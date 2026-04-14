@@ -1,76 +1,181 @@
 # SCLib_JZIS — Project Specification for Claude Code
-> **Version:** 1.0 | **Date:** 2026-04-14 | **Author:** Jian Zhou / JZIS
+> **Version:** 2.0 | **Date:** 2026-04-14 | **Author:** Jian Zhou / JZIS
 > **Repo:** https://github.com/JackZH26/SCLib_JZIS
 > **Domain:** jzis.org/sclib
-> **Status:** Ready to build
+> **Deployment:** Self-hosted VPS (all services)
+> **Status:** Confirmed by Jack — Ready to build
 
 ---
 
 ## 0. Project Overview
 
-**SCLib_JZIS** (JZIS Superconductivity Library) is the superconductivity field's equivalent of **Semantic Scholar + Materials Project + AI assistant**, unified in one open-source platform.
+**SCLib_JZIS** (JZIS Superconductivity Library) is the superconductivity field's equivalent of **Semantic Scholar + Materials Project + AI assistant**, unified in one open-source platform, fully self-hosted on JZIS VPS.
 
 ### What it does
 - **Semantic search** over 200,000+ superconductivity papers (1986–present, daily updates)
 - **Materials database** with structured Tc, pressure, and experimental data
 - **AI-powered Q&A** (RAG) citing specific papers as sources
-- **Open REST API** for researchers, AI agents, and ML pipelines
+- **Open REST API** for registered researchers and AI agents
 
-### Why it matters
-- NIMS SuperCon database went offline in 2021 — no active public materials DB exists
-- No domain-specific semantic search for superconductivity
-- Mathlib-inspired: machine-verifiable, community-contributed, continuously updated
-
----
-
-## 1. Tech Stack (Authoritative — Do Not Change Without Approval)
-
-| Layer | Technology | Notes |
-|-------|-----------|-------|
-| **Frontend** | Next.js 14 (App Router) + Tailwind CSS + shadcn/ui | SSR for SEO |
-| **Frontend Deploy** | Vercel | Free tier, global CDN |
-| **API** | FastAPI (Python 3.11) | Async, auto OpenAPI docs |
-| **API Deploy** | Google Cloud Run | Serverless, pay-per-request |
-| **Vector DB** | **Vertex AI Vector Search** | Managed, no ops overhead |
-| **Document DB** | Google Cloud Firestore | Serverless, real-time |
-| **Object Storage** | Google Cloud Storage | PDFs + parsed text + chunks |
-| **Embedding Model** | Vertex AI `text-embedding-005` (768d) | Best for scientific text |
-| **LLM (RAG)** | Gemini 2.5 Flash | Cost-efficient, context-aware |
-| **LLM (NER)** | Gemini 2.5 Flash | Material extraction from papers |
-| **LaTeX Parser** | Custom Python + Pandoc | arXiv source files preferred |
-| **PDF Fallback** | `opendataloader-pdf` v2.2.0 | When LaTeX unavailable |
-| **CI/CD** | GitHub Actions | Auto test + deploy |
-| **Package Manager** | `uv` (Python) + `pnpm` (Node) | Fast installs |
-
-### GCP Services Required
-```
-Vertex AI (Vector Search + Embedding + Gemini)
-Cloud Run
-Cloud Firestore (Native mode, nam5 region)
-Cloud Storage
-Cloud Build (for CI/CD)
-Secret Manager (API keys)
-```
+### Access Model
+| User Type | Registration | API Access | Free Queries |
+|-----------|-------------|-----------|--------------|
+| **Guest** | None | View docs + landing only | 3 queries/day/IP |
+| **Registered User** | Required (email verified) | Full API with API key | Unlimited |
 
 ---
 
-## 2. Repository Structure
+## 1. Tech Stack (Authoritative — All on VPS)
+
+| Layer | Technology | Hosting |
+|-------|-----------|---------|
+| **Frontend** | Next.js 14 (App Router) + Tailwind CSS + shadcn/ui | VPS container |
+| **API** | FastAPI (Python 3.11) | VPS container |
+| **Reverse Proxy** | Caddy (auto HTTPS via Let's Encrypt) | VPS container |
+| **Database** | PostgreSQL 16 | VPS container |
+| **Cache / Rate Limit** | Redis 7 | VPS container |
+| **Email** | SMTP via Resend API (or SendGrid) | External service |
+| **Vector DB** | **Vertex AI Vector Search** | GCP managed |
+| **Embedding Model** | Vertex AI `text-embedding-005` (768d) | GCP managed |
+| **LLM (RAG + NER)** | Gemini 2.5 Flash | GCP managed |
+| **Object Storage** | Google Cloud Storage | GCP managed |
+| **LaTeX Parser** | Custom Python + Pandoc | VPS (ingestion) |
+| **PDF Fallback** | `opendataloader-pdf` v2.2.0 | VPS (ingestion) |
+| **CI/CD** | GitHub Actions | Cloud |
+| **Package Manager** | `uv` (Python) + `pnpm` (Node) | — |
+
+### VPS Recommended Configuration
+Current VPS may need upgrading. Recommended minimum for production:
+
+| Spec | Minimum | Recommended |
+|------|---------|-------------|
+| **CPU** | 4 vCPU | 8 vCPU |
+| **RAM** | 8 GB | 16 GB |
+| **SSD** | 100 GB NVMe | 200 GB NVMe |
+| **Bandwidth** | 4 TB/month | 8 TB/month |
+
+**Reason:** Next.js SSR (~512MB) + FastAPI (~512MB) + PostgreSQL (~1GB) + Redis (~256MB) + ingestion pipeline (~2-4GB peak during embedding batches)
+
+Hostinger equivalent: **KVM 4** (~$10/mo minimum) or **KVM 8** (~$20/mo recommended).
+
+### GCP Services Required (data layer only, no servers)
+```
+Vertex AI (Vector Search + Embedding API + Gemini)
+Cloud Storage (PDF files + parsed text)
+```
+Note: Firestore is **NOT used** — PostgreSQL on VPS handles all metadata.
+
+---
+
+## 2. VPS Deployment Architecture
+
+```
+Internet
+    │
+    ▼
+┌─────────────────────────────────────────────────┐
+│  Caddy (80/443)                                  │
+│  jzis.org/sclib      → sclib-frontend:3000       │
+│  api.jzis.org/sclib  → sclib-api:8000            │
+│  Auto HTTPS (Let's Encrypt)                      │
+└─────────┬──────────────────────┬────────────────┘
+          │                      │
+    ┌─────▼──────┐        ┌──────▼─────┐
+    │  Next.js   │        │  FastAPI   │
+    │  :3000     │        │  :8000     │
+    └────────────┘        └──────┬─────┘
+                                 │
+              ┌──────────────────┼──────────────────┐
+              │                  │                   │
+        ┌─────▼──────┐   ┌───────▼───┐   ┌─────────▼────┐
+        │ PostgreSQL │   │   Redis   │   │  GCP (ext.)  │
+        │   :5432    │   │   :6379   │   │ Vertex AI VS │
+        │ (internal) │   │ (internal)│   │ Gemini API   │
+        └────────────┘   └───────────┘   │ Cloud Storage│
+                                         └──────────────┘
+```
+
+### Docker Compose Structure
+```yaml
+# docker-compose.yml (single file manages all services)
+services:
+  caddy:
+    image: caddy:2
+    ports: ["80:80", "443:443"]
+    volumes: ["./Caddyfile:/etc/caddy/Caddyfile", "caddy_data:/data"]
+    depends_on: [frontend, api]
+
+  frontend:
+    build: ./frontend
+    environment:
+      - NEXT_PUBLIC_API_BASE=https://api.jzis.org/sclib/v1
+
+  api:
+    build: ./api
+    environment:
+      - DATABASE_URL=postgresql://sclib:${DB_PASSWORD}@postgres:5432/sclib
+      - REDIS_URL=redis://redis:6379
+      - GCP_PROJECT=${GCP_PROJECT}
+    depends_on: [postgres, redis]
+    volumes:
+      - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: sclib
+      POSTGRES_USER: sclib
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+
+  redis:
+    image: redis:7-alpine
+    volumes: ["redis_data:/data"]
+
+volumes:
+  caddy_data:
+  postgres_data:
+  redis_data:
+```
+
+### Caddyfile
+```
+jzis.org/sclib {
+    reverse_proxy frontend:3000
+}
+
+api.jzis.org {
+    handle /sclib/* {
+        reverse_proxy api:8000
+    }
+}
+```
+
+---
+
+## 3. Repository Structure
 
 ```
 SCLib_JZIS/
 ├── README.md
 ├── CONTRIBUTING.md
 ├── LICENSE                          # Apache 2.0
+├── docker-compose.yml               # All VPS services
+├── docker-compose.dev.yml           # Local dev overrides
+├── Caddyfile                        # Reverse proxy config
+├── .env.example                     # Environment variable template
 ├── .github/
 │   └── workflows/
-│       ├── deploy-api.yml           # API → Cloud Run
-│       ├── deploy-frontend.yml      # Frontend → Vercel
+│       ├── deploy.yml               # SSH deploy to VPS on main push
 │       ├── test.yml                 # Run tests on PR
 │       └── ingest-daily.yml        # Daily arXiv update cron
 ├── api/                             # FastAPI backend
-│   ├── pyproject.toml               # uv project file
+│   ├── pyproject.toml
 │   ├── Dockerfile
-│   ├── main.py                      # FastAPI app entry
+│   ├── alembic/                     # Database migrations
+│   │   ├── env.py
+│   │   └── versions/
+│   ├── main.py
 │   ├── routers/
 │   │   ├── search.py                # POST /search
 │   │   ├── ask.py                   # POST /ask
@@ -78,453 +183,660 @@ SCLib_JZIS/
 │   │   ├── papers.py                # GET /paper/{id}
 │   │   ├── stats.py                 # GET /stats
 │   │   ├── similar.py               # GET /similar/{id}
-│   │   └── timeline.py              # GET /timeline
+│   │   ├── timeline.py              # GET /timeline
+│   │   └── auth.py                  # POST /register, /verify, /login, /keys
 │   ├── services/
 │   │   ├── vector_search.py         # Vertex AI Vector Search client
-│   │   ├── firestore.py             # Firestore CRUD
 │   │   ├── embedding.py             # text-embedding-005 client
 │   │   ├── gemini.py                # RAG + NER Gemini client
-│   │   └── storage.py               # GCS client
+│   │   ├── storage.py               # GCS client
+│   │   ├── email.py                 # Resend email service
+│   │   ├── rate_limit.py            # Redis-based rate limiting
+│   │   └── auth.py                  # API key management, JWT
 │   ├── models/
+│   │   ├── db.py                    # SQLAlchemy models (PostgreSQL)
 │   │   ├── paper.py                 # Paper Pydantic models
 │   │   ├── material.py              # Material Pydantic models
-│   │   ├── search.py                # Search request/response models
-│   │   └── ask.py                   # RAG request/response models
+│   │   ├── user.py                  # User Pydantic models
+│   │   ├── search.py
+│   │   └── ask.py
 │   └── tests/
 │       ├── test_search.py
 │       ├── test_ask.py
+│       ├── test_auth.py
 │       └── test_materials.py
-├── ingestion/                       # Data pipeline
+├── ingestion/                       # Data pipeline (runs on VPS or local)
 │   ├── pyproject.toml
 │   ├── collect/
-│   │   ├── arxiv_oai.py             # arXiv OAI-PMH bulk + incremental
-│   │   └── semantic_scholar.py      # S2 API metadata enrichment
+│   │   ├── arxiv_oai.py
+│   │   └── semantic_scholar.py
 │   ├── parse/
-│   │   ├── latex_parser.py          # arXiv .tar.gz source parsing
-│   │   └── pdf_parser.py            # opendataloader-pdf fallback
+│   │   ├── latex_parser.py
+│   │   └── pdf_parser.py
 │   ├── chunk/
-│   │   └── chunker.py               # Section-aware 512-token chunks
+│   │   └── chunker.py
 │   ├── embed/
-│   │   └── embedder.py              # Batch embedding via Vertex AI
+│   │   └── embedder.py
 │   ├── index/
-│   │   └── indexer.py               # Upsert to Vertex AI Vector Search
+│   │   └── indexer.py               # Vertex AI VS + PostgreSQL
 │   ├── extract/
-│   │   └── material_ner.py          # Gemini-based material NER
-│   └── pipeline.py                  # End-to-end orchestration
+│   │   └── material_ner.py
+│   └── pipeline.py
 ├── frontend/                        # Next.js app
 │   ├── package.json
 │   ├── next.config.ts
-│   ├── tailwind.config.ts
+│   ├── Dockerfile
 │   ├── app/
-│   │   ├── layout.tsx               # Root layout
-│   │   ├── page.tsx                 # Dashboard homepage
-│   │   ├── search/
-│   │   │   └── page.tsx             # Semantic search page
-│   │   ├── ask/
-│   │   │   └── page.tsx             # AI Q&A chat page
+│   │   ├── layout.tsx
+│   │   ├── page.tsx                 # Landing (guest accessible)
+│   │   ├── search/page.tsx          # Requires auth (3 free/day guest)
+│   │   ├── ask/page.tsx             # Requires auth (3 free/day guest)
 │   │   ├── materials/
-│   │   │   ├── page.tsx             # Materials database browser
-│   │   │   └── [formula]/
-│   │   │       └── page.tsx         # Material detail page
-│   │   ├── paper/
-│   │   │   └── [id]/
-│   │   │       └── page.tsx         # Paper detail page
-│   │   ├── timeline/
-│   │   │   └── page.tsx             # Tc records timeline
-│   │   ├── stats/
-│   │   │   └── page.tsx             # Statistics dashboard
-│   │   ├── api-docs/
-│   │   │   └── page.tsx             # Embedded Swagger UI
-│   │   └── about/
-│   │       └── page.tsx             # About + citation
+│   │   │   ├── page.tsx             # Requires auth
+│   │   │   └── [formula]/page.tsx
+│   │   ├── paper/[id]/page.tsx
+│   │   ├── timeline/page.tsx        # Public
+│   │   ├── stats/page.tsx           # Public
+│   │   ├── api-docs/page.tsx        # Public
+│   │   ├── about/page.tsx           # Public
+│   │   └── auth/
+│   │       ├── register/page.tsx    # Registration form
+│   │       ├── verify/page.tsx      # Email verification landing
+│   │       ├── login/page.tsx
+│   │       └── dashboard/page.tsx   # API key management
 │   └── components/
-│       ├── ui/                      # shadcn/ui components
+│       ├── ui/
 │       ├── SearchBar.tsx
 │       ├── PaperCard.tsx
 │       ├── MaterialTable.tsx
-│       ├── TcTimeline.tsx           # Plotly.js timeline
-│       ├── ChatInterface.tsx        # RAG chat UI
-│       └── StatsCards.tsx
+│       ├── TcTimeline.tsx
+│       ├── ChatInterface.tsx
+│       ├── StatsCards.tsx
+│       ├── GuestBanner.tsx          # Shows remaining free queries
+│       └── AuthGuard.tsx            # Wraps protected pages
 ├── scripts/
-│   ├── setup_gcp.sh                 # GCP project setup
-│   ├── init_firestore.py            # Create Firestore indexes
-│   ├── create_vector_index.py       # Create Vertex AI VS index
-│   └── import_nims.py               # Import NIMS SuperCon CSV
+│   ├── setup_vps.sh                 # Initial VPS setup script
+│   ├── deploy.sh                    # Manual deploy script
+│   ├── init_db.py                   # Create tables + indexes
+│   ├── create_vector_index.py       # Vertex AI VS index creation
+│   └── import_nims.py               # NIMS SuperCon CSV import
 └── docs/
-    ├── API.md                       # Full API reference
-    ├── INGESTION.md                 # Pipeline documentation
-    └── DEPLOYMENT.md               # Deployment guide
+    ├── API.md
+    ├── DEPLOYMENT.md
+    └── VPS_SETUP.md
 ```
 
 ---
 
-## 3. Data Models (Exact Schemas)
+## 4. Database Schema (PostgreSQL)
 
-### 3.1 Paper (Firestore: `papers/{paper_id}`)
+### 4.1 Users Table
 
-```python
-# models/paper.py
-from pydantic import BaseModel
-from typing import Optional, List
-from datetime import datetime
+```sql
+CREATE TABLE users (
+    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email           VARCHAR(255) UNIQUE NOT NULL,
+    email_verified  BOOLEAN DEFAULT FALSE,
+    name            VARCHAR(255) NOT NULL,
+    institution     VARCHAR(500),
+    country         VARCHAR(100),
+    age             SMALLINT CHECK (age >= 13 AND age <= 120),
+    research_area   VARCHAR(255),    -- e.g. "High-temperature superconductivity"
+    purpose         TEXT,            -- Why they want access (free text)
+    password_hash   VARCHAR(255) NOT NULL,
+    created_at      TIMESTAMPTZ DEFAULT NOW(),
+    updated_at      TIMESTAMPTZ DEFAULT NOW(),
+    last_login      TIMESTAMPTZ,
+    is_active       BOOLEAN DEFAULT FALSE,   -- False until email verified
+    is_admin        BOOLEAN DEFAULT FALSE
+);
 
-class MaterialRecord(BaseModel):
-    formula: str
-    tc_kelvin: Optional[float]
-    tc_type: Optional[str]  # "onset" | "zero_resistance" | "midpoint"
-    pressure_gpa: Optional[float]
-    measurement: Optional[str]  # "resistivity" | "susceptibility" | "specific_heat"
-    verified: bool = False
-    confidence: float  # 0.0-1.0
+-- Email verification tokens
+CREATE TABLE email_verifications (
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id     UUID REFERENCES users(id) ON DELETE CASCADE,
+    token       VARCHAR(64) UNIQUE NOT NULL,
+    expires_at  TIMESTAMPTZ NOT NULL,
+    used        BOOLEAN DEFAULT FALSE,
+    created_at  TIMESTAMPTZ DEFAULT NOW()
+);
 
-class Paper(BaseModel):
-    id: str                          # "arxiv:2306.07275" or "doi:10.1038/..."
-    source: str                      # "arxiv" | "semantic_scholar" | "crossref"
-    arxiv_id: Optional[str]
-    doi: Optional[str]
-    title: str
-    authors: List[str]
-    affiliations: Optional[List[str]]
-    date_submitted: Optional[str]    # ISO date string
-    date_published: Optional[str]
-    journal: Optional[str]
-    abstract: str
-    categories: List[str]            # ["cond-mat.supr-con"]
-    material_family: Optional[str]   # "cuprate"|"hydride"|"nickelate"|"iron_based"|"topological"|"2d_moire"|"kagome"|"conventional"|"other"
-    status: str = "published"        # "published" | "retracted" | "preprint"
-    retraction_date: Optional[str]
-    retraction_reason: Optional[str]
-    citation_count: int = 0
-    references_count: int = 0
-    chunk_count: int = 0
-    materials_extracted: List[MaterialRecord] = []
-    quality_flags: List[str] = []    # ["retracted", "disputed", "high_impact"]
-    indexed_at: datetime
-    updated_at: datetime
+-- API Keys (registered users get one key by default, can rotate)
+CREATE TABLE api_keys (
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id     UUID REFERENCES users(id) ON DELETE CASCADE,
+    key_hash    VARCHAR(64) UNIQUE NOT NULL,  -- SHA-256 of actual key
+    key_prefix  VARCHAR(8) NOT NULL,          -- First 8 chars for display: "scl_xxxx"
+    name        VARCHAR(100),                 -- User-assigned label
+    created_at  TIMESTAMPTZ DEFAULT NOW(),
+    last_used   TIMESTAMPTZ,
+    revoked     BOOLEAN DEFAULT FALSE
+);
 ```
 
-### 3.2 Material (Firestore: `materials/{material_id}`)
+### 4.2 Papers Table
 
-```python
-# models/material.py
-class TcRecord(BaseModel):
-    tc_kelvin: float
-    tc_type: str                     # "onset" | "zero_resistance"
-    pressure_gpa: float              # 0.0 = ambient
-    measurement_method: str
-    sample_form: str                 # "single_crystal" | "polycrystal" | "thin_film"
-    paper_id: str
-    year: int
-    verified: bool
-    notes: Optional[str]
+```sql
+CREATE TABLE papers (
+    id                  VARCHAR(100) PRIMARY KEY,   -- "arxiv:2306.07275"
+    source              VARCHAR(20) NOT NULL,        -- "arxiv"|"semantic_scholar"
+    arxiv_id            VARCHAR(20),
+    doi                 VARCHAR(200),
+    title               TEXT NOT NULL,
+    authors             JSONB NOT NULL,              -- ["Author A", "Author B"]
+    affiliations        JSONB,
+    date_submitted      DATE,
+    date_published      DATE,
+    journal             VARCHAR(300),
+    abstract            TEXT NOT NULL,
+    categories          JSONB,                       -- ["cond-mat.supr-con"]
+    material_family     VARCHAR(50),
+    status              VARCHAR(20) DEFAULT 'published',
+    retraction_date     DATE,
+    retraction_reason   TEXT,
+    citation_count      INTEGER DEFAULT 0,
+    chunk_count         INTEGER DEFAULT 0,
+    materials_extracted JSONB DEFAULT '[]',
+    quality_flags       JSONB DEFAULT '[]',
+    indexed_at          TIMESTAMPTZ DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ DEFAULT NOW()
+);
 
-class Material(BaseModel):
-    id: str                          # normalized formula, e.g. "La3Ni2O7"
-    formula: str                     # "La₃Ni₂O₇" (unicode)
-    formula_normalized: str          # "La3Ni2O7" (ASCII, for ID)
-    formula_latex: str               # "La_3Ni_2O_7"
-    family: str
-    subfamily: Optional[str]
-    crystal_structure: Optional[str]
-    records: List[TcRecord]
-    tc_max: Optional[float]
-    tc_max_conditions: Optional[str]
-    tc_ambient: Optional[float]      # highest Tc at 0 GPa
-    pairing_symmetry: Optional[str]
-    discovery_year: Optional[int]
-    total_papers: int = 0
-    status: str = "active_research"  # "active_research" | "confirmed" | "retracted"
+CREATE INDEX idx_papers_family ON papers(material_family);
+CREATE INDEX idx_papers_date ON papers(date_published DESC);
+CREATE INDEX idx_papers_status ON papers(status);
+CREATE INDEX idx_papers_arxiv ON papers(arxiv_id);
 ```
 
-### 3.3 Vector Chunk (Vertex AI Vector Search)
+### 4.3 Materials Table
 
-Each chunk stored as a vector with metadata:
+```sql
+CREATE TABLE materials (
+    id                  VARCHAR(100) PRIMARY KEY,  -- "La3Ni2O7"
+    formula             VARCHAR(200) NOT NULL,
+    formula_normalized  VARCHAR(200) NOT NULL,
+    formula_latex       VARCHAR(200),
+    family              VARCHAR(50),
+    subfamily           VARCHAR(100),
+    crystal_structure   VARCHAR(100),
+    tc_max              REAL,
+    tc_max_conditions   VARCHAR(300),
+    tc_ambient          REAL,
+    pairing_symmetry    VARCHAR(100),
+    discovery_year      SMALLINT,
+    total_papers        INTEGER DEFAULT 0,
+    status              VARCHAR(50) DEFAULT 'active_research',
+    records             JSONB DEFAULT '[]',        -- Array of TcRecord objects
+    updated_at          TIMESTAMPTZ DEFAULT NOW()
+);
 
-```python
-# Vertex AI datapoint structure
-{
-    "datapoint_id": "arxiv:2306.07275_chunk_005",   # unique ID
-    "feature_vector": [...],                          # 768-dim float32
-    "restricts": [                                    # for filtering
-        {"namespace": "material_family", "allow_list": ["nickelate"]},
-        {"namespace": "year", "allow_list": ["2023"]},
-    ],
-    "numeric_restricts": [
-        {"namespace": "tc_max", "value_float": 80.0},
-        {"namespace": "pressure_min", "value_float": 14.0},
-    ],
-    # crowding_tag for diversity
-    "crowding_tag": {"value": "arxiv:2306.07275"}    # max 1 chunk per paper in top-k
-}
+CREATE INDEX idx_materials_family ON materials(family);
+CREATE INDEX idx_materials_tc ON materials(tc_max DESC NULLS LAST);
+CREATE INDEX idx_materials_year ON materials(discovery_year);
 ```
 
-Firestore `chunks/{chunk_id}` stores the text payload:
-```python
-{
-    "id": "arxiv:2306.07275_chunk_005",
-    "paper_id": "arxiv:2306.07275",
-    "title": str,
-    "authors_short": str,          # "Sun et al."
-    "year": int,
-    "section": str,                # "Results"
-    "chunk_index": int,
-    "text": str,                   # actual chunk text, max 512 tokens
-    "material_family": str,
-    "materials_mentioned": List[str],
-    "has_equation": bool,
-    "has_table": bool,
-}
+### 4.4 Chunks Table (text payload for VS results)
+
+```sql
+CREATE TABLE chunks (
+    id              VARCHAR(200) PRIMARY KEY,  -- "arxiv:2306.07275_chunk_005"
+    paper_id        VARCHAR(100) REFERENCES papers(id),
+    title           TEXT,
+    authors_short   VARCHAR(200),
+    year            SMALLINT,
+    section         VARCHAR(200),
+    chunk_index     SMALLINT,
+    text            TEXT NOT NULL,
+    material_family VARCHAR(50),
+    materials_mentioned JSONB DEFAULT '[]',
+    has_equation    BOOLEAN DEFAULT FALSE,
+    has_table       BOOLEAN DEFAULT FALSE
+);
+
+CREATE INDEX idx_chunks_paper ON chunks(paper_id);
 ```
 
-### 3.4 Stats Cache (Firestore: `stats/global`)
+### 4.5 Stats Cache Table
+
+```sql
+CREATE TABLE stats_cache (
+    key         VARCHAR(100) PRIMARY KEY,
+    value       JSONB NOT NULL,
+    updated_at  TIMESTAMPTZ DEFAULT NOW()
+);
+-- Rows: 'global', 'by_year', 'by_family', 'tc_records'
+-- Refreshed by daily cron
+```
+
+---
+
+## 5. User Registration & Authentication
+
+### 5.1 Registration Flow
+
+```
+User fills form → POST /auth/register
+    → Validate fields (email format, age 13+, required fields)
+    → Check email not already registered
+    → Hash password (bcrypt, cost 12)
+    → Create user (is_active=False)
+    → Generate 64-char verification token (expires 24h)
+    → Send verification email
+    → Return: "Check your email to verify your account"
+
+User clicks link → GET /auth/verify?token=xxxx
+    → Validate token (exists, not expired, not used)
+    → Set user.is_active = True
+    → Mark token as used
+    → Generate API key (format: "scl_" + 40 random chars)
+    → Send welcome email with API key
+    → Redirect to /auth/dashboard
+
+User logs in → POST /auth/login
+    → Validate email/password
+    → Check is_active (if False: "Please verify your email")
+    → Return JWT (24h expiry) + user info
+```
+
+### 5.2 Registration Form Fields
 
 ```python
-{
-    "total_papers": int,
-    "total_materials": int,
-    "total_chunks": int,
-    "earliest_paper": {"id": str, "title": str, "date": str, "authors": List[str]},
-    "latest_paper": {"id": str, "title": str, "date": str},
-    "last_updated": datetime,
-    "papers_by_year": Dict[str, int],
-    "papers_by_family": Dict[str, int],
-    "tc_hall_of_fame": List[{
-        "rank": int, "material": str, "tc": float,
-        "pressure": str, "year": int, "family": str
-    }]
+class RegisterRequest(BaseModel):
+    # Required
+    email: EmailStr
+    password: str               # min 8 chars, validated
+    name: str                   # Full name, min 2 chars
+    age: int                    # Must be 13-120
+    
+    # Optional but encouraged
+    institution: Optional[str]  # University/company/independent
+    country: Optional[str]      # Country of residence
+    research_area: Optional[str] # e.g. "High-Tc superconductivity"
+    purpose: Optional[str]      # How they plan to use SCLib (max 500 chars)
+```
+
+### 5.3 Verification Email Template
+
+```
+Subject: Verify your SCLib_JZIS account
+
+Dear {name},
+
+Thank you for registering with SCLib_JZIS, the JZIS Superconductivity Library.
+
+Please verify your email address by clicking the link below:
+https://jzis.org/sclib/auth/verify?token={token}
+
+This link expires in 24 hours.
+
+Once verified, you will receive your API key to access the full SCLib database.
+
+Best regards,
+JZIS Team | jzis.org
+```
+
+### 5.4 Welcome Email (post-verification)
+
+```
+Subject: Your SCLib_JZIS API Key
+
+Dear {name},
+
+Your account has been verified! Here is your API key:
+
+  {api_key}
+
+Keep this key secure. Use it in requests as:
+  X-API-Key: {api_key}
+
+API Base URL: https://api.jzis.org/sclib/v1
+Documentation: https://jzis.org/sclib/api-docs
+
+You can manage your keys at: https://jzis.org/sclib/auth/dashboard
+
+Best regards,
+JZIS Team
+```
+
+### 5.5 API Key Format & Authentication
+
+```python
+# Key format: "scl_" + 40 random URL-safe chars
+# Example: "scl_aB3kL9mN2pQ7rS4tU1vW8xY5zA6bC0dE"
+
+# In requests:
+# Header: X-API-Key: scl_xxxxxxxxxxxxxxxxxxxx
+
+# Validation middleware:
+async def verify_api_key(x_api_key: str = Header(None), request: Request = None):
+    if not x_api_key:
+        # Check guest allowance
+        ip = get_client_ip(request)
+        remaining = await check_guest_quota(ip)
+        if remaining <= 0:
+            raise HTTPException(429, "Guest quota exceeded. Register for free access.")
+        await decrement_guest_quota(ip)
+        return GuestUser(ip=ip, remaining=remaining-1)
+    
+    # Hash and look up in DB
+    key_hash = sha256(x_api_key.encode()).hexdigest()
+    api_key = await db.fetch("SELECT * FROM api_keys WHERE key_hash=$1 AND revoked=FALSE", key_hash)
+    if not api_key:
+        raise HTTPException(401, "Invalid API key")
+    
+    user = await db.fetch("SELECT * FROM users WHERE id=$1 AND is_active=TRUE", api_key.user_id)
+    if not user:
+        raise HTTPException(401, "Account inactive")
+    
+    # Update last_used
+    await db.execute("UPDATE api_keys SET last_used=NOW() WHERE id=$1", api_key.id)
+    return AuthenticatedUser(user=user, key=api_key)
+```
+
+---
+
+## 6. Access Control & Rate Limiting
+
+### 6.1 Guest Access (no API key)
+
+```python
+# Redis key: "guest_quota:{date}:{ip}"
+# TTL: 86400 seconds (resets at midnight)
+
+GUEST_DAILY_LIMIT = 3  # per IP per day
+
+async def check_guest_quota(ip: str) -> int:
+    """Returns remaining queries for this IP today"""
+    redis_key = f"guest_quota:{date.today()}:{ip}"
+    used = await redis.get(redis_key) or 0
+    return max(0, GUEST_DAILY_LIMIT - int(used))
+
+async def decrement_guest_quota(ip: str):
+    redis_key = f"guest_quota:{date.today()}:{ip}"
+    await redis.incr(redis_key)
+    await redis.expire(redis_key, 86400)
+```
+
+### 6.2 Page Access Matrix
+
+| Page | Guest | Registered |
+|------|-------|-----------|
+| `/sclib` (landing) | ✅ Full | ✅ Full |
+| `/sclib/timeline` | ✅ Full | ✅ Full |
+| `/sclib/stats` | ✅ Full | ✅ Full |
+| `/sclib/about` | ✅ Full | ✅ Full |
+| `/sclib/api-docs` | ✅ Full | ✅ Full |
+| `/sclib/auth/*` | ✅ Full | ✅ Full |
+| `/sclib/search` | ⚠️ 3/day | ✅ Unlimited |
+| `/sclib/ask` | ⚠️ 3/day | ✅ Unlimited |
+| `/sclib/materials` | ⚠️ 3/day | ✅ Unlimited |
+| `/sclib/paper/{id}` | ⚠️ 3/day | ✅ Unlimited |
+| API endpoints | ⚠️ 3/day | ✅ Unlimited |
+
+### 6.3 Guest Banner Component
+
+```tsx
+// components/GuestBanner.tsx
+// Shows on all rate-limited pages for guests
+export function GuestBanner({ remaining }: { remaining: number }) {
+  return (
+    <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+      <p className="text-amber-800">
+        You have <strong>{remaining} free queries</strong> remaining today.{" "}
+        <Link href="/sclib/auth/register" className="underline font-semibold">
+          Register for free
+        </Link>{" "}
+        to get unlimited access.
+      </p>
+    </div>
+  );
 }
 ```
 
 ---
 
-## 4. API Specification (FastAPI)
+## 7. API Specification (FastAPI)
 
 **Base URL:** `https://api.jzis.org/sclib/v1`
-**Auth:** `X-API-Key: <key>` header (free registration) or anonymous (100 req/day)
+**Auth:** `X-API-Key: scl_xxxx` (registered) or no key (guest, 3/day/IP)
 
-### 4.1 POST /search
+### 7.1 Auth Endpoints
+
+```
+POST /auth/register          — Create account (triggers verification email)
+GET  /auth/verify?token=xxx  — Verify email (redirect to dashboard)
+POST /auth/login             — Login → JWT
+POST /auth/logout            — Invalidate JWT
+GET  /auth/me                — Get current user info
+POST /auth/keys              — Generate new API key
+DELETE /auth/keys/{key_id}   — Revoke API key
+```
+
+### 7.2 POST /auth/register
 
 ```python
-# Request
+# Request: RegisterRequest (see Section 5.2)
+# Response:
+{
+    "message": "Registration successful. Please check your email to verify your account.",
+    "email": "user@example.com"
+}
+# Errors: 400 (invalid fields), 409 (email already registered)
+```
+
+### 7.3 POST /search
+
+```python
 class SearchRequest(BaseModel):
-    query: str                          # natural language query
-    top_k: int = 20                     # max 100
+    query: str
+    top_k: int = 20                    # max 100
     filters: Optional[SearchFilters]
-    sort: str = "relevance"             # "relevance" | "date_desc" | "citations_desc"
-    include_chunks: bool = True         # include matched text snippet
+    sort: str = "relevance"            # "relevance"|"date_desc"|"citations_desc"
+    include_chunks: bool = True
 
 class SearchFilters(BaseModel):
     year_min: Optional[int]
     year_max: Optional[int]
     material_family: Optional[List[str]]
-    tc_min: Optional[float]             # minimum Tc in Kelvin
-    pressure_max: Optional[float]       # max pressure in GPa (0 = ambient only)
+    tc_min: Optional[float]
+    pressure_max: Optional[float]
     exclude_retracted: bool = True
-    status: Optional[List[str]]
 
-# Response
 class SearchResponse(BaseModel):
     total: int
     results: List[SearchResult]
     query_time_ms: int
-
-class SearchResult(BaseModel):
-    paper_id: str
-    title: str
-    authors: List[str]
-    year: int
-    journal: Optional[str]
-    relevance_score: float
-    matched_chunk: Optional[str]        # best matching text snippet
-    materials: List[dict]               # extracted materials with Tc
-    citation_count: int
-    status: str
-    arxiv_url: Optional[str]
-    doi_url: Optional[str]
+    guest_remaining: Optional[int]     # Included for guest users
 ```
 
-**Implementation:** Embed query with `text-embedding-005`, query Vertex AI VS with filters, fetch chunk text from Firestore, fetch paper metadata from Firestore, merge and return.
-
-### 4.2 POST /ask
+### 7.4 POST /ask
 
 ```python
-# Request
 class AskRequest(BaseModel):
     question: str
     max_sources: int = 10
-    filters: Optional[SearchFilters]    # same as search
-    language: str = "auto"             # "auto" | "en" | "zh"
-    model: str = "gemini-2.5-flash"
+    filters: Optional[SearchFilters]
+    language: str = "auto"             # "auto"|"en"|"zh"
 
-# Response
 class AskResponse(BaseModel):
-    answer: str                         # markdown formatted
+    answer: str                        # Markdown with [1][2] citations
     sources: List[AskSource]
     tokens_used: int
-    model: str
-    query_time_ms: int
-
-class AskSource(BaseModel):
-    paper_id: str
-    title: str
-    authors_short: str
-    year: int
-    relevance: float
-    matched_text: str                   # the chunk used
+    guest_remaining: Optional[int]
 ```
-
-**Implementation:**
-1. Embed question → retrieve top 10 chunks from VS
-2. Build RAG prompt with retrieved chunks + citation markers [1], [2], etc.
-3. Call Gemini 2.5 Flash with system prompt enforcing citation format
-4. Parse response, attach source metadata, return
 
 **RAG System Prompt:**
 ```
-You are SCLib, an AI research assistant specialized in superconductivity.
-Answer based ONLY on the provided papers. Cite sources as [1], [2], etc.
-Be precise about Tc values, pressures, and material formulas.
-If the answer is not in the provided papers, say so clearly.
-Distinguish between theoretical predictions and experimental measurements.
+You are SCLib, an AI research assistant for the superconductivity community.
+Answer ONLY based on the provided papers. Cite as [1], [2], etc.
+Be precise about Tc values, pressures, and chemical formulas.
+Distinguish experimental measurements from theoretical predictions.
+If the answer is not in the papers, say so clearly.
 Language: {language}
 ```
 
-### 4.3 GET /materials
+### 7.5 GET /materials
 
 ```
 GET /materials?family=nickelate&tc_min=50&pressure_max=0&sort=tc_desc&limit=50&offset=0
 ```
+Returns paginated list of Material objects.
 
-Query params: `family`, `tc_min`, `tc_max`, `pressure_min`, `pressure_max`, `year_min`, `year_max`, `sort` (`tc_desc`|`tc_asc`|`papers_desc`|`year_asc`), `limit` (max 200), `offset`
+### 7.6 GET /materials/{formula}
 
-Returns paginated list of Material objects with summary fields.
+Full Material object with all TcRecords, timeline, related materials.
 
-### 4.4 GET /materials/{formula}
+### 7.7 GET /paper/{id}
 
-URL-encoded formula, e.g. `/materials/La3Ni2O7`
+`/paper/arxiv:2306.07275` — Full Paper object.
 
-Returns full Material object including all TcRecords, timeline, related materials.
-
-### 4.5 GET /paper/{id}
-
-`/paper/arxiv:2306.07275` or `/paper/doi:10.1038/s41586-023-06408-7`
-
-Returns full Paper object with all fields.
-
-### 4.6 GET /similar/{paper_id}
+### 7.8 GET /similar/{paper_id}
 
 ```
 GET /similar/arxiv:2306.07275?top_k=10
 ```
 
-Returns top-k similar papers using average chunk vector of the given paper.
+### 7.9 GET /stats
 
-### 4.7 GET /stats
+Returns global stats. Refreshed by daily cron. Publicly accessible.
 
-Returns global stats cache from Firestore. Refreshed daily by cron.
-
-### 4.8 GET /timeline
+### 7.10 GET /timeline
 
 ```
 GET /timeline?family=all&ambient_only=false
 ```
-
-Returns array of `{year, material, formula, tc, pressure_gpa, paper_id, family}` sorted by date, suitable for frontend visualization.
+Returns Tc record history for Plotly visualization.
 
 ---
 
-## 5. Ingestion Pipeline
+## 8. Frontend Pages Specification
 
-### 5.1 Chunking Strategy
+### 8.1 Landing Page (`/sclib`) — Public
+
+- Hero: "The Superconductivity Library" + tagline + search bar
+- Stats cards: total papers, materials, coverage dates
+- Tc Timeline preview (interactive Plotly chart)
+- Material family grid (8 families with paper counts)
+- "Register Free" CTA prominently featured
+- Latest 5 papers indexed
+
+### 8.2 Registration Page (`/sclib/auth/register`)
+
+Form fields:
+```
+Email *
+Password * (min 8 chars, strength indicator)
+Confirm Password *
+Full Name *
+Age * (number input, 13+)
+Institution (text, e.g. "MIT", "Independent Researcher")
+Country (dropdown)
+Research Area (text, e.g. "High-temperature superconductivity")
+Purpose (textarea, "How do you plan to use SCLib?", max 500 chars)
+
+[ ] I agree to the Terms of Use and Privacy Policy *
+
+[Register for Free]
+```
+
+### 8.3 Email Verification Page (`/sclib/auth/verify`)
+
+- Shows success/failure of verification
+- On success: show API key + link to dashboard
+- On failure (expired/invalid): offer to resend verification
+
+### 8.4 Dashboard (`/sclib/auth/dashboard`) — Auth required
+
+- User profile (institution, research area)
+- API Key management (show/hide, copy, rotate, revoke)
+- Usage stats (queries this month)
+
+### 8.5 Search Page (`/sclib/search`) — 3/day guest, unlimited registered
+
+- Guest banner (remaining queries)
+- Sidebar filters + main results
+- Login prompt if guest quota exhausted
+
+### 8.6 Ask Page (`/sclib/ask`) — 3/day guest, unlimited registered
+
+- Chat interface with citation cards
+- Guest banner
+- Login prompt if exhausted
+
+### 8.7 Materials Page (`/sclib/materials`) — 3/day guest
+
+- Sortable, filterable table
+- Export CSV (registered only)
+
+### 8.8 Timeline Page (`/sclib/timeline`) — Public
+
+- Full interactive Plotly chart, no auth required
+
+### 8.9 Stats Page (`/sclib/stats`) — Public
+
+- All statistics, public access
+
+---
+
+## 9. Email Service (Resend)
 
 ```python
-# chunk/chunker.py
+# api/services/email.py
+import resend
 
+resend.api_key = RESEND_API_KEY
+
+async def send_verification_email(to: str, name: str, token: str):
+    verify_url = f"https://jzis.org/sclib/auth/verify?token={token}"
+    resend.Emails.send({
+        "from": "SCLib <noreply@jzis.org>",
+        "to": to,
+        "subject": "Verify your SCLib_JZIS account",
+        "html": render_template("verify.html", name=name, url=verify_url)
+    })
+
+async def send_welcome_email(to: str, name: str, api_key: str):
+    resend.Emails.send({
+        "from": "SCLib <noreply@jzis.org>",
+        "to": to,
+        "subject": "Your SCLib_JZIS API Key",
+        "html": render_template("welcome.html", name=name, api_key=api_key)
+    })
+```
+
+---
+
+## 10. Ingestion Pipeline
+
+### 10.1 Chunking Strategy (same as v1.0)
+
+```python
 MAX_TOKENS = 512
 OVERLAP_TOKENS = 64
 MIN_CHUNK_TOKENS = 100
 
 def chunk_paper(parsed: dict) -> List[dict]:
-    """
-    Section-aware chunking:
-    1. Split by \section{} boundaries first
-    2. Within each section, slide with 512-token window + 64-token overlap
-    3. Preserve equations as atomic units (never split mid-equation)
-    4. Prepend "Title: {title}\nSection: {section}\n" to each chunk for context
-    5. Skip reference list sections
-    """
+    # Section-aware chunking
+    # Preserve equations as atomic units
+    # Prepend "Title: {title}\nSection: {section}\n" to each chunk
+    # Skip reference list sections
 ```
 
-### 5.2 Embedding Batch Size
-
-Vertex AI `text-embedding-005` supports batch up to 250 texts per request.
-Use batch embedding with exponential backoff on rate limits.
+### 10.2 Vertex AI Vector Search
 
 ```python
-# embed/embedder.py
-BATCH_SIZE = 250
-DIMENSIONS = 768
-MODEL = "text-embedding-005"
-TASK_TYPE = "RETRIEVAL_DOCUMENT"  # for indexing; use RETRIEVAL_QUERY for queries
+# Upsert to VS index
+# Store text in PostgreSQL chunks table (not Firestore)
+
+from google.cloud import aiplatform
+
+def upsert_vectors(datapoints: List[dict]):
+    """Batch upsert to Vertex AI VS"""
+    index = aiplatform.MatchingEngineIndex(INDEX_NAME)
+    index.upsert_datapoints(datapoints=datapoints)
 ```
 
-### 5.3 Vertex AI Vector Search Index Configuration
-
-```python
-# scripts/create_vector_index.py
-index_config = {
-    "display_name": "sclib-papers-v1",
-    "description": "SCLib paper chunks, 768d, ~1.5M vectors",
-    "metadata": {
-        "contentsDeltaUri": "gs://sclib-jzis/vs-index/",
-        "config": {
-            "dimensions": 768,
-            "approximateNeighborsCount": 150,
-            "distanceMeasureType": "DOT_PRODUCT_DISTANCE",
-            "algorithm_config": {
-                "treeAhConfig": {
-                    "leafNodeEmbeddingCount": 1000,
-                    "leafNodesToSearchPercent": 7
-                }
-            }
-        }
-    }
-}
-
-# Deploy to endpoint for serving
-endpoint_config = {
-    "display_name": "sclib-papers-endpoint",
-    "public_endpoint_enabled": True
-}
-```
-
-### 5.4 Material NER Prompt
-
-```python
-MATERIAL_NER_PROMPT = """
-Extract superconducting materials from this text. Return JSON array only.
-For each material found, extract:
-- formula: chemical formula (e.g., "La3Ni2O7")  
-- tc_kelvin: critical temperature in Kelvin (null if not stated)
-- tc_type: "onset" | "zero_resistance" | "midpoint" | "unknown"
-- pressure_gpa: pressure in GPa (0.0 if ambient, null if not stated)
-- measurement: "resistivity" | "susceptibility" | "specific_heat" | "unknown"
-- confidence: 0.0-1.0
-
-Rules:
-- Only extract materials explicitly measured for superconductivity
-- Do not invent data not in the text
-- Flag unusual Tc values (>300K or <0.1K) with confidence < 0.3
-- Distinguish theoretical predictions from experimental measurements
-
-Text:
-{text}
-
-Return: [{...}, {...}] or [] if no materials found.
-"""
-```
-
-### 5.5 Daily Update Cron (GitHub Actions)
+### 10.3 Daily Update Cron
 
 ```yaml
 # .github/workflows/ingest-daily.yml
@@ -539,391 +851,283 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run incremental ingestion
-        run: |
-          cd ingestion
-          uv run pipeline.py --mode incremental --date yesterday
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-          GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+      - name: SSH to VPS and run ingestion
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /opt/SCLib_JZIS
+            docker compose run --rm api python ingestion/pipeline.py --mode incremental
 ```
 
 ---
 
-## 6. Frontend Pages Specification
+## 11. Environment Variables
 
-### 6.1 Homepage (`/`) — Dashboard
+### `.env` on VPS (single file)
 
-**Components:**
-- `StatsCards` — 4 cards: Total Papers, Total Materials, Coverage Start (1986), Last Updated
-- `SearchBar` — large, centered, placeholder: "Search 200K+ superconductivity papers..."
-- `TcTimeline` — interactive Plotly.js chart, Tc records 1986–present
-- `FamilyGrid` — 8 material families with paper counts, click → /search?family=X
-- `LatestPapers` — last 5 indexed papers from /stats endpoint
-- `QuickAsk` — small prompt box linking to /ask
-
-### 6.2 Search Page (`/search`)
-
-**Layout:** Sidebar filters + main results grid
-
-**Sidebar filters:**
-- Year range slider (1986–2026)
-- Material family checkboxes (8 options)
-- Min Tc slider (0–300K)
-- Max pressure slider (0–200 GPa)
-- Exclude retracted toggle (default: on)
-
-**Result card:** Title, authors (truncated), year, journal, relevance badge, Tc pill(s), matched text snippet with query highlighting, arXiv/DOI links
-
-**Pagination:** 20 per page, infinite scroll or page buttons
-
-### 6.3 Ask Page (`/ask`)
-
-Chat interface. Each exchange:
-- User message bubble
-- Assistant response (markdown rendered, citations as superscript links)
-- Collapsible "Sources" section showing paper cards
-- Copy button on responses
-
-### 6.4 Materials Page (`/materials`)
-
-Sortable, filterable table:
-- Columns: Formula, Family, Tc Max, Pressure, Year, Papers
-- Clicking formula → /materials/{formula}
-- Export CSV button
-- Quick filter bar at top
-
-### 6.5 Material Detail Page (`/materials/{formula}`)
-
-- Header: formula (large), family badge, Tc max chip
-- Tc Records table: all records with conditions, paper links
-- Timeline chart: Tc over time (papers reporting this material)
-- Related materials section
-- Recent papers mentioning this material (from /search)
-
-### 6.6 Timeline Page (`/timeline`)
-
-- Interactive Plotly.js scatter plot
-- X: year, Y: Tc (K), color: family, size: citation count
-- Toggle: All / Ambient pressure only / Per family
-- Hover: material card with paper link
-- Annotation markers for milestone events (YBCO 1987, H3S 2015, etc.)
-
-### 6.7 Stats Page (`/stats`)
-
-- Papers by year bar chart
-- Papers by family pie chart
-- Tc Hall of Fame table (top 20 highest Tc)
-- Coverage stats (earliest/latest paper)
-
----
-
-## 7. Environment Variables
-
-### API Service (Cloud Run)
 ```bash
+# Database
+DB_PASSWORD=<strong-random-password>
+DATABASE_URL=postgresql://sclib:${DB_PASSWORD}@postgres:5432/sclib
+
+# Redis
+REDIS_URL=redis://redis:6379
+
+# GCP
 GCP_PROJECT=jzis-sclib
 GCP_REGION=us-central1
+GOOGLE_APPLICATION_CREDENTIALS=/credentials/gcp-sa.json
 VERTEX_AI_INDEX_ENDPOINT=projects/.../locations/.../indexEndpoints/...
 VERTEX_AI_DEPLOYED_INDEX_ID=sclib_papers_v1
-FIRESTORE_DATABASE=(default)
 GCS_BUCKET=sclib-jzis
+
+# AI Models
 GEMINI_MODEL=gemini-2.5-flash
 EMBEDDING_MODEL=text-embedding-005
-API_KEYS_COLLECTION=api_keys          # Firestore collection for key validation
-ANON_RATE_LIMIT=100                   # requests per day for anonymous
+
+# Auth
+JWT_SECRET=<strong-random-secret>
+JWT_EXPIRY_HOURS=24
+
+# Email (Resend)
+RESEND_API_KEY=re_xxxxxxxxxxxx
+
+# App
+FRONTEND_URL=https://jzis.org/sclib
+API_BASE_URL=https://api.jzis.org/sclib/v1
+GUEST_DAILY_LIMIT=3
 ```
 
-### Frontend (Vercel)
-```bash
-NEXT_PUBLIC_API_BASE=https://api.jzis.org/sclib/v1
-NEXT_PUBLIC_SITE_URL=https://jzis.org/sclib
-```
+### Vercel / Frontend (NOT USED — all on VPS)
 
-### Ingestion Pipeline
-```bash
-GCP_PROJECT=jzis-sclib
-GCS_BUCKET=sclib-jzis
-ARXIV_OAI_SET=cs.supcon               # arXiv OAI-PMH set for cond-mat.supr-con
-S2_API_KEY=...                        # Semantic Scholar API key (free tier ok)
-VERTEX_AI_INDEX_ID=...
-EMBEDDING_BATCH_SIZE=250
-```
+All environment is in `.env` on VPS. Frontend container reads from same compose env.
 
 ---
 
-## 8. GCP Setup Script
+## 12. VPS Setup Script
 
 ```bash
-# scripts/setup_gcp.sh
 #!/bin/bash
+# scripts/setup_vps.sh
+# Run once on fresh VPS
+
 set -e
 
-PROJECT_ID="jzis-sclib"
-REGION="us-central1"
-BUCKET="sclib-jzis"
+# Install Docker
+curl -fsSL https://get.docker.com | sh
+usermod -aG docker $USER
 
-# Create project (if not exists)
-gcloud projects create $PROJECT_ID --name="SCLib JZIS" || true
-gcloud config set project $PROJECT_ID
+# Install Docker Compose v2
+apt-get install -y docker-compose-plugin
 
-# Enable APIs
-gcloud services enable \
-  aiplatform.googleapis.com \
-  firestore.googleapis.com \
-  storage.googleapis.com \
-  run.googleapis.com \
-  cloudbuild.googleapis.com \
-  secretmanager.googleapis.com
+# Open ports
+ufw allow 80/tcp
+ufw allow 443/tcp
+ufw allow 22/tcp
+ufw enable
 
-# Create GCS bucket
-gsutil mb -p $PROJECT_ID -l $REGION gs://$BUCKET/
-gsutil lifecycle set lifecycle.json gs://$BUCKET/  # 30-day lifecycle for temp files
+# Create app directory
+mkdir -p /opt/SCLib_JZIS
+cd /opt/SCLib_JZIS
 
-# Create Firestore database
-gcloud firestore databases create --region=$REGION
+# Clone repo
+git clone https://github.com/JackZH26/SCLib_JZIS.git .
 
-# Create service account
-gcloud iam service-accounts create sclib-api \
-  --display-name="SCLib API Service Account"
+# Create env file (fill in manually)
+cp .env.example .env
+echo "⚠️  Edit /opt/SCLib_JZIS/.env before starting!"
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:sclib-api@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --role="roles/aiplatform.user"
+# Create credentials directory
+mkdir -p credentials
+echo "⚠️  Place GCP service account JSON at credentials/gcp-sa.json"
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:sclib-api@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --role="roles/datastore.user"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:sclib-api@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --role="roles/storage.objectViewer"
-
-echo "GCP setup complete. Next: create Vertex AI Vector Search index."
+echo "Setup complete. Edit .env and credentials/, then run: docker compose up -d"
 ```
 
 ---
 
-## 9. Cost Estimates (Updated)
+## 13. CI/CD: Auto Deploy on Push
 
-### 9.1 One-Time Build (full ingestion 1986–2026)
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy to VPS
+on:
+  push:
+    branches: [main]
 
-| Item | Quantity | Cost |
-|------|---------|------|
-| Vertex AI Embedding (text-embedding-005) | ~1.5M chunks × 512 tokens ≈ 768M tokens | ~$0.77 |
-| GCS Storage (250GB PDFs + 25GB text) | 275 GB | ~$5.50/month |
-| Cloud Run (ingestion jobs) | ~50 hrs | ~$10 |
-| Gemini Flash (material NER, 50K papers) | ~25M tokens | ~$2.50 |
-| **Total one-time** | | **~$19** |
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /opt/SCLib_JZIS
+            git pull origin main
+            docker compose build
+            docker compose up -d
+            docker compose exec api alembic upgrade head
+            echo "Deployed successfully"
+```
 
-### 9.2 Monthly Operations
+---
+
+## 14. Cost Estimates (Updated — All VPS)
+
+### 14.1 Monthly Operations
 
 | Item | Cost/month |
 |------|-----------|
-| Vertex AI Vector Search (1 node, us-central1) | ~$65 |
-| Cloud Run API (100K req/month) | ~$5 |
-| Cloud Firestore (reads/writes/storage) | ~$5 |
-| GCS Storage (275GB) | ~$5.50 |
-| Vertex AI Embedding (daily updates ~30 papers) | ~$0.01 |
-| Gemini Flash (RAG Q&A ~1K/month) | ~$2 |
-| Gemini Flash (daily NER) | ~$0.05 |
-| Vercel (frontend, free tier) | $0 |
-| **Monthly total** | **~$83** |
+| **VPS (8 vCPU, 16GB RAM)** | ~$20 (Hostinger KVM 8) |
+| Vertex AI Vector Search (1 node) | ~$65 |
+| Vertex AI Embedding (daily updates) | ~$0.01 |
+| Gemini Flash (RAG + NER) | ~$3 |
+| Cloud Storage (PDFs + parsed text) | ~$6 |
+| Resend Email (free tier: 3,000/month) | $0 |
+| Domain renewal (jzis.org) | ~$1 |
+| **Monthly total** | **~$95** |
 
-> **Note:** Vertex AI Vector Search minimum is ~$65/month for 1 dedicated node. This is the primary cost driver vs the Qdrant self-hosted alternative (~$25/month). Trade-off: fully managed, no ops, better SLA.
+### 14.2 vs Original Plan (Vercel + Cloud Run)
 
----
+| Item | Old Plan | New Plan (VPS) |
+|------|---------|---------------|
+| Frontend | Vercel ($0) | VPS (included) |
+| API | Cloud Run (~$5) | VPS (included) |
+| Database | Firestore (~$5) | PostgreSQL on VPS (included) |
+| VPS | ~$10 (existing) | ~$20 (upgraded) |
+| Vector Search | VS ($65) | VS ($65) — same |
+| **Total** | ~$85 | **~$95** |
 
-## 10. Build Order for Claude Code
-
-Build in this exact order. Each phase should be functional before proceeding.
-
-### Phase 0: Repo + GCP Setup (Day 1)
-```
-1. Clone repo, set up monorepo structure per Section 2
-2. Create pyproject.toml files with uv
-3. Create package.json with pnpm
-4. Run scripts/setup_gcp.sh
-5. Create Vertex AI Vector Search index (scripts/create_vector_index.py)
-6. Set up GitHub Actions secrets
-7. Verify GCP connectivity from local env
-```
-
-### Phase 1: Ingestion Pipeline (Days 2-4)
-```
-1. ingestion/collect/arxiv_oai.py — OAI-PMH client, parse XML, download .tar.gz
-2. ingestion/parse/latex_parser.py — extract title/abstract/sections/equations/refs
-3. ingestion/parse/pdf_parser.py — opendataloader-pdf fallback
-4. ingestion/chunk/chunker.py — section-aware chunker
-5. ingestion/embed/embedder.py — batch embedding with Vertex AI
-6. ingestion/index/indexer.py — upsert to Vertex AI VS + Firestore chunks
-7. ingestion/extract/material_ner.py — Gemini NER pipeline
-8. ingestion/pipeline.py — orchestrate all steps, support --mode bulk|incremental
-9. Test with 100 papers, verify VS query returns results
-```
-
-### Phase 2: API (Days 5-7)
-```
-1. api/services/*.py — all GCP clients with proper auth
-2. api/models/*.py — all Pydantic models per Section 3
-3. api/routers/search.py — vector search + Firestore fetch + merge
-4. api/routers/ask.py — RAG: embed → VS → Firestore → Gemini → response
-5. api/routers/materials.py — Firestore query + pagination
-6. api/routers/papers.py — single paper fetch
-7. api/routers/stats.py — return cached stats
-8. api/routers/similar.py — avg chunk vector → VS query
-9. api/routers/timeline.py — Firestore query + format
-10. api/main.py — wire all routers, CORS, auth middleware, rate limiting
-11. Dockerfile — multi-stage build
-12. Deploy to Cloud Run, verify all endpoints
-13. Write api/tests/*.py
-```
-
-### Phase 3: Frontend (Days 8-12)
-```
-1. frontend/app/layout.tsx — root layout, nav, footer
-2. frontend/components/ui/ — install shadcn/ui components
-3. frontend/app/page.tsx — Dashboard with stats cards + search bar
-4. frontend/components/TcTimeline.tsx — Plotly.js chart
-5. frontend/app/search/page.tsx — full search UI with filters
-6. frontend/app/ask/page.tsx — chat interface
-7. frontend/app/materials/page.tsx — sortable table
-8. frontend/app/materials/[formula]/page.tsx — material detail
-9. frontend/app/paper/[id]/page.tsx — paper detail
-10. frontend/app/timeline/page.tsx — full timeline page
-11. frontend/app/stats/page.tsx — statistics dashboard
-12. frontend/app/api-docs/page.tsx — embed Swagger UI iframe
-13. frontend/app/about/page.tsx — about + citation format
-14. Deploy to Vercel, configure jzis.org/sclib route
-```
-
-### Phase 4: Automation + Polish (Days 13-14)
-```
-1. .github/workflows/ingest-daily.yml — daily cron
-2. .github/workflows/deploy-api.yml — CD for API
-3. .github/workflows/deploy-frontend.yml — CD for frontend
-4. .github/workflows/test.yml — CI on PR
-5. scripts/import_nims.py — bulk import NIMS SuperCon CSV
-6. Seed initial data: run bulk ingestion for 2023-2026 papers first (fastest path to demo)
-7. README.md with setup instructions
-8. CONTRIBUTING.md
-9. docs/API.md — full API reference with examples
-```
+Slight cost increase (~$10/mo) but full control, no vendor dependency, easier maintenance.
 
 ---
 
-## 11. Key Implementation Notes for Claude Code
+## 15. Build Order for Claude Code
 
-### Authentication
-- Use Workload Identity Federation for Cloud Run (no service account key files in prod)
-- For local dev: use `gcloud auth application-default login`
-- API keys stored in Firestore `api_keys/{key_hash}` collection
-- Rate limiting: use Firestore increment + TTL documents
+Build in this exact order. Each phase must be functional before proceeding.
 
-### Vertex AI Vector Search Specifics
-```python
-# Query example
-from google.cloud import aiplatform
-
-def search_vectors(query_embedding: List[float], top_k: int = 20, filters: dict = None):
-    index_endpoint = aiplatform.MatchingEngineIndexEndpoint(
-        index_endpoint_name=INDEX_ENDPOINT_NAME
-    )
-    
-    # Build numeric/categorical restricts from filters
-    numeric_restricts = []
-    restricts = []
-    
-    if filters:
-        if filters.get("year_min"):
-            numeric_restricts.append(
-                aiplatform.matching_engine.matching_engine_index_endpoint.NumericRestriction(
-                    namespace="year",
-                    value_int=filters["year_min"],
-                    op="GREATER_EQUAL"
-                )
-            )
-        if filters.get("material_family"):
-            restricts.append(
-                aiplatform.matching_engine.matching_engine_index_endpoint.Restriction(
-                    namespace="material_family",
-                    allow_list=filters["material_family"]
-                )
-            )
-    
-    response = index_endpoint.find_neighbors(
-        deployed_index_id=DEPLOYED_INDEX_ID,
-        queries=[query_embedding],
-        num_neighbors=top_k,
-        numeric_filter_restricts=numeric_restricts,
-        filter_restricts=restricts,
-        return_full_datapoint=False
-    )
-    return response[0]  # List of MatchNeighbor
+### Phase 0: VPS + Repo Setup (Day 1)
+```
+1. Clone repo, set up structure per Section 3
+2. Create docker-compose.yml with all 5 services
+3. Create Caddyfile
+4. Run scripts/setup_vps.sh on VPS
+5. Verify all containers start: caddy, api, frontend, postgres, redis
+6. Create Vertex AI VS index (scripts/create_vector_index.py)
+7. Set up GitHub Actions secrets (VPS_HOST, VPS_USER, VPS_SSH_KEY, GCP_*)
+8. Verify deploy.yml works on push to main
 ```
 
-### Firestore Indexes Required
-```python
-# scripts/init_firestore.py
-# Create composite indexes for:
-# papers: (material_family ASC, date_published DESC)
-# papers: (status ASC, date_published DESC)  
-# materials: (family ASC, tc_max DESC)
-# materials: (family ASC, total_papers DESC)
-# chunks: (paper_id ASC, chunk_index ASC)
+### Phase 1: Database + Auth (Days 2-3)
+```
+1. api/models/db.py — SQLAlchemy models for all tables
+2. alembic/ setup + initial migration
+3. api/services/email.py — Resend integration
+4. api/services/auth.py — bcrypt, JWT, API key generation
+5. api/services/rate_limit.py — Redis guest quota
+6. api/routers/auth.py — all auth endpoints
+7. Test full flow: register → email → verify → get API key → login
+8. frontend/app/auth/* pages — register form, verify page, dashboard, login
+9. Test email delivery to real inbox
 ```
 
-### Error Handling
-- All API endpoints return RFC 7807 Problem Details format on error
-- Retry with exponential backoff on all GCP calls (max 3 retries)
-- Log structured JSON to Cloud Logging
+### Phase 2: Ingestion Pipeline (Days 4-6)
+```
+1. ingestion/collect/arxiv_oai.py — OAI-PMH bulk + incremental
+2. ingestion/parse/latex_parser.py + pdf_parser.py
+3. ingestion/chunk/chunker.py
+4. ingestion/embed/embedder.py — Vertex AI batch
+5. ingestion/index/indexer.py — VS upsert + PostgreSQL chunks insert
+6. ingestion/extract/material_ner.py — Gemini NER
+7. scripts/import_nims.py — import NIMS CSV to materials table
+8. ingestion/pipeline.py — orchestrate
+9. Test with 100 papers → verify VS query works
+10. Run bulk ingestion for 2023-2026 papers (MVP seed)
+```
 
-### CORS Configuration
-```python
-# api/main.py
-from fastapi.middleware.cors import CORSMiddleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://jzis.org", "https://www.jzis.org", "http://localhost:3000"],
-    allow_methods=["GET", "POST"],
-    allow_headers=["X-API-Key", "Content-Type"],
-)
+### Phase 3: API (Days 7-9)
+```
+1. api/services/vector_search.py — Vertex AI VS query client
+2. api/services/gemini.py — RAG + NER
+3. api/services/storage.py — GCS client
+4. api/routers/search.py — embed → VS → PostgreSQL → merge
+5. api/routers/ask.py — embed → VS → PostgreSQL → Gemini → citations
+6. api/routers/materials.py — PostgreSQL query + pagination
+7. api/routers/papers.py + similar.py + timeline.py + stats.py
+8. api/main.py — wire routers, CORS, auth middleware
+9. Deploy + test all endpoints with real API key + guest quota
+10. Write tests
+```
+
+### Phase 4: Frontend (Days 10-13)
+```
+1. Layout, navigation, footer
+2. Install shadcn/ui components
+3. Landing page with stats + search preview
+4. Search page with guest banner + filters
+5. Ask page (chat UI)
+6. Materials table + detail page
+7. Paper detail page
+8. Timeline page (Plotly.js)
+9. Stats page
+10. API docs (Swagger UI embed)
+11. About page + citation format
+12. AuthGuard component (wrap protected pages)
+13. Responsive mobile layout
+14. Deploy + verify jzis.org/sclib works end-to-end
+```
+
+### Phase 5: Polish + Automation (Days 14-15)
+```
+1. .github/workflows/ingest-daily.yml — daily cron via SSH
+2. scripts/init_db.py — create all indexes
+3. Daily stats refresh cron
+4. README.md with quickstart
+5. CONTRIBUTING.md
+6. docs/API.md, DEPLOYMENT.md, VPS_SETUP.md
+7. Import full NIMS SuperCon dataset
+8. Run full bulk ingestion (2020-2026 papers minimum)
 ```
 
 ---
 
-## 12. Acceptance Criteria (MVP)
+## 16. Acceptance Criteria (MVP)
 
-The build is complete when:
-
-- [ ] `POST /search` returns relevant papers for "nickelate superconductor ambient pressure" in < 500ms
-- [ ] `POST /ask` returns a cited answer for "What is the highest ambient-pressure Tc?" in < 5s
-- [ ] `GET /materials?family=nickelate&sort=tc_desc` returns La₃Ni₂O₇ as top result
-- [ ] `GET /stats` shows total_papers > 10,000 (MVP seed with 2020–2026 papers)
-- [ ] `GET /timeline` returns data suitable for Plotly rendering
-- [ ] Frontend dashboard loads at jzis.org/sclib in < 3s
-- [ ] Search page returns results with highlighted snippets
-- [ ] Ask page returns cited responses with paper cards
-- [ ] Materials table is sortable and filterable
-- [ ] Daily GitHub Actions cron runs without error
-- [ ] All API endpoints documented in Swagger at /api-docs
-- [ ] README complete with quickstart for local dev
+- [ ] `POST /auth/register` → email arrives in inbox within 30 seconds
+- [ ] Email verification link works, API key delivered in welcome email
+- [ ] `POST /search` with API key returns relevant papers < 500ms
+- [ ] Guest gets exactly 3 searches/day, 4th returns 429 with register prompt
+- [ ] `POST /ask` returns cited answer < 5 seconds
+- [ ] `GET /materials?family=nickelate&sort=tc_desc` returns La₃Ni₂O₇ top
+- [ ] `GET /stats` shows total_papers > 10,000
+- [ ] Landing page loads at jzis.org/sclib < 3 seconds
+- [ ] Registration form validates all required fields
+- [ ] API docs accessible at /sclib/api-docs
+- [ ] GitHub push auto-deploys to VPS within 2 minutes
+- [ ] All 5 Docker containers healthy: `docker compose ps`
 
 ---
 
-## 13. References & Assets
+## 17. References & Assets
 
 - **Repo:** https://github.com/JackZH26/SCLib_JZIS
-- **Domain:** jzis.org/sclib (configure in Vercel + Cloudflare)
-- **GCP Project:** jzis-sclib (to be created)
-- **arXiv OAI-PMH endpoint:** http://export.arxiv.org/oai2
-- **arXiv set for superconductivity:** `cond-mat.supr-con`
+- **Domain:** jzis.org/sclib (DNS → VPS IP 76.13.191.130, configure in Cloudflare)
+- **GCP Project:** jzis-sclib (create in GCP Console)
+- **arXiv OAI-PMH:** http://export.arxiv.org/oai2 (set: cond-mat.supr-con)
 - **Semantic Scholar API:** https://api.semanticscholar.org/graph/v1
-- **NIMS SuperCon data:** Already downloaded at `research/superconductor-databases/supercon2_v22.12.03.csv` (40,325 records)
+- **NIMS SuperCon data:** local at `research/superconductor-databases/supercon2_v22.12.03.csv` (40,325 records)
+- **Resend:** https://resend.com (email service, free tier 3K/month)
 - **Vertex AI VS docs:** https://cloud.google.com/vertex-ai/docs/vector-search/overview
 - **License:** Apache 2.0 (code) + CC BY 4.0 (data)
 
 ---
 
-*SCLib_JZIS Project Specification v1.0 — Ready for Claude Code*
-*Generated by 瓦力 (Wall-E) | JZIS | 2026-04-14*
+*SCLib_JZIS Project Specification v2.0 — All on VPS — Confirmed by Jack 2026-04-14*
+*Generated by 瓦力 (Wall-E) | JZIS*
