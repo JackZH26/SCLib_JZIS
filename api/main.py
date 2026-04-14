@@ -1,0 +1,62 @@
+"""FastAPI application entry point.
+
+Exposes everything under /v1 so the path matches the public route
+`api.jzis.org/sclib/v1/*` once Nginx strips `/sclib/`. Phase 1 only
+mounts the auth router; Phase 3 will add search/ask/materials/etc.
+"""
+from __future__ import annotations
+
+import logging
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from config import get_settings
+from models.db import get_engine
+from routers import auth
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)-5s %(name)s  %(message)s",
+)
+log = logging.getLogger("sclib.api")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    settings = get_settings()
+    log.info("SCLib API starting (env=%s, backend=%s)",
+             settings.environment, settings.email_backend)
+    yield
+    engine = get_engine()
+    await engine.dispose()
+    log.info("SCLib API shutdown complete")
+
+
+settings = get_settings()
+
+app = FastAPI(
+    title="SCLib_JZIS API",
+    version="0.1.0",
+    description="Superconductivity research library — semantic search, materials DB, RAG Q&A.",
+    openapi_url="/v1/openapi.json",
+    docs_url="/v1/docs",
+    redoc_url="/v1/redoc",
+    lifespan=lifespan,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[settings.frontend_url, "http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(auth.router, prefix="/v1")
+
+
+@app.get("/v1/health", tags=["health"])
+async def health() -> dict[str, str]:
+    return {"status": "ok", "service": "sclib-api", "version": "0.1.0"}
