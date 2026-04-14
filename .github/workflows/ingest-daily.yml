@@ -1,0 +1,30 @@
+name: Daily arXiv ingest
+
+on:
+  schedule:
+    # Twice a day in UTC+8: 14:00 (morning submissions) and 22:00 (afternoon).
+    - cron: "0 6 * * *"
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ingest-daily
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger incremental ingest on VPS2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 72.62.251.29
+          username: root
+          key: ${{ secrets.VPS2_SSH_KEY }}
+          port: 22
+          script_stop: true
+          script: |
+            set -euo pipefail
+            cd /opt/SCLib_JZIS
+            docker compose exec -T api \
+              python -m ingestion.pipeline --mode incremental
