@@ -10,6 +10,9 @@ services:
       - "127.0.0.1:3100:3000"
     environment:
       - NEXT_PUBLIC_API_BASE=https://api.jzis.org/sclib/v1
+      # Server-side fetches (SSR in Next) take the in-cluster URL so
+      # page rendering doesn't hairpin through Nginx + TLS.
+      - API_BASE_SERVER=http://api:8000/v1
       - NODE_ENV=production
     depends_on:
       - api

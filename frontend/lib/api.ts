@@ -7,8 +7,24 @@
  * we expose both on `request` and let each call pick what it needs.
  */
 
-export const API_BASE =
+/**
+ * Two flavors:
+ * - `NEXT_PUBLIC_API_BASE` is the URL browsers use (e.g. the public
+ *   https://api.jzis.org/sclib/v1 once Nginx is in front).
+ * - `API_BASE_SERVER` is the URL Next's server-side fetches use
+ *   during SSR. Inside Docker Compose that's the internal service
+ *   DNS `http://api:8000/v1`, which is reachable before Nginx is up
+ *   and bypasses a TLS round-trip on every page render.
+ *
+ * If only the public URL is set (e.g. local dev), both fall back to
+ * it so nothing breaks.
+ */
+const PUBLIC_BASE =
   process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000/v1";
+const SERVER_BASE = process.env.API_BASE_SERVER ?? PUBLIC_BASE;
+
+export const API_BASE =
+  typeof window === "undefined" ? SERVER_BASE : PUBLIC_BASE;
 
 export class ApiError extends Error {
   constructor(public status: number, public body: unknown, msg: string) {
