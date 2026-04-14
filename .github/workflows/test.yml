@@ -1,0 +1,100 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - "api/**"
+      - "ingestion/**"
+      - "frontend/**"
+      - ".github/workflows/test.yml"
+
+jobs:
+  api-tests:
+    name: API (pytest)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: sclib_test
+          POSTGRES_USER: sclib
+          POSTGRES_PASSWORD: sclib_test_pw
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U sclib -d sclib_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://sclib:sclib_test_pw@localhost:5432/sclib_test
+      REDIS_URL: redis://localhost:6379
+      JWT_SECRET: test_jwt_secret_not_for_production_use_at_all
+      ENVIRONMENT: test
+      EMAIL_BACKEND: stdout
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: pip install --upgrade pip uv
+      - name: Install dependencies
+        run: |
+          if [ -f pyproject.toml ]; then
+            uv pip install --system -e ".[dev]" || uv pip install --system -e .
+          else
+            echo "api/pyproject.toml not present yet; skipping"
+            exit 0
+          fi
+      - name: Run tests
+        run: |
+          if [ -d tests ]; then
+            pytest -q
+          else
+            echo "No tests yet; skipping"
+          fi
+
+  frontend-build:
+    name: Frontend (pnpm build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - name: Install dependencies
+        run: |
+          if [ -f package.json ]; then
+            pnpm install --frozen-lockfile || pnpm install
+          else
+            echo "frontend/package.json not present yet; skipping"
+            exit 0
+          fi
+      - name: Type-check and build
+        run: |
+          if [ -f package.json ]; then
+            pnpm run build
+          fi
