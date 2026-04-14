@@ -3,8 +3,11 @@ services:
     build: ./frontend
     container_name: sclib-frontend
     restart: unless-stopped
+    # VPS2 already runs asrp.jzis.org on host port 3000 — bind the
+    # SCLib frontend to 3100 instead and point Nginx at that. Never
+    # collide with existing sites, per CLAUDE.md.
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:3100:3000"
     environment:
       - NEXT_PUBLIC_API_BASE=https://api.jzis.org/sclib/v1
       - NODE_ENV=production
