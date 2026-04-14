@@ -1,5 +1,5 @@
 # SCLib_JZIS — Project Specification for Claude Code
-> **Version:** 2.2 | **Date:** 2026-04-14 | **Author:** Jian Zhou / JZIS
+> **Version:** 2.3 | **Date:** 2026-04-14 | **Author:** Jian Zhou / JZIS
 > **Repo:** https://github.com/JackZH26/SCLib_JZIS
 > **Domain:** jzis.org/sclib (frontend) | api.jzis.org/sclib (API)
 > **Deployment:** Self-hosted VPS2 (all app services) + GCP (data layer)
@@ -671,18 +671,6 @@ def check_already_downloaded(arxiv_id) -> bool:
     pdf_exists = bucket.blob(f"pdf/{arxiv_id[:4]}/{arxiv_id}.pdf").exists()
     return src_exists or pdf_exists
 ```
-
-**Alternative: arXiv S3 Bulk Access (Faster, ~$9 one-time cost)**
-
-arXiv provides official bulk access via AWS S3 (requester-pays):
-```bash
-# Download all cond-mat.supr-con LaTeX sources at once
-# No rate limits, full speed, ~$9 transfer fee
-aws s3 sync s3://arxiv/src/ gs://sclib-jzis/src/ \
-  --request-payer requester \
-  --exclude "*" --include "*supr-con*"
-```
-If budget allows, this is cleaner than HTTP scraping.
 
 ---
 
