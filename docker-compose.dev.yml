@@ -1,0 +1,20 @@
+# Local development overrides.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+#
+# Expose postgres/redis to the host so local dev tools (psql, redis-cli, IDE DB
+# plugins) can connect, and mount source for hot reload on the API.
+services:
+  api:
+    environment:
+      - ENVIRONMENT=development
+    volumes:
+      - ./api:/app
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  postgres:
+    ports:
+      - "127.0.0.1:5432:5432"
+
+  redis:
+    ports:
+      - "127.0.0.1:6379:6379"
