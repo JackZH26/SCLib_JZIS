@@ -6,8 +6,12 @@
  * Client component so we can bind the filters live without reloading.
  * The URL mirrors the query (`?q=...`) so users can share and bookmark
  * results; filters are kept in local state since they mutate often.
+ *
+ * useSearchParams() forces Next to bail out of static prerendering,
+ * so the inner component is wrapped in <Suspense> to satisfy Next 14's
+ * CSR-bailout rule during `next build`.
  */
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { search, type SearchResponse, ApiError } from "@/lib/api";
 import { SearchBar } from "@/components/SearchBar";
@@ -15,6 +19,14 @@ import { PaperCard } from "@/components/PaperCard";
 import { GuestBanner } from "@/components/GuestBanner";
 
 export default function SearchPage() {
+  return (
+    <Suspense fallback={<p className="text-sm text-slate-500">Loading…</p>}>
+      <SearchInner />
+    </Suspense>
+  );
+}
+
+function SearchInner() {
   const params = useSearchParams();
   const router = useRouter();
   const q = params.get("q") ?? "";
