@@ -14,7 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from config import get_settings
 from models.db import get_engine
-from routers import auth
+from routers import ask, auth, materials, papers, search, similar, stats, timeline
 
 logging.basicConfig(
     level=logging.INFO,
@@ -55,6 +55,13 @@ app.add_middleware(
 )
 
 app.include_router(auth.router, prefix="/v1")
+app.include_router(search.router, prefix="/v1")
+app.include_router(ask.router, prefix="/v1")
+app.include_router(materials.router, prefix="/v1")
+app.include_router(papers.router, prefix="/v1")
+app.include_router(similar.router, prefix="/v1")
+app.include_router(stats.router, prefix="/v1")
+app.include_router(timeline.router, prefix="/v1")
 
 
 @app.get("/v1/health", tags=["health"])
