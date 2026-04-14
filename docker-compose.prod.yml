@@ -1,0 +1,16 @@
+# Production override for VPS2.
+# Usage on VPS2:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# Reuses the existing user-level ADC at
+# /root/.config/gcloud/application_default_credentials.json instead of
+# a dedicated service-account JSON file. This is the (A) path from the
+# Phase 0 ADC decision: zero extra GCP console work, fine for MVP.
+# Migrate to a real service account before opening to external users.
+services:
+  api:
+    volumes:
+      # Drop the default credentials/gcp-sa.json mount by re-declaring
+      # volumes here (compose v2 replaces list entries by index). We
+      # mount the ADC file read-only at the same path the app expects.
+      - /root/.config/gcloud/application_default_credentials.json:/credentials/gcp-sa.json:ro
