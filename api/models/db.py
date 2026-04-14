@@ -21,6 +21,7 @@ from sqlalchemy import (
     Boolean,
     CheckConstraint,
     Date,
+    DateTime,
     ForeignKey,
     Index,
     Integer,
@@ -29,6 +30,11 @@ from sqlalchemy import (
     Text,
     func,
 )
+
+
+#: All datetime columns use TIMESTAMPTZ. Never store naive datetimes — see
+#: routers/auth.py for how we construct values in UTC.
+_TZDT = DateTime(timezone=True)
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -67,11 +73,11 @@ class User(Base):
     research_area: Mapped[str | None] = mapped_column(String(255))
     purpose: Mapped[str | None] = mapped_column(Text)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(server_default=func.now(), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(_TZDT, server_default=func.now(), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        server_default=func.now(), onupdate=func.now(), nullable=False
+        _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False
     )
-    last_login: Mapped[datetime | None] = mapped_column()
+    last_login: Mapped[datetime | None] = mapped_column(_TZDT)
     is_active: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
@@ -95,9 +101,9 @@ class EmailVerification(Base):
         UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
     token: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
-    expires_at: Mapped[datetime] = mapped_column(nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
     used: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(server_default=func.now(), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(_TZDT, server_default=func.now(), nullable=False)
 
     user: Mapped[User] = relationship(back_populates="verifications")
 
@@ -112,8 +118,8 @@ class ApiKey(Base):
     key_hash: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
     key_prefix: Mapped[str] = mapped_column(String(12), nullable=False)
     name: Mapped[str | None] = mapped_column(String(100))
-    created_at: Mapped[datetime] = mapped_column(server_default=func.now(), nullable=False)
-    last_used: Mapped[datetime | None] = mapped_column()
+    created_at: Mapped[datetime] = mapped_column(_TZDT, server_default=func.now(), nullable=False)
+    last_used: Mapped[datetime | None] = mapped_column(_TZDT)
     revoked: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     user: Mapped[User] = relationship(back_populates="api_keys")
@@ -146,9 +152,9 @@ class Paper(Base):
     chunk_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     materials_extracted: Mapped[list[Any]] = mapped_column(JSONB, default=list, nullable=False)
     quality_flags: Mapped[list[Any]] = mapped_column(JSONB, default=list, nullable=False)
-    indexed_at: Mapped[datetime] = mapped_column(server_default=func.now(), nullable=False)
+    indexed_at: Mapped[datetime] = mapped_column(_TZDT, server_default=func.now(), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        server_default=func.now(), onupdate=func.now(), nullable=False
+        _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
     chunks: Mapped[list["Chunk"]] = relationship(back_populates="paper", cascade="all, delete-orphan")
@@ -180,7 +186,7 @@ class Material(Base):
     status: Mapped[str] = mapped_column(String(50), default="active_research", nullable=False)
     records: Mapped[list[Any]] = mapped_column(JSONB, default=list, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        server_default=func.now(), onupdate=func.now(), nullable=False
+        _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
     __table_args__ = (
@@ -216,7 +222,7 @@ class StatsCache(Base):
     key: Mapped[str] = mapped_column(String(100), primary_key=True)
     value: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        server_default=func.now(), onupdate=func.now(), nullable=False
+        _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
 
