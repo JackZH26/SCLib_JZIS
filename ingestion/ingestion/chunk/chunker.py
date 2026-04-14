@@ -42,6 +42,11 @@ def _count_tokens(text: str) -> int:
     return len(_ENCODER.encode(text, disallowed_special=()))
 
 
+#: Public alias so callers outside the chunker (e.g. the embedder's
+#: per-request token budgeter) can share the same tokenizer.
+count_tokens = _count_tokens
+
+
 @dataclass
 class _Window:
     section: Section

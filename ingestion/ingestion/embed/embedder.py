@@ -1,8 +1,10 @@
 """Batch text embeddings via Vertex AI ``text-embedding-005``.
 
-The Vertex SDK's ``TextEmbeddingModel.get_embeddings`` accepts up to 250
-inputs per request, but we default to 100 to keep payloads under the
-gRPC message size limit when chunks are long.
+text-embedding-005 caps each request at **20,000 input tokens total**
+across all inputs in the batch. A single 512-token chunk is fine, but
+100 chunks × ~500 tokens would blow the limit (~50k). So we pack
+batches by cumulative token count, not by fixed size. We also cap the
+number of inputs per request at 250 (the SDK's hard limit).
 
 Task type ``RETRIEVAL_DOCUMENT`` is used for indexing; queries issued by
 the API router should use ``RETRIEVAL_QUERY``.
@@ -17,10 +19,17 @@ from google.cloud import aiplatform
 from vertexai.language_models import TextEmbeddingInput, TextEmbeddingModel
 import vertexai
 
+from ingestion.chunk.chunker import count_tokens
 from ingestion.config import get_settings
 from ingestion.models import Chunk
 
 log = logging.getLogger(__name__)
+
+# Leave ~10% headroom under the 20k hard cap to tolerate tokenizer
+# differences between tiktoken (what we measure with) and the server-side
+# SentencePiece tokenizer used by text-embedding-005.
+_MAX_TOKENS_PER_REQUEST = 18000
+_MAX_INPUTS_PER_REQUEST = 250
 
 
 @lru_cache(maxsize=1)
@@ -35,11 +44,9 @@ def embed_chunks(chunks: list[Chunk]) -> None:
     """Mutates each chunk in-place, populating ``.embedding``."""
     if not chunks:
         return
-    settings = get_settings()
-    batch_size = settings.embed_batch_size
     model = _model()
 
-    for batch in _batched(chunks, batch_size):
+    for batch in _batched_by_tokens(chunks):
         inputs = [
             TextEmbeddingInput(text=c.text, task_type="RETRIEVAL_DOCUMENT")
             for c in batch
@@ -60,6 +67,27 @@ def embed_query(text: str) -> list[float]:
     return list(out[0].values)
 
 
-def _batched(seq: list[Chunk], n: int) -> Iterable[list[Chunk]]:
-    for i in range(0, len(seq), n):
-        yield seq[i : i + n]
+def _batched_by_tokens(chunks: list[Chunk]) -> Iterable[list[Chunk]]:
+    """Yield sub-lists whose total token count stays under the per-request cap."""
+    batch: list[Chunk] = []
+    batch_tokens = 0
+    for c in chunks:
+        n = count_tokens(c.text)
+        # A single chunk larger than the cap is truncated server-side
+        # anyway — send it alone rather than stalling the loop.
+        if n >= _MAX_TOKENS_PER_REQUEST:
+            if batch:
+                yield batch
+                batch, batch_tokens = [], 0
+            yield [c]
+            continue
+        if (
+            batch_tokens + n > _MAX_TOKENS_PER_REQUEST
+            or len(batch) >= _MAX_INPUTS_PER_REQUEST
+        ):
+            yield batch
+            batch, batch_tokens = [], 0
+        batch.append(c)
+        batch_tokens += n
+    if batch:
+        yield batch
