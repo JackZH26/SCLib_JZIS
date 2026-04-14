@@ -26,6 +26,19 @@ services:
       redis:
         condition: service_healthy
 
+  ingestion:
+    build: ./ingestion
+    container_name: sclib-ingestion
+    # One-shot job: invoked via `docker compose run --rm ingestion ...`,
+    # never as a daemon. `profiles` keeps it out of `docker compose up`.
+    profiles: ["tools"]
+    env_file: .env
+    volumes:
+      - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   postgres:
     image: postgres:16-alpine
     container_name: sclib-postgres
