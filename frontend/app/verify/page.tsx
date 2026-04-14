@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { verifyEmail, ApiError } from "@/lib/api";
 
@@ -10,7 +10,17 @@ type State =
   | { kind: "ok"; apiKey: string; email: string }
   | { kind: "error"; message: string };
 
+// useSearchParams() forces client-side bail-out; wrap in Suspense so the
+// Next.js static builder can emit a shell for /verify at build time.
 export default function VerifyPage() {
+  return (
+    <Suspense fallback={<main className="mx-auto max-w-md px-6 py-20"><p className="text-slate-500">Loading…</p></main>}>
+      <VerifyInner />
+    </Suspense>
+  );
+}
+
+function VerifyInner() {
   const params = useSearchParams();
   const token = params.get("token");
   const [state, setState] = useState<State>({ kind: "loading" });
