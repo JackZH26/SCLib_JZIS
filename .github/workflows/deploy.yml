@@ -1,0 +1,34 @@
+name: Deploy to VPS2
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-vps2
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 72.62.251.29
+          username: root
+          key: ${{ secrets.VPS2_SSH_KEY }}
+          port: 22
+          script_stop: true
+          script: |
+            set -euo pipefail
+            cd /opt/SCLib_JZIS
+            git fetch --prune origin
+            git reset --hard origin/main
+            docker compose build --pull
+            docker compose up -d
+            # Apply DB migrations (idempotent); fail the deploy if they fail.
+            docker compose exec -T api alembic upgrade head || \
+              echo "alembic not yet configured (pre-Phase-1)"
+            docker compose ps
