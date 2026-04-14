@@ -1,5 +1,5 @@
 # SCLib_JZIS — Project Specification for Claude Code
-> **Version:** 2.3 | **Date:** 2026-04-14 | **Author:** Jian Zhou / JZIS
+> **Version:** 2.4 | **Date:** 2026-04-14 | **Author:** Jian Zhou / JZIS
 > **Repo:** https://github.com/JackZH26/SCLib_JZIS
 > **Domain:** jzis.org/sclib (frontend) | api.jzis.org/sclib (API)
 > **Deployment:** Self-hosted VPS2 (all app services) + GCP (data layer)
@@ -47,6 +47,14 @@ SSH:      root@72.62.251.29
 - `api.jzis.org` → proxy to FastAPI `:8000`
 
 > **Note:** VPS1 (76.13.191.130) runs OpenClaw only. Do not touch VPS1.
+
+### GCP Infrastructure Status (as of 2026-04-14)
+- ✅ GCP Project: jzis-sclib (created)
+- ✅ GCS Bucket: gs://sclib-jzis (Coldline, us-central1, created)
+- ✅ VPS2 ADC: /root/.config/gcloud/application_default_credentials.json (configured)
+- ✅ Vertex AI API: enabled
+- ✅ Cloud Storage API: enabled
+- ⏳ Vertex AI Vector Search index: create via scripts/create_vertex_index.py (Phase 0 Step 6)
 
 ### GCP (Data Layer Only — No Servers to Manage)
 ```
