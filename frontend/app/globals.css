@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --sclib-fg: #0f172a;
+  --sclib-bg: #f8fafc;
+}
+
+html,
+body {
+  background: var(--sclib-bg);
+  color: var(--sclib-fg);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
