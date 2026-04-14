@@ -38,6 +38,34 @@ class PaperMetadata:
         stripped = self.arxiv_id.replace("cond-mat/", "").replace("/", "")
         return stripped[:4]
 
+    def to_dict(self) -> dict[str, Any]:
+        """JSON-friendly projection for the failure pool (no dataclasses.asdict
+        because ``date`` doesn't round-trip through json natively)."""
+        return {
+            "arxiv_id": self.arxiv_id,
+            "title": self.title,
+            "authors": self.authors,
+            "abstract": self.abstract,
+            "date_submitted": self.date_submitted.isoformat() if self.date_submitted else None,
+            "categories": self.categories,
+            "primary_category": self.primary_category,
+            "doi": self.doi,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "PaperMetadata":
+        ds = data.get("date_submitted")
+        return cls(
+            arxiv_id=data["arxiv_id"],
+            title=data["title"],
+            authors=list(data.get("authors", [])),
+            abstract=data.get("abstract", ""),
+            date_submitted=date.fromisoformat(ds) if ds else None,
+            categories=list(data.get("categories", [])),
+            primary_category=data.get("primary_category"),
+            doi=data.get("doi"),
+        )
+
 
 @dataclass
 class ParsedPaper:

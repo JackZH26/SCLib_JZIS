@@ -55,6 +55,15 @@ class IngestionSettings(BaseSettings):
     #: Vertex embedding batch size (text-embedding-005 allows up to 250)
     embed_batch_size: int = 100
 
+    # --- Failure pool -------------------------------------------------------
+    #: A batch run is considered successful (exit 0) if the per-paper
+    #: success ratio meets this threshold. Failed papers aren't lost —
+    #: they land in the GCS failure pool for a later `--mode retry` run.
+    failure_success_threshold: float = 0.66
+    #: How many times to retry a failed paper (across all escalation
+    #: strategies) before marking it ``dead``.
+    failure_max_attempts: int = 5
+
 
 @lru_cache(maxsize=1)
 def get_settings() -> IngestionSettings:
