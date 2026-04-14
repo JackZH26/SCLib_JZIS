@@ -25,10 +25,14 @@ from ingestion.models import Chunk
 
 log = logging.getLogger(__name__)
 
-# Leave ~10% headroom under the 20k hard cap to tolerate tokenizer
-# differences between tiktoken (what we measure with) and the server-side
-# SentencePiece tokenizer used by text-embedding-005.
-_MAX_TOKENS_PER_REQUEST = 18000
+# text-embedding-005 enforces a 20k input-token cap per request using its
+# own SentencePiece tokenizer. We measure with cl100k_base (from tiktoken)
+# because we already use it in the chunker — but cl100k undercounts
+# SentencePiece by up to ~15% on scientific text (observed during Phase 2
+# smoke: cl100k=18000 → server=20680). Set the budget to 14k cl100k tokens
+# to leave a healthy ~30% margin. Still packs ~27× 512-token chunks per
+# request, which keeps the batch count reasonable.
+_MAX_TOKENS_PER_REQUEST = 14000
 _MAX_INPUTS_PER_REQUEST = 250
 
 
