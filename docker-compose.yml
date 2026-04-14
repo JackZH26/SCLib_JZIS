@@ -1,0 +1,62 @@
+services:
+  frontend:
+    build: ./frontend
+    container_name: sclib-frontend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE=https://api.jzis.org/sclib/v1
+      - NODE_ENV=production
+    depends_on:
+      - api
+
+  api:
+    build: ./api
+    container_name: sclib-api
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file: .env
+    volumes:
+      - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: sclib-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sclib
+      POSTGRES_USER: sclib
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sclib -d sclib"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    # Internal only — no ports exposed
+
+  redis:
+    image: redis:7-alpine
+    container_name: sclib-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    # Internal only — no ports exposed
+
+volumes:
+  postgres_data:
+  redis_data:
