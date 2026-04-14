@@ -1,0 +1,50 @@
+# Environments & secrets
+.env
+.env.local
+.env.*.local
+credentials/
+!credentials/.gitkeep
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# uv
+uv.lock
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+.pnpm-store/
+pnpm-debug.log*
+npm-debug.log*
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Docker
+docker-compose.override.yml
+
+# Local data / logs
+*.log
+logs/
+tmp/
+data/
+!docs/data/
