@@ -61,6 +61,13 @@ class LatexParseError(RuntimeError):
 
 def parse_source_tarball(data: bytes, meta: PaperMetadata) -> ParsedPaper:
     """Unpack a ``.tar.gz`` (or bare .tex) and return a ``ParsedPaper``."""
+    # Defend against already-polluted GCS blobs: earlier ingestion runs
+    # may have uploaded PDF bytes under src/ before the arxiv client
+    # learned to reject PDF responses from /src/. Treat PDF bytes as a
+    # "no source" signal so the pipeline falls through to the PDF path.
+    if data[:5] == b"%PDF-":
+        raise LatexParseError("archive is actually a PDF")
+
     tex_files = _extract_tex_files(data)
     if not tex_files:
         raise LatexParseError("no .tex files in archive")
@@ -131,10 +138,16 @@ def _extract_tex_files(data: bytes) -> list[_TexFile]:
 def _decode(raw: bytes) -> str:
     for enc in ("utf-8", "latin-1"):
         try:
-            return raw.decode(enc)
+            decoded = raw.decode(enc)
+            break
         except UnicodeDecodeError:
             continue
-    return raw.decode("utf-8", errors="replace")
+    else:
+        decoded = raw.decode("utf-8", errors="replace")
+    # Postgres TEXT cannot store NUL (0x00), and asyncpg rejects them
+    # outright. Scrub them here so a weird .tex with a stray NUL can't
+    # kill the whole paper's chunk insert.
+    return decoded.replace("\x00", "")
 
 
 def _find_main(files: list[_TexFile]) -> _TexFile:
