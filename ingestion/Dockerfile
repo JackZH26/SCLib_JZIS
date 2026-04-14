@@ -18,10 +18,13 @@ RUN pip install uv
 
 WORKDIR /app
 
+# Install third-party deps first (cache-friendly), then copy the package
+# source and install the project itself non-editable. We avoid -e because
+# uv + hatch editable installs don't always wire up the top-level
+# `ingestion` package on sys.path inside a container.
 COPY pyproject.toml ./
-RUN uv pip install --system -e .
-
-COPY . .
+COPY ingestion ./ingestion
+RUN uv pip install --system .
 
 # Default: no-op. Compose / CI override this with an explicit `sclib-ingest`
 # invocation.
