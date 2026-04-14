@@ -179,8 +179,20 @@ class ArxivClient:
         return r.content
 
     async def download_source(self, arxiv_id: str) -> bytes:
-        """Download .tar.gz LaTeX source. Raises ArxivError if unavailable."""
-        return await self._file_get(ARXIV_SRC_URL.format(id=arxiv_id))
+        """Download .tar.gz LaTeX source. Raises ArxivError if unavailable.
+
+        arXiv's ``/src/`` endpoint returns the PDF itself for papers whose
+        withdrawn or pdf-only submissions have no tex source. We detect
+        the PDF magic here and raise, so the caller's fallback path can
+        record the PDF without polluting the ``src/`` prefix in GCS with
+        PDF bytes that will later blow up the LaTeX parser.
+        """
+        data = await self._file_get(ARXIV_SRC_URL.format(id=arxiv_id))
+        if data[:5] == b"%PDF-":
+            raise ArxivError(
+                f"{arxiv_id}: /src/ returned a PDF (no LaTeX source available)"
+            )
+        return data
 
     async def download_pdf(self, arxiv_id: str) -> bytes:
         return await self._file_get(ARXIV_PDF_URL.format(id=arxiv_id))
