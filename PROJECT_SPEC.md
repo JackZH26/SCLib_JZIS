@@ -1,5 +1,5 @@
 # SCLib_JZIS — Project Specification for Claude Code
-> **Version:** 2.1 | **Date:** 2026-04-14 | **Author:** Jian Zhou / JZIS
+> **Version:** 2.2 | **Date:** 2026-04-14 | **Author:** Jian Zhou / JZIS
 > **Repo:** https://github.com/JackZH26/SCLib_JZIS
 > **Domain:** jzis.org/sclib (frontend) | api.jzis.org/sclib (API)
 > **Deployment:** Self-hosted VPS2 (all app services) + GCP (data layer)
@@ -590,34 +590,178 @@ GET /timeline?family=all           → Tc records for Plotly visualization (publ
 
 ---
 
-## 8. Ingestion Pipeline
+## 8. Storage Strategy — GCS for Raw Files
 
-### Chunking Strategy
-```python
-MAX_TOKENS = 512
-OVERLAP_TOKENS = 64
-MIN_CHUNK_TOKENS = 100
-# Section-aware: split at \section{} boundaries first
-# Preserve equations as atomic units
-# Prepend "Title: {title}\nSection: {section}\n" for retrieval context
-# Skip bibliography sections
+### GCS Bucket Structure
+
+All raw paper files are stored in GCS for long-term archival and future reprocessing/verification.
+
+```
+gs://sclib-jzis/
+├── src/                          # LaTeX source .tar.gz (primary)
+│   ├── 2306/                     # Organized by arXiv YYmm prefix
+│   │   ├── 2306.07275.tar.gz
+│   │   └── 2306.14892.tar.gz
+│   └── 2404/
+│       └── ...
+├── pdf/                          # PDF fallback (when LaTeX unavailable)
+│   └── 2306/
+│       └── 2306.07275.pdf
+└── metadata/
+    └── harvest_state.json        # OAI-PMH cursor, last harvest timestamp
 ```
 
-### Vertex AI VS Upsert
+**Storage class:** Coldline ($0.004/GB/month)
+**Estimated size:** ~100GB (50K papers × 2MB avg) = **$0.40/month**
+**Purpose:** Raw file archive for data validation, re-parsing, and audit trail
+
+### After Parsing: Files Remain in GCS
+Once parsed and indexed, raw files are kept in GCS (not deleted).
+Processed data lives in PostgreSQL (chunks) + Vertex AI VS (vectors).
+
+---
+
+## 9. Ingestion Pipeline — Phased Download Plan
+
+### Phase A: Initial Bulk Download (One-Time, ~10 Days)
+
+arXiv has ~50,000 papers in `cond-mat.supr-con` (1992–present).
+Download is split into batches to respect arXiv's fair-use policy.
+
+**Rate limits respected:**
+- OAI-PMH metadata: 1 request/5s (returns ~1000 records per request)
+- File downloads: 1 file/3s (conservative, avoids triggering rate limiting)
+- Download window: 8 hours/day (off-peak: 01:00–09:00 UTC+8)
+- User-Agent: `SCLib-JZIS/1.0 (jzis.org; jack@jzis.org)` (polite bot identification)
+
+**Schedule by time period (oldest → newest, ~5,000 papers/day):**
+
+```
+Day 1-2:   1992-2000  (~10,000 papers)  — oldest, lowest server load
+Day 3-4:   2001-2009  (~15,000 papers)
+Day 5-6:   2010-2015  (~10,000 papers)
+Day 7-8:   2016-2019  (~8,000 papers)
+Day 9-10:  2020-2026  (~7,000 papers)  — most recent
+```
+
+**Each batch step:**
 ```python
-from google.cloud import aiplatform
+# ingestion/collect/arxiv_oai.py
 
-def upsert_chunks(datapoints):
-    index = aiplatform.MatchingEngineIndex(INDEX_NAME)
-    index.upsert_datapoints(datapoints=datapoints)
+RATE_LIMIT_METADATA = 5.0   # seconds between OAI-PMH requests
+RATE_LIMIT_DOWNLOAD = 3.0   # seconds between file downloads
+USER_AGENT = "SCLib-JZIS/1.0 (jzis.org; jack@jzis.org)"
+DAILY_DOWNLOAD_LIMIT = 5000  # papers per day hard cap
 
-# Each datapoint:
+def download_batch(from_date, until_date, batch_id):
+    """
+    1. OAI-PMH harvest: get all paper IDs in date range
+    2. Filter: skip already-downloaded (check GCS)
+    3. For each paper (rate limited):
+       a. Try: GET https://arxiv.org/src/{id}  → upload to gs://sclib-jzis/src/YYMM/{id}.tar.gz
+       b. Fallback: GET https://arxiv.org/pdf/{id} → upload to gs://sclib-jzis/pdf/YYMM/{id}.pdf
+    4. Update harvest_state.json with progress
+    5. Stop at DAILY_DOWNLOAD_LIMIT or 09:00 UTC+8
+    """
+
+def check_already_downloaded(arxiv_id) -> bool:
+    """Check GCS before downloading — resumable on restart"""
+    bucket = storage_client.bucket("sclib-jzis")
+    src_exists = bucket.blob(f"src/{arxiv_id[:4]}/{arxiv_id}.tar.gz").exists()
+    pdf_exists = bucket.blob(f"pdf/{arxiv_id[:4]}/{arxiv_id}.pdf").exists()
+    return src_exists or pdf_exists
+```
+
+**Alternative: arXiv S3 Bulk Access (Faster, ~$9 one-time cost)**
+
+arXiv provides official bulk access via AWS S3 (requester-pays):
+```bash
+# Download all cond-mat.supr-con LaTeX sources at once
+# No rate limits, full speed, ~$9 transfer fee
+aws s3 sync s3://arxiv/src/ gs://sclib-jzis/src/ \
+  --request-payer requester \
+  --exclude "*" --include "*supr-con*"
+```
+If budget allows, this is cleaner than HTTP scraping.
+
+---
+
+### Phase B: Daily Incremental (Post-Bulk, Ongoing)
+
+arXiv publishes new papers Sunday–Thursday (US time). New `cond-mat.supr-con` papers: ~30–50/day.
+
+**Two runs per day:**
+
+```yaml
+# .github/workflows/ingest-daily.yml
+schedule:
+  - cron: '0 6 * * *'    # 14:00 UTC+8 — catches morning arXiv submissions
+  - cron: '0 14 * * *'   # 22:00 UTC+8 — catches afternoon submissions
+```
+
+```python
+# ingestion/pipeline.py --mode incremental
+
+def incremental_ingest():
+    """
+    1. Load last_harvest_timestamp from GCS metadata/harvest_state.json
+    2. OAI-PMH: ListRecords from last_harvest to now (cond-mat.supr-con)
+    3. For each new paper ID:
+       a. Download src/pdf → GCS
+       b. Parse → chunk → embed (Vertex AI)
+       c. Upsert to Vertex AI VS + PostgreSQL
+    4. Update harvest_state.json with new timestamp
+    5. Refresh stats_cache in PostgreSQL
+    """
+    # Typical run: ~50 papers × 3s download + parse + embed ≈ ~5 minutes
+```
+
+---
+
+### Phase C: Per-Paper Processing Pipeline
+
+For each downloaded paper (both bulk and incremental):
+
+```
+GCS raw file
+    │
+    ▼
+[1] Parse
+    ├── LaTeX: extract sections / equations / tables / references
+    └── PDF fallback: opendataloader-pdf
+    │
+    ▼
+[2] Chunk (512 tokens, 64 overlap, section-aware)
+    Prepend: "Title: {title}\nSection: {section}\n"
+    Skip: bibliography sections
+    Preserve: equations as atomic units
+    │
+    ▼
+[3] Embed (Vertex AI text-embedding-005, batch 250)
+    │
+    ├──▶ [4a] Vertex AI VS upsert (vectors + filter metadata)
+    └──▶ [4b] PostgreSQL insert (chunks table, paper table)
+    │
+    ▼
+[5] Material NER (Gemini Flash)
+    → Update materials table in PostgreSQL
+    │
+    ▼
+[6] Update stats_cache
+```
+
+### Vertex AI VS Datapoint Format
+```python
 {
     "datapoint_id": "arxiv:2306.07275_chunk_005",
-    "feature_vector": [...],  # 768-dim
-    "restricts": [{"namespace": "material_family", "allow_list": ["nickelate"]}],
-    "numeric_restricts": [{"namespace": "year", "value_int": 2023}],
-    "crowding_tag": {"value": "arxiv:2306.07275"}  # 1 chunk per paper in results
+    "feature_vector": [...],       # 768-dim float32
+    "restricts": [
+        {"namespace": "material_family", "allow_list": ["nickelate"]}
+    ],
+    "numeric_restricts": [
+        {"namespace": "year", "value_int": 2023}
+    ],
+    "crowding_tag": {"value": "arxiv:2306.07275"}  # max 1 chunk per paper in results
 }
 ```
 
@@ -627,17 +771,6 @@ Extract superconducting materials from this text. Return JSON array only.
 For each material: {formula, tc_kelvin, tc_type, pressure_gpa, measurement, confidence}
 Only extract materials explicitly measured for superconductivity.
 Do not invent data not in the text. Flag Tc > 300K with confidence < 0.3.
-```
-
-### Daily Cron (GitHub Actions → SSH)
-```yaml
-- name: Run incremental ingestion
-  uses: appleboy/ssh-action@v1
-  with:
-    host: 72.62.251.29
-    script: |
-      cd /opt/SCLib_JZIS
-      docker compose run --rm api uv run ingestion/pipeline.py --mode incremental
 ```
 
 ---
@@ -810,18 +943,26 @@ echo "Setup complete!"
 
 ---
 
-## 14. Monthly Cost
+## 14. Cost Estimate
 
+### One-Time Setup
+| Item | Cost |
+|------|------|
+| arXiv S3 bulk transfer (100GB, optional fast path) | ~$9 |
+| Vertex AI Embedding initial batch (50K papers, ~1.5M chunks) | ~$0.77 |
+| **Total one-time** | **~$10** |
+
+### Monthly Ongoing
 | Item | Cost |
 |------|------|
 | VPS2 (8 vCPU, 8GB RAM, upgraded) | ~$20/mo |
 | Vertex AI Vector Search (1 node) | ~$65/mo |
-| Vertex AI Embedding (daily 30 papers) | ~$0.01/mo |
+| GCS Coldline storage (100GB raw PDFs/LaTeX) | ~$0.40/mo |
+| Vertex AI Embedding (daily ~50 papers incremental) | ~$0.02/mo |
 | Gemini Flash (RAG ~1K/mo + NER daily) | ~$3/mo |
-| Cloud Storage (~275 GB PDFs + text) | ~$6/mo |
-| Resend (free tier 3K emails/mo) | $0 |
+| Resend email (free tier 3K/mo) | $0 |
 | Domain (already owned) | — |
-| **Total** | **~$94/mo** |
+| **Monthly total** | **~$88/mo** |
 
 ---
 
@@ -853,18 +994,25 @@ echo "Setup complete!"
 8. Test complete flow: register → email verification → API key received → login
 ```
 
-### Phase 2: Ingestion Pipeline (Days 4-6)
+### Phase 2: Ingestion Pipeline (Days 4-7)
 ```
-1. ingestion/collect/arxiv_oai.py — OAI-PMH for cond-mat.supr-con
-2. ingestion/parse/latex_parser.py + pdf_parser.py
-3. ingestion/chunk/chunker.py (Section 8)
-4. ingestion/embed/embedder.py — Vertex AI batch, 250/request
-5. ingestion/index/indexer.py — VS upsert + PostgreSQL insert
-6. ingestion/extract/material_ner.py — Gemini NER (Section 8)
-7. scripts/import_nims.py — import NIMS SuperCon CSV (40,325 materials)
-8. ingestion/pipeline.py — orchestrate all steps
-9. Test with 100 papers → verify VS query returns results
-10. Seed MVP data: run bulk ingestion for 2023-2026 papers
+1. ingestion/collect/arxiv_oai.py
+   - OAI-PMH metadata harvest (cond-mat.supr-con, all dates)
+   - Rate: 1 req/5s, resumable (saves progress to GCS harvest_state.json)
+   - check_already_downloaded() to skip existing GCS files on restart
+2. ingestion/parse/latex_parser.py — arXiv .tar.gz source → structured JSON
+3. ingestion/parse/pdf_parser.py — opendataloader-pdf fallback
+4. ingestion/chunk/chunker.py — section-aware, 512 tokens, 64 overlap
+5. ingestion/embed/embedder.py — Vertex AI batch (250 chunks/request)
+6. ingestion/index/indexer.py — VS upsert + PostgreSQL chunks insert
+7. ingestion/extract/material_ner.py — Gemini NER → materials table
+8. scripts/import_nims.py — import NIMS SuperCon CSV (40,325 materials)
+9. ingestion/pipeline.py — two modes:
+   - --mode bulk --period 1992-2000 (runs in 8h windows, 5K papers/day)
+   - --mode incremental (daily cron, fetches yesterday's new papers)
+10. Test with 100 papers: verify GCS upload + VS query + PostgreSQL chunks
+11. MVP seed: run bulk for 2023-2026 first (fastest path to live demo)
+12. Background: continue bulk download for older papers (Days 7-17)
 ```
 
 ### Phase 3: API (Days 7-9)
