@@ -25,6 +25,9 @@ from ingestion.models import ParsedPaper
 log = logging.getLogger(__name__)
 
 
+# NOTE: we interpolate this with plain `str.replace("{{BODY}}", ...)` — not
+# str.format — because the prompt itself contains literal `{field, field}`
+# JSON-schema hints that would otherwise be interpreted as format fields.
 NER_PROMPT = """\
 Extract superconducting materials from this text. Return JSON array only.
 For each material: {formula, tc_kelvin, tc_type, pressure_gpa, measurement, confidence}
@@ -33,7 +36,7 @@ Do not invent data not in the text. Flag Tc > 300K with confidence < 0.3.
 
 Text:
 ---
-{body}
+{{BODY}}
 ---
 """
 
@@ -59,7 +62,7 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
     if not body.strip():
         return []
 
-    prompt = NER_PROMPT.format(body=body[:_MAX_CHARS])
+    prompt = NER_PROMPT.replace("{{BODY}}", body[:_MAX_CHARS])
 
     try:
         resp = _client().models.generate_content(
