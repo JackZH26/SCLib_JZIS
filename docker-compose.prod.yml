@@ -14,3 +14,6 @@ services:
       # volumes here (compose v2 replaces list entries by index). We
       # mount the ADC file read-only at the same path the app expects.
       - /root/.config/gcloud/application_default_credentials.json:/credentials/gcp-sa.json:ro
+  ingestion:
+    volumes:
+      - /root/.config/gcloud/application_default_credentials.json:/credentials/gcp-sa.json:ro
