@@ -240,17 +240,23 @@ def main(argv: list[str] | None = None) -> int:
         format="%(asctime)s %(levelname)-5s %(name)s: %(message)s",
     )
 
-    try:
-        results = asyncio.run(run(
-            mode=args.mode,
-            from_date=args.from_date,
-            until_date=args.until_date,
-            limit=args.limit,
-            skip_vector_search=args.skip_vector_search,
-            skip_ner=args.skip_ner,
-        ))
-    finally:
-        asyncio.run(dispose())
+    async def _main_async() -> list[dict[str, Any]]:
+        # dispose() must run on the *same* event loop as run(), otherwise
+        # asyncpg's pooled connections try to close on a loop that no
+        # longer exists. So we wrap both calls in a single asyncio.run.
+        try:
+            return await run(
+                mode=args.mode,
+                from_date=args.from_date,
+                until_date=args.until_date,
+                limit=args.limit,
+                skip_vector_search=args.skip_vector_search,
+                skip_ner=args.skip_ner,
+            )
+        finally:
+            await dispose()
+
+    results = asyncio.run(_main_async())
 
     ok = sum(1 for r in results if r.get("ok"))
     log.info("done: %d/%d ok", ok, len(results))
