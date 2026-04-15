@@ -33,6 +33,7 @@ dev = [
 
 [project.scripts]
 sclib-ingest = "ingestion.pipeline:main"
+sclib-import-nims = "ingestion.nims:main"
 
 [build-system]
 requires = ["hatchling"]
