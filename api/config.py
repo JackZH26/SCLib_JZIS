@@ -38,6 +38,11 @@ class Settings(BaseSettings):
     # === Rate limiting ===
     guest_daily_limit: int = 3
 
+    # === Internal admin hooks ===
+    # Shared secret for internal endpoints like POST /stats/refresh that
+    # the nightly cron calls. Never exposed via Nginx's public location.
+    internal_api_key: str = ""
+
     # === Email (Resend) ===
     resend_api_key: str = ""
     email_from: str = "SCLib <noreply@jzis.org>"
