@@ -33,9 +33,14 @@ Production target: **VPS2** (`72.62.251.29`), alongside existing
 - Docker + compose plugin
 - DNS `A api.jzis.org → 72.62.251.29`
 - GCP project `jzis-sclib` with Vertex AI + Matching Engine endpoint
-- Either a service account JSON **or** host ADC at
-  `/root/.config/gcloud/application_default_credentials.json` (ADC
-  option A is preferred — see `docker-compose.prod.yml`)
+- **Service account `sclib-api@jzis-sclib.iam.gserviceaccount.com`**
+  with `roles/aiplatform.user` and `roles/storage.objectUser`.
+  The API container authenticates as this SA via **impersonation**
+  — we never create or ship a JSON key (org policy forbids it and
+  SA keys are the current anti-pattern per Google's own docs).
+- Host ADC at `/root/.config/gcloud/application_default_credentials.json`
+  wrapped as an `impersonated_service_account` credential. See the
+  "SA impersonation setup" section below.
 
 ## Bootstrap
 
@@ -74,6 +79,81 @@ and installs `nginx/sclib.conf` into `/etc/nginx/conf.d/`.
    curl -s https://api.jzis.org/sclib/v1/stats | jq .
    curl -sI https://jzis.org/sclib/ | head -1
    ```
+
+## SA impersonation setup (GCP auth)
+
+Org policy `iam.disableServiceAccountKeyCreation` prevents us from
+shipping a JSON key, which is also the current Google-recommended
+stance. The API container instead runs as `sclib-api@jzis-sclib...`
+via **impersonation**: the host ADC is a wrapped credential that
+exchanges a human operator's OAuth refresh token for a short-lived
+(1h) SA access token on every API call.
+
+### One-time GCP side
+Run from any machine that can `gcloud` as a project owner:
+
+```bash
+PROJECT=jzis-sclib
+SA_EMAIL=sclib-api@${PROJECT}.iam.gserviceaccount.com
+ME=jack@jzis.org   # or whichever human owns the source ADC
+
+# 1. Create the SA (idempotent; 409 if it already exists)
+gcloud iam service-accounts create sclib-api \
+    --display-name="SCLib API runtime" --project=$PROJECT
+
+# 2. Runtime roles
+gcloud projects add-iam-policy-binding $PROJECT \
+    --member="serviceAccount:$SA_EMAIL" \
+    --role="roles/aiplatform.user"
+gcloud projects add-iam-policy-binding $PROJECT \
+    --member="serviceAccount:$SA_EMAIL" \
+    --role="roles/storage.objectUser"
+
+# 3. Human impersonator (resource-level binding — org policies
+#    typically don't block tokenCreator at this scope)
+gcloud iam service-accounts add-iam-policy-binding $SA_EMAIL \
+    --member="user:$ME" \
+    --role="roles/iam.serviceAccountTokenCreator" \
+    --project=$PROJECT
+
+# 4. Enable IAM Credentials API (required for generateAccessToken)
+gcloud services enable iamcredentials.googleapis.com --project=$PROJECT
+```
+
+### One-time VPS2 side
+The host already has a plain `authorized_user` ADC from a previous
+`gcloud auth application-default login`. Rewrite it in place as an
+impersonated credential via the helper script:
+
+```bash
+ssh root@72.62.251.29
+python3 /opt/SCLib_JZIS/scripts/wrap_adc_impersonated.py
+docker restart sclib-api
+```
+
+The script keeps a timestamped backup of the original user ADC next
+to the file (so you can roll back by copying back), writes the new
+`impersonated_service_account` form, and relaxes the mode to `0644`
+so uid 1001 inside the api container can read it. Re-running
+`gcloud auth application-default login` by hand will **reset** the
+file back to user form and reset mode to `0600`; always re-run the
+wrap script after any manual ADC refresh.
+
+### Verify
+
+```bash
+# gcloud fetches an impersonated token automatically
+TOK=$(gcloud auth application-default print-access-token)
+# tokeninfo will show NO email (SA tokens don't carry one)
+curl -s "https://oauth2.googleapis.com/tokeninfo?access_token=$TOK"
+
+# Real upstream call
+docker exec sclib-redis redis-cli --scan --pattern "guest_quota:*" \
+    | xargs -r -I{} docker exec sclib-redis redis-cli DEL {}
+curl -fsS -X POST http://127.0.0.1:8000/v1/search \
+    -H "content-type: application/json" \
+    -d '{"query":"iron-based superconductor","top_k":1}' | jq .total
+```
 
 ## Data bootstrap
 
