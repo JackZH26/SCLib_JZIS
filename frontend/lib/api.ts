@@ -27,9 +27,43 @@ export const API_BASE =
   typeof window === "undefined" ? SERVER_BASE : PUBLIC_BASE;
 
 export class ApiError extends Error {
-  constructor(public status: number, public body: unknown, msg: string) {
+  constructor(
+    public status: number,
+    public body: unknown,
+    msg: string,
+    /** Seconds the server asked us to wait, parsed from Retry-After. */
+    public retryAfterSec?: number,
+  ) {
     super(msg);
   }
+}
+
+/**
+ * Parse a Retry-After header per RFC 7231: either delta-seconds or an
+ * HTTP-date. Returns undefined when the header is missing or malformed
+ * so the caller can fall back to its own default.
+ */
+function parseRetryAfter(raw: string | null): number | undefined {
+  if (!raw) return undefined;
+  const n = Number(raw);
+  if (Number.isFinite(n) && n >= 0) return n;
+  const t = Date.parse(raw);
+  if (Number.isNaN(t)) return undefined;
+  return Math.max(0, Math.round((t - Date.now()) / 1000));
+}
+
+/**
+ * Scrub any internal URL (Docker service DNS, loopback) out of an
+ * error string before surfacing it to the user. Error messages from
+ * the API can contain the upstream URL when fetch itself fails
+ * (DNS, connection refused) and we do not want to leak the internal
+ * topology to the browser console.
+ */
+function sanitizeErrorMessage(msg: string): string {
+  return msg
+    .replace(/https?:\/\/[^\s"']*api:\d+[^\s"']*/gi, "[api]")
+    .replace(/https?:\/\/127\.0\.0\.1:\d+[^\s"']*/gi, "[api]")
+    .replace(/https?:\/\/localhost:\d+[^\s"']*/gi, "[api]");
 }
 
 async function request<T>(
@@ -43,21 +77,31 @@ async function request<T>(
   if (init.auth) headers.set("authorization", `Bearer ${init.auth}`);
   if (init.apiKey) headers.set("x-api-key", init.apiKey);
 
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...init,
-    headers,
-    cache: "no-store",
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      ...init,
+      headers,
+      cache: "no-store",
+    });
+  } catch (e) {
+    // Network-level failure (DNS, refused, aborted). The message can
+    // contain internal hostnames — scrub before rethrowing.
+    const raw = e instanceof Error ? e.message : String(e);
+    throw new ApiError(0, null, sanitizeErrorMessage(raw));
+  }
   const body = await res.json().catch(() => ({}));
   if (!res.ok) {
     const detail = (body as { detail?: unknown }).detail;
-    const msg =
+    const rawMsg =
       typeof detail === "string"
         ? detail
         : typeof detail === "object" && detail !== null && "message" in detail
           ? String((detail as { message: unknown }).message)
           : `HTTP ${res.status}`;
-    throw new ApiError(res.status, body, msg);
+    const retryAfterSec =
+      res.status === 429 ? parseRetryAfter(res.headers.get("retry-after")) : undefined;
+    throw new ApiError(res.status, body, sanitizeErrorMessage(rawMsg), retryAfterSec);
   }
   return body as T;
 }
