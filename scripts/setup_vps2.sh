@@ -88,9 +88,18 @@ systemctl reload nginx
 
 log "Setup complete. Next steps:"
 cat <<'EOF'
-  1. Fill in /opt/SCLib_JZIS/.env (DB_PASSWORD, JWT_SECRET, RESEND_API_KEY, VERTEX_AI_INDEX_ENDPOINT).
-  2. Place GCP service account JSON at /opt/SCLib_JZIS/credentials/gcp-sa.json.
-  3. Append location /sclib block into /etc/nginx/sites-available/jzis.org and `systemctl reload nginx`.
-  4. cd /opt/SCLib_JZIS && docker compose up -d
-  5. docker compose ps   # verify all 4 containers healthy
+  1. Fill in /opt/SCLib_JZIS/.env (DB_PASSWORD, JWT_SECRET, RESEND_API_KEY,
+     VERTEX_AI_INDEX_ENDPOINT, INTERNAL_API_KEY).
+  2. ADC option A: reuse /root/.config/gcloud/application_default_credentials.json
+     via docker-compose.prod.yml (already committed). Alternatively, place a
+     GCP service account JSON at /opt/SCLib_JZIS/credentials/gcp-sa.json.
+  3. Append the `location /sclib` block (port 3100!) from nginx/sclib.conf
+     into /etc/nginx/sites-available/jzis.org and `systemctl reload nginx`.
+  4. cd /opt/SCLib_JZIS && docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+  5. docker compose ps          # verify 4 containers (postgres, redis, api, frontend) healthy
+  6. curl -s http://127.0.0.1:8000/v1/stats | jq .   # smoke-test api
+  7. Install nightly cron:
+        ln -s /opt/SCLib_JZIS/scripts/cron_daily_ingest.sh \
+              /etc/cron.daily/sclib-ingest
+     or add to root crontab for a specific time.
 EOF
