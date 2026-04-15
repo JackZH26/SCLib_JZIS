@@ -92,20 +92,27 @@ def classify_family(formula: str) -> str | None:
     Returns ``None`` for anything we don't recognise, which the UI
     renders as "Other".
     """
-    f = formula
+    f = formula.strip()
     fl = f.lower()
 
     # MgB2 is its own thing
     if re.fullmatch(r"mgb2", fl):
         return "mgb2"
 
-    # Hydrides under pressure: H3S, LaH10, YH9, CaH6, etc. High-H formulas
-    # with only 1-2 metals.
-    if re.search(r"h\s*[0-9]", fl) and not re.search(r"o[0-9]", fl):
-        # rule out things like "H2O" or organic ligands — only call it a
-        # hydride if the compound is metal-hydrogen dominant
-        metal_count = len(re.findall(r"(la|y|ca|mg|sr|ba|th|sc|s|se)", fl))
-        if metal_count >= 1 and "c" not in re.sub(r"ca", "", fl):
+    # Hydrides under pressure: H3S, LaH10, YH9, CaH6, etc.
+    #
+    # We tokenise the *original-case* formula into element symbols
+    # ([A-Z][a-z]?) instead of substring-matching on the lowercased
+    # form. The old approach matched the alternation `s|se` against
+    # a lowercase string, so the `s` in `H3S` counted as a metal hit
+    # for itself, and "Se" in selenides was double-counted because
+    # `s` matched first. Element tokenisation eliminates both bugs.
+    elements = re.findall(r"[A-Z][a-z]?", f)
+    high_h = bool(re.search(r"H(?:[2-9]|1[0-9])\b", f))
+    if high_h and "O" not in elements and "C" not in elements:
+        partners = {"S", "Se", "La", "Y", "Ca", "Mg", "Sr", "Ba",
+                    "Th", "Sc", "Yb", "Ce", "Pr", "Nd"}
+        if any(e in partners for e in elements):
             return "hydride"
 
     # Iron-based: Fe with As, Se, Te, P, or a "11"/"122"/"1111" motif
