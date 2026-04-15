@@ -1,22 +1,32 @@
-"""GET /stats — dashboard counters.
+"""GET /stats — dashboard counters + POST /stats/refresh admin hook.
 
 Reads from the ``stats_cache`` row keyed ``dashboard``. The daily
-ingest job is responsible for refreshing that row (see Phase 5
-cron). If the cache is empty (fresh install, tests) we fall back
-to a live count so the endpoint still returns something sensible.
+ingest job is responsible for refreshing that row (see the
+``refresh_dashboard_cache`` service). If the cache is empty (fresh
+install, tests) we fall back to a live count so the endpoint still
+returns something sensible.
+
+``POST /stats/refresh`` is an internal admin hook intended for the
+Phase 5 cron (``scripts/cron_daily_ingest.sh``). It requires an
+``X-Internal-Key`` header matching ``INTERNAL_API_KEY`` in the env
+so the endpoint stays safe even if accidentally exposed through
+Nginx.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import logging
 
-from fastapi import APIRouter, Depends
-from sqlalchemy import func, select
+from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from config import get_settings
 from models import get_db
-from models.db import Chunk, Material, Paper, StatsCache
+from models.db import StatsCache
 from models.search import StatsResponse
 from routers.deps import Identity, peek_identity
+from services.stats_refresh import compute_stats, refresh_dashboard_cache
+
+log = logging.getLogger(__name__)
 
 router = APIRouter(tags=["stats"])
 
@@ -32,39 +42,30 @@ async def stats(
         v.setdefault("updated_at", cached.updated_at.isoformat())
         return StatsResponse(**v)
 
-    # Live fallback — kept cheap because it only runs on fresh DBs.
-    total_papers = (await db.execute(select(func.count()).select_from(Paper))).scalar_one()
-    total_materials = (await db.execute(select(func.count()).select_from(Material))).scalar_one()
-    total_chunks = (await db.execute(select(func.count()).select_from(Chunk))).scalar_one()
+    # Live fallback — only hit on fresh DBs before the first refresh.
+    payload = await compute_stats(db)
+    return StatsResponse(**payload)
 
-    year_expr = func.extract("year", Paper.date_submitted)
-    by_year_rows = (
-        await db.execute(
-            select(year_expr, func.count())
-            .where(Paper.date_submitted.is_not(None))
-            .group_by(year_expr)
-            .order_by(year_expr)
+
+@router.post("/stats/refresh", response_model=StatsResponse)
+async def refresh_stats(
+    x_internal_key: str | None = Header(default=None, alias="X-Internal-Key"),
+    db: AsyncSession = Depends(get_db),
+) -> StatsResponse:
+    """Recompute and persist the dashboard stats row.
+
+    Intended for the nightly cron. Not exposed through Nginx's
+    public location — the internal key gate is belt-and-braces.
+    """
+    settings = get_settings()
+    expected = settings.internal_api_key
+    if not expected:
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "INTERNAL_API_KEY is not configured on this instance",
         )
-    ).all()
-    papers_by_year = {str(int(y)): int(c) for y, c in by_year_rows if y is not None}
+    if x_internal_key != expected:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid internal key")
 
-    fam_rows = (
-        await db.execute(
-            select(Paper.material_family, func.count())
-            .where(Paper.material_family.is_not(None))
-            .group_by(Paper.material_family)
-            .order_by(func.count().desc())
-            .limit(10)
-        )
-    ).all()
-    top_material_families = [{"family": f, "count": int(c)} for f, c in fam_rows]
-
-    return StatsResponse(
-        total_papers=int(total_papers),
-        total_materials=int(total_materials),
-        total_chunks=int(total_chunks),
-        papers_by_year=papers_by_year,
-        top_material_families=top_material_families,
-        last_ingest_at=None,
-        updated_at=datetime.now(timezone.utc).isoformat(),
-    )
+    payload = await refresh_dashboard_cache(db)
+    return StatsResponse(**payload)
