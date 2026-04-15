@@ -22,7 +22,8 @@
 #      failure pool
 #   3. refresh the dashboard stats cache via the api container so the
 #      landing page / GET /stats reflects today's numbers on next hit
-#   4. append a timestamped log line to /var/log/sclib/cron.log
+#   4. dump postgres → GCS via scripts/backup_postgres.sh (best-effort)
+#   5. append a timestamped log line to /var/log/sclib/cron.log
 #
 # Failures DO NOT wake the retry pass off a 2+ exit (hard crash) —
 # we'd rather a human see the stack trace in logs than paper over it.
@@ -72,7 +73,7 @@ cd "${SCLIB_ROOT}"
 # ---- 1. Incremental ingest ----------------------------------------------
 
 log "START cron_daily_ingest"
-log "step 1/3: incremental ingest"
+log "step 1/4: incremental ingest"
 
 # --rm so each run is a clean container. `|| true` is deliberate: a
 # partial failure (below failure_success_threshold) returns non-zero
@@ -87,7 +88,7 @@ log "incremental ingest exit=${ingest_rc}"
 
 # ---- 2. Retry pass (drain failure pool) ---------------------------------
 
-log "step 2/3: retry pass (drain failure pool)"
+log "step 2/4: retry pass (drain failure pool)"
 set +e
 docker compose "${COMPOSE_FILES[@]}" run --rm ingestion \
     sclib-ingest --mode retry --limit 20 2>&1 | tee -a "${LOG_FILE}"
@@ -102,7 +103,7 @@ log "retry pass exit=${retry_rc}"
 # internet — the api container publishes only to 127.0.0.1:8000 and
 # the endpoint is gated by INTERNAL_API_KEY loaded from .env.
 
-log "step 3/3: refresh dashboard stats cache"
+log "step 3/4: refresh dashboard stats cache"
 if [[ -z "${INTERNAL_API_KEY:-}" ]]; then
     # Fall back to sourcing the compose .env so operators don't have to
     # duplicate the secret in .env.cron.
@@ -119,6 +120,19 @@ else
         -X POST "http://127.0.0.1:8000/v1/stats/refresh" \
         -H "X-Internal-Key: ${INTERNAL_API_KEY}" \
         2>&1 | tee -a "${LOG_FILE}" || log "WARN stats refresh curl failed"
+fi
+
+# ---- 4. Postgres backup → GCS -------------------------------------------
+#
+# Runs after the ingest + stats refresh so the snapshot includes the
+# day's new rows. Failures here are logged but do not fail the cron —
+# losing one night's backup is preferable to alerting on a noisy
+# transient gcloud error.
+log "step 4/4: postgres backup → GCS"
+if [[ -x "${SCLIB_ROOT}/scripts/backup_postgres.sh" ]]; then
+    "${SCLIB_ROOT}/scripts/backup_postgres.sh" || log "WARN backup_postgres failed"
+else
+    log "WARN backup_postgres.sh missing or not executable"
 fi
 
 log "DONE cron_daily_ingest ingest_rc=${ingest_rc} retry_rc=${retry_rc}"
