@@ -12,13 +12,21 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@9.12.0 --activate
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ENV NEXT_TELEMETRY_DISABLED=1
+# basePath is read from NEXT_PUBLIC_BASE_PATH at `next build` time and
+# baked into every emitted asset URL and link href. Default /sclib
+# matches production routing under https://jzis.org/sclib. Override
+# with --build-arg NEXT_PUBLIC_BASE_PATH= for a root-mounted dev build.
+ARG NEXT_PUBLIC_BASE_PATH=/sclib
+ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH \
+    NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build
 
 FROM node:20-alpine AS runner
 WORKDIR /app
+ARG NEXT_PUBLIC_BASE_PATH=/sclib
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
+    NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH \
     PORT=3000 \
     HOSTNAME=0.0.0.0
 RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001

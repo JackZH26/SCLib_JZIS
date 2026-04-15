@@ -14,10 +14,10 @@ services:
       # page rendering doesn't hairpin through Nginx + TLS.
       - API_BASE_SERVER=http://api:8000/v1
       - NODE_ENV=production
-    # Next.js serves / at the root, but in production we mount under
-    # /sclib. A GET / still returns 200 so it's a good liveness probe.
+    # With basePath=/sclib baked in, Next.js 404s on bare / and serves
+    # the app under /sclib. Probe that path for liveness.
     healthcheck:
-      test: ["CMD-SHELL", "wget -q -O- http://127.0.0.1:3000/ >/dev/null || exit 1"]
+      test: ["CMD-SHELL", "wget -q -O- http://127.0.0.1:3000/sclib >/dev/null || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
