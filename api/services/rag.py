@@ -100,10 +100,15 @@ def generate_answer(
         ),
     )
 
+    # Vertex's GenerativeModel raises ValueError on blocked / empty
+    # candidates when you touch `.text`. Catch that specifically —
+    # a bare `except Exception` would swallow real bugs (auth
+    # refresh failures, transport errors) and hand users a generic
+    # "couldn't answer" string with no log trace.
     try:
         answer = resp.text or ""
-    except Exception as exc:  # noqa: BLE001 — SDK raises on blocked responses
-        log.warning("Gemini response had no text: %s", exc)
+    except ValueError as exc:
+        log.warning("Gemini response had no text (blocked/empty): %s", exc)
         answer = "The model could not produce an answer for this question."
 
     usage = getattr(resp, "usage_metadata", None)
