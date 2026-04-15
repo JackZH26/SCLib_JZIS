@@ -2,14 +2,86 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Design tokens mirrored from asrp.jzis.org so the two JZIS sites share
+ * a visual identity. See tailwind.config.ts for the Tailwind-side mapping;
+ * these CSS variables exist so hand-written CSS (plot markers, prose
+ * overrides) can reach the same palette without hardcoding hex values.
+ */
 :root {
-  --sclib-fg: #0f172a;
-  --sclib-bg: #f8fafc;
+  --bg:            #f0f5f0;
+  --surface:       #e8f0e8;
+  --card:          #ffffff;
+  --border:        #d4e4d4;
+  --text:          #2d3b2d;
+  --text-secondary:#5a6b5a;
+  --text-tertiary: #6b7c6b;
+  --accent:        #3A7D5C;
+  --accent-deep:   #24503A;
+  --accent-light:  rgba(58, 125, 92, 0.08);
+  --gradient:      linear-gradient(135deg, #4ea27a, #24503A);
+  --gradient-text: linear-gradient(135deg, #3A7D5C, #24503A);
+  --shadow:        0 2px 8px rgba(36, 80, 58, 0.06);
+  --shadow-hover:  0 8px 24px rgba(36, 80, 58, 0.14);
 }
 
 html,
 body {
-  background: var(--sclib-bg);
-  color: var(--sclib-fg);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* asrp uses tight, near-black tracking on headings. Emulate with a
+   small letter-spacing bump so hero type doesn't drift apart. */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+/* Links inside prose and markdown bodies inherit the sage accent. */
+a {
+  color: var(--accent);
+}
+a:hover {
+  color: var(--accent-deep);
+}
+
+/* Reusable primary CTA that matches asrp's .btn-primary gradient. */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6875rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  background: var(--gradient);
+  color: #ffffff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(36, 80, 58, 0.28);
+  color: #ffffff;
+}
+
+/* Outline CTA (asrp .btn-outline) — used for secondary nav links on
+   the hero. White surface, sage border, accent on hover. */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6875rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  background: #ffffff;
+  color: var(--text);
+  border: 1px solid var(--border);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.btn-outline:hover {
+  border-color: var(--accent);
+  background: #f8faf8;
+  color: var(--text);
 }

@@ -33,12 +33,9 @@ export function SearchBar({
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 rounded-md border border-slate-300 bg-white px-4 py-3 text-base shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+        className="flex-1 rounded-[10px] border border-sage-border bg-white px-4 py-3 text-base text-sage-ink shadow-sage placeholder:text-sage-tertiary focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
       />
-      <button
-        type="submit"
-        className="rounded-md bg-slate-900 px-6 py-3 font-medium text-white hover:bg-slate-700"
-      >
+      <button type="submit" className="btn-primary">
         Search
       </button>
     </form>

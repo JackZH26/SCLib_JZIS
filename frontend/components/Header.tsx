@@ -1,9 +1,10 @@
 /**
  * Global header with the SCLib wordmark + primary nav.
  *
- * Rendered from the root layout so every page gets it. Kept as a
- * server component — no client state — so the initial HTML is
- * fully SSR'd.
+ * Visually mirrors asrp.jzis.org's fixed nav: translucent sage bg with
+ * a backdrop blur, sage border, muted link colour, and a gradient
+ * "Account" CTA. Kept as a server component — no client state — so
+ * the initial HTML is fully SSR'd.
  */
 import Link from "next/link";
 
@@ -17,25 +18,29 @@ const NAV = [
 
 export function Header() {
   return (
-    <header className="border-b border-slate-200 bg-white/80 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-sage-border bg-[rgba(240,245,240,0.85)] backdrop-blur-md supports-[backdrop-filter]:bg-[rgba(240,245,240,0.72)]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-baseline gap-2">
-          <span className="text-xl font-bold tracking-tight">SCLib</span>
-          <span className="text-xs text-slate-500">JZIS</span>
+          <span className="bg-sage-gradient-text bg-clip-text text-xl font-bold tracking-tight text-transparent">
+            SCLib
+          </span>
+          <span className="text-xs font-semibold uppercase tracking-widest text-sage-tertiary">
+            JZIS
+          </span>
         </Link>
         <nav className="flex items-center gap-6 text-sm">
           {NAV.map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              className="text-slate-700 hover:text-slate-900"
+              className="text-sage-muted transition-colors hover:text-accent-deep"
             >
               {n.label}
             </Link>
           ))}
           <Link
             href="/dashboard"
-            className="rounded-md bg-slate-900 px-3 py-1.5 text-white hover:bg-slate-700"
+            className="btn-primary !rounded-lg !px-4 !py-2 !text-sm"
           >
             Account
           </Link>

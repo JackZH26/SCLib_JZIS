@@ -31,7 +31,7 @@ export function MarkdownAnswer({
     // default. rehype-sanitize is belt-and-braces: even if Gemini
     // ever emits an exotic scheme or the default url transform
     // regresses, the sanitizer strips it before it hits the DOM.
-    <div className="prose prose-slate max-w-none prose-p:leading-relaxed prose-a:text-blue-600">
+    <div className="prose prose-slate max-w-none prose-p:leading-relaxed prose-a:text-accent hover:prose-a:text-accent-deep">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeSanitize]}

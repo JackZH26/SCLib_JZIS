@@ -87,7 +87,7 @@ export default async function MaterialDetailPage({
                         {pid ? (
                           <Link
                             href={`/paper/${encodeURIComponent(pid)}`}
-                            className="text-blue-600 hover:underline"
+                            className="text-accent hover:text-accent-deep hover:underline"
                           >
                             {pid}
                           </Link>
