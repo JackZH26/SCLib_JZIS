@@ -26,7 +26,8 @@ COPY pyproject.toml ./
 COPY ingestion ./ingestion
 RUN uv pip install --system .
 
-# Default: no-op. Compose / CI override this with an explicit `sclib-ingest`
-# invocation.
-ENTRYPOINT ["sclib-ingest"]
-CMD ["--mode", "smoke", "--limit", "30"]
+# No ENTRYPOINT — callers pick the console script explicitly so the
+# same image serves both `sclib-ingest` (nightly cron) and
+# `sclib-import-nims` (one-shot NIMS CSV loader) without awkward
+# --entrypoint overrides. Default CMD runs the Phase 2 smoke test.
+CMD ["sclib-ingest", "--mode", "smoke", "--limit", "30"]
