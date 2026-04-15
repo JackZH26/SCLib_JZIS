@@ -273,3 +273,227 @@ One account for all JZIS products:
 | 注册页品牌升级 | 1小时 | P2 |
 
 *JZIS Unified Auth Plan v1.0 | 瓦力 | 2026-04-15*
+
+---
+
+## 十一、Google OAuth 集成方案
+
+### 11.1 流程概述
+
+```
+用户点击 "Sign in with Google"
+  ↓
+GET /v1/auth/google/login
+  ↓ 302 重定向
+accounts.google.com/oauth2/...
+  ↓ 用户授权
+GET /v1/auth/google/callback?code=xxx
+  ↓ API 换取 access_token → 获取 email/name
+  ↓ upsert user 到 DB（新用户自动激活，跳过邮件验证）
+  ↓ 生成 JZIS JWT
+302 → https://jzis.org/sclib/auth/callback?token=JWT
+  ↓
+前端存储 token，登录完成
+```
+
+### 11.2 数据库变更
+
+```sql
+ALTER TABLE users
+  ADD COLUMN google_sub VARCHAR(128) UNIQUE,  -- Google user ID
+  ADD COLUMN auth_provider VARCHAR(20) DEFAULT 'local',
+  -- 'local' = 邮箱密码注册
+  -- 'google' = Google OAuth
+  -- 'both'  = 本地密码 + 已绑定 Google
+  ADD COLUMN avatar_url VARCHAR(500);          -- Google 头像 URL
+
+-- Google 登录用户无需密码，允许 password_hash 为空
+ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
+
+-- 索引
+CREATE INDEX idx_users_google_sub ON users(google_sub) WHERE google_sub IS NOT NULL;
+```
+
+### 11.3 后端实现（FastAPI + authlib）
+
+**依赖：**
+```toml
+# api/pyproject.toml 新增
+authlib = "^1.3"
+itsdangerous = "^2.1"   # 用于 state 参数防 CSRF
+```
+
+**新文件：`api/services/oauth.py`**
+```python
+from authlib.integrations.starlette_client import OAuth
+from starlette.config import Config
+
+config = Config(environ={
+    "GOOGLE_CLIENT_ID": settings.google_client_id,
+    "GOOGLE_CLIENT_SECRET": settings.google_client_secret,
+})
+
+oauth = OAuth(config)
+oauth.register(
+    name='google',
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs={'scope': 'openid email profile'},
+)
+```
+
+**新端点：`api/routers/auth.py` 追加**
+```python
+from starlette.requests import Request
+from starlette.responses import RedirectResponse
+
+FRONTEND_CALLBACK = "https://jzis.org/sclib/auth/callback"
+
+@router.get("/google/login")
+async def google_login(request: Request):
+    """Redirect browser to Google OAuth consent screen."""
+    redirect_uri = str(request.url_for("google_callback"))
+    return await oauth.google.authorize_redirect(request, redirect_uri)
+
+@router.get("/google/callback", name="google_callback")
+async def google_callback(request: Request, db: AsyncSession = Depends(get_db)):
+    """Exchange code for token, upsert user, redirect with JWT."""
+    token = await oauth.google.authorize_access_token(request)
+    userinfo = token.get("userinfo")  # contains sub, email, name, picture
+
+    # Upsert user
+    user = await db.scalar(
+        select(User).where(
+            (User.google_sub == userinfo["sub"]) |
+            (User.email == userinfo["email"])
+        )
+    )
+    if not user:
+        user = User(
+            email=userinfo["email"],
+            name=userinfo.get("name", ""),
+            google_sub=userinfo["sub"],
+            auth_provider="google",
+            avatar_url=userinfo.get("picture"),
+            email_verified=True,
+            is_active=True,
+            scopes=["basic", "sclib"],
+            password_hash=None,  # Google 用户无密码
+        )
+        db.add(user)
+    else:
+        # 已有本地账号，绑定 Google
+        user.google_sub = userinfo["sub"]
+        user.avatar_url = userinfo.get("picture")
+        if user.auth_provider == "local":
+            user.auth_provider = "both"
+    
+    await db.commit()
+    await db.refresh(user)
+
+    # 生成 JWT 并重定向到前端
+    jwt_token = create_access_token(user)
+    return RedirectResponse(
+        url=f"{FRONTEND_CALLBACK}?token={jwt_token}",
+        status_code=302
+    )
+```
+
+**config.py 新增字段：**
+```python
+google_client_id: str = Field(default="")
+google_client_secret: str = Field(default="")
+```
+
+**.env 新增：**
+```bash
+GOOGLE_CLIENT_ID=xxx.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-xxx
+```
+
+### 11.4 前端实现
+
+**登录页和注册页加 Google 按钮：**
+```tsx
+// frontend/app/auth/login/page.tsx
+<button
+  onClick={() => window.location.href = `${process.env.NEXT_PUBLIC_API_BASE}/auth/google/login`}
+  className="w-full flex items-center justify-center gap-2 border rounded-lg px-4 py-2 hover:bg-gray-50"
+>
+  <img src="/google-icon.svg" className="w-5 h-5" />
+  Continue with Google
+</button>
+
+<div className="relative my-4">
+  <div className="absolute inset-0 flex items-center">
+    <div className="w-full border-t border-gray-300" />
+  </div>
+  <div className="relative text-center text-sm text-gray-500">or</div>
+</div>
+
+{/* 现有邮箱密码表单 */}
+```
+
+**新建回调页：`frontend/app/auth/callback/page.tsx`**
+```tsx
+"use client"
+import { useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+
+export default function AuthCallback() {
+  const router = useRouter()
+  const params = useSearchParams()
+
+  useEffect(() => {
+    const token = params.get("token")
+    if (token) {
+      localStorage.setItem("sclib_jwt", token)
+      router.replace("/sclib")    // 登录成功 → 跳转首页
+    } else {
+      router.replace("/sclib/auth/login?error=oauth_failed")
+    }
+  }, [])
+
+  return <div className="p-8 text-center">Signing you in...</div>
+}
+```
+
+### 11.5 Google Cloud Console 配置步骤
+
+1. 打开：https://console.cloud.google.com/apis/credentials?project=jzis-sclib
+2. "Create Credentials" → "OAuth 2.0 Client IDs"
+3. 类型选 **Web application**
+4. 填写：
+   - Authorized JavaScript origins: `https://jzis.org`, `https://api.jzis.org`
+   - Authorized redirect URIs: `https://api.jzis.org/v1/auth/google/callback`
+5. 下载 credentials，取 `client_id` 和 `client_secret`
+6. 填入 VPS2 `/opt/SCLib_JZIS/.env`
+
+### 11.6 Session 中间件（authlib 需要）
+
+FastAPI 需要 session 存储 OAuth state（防 CSRF）：
+
+```python
+# api/main.py 新增
+from starlette.middleware.sessions import SessionMiddleware
+
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=settings.jwt_secret,  # 复用现有 secret
+    max_age=300,                     # state 5分钟过期
+    https_only=True,
+)
+```
+
+### 11.7 实施优先级
+
+| 步骤 | 工时 | 说明 |
+|------|------|------|
+| DB migration（google_sub 字段）| 15min | alembic revision |
+| authlib 依赖 + oauth.py | 30min | |
+| /google/login + /google/callback | 1hr | |
+| 前端 Google 按钮 + callback page | 1hr | |
+| Google Cloud Console 配置 | 15min | Jack 手动 |
+| .env 填入 credentials | 5min | Jack 手动 |
+| 测试端到端 | 30min | |
+| **总计** | **~3.5hr** | |
+
