@@ -1,0 +1,21 @@
+# Logrotate config for the SCLib nightly cron log.
+#
+# Install on VPS2:
+#   sudo cp scripts/sclib.logrotate /etc/logrotate.d/sclib
+#
+# Without this, /var/log/sclib/cron.log grows unbounded — the
+# nightly ingest can append several MB per run depending on
+# verbosity, so a year of logs would silently eat the root volume.
+
+/var/log/sclib/cron.log {
+    daily
+    rotate 30
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0644 root root
+    # The cron script writes via tee with append mode. No service
+    # restart needed after rotation; tee re-opens on the next invocation.
+    copytruncate
+}

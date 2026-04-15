@@ -28,6 +28,17 @@
 # we'd rather a human see the stack trace in logs than paper over it.
 set -Eeuo pipefail
 
+# ---- Single-instance lock ------------------------------------------------
+#
+# Re-exec under flock so a second invocation (e.g. cron racing with a
+# manual kick) can't run two ingests against the same DB at once. The
+# fd-99 trick keeps the lock open for the duration of the script.
+LOCKFILE="${SCLIB_LOCKFILE:-/var/lock/sclib-ingest.lock}"
+if [[ "${SCLIB_LOCKED:-}" != "1" ]]; then
+    export SCLIB_LOCKED=1
+    exec flock --nonblock "${LOCKFILE}" "$0" "$@"
+fi
+
 # ---- Config --------------------------------------------------------------
 
 SCLIB_ROOT="${SCLIB_ROOT:-/opt/sclib}"
