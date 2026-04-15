@@ -14,8 +14,17 @@ services:
       # page rendering doesn't hairpin through Nginx + TLS.
       - API_BASE_SERVER=http://api:8000/v1
       - NODE_ENV=production
+    # Next.js serves / at the root, but in production we mount under
+    # /sclib. A GET / still returns 200 so it's a good liveness probe.
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://127.0.0.1:3000/ >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
     depends_on:
-      - api
+      api:
+        condition: service_healthy
 
   api:
     build: ./api
@@ -26,6 +35,12 @@ services:
     env_file: .env
     volumes:
       - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/v1/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     depends_on:
       postgres:
         condition: service_healthy
