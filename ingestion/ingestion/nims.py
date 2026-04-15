@@ -46,7 +46,8 @@ log = logging.getLogger("sclib.nims")
 # whitespace-trimmed). First hit wins.
 COLUMN_ALIASES: dict[str, list[str]] = {
     "formula": ["formula", "name", "element", "composition", "chemical_formula"],
-    "tc": ["tc", "tc (k)", "tc_k", "tc_onset", "tconset", "t_c"],
+    "tc": ["tc", "tc (k)", "tc_k", "tc_onset", "tconset", "t_c",
+           "criticaltemperature", "criticaltemperature(k)"],
     "structure": ["structure", "crystal_structure", "spacegroup", "space_group"],
     "pressure": ["pressure", "pressure_gpa", "p (gpa)", "p_gpa"],
     "doping": ["doping", "doping_level", "x", "composition_x"],
