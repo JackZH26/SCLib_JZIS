@@ -7,6 +7,7 @@
  * to the referenced card.
  */
 import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import type { AskSource } from "@/lib/api";
 
@@ -26,8 +27,17 @@ export function MarkdownAnswer({
   });
 
   return (
+    // react-markdown already blocks raw HTML and javascript: URLs by
+    // default. rehype-sanitize is belt-and-braces: even if Gemini
+    // ever emits an exotic scheme or the default url transform
+    // regresses, the sanitizer strips it before it hits the DOM.
     <div className="prose prose-slate max-w-none prose-p:leading-relaxed prose-a:text-blue-600">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{linked}</ReactMarkdown>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeSanitize]}
+      >
+        {linked}
+      </ReactMarkdown>
     </div>
   );
 }
