@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import logging
 from contextlib import asynccontextmanager
+from urllib.parse import urlsplit
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -46,9 +47,18 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# CORS origins must be scheme+host only (no path). `frontend_url` is a
+# full base URL used for building verification / docs links, so we strip
+# it down to origin form here. Browsers send `Origin: https://jzis.org`
+# for a page served at `https://jzis.org/sclib/search`, and Starlette's
+# middleware does an exact string match — mismatching on the trailing
+# `/sclib` silently fails every POST preflight.
+_fe = urlsplit(str(settings.frontend_url))
+_frontend_origin = f"{_fe.scheme}://{_fe.netloc}" if _fe.scheme and _fe.netloc else str(settings.frontend_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url, "http://localhost:3000"],
+    allow_origins=[_frontend_origin, "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
