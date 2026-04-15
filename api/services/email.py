@@ -42,15 +42,33 @@ async def send_welcome(to: str, name: str, api_key: str) -> None:
     await _dispatch(to, subject, html)
 
 
+_resend_initialised: bool = False
+
+
+def _ensure_resend_key() -> bool:
+    """Set resend.api_key once. The Resend SDK keeps the key as a
+    module-level attribute, so writing it on every send was both
+    pointless and a thread race in theory. Now we set it once and
+    cache the success/skip decision."""
+    global _resend_initialised
+    if _resend_initialised:
+        return True
+    settings = get_settings()
+    if not settings.resend_api_key:
+        return False
+    resend.api_key = settings.resend_api_key
+    _resend_initialised = True
+    return True
+
+
 async def _dispatch(to: str, subject: str, html: str) -> None:
     settings = get_settings()
     if settings.email_backend == "stdout":
         log.info("=== EMAIL (stdout backend) ===\nTo: %s\nSubject: %s\n%s", to, subject, html)
         return
-    if not settings.resend_api_key:
+    if not _ensure_resend_key():
         log.error("email_backend=resend but RESEND_API_KEY empty; dropping email to %s", to)
         return
-    resend.api_key = settings.resend_api_key
     params = {
         "from": settings.email_from,
         "to": to,
