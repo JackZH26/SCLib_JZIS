@@ -27,6 +27,16 @@ RUN uv pip install --system -e .
 COPY . .
 RUN chmod +x /app/entrypoint.sh
 
+# Drop privileges. The API has no reason to run as root — it only
+# needs to read /app, write logs to stdout, and read the mounted
+# ADC credential at /credentials/gcp-sa.json (mode 0644 on the host
+# side). Creating a fixed UID lets the host mount honour ownership
+# checks without a chown step.
+RUN groupadd --system --gid 1001 sclib \
+ && useradd  --system --uid 1001 --gid sclib --home /app sclib \
+ && chown -R sclib:sclib /app
+USER sclib
+
 EXPOSE 8000
 ENTRYPOINT ["/usr/bin/tini", "--", "/app/entrypoint.sh"]
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

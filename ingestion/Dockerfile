@@ -26,6 +26,13 @@ COPY pyproject.toml ./
 COPY ingestion ./ingestion
 RUN uv pip install --system .
 
+# Non-root runtime. Shared UID 1001 matches the api image so the
+# mounted credential file (mode 0644) is readable without chowns.
+RUN groupadd --system --gid 1001 sclib \
+ && useradd  --system --uid 1001 --gid sclib --home /app sclib \
+ && chown -R sclib:sclib /app
+USER sclib
+
 # No ENTRYPOINT — callers pick the console script explicitly so the
 # same image serves both `sclib-ingest` (nightly cron) and
 # `sclib-import-nims` (one-shot NIMS CSV loader) without awkward

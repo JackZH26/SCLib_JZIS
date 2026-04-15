@@ -1,0 +1,48 @@
+# Keep the build context lean so `docker compose build api` stays fast
+# and secrets / local state never end up baked into the image.
+
+# Version control
+.git
+.gitignore
+
+# Python byte-compiled / caches
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov
+.tox
+
+# Virtual environments
+.venv
+venv
+env
+
+# Editor / IDE
+.vscode
+.idea
+*.swp
+.DS_Store
+
+# Local secrets and credentials — never copy these into the image.
+# The real ADC JSON is mounted at runtime into /credentials.
+.env
+.env.*
+!.env.example
+credentials/
+*.pem
+*.key
+gcp-sa.json
+
+# Docs and non-runtime assets
+docs/
+README.md
+*.md
+!pyproject.toml
+
+# Tests and fixtures — the image runs in production, not test mode
+tests/
