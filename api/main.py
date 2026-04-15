@@ -56,9 +56,17 @@ app = FastAPI(
 _fe = urlsplit(str(settings.frontend_url))
 _frontend_origin = f"{_fe.scheme}://{_fe.netloc}" if _fe.scheme and _fe.netloc else str(settings.frontend_url)
 
+# Include the `www.` sibling of the frontend origin. Users may hit the
+# site via either `jzis.org` or `www.jzis.org` (both resolve in DNS),
+# and the browser sends whichever host is in the address bar as the
+# Origin header. Starlette does exact-match so we need both.
+_allowed_origins = [_frontend_origin, "http://localhost:3000"]
+if _fe.netloc and not _fe.netloc.startswith("www."):
+    _allowed_origins.append(f"{_fe.scheme}://www.{_fe.netloc}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[_frontend_origin, "http://localhost:3000"],
+    allow_origins=_allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
