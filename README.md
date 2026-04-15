@@ -13,7 +13,40 @@ Semantic search + materials database + AI-powered Q&A for 200,000+ superconducti
 
 ## Quick Start for Developers
 
-See [PROJECT_SPEC.md](./PROJECT_SPEC.md) for the full technical specification.
+Spin up the full stack locally:
+
+```bash
+cp .env.example .env        # fill in DB_PASSWORD, JWT_SECRET, INTERNAL_API_KEY, …
+docker compose up -d        # postgres + redis + api + frontend
+docker compose exec api alembic upgrade head
+docker compose run --rm ingestion sclib-ingest --mode smoke --limit 30
+```
+
+Then hit `http://localhost:3100` for the Next.js frontend and
+`http://localhost:8000/v1/stats` for the FastAPI backend.
+
+## Docs
+
+- [`PROJECT_SPEC.md`](./PROJECT_SPEC.md) — full technical specification
+- [`docs/API.md`](./docs/API.md) — HTTP API reference
+- [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md) — VPS2 deployment guide
+- [`CLAUDE.md`](./CLAUDE.md) — project rules for automated contributors
+
+## Architecture
+
+```
+Next.js 14 (frontend)  ──►  FastAPI (api)  ──►  PostgreSQL 16
+        │                         │                   │
+        │                         ├──► Redis (rate limit / cache)
+        │                         ├──► Vertex AI Matching Engine
+        │                         └──► Gemini 2.5 Flash (RAG)
+        │
+        └── Nginx reverse proxy at jzis.org/sclib
+```
+
+Data ingestion runs as a one-shot `sclib-ingest` container (profile
+`tools`) driven by the nightly cron wrapper in
+[`scripts/cron_daily_ingest.sh`](./scripts/cron_daily_ingest.sh).
 
 ## Citation
 
