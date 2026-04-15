@@ -8,13 +8,16 @@ All six endpoints from PROJECT_SPEC.md section 7. The flow is:
 """
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timedelta, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
+
+log = logging.getLogger(__name__)
 
 from models import get_db
 from models.db import ApiKey, EmailVerification, User
@@ -61,7 +64,15 @@ async def current_user_from_api_key(
     user = await db.get(User, ak.user_id)
     if user is None or not user.is_active:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User inactive")
-    ak.last_used = datetime.now(timezone.utc)
+    # Targeted UPDATE to avoid the read-modify-write race when the
+    # same key is used concurrently from multiple requests. SQLAlchemy's
+    # ORM update on a detached attribute would serialize on the row
+    # version; an explicit UPDATE … WHERE id= is atomic at the DB level.
+    await db.execute(
+        update(ApiKey)
+        .where(ApiKey.id == ak.id)
+        .values(last_used=datetime.now(timezone.utc))
+    )
     await db.commit()
     return user
 
@@ -76,7 +87,10 @@ async def current_user_from_jwt(
     try:
         payload = auth_service.decode_access_token(token)
     except Exception as e:  # jwt.PyJWTError and variants
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, f"Invalid token: {e}") from e
+        # Never leak the exception class / message to the client — it
+        # discloses whether the token is expired vs. signature-invalid.
+        log.info("JWT decode failed: %s", e)
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid token") from None
     try:
         user_id = UUID(payload["sub"])
     except (KeyError, ValueError) as e:
@@ -168,7 +182,13 @@ async def verify(token: str, db: AsyncSession = Depends(get_db)):
 async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
     q = await db.execute(select(User).where(User.email == body.email))
     user = q.scalar_one_or_none()
-    if user is None or not auth_service.verify_password(body.password, user.password_hash):
+    # Constant-time branch: run a bcrypt compare even when the user
+    # does not exist, so attackers cannot enumerate valid emails by
+    # measuring response latency.
+    if user is None:
+        auth_service.verify_password_dummy(body.password)
+        raise HTTPException(401, "Invalid email or password")
+    if not auth_service.verify_password(body.password, user.password_hash):
         raise HTTPException(401, "Invalid email or password")
     if not user.is_active:
         raise HTTPException(403, "Email not verified")

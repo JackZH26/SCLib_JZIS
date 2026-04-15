@@ -19,6 +19,16 @@ from config import get_settings
 
 # --- passwords ------------------------------------------------------------
 
+# Pre-computed bcrypt hash of an unguessable random string. Used by
+# ``verify_password_dummy`` so login against a non-existent email still
+# runs a full bcrypt round, making account-existence side channels
+# (timing enumeration) infeasible.
+_DUMMY_HASH: bytes = bcrypt.hashpw(
+    secrets.token_urlsafe(32).encode("utf-8"),
+    bcrypt.gensalt(rounds=12),
+)
+
+
 def hash_password(plain: str) -> str:
     return bcrypt.hashpw(plain.encode("utf-8"), bcrypt.gensalt(rounds=12)).decode("utf-8")
 
@@ -28,6 +38,16 @@ def verify_password(plain: str, hashed: str) -> bool:
         return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
     except ValueError:
         return False
+
+
+def verify_password_dummy(plain: str) -> bool:
+    """Run a throwaway bcrypt compare so non-existent-user logins take
+    the same wall-clock time as real logins. Always returns False."""
+    try:
+        bcrypt.checkpw(plain.encode("utf-8"), _DUMMY_HASH)
+    except ValueError:
+        pass
+    return False
 
 
 # --- JWT ------------------------------------------------------------------
