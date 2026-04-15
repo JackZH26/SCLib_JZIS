@@ -49,16 +49,24 @@ class Identity:
 def _client_ip(request: Request) -> str:
     """Best-effort client IP.
 
-    Nginx on VPS2 terminates TLS and forwards via ``X-Forwarded-For``
-    (see ``nginx/sclib.conf``). We trust that header because the only
-    public entrypoint is Nginx — the API container binds to 127.0.0.1
-    and isn't directly reachable.
+    Nginx on VPS2 terminates TLS and forwards via ``X-Forwarded-For``.
+    We only trust that header when ``settings.trust_forwarded_for`` is
+    enabled (default True, matching the VPS2 deployment where the API
+    container binds to 127.0.0.1:8000 and is only reachable through
+    Nginx on the host). If the API is ever exposed directly, flip
+    ``TRUST_FORWARDED_FOR=false`` in ``.env`` so clients cannot spoof
+    arbitrary source IPs to bypass the guest daily quota.
     """
+    from config import get_settings
+
+    peer = request.client.host if request.client else "0.0.0.0"
+    if not get_settings().trust_forwarded_for:
+        return peer
     xff = request.headers.get("x-forwarded-for")
     if xff:
         # first entry in the comma list = original client
         return xff.split(",", 1)[0].strip()
-    return request.client.host if request.client else "0.0.0.0"
+    return peer
 
 
 async def require_identity(

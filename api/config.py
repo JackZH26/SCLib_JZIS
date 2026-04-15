@@ -8,7 +8,7 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field
+from pydantic import Field, HttpUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -21,8 +21,11 @@ class Settings(BaseSettings):
 
     # === App ===
     environment: Literal["development", "test", "production"] = "production"
-    frontend_url: str = "https://jzis.org/sclib"
-    api_base_url: str = "https://api.jzis.org/sclib/v1"
+    frontend_url: HttpUrl = Field(default="https://jzis.org/sclib")  # type: ignore[assignment]
+    api_base_url: HttpUrl = Field(default="https://api.jzis.org/sclib/v1")  # type: ignore[assignment]
+    # Trust X-Forwarded-For when picking the client IP for rate limits.
+    # True is correct for the VPS2 setup where only Nginx can reach us.
+    trust_forwarded_for: bool = True
 
     # === Database ===
     database_url: str = Field(..., description="SQLAlchemy URL, e.g. postgresql://u:p@host/db")
