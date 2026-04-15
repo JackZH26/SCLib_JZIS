@@ -14,6 +14,7 @@ Nginx.
 """
 from __future__ import annotations
 
+import hmac
 import logging
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
@@ -64,7 +65,9 @@ async def refresh_stats(
             status.HTTP_503_SERVICE_UNAVAILABLE,
             "INTERNAL_API_KEY is not configured on this instance",
         )
-    if x_internal_key != expected:
+    # Constant-time comparison — prevents byte-by-byte timing leaks of
+    # INTERNAL_API_KEY via response latency measurements.
+    if not hmac.compare_digest(x_internal_key or "", expected):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid internal key")
 
     payload = await refresh_dashboard_cache(db)
