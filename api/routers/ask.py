@@ -54,6 +54,10 @@ async def ask(
         )
 
     # 2. Hydrate chunks + papers from Postgres, keeping ANN order.
+    # Defensive cap on the IN clause — schema already bounds max_sources,
+    # but a buggy vector_search could still return a runaway list.
+    MAX_IN_CLAUSE = 100
+    neighbors = neighbors[:MAX_IN_CLAUSE]
     chunk_ids = [n.chunk_id for n in neighbors]
     q = (
         select(Chunk)

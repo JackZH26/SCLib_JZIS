@@ -65,7 +65,12 @@ async def search(
             guest_remaining=identity.guest_remaining,
         )
 
-    # 2. Fetch chunks + parent papers in one round-trip.
+    # 2. Fetch chunks + parent papers in one round-trip. Defensive cap:
+    # even though overfetch is 3x top_k (max 100), a buggy vector_search
+    # implementation could return more — cap the IN clause so a runaway
+    # list cannot blow out the Postgres parser.
+    MAX_IN_CLAUSE = 300
+    neighbors = neighbors[:MAX_IN_CLAUSE]
     chunk_ids = [n.chunk_id for n in neighbors]
     distance_by_chunk = {n.chunk_id: n.distance for n in neighbors}
 
