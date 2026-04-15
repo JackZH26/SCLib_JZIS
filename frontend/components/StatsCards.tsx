@@ -1,7 +1,18 @@
+"use client";
+
 /**
  * Four-up card row for the landing / stats pages: papers, materials,
- * chunks, and last-ingest timestamp. Pure presentational.
+ * chunks, and last-ingest timestamp.
+ *
+ * The "last ingest" card shows a relative time ("3h ago") which
+ * depends on the client's current wall clock. Computing that during
+ * SSR would bake the server's clock into the HTML and trigger a
+ * hydration mismatch when the client renders a different value a
+ * few hundred ms later. We render a stable placeholder on the first
+ * pass and swap in the relative string inside useEffect, after
+ * hydration has finished.
  */
+import { useEffect, useState } from "react";
 import type { StatsResponse } from "@/lib/api";
 
 function Card({ label, value, sub }: { label: string; value: string; sub?: string }) {
@@ -17,6 +28,16 @@ function Card({ label, value, sub }: { label: string; value: string; sub?: strin
 }
 
 export function StatsCards({ stats }: { stats: StatsResponse }) {
+  const [rel, setRel] = useState<string>(stats.last_ingest_at ? "…" : "—");
+
+  useEffect(() => {
+    if (!stats.last_ingest_at) return;
+    const tick = () => setRel(relativeTime(stats.last_ingest_at!));
+    tick();
+    const id = setInterval(tick, 60_000);
+    return () => clearInterval(id);
+  }, [stats.last_ingest_at]);
+
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
       <Card label="Papers" value={stats.total_papers.toLocaleString()} />
@@ -24,7 +45,7 @@ export function StatsCards({ stats }: { stats: StatsResponse }) {
       <Card label="Chunks" value={stats.total_chunks.toLocaleString()} />
       <Card
         label="Last ingest"
-        value={stats.last_ingest_at ? relativeTime(stats.last_ingest_at) : "—"}
+        value={rel}
         sub={stats.last_ingest_at ?? "never"}
       />
     </div>
