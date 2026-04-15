@@ -23,7 +23,15 @@ router = APIRouter(tags=["materials"])
 async def list_materials(
     family: str | None = Query(None, description="Filter by material family"),
     tc_min: float | None = Query(None, ge=0),
-    sort: str = Query("tc_max", pattern="^(tc_max|discovery_year|total_papers)$"),
+    # v2 filter params
+    ambient_sc: bool | None = Query(None, description="Only ambient-pressure SC"),
+    is_unconventional: bool | None = Query(None),
+    is_topological: bool | None = Query(None),
+    is_2d_or_interface: bool | None = Query(None),
+    has_competing_order: bool | None = Query(None),
+    pairing_symmetry: str | None = Query(None),
+    structure_phase: str | None = Query(None),
+    sort: str = Query("tc_max", pattern="^(tc_max|discovery_year|total_papers|tc_ambient)$"),
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001 — presence sets guest counter header
@@ -32,15 +40,33 @@ async def list_materials(
     stmt = select(Material)
     count_stmt = select(func.count()).select_from(Material)
 
+    def _apply(where_clause):
+        nonlocal stmt, count_stmt
+        stmt = stmt.where(where_clause)
+        count_stmt = count_stmt.where(where_clause)
+
     if family:
-        stmt = stmt.where(Material.family == family)
-        count_stmt = count_stmt.where(Material.family == family)
+        _apply(Material.family == family)
     if tc_min is not None:
-        stmt = stmt.where(Material.tc_max >= tc_min)
-        count_stmt = count_stmt.where(Material.tc_max >= tc_min)
+        _apply(Material.tc_max >= tc_min)
+    if ambient_sc is not None:
+        _apply(Material.ambient_sc.is_(ambient_sc))
+    if is_unconventional is not None:
+        _apply(Material.is_unconventional.is_(is_unconventional))
+    if is_topological is not None:
+        _apply(Material.is_topological.is_(is_topological))
+    if is_2d_or_interface is not None:
+        _apply(Material.is_2d_or_interface.is_(is_2d_or_interface))
+    if has_competing_order is not None:
+        _apply(Material.has_competing_order.is_(has_competing_order))
+    if pairing_symmetry:
+        _apply(Material.pairing_symmetry == pairing_symmetry)
+    if structure_phase:
+        _apply(Material.structure_phase == structure_phase)
 
     sort_col = {
         "tc_max": Material.tc_max,
+        "tc_ambient": Material.tc_ambient,
         "discovery_year": Material.discovery_year,
         "total_papers": Material.total_papers,
     }[sort]

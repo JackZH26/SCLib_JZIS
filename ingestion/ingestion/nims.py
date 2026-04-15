@@ -26,7 +26,7 @@ import csv
 import logging
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -147,6 +147,7 @@ class _Aggregate:
     family: str | None = None
     tc_max: float | None = None
     tc_max_conditions: str | None = None
+    tc_ambient: float | None = None  # best Tc at pressure == 0
     discovery_year: int | None = None  # NIMS doesn't ship this — left None
     records: list[dict[str, Any]] = field(default_factory=list)
 
@@ -165,6 +166,62 @@ class _Aggregate:
             if row.get("structure"):
                 conds.append(str(row["structure"]))
             self.tc_max_conditions = ", ".join(conds) or None
+        # Ambient bucket — records with no pressure column or pressure == 0
+        # are treated as ambient. NIMS rows without a pressure field are
+        # overwhelmingly ambient-pressure measurements.
+        pressure = row.get("pressure")
+        if pressure is None or pressure == 0:
+            if self.tc_ambient is None or tc > self.tc_ambient:
+                self.tc_ambient = tc
+
+    def derive_v2(self) -> dict[str, Any]:
+        """Compute the v2 summary columns the CSV can plausibly support.
+
+        Fields we *can't* fill from NIMS (pairing_symmetry, hc2_tesla,
+        lambda_eph, competing orders) are left None — the arXiv NER path
+        populates those via the aggregator.
+        """
+        # Most common non-null structure string across records.
+        struct_counter: Counter[str] = Counter()
+        for r in self.records:
+            s = r.get("structure")
+            if isinstance(s, str) and s.strip():
+                struct_counter[s.strip()] += 1
+        crystal_structure = (
+            struct_counter.most_common(1)[0][0] if struct_counter else None
+        )
+
+        # Pressure type: if any record has positive pressure, flag the
+        # material as studied under hydrostatic pressure.
+        has_pressure = any(
+            isinstance(r.get("pressure"), (int, float)) and r["pressure"] > 0
+            for r in self.records
+        )
+        pressure_type = "hydrostatic" if has_pressure else None
+
+        # Distinct references → a rough "how many sources cite this"
+        # number. NIMS bundles one row per measurement so this is an
+        # overestimate of independent papers, but still better than 0.
+        refs = {
+            r.get("reference") for r in self.records
+            if isinstance(r.get("reference"), str) and r["reference"].strip()
+        }
+        total_papers = len(refs)
+
+        ambient_sc: bool | None = None
+        if self.tc_ambient is not None:
+            ambient_sc = True
+        elif any(r.get("tc") is not None for r in self.records):
+            # We have Tc data but none of it is ambient — mark False.
+            ambient_sc = False
+
+        return {
+            "crystal_structure": (crystal_structure or None),
+            "tc_ambient": self.tc_ambient,
+            "ambient_sc": ambient_sc,
+            "pressure_type": pressure_type,
+            "total_papers": total_papers,
+        }
 
 
 def _parse_float(value: str | None) -> float | None:
@@ -274,20 +331,22 @@ async def load_csv(csv_path: Path, limit: int | None, dry_run: bool) -> int:
     async with Session() as db:
         inserted = 0
         for agg in aggregates.values():
+            v2 = agg.derive_v2()
+            values = dict(
+                id=_material_id(agg.formula_normalized),
+                formula=agg.formula[:200],
+                formula_normalized=agg.formula_normalized[:200],
+                family=agg.family,
+                tc_max=agg.tc_max,
+                tc_max_conditions=(agg.tc_max_conditions or None),
+                discovery_year=agg.discovery_year,
+                status="active_research",
+                records=agg.records,
+                **v2,
+            )
             stmt = (
                 pg_insert(materials_table)
-                .values(
-                    id=_material_id(agg.formula_normalized),
-                    formula=agg.formula[:200],
-                    formula_normalized=agg.formula_normalized[:200],
-                    family=agg.family,
-                    tc_max=agg.tc_max,
-                    tc_max_conditions=(agg.tc_max_conditions or None),
-                    discovery_year=agg.discovery_year,
-                    total_papers=0,
-                    status="active_research",
-                    records=agg.records,
-                )
+                .values(**values)
                 .on_conflict_do_update(
                     index_elements=[materials_table.c.id],
                     set_={
@@ -296,6 +355,7 @@ async def load_csv(csv_path: Path, limit: int | None, dry_run: bool) -> int:
                         "tc_max": agg.tc_max,
                         "tc_max_conditions": agg.tc_max_conditions,
                         "records": agg.records,
+                        **v2,
                     },
                 )
             )

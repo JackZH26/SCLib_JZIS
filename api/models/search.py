@@ -107,12 +107,44 @@ class MaterialSummary(BaseModel):
     discovery_year: int | None
     total_papers: int
     status: str
+    # v2 — fields the list/table view surfaces directly
+    pairing_symmetry: str | None = None
+    structure_phase: str | None = None
+    ambient_sc: bool | None = None
+    is_topological: bool | None = None
+    is_unconventional: bool | None = None
+    is_2d_or_interface: bool | None = None
+    has_competing_order: bool | None = None
 
 
 class MaterialDetail(MaterialSummary):
     crystal_structure: str | None
-    pairing_symmetry: str | None
     records: list[dict[str, Any]]
+    # v2 structural
+    space_group: str | None = None
+    lattice_params: dict[str, Any] | None = None
+    # v2 SC parameters
+    gap_structure: str | None = None
+    hc2_tesla: float | None = None
+    hc2_conditions: str | None = None
+    lambda_eph: float | None = None
+    omega_log_k: float | None = None
+    rho_s_mev: float | None = None
+    # v2 competing orders
+    t_cdw_k: float | None = None
+    t_sdw_k: float | None = None
+    t_afm_k: float | None = None
+    rho_exponent: float | None = None
+    competing_order: str | None = None
+    # v2 samples + pressure
+    pressure_type: str | None = None
+    sample_form: str | None = None
+    substrate: str | None = None
+    doping_type: str | None = None
+    doping_level: float | None = None
+    # v2 misc flags
+    disputed: bool | None = None
+    retracted: bool | None = None
 
 
 class MaterialListResponse(BaseModel):

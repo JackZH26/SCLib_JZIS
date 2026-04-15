@@ -25,6 +25,7 @@ from sqlalchemy import (
     Column,
     Date,
     DateTime,
+    Float,
     ForeignKey,
     Integer,
     MetaData,
@@ -94,6 +95,7 @@ chunks_table = Table(
 
 materials_table = Table(
     "materials", metadata,
+    # --- v1 core ----------------------------------------------------------
     Column("id", String(100), primary_key=True),
     Column("formula", String(200), nullable=False),
     Column("formula_normalized", String(200), nullable=False),
@@ -110,6 +112,37 @@ materials_table = Table(
     Column("status", String(50), nullable=False, server_default="active_research"),
     Column("records", JSONB, nullable=False, server_default="[]"),
     Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
+    # --- v2 structural ----------------------------------------------------
+    Column("space_group", String(50)),
+    Column("structure_phase", String(50)),
+    Column("lattice_params", JSONB),
+    # --- v2 SC parameters -------------------------------------------------
+    Column("gap_structure", String(50)),
+    Column("hc2_tesla", Float),
+    Column("hc2_conditions", String(200)),
+    Column("lambda_eph", Float),
+    Column("omega_log_k", Float),
+    Column("rho_s_mev", Float),
+    # --- v2 competing orders ---------------------------------------------
+    Column("t_cdw_k", Float),
+    Column("t_sdw_k", Float),
+    Column("t_afm_k", Float),
+    Column("rho_exponent", Float),
+    Column("competing_order", String(100)),
+    # --- v2 samples + pressure -------------------------------------------
+    Column("ambient_sc", Boolean),
+    Column("pressure_type", String(50)),
+    Column("sample_form", String(50)),
+    Column("substrate", String(100)),
+    Column("doping_type", String(50)),
+    Column("doping_level", Float),
+    # --- v2 flags ---------------------------------------------------------
+    Column("is_topological", Boolean, server_default="false"),
+    Column("is_unconventional", Boolean),
+    Column("has_competing_order", Boolean, server_default="false"),
+    Column("is_2d_or_interface", Boolean, server_default="false"),
+    Column("retracted", Boolean, server_default="false"),
+    Column("disputed", Boolean, server_default="false"),
 )
 
 

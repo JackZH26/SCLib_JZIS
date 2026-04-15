@@ -292,12 +292,44 @@ export interface MaterialSummary {
   discovery_year: number | null;
   total_papers: number;
   status: string;
+  // v2
+  pairing_symmetry: string | null;
+  structure_phase: string | null;
+  ambient_sc: boolean | null;
+  is_topological: boolean | null;
+  is_unconventional: boolean | null;
+  is_2d_or_interface: boolean | null;
+  has_competing_order: boolean | null;
 }
 
 export interface MaterialDetail extends MaterialSummary {
   crystal_structure: string | null;
-  pairing_symmetry: string | null;
   records: Record<string, unknown>[];
+  // v2 structural
+  space_group: string | null;
+  lattice_params: Record<string, number> | null;
+  // v2 SC parameters
+  gap_structure: string | null;
+  hc2_tesla: number | null;
+  hc2_conditions: string | null;
+  lambda_eph: number | null;
+  omega_log_k: number | null;
+  rho_s_mev: number | null;
+  // v2 competing orders
+  t_cdw_k: number | null;
+  t_sdw_k: number | null;
+  t_afm_k: number | null;
+  rho_exponent: number | null;
+  competing_order: string | null;
+  // v2 samples + pressure
+  pressure_type: string | null;
+  sample_form: string | null;
+  substrate: string | null;
+  doping_type: string | null;
+  doping_level: number | null;
+  // v2 misc
+  disputed: boolean | null;
+  retracted: boolean | null;
 }
 
 export interface MaterialListResponse {
@@ -307,16 +339,36 @@ export interface MaterialListResponse {
   offset: number;
 }
 
-export function listMaterials(params: {
+export interface MaterialListParams {
   family?: string;
   tc_min?: number;
-  sort?: "tc_max" | "discovery_year" | "total_papers";
+  ambient_sc?: boolean;
+  is_unconventional?: boolean;
+  is_topological?: boolean;
+  is_2d_or_interface?: boolean;
+  has_competing_order?: boolean;
+  pairing_symmetry?: string;
+  structure_phase?: string;
+  sort?: "tc_max" | "tc_ambient" | "discovery_year" | "total_papers";
   limit?: number;
   offset?: number;
-}) {
+}
+
+export function listMaterials(params: MaterialListParams) {
   const qs = new URLSearchParams();
   if (params.family) qs.set("family", params.family);
   if (params.tc_min != null) qs.set("tc_min", String(params.tc_min));
+  if (params.ambient_sc != null) qs.set("ambient_sc", String(params.ambient_sc));
+  if (params.is_unconventional != null)
+    qs.set("is_unconventional", String(params.is_unconventional));
+  if (params.is_topological != null)
+    qs.set("is_topological", String(params.is_topological));
+  if (params.is_2d_or_interface != null)
+    qs.set("is_2d_or_interface", String(params.is_2d_or_interface));
+  if (params.has_competing_order != null)
+    qs.set("has_competing_order", String(params.has_competing_order));
+  if (params.pairing_symmetry) qs.set("pairing_symmetry", params.pairing_symmetry);
+  if (params.structure_phase) qs.set("structure_phase", params.structure_phase);
   if (params.sort) qs.set("sort", params.sort);
   if (params.limit != null) qs.set("limit", String(params.limit));
   if (params.offset != null) qs.set("offset", String(params.offset));

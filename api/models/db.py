@@ -22,6 +22,7 @@ from sqlalchemy import (
     CheckConstraint,
     Date,
     DateTime,
+    Float,
     ForeignKey,
     Index,
     Integer,
@@ -170,6 +171,7 @@ class Paper(Base):
 class Material(Base):
     __tablename__ = "materials"
 
+    # --- v1 core ----------------------------------------------------------
     id: Mapped[str] = mapped_column(String(100), primary_key=True)
     formula: Mapped[str] = mapped_column(String(200), nullable=False)
     formula_normalized: Mapped[str] = mapped_column(String(200), nullable=False)
@@ -189,9 +191,47 @@ class Material(Base):
         _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
+    # --- v2 structural ----------------------------------------------------
+    space_group:     Mapped[str | None]  = mapped_column(String(50))
+    structure_phase: Mapped[str | None]  = mapped_column(String(50))
+    lattice_params:  Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+
+    # --- v2 SC parameters -------------------------------------------------
+    gap_structure:   Mapped[str | None]   = mapped_column(String(50))
+    hc2_tesla:       Mapped[float | None] = mapped_column(Float)
+    hc2_conditions:  Mapped[str | None]   = mapped_column(String(200))
+    lambda_eph:      Mapped[float | None] = mapped_column(Float)
+    omega_log_k:     Mapped[float | None] = mapped_column(Float)
+    rho_s_mev:       Mapped[float | None] = mapped_column(Float)
+
+    # --- v2 competing orders ---------------------------------------------
+    t_cdw_k:         Mapped[float | None] = mapped_column(Float)
+    t_sdw_k:         Mapped[float | None] = mapped_column(Float)
+    t_afm_k:         Mapped[float | None] = mapped_column(Float)
+    rho_exponent:    Mapped[float | None] = mapped_column(Float)
+    competing_order: Mapped[str | None]   = mapped_column(String(100))
+
+    # --- v2 samples + pressure -------------------------------------------
+    ambient_sc:      Mapped[bool | None]  = mapped_column(Boolean)
+    pressure_type:   Mapped[str | None]   = mapped_column(String(50))
+    sample_form:     Mapped[str | None]   = mapped_column(String(50))
+    substrate:       Mapped[str | None]   = mapped_column(String(100))
+    doping_type:     Mapped[str | None]   = mapped_column(String(50))
+    doping_level:    Mapped[float | None] = mapped_column(Float)
+
+    # --- v2 flags ---------------------------------------------------------
+    is_topological:      Mapped[bool | None] = mapped_column(Boolean, server_default="false")
+    is_unconventional:   Mapped[bool | None] = mapped_column(Boolean)
+    has_competing_order: Mapped[bool | None] = mapped_column(Boolean, server_default="false")
+    is_2d_or_interface:  Mapped[bool | None] = mapped_column(Boolean, server_default="false")
+    retracted:           Mapped[bool | None] = mapped_column(Boolean, server_default="false")
+    disputed:            Mapped[bool | None] = mapped_column(Boolean, server_default="false")
+
     __table_args__ = (
         Index("idx_materials_family", "family"),
         Index("idx_materials_tc", "tc_max"),  # NULLS LAST handled in query
+        Index("idx_materials_pairing", "pairing_symmetry"),
+        Index("idx_materials_phase", "structure_phase"),
     )
 
 

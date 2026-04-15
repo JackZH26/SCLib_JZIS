@@ -56,6 +56,7 @@ from ingestion.chunk.chunker import chunk_paper
 from ingestion.config import get_settings
 from ingestion.embed.embedder import embed_chunks
 from ingestion.extract.material_ner import extract_materials
+from ingestion.extract.materials_aggregator import aggregate_from_papers
 from ingestion.index.indexer import (
     dispose,
     upsert_chunks_to_vector_search,
@@ -237,6 +238,14 @@ async def run(
     if mode == "retry":
         return await _run_retry(limit=limit)
 
+    if mode == "aggregate-materials":
+        # Roll per-paper NER output (papers.materials_extracted) up into
+        # the materials table. Idempotent; safe to re-run.
+        n = await aggregate_from_papers()
+        log.info("aggregate-materials: %d materials upserted", n)
+        return [{"arxiv_id": "aggregate-materials", "ok": True,
+                 "n_materials": n}]
+
     if mode in ("bulk", "smoke"):
         if mode == "smoke":
             until_date = until_date or date.today()
@@ -391,7 +400,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--mode",
-        choices=["bulk", "incremental", "smoke", "retry"],
+        choices=["bulk", "incremental", "smoke", "retry", "aggregate-materials"],
         required=True,
     )
     parser.add_argument("--from", dest="from_date", type=_parse_date)

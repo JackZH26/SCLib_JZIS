@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 // asrp.jzis.org uses Inter as its primary sans stack (falling back to
 // the system font). Load it via next/font so Next handles subsetting +
@@ -25,9 +26,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-sage-bg font-sans antialiased">
+      <body className="flex min-h-screen flex-col bg-sage-bg font-sans antialiased">
         <Header />
-        <div className="mx-auto max-w-6xl px-6 py-8">{children}</div>
+        <div className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">{children}</div>
+        <Footer />
       </body>
     </html>
   );

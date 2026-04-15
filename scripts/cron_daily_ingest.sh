@@ -20,10 +20,12 @@
 #   2. if that partial-succeeds (exit 0, threshold met) OR fails with a
 #      recoverable error, fire a `--mode retry` pass to drain the GCS
 #      failure pool
-#   3. refresh the dashboard stats cache via the api container so the
+#   3. run `sclib-ingest --mode aggregate-materials` to roll fresh NER
+#      records (papers.materials_extracted) into the materials table
+#   4. refresh the dashboard stats cache via the api container so the
 #      landing page / GET /stats reflects today's numbers on next hit
-#   4. dump postgres → GCS via scripts/backup_postgres.sh (best-effort)
-#   5. append a timestamped log line to /var/log/sclib/cron.log
+#   5. dump postgres → GCS via scripts/backup_postgres.sh (best-effort)
+#   6. append a timestamped log line to /var/log/sclib/cron.log
 #
 # Failures DO NOT wake the retry pass off a 2+ exit (hard crash) —
 # we'd rather a human see the stack trace in logs than paper over it.
@@ -96,14 +98,29 @@ retry_rc=${PIPESTATUS[0]}
 set -e
 log "retry pass exit=${retry_rc}"
 
-# ---- 3. Refresh stats cache ---------------------------------------------
+# ---- 3. Aggregate per-paper NER into materials table -------------------
+#
+# After new papers land, roll their materials_extracted records up into
+# the material-level summary columns (tc_max, pairing_symmetry,
+# hc2_tesla, is_unconventional flags, etc.). Idempotent — rebuilds the
+# summary from scratch every run.
+
+log "step 3/5: aggregate NER records into materials table"
+set +e
+docker compose "${COMPOSE_FILES[@]}" run --rm ingestion \
+    sclib-ingest --mode aggregate-materials 2>&1 | tee -a "${LOG_FILE}"
+aggregate_rc=${PIPESTATUS[0]}
+set -e
+log "aggregate-materials exit=${aggregate_rc}"
+
+# ---- 4. Refresh stats cache ---------------------------------------------
 #
 # Call POST /stats/refresh on the internal loopback (127.0.0.1:8000)
 # with the X-Internal-Key header. Never touches Nginx or the public
 # internet — the api container publishes only to 127.0.0.1:8000 and
 # the endpoint is gated by INTERNAL_API_KEY loaded from .env.
 
-log "step 3/4: refresh dashboard stats cache"
+log "step 4/5: refresh dashboard stats cache"
 if [[ -z "${INTERNAL_API_KEY:-}" ]]; then
     # Fall back to sourcing the compose .env so operators don't have to
     # duplicate the secret in .env.cron.
@@ -122,17 +139,17 @@ else
         2>&1 | tee -a "${LOG_FILE}" || log "WARN stats refresh curl failed"
 fi
 
-# ---- 4. Postgres backup → GCS -------------------------------------------
+# ---- 5. Postgres backup → GCS -------------------------------------------
 #
 # Runs after the ingest + stats refresh so the snapshot includes the
 # day's new rows. Failures here are logged but do not fail the cron —
 # losing one night's backup is preferable to alerting on a noisy
 # transient gcloud error.
-log "step 4/4: postgres backup → GCS"
+log "step 5/5: postgres backup → GCS"
 if [[ -x "${SCLIB_ROOT}/scripts/backup_postgres.sh" ]]; then
     "${SCLIB_ROOT}/scripts/backup_postgres.sh" || log "WARN backup_postgres failed"
 else
     log "WARN backup_postgres.sh missing or not executable"
 fi
 
-log "DONE cron_daily_ingest ingest_rc=${ingest_rc} retry_rc=${retry_rc}"
+log "DONE cron_daily_ingest ingest_rc=${ingest_rc} retry_rc=${retry_rc} aggregate_rc=${aggregate_rc}"
