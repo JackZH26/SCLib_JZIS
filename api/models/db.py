@@ -16,7 +16,9 @@ from datetime import date, datetime
 from functools import lru_cache
 from typing import Any
 
+import sqlalchemy as sa
 from sqlalchemy import (
+    ARRAY,
     JSON,
     Boolean,
     CheckConstraint,
@@ -73,7 +75,7 @@ class User(Base):
     age: Mapped[int | None] = mapped_column(SmallInteger)
     research_area: Mapped[str | None] = mapped_column(String(255))
     purpose: Mapped[str | None] = mapped_column(Text)
-    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    password_hash: Mapped[str | None] = mapped_column(String(255), nullable=True)
     created_at: Mapped[datetime] = mapped_column(_TZDT, server_default=func.now(), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
         _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False
@@ -81,6 +83,13 @@ class User(Base):
     last_login: Mapped[datetime | None] = mapped_column(_TZDT)
     is_active: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+
+    # --- Google OAuth / unified auth -------------------------------------
+    google_sub: Mapped[str | None] = mapped_column(String(128), unique=True, nullable=True)
+    auth_provider: Mapped[str] = mapped_column(String(20), default="local", server_default="local")
+    avatar_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    scopes: Mapped[list[str]] = mapped_column(ARRAY(Text), server_default="{basic,sclib}", nullable=False)
+    profile: Mapped[dict[str, Any]] = mapped_column(JSONB, server_default=sa.text("'{}'::jsonb"), nullable=False)
 
     verifications: Mapped[list["EmailVerification"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"

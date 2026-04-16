@@ -12,6 +12,7 @@ from urllib.parse import urlsplit
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 
 from config import get_settings
 from models.db import get_engine
@@ -60,9 +61,25 @@ _frontend_origin = f"{_fe.scheme}://{_fe.netloc}" if _fe.scheme and _fe.netloc e
 # site via either `jzis.org` or `www.jzis.org` (both resolve in DNS),
 # and the browser sends whichever host is in the address bar as the
 # Origin header. Starlette does exact-match so we need both.
-_allowed_origins = [_frontend_origin, "http://localhost:3000"]
+_allowed_origins = [_frontend_origin, "http://localhost:3000", "https://asrp.jzis.org"]
 if _fe.netloc and not _fe.netloc.startswith("www."):
     _allowed_origins.append(f"{_fe.scheme}://www.{_fe.netloc}")
+
+# --- Middleware stack (order matters!) ---
+# Starlette applies middleware in reverse registration order, so the
+# LAST middleware added is the OUTERMOST (first to run on a request).
+# We need: Request → CORS (handle preflight) → Session → App
+# So register Session first (innermost), then CORS (outermost).
+
+# SessionMiddleware: stores OAuth state in a signed cookie. Must be
+# inside the CORS layer so preflight OPTIONS never hits session logic.
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=settings.jwt_secret,
+    max_age=300,        # OAuth state lives 5 minutes
+    https_only=settings.environment == "production",
+    same_site="lax",    # safe for OAuth redirect (top-level GET)
+)
 
 app.add_middleware(
     CORSMiddleware,

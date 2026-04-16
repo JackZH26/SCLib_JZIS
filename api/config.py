@@ -38,6 +38,12 @@ class Settings(BaseSettings):
     jwt_expiry_hours: int = 24
     api_key_prefix: str = "scl_"
 
+    # === Google OAuth ===
+    google_client_id: str = ""
+    google_client_secret: str = ""
+    google_redirect_uri: str = "https://api.jzis.org/v1/auth/google/callback"
+    frontend_callback_url: str = "https://jzis.org/sclib/auth/callback"
+
     # === Rate limiting ===
     guest_daily_limit: int = 3
 

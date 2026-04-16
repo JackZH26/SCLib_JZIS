@@ -158,6 +158,9 @@ export interface User {
   research_area: string | null;
   created_at: string;
   is_active: boolean;
+  auth_provider: string;
+  avatar_url: string | null;
+  scopes: string[];
 }
 
 export interface ApiKey {

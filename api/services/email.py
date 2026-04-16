@@ -22,22 +22,24 @@ log = logging.getLogger("sclib.email")
 async def send_verification(to: str, name: str, token: str) -> None:
     settings = get_settings()
     url = f"{settings.frontend_url}/auth/verify?token={token}"
-    subject = "Verify your SCLib_JZIS account"
+    subject = "Verify your JZIS account"
     html = f"""<p>Hi {name},</p>
 <p>Click to verify your email: <a href="{url}">{url}</a></p>
 <p>Link expires in 24 hours.</p>
+<p>This account gives you access to all JZIS products including SCLib.</p>
 <p>— JZIS Team</p>"""
     await _dispatch(to, subject, html)
 
 
 async def send_welcome(to: str, name: str, api_key: str) -> None:
     settings = get_settings()
-    subject = "Your SCLib_JZIS API Key is ready"
+    subject = "Your JZIS API Key is ready"
     docs = f"{settings.frontend_url}/api-docs"
-    html = f"""<p>Hi {name}, your account is verified!</p>
+    html = f"""<p>Hi {name}, your JZIS account is verified!</p>
 <p>Your API key: <code>{api_key}</code></p>
 <p>Use header: <code>X-API-Key: {api_key}</code></p>
 <p>API docs: <a href="{docs}">{docs}</a></p>
+<p>This account works across all JZIS products — SCLib, ASRP, and more.</p>
 <p>— JZIS Team</p>"""
     await _dispatch(to, subject, html)
 

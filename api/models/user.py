@@ -33,6 +33,9 @@ class UserRead(BaseModel):
     research_area: str | None
     created_at: datetime
     is_active: bool
+    auth_provider: str = "local"
+    avatar_url: str | None = None
+    scopes: list[str] = ["basic", "sclib"]
 
 
 class LoginRequest(BaseModel):
