@@ -19,20 +19,24 @@ ALICE = {
 }
 
 
-async def _fetch_verification_token(db_session, email: str) -> str:
-    q = await db_session.execute(
-        select(EmailVerification)
-        .join(User, EmailVerification.user_id == User.id)
-        .where(User.email == email)
-        .order_by(EmailVerification.created_at.desc())
-    )
-    ev = q.scalars().first()
-    assert ev is not None, f"no verification row for {email}"
-    return ev.token
+async def _fetch_verification_token(email: str) -> str:
+    """Fetch verification token from DB using a short-lived session."""
+    from models.db import get_session_factory
+    factory = get_session_factory()
+    async with factory() as sess:
+        q = await sess.execute(
+            select(EmailVerification)
+            .join(User, EmailVerification.user_id == User.id)
+            .where(User.email == email)
+            .order_by(EmailVerification.created_at.desc())
+        )
+        ev = q.scalars().first()
+        assert ev is not None, f"no verification row for {email}"
+        return ev.token
 
 
 @pytest.mark.asyncio
-async def test_full_auth_flow(client, db_session):
+async def test_full_auth_flow(client):
     # 1. register
     r = await client.post("/v1/auth/register", json=ALICE)
     assert r.status_code == 201, r.text
@@ -41,7 +45,7 @@ async def test_full_auth_flow(client, db_session):
     assert body["user"]["is_active"] is False
 
     # 2. fetch token from DB (in prod this arrives by email)
-    token = await _fetch_verification_token(db_session, ALICE["email"])
+    token = await _fetch_verification_token(ALICE["email"])
 
     # 3. verify
     r = await client.get(f"/v1/auth/verify?token={token}")
