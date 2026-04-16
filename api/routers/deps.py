@@ -23,10 +23,15 @@ from fastapi import Depends, Header, HTTPException, Request, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+import logging
+from uuid import UUID
+
 from models import get_db
 from models.db import ApiKey, User
 from services import auth_service
 from services.rate_limit import consume_guest, get_guest_remaining
+
+log = logging.getLogger(__name__)
 
 
 @dataclass(slots=True)
@@ -69,6 +74,33 @@ def _client_ip(request: Request) -> str:
     return peer
 
 
+async def _resolve_jwt_user(
+    request: Request,
+    db: AsyncSession,
+) -> User | None:
+    """Try to extract a valid JWT from the ``Authorization: Bearer`` header.
+
+    Returns the ``User`` if the token is valid and the account is active,
+    otherwise ``None`` (fall through to the next auth method).
+    """
+    auth_header = request.headers.get("authorization")
+    if not auth_header or not auth_header.lower().startswith("bearer "):
+        return None
+    token = auth_header[7:]  # strip "Bearer "
+    try:
+        payload = auth_service.decode_access_token(token)
+        user_id = UUID(payload["sub"])
+    except Exception:
+        # Malformed / expired JWT — don't hard-fail, fall through to
+        # guest path so clients with a stale token still get guest access.
+        log.debug("JWT decode failed, falling through to guest path")
+        return None
+    user = await db.get(User, user_id)
+    if user is None or not user.is_active:
+        return None
+    return user
+
+
 async def require_identity(
     request: Request,
     x_api_key: str | None = Header(default=None, alias="X-API-Key"),
@@ -76,11 +108,14 @@ async def require_identity(
 ) -> Identity:
     """Resolve the caller to a ``User`` or a quota-checked guest.
 
-    * Valid ``X-API-Key`` → ``Identity(user=..., guest_*=None)``. No
-      quota check (registered users are unlimited per §6 of the spec).
-    * Missing / invalid key → guest path. Increments Redis counter.
-      Returns 429 when the new remaining count is negative.
+    Priority order:
+    1. ``X-API-Key`` header → look up API key
+    2. ``Authorization: Bearer <jwt>`` → decode JWT
+    3. No credentials → guest path (rate-limited by IP)
+
+    Registered users (via key or JWT) are unlimited per §6 of the spec.
     """
+    # 1. API key
     if x_api_key:
         key_hash = auth_service.hash_api_key(x_api_key)
         q = await db.execute(
@@ -97,7 +132,12 @@ async def require_identity(
             raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Inactive account")
         return Identity(user=user, guest_ip=None, guest_remaining=None)
 
-    # Guest path
+    # 2. JWT Bearer token
+    jwt_user = await _resolve_jwt_user(request, db)
+    if jwt_user is not None:
+        return Identity(user=jwt_user, guest_ip=None, guest_remaining=None)
+
+    # 3. Guest path
     ip = _client_ip(request)
     remaining = await consume_guest(ip)
     if remaining < 0:
@@ -122,10 +162,11 @@ async def peek_identity(
     """Like ``require_identity`` but **does not consume** guest quota.
 
     Used by public read endpoints (materials / papers / timeline / stats)
-    that the spec §7 lists as free. We still resolve the API key so
+    that the spec §7 lists as free. We still resolve the API key / JWT so
     responses can be personalized for logged-in users, and we still
     surface the current guest remaining so the UI can show the badge.
     """
+    # 1. API key
     if x_api_key:
         key_hash = auth_service.hash_api_key(x_api_key)
         q = await db.execute(
@@ -140,6 +181,12 @@ async def peek_identity(
             if user is not None and user.is_active:
                 return Identity(user=user, guest_ip=None, guest_remaining=None)
 
+    # 2. JWT Bearer token
+    jwt_user = await _resolve_jwt_user(request, db)
+    if jwt_user is not None:
+        return Identity(user=jwt_user, guest_ip=None, guest_remaining=None)
+
+    # 3. Guest
     ip = _client_ip(request)
     remaining = await get_guest_remaining(ip)
     return Identity(user=None, guest_ip=ip, guest_remaining=remaining)

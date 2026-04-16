@@ -6,6 +6,7 @@
  */
 import { useState, type FormEvent } from "react";
 import { ask, friendlyErrorMessage, type AskResponse } from "@/lib/api";
+import { loadToken } from "@/lib/auth-storage";
 import { MarkdownAnswer } from "@/components/MarkdownAnswer";
 import { GuestBanner } from "@/components/GuestBanner";
 
@@ -21,12 +22,9 @@ export default function AskPage() {
     setLoading(true);
     setErr(null);
     setData(null);
-    const apiKey =
-      typeof window !== "undefined"
-        ? localStorage.getItem("sclib_api_key") ?? undefined
-        : undefined;
+    const token = loadToken() ?? undefined;
     try {
-      const r = await ask({ question: q.trim(), max_sources: 8 }, { apiKey });
+      const r = await ask({ question: q.trim(), max_sources: 8 }, { auth: token });
       setData(r);
     } catch (e: unknown) {
       setErr(friendlyErrorMessage(e));

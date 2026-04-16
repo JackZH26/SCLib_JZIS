@@ -279,11 +279,12 @@ export interface SearchResponse {
   guest_remaining: number | null;
 }
 
-export function search(req: SearchRequest, opts: { apiKey?: string } = {}) {
+export function search(req: SearchRequest, opts: { apiKey?: string; auth?: string } = {}) {
   return request<SearchResponse>("/search", {
     method: "POST",
     body: JSON.stringify(req),
     apiKey: opts.apiKey,
+    auth: opts.auth,
   });
 }
 
@@ -314,11 +315,12 @@ export interface AskResponse {
   guest_remaining: number | null;
 }
 
-export function ask(req: AskRequest, opts: { apiKey?: string } = {}) {
+export function ask(req: AskRequest, opts: { apiKey?: string; auth?: string } = {}) {
   return request<AskResponse>("/ask", {
     method: "POST",
     body: JSON.stringify(req),
     apiKey: opts.apiKey,
+    auth: opts.auth,
   });
 }
 

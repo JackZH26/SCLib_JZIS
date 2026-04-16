@@ -14,6 +14,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { search, type SearchResponse, friendlyErrorMessage } from "@/lib/api";
+import { loadToken } from "@/lib/auth-storage";
 import { SearchBar } from "@/components/SearchBar";
 import { PaperCard } from "@/components/PaperCard";
 import { GuestBanner } from "@/components/GuestBanner";
@@ -46,10 +47,7 @@ function SearchInner() {
     }
     setLoading(true);
     setErr(null);
-    const apiKey =
-      typeof window !== "undefined"
-        ? localStorage.getItem("sclib_api_key") ?? undefined
-        : undefined;
+    const token = loadToken() ?? undefined;
     search(
       {
         query: q,
@@ -62,7 +60,7 @@ function SearchInner() {
           exclude_retracted: true,
         },
       },
-      { apiKey },
+      { auth: token },
     )
       .then(setData)
       .catch((e: unknown) => {
