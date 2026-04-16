@@ -17,7 +17,9 @@ COPY . .
 # matches production routing under https://jzis.org/sclib. Override
 # with --build-arg NEXT_PUBLIC_BASE_PATH= for a root-mounted dev build.
 ARG NEXT_PUBLIC_BASE_PATH=/sclib
+ARG NEXT_PUBLIC_API_BASE=https://api.jzis.org/sclib/v1
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH \
+    NEXT_PUBLIC_API_BASE=$NEXT_PUBLIC_API_BASE \
     NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build
 

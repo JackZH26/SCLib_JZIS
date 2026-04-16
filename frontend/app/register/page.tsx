@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { register, friendlyErrorMessage } from "@/lib/api";
+import { register, friendlyErrorMessage, API_BASE } from "@/lib/api";
 
 export default function RegisterPage() {
-  const GOOGLE_LOGIN_URL = `${process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000/v1"}/auth/google/login`;
+  const GOOGLE_LOGIN_URL = `${API_BASE}/auth/google/login`;
   const [form, setForm] = useState({
     email: "",
     password: "",

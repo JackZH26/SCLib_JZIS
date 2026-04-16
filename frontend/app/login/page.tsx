@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { login, friendlyErrorMessage } from "@/lib/api";
+import { login, friendlyErrorMessage, API_BASE } from "@/lib/api";
 import { saveToken } from "@/lib/auth-storage";
 
 export default function LoginPage() {
-  const GOOGLE_LOGIN_URL = `${process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000/v1"}/auth/google/login`;
+  const GOOGLE_LOGIN_URL = `${API_BASE}/auth/google/login`;
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
