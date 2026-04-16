@@ -5,7 +5,7 @@
  * [n]-cited markdown, sidebar lists the source chunks.
  */
 import { useState, type FormEvent } from "react";
-import { ask, ApiError, type AskResponse } from "@/lib/api";
+import { ask, friendlyErrorMessage, type AskResponse } from "@/lib/api";
 import { MarkdownAnswer } from "@/components/MarkdownAnswer";
 import { GuestBanner } from "@/components/GuestBanner";
 
@@ -29,7 +29,7 @@ export default function AskPage() {
       const r = await ask({ question: q.trim(), max_sources: 8 }, { apiKey });
       setData(r);
     } catch (e: unknown) {
-      setErr(e instanceof ApiError ? e.message : "Request failed");
+      setErr(friendlyErrorMessage(e));
     } finally {
       setLoading(false);
     }

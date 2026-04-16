@@ -39,6 +39,47 @@ export class ApiError extends Error {
 }
 
 /**
+ * Map any caught error into a user-facing string. The fetch API throws a
+ * generic `TypeError: Failed to fetch` for every network-level failure
+ * (DNS, CORS block, connection refused, offline), and surface detail
+ * strings from the backend are often not fit for users either. Keep the
+ * mapping centralized so every page gets the same language.
+ *
+ * - 401 / 403 → "please sign in"
+ * - 429       → "daily free quota used up, sign in for unlimited" (+ retry hint if provided)
+ * - 5xx       → generic "server error, try again"
+ * - 0 / other → "network error"
+ *
+ * Pass a fallback for anything this helper doesn't know how to classify.
+ */
+export function friendlyErrorMessage(
+  err: unknown,
+  fallback = "请求失败，请稍后再试",
+): string {
+  if (err instanceof ApiError) {
+    if (err.status === 429) {
+      const base = "今日免费查询次数已用完，请注册或登录后继续使用";
+      return err.retryAfterSec
+        ? `${base}（约 ${Math.ceil(err.retryAfterSec / 60)} 分钟后可重试）`
+        : base;
+    }
+    if (err.status === 401 || err.status === 403) {
+      return "请先登录后再使用此功能";
+    }
+    if (err.status >= 500) {
+      return "服务器暂时不可用，请稍后再试";
+    }
+    if (err.status === 0) {
+      return "网络连接失败，请检查网络后重试";
+    }
+    // Known 4xx other than the ones above — show server-provided detail
+    // so validation errors ("query too short" etc.) still surface.
+    return err.message || fallback;
+  }
+  return fallback;
+}
+
+/**
  * Parse a Retry-After header per RFC 7231: either delta-seconds or an
  * HTTP-date. Returns undefined when the header is missing or malformed
  * so the caller can fall back to its own default.

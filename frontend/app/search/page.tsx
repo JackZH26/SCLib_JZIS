@@ -13,7 +13,7 @@
  */
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { search, type SearchResponse, ApiError } from "@/lib/api";
+import { search, type SearchResponse, friendlyErrorMessage } from "@/lib/api";
 import { SearchBar } from "@/components/SearchBar";
 import { PaperCard } from "@/components/PaperCard";
 import { GuestBanner } from "@/components/GuestBanner";
@@ -66,7 +66,7 @@ function SearchInner() {
     )
       .then(setData)
       .catch((e: unknown) => {
-        setErr(e instanceof ApiError ? e.message : "Request failed");
+        setErr(friendlyErrorMessage(e));
       })
       .finally(() => setLoading(false));
   }, [q, sort, yearMin, yearMax, tcMin]);
