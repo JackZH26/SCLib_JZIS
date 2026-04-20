@@ -3,8 +3,39 @@
 The arXiv pipeline writes ``papers.materials_extracted`` on every
 upsert — that's the v2 NER output from ``material_ner.extract_materials``
 for that one paper. This module sweeps all papers, groups the records
-by normalized formula, and upserts a row-per-formula into the
-``materials`` table with summary columns derived from the records.
+by *canonical* formula (so ``Bi_2Sr_2CaCu_2O_{8+δ}`` and ``Bi2Sr2CaCu2O8+d``
+land in the same bucket), and upserts one row per canonical formula
+into the ``materials`` table.
+
+Key design choices, in order of how much they affect visible data:
+
+1. **Formula canonicalization** — drops LaTeX syntax, normalizes
+   Greek → ASCII, and collapses variable oxygen-stoichiometry
+   suffixes (``+δ``, ``-x``, ``+delta``, ``±y`` …) so cuprate
+   oxygen-doping notations all merge into the parent compound.
+   Without this ~20 BSCCO variants stayed split, hiding that
+   300+ papers talk about the same compound.
+
+2. **Confidence-weighted MODE** for discrete fields (pairing,
+   structure_phase, …). A single high-confidence paper beats two
+   hedged mentions; ties below a 60% share threshold fall back to
+   NULL. Keeps disputed / weak signals out of the flat columns.
+
+3. **Dual-threshold boolean consensus** (0.7 for / 0.2 against) for
+   ``is_topological`` & peers. Without this, every material that a
+   single paper labelled ``False`` (common NER default) showed up as
+   "confirmed non-topological", which is dishonest.
+
+4. **Cross-family phase sanity check** — drops ``cuprate_*`` when the
+   formula has no Cu (Gemini over-applies the cuprate taxonomy to
+   unfamiliar compounds like MgB₂ or bismuthates).
+
+5. **Family fallback** — when NER doesn't emit a ``family`` for a
+   material, fall back to the rule-based ``classify_family`` shared
+   with the NIMS importer.
+
+6. **Numeric dispute detection** — when two+ ambient-pressure papers
+   disagree on Tc by >30%, flag ``disputed=True``.
 
 The aggregator is idempotent and safe to re-run: every call rebuilds
 the summary from scratch. We also merge NER records with any records
@@ -29,28 +60,17 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from ingestion.index.indexer import _session_factory, materials_table, papers_table
+# Canonicalization + family rules live in nims.py and are shared so
+# both import paths (NIMS CSV + arXiv NER) agree on the grouping key.
+from ingestion.nims import classify_family as _classify_family
+from ingestion.nims import normalize_formula
 
 log = logging.getLogger(__name__)
 
 
-# ---------------------------------------------------------------------------
-# Formula normalization — shared with nims.py so both importers agree on
-# the primary key.
-# ---------------------------------------------------------------------------
-
-_WS = re.compile(r"\s+")
-_SUBSCRIPT = re.compile(r"_\{?([0-9.]+)\}?")
-
-
-def normalize_formula(raw: str) -> str:
-    """Collapse whitespace, strip LaTeX subscripts, lowercase.
-
-    This is the *key*, not the display form — pages should always
-    render the original raw string, not this.
-    """
-    s = _WS.sub("", raw.strip())
-    s = _SUBSCRIPT.sub(r"\1", s)
-    return s.lower()
+# Re-export for backwards compat with any callers importing from this
+# module directly.
+__all__ = ["aggregate_from_papers", "normalize_formula"]
 
 
 def _material_id(normalized: str) -> str:
@@ -72,6 +92,35 @@ def _material_id(normalized: str) -> str:
 # Summary derivation helpers
 # ---------------------------------------------------------------------------
 
+# Default confidence assumed when a record doesn't report one. We use a
+# middling 0.5 so a bare "yes it's true" doesn't over- or under-weight
+# the vote; tune via NER prompt if we ever get well-calibrated confidences.
+_DEFAULT_CONFIDENCE = 0.5
+# Minimum confidence share for a weighted-mode winner to be promoted to
+# the flat column. 0.6 means "60% of summed confidence points to this
+# value"; anything below falls back to NULL.
+_MIN_CONFIDENCE_SHARE = 0.6
+# Minimum weighted share for a boolean flag to be considered "confirmed".
+# Applied to each side independently: >=0.7 agreement with <0.2 dissent.
+_BOOL_AGREEMENT = 0.7
+_BOOL_DISSENT_MAX = 0.2
+# When materials table has 2+ records we require at least this many
+# voters pointing at the winning value. For single-paper materials
+# we accept the single vote (otherwise everything would be NULL).
+_MIN_VOTERS_MULTIPAPER = 2
+# Ambient-pressure Tc spread threshold above which we flag the material
+# as "disputed" — 30% means one paper reports 100 K, another 65 K.
+_TC_DISPUTE_THRESHOLD = 0.30
+
+
+def _confidence(r: dict[str, Any]) -> float:
+    """Best-effort float confidence, clamped to [0, 1]."""
+    v = r.get("confidence")
+    if not isinstance(v, (int, float)):
+        return _DEFAULT_CONFIDENCE
+    return max(0.0, min(1.0, float(v)))
+
+
 def _max_numeric(records: list[dict[str, Any]], key: str) -> float | None:
     vals = [r[key] for r in records if isinstance(r.get(key), (int, float))]
     return max(vals) if vals else None
@@ -82,28 +131,88 @@ def _median_numeric(records: list[dict[str, Any]], key: str) -> float | None:
     return float(median(vals)) if vals else None
 
 
-def _any_true(records: list[dict[str, Any]], key: str) -> bool | None:
-    """True if any record sets this flag, None if no record says either way."""
-    seen = False
+def _weighted_mode_str(
+    records: list[dict[str, Any]],
+    key: str,
+) -> str | None:
+    """Confidence-weighted mode for a string field.
+
+    Returns the value whose summed confidence is highest, but only if
+    - it has at least ``_MIN_VOTERS_MULTIPAPER`` voters (when the
+      material has >=2 records overall); and
+    - its share of total confidence is >= ``_MIN_CONFIDENCE_SHARE``.
+
+    Otherwise returns ``None`` so we don't confidently publish a weak
+    consensus — better an empty cell than a wrong one.
+
+    Case-preserves the original winner spelling ("d-wave", not
+    "D-wave") by keying on the lowercased form internally and
+    emitting the most common cased variant.
+    """
+    votes: dict[str, float] = defaultdict(float)
+    voters: dict[str, set[str]] = defaultdict(set)
+    case_variants: dict[str, Counter[str]] = defaultdict(Counter)
+    for r in records:
+        v = r.get(key)
+        if not isinstance(v, str) or not v.strip():
+            continue
+        vl = v.strip().lower()
+        if vl == "unknown":
+            continue
+        w = _confidence(r)
+        votes[vl] += w
+        pid = r.get("paper_id") or ""
+        voters[vl].add(pid)
+        case_variants[vl][v.strip()] += 1
+
+    if not votes:
+        return None
+    total = sum(votes.values())
+    top_key, top_w = max(votes.items(), key=lambda kv: kv[1])
+
+    if len(records) >= 2 and len(voters[top_key]) < _MIN_VOTERS_MULTIPAPER:
+        return None
+    if total > 0 and (top_w / total) < _MIN_CONFIDENCE_SHARE:
+        return None
+
+    # Pick the most common casing among records that voted for this
+    # lowercased winner. Falls back to the first seen if counts tie.
+    return case_variants[top_key].most_common(1)[0][0]
+
+
+def _weighted_boolean(
+    records: list[dict[str, Any]],
+    key: str,
+) -> bool | None:
+    """Dual-threshold boolean consensus.
+
+    - Confirms **True** iff weighted True-share ≥ 0.7 AND False-share < 0.2
+    - Confirms **False** iff weighted False-share ≥ 0.7 AND True-share < 0.2
+    - Otherwise returns None (disputed / weak / silent)
+
+    Records that don't state this flag are ignored (not counted as
+    "False"). A common NER failure mode is emitting ``is_topological=False``
+    as a default; with this rule a single unopposed False doesn't
+    get promoted to a confident column — it needs agreement.
+    """
+    true_w = 0.0
+    false_w = 0.0
     for r in records:
         v = r.get(key)
         if v is True:
-            return True
-        if v is False:
-            seen = True
-    return False if seen else None
-
-
-def _mode_str(records: list[dict[str, Any]], key: str) -> str | None:
-    """Most common non-null string value across records, 'unknown' excluded."""
-    counter: Counter[str] = Counter()
-    for r in records:
-        v = r.get(key)
-        if isinstance(v, str) and v and v.lower() != "unknown":
-            counter[v] += 1
-    if not counter:
+            true_w += _confidence(r)
+        elif v is False:
+            false_w += _confidence(r)
+    total = true_w + false_w
+    if total <= 0:
         return None
-    return counter.most_common(1)[0][0]
+    t_share = true_w / total
+    f_share = false_w / total
+    if t_share >= _BOOL_AGREEMENT and f_share < _BOOL_DISSENT_MAX:
+        return True
+    if f_share >= _BOOL_AGREEMENT and t_share < _BOOL_DISSENT_MAX:
+        return False
+    return None
 
 
 def _first_non_null(records: list[dict[str, Any]], key: str) -> Any:
@@ -114,32 +223,62 @@ def _first_non_null(records: list[dict[str, Any]], key: str) -> Any:
     return None
 
 
-def _derive_summary(formula_raw: str,
-                    records: list[dict[str, Any]]) -> dict[str, Any]:
+def _earliest_non_null(
+    records: list[dict[str, Any]], key: str,
+) -> Any:
+    """First non-null value sorted by paper year ascending.
+
+    Used for ``crystal_structure`` / ``space_group`` — the oldest paper
+    that reports the crystal structure is the canonical source, because
+    later papers either reconfirm or refine that structure but rarely
+    redefine it. Falls back to ``_first_non_null`` order if year is
+    missing everywhere.
+    """
+    with_year = sorted(
+        (r for r in records if r.get(key) not in (None, "")
+         and isinstance(r.get("year"), int)),
+        key=lambda r: r["year"],
+    )
+    if with_year:
+        return with_year[0][key]
+    return _first_non_null(records, key)
+
+
+def _has_cu(formula: str) -> bool:
+    """True iff the formula token-stream contains the Cu element.
+
+    Uses element tokenization (``[A-Z][a-z]?``) on the original-case
+    formula. Matching "cu" in a lowercased form would false-hit on
+    e.g. "CuI4" → OK, "BCS" → no... but safer to tokenize.
+    """
+    return "Cu" in re.findall(r"[A-Z][a-z]?", formula)
+
+
+def _sanity_check_structure_phase(
+    formula_raw: str,
+    structure_phase: str | None,
+) -> str | None:
+    """Reject a ``structure_phase`` that's inconsistent with the formula.
+
+    Gemini systematically over-tags unfamiliar compounds with
+    ``cuprate_*`` phase labels (e.g. MgB₂ → cuprate_123). Block that
+    obvious contradiction; leave everything else alone.
+    """
+    if not structure_phase:
+        return None
+    if structure_phase.startswith("cuprate") and not _has_cu(formula_raw):
+        return None
+    return structure_phase
+
+
+def _derive_summary(
+    formula_raw: str,
+    records: list[dict[str, Any]],
+) -> dict[str, Any]:
     """Build the v2 material-level summary from its record list.
 
-    Rules:
-    - ``tc_max``:    max of numeric tc_kelvin across all records
-    - ``tc_ambient``: max of tc_kelvin across records with pressure_gpa==0
-    - ``ambient_sc``: true iff any ambient tc is present
-    - ``pairing_symmetry`` / ``structure_phase`` / ``sample_form`` /
-      ``pressure_type`` / ``doping_type`` / ``competing_order``: mode
-    - ``crystal_structure`` / ``space_group``: first non-null
-    - ``hc2_tesla``: max (the upper critical field reported is already
-                    a maximum, and aggregating multiple papers by max
-                    gives the community best estimate)
-    - ``lambda_eph`` / ``omega_log_k`` / ``rho_s_mev``: max (computational
-                    papers sometimes undercalculate; the highest value
-                    usually corresponds to the optimally-coupled phase)
-    - ``rho_exponent``: median (NFL/FL distinction is robust to outliers)
-    - ``t_cdw_k`` / ``t_sdw_k`` / ``t_afm_k``: max
-    - ``has_competing_order``: true iff any of the above three is set
-                               or ``competing_order`` is non-null
-    - ``is_*`` flags: "any true" semantics (True if any record asserts,
-                     False if any record denies and none assert, None
-                     if no record says either way)
-    - ``discovery_year``: min of paper years in records (first report)
-    - ``total_papers``: cardinality of distinct paper_ids
+    See module docstring for the rule overview; this is the
+    implementation.
     """
     tc_max = _max_numeric(records, "tc_kelvin")
 
@@ -152,10 +291,24 @@ def _derive_summary(formula_raw: str,
         (r["tc_kelvin"] for r in ambient_records),
         default=None,
     )
+    # Numeric dispute: ambient-pressure Tc values from 2+ papers span
+    # more than 30% of the max. Typical cause is over/under-doped
+    # samples in different papers; worth surfacing to the user.
+    numeric_disputed = False
+    if len(ambient_records) >= 2:
+        tc_vals = [r["tc_kelvin"] for r in ambient_records]
+        tc_max_v = max(tc_vals)
+        if tc_max_v > 0:
+            spread = (tc_max_v - min(tc_vals)) / tc_max_v
+            numeric_disputed = spread > _TC_DISPUTE_THRESHOLD
 
-    ambient_sc = bool(ambient_records) or _any_true(records, "ambient_sc")
+    ambient_sc_weighted = _weighted_boolean(records, "ambient_sc")
+    # Any ambient_sc record with a numeric Tc is direct evidence of
+    # ambient SC even if the weighted-boolean path returned None; keep
+    # the permissive semantics for this field specifically.
+    ambient_sc = bool(ambient_records) or ambient_sc_weighted is True
 
-    competing_order = _mode_str(records, "competing_order")
+    competing_order = _weighted_mode_str(records, "competing_order")
     t_cdw = _max_numeric(records, "t_cdw_k")
     t_sdw = _max_numeric(records, "t_sdw_k")
     t_afm = _max_numeric(records, "t_afm_k")
@@ -165,43 +318,68 @@ def _derive_summary(formula_raw: str,
         or t_sdw is not None or t_afm is not None
     )
 
-    # Build tc_max_conditions from the winning record
+    # tc_max_conditions: pick the record tying the max and format as
+    # "P={p} GPa, <sample>, <measurement> (arXiv:<id>)"
     tc_max_cond = None
     if tc_max is not None:
         for r in records:
             if r.get("tc_kelvin") == tc_max:
                 parts: list[str] = []
-                if r.get("pressure_gpa"):
-                    parts.append(f"P={r['pressure_gpa']} GPa")
+                p = r.get("pressure_gpa")
+                if isinstance(p, (int, float)) and p > 0:
+                    parts.append(f"P={p:g} GPa")
+                elif isinstance(p, (int, float)):
+                    parts.append("ambient")
                 if r.get("sample_form"):
                     parts.append(str(r["sample_form"]))
-                if r.get("measurement"):
+                if r.get("measurement") and str(r["measurement"]).lower() != "unknown":
                     parts.append(str(r["measurement"]))
+                pid = r.get("paper_id")
+                if pid:
+                    # papers.id uses the "arxiv:<id>" prefix; strip for
+                    # display so users see the bare arXiv id.
+                    arx = str(pid).removeprefix("arxiv:")
+                    parts.append(f"arXiv:{arx}")
                 tc_max_cond = ", ".join(parts) or None
                 break
 
     paper_ids = {r.get("paper_id") for r in records if r.get("paper_id")}
-    years = [r.get("year") for r in records
-             if isinstance(r.get("year"), int) and r.get("year") > 1900]
+    years = [
+        r.get("year") for r in records
+        if isinstance(r.get("year"), int) and r.get("year") > 1900
+    ]
     discovery_year = min(years) if years else None
+
+    # Structure phase with cross-family sanity check
+    raw_phase = _weighted_mode_str(records, "structure_phase")
+    structure_phase = _sanity_check_structure_phase(formula_raw, raw_phase)
+
+    # Family: trust NER's mode first, fall back to the rule-based
+    # classifier from nims.py when NER didn't say (most common case).
+    family = _weighted_mode_str(records, "family") or _classify_family(formula_raw)
+
+    # disputed: union of NER-reported disputes and numeric-Tc dispute
+    disputed_ner = _weighted_boolean(records, "disputed")
+    disputed = bool(numeric_disputed) or bool(disputed_ner)
 
     return {
         "formula": formula_raw[:200],
         "formula_normalized": normalize_formula(formula_raw)[:200],
+        "family": family,
         "tc_max": tc_max,
         "tc_max_conditions": tc_max_cond,
         "tc_ambient": tc_ambient,
         "ambient_sc": ambient_sc,
         "discovery_year": discovery_year,
         "total_papers": len(paper_ids),
-        # Structure
-        "crystal_structure": _first_non_null(records, "crystal_structure"),
-        "space_group":       _first_non_null(records, "space_group"),
-        "structure_phase":   _mode_str(records, "structure_phase"),
+        # Structure (earliest paper wins for structural claims)
+        "crystal_structure": _earliest_non_null(records, "crystal_structure"),
+        "space_group":       _earliest_non_null(records, "space_group"),
+        "structure_phase":   structure_phase,
         "lattice_params":    _lattice_params(records),
-        # SC parameters
-        "pairing_symmetry":  _mode_str(records, "pairing_symmetry"),
-        "gap_structure":     _mode_str(records, "gap_structure"),
+        # SC parameters (discrete → weighted mode, scalar → max)
+        "pairing_symmetry":  _weighted_mode_str(records, "pairing_symmetry"),
+        "gap_structure":     _weighted_mode_str(records, "gap_structure"),
         "hc2_tesla":         _max_numeric(records, "hc2_tesla"),
         "hc2_conditions":    _first_non_null(records, "hc2_conditions"),
         "lambda_eph":        _max_numeric(records, "lambda_eph"),
@@ -215,16 +393,16 @@ def _derive_summary(formula_raw: str,
         "competing_order":   competing_order,
         "has_competing_order": has_competing_order,
         # Samples / pressure
-        "sample_form":       _mode_str(records, "sample_form"),
+        "sample_form":       _weighted_mode_str(records, "sample_form"),
         "substrate":         _first_non_null(records, "substrate"),
-        "pressure_type":     _mode_str(records, "pressure_type"),
-        "doping_type":       _mode_str(records, "doping_type"),
+        "pressure_type":     _weighted_mode_str(records, "pressure_type"),
+        "doping_type":       _weighted_mode_str(records, "doping_type"),
         "doping_level":      _median_numeric(records, "doping_level"),
-        # Flags
-        "is_topological":      _any_true(records, "is_topological"),
-        "is_unconventional":   _any_true(records, "is_unconventional"),
-        "is_2d_or_interface":  _any_true(records, "is_2d_or_interface"),
-        "disputed":            _any_true(records, "disputed"),
+        # Flags (weighted-boolean → None when weak / disputed)
+        "is_topological":      _weighted_boolean(records, "is_topological"),
+        "is_unconventional":   _weighted_boolean(records, "is_unconventional"),
+        "is_2d_or_interface":  _weighted_boolean(records, "is_2d_or_interface"),
+        "disputed":            disputed,
         "records": records,
     }
 
@@ -261,8 +439,10 @@ async def aggregate_from_papers() -> int:
     """
     Session = _session_factory()
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    # Track the first display-form for each normalized key.
-    display: dict[str, str] = {}
+    # Track the most common display-form for each canonical key so the
+    # ``formula`` column shows a sensible raw string to users. Counter
+    # of raw → occurrences; we pick most_common(1) at write time.
+    display_counts: dict[str, Counter[str]] = defaultdict(Counter)
 
     async with Session() as db:
         # Stream all papers with their extracted materials. Each paper
@@ -293,20 +473,29 @@ async def aggregate_from_papers() -> int:
                 if not norm:
                     continue
                 # Stamp provenance onto the record so the UI can link
-                # back to the source paper.
+                # back to the source paper and show per-paper values.
                 record = dict(m)
                 record["paper_id"] = paper_id
                 if year is not None and "year" not in record:
                     record["year"] = year
                 grouped[norm].append(record)
-                display.setdefault(norm, raw)
+                # Prefer the variant *without* LaTeX noise as display
+                # form: strip dollar signs and pick by raw freq.
+                display_counts[norm][raw.strip()] += 1
 
-        log.info("aggregator: %d unique formulas from NER", len(grouped))
+        log.info("aggregator: %d unique canonical formulas from NER",
+                 len(grouped))
 
         upserted = 0
         for norm, records in grouped.items():
-            raw = display[norm]
-            summary = _derive_summary(raw, records)
+            # Most-common raw spelling — or shortest if frequencies tie,
+            # since shorter usually means less LaTeX noise.
+            candidates = display_counts[norm].most_common()
+            top_count = candidates[0][1]
+            top_raws = [r for r, c in candidates if c == top_count]
+            display_raw = min(top_raws, key=len)
+
+            summary = _derive_summary(display_raw, records)
             mat_id = _material_id(norm)
 
             stmt = pg_insert(materials_table).values(

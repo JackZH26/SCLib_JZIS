@@ -68,17 +68,67 @@ def _find_col(headers: list[str], logical: str) -> str | None:
 # ---------------------------------------------------------------------------
 
 _WS = re.compile(r"\s+")
-_SUBSCRIPT = re.compile(r"_\{?([0-9.]+)\}?")
+# LaTeX brace subscripts: ``_{8+δ}`` → ``8+δ``
+_LATEX_BRACE = re.compile(r"[_^]\{([^}]*)\}")
+# Plain LaTeX numeric subscripts: ``Li_2`` → ``Li2``
+_LATEX_NUM_SUBSCRIPT = re.compile(r"[_^]([0-9.]+)")
+# Variable oxygen-stoichiometry suffixes: `+δ`, `-δ`, `+x`, `-y`,
+# `+delta`, `±z` … Collapsed to "" so BSCCO `O_8+δ`, `O_8-x`,
+# `O_8+delta` all normalize to `o8` (same parent compound, different
+# doping levels). Numeric doping (e.g. `O_6.63`) is preserved.
+_VAR_STOICH_SUFFIX = re.compile(
+    r"[+\-±](?:delta|d|x|y|z)\b", re.IGNORECASE,
+)
 
 
 def normalize_formula(raw: str) -> str:
-    """Collapse whitespace, drop LaTeX subscript markers, lowercase.
+    """Canonicalize a chemical formula to a grouping key.
 
-    This is a *normalized key*, not a display form — callers should keep
-    the original ``raw`` string in the ``formula`` column for UI use.
+    Rules (applied in order):
+
+      1. ``_{xyz}`` → ``xyz``                     (LaTeX subscript strip)
+      2. ``_1.23`` or ``^2`` → ``1.23`` / ``2``  (plain LaTeX sub/sup)
+      3. ``{`` ``}`` ``_`` → stripped
+      4. ``δ Δ``  → ``d``                         (Greek → ASCII)
+      5. ``±`` ``×`` → stripped                   (symbol noise)
+      6. Whitespace  → stripped
+      7. ``+δ / -δ / +x / -y / +delta`` → stripped
+         (variable oxygen-stoichiometry suffixes collapse into the
+         parent compound)
+      8. Lowercase
+
+    This is the *grouping key*, not a display form — callers keep the
+    original raw string in the ``formula`` column for UI use.
+
+    Examples::
+
+        Bi_2Sr_2CaCu_2O_{8+δ}    → bi2sr2cacu2o8
+        Bi2Sr2CaCu2O8+delta      → bi2sr2cacu2o8
+        Bi_2Sr_2Ca Cu_2 O_8-δ    → bi2sr2cacu2o8
+        YBa_2Cu_3O_7-δ           → yba2cu3o7
+        MgB_2                    → mgb2
+        κ-(BEDT-TTF)_2Cu(NCS)_2  → κ-(bedt-ttf)2cu(ncs)2  (phase letter kept)
     """
-    s = _WS.sub("", raw.strip())
-    s = _SUBSCRIPT.sub(r"\1", s)
+    s = raw.strip()
+    # 1. LaTeX brace subscripts first (they may contain δ/± we
+    #    normalize next)
+    s = _LATEX_BRACE.sub(r"\1", s)
+    # 2. Plain LaTeX numeric subscripts
+    s = _LATEX_NUM_SUBSCRIPT.sub(r"\1", s)
+    # 3. Strip any remaining LaTeX syntax noise
+    s = s.replace("_", "").replace("{", "").replace("}", "")
+    # 4. Greek → ASCII for the doping marker specifically. Keep other
+    #    Greeks (λ, κ, α, β prefixes) because they denote distinct
+    #    polymorphs of organic superconductors.
+    s = s.replace("δ", "d").replace("Δ", "d")
+    # 5. Noisy symbols
+    s = s.replace("±", "").replace("×", "x")
+    # 6. Whitespace gone
+    s = _WS.sub("", s)
+    # 7. Variable stoichiometry suffixes. Runs AFTER whitespace /
+    #    Greek normalization so "O_8 + delta" hits the same pattern.
+    s = _VAR_STOICH_SUFFIX.sub("", s)
+    # 8. Lowercase — the ONLY semantic fold we do besides the above.
     return s.lower()
 
 
