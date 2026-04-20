@@ -269,14 +269,25 @@ function RecordsTable({
                     {year ?? "—"}
                   </td>
                   <td className="px-3 py-2.5">
-                    {pid ? (
-                      <Link
-                        href={`/paper/${encodeURIComponent(pid)}`}
-                        className="text-accent hover:text-accent-deep hover:underline"
-                        title={pid}
+                    {pid && arx ? (
+                      // Link directly to the original on arXiv, new
+                      // tab. The previous internal /paper/<id> route
+                      // had the arXiv id URL-encoded in a way Next
+                      // couldn't route (%2F and %3A combined with the
+                      // /sclib basePath produced silent no-op clicks
+                      // in some browsers). Going straight to the
+                      // source also matches "原文地址" — what users
+                      // expect when they click a paper citation.
+                      <a
+                        href={`https://arxiv.org/abs/${arx}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-accent hover:text-accent-deep hover:underline"
+                        title={`Open ${pid} on arXiv in a new tab`}
                       >
                         {arx}
-                      </Link>
+                        <span aria-hidden="true" className="text-[0.7em] text-slate-400">↗</span>
+                      </a>
                     ) : (
                       "—"
                     )}
