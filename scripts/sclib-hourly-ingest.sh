@@ -39,15 +39,7 @@ FAILURE_COUNTER="${STATE_DIR}/consecutive_failures"
 LOCKFILE="${SCLIB_LOCKFILE:-/var/lock/sclib-hourly-ingest.lock}"
 
 COMPOSE_FILES=(-f docker-compose.yml)
-# NOTE: We intentionally *do not* pick up docker-compose.prod.yml here.
-# That override mounts /root/.config/gcloud/application_default_credentials.json
-# over /credentials/gcp-sa.json — an authorized_user ADC whose refresh
-# token expires every ~7 days and cannot be renewed non-interactively.
-# The production deployment uses a real service-account key at
-# ./credentials/gcp-sa.json (see docker-compose.yml), so skipping the
-# prod override keeps ingest auth stable.
-# Opt in via SCLIB_USE_PROD_OVERRIDE=1 only if you know the ADC is fresh.
-if [[ "${SCLIB_USE_PROD_OVERRIDE:-}" == "1" && -f "${SCLIB_ROOT}/docker-compose.prod.yml" ]]; then
+if [[ -f "${SCLIB_ROOT}/docker-compose.prod.yml" ]]; then
     COMPOSE_FILES+=(-f docker-compose.prod.yml)
 fi
 
