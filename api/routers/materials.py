@@ -34,6 +34,15 @@ async def list_materials(
     sort: str = Query("tc_max", pattern="^(tc_max|discovery_year|total_papers|tc_ambient)$"),
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
+    include_pending: bool = Query(
+        False,
+        description=(
+            "Include materials flagged needs_review=True (physically "
+            "implausible values, usually NER confusing Curie temp / "
+            "melting point with Tc). Off by default so the list stays "
+            "trustworthy; admins set it to audit / unflag."
+        ),
+    ),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001 — presence sets guest counter header
     db: AsyncSession = Depends(get_db),
 ) -> MaterialListResponse:
@@ -44,6 +53,13 @@ async def list_materials(
         nonlocal stmt, count_stmt
         stmt = stmt.where(where_clause)
         count_stmt = count_stmt.where(where_clause)
+
+    # Automatic sanity gate. Rows where the aggregator detected an
+    # implausible Tc (>250 K at ambient pressure) are hidden from the
+    # public list; they remain fetchable via GET /materials/{id} so
+    # old bookmarks keep working and admins can reach them to review.
+    if not include_pending:
+        _apply(Material.needs_review.is_(False))
 
     if family:
         _apply(Material.family == family)

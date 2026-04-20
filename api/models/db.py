@@ -236,6 +236,18 @@ class Material(Base):
     retracted:           Mapped[bool | None] = mapped_column(Boolean, server_default="false")
     disputed:            Mapped[bool | None] = mapped_column(Boolean, server_default="false")
 
+    # --- v3 automatic sanity gate ----------------------------------------
+    # Set by the aggregator when a record crosses a physical sanity
+    # threshold (e.g. Tc > 250 K at ambient pressure, almost always an
+    # NER confusion of Curie / structural transition with SC Tc).
+    # Materials flagged here are hidden from GET /materials unless
+    # ``?include_pending=true``; the row is kept for audit and for
+    # direct-link access via GET /materials/{id}.
+    needs_review: Mapped[bool] = mapped_column(
+        Boolean, server_default="false", nullable=False,
+    )
+    review_reason: Mapped[str | None] = mapped_column(String(200), nullable=True)
+
     __table_args__ = (
         Index("idx_materials_family", "family"),
         Index("idx_materials_tc", "tc_max"),  # NULLS LAST handled in query

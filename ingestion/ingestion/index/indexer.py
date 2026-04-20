@@ -143,6 +143,9 @@ materials_table = Table(
     Column("is_2d_or_interface", Boolean, server_default="false"),
     Column("retracted", Boolean, server_default="false"),
     Column("disputed", Boolean, server_default="false"),
+    # v3 sanity gate (see api/alembic/versions/0005_needs_review.py)
+    Column("needs_review", Boolean, nullable=False, server_default="false"),
+    Column("review_reason", String(200)),
 )
 
 

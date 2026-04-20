@@ -112,6 +112,14 @@ _MIN_VOTERS_MULTIPAPER = 2
 # as "disputed" — 30% means one paper reports 100 K, another 65 K.
 _TC_DISPUTE_THRESHOLD = 0.30
 
+# Physically implausible Tc. Confirmed ambient-pressure SC Tc tops out
+# at ~140 K (cuprates); even 200 GPa hydrides stay under 260 K. Any
+# record above this at ambient pressure is almost certainly an NER
+# confusion with Curie / melting / mechanical transitions. We flag
+# those materials ``needs_review=True`` and the API hides them by
+# default (?include_pending=true surfaces them for admin review).
+_TC_SANITY_MAX_K = 250.0
+
 
 def _confidence(r: dict[str, Any]) -> float:
     """Best-effort float confidence, clamped to [0, 1]."""
@@ -362,6 +370,22 @@ def _derive_summary(
     disputed_ner = _weighted_boolean(records, "disputed")
     disputed = bool(numeric_disputed) or bool(disputed_ner)
 
+    # Sanity gate: mark row ``needs_review`` when any Tc claim exceeds
+    # the physical ceiling. API list endpoint hides these by default;
+    # the frontend MaterialTable never shows them until a human
+    # confirms. Separate ``review_reason`` exposes the trigger for
+    # admin review — currently only one reason, but the slot is open
+    # so we can add more (hallucinated pressure, formula = single
+    # element, etc.) without another migration.
+    needs_review = False
+    review_reason: str | None = None
+    if tc_max is not None and tc_max > _TC_SANITY_MAX_K:
+        needs_review = True
+        review_reason = "tc_max_exceeds_250K"
+    elif tc_ambient is not None and tc_ambient > _TC_SANITY_MAX_K:
+        needs_review = True
+        review_reason = "tc_ambient_exceeds_250K"
+
     return {
         "formula": formula_raw[:200],
         "formula_normalized": normalize_formula(formula_raw)[:200],
@@ -403,6 +427,9 @@ def _derive_summary(
         "is_unconventional":   _weighted_boolean(records, "is_unconventional"),
         "is_2d_or_interface":  _weighted_boolean(records, "is_2d_or_interface"),
         "disputed":            disputed,
+        # Automatic sanity gate
+        "needs_review":        needs_review,
+        "review_reason":       review_reason,
         "records": records,
     }
 
