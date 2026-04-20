@@ -11,12 +11,14 @@
  */
 import { listMaterials, type MaterialListParams } from "@/lib/api";
 import { MaterialTable } from "@/components/MaterialTable";
+import { Pagination } from "@/components/Pagination";
 
 type Sp = {
   family?: string;
   tc_min?: string;
   sort?: string;
   page?: string;
+  per_page?: string;
   ambient_sc?: string;
   is_unconventional?: string;
   is_topological?: string;
@@ -26,7 +28,15 @@ type Sp = {
   structure_phase?: string;
 };
 
-const PAGE_SIZE = 50;
+const DEFAULT_PAGE_SIZE = 50;
+const ALLOWED_PAGE_SIZES = new Set([25, 50, 100, 200]);
+
+/** Clamp an arbitrary `per_page` URL value to a safe, allowed size. */
+function resolvePageSize(raw: string | undefined): number {
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n <= 0) return DEFAULT_PAGE_SIZE;
+  return ALLOWED_PAGE_SIZES.has(n) ? n : DEFAULT_PAGE_SIZE;
+}
 
 /** URL "true"/"false"/"" → boolean | undefined. */
 function parseTri(v: string | undefined): boolean | undefined {
@@ -41,6 +51,7 @@ export default async function MaterialsPage({
   searchParams: Sp;
 }) {
   const page = Math.max(0, Number(searchParams.page ?? "0"));
+  const perPage = resolvePageSize(searchParams.per_page);
   const sort =
     (searchParams.sort as MaterialListParams["sort"]) ?? "tc_max";
 
@@ -55,8 +66,8 @@ export default async function MaterialsPage({
     pairing_symmetry: searchParams.pairing_symmetry || undefined,
     structure_phase: searchParams.structure_phase || undefined,
     sort,
-    limit: PAGE_SIZE,
-    offset: page * PAGE_SIZE,
+    limit: perPage,
+    offset: page * perPage,
   };
 
   const data = await listMaterials(params).catch(() => null);
@@ -197,6 +208,13 @@ export default async function MaterialsPage({
             {data.total.toLocaleString()} materials
           </div>
           <MaterialTable rows={data.results} />
+          <Pagination
+            total={data.total}
+            limit={perPage}
+            offset={page * perPage}
+            basePath="/materials"
+            searchParams={searchParams}
+          />
         </>
       )}
     </main>
