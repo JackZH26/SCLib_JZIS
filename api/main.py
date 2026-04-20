@@ -6,6 +6,7 @@ mounts the auth router; Phase 3 will add search/ask/materials/etc.
 """
 from __future__ import annotations
 
+import asyncio
 import logging
 from contextlib import asynccontextmanager
 from urllib.parse import urlsplit
@@ -15,8 +16,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from config import get_settings
+from models import get_session_factory
 from models.db import get_engine
 from routers import ask, auth, materials, papers, search, similar, stats, timeline
+from services.stats_refresh import refresh_dashboard_cache
 
 logging.basicConfig(
     level=logging.INFO,
@@ -25,15 +28,72 @@ logging.basicConfig(
 log = logging.getLogger("sclib.api")
 
 
+async def _periodic_stats_refresh(interval_sec: int) -> None:
+    """Recompute ``stats_cache['dashboard']`` every ``interval_sec``.
+
+    The ingest pipeline runs out-of-band (瓦力 cron) and does not refresh
+    the cache itself, so without this task the homepage would forever
+    show whatever counts existed at the last manual ``POST /stats/refresh``.
+    Runs until the app shuts down. Exceptions are logged and swallowed
+    so a transient DB blip never crashes the API process — the next tick
+    retries.
+    """
+    factory = get_session_factory()
+    # Small delay on startup so the first tick doesn't race with
+    # alembic upgrade + initial request traffic.
+    await asyncio.sleep(30)
+    while True:
+        try:
+            async with factory() as session:
+                payload = await refresh_dashboard_cache(session)
+            log.info(
+                "stats_cache refreshed: %d papers / %d materials / %d chunks",
+                payload["total_papers"],
+                payload["total_materials"],
+                payload["total_chunks"],
+            )
+        except asyncio.CancelledError:
+            raise
+        except Exception:  # noqa: BLE001
+            log.exception("stats_cache refresh failed; retrying on next tick")
+        await asyncio.sleep(interval_sec)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = get_settings()
     log.info("SCLib API starting (env=%s, backend=%s)",
              settings.environment, settings.email_backend)
-    yield
-    engine = get_engine()
-    await engine.dispose()
-    log.info("SCLib API shutdown complete")
+
+    # Schedule the hourly dashboard refresh. The 瓦力 ingest adds
+    # ~100 papers/hour; without this loop the landing page and /stats
+    # endpoint would keep serving stale numbers from stats_cache.
+    # Override the cadence with SCLIB_STATS_REFRESH_INTERVAL_SEC for
+    # tests (e.g. set to 10 to verify the loop fires).
+    import os
+    interval = int(os.environ.get("SCLIB_STATS_REFRESH_INTERVAL_SEC", "3600"))
+    if interval > 0:
+        refresh_task = asyncio.create_task(
+            _periodic_stats_refresh(interval),
+            name="sclib-stats-refresh",
+        )
+        log.info("stats_cache auto-refresh scheduled every %ds", interval)
+    else:
+        refresh_task = None
+        log.info("stats_cache auto-refresh disabled (interval=%d)", interval)
+
+    try:
+        yield
+    finally:
+        if refresh_task is not None:
+            refresh_task.cancel()
+            try:
+                await refresh_task
+            except (asyncio.CancelledError, Exception):  # noqa: BLE001
+                pass
+        engine = get_engine()
+        await engine.dispose()
+        log.info("SCLib API shutdown complete")
 
 
 settings = get_settings()
