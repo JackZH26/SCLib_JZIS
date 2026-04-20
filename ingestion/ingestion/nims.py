@@ -79,6 +79,59 @@ _LATEX_NUM_SUBSCRIPT = re.compile(r"[_^]([0-9.]+)")
 _VAR_STOICH_SUFFIX = re.compile(
     r"[+\-±](?:delta|d|x|y|z)\b", re.IGNORECASE,
 )
+# Crystallographic polytype prefix: ``2H-``, ``3R-``, ``4H-``, ``1T-`` …
+# (digit + single letter + hyphen at the start). These mark the
+# stacking sequence of layered compounds; papers that specify it are
+# still talking about the same compound family.  We keep Greek phase
+# letters (κ-, λ-, α-, β-) intact because those denote genuinely
+# distinct polymorphs of organic SCs.
+_POLYTYPE_PREFIX = re.compile(r"^[0-9][a-z]-", re.IGNORECASE)
+
+# Acronym / shorthand → canonical normalized formula. Papers casually
+# write "YBCO" or "BSCCO" while others carry the explicit Bi₂Sr₂…
+# formula; without this map they land in separate materials rows
+# (audit showed YBCO split ~386 papers across two rows, BSCCO ~377
+# across three). Keep the list short and scientifically unambiguous —
+# every entry here should be an equivalence that any condensed-matter
+# physicist would accept. Generic family names ("cuprates", "iron
+# pnictides") are deliberately NOT aliased; they refer to classes,
+# not compounds.
+#
+# Map is applied AFTER the other normalization steps, so keys are
+# already lowercased and stripped. Values are existing normalized
+# forms that the aggregator uses elsewhere.
+_FORMULA_ALIASES: dict[str, str] = {
+    # Cuprates
+    "ybco":    "yba2cu3o7",
+    "y-123":   "yba2cu3o7",
+    "y123":    "yba2cu3o7",
+    "y-124":   "yba2cu4o8",
+    "y124":    "yba2cu4o8",
+    "bscco":   "bi2sr2cacu2o8",   # canonical Bi-2212 stoichiometry
+    "bi2212":  "bi2sr2cacu2o8",
+    "bi-2212": "bi2sr2cacu2o8",
+    "bi2201":  "bi2sr2cuo6",
+    "bi-2201": "bi2sr2cuo6",
+    "bi2223":  "bi2sr2ca2cu3o10",
+    "bi-2223": "bi2sr2ca2cu3o10",
+    "lsco":    "la2-xsrxcuo4",
+    "lbco":    "la2-xbaxcuo4",
+    "ncco":    "nd2-xcexcuo4",
+    "pccco":   "pr2-xcexcuo4",
+    "lco":     "la2cuo4",
+    "hg-1201": "hgba2cuo4",
+    "hg1201":  "hgba2cuo4",
+    "hg-1212": "hgba2cacu2o6",
+    "hg1212":  "hgba2cacu2o6",
+    "hg-1223": "hgba2ca2cu3o8",
+    "hg1223":  "hgba2ca2cu3o8",
+    "tl-2201": "tl2ba2cuo6",
+    "tl2201":  "tl2ba2cuo6",
+    "tl-2212": "tl2ba2cacu2o8",
+    "tl2212":  "tl2ba2cacu2o8",
+    "tl-2223": "tl2ba2ca2cu3o10",
+    "tl2223":  "tl2ba2ca2cu3o10",
+}
 
 
 def normalize_formula(raw: str) -> str:
@@ -129,7 +182,16 @@ def normalize_formula(raw: str) -> str:
     #    Greek normalization so "O_8 + delta" hits the same pattern.
     s = _VAR_STOICH_SUFFIX.sub("", s)
     # 8. Lowercase — the ONLY semantic fold we do besides the above.
-    return s.lower()
+    s = s.lower()
+    # 9. Strip crystallographic polytype prefix ``2h-`` / ``3r-`` /
+    #    ``4h-`` etc. so `2h-nbse2` collapses onto `nbse2`. The digit
+    #    is preserved via the lookup below for polytypes that *are*
+    #    a distinct material (none today, but room to grow).
+    s = _POLYTYPE_PREFIX.sub("", s)
+    # 10. Acronym alias lookup. Papers interchangeably say "YBCO" and
+    #    "YBa_2Cu_3O_7-δ"; this map folds the former onto the latter
+    #    so they end up in the same row.
+    return _FORMULA_ALIASES.get(s, s)
 
 
 # ---------------------------------------------------------------------------
