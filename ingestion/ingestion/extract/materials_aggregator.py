@@ -367,6 +367,21 @@ def _derive_summary(
     # Apply the same corroboration rule here so an outlier
     # ambient-pressure claim doesn't dominate either.
     tc_ambient, _ = _corroborated_max(ambient_records, "tc_kelvin")
+
+    # Invariant: tc_max >= tc_ambient (by definition, "record high
+    # in any condition" cannot be below "record high at ambient").
+    # The corroboration rule uses a support threshold that scales
+    # with the sample size, so the stricter full-set threshold can
+    # reject a value that the smaller ambient subset accepts — the
+    # subset then returns a number higher than the full-set max.
+    # Promote tc_max to match so the summary stays consistent.
+    if (
+        tc_max is not None
+        and tc_ambient is not None
+        and tc_ambient > tc_max
+    ):
+        tc_max = tc_ambient
+        tc_max_support = max(tc_max_support, 1)
     # Numeric dispute: ambient-pressure Tc values from 2+ papers span
     # more than 30% of the max. Typical cause is over/under-doped
     # samples in different papers; worth surfacing to the user.
