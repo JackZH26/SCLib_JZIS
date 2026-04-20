@@ -11,6 +11,64 @@
 import Link from "next/link";
 import type { MaterialSummary } from "@/lib/api";
 
+/**
+ * How "filled in" is this material's summary? Count non-null values
+ * across the MaterialSummary fields we care about. Used to render a
+ * compact progress indicator in the list so users can see at a glance
+ * which materials are well-sourced vs. skeletal (name only).
+ *
+ * The list is the same set we surface as dedicated columns + the
+ * badge flags, so a "fully green" bar means every column has data,
+ * not just "papers agreed".
+ */
+const COMPLETENESS_FIELDS = 12;
+
+function completeness(m: MaterialSummary): number {
+  let n = 0;
+  if (m.family) n += 1;
+  if (m.tc_max != null) n += 1;
+  if (m.tc_ambient != null) n += 1;
+  if (m.discovery_year != null) n += 1;
+  if (m.pairing_symmetry) n += 1;
+  if (m.structure_phase) n += 1;
+  if (m.ambient_sc != null) n += 1;
+  if (m.is_unconventional != null) n += 1;
+  if (m.is_topological != null) n += 1;
+  if (m.is_2d_or_interface != null) n += 1;
+  if (m.has_competing_order != null) n += 1;
+  if (m.total_papers > 0) n += 1;
+  return n;
+}
+
+function CompletenessBar({ filled }: { filled: number }) {
+  const pct = (filled / COMPLETENESS_FIELDS) * 100;
+  // 3 tiers: thin = skeletal, mid = partial, full = well-sourced. The
+  // accent green signals "data you can trust", muted slate signals
+  // "only the formula is known".
+  const tone =
+    filled >= 8
+      ? "bg-[color:var(--accent)]"
+      : filled >= 4
+        ? "bg-[color:var(--accent)]/60"
+        : "bg-slate-300";
+  return (
+    <div
+      title={`${filled}/${COMPLETENESS_FIELDS} fields populated`}
+      className="flex items-center gap-2"
+    >
+      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
+        <div
+          className={`h-full ${tone} transition-all`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <span className="text-xs tabular-nums text-slate-500">
+        {filled}/{COMPLETENESS_FIELDS}
+      </span>
+    </div>
+  );
+}
+
 function Badge({
   children,
   tone = "neutral",
@@ -59,6 +117,7 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
             <th className="px-4 py-3 text-left font-medium">Flags</th>
             <th className="px-4 py-3 text-right font-medium">Discovery</th>
             <th className="px-4 py-3 text-right font-medium">Papers</th>
+            <th className="px-4 py-3 text-left font-medium">Data</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">
@@ -117,6 +176,9 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
               </td>
               <td className="px-4 py-3 text-right tabular-nums text-slate-600">
                 {m.total_papers}
+              </td>
+              <td className="px-4 py-3">
+                <CompletenessBar filled={completeness(m)} />
               </td>
             </tr>
           ))}

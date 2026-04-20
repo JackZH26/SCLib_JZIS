@@ -77,6 +77,28 @@ export default async function MaterialDetailPage({
         <Fact label="Papers" value={mat.total_papers.toString()} />
       </section>
 
+      {mat.tc_max_conditions && (
+        <p className="-mt-4 text-xs text-slate-500">
+          Tc max measured at{" "}
+          <span className="font-medium text-slate-700">
+            {mat.tc_max_conditions}
+          </span>
+        </p>
+      )}
+
+      {/*
+        Records / provenance section lives near the top (not at the
+        bottom) so readers can immediately see the evidence behind the
+        flat-column aggregates above. The flat columns pick one value
+        per field (max / weighted mode / ..., see
+        ingestion/.../materials_aggregator.py), but research papers
+        rarely agree exactly — this table lets the reader verify the
+        claim and cross-check against the source paper.
+      */}
+      {mat.records.length > 0 && (
+        <RecordsTable records={mat.records} />
+      )}
+
       <DetailSection
         title="Structure"
         rows={[
@@ -135,62 +157,137 @@ export default async function MaterialDetailPage({
         ]}
       />
 
-      {mat.records.length > 0 && (
-        <section>
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
-            Tc records ({mat.records.length})
-          </h2>
-          <div className="overflow-x-auto rounded-lg border border-sage-border bg-white">
-            <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-                <tr>
-                  <th className="px-4 py-3 text-right font-medium">Tc (K)</th>
-                  <th className="px-4 py-3 text-right font-medium">Year</th>
-                  <th className="px-4 py-3 text-right font-medium">
-                    Pressure (GPa)
-                  </th>
-                  <th className="px-4 py-3 text-left font-medium">Paper</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {mat.records.map((r, i) => {
-                  const tc = num(r.tc_kelvin ?? r.tc);
-                  const year = num(r.year ?? r.measurement_year);
-                  const p = num(r.pressure_gpa ?? r.pressure);
-                  const pid =
-                    typeof r.paper_id === "string" ? r.paper_id : null;
-                  return (
-                    <tr key={i} className="hover:bg-slate-50">
-                      <td className="px-4 py-3 text-right tabular-nums">
-                        {tc != null ? tc.toFixed(1) : "—"}
-                      </td>
-                      <td className="px-4 py-3 text-right tabular-nums text-slate-600">
-                        {year ?? "—"}
-                      </td>
-                      <td className="px-4 py-3 text-right tabular-nums text-slate-600">
-                        {p != null ? p.toFixed(1) : "ambient"}
-                      </td>
-                      <td className="px-4 py-3 text-sm">
-                        {pid ? (
-                          <Link
-                            href={`/paper/${encodeURIComponent(pid)}`}
-                            className="text-accent hover:text-accent-deep hover:underline"
-                          >
-                            {pid}
-                          </Link>
-                        ) : (
-                          "—"
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      )}
     </main>
+  );
+}
+
+/**
+ * The "evidence trail" behind the flat columns. Each row is one
+ * paper's claim about this material: Tc at some pressure on some
+ * sample form measured with some method. Deduped by paper_id +
+ * tc_kelvin + pressure_gpa so multiple rows from the same paper
+ * reporting the same Tc under the same conditions don't clutter.
+ *
+ * Sorted most-informative first: Tc descending, then year descending
+ * (prefer latest measurement when Tcs tie).
+ */
+function RecordsTable({
+  records,
+}: {
+  records: Record<string, unknown>[];
+}) {
+  // Dedupe: same paper reporting same Tc at same pressure = one row.
+  // The NER sometimes emits one record per measurement technique
+  // (resistivity vs susceptibility) which is interesting only when
+  // the Tc differs; otherwise collapse them and show all techniques.
+  const seen = new Map<string, Record<string, unknown> & { _methods: Set<string> }>();
+  for (const r of records) {
+    const tc = num(r.tc_kelvin ?? r.tc);
+    const p = num(r.pressure_gpa ?? r.pressure);
+    const pid = typeof r.paper_id === "string" ? r.paper_id : "";
+    const key = `${pid}::${tc ?? "_"}::${p ?? "_"}`;
+    const prev = seen.get(key);
+    const meas = typeof r.measurement === "string" ? r.measurement : "";
+    if (prev) {
+      if (meas && meas.toLowerCase() !== "unknown") prev._methods.add(meas);
+    } else {
+      const methods = new Set<string>();
+      if (meas && meas.toLowerCase() !== "unknown") methods.add(meas);
+      seen.set(key, { ...r, _methods: methods });
+    }
+  }
+
+  const rows = Array.from(seen.values()).sort((a, b) => {
+    const ta = num(a.tc_kelvin ?? a.tc) ?? -Infinity;
+    const tb = num(b.tc_kelvin ?? b.tc) ?? -Infinity;
+    if (ta !== tb) return tb - ta;
+    const ya = num(a.year ?? a.measurement_year) ?? 0;
+    const yb = num(b.year ?? b.measurement_year) ?? 0;
+    return yb - ya;
+  });
+
+  return (
+    <section>
+      <div className="mb-3 flex items-baseline justify-between">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Evidence ({rows.length} record{rows.length === 1 ? "" : "s"} from{" "}
+          {new Set(rows.map((r) => r.paper_id)).size} paper
+          {new Set(rows.map((r) => r.paper_id)).size === 1 ? "" : "s"})
+        </h2>
+        <span className="text-xs text-slate-400">
+          the flat columns above are aggregates — each line here is one
+          paper&apos;s claim
+        </span>
+      </div>
+      <div className="overflow-x-auto rounded-lg border border-sage-border bg-white">
+        <table className="w-full text-sm">
+          <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+            <tr>
+              <th className="px-3 py-3 text-right font-medium">Tc (K)</th>
+              <th className="px-3 py-3 text-right font-medium">P (GPa)</th>
+              <th className="px-3 py-3 text-left font-medium">Sample</th>
+              <th className="px-3 py-3 text-left font-medium">Method</th>
+              <th className="px-3 py-3 text-left font-medium">Pairing</th>
+              <th className="px-3 py-3 text-right font-medium">Year</th>
+              <th className="px-3 py-3 text-left font-medium">Paper</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {rows.map((r, i) => {
+              const tc = num(r.tc_kelvin ?? r.tc);
+              const year = num(r.year ?? r.measurement_year);
+              const p = num(r.pressure_gpa ?? r.pressure);
+              const pid = typeof r.paper_id === "string" ? r.paper_id : null;
+              const arx = pid ? pid.replace(/^arxiv:/, "") : null;
+              const sample =
+                typeof r.sample_form === "string" ? r.sample_form : "";
+              const methods = Array.from(r._methods as Set<string>).join(", ");
+              const pairing =
+                typeof r.pairing_symmetry === "string" ? r.pairing_symmetry : "";
+              return (
+                <tr key={i} className="hover:bg-slate-50">
+                  <td className="px-3 py-2.5 text-right tabular-nums font-medium">
+                    {tc != null ? tc.toFixed(1) : "—"}
+                  </td>
+                  <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
+                    {p == null
+                      ? "—"
+                      : p === 0
+                        ? "ambient"
+                        : p.toFixed(1)}
+                  </td>
+                  <td className="px-3 py-2.5 text-slate-600">
+                    {sample || "—"}
+                  </td>
+                  <td className="px-3 py-2.5 text-slate-600">
+                    {methods || "—"}
+                  </td>
+                  <td className="px-3 py-2.5 text-slate-600">
+                    {pairing || "—"}
+                  </td>
+                  <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
+                    {year ?? "—"}
+                  </td>
+                  <td className="px-3 py-2.5">
+                    {pid ? (
+                      <Link
+                        href={`/paper/${encodeURIComponent(pid)}`}
+                        className="text-accent hover:text-accent-deep hover:underline"
+                        title={pid}
+                      >
+                        {arx}
+                      </Link>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }
 
