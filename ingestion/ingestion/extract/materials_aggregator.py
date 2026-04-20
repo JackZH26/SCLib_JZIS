@@ -288,12 +288,23 @@ def _derive_summary(
     See module docstring for the rule overview; this is the
     implementation.
     """
+    # tc_max is the highest-ever-observed Tc in ANY condition (high
+    # pressure, thin film, doped, …) — this is the scientific
+    # "record-high" metric.
     tc_max = _max_numeric(records, "tc_kelvin")
 
+    # tc_ambient is intentionally *stricter*: only records where NER
+    # affirmatively emitted ``ambient_sc: true`` count. We deliberately
+    # do NOT trust ``pressure_gpa == 0`` alone because the NER uses
+    # 0.0 as a "value unknown" fallback, so the OR-with-pressure rule
+    # we had before was falsely promoting unknown-pressure records
+    # into the ambient bucket and making tc_ambient spuriously equal
+    # to tc_max. When no paper explicitly confirmed ambient SC, we
+    # leave tc_ambient NULL — honest "unknown" beats a wrong answer.
     ambient_records = [
         r for r in records
         if isinstance(r.get("tc_kelvin"), (int, float))
-        and (r.get("pressure_gpa") in (0, 0.0) or r.get("ambient_sc") is True)
+        and r.get("ambient_sc") is True
     ]
     tc_ambient = max(
         (r["tc_kelvin"] for r in ambient_records),
@@ -310,11 +321,16 @@ def _derive_summary(
             spread = (tc_max_v - min(tc_vals)) / tc_max_v
             numeric_disputed = spread > _TC_DISPUTE_THRESHOLD
 
-    ambient_sc_weighted = _weighted_boolean(records, "ambient_sc")
-    # Any ambient_sc record with a numeric Tc is direct evidence of
-    # ambient SC even if the weighted-boolean path returned None; keep
-    # the permissive semantics for this field specifically.
-    ambient_sc = bool(ambient_records) or ambient_sc_weighted is True
+    # The summary flag ``ambient_sc`` follows the same strict rule:
+    # true iff at least one record has ambient_sc==True AND no record
+    # denies it (weighted-boolean handles the "denied by most"
+    # case). Without evidence either way we return None, not False.
+    ambient_sc = _weighted_boolean(records, "ambient_sc")
+    # If any record directly confirmed ambient, that wins regardless
+    # of how the weighted vote came out — one good observation is
+    # enough to say the material has an ambient-pressure SC phase.
+    if any(r.get("ambient_sc") is True for r in records):
+        ambient_sc = True
 
     competing_order = _weighted_mode_str(records, "competing_order")
     t_cdw = _max_numeric(records, "t_cdw_k")
