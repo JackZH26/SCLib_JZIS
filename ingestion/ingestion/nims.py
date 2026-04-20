@@ -228,6 +228,23 @@ def classify_family(formula: str) -> str | None:
         if any(e in partners for e in elements):
             return "hydride"
 
+    # Fullerides: superconducting alkali-doped fullerenes. The
+    # industry-standard family label is "fulleride" — coined after
+    # Rosseinsky et al. (K₃C₆₀ Tc=19 K, 1991) and consistently used
+    # in condensed-matter reviews (Gunnarsson 1997, Capone 2009,
+    # Ganin et al. 2008 for Cs₃C₆₀ at Tc≈38 K under pressure).
+    #
+    # Detection: tokenise to element symbols on the original-case
+    # formula and look for any carbon atom with stoichiometry 60,
+    # 70, 76, or 84 (the common closed-cage fullerene sizes). This
+    # catches ``C_60``, ``K_3C_60``, ``Rb_3C_60``, ``Cs_3C_60``,
+    # ``NaRb_2C_60``, solvent intercalates ``C_60/C_12H_26`` etc.,
+    # while safely rejecting false positives like ``Sc60Ti40``
+    # where ``60`` is a scandium stoichiometry, not a cage size.
+    for el, cnt in re.findall(r"([A-Z][a-z]?)[_\s]*(\d+)?", f):
+        if el == "C" and cnt in ("60", "70", "76", "84"):
+            return "fulleride"
+
     # Iron-based: Fe with As, Se, Te, P, or a "11"/"122"/"1111" motif
     if "fe" in fl and re.search(r"(as|se|te|p)", fl):
         return "iron_based"
