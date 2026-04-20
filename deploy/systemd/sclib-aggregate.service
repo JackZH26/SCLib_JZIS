@@ -1,0 +1,31 @@
+[Unit]
+Description=SCLib daily materials aggregate
+# Wait for Docker + network; we call `docker compose run` on the
+# ingestion container, which needs both up.
+After=docker.service network-online.target
+Requires=docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+Environment=SCLIB_ROOT=/opt/SCLib_JZIS
+Environment=SCLIB_LOG_DIR=/var/log/sclib
+Environment=SCLIB_STATE_DIR=/var/lib/sclib
+ExecStart=/opt/SCLib_JZIS/scripts/sclib-daily-aggregate.sh
+
+# A full sweep of 5-10k papers + 1-2k materials easily fits in
+# under 5 minutes and ~500 MB RAM. Cap generously so the unit
+# doesn't get OOM-killed if paper volume grows.
+MemoryMax=1G
+TimeoutStartSec=30min
+
+# exit 99 = flock skip, treat as success
+SuccessExitStatus=99
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

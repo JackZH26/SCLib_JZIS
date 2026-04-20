@@ -1,0 +1,19 @@
+[Unit]
+Description=Fire SCLib daily materials aggregate
+Documentation=file:///opt/SCLib_JZIS/deploy/systemd/README.md
+
+[Timer]
+# Daily at 03:10 UTC (11:10 UTC+8 Beijing). Chosen because:
+#   - The 瓦力 hourly ingest just ran at :10 for the previous hour
+#     and any in-flight work is done.
+#   - The stats-cache auto-refresh loop inside the API container
+#     runs hourly too, so there's no cache contention.
+#   - Low-traffic window globally (overnight US, late morning CN).
+OnCalendar=*-*-* 03:10:00
+RandomizedDelaySec=60s
+Persistent=true
+Unit=sclib-aggregate.service
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target
