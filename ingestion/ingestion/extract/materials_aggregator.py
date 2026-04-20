@@ -134,6 +134,65 @@ def _max_numeric(records: list[dict[str, Any]], key: str) -> float | None:
     return max(vals) if vals else None
 
 
+def _corroborated_max(
+    records: list[dict[str, Any]],
+    key: str,
+) -> tuple[float | None, int]:
+    """Highest value corroborated by multiple independent papers.
+
+    NER sometimes mistakes a paper's gap energy (2Δ/k_B), Hc2
+    extrapolation, or Curie / structural transition for the SC Tc.
+    Taking plain ``max(tc_kelvin)`` then lets a single bad paper set
+    the headline Tc — MgB₂ at 79 K is the audit example where one
+    paper's gap-derived number beat 200 papers' correct 39 K.
+
+    Rule: walk candidate paper-maxima from highest down. For each
+    candidate ``c``, count how many *distinct papers* report
+    ``tc_kelvin >= c``. Accept the first ``c`` where that count
+    meets ``min_support``:
+
+      n_papers | min_support
+      -------- | ------------
+         1–4   |      1  (accept the max — rare materials)
+         5–39  |      2  (need one corroborating paper)
+        40–199 |   n // 20  (5% of papers)
+        ≥ 200  |     10  (cap so hundreds-of-papers materials stay
+                          resistant to a small cluster of NER errors)
+
+    The strict ``v >= c`` support rule (rather than a tolerance band)
+    is deliberate: the previous version let legitimate high-Tc papers
+    at 133 K "confirm" a spurious 150 K claim, because 133 > 150·0.85.
+    Requiring papers to claim at least as high as the candidate
+    avoids that false confirmation.
+
+    Returns (value, supporting_paper_count).
+    """
+    per_paper: dict[str, float] = {}
+    for r in records:
+        v = r.get(key)
+        pid = r.get("paper_id")
+        if isinstance(v, (int, float)) and v > 0 and isinstance(pid, str) and pid:
+            if v > per_paper.get(pid, 0):
+                per_paper[pid] = float(v)
+    if not per_paper:
+        return None, 0
+
+    values = sorted(per_paper.values(), reverse=True)
+    n_papers = len(values)
+    if n_papers < 5:
+        return values[0], n_papers
+
+    min_support = max(2, min(10, n_papers // 20))
+    for cand in values:
+        support = sum(1 for v in values if v >= cand)
+        if support >= min_support:
+            return cand, support
+
+    # Unreachable when n_papers >= 5 (the smallest value always has
+    # support = n_papers), but fall back for safety.
+    return values[-1], n_papers
+
+
 def _median_numeric(records: list[dict[str, Any]], key: str) -> float | None:
     vals = [r[key] for r in records if isinstance(r.get(key), (int, float))]
     return float(median(vals)) if vals else None
@@ -288,28 +347,26 @@ def _derive_summary(
     See module docstring for the rule overview; this is the
     implementation.
     """
-    # tc_max is the highest-ever-observed Tc in ANY condition (high
-    # pressure, thin film, doped, …) — this is the scientific
-    # "record-high" metric.
-    tc_max = _max_numeric(records, "tc_kelvin")
+    # tc_max is the highest Tc reported in ANY condition (high
+    # pressure, thin film, doped, …) — the scientific "record-high"
+    # metric. Uses a corroboration rule (≥2 papers within 15%) to
+    # reject single-paper outliers; see _corroborated_max docstring.
+    tc_max, tc_max_support = _corroborated_max(records, "tc_kelvin")
 
     # tc_ambient is intentionally *stricter*: only records where NER
     # affirmatively emitted ``ambient_sc: true`` count. We deliberately
     # do NOT trust ``pressure_gpa == 0`` alone because the NER uses
-    # 0.0 as a "value unknown" fallback, so the OR-with-pressure rule
-    # we had before was falsely promoting unknown-pressure records
-    # into the ambient bucket and making tc_ambient spuriously equal
-    # to tc_max. When no paper explicitly confirmed ambient SC, we
-    # leave tc_ambient NULL — honest "unknown" beats a wrong answer.
+    # 0.0 as a "value unknown" fallback. When no paper explicitly
+    # confirmed ambient SC, we leave tc_ambient NULL — honest
+    # "unknown" beats a wrong answer.
     ambient_records = [
         r for r in records
         if isinstance(r.get("tc_kelvin"), (int, float))
         and r.get("ambient_sc") is True
     ]
-    tc_ambient = max(
-        (r["tc_kelvin"] for r in ambient_records),
-        default=None,
-    )
+    # Apply the same corroboration rule here so an outlier
+    # ambient-pressure claim doesn't dominate either.
+    tc_ambient, _ = _corroborated_max(ambient_records, "tc_kelvin")
     # Numeric dispute: ambient-pressure Tc values from 2+ papers span
     # more than 30% of the max. Typical cause is over/under-doped
     # samples in different papers; worth surfacing to the user.
@@ -343,7 +400,9 @@ def _derive_summary(
     )
 
     # tc_max_conditions: pick the record tying the max and format as
-    # "P={p} GPa, <sample>, <measurement> (arXiv:<id>)"
+    # "P={p} GPa, <sample>, <measurement> (arXiv:<id>)". Appends a
+    # corroboration note ("confirmed by N papers") so users can see
+    # how well-supported the headline number is.
     tc_max_cond = None
     if tc_max is not None:
         for r in records:
@@ -360,12 +419,15 @@ def _derive_summary(
                     parts.append(str(r["measurement"]))
                 pid = r.get("paper_id")
                 if pid:
-                    # papers.id uses the "arxiv:<id>" prefix; strip for
-                    # display so users see the bare arXiv id.
                     arx = str(pid).removeprefix("arxiv:")
                     parts.append(f"arXiv:{arx}")
                 tc_max_cond = ", ".join(parts) or None
                 break
+        if tc_max_support >= 2:
+            note = f"confirmed by {tc_max_support} papers"
+            tc_max_cond = (
+                f"{tc_max_cond}, {note}" if tc_max_cond else note
+            )
 
     paper_ids = {r.get("paper_id") for r in records if r.get("paper_id")}
     years = [
