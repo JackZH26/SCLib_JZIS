@@ -93,22 +93,6 @@ chunks_table = Table(
     Column("has_table", Boolean, nullable=False, server_default="false"),
 )
 
-ingest_runs_table = Table(
-    "ingest_runs", metadata,
-    Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("started_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
-    Column("finished_at", DateTime(timezone=True)),
-    Column("status", String(20), nullable=False),
-    Column("mode", String(30), nullable=False),
-    Column("papers_processed", Integer, nullable=False, server_default="0"),
-    Column("papers_succeeded", Integer, nullable=False, server_default="0"),
-    Column("papers_failed", Integer, nullable=False, server_default="0"),
-    Column("duration_sec", Integer),
-    Column("error_message", Text),
-    Column("host", String(100)),
-)
-
-
 materials_table = Table(
     "materials", metadata,
     # --- v1 core ----------------------------------------------------------
@@ -341,60 +325,6 @@ def upsert_chunks_to_vector_search(
     index.upsert_datapoints(datapoints=datapoints)
     log.info("upserted %d datapoints to Vertex VS (paper=%s)",
              len(datapoints), meta.paper_id)
-
-
-# ---------------------------------------------------------------------------
-# ingest_runs — scheduled-ingest observability
-# ---------------------------------------------------------------------------
-
-async def start_ingest_run(mode: str, host: str | None = None) -> int:
-    """Insert a row with status='running' and return its id.
-
-    The row is completed later via ``finish_ingest_run``. If the process
-    crashes before that, the row stays as 'running' and the orchestrator
-    shell script reconciles it to 'failed' on the next tick.
-    """
-    factory = _session_factory()
-    async with factory() as session:
-        result = await session.execute(
-            ingest_runs_table.insert()
-            .values(status="running", mode=mode, host=host)
-            .returning(ingest_runs_table.c.id)
-        )
-        run_id = result.scalar_one()
-        await session.commit()
-    return int(run_id)
-
-
-async def finish_ingest_run(
-    run_id: int,
-    *,
-    status: str,
-    papers_processed: int = 0,
-    papers_succeeded: int = 0,
-    papers_failed: int = 0,
-    duration_sec: int | None = None,
-    error_message: str | None = None,
-) -> None:
-    """Update the ingest_runs row. ``status`` must be 'succeeded' or 'failed'."""
-    from datetime import datetime, timezone
-
-    factory = _session_factory()
-    async with factory() as session:
-        await session.execute(
-            ingest_runs_table.update()
-            .where(ingest_runs_table.c.id == run_id)
-            .values(
-                status=status,
-                finished_at=datetime.now(timezone.utc),
-                papers_processed=papers_processed,
-                papers_succeeded=papers_succeeded,
-                papers_failed=papers_failed,
-                duration_sec=duration_sec,
-                error_message=(error_message[:5000] if error_message else None),
-            )
-        )
-        await session.commit()
 
 
 # ---------------------------------------------------------------------------

@@ -51,10 +51,6 @@ import sys
 from datetime import date, datetime, timedelta, timezone
 from typing import Any
 
-import os
-import socket
-import time
-
 from ingestion.collect.arxiv_oai import ArxivClient, ArxivError
 from ingestion.chunk.chunker import chunk_paper
 from ingestion.config import get_settings
@@ -63,8 +59,6 @@ from ingestion.extract.material_ner import extract_materials
 from ingestion.extract.materials_aggregator import aggregate_from_papers
 from ingestion.index.indexer import (
     dispose,
-    finish_ingest_run,
-    start_ingest_run,
     upsert_chunks_to_vector_search,
     upsert_paper_with_chunks,
 )
@@ -424,78 +418,29 @@ def main(argv: list[str] | None = None) -> int:
         format="%(asctime)s %(levelname)-5s %(name)s: %(message)s",
     )
 
-    # Record this run in ingest_runs for observability. The row is
-    # inserted *before* the pipeline starts so a crashed process leaves
-    # a visible 'running' row that the orchestrator later reconciles.
-    # Suppressed via SCLIB_SKIP_INGEST_RUNS=1 (unit tests, smoke tests
-    # from a dev laptop that shouldn't touch prod telemetry).
-    record_run = os.environ.get("SCLIB_SKIP_INGEST_RUNS") != "1"
-    threshold = get_settings().failure_success_threshold
-
-    async def _main_async() -> tuple[int, list[dict[str, Any]]]:
-        # All DB work — pipeline, ingest_runs insert/update, dispose —
-        # happens in a single event loop so asyncpg's pooled connections
-        # close on the same loop they opened on.
-        t_start = time.monotonic()
-        run_id: int | None = None
+    async def _main_async() -> list[dict[str, Any]]:
+        # dispose() must run on the *same* event loop as run(), otherwise
+        # asyncpg's pooled connections try to close on a loop that no
+        # longer exists. So we wrap both calls in a single asyncio.run.
         try:
-            if record_run:
-                run_id = await start_ingest_run(
-                    mode=args.mode, host=socket.gethostname()
-                )
-
-            try:
-                results = await run(
-                    mode=args.mode,
-                    from_date=args.from_date,
-                    until_date=args.until_date,
-                    limit=args.limit,
-                    skip_vector_search=args.skip_vector_search,
-                    skip_ner=args.skip_ner,
-                )
-            except Exception as exc:  # noqa: BLE001
-                if record_run and run_id is not None:
-                    await finish_ingest_run(
-                        run_id,
-                        status="failed",
-                        duration_sec=int(time.monotonic() - t_start),
-                        error_message=f"{type(exc).__name__}: {exc}",
-                    )
-                raise
-
-            ok_n = sum(1 for r in results if r.get("ok"))
-            total_n = len(results)
-            ratio_now = (ok_n / total_n) if total_n else 1.0
-            exit_code_now = 0 if (total_n == 0 or ratio_now >= threshold) else 1
-
-            if record_run and run_id is not None:
-                await finish_ingest_run(
-                    run_id,
-                    status="succeeded" if exit_code_now == 0 else "failed",
-                    papers_processed=total_n,
-                    papers_succeeded=ok_n,
-                    papers_failed=total_n - ok_n,
-                    duration_sec=int(time.monotonic() - t_start),
-                    error_message=(
-                        f"{total_n-ok_n}/{total_n} papers failed "
-                        f"(ratio {ratio_now:.2f} < {threshold})"
-                        if exit_code_now != 0 else None
-                    ),
-                )
-
-            return exit_code_now, results
+            return await run(
+                mode=args.mode,
+                from_date=args.from_date,
+                until_date=args.until_date,
+                limit=args.limit,
+                skip_vector_search=args.skip_vector_search,
+                skip_ner=args.skip_ner,
+            )
         finally:
             await dispose()
 
-    try:
-        exit_code, results = asyncio.run(_main_async())
-    except Exception:  # noqa: BLE001
-        log.exception("pipeline crashed")
-        return 2
+    results = asyncio.run(_main_async())
 
     ok = sum(1 for r in results if r.get("ok"))
     total = len(results)
     ratio = (ok / total) if total else 1.0
+    threshold = get_settings().failure_success_threshold
+
     log.info("done: %d/%d ok (ratio=%.2f, threshold=%.2f)",
              ok, total, ratio, threshold)
 
@@ -507,7 +452,13 @@ def main(argv: list[str] | None = None) -> int:
             log.info("  - %s stage=%s err=%.80s",
                      r.get("arxiv_id"), r.get("stage"), r.get("error", ""))
 
-    return exit_code
+    # Partial-failure policy: a run is considered successful as long as the
+    # success ratio meets the configured threshold. The remaining failures
+    # are already in the GCS failure pool and will be picked up by a later
+    # `--mode retry` run, so we don't want them to page the cron.
+    if total == 0:
+        return 0
+    return 0 if ratio >= threshold else 1
 
 
 def _parse_date(s: str) -> date:

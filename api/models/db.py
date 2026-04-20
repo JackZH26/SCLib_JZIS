@@ -275,42 +275,6 @@ class StatsCache(Base):
     )
 
 
-class IngestRun(Base):
-    """One row per scheduled ingest invocation.
-
-    The pipeline inserts this row at startup (status='running') and
-    updates it at finish. A crashed process therefore leaves a
-    long-lived 'running' row — the orchestrator shell script reconciles
-    stale rows (finished_at NULL, started_at > 30 min ago) to 'failed'.
-    """
-
-    __tablename__ = "ingest_runs"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    started_at: Mapped[datetime] = mapped_column(
-        _TZDT, server_default=func.now(), nullable=False
-    )
-    finished_at: Mapped[datetime | None] = mapped_column(_TZDT, nullable=True)
-    status: Mapped[str] = mapped_column(String(20), nullable=False)
-    mode: Mapped[str] = mapped_column(String(30), nullable=False)
-    papers_processed: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
-    papers_succeeded: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
-    papers_failed: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
-    duration_sec: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
-    host: Mapped[str | None] = mapped_column(String(100), nullable=True)
-
-    __table_args__ = (
-        CheckConstraint(
-            "status IN ('running','succeeded','failed')",
-            name="ingest_runs_status_chk",
-        ),
-        # Descending order matches the migration + the query pattern
-        # (ORDER BY started_at DESC LIMIT 20).
-        Index("idx_ingest_runs_started_at", sa.text("started_at DESC")),
-    )
-
-
 # ---------------------------------------------------------------------------
 # Engine / session (async, module-level cached)
 # ---------------------------------------------------------------------------
