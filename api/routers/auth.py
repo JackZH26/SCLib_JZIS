@@ -29,19 +29,28 @@ from models import get_db
 from models.db import ApiKey, EmailVerification, User
 from models.user import (
     ApiKeyCreate,
+    ApiKeyRead,
     ApiKeyWithSecret,
     LoginRequest,
     MessageResponse,
     RegisterResponse,
     TokenResponse,
+    UsageStats,
     UserCreate,
     UserRead,
+    UserUpdate,
     VerifyResponse,
 )
 from config import get_settings
 from services import auth_service
 from services.email import send_verification, send_welcome
 from services.google_oauth import get_oauth
+from services.rate_limit import (
+    get_user_remaining,
+    get_user_today_used,
+    get_user_week_used,
+)
+from sqlalchemy import func
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -217,6 +226,47 @@ async def me(user: User = Depends(current_user_from_jwt)):
     return UserRead.model_validate(user)
 
 
+@router.patch("/me", response_model=UserRead)
+async def update_me(
+    body: UserUpdate,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(current_user_from_jwt),
+):
+    """Update whitelisted profile fields on the current user.
+
+    Email / id / auth_provider / is_active are deliberately NOT editable
+    — they're system-owned identity. Clients PATCH only the fields they
+    want to change; omitting a key leaves the existing value untouched.
+    Passing an explicit ``null`` clears the field (useful for "remove my
+    institution").
+    """
+    # Use exclude_unset so omitted keys don't overwrite stored values.
+    updates = body.model_dump(exclude_unset=True)
+    for field, value in updates.items():
+        setattr(user, field, value)
+    await db.commit()
+    await db.refresh(user)
+    return UserRead.model_validate(user)
+
+
+@router.get("/keys", response_model=list[ApiKeyRead])
+async def list_keys(
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(current_user_from_jwt),
+):
+    """All API keys owned by the current user, newest first.
+
+    Includes revoked keys (dashboard shows them greyed out with the
+    revocation timestamp) so the user can audit historical activity.
+    """
+    q = await db.execute(
+        select(ApiKey)
+        .where(ApiKey.user_id == user.id)
+        .order_by(ApiKey.created_at.desc())
+    )
+    return [ApiKeyRead.model_validate(k) for k in q.scalars().all()]
+
+
 @router.post("/keys", response_model=ApiKeyWithSecret, status_code=201)
 async def create_key(
     body: ApiKeyCreate,
@@ -240,6 +290,8 @@ async def create_key(
         created_at=ak.created_at,
         last_used=ak.last_used,
         revoked=ak.revoked,
+        revoked_at=ak.revoked_at,
+        total_requests=ak.total_requests,
         key=plain,
     )
 
@@ -253,9 +305,43 @@ async def revoke_key(
     ak = await db.get(ApiKey, key_id)
     if ak is None or ak.user_id != user.id:
         raise HTTPException(404, "Key not found")
-    ak.revoked = True
-    await db.commit()
+    if not ak.revoked:
+        ak.revoked = True
+        ak.revoked_at = datetime.now(timezone.utc)
+        await db.commit()
     return MessageResponse(message="Key revoked")
+
+
+@router.get("/usage", response_model=UsageStats)
+async def usage(
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(current_user_from_jwt),
+):
+    """Per-user quota + historical request counters for the dashboard.
+
+    Today / week numbers are read from Redis (cheap, one MGET).
+    All-time is the SUM of ``total_requests`` across the user's API
+    keys — that's the canonical count since the quota counter itself
+    only spans a rolling 7 days of retention.
+    """
+    settings = get_settings()
+    today_used = await get_user_today_used(user.id)
+    today_remaining = await get_user_remaining(user.id)
+    week_used = await get_user_week_used(user.id)
+
+    all_time_q = await db.execute(
+        select(func.coalesce(func.sum(ApiKey.total_requests), 0))
+        .where(ApiKey.user_id == user.id)
+    )
+    all_time_used = int(all_time_q.scalar_one() or 0)
+
+    return UsageStats(
+        today_used=today_used,
+        today_remaining=today_remaining,
+        daily_limit=settings.registered_daily_limit,
+        week_used=week_used,
+        all_time_used=all_time_used,
+    )
 
 
 # ---------------------------------------------------------------------------
