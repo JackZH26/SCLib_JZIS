@@ -6,14 +6,20 @@
  *
  * Axes + interaction notes:
  *
- * - Y axis is fixed to [0, 280] K by default. 280 K comfortably
- *   covers every confirmed SC Tc (LaH₁₀ at ≈250 K is the record; the
- *   API also hard-filters at 250 K). Without a fixed range, a single
- *   implausible outlier would crush the real data into the bottom
- *   pixel row. User can zoom out via the modebar if they want to.
+ * - Y axis is fixed to [0, 250] K with rangemode "nonnegative" so
+ *   pan/zoom/autoscale can never drift below 0 K — there are no
+ *   negative Tc values and the API already caps plausible Tc at
+ *   250 K (LaH₁₀ hydride record).
  *
  * - X axis auto-ranges to the data, with a small ±1-year pad so the
- *   outermost points aren't glued to the frame edges.
+ *   outermost points aren't glued to the frame edges. Each point's
+ *   rendered x position gets a small deterministic jitter (±0.35 yr,
+ *   stable per material) so high-volume years (NIMS 1995–2002) don't
+ *   stack into solid unreadable columns. The original integer year
+ *   is preserved in the hover card.
+ *
+ * - Markers are small (5 px) and semi-transparent so overlaps remain
+ *   legible as density rather than a single opaque blob.
  *
  * - modeBar is ON (pan / box-zoom / reset / download PNG). dragmode
  *   defaults to 'pan' because scrolling a timeline left-right is
@@ -53,7 +59,21 @@ const FAMILY_LABEL: Record<string, string> = {
   unknown:       "Other",
 };
 
-const Y_MAX_DEFAULT = 280;
+const Y_MAX_DEFAULT = 250;
+
+// Deterministic ±0.35-year horizontal jitter seeded by material +
+// Tc so the same point lands in the same spot on every render.
+// Cheap 32-bit string hash — good enough for visual spreading.
+function jitterYear(material: string, tc: number): number {
+  const s = `${material}:${tc}`;
+  let h = 2166136261 | 0;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  const frac = ((h >>> 0) % 1000) / 1000; // [0, 1)
+  return (frac - 0.5) * 0.7;              // [-0.35, 0.35)
+}
 
 export function TcTimeline({
   points,
@@ -81,24 +101,25 @@ export function TcTimeline({
       type: "scatter" as const,
       mode: "markers" as const,
       name: FAMILY_LABEL[fam] ?? fam,
-      x: subset.map((p) => p.year),
+      x: subset.map((p) => p.year + jitterYear(p.material, p.tc_kelvin)),
       y: subset.map((p) => p.tc_kelvin),
       customdata: subset.map((p) => [
         p.pressure_gpa != null ? `${p.pressure_gpa.toFixed(1)} GPa` : "ambient",
         p.paper_id ?? "",
+        p.year,
       ]),
       text: subset.map((p) => p.material),
       hovertemplate:
         "<b>%{text}</b><br>" +
         "Tc = %{y} K<br>" +
         "P = %{customdata[0]}<br>" +
-        "Year = %{x}<br>" +
+        "Year = %{customdata[2]}<br>" +
         "%{customdata[1]}<extra></extra>",
       marker: {
-        size: 8,
-        opacity: 0.72,    // lets overlapping dots visually stack
+        size: 5,
+        opacity: 0.55,   // overlaps read as density, not a solid blob
         color: FAMILY_COLORS[fam] ?? "#94a3b8",
-        line: { width: 0.6, color: "#fff" },
+        line: { width: 0 },
       },
     };
   });
@@ -134,6 +155,8 @@ export function TcTimeline({
             title: { text: "Tc (K)" },
             gridcolor: "#eef2ee",
             range: [0, Y_MAX_DEFAULT],
+            autorange: false,
+            rangemode: "nonnegative",   // never dip below 0 K
             zeroline: true,
             zerolinecolor: "#d4e4d4",
           },
