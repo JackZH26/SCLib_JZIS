@@ -267,6 +267,137 @@ export function getUsage(jwt: string) {
   return request<UsageStats>("/auth/usage", { auth: jwt });
 }
 
+// --- Ask history ----------------------------------------------------------
+
+export interface AskHistoryEntry {
+  id: string;
+  question: string;
+  answer: string;
+  sources: Array<{
+    index?: number;
+    paper_id?: string;
+    arxiv_id?: string | null;
+    title?: string;
+    authors_short?: string;
+    year?: number | null;
+    section?: string | null;
+    snippet?: string;
+  }>;
+  tokens_used: number | null;
+  latency_ms: number;
+  language: string | null;
+  created_at: string;
+}
+
+export interface AskHistoryListResponse {
+  total: number;
+  results: AskHistoryEntry[];
+  limit: number;
+  offset: number;
+}
+
+export function listHistory(jwt: string, limit = 50, offset = 0) {
+  const qs = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+  return request<AskHistoryListResponse>(`/history?${qs}`, { auth: jwt });
+}
+
+export function deleteHistoryEntry(jwt: string, id: string) {
+  return request<{ message: string }>(`/history/${id}`, {
+    method: "DELETE",
+    auth: jwt,
+  });
+}
+
+// --- Bookmarks ------------------------------------------------------------
+
+export type BookmarkTargetType = "paper" | "material";
+
+export interface Bookmark {
+  id: string;
+  target_type: BookmarkTargetType;
+  target_id: string;
+  created_at: string;
+}
+
+export interface BookmarkedPaper {
+  id: string;
+  target_id: string;
+  created_at: string;
+  title: string;
+  authors: string[];
+  date_submitted: string | null;
+  material_family: string | null;
+  status: string;
+  citation_count: number;
+}
+
+export interface BookmarkedMaterial {
+  id: string;
+  target_id: string;
+  created_at: string;
+  formula: string;
+  formula_latex: string | null;
+  family: string | null;
+  tc_max: number | null;
+  tc_ambient: number | null;
+  discovery_year: number | null;
+}
+
+export interface BookmarkedPapersResponse {
+  total: number;
+  results: BookmarkedPaper[];
+}
+
+export interface BookmarkedMaterialsResponse {
+  total: number;
+  results: BookmarkedMaterial[];
+}
+
+export function createBookmark(
+  jwt: string,
+  target_type: BookmarkTargetType,
+  target_id: string,
+) {
+  return request<Bookmark>("/bookmarks", {
+    method: "POST",
+    body: JSON.stringify({ target_type, target_id }),
+    auth: jwt,
+  });
+}
+
+export function deleteBookmark(jwt: string, id: string) {
+  return request<{ message: string }>(`/bookmarks/${id}`, {
+    method: "DELETE",
+    auth: jwt,
+  });
+}
+
+export function listPaperBookmarks(jwt: string) {
+  return request<BookmarkedPapersResponse>("/bookmarks/papers", { auth: jwt });
+}
+
+export function listMaterialBookmarks(jwt: string) {
+  return request<BookmarkedMaterialsResponse>("/bookmarks/materials", { auth: jwt });
+}
+
+// --- Feedback -------------------------------------------------------------
+
+export type FeedbackCategory = "bug" | "feature_request" | "data_issue" | "other";
+
+export interface FeedbackPayload {
+  category: FeedbackCategory;
+  message: string;
+  contact_email?: string | null;
+}
+
+export function submitFeedback(jwt: string, payload: FeedbackPayload) {
+  return request<{ message: string }>("/feedback", {
+    method: "POST",
+    body: JSON.stringify(payload),
+    auth: jwt,
+  });
+}
+
 // --- Phase 3 public/search types ------------------------------------------
 
 export interface SearchFilters {
