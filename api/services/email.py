@@ -44,6 +44,63 @@ async def send_welcome(to: str, name: str, api_key: str) -> None:
     await _dispatch(to, subject, html)
 
 
+async def send_feedback(
+    *,
+    category: str,
+    message: str,
+    submitter_id: str,
+    submitter_name: str,
+    submitter_email: str,
+    contact_email: str | None,
+    user_agent: str | None,
+    client_ip: str | None,
+) -> None:
+    """Email a dashboard feedback submission to the JZIS inbox.
+
+    Always addressed to ``settings.feedback_inbox`` (default
+    ``info@jzis.org``). The ``Reply-To`` header would be nicer but the
+    current ``_dispatch`` helper does not accept extra headers; for now
+    we include the contact address in the body so recipients can just
+    copy-paste it.
+    """
+    settings = get_settings()
+    safe_msg = _escape_html(message)
+    reply_to = contact_email or submitter_email
+    subject = f"[SCLib feedback/{category}] {_summary(message)}"
+    html = f"""<h3>New feedback from SCLib dashboard</h3>
+<p><b>Category:</b> {_escape_html(category)}</p>
+<hr>
+<p><b>From:</b> {_escape_html(submitter_name)} &lt;{_escape_html(submitter_email)}&gt;</p>
+<p><b>User ID:</b> <code>{_escape_html(submitter_id)}</code></p>
+<p><b>Reply to:</b> {_escape_html(reply_to)}</p>
+<p><b>User agent:</b> <code>{_escape_html(user_agent or 'unknown')}</code></p>
+<p><b>Client IP:</b> <code>{_escape_html(client_ip or 'unknown')}</code></p>
+<hr>
+<p><b>Message:</b></p>
+<pre style="white-space: pre-wrap; font-family: inherit;">{safe_msg}</pre>"""
+    await _dispatch(settings.feedback_inbox, subject, html)
+
+
+def _escape_html(s: str) -> str:
+    """Minimal HTML escape. Feedback text is untrusted — a user could
+    paste <script> and we would happily mail it to info@jzis.org."""
+    return (
+        s.replace("&", "&amp;")
+         .replace("<", "&lt;")
+         .replace(">", "&gt;")
+         .replace('"', "&quot;")
+    )
+
+
+def _summary(message: str, max_len: int = 60) -> str:
+    """First line or first N chars, whichever is shorter; used in the
+    email subject so the inbox is readable without opening each message."""
+    first_line = message.strip().splitlines()[0] if message.strip() else ""
+    if len(first_line) <= max_len:
+        return _escape_html(first_line)
+    return _escape_html(first_line[: max_len - 1].rstrip() + "…")
+
+
 _resend_initialised: bool = False
 
 

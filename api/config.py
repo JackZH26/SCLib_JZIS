@@ -61,6 +61,9 @@ class Settings(BaseSettings):
     email_from: str = "SCLib <noreply@jzis.org>"
     # "resend" uses the real API; "stdout" prints to the log (dev/test)
     email_backend: Literal["resend", "stdout"] = "resend"
+    # Destination for POST /feedback. Kept configurable so staging can
+    # divert to a test inbox without a code change.
+    feedback_inbox: str = "info@jzis.org"
 
     # === GCP ===
     gcp_project: str = "jzis-sclib"
