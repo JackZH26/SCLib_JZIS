@@ -46,6 +46,10 @@ class Settings(BaseSettings):
 
     # === Rate limiting ===
     guest_daily_limit: int = 3
+    # Registered users: hard daily cap on data-query endpoints (search,
+    # ask, anything guarded by deps.require_identity). Surfaced on the
+    # dashboard as today-used / today-remaining.
+    registered_daily_limit: int = 999
 
     # === Internal admin hooks ===
     # Shared secret for internal endpoints like POST /stats/refresh that
