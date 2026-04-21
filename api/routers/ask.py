@@ -20,7 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from models import get_db
-from models.db import Chunk
+from models.db import AskHistory, Chunk
 from models.search import AskRequest, AskResponse, AskSource
 from routers.deps import Identity, require_identity
 from services import rag, vector_search
@@ -45,11 +45,18 @@ async def ask(
 
     neighbors = await asyncio.to_thread(_vs_lookup)
     if not neighbors:
+        latency_ms = int((time.perf_counter() - t0) * 1000)
+        empty_answer = "No indexed sources match this question."
+        if identity.user is not None:
+            await _persist_history(
+                db, identity.user.id, body.question, empty_answer,
+                [], 0, latency_ms, body.language,
+            )
         return AskResponse(
-            answer="No indexed sources match this question.",
+            answer=empty_answer,
             sources=[],
             tokens_used=0,
-            query_time_ms=int((time.perf_counter() - t0) * 1000),
+            query_time_ms=latency_ms,
             guest_remaining=identity.guest_remaining,
         )
 
@@ -111,13 +118,53 @@ async def ask(
         language=body.language,
     )
 
+    latency_ms = int((time.perf_counter() - t0) * 1000)
+    if identity.user is not None:
+        await _persist_history(
+            db, identity.user.id, body.question, result.answer,
+            [s.model_dump(mode="json") for s in sources_out],
+            result.tokens_used, latency_ms, body.language,
+        )
+
     return AskResponse(
         answer=result.answer,
         sources=sources_out,
         tokens_used=result.tokens_used,
-        query_time_ms=int((time.perf_counter() - t0) * 1000),
+        query_time_ms=latency_ms,
         guest_remaining=identity.guest_remaining,
     )
+
+
+async def _persist_history(
+    db: AsyncSession,
+    user_id,
+    question: str,
+    answer: str,
+    sources: list[dict],
+    tokens_used: int | None,
+    latency_ms: int,
+    language: str | None,
+) -> None:
+    """Record a single Ask interaction for the dashboard history tab.
+
+    Failures here never fail the outer /ask response — the user already
+    has their answer, and history writes are eventually-consistent with
+    the 90-day prune job. We log and swallow.
+    """
+    try:
+        db.add(AskHistory(
+            user_id=user_id,
+            question=question,
+            answer=answer,
+            sources=sources,
+            tokens_used=tokens_used,
+            latency_ms=latency_ms,
+            language=language,
+        ))
+        await db.commit()
+    except Exception:  # noqa: BLE001
+        log.exception("ask_history write failed (non-fatal)")
+        await db.rollback()
 
 
 # ---------------------------------------------------------------------------
