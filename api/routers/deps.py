@@ -19,8 +19,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from datetime import datetime, timezone
+
 from fastapi import Depends, Header, HTTPException, Request, status
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import logging
@@ -29,7 +31,12 @@ from uuid import UUID
 from models import get_db
 from models.db import ApiKey, User
 from services import auth_service
-from services.rate_limit import consume_guest, get_guest_remaining
+from services.rate_limit import (
+    consume_guest,
+    consume_user,
+    get_guest_remaining,
+    get_user_remaining,
+)
 
 log = logging.getLogger(__name__)
 
@@ -38,13 +45,15 @@ log = logging.getLogger(__name__)
 class Identity:
     """Who is making this request?
 
-    Exactly one of ``user`` / ``guest_ip`` is set. ``guest_remaining`` is
-    the remaining daily quota **after** consuming this request.
+    Exactly one of ``user`` / ``guest_ip`` is set. The ``_remaining``
+    field is the remaining daily quota **after** consuming this request
+    — meaningful only for the matching auth path (guest or user).
     """
 
     user: User | None
     guest_ip: str | None
     guest_remaining: int | None
+    user_remaining: int | None = None
 
     @property
     def is_guest(self) -> bool:
@@ -101,6 +110,31 @@ async def _resolve_jwt_user(
     return user
 
 
+async def _enforce_user_quota(user: User) -> int:
+    """Consume one daily-quota slot for ``user`` and 429 if over cap.
+
+    Returns the NEW remaining count (>= 0) for the caller to forward
+    into the Identity. Shared by the API-key and JWT branches of
+    ``require_identity`` so both enforce the same 999/day rule.
+    """
+    from config import get_settings
+
+    remaining = await consume_user(user.id)
+    if remaining < 0:
+        limit = get_settings().registered_daily_limit
+        raise HTTPException(
+            status.HTTP_429_TOO_MANY_REQUESTS,
+            detail={
+                "error": "user_quota_exceeded",
+                "message": f"Daily quota of {limit} queries exhausted. "
+                           "Quota resets at 00:00 UTC.",
+                "remaining": 0,
+                "limit": limit,
+            },
+        )
+    return remaining
+
+
 async def require_identity(
     request: Request,
     x_api_key: str | None = Header(default=None, alias="X-API-Key"),
@@ -113,7 +147,11 @@ async def require_identity(
     2. ``Authorization: Bearer <jwt>`` → decode JWT
     3. No credentials → guest path (rate-limited by IP)
 
-    Registered users (via key or JWT) are unlimited per §6 of the spec.
+    Registered users (key OR JWT) are subject to
+    ``registered_daily_limit`` (default 999/day, Redis-tracked).
+    API-key requests additionally bump ``api_keys.last_used`` and
+    ``api_keys.total_requests`` so the dashboard's Keys tab can show
+    per-key activity.
     """
     # 1. API key
     if x_api_key:
@@ -130,12 +168,31 @@ async def require_identity(
         user = await db.get(User, ak.user_id)
         if user is None or not user.is_active:
             raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Inactive account")
-        return Identity(user=user, guest_ip=None, guest_remaining=None)
+        remaining = await _enforce_user_quota(user)
+        # Atomic UPDATE avoids a read-modify-write race when the same
+        # key fires parallel requests.
+        await db.execute(
+            update(ApiKey)
+            .where(ApiKey.id == ak.id)
+            .values(
+                last_used=datetime.now(timezone.utc),
+                total_requests=ApiKey.total_requests + 1,
+            )
+        )
+        await db.commit()
+        return Identity(
+            user=user, guest_ip=None, guest_remaining=None,
+            user_remaining=remaining,
+        )
 
     # 2. JWT Bearer token
     jwt_user = await _resolve_jwt_user(request, db)
     if jwt_user is not None:
-        return Identity(user=jwt_user, guest_ip=None, guest_remaining=None)
+        remaining = await _enforce_user_quota(jwt_user)
+        return Identity(
+            user=jwt_user, guest_ip=None, guest_remaining=None,
+            user_remaining=remaining,
+        )
 
     # 3. Guest path
     ip = _client_ip(request)
@@ -159,12 +216,13 @@ async def peek_identity(
     x_api_key: str | None = Header(default=None, alias="X-API-Key"),
     db: AsyncSession = Depends(get_db),
 ) -> Identity:
-    """Like ``require_identity`` but **does not consume** guest quota.
+    """Like ``require_identity`` but **does not consume** quota.
 
     Used by public read endpoints (materials / papers / timeline / stats)
     that the spec §7 lists as free. We still resolve the API key / JWT so
     responses can be personalized for logged-in users, and we still
-    surface the current guest remaining so the UI can show the badge.
+    surface the current guest / user remaining so the UI can show the
+    badge without spending a slot.
     """
     # 1. API key
     if x_api_key:
@@ -179,12 +237,20 @@ async def peek_identity(
         if ak is not None:
             user = await db.get(User, ak.user_id)
             if user is not None and user.is_active:
-                return Identity(user=user, guest_ip=None, guest_remaining=None)
+                remaining = await get_user_remaining(user.id)
+                return Identity(
+                    user=user, guest_ip=None, guest_remaining=None,
+                    user_remaining=remaining,
+                )
 
     # 2. JWT Bearer token
     jwt_user = await _resolve_jwt_user(request, db)
     if jwt_user is not None:
-        return Identity(user=jwt_user, guest_ip=None, guest_remaining=None)
+        remaining = await get_user_remaining(jwt_user.id)
+        return Identity(
+            user=jwt_user, guest_ip=None, guest_remaining=None,
+            user_remaining=remaining,
+        )
 
     # 3. Guest
     ip = _client_ip(request)
