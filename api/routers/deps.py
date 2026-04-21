@@ -122,6 +122,13 @@ async def _enforce_user_quota(user: User) -> int:
     remaining = await consume_user(user.id)
     if remaining < 0:
         limit = get_settings().registered_daily_limit
+        # Log at WARNING so ops can diagnose "my quota looked wrong"
+        # reports from the Grafana / log-aggregator side without
+        # instrumenting a per-user counter.
+        log.warning(
+            "user_quota_exceeded user=%s email=%s limit=%d",
+            user.id, user.email, limit,
+        )
         raise HTTPException(
             status.HTTP_429_TOO_MANY_REQUESTS,
             detail={

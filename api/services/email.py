@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from html import escape as _h
 
 import resend
 
@@ -64,41 +65,34 @@ async def send_feedback(
     copy-paste it.
     """
     settings = get_settings()
-    safe_msg = _escape_html(message)
     reply_to = contact_email or submitter_email
     subject = f"[SCLib feedback/{category}] {_summary(message)}"
+    # All user-controlled inputs below pass through html.escape — feedback
+    # is untrusted, and this body ends up in our own inbox where a
+    # well-meaning click could execute injected markup.
     html = f"""<h3>New feedback from SCLib dashboard</h3>
-<p><b>Category:</b> {_escape_html(category)}</p>
+<p><b>Category:</b> {_h(category)}</p>
 <hr>
-<p><b>From:</b> {_escape_html(submitter_name)} &lt;{_escape_html(submitter_email)}&gt;</p>
-<p><b>User ID:</b> <code>{_escape_html(submitter_id)}</code></p>
-<p><b>Reply to:</b> {_escape_html(reply_to)}</p>
-<p><b>User agent:</b> <code>{_escape_html(user_agent or 'unknown')}</code></p>
-<p><b>Client IP:</b> <code>{_escape_html(client_ip or 'unknown')}</code></p>
+<p><b>From:</b> {_h(submitter_name)} &lt;{_h(submitter_email)}&gt;</p>
+<p><b>User ID:</b> <code>{_h(submitter_id)}</code></p>
+<p><b>Reply to:</b> {_h(reply_to)}</p>
+<p><b>User agent:</b> <code>{_h(user_agent or 'unknown')}</code></p>
+<p><b>Client IP:</b> <code>{_h(client_ip or 'unknown')}</code></p>
 <hr>
 <p><b>Message:</b></p>
-<pre style="white-space: pre-wrap; font-family: inherit;">{safe_msg}</pre>"""
+<pre style="white-space: pre-wrap; font-family: inherit;">{_h(message)}</pre>"""
     await _dispatch(settings.feedback_inbox, subject, html)
-
-
-def _escape_html(s: str) -> str:
-    """Minimal HTML escape. Feedback text is untrusted — a user could
-    paste <script> and we would happily mail it to info@jzis.org."""
-    return (
-        s.replace("&", "&amp;")
-         .replace("<", "&lt;")
-         .replace(">", "&gt;")
-         .replace('"', "&quot;")
-    )
 
 
 def _summary(message: str, max_len: int = 60) -> str:
     """First line or first N chars, whichever is shorter; used in the
     email subject so the inbox is readable without opening each message."""
     first_line = message.strip().splitlines()[0] if message.strip() else ""
-    if len(first_line) <= max_len:
-        return _escape_html(first_line)
-    return _escape_html(first_line[: max_len - 1].rstrip() + "…")
+    if len(first_line) > max_len:
+        first_line = first_line[: max_len - 1].rstrip() + "…"
+    # Subjects don't need HTML escaping, but do strip CR/LF so a user
+    # cannot inject additional headers by pasting a newline.
+    return first_line.replace("\r", "").replace("\n", " ")
 
 
 _resend_initialised: bool = False
