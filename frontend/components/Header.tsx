@@ -4,12 +4,17 @@
  * After login the JWT is in localStorage → we fetch /me to get the user
  * name + avatar and render them instead of the generic "Account" button.
  * Falls back to "Account" while loading or when not logged in.
+ *
+ * Because the header is always mounted, we also subscribe to the
+ * same-tab auth-change event (see lib/auth-storage.ts) so the chip
+ * flips to the logged-in state the moment /auth/callback or the
+ * login form writes a token — no refresh or navigation needed.
  */
 "use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { loadToken } from "@/lib/auth-storage";
+import { loadToken, onAuthChange } from "@/lib/auth-storage";
 import { me, type User, ApiError } from "@/lib/api";
 
 const NAV = [
@@ -24,16 +29,25 @@ export function Header() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const token = loadToken();
-    if (!token) return;
-    me(token)
-      .then(setUser)
-      .catch((err) => {
-        // Token expired / invalid — silently ignore, show Account button
-        if (err instanceof ApiError && err.status === 401) {
-          // Don't clear token here — let dashboard handle that
-        }
-      });
+    function refresh() {
+      const token = loadToken();
+      if (!token) {
+        setUser(null);
+        return;
+      }
+      me(token)
+        .then(setUser)
+        .catch((err) => {
+          // Token expired / invalid — silently ignore, show Account button.
+          // Don't clear token here; let the dashboard shell handle that on
+          // its own /me call.
+          if (err instanceof ApiError && err.status === 401) {
+            setUser(null);
+          }
+        });
+    }
+    refresh(); // on mount — handles a reload with a pre-existing token
+    return onAuthChange(refresh); // and on any same-tab save/clear
   }, []);
 
   return (
