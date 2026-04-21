@@ -17,7 +17,7 @@ from datetime import datetime, timedelta, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
-from sqlalchemy import or_, select, update
+from sqlalchemy import or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
@@ -56,43 +56,12 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 # ---------------------------------------------------------------------------
-# Dependencies (re-exported so Phase 3 routers can enforce auth via X-API-Key)
+# Dependencies
 # ---------------------------------------------------------------------------
-
-async def current_user_from_api_key(
-    x_api_key: str | None = Header(default=None, alias="X-API-Key"),
-    db: AsyncSession = Depends(get_db),
-) -> User:
-    """Resolve X-API-Key header to an active User.
-
-    Raises 401 if missing/invalid/revoked. Phase 3 routers will Depend on
-    this; routers that also allow guests will have their own guarded
-    dependency that tolerates a missing header.
-    """
-    if not x_api_key:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Missing X-API-Key")
-    key_hash = auth_service.hash_api_key(x_api_key)
-    q = await db.execute(
-        select(ApiKey).where(ApiKey.key_hash == key_hash, ApiKey.revoked.is_(False))
-    )
-    ak = q.scalar_one_or_none()
-    if ak is None:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid API key")
-    user = await db.get(User, ak.user_id)
-    if user is None or not user.is_active:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User inactive")
-    # Targeted UPDATE to avoid the read-modify-write race when the
-    # same key is used concurrently from multiple requests. SQLAlchemy's
-    # ORM update on a detached attribute would serialize on the row
-    # version; an explicit UPDATE … WHERE id= is atomic at the DB level.
-    await db.execute(
-        update(ApiKey)
-        .where(ApiKey.id == ak.id)
-        .values(last_used=datetime.now(timezone.utc))
-    )
-    await db.commit()
-    return user
-
+# X-API-Key auth for data endpoints lives in routers.deps.require_identity —
+# that path both validates the key AND enforces the per-user daily quota,
+# so there is no second implementation here. JWT auth for account-
+# management endpoints is below.
 
 async def current_user_from_jwt(
     authorization: str | None = Header(default=None),
