@@ -24,7 +24,7 @@ const NAV = [
   { href: "/dashboard/keys",     label: "API Keys" },
   { href: "/dashboard/history",  label: "Ask History" },
   { href: "/dashboard/saved",    label: "Bookmarks" },
-  { href: "/dashboard/feedback", label: "Feedback",     placeholder: true },
+  { href: "/dashboard/feedback", label: "Feedback" },
 ];
 
 export default function DashboardLayout({
