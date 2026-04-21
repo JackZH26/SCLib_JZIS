@@ -22,8 +22,8 @@ import { DashboardUserProvider } from "@/components/dashboard/user-context";
 const NAV = [
   { href: "/dashboard",          label: "Overview" },
   { href: "/dashboard/keys",     label: "API Keys" },
-  { href: "/dashboard/history",  label: "Ask History",  placeholder: true },
-  { href: "/dashboard/saved",    label: "Bookmarks",    placeholder: true },
+  { href: "/dashboard/history",  label: "Ask History" },
+  { href: "/dashboard/saved",    label: "Bookmarks" },
   { href: "/dashboard/feedback", label: "Feedback",     placeholder: true },
 ];
 
