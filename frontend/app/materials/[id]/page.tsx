@@ -18,6 +18,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMaterial } from "@/lib/api";
 import { ApiError } from "@/lib/api";
+import { BookmarkButton } from "@/components/BookmarkButton";
 
 export default async function MaterialDetailPage({
   params,
@@ -50,7 +51,12 @@ export default async function MaterialDetailPage({
         <Link href="/materials" className="text-sm text-slate-500 hover:underline">
           ← Materials
         </Link>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight">{mat.formula}</h1>
+        <div className="mt-2 flex items-start justify-between gap-4">
+          <h1 className="text-3xl font-bold tracking-tight">{mat.formula}</h1>
+          <div className="shrink-0 pt-1">
+            <BookmarkButton targetType="material" targetId={mat.id} />
+          </div>
+        </div>
         <p className="mt-1 text-sm text-slate-600">
           {[mat.family, mat.subfamily, mat.crystal_structure, mat.structure_phase]
             .filter(Boolean)

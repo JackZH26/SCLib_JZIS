@@ -9,6 +9,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ApiError, getPaper, getSimilar } from "@/lib/api";
+import { BookmarkButton } from "@/components/BookmarkButton";
 import { PaperCard } from "@/components/PaperCard";
 
 export default async function PaperDetailPage({
@@ -33,9 +34,14 @@ export default async function PaperDetailPage({
         <Link href="/search" className="text-sm text-slate-500 hover:underline">
           ← Back to search
         </Link>
-        <h1 className="mt-2 text-3xl font-bold leading-tight tracking-tight">
-          {paper.title}
-        </h1>
+        <div className="mt-2 flex items-start justify-between gap-4">
+          <h1 className="text-3xl font-bold leading-tight tracking-tight">
+            {paper.title}
+          </h1>
+          <div className="shrink-0 pt-1">
+            <BookmarkButton targetType="paper" targetId={paper.id} />
+          </div>
+        </div>
         <p className="mt-2 text-sm text-slate-600">
           {paper.authors.join(", ")}
         </p>
