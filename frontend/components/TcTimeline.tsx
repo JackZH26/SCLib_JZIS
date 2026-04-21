@@ -40,6 +40,7 @@ const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 const FAMILY_COLORS: Record<string, string> = {
   cuprate:       "#2563eb",   // blue
   iron_based:    "#ca8a04",   // amber
+  nickelate:     "#0891b2",   // cyan — distinct from cuprate blue
   hydride:       "#dc2626",   // red
   mgb2:          "#059669",   // emerald
   heavy_fermion: "#7c3aed",   // violet
@@ -51,6 +52,7 @@ const FAMILY_COLORS: Record<string, string> = {
 const FAMILY_LABEL: Record<string, string> = {
   cuprate:       "Cuprate",
   iron_based:    "Iron-based",
+  nickelate:     "Nickelate",
   hydride:       "Hydride",
   mgb2:          "MgB₂",
   heavy_fermion: "Heavy fermion",

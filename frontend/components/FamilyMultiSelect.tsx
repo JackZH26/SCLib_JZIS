@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 export const FAMILY_OPTIONS: { slug: string; label: string }[] = [
   { slug: "cuprate",       label: "Cuprate" },
   { slug: "iron_based",    label: "Iron-based" },
+  { slug: "nickelate",     label: "Nickelate" },
   { slug: "hydride",       label: "Hydride" },
   { slug: "mgb2",          label: "MgB₂" },
   { slug: "heavy_fermion", label: "Heavy fermion" },
