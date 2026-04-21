@@ -22,7 +22,7 @@ from __future__ import annotations
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func, select
+from sqlalchemy import func, insert, literal, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -38,6 +38,7 @@ from models.personal import (
 )
 from models.user import MessageResponse
 from routers.auth import current_user_from_jwt
+from services.authors import names as _author_names
 
 router = APIRouter(prefix="/bookmarks", tags=["bookmarks"])
 
@@ -48,29 +49,49 @@ async def create_bookmark(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(current_user_from_jwt),
 ) -> BookmarkRead:
-    # Confirm the target exists so we don't accumulate dead pointers.
-    # This also gives the user a clear 404 instead of a silent success
-    # that renders as "Untitled" on the dashboard later.
-    if body.target_type == "paper":
-        exists = await db.get(Paper, body.target_id)
-    else:  # "material"
-        exists = await db.get(Material, body.target_id)
-    if exists is None:
-        raise HTTPException(404, f"{body.target_type} '{body.target_id}' not found")
+    """Bookmark a paper or material atomically.
 
-    bm = Bookmark(
-        user_id=user.id,
-        target_type=body.target_type,
-        target_id=body.target_id,
+    Uses an INSERT ... SELECT ... WHERE target exists pattern so the
+    existence check and the insert happen in one round-trip and share
+    a row-level view of the target table. If the target was deleted
+    between a separate SELECT and INSERT (previous implementation),
+    we would have left a dangling bookmark; now we return 404.
+    Duplicate row → IntegrityError → 409 as before.
+    """
+    target_table = Paper if body.target_type == "paper" else Material
+
+    src = (
+        select(
+            literal(user.id).label("user_id"),
+            literal(body.target_type).label("target_type"),
+            target_table.id.label("target_id"),
+        )
+        .where(target_table.id == body.target_id)
     )
-    db.add(bm)
+    stmt = (
+        insert(Bookmark)
+        .from_select(["user_id", "target_type", "target_id"], src)
+        .returning(Bookmark.id, Bookmark.created_at)
+    )
     try:
-        await db.commit()
+        result = await db.execute(stmt)
     except IntegrityError:
         await db.rollback()
         raise HTTPException(409, "Already bookmarked") from None
-    await db.refresh(bm)
-    return BookmarkRead.model_validate(bm)
+
+    row = result.first()
+    if row is None:
+        # SELECT matched zero rows — target doesn't exist. Nothing was
+        # inserted, but commit/rollback status is clean.
+        raise HTTPException(404, f"{body.target_type} '{body.target_id}' not found")
+
+    await db.commit()
+    return BookmarkRead(
+        id=row.id,
+        target_type=body.target_type,
+        target_id=body.target_id,
+        created_at=row.created_at,
+    )
 
 
 @router.delete("/{bookmark_id}", response_model=MessageResponse)
@@ -117,7 +138,7 @@ async def list_paper_bookmarks(
             target_id=bm.target_id,
             created_at=bm.created_at,
             title=paper.title,
-            authors=_authors_names(paper.authors or []),
+            authors=_author_names(paper.authors),
             date_submitted=paper.date_submitted,
             material_family=paper.material_family,
             status=paper.status,
@@ -163,23 +184,3 @@ async def list_material_bookmarks(
     return BookmarkedMaterialsResponse(total=total, results=rows)
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-def _authors_names(authors: list) -> list[str]:
-    """Flatten the authors JSONB blob to a list of plain strings.
-
-    Papers store authors as either ``["Alice Smith", ...]`` or
-    ``[{"name": "Alice Smith"}, ...]`` depending on ingestion source.
-    This normalizes both so the dashboard can just render strings.
-    """
-    out: list[str] = []
-    for a in authors:
-        if isinstance(a, str):
-            out.append(a)
-        elif isinstance(a, dict):
-            n = a.get("name") or a.get("family") or ""
-            if n:
-                out.append(str(n))
-    return out
