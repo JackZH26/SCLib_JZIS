@@ -18,7 +18,18 @@ from starlette.middleware.sessions import SessionMiddleware
 from config import get_settings
 from models import get_session_factory
 from models.db import get_engine
-from routers import ask, auth, materials, papers, search, similar, stats, timeline
+from routers import (
+    ask,
+    auth,
+    bookmarks,
+    history,
+    materials,
+    papers,
+    search,
+    similar,
+    stats,
+    timeline,
+)
 from services.stats_refresh import refresh_dashboard_cache
 
 logging.basicConfig(
@@ -59,6 +70,43 @@ async def _periodic_stats_refresh(interval_sec: int) -> None:
         await asyncio.sleep(interval_sec)
 
 
+async def _periodic_ask_history_prune(interval_sec: int, retention_days: int) -> None:
+    """Delete Ask history rows older than ``retention_days``.
+
+    Product decision: users keep a rolling 90-day window. We run this
+    in-process (daily tick) rather than via cron so Phase B has no
+    ops dependency — if the API is up, history stays bounded.
+    A larger deployment would likely move this to a batch job.
+    """
+    from datetime import datetime, timedelta, timezone
+
+    from sqlalchemy import delete
+
+    from models.db import AskHistory
+
+    factory = get_session_factory()
+    # Offset from the stats refresh so we don't pile two heavy loops on
+    # the same 30-second startup slot.
+    await asyncio.sleep(90)
+    while True:
+        try:
+            cutoff = datetime.now(timezone.utc) - timedelta(days=retention_days)
+            async with factory() as session:
+                result = await session.execute(
+                    delete(AskHistory).where(AskHistory.created_at < cutoff)
+                )
+                await session.commit()
+            deleted = result.rowcount or 0
+            if deleted:
+                log.info("ask_history prune: removed %d rows older than %dd",
+                         deleted, retention_days)
+        except asyncio.CancelledError:
+            raise
+        except Exception:  # noqa: BLE001
+            log.exception("ask_history prune failed; retrying on next tick")
+        await asyncio.sleep(interval_sec)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = get_settings()
@@ -82,13 +130,30 @@ async def lifespan(app: FastAPI):
         refresh_task = None
         log.info("stats_cache auto-refresh disabled (interval=%d)", interval)
 
+    # Ask-history pruning runs once a day (86400s) and deletes rows
+    # older than 90 days — matches the locked product decision.
+    prune_interval = int(os.environ.get("SCLIB_ASK_HISTORY_PRUNE_INTERVAL_SEC", "86400"))
+    retention_days = int(os.environ.get("SCLIB_ASK_HISTORY_RETENTION_DAYS", "90"))
+    if prune_interval > 0 and retention_days > 0:
+        prune_task = asyncio.create_task(
+            _periodic_ask_history_prune(prune_interval, retention_days),
+            name="sclib-ask-history-prune",
+        )
+        log.info("ask_history prune scheduled every %ds (retain %dd)",
+                 prune_interval, retention_days)
+    else:
+        prune_task = None
+        log.info("ask_history prune disabled")
+
     try:
         yield
     finally:
-        if refresh_task is not None:
-            refresh_task.cancel()
+        for t in (refresh_task, prune_task):
+            if t is None:
+                continue
+            t.cancel()
             try:
-                await refresh_task
+                await t
             except (asyncio.CancelledError, Exception):  # noqa: BLE001
                 pass
         engine = get_engine()
@@ -157,6 +222,8 @@ app.include_router(papers.router, prefix="/v1")
 app.include_router(similar.router, prefix="/v1")
 app.include_router(stats.router, prefix="/v1")
 app.include_router(timeline.router, prefix="/v1")
+app.include_router(history.router, prefix="/v1")
+app.include_router(bookmarks.router, prefix="/v1")
 
 
 @app.get("/v1/health", tags=["health"])
