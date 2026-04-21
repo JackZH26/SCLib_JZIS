@@ -108,51 +108,52 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
       <table className="w-full text-sm">
         <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
           <tr>
-            <th className="px-4 py-3 text-left font-medium">Formula</th>
-            <th className="px-4 py-3 text-left font-medium">Family</th>
-            <th className="px-4 py-3 text-right font-medium">Tc max (K)</th>
-            <th className="px-4 py-3 text-right font-medium">Tc ambient</th>
-            <th className="px-4 py-3 text-left font-medium">Pairing</th>
-            <th className="px-4 py-3 text-left font-medium">Phase</th>
-            <th className="px-4 py-3 text-left font-medium">Flags</th>
-            <th className="px-4 py-3 text-right font-medium">Discovery</th>
-            <th className="px-4 py-3 text-right font-medium">Papers</th>
-            <th className="px-4 py-3 text-left font-medium">Data</th>
+            <th className="px-4 py-2 text-left font-medium">Formula</th>
+            <th className="px-4 py-2 text-left font-medium">Family</th>
+            <th className="px-4 py-2 text-right font-medium">Tc max (K)</th>
+            <th className="px-4 py-2 text-right font-medium">Tc ambient</th>
+            <th className="px-4 py-2 text-left font-medium">Pairing</th>
+            <th className="px-4 py-2 text-left font-medium">Phase</th>
+            <th className="px-4 py-2 text-left font-medium">Flags</th>
+            <th className="px-4 py-2 text-right font-medium">Discovery</th>
+            <th className="px-4 py-2 text-right font-medium">Papers</th>
+            <th className="px-4 py-2 text-left font-medium">Data</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">
           {rows.map((m) => (
             <tr key={m.id} className="hover:bg-slate-50">
-              <td className="px-4 py-3">
+              <td className="px-4 py-2">
                 <Link
                   href={`/materials/${encodeURIComponent(m.id)}`}
-                  className="font-medium text-slate-900 hover:underline"
+                  className="block max-w-[18rem] truncate font-medium text-slate-900 hover:underline"
+                  title={m.formula}
                 >
                   {m.formula}
                 </Link>
               </td>
-              <td className="px-4 py-3 text-slate-600">{m.family ?? "—"}</td>
-              <td className="px-4 py-3 text-right tabular-nums text-slate-800">
+              <td className="px-4 py-2 text-slate-600">{m.family ?? "—"}</td>
+              <td className="px-4 py-2 text-right tabular-nums text-slate-800">
                 {m.tc_max != null ? m.tc_max.toFixed(1) : "—"}
               </td>
-              <td className="px-4 py-3 text-right tabular-nums text-slate-600">
+              <td className="px-4 py-2 text-right tabular-nums text-slate-600">
                 {m.tc_ambient != null ? m.tc_ambient.toFixed(1) : "—"}
               </td>
-              <td className="px-4 py-3">
+              <td className="px-4 py-2">
                 {m.pairing_symmetry ? (
                   <Badge tone="accent">{m.pairing_symmetry}</Badge>
                 ) : (
                   <span className="text-slate-400">—</span>
                 )}
               </td>
-              <td className="px-4 py-3">
+              <td className="px-4 py-2">
                 {m.structure_phase ? (
                   <Badge tone="neutral">{m.structure_phase}</Badge>
                 ) : (
                   <span className="text-slate-400">—</span>
                 )}
               </td>
-              <td className="px-4 py-3">
+              <td className="px-4 py-2">
                 <div className="flex flex-wrap gap-1">
                   {m.ambient_sc === true && (
                     <Badge tone="accent">ambient</Badge>
@@ -171,13 +172,13 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
                   )}
                 </div>
               </td>
-              <td className="px-4 py-3 text-right tabular-nums text-slate-600">
+              <td className="px-4 py-2 text-right tabular-nums text-slate-600">
                 {m.discovery_year ?? "—"}
               </td>
-              <td className="px-4 py-3 text-right tabular-nums text-slate-600">
+              <td className="px-4 py-2 text-right tabular-nums text-slate-600">
                 {m.total_papers}
               </td>
-              <td className="px-4 py-3">
+              <td className="px-4 py-2">
                 <CompletenessBar filled={completeness(m)} />
               </td>
             </tr>
