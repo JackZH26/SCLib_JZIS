@@ -145,6 +145,83 @@ class ApiKey(Base):
     user: Mapped[User] = relationship(back_populates="api_keys")
 
 
+class AskHistory(Base):
+    """Per-user record of /ask interactions.
+
+    The aggregated source list (JSONB) is a snapshot of the AskSource[]
+    that the API returned; the dashboard can re-render the entry
+    without re-hitting the vector store. A periodic task in main.py
+    prunes rows older than 90 days.
+    """
+
+    __tablename__ = "ask_history"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True,
+        server_default=sa.text("gen_random_uuid()"),
+        default=uuid.uuid4,
+    )
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    question: Mapped[str] = mapped_column(Text, nullable=False)
+    answer: Mapped[str] = mapped_column(Text, nullable=False)
+    sources: Mapped[list[Any]] = mapped_column(
+        JSONB, server_default=sa.text("'[]'::jsonb"), default=list, nullable=False
+    )
+    tokens_used: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    latency_ms: Mapped[int] = mapped_column(Integer, nullable=False)
+    language: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False
+    )
+
+    __table_args__ = (
+        Index("idx_ask_history_user_created", "user_id", sa.text("created_at DESC")),
+        Index("idx_ask_history_created", "created_at"),
+    )
+
+
+class Bookmark(Base):
+    """User-private bookmark of a paper or material.
+
+    target_type is constrained to {'paper', 'material'} at the DB level;
+    (user_id, target_type, target_id) is unique so double-POSTs 409.
+    Cascade-deletes with the owning user.
+    """
+
+    __tablename__ = "bookmarks"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True,
+        server_default=sa.text("gen_random_uuid()"),
+        default=uuid.uuid4,
+    )
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    target_type: Mapped[str] = mapped_column(String(20), nullable=False)
+    target_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "target_type IN ('paper', 'material')",
+            name="ck_bookmarks_target_type",
+        ),
+        sa.UniqueConstraint(
+            "user_id", "target_type", "target_id",
+            name="uq_bookmarks_user_target",
+        ),
+        Index(
+            "idx_bookmarks_user_type_created",
+            "user_id", "target_type", sa.text("created_at DESC"),
+        ),
+    )
+
+
 # ---------------------------------------------------------------------------
 # Papers / Materials / Chunks
 # ---------------------------------------------------------------------------
