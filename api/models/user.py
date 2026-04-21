@@ -8,7 +8,13 @@ from __future__ import annotations
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
+
+
+# ORCID is always 16 digits grouped 4-4-4-4 with hyphens; the final
+# character may be 'X' (ISO 7064 MOD 11-2 check digit). We only enforce
+# shape, not checksum — clients that paste the URL get it stripped.
+_ORCID_RE = r"^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$"
 
 
 class UserCreate(BaseModel):
@@ -27,15 +33,48 @@ class UserRead(BaseModel):
 
     id: UUID
     email: str
+    email_verified: bool = False
     name: str
     institution: str | None
     country: str | None
     research_area: str | None
+    bio: str | None = None
+    orcid: str | None = None
     created_at: datetime
     is_active: bool
     auth_provider: str = "local"
     avatar_url: str | None = None
     scopes: list[str] = ["basic", "sclib"]
+
+
+class UserUpdate(BaseModel):
+    """PATCH /me payload — only fields the user is allowed to edit.
+
+    Every field is optional: omit to leave untouched, pass ``null`` to
+    clear. Email / id / auth_provider / is_active are intentionally
+    absent — those are system-owned.
+    """
+
+    name: str | None = Field(None, min_length=2, max_length=255)
+    institution: str | None = Field(None, max_length=500)
+    country: str | None = Field(None, max_length=100)
+    research_area: str | None = Field(None, max_length=255)
+    bio: str | None = Field(None, max_length=2000)
+    orcid: str | None = Field(None)
+
+    @field_validator("orcid")
+    @classmethod
+    def _validate_orcid(cls, v: str | None) -> str | None:
+        if v in (None, ""):
+            return None
+        import re
+        # Accept either raw ID or orcid.org URL form
+        v = v.strip().removeprefix("https://orcid.org/").removeprefix("orcid.org/")
+        if not re.match(_ORCID_RE, v):
+            raise ValueError(
+                "ORCID must look like 0000-0002-1825-0097 (16 digits, last may be X)"
+            )
+        return v
 
 
 class LoginRequest(BaseModel):
@@ -62,6 +101,8 @@ class ApiKeyRead(BaseModel):
     created_at: datetime
     last_used: datetime | None
     revoked: bool
+    revoked_at: datetime | None = None
+    total_requests: int = 0
 
 
 class ApiKeyWithSecret(ApiKeyRead):
@@ -85,3 +126,20 @@ class VerifyResponse(BaseModel):
 
 class MessageResponse(BaseModel):
     message: str
+
+
+class UsageStats(BaseModel):
+    """GET /auth/usage — per-user quota + historical counters.
+
+    Today numbers come from Redis (``user_quota:YYYY-MM-DD:{user_id}``),
+    week is the sum of the last 7 daily keys, all-time is the SUM of
+    ``api_keys.total_requests`` for the user (so API-key traffic is
+    canonical; dashboard-originated JWT calls are not counted as
+    "query usage" for this metric).
+    """
+
+    today_used: int
+    today_remaining: int
+    daily_limit: int
+    week_used: int
+    all_time_used: int
