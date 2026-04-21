@@ -152,15 +152,28 @@ async function request<T>(
 export interface User {
   id: string;
   email: string;
+  email_verified: boolean;
   name: string;
   institution: string | null;
   country: string | null;
   research_area: string | null;
+  bio: string | null;
+  orcid: string | null;
   created_at: string;
   is_active: boolean;
   auth_provider: string;
   avatar_url: string | null;
   scopes: string[];
+}
+
+/** PATCH /auth/me payload — only the fields the user may edit. */
+export interface UpdateUserPayload {
+  name?: string | null;
+  institution?: string | null;
+  country?: string | null;
+  research_area?: string | null;
+  bio?: string | null;
+  orcid?: string | null;
 }
 
 export interface ApiKey {
@@ -170,10 +183,20 @@ export interface ApiKey {
   created_at: string;
   last_used: string | null;
   revoked: boolean;
+  revoked_at: string | null;
+  total_requests: number;
 }
 
 export interface ApiKeyWithSecret extends ApiKey {
   key: string;
+}
+
+export interface UsageStats {
+  today_used: number;
+  today_remaining: number;
+  daily_limit: number;
+  week_used: number;
+  all_time_used: number;
 }
 
 // --- auth endpoints --------------------------------------------------------
@@ -213,6 +236,18 @@ export function me(jwt: string) {
   return request<User>("/auth/me", { auth: jwt });
 }
 
+export function updateMe(jwt: string, payload: UpdateUserPayload) {
+  return request<User>("/auth/me", {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+    auth: jwt,
+  });
+}
+
+export function listKeys(jwt: string) {
+  return request<ApiKey[]>("/auth/keys", { auth: jwt });
+}
+
 export function createKey(jwt: string, name: string) {
   return request<ApiKeyWithSecret>("/auth/keys", {
     method: "POST",
@@ -226,6 +261,10 @@ export function revokeKey(jwt: string, keyId: string) {
     method: "DELETE",
     auth: jwt,
   });
+}
+
+export function getUsage(jwt: string) {
+  return request<UsageStats>("/auth/usage", { auth: jwt });
 }
 
 // --- Phase 3 public/search types ------------------------------------------
