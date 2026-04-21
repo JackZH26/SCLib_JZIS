@@ -91,6 +91,10 @@ class User(Base):
     scopes: Mapped[list[str]] = mapped_column(ARRAY(Text), server_default="{basic,sclib}", nullable=False)
     profile: Mapped[dict[str, Any]] = mapped_column(JSONB, server_default=sa.text("'{}'::jsonb"), nullable=False)
 
+    # --- Dashboard Phase A (editable profile extras) ---------------------
+    bio: Mapped[str | None] = mapped_column(Text, nullable=True)
+    orcid: Mapped[str | None] = mapped_column(String(19), nullable=True)
+
     verifications: Mapped[list["EmailVerification"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
@@ -131,6 +135,12 @@ class ApiKey(Base):
     created_at: Mapped[datetime] = mapped_column(_TZDT, server_default=func.now(), nullable=False)
     last_used: Mapped[datetime | None] = mapped_column(_TZDT)
     revoked: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    # Dashboard Phase A: counter bumped on every successful auth in
+    # deps.require_identity; paired revoked_at timestamp for the UI.
+    total_requests: Mapped[int] = mapped_column(
+        sa.BigInteger, server_default=sa.text("0"), default=0, nullable=False
+    )
+    revoked_at: Mapped[datetime | None] = mapped_column(_TZDT, nullable=True)
 
     user: Mapped[User] = relationship(back_populates="api_keys")
 
