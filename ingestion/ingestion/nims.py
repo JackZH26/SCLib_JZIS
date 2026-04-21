@@ -249,6 +249,21 @@ def classify_family(formula: str) -> str | None:
     if "fe" in fl and re.search(r"(as|se|te|p)", fl):
         return "iron_based"
 
+    # Nickelates (Ni + O oxides, no Cu or Fe partner). Covers the
+    # infinite-layer family (Nd₀·₈Sr₀·₂NiO₂ on SrTiO₃, Li et al. 2019,
+    # Tc≈15 K), bulk Ruddlesden-Popper stacks (La₃Ni₂O₇, Sun et al.
+    # 2023, Tc≈80 K at 14 GPa), and the growing 2024+ cohort. We
+    # check the tokenized element list (``elements`` from the hydride
+    # branch above) instead of a lowercase substring so "in" / other
+    # elements containing 'n' or 'i' don't false-positive.
+    if (
+        "Ni" in elements
+        and "O" in elements
+        and "Cu" not in elements
+        and "Fe" not in elements
+    ):
+        return "nickelate"
+
     # Cuprates: must contain both Cu and O, plus a rare-earth / alkaline
     # earth cation typical of high-Tc cuprates
     if "cu" in fl and "o" in fl and re.search(r"(la|y|ba|sr|ca|bi|hg|tl|nd|sm|gd)", fl):
