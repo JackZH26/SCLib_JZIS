@@ -13,6 +13,7 @@ import { useState } from "react";
 
 import { ApiError, revokeKey, type ApiKey } from "@/lib/api";
 import { loadToken } from "@/lib/auth-storage";
+import { ConfirmModal } from "@/components/dashboard/ConfirmModal";
 
 export function KeysTable({
   keys,
@@ -23,11 +24,9 @@ export function KeysTable({
 }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [confirming, setConfirming] = useState<ApiKey | null>(null);
 
-  async function onRevoke(k: ApiKey) {
-    if (!confirm(`Revoke key "${k.name ?? k.key_prefix}"? This cannot be undone.`)) {
-      return;
-    }
+  async function performRevoke(k: ApiKey) {
     const token = loadToken();
     if (!token) return;
     setBusy(k.id);
@@ -39,6 +38,7 @@ export function KeysTable({
       setError(err instanceof ApiError ? err.message : "Failed to revoke");
     } finally {
       setBusy(null);
+      setConfirming(null);
     }
   }
 
@@ -100,7 +100,7 @@ export function KeysTable({
                     </span>
                   ) : (
                     <button
-                      onClick={() => onRevoke(k)}
+                      onClick={() => setConfirming(k)}
                       disabled={busy === k.id}
                       className="rounded-md border border-sage-border bg-white px-3 py-1 text-xs text-red-700 hover:bg-red-50 disabled:opacity-60"
                     >
@@ -113,6 +113,22 @@ export function KeysTable({
           </tbody>
         </table>
       </div>
+
+      <ConfirmModal
+        open={confirming !== null}
+        title="Revoke API key?"
+        body={
+          <>
+            Key <code>{confirming?.name ?? confirming?.key_prefix}…</code>{" "}
+            will stop authenticating requests immediately. You can create a
+            new one, but this action cannot be undone.
+          </>
+        }
+        confirmLabel="Revoke"
+        tone="destructive"
+        onConfirm={() => confirming && performRevoke(confirming)}
+        onCancel={() => setConfirming(null)}
+      />
     </div>
   );
 }
