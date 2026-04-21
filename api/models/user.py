@@ -8,13 +8,20 @@ from __future__ import annotations
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
 
 
 # ORCID is always 16 digits grouped 4-4-4-4 with hyphens; the final
 # character may be 'X' (ISO 7064 MOD 11-2 check digit). We only enforce
 # shape, not checksum — clients that paste the URL get it stripped.
+# Pasting lowercase 'x' or a trailing slash is a common copy-paste
+# artefact and should normalize, not reject.
 _ORCID_RE = r"^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$"
+_ORCID_URL_PREFIXES = (
+    "HTTPS://ORCID.ORG/",
+    "HTTP://ORCID.ORG/",
+    "ORCID.ORG/",
+)
 
 
 class UserCreate(BaseModel):
@@ -51,8 +58,10 @@ class UserUpdate(BaseModel):
     """PATCH /me payload — only fields the user is allowed to edit.
 
     Every field is optional: omit to leave untouched, pass ``null`` to
-    clear. Email / id / auth_provider / is_active are intentionally
-    absent — those are system-owned.
+    clear. ``name`` is a special case because the database enforces
+    NOT NULL — passing ``null`` for name is rejected (400) instead of
+    being allowed to propagate into a 500. Email / id / auth_provider
+    / is_active are intentionally absent — those are system-owned.
     """
 
     name: str | None = Field(None, min_length=2, max_length=255)
@@ -62,14 +71,33 @@ class UserUpdate(BaseModel):
     bio: str | None = Field(None, max_length=2000)
     orcid: str | None = Field(None)
 
+    @model_validator(mode="before")
+    @classmethod
+    def _reject_null_name(cls, data: object) -> object:
+        # Only "explicit null" is a problem — an omitted key leaves the
+        # field alone and never touches the DB. We have to peek at the
+        # raw input to distinguish omitted vs null, which field_validator
+        # can't do on its own.
+        if isinstance(data, dict) and "name" in data and data["name"] is None:
+            raise ValueError(
+                "name cannot be set to null; omit the field to leave it unchanged"
+            )
+        return data
+
     @field_validator("orcid")
     @classmethod
     def _validate_orcid(cls, v: str | None) -> str | None:
         if v in (None, ""):
             return None
         import re
-        # Accept either raw ID or orcid.org URL form
-        v = v.strip().removeprefix("https://orcid.org/").removeprefix("orcid.org/")
+        # Accept raw IDs and the orcid.org URL form in any case; strip
+        # trailing slash before prefix stripping so "orcid.org/XXXX/"
+        # also works. Uppercasing up front lets the regex stay simple.
+        v = v.strip().rstrip("/").upper()
+        for prefix in _ORCID_URL_PREFIXES:
+            if v.startswith(prefix):
+                v = v[len(prefix):]
+                break
         if not re.match(_ORCID_RE, v):
             raise ValueError(
                 "ORCID must look like 0000-0002-1825-0097 (16 digits, last may be X)"

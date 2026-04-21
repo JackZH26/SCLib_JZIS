@@ -13,6 +13,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
+from uuid import UUID
 
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
@@ -24,6 +25,7 @@ from models.db import AskHistory, Chunk
 from models.search import AskRequest, AskResponse, AskSource
 from routers.deps import Identity, require_identity
 from services import rag, vector_search
+from services.authors import short as _authors_short
 
 log = logging.getLogger(__name__)
 
@@ -137,7 +139,7 @@ async def ask(
 
 async def _persist_history(
     db: AsyncSession,
-    user_id,
+    user_id: UUID,
     question: str,
     answer: str,
     sources: list[dict],
@@ -170,22 +172,6 @@ async def _persist_history(
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
-
-def _authors_short(authors: list) -> str:
-    """'Smith et al.' for >2 authors, else 'Smith & Jones' / 'Smith'."""
-    names: list[str] = []
-    for a in authors[:3]:
-        if isinstance(a, str):
-            names.append(a.split(",")[0].strip())
-        elif isinstance(a, dict):
-            names.append(str(a.get("name") or a.get("family") or "").strip())
-    names = [n for n in names if n]
-    if not names:
-        return "Unknown"
-    if len(authors) > 2:
-        return f"{names[0]} et al."
-    return " & ".join(names)
-
 
 def _snippet(text: str, max_chars: int = 280) -> str:
     text = " ".join(text.split())
