@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { ApiError, me, type User } from "@/lib/api";
 import { clearToken, loadToken } from "@/lib/auth-storage";
 import { Sidebar } from "@/components/dashboard/Sidebar";
+import { DashboardUserProvider } from "@/components/dashboard/user-context";
 
 const NAV = [
   { href: "/dashboard",          label: "Overview" },
@@ -74,33 +75,50 @@ export default function DashboardLayout({
   }
 
   return (
-    <main className="mx-auto flex max-w-6xl gap-8 px-6 py-10">
-      <Sidebar items={NAV} />
-      <section className="min-w-0 flex-1">
-        <header className="mb-6 flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-semibold text-sage-ink">
-              {user.name}
-            </h1>
-            <p className="text-sm text-sage-muted">{user.email}</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Link
-              href="/"
-              className="rounded-md border border-sage-border bg-white px-3 py-1.5 text-sm text-sage-muted hover:text-accent-deep"
-            >
-              Back to site
-            </Link>
-            <button
-              onClick={onSignOut}
-              className="rounded-md bg-accent-deep px-3 py-1.5 text-sm font-medium text-white hover:bg-accent"
-            >
-              Sign out
-            </button>
-          </div>
-        </header>
-        {children}
-      </section>
-    </main>
+    <DashboardUserProvider value={{ user, setUser }}>
+      <main className="mx-auto flex max-w-6xl gap-8 px-6 py-10">
+        <Sidebar items={NAV} />
+        <section className="min-w-0 flex-1">
+          <header className="mb-6 flex items-start justify-between gap-4">
+            <div className="flex items-center gap-3">
+              {user.avatar_url ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={user.avatar_url}
+                  alt=""
+                  referrerPolicy="no-referrer"
+                  className="h-10 w-10 rounded-full"
+                />
+              ) : (
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-sm font-semibold text-white">
+                  {user.name.charAt(0).toUpperCase()}
+                </span>
+              )}
+              <div>
+                <h1 className="text-2xl font-semibold text-sage-ink">
+                  {user.name}
+                </h1>
+                <p className="text-sm text-sage-muted">{user.email}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/"
+                className="rounded-md border border-sage-border bg-white px-3 py-1.5 text-sm text-sage-muted hover:text-accent-deep"
+              >
+                Back to site
+              </Link>
+              <button
+                onClick={onSignOut}
+                className="rounded-md bg-accent-deep px-3 py-1.5 text-sm font-medium text-white hover:bg-accent"
+              >
+                Sign out
+              </button>
+            </div>
+          </header>
+          {children}
+        </section>
+      </main>
+    </DashboardUserProvider>
   );
 }

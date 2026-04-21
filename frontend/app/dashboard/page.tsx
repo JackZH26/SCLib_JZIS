@@ -3,44 +3,40 @@
 /**
  * /dashboard — Overview tab.
  *
- * Default landing page after login. Two cards: editable Profile
- * (view/edit toggle → PATCH /auth/me) and Usage Stats (today / week /
- * all-time with a progress bar toward the 999/day cap). The dashboard
- * shell's auth guard has already resolved the token by the time this
- * page mounts, so we can assume a valid JWT is in localStorage.
+ * Reads the user from the DashboardUserProvider in layout.tsx
+ * instead of calling /auth/me again, so switching between tabs
+ * doesn't fire a redundant network round-trip. Only /auth/usage is
+ * fetched here (it's tab-specific). The profile edit flow pushes
+ * updates back via setUser so the shell header also refreshes.
  */
 import { useEffect, useState } from "react";
 
-import { getUsage, me, type UsageStats, type User } from "@/lib/api";
+import { getUsage, type UsageStats } from "@/lib/api";
 import { loadToken } from "@/lib/auth-storage";
 import { ProfileCard } from "@/components/dashboard/ProfileCard";
 import { UsageStatsCard } from "@/components/dashboard/UsageStats";
+import { useDashboardUser } from "@/components/dashboard/user-context";
 
 export default function OverviewPage() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, setUser } = useDashboardUser();
   const [usage, setUsage] = useState<UsageStats | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const token = loadToken();
     if (!token) return;
-    // Fetch both in parallel — they hit different endpoints and don't
-    // depend on each other.
-    Promise.all([me(token), getUsage(token)])
-      .then(([u, us]) => {
-        setUser(u);
-        setUsage(us);
-      })
+    getUsage(token)
+      .then(setUsage)
       .catch((err) => {
-        setError(err instanceof Error ? err.message : "Failed to load overview");
+        setError(err instanceof Error ? err.message : "Failed to load usage");
       });
   }, []);
 
   if (error) {
     return <p className="text-sm text-red-700">{error}</p>;
   }
-  if (!user || !usage) {
-    return <p className="text-sm text-sage-muted">Loading overview…</p>;
+  if (!usage) {
+    return <p className="text-sm text-sage-muted">Loading usage…</p>;
   }
 
   return (
