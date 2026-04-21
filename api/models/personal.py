@@ -105,3 +105,27 @@ class BookmarkedPapersResponse(BaseModel):
 class BookmarkedMaterialsResponse(BaseModel):
     total: int
     results: list[BookmarkedMaterial]
+
+
+# ---------------------------------------------------------------------------
+# Feedback
+# ---------------------------------------------------------------------------
+
+FeedbackCategory = Literal["bug", "feature_request", "data_issue", "other"]
+
+
+class FeedbackCreate(BaseModel):
+    """POST /feedback body.
+
+    Feedback requires login (product decision — no anonymous channel).
+    The server-side handler appends the submitter's user_id / name /
+    email / user-agent / IP before sending to the inbox, so the client
+    only needs to provide what the user actually typed.
+    """
+
+    category: FeedbackCategory = "other"
+    message: str = Field(..., min_length=5, max_length=2000)
+    # Optional: if the user wants replies sent somewhere other than
+    # their account email (e.g. work address). Purely a hint to the
+    # recipient — we do not validate that it is reachable.
+    contact_email: str | None = Field(None, max_length=255)

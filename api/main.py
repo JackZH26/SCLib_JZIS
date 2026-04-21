@@ -22,6 +22,7 @@ from routers import (
     ask,
     auth,
     bookmarks,
+    feedback,
     history,
     materials,
     papers,
@@ -224,6 +225,7 @@ app.include_router(stats.router, prefix="/v1")
 app.include_router(timeline.router, prefix="/v1")
 app.include_router(history.router, prefix="/v1")
 app.include_router(bookmarks.router, prefix="/v1")
+app.include_router(feedback.router, prefix="/v1")
 
 
 @app.get("/v1/health", tags=["health"])
