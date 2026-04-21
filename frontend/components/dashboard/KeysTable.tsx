@@ -126,7 +126,9 @@ export function KeysTable({
         }
         confirmLabel="Revoke"
         tone="destructive"
-        onConfirm={() => confirming && performRevoke(confirming)}
+        onConfirm={async () => {
+          if (confirming) await performRevoke(confirming);
+        }}
         onCancel={() => setConfirming(null)}
       />
     </div>
