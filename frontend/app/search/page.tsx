@@ -18,6 +18,7 @@ import { loadToken } from "@/lib/auth-storage";
 import { SearchBar } from "@/components/SearchBar";
 import { PaperCard } from "@/components/PaperCard";
 import { GuestBanner } from "@/components/GuestBanner";
+import { FamilyMultiSelect } from "@/components/FamilyMultiSelect";
 
 export default function SearchPage() {
   return (
@@ -39,6 +40,13 @@ function SearchInner() {
   const [yearMin, setYearMin] = useState<string>("");
   const [yearMax, setYearMax] = useState<string>("");
   const [tcMin, setTcMin] = useState<string>("");
+  const [families, setFamilies] = useState<string[]>([]);
+
+  // The effect deps include the JSON-serialized families list because
+  // React does array identity comparison — without this, toggling a
+  // family twice (add then remove) would still trigger a refetch every
+  // render even when the resulting slugs are identical to a prior run.
+  const familiesKey = families.join(",");
 
   useEffect(() => {
     if (q.length < 2) {
@@ -57,6 +65,7 @@ function SearchInner() {
           year_min: yearMin ? Number(yearMin) : undefined,
           year_max: yearMax ? Number(yearMax) : undefined,
           tc_min: tcMin ? Number(tcMin) : undefined,
+          material_family: families.length > 0 ? families : undefined,
           exclude_retracted: true,
         },
       },
@@ -67,7 +76,7 @@ function SearchInner() {
         setErr(friendlyErrorMessage(e));
       })
       .finally(() => setLoading(false));
-  }, [q, sort, yearMin, yearMax, tcMin]);
+  }, [q, sort, yearMin, yearMax, tcMin, familiesKey]);
 
   return (
     <main className="space-y-6">
@@ -96,6 +105,9 @@ function SearchInner() {
         </Field>
         <Field label="Tc ≥ (K)">
           <NumInput value={tcMin} set={setTcMin} />
+        </Field>
+        <Field label="Family">
+          <FamilyMultiSelect value={families} onChange={setFamilies} />
         </Field>
       </div>
 
