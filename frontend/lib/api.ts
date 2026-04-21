@@ -497,9 +497,17 @@ export interface TimelinePoint {
   paper_id: string | null;
 }
 
+export interface TimelineCoverage {
+  total_points: number;
+  total_materials: number;
+  year_min: number | null;
+  year_max: number | null;
+}
+
 export interface TimelineResponse {
   family: string | null;
   points: TimelinePoint[];
+  coverage: TimelineCoverage | null;
 }
 
 export function getTimeline(family?: string) {

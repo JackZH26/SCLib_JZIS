@@ -1,31 +1,72 @@
 "use client";
 
 /**
- * Plotly scatter: Tc (K) vs year, one dot per measurement.
+ * Plotly scatter: Tc (K) vs year, one dot per (material, year, Tc,
+ * pressure) measurement. Server-side deduped in routers/timeline.py.
+ *
+ * Axes + interaction notes:
+ *
+ * - Y axis is fixed to [0, 280] K by default. 280 K comfortably
+ *   covers every confirmed SC Tc (LaH₁₀ at ≈250 K is the record; the
+ *   API also hard-filters at 250 K). Without a fixed range, a single
+ *   implausible outlier would crush the real data into the bottom
+ *   pixel row. User can zoom out via the modebar if they want to.
+ *
+ * - X axis auto-ranges to the data, with a small ±1-year pad so the
+ *   outermost points aren't glued to the frame edges.
+ *
+ * - modeBar is ON (pan / box-zoom / reset / download PNG). dragmode
+ *   defaults to 'pan' because scrolling a timeline left-right is
+ *   more natural than draw-a-box. scrollZoom lets the mouse wheel
+ *   zoom both axes in tandem.
  *
  * Loaded dynamically (ssr: false) because plotly.js walks `window`
- * at import time. The page that embeds us passes an already-fetched
- * points array so the chart itself has no data dependencies.
+ * at import time.
  */
 import dynamic from "next/dynamic";
-import type { TimelinePoint } from "@/lib/api";
+import type { TimelineCoverage, TimelinePoint } from "@/lib/api";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
+// Color palette for each supported family; unknown family falls back
+// to slate. Colors chosen to be discernible on light background and
+// colorblind-friendly-ish.
 const FAMILY_COLORS: Record<string, string> = {
-  cuprate: "#2563eb",
-  iron: "#ca8a04",
-  hydride: "#dc2626",
-  mgb2: "#059669",
-  heavy_fermion: "#7c3aed",
-  conventional: "#64748b",
+  cuprate:       "#2563eb",   // blue
+  iron_based:    "#ca8a04",   // amber
+  hydride:       "#dc2626",   // red
+  mgb2:          "#059669",   // emerald
+  heavy_fermion: "#7c3aed",   // violet
+  fulleride:     "#db2777",   // pink
+  conventional:  "#64748b",   // slate
 };
 
-export function TcTimeline({ points }: { points: TimelinePoint[] }) {
+// Label shown in the legend (capitalised / punctuated for humans).
+const FAMILY_LABEL: Record<string, string> = {
+  cuprate:       "Cuprate",
+  iron_based:    "Iron-based",
+  hydride:       "Hydride",
+  mgb2:          "MgB₂",
+  heavy_fermion: "Heavy fermion",
+  fulleride:     "Fulleride",
+  conventional:  "Conventional",
+  unknown:       "Other",
+};
+
+const Y_MAX_DEFAULT = 280;
+
+export function TcTimeline({
+  points,
+  coverage,
+}: {
+  points: TimelinePoint[];
+  coverage: TimelineCoverage | null;
+}) {
   if (points.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
-        No Tc records available yet — waiting on Phase 5 material aggregation.
+        No measurements match this filter yet. Daily aggregates run at
+        03:10 UTC; come back tomorrow or pick a different family.
       </div>
     );
   }
@@ -39,23 +80,33 @@ export function TcTimeline({ points }: { points: TimelinePoint[] }) {
     return {
       type: "scatter" as const,
       mode: "markers" as const,
-      name: fam,
+      name: FAMILY_LABEL[fam] ?? fam,
       x: subset.map((p) => p.year),
       y: subset.map((p) => p.tc_kelvin),
-      text: subset.map(
-        (p) =>
-          `${p.material}<br>Tc = ${p.tc_kelvin} K${
-            p.pressure_gpa ? `<br>p = ${p.pressure_gpa} GPa` : ""
-          }`,
-      ),
-      hovertemplate: "%{text}<extra></extra>",
+      customdata: subset.map((p) => [
+        p.pressure_gpa != null ? `${p.pressure_gpa.toFixed(1)} GPa` : "ambient",
+        p.paper_id ?? "",
+      ]),
+      text: subset.map((p) => p.material),
+      hovertemplate:
+        "<b>%{text}</b><br>" +
+        "Tc = %{y} K<br>" +
+        "P = %{customdata[0]}<br>" +
+        "Year = %{x}<br>" +
+        "%{customdata[1]}<extra></extra>",
       marker: {
-        size: 10,
+        size: 8,
+        opacity: 0.72,    // lets overlapping dots visually stack
         color: FAMILY_COLORS[fam] ?? "#94a3b8",
-        line: { width: 1, color: "#fff" },
+        line: { width: 0.6, color: "#fff" },
       },
     };
   });
+
+  // X range: pad one year either side so outermost dots aren't on
+  // the axis line.
+  const xMin = (coverage?.year_min ?? 1990) - 1;
+  const xMax = (coverage?.year_max ?? new Date().getUTCFullYear()) + 1;
 
   return (
     <div className="w-full overflow-hidden rounded-lg border border-slate-200 bg-white">
@@ -63,20 +114,53 @@ export function TcTimeline({ points }: { points: TimelinePoint[] }) {
         data={traces}
         layout={{
           autosize: true,
-          height: 520,
-          margin: { l: 60, r: 20, t: 20, b: 50 },
-          xaxis: { title: { text: "Year" }, gridcolor: "#eee" },
+          height: 560,
+          margin: { l: 60, r: 20, t: 24, b: 60 },
+          dragmode: "pan",
+          hovermode: "closest",
+          xaxis: {
+            title: { text: "Year" },
+            gridcolor: "#eef2ee",
+            range: [xMin, xMax],
+            // Allow user to scroll beyond the data range a bit if
+            // they drag, but stay sane.
+            rangeslider: { visible: false },
+            showspikes: true,
+            spikemode: "across",
+            spikecolor: "#cbd5cb",
+            spikethickness: 1,
+          },
           yaxis: {
             title: { text: "Tc (K)" },
-            gridcolor: "#eee",
-            rangemode: "tozero",
+            gridcolor: "#eef2ee",
+            range: [0, Y_MAX_DEFAULT],
+            zeroline: true,
+            zerolinecolor: "#d4e4d4",
           },
-          legend: { orientation: "h", y: -0.15 },
+          legend: { orientation: "h", y: -0.14 },
           paper_bgcolor: "#fff",
           plot_bgcolor: "#fff",
         }}
-        config={{ displayModeBar: false, responsive: true }}
-        style={{ width: "100%", height: "520px" }}
+        config={{
+          responsive: true,
+          displayModeBar: true,
+          scrollZoom: true,
+          // Keep only the navigation tools we actually want; drop
+          // the noisy plotly logo + select tools.
+          modeBarButtonsToRemove: [
+            "lasso2d",
+            "select2d",
+            "autoScale2d",
+            "toggleSpikelines",
+          ],
+          displaylogo: false,
+          toImageButtonOptions: {
+            filename: "sclib-tc-timeline",
+            format: "png",
+            scale: 2,
+          },
+        }}
+        style={{ width: "100%", height: "560px" }}
       />
     </div>
   );

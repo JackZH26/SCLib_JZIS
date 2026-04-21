@@ -221,6 +221,21 @@ class TimelinePoint(BaseModel):
     paper_id: str | None
 
 
+class TimelineCoverage(BaseModel):
+    """Summary counts so the frontend can surface 'N points from M
+    materials, years X–Y' without recomputing from the points list.
+
+    ``year_range`` is the inclusive [min, max] of points that survived
+    filtering; ``total_materials`` is the distinct material count.
+    """
+
+    total_points: int
+    total_materials: int
+    year_min: int | None
+    year_max: int | None
+
+
 class TimelineResponse(BaseModel):
     family: str | None
     points: list[TimelinePoint]
+    coverage: TimelineCoverage | None = None
