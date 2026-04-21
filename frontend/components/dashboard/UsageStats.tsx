@@ -11,6 +11,7 @@ import type { UsageStats } from "@/lib/api";
 
 export function UsageStatsCard({ stats }: { stats: UsageStats }) {
   const pct = Math.min(100, (stats.today_used / Math.max(1, stats.daily_limit)) * 100);
+  const atLimit = stats.today_remaining <= 0;
   // Red past 90% so the user notices approaching the hard cap.
   const barTone =
     pct >= 90 ? "bg-red-500" : pct >= 60 ? "bg-amber-400" : "bg-accent";
@@ -39,10 +40,18 @@ export function UsageStatsCard({ stats }: { stats: UsageStats }) {
           style={{ width: `${pct}%` }}
         />
       </div>
-      <p className="mt-2 text-xs text-sage-tertiary">
-        Quota resets at 00:00 UTC. Data queries (search / ask) count toward
-        the daily cap; browsing materials and papers is free.
-      </p>
+      {atLimit ? (
+        <div className="mt-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-800">
+          <strong className="font-semibold">Daily quota reached.</strong>{" "}
+          New search / ask requests will be rejected with 429 until 00:00 UTC.
+          Browsing materials, papers, and the timeline continues to work.
+        </div>
+      ) : (
+        <p className="mt-2 text-xs text-sage-tertiary">
+          Quota resets at 00:00 UTC. Data queries (search / ask) count toward
+          the daily cap; browsing materials and papers is free.
+        </p>
+      )}
     </section>
   );
 }
