@@ -9,15 +9,17 @@ from __future__ import annotations
 import asyncio
 import logging
 from contextlib import asynccontextmanager
+from datetime import datetime, timedelta, timezone
 from urllib.parse import urlsplit
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import delete
 from starlette.middleware.sessions import SessionMiddleware
 
 from config import get_settings
 from models import get_session_factory
-from models.db import get_engine
+from models.db import AskHistory, get_engine
 from routers import (
     ask,
     auth,
@@ -79,12 +81,6 @@ async def _periodic_ask_history_prune(interval_sec: int, retention_days: int) ->
     ops dependency — if the API is up, history stays bounded.
     A larger deployment would likely move this to a batch job.
     """
-    from datetime import datetime, timedelta, timezone
-
-    from sqlalchemy import delete
-
-    from models.db import AskHistory
-
     factory = get_session_factory()
     # Offset from the stats refresh so we don't pile two heavy loops on
     # the same 30-second startup slot.
