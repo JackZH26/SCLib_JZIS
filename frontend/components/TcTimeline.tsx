@@ -63,6 +63,12 @@ const FAMILY_LABEL: Record<string, string> = {
 
 const Y_MAX_DEFAULT = 250;
 
+function pressureLabel(p: number | null | undefined): string {
+  if (p == null) return "ambient (unstated)";
+  if (p <= 0) return "ambient";
+  return `${p.toFixed(1)} GPa`;
+}
+
 // Deterministic ±0.35-year horizontal jitter seeded by material +
 // Tc so the same point lands in the same spot on every render.
 // Cheap 32-bit string hash — good enough for visual spreading.
@@ -106,7 +112,14 @@ export function TcTimeline({
       x: subset.map((p) => p.year + jitterYear(p.material, p.tc_kelvin)),
       y: subset.map((p) => p.tc_kelvin),
       customdata: subset.map((p) => [
-        p.pressure_gpa != null ? `${p.pressure_gpa.toFixed(1)} GPa` : "ambient",
+        // Pressure label is three-state:
+        //   explicit >0 → "X GPa"
+        //   explicit 0  → "ambient" (the paper confirms ambient P)
+        //   null        → "ambient (unstated)" — we have no evidence
+        //                 one way or the other; historically the NER
+        //                 defaulted to 0.0 for unstated pressures, so
+        //                 this bucket is the most honest fallback.
+        pressureLabel(p.pressure_gpa),
         p.paper_id ?? "",
         p.year,
       ]),
@@ -121,7 +134,15 @@ export function TcTimeline({
         size: 5,
         opacity: 0.55,   // overlaps read as density, not a solid blob
         color: FAMILY_COLORS[fam] ?? "#94a3b8",
-        line: { width: 0 },
+        // Dark outline when the record explicitly reports pressure > 0.
+        // Lets the reader scan "which dots are high-pressure measurements"
+        // at a glance without opening every tooltip.
+        line: {
+          width: subset.map((p) =>
+            p.pressure_gpa != null && p.pressure_gpa > 0 ? 1.2 : 0,
+          ),
+          color: "#0f172a",
+        },
       },
     };
   });
