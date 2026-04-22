@@ -249,6 +249,19 @@ def classify_family(formula: str) -> str | None:
     if "fe" in fl and re.search(r"(as|se|te|p)", fl):
         return "iron_based"
 
+    # Cuprate phase-label shorthand — papers often write "BSCCO",
+    # "YBCO", "Bi-2212", "Bi(Pb)-2212", "Hg-1223", "Pb-Bi2212" etc.
+    # instead of the full stoichiometry. The cu+o test below misses
+    # these because the shorthand has no 'o', and the conventional
+    # "pb"/"hg" check further down would grab the Pb-doped ones.
+    # Catching them up front fixes both.
+    if re.search(r"bscco|ybco|lsco|tbcco", fl):
+        return "cuprate"
+    if re.search(r"\b(pb|bi|tl|hg)[\s\-()a-z]*[12][12][0-9]{2}\b", fl):
+        return "cuprate"
+    if re.search(r"\by[\s\-]*12[3-8]\b", fl):
+        return "cuprate"  # YBCO n-layer shorthand: Y-123, Y-124, Y-125
+
     # Nickelates (Ni + O oxides, no Cu or Fe partner). Covers the
     # infinite-layer family (Nd₀·₈Sr₀·₂NiO₂ on SrTiO₃, Li et al. 2019,
     # Tc≈15 K), bulk Ruddlesden-Popper stacks (La₃Ni₂O₇, Sun et al.
