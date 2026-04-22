@@ -126,7 +126,12 @@ REQUIRED per record:
 - formula: chemical formula as written in the text (e.g. "La3Ni2O7")
 - tc_kelvin: critical temperature in Kelvin, null if not stated
 - tc_type: "onset" | "zero_resistance" | "midpoint" | "unknown"
-- pressure_gpa: pressure in GPa (0.0 if ambient, null if not stated)
+- pressure_gpa: MUST be null unless the paper explicitly states a
+                pressure for THIS measurement. Use 0.0 ONLY when the
+                text literally says "ambient pressure", "atmospheric
+                pressure", "P = 0", or "zero pressure". If the paper
+                doesn't mention pressure, emit null — do NOT default
+                to 0.0. Emit the numeric value in GPa when stated.
 - measurement: "resistivity" | "susceptibility" | "specific_heat" |
                "muSR" | "ARPES" | "STM" | "neutron" | "unknown"
 - confidence: 0.0-1.0 — your confidence the text actually reports this
@@ -327,11 +332,13 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         if tc is not None and (tc > 300 or tc < 0.01) and conf >= 0.3:
             record["confidence"] = 0.3
 
-        # ambient_sc fallback: if the LLM didn't set it but pressure
-        # is explicitly 0 GPa, we can derive it.
-        if "ambient_sc" not in record and record.get("pressure_gpa") == 0:
-            if record.get("tc_kelvin") is not None:
-                record["ambient_sc"] = True
+        # NOTE: we used to default ambient_sc=True when pressure_gpa==0,
+        # but ambient vs unknown is exactly what the new prompt asks
+        # the LLM to distinguish. The historical fallback silently
+        # promoted every "LLM didn't mention pressure" record into a
+        # confident ambient-SC claim, which polluted the corpus (see
+        # alembic 0009). We rely entirely on the LLM's ambient_sc
+        # field now; if it's missing, ambient_sc stays None / unknown.
 
         cleaned.append(record)
 
