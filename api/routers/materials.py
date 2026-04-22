@@ -50,6 +50,16 @@ async def list_materials(
             "trustworthy; admins set it to audit / unflag."
         ),
     ),
+    include_skeletons: bool = Query(
+        False,
+        description=(
+            "Include materials with ``total_papers = 0`` — typically "
+            "NIMS SuperCon reference-only catalog entries that carry "
+            "no measured data (Tc / pressure / structure all null). "
+            "Off by default so the list surfaces materials with real "
+            "content. Turn on to browse the full NIMS index."
+        ),
+    ),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001 — presence sets guest counter header
     db: AsyncSession = Depends(get_db),
 ) -> MaterialListResponse:
@@ -67,6 +77,13 @@ async def list_materials(
     # old bookmarks keep working and admins can reach them to review.
     if not include_pending:
         _apply(Material.needs_review.is_(False))
+
+    # Skeleton entries are rows that came from the NIMS CSV as a bare
+    # DOI reference — no Tc, no pressure, total_papers = 0. Hiding
+    # them by default keeps the default list feeling informative; the
+    # opt-in flag lets admins / power users browse the full catalog.
+    if not include_skeletons:
+        _apply(Material.total_papers > 0)
 
     if family:
         # Multi-select: split on comma and match any. Single-value

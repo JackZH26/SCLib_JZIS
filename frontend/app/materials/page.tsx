@@ -27,6 +27,7 @@ type Sp = {
   has_competing_order?: string;
   pairing_symmetry?: string;
   structure_phase?: string;
+  include_skeletons?: string;
 };
 
 const DEFAULT_PAGE_SIZE = 50;
@@ -56,6 +57,8 @@ export default async function MaterialsPage({
   const sort =
     (searchParams.sort as MaterialListParams["sort"]) ?? "tc_max";
 
+  const includeSkeletons = searchParams.include_skeletons === "true";
+
   const params: MaterialListParams = {
     family: searchParams.family || undefined,
     tc_min: searchParams.tc_min ? Number(searchParams.tc_min) : undefined,
@@ -69,6 +72,7 @@ export default async function MaterialsPage({
     sort,
     limit: perPage,
     offset: page * perPage,
+    include_skeletons: includeSkeletons,
   };
 
   const data = await listMaterials(params).catch(() => null);
@@ -190,6 +194,24 @@ export default async function MaterialsPage({
             <option value="discovery_year">Discovery year</option>
             <option value="total_papers">Paper count</option>
           </select>
+        </label>
+        {/*
+          Library-only entries are NIMS SuperCon catalog rows that
+          arrived with a reference DOI but no measured Tc / pressure /
+          structure. Hiding them by default keeps the list feeling
+          populated; toggling shows the full index for power users.
+        */}
+        <label className="flex items-center gap-2 self-end pb-1">
+          <input
+            type="checkbox"
+            name="include_skeletons"
+            value="true"
+            defaultChecked={includeSkeletons}
+            className="h-4 w-4 rounded border-slate-300 accent-[color:var(--accent,#3A7D5C)]"
+          />
+          <span className="text-xs font-medium text-slate-600">
+            Include library-only entries
+          </span>
         </label>
         <button type="submit" className="btn-primary">
           Apply

@@ -568,6 +568,7 @@ export interface MaterialListParams {
   sort?: "tc_max" | "tc_ambient" | "discovery_year" | "total_papers";
   limit?: number;
   offset?: number;
+  include_skeletons?: boolean;
 }
 
 export function listMaterials(params: MaterialListParams) {
@@ -588,6 +589,7 @@ export function listMaterials(params: MaterialListParams) {
   if (params.sort) qs.set("sort", params.sort);
   if (params.limit != null) qs.set("limit", String(params.limit));
   if (params.offset != null) qs.set("offset", String(params.offset));
+  if (params.include_skeletons) qs.set("include_skeletons", "true");
   return request<MaterialListResponse>(
     `/materials${qs.toString() ? `?${qs}` : ""}`,
   );
