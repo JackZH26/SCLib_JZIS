@@ -221,7 +221,14 @@ def classify_family(formula: str) -> str | None:
     # for itself, and "Se" in selenides was double-counted because
     # `s` matched first. Element tokenisation eliminates both bugs.
     elements = re.findall(r"[A-Z][a-z]?", f)
-    high_h = bool(re.search(r"H(?:[2-9]|1[0-9])\b", f))
+    # Match "H" followed by a plausible hydrogen stoichiometry (2-9
+    # or 10-19). The trailing lookahead rejects only another digit,
+    # so "H3S" or "LaH10Fe" match (S / F are non-digits) while
+    # "H103" does not (the H10 prefix would falsely leak through a
+    # naive \b). The pre-fix regex used \b, which *fails* between
+    # two word chars like "H3S" → the hydride branch silently
+    # skipped H3S and every similar hydrogen-then-element formula.
+    high_h = bool(re.search(r"H(?:[2-9]|1[0-9])(?![0-9])", f))
     if high_h and "O" not in elements and "C" not in elements:
         partners = {"S", "Se", "La", "Y", "Ca", "Mg", "Sr", "Ba",
                     "Th", "Sc", "Yb", "Ce", "Pr", "Nd"}
@@ -451,10 +458,19 @@ async def load_csv(csv_path: Path, limit: int | None, dry_run: bool) -> int:
             normalized = normalize_formula(raw_formula)
             agg = aggregates.get(normalized)
             if agg is None:
+                # classify_family expects the ORIGINAL-case formula so
+                # the element-tokenising rules (hydride / fulleride /
+                # nickelate — which all rely on re.findall(r"[A-Z][a-z]?",
+                # f)) can actually fire. Passing the lowercased
+                # ``normalized`` here was a silent bug that left every
+                # NIMS row ineligible for those three families and, worse,
+                # let a pre-2026-04 version of the hydride rule match the
+                # lowercase "rh" substring of rhodium compounds. See
+                # alembic 0011 for the one-shot backfill.
                 agg = _Aggregate(
                     formula=raw_formula,
                     formula_normalized=normalized,
-                    family=classify_family(normalized),
+                    family=classify_family(raw_formula),
                 )
                 aggregates[normalized] = agg
             record = {
