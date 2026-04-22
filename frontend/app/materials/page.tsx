@@ -12,6 +12,7 @@
 import { listMaterials, type MaterialListParams } from "@/lib/api";
 import { MaterialTable } from "@/components/MaterialTable";
 import { Pagination } from "@/components/Pagination";
+import { FamilyFilterField } from "@/components/FamilyFilterField";
 
 type Sp = {
   family?: string;
@@ -110,12 +111,7 @@ export default async function MaterialsPage({
           <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Family
           </span>
-          <input
-            name="family"
-            defaultValue={searchParams.family ?? ""}
-            className="rounded border border-sage-border px-2 py-1"
-            placeholder="cuprate, iron, hydride..."
-          />
+          <FamilyFilterField initial={searchParams.family ?? ""} />
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-xs font-medium uppercase tracking-wide text-slate-500">

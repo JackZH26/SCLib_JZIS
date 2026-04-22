@@ -21,7 +21,14 @@ router = APIRouter(tags=["materials"])
 
 @router.get("/materials", response_model=MaterialListResponse)
 async def list_materials(
-    family: str | None = Query(None, description="Filter by material family"),
+    family: str | None = Query(
+        None,
+        description=(
+            "Filter by material family. Accepts a single slug (``cuprate``) "
+            "or a comma-separated list (``cuprate,iron_based``) to match any "
+            "of several families with OR semantics."
+        ),
+    ),
     tc_min: float | None = Query(None, ge=0),
     # v2 filter params
     ambient_sc: bool | None = Query(None, description="Only ambient-pressure SC"),
@@ -62,7 +69,12 @@ async def list_materials(
         _apply(Material.needs_review.is_(False))
 
     if family:
-        _apply(Material.family == family)
+        # Multi-select: split on comma and match any. Single-value
+        # requests ("?family=cuprate") still work — they reduce to an
+        # IN clause with one element.
+        slugs = [s.strip() for s in family.split(",") if s.strip()]
+        if slugs:
+            _apply(Material.family.in_(slugs))
     if tc_min is not None:
         _apply(Material.tc_max >= tc_min)
     if ambient_sc is not None:
