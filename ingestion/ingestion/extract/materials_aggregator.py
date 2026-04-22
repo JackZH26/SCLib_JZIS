@@ -568,10 +568,19 @@ async def aggregate_from_papers() -> int:
         # Stream all papers with their extracted materials. Each paper
         # is small (materials_extracted is a short list) so we can pull
         # them all at once rather than page.
+        #
+        # Retracted papers are excluded so their fabricated / flagged
+        # claims do not re-pollute materials.records on every aggregator
+        # run. This is what makes the alembic 0010 Schön-fraud cleanup
+        # *durable* — without this filter, the retracted papers would
+        # stay in papers.materials_extracted and get re-aggregated here.
         stmt = select(
             papers_table.c.id,
             papers_table.c.date_submitted,
             papers_table.c.materials_extracted,
+        ).where(
+            (papers_table.c.status != "retracted")
+            | (papers_table.c.status.is_(None))
         )
         rows = (await db.execute(stmt)).all()
         log.info("aggregator: scanning %d papers", len(rows))
