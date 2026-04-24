@@ -135,6 +135,17 @@ REQUIRED per record:
 - measurement: "resistivity" | "susceptibility" | "specific_heat" |
                "muSR" | "ARPES" | "STM" | "neutron" | "unknown"
 - confidence: 0.0-1.0 — your confidence the text actually reports this
+- evidence_type: "primary" | "cited". Use "primary" ONLY when the
+                 paper ITSELF measures, computes, synthesizes, or
+                 characterizes this material's Tc. Use "cited" for
+                 numbers taken from the literature — introduction
+                 surveys, comparison tables, "previously reported"
+                 mentions, reference to prior work by other groups
+                 (e.g. "LaH10 has Tc≈260 K [Drozdov 2019]" in the
+                 intro). When in doubt, default to "cited". A formula
+                 whose Tc comes right before/after a bracketed citation
+                 "[12]" or a phrase like "reported by X et al" is
+                 ALWAYS "cited".
 
 EXTRACT IF PRESENT (omit or set null otherwise):
 - pairing_symmetry: "d-wave" | "s-wave" | "s_pm" | "p-wave" | "unknown"
@@ -172,6 +183,12 @@ RULES:
 - Distinguish experimental measurements from theoretical predictions.
   If the paper only predicts Tc from DFT, mark measurement="unknown"
   and confidence <= 0.5.
+- evidence_type is orthogonal to confidence. A paper may cite a
+  prior measurement with 100% confidence — that's still "cited",
+  not "primary". primary == THIS paper IS the source. Review /
+  theory-survey introductions are the most common "cited" region.
+  Materials in Table 1 / benchmark columns are usually "cited"
+  unless the paper explicitly frames them as newly measured here.
 - For structure_phase, look for patterns like "1212 phase", "n=2 RP",
   "infinite layer", "YBCO", "La2CuO4" etc.
 - For rho_exponent, look for "T-linear" (n=1.0), "T^2" (n=2.0),
@@ -228,6 +245,7 @@ def _client() -> genai.Client:
 # aggregator later consumes these to build the material-level summary.
 _V2_FIELDS = (
     "tc_kelvin", "tc_type", "pressure_gpa", "measurement", "confidence",
+    "evidence_type",
     "pairing_symmetry", "gap_structure",
     "crystal_structure", "space_group", "structure_phase",
     "lattice_a", "lattice_c",
@@ -239,6 +257,11 @@ _V2_FIELDS = (
     "is_topological", "is_unconventional", "is_2d_or_interface",
     "disputed",
 )
+
+# evidence_type is a string enum with a strict value set. Anything
+# outside the set is dropped so aggregator filtering stays a simple
+# equality check ("cited" → skip).
+_EVIDENCE_TYPES = {"primary", "cited"}
 
 _NUMERIC_FIELDS = {
     "tc_kelvin", "pressure_gpa", "confidence",
@@ -324,6 +347,17 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         # Regex fallback for structure_phase
         if "structure_phase" not in record and phase_fallback:
             record["structure_phase"] = phase_fallback
+
+        # Normalize evidence_type to a known enum value or drop it.
+        # Missing/invalid is left absent — the aggregator treats absent
+        # as "primary" for backward compatibility with legacy records.
+        ev = record.get("evidence_type")
+        if ev is not None:
+            ev_lower = str(ev).strip().lower()
+            if ev_lower in _EVIDENCE_TYPES:
+                record["evidence_type"] = ev_lower
+            else:
+                record.pop("evidence_type", None)
 
         # Defensive: enforce the spec's confidence-downgrade for
         # implausibly high Tc values.

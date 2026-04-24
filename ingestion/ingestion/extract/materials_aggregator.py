@@ -595,6 +595,14 @@ async def aggregate_from_papers() -> int:
                 raw = m.get("formula")
                 if not raw or not isinstance(raw, str):
                     continue
+                # Skip records the NER marked as citations of prior work
+                # (introduction surveys, comparison tables, "previously
+                # reported" mentions). Absent evidence_type is treated as
+                # primary for backward compatibility with legacy records;
+                # the P0 flag migration (alembic 0012) already hides the
+                # worst legacy citation-conflation victims.
+                if m.get("evidence_type") == "cited":
+                    continue
                 conf = m.get("confidence")
                 if isinstance(conf, (int, float)) and conf < _MIN_CONFIDENCE:
                     continue
