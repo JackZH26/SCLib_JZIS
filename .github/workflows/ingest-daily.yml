@@ -26,5 +26,17 @@ jobs:
           script: |
             set -euo pipefail
             cd /opt/SCLib_JZIS
-            docker compose exec -T api \
-              python -m ingestion.pipeline --mode incremental
+            # The ingestion package lives in its own image (see
+            # docker-compose.yml "ingestion" service with profiles=[tools]).
+            # It is NOT installed in the api container, so exec'ing into api
+            # and running python -m ingestion.pipeline fails with
+            # ModuleNotFoundError. Use `compose run --rm` on the ingestion
+            # profile instead — it spins up a one-shot container and cleans
+            # up on exit.
+            docker compose --profile tools run --rm ingestion \
+              sclib-ingest --mode incremental
+            # Roll the fresh NER output up into materials.records so the
+            # UI reflects the new papers without waiting for a manual
+            # aggregator call.
+            docker compose --profile tools run --rm ingestion \
+              sclib-ingest --mode aggregate-materials
