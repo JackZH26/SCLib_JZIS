@@ -606,6 +606,17 @@ async def aggregate_from_papers() -> int:
                 conf = m.get("confidence")
                 if isinstance(conf, (int, float)) and conf < _MIN_CONFIDENCE:
                     continue
+                # Numeric sanity: tc_kelvin must land in a Postgres-safe
+                # double range AND be physically meaningful. The NER
+                # occasionally hallucinates 1e-100 K ("essentially zero")
+                # for placeholder materials; that triggers asyncpg's
+                # NumericValueOutOfRangeError on the float column. Drop
+                # records with tc_kelvin outside (0.01, 300) — the
+                # confidence=0.3 floor in NER post-processing should
+                # have caught these but it's a soft bound, not enforced.
+                tc = m.get("tc_kelvin")
+                if isinstance(tc, (int, float)) and (tc < 0.01 or tc > 300):
+                    continue
                 norm = normalize_formula(raw)
                 if not norm:
                     continue
