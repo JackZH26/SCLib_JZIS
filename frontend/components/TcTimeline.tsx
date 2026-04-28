@@ -6,10 +6,12 @@
  *
  * Axes + interaction notes:
  *
- * - Y axis starts at [0, 250] K with `minallowed: 0` so pan and
- *   zoom can never expose values below 0 K (negative Kelvin is
- *   physically impossible and was confusing readers). Upward zoom
- *   is still allowed in case future hydrides push Tc past 250 K.
+ * - Y axis defaults to [-30, 250] K. The -30 K bottom is pure
+ *   visual padding so dots near Tc=0 don't clip against the axis
+ *   line; `minallowed` clamps pan/zoom to that same -30 K floor so
+ *   readers can never see deeply negative (and physically nonsense)
+ *   Kelvin. Upward zoom is still allowed in case future hydrides
+ *   push Tc past 250 K.
  *
  * - X axis auto-ranges to the data, with a small ±1-year pad so the
  *   outermost points aren't glued to the frame edges. Each point's
@@ -69,6 +71,10 @@ const FAMILY_LABEL: Record<string, string> = {
 };
 
 const Y_MAX_DEFAULT = 250;
+// Visual cushion below 0 K so dots clustered around Tc=0 aren't
+// pressed flat against the x-axis. Negative Kelvin is unphysical so
+// these K values never carry data — they're whitespace only.
+const Y_MIN_DEFAULT = -30;
 
 function pressureLabel(p: number | null | undefined): string {
   if (p == null) return "ambient (unstated)";
@@ -205,13 +211,13 @@ export function TcTimeline({
           yaxis: {
             title: { text: "Tc (K)" },
             gridcolor: "#eef2ee",
-            range: [0, Y_MAX_DEFAULT],
+            range: [Y_MIN_DEFAULT, Y_MAX_DEFAULT],
             autorange: false,
-            // Hard floor at 0 K. `rangemode: nonnegative` only acts
-            // when autorange is true, so it didn't actually prevent
-            // pan/zoom from showing negative Kelvin — `minallowed`
-            // is the property that does.
-            minallowed: 0,
+            // Floor at Y_MIN_DEFAULT (= -30 K). Pan/zoom can't drift
+            // below it. Auto-ticks handle spacing — at the default
+            // [-30, 250] view plotly picks ≥50 K steps so no negative
+            // tick label shows; zoomed views keep their fine ticks.
+            minallowed: Y_MIN_DEFAULT,
             zeroline: true,
             zerolinecolor: "#d4e4d4",
           },
