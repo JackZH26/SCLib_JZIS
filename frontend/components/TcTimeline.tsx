@@ -30,9 +30,16 @@
  * at import time.
  */
 import dynamic from "next/dynamic";
+import { useState } from "react";
 import type { TimelineCoverage, TimelinePoint } from "@/lib/api";
 
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
+// `loading: () => null` because we render our own overlay below; the
+// default would briefly flash plotly's empty inner div before our
+// spinner appears.
+const Plot = dynamic(() => import("react-plotly.js"), {
+  ssr: false,
+  loading: () => null,
+});
 
 // Color palette for each supported family; unknown family falls back
 // to slate. Colors chosen to be discernible on light background and
@@ -90,6 +97,12 @@ export function TcTimeline({
   points: TimelinePoint[];
   coverage: TimelineCoverage | null;
 }) {
+  // Hidden once plotly fires onInitialized (= first paint complete).
+  // Covers the gap between "page HTML hydrated" and "chart actually
+  // visible" — that gap is several seconds with tens of thousands
+  // of markers, and used to show as a blank white box.
+  const [isPlotReady, setIsPlotReady] = useState(false);
+
   if (points.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
@@ -153,8 +166,23 @@ export function TcTimeline({
   const xMax = (coverage?.year_max ?? new Date().getUTCFullYear()) + 1;
 
   return (
-    <div className="w-full overflow-hidden rounded-lg border border-slate-200 bg-white">
+    <div
+      className="relative w-full overflow-hidden rounded-lg border border-slate-200 bg-white"
+      style={{ minHeight: 560 }}
+    >
+      {!isPlotReady && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white">
+          <div className="flex flex-col items-center gap-3">
+            <div
+              className="h-10 w-10 animate-spin rounded-full border-2 border-slate-200 border-t-slate-900"
+              aria-hidden
+            />
+            <p className="text-sm text-slate-500">Rendering chart…</p>
+          </div>
+        </div>
+      )}
       <Plot
+        onInitialized={() => setIsPlotReady(true)}
         data={traces}
         layout={{
           autosize: true,
