@@ -6,10 +6,10 @@
  *
  * Axes + interaction notes:
  *
- * - Y axis is fixed to [0, 250] K with rangemode "nonnegative" so
- *   pan/zoom/autoscale can never drift below 0 K — there are no
- *   negative Tc values and the API already caps plausible Tc at
- *   250 K (LaH₁₀ hydride record).
+ * - Y axis starts at [0, 250] K with `minallowed: 0` so pan and
+ *   zoom can never expose values below 0 K (negative Kelvin is
+ *   physically impossible and was confusing readers). Upward zoom
+ *   is still allowed in case future hydrides push Tc past 250 K.
  *
  * - X axis auto-ranges to the data, with a small ±1-year pad so the
  *   outermost points aren't glued to the frame edges. Each point's
@@ -207,7 +207,11 @@ export function TcTimeline({
             gridcolor: "#eef2ee",
             range: [0, Y_MAX_DEFAULT],
             autorange: false,
-            rangemode: "nonnegative",   // never dip below 0 K
+            // Hard floor at 0 K. `rangemode: nonnegative` only acts
+            // when autorange is true, so it didn't actually prevent
+            // pan/zoom from showing negative Kelvin — `minallowed`
+            // is the property that does.
+            minallowed: 0,
             zeroline: true,
             zerolinecolor: "#d4e4d4",
           },
