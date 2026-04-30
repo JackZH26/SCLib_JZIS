@@ -79,21 +79,34 @@ log = logging.getLogger("sync_mp_ids")
 # request and the resulting 400 in the log.
 _SKIP_NEEDLE = re.compile(r"[,δ]|\([^)]*[A-Z][a-z]?,")  # alloys / variable
 _DECIMAL_SUBSCRIPT = re.compile(r"[A-Z][a-z]?_?\d*\.\d")  # X0.75 or X_0.5
+# Characters that should never appear in a real chemical formula.
+# Whitespace = NER picked up descriptive text ("1L As"); $ = LaTeX
+# math markers ("(TMTSF)$2$PF$6$"); / = heterostructure descriptor
+# ("1.5nm-AlOx/1nm-LAO"); = = doping placeholder ("(x = 0.40)").
+_FORMULA_FORBIDDEN = re.compile(r"[\s$/=:;×√]")
+# A real formula contains at least one element symbol — uppercase
+# letter optionally followed by a lowercase letter. Strings without
+# that are descriptive labels like "123-cuprate" or "0.25 compound".
+_ELEMENT_SYMBOL = re.compile(r"[A-Z][a-z]?")
 
 
 def _clean_formula_for_mp(formula: str) -> tuple[str, str | None]:
     """Best-effort sanitisation. Side-effect-free."""
     if not formula:
         return formula, "empty"
+    if _FORMULA_FORBIDDEN.search(formula):
+        return formula, "non_formula_text"
     if _SKIP_NEEDLE.search(formula):
         return formula, "alloy_or_variable_stoichiometry"
     if _DECIMAL_SUBSCRIPT.search(formula):
         return formula, "decimal_subscript"
-    # Strip NIMS-style underscore subscript markers ("Bi_2Sr_2" → "Bi2Sr2").
     # Curly braces around subscripts ("O_{8+x}") signal variable
-    # stoichiometry — also skip those, MP won't have them.
+    # stoichiometry — MP won't have them.
     if "{" in formula or "}" in formula:
         return formula, "variable_subscript"
+    if not _ELEMENT_SYMBOL.search(formula):
+        return formula, "no_element_symbol"
+    # Strip NIMS-style underscore subscript markers ("Bi_2Sr_2" → "Bi2Sr2").
     cleaned = formula.replace("_", "")
     return cleaned, None
 
