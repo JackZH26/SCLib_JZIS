@@ -32,6 +32,7 @@ from routers import (
     similar,
     stats,
     timeline,
+    version,
 )
 from services.stats_refresh import refresh_dashboard_cache
 
@@ -222,6 +223,7 @@ app.include_router(timeline.router, prefix="/v1")
 app.include_router(history.router, prefix="/v1")
 app.include_router(bookmarks.router, prefix="/v1")
 app.include_router(feedback.router, prefix="/v1")
+app.include_router(version.router, prefix="/v1")
 
 
 @app.get("/v1/health", tags=["health"])
