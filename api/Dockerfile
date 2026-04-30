@@ -23,6 +23,13 @@ WORKDIR /app
 COPY pyproject.toml ./
 RUN uv pip install --system -e .
 
+# GIT_SHA is the short commit hash surfaced on /version so operators
+# (and the frontend Footer) can confirm what code is running. Falls
+# back to "dev" for local builds; production deploys export the real
+# SHA via docker-compose's args block.
+ARG GIT_SHA=dev
+ENV GIT_SHA=$GIT_SHA
+
 # Copy application code
 COPY . .
 RUN chmod +x /app/entrypoint.sh

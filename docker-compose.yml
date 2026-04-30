@@ -1,6 +1,14 @@
 services:
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      # GIT_SHA defaults to "dev" so local `docker compose build` works
+      # without setting the env. Production deploys (deploy.yml + the
+      # manual VPS2 steps) export GIT_SHA=$(git rev-parse --short HEAD)
+      # before invoking compose so the running image carries the real
+      # commit. Surfaced on the site footer + GET /version.
+      args:
+        GIT_SHA: ${GIT_SHA:-dev}
     container_name: sclib-frontend
     restart: unless-stopped
     # VPS2 already runs asrp.jzis.org on host port 3000 — bind the
@@ -27,7 +35,10 @@ services:
         condition: service_healthy
 
   api:
-    build: ./api
+    build:
+      context: ./api
+      args:
+        GIT_SHA: ${GIT_SHA:-dev}
     container_name: sclib-api
     restart: unless-stopped
     ports:

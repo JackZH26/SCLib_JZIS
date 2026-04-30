@@ -26,6 +26,11 @@ jobs:
             cd /opt/SCLib_JZIS
             git fetch --prune origin
             git reset --hard origin/main
+            # Export GIT_SHA so docker-compose's `args: GIT_SHA: ${GIT_SHA:-dev}`
+            # picks up the real commit instead of falling back to "dev".
+            # Surfaced by the frontend footer + GET /version endpoint.
+            export GIT_SHA="$(git rev-parse --short HEAD)"
+            echo "deploy: building images at GIT_SHA=$GIT_SHA"
             docker compose build --pull
             docker compose up -d
             # Apply DB migrations (idempotent); fail the deploy if they fail.
