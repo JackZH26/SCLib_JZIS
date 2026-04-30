@@ -46,6 +46,12 @@ services:
     env_file: .env
     volumes:
       - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
+      # One-shot scripts (refresh_stats.py, sync_mp_ids.py, …) live in
+      # the repo's top-level scripts/ dir, but the api image's build
+      # context is ./api so they are not baked in. Mount them read-only
+      # so `docker compose exec api python /app/scripts/foo.py` works
+      # without a rebuild whenever a script is added or edited.
+      - ./scripts:/app/scripts:ro
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/v1/health"]
       interval: 15s
