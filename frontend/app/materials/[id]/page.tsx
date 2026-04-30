@@ -62,6 +62,46 @@ export default async function MaterialDetailPage({
             .filter(Boolean)
             .join(" · ") || "—"}
         </p>
+        {mat.mp_id && (
+          // Cross-link to Materials Project for DFT structure / band data.
+          // Rendered only when the Phase B sync (scripts/sync_mp_ids.py)
+          // matched this formula. The "+N polymorphs" hint surfaces
+          // mp_alternate_ids when the formula has multiple structures
+          // (e.g. high-pressure phases) so the reader knows the chosen
+          // mp_id is just the lowest-energy one.
+          <div className="mt-3">
+            <a
+              href={`https://next-gen.materialsproject.org/materials/${mat.mp_id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-md border border-sage-border bg-white px-3 py-1.5 text-xs font-medium text-accent-deep shadow-sm transition-colors hover:bg-[rgba(58,125,92,0.06)]"
+            >
+              <span>View structure on Materials Project</span>
+              <span className="font-mono text-[10px] text-slate-500">
+                {mat.mp_id}
+              </span>
+              {mat.mp_alternate_ids.length > 1 && (
+                <span className="text-[10px] text-slate-500">
+                  · +{mat.mp_alternate_ids.length - 1} polymorph
+                  {mat.mp_alternate_ids.length - 1 === 1 ? "" : "s"}
+                </span>
+              )}
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M7 17L17 7M9 7h8v8" />
+              </svg>
+            </a>
+          </div>
+        )}
         {activeFlags.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-2">
             {activeFlags.map(([label]) => (

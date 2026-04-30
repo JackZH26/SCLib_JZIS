@@ -546,6 +546,13 @@ export interface MaterialDetail extends MaterialSummary {
   // v2 misc
   disputed: boolean | null;
   retracted: boolean | null;
+  // Phase B — Materials Project linkage. mp_id is null when the
+  // formula has no MP entry. mp_alternate_ids is sorted by
+  // energy_above_hull (lowest first); alternate_ids[0] === mp_id when
+  // there's a match.
+  mp_id: string | null;
+  mp_alternate_ids: string[];
+  mp_synced_at: string | null;
 }
 
 export interface MaterialListResponse {
