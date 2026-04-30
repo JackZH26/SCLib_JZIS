@@ -1,0 +1,58 @@
+SCLib_JZIS Data License — Creative Commons Attribution 4.0 International
+=========================================================================
+
+This file covers the *data* produced and curated by the SCLib_JZIS
+project (the materials database, Tc records, statistics, timeline
+points, and any aggregations published through https://jzis.org/sclib
+or https://api.jzis.org/sclib/v1).
+
+The SCLib_JZIS code itself is governed separately by `LICENSE`
+(Apache License, Version 2.0).
+
+Third-party data ingested by SCLib (arXiv abstracts, NIMS SuperCon
+records, Materials Project DFT properties, etc.) remains under the
+license terms of its respective upstream provider — see
+`DATA_SOURCES.md` for the per-source list. Nothing in this file
+extends or weakens those upstream terms.
+
+---
+
+You are free to:
+
+- **Share**  — copy and redistribute the material in any medium or format
+- **Adapt**  — remix, transform, and build upon the material for any
+                purpose, even commercially.
+
+The licensor cannot revoke these freedoms as long as you follow the
+license terms.
+
+Under the following terms:
+
+- **Attribution** — You must give appropriate credit, provide a link
+  to the license, and indicate if changes were made. You may do so in
+  any reasonable manner, but not in any way that suggests the licensor
+  endorses you or your use.
+
+  A typical citation looks like:
+
+      SCLib_JZIS — JZIS Superconductivity Library.
+      https://jzis.org/sclib · https://github.com/JackZH26/SCLib_JZIS
+      Data licensed under CC BY 4.0.
+
+- **No additional restrictions** — You may not apply legal terms or
+  technological measures that legally restrict others from doing
+  anything the license permits.
+
+Notices:
+
+- You do not have to comply with the license for elements of the
+  material in the public domain or where your use is permitted by an
+  applicable exception or limitation.
+- No warranties are given. The license may not give you all of the
+  permissions necessary for your intended use. For example, other
+  rights such as publicity, privacy, or moral rights may limit how
+  you use the material.
+
+The full legal code of CC BY 4.0 is available at
+https://creativecommons.org/licenses/by/4.0/legalcode and applies
+verbatim to the data covered by this file.
