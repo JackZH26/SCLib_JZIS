@@ -207,6 +207,11 @@ class StatsResponse(BaseModel):
     top_material_families: list[dict[str, Any]]
     last_ingest_at: str | None
     updated_at: str
+    # Calver string ("v2026.04.30") derived from last_ingest_at — gives
+    # users a stable, human-readable handle for "which data snapshot is
+    # this answer based on", mirroring Materials Project's
+    # `database_version`. None when the DB has never been ingested.
+    dataset_version: str | None = None
 
 
 class TimelinePoint(BaseModel):

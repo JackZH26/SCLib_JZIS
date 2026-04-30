@@ -57,6 +57,12 @@ async def compute_stats(db: AsyncSession) -> dict:
     )
     last_ingest_at = last_ingest_row.scalar_one()
     last_ingest_iso = last_ingest_at.isoformat() if last_ingest_at is not None else None
+    # Calver dataset_version mirrors Materials Project's
+    # `database_version` so users have a stable handle for citing
+    # "which data snapshot". Bumps every day the ingest adds papers.
+    dataset_version = (
+        f"v{last_ingest_at:%Y.%m.%d}" if last_ingest_at is not None else None
+    )
 
     return {
         "total_papers": int(total_papers),
@@ -65,6 +71,7 @@ async def compute_stats(db: AsyncSession) -> dict:
         "papers_by_year": papers_by_year,
         "top_material_families": top_material_families,
         "last_ingest_at": last_ingest_iso,
+        "dataset_version": dataset_version,
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
 
