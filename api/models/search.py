@@ -6,7 +6,7 @@ a database migration, and vice versa.
 """
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -145,6 +145,15 @@ class MaterialDetail(MaterialSummary):
     # v2 misc flags
     disputed: bool | None = None
     retracted: bool | None = None
+    # Phase B — Materials Project linkage. mp_id stays NULL when the
+    # formula has no MP match (NIMS oxynitrides, non-stoich cuprates,
+    # etc.). mp_alternate_ids is the full polymorph list sorted by
+    # energy_above_hull (lowest first); alternate_ids[0] == mp_id when
+    # there is a match. The frontend renders a "View on MP" button only
+    # when mp_id is set.
+    mp_id: str | None = None
+    mp_alternate_ids: list[str] = []
+    mp_synced_at: datetime | None = None
 
 
 class MaterialListResponse(BaseModel):
