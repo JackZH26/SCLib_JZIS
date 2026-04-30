@@ -659,6 +659,33 @@ export function getStats() {
   return request<StatsResponse>("/stats");
 }
 
+export interface VersionResponse {
+  site_version: string;
+  dataset_version: string | null;
+  api_version: string;
+}
+
+/**
+ * Used by the site Footer on every page render. We deliberately bypass
+ * `request()` (which forces `cache: "no-store"`) and let Next's data
+ * cache deduplicate this for an hour — `/version` rarely changes and
+ * a fresh fetch on every navigation would be wasteful. Returns null on
+ * any failure so the footer can degrade gracefully.
+ */
+export async function getVersion(opts?: {
+  revalidateSec?: number;
+}): Promise<VersionResponse | null> {
+  try {
+    const res = await fetch(`${API_BASE}/version`, {
+      next: { revalidate: opts?.revalidateSec ?? 3600 },
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as VersionResponse;
+  } catch {
+    return null;
+  }
+}
+
 export interface TimelinePoint {
   material: string;
   formula_latex: string | null;

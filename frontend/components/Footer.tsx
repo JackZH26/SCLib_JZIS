@@ -8,11 +8,19 @@
  *   - JZIS    → https://www.jzis.org
  *   - Join Us → https://jzis.org/#join  (anchor on the main site)
  *
- * Layout: centered row of links over a small copyright line, backed by
- * --card-alt (the pale sage band) + top border for the same visual
- * separation asrp uses.
+ * Layout: centered row of links over two small text rows:
+ *   1) copyright + license summary (Apache-2.0 code, CC BY 4.0 data)
+ *   2) site/data version stamps (à la Materials Project's
+ *      "website 8b6f045e | database v2025.09.25")
+ * Backed by --card-alt (the pale sage band) + top border for the
+ * same visual separation asrp uses.
+ *
+ * Async server component so it can fetch /version once per request
+ * and ride Next's data cache for the rest of the hour. Network
+ * failures degrade gracefully — the version line just hides.
  */
 import Link from "next/link";
+import { getVersion } from "@/lib/api";
 
 const GithubIcon = () => (
   <svg
@@ -26,7 +34,19 @@ const GithubIcon = () => (
   </svg>
 );
 
-export function Footer() {
+export async function Footer() {
+  // Best-effort. Returns null when the API is unreachable (e.g. local
+  // dev without docker-compose up); the footer just drops the version
+  // line in that case rather than throwing during SSR.
+  const version = await getVersion();
+  // Hide the literal "dev" SHA in production-looking text — if the
+  // build wasn't tagged with a real SHA, just don't show one. Same
+  // for missing dataset_version (fresh DB, no ingest yet).
+  const siteVersion =
+    version && version.site_version && version.site_version !== "dev"
+      ? version.site_version
+      : null;
+  const datasetVersion = version?.dataset_version ?? null;
   return (
     <footer className="mt-16 border-t border-sage-border bg-[rgba(232,240,232,0.6)]">
       <div className="mx-auto max-w-6xl px-6 py-12 text-center">
@@ -66,7 +86,25 @@ export function Footer() {
           </a>
         </nav>
         <p className="mt-5 text-xs text-slate-500">
-          SCLib — JZIS Superconductivity Library · Apache 2.0 · Built by{" "}
+          SCLib — JZIS Superconductivity Library · Code{" "}
+          <a
+            href="https://github.com/JackZH26/SCLib_JZIS/blob/main/LICENSE"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-accent-deep"
+          >
+            Apache 2.0
+          </a>{" "}
+          · Data{" "}
+          <a
+            href="https://github.com/JackZH26/SCLib_JZIS/blob/main/LICENSE-DATA"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-accent-deep"
+          >
+            CC BY 4.0
+          </a>{" "}
+          · Built by{" "}
           <a
             href="https://www.jzis.org"
             target="_blank"
@@ -76,6 +114,31 @@ export function Footer() {
             JZIS
           </a>
         </p>
+        {(siteVersion || datasetVersion) && (
+          <p className="mt-1 text-[11px] text-slate-400">
+            {siteVersion && (
+              <>
+                Site{" "}
+                <a
+                  href={`https://github.com/JackZH26/SCLib_JZIS/commit/${siteVersion}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono hover:text-accent-deep"
+                >
+                  {siteVersion}
+                </a>
+              </>
+            )}
+            {siteVersion && datasetVersion && (
+              <span className="mx-2">·</span>
+            )}
+            {datasetVersion && (
+              <>
+                Data <span className="font-mono">{datasetVersion}</span>
+              </>
+            )}
+          </p>
+        )}
       </div>
     </footer>
   );
