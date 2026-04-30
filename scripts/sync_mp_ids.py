@@ -43,12 +43,16 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-# Allow running this script outside the container too:
-#   `python scripts/sync_mp_ids.py`
+# Path resolution handles both layouts:
+#  - host:      /repo/scripts/sync_mp_ids.py + /repo/api/{models,services,...}
+#  - container: /app/scripts/sync_mp_ids.py  + /app/{models,services,...}
+# The api/ container's WORKDIR is /app and the api source is COPY'd
+# straight in (no nested ``api/`` subdir), so we add both candidates to
+# sys.path and let the import find whichever is real.
 ROOT = Path(__file__).resolve().parent.parent
-API_DIR = ROOT / "api"
-if API_DIR.is_dir() and str(API_DIR) not in sys.path:
-    sys.path.insert(0, str(API_DIR))
+for cand in (ROOT / "api", ROOT):
+    if (cand / "models").is_dir() and str(cand) not in sys.path:
+        sys.path.insert(0, str(cand))
 
 import httpx  # noqa: E402
 from sqlalchemy import select, update  # noqa: E402
