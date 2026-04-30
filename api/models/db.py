@@ -32,6 +32,7 @@ from sqlalchemy import (
     String,
     Text,
     func,
+    text,
 )
 
 
@@ -335,11 +336,26 @@ class Material(Base):
     )
     review_reason: Mapped[str | None] = mapped_column(String(200), nullable=True)
 
+    # --- Materials Project linkage (Phase B) -----------------------------
+    # Populated out-of-band by ``scripts/sync_mp_ids.py``; stays NULL for
+    # rows whose formula has no MP match (NIMS oxynitrides, non-stoich
+    # cuprates with δ, etc.). See alembic 0013 + DATA_SOURCES.md "mp" row.
+    mp_id:            Mapped[str | None]      = mapped_column(String(50))
+    mp_alternate_ids: Mapped[list[str]]       = mapped_column(
+        JSONB, default=list, server_default="[]", nullable=False,
+    )
+    mp_synced_at:     Mapped[datetime | None] = mapped_column(_TZDT)
+
     __table_args__ = (
         Index("idx_materials_family", "family"),
         Index("idx_materials_tc", "tc_max"),  # NULLS LAST handled in query
         Index("idx_materials_pairing", "pairing_symmetry"),
         Index("idx_materials_phase", "structure_phase"),
+        # Partial index — see alembic 0013 for rationale.
+        Index(
+            "idx_materials_mp_id", "mp_id",
+            postgresql_where=text("mp_id IS NOT NULL"),
+        ),
     )
 
 
