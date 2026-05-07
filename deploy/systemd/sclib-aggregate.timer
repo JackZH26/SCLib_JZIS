@@ -1,15 +1,19 @@
 [Unit]
-Description=Fire SCLib daily materials aggregate
+Description=Fire SCLib hourly materials aggregate
 Documentation=file:///opt/SCLib_JZIS/deploy/systemd/README.md
 
 [Timer]
-# Daily at 03:10 UTC (11:10 UTC+8 Beijing). Chosen because:
-#   - The 瓦力 hourly ingest just ran at :10 for the previous hour
-#     and any in-flight work is done.
-#   - The stats-cache auto-refresh loop inside the API container
-#     runs hourly too, so there's no cache contention.
-#   - Low-traffic window globally (overnight US, late morning CN).
-OnCalendar=*-*-* 03:10:00
+# Hourly at :30. Was daily originally — but the aggregator finishes
+# in ~10 s on 30 k papers, and waiting up to 24 h made the materials
+# count lag noticeably behind paper / chunk counts on the dashboard.
+# Hourly gets the materials table within ~30 min of any new arXiv
+# paper while still costing essentially nothing.
+#
+# :30 is chosen so we land mid-hour, between the 瓦力 ingest tick
+# (typically near :00 / :05) and the API's hourly stats-refresh
+# (every 3600 s from container start, drifts by minutes). No
+# contention even if cadences shift.
+OnCalendar=*:30:00
 RandomizedDelaySec=60s
 Persistent=true
 Unit=sclib-aggregate.service

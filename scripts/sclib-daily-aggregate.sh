@@ -1,13 +1,21 @@
 #!/usr/bin/env bash
-# Daily SCLib materials aggregate.
+# Hourly SCLib materials aggregate.
 #
 # Triggered by the systemd timer at /etc/systemd/system/sclib-aggregate.timer.
-# Cadence: every day at 03:10 UTC (11:10 UTC+8).
+# Cadence: every hour at :30 UTC. Originally daily, bumped to hourly
+# once we measured an actual run at ~10 s on 30 k papers — leaving a
+# 24 h gap was making the dashboard's MATERIALS count visibly lag
+# behind PAPERS / CHUNKS as new arXiv work landed.
 #
 # This script *does not touch arXiv ingest*. The user's 瓦力 cron
 # handles that; our sole job is to roll the per-paper NER output
 # (papers.materials_extracted JSONB) into the flat `materials` table
 # columns, and refresh the dashboard stats cache afterwards.
+#
+# (Filename still says "daily" for backwards compatibility with the
+# existing systemd ExecStart path; renaming would churn the unit
+# files and the symlinks already deployed on VPS2 for no functional
+# benefit.)
 #
 # Steps:
 #   1. sclib-ingest --mode aggregate-materials
@@ -15,7 +23,7 @@
 #   2. POST /stats/refresh
 #      (so the homepage count reflects the fresh aggregate)
 #
-# Exit codes mirror the hourly script:
+# Exit codes:
 #   0  everything OK
 #   1  aggregate or stats-refresh soft-failure
 #   2  aggregate hard-crashed
