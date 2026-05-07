@@ -1,6 +1,6 @@
 """Strip LaTeX math-mode markup from materials.formula + .id + .formula_normalized.
 
-Revision ID: 0014_strip_latex_from_display_formulas
+Revision ID: 0014_strip_latex_formulas
 Down revision: 0013_add_mp_id_columns
 
 The pre-2026-04-28 ``normalize_formula`` did not drop the LaTeX
@@ -44,7 +44,7 @@ from alembic import op
 from sqlalchemy import text
 
 
-revision = "0014_strip_latex_from_display_formulas"
+revision = "0014_strip_latex_formulas"
 down_revision = "0013_add_mp_id_columns"
 branch_labels = None
 depends_on = None

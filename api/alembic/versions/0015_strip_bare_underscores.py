@@ -1,7 +1,7 @@
 """Broader formula cleanup — handle bare ``_x`` underscores too.
 
 Revision ID: 0015_strip_bare_underscores
-Down revision: 0014_strip_latex_from_display_formulas
+Down revision: 0014_strip_latex_formulas
 
 Migration 0014 cleaned ``$_{...}$`` and ``_{...}`` patterns but its
 WHERE clause filtered for ``\\$|_\\{``, so formulas that used the
@@ -34,7 +34,7 @@ from sqlalchemy import text
 
 
 revision = "0015_strip_bare_underscores"
-down_revision = "0014_strip_latex_from_display_formulas"
+down_revision = "0014_strip_latex_formulas"
 branch_labels = None
 depends_on = None
 
