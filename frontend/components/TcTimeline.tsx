@@ -209,6 +209,13 @@ export function TcTimeline({
           </div>
         </div>
       )}
+      {/* Symbol legend lives in the DOM above the Plotly chart, NOT
+          as a plotly annotation. The annotation version collided with
+          plotly's modebar (camera/zoom/pan icons in the top-right) so
+          the text was always partly hidden behind those buttons. As
+          plain React it gets its own row + clean typography, and the
+          modebar keeps the chart's top-right to itself. */}
+      <SymbolLegend />
       <Plot
         onInitialized={() => setIsPlotReady(true)}
         data={traces}
@@ -246,26 +253,9 @@ export function TcTimeline({
           legend: { orientation: "h", y: -0.14 },
           paper_bgcolor: "#fff",
           plot_bgcolor: "#fff",
-          // Symbol legend — renders top-right above the plot,
-          // explaining the filled-vs-hollow + dark-outline coding so
-          // users don't have to hover every dot to interpret it.
-          // Plotly's regular legend can only show one symbol per
-          // trace, so we put the symbol-vs-meaning key here as text.
-          annotations: [
-            {
-              text:
-                "● experimental · ◯ theoretical (DFT) · " +
-                "<span style='color:#0f172a'>●︎</span> high-pressure",
-              showarrow: false,
-              xref: "paper",
-              yref: "paper",
-              x: 1,
-              y: 1.04,
-              xanchor: "right",
-              yanchor: "bottom",
-              font: { size: 11, color: "#64748b" },
-            },
-          ],
+          // The symbol legend used to live here as a plotly annotation
+          // at (1, 1.04) but it collided with the modebar. It is now a
+          // React element above the chart (see <SymbolLegend />).
         }}
         config={{
           responsive: true,
@@ -289,5 +279,61 @@ export function TcTimeline({
         style={{ width: "100%", height: "560px" }}
       />
     </div>
+  );
+}
+
+/**
+ * Three-symbol key explaining the marker coding: filled vs hollow
+ * (experimental vs theoretical) and the dark-outline cue (high-
+ * pressure measurement). Sits in a flex row above the Plotly chart
+ * so it can't collide with the modebar like the old plotly-
+ * annotation version did.
+ */
+function SymbolLegend() {
+  return (
+    <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 border-b border-slate-100 px-4 py-2 text-xs text-slate-500">
+      <LegendItem variant="filled" label="experimental" />
+      <LegendItem variant="hollow" label="theoretical (DFT)" />
+      <LegendItem variant="outlined" label="high-pressure" />
+    </div>
+  );
+}
+
+function LegendItem({
+  variant,
+  label,
+}: {
+  variant: "filled" | "hollow" | "outlined";
+  label: string;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+        {variant === "filled" && (
+          <circle cx="6" cy="6" r="4" fill="#64748b" />
+        )}
+        {variant === "hollow" && (
+          <circle
+            cx="6"
+            cy="6"
+            r="4"
+            fill="none"
+            stroke="#64748b"
+            strokeWidth="1.4"
+          />
+        )}
+        {variant === "outlined" && (
+          <circle
+            cx="6"
+            cy="6"
+            r="4"
+            fill="#64748b"
+            stroke="#0f172a"
+            strokeWidth="1.4"
+          />
+        )}
+      </svg>
+      <span>{label}</span>
+    </span>
   );
 }
