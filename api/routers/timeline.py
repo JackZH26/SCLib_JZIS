@@ -48,6 +48,55 @@ router = APIRouter(tags=["timeline"])
 _TC_MAX_K = 250.0
 
 
+# Known experimental measurement techniques. If a record's
+# ``measurement`` field matches any of these we trust the value as a
+# real measurement, regardless of what the (notoriously over-tagged)
+# ``paper_type`` field claims. Counts taken from a recent DB sample —
+# this list covers > 99% of explicit non-empty measurement values.
+_EXPERIMENTAL_MEASUREMENTS = frozenset({
+    "resistivity", "susceptibility", "specific_heat",
+    "arpes", "musr", "stm", "neutron", "nmr", "nqr",
+    "magnetization", "thermal_conductivity",
+    "raman scattering", "raman", "andreev reflection",
+    "nernst", "tunneling", "esr", "torque magnetometry",
+    "hall effect", "hall_effect", "transport",
+})
+
+# Explicit calculation tags. NER uses these when the paper itself
+# describes its method ("DFT", "first-principles study"). Mirrors
+# the most common values surfacing on /materials.records.
+_THEORETICAL_MEASUREMENTS = frozenset({
+    "calculation", "dft", "first-principles", "first principles",
+    "computational", "ab initio", "ab-initio",
+    "allen-dynes", "eliashberg", "tight-binding",
+})
+
+
+def _is_theoretical(rec: dict) -> bool:
+    """Hybrid classifier: was this Tc measured or calculated?
+
+    Rule of precedence:
+
+    1. Explicit experimental technique in ``measurement`` (resistivity,
+       STM, ARPES, ...) → **experimental**, regardless of paper_type.
+       The NER's paper_type label is unreliable; an explicit technique
+       wins.
+    2. Explicit calculation tag (calculation, DFT, ...) → **theoretical**.
+    3. measurement empty / unknown — fall back to paper_type. If NER
+       called the paper theoretical or computational and we have no
+       measurement evidence to override that, treat the record as
+       theoretical. Otherwise default to experimental, since most
+       arXiv cond-mat.supr-con papers are experimental.
+    """
+    m = (rec.get("measurement") or "").strip().lower()
+    if m in _EXPERIMENTAL_MEASUREMENTS:
+        return False
+    if m in _THEORETICAL_MEASUREMENTS:
+        return True
+    pt = (rec.get("paper_type") or "").strip().lower()
+    return pt in {"theoretical", "computational"}
+
+
 @router.get("/timeline", response_model=TimelineResponse)
 async def timeline(
     family: str | None = Query(None, description="Restrict to one family"),
@@ -99,9 +148,14 @@ async def timeline(
                 continue
 
             p = _as_float(rec.get("pressure_gpa"))
+            theory = _is_theoretical(rec)
             tc_bin = round(tc_f, 1)
             p_bin = round(p) if p is not None else None
-            key = (m.id, year_i, tc_bin, p_bin)
+            # Theoretical records dedup against theoretical, experimental
+            # against experimental — so a theory paper's calculated 200 K
+            # for H₃S and an experimental 200 K paper at the same year
+            # don't collapse into one dot. The chart should show both.
+            key = (m.id, year_i, tc_bin, p_bin, theory)
             if key in seen:
                 continue
 
@@ -113,6 +167,7 @@ async def timeline(
                 year=year_i,
                 pressure_gpa=p,
                 paper_id=rec.get("paper_id"),
+                is_theoretical=theory,
             )
 
     points = sorted(seen.values(), key=lambda p: (p.year, -p.tc_kelvin))

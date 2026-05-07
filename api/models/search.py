@@ -233,6 +233,13 @@ class TimelinePoint(BaseModel):
     year: int
     pressure_gpa: float | None
     paper_id: str | None
+    # True iff the underlying record is a calculation rather than an
+    # experimental measurement. The frontend renders these as hollow
+    # rings so users can distinguish DFT predictions (e.g. P/Cl-doped
+    # H₃S at 200 K) from confirmed lab measurements. Defaults False
+    # so any caller that doesn't set it gets the safer "experimental"
+    # styling rather than mis-marking real data as theory.
+    is_theoretical: bool = False
 
 
 class TimelineCoverage(BaseModel):

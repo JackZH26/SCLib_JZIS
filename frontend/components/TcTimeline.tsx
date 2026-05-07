@@ -124,6 +124,7 @@ export function TcTimeline({
 
   const traces = families.map((fam) => {
     const subset = points.filter((p) => (p.family ?? "unknown") === fam);
+    const familyColor = FAMILY_COLORS[fam] ?? "#94a3b8";
     return {
       type: "scatter" as const,
       mode: "markers" as const,
@@ -141,26 +142,47 @@ export function TcTimeline({
         pressureLabel(p.pressure_gpa),
         p.paper_id ?? "",
         p.year,
+        // Theory tag, prefixed with <br> so it nests cleanly under
+        // the material name in the hover card; empty string for
+        // experimental points so the line is suppressed.
+        p.is_theoretical ? "<br>⚠ theoretical (DFT / computational)" : "",
       ]),
       text: subset.map((p) => p.material),
       hovertemplate:
-        "<b>%{text}</b><br>" +
+        "<b>%{text}</b>%{customdata[3]}<br>" +
         "Tc = %{y} K<br>" +
         "P = %{customdata[0]}<br>" +
         "Year = %{customdata[2]}<br>" +
         "%{customdata[1]}<extra></extra>",
       marker: {
         size: 5,
-        opacity: 0.55,   // overlaps read as density, not a solid blob
-        color: FAMILY_COLORS[fam] ?? "#94a3b8",
-        // Dark outline when the record explicitly reports pressure > 0.
-        // Lets the reader scan "which dots are high-pressure measurements"
-        // at a glance without opening every tooltip.
+        // Theoretical points deliberately faded so a single chatty
+        // DFT paper doesn't visually outweigh experimental data.
+        opacity: subset.map((p) => (p.is_theoretical ? 0.35 : 0.7)),
+        color: familyColor,
+        // Hollow ring for theoretical, filled disk for experimental.
+        // Lets readers tell apart "this Tc was measured" from "this
+        // Tc was calculated" at a glance.
+        symbol: subset.map((p) =>
+          p.is_theoretical ? "circle-open" : "circle",
+        ),
         line: {
-          width: subset.map((p) =>
-            p.pressure_gpa != null && p.pressure_gpa > 0 ? 1.2 : 0,
+          // - Hollow circles need a stroke wide enough to see at
+          //   5 px size → 1.4
+          // - Filled experimental high-pressure points get a dark
+          //   outline (existing scan-at-a-glance hint) → 1.2
+          // - Plain ambient experimental → no stroke
+          width: subset.map((p) => {
+            if (p.is_theoretical) return 1.4;
+            if (p.pressure_gpa != null && p.pressure_gpa > 0) return 1.2;
+            return 0;
+          }),
+          // Theoretical strokes inherit the family colour (the ring
+          // IS the visible mark); experimental high-P points get the
+          // dark slate outline as before.
+          color: subset.map((p) =>
+            p.is_theoretical ? familyColor : "#0f172a",
           ),
-          color: "#0f172a",
         },
       },
     };
@@ -224,6 +246,26 @@ export function TcTimeline({
           legend: { orientation: "h", y: -0.14 },
           paper_bgcolor: "#fff",
           plot_bgcolor: "#fff",
+          // Symbol legend — renders top-right above the plot,
+          // explaining the filled-vs-hollow + dark-outline coding so
+          // users don't have to hover every dot to interpret it.
+          // Plotly's regular legend can only show one symbol per
+          // trace, so we put the symbol-vs-meaning key here as text.
+          annotations: [
+            {
+              text:
+                "● experimental · ◯ theoretical (DFT) · " +
+                "<span style='color:#0f172a'>●︎</span> high-pressure",
+              showarrow: false,
+              xref: "paper",
+              yref: "paper",
+              x: 1,
+              y: 1.04,
+              xanchor: "right",
+              yanchor: "bottom",
+              font: { size: 11, color: "#64748b" },
+            },
+          ],
         }}
         config={{
           responsive: true,

@@ -702,6 +702,8 @@ export interface TimelinePoint {
   year: number;
   pressure_gpa: number | null;
   paper_id: string | null;
+  /** True for DFT / first-principles records, false for experimental. */
+  is_theoretical: boolean;
 }
 
 export interface TimelineCoverage {
