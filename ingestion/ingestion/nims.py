@@ -168,8 +168,15 @@ def normalize_formula(raw: str) -> str:
     s = _LATEX_BRACE.sub(r"\1", s)
     # 2. Plain LaTeX numeric subscripts
     s = _LATEX_NUM_SUBSCRIPT.sub(r"\1", s)
-    # 3. Strip any remaining LaTeX syntax noise
-    s = s.replace("_", "").replace("{", "").replace("}", "")
+    # 3. Strip any remaining LaTeX syntax noise.
+    #    "$" is the math-mode delimiter — papers write H$_{3}$S, and
+    #    without dropping the dollars we got TWO grouping keys
+    #    ("h$3$s" vs "h3s") for the same compound. The pre-fix corpus
+    #    has ~680 such duplicated rows; alembic 0013 dedupes them.
+    s = (s.replace("_", "")
+           .replace("{", "")
+           .replace("}", "")
+           .replace("$", ""))
     # 4. Greek → ASCII for the doping marker specifically. Keep other
     #    Greeks (λ, κ, α, β prefixes) because they denote distinct
     #    polymorphs of organic superconductors.

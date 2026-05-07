@@ -615,6 +615,36 @@ def _lattice_params(records: list[dict[str, Any]]) -> dict[str, float] | None:
 _MIN_CONFIDENCE = 0.3
 
 
+# Match either ``$_{...}$`` or ``_{...}`` LaTeX subscripts so the
+# captured group can be substituted back inline. Used by
+# ``_clean_display`` to flatten ``Bi_{2}Sr_{2}CaCu_{2}O_{8+δ}`` to
+# ``Bi2Sr2CaCu2O8+δ`` for the materials.formula column.
+_LATEX_SUB_DISPLAY = re.compile(r"\$?_\{([^}]+)\}\$?")
+_LATEX_DOLLAR_DISPLAY = re.compile(r"\$([^$]*)\$")
+
+
+def _clean_display(raw: str) -> str:
+    """Strip LaTeX math-mode + subscript markup from a display formula.
+
+    The grouping key (``normalize_formula``) already does this for the
+    purpose of folding duplicates; this helper does the same for the
+    ``materials.formula`` column the UI surfaces. Without it, NER
+    output like ``H$_{3}$S`` rendered as raw LaTeX in tooltips and
+    badges, even though the row had the right normalized id.
+
+    Conservative: keeps unicode (δ, subscripts already in the source),
+    only removes the LaTeX scaffolding.
+    """
+    # Remove ``$_{xyz}$`` and bare ``_{xyz}`` → ``xyz``
+    s = _LATEX_SUB_DISPLAY.sub(r"\1", raw)
+    # Remove any remaining ``$...$`` math-mode wrap → contents inline
+    s = _LATEX_DOLLAR_DISPLAY.sub(r"\1", s)
+    # Drop stray underscores that were guarding numeric subscripts
+    # (e.g. ``H_3S`` → ``H3S``). Stripping ``{}`` cleans up anything
+    # the patterns above missed.
+    return s.replace("_", "").replace("{", "").replace("}", "").strip()
+
+
 async def aggregate_from_papers() -> int:
     """Sweep papers.materials_extracted → upsert into materials.
 
@@ -690,9 +720,12 @@ async def aggregate_from_papers() -> int:
                 if year is not None and "year" not in record:
                     record["year"] = year
                 grouped[norm].append(record)
-                # Prefer the variant *without* LaTeX noise as display
-                # form: strip dollar signs and pick by raw freq.
-                display_counts[norm][raw.strip()] += 1
+                # Display-form bookkeeping: clean LaTeX scaffolding off
+                # each candidate before counting so $-wrapped variants
+                # don't compete with their already-clean siblings as
+                # different "spellings". Final pick is the most-common
+                # cleaned form, breaking ties by length.
+                display_counts[norm][_clean_display(raw) or raw.strip()] += 1
 
         log.info("aggregator: %d unique canonical formulas from NER",
                  len(grouped))
