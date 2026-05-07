@@ -719,7 +719,13 @@ export interface TimelineResponse {
   coverage: TimelineCoverage | null;
 }
 
-export function getTimeline(family?: string) {
-  const qs = family ? `?family=${encodeURIComponent(family)}` : "";
-  return request<TimelineResponse>(`/timeline${qs}`);
+export function getTimeline(opts: {
+  family?: string;
+  experimentalOnly?: boolean;
+} = {}) {
+  const qs = new URLSearchParams();
+  if (opts.family) qs.set("family", opts.family);
+  if (opts.experimentalOnly) qs.set("experimental_only", "true");
+  const qstr = qs.toString();
+  return request<TimelineResponse>(`/timeline${qstr ? `?${qstr}` : ""}`);
 }

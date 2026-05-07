@@ -107,6 +107,16 @@ async def timeline(
             "Tc). Off by default so the chart reflects vetted data only."
         ),
     ),
+    experimental_only: bool = Query(
+        False,
+        description=(
+            "Drop records classified as theoretical (DFT / first-"
+            "principles calculations, see _is_theoretical()). When set, "
+            "only points originating from a real experimental "
+            "measurement technique survive — useful when the user is "
+            "looking for ground truth and not predictions."
+        ),
+    ),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001
     db: AsyncSession = Depends(get_db),
 ) -> TimelineResponse:
@@ -149,6 +159,8 @@ async def timeline(
 
             p = _as_float(rec.get("pressure_gpa"))
             theory = _is_theoretical(rec)
+            if experimental_only and theory:
+                continue
             tc_bin = round(tc_f, 1)
             p_bin = round(p) if p is not None else None
             # Theoretical records dedup against theoretical, experimental

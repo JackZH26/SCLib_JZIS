@@ -27,10 +27,31 @@ const FAMILIES = [
 export default async function TimelinePage({
   searchParams,
 }: {
-  searchParams: { family?: string };
+  searchParams: { family?: string; experimental_only?: string };
 }) {
   const current = searchParams.family ?? "";
-  const data = await getTimeline(current || undefined).catch(() => null);
+  // Booleans on URL: anything other than the literal string "true"
+  // is treated as off, so back-button / shared links don't end up in
+  // a half-checked state when query strings are sloppy.
+  const experimentalOnly = searchParams.experimental_only === "true";
+  const data = await getTimeline({
+    family: current || undefined,
+    experimentalOnly,
+  }).catch(() => null);
+
+  // Build hrefs that round-trip the *other* filter so toggling one
+  // never silently resets the other. The family buttons preserve
+  // experimental_only, and the experimental toggle preserves family.
+  const buildHref = (
+    nextFamily: string,
+    nextExperimentalOnly: boolean,
+  ): string => {
+    const qs = new URLSearchParams();
+    if (nextFamily) qs.set("family", nextFamily);
+    if (nextExperimentalOnly) qs.set("experimental_only", "true");
+    const s = qs.toString();
+    return s ? `/timeline?${s}` : "/timeline";
+  };
 
   return (
     <main className="space-y-6">
@@ -45,13 +66,13 @@ export default async function TimelinePage({
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {FAMILIES.map((f) => {
           const active = f.slug === current;
           return (
             <Link
               key={f.slug}
-              href={f.slug ? `/timeline?family=${f.slug}` : "/timeline"}
+              href={buildHref(f.slug, experimentalOnly)}
               className={
                 active
                   ? "rounded-md bg-slate-900 px-3 py-1.5 text-sm text-white"
@@ -62,6 +83,54 @@ export default async function TimelinePage({
             </Link>
           );
         })}
+
+        {/*
+          "Only experimental" toggle. Clicking flips the URL flag and
+          Next re-renders the server component with the filtered set
+          (the API drops theoretical points before responding, so
+          coverage counts also shrink to match). Rendered as a
+          checkbox-shaped Link rather than an <input type="checkbox">
+          so the filter row stays a single SSR-friendly component
+          with no client state.
+        */}
+        <Link
+          href={buildHref(current, !experimentalOnly)}
+          aria-pressed={experimentalOnly}
+          className={
+            "ml-auto inline-flex items-center gap-2 rounded-md border " +
+            "px-3 py-1.5 text-sm transition-colors " +
+            (experimentalOnly
+              ? "border-[color:var(--accent)] bg-[color:var(--accent)] text-white hover:bg-[color:var(--accent-deep)]"
+              : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100")
+          }
+        >
+          <span
+            aria-hidden
+            className={
+              "flex h-4 w-4 items-center justify-center rounded-sm border " +
+              (experimentalOnly
+                ? "border-white bg-white text-[color:var(--accent)]"
+                : "border-slate-400 bg-white text-transparent")
+            }
+          >
+            <svg
+              viewBox="0 0 16 16"
+              width="12"
+              height="12"
+              className={experimentalOnly ? "" : "invisible"}
+            >
+              <path
+                d="M3 8l3 3 7-7"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+          Only experimental
+        </Link>
       </div>
 
       {data == null ? (
