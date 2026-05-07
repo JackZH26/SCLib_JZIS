@@ -640,9 +640,15 @@ def _clean_display(raw: str) -> str:
     # Remove any remaining ``$...$`` math-mode wrap → contents inline
     s = _LATEX_DOLLAR_DISPLAY.sub(r"\1", s)
     # Drop stray underscores that were guarding numeric subscripts
-    # (e.g. ``H_3S`` → ``H3S``). Stripping ``{}`` cleans up anything
-    # the patterns above missed.
-    return s.replace("_", "").replace("{", "").replace("}", "").strip()
+    # (e.g. ``H_3S`` → ``H3S``). Stripping ``{}`` and unmatched ``$``
+    # cleans up edge cases the regex pair above doesn't catch — e.g.
+    # ``$Nb/Cu40Ni60`` (leading dollar with no closer) or
+    # ``Na0.31CoO2\cdot$1.3H2O`` (embedded unmatched dollar).
+    return (s.replace("_", "")
+              .replace("{", "")
+              .replace("}", "")
+              .replace("$", "")
+              .strip())
 
 
 async def aggregate_from_papers() -> int:
