@@ -282,6 +282,54 @@ def _weighted_boolean(
     return None
 
 
+# Per-column length budgets — must match the VARCHAR(N) widths in
+# api/models/db.py and api/alembic/versions/0002_materials_v2_schema.py.
+# Strings exceeding the column width crash the aggregator
+# (asyncpg.StringDataRightTruncationError). The NER occasionally
+# returns a sentence-long description into a field that's supposed to
+# carry a single tag (e.g. ``crystal_structure`` got an entire phrase
+# about Fe-vacancy ordering). Anything past the budget is almost
+# certainly off-spec and we treat it as "no value" rather than
+# truncating mid-word, since a half-sentence aggregate is misleading.
+_FIELD_MAX_LEN: dict[str, int] = {
+    "crystal_structure": 100,
+    "space_group": 50,
+    "structure_phase": 50,
+    "gap_structure": 50,
+    "pairing_symmetry": 100,
+    "hc2_conditions": 200,
+    "tc_max_conditions": 300,
+    "competing_order": 100,
+    "pressure_type": 50,
+    "sample_form": 50,
+    "substrate": 100,
+    "doping_type": 50,
+    "review_reason": 200,
+    "family": 50,
+}
+
+
+def _clip(field: str, value: Any) -> Any:
+    """Drop string values longer than the destination column.
+
+    Returns the original value untouched when the field has no
+    configured budget or the value is not a string within budget.
+    Returns ``None`` when the value is over-long — the caller writes
+    that NULL into the materials table instead of trying to truncate
+    a partial sentence into a tag column.
+    """
+    if not isinstance(value, str):
+        return value
+    cap = _FIELD_MAX_LEN.get(field)
+    if cap is None or len(value) <= cap:
+        return value
+    log.debug(
+        "_clip: dropping %s value of length %d > cap %d",
+        field, len(value), cap,
+    )
+    return None
+
+
 def _first_non_null(records: list[dict[str, Any]], key: str) -> Any:
     for r in records:
         v = r.get(key)
@@ -479,26 +527,37 @@ def _derive_summary(
         needs_review = True
         review_reason = "tc_ambient_exceeds_250K"
 
+    # Every string going into a varchar column passes through _clip
+    # so a chatty NER hallucination (e.g. "single Fe vacancy for every
+    # eight Fe-sites arranged in a √10×√8 parallelogram structure"
+    # being dropped into ``crystal_structure``) doesn't crash the
+    # whole aggregator with a StringDataRightTruncationError. Values
+    # over the column budget become NULL — better empty than wrong.
     return {
         "formula": formula_raw[:200],
         "formula_normalized": normalize_formula(formula_raw)[:200],
-        "family": family,
+        "family":            _clip("family", family),
         "tc_max": tc_max,
-        "tc_max_conditions": tc_max_cond,
+        "tc_max_conditions": _clip("tc_max_conditions", tc_max_cond),
         "tc_ambient": tc_ambient,
         "ambient_sc": ambient_sc,
         "discovery_year": discovery_year,
         "total_papers": len(paper_ids),
         # Structure (earliest paper wins for structural claims)
-        "crystal_structure": _earliest_non_null(records, "crystal_structure"),
-        "space_group":       _earliest_non_null(records, "space_group"),
-        "structure_phase":   structure_phase,
+        "crystal_structure": _clip("crystal_structure",
+                                   _earliest_non_null(records, "crystal_structure")),
+        "space_group":       _clip("space_group",
+                                   _earliest_non_null(records, "space_group")),
+        "structure_phase":   _clip("structure_phase", structure_phase),
         "lattice_params":    _lattice_params(records),
         # SC parameters (discrete → weighted mode, scalar → max)
-        "pairing_symmetry":  _weighted_mode_str(records, "pairing_symmetry"),
-        "gap_structure":     _weighted_mode_str(records, "gap_structure"),
+        "pairing_symmetry":  _clip("pairing_symmetry",
+                                   _weighted_mode_str(records, "pairing_symmetry")),
+        "gap_structure":     _clip("gap_structure",
+                                   _weighted_mode_str(records, "gap_structure")),
         "hc2_tesla":         _max_numeric(records, "hc2_tesla"),
-        "hc2_conditions":    _first_non_null(records, "hc2_conditions"),
+        "hc2_conditions":    _clip("hc2_conditions",
+                                   _first_non_null(records, "hc2_conditions")),
         "lambda_eph":        _max_numeric(records, "lambda_eph"),
         "omega_log_k":       _max_numeric(records, "omega_log_k"),
         "rho_s_mev":         _max_numeric(records, "rho_s_mev"),
@@ -507,13 +566,17 @@ def _derive_summary(
         "t_sdw_k":           t_sdw,
         "t_afm_k":           t_afm,
         "rho_exponent":      _median_numeric(records, "rho_exponent"),
-        "competing_order":   competing_order,
+        "competing_order":   _clip("competing_order", competing_order),
         "has_competing_order": has_competing_order,
         # Samples / pressure
-        "sample_form":       _weighted_mode_str(records, "sample_form"),
-        "substrate":         _first_non_null(records, "substrate"),
-        "pressure_type":     _weighted_mode_str(records, "pressure_type"),
-        "doping_type":       _weighted_mode_str(records, "doping_type"),
+        "sample_form":       _clip("sample_form",
+                                   _weighted_mode_str(records, "sample_form")),
+        "substrate":         _clip("substrate",
+                                   _first_non_null(records, "substrate")),
+        "pressure_type":     _clip("pressure_type",
+                                   _weighted_mode_str(records, "pressure_type")),
+        "doping_type":       _clip("doping_type",
+                                   _weighted_mode_str(records, "doping_type")),
         "doping_level":      _median_numeric(records, "doping_level"),
         # Flags (weighted-boolean → None when weak / disputed)
         "is_topological":      _weighted_boolean(records, "is_topological"),
@@ -522,7 +585,7 @@ def _derive_summary(
         "disputed":            disputed,
         # Automatic sanity gate
         "needs_review":        needs_review,
-        "review_reason":       review_reason,
+        "review_reason":       _clip("review_reason", review_reason),
         "records": records,
     }
 
