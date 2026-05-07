@@ -123,7 +123,19 @@ JSON array only. One object per (material, measurement) pair. If no
 superconducting material is measured, return [].
 
 REQUIRED per record:
-- formula: chemical formula as written in the text (e.g. "La3Ni2O7")
+- formula: chemical formula in PLAIN TEXT only. STRIP all LaTeX
+           markup BEFORE emitting — subscripts go inline as plain
+           digits/letters. NEVER include any of: $ _ { } \  in this
+           field. Greek letters (δ ε α β γ) stay as Unicode.
+           Examples (input → emit):
+             "La$_{3}$Ni$_{2}$O$_{7}$"                 → "La3Ni2O7"
+             "La_3Ni_2O_7"                              → "La3Ni2O7"
+             "Bi$_2$Sr$_2$CaCu$_2$O$_{8+\\delta}$"     → "Bi2Sr2CaCu2O8+δ"
+             "(Y_{0.8}Pr_{0.2})Ba_2Cu_3O_7-\\delta"   → "(Y0.8Pr0.2)Ba2Cu3O7-δ"
+             "CsV$_3$Sb$_{5-x}$Sn$_x$"                  → "CsV3Sb5-xSnx"
+           If the source has math-mode wrappers ``$...$`` around a
+           subscript, drop the dollars AND the underscore AND the
+           braces — keep only the text content.
 - tc_kelvin: critical temperature in Kelvin, null if not stated
 - tc_type: "onset" | "zero_resistance" | "midpoint" | "unknown"
 - pressure_gpa: MUST be null unless the paper explicitly states a
