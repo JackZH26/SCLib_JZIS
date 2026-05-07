@@ -81,7 +81,11 @@ def upgrade() -> None:
             cleaned_records += 1
     print(f"0015: cleaned records[] in {cleaned_records} materials")
 
-    # Step 2: drop dirty rows whose clean twin already exists.
+    # Step 2 + 3 combined: dedupe + rename in a single pass with a
+    # ``claimed`` set, mirroring the fix in 0014. Two-phase races
+    # otherwise crash the migration when N dirty rows all clean to
+    # the same target id (common with NER variants that only differ
+    # in markup).
     dirty = bind.execute(text(r"""
         SELECT id FROM materials
         WHERE id ~ '[\$_{}]'
@@ -89,33 +93,43 @@ def upgrade() -> None:
            OR formula_normalized ~ '[\$_{}]'
     """)).fetchall()
     deleted = 0
-    pending_rename: list[tuple[str, str]] = []
+    renamed = 0
+    claimed: set[str] = set()
     for row in dirty:
         new_id = _clean(row.id)
-        if new_id == row.id:
-            # id already clean, only formula/normalized need a rename
-            pending_rename.append((row.id, row.id))
-            continue
-        twin = bind.execute(
-            text("SELECT 1 FROM materials WHERE id = :nid"), {"nid": new_id},
-        ).first()
-        if twin:
-            bind.execute(
-                text("DELETE FROM materials WHERE id = :id"), {"id": row.id},
-            )
-            deleted += 1
-        else:
-            pending_rename.append((row.id, new_id))
-    print(f"0015: deleted {deleted} duplicate rows whose clean twin exists")
-
-    # Step 3: rename surviving dirty rows in place.
-    renamed = 0
-    for old_id, new_id in pending_rename:
         r = bind.execute(
             text("SELECT formula, formula_normalized FROM materials WHERE id = :id"),
-            {"id": old_id},
+            {"id": row.id},
         ).first()
         if r is None:
+            continue
+        if new_id == row.id:
+            # id already clean — just update the formula columns.
+            bind.execute(
+                text("""
+                    UPDATE materials
+                    SET formula = :nfm,
+                        formula_normalized = :nnorm
+                    WHERE id = :oid
+                """),
+                {
+                    "nfm": _clean(r.formula),
+                    "nnorm": _clean(r.formula_normalized),
+                    "oid": row.id,
+                },
+            )
+            renamed += 1
+            continue
+        twin_exists = bind.execute(
+            text("SELECT 1 FROM materials WHERE id = :nid"),
+            {"nid": new_id},
+        ).first() is not None
+        if twin_exists or new_id in claimed:
+            bind.execute(
+                text("DELETE FROM materials WHERE id = :id"),
+                {"id": row.id},
+            )
+            deleted += 1
             continue
         bind.execute(
             text("""
@@ -129,11 +143,12 @@ def upgrade() -> None:
                 "nid": new_id,
                 "nfm": _clean(r.formula),
                 "nnorm": _clean(r.formula_normalized),
-                "oid": old_id,
+                "oid": row.id,
             },
         )
+        claimed.add(new_id)
         renamed += 1
-    print(f"0015: renamed {renamed} rows in place")
+    print(f"0015: deleted {deleted} duplicates, renamed {renamed} in place")
 
 
 def downgrade() -> None:

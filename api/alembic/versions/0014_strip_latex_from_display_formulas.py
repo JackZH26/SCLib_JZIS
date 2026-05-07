@@ -98,40 +98,40 @@ def upgrade() -> None:
     print(f"0014: cleaned records[] in {cleaned_records} materials")
 
     # ------------------------------------------------------------------
-    # Step 2: drop LaTeX-only rows that already have a clean twin.
+    # Step 2: dedupe + rename in one pass. The earlier two-step version
+    # had a race: when N dirty ids all cleaned to the same target, step 2
+    # saw "no twin in DB" for each (the target was indeed missing at
+    # snapshot time) and step 3 then crashed on the second UPDATE
+    # because the first one had just claimed the target id.
+    #
+    # Combined loop: track every clean-id we've claimed in this run,
+    # and do a fresh "does this id already exist?" query right before
+    # each UPDATE. If either says yes, delete the row instead.
     # ------------------------------------------------------------------
-    dirty = bind.execute(text("""
-        SELECT id FROM materials WHERE id ~ '\\$|_\\{'
+    dirty = bind.execute(text(r"""
+        SELECT id FROM materials WHERE id ~ '\$|_\{'
     """)).fetchall()
     deleted = 0
-    pending_rename: list[tuple[str, str]] = []
+    renamed = 0
+    claimed: set[str] = set()
     for row in dirty:
         new_id = _clean(row.id)
         if new_id == row.id:
             continue
-        twin = bind.execute(
+        twin_exists = bind.execute(
             text("SELECT 1 FROM materials WHERE id = :nid"),
             {"nid": new_id},
-        ).first()
-        if twin:
+        ).first() is not None
+        if twin_exists or new_id in claimed:
             bind.execute(
                 text("DELETE FROM materials WHERE id = :id"),
                 {"id": row.id},
             )
             deleted += 1
-        else:
-            pending_rename.append((row.id, new_id))
-    print(f"0014: deleted {deleted} LaTeX duplicate rows")
-
-    # ------------------------------------------------------------------
-    # Step 3: rename surviving LaTeX-only rows in place.
-    # ------------------------------------------------------------------
-    renamed = 0
-    for old_id, new_id in pending_rename:
-        # Re-fetch in case step 1 already touched the formula.
+            continue
         r = bind.execute(
             text("SELECT formula, formula_normalized FROM materials WHERE id = :id"),
-            {"id": old_id},
+            {"id": row.id},
         ).first()
         if r is None:
             continue
@@ -148,11 +148,12 @@ def upgrade() -> None:
                 "nfm": _clean(r.formula) if r.formula else r.formula,
                 "nnorm": _clean(r.formula_normalized) if r.formula_normalized
                          else r.formula_normalized,
-                "oid": old_id,
+                "oid": row.id,
             },
         )
+        claimed.add(new_id)
         renamed += 1
-    print(f"0014: renamed {renamed} LaTeX-only rows in place")
+    print(f"0014: deleted {deleted} duplicates, renamed {renamed} in place")
 
 
 def downgrade() -> None:
