@@ -6,6 +6,7 @@
  * can be reused across routes.
  */
 import Link from "next/link";
+import { LatexText } from "@/components/LatexText";
 
 export interface PaperCardInput {
   paper_id: string;
@@ -29,7 +30,7 @@ export function PaperCard(p: PaperCardInput) {
     >
       <div className="flex items-start justify-between gap-4">
         <h3 className="text-base font-semibold leading-snug text-slate-900">
-          {p.title}
+          <LatexText>{p.title}</LatexText>
         </h3>
         {p.score != null && (
           <span className="shrink-0 rounded bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">

@@ -24,11 +24,15 @@ export default function SearchPage() {
 }
 
 const Q_WORDS =
-  /[?？]|\b(what|how|why|which|when|where|who|explain|describe|compare|list|summarize|can|does|is there|are there|tell me)\b|(?:什么|为什么|如何|哪些|怎样|怎么|是否|能否|有没有|请问|介绍|解释|比较)/i;
+  /[?？]|\b(what|how|why|which|when|where|who|explain|describe|compare|list|summarize|can|does|is there|are there|tell me)\b|(?:什么|为什么|如何|哪些|哪个|哪一|怎样|怎么|多少|几个|是否|能否|有没有|请问|介绍|解释|比较|区别|关系|机制|原因)/i;
 
 function isQuestion(q: string): boolean {
   if (Q_WORDS.test(q)) return true;
+  // English: more than 6 space-separated words
   if (q.trim().split(/\s+/).length > 6) return true;
+  // CJK: longer than 10 characters (Chinese doesn't use spaces)
+  const cjkCount = (q.match(/[一-鿿]/g) || []).length;
+  if (cjkCount > 10) return true;
   return false;
 }
 
