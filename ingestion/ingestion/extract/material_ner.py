@@ -34,6 +34,7 @@ from google import genai
 from google.genai import types as genai_types
 
 from ingestion.config import get_settings
+from ingestion.extract import formula_validator
 from ingestion.models import ParsedPaper
 
 log = logging.getLogger(__name__)
@@ -189,6 +190,16 @@ EXTRACT IF PRESENT (omit or set null otherwise):
 - disputed: true iff the paper mentions contested / retracted results
 
 RULES:
+- formula MUST be a chemical formula, NOT a description. Reject the
+  record if you would otherwise emit any of: "interface", "bilayer",
+  "monolayer", "superlattice", "graphene", "diamond", "molecule",
+  "organic", "compound", "system", "doped", "intercalated", "bulk",
+  "hybrid", "twisted", "valley", "ladder", "surface", "nanoparticle",
+  "polycrystal", "underdoped", "overdoped", "(x = 0.3)" condition
+  fragments, or any English word longer than 3 lowercase letters.
+  When in doubt, return only the explicit chemical formula
+  (e.g. "FeSe" instead of "12%-S doped FeSe", "TaS2" instead of
+  "chiral molecule intercalated TaS2 hybrid superlattice").
 - Only extract materials explicitly measured for superconductivity.
 - Do not invent data. Fields not in the text must be null / omitted.
 - If Tc > 300 K or Tc < 0.01 K, set confidence <= 0.3.
@@ -336,8 +347,22 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
     for r in records:
         if not isinstance(r, dict) or "formula" not in r:
             continue
+        # Whitespace-normalize + validate. Records the LLM produced as
+        # sentence fragments ("12%-S doped FeSe") get rejected here so
+        # they don't pollute papers.materials_extracted, which would
+        # then re-pollute materials.records on every aggregator pass.
+        raw_formula = formula_validator.normalize_whitespace(
+            str(r["formula"])
+        )
+        ok, reject_reason = formula_validator.validate_formula(raw_formula)
+        if not ok:
+            log.info(
+                "%s: dropping NER record formula=%r reason=%s",
+                parsed.meta.paper_id, r.get("formula"), reject_reason,
+            )
+            continue
         record: dict[str, Any] = {
-            "formula": str(r["formula"]).strip(),
+            "formula": raw_formula,
             "paper_type": paper_type,
         }
         for field in _V2_FIELDS:

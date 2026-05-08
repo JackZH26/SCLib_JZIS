@@ -74,6 +74,67 @@ async def _periodic_stats_refresh(interval_sec: int) -> None:
         await asyncio.sleep(interval_sec)
 
 
+# Mirrors ingestion/ingestion/extract/formula_validator.py::_BLACKLIST_PATTERN
+# and the same regex used by alembic 0020. Keep all three in sync.
+_FORMULA_BLACKLIST_REGEX = (
+    r"\m("
+    r"interface|bilayer|trilayer|multilayer|monolayer|superlattice|"
+    r"superlattices|homobilayer|homobilayers|heterostructure|graphene|"
+    r"diamond|molecule|molecules|organic|compound|compounds|system|"
+    r"systems|doped|undoped|intercalated|hybrid|twisted|valley|bulk|"
+    r"ladder|mirror|surface|surfaces|nanoparticle|nanoparticles|film|"
+    r"films|wire|wires|polycrystal|polycrystals|tube|tubes|composition|"
+    r"compositions|underdoped|overdoped|optimal|optimally|holes?|"
+    r"electrons?|cells?|samples?|layers?|chiral|kagome|nanotube|"
+    r"nanotubes|nanowire|nanowires"
+    r")\M"
+)
+_FORMULA_CONDITION_REGEX = r"\(?\s*[xyzn]\s*=\s*[0-9]"
+
+
+async def _periodic_formula_audit(interval_sec: int) -> None:
+    """Re-flag any materials whose formula slips past the NER + aggregator
+    validators. Runs hourly. Idempotent — only flips ``needs_review``
+    on rows currently marked False that match the descriptive-text
+    rules; never un-flags. The migration 0020 is the initial
+    backfill; this loop is the safety net for anything that lands
+    between releases.
+    """
+    from sqlalchemy import text
+
+    factory = get_session_factory()
+    # Stagger from stats_refresh (30s) and ask_history_prune (90s)
+    # so three lifespan tasks don't all hit the DB at once.
+    await asyncio.sleep(150)
+    while True:
+        try:
+            async with factory() as session:
+                result = await session.execute(text(f"""
+                    UPDATE materials
+                    SET needs_review = TRUE,
+                        review_reason = 'ner_extracted_descriptive_text'
+                    WHERE needs_review = FALSE
+                      AND (
+                            formula ~* '{_FORMULA_BLACKLIST_REGEX}'
+                         OR formula ~  '{_FORMULA_CONDITION_REGEX}'
+                         OR formula !~ '[A-Z]'
+                      );
+                """))
+                await session.commit()
+            flagged = result.rowcount or 0
+            if flagged:
+                log.warning(
+                    "formula audit: flagged %d materials matching "
+                    "descriptive-text predicate (review NER pipeline)",
+                    flagged,
+                )
+        except asyncio.CancelledError:
+            raise
+        except Exception:  # noqa: BLE001
+            log.exception("formula audit failed; retrying on next tick")
+        await asyncio.sleep(interval_sec)
+
+
 async def _periodic_ask_history_prune(interval_sec: int, retention_days: int) -> None:
     """Delete Ask history rows older than ``retention_days``.
 
@@ -128,6 +189,21 @@ async def lifespan(app: FastAPI):
         refresh_task = None
         log.info("stats_cache auto-refresh disabled (interval=%d)", interval)
 
+    # Formula audit — hourly. Catches dirty / descriptive material
+    # formulas that slip past the NER + aggregator validators (eg
+    # when a new descriptor pattern emerges before the prompt is
+    # updated). Idempotent SQL; flips needs_review and never unflags.
+    audit_interval = int(os.environ.get("SCLIB_FORMULA_AUDIT_INTERVAL_SEC", "3600"))
+    if audit_interval > 0:
+        audit_task = asyncio.create_task(
+            _periodic_formula_audit(audit_interval),
+            name="sclib-formula-audit",
+        )
+        log.info("formula audit scheduled every %ds", audit_interval)
+    else:
+        audit_task = None
+        log.info("formula audit disabled")
+
     # Ask-history pruning runs once a day (86400s) and deletes rows
     # older than 90 days — matches the locked product decision.
     prune_interval = int(os.environ.get("SCLIB_ASK_HISTORY_PRUNE_INTERVAL_SEC", "86400"))
@@ -146,7 +222,7 @@ async def lifespan(app: FastAPI):
     try:
         yield
     finally:
-        for t in (refresh_task, prune_task):
+        for t in (refresh_task, prune_task, audit_task):
             if t is None:
                 continue
             t.cancel()

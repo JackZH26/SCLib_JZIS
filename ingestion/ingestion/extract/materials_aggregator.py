@@ -62,6 +62,7 @@ from sqlalchemy.dialects.postgresql import insert as pg_insert
 from ingestion.index.indexer import _session_factory, materials_table, papers_table
 # Canonicalization + family rules live in nims.py and are shared so
 # both import paths (NIMS CSV + arXiv NER) agree on the grouping key.
+from ingestion.extract import formula_validator as _formula_validator
 from ingestion.nims import classify_family as _classify_family
 from ingestion.nims import normalize_formula
 
@@ -693,6 +694,20 @@ async def aggregate_from_papers() -> int:
                     continue
                 raw = m.get("formula")
                 if not raw or not isinstance(raw, str):
+                    continue
+                # Whitespace-normalize first — NER occasionally emits
+                # ``Ba 2 Cu 3 O 7`` style strings.
+                raw = _formula_validator.normalize_whitespace(raw)
+                # Defense-in-depth: even though the NER post-process
+                # validates, legacy ``papers.materials_extracted`` rows
+                # may carry pre-validator descriptive strings. Skip
+                # them so they never reach materials.records.
+                ok, reject_reason = _formula_validator.validate_formula(raw)
+                if not ok:
+                    log.debug(
+                        "aggregator: skip paper=%s formula=%r reason=%s",
+                        paper_id, m.get("formula"), reject_reason,
+                    )
                     continue
                 # Skip records the NER marked as citations of prior work
                 # (introduction surveys, comparison tables, "previously
