@@ -213,60 +213,65 @@ export default function AdminAuditPage() {
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-xs uppercase tracking-wide text-sage-tertiary">
               <tr>
-                <th className="px-4 py-2 text-left font-medium">Material</th>
-                <th className="px-4 py-2 text-left font-medium">Family</th>
-                <th className="px-4 py-2 text-right font-medium">Tc max</th>
-                <th className="px-4 py-2 text-right font-medium">Papers</th>
-                <th className="px-4 py-2 text-left font-medium">Reason</th>
-                <th className="px-4 py-2 text-right font-medium">Actions</th>
+                <th className="px-3 py-2 text-left font-medium">Material</th>
+                <th className="px-2 py-2 text-left font-medium">Family</th>
+                <th className="px-2 py-2 text-right font-medium">Tc</th>
+                <th className="px-2 py-2 text-right font-medium">Papers</th>
+                <th className="px-2 py-2 text-left font-medium">Reason</th>
+                <th className="px-2 py-2 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {queue.map((m) => (
                 <tr key={m.id}>
-                  <td className="px-4 py-2">
+                  <td className="px-3 py-2">
                     <Link
                       href={`/materials/${encodeURIComponent(m.id)}`}
                       target="_blank"
-                      className="block max-w-[18rem] truncate font-medium text-sage-ink hover:underline"
+                      className="block max-w-[12rem] truncate font-medium text-sage-ink hover:underline"
                       title={m.formula}
                     >
                       {m.formula}
                     </Link>
                   </td>
-                  <td className="px-4 py-2 text-sage-muted">{m.family ?? "—"}</td>
-                  <td className="px-4 py-2 text-right tabular-nums text-sage-ink">
+                  <td className="px-2 py-2 text-xs text-sage-muted">{m.family ?? "—"}</td>
+                  <td className="px-2 py-2 text-right tabular-nums text-sage-ink">
                     {m.tc_max == null ? "—" : m.tc_max.toFixed(1)}
                   </td>
-                  <td className="px-4 py-2 text-right tabular-nums text-sage-muted">{m.total_papers}</td>
-                  <td className="px-4 py-2">
-                    <code className="font-mono text-xs">{m.review_reason ?? "—"}</code>
+                  <td className="px-2 py-2 text-right tabular-nums text-sage-muted">{m.total_papers}</td>
+                  <td className="px-2 py-2">
+                    <span
+                      title={m.review_reason ?? ""}
+                      className="inline-block max-w-[10rem] truncate rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-800 align-middle"
+                    >
+                      {shortReason(m.review_reason)}
+                    </span>
                     {m.has_admin_decision && (
-                      <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700">
-                        prior decision
+                      <span className="ml-1 rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-700">
+                        prior
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-2 text-right">
+                  <td className="px-2 py-2 text-right">
                     <div className="inline-flex gap-1">
                       <button
                         onClick={() => act("approve", m)}
                         disabled={acting === m.id}
                         title="One-click: clear the flag with an auto-generated note. The material reappears on /materials immediately."
-                        className="rounded-md border border-accent bg-[rgba(58,125,92,0.08)] px-2.5 py-1 text-xs font-medium text-accent-deep hover:bg-[rgba(58,125,92,0.18)] disabled:opacity-60"
-                      >✓ Approve</button>
+                        className="rounded-md border border-accent bg-[rgba(58,125,92,0.08)] px-2 py-1 text-xs font-medium text-accent-deep hover:bg-[rgba(58,125,92,0.18)] disabled:opacity-60"
+                      >✓ Pass</button>
                       <button
                         onClick={() => act("override", m)}
                         disabled={acting === m.id}
                         title="Clear the flag with a custom note (will prompt)."
-                        className="rounded-md border border-sage-border bg-white px-2.5 py-1 text-xs text-accent-deep hover:bg-[rgba(58,125,92,0.08)] disabled:opacity-60"
-                      >Override…</button>
+                        className="rounded-md border border-sage-border bg-white px-2 py-1 text-xs text-accent-deep hover:bg-[rgba(58,125,92,0.08)] disabled:opacity-60"
+                      >Edit…</button>
                       <button
                         onClick={() => act("confirm", m)}
                         disabled={acting === m.id}
                         title="Keep the flag (the row stays hidden) but record that an admin has reviewed it."
-                        className="rounded-md border border-sage-border bg-white px-2.5 py-1 text-xs text-sage-muted hover:bg-slate-50 disabled:opacity-60"
-                      >Confirm…</button>
+                        className="rounded-md border border-sage-border bg-white px-2 py-1 text-xs text-sage-muted hover:bg-slate-50 disabled:opacity-60"
+                      >Hold…</button>
                     </div>
                   </td>
                 </tr>
@@ -304,4 +309,31 @@ export default function AdminAuditPage() {
       </section>
     </div>
   );
+}
+
+// Map review_reason snake_case to a short human-readable label for the
+// queue's Reason column. Full string stays in the title attribute so a
+// hover surfaces the canonical name.
+const REASON_LABELS: Record<string, string> = {
+  tc_max_exceeds_250K:                "Tc > 250 K",
+  tc_exceeds_family_cap:              "Tc > family cap",
+  tc_at_ambient_above_record:         "ambient > record",
+  ambient_sc_with_high_pressure:      "ambient + P>0",
+  implausible_pressure:               "P out of range",
+  hydride_low_pressure_high_tc:       "hydride low-P high-Tc",
+  citation_conflation_review_paper:   "citation conflation",
+  family_unconv_contradiction:        "family vs unconv",
+  sole_source_retracted:              "all sources retracted",
+  ner_extracted_descriptive_text:     "NER caught text not formula",
+  english_element_name:               "English element name",
+  system_designator_not_compound:     "system, not compound",
+  phase_prefix_in_formula:            "space-group prefix",
+  incomplete_or_charged_formula:      "incomplete/charged",
+  fulleride_tc_implausible_schon_era: "Schön fraud era",
+  cnt_tc_ner_hallucination:           "CNT NER hallucination",
+};
+
+function shortReason(reason: string | null): string {
+  if (!reason) return "—";
+  return REASON_LABELS[reason] ?? reason;
 }

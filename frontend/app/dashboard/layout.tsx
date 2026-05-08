@@ -82,7 +82,7 @@ export default function DashboardLayout({
 
   return (
     <DashboardUserProvider value={{ user, setUser }}>
-      <main className="mx-auto flex max-w-6xl gap-8 px-6 py-10">
+      <main className="mx-auto flex max-w-7xl gap-8 px-6 py-10">
         <Sidebar items={user.is_admin ? [...NAV_BASE, ...NAV_ADMIN] : NAV_BASE} />
         <section className="min-w-0 flex-1">
           <header className="mb-6 flex items-start justify-between gap-4">
