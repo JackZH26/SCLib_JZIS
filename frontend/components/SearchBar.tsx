@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function SearchBar({
-  placeholder = "Search papers (e.g. 'ambient-pressure hydride Tc')...",
+  placeholder = "Search papers or materials, or just ask a question…",
   initial = "",
   target = "/search",
 }: {
