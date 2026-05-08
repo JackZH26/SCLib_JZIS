@@ -11,7 +11,7 @@ export function GuestBanner({ remaining }: { remaining: number | null }) {
       Guest mode: <strong>{remaining}</strong>{" "}
       {remaining === 1 ? "query" : "queries"} remaining today.{" "}
       <Link href="/register" className="underline hover:text-amber-700">
-        Register for unlimited access
+        Register for more queries
       </Link>
       .
     </div>
