@@ -67,22 +67,34 @@ export default function AdminAuditPage() {
     return <p className="text-sm text-red-700">Admin access required.</p>;
   }
 
-  async function act(kind: "override" | "confirm", item: AuditQueueItem) {
+  async function act(
+    kind: "override" | "confirm" | "approve",
+    item: AuditQueueItem,
+  ) {
     const token = loadToken();
     if (!token) return;
-    const note = window.prompt(
-      kind === "override"
-        ? `Override flag on ${item.formula}? Add a short justification:`
-        : `Confirm the flag on ${item.formula} after review. Add notes:`,
-    );
-    if (!note || !note.trim()) return;
+    let note: string;
+    if (kind === "approve") {
+      // Quick path: one-click "this material is fine, restore". The
+      // backend stores the auto-note + reviewer + timestamp in
+      // materials.admin_decision so we still have provenance.
+      note = `approved: ${item.review_reason ?? "n/a"} verified valid by admin`;
+    } else {
+      const prompted = window.prompt(
+        kind === "override"
+          ? `Override flag on ${item.formula}? Add a short justification:`
+          : `Confirm the flag on ${item.formula} after review. Add notes:`,
+      );
+      if (!prompted || !prompted.trim()) return;
+      note = prompted.trim();
+    }
     setActing(item.id);
     setError(null);
     try {
-      if (kind === "override") {
-        await adminOverrideFlag(token, item.id, note.trim());
+      if (kind === "approve" || kind === "override") {
+        await adminOverrideFlag(token, item.id, note);
       } else {
-        await adminConfirmFlag(token, item.id, note.trim());
+        await adminConfirmFlag(token, item.id, note);
       }
       await load();
     } catch (err) {
@@ -238,15 +250,23 @@ export default function AdminAuditPage() {
                   <td className="px-4 py-2 text-right">
                     <div className="inline-flex gap-1">
                       <button
+                        onClick={() => act("approve", m)}
+                        disabled={acting === m.id}
+                        title="One-click: clear the flag with an auto-generated note. The material reappears on /materials immediately."
+                        className="rounded-md border border-accent bg-[rgba(58,125,92,0.08)] px-2.5 py-1 text-xs font-medium text-accent-deep hover:bg-[rgba(58,125,92,0.18)] disabled:opacity-60"
+                      >✓ Approve</button>
+                      <button
                         onClick={() => act("override", m)}
                         disabled={acting === m.id}
+                        title="Clear the flag with a custom note (will prompt)."
                         className="rounded-md border border-sage-border bg-white px-2.5 py-1 text-xs text-accent-deep hover:bg-[rgba(58,125,92,0.08)] disabled:opacity-60"
-                      >Override</button>
+                      >Override…</button>
                       <button
                         onClick={() => act("confirm", m)}
                         disabled={acting === m.id}
+                        title="Keep the flag (the row stays hidden) but record that an admin has reviewed it."
                         className="rounded-md border border-sage-border bg-white px-2.5 py-1 text-xs text-sage-muted hover:bg-slate-50 disabled:opacity-60"
-                      >Confirm</button>
+                      >Confirm…</button>
                     </div>
                   </td>
                 </tr>
