@@ -93,12 +93,16 @@ _FORMULA_CONDITION_REGEX = r"\(?\s*[xyzn]\s*=\s*[0-9]"
 
 
 async def _periodic_formula_audit(interval_sec: int) -> None:
-    """Re-flag any materials whose formula slips past the NER + aggregator
-    validators. Runs hourly. Idempotent — only flips ``needs_review``
-    on rows currently marked False that match the descriptive-text
-    rules; never un-flags. The migration 0020 is the initial
-    backfill; this loop is the safety net for anything that lands
-    between releases.
+    """Re-flag any materials whose formula slips past the NER +
+    aggregator validators. Runs hourly. Idempotent — only flips
+    ``needs_review`` on rows currently marked False that match one of
+    the named rules; never un-flags. Migrations 0020 + 0021 are the
+    initial backfills; this loop is the safety net for anything that
+    lands between releases.
+
+    Each rule writes a distinct ``review_reason`` so admins can
+    audit / unflag per-category. The set of rules mirrors
+    ``ingestion/.../formula_validator.py``.
     """
     from sqlalchemy import text
 
@@ -106,27 +110,50 @@ async def _periodic_formula_audit(interval_sec: int) -> None:
     # Stagger from stats_refresh (30s) and ask_history_prune (90s)
     # so three lifespan tasks don't all hit the DB at once.
     await asyncio.sleep(150)
+    rules: list[tuple[str, str]] = [
+        # (review_reason, predicate fragment). Each runs as its own
+        # idempotent UPDATE so a regex error in one rule does not
+        # block the others.
+        (
+            "ner_extracted_descriptive_text",
+            f"formula ~* '{_FORMULA_BLACKLIST_REGEX}' "
+            f"OR formula ~  '{_FORMULA_CONDITION_REGEX}' "
+            f"OR formula !~ '[A-Z]'",
+        ),
+        (
+            "system_designator_not_compound",
+            r"formula ~ '^([A-Z][a-z]?-){2,}[A-Z][a-z]?$'",
+        ),
+        (
+            "phase_prefix_in_formula",
+            r"formula ~ '^(Fd-?3m|Fm-?3m|Im-?3m|Pm-?3m|Pnma|"
+            r"P6_?3?/?mmc?|P6/mmm|R-?3m|R-?3c|I4/mmm|I4/mcm|"
+            r"Pn-?3m|P6_?3mc|C2/m|Cmcm|P-?1|P21/c|P-43m|"
+            r"P4/nmm|Pm-3n)-'",
+        ),
+        (
+            "incomplete_or_charged_formula",
+            r"formula ~ '[A-Za-z0-9][+\-]$'",
+        ),
+    ]
     while True:
         try:
+            total_flagged = 0
             async with factory() as session:
-                result = await session.execute(text(f"""
-                    UPDATE materials
-                    SET needs_review = TRUE,
-                        review_reason = 'ner_extracted_descriptive_text'
-                    WHERE needs_review = FALSE
-                      AND (
-                            formula ~* '{_FORMULA_BLACKLIST_REGEX}'
-                         OR formula ~  '{_FORMULA_CONDITION_REGEX}'
-                         OR formula !~ '[A-Z]'
-                      );
-                """))
+                for reason, predicate in rules:
+                    result = await session.execute(text(f"""
+                        UPDATE materials
+                        SET needs_review = TRUE,
+                            review_reason = '{reason}'
+                        WHERE needs_review = FALSE AND ({predicate});
+                    """))
+                    total_flagged += result.rowcount or 0
                 await session.commit()
-            flagged = result.rowcount or 0
-            if flagged:
+            if total_flagged:
                 log.warning(
-                    "formula audit: flagged %d materials matching "
-                    "descriptive-text predicate (review NER pipeline)",
-                    flagged,
+                    "formula audit: flagged %d materials across "
+                    "%d naming-rule categories",
+                    total_flagged, len(rules),
                 )
         except asyncio.CancelledError:
             raise

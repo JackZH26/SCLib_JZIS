@@ -33,6 +33,13 @@ DESCRIPTIVE_WORD      = "descriptive_word"
 CONDITION_DESCRIPTOR  = "condition_descriptor"
 INVALID_START         = "invalid_start"
 
+# Gemini-audit categories (2026-05-08 audit). Each is a distinct
+# named-rule violation so admins can filter / un-flag per-category.
+SYSTEM_DESIGNATOR     = "system_designator_not_compound"   # "Sr-Ru-O"
+PHASE_PREFIX          = "phase_prefix_in_formula"          # "Fm-3m-CeH10"
+INCOMPLETE_FORMULA    = "incomplete_or_charged_formula"    # "Al45-", "YBa2Cu3O7-"
+ENGLISH_ELEMENT_NAME  = "english_element_name"             # "Oxygen", "Sulfur"
+
 MAX_LENGTH = 100
 
 # ``$``, ``_``, ``{``, ``}``, ``\``, ``%`` and the Unicode minus are
@@ -55,9 +62,35 @@ _BLACKLIST_PATTERN = re.compile(
     r"|underdoped|overdoped|optimal|optimally"
     r"|holes?|electrons?|cells?|samples?|layers?"
     r"|chiral|kagome|nanotube|nanotubes|nanowire|nanowires"
+    # English element / chemistry names (Cat 1 from Gemini audit)
+    r"|hydrogen|oxygen|nitrogen|sulfur|sulphur|fluorine|chlorine"
+    r"|bromine|iodine|silicon|water"
+    r"|hydride|hydrides|oxide|oxides|sulfide|sulfides|selenide|selenides"
+    r"|telluride|tellurides|arsenide|arsenides|phosphide|phosphides"
+    r"|nitride|nitrides|carbide|carbides|silicide|silicides"
+    r"|fluoride|chloride|bromide|iodide"
     r")\b",
     re.IGNORECASE,
 )
+
+# Cat 2B: ``Sr-Ru-O`` style. Element symbols separated by hyphens with
+# no digits — represents a phase diagram / compositional family, not
+# a specific compound.
+_SYSTEM_DESIGNATOR = re.compile(r"^([A-Z][a-z]?-){2,}[A-Z][a-z]?$")
+
+# Cat 3: space-group prefix attached. Common groups in cuprate /
+# hydride papers; extend if new ones surface.
+_PHASE_PREFIX = re.compile(
+    r"^(Fd-?3m|Fm-?3m|Im-?3m|Pm-?3m|Pnma|P6_?3?/?mmc?|P6/mmm"
+    r"|R-?3m|R-?3c|I4/mmm|I4/mcm|Pn-?3m|P6_?3mc"
+    r"|C2/m|Cmcm|P-?1|P21/c|P-43m|P4/nmm|Pm-3n)-"
+)
+
+# Cat 4: trailing ``+`` or ``-`` immediately after a letter / digit —
+# either a charged cluster (``Al47-``) or a stoichiometry suffix
+# whose ``δ`` was lost during cleanup (``YBa2Cu3O7-``). Either way
+# the formula is not in canonical form.
+_TRAILING_CHARGE = re.compile(r"[A-Za-z0-9][+\-]$")
 
 # Condition descriptors NER sometimes appends to a formula:
 # ``(x = 0.3)``, ``(z = 0.05)``, ``with n = 2`` etc.
@@ -106,4 +139,13 @@ def validate_formula(raw: str) -> tuple[bool, str | None]:
         return False, CONDITION_DESCRIPTOR
     if not _VALID_START.match(s):
         return False, INVALID_START
+    # Order matters: the more specific Gemini-audit categories run
+    # last so a generic descriptive-word match takes precedence
+    # (cleaner UX when a string trips both rules).
+    if _SYSTEM_DESIGNATOR.match(s):
+        return False, SYSTEM_DESIGNATOR
+    if _PHASE_PREFIX.match(s):
+        return False, PHASE_PREFIX
+    if _TRAILING_CHARGE.search(s):
+        return False, INCOMPLETE_FORMULA
     return True, None
