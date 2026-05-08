@@ -1,24 +1,19 @@
 "use client";
 
-/**
- * /search — main semantic-search UI.
- *
- * Client component so we can bind the filters live without reloading.
- * The URL mirrors the query (`?q=...`) so users can share and bookmark
- * results; filters are kept in local state since they mutate often.
- *
- * useSearchParams() forces Next to bail out of static prerendering,
- * so the inner component is wrapped in <Suspense> to satisfy Next 14's
- * CSR-bailout rule during `next build`.
- */
 import { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { search, type SearchResponse, friendlyErrorMessage } from "@/lib/api";
+import { useSearchParams } from "next/navigation";
+import {
+  search,
+  ask,
+  type SearchResponse,
+  type AskResponse,
+  friendlyErrorMessage,
+} from "@/lib/api";
 import { loadToken } from "@/lib/auth-storage";
 import { SearchBar } from "@/components/SearchBar";
 import { PaperCard } from "@/components/PaperCard";
 import { GuestBanner } from "@/components/GuestBanner";
-import { FamilyMultiSelect } from "@/components/FamilyMultiSelect";
+import { MarkdownAnswer } from "@/components/MarkdownAnswer";
 
 export default function SearchPage() {
   return (
@@ -28,108 +23,160 @@ export default function SearchPage() {
   );
 }
 
+const Q_WORDS =
+  /[?？]|\b(what|how|why|which|when|where|who|explain|describe|compare|list|summarize|can|does|is there|are there|tell me)\b|(?:什么|为什么|如何|哪些|怎样|怎么|是否|能否|有没有|请问|介绍|解释|比较)/i;
+
+function isQuestion(q: string): boolean {
+  if (Q_WORDS.test(q)) return true;
+  if (q.trim().split(/\s+/).length > 6) return true;
+  return false;
+}
+
 function SearchInner() {
   const params = useSearchParams();
-  const router = useRouter();
   const q = params.get("q") ?? "";
 
-  const [data, setData] = useState<SearchResponse | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [sort, setSort] = useState<"relevance" | "date" | "tc">("relevance");
-  const [yearMin, setYearMin] = useState<string>("");
-  const [yearMax, setYearMax] = useState<string>("");
-  const [tcMin, setTcMin] = useState<string>("");
-  const [families, setFamilies] = useState<string[]>([]);
-
-  // The effect deps include the JSON-serialized families list because
-  // React does array identity comparison — without this, toggling a
-  // family twice (add then remove) would still trigger a refetch every
-  // render even when the resulting slugs are identical to a prior run.
-  const familiesKey = families.join(",");
+  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+  const [askData, setAskData] = useState<AskResponse | null>(null);
+  const [searchErr, setSearchErr] = useState<string | null>(null);
+  const [askErr, setAskErr] = useState<string | null>(null);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [askLoading, setAskLoading] = useState(false);
+  const [manualAsk, setManualAsk] = useState(false);
 
   useEffect(() => {
     if (q.length < 2) {
-      setData(null);
+      setSearchData(null);
+      setAskData(null);
+      setManualAsk(false);
       return;
     }
-    setLoading(true);
-    setErr(null);
+
+    setSearchLoading(true);
+    setSearchErr(null);
+    setSearchData(null);
+    setAskData(null);
+    setAskErr(null);
+    setManualAsk(false);
+
     const token = loadToken() ?? undefined;
+
     search(
-      {
-        query: q,
-        top_k: 20,
-        sort,
-        filters: {
-          year_min: yearMin ? Number(yearMin) : undefined,
-          year_max: yearMax ? Number(yearMax) : undefined,
-          tc_min: tcMin ? Number(tcMin) : undefined,
-          material_family: families.length > 0 ? families : undefined,
-          exclude_retracted: true,
-        },
-      },
+      { query: q, top_k: 20, filters: { exclude_retracted: true } },
       { auth: token },
     )
-      .then(setData)
-      .catch((e: unknown) => {
-        setErr(friendlyErrorMessage(e));
-      })
-      .finally(() => setLoading(false));
-  }, [q, sort, yearMin, yearMax, tcMin, familiesKey]);
+      .then(setSearchData)
+      .catch((e: unknown) => setSearchErr(friendlyErrorMessage(e)))
+      .finally(() => setSearchLoading(false));
+
+    if (isQuestion(q)) {
+      setAskLoading(true);
+      ask({ question: q, max_sources: 8 }, { auth: token })
+        .then(setAskData)
+        .catch((e: unknown) => setAskErr(friendlyErrorMessage(e)))
+        .finally(() => setAskLoading(false));
+    }
+  }, [q]);
+
+  function triggerAsk() {
+    setManualAsk(true);
+    setAskLoading(true);
+    setAskErr(null);
+    const token = loadToken() ?? undefined;
+    ask({ question: q, max_sources: 8 }, { auth: token })
+      .then(setAskData)
+      .catch((e: unknown) => setAskErr(friendlyErrorMessage(e)))
+      .finally(() => setAskLoading(false));
+  }
+
+  const guestRemaining =
+    searchData?.guest_remaining ?? askData?.guest_remaining;
+  const showAskButton =
+    q.length >= 2 && !isQuestion(q) && !askData && !askLoading && !manualAsk;
 
   return (
     <main className="space-y-6">
       <SearchBar
         initial={q}
-        placeholder="Search papers..."
+        placeholder="Search papers or materials, or just ask a question…"
       />
 
-      <div className="flex flex-wrap items-end gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm">
-        <Field label="Sort">
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value as typeof sort)}
-            className="rounded border border-slate-300 px-2 py-1"
-          >
-            <option value="relevance">Relevance</option>
-            <option value="date">Date (newest)</option>
-            <option value="tc">Highest Tc</option>
-          </select>
-        </Field>
-        <Field label="Year ≥">
-          <NumInput value={yearMin} set={setYearMin} />
-        </Field>
-        <Field label="Year ≤">
-          <NumInput value={yearMax} set={setYearMax} />
-        </Field>
-        <Field label="Tc ≥ (K)">
-          <NumInput value={tcMin} set={setTcMin} />
-        </Field>
-        <Field label="Family">
-          <FamilyMultiSelect value={families} onChange={setFamilies} />
-        </Field>
-      </div>
+      {guestRemaining != null && <GuestBanner remaining={guestRemaining} />}
 
-      {data?.guest_remaining != null && (
-        <GuestBanner remaining={data.guest_remaining} />
-      )}
-
-      {loading && <p className="text-sm text-slate-500">Searching…</p>}
-      {err && (
-        <div className="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-          {err}
+      {/* ── AI answer (auto for questions, manual trigger for keywords) ── */}
+      {askLoading && (
+        <div className="rounded-lg border border-sage-border bg-white p-6 shadow-sm">
+          <div className="flex items-center gap-2 text-sm text-sage-muted">
+            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+            Generating AI answer…
+          </div>
         </div>
       )}
 
-      {data && data.results.length > 0 && (
+      {askErr && (
+        <div className="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          {askErr}
+        </div>
+      )}
+
+      {askData && (
+        <div className="rounded-lg border border-sage-border bg-white p-6 shadow-sm">
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-sage-tertiary">
+            AI Answer
+          </h2>
+          <MarkdownAnswer markdown={askData.answer} sources={askData.sources} />
+          <div className="mt-4 flex flex-wrap gap-2 border-t border-sage-border pt-4">
+            {askData.sources.map((s) => (
+              <a
+                key={s.index}
+                id={`src-${s.index}`}
+                href={`/paper/${encodeURIComponent(s.paper_id)}`}
+                className="group flex items-baseline gap-1.5 rounded-md border border-sage-border px-2.5 py-1.5 text-xs transition-colors hover:bg-sage-bg"
+              >
+                <span className="font-semibold text-accent">[{s.index}]</span>
+                <span className="max-w-[200px] truncate text-sage-muted group-hover:text-sage-ink">
+                  {s.title}
+                </span>
+                {s.year && (
+                  <span className="text-sage-tertiary">{s.year}</span>
+                )}
+              </a>
+            ))}
+          </div>
+          <div className="mt-2 text-xs text-sage-tertiary">
+            {askData.query_time_ms} ms · {askData.tokens_used ?? "—"} tokens
+          </div>
+        </div>
+      )}
+
+      {showAskButton && (
+        <button
+          onClick={triggerAsk}
+          className="rounded-md border border-sage-border bg-white px-4 py-2 text-sm text-sage-muted shadow-sm transition-colors hover:bg-sage-bg hover:text-sage-ink"
+        >
+          Summarize with AI
+        </button>
+      )}
+
+      {/* ── Search results ── */}
+      {searchLoading && (
+        <p className="text-sm text-sage-muted">Searching…</p>
+      )}
+      {searchErr && (
+        <div className="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          {searchErr}
+        </div>
+      )}
+
+      {searchData && searchData.results.length > 0 && (
         <>
-          <div className="text-xs text-slate-500">
-            {data.results.length} result{data.results.length === 1 ? "" : "s"}{" "}
-            · {data.query_time_ms} ms
+          <div className="text-xs text-sage-tertiary">
+            {searchData.results.length} result
+            {searchData.results.length === 1 ? "" : "s"} ·{" "}
+            {searchData.query_time_ms} ms
           </div>
           <div className="space-y-3">
-            {data.results.map((r, i) => (
+            {searchData.results.map((r, i) => (
               <PaperCard
                 key={`${r.paper_id}-${i}`}
                 paper_id={r.paper_id}
@@ -151,37 +198,16 @@ function SearchInner() {
           </div>
         </>
       )}
-      {data && data.results.length === 0 && (
-        <p className="text-sm text-slate-500">No results.</p>
+
+      {searchData && searchData.results.length === 0 && (
+        <p className="text-sm text-sage-muted">No results.</p>
       )}
 
       {!q && (
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-sage-muted">
           Enter a query above to start searching.
         </p>
       )}
     </main>
-  );
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="flex flex-col gap-1">
-      <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
-        {label}
-      </span>
-      {children}
-    </label>
-  );
-}
-
-function NumInput({ value, set }: { value: string; set: (s: string) => void }) {
-  return (
-    <input
-      type="number"
-      value={value}
-      onChange={(e) => set(e.target.value)}
-      className="w-24 rounded border border-slate-300 px-2 py-1"
-    />
   );
 }

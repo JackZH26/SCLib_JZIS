@@ -42,7 +42,7 @@ export default async function Landing() {
           <SearchBar />
         </div>
         <div className="flex flex-wrap justify-center gap-3 pt-2 text-sm">
-          <Link href="/ask" className="btn-outline">
+          <Link href="/search" className="btn-outline">
             Ask a question →
           </Link>
           <Link href="/timeline" className="btn-outline">

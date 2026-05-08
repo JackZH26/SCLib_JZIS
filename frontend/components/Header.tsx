@@ -19,7 +19,6 @@ import { me, type User, ApiError } from "@/lib/api";
 
 const NAV = [
   { href: "/search", label: "Search" },
-  { href: "/ask", label: "Ask" },
   { href: "/materials", label: "Materials" },
   { href: "/timeline", label: "Timeline" },
   { href: "/stats", label: "Stats" },
