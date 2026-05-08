@@ -36,7 +36,8 @@ export default async function Landing() {
         </h1>
         <p className="mx-auto max-w-2xl text-lg text-sage-muted">
           Semantic search and grounded Q&amp;A across the arXiv cond-mat.supr-con
-          corpus. Free for everyone; 3 guest queries per day without an account.
+          corpus. Data is automatically extracted and validated by LLM; please
+          confirm accuracy through the original literature.
         </p>
         <div className="mx-auto max-w-2xl pt-2">
           <SearchBar />
