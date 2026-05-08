@@ -19,12 +19,18 @@ import { clearToken, loadToken } from "@/lib/auth-storage";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { DashboardUserProvider } from "@/components/dashboard/user-context";
 
-const NAV = [
+const NAV_BASE = [
   { href: "/dashboard",          label: "Overview" },
   { href: "/dashboard/keys",     label: "API Keys" },
   { href: "/dashboard/history",  label: "Ask History" },
   { href: "/dashboard/saved",    label: "Bookmarks" },
   { href: "/dashboard/feedback", label: "Feedback" },
+];
+
+// Admin entries only show when /auth/me reports is_admin=TRUE.
+const NAV_ADMIN = [
+  { href: "/dashboard/admin/users", label: "Admin · Users",  hint: "admin" },
+  { href: "/dashboard/admin/audit", label: "Admin · Audit",  hint: "admin" },
 ];
 
 export default function DashboardLayout({
@@ -77,7 +83,7 @@ export default function DashboardLayout({
   return (
     <DashboardUserProvider value={{ user, setUser }}>
       <main className="mx-auto flex max-w-6xl gap-8 px-6 py-10">
-        <Sidebar items={NAV} />
+        <Sidebar items={user.is_admin ? [...NAV_BASE, ...NAV_ADMIN] : NAV_BASE} />
         <section className="min-w-0 flex-1">
           <header className="mb-6 flex items-start justify-between gap-4">
             <div className="flex items-center gap-3">

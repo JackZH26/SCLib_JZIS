@@ -49,6 +49,7 @@ class UserRead(BaseModel):
     orcid: str | None = None
     created_at: datetime
     is_active: bool
+    is_admin: bool = False
     auth_provider: str = "local"
     avatar_url: str | None = None
     scopes: list[str] = ["basic", "sclib"]

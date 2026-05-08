@@ -21,6 +21,7 @@ from config import get_settings
 from models import get_session_factory
 from models.db import AskHistory, get_engine
 from routers import (
+    admin,
     ask,
     auth,
     bookmarks,
@@ -162,6 +163,48 @@ async def _periodic_formula_audit(interval_sec: int) -> None:
         await asyncio.sleep(interval_sec)
 
 
+async def _nightly_data_audit(target_hour_utc: int = 20) -> None:
+    """Run every audit_rule once per day at the configured UTC hour.
+
+    Default 20:00 UTC = 04:00 Beijing — runs after the 14:00 UTC
+    arXiv cron has settled but well before the next morning's
+    14:00. Per-day cadence is a deliberate trade-off: the rules
+    run heavy JSONB scans and we'd rather a regression land 24h
+    later than spend hourly DB time on a corpus that only
+    changes after each ingest.
+
+    The hourly ``_periodic_formula_audit`` already keeps the
+    string-shape naming rules tight; this task adds the broader
+    Tc / pressure / year / cross-field / retraction surface.
+    """
+    factory = get_session_factory()
+    while True:
+        now = datetime.now(timezone.utc)
+        target = now.replace(
+            hour=target_hour_utc, minute=0, second=0, microsecond=0,
+        )
+        if target <= now:
+            target += timedelta(days=1)
+        sleep_sec = (target - now).total_seconds()
+        log.info(
+            "nightly audit: sleeping %.0fs until %s UTC",
+            sleep_sec, target.isoformat(),
+        )
+        try:
+            await asyncio.sleep(sleep_sec)
+        except asyncio.CancelledError:
+            raise
+
+        try:
+            from services.audit_runner import run_audit
+            async with factory() as session:
+                await run_audit(session)
+        except asyncio.CancelledError:
+            raise
+        except Exception:  # noqa: BLE001
+            log.exception("nightly audit run failed; retrying tomorrow")
+
+
 async def _periodic_ask_history_prune(interval_sec: int, retention_days: int) -> None:
     """Delete Ask history rows older than ``retention_days``.
 
@@ -231,6 +274,19 @@ async def lifespan(app: FastAPI):
         audit_task = None
         log.info("formula audit disabled")
 
+    # Nightly broad-rule audit — 04:00 Beijing (= 20:00 UTC). Override
+    # via SCLIB_NIGHTLY_AUDIT_HOUR_UTC for tests.
+    nightly_hour = int(os.environ.get("SCLIB_NIGHTLY_AUDIT_HOUR_UTC", "20"))
+    if 0 <= nightly_hour <= 23:
+        nightly_task = asyncio.create_task(
+            _nightly_data_audit(nightly_hour),
+            name="sclib-nightly-data-audit",
+        )
+        log.info("nightly data audit scheduled at %02d:00 UTC", nightly_hour)
+    else:
+        nightly_task = None
+        log.info("nightly data audit disabled (hour=%d)", nightly_hour)
+
     # Ask-history pruning runs once a day (86400s) and deletes rows
     # older than 90 days — matches the locked product decision.
     prune_interval = int(os.environ.get("SCLIB_ASK_HISTORY_PRUNE_INTERVAL_SEC", "86400"))
@@ -249,7 +305,7 @@ async def lifespan(app: FastAPI):
     try:
         yield
     finally:
-        for t in (refresh_task, prune_task, audit_task):
+        for t in (refresh_task, prune_task, audit_task, nightly_task):
             if t is None:
                 continue
             t.cancel()
@@ -327,6 +383,7 @@ app.include_router(history.router, prefix="/v1")
 app.include_router(bookmarks.router, prefix="/v1")
 app.include_router(feedback.router, prefix="/v1")
 app.include_router(version.router, prefix="/v1")
+app.include_router(admin.router, prefix="/v1")
 
 
 @app.get("/v1/health", tags=["health"])

@@ -183,6 +183,38 @@ class AskHistory(Base):
     )
 
 
+class AuditReport(Base):
+    """One row per (rule, run) of the nightly data audit.
+
+    Lets the admin UI surface "last night's run", trend lines per
+    rule, and quickly jump to the sample ids that got flagged.
+    """
+
+    __tablename__ = "audit_reports"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True,
+        server_default=sa.text("gen_random_uuid()"),
+        default=uuid.uuid4,
+    )
+    started_at: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
+    completed_at: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
+    rule_name: Mapped[str] = mapped_column(String(100), nullable=False)
+    severity: Mapped[str] = mapped_column(String(20), nullable=False)
+    rows_flagged: Mapped[int] = mapped_column(
+        Integer, server_default=sa.text("0"), nullable=False
+    )
+    delta_vs_previous: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    sample_ids: Mapped[list[Any]] = mapped_column(
+        JSONB, server_default=sa.text("'[]'::jsonb"), nullable=False
+    )
+
+    __table_args__ = (
+        Index("idx_audit_reports_started", "started_at"),
+        Index("idx_audit_reports_rule_started", "rule_name", "started_at"),
+    )
+
+
 class Bookmark(Base):
     """User-private bookmark of a paper or material.
 
@@ -335,6 +367,11 @@ class Material(Base):
         Boolean, server_default="false", nullable=False,
     )
     review_reason: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    # Admin override channel: when an admin reviews a flagged row and
+    # signs off, the JSON blob records the rule, reviewer, timestamp,
+    # and free-form note. The nightly audit checks this to skip rows
+    # whose flag has already been adjudicated.
+    admin_decision: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
 
     # --- Materials Project linkage (Phase B) -----------------------------
     # Populated out-of-band by ``scripts/sync_mp_ids.py``; stays NULL for

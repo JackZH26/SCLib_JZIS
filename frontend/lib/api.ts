@@ -162,6 +162,7 @@ export interface User {
   orcid: string | null;
   created_at: string;
   is_active: boolean;
+  is_admin?: boolean;
   auth_provider: string;
   avatar_url: string | null;
   scopes: string[];
@@ -729,4 +730,133 @@ export function getTimeline(opts: {
   if (opts.experimentalOnly) qs.set("experimental_only", "true");
   const qstr = qs.toString();
   return request<TimelineResponse>(`/timeline${qstr ? `?${qstr}` : ""}`);
+}
+
+// --- Admin --------------------------------------------------------------
+
+export interface AdminUserSummary {
+  id: string;
+  email: string;
+  name: string;
+  institution: string | null;
+  country: string | null;
+  research_area: string | null;
+  is_active: boolean;
+  is_admin: boolean;
+  email_verified: boolean;
+  auth_provider: string;
+  created_at: string;
+  last_login: string | null;
+}
+
+export interface AdminUserListResponse {
+  total: number;
+  results: AdminUserSummary[];
+  limit: number;
+  offset: number;
+}
+
+export interface AuditReportSummary {
+  id: string;
+  started_at: string;
+  completed_at: string;
+  rule_name: string;
+  severity: string;
+  rows_flagged: number;
+  delta_vs_previous: number | null;
+  sample_ids: string[];
+}
+
+export interface AuditQueueItem {
+  id: string;
+  formula: string;
+  family: string | null;
+  tc_max: number | null;
+  review_reason: string | null;
+  total_papers: number;
+  has_admin_decision: boolean;
+}
+
+export interface AuditQueueResponse {
+  total: number;
+  results: AuditQueueItem[];
+  limit: number;
+  offset: number;
+}
+
+export interface AdminOverview {
+  total_users: number;
+  active_users: number;
+  admins: number;
+  total_materials: number;
+  flagged_materials: number;
+  flagged_by_reason: Record<string, number>;
+  last_audit_started: string | null;
+  last_audit_total_flagged: number | null;
+}
+
+export function adminListUsers(
+  jwt: string,
+  params: { q?: string; role?: "admin" | "active" | "inactive"; limit?: number; offset?: number } = {},
+) {
+  const qs = new URLSearchParams();
+  if (params.q) qs.set("q", params.q);
+  if (params.role) qs.set("role", params.role);
+  if (params.limit != null) qs.set("limit", String(params.limit));
+  if (params.offset != null) qs.set("offset", String(params.offset));
+  const suffix = qs.toString() ? `?${qs}` : "";
+  return request<AdminUserListResponse>(`/admin/users${suffix}`, { auth: jwt });
+}
+
+export function adminBanUser(jwt: string, userId: string) {
+  return request<{ message: string }>(`/admin/users/${userId}/ban`, {
+    method: "POST", auth: jwt,
+  });
+}
+
+export function adminUnbanUser(jwt: string, userId: string) {
+  return request<{ message: string }>(`/admin/users/${userId}/unban`, {
+    method: "POST", auth: jwt,
+  });
+}
+
+export function adminDeleteUser(jwt: string, userId: string) {
+  return request<{ message: string }>(`/admin/users/${userId}`, {
+    method: "DELETE", auth: jwt,
+  });
+}
+
+export function adminListAuditReports(jwt: string, rule?: string) {
+  const suffix = rule ? `?rule=${encodeURIComponent(rule)}` : "";
+  return request<AuditReportSummary[]>(`/admin/audit/reports${suffix}`, { auth: jwt });
+}
+
+export function adminAuditQueue(
+  jwt: string,
+  params: { rule?: string; limit?: number; offset?: number } = {},
+) {
+  const qs = new URLSearchParams();
+  if (params.rule) qs.set("rule", params.rule);
+  if (params.limit != null) qs.set("limit", String(params.limit));
+  if (params.offset != null) qs.set("offset", String(params.offset));
+  const suffix = qs.toString() ? `?${qs}` : "";
+  return request<AuditQueueResponse>(`/admin/audit/queue${suffix}`, { auth: jwt });
+}
+
+export function adminOverrideFlag(jwt: string, materialId: string, note: string) {
+  return request<{ message: string }>(
+    `/admin/audit/queue/${encodeURIComponent(materialId)}/override`,
+    { method: "POST", body: JSON.stringify({ note }), auth: jwt },
+  );
+}
+
+export function adminConfirmFlag(jwt: string, materialId: string, note: string) {
+  return request<{ message: string }>(
+    `/admin/audit/queue/${encodeURIComponent(materialId)}/confirm`,
+    { method: "POST", body: JSON.stringify({ note }), auth: jwt },
+  );
+}
+
+export function adminOverview(jwt: string) {
+  return request<AdminOverview>("/admin/overview", { auth: jwt });
 }
