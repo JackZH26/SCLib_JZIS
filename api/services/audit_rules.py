@@ -94,7 +94,7 @@ RULES: list[AuditRule] = [
     ),
     AuditRule(
         name="tc_at_ambient_above_record",
-        severity="warn",
+        severity="critical",
         description=(
             "ambient_sc=true but tc_max above the documented ambient "
             "record (Hg-1223 quench, 152 K, Deng PNAS 2026)."
@@ -122,7 +122,7 @@ RULES: list[AuditRule] = [
     ),
     AuditRule(
         name="hydride_low_pressure_high_tc",
-        severity="warn",
+        severity="critical",
         description=(
             "Hydride material with a record claiming Tc > 100 K and "
             "pressure < 50 GPa (ambient hydride SC tops at ~10 K)."
@@ -223,7 +223,7 @@ RULES: list[AuditRule] = [
     # --------------------------------------------------------
     AuditRule(
         name="family_unconv_contradiction",
-        severity="warn",
+        severity="critical",
         description=(
             "is_unconventional=TRUE but family='conventional'."
         ),
