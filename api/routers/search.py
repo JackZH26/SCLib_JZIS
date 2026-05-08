@@ -86,6 +86,7 @@ async def search(
     #    fit in the index namespaces.
     f = body.filters
     matches: list[SearchMatch] = []
+    seen_papers: set[str] = set()  # deduplicate: one result per paper
     for cid in chunk_ids:
         chunk = chunk_by_id.get(cid)
         if chunk is None:
@@ -93,6 +94,8 @@ async def search(
         paper = chunk.paper
         if paper is None:
             continue
+        if paper.id in seen_papers:
+            continue  # already have a higher-ranked chunk from this paper
         if f.exclude_retracted and paper.status == "retracted":
             continue
         if f.tc_min is not None:
@@ -104,6 +107,7 @@ async def search(
             if not _any_pressure_below(materials, f.pressure_max):
                 continue
 
+        seen_papers.add(paper.id)
         matches.append(
             SearchMatch(
                 paper_id=paper.id,
