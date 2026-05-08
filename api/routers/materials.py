@@ -130,7 +130,7 @@ async def list_materials(
     )
 
 
-@router.get("/materials/{material_id}", response_model=MaterialDetail)
+@router.get("/materials/{material_id:path}", response_model=MaterialDetail)
 async def material_detail(
     material_id: str,
     identity: Identity = Depends(peek_identity),  # noqa: ARG001
