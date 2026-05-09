@@ -18,6 +18,7 @@ import { loadToken, onAuthChange } from "@/lib/auth-storage";
 import { me, type User, ApiError } from "@/lib/api";
 
 const NAV = [
+  { href: "https://jzis.org/sclib", label: "Home" },
   { href: "/search", label: "Search" },
   { href: "/materials", label: "Materials" },
   { href: "/timeline", label: "Timeline" },
