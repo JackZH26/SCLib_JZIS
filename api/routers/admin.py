@@ -231,7 +231,7 @@ async def audit_queue(
     )
 
 
-@router.post("/audit/queue/{material_id}/override", response_model=MessageResponse)
+@router.post("/audit/queue/{material_id:path}/override", response_model=MessageResponse)
 async def override_flag(
     material_id: str,
     body: AuditOverridePayload,
@@ -263,7 +263,7 @@ async def override_flag(
     return MessageResponse(message=f"Override recorded for {material_id}")
 
 
-@router.post("/audit/queue/{material_id}/confirm", response_model=MessageResponse)
+@router.post("/audit/queue/{material_id:path}/confirm", response_model=MessageResponse)
 async def confirm_flag(
     material_id: str,
     body: AuditOverridePayload,
