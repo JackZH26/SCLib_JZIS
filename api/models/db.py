@@ -84,6 +84,7 @@ class User(Base):
     last_login: Mapped[datetime | None] = mapped_column(_TZDT)
     is_active: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    is_reviewer: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     # --- Google OAuth / unified auth -------------------------------------
     google_sub: Mapped[str | None] = mapped_column(String(128), unique=True, nullable=True)

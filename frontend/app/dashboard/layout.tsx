@@ -27,10 +27,15 @@ const NAV_BASE = [
   { href: "/dashboard/feedback", label: "Feedback" },
 ];
 
-// Admin entries only show when /auth/me reports is_admin=TRUE.
+// Admin-only: user management + audit queue.
 const NAV_ADMIN = [
   { href: "/dashboard/admin/users", label: "Admin · Users",  hint: "admin" },
   { href: "/dashboard/admin/audit", label: "Admin · Audit",  hint: "admin" },
+];
+
+// Reviewer-only: audit queue (no user management).
+const NAV_REVIEWER = [
+  { href: "/dashboard/admin/audit", label: "Review queue", hint: "reviewer" },
 ];
 
 export default function DashboardLayout({
@@ -83,7 +88,13 @@ export default function DashboardLayout({
   return (
     <DashboardUserProvider value={{ user, setUser }}>
       <main className="mx-auto flex max-w-7xl gap-8 px-6 py-10">
-        <Sidebar items={user.is_admin ? [...NAV_BASE, ...NAV_ADMIN] : NAV_BASE} />
+        <Sidebar items={
+          user.is_admin
+            ? [...NAV_BASE, ...NAV_ADMIN]
+            : user.is_reviewer
+              ? [...NAV_BASE, ...NAV_REVIEWER]
+              : NAV_BASE
+        } />
         <section className="min-w-0 flex-1">
           <header className="mb-6 flex items-start justify-between gap-4">
             <div className="flex items-center gap-3">

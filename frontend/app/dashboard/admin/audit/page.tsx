@@ -63,8 +63,8 @@ export default function AdminAuditPage() {
 
   useEffect(() => { load(); }, [load]);
 
-  if (!user.is_admin) {
-    return <p className="text-sm text-red-700">Admin access required.</p>;
+  if (!user.is_admin && !user.is_reviewer) {
+    return <p className="text-sm text-red-700">Reviewer or admin access required.</p>;
   }
 
   async function act(

@@ -34,6 +34,7 @@ class AdminUserSummary(BaseModel):
     research_area: str | None = None
     is_active: bool
     is_admin: bool
+    is_reviewer: bool = False
     email_verified: bool
     auth_provider: str
     created_at: datetime

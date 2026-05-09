@@ -163,6 +163,7 @@ export interface User {
   created_at: string;
   is_active: boolean;
   is_admin?: boolean;
+  is_reviewer?: boolean;
   auth_provider: string;
   avatar_url: string | null;
   scopes: string[];
@@ -743,6 +744,7 @@ export interface AdminUserSummary {
   research_area: string | null;
   is_active: boolean;
   is_admin: boolean;
+  is_reviewer: boolean;
   email_verified: boolean;
   auth_provider: string;
   created_at: string;
@@ -824,6 +826,13 @@ export function adminDeleteUser(jwt: string, userId: string) {
   return request<{ message: string }>(`/admin/users/${userId}`, {
     method: "DELETE", auth: jwt,
   });
+}
+
+export function adminSetReviewer(jwt: string, userId: string, value: boolean) {
+  return request<{ message: string }>(
+    `/admin/users/${userId}/set-reviewer?value=${value}`,
+    { method: "POST", auth: jwt },
+  );
 }
 
 export function adminListAuditReports(jwt: string, rule?: string) {

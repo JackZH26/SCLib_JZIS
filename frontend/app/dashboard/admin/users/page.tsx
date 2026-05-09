@@ -3,9 +3,10 @@
 /**
  * /dashboard/admin/users — admin-only user management.
  *
- * Search, ban, unban, delete. The shell layout already gates the
- * sidebar entry behind ``user.is_admin``; this page double-checks
- * by 403'ing if a non-admin somehow lands here directly.
+ * Search, ban, unban, delete, set/revoke reviewer role.
+ * The shell layout already gates the sidebar entry behind
+ * ``user.is_admin``; this page double-checks with a 403
+ * if a non-admin somehow lands here directly.
  */
 import { useCallback, useEffect, useState } from "react";
 
@@ -14,6 +15,7 @@ import {
   adminBanUser,
   adminDeleteUser,
   adminListUsers,
+  adminSetReviewer,
   adminUnbanUser,
   type AdminUserSummary,
 } from "@/lib/api";
@@ -80,14 +82,29 @@ export default function AdminUsersPage() {
     }
   }
 
+  async function toggleReviewer(u: AdminUserSummary) {
+    const token = loadToken();
+    if (!token) return;
+    setBusyId(u.id);
+    setError(null);
+    try {
+      await adminSetReviewer(token, u.id, !u.is_reviewer);
+      await load();
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Action failed");
+    } finally {
+      setBusyId(null);
+    }
+  }
+
   return (
     <div className="space-y-5">
       <div>
         <h2 className="text-lg font-semibold text-sage-ink">User management</h2>
         <p className="mt-1 text-sm text-sage-muted">
           {total.toLocaleString()} users total. Ban deactivates the account
-          (reversible); delete is permanent and cascades through API keys,
-          bookmarks, and history.
+          (reversible); delete is permanent. Reviewers can act on the audit
+          queue but cannot manage members.
         </p>
       </div>
 
@@ -151,6 +168,11 @@ export default function AdminUsersPage() {
                         admin
                       </span>
                     )}
+                    {u.is_reviewer && (
+                      <span className="rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
+                        reviewer
+                      </span>
+                    )}
                     {!u.is_active && (
                       <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700">
                         banned
@@ -175,6 +197,21 @@ export default function AdminUsersPage() {
                     <span className="text-xs text-slate-400">protected</span>
                   ) : (
                     <div className="inline-flex gap-1">
+                      {/* Reviewer toggle */}
+                      <button
+                        onClick={() => toggleReviewer(u)}
+                        disabled={busyId === u.id}
+                        title={u.is_reviewer ? "Revoke reviewer role" : "Grant reviewer role"}
+                        className={[
+                          "rounded-md border px-2.5 py-1 text-xs disabled:opacity-60",
+                          u.is_reviewer
+                            ? "border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100"
+                            : "border-sage-border bg-white text-sage-muted hover:bg-[rgba(58,125,92,0.08)] hover:text-accent-deep",
+                        ].join(" ")}
+                      >
+                        {u.is_reviewer ? "Reviewer ✓" : "Set reviewer"}
+                      </button>
+                      {/* Ban / Unban */}
                       {u.is_active ? (
                         <button
                           onClick={() => setConfirming({ kind: "ban", user: u })}

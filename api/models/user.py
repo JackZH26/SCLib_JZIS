@@ -50,6 +50,7 @@ class UserRead(BaseModel):
     created_at: datetime
     is_active: bool
     is_admin: bool = False
+    is_reviewer: bool = False
     auth_provider: str = "local"
     avatar_url: str | None = None
     scopes: list[str] = ["basic", "sclib"]

@@ -1,13 +1,16 @@
 """/admin/* — site-administration endpoints.
 
-Gated behind ``current_admin_user``; non-admins get 403. Three
-groups today:
+Two permission tiers:
 
-* **users**: list, ban (deactivate), unban, delete
-* **audit reports**: most recent runs of the nightly audit
-* **audit queue**: materials currently flagged ``needs_review=TRUE``
-  + admin override (``confirm`` keeps the flag, ``override`` clears
-  it and records the admin's decision in ``materials.admin_decision``)
+* ``current_admin_user`` — full admin (is_admin=TRUE): user management
+  + audit queue review.
+* ``current_reviewer_or_admin`` — reviewer (is_reviewer=TRUE) or admin:
+  audit queue review only (no user management).
+
+Groups:
+* **users**: list, ban, unban, delete, set-reviewer  (admin only)
+* **audit reports**: most recent nightly audit runs  (reviewer+admin)
+* **audit queue**: flagged materials + override/confirm  (reviewer+admin)
 """
 from __future__ import annotations
 
@@ -49,6 +52,16 @@ async def current_admin_user(
     user knows they're authenticated but not authorised."""
     if not user.is_admin:
         raise HTTPException(403, "Admin role required")
+    return user
+
+
+async def current_reviewer_or_admin(
+    user: User = Depends(current_user_from_jwt),
+) -> User:
+    """Allows both reviewers (is_reviewer=TRUE) and admins (is_admin=TRUE).
+    Used for audit-queue endpoints that reviewers are permitted to act on."""
+    if not (user.is_admin or user.is_reviewer):
+        raise HTTPException(403, "Reviewer or admin role required")
     return user
 
 
@@ -160,6 +173,29 @@ async def delete_user(
     return MessageResponse(message=f"Deleted {email}")
 
 
+@router.post("/users/{user_id}/set-reviewer", response_model=MessageResponse)
+async def set_reviewer(
+    user_id: UUID,
+    value: bool = Query(..., description="true to grant reviewer role, false to revoke"),
+    db: AsyncSession = Depends(get_db),
+    admin: User = Depends(current_admin_user),
+) -> MessageResponse:
+    """Grant or revoke the reviewer role on a registered user.
+    Reviewers can act on the audit queue but cannot manage site members."""
+    if user_id == admin.id:
+        raise HTTPException(400, "Cannot change your own reviewer status")
+    target = await db.get(User, user_id)
+    if target is None:
+        raise HTTPException(404, "User not found")
+    if target.is_admin:
+        raise HTTPException(400, "Admins already have full access; reviewer flag is redundant")
+    target.is_reviewer = value
+    await db.commit()
+    action = "granted" if value else "revoked"
+    log.info("admin %s %s reviewer role for %s", admin.email, action, target.email)
+    return MessageResponse(message=f"Reviewer role {action} for {target.email}")
+
+
 # ---------------------------------------------------------------------------
 # Audit reports
 # ---------------------------------------------------------------------------
@@ -169,7 +205,7 @@ async def list_audit_reports(
     rule: str | None = Query(None, description="Filter to one rule name"),
     limit: int = Query(50, ge=1, le=500),
     db: AsyncSession = Depends(get_db),
-    _admin: User = Depends(current_admin_user),
+    _reviewer: User = Depends(current_reviewer_or_admin),
 ) -> list[AuditReportSummary]:
     """Newest-first list of audit_reports rows. Default returns the
     last ~50 across all rules; pass ``?rule=…`` to drill into one
@@ -192,7 +228,7 @@ async def audit_queue(
     limit: int = Query(50, ge=1, le=500),
     offset: int = Query(0, ge=0),
     db: AsyncSession = Depends(get_db),
-    _admin: User = Depends(current_admin_user),
+    _reviewer: User = Depends(current_reviewer_or_admin),
 ) -> AuditQueueResponse:
     base = select(Material).where(Material.needs_review.is_(True))
     count_stmt = (
@@ -236,9 +272,9 @@ async def override_flag(
     material_id: str,
     body: AuditOverridePayload,
     db: AsyncSession = Depends(get_db),
-    admin: User = Depends(current_admin_user),
+    reviewer: User = Depends(current_reviewer_or_admin),
 ) -> MessageResponse:
-    """Clear the flag and record the admin's decision. Subsequent
+    """Clear the flag and record the reviewer's decision. Subsequent
     nightly runs check ``admin_decision->>'rule'`` and skip rows
     whose flag has been overridden — so manual review work persists
     across audits."""
@@ -249,8 +285,8 @@ async def override_flag(
         raise HTTPException(400, "Material is not currently flagged")
     m.admin_decision = {
         "rule": m.review_reason,
-        "reviewer": admin.email,
-        "reviewer_id": str(admin.id),
+        "reviewer": reviewer.email,
+        "reviewer_id": str(reviewer.id),
         "decided_at": datetime.now(timezone.utc).isoformat(),
         "note": body.note,
         "action": "override",
@@ -258,8 +294,8 @@ async def override_flag(
     m.needs_review = False
     m.review_reason = None
     await db.commit()
-    log.info("admin %s overrode flag on material %s: %s",
-             admin.email, material_id, body.note)
+    log.info("reviewer %s overrode flag on material %s: %s",
+             reviewer.email, material_id, body.note)
     return MessageResponse(message=f"Override recorded for {material_id}")
 
 
@@ -268,17 +304,17 @@ async def confirm_flag(
     material_id: str,
     body: AuditOverridePayload,
     db: AsyncSession = Depends(get_db),
-    admin: User = Depends(current_admin_user),
+    reviewer: User = Depends(current_reviewer_or_admin),
 ) -> MessageResponse:
-    """Keep the flag but record that an admin has reviewed and
+    """Keep the flag but record that a reviewer has reviewed and
     confirmed it (audit trail)."""
     m = await db.get(Material, material_id)
     if m is None:
         raise HTTPException(404, "Material not found")
     m.admin_decision = {
         "rule": m.review_reason,
-        "reviewer": admin.email,
-        "reviewer_id": str(admin.id),
+        "reviewer": reviewer.email,
+        "reviewer_id": str(reviewer.id),
         "decided_at": datetime.now(timezone.utc).isoformat(),
         "note": body.note,
         "action": "confirm",
@@ -294,7 +330,7 @@ async def confirm_flag(
 @router.get("/overview", response_model=AdminOverview)
 async def admin_overview(
     db: AsyncSession = Depends(get_db),
-    _admin: User = Depends(current_admin_user),
+    _reviewer: User = Depends(current_reviewer_or_admin),
 ) -> AdminOverview:
     total_users = (await db.execute(select(func.count()).select_from(User))).scalar_one()
     active_users = (
