@@ -56,6 +56,7 @@ class SearchResponse(BaseModel):
     results: list[SearchMatch]
     query_time_ms: int
     guest_remaining: int | None = None
+    remaining: int | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -87,6 +88,7 @@ class AskResponse(BaseModel):
     tokens_used: int | None
     query_time_ms: int
     guest_remaining: int | None = None
+    remaining: int | None = None
 
 
 # ---------------------------------------------------------------------------

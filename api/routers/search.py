@@ -63,6 +63,7 @@ async def search(
             results=[],
             query_time_ms=int((time.perf_counter() - t0) * 1000),
             guest_remaining=identity.guest_remaining,
+            remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
         )
 
     # 2. Fetch chunks + parent papers in one round-trip. Defensive cap:

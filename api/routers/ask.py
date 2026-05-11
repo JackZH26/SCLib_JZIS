@@ -60,6 +60,7 @@ async def ask(
             tokens_used=0,
             query_time_ms=latency_ms,
             guest_remaining=identity.guest_remaining,
+            remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
         )
 
     # 2. Hydrate chunks + papers from Postgres, keeping ANN order.
