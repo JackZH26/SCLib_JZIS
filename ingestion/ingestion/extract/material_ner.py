@@ -343,17 +343,38 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
     paper_type = classify_paper_type(parsed.meta.title, parsed.meta.abstract)
     prompt = _build_prompt(body, paper_type)
 
-    try:
-        resp = _client().models.generate_content(
-            model=settings.gemini_model,
-            contents=prompt,
-            config=genai_types.GenerateContentConfig(
-                temperature=0.0,
-                response_mime_type="application/json",
-            ),
-        )
-    except Exception as e:  # noqa: BLE001
-        log.warning("Gemini NER call failed for %s: %s", parsed.meta.paper_id, e)
+    # Retry with exponential backoff for transient Gemini errors (429,
+    # 503, connection resets). Without this the pipeline silently drops
+    # materials for papers that hit a rate-limit spike.
+    resp = None
+    max_retries = 4
+    for attempt in range(max_retries):
+        try:
+            resp = _client().models.generate_content(
+                model=settings.gemini_model,
+                contents=prompt,
+                config=genai_types.GenerateContentConfig(
+                    temperature=0.0,
+                    response_mime_type="application/json",
+                ),
+            )
+            break  # success
+        except Exception as e:  # noqa: BLE001
+            err_str = str(e)
+            retryable = ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str
+                         or "503" in err_str or "UNAVAILABLE" in err_str)
+            if retryable and attempt < max_retries - 1:
+                wait = 2 ** attempt * 3  # 3s, 6s, 12s, 24s
+                log.info("%s: Gemini %s — retry %d/%d in %ds",
+                         parsed.meta.paper_id, err_str[:80],
+                         attempt + 1, max_retries, wait)
+                import time as _time
+                _time.sleep(wait)
+                continue
+            log.warning("Gemini NER call failed for %s: %s",
+                        parsed.meta.paper_id, e)
+            return []
+    if resp is None:
         return []
 
     text = (resp.text or "").strip()
