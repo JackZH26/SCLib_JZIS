@@ -54,7 +54,8 @@ MAX_LENGTH = 100
 # NEW: Literal placeholders — NER sometimes emits these verbatim
 # ===================================================================
 _PLACEHOLDERS = frozenset({
-    "none", "unknown", "n/a", "na", "null", "tbd", "-", "?", "??",
+    "none", "unknown", "n/a", "null", "tbd", "-", "?", "??",
+    # NOTE: "na" deliberately excluded — "Na" is sodium's element symbol.
 })
 
 

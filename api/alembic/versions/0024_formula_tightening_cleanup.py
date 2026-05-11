@@ -43,7 +43,7 @@ def upgrade() -> None:
             review_reason = 'literal_placeholder'
         WHERE needs_review = FALSE
           AND admin_decision IS NULL
-          AND LOWER(formula) IN ('none', 'unknown', 'n/a', 'na', 'null', 'tbd', '-', '?', '??');
+          AND LOWER(formula) IN ('none', 'unknown', 'n/a', 'null', 'tbd', '-', '?', '??');
     """))
 
     # --- 2. Single bare element symbol (one uppercase letter) ---
