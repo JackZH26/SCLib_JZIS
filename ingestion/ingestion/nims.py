@@ -220,17 +220,42 @@ def classify_family(formula: str) -> str | None:
     f = formula.strip()
     fl = f.lower()
 
-    # Element tokenisation — used by many branches below
-    elements = re.findall(r"[A-Z][a-z]?", f)
-    el_set = set(elements)
+    # ── Pre-processing for element extraction ──────────────────
+    # The naive tokenizer ``[A-Z][a-z]?`` greedily eats lowercase
+    # characters that aren't part of element symbols — variable-
+    # stoichiometry markers (x, y, z, δ) and polytype codes turn
+    # "O" into "Oy", "K" into "Kx", "H" into "Hb" etc.
+    # Strip them from a working copy before tokenising.
+    f_el = f
+    # 1. Polytype prefix: 4Hb-, 1T'-, 2H-, 3R-, etc.
+    f_el = re.sub(r"^[0-9]+[A-Za-z]+'?-", "", f_el)
+    # 2. Amorphous / phase prefix: a-MoGe, t-PtBi2, c-WSi
+    f_el = re.sub(r"^[atc]-(?=[A-Z])", "", f_el)
+    # 3. Isotope markers: ^10, ^11
+    f_el = re.sub(r"\^[0-9]+", "", f_el)
+    # 4. Variable stoichiometry: strip x/y/z/δ that follow an
+    #    uppercase letter or digit (the cases where ``[A-Z][a-z]?``
+    #    would mis-consume them). Safe: no real element has symbol
+    #    x, y, z, or δ.
+    f_el = re.sub(
+        r"(?<=[A-Z0-9])[xyzδ](?=[A-Z0-9()\[\]+\-·.,/]|$)", "", f_el,
+    )
 
-    # ── MgB2 ──
-    if re.fullmatch(r"mg[\d.\-]*(?:al[\d.]*)?b2", fl):
-        return "mgb2"  # Also catches Mg1-xAlxB2
+    elements = re.findall(r"[A-Z][a-z]?", f_el)
+    el_set = set(elements)
+    # Lowered cleaned formula — useful for MgB2 isotope matching
+    fl_el = f_el.lower()
+
+    # ── MgB2 ──────────────────────────────────────────────────
+    # Catches: MgB2, Mg1-xAlxB2, MgB2-xCx, Mg(B1-xCx)2,
+    #          Mg^10B2, Mg^11B2 (after isotope stripping)
+    if re.search(r"^mg", fl) and re.search(r"b[0-9]", fl_el):
+        if not any(x in fl for x in ("cu", "fe", "ni", "as", "se", "te")):
+            return "mgb2"
 
     # ── Hydrides under pressure ──
     # H3S, LaH10, YH9, CaH6, ScLuH12, etc.
-    high_h = bool(re.search(r"H(?:[2-9]|1[0-9])(?![0-9])", f))
+    high_h = bool(re.search(r"H(?:[2-9]|1[0-9])(?![0-9])", f_el))
     if high_h and "O" not in el_set and "C" not in el_set:
         partners = {"S", "Se", "La", "Y", "Ca", "Mg", "Sr", "Ba",
                     "Th", "Sc", "Yb", "Ce", "Pr", "Nd", "Lu", "Ac",
@@ -239,7 +264,7 @@ def classify_family(formula: str) -> str | None:
             return "hydride"
 
     # ── Fullerides ──
-    for el, cnt in re.findall(r"([A-Z][a-z]?)[_\s]*(\d+)?", f):
+    for el, cnt in re.findall(r"([A-Z][a-z]?)[_\s]*(\d+)?", f_el):
         if el == "C" and cnt in ("60", "70", "76", "84"):
             return "fulleride"
 
@@ -262,7 +287,7 @@ def classify_family(formula: str) -> str | None:
             return "iron_based"
 
     # ── Cuprate phase-label shorthand ──
-    if re.search(r"bscco|ybco|lsco|tbcco|ncco|pccco", fl):
+    if re.search(r"bscco|ybco|lsco|tbcco|ncco|pccco|rebco", fl):
         return "cuprate"
     if re.search(r"(pb|bi|tl|hg)[\s\-()a-z]*[12][12][0-9]{2}", fl):
         return "cuprate"
@@ -276,6 +301,7 @@ def classify_family(formula: str) -> str | None:
         and "Cu" not in el_set
         and "Fe" not in el_set
         and "B" not in el_set  # exclude borocarbides like YNi2B2C
+        and "Sn" not in el_set  # exclude stannides like Ca3Rh4Sn13
     ):
         return "nickelate"
 
@@ -310,10 +336,15 @@ def classify_family(formula: str) -> str | None:
         hf_partners = {"Te", "Pt", "Rh", "Co", "Pd", "Ge", "Be", "Ru", "Si", "Ir", "Ni"}
         if el_set & hf_partners:
             return "heavy_fermion"
-    # Cerium compounds: CeIn3, CeCoIn5, CeCu2Si2, CePt3Si, CeRhIn5, CeRh2As2
+    # Cerium compounds: CeIn3, CeCoIn5, CeCu2Si2, CePt3Si, CeRhIn5
     if "Ce" in el_set and len(el_set) >= 2:
         return "heavy_fermion"
-    # PrOs4Sb12 (skutterudite heavy-fermion)
+    # Plutonium compounds: PuCoGa5, PuRhGa5
+    if "Pu" in el_set and len(el_set) >= 2:
+        return "heavy_fermion"
+    # Praseodymium skutterudites: PrOs4Sb12, PrRu4Sb12, PrPt4Ge12
+    if "Pr" in el_set and re.search(r"(?:sb|ge)12", fl):
+        return "heavy_fermion"
     if re.search(r"pros4sb12|pros4|prpt4ge12", fl):
         return "heavy_fermion"
     # YbRh2Si2, YbAlB4
@@ -335,8 +366,13 @@ def classify_family(formula: str) -> str | None:
         if "Sr" in el_set or "Ca" in el_set:
             return "ruthenate"
 
+    # ── Chevrel phases (before general chalcogenide catch) ──
+    # PbMo6S8, SnMo6S8, etc. — phonon-mediated, classified conventional
+    if re.search(r"mo6s8|mo6se8", fl):
+        return "conventional"
+
     # ── Chalcogenides (transition-metal dichalcogenides + misc) ──
-    # NbSe2, TaS2, MoS2, MoTe2, PdTe2, PbTaSe2, CuxBi2Se3, 4Hb-TaS2, etc.
+    # NbSe2, TaS2, MoS2, MoTe2, PdTe2, PbTaSe2, CuxBi2Se3, 4Hb-TaS2
     chalc = {"Se", "Te", "S"}
     tm_chalc = {"Nb", "Ta", "Mo", "W", "Ti", "Zr", "Hf", "Pd", "Pt", "Ir", "Re"}
     if el_set & chalc and el_set & tm_chalc:
@@ -346,6 +382,11 @@ def classify_family(formula: str) -> str | None:
     # Bi2Se3/Bi2Te3 topological SCs (Cu/Sr-doped)
     if "Bi" in el_set and el_set & {"Se", "Te"} and "O" not in el_set:
         return "chalcogenide"
+    # SnSe, SnTe, InSe, InTe, GeSe, GeTe — IV-VI chalcogenides
+    _iv_vi = {"Sn", "In", "Ge", "Pb", "Ga"}
+    if el_set & chalc and el_set & _iv_vi:
+        if "O" not in el_set and "Cu" not in el_set and "Fe" not in el_set:
+            return "chalcogenide"
 
     # ── Graphite intercalation compounds (GIC) ──
     # CaC6, YbC6, KC8 — superconducting graphite intercalants
@@ -353,36 +394,50 @@ def classify_family(formula: str) -> str | None:
         return "conventional"
 
     # ── Elemental superconductors ──
-    # Single elements known to superconduct: Nb, Al, Pb, Sn, In, V, Ta, etc.
     _SC_ELEMENTS = {
         "Nb", "Al", "Pb", "Sn", "In", "V", "Ta", "Re", "Ti", "Zr",
         "Hf", "Mo", "W", "Ru", "Os", "Ir", "Rh", "Zn", "Ga", "La",
         "Tl", "Bi", "Cd", "Th", "Pa", "Be", "Am",
+        # 2026-05-11 additions
+        "Au", "Li", "Fe",   # Fe SCs under extreme pressure
     }
     if len(elements) == 1 and elements[0] in _SC_ELEMENTS:
         return "elemental"
     # Hg / Sn / Pb / In as standalone or with simple numerals
-    if re.fullmatch(r"(nb|al|pb|sn|in|v|ta|re|ti|la|bi|hg)\d*", fl):
+    if re.fullmatch(r"(nb|al|pb|sn|in|v|ta|re|ti|la|bi|hg|au|li|fe)\d*", fl):
         return "elemental"
 
     # ── Conventional (A15 compounds, nitrides, borides, alloys) ──
     # A15: Nb3Sn, Nb3Ge, Nb3Al, V3Si, V3Ga, Cr3Ir
     if re.search(r"nb3(?:sn|ge|al|ga|si)|v3(?:si|ga)|cr3ir", fl):
         return "conventional"
-    # Nitrides: NbN, TiN, NbTiN, MoN, VN, ZrN
-    if re.search(r"^(?:nb|ti|mo|v|zr|hf|ta)[\d.]*n[\d.]*$", fl):
+    # Nitrides: NbN, TiN, NbTiN, MoN, VN, ZrN, HfN, TaN, InN, AlN
+    if re.search(r"^(?:nb|ti|mo|v|zr|hf|ta|in|al)[\d.]*n[\d.]*$", fl):
+        return "conventional"
+    # Carbides: NbC, MoC, TaC, TiC, WC, HfC, VC
+    if re.fullmatch(r"(?:nb|ti|mo|v|zr|hf|ta|w)[\d.]*c[\d.]*", fl):
+        return "conventional"
+    # Sesquicarbides: Y2C3, La2C3, Th2C3, Lu2C3
+    if re.fullmatch(r"(?:y|la|th|lu|sc)2c3", fl):
         return "conventional"
     # Binary alloys: NbTi, MoRe, MoGe, NbZr, etc.
     if re.search(r"nbti|more|moge|nbzr|inox|srpt3p", fl):
         return "conventional"
+    # Silicides: MoSi, Mo3Si, WSi, NbSi
+    if re.fullmatch(r"(?:mo|w|nb|ta|v)[\d.]*si[\d.]*", fl):
+        return "conventional"
+    # Ternary silicides: CaAlSi, SrAlSi, BaAlSi
+    if re.fullmatch(r"(?:ca|sr|ba)alsi", fl):
+        return "conventional"
     # Borides (non-MgB2): ZrB12, YB6, TaB2
     if re.search(r"^(?:zr|y|ta|lu|nb|la|sc)b\d+", fl):
         return "conventional"
-    # Chevrel phases: PbMo6S8, SnMo6S8, etc.
-    if re.search(r"mo6s8|mo6se8", fl):
-        return "conventional"
+    # (Chevrel phases moved above chalcogenide section)
     # Spinel: LiTi2O4
     if re.search(r"liti2o4", fl):
+        return "conventional"
+    # Perovskite oxide SCs: SrTiO3, KTaO3, BaTiO3
+    if re.fullmatch(r"(?:sr|ba|ca|k|na)(?:ti|ta|nb)o3", fl):
         return "conventional"
     # Pyrochlore osmates/rhenates: Cd2Re2O7, KOs2O6, RbOs2O6
     if re.search(r"cd2re2o7|os2o6", fl):
@@ -392,6 +447,16 @@ def classify_family(formula: str) -> str | None:
         return "conventional"
     # Quasi-1D: K2Cr3As3, Rb2Cr3As3
     if re.search(r"cr3as3", fl):
+        return "conventional"
+    # Stannides: Ca3Rh4Sn13, Ca3Ir4Sn13, Sr3Rh4Sn13, La3Rh4Sn13
+    if re.search(r"sn1[23]", fl):
+        if el_set & {"Ca", "Sr", "La", "Ba"}:
+            return "conventional"
+    # Ternary borides: ErRh4B4, LuRh4B4 (non-borocarbide)
+    if re.search(r"rh4b4|ir4b4", fl):
+        return "conventional"
+    # Amorphous alloys (after a- prefix stripping): MoGe, MoSi, WSi
+    if re.fullmatch(r"mo[\d.]*(?:ge|si|re)[\d.]*", fl_el):
         return "conventional"
 
     # Legacy catch-all
