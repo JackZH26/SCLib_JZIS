@@ -146,7 +146,7 @@ async def _update_materials_extracted(
         await session.execute(
             text("""
                 UPDATE papers
-                SET materials_extracted = :mats::jsonb,
+                SET materials_extracted = CAST(:mats AS jsonb),
                     updated_at = NOW()
                 WHERE id = :pid
             """),
