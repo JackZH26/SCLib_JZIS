@@ -161,6 +161,27 @@ REQUIRED per record:
                  ALWAYS "cited".
 
 EXTRACT IF PRESENT (omit or set null otherwise):
+- family: superconductor family — one of: "cuprate" | "iron_based" |
+          "nickelate" | "hydride" | "mgb2" | "heavy_fermion" |
+          "fulleride" | "kagome" | "organic" | "bismuthate" |
+          "borocarbide" | "ruthenate" | "chalcogenide" | "elemental" |
+          "conventional". Omit or null if unclear.
+          cuprate = copper-oxide layered (YBCO, BSCCO, Hg-1223, LSCO…)
+          iron_based = iron-pnictide / iron-chalcogenide (LaFeAsO, FeSe,
+            BaFe2As2…)
+          nickelate = nickel-oxide layered (NdNiO2, La3Ni2O7…)
+          hydride = metal superhydride (LaH10, H3S…)
+          mgb2 = MgB2 and Mg-B variants
+          heavy_fermion = f-electron (CeCoIn5, UPt3, PuCoGa5…)
+          fulleride = C60-based (K3C60, Rb3C60…)
+          kagome = kagome lattice (CsV3Sb5, AV3Sb5…)
+          organic = organic / BEDT-TTF / (TMTSF)2X
+          bismuthate = BaBiO3-derived (Ba1-xKxBiO3…)
+          borocarbide = RNi2B2C family
+          ruthenate = Sr2RuO4 family
+          chalcogenide = non-iron chalcogenide (NbSe2, TaS2, TiSe2…)
+          elemental = elemental metals (Nb, Pb, Sn, Al, V…)
+          conventional = other BCS / phonon-mediated not in above families
 - pairing_symmetry: "d-wave" | "s-wave" | "s_pm" | "p-wave" | "unknown"
 - gap_structure: "full_gap" | "nodal" | "multi_gap" | "unknown"
 - crystal_structure: space group or structure type (e.g. "I4/mmm")
@@ -268,7 +289,7 @@ def _client() -> genai.Client:
 # aggregator later consumes these to build the material-level summary.
 _V2_FIELDS = (
     "tc_kelvin", "tc_type", "pressure_gpa", "measurement", "confidence",
-    "evidence_type",
+    "evidence_type", "family",
     "pairing_symmetry", "gap_structure",
     "crystal_structure", "space_group", "structure_phase",
     "lattice_a", "lattice_c",
@@ -285,6 +306,14 @@ _V2_FIELDS = (
 # outside the set is dropped so aggregator filtering stays a simple
 # equality check ("cited" → skip).
 _EVIDENCE_TYPES = {"primary", "cited"}
+
+# Valid family enum — must stay in lockstep with classify_family() in
+# nims.py and _FAMILY_TC_CAPS in api/services/audit_rules.py.
+_FAMILY_ENUM = {
+    "cuprate", "iron_based", "nickelate", "hydride", "mgb2",
+    "heavy_fermion", "fulleride", "kagome", "organic", "bismuthate",
+    "borocarbide", "ruthenate", "chalcogenide", "elemental", "conventional",
+}
 
 _NUMERIC_FIELDS = {
     "tc_kelvin", "pressure_gpa", "confidence",
@@ -395,6 +424,17 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
                 record["evidence_type"] = ev_lower
             else:
                 record.pop("evidence_type", None)
+
+        # Normalize family to a known enum value or drop it.
+        # The aggregator falls back to rule-based classify_family()
+        # when NER family is absent, so dropping invalid values is safe.
+        fam = record.get("family")
+        if fam is not None:
+            fam_lower = str(fam).strip().lower().replace("-", "_").replace(" ", "_")
+            if fam_lower in _FAMILY_ENUM:
+                record["family"] = fam_lower
+            else:
+                record.pop("family", None)
 
         # Defensive: enforce the spec's confidence-downgrade for
         # implausibly high Tc values.
