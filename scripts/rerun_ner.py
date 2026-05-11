@@ -204,6 +204,9 @@ async def _process_one(
             if not dry_run:
                 await _update_materials_extracted(paper["paper_id"], materials)
 
+            # Brief pause to stay under Gemini RPM limits
+            await asyncio.sleep(0.5)
+
             elapsed = time.monotonic() - t0
             return arxiv_id, len(materials), elapsed
 
