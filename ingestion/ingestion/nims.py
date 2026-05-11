@@ -211,99 +211,235 @@ def classify_family(formula: str) -> str | None:
     Order matters — checks go from most-specific to most-general.
     Returns ``None`` for anything we don't recognise, which the UI
     renders as "Other".
+
+    Families (2026-05 revision):
+      mgb2, hydride, fulleride, iron_based, cuprate, nickelate,
+      heavy_fermion, kagome, organic, bismuthate, borocarbide,
+      ruthenate, chalcogenide, elemental, conventional
     """
     f = formula.strip()
     fl = f.lower()
 
-    # MgB2 is its own thing
-    if re.fullmatch(r"mgb2", fl):
-        return "mgb2"
-
-    # Hydrides under pressure: H3S, LaH10, YH9, CaH6, etc.
-    #
-    # We tokenise the *original-case* formula into element symbols
-    # ([A-Z][a-z]?) instead of substring-matching on the lowercased
-    # form. The old approach matched the alternation `s|se` against
-    # a lowercase string, so the `s` in `H3S` counted as a metal hit
-    # for itself, and "Se" in selenides was double-counted because
-    # `s` matched first. Element tokenisation eliminates both bugs.
+    # Element tokenisation — used by many branches below
     elements = re.findall(r"[A-Z][a-z]?", f)
-    # Match "H" followed by a plausible hydrogen stoichiometry (2-9
-    # or 10-19). The trailing lookahead rejects only another digit,
-    # so "H3S" or "LaH10Fe" match (S / F are non-digits) while
-    # "H103" does not (the H10 prefix would falsely leak through a
-    # naive \b). The pre-fix regex used \b, which *fails* between
-    # two word chars like "H3S" → the hydride branch silently
-    # skipped H3S and every similar hydrogen-then-element formula.
+    el_set = set(elements)
+
+    # ── MgB2 ──
+    if re.fullmatch(r"mg[\d.\-]*(?:al[\d.]*)?b2", fl):
+        return "mgb2"  # Also catches Mg1-xAlxB2
+
+    # ── Hydrides under pressure ──
+    # H3S, LaH10, YH9, CaH6, ScLuH12, etc.
     high_h = bool(re.search(r"H(?:[2-9]|1[0-9])(?![0-9])", f))
-    if high_h and "O" not in elements and "C" not in elements:
+    if high_h and "O" not in el_set and "C" not in el_set:
         partners = {"S", "Se", "La", "Y", "Ca", "Mg", "Sr", "Ba",
-                    "Th", "Sc", "Yb", "Ce", "Pr", "Nd"}
-        if any(e in partners for e in elements):
+                    "Th", "Sc", "Yb", "Ce", "Pr", "Nd", "Lu", "Ac",
+                    "Be", "Hf", "Na", "Li", "K", "Zr"}
+        if any(e in partners for e in el_set):
             return "hydride"
 
-    # Fullerides: superconducting alkali-doped fullerenes. The
-    # industry-standard family label is "fulleride" — coined after
-    # Rosseinsky et al. (K₃C₆₀ Tc=19 K, 1991) and consistently used
-    # in condensed-matter reviews (Gunnarsson 1997, Capone 2009,
-    # Ganin et al. 2008 for Cs₃C₆₀ at Tc≈38 K under pressure).
-    #
-    # Detection: tokenise to element symbols on the original-case
-    # formula and look for any carbon atom with stoichiometry 60,
-    # 70, 76, or 84 (the common closed-cage fullerene sizes). This
-    # catches ``C_60``, ``K_3C_60``, ``Rb_3C_60``, ``Cs_3C_60``,
-    # ``NaRb_2C_60``, solvent intercalates ``C_60/C_12H_26`` etc.,
-    # while safely rejecting false positives like ``Sc60Ti40``
-    # where ``60`` is a scandium stoichiometry, not a cage size.
+    # ── Fullerides ──
     for el, cnt in re.findall(r"([A-Z][a-z]?)[_\s]*(\d+)?", f):
         if el == "C" and cnt in ("60", "70", "76", "84"):
             return "fulleride"
 
-    # Iron-based: Fe with As, Se, Te, P, or a "11"/"122"/"1111" motif
-    if "fe" in fl and re.search(r"(as|se|te|p)", fl):
-        return "iron_based"
+    # ── Kagome vanadium antimonides ──
+    # CsV3Sb5, KV3Sb5, RbV3Sb5 — the AV3Sb5 family
+    if "V" in el_set and "Sb" in el_set:
+        if re.search(r"v3sb5", fl):
+            return "kagome"
 
-    # Cuprate phase-label shorthand — papers often write "BSCCO",
-    # "YBCO", "Bi-2212", "Bi(Pb)-2212", "Hg-1223", "Pb-Bi2212" etc.
-    # instead of the full stoichiometry. The cu+o test below misses
-    # these because the shorthand has no 'o', and the conventional
-    # "pb"/"hg" check further down would grab the Pb-doped ones.
-    # Catching them up front fixes both.
-    if re.search(r"bscco|ybco|lsco|tbcco", fl):
-        return "cuprate"
-    if re.search(r"\b(pb|bi|tl|hg)[\s\-()a-z]*[12][12][0-9]{2}\b", fl):
-        return "cuprate"
-    if re.search(r"\by[\s\-]*12[3-8]\b", fl):
-        return "cuprate"  # YBCO n-layer shorthand: Y-123, Y-124, Y-125
+    # ── Iron-based ──
+    # Fe with pnictide/chalcogenide partner: FeAs, FeSe, FeTe, FeP, FeS
+    if "Fe" in el_set:
+        if {"As"} & el_set or {"Te"} & el_set or {"P"} & el_set:
+            return "iron_based"
+        # FeSe / FeS — important iron-chalcogenide SCs
+        if {"Se"} & el_set or ({"S"} & el_set and "Cu" not in el_set):
+            return "iron_based"
+        # Iron-based shorthands: "122", "1111", "11" structure motifs
+        if re.search(r"bafe2as2|bafe2|lafeaso|lifeas|nafeas", fl):
+            return "iron_based"
 
-    # Nickelates (Ni + O oxides, no Cu or Fe partner). Covers the
-    # infinite-layer family (Nd₀·₈Sr₀·₂NiO₂ on SrTiO₃, Li et al. 2019,
-    # Tc≈15 K), bulk Ruddlesden-Popper stacks (La₃Ni₂O₇, Sun et al.
-    # 2023, Tc≈80 K at 14 GPa), and the growing 2024+ cohort. We
-    # check the tokenized element list (``elements`` from the hydride
-    # branch above) instead of a lowercase substring so "in" / other
-    # elements containing 'n' or 'i' don't false-positive.
+    # ── Cuprate phase-label shorthand ──
+    if re.search(r"bscco|ybco|lsco|tbcco|ncco|pccco", fl):
+        return "cuprate"
+    if re.search(r"(pb|bi|tl|hg)[\s\-()a-z]*[12][12][0-9]{2}", fl):
+        return "cuprate"
+    if re.search(r"y[\s\-]*12[3-8]", fl):
+        return "cuprate"
+
+    # ── Nickelates ──
     if (
-        "Ni" in elements
-        and "O" in elements
-        and "Cu" not in elements
-        and "Fe" not in elements
+        "Ni" in el_set
+        and "O" in el_set
+        and "Cu" not in el_set
+        and "Fe" not in el_set
+        and "B" not in el_set  # exclude borocarbides like YNi2B2C
     ):
         return "nickelate"
 
-    # Cuprates: must contain both Cu and O, plus a rare-earth / alkaline
-    # earth cation typical of high-Tc cuprates
-    if "cu" in fl and "o" in fl and re.search(r"(la|y|ba|sr|ca|bi|hg|tl|nd|sm|gd)", fl):
-        return "cuprate"
+    # ── Cuprates (full stoichiometry) ──
+    if "Cu" in el_set and "O" in el_set:
+        re_cation = r"(la|y|ba|sr|ca|bi|hg|tl|nd|sm|gd|pr|eu|tb|dy|ho|er|tm)"
+        if re.search(re_cation, fl):
+            return "cuprate"
 
-    # Heavy-fermion: actinides / lanthanides we care about
-    if re.search(r"(ube|cein|ceco|cecu|ypb|yrh|uru)", fl):
+    # ── Organic superconductors ──
+    # BEDT-TTF (ET), TMTSF (Bechgaard salts), BETS, TTF-TCNQ, picene, etc.
+    organic_patterns = (
+        r"bedt[\s\-]?ttf|κ-\(et\)|κ-\(bedt|tmtsf|bets|"
+        r"dmit|tcnq|picene|phenanthrene|coronene|chrysene"
+    )
+    if re.search(organic_patterns, fl):
+        return "organic"
+
+    # ── Bismuthates ──
+    # BaPb1-xBixO3, Ba1-xKxBiO3 — the oxide family with Bi + O
+    if "Bi" in el_set and "O" in el_set and "Cu" not in el_set:
+        if "Ba" in el_set or "Sr" in el_set:
+            if "Se" not in el_set and "Te" not in el_set:
+                return "bismuthate"
+    # BiS2-based layered SCs: LaO0.5F0.5BiS2, NdOBiS2
+    if re.search(r"bis2", fl):
+        return "bismuthate"
+
+    # ── Heavy-fermion ──
+    # Uranium compounds: UTe2, UPt3, URhGe, UCoGe, UPd2Al3, UGe2, etc.
+    if "U" in el_set and len(el_set) >= 2:
+        hf_partners = {"Te", "Pt", "Rh", "Co", "Pd", "Ge", "Be", "Ru", "Si", "Ir", "Ni"}
+        if el_set & hf_partners:
+            return "heavy_fermion"
+    # Cerium compounds: CeIn3, CeCoIn5, CeCu2Si2, CePt3Si, CeRhIn5, CeRh2As2
+    if "Ce" in el_set and len(el_set) >= 2:
+        return "heavy_fermion"
+    # PrOs4Sb12 (skutterudite heavy-fermion)
+    if re.search(r"pros4sb12|pros4|prpt4ge12", fl):
+        return "heavy_fermion"
+    # YbRh2Si2, YbAlB4
+    if "Yb" in el_set and el_set & {"Rh", "Al", "Pd", "Ni"}:
+        return "heavy_fermion"
+    # Legacy patterns for partial matches
+    if re.search(r"ube13|cecu2si2|upd2al3|uru2si2|cecoin5", fl):
         return "heavy_fermion"
 
-    # Conventional low-Tc: Nb3Sn, Nb3Ge, V3Si, NbTi, Pb, Hg, Sn, In, MgB2...
-    if re.search(r"(nb3sn|nb3ge|v3si|nbti|pb\b|hg\b|\bsn\b)", fl):
+    # ── Borocarbides ──
+    # RNi2B2C: YNi2B2C, LuNi2B2C, ErNi2B2C, HoNi2B2C, etc.
+    if "Ni" in el_set and "B" in el_set and "C" in el_set:
+        if re.search(r"ni2b2c", fl):
+            return "borocarbide"
+
+    # ── Ruthenates ──
+    # Sr2RuO4 — the canonical spin-triplet candidate
+    if "Ru" in el_set and "O" in el_set:
+        if "Sr" in el_set or "Ca" in el_set:
+            return "ruthenate"
+
+    # ── Chalcogenides (transition-metal dichalcogenides + misc) ──
+    # NbSe2, TaS2, MoS2, MoTe2, PdTe2, PbTaSe2, CuxBi2Se3, 4Hb-TaS2, etc.
+    chalc = {"Se", "Te", "S"}
+    tm_chalc = {"Nb", "Ta", "Mo", "W", "Ti", "Zr", "Hf", "Pd", "Pt", "Ir", "Re"}
+    if el_set & chalc and el_set & tm_chalc:
+        # Exclude iron-based (already caught) and bismuthates
+        if "Fe" not in el_set:
+            return "chalcogenide"
+    # Bi2Se3/Bi2Te3 topological SCs (Cu/Sr-doped)
+    if "Bi" in el_set and el_set & {"Se", "Te"} and "O" not in el_set:
+        return "chalcogenide"
+
+    # ── Graphite intercalation compounds (GIC) ──
+    # CaC6, YbC6, KC8 — superconducting graphite intercalants
+    if re.search(r"^[a-z]{1,2}c[68]\b", fl):
         return "conventional"
 
+    # ── Elemental superconductors ──
+    # Single elements known to superconduct: Nb, Al, Pb, Sn, In, V, Ta, etc.
+    _SC_ELEMENTS = {
+        "Nb", "Al", "Pb", "Sn", "In", "V", "Ta", "Re", "Ti", "Zr",
+        "Hf", "Mo", "W", "Ru", "Os", "Ir", "Rh", "Zn", "Ga", "La",
+        "Tl", "Bi", "Cd", "Th", "Pa", "Be", "Am",
+    }
+    if len(elements) == 1 and elements[0] in _SC_ELEMENTS:
+        return "elemental"
+    # Hg / Sn / Pb / In as standalone or with simple numerals
+    if re.fullmatch(r"(nb|al|pb|sn|in|v|ta|re|ti|la|bi|hg)\d*", fl):
+        return "elemental"
+
+    # ── Conventional (A15 compounds, nitrides, borides, alloys) ──
+    # A15: Nb3Sn, Nb3Ge, Nb3Al, V3Si, V3Ga, Cr3Ir
+    if re.search(r"nb3(?:sn|ge|al|ga|si)|v3(?:si|ga)|cr3ir", fl):
+        return "conventional"
+    # Nitrides: NbN, TiN, NbTiN, MoN, VN, ZrN
+    if re.search(r"^(?:nb|ti|mo|v|zr|hf|ta)[\d.]*n[\d.]*$", fl):
+        return "conventional"
+    # Binary alloys: NbTi, MoRe, MoGe, NbZr, etc.
+    if re.search(r"nbti|more|moge|nbzr|inox|srpt3p", fl):
+        return "conventional"
+    # Borides (non-MgB2): ZrB12, YB6, TaB2
+    if re.search(r"^(?:zr|y|ta|lu|nb|la|sc)b\d+", fl):
+        return "conventional"
+    # Chevrel phases: PbMo6S8, SnMo6S8, etc.
+    if re.search(r"mo6s8|mo6se8", fl):
+        return "conventional"
+    # Spinel: LiTi2O4
+    if re.search(r"liti2o4", fl):
+        return "conventional"
+    # Pyrochlore osmates/rhenates: Cd2Re2O7, KOs2O6, RbOs2O6
+    if re.search(r"cd2re2o7|os2o6", fl):
+        return "conventional"
+    # MgCNi3 — perovskite conventional
+    if re.search(r"mgcni3", fl):
+        return "conventional"
+    # Quasi-1D: K2Cr3As3, Rb2Cr3As3
+    if re.search(r"cr3as3", fl):
+        return "conventional"
+
+    # Legacy catch-all
+    if re.search(r"nb3sn|nb3ge|v3si|nbti", fl):
+        return "conventional"
+
+    return None
+
+
+# ---------------------------------------------------------------------------
+# is_unconventional inference from family
+# ---------------------------------------------------------------------------
+
+# Definitive mapping from family to is_unconventional. These are
+# consensus assignments any condensed-matter physicist would agree with.
+# Families not in either set are left NULL (no inference).
+_UNCONVENTIONAL_FAMILIES = frozenset({
+    "cuprate",        # d-wave, beyond BCS
+    "iron_based",     # s±-wave, magnetic fluctuation mediated
+    "nickelate",      # d-wave / s±, strong correlations
+    "heavy_fermion",  # multiple exotic pairing channels
+    "organic",        # proximity to Mott insulator, spin fluctuations
+    "ruthenate",      # candidate spin-triplet (debated but consensus: unconventional)
+    "kagome",         # unconventional due to competing orders / topology
+})
+_CONVENTIONAL_FAMILIES = frozenset({
+    "conventional",   # BCS / electron-phonon
+    "mgb2",           # phonon-mediated (two-gap but still conventional)
+    "elemental",      # BCS
+    "borocarbide",    # phonon-mediated
+})
+# Deliberately omitted (cannot assign without per-material info):
+# hydride — mostly phonon-mediated but some have unconventional claims
+# fulleride — debated (some claim Jahn-Teller / electronic mechanism)
+# bismuthate — debated (CDW proximity)
+# chalcogenide — varies (NbSe2 conventional, CuxBi2Se3 topological)
+
+
+def infer_unconventional(family: str | None) -> bool | None:
+    """Infer is_unconventional from family classification.
+
+    Returns True/False for families with clear consensus, None for
+    ambiguous or unknown families.
+    """
+    if family in _UNCONVENTIONAL_FAMILIES:
+        return True
+    if family in _CONVENTIONAL_FAMILIES:
+        return False
     return None
 
 

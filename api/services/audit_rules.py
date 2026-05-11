@@ -56,6 +56,13 @@ _FAMILY_TC_CAPS = {
     "heavy_fermion":  25.0,
     "fulleride":      45.0,
     "conventional":   28.0,
+    "kagome":         10.0,
+    "organic":        15.0,
+    "bismuthate":     35.0,
+    "borocarbide":    25.0,
+    "ruthenate":       4.0,
+    "chalcogenide":   20.0,
+    "elemental":      12.0,
 }
 
 # Build the SQL VALUES list for the join in the Tc-cap rule.

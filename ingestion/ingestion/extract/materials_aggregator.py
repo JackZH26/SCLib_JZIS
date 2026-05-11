@@ -64,6 +64,7 @@ from ingestion.index.indexer import _session_factory, materials_table, papers_ta
 # both import paths (NIMS CSV + arXiv NER) agree on the grouping key.
 from ingestion.extract import formula_validator as _formula_validator
 from ingestion.nims import classify_family as _classify_family
+from ingestion.nims import infer_unconventional as _infer_unconventional
 from ingestion.nims import normalize_formula
 
 log = logging.getLogger(__name__)
@@ -508,6 +509,18 @@ def _derive_summary(
     # classifier from nims.py when NER didn't say (most common case).
     family = _weighted_mode_str(records, "family") or _classify_family(formula_raw)
 
+    # is_unconventional: trust NER weighted-boolean first; when NER is
+    # silent (the common case — 61.8% missing), infer from family.
+    # Family-based inference is definitive for clear-cut families
+    # (cuprate → True, elemental → False) and returns None for
+    # ambiguous ones (hydride, chalcogenide).
+    is_unconv_ner = _weighted_boolean(records, "is_unconventional")
+    is_unconventional = (
+        is_unconv_ner
+        if is_unconv_ner is not None
+        else _infer_unconventional(family)
+    )
+
     # disputed: union of NER-reported disputes and numeric-Tc dispute
     disputed_ner = _weighted_boolean(records, "disputed")
     disputed = bool(numeric_disputed) or bool(disputed_ner)
@@ -581,7 +594,7 @@ def _derive_summary(
         "doping_level":      _median_numeric(records, "doping_level"),
         # Flags (weighted-boolean → None when weak / disputed)
         "is_topological":      _weighted_boolean(records, "is_topological"),
-        "is_unconventional":   _weighted_boolean(records, "is_unconventional"),
+        "is_unconventional":   is_unconventional,
         "is_2d_or_interface":  _weighted_boolean(records, "is_2d_or_interface"),
         "disputed":            disputed,
         # Automatic sanity gate
