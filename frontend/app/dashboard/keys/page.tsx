@@ -8,6 +8,7 @@
  * plaintext secret is ever shown.
  */
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 
 import { listKeys, type ApiKey } from "@/lib/api";
 import { loadToken } from "@/lib/auth-storage";
@@ -45,12 +46,21 @@ export default function KeysPage() {
             requests. {active} active, {(keys?.length ?? 0) - active} revoked.
           </p>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="rounded-md bg-accent-deep px-3 py-2 text-sm font-medium text-white hover:bg-accent"
-        >
-          + New key
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/docs/api"
+            target="_blank"
+            className="rounded-md border border-sage-border bg-white px-3 py-2 text-sm font-medium text-sage-muted hover:text-accent-deep hover:border-accent-light"
+          >
+            API Docs
+          </Link>
+          <button
+            onClick={() => setShowModal(true)}
+            className="rounded-md bg-accent-deep px-3 py-2 text-sm font-medium text-white hover:bg-accent"
+          >
+            + New key
+          </button>
+        </div>
       </div>
 
       {error && (
