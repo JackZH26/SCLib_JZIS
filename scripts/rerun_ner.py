@@ -48,17 +48,27 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 
+def _async_db_url() -> str:
+    """Get DATABASE_URL and ensure it uses the asyncpg driver."""
+    url = os.environ.get(
+        "DATABASE_URL",
+        "postgresql+asyncpg://sclib:sclib@localhost:5432/sclib",
+    )
+    # .env typically has plain "postgresql://" — patch to asyncpg
+    if url.startswith("postgresql://"):
+        url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    elif url.startswith("postgresql+psycopg2://"):
+        url = url.replace("postgresql+psycopg2://", "postgresql+asyncpg://", 1)
+    return url
+
+
 async def _load_papers(skip_already_done: bool = True) -> list[dict]:
     """Fetch all paper rows we need to re-extract from Postgres."""
     from sqlalchemy import text
     from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
     from sqlalchemy.orm import sessionmaker
 
-    db_url = os.environ.get(
-        "DATABASE_URL",
-        "postgresql+asyncpg://sclib:sclib@localhost:5432/sclib",
-    )
-    engine = create_async_engine(db_url)
+    engine = create_async_engine(_async_db_url())
     Session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
     async with Session() as session:
@@ -107,22 +117,31 @@ async def _load_papers(skip_already_done: bool = True) -> list[dict]:
     return papers
 
 
+_engine = None
+_SessionFactory = None
+
+
+def _get_session_factory():
+    """Lazy-init a shared async engine + session factory."""
+    global _engine, _SessionFactory
+    if _engine is None:
+        from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+        from sqlalchemy.orm import sessionmaker
+        _engine = create_async_engine(_async_db_url(), pool_size=8)
+        _SessionFactory = sessionmaker(
+            _engine, class_=AsyncSession, expire_on_commit=False,
+        )
+    return _SessionFactory
+
+
 async def _update_materials_extracted(
     paper_id: str, materials: list[dict],
 ) -> None:
     """Write new materials_extracted JSON to the papers table."""
     from sqlalchemy import text
-    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-    from sqlalchemy.orm import sessionmaker
     import json
 
-    db_url = os.environ.get(
-        "DATABASE_URL",
-        "postgresql+asyncpg://sclib:sclib@localhost:5432/sclib",
-    )
-    engine = create_async_engine(db_url)
-    Session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
-
+    Session = _get_session_factory()
     async with Session() as session:
         await session.execute(
             text("""
@@ -134,7 +153,6 @@ async def _update_materials_extracted(
             {"mats": json.dumps(materials), "pid": paper_id},
         )
         await session.commit()
-    await engine.dispose()
 
 
 def _reconstruct_parsed(paper: dict) -> ParsedPaper | None:
@@ -259,6 +277,10 @@ async def main(
         if len(failed_ids) > 20:
             log.info("  … and %d more", len(failed_ids) - 20)
     log.info("Elapsed: %.1f minutes", (time.monotonic() - t_start) / 60)
+
+    # Clean up the shared DB engine
+    if _engine is not None:
+        await _engine.dispose()
 
     if not dry_run:
         log.info(
