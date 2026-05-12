@@ -42,8 +42,7 @@ async def _run_rule(session: AsyncSession, rule: AuditRule) -> dict:
             SET needs_review = TRUE,
                 review_reason = '{rule.name}'
             WHERE needs_review = FALSE
-              AND (admin_decision IS NULL
-                   OR admin_decision->>'rule' != '{rule.name}')
+              AND admin_decision IS NULL
               AND ({rule.predicate});
         """
         result = await session.execute(text(update_sql))

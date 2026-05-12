@@ -56,7 +56,7 @@ from collections import Counter, defaultdict
 from statistics import median
 from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import case, select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from ingestion.index.indexer import _session_factory, materials_table, papers_table
@@ -782,8 +782,21 @@ async def aggregate_from_papers() -> int:
                 **summary,
             )
             update_cols = {k: stmt.excluded[k] for k in summary}
+            # Preserve admin review decisions: when admin_decision is
+            # set (admin already reviewed this material), keep the
+            # existing needs_review + review_reason values so automated
+            # re-aggregation can't undo manual approvals/confirmations.
+            mt = materials_table.c
+            update_cols["needs_review"] = case(
+                (mt.admin_decision.isnot(None), mt.needs_review),
+                else_=stmt.excluded["needs_review"],
+            )
+            update_cols["review_reason"] = case(
+                (mt.admin_decision.isnot(None), mt.review_reason),
+                else_=stmt.excluded["review_reason"],
+            )
             stmt = stmt.on_conflict_do_update(
-                index_elements=[materials_table.c.id],
+                index_elements=[mt.id],
                 set_=update_cols,
             )
             await db.execute(stmt)

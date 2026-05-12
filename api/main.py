@@ -146,7 +146,9 @@ async def _periodic_formula_audit(interval_sec: int) -> None:
                         UPDATE materials
                         SET needs_review = TRUE,
                             review_reason = '{reason}'
-                        WHERE needs_review = FALSE AND ({predicate});
+                        WHERE needs_review = FALSE
+                          AND admin_decision IS NULL
+                          AND ({predicate});
                     """))
                     total_flagged += result.rowcount or 0
                 await session.commit()
