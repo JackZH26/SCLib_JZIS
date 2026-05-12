@@ -88,8 +88,8 @@ export function CookieConsentBanner() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-[100] w-[340px] max-w-[calc(100vw-2rem)] rounded-xl border border-sage-border bg-white shadow-lg">
-      <div className="p-4">
+    <div className="fixed bottom-4 right-4 z-[100] w-[420px] max-w-[calc(100vw-2rem)] rounded-xl border border-sage-border bg-white shadow-lg">
+      <div className="p-5">
         <h2 className="text-sm font-semibold text-slate-900">
           Cookie preferences
         </h2>
@@ -151,13 +151,13 @@ export function CookieConsentBanner() {
                   )?.checked ?? false;
                   saveCustom(checked);
                 }}
-                className="btn-primary flex-1 rounded-md px-3 py-1.5 text-xs font-medium"
+                className="btn-primary flex-1 whitespace-nowrap rounded-md px-4 py-2 text-xs font-medium"
               >
                 Save
               </button>
               <button
                 onClick={() => setShowCustomize(false)}
-                className="btn-outline flex-1 rounded-md px-3 py-1.5 text-xs font-medium"
+                className="btn-outline flex-1 whitespace-nowrap rounded-md px-4 py-2 text-xs font-medium"
               >
                 Back
               </button>
@@ -168,19 +168,19 @@ export function CookieConsentBanner() {
           <div className="mt-3 flex gap-2">
             <button
               onClick={accept}
-              className="btn-primary flex-1 rounded-md px-3 py-1.5 text-xs font-medium"
+              className="btn-primary flex-1 whitespace-nowrap rounded-md px-4 py-2 text-xs font-medium"
             >
               Accept all
             </button>
             <button
               onClick={reject}
-              className="btn-outline flex-1 rounded-md px-3 py-1.5 text-xs font-medium"
+              className="btn-outline flex-1 whitespace-nowrap rounded-md px-4 py-2 text-xs font-medium"
             >
               Reject all
             </button>
             <button
               onClick={() => setShowCustomize(true)}
-              className="btn-outline flex-1 rounded-md px-3 py-1.5 text-xs font-medium"
+              className="btn-outline flex-1 whitespace-nowrap rounded-md px-4 py-2 text-xs font-medium"
             >
               Customize
             </button>
