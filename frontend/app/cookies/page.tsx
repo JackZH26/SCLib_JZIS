@@ -241,7 +241,7 @@ export default function CookiePolicyPage() {
       <h2>7. Contact</h2>
       <p>
         If you have questions about this Cookie Policy, reach us at{" "}
-        <a href="mailto:contact@jzis.org">contact@jzis.org</a>.
+        <a href="mailto:info@jzis.org">info@jzis.org</a>.
       </p>
     </article>
   );

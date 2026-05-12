@@ -88,65 +88,62 @@ export function CookieConsentBanner() {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/30 backdrop-blur-[2px] sm:items-center">
-      <div className="m-4 w-full max-w-lg rounded-2xl border border-sage-border bg-white p-6 shadow-xl sm:p-8">
-        <h2 className="text-lg font-semibold text-slate-900">
-          We care about your privacy
+    <div className="fixed bottom-4 right-4 z-[100] w-[340px] max-w-[calc(100vw-2rem)] rounded-xl border border-sage-border bg-white shadow-lg">
+      <div className="p-4">
+        <h2 className="text-sm font-semibold text-slate-900">
+          Cookie preferences
         </h2>
 
-        <p className="mt-3 text-sm leading-relaxed text-slate-600">
-          This website uses cookies that are needed for the site to work
-          properly and to collect anonymous usage data via Google Analytics.
-          You can choose which categories to allow. Read our{" "}
+        <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
+          We use cookies for site functionality and anonymous analytics.{" "}
           <Link
             href="/cookies"
             className="font-medium text-accent-deep underline underline-offset-2 hover:text-slate-800"
           >
             Cookie Policy
-          </Link>{" "}
-          for full details.
+          </Link>
         </p>
 
         {showCustomize ? (
           /* ---- Customize panel ---- */
-          <div className="mt-5 space-y-3">
+          <div className="mt-3 space-y-2">
             {/* Necessary — always on */}
-            <label className="flex items-center justify-between rounded-lg border border-sage-border bg-slate-50 px-4 py-3">
+            <label className="flex items-center justify-between rounded-md border border-sage-border bg-slate-50 px-3 py-2">
               <div>
-                <span className="text-sm font-medium text-slate-800">
+                <span className="text-xs font-medium text-slate-800">
                   Necessary
                 </span>
-                <p className="text-xs text-slate-500">
-                  Session handling and consent preference. Always active.
+                <p className="text-[11px] leading-tight text-slate-500">
+                  Always active
                 </p>
               </div>
               <input
                 type="checkbox"
                 checked
                 disabled
-                className="h-4 w-4 accent-accent-deep"
+                className="h-3.5 w-3.5 accent-accent-deep"
               />
             </label>
 
             {/* Analytics — toggleable */}
-            <label className="flex cursor-pointer items-center justify-between rounded-lg border border-sage-border px-4 py-3 transition-colors hover:bg-slate-50">
+            <label className="flex cursor-pointer items-center justify-between rounded-md border border-sage-border px-3 py-2 transition-colors hover:bg-slate-50">
               <div>
-                <span className="text-sm font-medium text-slate-800">
+                <span className="text-xs font-medium text-slate-800">
                   Analytics
                 </span>
-                <p className="text-xs text-slate-500">
-                  Google Analytics (GA4) for anonymous usage statistics.
+                <p className="text-[11px] leading-tight text-slate-500">
+                  Google Analytics (GA4)
                 </p>
               </div>
               <input
                 type="checkbox"
                 defaultChecked
                 id="analytics-toggle"
-                className="h-4 w-4 accent-accent-deep"
+                className="h-3.5 w-3.5 accent-accent-deep"
               />
             </label>
 
-            <div className="flex gap-3 pt-2">
+            <div className="flex gap-2 pt-1">
               <button
                 onClick={() => {
                   const checked = (
@@ -154,13 +151,13 @@ export function CookieConsentBanner() {
                   )?.checked ?? false;
                   saveCustom(checked);
                 }}
-                className="btn-primary flex-1 rounded-lg px-5 py-2.5 text-sm font-medium"
+                className="btn-primary flex-1 rounded-md px-3 py-1.5 text-xs font-medium"
               >
-                Save preferences
+                Save
               </button>
               <button
                 onClick={() => setShowCustomize(false)}
-                className="btn-outline flex-1 rounded-lg px-5 py-2.5 text-sm font-medium"
+                className="btn-outline flex-1 rounded-md px-3 py-1.5 text-xs font-medium"
               >
                 Back
               </button>
@@ -168,22 +165,22 @@ export function CookieConsentBanner() {
           </div>
         ) : (
           /* ---- Default buttons ---- */
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-3 flex gap-2">
             <button
               onClick={accept}
-              className="btn-primary flex-1 rounded-lg px-5 py-2.5 text-sm font-medium"
+              className="btn-primary flex-1 rounded-md px-3 py-1.5 text-xs font-medium"
             >
               Accept all
             </button>
             <button
               onClick={reject}
-              className="btn-outline flex-1 rounded-lg px-5 py-2.5 text-sm font-medium"
+              className="btn-outline flex-1 rounded-md px-3 py-1.5 text-xs font-medium"
             >
               Reject all
             </button>
             <button
               onClick={() => setShowCustomize(true)}
-              className="btn-outline flex-1 rounded-lg px-5 py-2.5 text-sm font-medium"
+              className="btn-outline flex-1 rounded-md px-3 py-1.5 text-xs font-medium"
             >
               Customize
             </button>
