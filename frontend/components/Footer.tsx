@@ -84,6 +84,12 @@ export async function Footer() {
           >
             Join Us
           </a>
+          <Link
+            href="/cookies"
+            className="transition-colors hover:text-accent-deep"
+          >
+            Cookie Policy
+          </Link>
         </nav>
         <p className="mt-5 text-xs text-slate-500">
           SCLib — JZIS Superconductivity Library · Code{" "}
