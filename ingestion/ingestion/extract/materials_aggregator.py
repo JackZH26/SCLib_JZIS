@@ -59,7 +59,13 @@ from typing import Any
 from sqlalchemy import case, select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
-from ingestion.index.indexer import _session_factory, materials_table, papers_table
+from ingestion.index.indexer import (
+    _session_factory,
+    manual_overrides_table,
+    materials_table,
+    papers_table,
+    refuted_claims_table,
+)
 # Canonicalization + family rules live in nims.py and are shared so
 # both import paths (NIMS CSV + arXiv NER) agree on the grouping key.
 from ingestion.extract import formula_validator as _formula_validator
@@ -121,6 +127,153 @@ _TC_DISPUTE_THRESHOLD = 0.30
 # those materials ``needs_review=True`` and the API hides them by
 # default (?include_pending=true surfaces them for admin review).
 _TC_SANITY_MAX_K = 250.0
+
+# Numeric fields subject to float32 artifact rounding (Step 0.6 / C4).
+_NUMERIC_FIELDS = (
+    "tc_max", "tc_ambient", "pressure_gpa", "hc2_tesla",
+    "lambda_london_nm", "xi_gl_nm", "lambda_eph", "omega_log_k",
+    "rho_s_mev", "t_cdw_k", "t_sdw_k", "t_afm_k", "rho_exponent",
+    "doping_level",
+)
+
+
+# ---------------------------------------------------------------------------
+# P0: Override / refuted-claim infrastructure
+# ---------------------------------------------------------------------------
+
+class _OverrideEntry:
+    """In-memory representation of one manual_overrides row."""
+    __slots__ = ("field", "value_str", "is_cap", "source", "reason")
+
+    def __init__(self, field: str, value_str: str, is_cap: bool,
+                 source: str, reason: str | None):
+        self.field = field
+        self.value_str = value_str
+        self.is_cap = is_cap
+        self.source = source
+        self.reason = reason
+
+    @property
+    def numeric_value(self) -> float | None:
+        try:
+            return float(self.value_str)
+        except (ValueError, TypeError):
+            return None
+
+    @property
+    def string_value(self) -> str:
+        """Strip surrounding double-quotes for enum overrides."""
+        s = self.value_str.strip()
+        if s.startswith('"') and s.endswith('"'):
+            return s[1:-1]
+        return s
+
+
+class _RefutedEntry:
+    __slots__ = ("canonical", "claim_type", "claimed_tc", "notes")
+
+    def __init__(self, canonical: str, claim_type: str,
+                 claimed_tc: float | None, notes: str | None):
+        self.canonical = canonical
+        self.claim_type = claim_type
+        self.claimed_tc = claimed_tc
+        self.notes = notes
+
+
+# These caches are populated once per `aggregate_from_papers()` run.
+_override_cache: dict[str, list[_OverrideEntry]] = {}
+_refuted_cache: dict[str, _RefutedEntry] = {}
+
+
+async def _load_all_overrides(db: Any) -> dict[str, list[_OverrideEntry]]:
+    """Load all manual_overrides into a dict keyed by canonical formula."""
+    result: dict[str, list[_OverrideEntry]] = defaultdict(list)
+    rows = (await db.execute(
+        select(
+            manual_overrides_table.c.canonical,
+            manual_overrides_table.c.field,
+            manual_overrides_table.c.override_value,
+            manual_overrides_table.c.is_cap,
+            manual_overrides_table.c.source,
+            manual_overrides_table.c.reason,
+        )
+    )).all()
+    for canonical, field, value, is_cap, source, reason in rows:
+        result[canonical].append(
+            _OverrideEntry(field, value, is_cap, source, reason)
+        )
+    return dict(result)
+
+
+async def _load_all_refuted(db: Any) -> dict[str, _RefutedEntry]:
+    """Load all refuted_claims into a dict keyed by canonical formula."""
+    result: dict[str, _RefutedEntry] = {}
+    rows = (await db.execute(
+        select(
+            refuted_claims_table.c.canonical,
+            refuted_claims_table.c.claim_type,
+            refuted_claims_table.c.claimed_tc,
+            refuted_claims_table.c.notes,
+        )
+    )).all()
+    for canonical, claim_type, claimed_tc, notes in rows:
+        # If multiple rows for same canonical, keep the first (shouldn't
+        # happen with current seed data, but defensive).
+        if canonical not in result:
+            result[canonical] = _RefutedEntry(
+                canonical, claim_type, claimed_tc, notes
+            )
+    return result
+
+
+def _apply_overrides(
+    summary: dict[str, Any],
+    overrides: list[_OverrideEntry],
+) -> list[str]:
+    """Apply manual overrides to a computed summary dict.
+
+    Returns a list of human-readable notes describing what was changed,
+    for appending to review_reason.
+    """
+    notes: list[str] = []
+
+    # Group overrides by field: exact overrides take priority over caps
+    by_field: dict[str, list[_OverrideEntry]] = defaultdict(list)
+    for ov in overrides:
+        by_field[ov.field].append(ov)
+
+    for field, entries in by_field.items():
+        # Exact overrides (is_cap=False) first
+        exact = [e for e in entries if not e.is_cap]
+        caps = [e for e in entries if e.is_cap]
+
+        if exact:
+            ov = exact[0]  # take the first exact override
+            if field in ("pairing_symmetry", "gap_structure",
+                         "competing_order", "crystal_structure",
+                         "space_group", "structure_phase"):
+                old = summary.get(field)
+                summary[field] = ov.string_value
+                notes.append(f"{field}: {old!r} -> {ov.string_value!r} (override: {ov.source})")
+            else:
+                val = ov.numeric_value
+                if val is not None:
+                    old = summary.get(field)
+                    summary[field] = val
+                    notes.append(f"{field}: {old} -> {val} (override: {ov.source})")
+        elif caps:
+            cap_entry = caps[0]
+            cap_val = cap_entry.numeric_value
+            if cap_val is not None:
+                current = summary.get(field)
+                if isinstance(current, (int, float)) and current > cap_val:
+                    summary[field] = cap_val
+                    notes.append(
+                        f"{field}: {current} clamped to {cap_val} "
+                        f"(per-compound cap: {cap_entry.source})"
+                    )
+
+    return notes
 
 
 def _confidence(r: dict[str, Any]) -> float:
@@ -391,12 +544,73 @@ def _sanity_check_structure_phase(
 def _derive_summary(
     formula_raw: str,
     records: list[dict[str, Any]],
+    *,
+    overrides: list[_OverrideEntry] | None = None,
+    refuted: _RefutedEntry | None = None,
 ) -> dict[str, Any]:
     """Build the v2 material-level summary from its record list.
 
     See module docstring for the rule overview; this is the
     implementation.
+
+    P0 additions:
+    - Record-level flagging (Step 0.5): individual records that fail
+      sanity checks are excluded from aggregation instead of hiding
+      the entire material. Only if ALL records fail does the material
+      get needs_review=True.
+    - Override application (Step 0.4): manual_overrides values are
+      applied after natural aggregation.
+    - Float rounding (Step 0.6): all numeric outputs are rounded to
+      3 decimal places to eliminate float32 artifacts.
     """
+    # -------------------------------------------------------------------
+    # Step 0.5: Record-level flagging — exclude bad records, not the
+    # whole material. Per-compound caps from manual_overrides further
+    # tighten what "sane" means for well-known compounds.
+    # -------------------------------------------------------------------
+    per_compound_tc_cap: float | None = None
+    if overrides:
+        for ov in overrides:
+            if ov.field == "tc_max" and ov.is_cap:
+                cap_val = ov.numeric_value
+                if cap_val is not None:
+                    per_compound_tc_cap = cap_val
+                    break
+
+    clean_records: list[dict[str, Any]] = []
+    flagged_count = 0
+    for r in records:
+        tc_val = r.get("tc_kelvin")
+        tc_is_numeric = isinstance(tc_val, (int, float))
+        # Global sanity ceiling
+        if tc_is_numeric and tc_val > _TC_SANITY_MAX_K:
+            flagged_count += 1
+            continue
+        # Per-compound cap: record exceeds known physical ceiling by >50%
+        if (
+            per_compound_tc_cap is not None
+            and tc_is_numeric
+            and tc_val > per_compound_tc_cap * 1.5
+        ):
+            flagged_count += 1
+            continue
+        clean_records.append(r)
+
+    # If ALL records were flagged, mark the material for review.
+    # Otherwise, aggregate from the clean subset only.
+    all_records_bad = len(clean_records) == 0 and len(records) > 0
+    if all_records_bad:
+        # Fall back to original records so we still produce *something*
+        # (the needs_review flag will hide it from public API).
+        clean_records = records
+    elif flagged_count > 0:
+        log.info(
+            "record-level flagging: %s — dropped %d/%d records "
+            "(per-compound cap=%s)",
+            formula_raw, flagged_count, len(records), per_compound_tc_cap,
+        )
+    records = clean_records
+
     # tc_max is the highest Tc reported in ANY condition (high
     # pressure, thin film, doped, …) — the scientific "record-high"
     # metric. Uses a corroboration rule (≥2 papers within 15%) to
@@ -525,16 +739,21 @@ def _derive_summary(
     disputed_ner = _weighted_boolean(records, "disputed")
     disputed = bool(numeric_disputed) or bool(disputed_ner)
 
-    # Sanity gate: mark row ``needs_review`` when any Tc claim exceeds
-    # the physical ceiling. API list endpoint hides these by default;
-    # the frontend MaterialTable never shows them until a human
-    # confirms. Separate ``review_reason`` exposes the trigger for
-    # admin review — currently only one reason, but the slot is open
-    # so we can add more (hallucinated pressure, formula = single
-    # element, etc.) without another migration.
+    # -------------------------------------------------------------------
+    # Sanity gate: needs_review
+    # -------------------------------------------------------------------
+    # P0 change (Step 0.5): record-level flagging already excluded the
+    # worst outliers above. `needs_review` is now set only when ALL
+    # records failed (all_records_bad) or when the *aggregated* values
+    # still exceed the ceiling after record-level filtering.
     needs_review = False
     review_reason: str | None = None
-    if tc_max is not None and tc_max > _TC_SANITY_MAX_K:
+    if all_records_bad:
+        needs_review = True
+        review_reason = (
+            f"all_{len(records)}_records_failed_sanity_checks"
+        )
+    elif tc_max is not None and tc_max > _TC_SANITY_MAX_K:
         needs_review = True
         review_reason = "tc_max_exceeds_250K"
     elif tc_ambient is not None and tc_ambient > _TC_SANITY_MAX_K:
@@ -547,7 +766,7 @@ def _derive_summary(
     # being dropped into ``crystal_structure``) doesn't crash the
     # whole aggregator with a StringDataRightTruncationError. Values
     # over the column budget become NULL — better empty than wrong.
-    return {
+    summary = {
         "formula": formula_raw[:200],
         "formula_normalized": normalize_formula(formula_raw)[:200],
         "family":            _clip("family", family),
@@ -602,6 +821,52 @@ def _derive_summary(
         "review_reason":       _clip("review_reason", review_reason),
         "records": records,
     }
+
+    # -------------------------------------------------------------------
+    # Step 0.4: Apply manual overrides (exact replacements + caps)
+    # -------------------------------------------------------------------
+    if overrides:
+        override_notes = _apply_overrides(summary, overrides)
+        if override_notes:
+            existing_reason = summary.get("review_reason") or ""
+            note_str = "; ".join(override_notes)
+            if existing_reason:
+                summary["review_reason"] = _clip(
+                    "review_reason",
+                    f"{existing_reason}; overrides_applied: {note_str}",
+                )
+            else:
+                summary["review_reason"] = _clip(
+                    "review_reason", f"overrides_applied: {note_str}",
+                )
+            log.info("overrides applied to %s: %s", formula_raw, note_str)
+
+    # -------------------------------------------------------------------
+    # Step 0.4: Refuted claim → force disputed=True
+    # -------------------------------------------------------------------
+    if refuted:
+        summary["disputed"] = True
+        reason_prefix = summary.get("review_reason") or ""
+        refuted_note = f"refuted:{refuted.claim_type}"
+        if reason_prefix:
+            summary["review_reason"] = _clip(
+                "review_reason", f"{reason_prefix}; {refuted_note}",
+            )
+        else:
+            summary["review_reason"] = refuted_note
+        log.info(
+            "refuted claim matched: %s (%s)", formula_raw, refuted.claim_type,
+        )
+
+    # -------------------------------------------------------------------
+    # Step 0.6: Round all numeric fields to 3 decimals (float32 fix)
+    # -------------------------------------------------------------------
+    for key in _NUMERIC_FIELDS:
+        val = summary.get(key)
+        if isinstance(val, float):
+            summary[key] = round(val, 3)
+
+    return summary
 
 
 def _lattice_params(records: list[dict[str, Any]]) -> dict[str, float] | None:
@@ -678,6 +943,16 @@ async def aggregate_from_papers() -> int:
     display_counts: dict[str, Counter[str]] = defaultdict(Counter)
 
     async with Session() as db:
+        # -----------------------------------------------------------
+        # P0: Load override / refuted caches once per run
+        # -----------------------------------------------------------
+        override_map = await _load_all_overrides(db)
+        refuted_map = await _load_all_refuted(db)
+        log.info(
+            "aggregator: loaded %d override entries, %d refuted entries",
+            sum(len(v) for v in override_map.values()), len(refuted_map),
+        )
+
         # Stream all papers with their extracted materials. Each paper
         # is small (materials_extracted is a short list) so we can pull
         # them all at once rather than page.
@@ -773,7 +1048,11 @@ async def aggregate_from_papers() -> int:
             top_raws = [r for r, c in candidates if c == top_count]
             display_raw = min(top_raws, key=len)
 
-            summary = _derive_summary(display_raw, records)
+            summary = _derive_summary(
+                display_raw, records,
+                overrides=override_map.get(norm),
+                refuted=refuted_map.get(norm),
+            )
             mat_id = _material_id(norm)
 
             stmt = pg_insert(materials_table).values(
