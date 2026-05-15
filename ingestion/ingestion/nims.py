@@ -82,6 +82,20 @@ _VAR_STOICH_SUFFIX = re.compile(
 # Crystallographic polytype prefix: ``2H-``, ``3R-``, ``4H-``, ``1T-`` …
 # (digit + single letter + hyphen at the start). These mark the
 # stacking sequence of layered compounds; papers that specify it are
+# Unicode subscript / superscript maps (C1 normalization).
+# Covers digits, operators (₊₋₌), and the common subscript letters
+# that appear in doped-compound formulas (ₓ for x, ₙ for n, etc.).
+_UNICODE_SUB_MAP = str.maketrans(
+    "₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₕₖₗₘₙₒₚₛₜₓ",
+    "0123456789+-=()aehklmnopstx",
+)
+_UNICODE_SUP_MAP = str.maketrans(
+    "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾",
+    "0123456789+-=()",
+)
+# Invisible / decorative whitespace that creeps in from PDF copy-paste.
+_INVISIBLE_SPACE = re.compile(r"[​    ﻿]")
+
 # still talking about the same compound family.  We keep Greek phase
 # letters (κ-, λ-, α-, β-) intact because those denote genuinely
 # distinct polymorphs of organic SCs.
@@ -163,6 +177,15 @@ def normalize_formula(raw: str) -> str:
         κ-(BEDT-TTF)_2Cu(NCS)_2  → κ-(bedt-ttf)2cu(ncs)2  (phase letter kept)
     """
     s = raw.strip()
+    # 0. Unicode subscript / superscript digits → ASCII, so "MgB₂"
+    #    folds onto "MgB2" without waiting for the LaTeX pass. Also
+    #    replace the Unicode minus sign (U+2212) with ASCII hyphen and
+    #    strip zero-width / thin / hair / no-break spaces that copy-paste
+    #    from PDFs commonly introduces.
+    s = s.translate(_UNICODE_SUB_MAP)
+    s = s.translate(_UNICODE_SUP_MAP)
+    s = s.replace("−", "-")           # U+2212 MINUS SIGN → hyphen
+    s = _INVISIBLE_SPACE.sub("", s)
     # 1. LaTeX brace subscripts first (they may contain δ/± we
     #    normalize next)
     s = _LATEX_BRACE.sub(r"\1", s)
@@ -520,7 +543,7 @@ class _Aggregate:
     tc_max: float | None = None
     tc_max_conditions: str | None = None
     tc_ambient: float | None = None  # best Tc at pressure == 0
-    discovery_year: int | None = None  # NIMS doesn't ship this — left None
+    arxiv_year: int | None = None  # NIMS doesn't ship this — left None
     records: list[dict[str, Any]] = field(default_factory=list)
 
     def ingest(self, row: dict[str, Any]) -> None:
@@ -720,7 +743,7 @@ async def load_csv(csv_path: Path, limit: int | None, dry_run: bool) -> int:
                 family=agg.family,
                 tc_max=agg.tc_max,
                 tc_max_conditions=(agg.tc_max_conditions or None),
-                discovery_year=agg.discovery_year,
+                arxiv_year=agg.arxiv_year,
                 status="active_research",
                 records=agg.records,
                 **v2,

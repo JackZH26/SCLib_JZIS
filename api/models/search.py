@@ -106,16 +106,14 @@ class MaterialSummary(BaseModel):
     tc_max: float | None
     tc_max_conditions: str | None
     tc_ambient: float | None
-    discovery_year: int | None
+    arxiv_year: int | None
     total_papers: int
     status: str
     # v2 — fields the list/table view surfaces directly
     pairing_symmetry: str | None = None
     structure_phase: str | None = None
     ambient_sc: bool | None = None
-    is_topological: bool | None = None
     is_unconventional: bool | None = None
-    is_2d_or_interface: bool | None = None
     has_competing_order: bool | None = None
 
 

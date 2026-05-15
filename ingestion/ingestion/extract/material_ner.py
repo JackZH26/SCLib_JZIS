@@ -204,10 +204,8 @@ EXTRACT IF PRESENT (omit or set null otherwise):
 - pressure_type: "hydrostatic" | "uniaxial" | "chemical" | "none"
 - doping_type: "hole" | "electron" | "isovalent" | "none"
 - doping_level: numeric doping x (0..1 range)
-- is_topological: true iff the paper claims topological SC features
 - is_unconventional: true iff explicitly described as unconventional
                      / non-BCS
-- is_2d_or_interface: true iff 2D material or interface superconductor
 - disputed: true iff the paper mentions contested / retracted results
 
 RULES:
@@ -298,7 +296,7 @@ _V2_FIELDS = (
     "lambda_eph", "omega_log_k", "rho_s_mev",
     "ambient_sc", "sample_form", "substrate",
     "pressure_type", "doping_type", "doping_level",
-    "is_topological", "is_unconventional", "is_2d_or_interface",
+    "is_unconventional",
     "disputed",
 )
 
@@ -323,8 +321,7 @@ _NUMERIC_FIELDS = {
     "doping_level",
 }
 _BOOL_FIELDS = {
-    "ambient_sc", "is_topological", "is_unconventional",
-    "is_2d_or_interface", "disputed",
+    "ambient_sc", "is_unconventional", "disputed",
 }
 
 

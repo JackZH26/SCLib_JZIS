@@ -21,20 +21,18 @@ import type { MaterialSummary } from "@/lib/api";
  * badge flags, so a "fully green" bar means every column has data,
  * not just "papers agreed".
  */
-const COMPLETENESS_FIELDS = 12;
+const COMPLETENESS_FIELDS = 10;
 
 function completeness(m: MaterialSummary): number {
   let n = 0;
   if (m.family) n += 1;
   if (m.tc_max != null) n += 1;
   if (m.tc_ambient != null) n += 1;
-  if (m.discovery_year != null) n += 1;
+  if (m.arxiv_year != null) n += 1;
   if (m.pairing_symmetry) n += 1;
   if (m.structure_phase) n += 1;
   if (m.ambient_sc != null) n += 1;
   if (m.is_unconventional != null) n += 1;
-  if (m.is_topological != null) n += 1;
-  if (m.is_2d_or_interface != null) n += 1;
   if (m.has_competing_order != null) n += 1;
   if (m.total_papers > 0) n += 1;
   return n;
@@ -115,7 +113,7 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
             <th className="px-4 py-2 text-left font-medium">Pairing</th>
             <th className="px-4 py-2 text-left font-medium">Phase</th>
             <th className="px-4 py-2 text-left font-medium">Flags</th>
-            <th className="px-4 py-2 text-right font-medium">Discovery</th>
+            <th className="px-4 py-2 text-right font-medium">arXiv year</th>
             <th className="px-4 py-2 text-right font-medium">Papers</th>
             <th className="px-4 py-2 text-left font-medium">Data</th>
           </tr>
@@ -161,19 +159,13 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
                   {m.is_unconventional === true && (
                     <Badge tone="warn">unconv</Badge>
                   )}
-                  {m.is_topological === true && (
-                    <Badge tone="neutral">topo</Badge>
-                  )}
-                  {m.is_2d_or_interface === true && (
-                    <Badge tone="neutral">2D</Badge>
-                  )}
                   {m.has_competing_order === true && (
                     <Badge tone="muted">CDW/SDW</Badge>
                   )}
                 </div>
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-slate-600">
-                {m.discovery_year ?? "—"}
+                {m.arxiv_year ?? "—"}
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-slate-600">
                 {m.total_papers}

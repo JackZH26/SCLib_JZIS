@@ -230,7 +230,7 @@ function MaterialsPanel() {
             <th className="px-4 py-2 text-left font-medium">Family</th>
             <th className="px-4 py-2 text-right font-medium">Tc max (K)</th>
             <th className="px-4 py-2 text-right font-medium">Tc ambient</th>
-            <th className="px-4 py-2 text-right font-medium">Discovery</th>
+            <th className="px-4 py-2 text-right font-medium">arXiv year</th>
             <th className="px-4 py-2 text-left font-medium">Saved</th>
             <th className="px-4 py-2 text-right font-medium">Actions</th>
           </tr>
@@ -255,7 +255,7 @@ function MaterialsPanel() {
                 {m.tc_ambient != null ? m.tc_ambient.toFixed(1) : "—"}
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-sage-muted">
-                {m.discovery_year ?? "—"}
+                {m.arxiv_year ?? "—"}
               </td>
               <td className="px-4 py-2 text-sage-muted">
                 {formatAbs(m.created_at)}

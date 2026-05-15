@@ -33,12 +33,10 @@ async def list_materials(
     # v2 filter params
     ambient_sc: bool | None = Query(None, description="Only ambient-pressure SC"),
     is_unconventional: bool | None = Query(None),
-    is_topological: bool | None = Query(None),
-    is_2d_or_interface: bool | None = Query(None),
     has_competing_order: bool | None = Query(None),
     pairing_symmetry: str | None = Query(None),
     structure_phase: str | None = Query(None),
-    sort: str = Query("tc_max", pattern="^(tc_max|discovery_year|total_papers|tc_ambient)$"),
+    sort: str = Query("tc_max", pattern="^(tc_max|arxiv_year|total_papers|tc_ambient)$"),
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
     include_pending: bool = Query(
@@ -98,10 +96,6 @@ async def list_materials(
         _apply(Material.ambient_sc.is_(ambient_sc))
     if is_unconventional is not None:
         _apply(Material.is_unconventional.is_(is_unconventional))
-    if is_topological is not None:
-        _apply(Material.is_topological.is_(is_topological))
-    if is_2d_or_interface is not None:
-        _apply(Material.is_2d_or_interface.is_(is_2d_or_interface))
     if has_competing_order is not None:
         _apply(Material.has_competing_order.is_(has_competing_order))
     if pairing_symmetry:
@@ -112,7 +106,7 @@ async def list_materials(
     sort_col = {
         "tc_max": Material.tc_max,
         "tc_ambient": Material.tc_ambient,
-        "discovery_year": Material.discovery_year,
+        "arxiv_year": Material.arxiv_year,
         "total_papers": Material.total_papers,
     }[sort]
     # Postgres treats NULLS LAST as an extension — spell it out so

@@ -183,19 +183,19 @@ RULES: list[AuditRule] = [
         """,
     ),
     AuditRule(
-        name="discovery_year_mismatch",
+        name="arxiv_year_mismatch",
         severity="info",
         description=(
-            "discovery_year more than 5 years before the earliest "
+            "arxiv_year more than 5 years before the earliest "
             "record year — usually NER putting a citation date in "
-            "discovery_year."
+            "arxiv_year."
         ),
         predicate="""
-            discovery_year IS NOT NULL
+            arxiv_year IS NOT NULL
             AND EXISTS (
                 SELECT 1 FROM jsonb_array_elements(materials.records) r
                 WHERE jsonb_typeof(r.value->'year') = 'number'
-                  AND (r.value->>'year')::int - 5 > materials.discovery_year
+                  AND (r.value->>'year')::int - 5 > materials.arxiv_year
             )
         """,
     ),

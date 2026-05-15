@@ -4,8 +4,7 @@
  * the exact filter state.
  *
  * v2 adds filter controls for the boolean flags (ambient_sc,
- * is_unconventional, is_topological, is_2d_or_interface,
- * has_competing_order) plus pairing_symmetry / structure_phase
+ * is_unconventional, has_competing_order) plus pairing_symmetry / structure_phase
  * dropdowns. Everything round-trips via URL query params so the
  * page stays SSR-friendly and shareable.
  */
@@ -22,8 +21,6 @@ type Sp = {
   per_page?: string;
   ambient_sc?: string;
   is_unconventional?: string;
-  is_topological?: string;
-  is_2d_or_interface?: string;
   has_competing_order?: string;
   pairing_symmetry?: string;
   structure_phase?: string;
@@ -64,8 +61,6 @@ export default async function MaterialsPage({
     tc_min: searchParams.tc_min ? Number(searchParams.tc_min) : undefined,
     ambient_sc: parseTri(searchParams.ambient_sc),
     is_unconventional: parseTri(searchParams.is_unconventional),
-    is_topological: parseTri(searchParams.is_topological),
-    is_2d_or_interface: parseTri(searchParams.is_2d_or_interface),
     has_competing_order: parseTri(searchParams.has_competing_order),
     pairing_symmetry: searchParams.pairing_symmetry || undefined,
     structure_phase: searchParams.structure_phase || undefined,
@@ -165,16 +160,6 @@ export default async function MaterialsPage({
           searchParams.is_unconventional,
         )}
         {triOptions(
-          "is_topological",
-          "Topological",
-          searchParams.is_topological,
-        )}
-        {triOptions(
-          "is_2d_or_interface",
-          "2D/interface",
-          searchParams.is_2d_or_interface,
-        )}
-        {triOptions(
           "has_competing_order",
           "Comp. order",
           searchParams.has_competing_order,
@@ -191,7 +176,7 @@ export default async function MaterialsPage({
           >
             <option value="tc_max">Tc max</option>
             <option value="tc_ambient">Tc ambient</option>
-            <option value="discovery_year">Discovery year</option>
+            <option value="arxiv_year">arXiv year</option>
             <option value="total_papers">Paper count</option>
           </select>
         </label>

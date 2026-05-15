@@ -37,8 +37,6 @@ export default async function MaterialDetailPage({
   const flags: [string, boolean | null][] = [
     ["ambient SC", mat.ambient_sc],
     ["unconventional", mat.is_unconventional],
-    ["topological", mat.is_topological],
-    ["2D / interface", mat.is_2d_or_interface],
     ["competing order", mat.has_competing_order],
     ["disputed", mat.disputed],
     ["retracted", mat.retracted],
@@ -119,7 +117,7 @@ export default async function MaterialDetailPage({
       <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <Fact label="Tc max" value={fmtNum(mat.tc_max, 1)} suffix=" K" />
         <Fact label="Tc ambient" value={fmtNum(mat.tc_ambient, 1)} suffix=" K" />
-        <Fact label="Discovery" value={String(mat.discovery_year ?? "—")} />
+        <Fact label="arXiv year" value={String(mat.arxiv_year ?? "—")} />
         <Fact label="Papers" value={mat.total_papers.toString()} />
       </section>
 

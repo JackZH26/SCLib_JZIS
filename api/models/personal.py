@@ -94,7 +94,7 @@ class BookmarkedMaterial(BaseModel):
     family: str | None
     tc_max: float | None
     tc_ambient: float | None
-    discovery_year: int | None
+    arxiv_year: int | None
 
 
 class BookmarkedPapersResponse(BaseModel):

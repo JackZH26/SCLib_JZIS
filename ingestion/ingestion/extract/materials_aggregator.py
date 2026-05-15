@@ -22,9 +22,9 @@ Key design choices, in order of how much they affect visible data:
    NULL. Keeps disputed / weak signals out of the flat columns.
 
 3. **Dual-threshold boolean consensus** (0.7 for / 0.2 against) for
-   ``is_topological`` & peers. Without this, every material that a
+   ``is_unconventional`` & peers. Without this, every material that a
    single paper labelled ``False`` (common NER default) showed up as
-   "confirmed non-topological", which is dishonest.
+   "confirmed conventional", which is dishonest.
 
 4. **Cross-family phase sanity check** — drops ``cuprate_*`` when the
    formula has no Cu (Gemini over-applies the cuprate taxonomy to
@@ -413,7 +413,7 @@ def _weighted_boolean(
     - Otherwise returns None (disputed / weak / silent)
 
     Records that don't state this flag are ignored (not counted as
-    "False"). A common NER failure mode is emitting ``is_topological=False``
+    "False"). A common NER failure mode is emitting ``is_unconventional=False``
     as a default; with this rule a single unopposed False doesn't
     get promoted to a confident column — it needs agreement.
     """
@@ -713,7 +713,7 @@ def _derive_summary(
         r.get("year") for r in records
         if isinstance(r.get("year"), int) and r.get("year") > 1900
     ]
-    discovery_year = min(years) if years else None
+    arxiv_year = min(years) if years else None
 
     # Structure phase with cross-family sanity check
     raw_phase = _weighted_mode_str(records, "structure_phase")
@@ -774,7 +774,7 @@ def _derive_summary(
         "tc_max_conditions": _clip("tc_max_conditions", tc_max_cond),
         "tc_ambient": tc_ambient,
         "ambient_sc": ambient_sc,
-        "discovery_year": discovery_year,
+        "arxiv_year": arxiv_year,
         "total_papers": len(paper_ids),
         # Structure (earliest paper wins for structural claims)
         "crystal_structure": _clip("crystal_structure",
@@ -812,9 +812,7 @@ def _derive_summary(
                                    _weighted_mode_str(records, "doping_type")),
         "doping_level":      _median_numeric(records, "doping_level"),
         # Flags (weighted-boolean → None when weak / disputed)
-        "is_topological":      _weighted_boolean(records, "is_topological"),
         "is_unconventional":   is_unconventional,
-        "is_2d_or_interface":  _weighted_boolean(records, "is_2d_or_interface"),
         "disputed":            disputed,
         # Automatic sanity gate
         "needs_review":        needs_review,

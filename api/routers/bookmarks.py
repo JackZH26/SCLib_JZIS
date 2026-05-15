@@ -179,7 +179,7 @@ async def list_material_bookmarks(
             family=mat.family,
             tc_max=mat.tc_max,
             tc_ambient=mat.tc_ambient,
-            discovery_year=mat.discovery_year,
+            arxiv_year=mat.arxiv_year,
         ))
     return BookmarkedMaterialsResponse(total=total, results=rows)
 

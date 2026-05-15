@@ -106,7 +106,7 @@ materials_table = Table(
     Column("tc_max_conditions", String(300)),
     Column("tc_ambient", Float),
     Column("pairing_symmetry", String(100)),
-    Column("discovery_year", SmallInteger),
+    Column("arxiv_year", SmallInteger),
     Column("total_papers", Integer, nullable=False, server_default="0"),
     Column("status", String(50), nullable=False, server_default="active_research"),
     Column("records", JSONB, nullable=False, server_default="[]"),
@@ -136,10 +136,8 @@ materials_table = Table(
     Column("doping_type", String(50)),
     Column("doping_level", Float),
     # --- v2 flags ---------------------------------------------------------
-    Column("is_topological", Boolean, server_default="false"),
     Column("is_unconventional", Boolean),
     Column("has_competing_order", Boolean, server_default="false"),
-    Column("is_2d_or_interface", Boolean, server_default="false"),
     Column("retracted", Boolean, server_default="false"),
     Column("disputed", Boolean, server_default="false"),
     # v3 sanity gate (see api/alembic/versions/0005_needs_review.py)

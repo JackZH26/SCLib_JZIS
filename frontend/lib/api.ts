@@ -343,7 +343,7 @@ export interface BookmarkedMaterial {
   family: string | null;
   tc_max: number | null;
   tc_ambient: number | null;
-  discovery_year: number | null;
+  arxiv_year: number | null;
 }
 
 export interface BookmarkedPapersResponse {
@@ -508,16 +508,14 @@ export interface MaterialSummary {
   tc_max: number | null;
   tc_max_conditions: string | null;
   tc_ambient: number | null;
-  discovery_year: number | null;
+  arxiv_year: number | null;
   total_papers: number;
   status: string;
   // v2
   pairing_symmetry: string | null;
   structure_phase: string | null;
   ambient_sc: boolean | null;
-  is_topological: boolean | null;
   is_unconventional: boolean | null;
-  is_2d_or_interface: boolean | null;
   has_competing_order: boolean | null;
 }
 
@@ -570,12 +568,10 @@ export interface MaterialListParams {
   tc_min?: number;
   ambient_sc?: boolean;
   is_unconventional?: boolean;
-  is_topological?: boolean;
-  is_2d_or_interface?: boolean;
   has_competing_order?: boolean;
   pairing_symmetry?: string;
   structure_phase?: string;
-  sort?: "tc_max" | "tc_ambient" | "discovery_year" | "total_papers";
+  sort?: "tc_max" | "tc_ambient" | "arxiv_year" | "total_papers";
   limit?: number;
   offset?: number;
   include_skeletons?: boolean;
@@ -588,10 +584,6 @@ export function listMaterials(params: MaterialListParams) {
   if (params.ambient_sc != null) qs.set("ambient_sc", String(params.ambient_sc));
   if (params.is_unconventional != null)
     qs.set("is_unconventional", String(params.is_unconventional));
-  if (params.is_topological != null)
-    qs.set("is_topological", String(params.is_topological));
-  if (params.is_2d_or_interface != null)
-    qs.set("is_2d_or_interface", String(params.is_2d_or_interface));
   if (params.has_competing_order != null)
     qs.set("has_competing_order", String(params.has_competing_order));
   if (params.pairing_symmetry) qs.set("pairing_symmetry", params.pairing_symmetry);

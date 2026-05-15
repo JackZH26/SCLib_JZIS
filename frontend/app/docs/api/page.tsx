@@ -232,12 +232,12 @@ Content-Type: application/json
           <p className="mt-2">
             <strong>Filters:</strong> <Code>family</Code> (comma-separated),{" "}
             <Code>tc_min</Code>, <Code>ambient_sc</Code>,{" "}
-            <Code>is_unconventional</Code>, <Code>is_topological</Code>,{" "}
+            <Code>is_unconventional</Code>,{" "}
             <Code>pairing_symmetry</Code>, <Code>structure_phase</Code>.
           </p>
           <p className="mt-1">
             <strong>Sort:</strong> <Code>tc_max</Code> |{" "}
-            <Code>tc_ambient</Code> | <Code>discovery_year</Code> |{" "}
+            <Code>tc_ambient</Code> | <Code>arxiv_year</Code> |{" "}
             <Code>total_papers</Code>. Pagination via <Code>limit</Code> &amp;{" "}
             <Code>offset</Code>.
           </p>
@@ -272,7 +272,7 @@ Content-Type: application/json
         {/* Timeline */}
         <Endpoint method="GET" path="/timeline" badge="free">
           <p>
-            Tc discovery timeline data — every material plotted by discovery year
+            Tc timeline data — every material plotted by arXiv year
             and maximum Tc, grouped by family. Powers the Timeline chart.
           </p>
         </Endpoint>

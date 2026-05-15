@@ -313,7 +313,7 @@ class Material(Base):
     tc_max_conditions: Mapped[str | None] = mapped_column(String(300))
     tc_ambient: Mapped[float | None] = mapped_column()
     pairing_symmetry: Mapped[str | None] = mapped_column(String(100))
-    discovery_year: Mapped[int | None] = mapped_column(SmallInteger)
+    arxiv_year: Mapped[int | None] = mapped_column(SmallInteger)
     total_papers: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     status: Mapped[str] = mapped_column(String(50), default="active_research", nullable=False)
     records: Mapped[list[Any]] = mapped_column(JSONB, default=list, nullable=False)
@@ -350,10 +350,8 @@ class Material(Base):
     doping_level:    Mapped[float | None] = mapped_column(Float)
 
     # --- v2 flags ---------------------------------------------------------
-    is_topological:      Mapped[bool | None] = mapped_column(Boolean, server_default="false")
     is_unconventional:   Mapped[bool | None] = mapped_column(Boolean)
     has_competing_order: Mapped[bool | None] = mapped_column(Boolean, server_default="false")
-    is_2d_or_interface:  Mapped[bool | None] = mapped_column(Boolean, server_default="false")
     retracted:           Mapped[bool | None] = mapped_column(Boolean, server_default="false")
     disputed:            Mapped[bool | None] = mapped_column(Boolean, server_default="false")
 
