@@ -149,6 +149,36 @@ materials_table = Table(
 )
 
 
+# --- P0 data-quality infrastructure (alembic 0025) -----------------------
+
+refuted_claims_table = Table(
+    "refuted_claims", metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("formula", String(200), nullable=False),
+    Column("canonical", String(200), nullable=False),
+    Column("claim_type", String(50), nullable=False),
+    Column("claimed_tc", Float),
+    Column("refutation_doi", String(200)),
+    Column("refutation_year", SmallInteger),
+    Column("notes", Text),
+    Column("created_at", DateTime(timezone=True), server_default=func.now()),
+)
+
+manual_overrides_table = Table(
+    "manual_overrides", metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("formula", String(200), nullable=False),
+    Column("canonical", String(200), nullable=False),
+    Column("field", String(50), nullable=False),
+    Column("override_value", Text, nullable=False),
+    Column("is_cap", Boolean, nullable=False, server_default="false"),
+    Column("source", String(200), nullable=False),
+    Column("reason", Text),
+    Column("created_by", String(100), nullable=False, server_default="system"),
+    Column("created_at", DateTime(timezone=True), server_default=func.now()),
+)
+
+
 # ---------------------------------------------------------------------------
 # Async engine
 # ---------------------------------------------------------------------------

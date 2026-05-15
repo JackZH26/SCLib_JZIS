@@ -429,6 +429,86 @@ class StatsCache(Base):
 
 
 # ---------------------------------------------------------------------------
+# Data-quality infrastructure (P0 pipeline optimization)
+# ---------------------------------------------------------------------------
+
+
+class RefutedClaim(Base):
+    """Materials whose superconductivity claims have been scientifically refuted.
+
+    Matched by *canonical* formula during aggregation — any material whose
+    ``canonical`` matches a row here is auto-flagged ``disputed=True``.
+
+    Seed data: LK-99, CSH (Dias retractions), AgB₂, ZrZn₂, etc.
+    """
+
+    __tablename__ = "refuted_claims"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    formula: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
+    canonical: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
+    claim_type: Mapped[str] = mapped_column(
+        String(50), nullable=False,
+        comment="room_temp_sc | superconductor | tc_value",
+    )
+    claimed_tc: Mapped[float | None] = mapped_column(Float)
+    refutation_doi: Mapped[str | None] = mapped_column(String(200))
+    refutation_year: Mapped[int | None] = mapped_column(SmallInteger)
+    notes: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False,
+    )
+
+
+class ManualOverride(Base):
+    """Curated per-compound corrections and Tc caps.
+
+    Two modes (``is_cap`` flag):
+
+    * **Exact override** (``is_cap=False``): replaces the aggregated value
+      unconditionally. Used for P0 hotfixes (LSCO tc_max=38, FeSe tc_ambient=8.5).
+    * **Cap** (``is_cap=True``): clamps the aggregated value to an upper bound.
+      Used for per-compound physical ceilings (LSCO tc_max ≤ 45 K).
+
+    The nightly re-aggregation reads this table; values here are never
+    overwritten by automated pipeline runs.
+    """
+
+    __tablename__ = "manual_overrides"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    formula: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
+    canonical: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
+    field: Mapped[str] = mapped_column(
+        String(50), nullable=False,
+        comment="target column: tc_max | tc_ambient | hc2_tesla | pairing_symmetry | ...",
+    )
+    override_value: Mapped[str] = mapped_column(
+        Text, nullable=False,
+        comment="JSON-encoded value (number as string, or quoted string for enums)",
+    )
+    is_cap: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default="false", nullable=False,
+        comment="True = upper-bound clamp; False = exact replacement",
+    )
+    source: Mapped[str] = mapped_column(
+        String(200), nullable=False,
+        comment="DOI, review reference, or free-text provenance",
+    )
+    reason: Mapped[str | None] = mapped_column(Text)
+    created_by: Mapped[str] = mapped_column(
+        String(100), default="system", server_default="system", nullable=False,
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False,
+    )
+
+    __table_args__ = (
+        Index("idx_overrides_canonical_field", "canonical", "field"),
+    )
+
+
+# ---------------------------------------------------------------------------
 # Engine / session (async, module-level cached)
 # ---------------------------------------------------------------------------
 
