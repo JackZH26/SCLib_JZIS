@@ -146,6 +146,11 @@ materials_table = Table(
     # v3 sanity gate (see api/alembic/versions/0005_needs_review.py)
     Column("needs_review", Boolean, nullable=False, server_default="false"),
     Column("review_reason", String(200)),
+    Column("admin_decision", JSONB),
+    # Materials Project linkage (Phase B)
+    Column("mp_id", String(50)),
+    Column("mp_alternate_ids", JSONB, nullable=False, server_default="[]"),
+    Column("mp_synced_at", DateTime(timezone=True)),
 )
 
 
