@@ -148,17 +148,28 @@ REQUIRED per record:
 - measurement: "resistivity" | "susceptibility" | "specific_heat" |
                "muSR" | "ARPES" | "STM" | "neutron" | "unknown"
 - confidence: 0.0-1.0 — your confidence the text actually reports this
-- evidence_type: "primary" | "cited". Use "primary" ONLY when the
-                 paper ITSELF measures, computes, synthesizes, or
-                 characterizes this material's Tc. Use "cited" for
-                 numbers taken from the literature — introduction
-                 surveys, comparison tables, "previously reported"
-                 mentions, reference to prior work by other groups
-                 (e.g. "LaH10 has Tc≈260 K [Drozdov 2019]" in the
-                 intro). When in doubt, default to "cited". A formula
-                 whose Tc comes right before/after a bracketed citation
-                 "[12]" or a phrase like "reported by X et al" is
-                 ALWAYS "cited".
+- evidence_type: MUST be one of:
+  "primary_experimental" — Tc was MEASURED in THIS paper for THIS
+    specific formula (resistivity, susceptibility, specific heat, etc.)
+  "primary_theoretical" — Tc was CALCULATED/PREDICTED (DFT, Eliashberg,
+    McMillan, etc.) in THIS paper for THIS formula
+  "cited" — Tc value is mentioned but comes from a DIFFERENT paper.
+    Introduction surveys, comparison tables, "previously reported"
+    mentions, reference to prior work by other groups are ALL "cited"
+    (e.g. "LaH10 has Tc≈260 K [Drozdov 2019]" in the intro).
+  When in doubt, default to "cited". A formula whose Tc comes
+  right before/after a bracketed citation "[12]" or a phrase like
+  "reported by X et al" is ALWAYS "cited".
+  Rule: if confidence < 0.5, set evidence_type = "cited" as default.
+- tc_regime: one of "bulk_equilibrium" | "thin_film" | "interface" |
+             "high_pressure" | "unknown".
+  "bulk_equilibrium" — bulk sample at ambient or low pressure (<1 GPa)
+  "thin_film" — thin film / monolayer (e.g. FeSe/STO, LaAlO3/SrTiO3)
+  "interface" — heterostructure interface effect
+  "high_pressure" — measured under >1 GPa
+  "unknown" — cannot determine from context
+  This field drives the tc_ambient filter: only "bulk_equilibrium"
+  records contribute to the ambient-pressure Tc.
 
 EXTRACT IF PRESENT (omit or set null otherwise):
 - family: superconductor family — one of: "cuprate" | "iron_based" |
@@ -287,7 +298,7 @@ def _client() -> genai.Client:
 # aggregator later consumes these to build the material-level summary.
 _V2_FIELDS = (
     "tc_kelvin", "tc_type", "pressure_gpa", "measurement", "confidence",
-    "evidence_type", "family",
+    "evidence_type", "tc_regime", "family",
     "pairing_symmetry", "gap_structure",
     "crystal_structure", "space_group", "structure_phase",
     "lattice_a", "lattice_c",
@@ -303,14 +314,18 @@ _V2_FIELDS = (
 # evidence_type is a string enum with a strict value set. Anything
 # outside the set is dropped so aggregator filtering stays a simple
 # equality check ("cited" → skip).
-_EVIDENCE_TYPES = {"primary", "cited"}
+_EVIDENCE_TYPES = {"primary", "primary_experimental", "primary_theoretical", "cited"}
+
+# tc_regime enum — drives which records contribute to tc_ambient
+_TC_REGIMES = {"bulk_equilibrium", "thin_film", "interface", "high_pressure", "unknown"}
 
 # Valid family enum — must stay in lockstep with classify_family() in
 # nims.py and _FAMILY_TC_CAPS in api/services/audit_rules.py.
 _FAMILY_ENUM = {
     "cuprate", "iron_based", "nickelate", "hydride", "mgb2",
     "heavy_fermion", "fulleride", "kagome", "organic", "bismuthate",
-    "borocarbide", "ruthenate", "chalcogenide", "elemental", "conventional",
+    "bis2_layered", "borocarbide", "ruthenate", "chalcogenide",
+    "elemental", "conventional",
 }
 
 _NUMERIC_FIELDS = {
@@ -322,6 +337,20 @@ _NUMERIC_FIELDS = {
 }
 _BOOL_FIELDS = {
     "ambient_sc", "is_unconventional", "disputed",
+}
+
+# B3: Semantic blacklist — formulas that are syntactically valid but
+# refer to refuted materials, generic placeholders, or family-name
+# strings the LLM sometimes hallucinates as if they were real formulas.
+# Comparison is case-insensitive, with hyphens and spaces stripped.
+_SEMANTIC_BLACKLIST = {
+    "LK99", "LK-99", "HBCO", "MAT4G", "Ln2-xSrxCuO4",
+    "RE-123", "RE123", "REBCO", "A3C60", "AxFe2Se2",
+    "MxFe2-ySe2", "cupratesuperconductors", "a-C",
+    "CSH", "N-doped lutetium hydride", "room temperature superconductor",
+}
+_SEMANTIC_BLACKLIST_LOWER = {
+    s.lower().replace("-", "").replace(" ", "") for s in _SEMANTIC_BLACKLIST
 }
 
 
@@ -394,13 +423,23 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
     for r in records:
         if not isinstance(r, dict) or "formula" not in r:
             continue
+
+        # B3: Semantic blacklist — syntactically valid formulas that
+        # are not real superconductors or are generic family names
+        # the LLM should not have extracted.
+        raw_f = str(r["formula"]).strip()
+        if raw_f.lower().replace("-", "").replace(" ", "") in _SEMANTIC_BLACKLIST_LOWER:
+            log.info(
+                "%s: dropping blacklisted formula=%r",
+                parsed.meta.paper_id, raw_f,
+            )
+            continue
+
         # Whitespace-normalize + validate. Records the LLM produced as
         # sentence fragments ("12%-S doped FeSe") get rejected here so
         # they don't pollute papers.materials_extracted, which would
         # then re-pollute materials.records on every aggregator pass.
-        raw_formula = formula_validator.normalize_whitespace(
-            str(r["formula"])
-        )
+        raw_formula = formula_validator.normalize_whitespace(raw_f)
         ok, reject_reason = formula_validator.validate_formula(raw_formula)
         if not ok:
             log.info(
@@ -435,6 +474,8 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         # Normalize evidence_type to a known enum value or drop it.
         # Missing/invalid is left absent — the aggregator treats absent
         # as "primary" for backward compatibility with legacy records.
+        # B1: "primary" is accepted for backward compat; new records
+        # should use "primary_experimental" or "primary_theoretical".
         ev = record.get("evidence_type")
         if ev is not None:
             ev_lower = str(ev).strip().lower()
@@ -442,6 +483,15 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
                 record["evidence_type"] = ev_lower
             else:
                 record.pop("evidence_type", None)
+
+        # B2: Normalize tc_regime to a known enum value or drop it.
+        regime = record.get("tc_regime")
+        if regime is not None:
+            regime_lower = str(regime).strip().lower()
+            if regime_lower in _TC_REGIMES:
+                record["tc_regime"] = regime_lower
+            else:
+                record.pop("tc_regime", None)
 
         # Normalize family to a known enum value or drop it.
         # The aggregator falls back to rule-based classify_family()

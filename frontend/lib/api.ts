@@ -508,6 +508,9 @@ export interface MaterialSummary {
   tc_max: number | null;
   tc_max_conditions: string | null;
   tc_ambient: number | null;
+  dominant_evidence: string | null;
+  tc_max_experimental: number | null;
+  tc_max_theoretical: number | null;
   arxiv_year: number | null;
   total_papers: number;
   status: string;

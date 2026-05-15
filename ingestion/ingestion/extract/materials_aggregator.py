@@ -130,7 +130,8 @@ _TC_SANITY_MAX_K = 250.0
 
 # Numeric fields subject to float32 artifact rounding (Step 0.6 / C4).
 _NUMERIC_FIELDS = (
-    "tc_max", "tc_ambient", "pressure_gpa", "hc2_tesla",
+    "tc_max", "tc_ambient", "tc_max_experimental", "tc_max_theoretical",
+    "pressure_gpa", "hc2_tesla",
     "lambda_london_nm", "xi_gl_nm", "lambda_eph", "omega_log_k",
     "rho_s_mev", "t_cdw_k", "t_sdw_k", "t_afm_k", "rho_exponent",
     "doping_level",
@@ -611,6 +612,25 @@ def _derive_summary(
         )
     records = clean_records
 
+    # -----------------------------------------------------------------
+    # A2: Evidence-tier split — separate experimental vs theoretical
+    # -----------------------------------------------------------------
+    # "primary" is the legacy value; treat it as experimental for
+    # backward compat with records that predate the B1 prompt change.
+    _EXP_TYPES = {"primary_experimental", "primary", None}
+    _THEO_TYPES = {"primary_theoretical"}
+    exp_records = [
+        r for r in records
+        if r.get("evidence_type") in _EXP_TYPES
+        or r.get("evidence_type") not in ("cited", "primary_theoretical")
+    ]
+    theo_records = [
+        r for r in records if r.get("evidence_type") in _THEO_TYPES
+    ]
+    tc_max_exp, _ = _corroborated_max(exp_records, "tc_kelvin")
+    tc_max_theo, _ = _corroborated_max(theo_records, "tc_kelvin")
+    dominant_evidence = _classify_evidence(exp_records, theo_records, records)
+
     # tc_max is the highest Tc reported in ANY condition (high
     # pressure, thin film, doped, …) — the scientific "record-high"
     # metric. Uses a corroboration rule (≥2 papers within 15%) to
@@ -760,6 +780,23 @@ def _derive_summary(
         needs_review = True
         review_reason = "tc_ambient_exceeds_250K"
 
+    # B4: Single-value distrust — if only 1 paper contributed a Tc
+    # that exceeds the per-compound cap by >50%, flag for review
+    # instead of accepting it blindly. This catches one-off NER errors
+    # in rare materials where corroboration can't help.
+    if (
+        not needs_review
+        and per_compound_tc_cap is not None
+        and tc_max is not None
+        and len(paper_ids) == 1
+        and tc_max > per_compound_tc_cap * 1.5
+    ):
+        needs_review = True
+        review_reason = (
+            f"single_paper_exceeds_cap: tc_max={tc_max:.1f} > "
+            f"cap={per_compound_tc_cap:.1f}*1.5"
+        )
+
     # Every string going into a varchar column passes through _clip
     # so a chatty NER hallucination (e.g. "single Fe vacancy for every
     # eight Fe-sites arranged in a √10×√8 parallelogram structure"
@@ -773,6 +810,9 @@ def _derive_summary(
         "tc_max": tc_max,
         "tc_max_conditions": _clip("tc_max_conditions", tc_max_cond),
         "tc_ambient": tc_ambient,
+        "dominant_evidence": dominant_evidence,
+        "tc_max_experimental": tc_max_exp,
+        "tc_max_theoretical": tc_max_theo,
         "ambient_sc": ambient_sc,
         "arxiv_year": arxiv_year,
         "total_papers": len(paper_ids),
@@ -865,6 +905,44 @@ def _derive_summary(
             summary[key] = round(val, 3)
 
     return summary
+
+
+def _classify_evidence(
+    exp_records: list[dict[str, Any]],
+    theo_records: list[dict[str, Any]],
+    all_records: list[dict[str, Any]],
+) -> str | None:
+    """Classify dominant evidence type for a material.
+
+    Returns "experimental", "theoretical", "mixed", "cited_only", or None.
+    """
+    # Count records with primary evidence (experimental or theoretical)
+    n_exp = sum(
+        1 for r in all_records
+        if r.get("evidence_type") in ("primary_experimental", "primary", None)
+        and r.get("evidence_type") != "cited"
+    )
+    n_theo = sum(
+        1 for r in all_records
+        if r.get("evidence_type") == "primary_theoretical"
+    )
+    n_cited = sum(
+        1 for r in all_records
+        if r.get("evidence_type") == "cited"
+    )
+    total = len(all_records)
+    if total == 0:
+        return None
+    # All cited → "cited_only"
+    if n_cited == total:
+        return "cited_only"
+    if n_exp > 0 and n_theo == 0:
+        return "experimental"
+    if n_theo > 0 and n_exp == 0:
+        return "theoretical"
+    if n_exp > 0 and n_theo > 0:
+        return "mixed"
+    return None
 
 
 def _lattice_params(records: list[dict[str, Any]]) -> dict[str, float] | None:

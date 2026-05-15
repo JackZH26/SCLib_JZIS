@@ -312,6 +312,10 @@ class Material(Base):
     tc_max: Mapped[float | None] = mapped_column()
     tc_max_conditions: Mapped[str | None] = mapped_column(String(300))
     tc_ambient: Mapped[float | None] = mapped_column()
+    # P1b A2: evidence-tier split
+    dominant_evidence: Mapped[str | None] = mapped_column(String(20))
+    tc_max_experimental: Mapped[float | None] = mapped_column(Float)
+    tc_max_theoretical: Mapped[float | None] = mapped_column(Float)
     pairing_symmetry: Mapped[str | None] = mapped_column(String(100))
     arxiv_year: Mapped[int | None] = mapped_column(SmallInteger)
     total_papers: Mapped[int] = mapped_column(Integer, default=0, nullable=False)

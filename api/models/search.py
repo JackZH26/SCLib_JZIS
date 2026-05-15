@@ -106,6 +106,9 @@ class MaterialSummary(BaseModel):
     tc_max: float | None
     tc_max_conditions: str | None
     tc_ambient: float | None
+    dominant_evidence: str | None = None
+    tc_max_experimental: float | None = None
+    tc_max_theoretical: float | None = None
     arxiv_year: int | None
     total_papers: int
     status: str

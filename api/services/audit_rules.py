@@ -59,6 +59,7 @@ _FAMILY_TC_CAPS = {
     "kagome":         10.0,
     "organic":        15.0,
     "bismuthate":     35.0,
+    "bis2_layered":   12.0,
     "borocarbide":    25.0,
     "ruthenate":       4.0,
     "chalcogenide":   20.0,

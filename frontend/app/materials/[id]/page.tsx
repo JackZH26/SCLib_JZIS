@@ -120,6 +120,13 @@ export default async function MaterialDetailPage({
         <Fact label="arXiv year" value={String(mat.arxiv_year ?? "—")} />
         <Fact label="Papers" value={mat.total_papers.toString()} />
       </section>
+      {(mat.tc_max_experimental != null || mat.tc_max_theoretical != null) && (
+        <section className="-mt-2 grid grid-cols-2 gap-4 md:grid-cols-4">
+          <Fact label="Tc exp." value={fmtNum(mat.tc_max_experimental, 1)} suffix=" K" />
+          <Fact label="Tc theo." value={fmtNum(mat.tc_max_theoretical, 1)} suffix=" K" />
+          <Fact label="Evidence" value={mat.dominant_evidence ?? "—"} />
+        </section>
+      )}
 
       {mat.tc_max_conditions && (
         <p className="-mt-4 text-xs text-slate-500">

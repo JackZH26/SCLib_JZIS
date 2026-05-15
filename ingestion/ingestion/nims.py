@@ -278,13 +278,19 @@ def classify_family(formula: str) -> str | None:
 
     # ── Hydrides under pressure ──
     # H3S, LaH10, YH9, CaH6, ScLuH12, etc.
+    # C3 fix: exclude ammoniated FeSe (Li0.6(NH2)0.2(NH3)0.8Fe2Se2
+    # etc.) where H comes from NH₂/NH₃ ligands, not a superhydride
     high_h = bool(re.search(r"H(?:[2-9]|1[0-9])(?![0-9])", f_el))
     if high_h and "O" not in el_set and "C" not in el_set:
-        partners = {"S", "Se", "La", "Y", "Ca", "Mg", "Sr", "Ba",
-                    "Th", "Sc", "Yb", "Ce", "Pr", "Nd", "Lu", "Ac",
-                    "Be", "Hf", "Na", "Li", "K", "Zr"}
-        if any(e in partners for e in el_set):
-            return "hydride"
+        # Skip if Fe+Se present with N (ammoniated iron selenide)
+        if "Fe" in el_set and el_set & {"Se", "S"} and "N" in el_set:
+            pass  # fall through to iron_based below
+        else:
+            partners = {"S", "Se", "La", "Y", "Ca", "Mg", "Sr", "Ba",
+                        "Th", "Sc", "Yb", "Ce", "Pr", "Nd", "Lu", "Ac",
+                        "Be", "Hf", "Na", "Li", "K", "Zr"}
+            if any(e in partners for e in el_set):
+                return "hydride"
 
     # ── Fullerides ──
     for el, cnt in re.findall(r"([A-Z][a-z]?)[_\s]*(\d+)?", f_el):
@@ -349,8 +355,12 @@ def classify_family(formula: str) -> str | None:
         if "Ba" in el_set or "Sr" in el_set:
             if "Se" not in el_set and "Te" not in el_set:
                 return "bismuthate"
-    # BiS2-based layered SCs: LaO0.5F0.5BiS2, NdOBiS2
+    # BiS2-based layered SCs: LaO0.5F0.5BiS2, NdOBiS2, CeOBiS2
+    # C3 fix: BiS₂-layered compounds are NOT bismuthates — true
+    # bismuthates contain Bi-O octahedra (BaPbBiO3, BaKBiO3).
     if re.search(r"bis2", fl):
+        if re.search(r"(la|ce|nd|pr|sr|eu).*bis2|bis2.*(la|ce|nd|pr|sr|eu)", fl):
+            return "bis2_layered"
         return "bismuthate"
 
     # ── Heavy-fermion ──
@@ -360,8 +370,11 @@ def classify_family(formula: str) -> str | None:
         if el_set & hf_partners:
             return "heavy_fermion"
     # Cerium compounds: CeIn3, CeCoIn5, CeCu2Si2, CePt3Si, CeRhIn5
+    # C3 fix: CeRu₂ is Ce⁴⁺ (no f-electron), not a heavy fermion.
+    _CE_NOT_HF = {"ceru2"}
     if "Ce" in el_set and len(el_set) >= 2:
-        return "heavy_fermion"
+        if fl_el not in _CE_NOT_HF:
+            return "heavy_fermion"
     # Plutonium compounds: PuCoGa5, PuRhGa5
     if "Pu" in el_set and len(el_set) >= 2:
         return "heavy_fermion"
