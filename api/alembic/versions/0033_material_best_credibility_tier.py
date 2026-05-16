@@ -1,13 +1,13 @@
 """Add best_credibility_tier to materials.
 
-Revision ID: 0033_material_best_credibility_tier
+Revision ID: 0033_mat_best_cred_tier
 Revises: 0032_paper_credibility_tier
 Create Date: 2026-05-16
 """
 from alembic import op
 import sqlalchemy as sa
 
-revision = "0033_material_best_credibility_tier"
+revision = "0033_mat_best_cred_tier"
 down_revision = "0032_paper_credibility_tier"
 branch_labels = None
 depends_on = None
