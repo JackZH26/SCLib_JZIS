@@ -19,6 +19,7 @@ import { notFound } from "next/navigation";
 import { getMaterial } from "@/lib/api";
 import { ApiError } from "@/lib/api";
 import { BookmarkButton } from "@/components/BookmarkButton";
+import { FormulaDisplay } from "@/components/FormulaDisplay";
 
 export default async function MaterialDetailPage({
   params,
@@ -50,7 +51,9 @@ export default async function MaterialDetailPage({
           ← Materials
         </Link>
         <div className="mt-2 flex items-start justify-between gap-4">
-          <h1 className="text-3xl font-bold tracking-tight">{mat.formula}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            <FormulaDisplay formula={mat.formula} />
+          </h1>
           <div className="shrink-0 pt-1">
             <BookmarkButton targetType="material" targetId={mat.id} />
           </div>
@@ -140,8 +143,8 @@ export default async function MaterialDetailPage({
       {/* P2: Interface material decomposition */}
       {(mat.formula_substrate || mat.formula_overlayer) && (
         <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <Fact label="Overlayer" value={mat.formula_overlayer ?? "—"} />
-          <Fact label="Substrate" value={mat.formula_substrate ?? "—"} />
+          <FactFormula label="Overlayer" formula={mat.formula_overlayer} />
+          <FactFormula label="Substrate" formula={mat.formula_substrate} />
           {mat.layer_thickness_nm != null && (
             <Fact label="Thickness" value={fmtNum(mat.layer_thickness_nm, 1)} suffix=" nm" />
           )}
@@ -173,7 +176,7 @@ export default async function MaterialDetailPage({
                         href={`/materials/${encodeURIComponent(v.id)}`}
                         className="font-medium text-accent-deep hover:underline"
                       >
-                        {v.formula}
+                        <FormulaDisplay formula={v.formula} />
                       </Link>
                     </td>
                     <td className="px-3 py-2.5 text-right tabular-nums">
@@ -462,6 +465,26 @@ function Fact({
         {suffix && value !== "—" && (
           <span className="text-base text-slate-500">{suffix}</span>
         )}
+      </div>
+    </div>
+  );
+}
+
+/** Like Fact, but renders a chemical formula with subscripts. */
+function FactFormula({
+  label,
+  formula,
+}: {
+  label: string;
+  formula: string | null | undefined;
+}) {
+  return (
+    <div className="rounded-lg border border-sage-border bg-white p-4 shadow-sage">
+      <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
+        {label}
+      </div>
+      <div className="mt-1 text-2xl font-semibold">
+        {formula ? <FormulaDisplay formula={formula} /> : "—"}
       </div>
     </div>
   );

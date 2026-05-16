@@ -10,6 +10,7 @@
  */
 import Link from "next/link";
 import type { MaterialSummary } from "@/lib/api";
+import { FormulaDisplay } from "@/components/FormulaDisplay";
 
 /**
  * How "filled in" is this material's summary? Count non-null values
@@ -127,7 +128,7 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
                   className="block max-w-[18rem] truncate font-medium text-slate-900 hover:underline"
                   title={m.formula}
                 >
-                  {m.formula}
+                  <FormulaDisplay formula={m.formula} />
                 </Link>
               </td>
               <td className="px-4 py-2 text-slate-600">{m.family ?? "—"}</td>
