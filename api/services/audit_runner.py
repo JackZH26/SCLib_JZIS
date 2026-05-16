@@ -81,7 +81,27 @@ async def _run_rule(session: AsyncSession, rule: AuditRule) -> dict:
         sample_rows = await session.execute(text(sample_sql))
     sample_ids = [r[0] for r in sample_rows.fetchall()]
 
-    return {"flagged": flagged, "sample_ids": sample_ids}
+    # Run fix_query if present to get per-row suggested fixes.
+    # Each row is (material_id, field, current_val, suggested_val).
+    suggested_fixes: list[dict] = []
+    if rule.fix_query and flagged > 0:
+        try:
+            fix_rows = await session.execute(text(rule.fix_query))
+            for mid, field, cur, sug in fix_rows.fetchall():
+                suggested_fixes.append({
+                    "material_id": mid,
+                    "field": field,
+                    "current_value": cur,
+                    "suggested_value": sug,
+                })
+        except Exception:  # noqa: BLE001
+            log.warning("fix_query for rule %s failed", rule.name, exc_info=True)
+
+    return {
+        "flagged": flagged,
+        "sample_ids": sample_ids,
+        "suggested_fixes": suggested_fixes,
+    }
 
 
 async def run_audit(session: AsyncSession) -> dict[str, int]:
@@ -123,10 +143,12 @@ async def run_audit(session: AsyncSession) -> dict[str, int]:
             text("""
                 INSERT INTO audit_reports
                   (started_at, completed_at, rule_name, severity,
-                   rows_flagged, delta_vs_previous, sample_ids)
+                   rows_flagged, delta_vs_previous, sample_ids,
+                   suggested_fix, suggested_fixes)
                 VALUES
                   (:started, :completed, :name, :sev,
-                   :rows, :delta, CAST(:samples AS jsonb))
+                   :rows, :delta, CAST(:samples AS jsonb),
+                   :fix_text, CAST(:fixes AS jsonb))
             """),
             {
                 "started":   started_at,
@@ -136,6 +158,8 @@ async def run_audit(session: AsyncSession) -> dict[str, int]:
                 "rows":      outcome["flagged"],
                 "delta":     delta,
                 "samples":   json.dumps(outcome["sample_ids"]),
+                "fix_text":  rule.suggested_fix or None,
+                "fixes":     json.dumps(outcome.get("suggested_fixes", [])),
             },
         )
         await session.commit()

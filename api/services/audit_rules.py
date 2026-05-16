@@ -14,6 +14,13 @@ Each rule is one ``AuditRule`` row with:
 * ``setup`` — optional CTE prefix, joined via ``WITH`` before the
   UPDATE. Used by rules that need cross-table joins (citation
   conflation, retracted-source) so the predicate stays readable.
+* ``suggested_fix`` — human-readable action the admin should take
+  when this rule fires. Surfaced in the admin queue as guidance.
+* ``fix_query`` — optional SQL that returns
+  ``(material_id, field, current_val, suggested_val)`` for every
+  flagged row. The runner stores the first 10 rows in
+  ``audit_reports.suggested_fixes`` so the admin queue can show
+  concrete per-row fix proposals.
 
 Two important guarantees the runner enforces:
 
@@ -42,6 +49,8 @@ class AuditRule:
     description: str
     predicate: str
     setup: str = ""  # optional CTE prefixed before the UPDATE
+    suggested_fix: str = ""  # human-readable fix guidance for admin
+    fix_query: str = ""  # SQL → (material_id, field, current_val, suggested_val)
 
 
 # Family-specific Tc ceilings. Anything above this is implausible at
@@ -99,6 +108,23 @@ RULES: list[AuditRule] = [
                   AND materials.tc_max > caps.cap
             )
         """,
+        suggested_fix=(
+            "Clamp tc_max to the family ceiling, or reclassify "
+            "the material to the correct family."
+        ),
+        fix_query=f"""
+            WITH caps(family, cap) AS (
+                VALUES {_TC_CAPS_SQL}
+            )
+            SELECT m.id, 'tc_max',
+                   m.tc_max::text,
+                   caps.cap::text
+            FROM materials m
+            JOIN caps ON caps.family = m.family
+            WHERE m.review_reason = 'tc_exceeds_family_cap'
+              AND m.tc_max > caps.cap
+            LIMIT 10
+        """,
     ),
     AuditRule(
         name="tc_at_ambient_above_record",
@@ -108,6 +134,18 @@ RULES: list[AuditRule] = [
             "record (Hg-1223 quench, 152 K, Deng PNAS 2026)."
         ),
         predicate="ambient_sc = TRUE AND tc_max > 152",
+        suggested_fix=(
+            "Clamp tc_max to 152 K, or set ambient_sc=false if "
+            "the material is a high-pressure superconductor."
+        ),
+        fix_query="""
+            SELECT id, 'tc_max',
+                   tc_max::text,
+                   '152'
+            FROM materials
+            WHERE review_reason = 'tc_at_ambient_above_record'
+            LIMIT 10
+        """,
     ),
 
     # --------------------------------------------------------
@@ -127,6 +165,10 @@ RULES: list[AuditRule] = [
                     OR (r.value->>'pressure_gpa')::float > 500)
             )
         """,
+        suggested_fix=(
+            "Remove or correct the bad record-level pressure value. "
+            "Likely an NER parse error (unit confusion or OCR artifact)."
+        ),
     ),
     AuditRule(
         name="hydride_low_pressure_high_tc",
@@ -145,6 +187,11 @@ RULES: list[AuditRule] = [
                   AND (r.value->>'pressure_gpa')::float < 50
             )
         """,
+        suggested_fix=(
+            "Likely citation conflation or misclassified family. "
+            "Check if the record is from a review paper; if so, "
+            "exclude it. Otherwise reclassify the material."
+        ),
     ),
     AuditRule(
         name="ambient_sc_with_high_pressure",
@@ -161,6 +208,11 @@ RULES: list[AuditRule] = [
                   AND (r.value->>'pressure_gpa')::float > 1
             )
         """,
+        suggested_fix=(
+            "Set ambient_sc=false on the offending record, or "
+            "zero out pressure_gpa if the material is genuinely "
+            "ambient-pressure."
+        ),
     ),
 
     # --------------------------------------------------------
@@ -182,6 +234,10 @@ RULES: list[AuditRule] = [
                        EXTRACT(YEAR FROM NOW())::int + 1)
             )
         """,
+        suggested_fix=(
+            "Correct the record year (NER parse error) or remove "
+            "the record if the year is unrecoverable."
+        ),
     ),
     AuditRule(
         name="arxiv_year_mismatch",
@@ -199,6 +255,11 @@ RULES: list[AuditRule] = [
                   AND (r.value->>'year')::int - 5 > materials.arxiv_year
             )
         """,
+        suggested_fix=(
+            "Replace arxiv_year with the earliest record year. "
+            "The current value is likely a cited reference date "
+            "rather than the paper's own publication year."
+        ),
     ),
 
     # --------------------------------------------------------
@@ -224,6 +285,55 @@ RULES: list[AuditRule] = [
             AND tc_max > 80
             AND (records->0->>'paper_id') IN (SELECT id FROM review_papers)
         """,
+        suggested_fix=(
+            "Mark the material as disputed or delete it. The Tc "
+            "was extracted from a review paper and likely belongs "
+            "to a different material cited in that review."
+        ),
+    ),
+
+    # --------------------------------------------------------
+    # D. Per-compound Tc cap (tighter than family cap)
+    # --------------------------------------------------------
+    AuditRule(
+        name="tc_exceeds_compound_cap",
+        severity="critical",
+        description=(
+            "tc_max exceeds the per-compound cap from manual_overrides "
+            "(tighter than the family ceiling)."
+        ),
+        setup="""
+            WITH compound_caps AS (
+                SELECT canonical, (override_value)::float AS cap
+                FROM manual_overrides
+                WHERE field = 'tc_max' AND is_cap = true
+            )
+        """,
+        predicate="""
+            EXISTS (
+                SELECT 1 FROM compound_caps cc
+                WHERE cc.canonical = materials.formula_normalized
+                  AND materials.tc_max > cc.cap
+            )
+        """,
+        suggested_fix=(
+            "Clamp tc_max to the per-compound cap. The cap is based "
+            "on established experimental records for this specific "
+            "material."
+        ),
+        fix_query="""
+            SELECT m.id, 'tc_max',
+                   m.tc_max::text,
+                   mo.override_value
+            FROM materials m
+            JOIN manual_overrides mo
+              ON mo.canonical = m.formula_normalized
+             AND mo.field = 'tc_max'
+             AND mo.is_cap = true
+            WHERE m.review_reason = 'tc_exceeds_compound_cap'
+              AND m.tc_max > (mo.override_value)::float
+            LIMIT 10
+        """,
     ),
 
     # --------------------------------------------------------
@@ -237,6 +347,10 @@ RULES: list[AuditRule] = [
         ),
         predicate=(
             "is_unconventional = TRUE AND family = 'conventional'"
+        ),
+        suggested_fix=(
+            "Set is_unconventional=false (if genuinely BCS), or "
+            "reclassify the family to the correct unconventional type."
         ),
     ),
 
@@ -269,6 +383,18 @@ RULES: list[AuditRule] = [
                 SELECT mat_id FROM per_mat
                 WHERE n_records > 0 AND n_records = n_retracted
             )
+        """,
+        suggested_fix=(
+            "Set disputed=true. All supporting papers are retracted "
+            "so the material's claims are unreliable."
+        ),
+        fix_query="""
+            SELECT id, 'disputed',
+                   COALESCE(disputed::text, 'false'),
+                   'true'
+            FROM materials
+            WHERE review_reason = 'sole_source_retracted'
+            LIMIT 10
         """,
     ),
 ]

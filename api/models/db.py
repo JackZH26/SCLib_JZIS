@@ -209,6 +209,10 @@ class AuditReport(Base):
     sample_ids: Mapped[list[Any]] = mapped_column(
         JSONB, server_default=sa.text("'[]'::jsonb"), nullable=False
     )
+    suggested_fix: Mapped[str | None] = mapped_column(Text, nullable=True)
+    suggested_fixes: Mapped[list[Any]] = mapped_column(
+        JSONB, server_default=sa.text("'[]'::jsonb"), nullable=False
+    )
 
     __table_args__ = (
         Index("idx_audit_reports_started", "started_at"),
