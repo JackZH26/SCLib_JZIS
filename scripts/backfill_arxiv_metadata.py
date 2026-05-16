@@ -17,6 +17,8 @@ import re
 import time
 import xml.etree.ElementTree as ET
 
+import json
+
 import httpx
 from sqlalchemy import text
 
@@ -165,7 +167,7 @@ async def main():
                             "pid": u["paper_id"],
                             "title": u["title"],
                             "abstract": u["abstract"],
-                            "authors": u["authors"],
+                            "authors": json.dumps(u["authors"]),
                         },
                     )
                 await db.commit()
