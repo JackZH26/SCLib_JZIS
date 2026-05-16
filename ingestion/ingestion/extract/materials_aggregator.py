@@ -906,6 +906,19 @@ def _derive_summary(
         )
 
     # -------------------------------------------------------------------
+    # Invariant: tc_ambient <= tc_max (overrides may have clamped tc_max
+    # below the naturally-aggregated tc_ambient)
+    # -------------------------------------------------------------------
+    _tc_max = summary.get("tc_max")
+    _tc_amb = summary.get("tc_ambient")
+    if (
+        isinstance(_tc_max, (int, float))
+        and isinstance(_tc_amb, (int, float))
+        and _tc_amb > _tc_max
+    ):
+        summary["tc_ambient"] = _tc_max
+
+    # -------------------------------------------------------------------
     # Step 0.6: Round all numeric fields to 3 decimals (float32 fix)
     # -------------------------------------------------------------------
     for key in _NUMERIC_FIELDS:
