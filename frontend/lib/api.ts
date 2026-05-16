@@ -653,6 +653,9 @@ export interface PaperDetail {
   status: string;
   citation_count: number;
   chunk_count: number;
+  credibility_tier: string | null;
+  paper_type: string | null;
+  journal: string | null;
   abstract: string;
   categories: string[] | null;
   materials_extracted: MaterialExtract[];
