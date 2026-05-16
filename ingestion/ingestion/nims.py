@@ -373,10 +373,43 @@ def detect_interface(canonical: str) -> tuple[str | None, str | None]:
         fese/srtio3  → ("fese", "srtio3")
         bi2se3/nbse2 → ("bi2se3", "nbse2")
         mgb2         → (None, None)
+        li5/6bc      → (None, None)   # fraction, not interface
+        na0.3coo21.4(h/d)2o → (None, None)  # slash inside parens
     """
+    # Quick rejection: no slash at all
+    if "/" not in canonical:
+        return None, None
+
+    # Reject if the slash is inside parentheses (e.g. "(H/D)")
+    depth = 0
+    slash_inside_paren = False
+    for ch in canonical:
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth = max(0, depth - 1)
+        elif ch == "/" and depth > 0:
+            slash_inside_paren = True
+            break
+    if slash_inside_paren:
+        return None, None
+
     m = _INTERFACE_SLASH.match(canonical)
     if m:
         a, b = m.group(1).strip(), m.group(2).strip()
+        if not a or not b:
+            return None, None
+        # Guard: if either side starts with a digit, this is a
+        # fractional formula (Li5/6BC), not an interface.
+        if not a[0].isalpha() or not b[0].isalpha():
+            return None, None
+        # Minimum length: real materials have at least 2 characters
+        # (e.g. "Al", "Nb", "Si"); single-letter splits are fractions
+        if len(a) < 2 or len(b) < 2:
+            return None, None
+        # Guard: either side has unbalanced parentheses → broken split
+        if a.count("(") != a.count(")") or b.count("(") != b.count(")"):
+            return None, None
         # The substrate is usually the second part (X/substrate)
         # but check both against known substrates
         if b.lower() in _KNOWN_SUBSTRATES:
