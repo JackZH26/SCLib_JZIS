@@ -287,6 +287,7 @@ def _client() -> genai.Client:
         vertexai=True,
         project=settings.gcp_project,
         location=settings.gcp_region,
+        http_options={"timeout": 120_000},
     )
 
 
@@ -388,7 +389,8 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         except Exception as e:  # noqa: BLE001
             err_str = str(e)
             retryable = ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str
-                         or "503" in err_str or "UNAVAILABLE" in err_str)
+                         or "503" in err_str or "UNAVAILABLE" in err_str
+                         or "timed out" in err_str.lower() or "timeout" in err_str.lower())
             if retryable and attempt < max_retries - 1:
                 wait = 2 ** attempt * 3  # 3s, 6s, 12s, 24s
                 log.info("%s: Gemini %s — retry %d/%d in %ds",
