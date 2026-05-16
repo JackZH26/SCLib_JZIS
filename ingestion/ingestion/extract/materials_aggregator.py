@@ -1071,24 +1071,28 @@ async def aggregate_from_papers() -> int:
         rows = (await db.execute(stmt)).all()
         log.info("aggregator: scanning %d papers", len(rows))
 
-        # Credibility tier → confidence multiplier. T4/T5 records are
-        # downweighted so review-paper Tc values or refuted claims
-        # don't dominate the aggregated summary. T1/T2 records pass
-        # through at full weight.
+        # Credibility tier → confidence multiplier. T4/T5 papers are
+        # completely excluded from aggregation: T4 are large reviews or
+        # high-anomaly sources whose NER records pollute materials with
+        # cited/erroneous values; T5 are retracted or refuted.
+        # T3 papers (unfocused, low-confidence, or no extractions) get
+        # a mild 0.8× downweight so focused experimental papers (T1/T2)
+        # dominate the aggregated summary.
         _TIER_MULTIPLIER = {
             "T1": 1.0,
             "T2": 1.0,
-            "T3": 0.7,
-            "T4": 0.3,
-            "T5": 0.0,  # excluded entirely
+            "T3": 0.8,
+            "T4": 0.0,
+            "T5": 0.0,
         }
 
+        n_skipped_t4t5 = 0
         for paper_id, date_submitted, mats, cred_tier in rows:
             if not isinstance(mats, list) or not mats:
                 continue
-            # Skip T5 papers entirely (retracted/refuted catch-all)
             tier_mult = _TIER_MULTIPLIER.get(cred_tier, 1.0)
             if tier_mult <= 0.0:
+                n_skipped_t4t5 += 1
                 continue
             year = date_submitted.year if date_submitted else None
             for m in mats:
@@ -1157,8 +1161,11 @@ async def aggregate_from_papers() -> int:
                 # cleaned form, breaking ties by length.
                 display_counts[norm][_clean_display(raw) or raw.strip()] += 1
 
-        log.info("aggregator: %d unique canonical formulas from NER",
-                 len(grouped))
+        log.info(
+            "aggregator: %d unique canonical formulas from NER "
+            "(skipped %d T4/T5 papers)",
+            len(grouped), n_skipped_t4t5,
+        )
 
         upserted = 0
         for norm, records in grouped.items():
