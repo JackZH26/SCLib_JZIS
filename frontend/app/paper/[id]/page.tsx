@@ -50,11 +50,35 @@ export default async function PaperDetailPage({
             paper.arxiv_id && `arXiv:${paper.arxiv_id}`,
             paper.doi && `DOI ${paper.doi}`,
             paper.date_submitted,
+            paper.journal,
             paper.material_family,
           ]
             .filter(Boolean)
             .join(" · ")}
         </p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {paper.credibility_tier && (
+            <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+              paper.credibility_tier === "T1" ? "bg-emerald-50 text-emerald-700 border border-emerald-200" :
+              paper.credibility_tier === "T2" ? "bg-blue-50 text-blue-700 border border-blue-200" :
+              paper.credibility_tier === "T3" ? "bg-amber-50 text-amber-700 border border-amber-200" :
+              paper.credibility_tier === "T4" ? "bg-orange-50 text-orange-700 border border-orange-200" :
+              "bg-red-50 text-red-700 border border-red-200"
+            }`}>
+              {paper.credibility_tier}
+            </span>
+          )}
+          {paper.paper_type && (
+            <span className="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600 border border-slate-200">
+              {paper.paper_type}
+            </span>
+          )}
+          {paper.citation_count > 0 && (
+            <span className="inline-flex items-center rounded-full bg-slate-50 px-2 py-0.5 text-xs text-slate-500 border border-slate-200">
+              {paper.citation_count} citations
+            </span>
+          )}
+        </div>
       </div>
 
       <section>

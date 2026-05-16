@@ -1157,6 +1157,7 @@ async def aggregate_from_papers() -> int:
                 # back to the source paper and show per-paper values.
                 record = dict(m)
                 record["paper_id"] = paper_id
+                record["credibility_tier"] = cred_tier
                 # Apply credibility tier multiplier to record confidence.
                 # T3 papers get 0.7× weight, T4 get 0.3×. This makes the
                 # weighted-mode aggregation prefer focused experimental

@@ -342,6 +342,7 @@ function RecordsTable({
               <th className="px-3 py-3 text-left font-medium">Method</th>
               <th className="px-3 py-3 text-left font-medium">Pairing</th>
               <th className="px-3 py-3 text-right font-medium">Year</th>
+              <th className="px-3 py-3 text-center font-medium">Tier</th>
               <th className="px-3 py-3 text-left font-medium">Paper</th>
             </tr>
           </thead>
@@ -381,16 +382,18 @@ function RecordsTable({
                   <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
                     {year ?? "—"}
                   </td>
+                  <td className="px-3 py-2.5 text-center">
+                    {(() => {
+                      const tier = typeof r.credibility_tier === "string" ? r.credibility_tier : null;
+                      if (!tier) return "—";
+                      const cls = tier === "T1" ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                        : tier === "T2" ? "bg-blue-50 text-blue-700 border-blue-200"
+                        : "bg-slate-50 text-slate-500 border-slate-200";
+                      return <span className={`inline-flex items-center rounded-full border px-1.5 py-0.5 text-[10px] font-medium ${cls}`}>{tier}</span>;
+                    })()}
+                  </td>
                   <td className="px-3 py-2.5">
                     {pid && arx ? (
-                      // Link directly to the original on arXiv, new
-                      // tab. The previous internal /paper/<id> route
-                      // had the arXiv id URL-encoded in a way Next
-                      // couldn't route (%2F and %3A combined with the
-                      // /sclib basePath produced silent no-op clicks
-                      // in some browsers). Going straight to the
-                      // source also matches "原文地址" — what users
-                      // expect when they click a paper citation.
                       <a
                         href={`https://arxiv.org/abs/${arx}`}
                         target="_blank"
