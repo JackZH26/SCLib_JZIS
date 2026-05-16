@@ -1056,10 +1056,14 @@ async def aggregate_from_papers() -> int:
         # run. This is what makes the alembic 0010 Schön-fraud cleanup
         # *durable* — without this filter, the retracted papers would
         # stay in papers.materials_extracted and get re-aggregated here.
+        #
+        # credibility_tier is loaded so we can apply tier-based
+        # confidence scaling (T4/T5 records get downweighted).
         stmt = select(
             papers_table.c.id,
             papers_table.c.date_submitted,
             papers_table.c.materials_extracted,
+            papers_table.c.credibility_tier,
         ).where(
             (papers_table.c.status != "retracted")
             | (papers_table.c.status.is_(None))
@@ -1067,8 +1071,24 @@ async def aggregate_from_papers() -> int:
         rows = (await db.execute(stmt)).all()
         log.info("aggregator: scanning %d papers", len(rows))
 
-        for paper_id, date_submitted, mats in rows:
+        # Credibility tier → confidence multiplier. T4/T5 records are
+        # downweighted so review-paper Tc values or refuted claims
+        # don't dominate the aggregated summary. T1/T2 records pass
+        # through at full weight.
+        _TIER_MULTIPLIER = {
+            "T1": 1.0,
+            "T2": 1.0,
+            "T3": 0.7,
+            "T4": 0.3,
+            "T5": 0.0,  # excluded entirely
+        }
+
+        for paper_id, date_submitted, mats, cred_tier in rows:
             if not isinstance(mats, list) or not mats:
+                continue
+            # Skip T5 papers entirely (retracted/refuted catch-all)
+            tier_mult = _TIER_MULTIPLIER.get(cred_tier, 1.0)
+            if tier_mult <= 0.0:
                 continue
             year = date_submitted.year if date_submitted else None
             for m in mats:
@@ -1120,6 +1140,13 @@ async def aggregate_from_papers() -> int:
                 # back to the source paper and show per-paper values.
                 record = dict(m)
                 record["paper_id"] = paper_id
+                # Apply credibility tier multiplier to record confidence.
+                # T3 papers get 0.7× weight, T4 get 0.3×. This makes the
+                # weighted-mode aggregation prefer focused experimental
+                # papers (T1/T2) over reviews and low-quality sources.
+                if tier_mult < 1.0:
+                    raw_conf = record.get("confidence", _DEFAULT_CONFIDENCE)
+                    record["confidence"] = round(raw_conf * tier_mult, 3)
                 if year is not None and "year" not in record:
                     record["year"] = year
                 grouped[norm].append(record)

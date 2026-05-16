@@ -72,6 +72,8 @@ papers_table = Table(
     Column("chunk_count", Integer, nullable=False, server_default="0"),
     Column("materials_extracted", JSONB, nullable=False, server_default="[]"),
     Column("quality_flags", JSONB, nullable=False, server_default="[]"),
+    Column("credibility_tier", String(2)),
+    Column("paper_type", String(20)),
     Column("indexed_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
     Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
 )
