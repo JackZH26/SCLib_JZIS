@@ -215,6 +215,9 @@ class PaperSummary(BaseModel):
     status: str
     citation_count: int
     chunk_count: int
+    credibility_tier: str | None = None
+    paper_type: str | None = None
+    journal: str | None = None
 
 
 class PaperDetail(PaperSummary):
