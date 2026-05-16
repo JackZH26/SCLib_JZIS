@@ -11,15 +11,16 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import asyncio
 import logging
-import os
 import re
-import sys
 import time
 import xml.etree.ElementTree as ET
 
 import httpx
-from sqlalchemy import create_engine, text
+from sqlalchemy import text
+
+from ingestion.index.indexer import _session_factory, dispose
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -32,8 +33,7 @@ BATCH_SIZE = 50
 def _clean_text(s: str | None) -> str:
     if not s:
         return ""
-    s = re.sub(r"\s+", " ", s).strip()
-    return s
+    return re.sub(r"\s+", " ", s).strip()
 
 
 def _fetch_batch(client: httpx.Client, arxiv_ids: list[str]) -> dict[str, dict]:
@@ -71,9 +71,7 @@ def _fetch_batch(client: httpx.Client, arxiv_ids: list[str]) -> dict[str, dict]:
         id_el = entry.find(f"{ATOM_NS}id")
         if id_el is None or id_el.text is None:
             continue
-        # Extract arxiv_id from URL like http://arxiv.org/abs/2301.12345v1
         raw_id = id_el.text.strip().split("/abs/")[-1]
-        # Strip version suffix
         arxiv_id = re.sub(r"v\d+$", "", raw_id)
 
         title_el = entry.find(f"{ATOM_NS}title")
@@ -97,34 +95,28 @@ def _fetch_batch(client: httpx.Client, arxiv_ids: list[str]) -> dict[str, dict]:
     return results
 
 
-def main():
+async def main():
     parser = argparse.ArgumentParser(description="Backfill arXiv metadata")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--limit", type=int, default=0, help="Max papers (0=all)")
     parser.add_argument("--delay", type=float, default=3.0)
     args = parser.parse_args()
 
-    db_url = os.environ.get("DATABASE_URL", "")
-    if not db_url:
-        log.error("DATABASE_URL not set")
-        sys.exit(1)
+    Session = _session_factory()
 
-    sync_url = db_url.replace("+asyncpg", "").replace("+aiopg", "")
-    engine = create_engine(sync_url)
-
-    with engine.connect() as conn:
-        rows = conn.execute(text("""
+    async with Session() as db:
+        rows = (await db.execute(text("""
             SELECT id, arxiv_id FROM papers
             WHERE (title IS NULL OR title = '')
               AND (abstract IS NULL OR abstract = '')
               AND arxiv_id IS NOT NULL AND arxiv_id != ''
               AND chunk_count > 0
             ORDER BY id
-        """)).fetchall()
+        """))).all()
 
     log.info("Papers with missing metadata: %d", len(rows))
     if args.limit > 0:
-        rows = rows[:args.limit]
+        rows = rows[: args.limit]
         log.info("Limited to %d", len(rows))
 
     papers = [(r[0], r[1]) for r in rows]
@@ -135,42 +127,48 @@ def main():
     total_batches = (len(papers) + BATCH_SIZE - 1) // BATCH_SIZE
 
     for batch_num, batch_start in enumerate(range(0, len(papers), BATCH_SIZE), 1):
-        batch = papers[batch_start:batch_start + BATCH_SIZE]
+        batch = papers[batch_start : batch_start + BATCH_SIZE]
         arxiv_ids = [aid for _, aid in batch]
         id_map = {aid: pid for pid, aid in batch}
 
-        results = _fetch_batch(client, arxiv_ids)
+        results = await asyncio.to_thread(_fetch_batch, client, arxiv_ids)
 
         updates = []
         for aid, meta in results.items():
             pid = id_map.get(aid)
             if pid and meta.get("title"):
-                updates.append({
-                    "paper_id": pid,
-                    "title": meta["title"],
-                    "abstract": meta.get("abstract", ""),
-                    "authors": meta.get("authors", []),
-                })
+                updates.append(
+                    {
+                        "paper_id": pid,
+                        "title": meta["title"],
+                        "abstract": meta.get("abstract", ""),
+                        "authors": meta.get("authors", []),
+                    }
+                )
 
         not_found = len(batch) - len(updates)
         total_not_found += not_found
 
         if updates and not args.dry_run:
-            with engine.begin() as conn:
+            async with Session() as db:
                 for u in updates:
-                    conn.execute(text("""
+                    await db.execute(
+                        text("""
                         UPDATE papers
                         SET title = :title,
                             abstract = :abstract,
                             authors = :authors
                         WHERE id = :pid
                           AND (title IS NULL OR title = '')
-                    """), {
-                        "pid": u["paper_id"],
-                        "title": u["title"],
-                        "abstract": u["abstract"],
-                        "authors": u["authors"],
-                    })
+                    """),
+                        {
+                            "pid": u["paper_id"],
+                            "title": u["title"],
+                            "abstract": u["abstract"],
+                            "authors": u["authors"],
+                        },
+                    )
+                await db.commit()
             total_updated += len(updates)
 
         if args.dry_run and batch_num == 1:
@@ -178,12 +176,19 @@ def main():
                 log.info("[DRY] %s → title=%s", u["paper_id"], u["title"][:80])
 
         if batch_num % 10 == 0 or batch_num == total_batches:
-            log.info("Batch %d/%d: updated=%d, not_found=%d",
-                     batch_num, total_batches, total_updated, total_not_found)
+            log.info(
+                "Batch %d/%d: updated=%d, not_found=%d",
+                batch_num,
+                total_batches,
+                total_updated,
+                total_not_found,
+            )
 
-        time.sleep(args.delay)
+        await asyncio.sleep(args.delay)
 
     client.close()
+    await dispose()
+
     log.info("=== DONE ===")
     log.info("  Updated:   %d", total_updated)
     log.info("  Not found: %d", total_not_found)
@@ -191,4 +196,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
