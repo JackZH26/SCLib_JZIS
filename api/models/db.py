@@ -287,6 +287,9 @@ class Paper(Base):
     chunk_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     materials_extracted: Mapped[list[Any]] = mapped_column(JSONB, default=list, nullable=False)
     quality_flags: Mapped[list[Any]] = mapped_column(JSONB, default=list, nullable=False)
+    # --- credibility scoring -----------------------------------------------
+    credibility_tier: Mapped[str | None] = mapped_column(String(2))  # T1-T5
+    paper_type: Mapped[str | None] = mapped_column(String(20))       # experimental|theoretical|computational|review
     indexed_at: Mapped[datetime] = mapped_column(_TZDT, server_default=func.now(), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
         _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False
