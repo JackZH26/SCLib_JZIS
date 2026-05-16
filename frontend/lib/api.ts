@@ -520,6 +520,8 @@ export interface MaterialSummary {
   ambient_sc: boolean | null;
   is_unconventional: boolean | null;
   has_competing_order: boolean | null;
+  // Credibility
+  best_credibility_tier: string | null;
   // P2
   parent_material_id: string | null;
   variant_count: number;
@@ -602,6 +604,8 @@ export interface MaterialListParams {
   has_competing_order?: boolean;
   pairing_symmetry?: string;
   structure_phase?: string;
+  min_tier?: "T1" | "T2" | "T3";
+  min_papers?: number;
   parents_only?: boolean;
   sort?: "tc_max" | "tc_ambient" | "arxiv_year" | "total_papers";
   limit?: number;
@@ -620,6 +624,8 @@ export function listMaterials(params: MaterialListParams) {
     qs.set("has_competing_order", String(params.has_competing_order));
   if (params.pairing_symmetry) qs.set("pairing_symmetry", params.pairing_symmetry);
   if (params.structure_phase) qs.set("structure_phase", params.structure_phase);
+  if (params.min_tier) qs.set("min_tier", params.min_tier);
+  if (params.min_papers != null) qs.set("min_papers", String(params.min_papers));
   if (params.sort) qs.set("sort", params.sort);
   if (params.limit != null) qs.set("limit", String(params.limit));
   if (params.offset != null) qs.set("offset", String(params.offset));

@@ -116,6 +116,7 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
             <th className="px-4 py-2 text-left font-medium">Flags</th>
             <th className="px-4 py-2 text-right font-medium">arXiv year</th>
             <th className="px-4 py-2 text-right font-medium">Papers</th>
+            <th className="px-4 py-2 text-center font-medium">Tier</th>
             <th className="px-4 py-2 text-left font-medium">Data</th>
           </tr>
         </thead>
@@ -174,6 +175,17 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
                   <span className="ml-1 text-[10px] text-slate-400" title={`${m.variant_count} doping variant${m.variant_count === 1 ? "" : "s"}`}>
                     +{m.variant_count}v
                   </span>
+                )}
+              </td>
+              <td className="px-4 py-2 text-center">
+                {m.best_credibility_tier ? (
+                  <span className={`inline-flex items-center rounded-full border px-1.5 py-0.5 text-[10px] font-medium ${
+                    m.best_credibility_tier === "T1" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+                    m.best_credibility_tier === "T2" ? "bg-blue-50 text-blue-700 border-blue-200" :
+                    "bg-slate-50 text-slate-500 border-slate-200"
+                  }`}>{m.best_credibility_tier}</span>
+                ) : (
+                  <span className="text-slate-400">—</span>
                 )}
               </td>
               <td className="px-4 py-2">

@@ -24,6 +24,8 @@ type Sp = {
   has_competing_order?: string;
   pairing_symmetry?: string;
   structure_phase?: string;
+  min_tier?: string;
+  min_papers?: string;
   include_skeletons?: string;
 };
 
@@ -56,6 +58,9 @@ export default async function MaterialsPage({
 
   const includeSkeletons = searchParams.include_skeletons === "true";
 
+  const minTier = (searchParams.min_tier as MaterialListParams["min_tier"]) || undefined;
+  const minPapers = searchParams.min_papers ? Number(searchParams.min_papers) : undefined;
+
   const params: MaterialListParams = {
     family: searchParams.family || undefined,
     tc_min: searchParams.tc_min ? Number(searchParams.tc_min) : undefined,
@@ -64,6 +69,8 @@ export default async function MaterialsPage({
     has_competing_order: parseTri(searchParams.has_competing_order),
     pairing_symmetry: searchParams.pairing_symmetry || undefined,
     structure_phase: searchParams.structure_phase || undefined,
+    min_tier: minTier,
+    min_papers: minPapers,
     sort,
     limit: perPage,
     offset: page * perPage,
@@ -150,6 +157,34 @@ export default async function MaterialsPage({
             defaultValue={searchParams.structure_phase ?? ""}
             className="rounded border border-sage-border px-2 py-1 w-32"
             placeholder="e.g. RP_n=1, 1212"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1">
+          <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
+            Evidence
+          </span>
+          <select
+            name="min_tier"
+            defaultValue={searchParams.min_tier ?? ""}
+            className="rounded border border-sage-border bg-white px-2 py-1"
+          >
+            <option value="">any tier</option>
+            <option value="T1">T1 only</option>
+            <option value="T2">T1–T2</option>
+            <option value="T3">T1–T3</option>
+          </select>
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
+            Papers ≥
+          </span>
+          <input
+            type="number"
+            name="min_papers"
+            min="1"
+            defaultValue={searchParams.min_papers ?? ""}
+            className="w-20 rounded border border-sage-border px-2 py-1"
           />
         </label>
 

@@ -52,6 +52,19 @@ async def list_materials(
             "variant_count shows how many children each parent has."
         ),
     ),
+    min_tier: str | None = Query(
+        None,
+        pattern="^(T1|T2|T3)$",
+        description=(
+            "Only show materials whose best credibility tier is at most "
+            "this value (T1 = best). T1 → only T1; T2 → T1 or T2; T3 → T1-T3."
+        ),
+    ),
+    min_papers: int | None = Query(
+        None,
+        ge=1,
+        description="Only show materials cited in at least this many papers.",
+    ),
     sort: str = Query("tc_max", pattern="^(tc_max|arxiv_year|total_papers|tc_ambient)$"),
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
@@ -122,6 +135,11 @@ async def list_materials(
         _apply(Material.pairing_symmetry == pairing_symmetry)
     if structure_phase:
         _apply(Material.structure_phase == structure_phase)
+    if min_tier:
+        allowed = {"T1": ["T1"], "T2": ["T1", "T2"], "T3": ["T1", "T2", "T3"]}
+        _apply(Material.best_credibility_tier.in_(allowed[min_tier]))
+    if min_papers is not None:
+        _apply(Material.total_papers >= min_papers)
 
     sort_col = {
         "tc_max": Material.tc_max,

@@ -649,6 +649,7 @@ def _derive_summary(
         r for r in records
         if isinstance(r.get("tc_kelvin"), (int, float))
         and r.get("ambient_sc") is True
+        and r.get("tc_regime", "bulk_equilibrium") not in ("high_pressure", "interface")
     ]
     # Apply the same corroboration rule here so an outlier
     # ambient-pressure claim doesn't dominate either.
@@ -863,6 +864,11 @@ def _derive_summary(
         # P2: Interface material decomposition
         "formula_substrate":   substrate_mat[:200] if substrate_mat else None,
         "formula_overlayer":   overlayer[:200] if overlayer else None,
+        # Best credibility tier across all records (T1 best → T3 worst)
+        "best_credibility_tier": min(
+            (r.get("credibility_tier") for r in records if r.get("credibility_tier")),
+            default=None,
+        ),
         # Automatic sanity gate
         "needs_review":        needs_review,
         "review_reason":       _clip("review_reason", review_reason),

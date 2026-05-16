@@ -383,6 +383,9 @@ class Material(Base):
     # whose flag has already been adjudicated.
     admin_decision: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
 
+    # Best credibility tier across all records (T1 < T2 < T3).
+    best_credibility_tier: Mapped[str | None] = mapped_column(String(2))
+
     # --- P2: Parent-variant model (A4) ------------------------------------
     # Doping variants (YBa2Cu3O6.95) point at parent (YBa2Cu3O7-δ).
     parent_material_id: Mapped[str | None] = mapped_column(

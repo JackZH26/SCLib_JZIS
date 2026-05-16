@@ -118,6 +118,8 @@ class MaterialSummary(BaseModel):
     ambient_sc: bool | None = None
     is_unconventional: bool | None = None
     has_competing_order: bool | None = None
+    # Credibility
+    best_credibility_tier: str | None = None
     # P2 — parent-variant
     parent_material_id: str | None = None
     variant_count: int = 0
