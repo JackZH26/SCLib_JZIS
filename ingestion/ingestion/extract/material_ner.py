@@ -435,6 +435,20 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
             )
             continue
 
+        # B3: Unicode subscript/superscript → ASCII so NER output like
+        # "MgB₂" or "La₂₋ₓSrₓCuO₄" normalizes to the same ASCII form
+        # as the aggregator's normalize_formula(). Without this, the
+        # record's formula and the material's grouping key can diverge.
+        raw_f = raw_f.translate(str.maketrans(
+            "₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₕₖₗₘₙₒₚₛₜₓ",
+            "0123456789+-=()aehklmnopstx",
+        ))
+        raw_f = raw_f.translate(str.maketrans(
+            "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾",
+            "0123456789+-=()",
+        ))
+        raw_f = raw_f.replace("−", "-")  # Unicode minus → hyphen
+
         # Whitespace-normalize + validate. Records the LLM produced as
         # sentence fragments ("12%-S doped FeSe") get rejected here so
         # they don't pollute papers.materials_extracted, which would

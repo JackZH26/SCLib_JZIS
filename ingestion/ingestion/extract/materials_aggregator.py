@@ -913,6 +913,15 @@ def _derive_summary(
         if isinstance(val, float):
             summary[key] = round(val, 3)
 
+    # -------------------------------------------------------------------
+    # C3 Fix 4: Cuprate pairing symmetry default
+    # -------------------------------------------------------------------
+    # All known cuprates (including infinite-layer) are d-wave. If the
+    # aggregation didn't produce a pairing_symmetry (no NER records
+    # mention it), default to "d-wave" for cuprate-family materials.
+    if summary.get("family") == "cuprate" and not summary.get("pairing_symmetry"):
+        summary["pairing_symmetry"] = "d-wave"
+
     return summary
 
 
