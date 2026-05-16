@@ -520,6 +520,9 @@ export interface MaterialSummary {
   ambient_sc: boolean | null;
   is_unconventional: boolean | null;
   has_competing_order: boolean | null;
+  // P2
+  parent_material_id: string | null;
+  variant_count: number;
 }
 
 export interface MaterialDetail extends MaterialSummary {
@@ -550,6 +553,12 @@ export interface MaterialDetail extends MaterialSummary {
   // v2 misc
   disputed: boolean | null;
   retracted: boolean | null;
+  // P2: Interface decomposition
+  formula_substrate: string | null;
+  formula_overlayer: string | null;
+  layer_thickness_nm: number | null;
+  // P2: Variants
+  variants: VariantSummary[];
   // Phase B — Materials Project linkage. mp_id is null when the
   // formula has no MP entry. mp_alternate_ids is sorted by
   // energy_above_hull (lowest first); alternate_ids[0] === mp_id when
@@ -557,6 +566,25 @@ export interface MaterialDetail extends MaterialSummary {
   mp_id: string | null;
   mp_alternate_ids: string[];
   mp_synced_at: string | null;
+}
+
+export interface VariantSummary {
+  id: string;
+  formula: string;
+  tc_max: number | null;
+  tc_ambient: number | null;
+  total_papers: number;
+  doping_level: number | null;
+  pressure_type: string | null;
+}
+
+export interface PhaseDiagramPoint {
+  formula: string;
+  tc_kelvin: number;
+  doping_level: number | null;
+  pressure_gpa: number | null;
+  paper_id: string | null;
+  year: number | null;
 }
 
 export interface MaterialListResponse {
@@ -574,6 +602,7 @@ export interface MaterialListParams {
   has_competing_order?: boolean;
   pairing_symmetry?: string;
   structure_phase?: string;
+  parents_only?: boolean;
   sort?: "tc_max" | "tc_ambient" | "arxiv_year" | "total_papers";
   limit?: number;
   offset?: number;
@@ -594,6 +623,7 @@ export function listMaterials(params: MaterialListParams) {
   if (params.sort) qs.set("sort", params.sort);
   if (params.limit != null) qs.set("limit", String(params.limit));
   if (params.offset != null) qs.set("offset", String(params.offset));
+  if (params.parents_only) qs.set("parents_only", "true");
   if (params.include_skeletons) qs.set("include_skeletons", "true");
   return request<MaterialListResponse>(
     `/materials${qs.toString() ? `?${qs}` : ""}`,
@@ -602,6 +632,12 @@ export function listMaterials(params: MaterialListParams) {
 
 export function getMaterial(id: string) {
   return request<MaterialDetail>(`/materials/${encodeURIComponent(id)}`);
+}
+
+export function getMaterialPhaseDiagram(id: string) {
+  return request<PhaseDiagramPoint[]>(
+    `/materials/${encodeURIComponent(id)}/phase_diagram`,
+  );
 }
 
 // --- Papers ---------------------------------------------------------------

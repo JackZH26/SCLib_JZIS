@@ -169,6 +169,11 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-slate-600">
                 {m.total_papers}
+                {m.variant_count > 0 && (
+                  <span className="ml-1 text-[10px] text-slate-400" title={`${m.variant_count} doping variant${m.variant_count === 1 ? "" : "s"}`}>
+                    +{m.variant_count}v
+                  </span>
+                )}
               </td>
               <td className="px-4 py-2">
                 <CompletenessBar filled={completeness(m)} />

@@ -13,7 +13,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
 from models.db import Material
-from models.search import MaterialDetail, MaterialListResponse, MaterialSummary
+from models.search import (
+    MaterialDetail,
+    MaterialListResponse,
+    MaterialSummary,
+    PhaseDiagramPoint,
+    VariantSummary,
+)
 from routers.deps import Identity, peek_identity
 
 router = APIRouter(tags=["materials"])
@@ -36,6 +42,16 @@ async def list_materials(
     has_competing_order: bool | None = Query(None),
     pairing_symmetry: str | None = Query(None),
     structure_phase: str | None = Query(None),
+    # P2: parent grouping — when true, only return parent materials
+    # (those with no parent_material_id) and include rolled-up
+    # total_papers from all variants.
+    parents_only: bool = Query(
+        False,
+        description=(
+            "Only return parent materials (no doping variants). "
+            "variant_count shows how many children each parent has."
+        ),
+    ),
     sort: str = Query("tc_max", pattern="^(tc_max|arxiv_year|total_papers|tc_ambient)$"),
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
@@ -83,6 +99,10 @@ async def list_materials(
     if not include_skeletons:
         _apply(Material.total_papers > 0)
 
+    # P2: only return parent materials (those with no parent_material_id)
+    if parents_only:
+        _apply(Material.parent_material_id.is_(None))
+
     if family:
         # Multi-select: split on comma and match any. Single-value
         # requests ("?family=cuprate") still work — they reduce to an
@@ -124,6 +144,53 @@ async def list_materials(
     )
 
 
+@router.get("/materials/{material_id:path}/phase_diagram", response_model=list[PhaseDiagramPoint])
+async def material_phase_diagram(
+    material_id: str,
+    identity: Identity = Depends(peek_identity),  # noqa: ARG001
+    db: AsyncSession = Depends(get_db),
+) -> list[PhaseDiagramPoint]:
+    """Return Tc-vs-doping/pressure data points for a material and all its variants.
+
+    Used by the frontend to render an interactive phase diagram scatter plot.
+    Collects record-level data from the parent and all children, extracting
+    tc_kelvin, doping_level (or x composition), and pressure_gpa.
+    """
+    parent = await db.get(Material, material_id)
+    if parent is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
+
+    # Collect this material + all variants
+    materials = [parent]
+    if parent.variant_count > 0:
+        variant_stmt = (
+            select(Material)
+            .where(Material.parent_material_id == material_id)
+            .order_by(Material.formula)
+        )
+        variants = (await db.execute(variant_stmt)).scalars().all()
+        materials.extend(variants)
+
+    points: list[PhaseDiagramPoint] = []
+    for mat in materials:
+        if not isinstance(mat.records, list):
+            continue
+        for r in mat.records:
+            tc = r.get("tc_kelvin")
+            if not isinstance(tc, (int, float)) or tc <= 0:
+                continue
+            points.append(PhaseDiagramPoint(
+                formula=mat.formula,
+                tc_kelvin=float(tc),
+                doping_level=r.get("doping_level") if isinstance(r.get("doping_level"), (int, float)) else mat.doping_level,
+                pressure_gpa=r.get("pressure_gpa") if isinstance(r.get("pressure_gpa"), (int, float)) else None,
+                paper_id=r.get("paper_id"),
+                year=r.get("year") if isinstance(r.get("year"), int) else None,
+            ))
+
+    return points
+
+
 @router.get("/materials/{material_id:path}", response_model=MaterialDetail)
 async def material_detail(
     material_id: str,
@@ -133,4 +200,18 @@ async def material_detail(
     m = await db.get(Material, material_id)
     if m is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
-    return MaterialDetail.model_validate(m)
+
+    detail = MaterialDetail.model_validate(m)
+
+    # P2: populate variants list if this material has children
+    if m.variant_count > 0:
+        variant_stmt = (
+            select(Material)
+            .where(Material.parent_material_id == material_id)
+            .order_by(Material.tc_max.desc().nulls_last())
+            .limit(100)
+        )
+        variants = (await db.execute(variant_stmt)).scalars().all()
+        detail.variants = [VariantSummary.model_validate(v) for v in variants]
+
+    return detail

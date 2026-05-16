@@ -147,6 +147,12 @@ materials_table = Table(
     Column("needs_review", Boolean, nullable=False, server_default="false"),
     Column("review_reason", String(200)),
     Column("admin_decision", JSONB),
+    # P2: Parent-variant model + interface
+    Column("parent_material_id", String(100)),
+    Column("variant_count", Integer, nullable=False, server_default="0"),
+    Column("formula_substrate", String(200)),
+    Column("formula_overlayer", String(200)),
+    Column("layer_thickness_nm", Float),
     # Materials Project linkage (Phase B)
     Column("mp_id", String(50)),
     Column("mp_alternate_ids", JSONB, nullable=False, server_default="[]"),

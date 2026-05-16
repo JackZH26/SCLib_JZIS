@@ -137,6 +137,65 @@ export default async function MaterialDetailPage({
         </p>
       )}
 
+      {/* P2: Interface material decomposition */}
+      {(mat.formula_substrate || mat.formula_overlayer) && (
+        <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <Fact label="Overlayer" value={mat.formula_overlayer ?? "—"} />
+          <Fact label="Substrate" value={mat.formula_substrate ?? "—"} />
+          {mat.layer_thickness_nm != null && (
+            <Fact label="Thickness" value={fmtNum(mat.layer_thickness_nm, 1)} suffix=" nm" />
+          )}
+        </section>
+      )}
+
+      {/* P2: Doping variants table */}
+      {mat.variants && mat.variants.length > 0 && (
+        <section>
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
+            Doping variants ({mat.variants.length})
+          </h2>
+          <div className="overflow-x-auto rounded-lg border border-sage-border bg-white">
+            <table className="w-full text-sm">
+              <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                <tr>
+                  <th className="px-3 py-3 text-left font-medium">Formula</th>
+                  <th className="px-3 py-3 text-right font-medium">Tc max (K)</th>
+                  <th className="px-3 py-3 text-right font-medium">Tc amb. (K)</th>
+                  <th className="px-3 py-3 text-right font-medium">Papers</th>
+                  <th className="px-3 py-3 text-right font-medium">Doping</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {mat.variants.map((v) => (
+                  <tr key={v.id} className="hover:bg-slate-50">
+                    <td className="px-3 py-2.5">
+                      <Link
+                        href={`/materials/${encodeURIComponent(v.id)}`}
+                        className="font-medium text-accent-deep hover:underline"
+                      >
+                        {v.formula}
+                      </Link>
+                    </td>
+                    <td className="px-3 py-2.5 text-right tabular-nums">
+                      {v.tc_max != null ? v.tc_max.toFixed(1) : "—"}
+                    </td>
+                    <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
+                      {v.tc_ambient != null ? v.tc_ambient.toFixed(1) : "—"}
+                    </td>
+                    <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
+                      {v.total_papers}
+                    </td>
+                    <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
+                      {v.doping_level != null ? v.doping_level.toFixed(3) : "—"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
       {/*
         Records / provenance section lives near the top (not at the
         bottom) so readers can immediately see the evidence behind the

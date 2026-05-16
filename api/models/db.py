@@ -380,6 +380,20 @@ class Material(Base):
     # whose flag has already been adjudicated.
     admin_decision: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
 
+    # --- P2: Parent-variant model (A4) ------------------------------------
+    # Doping variants (YBa2Cu3O6.95) point at parent (YBa2Cu3O7-δ).
+    parent_material_id: Mapped[str | None] = mapped_column(
+        String(100), ForeignKey("materials.id", ondelete="SET NULL"),
+    )
+    variant_count: Mapped[int] = mapped_column(
+        Integer, server_default="0", nullable=False,
+    )
+
+    # --- P2: Interface material decomposition (A5) ----------------------
+    formula_substrate:  Mapped[str | None]   = mapped_column(String(200))
+    formula_overlayer:  Mapped[str | None]   = mapped_column(String(200))
+    layer_thickness_nm: Mapped[float | None] = mapped_column(Float)
+
     # --- Materials Project linkage (Phase B) -----------------------------
     # Populated out-of-band by ``scripts/sync_mp_ids.py``; stays NULL for
     # rows whose formula has no MP match (NIMS oxynitrides, non-stoich
@@ -395,6 +409,10 @@ class Material(Base):
         Index("idx_materials_tc", "tc_max"),  # NULLS LAST handled in query
         Index("idx_materials_pairing", "pairing_symmetry"),
         Index("idx_materials_phase", "structure_phase"),
+        Index(
+            "idx_materials_parent_id", "parent_material_id",
+            postgresql_where=text("parent_material_id IS NOT NULL"),
+        ),
         # Partial index — see alembic 0013 for rationale.
         Index(
             "idx_materials_mp_id", "mp_id",

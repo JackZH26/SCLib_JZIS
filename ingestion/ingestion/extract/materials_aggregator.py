@@ -70,8 +70,10 @@ from ingestion.index.indexer import (
 # both import paths (NIMS CSV + arXiv NER) agree on the grouping key.
 from ingestion.extract import formula_validator as _formula_validator
 from ingestion.nims import classify_family as _classify_family
+from ingestion.nims import detect_interface as _detect_interface
 from ingestion.nims import infer_unconventional as _infer_unconventional
 from ingestion.nims import normalize_formula
+from ingestion.nims import parent_formula_key as _parent_formula_key
 
 log = logging.getLogger(__name__)
 
@@ -797,6 +799,10 @@ def _derive_summary(
             f"cap={per_compound_tc_cap:.1f}*1.5"
         )
 
+    # P2 A5: Interface material detection (FeSe/STO → overlayer + substrate)
+    norm_key = normalize_formula(formula_raw)
+    overlayer, substrate_mat = _detect_interface(norm_key)
+
     # Every string going into a varchar column passes through _clip
     # so a chatty NER hallucination (e.g. "single Fe vacancy for every
     # eight Fe-sites arranged in a √10×√8 parallelogram structure"
@@ -805,7 +811,7 @@ def _derive_summary(
     # over the column budget become NULL — better empty than wrong.
     summary = {
         "formula": formula_raw[:200],
-        "formula_normalized": normalize_formula(formula_raw)[:200],
+        "formula_normalized": norm_key[:200],
         "family":            _clip("family", family),
         "tc_max": tc_max,
         "tc_max_conditions": _clip("tc_max_conditions", tc_max_cond),
@@ -854,6 +860,9 @@ def _derive_summary(
         # Flags (weighted-boolean → None when weak / disputed)
         "is_unconventional":   is_unconventional,
         "disputed":            disputed,
+        # P2: Interface material decomposition
+        "formula_substrate":   substrate_mat[:200] if substrate_mat else None,
+        "formula_overlayer":   overlayer[:200] if overlayer else None,
         # Automatic sanity gate
         "needs_review":        needs_review,
         "review_reason":       _clip("review_reason", review_reason),
@@ -1162,5 +1171,47 @@ async def aggregate_from_papers() -> int:
                          upserted, len(grouped))
 
         await db.commit()
-    log.info("aggregator: %d materials upserted", upserted)
+        log.info("aggregator: %d materials upserted", upserted)
+
+        # -----------------------------------------------------------
+        # P2: Parent-variant linking
+        # -----------------------------------------------------------
+        # For each canonical formula, compute its parent key. If the
+        # parent key differs from the formula itself AND the parent
+        # exists in the DB, set parent_material_id.
+        parent_links = 0
+        variant_counts: dict[str, int] = defaultdict(int)
+        all_norms = set(grouped.keys())
+
+        for norm in all_norms:
+            parent_key = _parent_formula_key(norm)
+            if parent_key == norm:
+                continue  # this IS a parent, not a variant
+            parent_id = _material_id(parent_key)
+            child_id = _material_id(norm)
+            # Only link if the parent actually exists
+            if parent_key in all_norms:
+                await db.execute(
+                    materials_table.update()
+                    .where(materials_table.c.id == child_id)
+                    .values(parent_material_id=parent_id)
+                )
+                variant_counts[parent_key] += 1
+                parent_links += 1
+
+        # Update variant_count on parent rows
+        for parent_norm, count in variant_counts.items():
+            pid = _material_id(parent_norm)
+            await db.execute(
+                materials_table.update()
+                .where(materials_table.c.id == pid)
+                .values(variant_count=count)
+            )
+
+        await db.commit()
+        log.info(
+            "aggregator: linked %d variants to %d parents",
+            parent_links, len(variant_counts),
+        )
+
     return upserted

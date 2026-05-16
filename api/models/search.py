@@ -118,6 +118,32 @@ class MaterialSummary(BaseModel):
     ambient_sc: bool | None = None
     is_unconventional: bool | None = None
     has_competing_order: bool | None = None
+    # P2 — parent-variant
+    parent_material_id: str | None = None
+    variant_count: int = 0
+
+
+class VariantSummary(BaseModel):
+    """Compact representation of a doping/oxygen variant for the detail page."""
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    formula: str
+    tc_max: float | None = None
+    tc_ambient: float | None = None
+    total_papers: int = 0
+    doping_level: float | None = None
+    pressure_type: str | None = None
+
+
+class PhaseDiagramPoint(BaseModel):
+    """One dot on the Tc-vs-doping phase diagram."""
+    formula: str
+    tc_kelvin: float
+    doping_level: float | None = None
+    pressure_gpa: float | None = None
+    paper_id: str | None = None
+    year: int | None = None
 
 
 class MaterialDetail(MaterialSummary):
@@ -148,6 +174,12 @@ class MaterialDetail(MaterialSummary):
     # v2 misc flags
     disputed: bool | None = None
     retracted: bool | None = None
+    # P2: Interface decomposition
+    formula_substrate: str | None = None
+    formula_overlayer: str | None = None
+    layer_thickness_nm: float | None = None
+    # P2: Variants — populated only when this material has children
+    variants: list[VariantSummary] = []
     # Phase B — Materials Project linkage. mp_id stays NULL when the
     # formula has no MP match (NIMS oxynitrides, non-stoich cuprates,
     # etc.). mp_alternate_ids is the full polymorph list sorted by

@@ -225,6 +225,171 @@ def normalize_formula(raw: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Parent-variant key (P2 C2)
+# ---------------------------------------------------------------------------
+
+# YBCO oxygen variants: yba2cu3o[anything] → yba2cu3o7
+_YBCO_VARIANT = re.compile(r"^(yba2cu3o)[0-9.x\-+dy]+$")
+
+# Ba-122 doped variants: ba(fe0.92co0.08)2as2, bafe1.84co0.16as2, etc.
+_BA122_VARIANT = re.compile(
+    r"^ba\(?(fe[0-9.]*(?:co|ni|mn|cr|ru|ir|pt)[0-9.]*)\)?2as2$"
+)
+
+# LSCO-style doped cuprates: la1.85sr0.15cuo4, la2-xsrxcuo4, etc.
+_LSCO_VARIANT = re.compile(
+    r"^la[0-9.]*(?:-?x)?sr[0-9.]*(?:x)?cuo4$"
+)
+
+# Bi-2212 with variable oxygen: bi2sr2cacu2o[anything]
+_BI2212_VARIANT = re.compile(r"^(bi2sr2cacu2o)[0-9.x\-+dy]+$")
+
+# Bi-2223 with variable oxygen
+_BI2223_VARIANT = re.compile(r"^(bi2sr2ca2cu3o)[0-9.x\-+dy]+$")
+
+# Hg-1201 with variable oxygen
+_HG1201_VARIANT = re.compile(r"^(hgba2cuo)[0-9.x\-+dy]+$")
+
+# Generic doped formula: (A1-xBx)CDE → ACDE pattern
+_DOPED_PAREN = re.compile(
+    r"^\(([a-z]+)[0-9.]*[-+]?[xyz]?([a-z]+)[0-9.]*[xyz]?\)(.+)$"
+)
+
+# Variable stoichiometry suffix on any formula: Fe1.02Se0.98 → FeSe
+_EXACT_STOICH = re.compile(r"([a-z])([0-9]+\.[0-9]+)")
+
+
+# Known parent formula mappings for common variants
+_PARENT_ALIASES: dict[str, str] = {
+    # YBCO family
+    "yba2cu3o7": "yba2cu3o7",
+    "yba2cu3o6": "yba2cu3o7",
+    # LSCO family
+    "la2-xsrxcuo4": "la2-xsrxcuo4",
+    "la2cuo4": "la2-xsrxcuo4",
+    # LBCO
+    "la2-xbaxcuo4": "la2-xbaxcuo4",
+    # Bi-2212
+    "bi2sr2cacu2o8": "bi2sr2cacu2o8",
+    # Bi-2223
+    "bi2sr2ca2cu3o10": "bi2sr2ca2cu3o10",
+    # Iron pnictides
+    "bafe2as2": "bafe2as2",
+    # Hg cuprates
+    "hgba2cuo4": "hgba2cuo4",
+    "hgba2cacu2o6": "hgba2cacu2o6",
+    "hgba2ca2cu3o8": "hgba2ca2cu3o8",
+}
+
+
+def parent_formula_key(canonical: str) -> str:
+    """Fold doping/oxygen variants to their parent formula.
+
+    Used by the aggregator to set ``parent_material_id`` so the API can
+    group variants under a single parent material and render Tc-vs-doping
+    phase diagrams.
+
+    Returns the parent's canonical key if the formula is a recognizable
+    variant, otherwise returns the input unchanged (the formula IS the
+    parent).
+
+    Examples::
+
+        yba2cu3o6.95       → yba2cu3o7
+        yba2cu3o6.5        → yba2cu3o7
+        la1.85sr0.15cuo4   → la2-xsrxcuo4
+        ba(fe0.92co0.08)2as2 → bafe2as2
+        bi2sr2cacu2o8.15   → bi2sr2cacu2o8
+        mgb2               → mgb2  (unchanged — already a parent)
+    """
+    s = canonical.strip().lower()
+
+    # Direct alias lookup first
+    if s in _PARENT_ALIASES:
+        return _PARENT_ALIASES[s]
+
+    # YBCO oxygen variants
+    m = _YBCO_VARIANT.match(s)
+    if m:
+        return "yba2cu3o7"
+
+    # LSCO doping variants
+    if _LSCO_VARIANT.match(s):
+        return "la2-xsrxcuo4"
+
+    # Bi-2212 oxygen variants
+    m = _BI2212_VARIANT.match(s)
+    if m:
+        return "bi2sr2cacu2o8"
+
+    # Bi-2223 oxygen variants
+    m = _BI2223_VARIANT.match(s)
+    if m:
+        return "bi2sr2ca2cu3o10"
+
+    # Hg-1201 oxygen variants
+    m = _HG1201_VARIANT.match(s)
+    if m:
+        return "hgba2cuo4"
+
+    # Ba-122 doped variants
+    if _BA122_VARIANT.match(s):
+        return "bafe2as2"
+
+    # Parenthetical doping: (A1-xBx)Rest → ARest
+    m = _DOPED_PAREN.match(s)
+    if m:
+        base_el, _dopant, rest = m.groups()
+        parent_candidate = f"{base_el}{rest}"
+        # Only fold if the parent is a known formula (avoid creating
+        # meaningless parents from misparses)
+        if parent_candidate in _PARENT_ALIASES:
+            return _PARENT_ALIASES[parent_candidate]
+
+    # Not a recognized variant — return as-is
+    return s
+
+
+# ---------------------------------------------------------------------------
+# Interface material detection (P2 A5)
+# ---------------------------------------------------------------------------
+
+# Slash-separated interface notation: FeSe/STO, Bi2Se3/NbSe2
+_INTERFACE_SLASH = re.compile(r"^(.+)/(.+)$")
+
+# Known substrates (normalized forms)
+_KNOWN_SUBSTRATES = {
+    "srtio3", "sto", "laalo3", "lao", "mgo", "al2o3", "si",
+    "tio2", "sio2", "nb", "nbse2", "nbn", "graphene",
+}
+
+
+def detect_interface(canonical: str) -> tuple[str | None, str | None]:
+    """Detect if a canonical formula represents an interface material.
+
+    Returns (overlayer, substrate) if detected, else (None, None).
+
+    Examples::
+        fese/srtio3  → ("fese", "srtio3")
+        bi2se3/nbse2 → ("bi2se3", "nbse2")
+        mgb2         → (None, None)
+    """
+    m = _INTERFACE_SLASH.match(canonical)
+    if m:
+        a, b = m.group(1).strip(), m.group(2).strip()
+        # The substrate is usually the second part (X/substrate)
+        # but check both against known substrates
+        if b.lower() in _KNOWN_SUBSTRATES:
+            return a, b
+        if a.lower() in _KNOWN_SUBSTRATES:
+            return b, a
+        # Unknown pair — assume second is substrate (convention)
+        return a, b
+
+    return None, None
+
+
+# ---------------------------------------------------------------------------
 # Family classification
 # ---------------------------------------------------------------------------
 
