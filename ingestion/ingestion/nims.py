@@ -478,10 +478,17 @@ def classify_family(formula: str) -> str | None:
             return "mgb2"
 
     # ── Hydrides under pressure ──
-    # H3S, LaH10, YH9, CaH6, ScLuH12, etc.
+    # H3S, LaH10, YH9, CaH6, ScLuH12, and H-rich superhydrides with a
+    # ≥20 subscript: H24S7P, H48S15P, Sc7LiH23N, H24S7Na, etc.
+    # high_h = H followed by a count whose value is ≥ 2, of ANY length
+    # (incl. ≥20, ≥100) and decimals (H9.985). The previous
+    # ``[2-9]|1[0-9]`` form silently capped at 19 and dropped every
+    # ≥20-H superhydride to family=null when NER also left it untagged.
     # C3 fix: exclude ammoniated FeSe (Li0.6(NH2)0.2(NH3)0.8Fe2Se2
     # etc.) where H comes from NH₂/NH₃ ligands, not a superhydride
-    high_h = bool(re.search(r"H(?:[2-9]|1[0-9])(?![0-9])", f_el))
+    high_h = bool(
+        re.search(r"H(?:[2-9][0-9]*(?:\.[0-9]+)?|1[0-9]+)", f_el)
+    )
     if high_h and "O" not in el_set and "C" not in el_set:
         # Skip if Fe+Se present with N (ammoniated iron selenide)
         if "Fe" in el_set and el_set & {"Se", "S"} and "N" in el_set:
