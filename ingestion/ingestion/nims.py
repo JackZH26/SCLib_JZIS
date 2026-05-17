@@ -496,7 +496,11 @@ def classify_family(formula: str) -> str | None:
         else:
             partners = {"S", "Se", "La", "Y", "Ca", "Mg", "Sr", "Ba",
                         "Th", "Sc", "Yb", "Ce", "Pr", "Nd", "Lu", "Ac",
-                        "Be", "Hf", "Na", "Li", "K", "Zr"}
+                        "Be", "Hf", "Na", "Li", "K", "Zr",
+                        # superhydride formers the set previously omitted:
+                        # MoH10, Mo3H14, WH?, NbH6, SnH8, SiH4(H2)2,
+                        # PH2/PH3, B2H6/boranes, CsBH5
+                        "Mo", "W", "Nb", "Sn", "Si", "P", "B", "Cs"}
             if any(e in partners for e in el_set):
                 return "hydride"
 
