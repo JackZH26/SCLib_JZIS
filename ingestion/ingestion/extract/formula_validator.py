@@ -213,6 +213,29 @@ def normalize_whitespace(raw: str) -> str:
     return re.sub(r"\s+", "", raw.strip())
 
 
+# Concatenated structural descriptors. _BLACKLIST_PATTERN is
+# word-boundary anchored (\b...\b), so NER concatenations like
+# "TaNSmonolayer" or "Y-dopedBi2Sr2CaCu2O8" slip past it (no boundary
+# between the formula and the glued-on English word). These tokens can
+# never be a substring of a real chemical formula, so a boundary-less
+# substring match is safe. Reuses the DESCRIPTIVE_WORD reason so the
+# api/main.py audit + alembic mirror need no new category.
+#
+# LOCKSTEP: this alternation is mirrored verbatim in
+#   api/main.py::_FORMULA_CONCAT_DESCRIPTOR_REGEX
+#   api/alembic/versions/0034_concat_descriptor_validation.py
+# Keep all three identical when editing.
+_CONCAT_DESCRIPTOR = re.compile(
+    r"(monolayer|bilayer|trilayer|tetralayer|fewlayer|multilayer"
+    r"|heterostructure|heterostructures|superlattice|superlattices"
+    r"|nanotube|nanotubes|nanowire|nanowires|nanoparticle|nanoparticles"
+    r"|nanosheet|nanosheets|nanoribbon|nanoribbons|nanostructure"
+    r"|nanostructures|graphene|graphite|fullerene|thinfilm|epitaxial"
+    r"|amorphous|polycrystalline|substrate|doped|undoped|intercalated)",
+    re.IGNORECASE,
+)
+
+
 def validate_formula(raw: str) -> tuple[bool, str | None]:
     """Return ``(ok, reason)``.
 
@@ -244,6 +267,8 @@ def validate_formula(raw: str) -> tuple[bool, str | None]:
     if _FORBIDDEN_CHARS.search(s):
         return False, FORBIDDEN_CHAR
     if _BLACKLIST_PATTERN.search(s):
+        return False, DESCRIPTIVE_WORD
+    if _CONCAT_DESCRIPTOR.search(s):
         return False, DESCRIPTIVE_WORD
     if _CONDITION_PATTERN.search(s):
         return False, CONDITION_DESCRIPTOR

@@ -92,6 +92,21 @@ _FORMULA_BLACKLIST_REGEX = (
 )
 _FORMULA_CONDITION_REGEX = r"\(?\s*[xyzn]\s*=\s*[0-9]"
 
+# Concatenated structural descriptors the word-boundary blacklist
+# misses (e.g. "TaNSmonolayer", "Y-dopedBi2Sr2CaCu2O8"). Substring
+# match (no \m/\M). Mirrors verbatim
+#   ingestion/ingestion/extract/formula_validator.py::_CONCAT_DESCRIPTOR
+#   api/alembic/versions/0034_concat_descriptor_validation.py
+# Keep all three identical when editing.
+_FORMULA_CONCAT_DESCRIPTOR_REGEX = (
+    r"(monolayer|bilayer|trilayer|tetralayer|fewlayer|multilayer"
+    r"|heterostructure|heterostructures|superlattice|superlattices"
+    r"|nanotube|nanotubes|nanowire|nanowires|nanoparticle|nanoparticles"
+    r"|nanosheet|nanosheets|nanoribbon|nanoribbons|nanostructure"
+    r"|nanostructures|graphene|graphite|fullerene|thinfilm|epitaxial"
+    r"|amorphous|polycrystalline|substrate|doped|undoped|intercalated)"
+)
+
 
 async def _periodic_formula_audit(interval_sec: int) -> None:
     """Re-flag any materials whose formula slips past the NER +
@@ -118,6 +133,7 @@ async def _periodic_formula_audit(interval_sec: int) -> None:
         (
             "ner_extracted_descriptive_text",
             f"formula ~* '{_FORMULA_BLACKLIST_REGEX}' "
+            f"OR formula ~* '{_FORMULA_CONCAT_DESCRIPTOR_REGEX}' "
             f"OR formula ~  '{_FORMULA_CONDITION_REGEX}' "
             f"OR formula !~ '[A-Z]'",
         ),
