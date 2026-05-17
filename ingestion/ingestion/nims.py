@@ -470,7 +470,10 @@ def classify_family(formula: str) -> str | None:
     # ── MgB2 ──────────────────────────────────────────────────
     # Catches: MgB2, Mg1-xAlxB2, MgB2-xCx, Mg(B1-xCx)2,
     #          Mg^10B2, Mg^11B2 (after isotope stripping)
-    if re.search(r"^mg", fl) and re.search(r"b[0-9]", fl_el):
+    # ``^\(?\s*mg`` so parenthetical-prefixed substitutions like
+    # ``(Mg0.7Al0.3)B2`` / ``(Mg1-xNax)B2`` match, not only the
+    # leading-``Mg`` spellings.
+    if re.search(r"^\(?\s*mg", fl) and re.search(r"b[0-9]", fl_el):
         if not any(x in fl for x in ("cu", "fe", "ni", "as", "se", "te")):
             return "mgb2"
 
@@ -542,7 +545,7 @@ def classify_family(formula: str) -> str | None:
     # BEDT-TTF (ET), TMTSF (Bechgaard salts), BETS, TTF-TCNQ, picene, etc.
     organic_patterns = (
         r"bedt[\s\-]?ttf|κ-\(et\)|κ-\(bedt|tmtsf|bets|"
-        r"dmit|tcnq|picene|phenanthrene|coronene|chrysene"
+        r"dmit|tcnq|picene|phenanthrene|coronene|chrysene|\(best\)"
     )
     if re.search(organic_patterns, fl):
         return "organic"
@@ -553,6 +556,18 @@ def classify_family(formula: str) -> str | None:
         if "Ba" in el_set or "Sr" in el_set:
             if "Se" not in el_set and "Te" not in el_set:
                 return "bismuthate"
+    # BiS2-layered by stoichiometry: Ln-O(F)-Bi-S(Se) systems
+    # (LaOBiS2 homologues + Pb/Ag/Sn/Se-substituted variants). The
+    # literal-``bis2`` rule below only catches the canonical spelling;
+    # this catches ``La2O2Bi2Pb2S5Se``, ``PrO0.5F0.5BiS1.7Se0.3`` etc.
+    # Ordered AFTER the Ba/Sr-bismuthate rule so true Bi-O bismuthates
+    # (no S) are unaffected.
+    if (
+        "Bi" in el_set and "S" in el_set and "O" in el_set
+        and "Cu" not in el_set
+        and el_set & {"La", "Ce", "Pr", "Nd", "Sm", "Eu", "Gd", "Y"}
+    ):
+        return "bis2_layered"
     # BiS2-based layered SCs: LaO0.5F0.5BiS2, NdOBiS2, CeOBiS2
     # C3 fix: BiS₂-layered compounds are NOT bismuthates — true
     # bismuthates contain Bi-O octahedra (BaPbBiO3, BaKBiO3).
