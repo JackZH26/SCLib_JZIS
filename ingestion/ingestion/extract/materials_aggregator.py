@@ -130,6 +130,36 @@ _TC_DISPUTE_THRESHOLD = 0.30
 # default (?include_pending=true surfaces them for admin review).
 _TC_SANITY_MAX_K = 250.0
 
+# Family-specific Tc ceilings (K). A headline tc_max above the ceiling
+# for its family is physically implausible (NER confusing a gap 2Δ/k_B,
+# Hc2, Curie/structural transition, or a theoretical value with the SC
+# Tc) and gets needs_review=True so the API hides it pending human
+# review — it is NOT deleted or altered. Ceilings are deliberately set
+# well ABOVE each family's record-high (generous margin) so only gross
+# 2x-type errors are caught and no legitimate (incl. high-pressure)
+# material is flagged. ``hydride`` is intentionally absent: super-
+# hydrides legitimately reach ~250-294 K and are already governed by
+# the global _TC_SANITY_MAX_K rule. Families not in the table (None /
+# "Other") are not judged on Tc — plausibility is unknown without a
+# family.
+_FAMILY_TC_CEILING_K = {
+    "cuprate":      180.0,  # Hg-1223 ~134 K ambient, ~164 K @ pressure
+    "iron_based":   110.0,  # bulk ~56 K; FeSe/STO monolayer extreme ~100
+    "nickelate":    110.0,  # La3Ni2O7 ~80 K @ pressure
+    "mgb2":          50.0,  # ~39 K pure
+    "fulleride":     50.0,  # Cs3C60 ~38 K
+    "bismuthate":    45.0,  # Ba1-xKxBiO3 ~32 K
+    "conventional":  45.0,  # A15 Nb3Ge ~23 K
+    "chalcogenide":  40.0,  # TMDs / Bi2Se3-type ~3-15 K
+    "elemental":     40.0,  # elements under pressure ~30 K
+    "borocarbide":   30.0,  # YPd2B2C ~23 K
+    "bis2_layered":  30.0,  # LaOBiS2 ~11 K
+    "heavy_fermion": 30.0,  # PuCoGa5 ~18.5 K
+    "organic":       25.0,  # κ-(BEDT-TTF) ~12-14 K
+    "kagome":        15.0,  # CsV3Sb5 ~3 K
+    "ruthenate":     10.0,  # Sr2RuO4 ~1.5 K
+}
+
 # Numeric fields subject to float32 artifact rounding (Step 0.6 / C4).
 _NUMERIC_FIELDS = (
     "tc_max", "tc_ambient", "tc_max_experimental", "tc_max_theoretical",
@@ -878,6 +908,26 @@ def _derive_summary(
         review_reason = (
             f"single_paper_exceeds_cap: tc_max={tc_max:.1f} > "
             f"cap={per_compound_tc_cap:.1f}*1.5"
+        )
+
+    # P1: family-specific Tc ceiling. Coarse net for materials WITHOUT
+    # a manual per-compound cap: a tc_max physically impossible for the
+    # family (SmOFeAs=116 K, Bi2Te3=80 K, Mg0.019WO3=76 K …) is almost
+    # always an NER mis-extraction surviving corroboration. Skipped when
+    # a manual override cap exists (that is authoritative) or the family
+    # is unrecognized (plausibility unknown).
+    _fam_ceil = _FAMILY_TC_CEILING_K.get(family) if family else None
+    if (
+        not needs_review
+        and per_compound_tc_cap is None
+        and tc_max is not None
+        and _fam_ceil is not None
+        and tc_max > _fam_ceil
+    ):
+        needs_review = True
+        review_reason = (
+            f"tc_max_{tc_max:.1f}_implausible_for_{family}"
+            f"_ceiling_{_fam_ceil:.0f}K"
         )
 
     # P2 A5: Interface material detection (FeSe/STO → overlayer + substrate)
