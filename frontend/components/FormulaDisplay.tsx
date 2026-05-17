@@ -36,6 +36,17 @@ function parseFormula(formula: string): { text: string; sub: boolean }[] {
   return result;
 }
 
+/**
+ * Same subscript rule as <FormulaDisplay>, but returns a plain HTML
+ * string instead of JSX — for non-React renderers (e.g. Plotly's
+ * hovertemplate, which accepts a limited HTML subset incl. <sub>).
+ */
+export function formulaToHtml(formula: string): string {
+  return parseFormula(formula)
+    .map((seg) => (seg.sub ? `<sub>${seg.text}</sub>` : seg.text))
+    .join("");
+}
+
 export function FormulaDisplay({
   formula,
   className,

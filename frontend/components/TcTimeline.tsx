@@ -34,6 +34,7 @@
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import type { TimelineCoverage, TimelinePoint } from "@/lib/api";
+import { formulaToHtml } from "@/components/FormulaDisplay";
 
 // `loading: () => null` because we render our own overlay below; the
 // default would briefly flash plotly's empty inner div before our
@@ -147,7 +148,7 @@ export function TcTimeline({
         // experimental points so the line is suppressed.
         p.is_theoretical ? "<br>⚠ theoretical (DFT / computational)" : "",
       ]),
-      text: subset.map((p) => p.material),
+      text: subset.map((p) => formulaToHtml(p.material)),
       hovertemplate:
         "<b>%{text}</b>%{customdata[3]}<br>" +
         "Tc = %{y} K<br>" +
