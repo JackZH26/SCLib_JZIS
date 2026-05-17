@@ -6,12 +6,13 @@
  *
  * Axes + interaction notes:
  *
- * - Y axis defaults to [-30, 250] K. The -30 K bottom is pure
+ * - Y axis defaults to [-30, 300] K. The -30 K bottom is pure
  *   visual padding so dots near Tc=0 don't clip against the axis
  *   line; `minallowed` clamps pan/zoom to that same -30 K floor so
  *   readers can never see deeply negative (and physically nonsense)
- *   Kelvin. Upward zoom is still allowed in case future hydrides
- *   push Tc past 250 K.
+ *   Kelvin. The 300 K top keeps the near-room-temperature hydride
+ *   claims (~294 K) on screen; upward zoom is still allowed in case
+ *   future claims push Tc past 300 K.
  *
  * - X axis auto-ranges to the data, with a small ±1-year pad so the
  *   outermost points aren't glued to the frame edges. Each point's
@@ -71,7 +72,7 @@ const FAMILY_LABEL: Record<string, string> = {
   unknown:       "Other",
 };
 
-const Y_MAX_DEFAULT = 250;
+const Y_MAX_DEFAULT = 300;
 // Visual cushion below 0 K so dots clustered around Tc=0 aren't
 // pressed flat against the x-axis. Negative Kelvin is unphysical so
 // these K values never carry data — they're whitespace only.

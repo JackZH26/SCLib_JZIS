@@ -13,7 +13,7 @@ implausible):
    at 347 K etc. are held back from both the list and the chart
    until a human confirms.
 2. **Per-record Tc sanity:** any individual record with
-   ``tc_kelvin > 250`` or ``tc_kelvin < 0`` is skipped even on
+   ``tc_kelvin > 300`` or ``tc_kelvin < 0`` is skipped even on
    non-flagged materials (the headline aggregate may be fine while
    a single NER-mis-extracted record pollutes the chart).
 3. **Year validity:** record year must be in [1900, current_year + 1];
@@ -41,11 +41,14 @@ from routers.deps import Identity, peek_identity
 router = APIRouter(tags=["timeline"])
 
 
-# Physical sanity ceiling for a single Tc measurement. Matches the
-# aggregator's _TC_SANITY_MAX_K; anything above this is almost
-# certainly NER confusing a Curie / structural / theoretical transition
-# with the SC Tc. Keep the two thresholds in sync if either changes.
-_TC_MAX_K = 250.0
+# Display ceiling for a single Tc point on the timeline. Set ABOVE the
+# aggregator's _TC_SANITY_MAX_K (250 K) on purpose: vetted near-room-
+# temperature hydride claims (e.g. CaLuH12 ~294 K) are legitimately in
+# the Materials catalog (needs_review=False) and should be visible on
+# the chart too. This is a display-only filter — it does NOT affect
+# ingestion-time needs_review flagging, so the two thresholds are now
+# intentionally decoupled; do not "resync" them to the aggregator.
+_TC_MAX_K = 300.0
 
 
 # Known experimental measurement techniques. If a record's
