@@ -351,6 +351,58 @@ def _corroborated_max(
     return values[-1], n_papers
 
 
+# Experimental vs calculation technique tags. Mirrors
+# routers/timeline.py::_is_theoretical so the chart and the aggregated
+# headline classify a record the same way — keep the two in lockstep.
+_EXPERIMENTAL_MEASUREMENTS = frozenset({
+    "resistivity", "susceptibility", "specific_heat",
+    "arpes", "musr", "stm", "neutron", "nmr", "nqr",
+    "magnetization", "thermal_conductivity",
+    "raman scattering", "raman", "andreev reflection",
+    "nernst", "tunneling", "esr", "torque magnetometry",
+    "hall effect", "hall_effect", "transport",
+})
+_THEORETICAL_MEASUREMENTS = frozenset({
+    "calculation", "dft", "first-principles", "first principles",
+    "computational", "ab initio", "ab-initio",
+    "allen-dynes", "eliashberg", "tight-binding",
+})
+
+
+def _record_is_theoretical(r: dict[str, Any]) -> bool:
+    """Was THIS record's Tc calculated rather than measured?
+
+    Single source of truth for the evidence split. NER's
+    ``evidence_type`` is under-populated, so a real DFT/Eliashberg
+    prediction frequently arrives evidence_type-untagged and used to
+    leak into the experimental headline (audit category E). Precedence:
+
+      1. explicit ``evidence_type`` wins ONLY when unambiguous
+         (primary_theoretical → theory; primary_experimental → exp).
+         The legacy bare "primary" is ambiguous and must NOT override
+         a paper that is itself theoretical (e.g. a DFT superhydride
+         prediction NER tagged ev=primary, pt=computational) — it
+         falls through to the measurement/paper_type signals.
+      2. else an explicit experimental technique in ``measurement``
+         → experimental (a named technique outranks a missing tag).
+      3. else an explicit calculation tag in ``measurement`` → theory.
+      4. else fall back to ``paper_type`` (theoretical|computational).
+      5. else experimental — most cond-mat.supr-con papers measure.
+    """
+    et = r.get("evidence_type") or ""
+    if et == "primary_theoretical":
+        return True
+    if et == "primary_experimental":
+        return False
+    m = (r.get("measurement") or "").strip().lower()
+    if m in _EXPERIMENTAL_MEASUREMENTS:
+        return False
+    if m in _THEORETICAL_MEASUREMENTS:
+        return True
+    pt = (r.get("paper_type") or "").strip().lower()
+    return pt in ("theoretical", "computational")
+
+
 def _median_numeric(records: list[dict[str, Any]], key: str) -> float | None:
     vals = [r[key] for r in records if isinstance(r.get(key), (int, float))]
     return float(median(vals)) if vals else None
@@ -534,12 +586,29 @@ def _sanity_check_structure_phase(
     """Reject a ``structure_phase`` that's inconsistent with the formula.
 
     Gemini systematically over-tags unfamiliar compounds with
-    ``cuprate_*`` phase labels (e.g. MgB₂ → cuprate_123). Block that
-    obvious contradiction; leave everything else alone.
+    ``cuprate_*`` phase labels (e.g. MgB₂ → cuprate_123) and confuses
+    cuprate sub-phases. Drop only HIGH-CONFIDENCE contradictions
+    (return None = "no phase", never fabricate one); leave anything
+    ambiguous untouched.
     """
     if not structure_phase:
         return None
     if structure_phase.startswith("cuprate") and not _has_cu(formula_raw):
+        return None
+    toks = re.findall(r"[A-Z][a-z]?", formula_raw)
+    has_cu = "Cu" in toks
+    # Normalize "cuprate_123" / "123" to a bare phase token (exact
+    # match — "1232" must NOT be treated as "123").
+    p = structure_phase.lower().removeprefix("cuprate_").strip()
+    # "123" == R Ba₂ Cu₃ O₇ (YBCO): defined by the Ba₂Cu₃ block. An
+    # electron-doped T′ cuprate R₂₋ₓCeₓCuO₄ (Ce present, Ba absent)
+    # tagged 123 is a recurrent Gemini error.
+    if p == "123" and has_cu and "Ce" in toks and "Ba" not in toks:
+        return None
+    # "214" == La₂CuO₄-type single CuO₂ layer (La/Sr). Hg-/Tl-based
+    # cuprates are the 12(n-1)n / 22(n-1)n homologous series and are
+    # never the 214 phase.
+    if p == "214" and has_cu and ("Hg" in toks or "Tl" in toks):
         return None
     return structure_phase
 
@@ -617,27 +686,34 @@ def _derive_summary(
     # -----------------------------------------------------------------
     # A2: Evidence-tier split — separate experimental vs theoretical
     # -----------------------------------------------------------------
-    # "primary" is the legacy value; treat it as experimental for
-    # backward compat with records that predate the B1 prompt change.
-    _EXP_TYPES = {"primary_experimental", "primary", None}
-    _THEO_TYPES = {"primary_theoretical"}
+    # Evidence split via the single-source-of-truth classifier so a
+    # DFT/Eliashberg record NER left evidence_type-untagged (or tagged
+    # only with the legacy ambiguous "primary") is counted as theory,
+    # not smuggled into the experimental headline (audit cat. E).
+    theo_records = [r for r in records if _record_is_theoretical(r)]
     exp_records = [
         r for r in records
-        if r.get("evidence_type") in _EXP_TYPES
-        or r.get("evidence_type") not in ("cited", "primary_theoretical")
+        if not _record_is_theoretical(r)
+        and r.get("evidence_type") != "cited"
     ]
-    theo_records = [
-        r for r in records if r.get("evidence_type") in _THEO_TYPES
-    ]
-    tc_max_exp, _ = _corroborated_max(exp_records, "tc_kelvin")
-    tc_max_theo, _ = _corroborated_max(theo_records, "tc_kelvin")
+    tc_max_exp, sup_exp = _corroborated_max(exp_records, "tc_kelvin")
+    tc_max_theo, sup_theo = _corroborated_max(theo_records, "tc_kelvin")
     dominant_evidence = _classify_evidence(exp_records, theo_records, records)
 
-    # tc_max is the highest Tc reported in ANY condition (high
-    # pressure, thin film, doped, …) — the scientific "record-high"
-    # metric. Uses a corroboration rule (≥2 papers within 15%) to
-    # reject single-paper outliers; see _corroborated_max docstring.
-    tc_max, tc_max_support = _corroborated_max(records, "tc_kelvin")
+    # tc_max is the record-high Tc in ANY condition (high pressure,
+    # thin film, doped, …) BUT reflects EXPERIMENTAL reality whenever
+    # any experimental evidence exists — a pure DFT/Eliashberg
+    # prediction must never be presented as the measured record-high
+    # (audit cat. E). The prediction is still surfaced separately via
+    # tc_max_theoretical, and the conditions string is tagged
+    # "theoretical" for prediction-only materials. Each side keeps the
+    # corroboration rule (≥2 papers) against single-paper outliers.
+    if tc_max_exp is not None:
+        tc_max, tc_max_support, _tc_basis = tc_max_exp, sup_exp, "experimental"
+    elif tc_max_theo is not None:
+        tc_max, tc_max_support, _tc_basis = tc_max_theo, sup_theo, "theoretical"
+    else:
+        tc_max, tc_max_support, _tc_basis = None, 0, None
 
     # tc_ambient is intentionally *stricter*: only records where NER
     # affirmatively emitted ``ambient_sc: true`` count. We deliberately
@@ -650,6 +726,7 @@ def _derive_summary(
         if isinstance(r.get("tc_kelvin"), (int, float))
         and r.get("ambient_sc") is True
         and r.get("tc_regime", "bulk_equilibrium") not in ("high_pressure", "interface")
+        and not _record_is_theoretical(r)
     ]
     # Apply the same corroboration rule here so an outlier
     # ambient-pressure claim doesn't dominate either.
@@ -707,9 +784,12 @@ def _derive_summary(
     # how well-supported the headline number is.
     tc_max_cond = None
     if tc_max is not None:
-        for r in records:
+        _basis_recs = theo_records if _tc_basis == "theoretical" else exp_records
+        for r in _basis_recs:
             if r.get("tc_kelvin") == tc_max:
                 parts: list[str] = []
+                if _tc_basis == "theoretical":
+                    parts.append("theoretical (DFT/computational)")
                 p = r.get("pressure_gpa")
                 if isinstance(p, (int, float)) and p > 0:
                     parts.append(f"P={p:g} GPa")
@@ -944,6 +1024,14 @@ def _derive_summary(
     return summary
 
 
+# A material counts as evidence-"dominant" (not "mixed") when one side
+# holds at least this share of the primary (non-cited) records. Without
+# it a single stray DFT record would demote an overwhelmingly
+# experimentally-established SC (e.g. Ba1-xKxFe2As2: 78 records, a
+# handful theoretical) from "experimental" to "mixed", losing signal.
+_EVIDENCE_DOMINANCE = 0.75
+
+
 def _classify_evidence(
     exp_records: list[dict[str, Any]],
     theo_records: list[dict[str, Any]],
@@ -951,21 +1039,24 @@ def _classify_evidence(
 ) -> str | None:
     """Classify dominant evidence type for a material.
 
-    Returns "experimental", "theoretical", "mixed", "cited_only", or None.
+    Returns "experimental", "theoretical", "mixed", "cited_only", or
+    None. When both kinds are present, the majority side wins if it
+    holds >= _EVIDENCE_DOMINANCE of the primary records; only a genuine
+    contest (neither side dominant) is "mixed".
     """
-    # Count records with primary evidence (experimental or theoretical)
-    n_exp = sum(
-        1 for r in all_records
-        if r.get("evidence_type") in ("primary_experimental", "primary", None)
-        and r.get("evidence_type") != "cited"
+    # Count via the same single-source-of-truth classifier used for
+    # the tc split, so dominant_evidence can't disagree with which
+    # pool drove the headline tc_max.
+    n_cited = sum(
+        1 for r in all_records if r.get("evidence_type") == "cited"
     )
     n_theo = sum(
         1 for r in all_records
-        if r.get("evidence_type") == "primary_theoretical"
+        if r.get("evidence_type") != "cited" and _record_is_theoretical(r)
     )
-    n_cited = sum(
+    n_exp = sum(
         1 for r in all_records
-        if r.get("evidence_type") == "cited"
+        if r.get("evidence_type") != "cited" and not _record_is_theoretical(r)
     )
     total = len(all_records)
     if total == 0:
@@ -978,6 +1069,11 @@ def _classify_evidence(
     if n_theo > 0 and n_exp == 0:
         return "theoretical"
     if n_exp > 0 and n_theo > 0:
+        primary = n_exp + n_theo
+        if n_exp / primary >= _EVIDENCE_DOMINANCE:
+            return "experimental"
+        if n_theo / primary >= _EVIDENCE_DOMINANCE:
+            return "theoretical"
         return "mixed"
     return None
 
@@ -1041,6 +1137,61 @@ def _clean_display(raw: str) -> str:
               .replace("}", "")
               .replace("$", "")
               .strip())
+
+
+# Garbage review-reason markers, sourced from the validator's own
+# constants (kept in lockstep automatically) plus the api/main.py
+# periodic-audit tag. A row already wearing one of these was flagged
+# garbage by an earlier gate; if a sweep can no longer regenerate it,
+# it is safe to soft-retire.
+_GARBAGE_REVIEW_REASONS = (
+    _formula_validator.DESCRIPTIVE_WORD,
+    _formula_validator.CONDITION_DESCRIPTOR,
+    _formula_validator.INVALID_START,
+    _formula_validator.SYSTEM_DESIGNATOR,
+    _formula_validator.PHASE_PREFIX,
+    _formula_validator.INCOMPLETE_FORMULA,
+    _formula_validator.ENGLISH_ELEMENT_NAME,
+    _formula_validator.LITERAL_PLACEHOLDER,
+    _formula_validator.SINGLE_ELEMENT,
+    _formula_validator.CONCATENATED_PROSE,
+    _formula_validator.TRADE_NAME,
+    _formula_validator.GENERIC_FAMILY_NAME,
+    _formula_validator.FORBIDDEN_CHAR,
+    "ner_extracted_descriptive_text",
+)
+
+
+def _is_purgeable_orphan(
+    formula: str | None,
+    review_reason: str | None,
+    mat_id: str,
+) -> bool:
+    """True iff a row this sweep did NOT regenerate is positively-
+    identified NER garbage that is safe to soft-retire.
+
+    Deliberately conservative — an absent NER source is the *normal*
+    state for two large, legitimate populations that must be PRESERVED:
+
+      * NIMS-imported rows (``nims:`` id) — no arXiv paper ever backed
+        them, so a papers-only sweep can never reproduce them.
+      * Valid-formula rows transiently source-less this sweep (e.g. a
+        paper whose ``materials_extracted`` was just rewritten by the
+        in-flight NER re-run).
+
+    We retire ONLY rows that fail the current formula validator or were
+    already tagged with a garbage reason by an earlier gate. Soft
+    (needs_review=True), never DELETE — fully reversible.
+    """
+    if mat_id.startswith("nims:"):
+        return False
+    rr = review_reason or ""
+    if any(g and g in rr for g in _GARBAGE_REVIEW_REASONS):
+        return True
+    ok, _ = _formula_validator.validate_formula(
+        _formula_validator.normalize_whitespace(formula or "")
+    )
+    return not ok
 
 
 async def aggregate_from_papers() -> int:
@@ -1275,6 +1426,53 @@ async def aggregate_from_papers() -> int:
         log.info(
             "aggregator: linked %d variants to %d parents",
             parent_links, len(variant_counts),
+        )
+
+        # -----------------------------------------------------------
+        # P3: Discriminating orphan reconcile
+        # -----------------------------------------------------------
+        # Rows in `materials` that this sweep did NOT regenerate are
+        # "orphans". The upsert path only ever inserts/updates present
+        # canonicals and never deletes, so stale pre-validator NER
+        # garbage from a looser era lingers visibly forever. Soft-retire
+        # ONLY positively-identified garbage (see _is_purgeable_orphan);
+        # NIMS-only and valid source-less rows are preserved. Skips
+        # admin-reviewed rows so manual decisions are never undone.
+        live_ids = {_material_id(n) for n in all_norms}
+        candidates = (await db.execute(
+            select(
+                materials_table.c.id,
+                materials_table.c.formula,
+                materials_table.c.review_reason,
+            )
+            .where(materials_table.c.needs_review.is_(False))
+            .where(materials_table.c.admin_decision.is_(None))
+        )).all()
+        retired = 0
+        for oid, oformula, orr in candidates:
+            if oid in live_ids:
+                continue
+            if not _is_purgeable_orphan(oformula, orr, oid):
+                continue
+            await db.execute(
+                materials_table.update()
+                .where(materials_table.c.id == oid)
+                .values(
+                    needs_review=True,
+                    review_reason=_clip(
+                        "review_reason",
+                        f"orphaned_invalid_source; was: {orr or '(none)'}",
+                    ),
+                )
+            )
+            retired += 1
+            if retired % 200 == 0:
+                await db.commit()
+        await db.commit()
+        log.info(
+            "aggregator: soft-retired %d stale orphan rows "
+            "(scanned %d non-reviewed candidates, %d live this sweep)",
+            retired, len(candidates), len(live_ids),
         )
 
     return upserted
