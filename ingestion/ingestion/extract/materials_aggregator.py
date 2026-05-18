@@ -954,6 +954,38 @@ def _derive_summary(
             f"tc_max_{tc_max:.1f}_implausible_for_null_family_ceiling_45K"
         )
 
+    # T1.3 (P3a): non-superconductor contaminants NER scraped as
+    # "materials". Two random-100 audits independently recurred CMR
+    # manganites (LaMnO3, La0.65Ca0.35MnO3, La0.67Sr0.33MnO3) — these
+    # are ferromagnetic/AFM, NOT superconductors (a ~370 K Curie temp
+    # often mis-read as Tc). Soft-flag (reversible, admin can clear).
+    # Mn-based SCs (MnP/MnSi) carry no oxygen, so the O requirement
+    # excludes them; Cu/Fe exclusion protects Mn-doped cuprates/iron.
+    if not needs_review:
+        _els = set(re.findall(r"[A-Z][a-z]?", formula_raw))
+        _bare = re.sub(r"[^a-z0-9]", "", formula_raw.lower())
+        if (
+            "Mn" in _els and "O" in _els
+            and (_els & {"La", "Pr", "Nd", "Sm", "Y",
+                         "Ca", "Sr", "Ba", "Bi"})
+            and "Cu" not in _els and "Fe" not in _els
+            # CMR manganites are oxides — never oxysulfides. Excludes
+            # Mn-doped BiS-type SCs like Bi4-xMnxO4S3 (chalcogen).
+            and not (_els & {"S", "Se", "Te"})
+        ):
+            needs_review = True
+            review_reason = "non_sc_material_suspected: CMR/AFM manganite"
+        elif _bare in {
+            # bare ferroelectric / band-insulator substrates (NOT
+            # SrTiO3/KTaO3 — those have real doped-SC literature).
+            "batio3", "pbtio3", "catio3", "laalo3", "mgo",
+            "al2o3", "sio2", "srzro3", "bazro3", "latio3", "tio2",
+        }:
+            needs_review = True
+            review_reason = (
+                "non_sc_material_suspected: ferroelectric/insulator"
+            )
+
     # P2 A5: Interface material detection (FeSe/STO → overlayer + substrate)
     norm_key = normalize_formula(formula_raw)
     overlayer, substrate_mat = _detect_interface(norm_key)
