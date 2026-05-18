@@ -1,5 +1,15 @@
 """Scoped 30-record aggregator test — REAL DB, REAL upsert, ROLLBACK.
 
+*** T0.2 — MANDATORY PRE-DEPLOY GATE ***
+Run this (green) before EVERY production aggregator re-run, together
+with the offline T0.1 schema-drift guard in aggregator_eval.py. The
+offline harness stubs SQLAlchemy and therefore CANNOT exercise the
+pg_insert/`stmt.excluded` upsert path — the exact path whose
+`best_credibility_tier` KeyError crashed production. T0.1 catches
+summary-key vs Table-column drift statically; this test then proves
+the real upsert executes against the live schema. Both must pass
+before `sclib-ingest --mode aggregate-materials` is run on prod.
+
 Purpose: prove the indexer schema-drift fix (best_credibility_tier)
 lets the exact upsert path that crashed in production
 (`{k: stmt.excluded[k] for k in summary}`) execute against the real
