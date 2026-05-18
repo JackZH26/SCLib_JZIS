@@ -193,6 +193,10 @@ async def _run_db(apply: bool, ack_hetero):
                 f"(human must review them first). Got {ack_hetero}.")
 
         print("\n  APPLYING (one transaction)…")
+        # the plan-building reads above autobegin a tx on this Session;
+        # discard that read-only tx so begin() can open a clean atomic
+        # write transaction (else: "transaction already begun").
+        await db.rollback()
         async with db.begin():
             for m in plan["merges"]:
                 await db.execute(delete(materials_table).where(
