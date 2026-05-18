@@ -1,15 +1,24 @@
 """R2.2 — near-duplicate consolidation (companion to R2.1).
 
 Reconciles the materials table to the R2.1 normalize_formula id
-scheme: re-keys rows, merges fragmented rows (pool+dedup records,
+scheme: re-key rows, merge fragmented rows (pool+dedup records,
 recompute summary via the real _derive_summary, preserve
-admin_decision), and folds R2.4 stale orphans.
+admin_decision), fold R2.4 stale orphans, then bump
+pipeline_state.materials_normalize_version (releases the aggregator
+interlock).
 
-DEFAULT = offline DRY-RUN on a JSONL snapshot (zero DB, zero prod):
-  SCLIB_EVAL_DATA=/tmp/sclib_r2 python3 scripts/r22_consolidate.py
-
-The real-DB --apply path (staging then prod, transactional) is a
-SEPARATELY-AUTHORISED step — not enabled here.
+Modes (safety-gated):
+  (default)            offline DRY-RUN on a JSONL snapshot. Zero DB.
+      SCLIB_EVAL_DATA=/tmp/sclib_r2 python3 scripts/r22_consolidate.py
+  --db                 STAGING dry-run: real DB, compute plan,
+                        READ-ONLY (rolls back). Run in the ingestion
+                        container.
+  --db --apply --yes   PROD apply: real DB, ONE transaction, writes,
+                        bumps the version. SEPARATELY AUTHORISED.
+                        --ack-hetero N must equal the reviewed
+                        element-heterogeneous group count or it aborts
+                        (forces a human to re-confirm that fuzzy
+                        safety dimension).
 """
 from __future__ import annotations
 
@@ -18,37 +27,40 @@ import re
 import sys
 from collections import Counter, defaultdict
 
-sys.path.insert(0, "scripts")
-import aggregator_eval as E  # noqa: E402 (installs sqlalchemy stubs)
+OFFLINE = not ({"--db"} & set(sys.argv))
 
-A = E.A
+if OFFLINE:
+    sys.path.insert(0, "scripts")
+    import aggregator_eval as E            # installs sqlalchemy stubs
+    A = E.A
+    _load_jsonl = E._load_jsonl
+    _build_override_map = E._build_override_map
+    _build_refuted_map = E._build_refuted_map
+    DATA = E.DATA
+else:
+    # real modules — NO stubs (run inside the ingestion container)
+    from ingestion.extract import materials_aggregator as A  # noqa
+
 normalize_formula = A.normalize_formula
 _derive_summary = A._derive_summary
 _clean_display = A._clean_display
-
-_KNOWN_EL = __import__("family_audit")._KNOWN_EL
+NORMALIZE_SCHEMA_VERSION = A.NORMALIZE_SCHEMA_VERSION
+_KNOWN_EL = __import__("family_audit")._KNOWN_EL if OFFLINE else None
+_ALIASES = getattr(A, "_FORMULA_ALIASES", {})
 
 
 def build_id(prefix: str, norm: str) -> str:
-    """Replicates _material_id, preserving the origin prefix."""
     if len(norm) <= 90:
         return f"{prefix}:{norm}"
     h = hashlib.sha1(norm.encode()).hexdigest()[:8]
     return f"{prefix}:{norm[:80]}:{h}"
 
 
-_ALIASES = getattr(A, "_FORMULA_ALIASES", {})
-
-
-def elemset(formula: str) -> frozenset | None:
-    """Robust true-chemistry element set (defence-in-depth flag).
-    Strips the crystallographic polytype prefix (2H-/4H-/1T-/3R-/1T'-)
-    so its letter is not misread as H/T, drops x/X/y/z/n doping
-    variables and δ. Returns None for alias shorthands (Y123/YBCO/…)
-    whose literal token set is meaningless — excluded from the check.
-    """
-    f = formula.strip().replace("−", "-")                    # U+2212
-    f = re.sub(r"^[0-9]+[A-Za-z]+'?-", "", f)                # polytype
+def elemset(formula: str):
+    if _KNOWN_EL is None:                  # --db: skip the fuzzy oracle
+        return frozenset()
+    f = formula.strip().replace("−", "-")
+    f = re.sub(r"^[0-9]+[A-Za-z]+'?-", "", f)
     if normalize_formula(f) in _ALIASES or f.lower() in _ALIASES:
         return None
     fe = re.sub(r"[δΔ]|[Dd]elta|[±*·⋅(){}\[\]$_]", "", f)
@@ -66,110 +78,162 @@ def _rec_key(r: dict):
             r.get("year"), r.get("pressure_gpa"))
 
 
-def main():
-    mats = E._load_jsonl(str(E.DATA / "materials.jsonl"))
-    omap = E._build_override_map(
-        E._load_jsonl(str(E.DATA / "overrides.jsonl")))
-    rmap = E._build_refuted_map(
-        E._load_jsonl(str(E.DATA / "refuted.jsonl")))
-    print(f"prod materials rows: {len(mats)}")
-
+def build_plan(rows, omap, rmap):
+    """Pure: rows -> consolidation plan. rows = [{id,formula,records,
+    needs_review,review_reason,admin_decision,best_credibility_tier}]."""
     groups: dict[str, list[dict]] = defaultdict(list)
-    for row in mats:
+    for row in rows:
         oid = row["id"]
         prefix = "nims" if str(oid).startswith("nims:") else "mat"
         norm = normalize_formula(row.get("formula") or "")
-        if not norm:
-            groups[oid].append(row)            # leave unkeyable as-is
-            continue
-        groups[build_id(prefix, norm)].append(row)
+        groups[build_id(prefix, norm) if norm else oid].append(row)
 
-    n_unchanged = n_rekey = 0
-    merge_groups = []
-    hetero = []                                 # element-heterogeneous
-    rows_removed = 0
-    stale_only_flagged = 0
-    rekey_samples, merge_samples = [], []
-
-    for new_id, rows in groups.items():
-        if len(rows) == 1:
-            r = rows[0]
+    plan = {"unchanged": 0, "rekey": [], "merges": [], "hetero": [],
+            "stale_flag": 0, "rows_removed": 0}
+    for new_id, grp in groups.items():
+        if len(grp) == 1:
+            r = grp[0]
             if r["id"] == new_id:
-                n_unchanged += 1
+                plan["unchanged"] += 1
             else:
-                n_rekey += 1
-                if len(rekey_samples) < 8:
-                    rekey_samples.append((r["id"], new_id))
+                plan["rekey"].append((r["id"], new_id))
             continue
-
-        # MERGE group
-        es = {elemset(r.get("formula") or "") for r in rows}
-        es = {e for e in es if e}               # ignore empties (alias)
+        es = {e for e in {elemset(r.get("formula") or "")
+                          for r in grp} if e}
         if len(es) > 1:
-            hetero.append((new_id, [r.get("formula") for r in rows[:4]],
-                           [sorted(x) for x in es]))
-
+            plan["hetero"].append(
+                (new_id, [r.get("formula") for r in grp[:4]]))
         pooled, seen = [], set()
-        for r in rows:
+        for r in grp:
             for rec in (r.get("records") or []):
                 k = _rec_key(rec)
                 if k not in seen:
                     seen.add(k)
                     pooled.append(rec)
-        # display formula: most-common cleaned, shortest tiebreak
         dc = Counter(_clean_display(r.get("formula") or "")
-                     or (r.get("formula") or "") for r in rows)
-        top = dc.most_common(1)[0][1]
-        disp = min([f for f, c in dc.items() if c == top], key=len)
-        norm_key = normalize_formula(disp)
-        summary = _derive_summary(disp, pooled,
-                                  overrides=omap.get(norm_key),
-                                  refuted=rmap.get(norm_key))
-
-        # admin_decision preservation
-        admin = next((r for r in rows
+                     or (r.get("formula") or "") for r in grp)
+        topc = dc.most_common(1)[0][1]
+        disp = min([f for f, c in dc.items() if c == topc], key=len)
+        nk = normalize_formula(disp)
+        summary = _derive_summary(disp, pooled, overrides=omap.get(nk),
+                                  refuted=rmap.get(nk))
+        admin = next((r for r in grp
                       if r.get("admin_decision") is not None), None)
         if admin is not None:
             summary["needs_review"] = admin.get("needs_review")
             summary["review_reason"] = admin.get("review_reason")
-
-        # R2.4: group made ENTIRELY of stale orphans (no fresh member)
-        all_stale = all(r.get("best_credibility_tier") is None
-                        and not str(r["id"]).startswith("nims:")
-                        for r in rows)
-        if all_stale and admin is None:
+        elif all(r.get("best_credibility_tier") is None
+                 and not str(r["id"]).startswith("nims:") for r in grp):
             summary["needs_review"] = True
             summary["review_reason"] = "stale_orphan_no_current_source"
-            stale_only_flagged += 1
+            plan["stale_flag"] += 1
+        plan["rows_removed"] += len(grp) - 1
+        plan["merges"].append({
+            "new_id": new_id, "old_ids": [r["id"] for r in grp],
+            "summary": summary, "n_pooled": len(pooled),
+            "admin_row": admin})
+    return plan
 
-        rows_removed += len(rows) - 1
-        merge_groups.append(new_id)
-        if len(merge_samples) < 12:
-            merge_samples.append((
-                new_id, [r["id"] for r in rows],
-                f"{len(pooled)} pooled recs",
-                f"fam {summary.get('family')} tc {summary.get('tc_max')}"))
 
-    print("\n===== R2.2 CONSOLIDATION PLAN (offline dry-run) =====")
-    print(f"  unchanged rows          : {n_unchanged}")
-    print(f"  pure re-key (id rename) : {n_rekey}")
-    print(f"  merge groups            : {len(merge_groups)}")
-    print(f"  rows removed by merge   : {rows_removed}")
-    print(f"  stale-orphan-only flagged (R2.4): {stale_only_flagged}")
-    print(f"  final row count         : "
-          f"{len(mats) - rows_removed}")
-    print(f"\n  GUARDRAIL element-heterogeneous merge groups: "
-          f"{len(hetero)} (review — may be alias/x-variable noise)")
-    for nid, fs, es in hetero[:8]:
-        print(f"    {nid} <= {fs}  elemsets={es}")
-    print("\n  re-key sample:")
-    for o, n in rekey_samples:
-        print(f"    {o}  ->  {n}")
-    print("\n  merge sample (old ids -> new id):")
-    for nid, oids, npool, fam in merge_samples:
-        print(f"    {nid}\n      <= {oids[:6]}  | {npool} | {fam}")
-    print("\n  (DRY-RUN — zero DB writes. --apply path is a separately"
-          "-authorised staging/prod step.)")
+def print_plan(plan, total):
+    print("\n===== R2.2 CONSOLIDATION PLAN =====")
+    print(f"  unchanged          : {plan['unchanged']}")
+    print(f"  pure re-key        : {len(plan['rekey'])}")
+    print(f"  merge groups       : {len(plan['merges'])}")
+    print(f"  rows removed       : {plan['rows_removed']}")
+    print(f"  R2.4 stale flagged : {plan['stale_flag']}")
+    print(f"  final row count    : {total - plan['rows_removed']}")
+    print(f"  element-heterogeneous groups (review): "
+          f"{len(plan['hetero'])}")
+    for nid, fs in plan["hetero"][:8]:
+        print(f"    {nid} <= {fs}")
+
+
+# --------------------------------------------------------------------
+# OFFLINE (default)
+# --------------------------------------------------------------------
+def run_offline():
+    rows = _load_jsonl(str(DATA / "materials.jsonl"))
+    omap = _build_override_map(_load_jsonl(str(DATA / "overrides.jsonl")))
+    rmap = _build_refuted_map(_load_jsonl(str(DATA / "refuted.jsonl")))
+    print(f"prod materials rows (snapshot): {len(rows)}")
+    plan = build_plan(rows, omap, rmap)
+    print_plan(plan, len(rows))
+    print("\n  (OFFLINE DRY-RUN — zero DB. Use --db for staging.)")
+
+
+# --------------------------------------------------------------------
+# REAL DB  (--db [--apply --yes --ack-hetero N])
+# --------------------------------------------------------------------
+async def _run_db(apply: bool, ack_hetero):
+    import asyncio  # noqa
+    from sqlalchemy import select, delete
+    from ingestion.index.indexer import (
+        _session_factory, materials_table, pipeline_state_table)
+    from ingestion.extract.materials_aggregator import (
+        _load_all_overrides, _load_all_refuted)
+
+    Session = _session_factory()
+    async with Session() as db:
+        rows = [dict(r._mapping) for r in (await db.execute(
+            select(materials_table))).all()]
+        omap = await _load_all_overrides(db)
+        rmap = await _load_all_refuted(db)
+        print(f"DB materials rows: {len(rows)}")
+        plan = build_plan(rows, omap, rmap)
+        print_plan(plan, len(rows))
+
+        if not apply:
+            print("\n  STAGING DRY-RUN (--db, no --apply): no writes.")
+            return
+        if ack_hetero != len(plan["hetero"]):
+            raise SystemExit(
+                f"ABORT: --ack-hetero must equal the "
+                f"{len(plan['hetero'])} element-heterogeneous groups "
+                f"(human must review them first). Got {ack_hetero}.")
+
+        print("\n  APPLYING (one transaction)…")
+        async with db.begin():
+            for m in plan["merges"]:
+                await db.execute(delete(materials_table).where(
+                    materials_table.c.id.in_(m["old_ids"])))
+                ins = {"id": m["new_id"], "status": "active_research",
+                       **m["summary"]}
+                await db.execute(materials_table.insert().values(**ins))
+            for old_id, new_id in plan["rekey"]:
+                exists = (await db.execute(select(materials_table.c.id)
+                          .where(materials_table.c.id == new_id))).first()
+                if exists:
+                    await db.execute(delete(materials_table).where(
+                        materials_table.c.id == old_id))
+                else:
+                    await db.execute(materials_table.update().where(
+                        materials_table.c.id == old_id).values(
+                        id=new_id))
+            await db.execute(
+                pipeline_state_table.update().where(
+                    pipeline_state_table.c.key
+                    == "materials_normalize_version"
+                ).values(value=str(NORMALIZE_SCHEMA_VERSION)))
+        print(f"  DONE. materials_normalize_version -> "
+              f"{NORMALIZE_SCHEMA_VERSION}. Aggregator interlock "
+              f"released; run the aggregator next to refresh summaries.")
+
+
+def main():
+    args = set(sys.argv[1:])
+    if OFFLINE:
+        run_offline()
+        return
+    import asyncio
+    apply = "--apply" in args
+    if apply and "--yes" not in args:
+        raise SystemExit("ABORT: --apply requires explicit --yes.")
+    ack = None
+    for a in sys.argv[1:]:
+        if a.startswith("--ack-hetero="):
+            ack = int(a.split("=", 1)[1])
+    asyncio.run(_run_db(apply, ack))
 
 
 if __name__ == "__main__":
