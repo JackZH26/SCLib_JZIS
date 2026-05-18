@@ -930,6 +930,30 @@ def _derive_summary(
             f"_ceiling_{_fam_ceil:.0f}K"
         )
 
+    # T1.1: family=null absolute Tc sanity — the blind spot of the
+    # per-family ceiling above. A material with NO recognised family
+    # is never guarded, so an implausibly high tc_max (MgxWO3
+    # 140-280 K, NaxCoO2 58 K, CB 55.9 K, LK-99 300 K) stays public.
+    # Flag needs_review unless it carries a superhydride signature
+    # (H with a >=2 subscript) — those legitimately reach ~250 K and
+    # are governed by the global _TC_SANITY_MAX_K rule. ``not family``
+    # (not ``_fam_ceil is None``) so family='hydride' — intentionally
+    # absent from the ceiling table — is NOT swept in here.
+    if (
+        not needs_review
+        and per_compound_tc_cap is None
+        and tc_max is not None
+        and not family
+        and tc_max > 45.0
+        and not re.search(
+            r"H(?:[2-9][0-9]*(?:\.[0-9]+)?|1[0-9]+)", formula_raw
+        )
+    ):
+        needs_review = True
+        review_reason = (
+            f"tc_max_{tc_max:.1f}_implausible_for_null_family_ceiling_45K"
+        )
+
     # P2 A5: Interface material detection (FeSe/STO → overlayer + substrate)
     norm_key = normalize_formula(formula_raw)
     overlayer, substrate_mat = _detect_interface(norm_key)
