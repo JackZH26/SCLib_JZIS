@@ -145,6 +145,15 @@ materials_table = Table(
     Column("has_competing_order", Boolean, server_default="false"),
     Column("retracted", Boolean, server_default="false"),
     Column("disputed", Boolean, server_default="false"),
+    # Aggregate best credibility tier across a material's papers. Added
+    # to the DB by alembic 0033_mat_best_cred_tier and emitted by
+    # _derive_summary, but this hand-maintained Table object had
+    # drifted (column never added here) — so the upsert
+    # ``{k: stmt.excluded[k] for k in summary}`` raised
+    # KeyError('best_credibility_tier') and aggregate_from_papers
+    # crashed on EVERY run since 0033. That is the real reason the
+    # materials table stayed stale. Type matches models/db.py.
+    Column("best_credibility_tier", String(2)),
     # v3 sanity gate (see api/alembic/versions/0005_needs_review.py)
     Column("needs_review", Boolean, nullable=False, server_default="false"),
     Column("review_reason", String(200)),
