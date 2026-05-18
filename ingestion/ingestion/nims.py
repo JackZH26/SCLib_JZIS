@@ -148,6 +148,18 @@ _FORMULA_ALIASES: dict[str, str] = {
 }
 
 
+# Canonicalisation scheme version. BUMP whenever a normalize_formula
+# change re-keys existing material ids (e.g. R2.1 cosmetic folding).
+# The materials table must be reconciled to this version by the R2.2
+# consolidation (scripts/r22_consolidate.py --apply, which writes
+# pipeline_state.materials_normalize_version) BEFORE the aggregator
+# is allowed to run — otherwise re-keyed old rows orphan and
+# duplicates multiply. aggregate_from_papers enforces this interlock.
+#   v1: original scheme
+#   v2: R2.1 — cosmetic paren/bracket strip, δ/±δ fold, ·/* hydrate
+NORMALIZE_SCHEMA_VERSION = 2
+
+
 def normalize_formula(raw: str) -> str:
     """Canonicalize a chemical formula to a grouping key.
 

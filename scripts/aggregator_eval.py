@@ -51,7 +51,8 @@ def _install_stubs() -> None:
     sys.modules["sqlalchemy.dialects.postgresql"] = pg
     idx = types.ModuleType("ingestion.index.indexer")
     for name in ("_session_factory", "manual_overrides_table",
-                 "materials_table", "papers_table", "refuted_claims_table"):
+                 "materials_table", "papers_table", "refuted_claims_table",
+                 "pipeline_state_table"):
         setattr(idx, name, object())
     sys.modules["ingestion.index.indexer"] = idx
 

@@ -170,6 +170,17 @@ materials_table = Table(
     Column("mp_synced_at", DateTime(timezone=True)),
 )
 
+# Tiny key/value pipeline state. Holds materials_normalize_version —
+# the canonicalisation scheme the materials table has been reconciled
+# to. The aggregator refuses to run if this is behind
+# nims.NORMALIZE_SCHEMA_VERSION (R2.2 interlock). Created + seeded by
+# alembic 0035_pipeline_state.
+pipeline_state_table = Table(
+    "pipeline_state", metadata,
+    Column("key", String(64), primary_key=True),
+    Column("value", String(256), nullable=False),
+)
+
 
 # --- P0 data-quality infrastructure (alembic 0025) -----------------------
 

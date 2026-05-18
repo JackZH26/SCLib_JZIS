@@ -64,6 +64,7 @@ from ingestion.index.indexer import (
     manual_overrides_table,
     materials_table,
     papers_table,
+    pipeline_state_table,
     refuted_claims_table,
 )
 # Canonicalization + family rules live in nims.py and are shared so
@@ -72,6 +73,7 @@ from ingestion.extract import formula_validator as _formula_validator
 from ingestion.nims import classify_family as _classify_family
 from ingestion.nims import detect_interface as _detect_interface
 from ingestion.nims import infer_unconventional as _infer_unconventional
+from ingestion.nims import NORMALIZE_SCHEMA_VERSION
 from ingestion.nims import normalize_formula
 from ingestion.nims import parent_formula_key as _parent_formula_key
 
@@ -1313,6 +1315,35 @@ async def aggregate_from_papers() -> int:
     display_counts: dict[str, Counter[str]] = defaultdict(Counter)
 
     async with Session() as db:
+        # -----------------------------------------------------------
+        # R2.2 INTERLOCK — refuse to run unless the materials table
+        # has been reconciled to the current canonicalisation scheme.
+        # Re-keying rows under a changed normalize_formula WITHOUT
+        # first running scripts/r22_consolidate.py --apply orphans the
+        # old rows (valid formula -> reconcile preserves them) and
+        # multiplies duplicates. The consolidation bumps
+        # pipeline_state.materials_normalize_version on success.
+        # -----------------------------------------------------------
+        _vr = (await db.execute(
+            select(pipeline_state_table.c.value).where(
+                pipeline_state_table.c.key == "materials_normalize_version"
+            )
+        )).first()
+        _db_ver = (int(_vr[0]) if _vr and str(_vr[0]).isdigit() else 0)
+        if _db_ver < NORMALIZE_SCHEMA_VERSION:
+            msg = (
+                f"ABORT aggregate_from_papers: "
+                f"materials_normalize_version={_db_ver} < code "
+                f"NORMALIZE_SCHEMA_VERSION={NORMALIZE_SCHEMA_VERSION}. "
+                f"materials is NOT consolidated to the R2.1 id scheme; "
+                f"running now would orphan ~re-keyed rows and multiply "
+                f"duplicates. Run scripts/r22_consolidate.py --apply "
+                f"(it reconciles the table and bumps the version), "
+                f"then retry."
+            )
+            log.critical(msg)
+            raise RuntimeError(msg)
+
         # -----------------------------------------------------------
         # P0: Load override / refuted caches once per run
         # -----------------------------------------------------------
