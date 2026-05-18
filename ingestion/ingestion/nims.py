@@ -473,7 +473,7 @@ def classify_family(formula: str) -> str | None:
     # ``^\(?\s*mg`` so parenthetical-prefixed substitutions like
     # ``(Mg0.7Al0.3)B2`` / ``(Mg1-xNax)B2`` match, not only the
     # leading-``Mg`` spellings.
-    if re.search(r"^\(?\s*mg", fl) and re.search(r"b[0-9]", fl_el):
+    if re.search(r"^(?:[hd]-?)?\(?\s*mg", fl) and re.search(r"b[0-9]", fl_el):
         if not any(x in fl for x in ("cu", "fe", "ni", "as", "se", "te")):
             return "mgb2"
 
@@ -486,8 +486,12 @@ def classify_family(formula: str) -> str | None:
     # ≥20-H superhydride to family=null when NER also left it untagged.
     # C3 fix: exclude ammoniated FeSe (Li0.6(NH2)0.2(NH3)0.8Fe2Se2
     # etc.) where H comes from NH₂/NH₃ ligands, not a superhydride
+    # ``[HD]`` so deuterides (D3S = deuterated H3S, etc.) are caught
+    # as the hydride family too — D only triggers when directly
+    # followed by a >=2 count (deuterium notation), never the 'D' of
+    # the Dy element symbol (Dy is D+y, not D+digit).
     high_h = bool(
-        re.search(r"H(?:[2-9][0-9]*(?:\.[0-9]+)?|1[0-9]+)", f_el)
+        re.search(r"[HD](?:[2-9][0-9]*(?:\.[0-9]+)?|1[0-9]+)", f_el)
     )
     if high_h and "O" not in el_set and "C" not in el_set:
         # Skip if Fe+Se present with N (ammoniated iron selenide)
@@ -512,7 +516,12 @@ def classify_family(formula: str) -> str | None:
     # ── Kagome vanadium antimonides ──
     # CsV3Sb5, KV3Sb5, RbV3Sb5 — the AV3Sb5 family
     if "V" in el_set and "Sb" in el_set:
-        if re.search(r"v3sb5", fl):
+        # CsV3Sb5 / RbV3Sb5 / KV3Sb5 and their Ti/Ta/Sn-substituted
+        # variants (doping notation breaks the literal "v3sb5", so
+        # also accept the specific alkali+V+Sb, no-O signature).
+        if re.search(r"v3sb5", fl) or (
+            el_set & {"Cs", "Rb", "K"} and "O" not in el_set
+        ):
             return "kagome"
 
     # ── Iron-based ──
@@ -554,9 +563,14 @@ def classify_family(formula: str) -> str | None:
 
     # ── Organic superconductors ──
     # BEDT-TTF (ET), TMTSF (Bechgaard salts), BETS, TTF-TCNQ, picene, etc.
+    # Also match: hyphen/paren-optional κ phase (κ(ET)2, κ-(BEDT…);
+    # BEDT-TTF written as its molecular formula C10H8S8 / C10D8S8;
+    # alkali-doped aromatic-hydrocarbon donors written as molecular
+    # formula (p-terphenyl C18H14, picene/pentacene C22H14, C18H12).
     organic_patterns = (
-        r"bedt[\s\-]?ttf|κ-\(et\)|κ-\(bedt|tmtsf|bets|"
-        r"dmit|tcnq|picene|phenanthrene|coronene|chrysene|\(best\)"
+        r"bedt[\s\-]?ttf|κ-?\(?et|κ-?\(?bedt|tmtsf|bets|"
+        r"dmit|tcnq|picene|phenanthrene|coronene|chrysene|\(best\)|"
+        r"c10[hd]8s8|c18h1[24]|c22h14"
     )
     if re.search(organic_patterns, fl):
         return "organic"
@@ -614,6 +628,13 @@ def classify_family(formula: str) -> str | None:
     if re.search(r"ube13|cecu2si2|upd2al3|uru2si2|cecoin5", fl):
         return "heavy_fermion"
 
+    # LaRu3Si2-type kagome-lattice SCs (LaRu3Si2, YRu3Si2, ThRu3Si2,
+    # …). Placed AFTER the heavy-fermion block so a HF Ce/U variant
+    # (e.g. CeRu3Si2) keeps its heavy_fermion label — only the
+    # otherwise-unclassified RRu3Si2 fall through to kagome here.
+    if re.search(r"ru3si2", fl):
+        return "kagome"
+
     # ── Borocarbides ──
     # RNi2B2C: YNi2B2C, LuNi2B2C, ErNi2B2C, HoNi2B2C, etc.
     if "Ni" in el_set and "B" in el_set and "C" in el_set:
@@ -634,7 +655,8 @@ def classify_family(formula: str) -> str | None:
     # ── Chalcogenides (transition-metal dichalcogenides + misc) ──
     # NbSe2, TaS2, MoS2, MoTe2, PdTe2, PbTaSe2, CuxBi2Se3, 4Hb-TaS2
     chalc = {"Se", "Te", "S"}
-    tm_chalc = {"Nb", "Ta", "Mo", "W", "Ti", "Zr", "Hf", "Pd", "Pt", "Ir", "Re"}
+    tm_chalc = {"Nb", "Ta", "Mo", "W", "Ti", "Zr", "Hf", "Pd", "Pt",
+                "Ir", "Re", "V"}  # V: VSe2/VS2/VTe2 dichalcogenides
     if el_set & chalc and el_set & tm_chalc:
         # Exclude iron-based (already caught) and bismuthates
         if "Fe" not in el_set:
