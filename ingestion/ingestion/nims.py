@@ -200,14 +200,40 @@ def normalize_formula(raw: str) -> str:
            .replace("{", "")
            .replace("}", "")
            .replace("$", ""))
-    # 4. Greek → ASCII for the doping marker specifically. Keep other
-    #    Greeks (λ, κ, α, β prefixes) because they denote distinct
-    #    polymorphs of organic superconductors.
+    # R2-B2: variable-stoichiometry delta marker in ANY position,
+    #   stripped while still Greek/word form (BEFORE lowercase) so it
+    #   can never be confused with the 'd' of Pd/Nd/Gd/Cd. Folds
+    #   O8±δ / O8+δ / O8-δ / O0.9F0.1-δFeAs / +delta onto the parent.
+    #   Greek δ/Δ and the word "delta" never occur inside a real
+    #   element token, so the element multiset is preserved.
+    s = re.sub(r"[+\-±]?\s*(?:[δΔ]|[Dd]elta|DELTA)", "", s)
+    # 4. Greek → ASCII for any non-doping δ that remains (no-op for
+    #    the doping marker, handled above). Keep λ/κ/α/β polymorph
+    #    prefixes.
     s = s.replace("δ", "d").replace("Δ", "d")
     # 5. Noisy symbols
     s = s.replace("±", "").replace("×", "x")
     # 6. Whitespace gone
     s = _WS.sub("", s)
+    # R2-B3: canonicalize water-of-crystallisation separators. Only
+    #   the UNAMBIGUOUS middot/asterisk separators (``·`` ``⋅`` ``*``)
+    #   are removed — these never occur in a real formula except as a
+    #   hydrate/multiplication separator, so NaxCoO2·1.3H2O and
+    #   NaxCoO2*1.3H2O collapse onto NaxCoO21.3H2O with the hydrate
+    #   decimal intact. A ``.``/``-`` separator is deliberately NOT
+    #   touched: it is indistinguishable from the decimal inside the
+    #   hydrate count (1.3H2O) and stripping it corrupts stoichiometry.
+    s = s.replace("·", "").replace("⋅", "").replace("*", "")
+    # R2-B1: strip COSMETIC grouping brackets — a ``)``/``]`` NOT
+    #   followed by a digit/decimal is pure grouping, not a
+    #   stoichiometric multiplier. Iterate for repeated (non-nested)
+    #   groups; ``(...)2`` / ``[...]5`` multipliers are preserved.
+    #   Removes only bracket chars — element multiset preserved.
+    _prev = None
+    while _prev != s:
+        _prev = s
+        s = re.sub(r"\(([^()]*)\)(?![0-9.])", r"\1", s)
+        s = re.sub(r"\[([^\[\]]*)\](?![0-9.])", r"\1", s)
     # 7. Variable stoichiometry suffixes. Runs AFTER whitespace /
     #    Greek normalization so "O_8 + delta" hits the same pattern.
     s = _VAR_STOICH_SUFFIX.sub("", s)
