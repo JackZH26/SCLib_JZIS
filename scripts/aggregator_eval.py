@@ -22,12 +22,16 @@ Usage:
 from __future__ import annotations
 
 import json
+import os
 import sys
 import types
 from collections import Counter, defaultdict
 from pathlib import Path
 
-DATA = Path("/tmp/sclib_phase0")
+# Override with SCLIB_EVAL_DATA to point at a different snapshot
+# (e.g. the Phase 4 post-NER dump) while keeping the Phase 0 baseline
+# dir untouched for comparison.
+DATA = Path(os.environ.get("SCLIB_EVAL_DATA", "/tmp/sclib_phase0"))
 
 
 # --------------------------------------------------------------------------
