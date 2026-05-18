@@ -439,6 +439,49 @@ def reconcile_preview(fresh: dict, prod_rows: list[dict]) -> None:
           [r["formula"] for r in preserved_valid[:6]])
 
 
+def schema_drift_check(fresh: dict) -> set[str]:
+    """T0.1 — offline guard for the bug class that crashed prod.
+
+    Every key _derive_summary emits MUST be a real column in the
+    hand-maintained indexer.materials_table Table object, or the
+    production upsert `{k: stmt.excluded[k] for k in summary}` raises
+    KeyError and aggregate_from_papers dies on the first material.
+    This parses the Table column names statically (no sqlalchemy /
+    DB) and asserts summary_keys ⊆ columns. Would have caught
+    `best_credibility_tier` instantly, offline.
+    """
+    import re as _re
+    idx = (Path(__file__).resolve().parents[1]
+           / "ingestion/ingestion/index/indexer.py")
+    src = idx.read_text().splitlines()
+    i = next(n for n, l in enumerate(src)
+             if l.strip().startswith("materials_table = Table("))
+    depth = 0
+    cols: set[str] = set()
+    for n in range(i, len(src)):
+        depth += src[n].count("(") - src[n].count(")")
+        m = _re.search(r'Column\("([a-z0-9_]+)"', src[n])
+        if m:
+            cols.add(m.group(1))
+        if depth <= 0 and n > i:
+            break
+    keys: set[str] = set()
+    for v in fresh.values():
+        keys |= set(v["summary"].keys())
+    drift = keys - cols
+    print("\n===== SCHEMA-DRIFT GUARD (summary keys vs "
+          "indexer.materials_table) =====")
+    print(f"  indexer columns: {len(cols)}  summary keys: {len(keys)}")
+    if drift:
+        print(f"  ❌ FAIL — {len(drift)} key(s) not declared as columns: "
+              f"{sorted(drift)}")
+        print("  → production upsert WILL KeyError on these. Add the "
+              "column(s) to indexer.materials_table before any re-run.")
+    else:
+        print("  ✅ PASS — every summary key has a materials_table column")
+    return drift
+
+
 def main():
     papers = _load_jsonl("papers.jsonl")
     prod_rows = _load_jsonl("materials.jsonl")
@@ -453,6 +496,8 @@ def main():
           f"records_skipped={sum(skips.values())}")
     for k, v in skips.most_common():
         print(f"  skip {k:32} {v}")
+
+    schema_drift_check(fresh)
 
     print("\n===== SCORECARD (fresh recompute) =====")
     for k, v in scorecard(fresh).items():
