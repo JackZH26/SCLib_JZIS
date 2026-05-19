@@ -192,7 +192,13 @@ _TRAILING_CHARGE = re.compile(r"[A-Za-z0-9][+\-]$")
 
 # Condition descriptors NER sometimes appends to a formula:
 # ``(x = 0.3)``, ``(z = 0.05)``, ``with n = 2`` etc.
-_CONDITION_PATTERN = re.compile(r"\(?\s*[xyzn]\s*=\s*[0-9]", re.IGNORECASE)
+# Also catches inequality / range conditions glued onto a formula
+# ("(1.78≤x≤1.88", "x>=0.1"): ≤ ≥ < > never occur in a real chemical
+# formula. LOCKSTEP with api/main.py::_FORMULA_CONDITION_REGEX +
+# api/alembic 0036_inequality_condition — keep all three identical.
+_CONDITION_PATTERN = re.compile(
+    r"\(?\s*[xyzn]\s*=\s*[0-9]|[≤≥]|<=|>=", re.IGNORECASE
+)
 
 # A formula must start with an element symbol (uppercase letter) or
 # an opening bracket. Allowing Greek prefixes covers organic SC

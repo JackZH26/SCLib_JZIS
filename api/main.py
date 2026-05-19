@@ -90,7 +90,10 @@ _FORMULA_BLACKLIST_REGEX = (
     r"nanotubes|nanowire|nanowires"
     r")\M"
 )
-_FORMULA_CONDITION_REGEX = r"\(?\s*[xyzn]\s*=\s*[0-9]"
+# LOCKSTEP: mirrors formula_validator._CONDITION_PATTERN +
+# api/alembic 0036_inequality_condition. ≤ ≥ < > never occur in a
+# real chemical formula — they signal a glued-on range condition.
+_FORMULA_CONDITION_REGEX = r"\(?\s*[xyzn]\s*=\s*[0-9]|[≤≥]|<=|>="
 
 # Concatenated structural descriptors the word-boundary blacklist
 # misses (e.g. "TaNSmonolayer", "Y-dopedBi2Sr2CaCu2O8"). Substring
