@@ -854,9 +854,22 @@ def _derive_summary(
     raw_phase = _weighted_mode_str(records, "structure_phase")
     structure_phase = _sanity_check_structure_phase(formula_raw, raw_phase)
 
-    # Family: trust NER's mode first, fall back to the rule-based
-    # classifier from nims.py when NER didn't say (most common case).
-    family = _weighted_mode_str(records, "family") or _classify_family(formula_raw)
+    # Family: trust NER's weighted mode first, fall back to the
+    # rule-based classifier when NER is silent (the common case).
+    # EXCEPTION — BiS2-layered: NER systematically coarse-votes
+    # "chalcogenide"/"bismuthate" for the LaO1-xFxBiS2 family, but
+    # classify_family's Bi+S+RE+O rule is precise and verified
+    # false-positive-free corpus-wide (190/190 carry the BiS2 motif),
+    # so it overrides a coarser NER vote here. Without this the
+    # hourly sweep keeps reverting these ~60 rows to "chalcogenide".
+    _ner_fam = _weighted_mode_str(records, "family")
+    _rule_fam = _classify_family(formula_raw)
+    if _rule_fam == "bis2_layered" and _ner_fam in (
+        None, "chalcogenide", "bismuthate"
+    ):
+        family = "bis2_layered"
+    else:
+        family = _ner_fam or _rule_fam
 
     # is_unconventional: trust NER weighted-boolean first; when NER is
     # silent (the common case — 61.8% missing), infer from family.
