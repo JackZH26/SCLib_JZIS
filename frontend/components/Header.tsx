@@ -14,7 +14,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { loadToken, onAuthChange } from "@/lib/auth-storage";
+import { loadValidToken, onAuthChange } from "@/lib/auth-storage";
 import { me, type User, ApiError } from "@/lib/api";
 
 const NAV = [
@@ -30,7 +30,7 @@ export function Header() {
 
   useEffect(() => {
     function refresh() {
-      const token = loadToken();
+      const token = loadValidToken();
       if (!token) {
         setUser(null);
         return;

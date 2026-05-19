@@ -9,7 +9,7 @@ import {
   type AskResponse,
   friendlyErrorMessage,
 } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
+import { loadValidToken } from "@/lib/auth-storage";
 import { SearchBar } from "@/components/SearchBar";
 import { PaperCard } from "@/components/PaperCard";
 import { GuestBanner } from "@/components/GuestBanner";
@@ -63,7 +63,7 @@ function SearchInner() {
     setAskErr(null);
     setManualAsk(false);
 
-    const token = loadToken() ?? undefined;
+    const token = loadValidToken() ?? undefined;
 
     search(
       { query: q, top_k: 20, filters: { exclude_retracted: true } },
@@ -86,7 +86,7 @@ function SearchInner() {
     setManualAsk(true);
     setAskLoading(true);
     setAskErr(null);
-    const token = loadToken() ?? undefined;
+    const token = loadValidToken() ?? undefined;
     ask({ question: q, max_sources: 8 }, { auth: token })
       .then(setAskData)
       .catch((e: unknown) => setAskErr(friendlyErrorMessage(e)))

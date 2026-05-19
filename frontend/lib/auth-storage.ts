@@ -23,6 +23,28 @@ export function loadToken(): string | null {
   return window.localStorage.getItem(KEY);
 }
 
+/**
+ * Like ``loadToken`` but also checks the JWT ``exp`` claim.
+ * Returns ``null`` (and clears the stale token + fires the auth event)
+ * if the token is expired or malformed, so the Header immediately
+ * flips back to the "Account" button.
+ */
+export function loadValidToken(): string | null {
+  const token = loadToken();
+  if (!token) return null;
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    if (typeof payload.exp === "number" && payload.exp * 1000 < Date.now()) {
+      clearToken();
+      return null;
+    }
+  } catch {
+    clearToken();
+    return null;
+  }
+  return token;
+}
+
 export function clearToken() {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(KEY);
