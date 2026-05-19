@@ -157,7 +157,7 @@ _FORMULA_ALIASES: dict[str, str] = {
 # duplicates multiply. aggregate_from_papers enforces this interlock.
 #   v1: original scheme
 #   v2: R2.1 — cosmetic paren/bracket strip, δ/±δ fold, ·/* hydrate
-NORMALIZE_SCHEMA_VERSION = 2
+NORMALIZE_SCHEMA_VERSION = 3
 
 
 def normalize_formula(raw: str) -> str:
@@ -198,6 +198,16 @@ def normalize_formula(raw: str) -> str:
     s = s.translate(_UNICODE_SUP_MAP)
     s = s.replace("−", "-")           # U+2212 MINUS SIGN → hyphen
     s = _INVISIBLE_SPACE.sub("", s)
+    # R2.3-N2: drop caret superscripts BEFORE the LaTeX passes. A
+    #   superscript is an isotope mass (``^10B``, ``^{18}O``), an ionic
+    #   charge (``Fe^3+``) or a phase-prime (``β^'``) — never
+    #   stoichiometry. Left in, step-2's ``[_^][0-9.]+`` would fold
+    #   ``^10`` into a fake subscript (``YNi2^10B2C`` → ``yni210b2c``),
+    #   fragmenting every isotopologue onto its own row. Strip
+    #   ``^{...}`` then bare ``^<num>``/``^'``/``^`` so ^10B, ^11B and
+    #   B all key together (isotope detail is preserved per-record).
+    s = re.sub(r"\^\{[^}]*\}", "", s)
+    s = re.sub(r"\^\d*'?", "", s)
     # 1. LaTeX brace subscripts first (they may contain δ/± we
     #    normalize next)
     s = _LATEX_BRACE.sub(r"\1", s)
@@ -256,6 +266,23 @@ def normalize_formula(raw: str) -> str:
     #    is preserved via the lookup below for polytypes that *are*
     #    a distinct material (none today, but room to grow).
     s = _POLYTYPE_PREFIX.sub("", s)
+    # R2.3-D-low: collapse pure SEGMENT separators (run AFTER polytype
+    #   + lowercase so it can never eat the ``2h-`` polytype hyphen or
+    #   a ``-x``/``-δ`` doping marker — those are gone by now).
+    #   (a) ``±`` before a hydrate tail: ``naxcoo2-1.3h2o`` /
+    #       ``+1.3h2o`` → ``naxcoo21.3h2o`` (matches R2-B3's ``·``
+    #       form). Anchored to ``h2o`` so a stoichiometric ± is safe.
+    s = re.sub(r"[+\-](?=\d*\.?\d*h2o\b)", "", s)
+    #   (b) hyphen strictly BETWEEN two letters = a cosmetic element/
+    #       segment separator, not stoichiometry: ``h-mgb2`` →
+    #       ``hmgb2``, ``mg-alb2`` → ``mgalb2``, ``ba-la-cu-o`` →
+    #       ``balacuo``. Digit-adjacent hyphens (decimals, ``1-x``)
+    #       are untouched — the lookbehind/ahead require [a-z].
+    s = re.sub(r"(?<=[a-z])-(?=[a-z])", "", s)
+    #   (c) solid-solution comma between element context: ``(ca,re)``
+    #       ``ba,kfe2as2`` → comma dropped (same compound family,
+    #       grouping key only).
+    s = re.sub(r"(?<=[a-z0-9.]),(?=[a-z])", "", s)
     # 10. Acronym alias lookup. Papers interchangeably say "YBCO" and
     #    "YBa_2Cu_3O_7-δ"; this map folds the former onto the latter
     #    so they end up in the same row.
