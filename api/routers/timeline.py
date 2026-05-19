@@ -97,7 +97,23 @@ def _is_theoretical(rec: dict) -> bool:
     if m in _THEORETICAL_MEASUREMENTS:
         return True
     pt = (rec.get("paper_type") or "").strip().lower()
-    return pt in {"theoretical", "computational"}
+    if pt not in {"theoretical", "computational"}:
+        return False
+    # paper_type is the ONLY remaining signal here, and NER massively
+    # over-tags it. Measured over the live timeline corpus: the
+    # explicit-calc tag fires on 1/19922 records, so paper_type drives
+    # ~100% of "theoretical" — and ~84% of those (2953 records) are
+    # AMBIENT-pressure points that are demonstrably real experimental
+    # classics (ErBa2Cu3O7, La1.86Sr0.14CuO4, Chevrel Mo6Se7.5,
+    # RuSr2Gd1.5Ce0.5Cu2O10, picene C14H10 …) — three independent
+    # random-100 scientific reviews all flagged this as THE systematic
+    # error. Trust paper_type ONLY in the pressure-bearing prediction
+    # zone, where the theory/experiment split is defensible and most
+    # meaningful (super-hydride / high-pressure predictions). An
+    # ambient paper_type-only "theoretical" is almost always a
+    # mislabeled measurement → treat as experimental.
+    p = _as_float(rec.get("pressure_gpa"))
+    return p is not None and p > 0
 
 
 @router.get("/timeline", response_model=TimelineResponse)
