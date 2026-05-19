@@ -19,7 +19,7 @@ from datetime import datetime, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
@@ -230,11 +230,21 @@ async def audit_queue(
     db: AsyncSession = Depends(get_db),
     _reviewer: User = Depends(current_reviewer_or_admin),
 ) -> AuditQueueResponse:
-    base = select(Material).where(Material.needs_review.is_(True))
+    # Exclude NIMS provenance-quarantine rows: they are not a
+    # data-quality issue to review/unflag (unflagging would wrongly
+    # resurface the broken NIMS set site-wide) and would flood the
+    # queue with thousands of entries. NULL-safe.
+    _not_quarantined = or_(
+        Material.review_reason.is_(None),
+        Material.review_reason != "provenance_quarantine_nims",
+    )
+    base = select(Material).where(
+        Material.needs_review.is_(True), _not_quarantined
+    )
     count_stmt = (
         select(func.count())
         .select_from(Material)
-        .where(Material.needs_review.is_(True))
+        .where(Material.needs_review.is_(True), _not_quarantined)
     )
     if rule:
         base = base.where(Material.review_reason == rule)

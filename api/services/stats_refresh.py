@@ -25,8 +25,17 @@ async def compute_stats(db: AsyncSession) -> dict:
     serialize it straight through."""
 
     total_papers = (await db.execute(select(func.count()).select_from(Paper))).scalar_one()
+    # Public count only: needs_review=True covers both data-quality
+    # flags and the NIMS provenance quarantine
+    # (review_reason='provenance_quarantine_nims'). Mirrors the default
+    # /materials list gate (materials.py) so the headline MATERIALS
+    # number reflects the trustworthy arXiv-derived catalogue.
     total_materials = (
-        await db.execute(select(func.count()).select_from(Material))
+        await db.execute(
+            select(func.count())
+            .select_from(Material)
+            .where(Material.needs_review.is_(False))
+        )
     ).scalar_one()
     total_chunks = (await db.execute(select(func.count()).select_from(Chunk))).scalar_one()
 

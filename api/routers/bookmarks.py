@@ -22,7 +22,7 @@ from __future__ import annotations
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func, insert, literal, select
+from sqlalchemy import func, insert, literal, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -154,16 +154,31 @@ async def list_material_bookmarks(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(current_user_from_jwt),
 ) -> BookmarkedMaterialsResponse:
+    # Hide NIMS provenance-quarantine rows from saved lists too — they
+    # 404 on click, so showing them as bookmarks would be inconsistent.
+    _not_quarantined = or_(
+        Material.review_reason.is_(None),
+        Material.review_reason != "provenance_quarantine_nims",
+    )
     total_q = await db.execute(
         select(func.count()).select_from(Bookmark)
-        .where(Bookmark.user_id == user.id, Bookmark.target_type == "material")
+        .join(Material, Material.id == Bookmark.target_id)
+        .where(
+            Bookmark.user_id == user.id,
+            Bookmark.target_type == "material",
+            _not_quarantined,
+        )
     )
     total = int(total_q.scalar_one() or 0)
 
     q = await db.execute(
         select(Bookmark, Material)
         .join(Material, Material.id == Bookmark.target_id)
-        .where(Bookmark.user_id == user.id, Bookmark.target_type == "material")
+        .where(
+            Bookmark.user_id == user.id,
+            Bookmark.target_type == "material",
+            _not_quarantined,
+        )
         .order_by(Bookmark.created_at.desc())
         .offset(offset)
         .limit(limit)

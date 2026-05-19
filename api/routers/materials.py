@@ -8,7 +8,7 @@ offset/limit pagination.
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
@@ -98,6 +98,19 @@ async def list_materials(
         stmt = stmt.where(where_clause)
         count_stmt = count_stmt.where(where_clause)
 
+    # NIMS provenance quarantine — UNCONDITIONAL: the broken NIMS
+    # import left the whole NIMS set without Tc/papers, so it is
+    # hidden site-wide until re-ingested. Excluded even when admins
+    # pass include_pending / include_skeletons (those toggles are for
+    # auditing data-quality flags, not for resurfacing quarantined
+    # provenance).
+    _apply(
+        or_(
+            Material.review_reason.is_(None),
+            Material.review_reason != "provenance_quarantine_nims",
+        )
+    )
+
     # Automatic sanity gate. Rows where the aggregator detected an
     # implausible Tc (>250 K at ambient pressure) are hidden from the
     # public list; they remain fetchable via GET /materials/{id} so
@@ -177,6 +190,9 @@ async def material_phase_diagram(
     parent = await db.get(Material, material_id)
     if parent is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
+    # NIMS provenance quarantine — hidden site-wide (see material_detail).
+    if parent.review_reason == "provenance_quarantine_nims":
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
 
     # Collect this material + all variants
     materials = [parent]
@@ -217,6 +233,12 @@ async def material_detail(
 ) -> MaterialDetail:
     m = await db.get(Material, material_id)
     if m is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
+    # NIMS provenance quarantine: treat as non-existent publicly (the
+    # NIMS import is broken — Tc/papers missing — so the whole NIMS
+    # set is hidden site-wide until re-ingested). Same 404 as missing
+    # so it's indistinguishable from a bad id.
+    if m.review_reason == "provenance_quarantine_nims":
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
 
     detail = MaterialDetail.model_validate(m)
