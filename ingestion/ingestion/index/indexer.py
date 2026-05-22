@@ -59,6 +59,7 @@ papers_table = Table(
     Column("title", Text, nullable=False),
     Column("authors", JSONB, nullable=False),
     Column("affiliations", JSONB),
+    Column("paper_geo", JSONB),
     Column("date_submitted", Date),
     Column("date_published", Date),
     Column("journal", String(300)),
@@ -311,6 +312,26 @@ async def upsert_paper_with_chunks(
                         for c in chunks
                     ],
                 )
+
+
+async def upsert_paper_geo(
+    paper_id: str,
+    affiliations: list[Any] | None,
+    paper_geo: dict[str, Any] | None,
+) -> None:
+    """Write author-geography NER output onto an existing papers row.
+
+    Kept separate from ``upsert_paper_with_chunks`` so the geo flow
+    stays fully decoupled from the material-NER write path. The UPDATE
+    simply matches nothing if the row does not exist yet.
+    """
+    async with _session_factory()() as session:
+        async with session.begin():
+            await session.execute(
+                papers_table.update()
+                .where(papers_table.c.id == paper_id)
+                .values(affiliations=affiliations, paper_geo=paper_geo)
+            )
 
 
 # ---------------------------------------------------------------------------

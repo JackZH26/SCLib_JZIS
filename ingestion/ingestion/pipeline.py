@@ -55,11 +55,13 @@ from ingestion.collect.arxiv_oai import ArxivClient, ArxivError
 from ingestion.chunk.chunker import chunk_paper
 from ingestion.config import get_settings
 from ingestion.embed.embedder import embed_chunks
+from ingestion.extract.affiliation_ner import extract_paper_geo
 from ingestion.extract.material_ner import extract_materials
 from ingestion.extract.materials_aggregator import aggregate_from_papers
 from ingestion.index.indexer import (
     dispose,
     upsert_chunks_to_vector_search,
+    upsert_paper_geo,
     upsert_paper_with_chunks,
 )
 from ingestion.models import PaperMetadata, ParsedPaper
@@ -79,6 +81,7 @@ async def process_paper(
     *,
     skip_vector_search: bool = False,
     skip_ner: bool = False,
+    skip_geo: bool = False,
     strategy: str = "default",
 ) -> dict[str, Any]:
     """Run the full per-paper pipeline. Returns a dict summarizing the work.
@@ -113,7 +116,7 @@ async def process_paper(
     # Short-circuit: abstract_only never touches the network or the parser.
     if strategy == "abstract_only":
         parsed = ParsedPaper(meta=meta, sections=[], has_latex_source=False)
-        return await _finish(parsed, skip_vector_search, skip_ner, result)
+        return await _finish(parsed, skip_vector_search, skip_ner, skip_geo, result)
 
     # 1. Fetch + archive
     data: bytes | None = None
@@ -136,7 +139,7 @@ async def process_paper(
             result.update({"stage": "download", "error": f"pdf: {e}"})
             return result
         parsed = ParsedPaper(meta=meta, sections=[], has_latex_source=False)
-        return await _finish(parsed, skip_vector_search, skip_ner, result)
+        return await _finish(parsed, skip_vector_search, skip_ner, skip_geo, result)
     else:
         try:
             data = await client.download_source(meta.arxiv_id)
@@ -152,7 +155,7 @@ async def process_paper(
                 return result
             # PDF fallback parser not implemented yet — chunk abstract only
             parsed = ParsedPaper(meta=meta, sections=[], has_latex_source=False)
-            return await _finish(parsed, skip_vector_search, skip_ner, result)
+            return await _finish(parsed, skip_vector_search, skip_ner, skip_geo, result)
 
     # 2. Parse LaTeX
     try:
@@ -162,13 +165,14 @@ async def process_paper(
                     meta.arxiv_id, e)
         parsed = ParsedPaper(meta=meta, sections=[], has_latex_source=False)
 
-    return await _finish(parsed, skip_vector_search, skip_ner, result)
+    return await _finish(parsed, skip_vector_search, skip_ner, skip_geo, result)
 
 
 async def _finish(
     parsed: ParsedPaper,
     skip_vector_search: bool,
     skip_ner: bool,
+    skip_geo: bool,
     result: dict[str, Any],
 ) -> dict[str, Any]:
     # 3. Chunk
@@ -217,6 +221,20 @@ async def _finish(
             result.update({"stage": "vs", "error": f"{e}"})
             return result
 
+    # 8. Author-geography NER — a separate NER flow from material NER
+    #    (step 5), writing papers.affiliations + papers.paper_geo. Runs
+    #    last and only logs on error, so a geo failure can never fail an
+    #    otherwise-good paper.
+    if not skip_geo:
+        try:
+            geo = await asyncio.to_thread(extract_paper_geo, parsed.meta.arxiv_id)
+            await upsert_paper_geo(
+                parsed.meta.paper_id, geo["affiliations"], geo["paper_geo"],
+            )
+            result["geo_status"] = geo["paper_geo"].get("status")
+        except Exception as e:  # noqa: BLE001
+            log.warning("%s: geo NER failed: %s", parsed.meta.arxiv_id, e)
+
     result["ok"] = True
     return result
 
@@ -233,6 +251,7 @@ async def run(
     limit: int | None,
     skip_vector_search: bool,
     skip_ner: bool,
+    skip_geo: bool,
 ) -> list[dict[str, Any]]:
 
     if mode == "retry":
@@ -279,6 +298,7 @@ async def run(
                     client, meta,
                     skip_vector_search=skip_vector_search,
                     skip_ner=skip_ner,
+                    skip_geo=skip_geo,
                 )
             except Exception as e:  # noqa: BLE001
                 log.exception("pipeline error on %s: %s", meta.arxiv_id, e)
@@ -410,6 +430,8 @@ def main(argv: list[str] | None = None) -> int:
                         help="Skip Vertex VS upsert (DB-only).")
     parser.add_argument("--skip-ner", action="store_true",
                         help="Skip Gemini material NER.")
+    parser.add_argument("--skip-geo", action="store_true",
+                        help="Skip Gemini author-geography NER.")
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args(argv)
 
@@ -430,6 +452,7 @@ def main(argv: list[str] | None = None) -> int:
                 limit=args.limit,
                 skip_vector_search=args.skip_vector_search,
                 skip_ner=args.skip_ner,
+                skip_geo=args.skip_geo,
             )
         finally:
             await dispose()
