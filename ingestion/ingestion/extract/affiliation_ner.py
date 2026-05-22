@@ -29,9 +29,9 @@ from __future__ import annotations
 import json
 import logging
 import re
+import threading
 import time
 from datetime import datetime, timezone
-from functools import lru_cache
 from typing import Any
 
 import httpx
@@ -207,13 +207,26 @@ def _fetch_evidence(arxiv_id: str) -> tuple[str, str | None, Any]:
 # Gemini extraction
 # ---------------------------------------------------------------------------
 
-@lru_cache(maxsize=1)
+_tls = threading.local()
+
+
 def _client() -> genai.Client:
-    s = get_settings()
-    return genai.Client(
-        vertexai=True, project=s.gcp_project, location=s.gcp_region,
-        http_options={"timeout": 120_000},
-    )
+    """Return a per-thread genai client.
+
+    The backfill runs extract_paper_geo across many worker threads. A
+    single shared google-genai client races on its underlying httpx
+    connection ("Cannot send a request, as the client has been
+    closed"), so each thread gets and reuses its own.
+    """
+    c = getattr(_tls, "geo_client", None)
+    if c is None:
+        s = get_settings()
+        c = genai.Client(
+            vertexai=True, project=s.gcp_project, location=s.gcp_region,
+            http_options={"timeout": 120_000},
+        )
+        _tls.geo_client = c
+    return c
 
 
 def _finish_reason(resp: Any) -> str:
