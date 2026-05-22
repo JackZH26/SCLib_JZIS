@@ -274,6 +274,9 @@ class Paper(Base):
     title: Mapped[str] = mapped_column(Text, nullable=False)
     authors: Mapped[list[Any]] = mapped_column(JSONB, nullable=False)
     affiliations: Mapped[list[Any] | None] = mapped_column(JSONB)
+    # Backend-only author/institution geography (see alembic 0035).
+    # Never exposed by an API response model — kept for analysis only.
+    paper_geo: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
     date_submitted: Mapped[date | None] = mapped_column(Date)
     date_published: Mapped[date | None] = mapped_column(Date)
     journal: Mapped[str | None] = mapped_column(String(300))
