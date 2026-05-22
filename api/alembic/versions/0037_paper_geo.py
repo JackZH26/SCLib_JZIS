@@ -1,7 +1,7 @@
 """Add papers.paper_geo + author-geography analysis views.
 
-Revision ID: 0035_paper_geo
-Down revision: 0034_concat_descriptor
+Revision ID: 0037_paper_geo
+Down revision: 0036_inequality_condition
 
 Backend-only author / institution geography. Nothing here is exposed by
 an API router, so geography never reaches the frontend.
@@ -27,8 +27,8 @@ import sqlalchemy as sa
 from alembic import op
 from sqlalchemy.dialects import postgresql
 
-revision = "0035_paper_geo"
-down_revision = "0034_concat_descriptor"
+revision = "0037_paper_geo"
+down_revision = "0036_inequality_condition"
 branch_labels = None
 depends_on = None
 
