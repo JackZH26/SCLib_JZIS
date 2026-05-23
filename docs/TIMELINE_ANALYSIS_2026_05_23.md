@@ -1,6 +1,12 @@
 # Timeline 数据大数据分析 — 10 大主要发现
 
-> **⚠️ 极其重要 / VERY IMPORTANT** — 本文档是 2026-05-23 全库快照的统计分析,作为 timeline 数据 + 新补全地理(`paper_geo`)首次联合分析的基线。任何关于超导研究的家族/地缘/时代趋势讨论,优先参考本文档。
+> **🚫 已被 v2 取代 / SUPERSEDED BY v2** — 请参考 [`TIMELINE_ANALYSIS_2026_05_23_v2.md`](TIMELINE_ANALYSIS_2026_05_23_v2.md)。
+>
+> v1 含 **1 处事实性错误**(294 K CaLuH12 实为 DFT 预测而非实验测量)+ **4 处解读偏差**(中美关系叙事、家族领先幅度、Top 材料排序、Pareto 计数),已在 v2 修正。v2 同时**大幅扩展了数据局限**说明(arXiv 非全量入库、仅 cond-mat.supr-con 分类、preprint 不是正式发表等共 11 条)。
+>
+> **v1 仅保留作历史记录与对比,不再作为权威分析。**
+
+> **(v1 原"极其重要"标记 — 已失效)** — 本文档曾是 2026-05-23 全库快照的统计分析,作为 timeline 数据 + 新补全地理(`paper_geo`)首次联合分析的基线。
 
 > **快照时间:2026-05-23。** 本次分析依赖刚部署的 `papers.paper_geo` 列(99.52% 覆盖,通过 `ingestion/extract/affiliation_ner.py` 抽取)与视图 `v_tc_geo`(27,848 行)、`v_material_geo`(7,193 行)。详见 alembic `0037_paper_geo` + `scripts/backfill_paper_geo.py`。视图后端专用,前端零暴露。
 
