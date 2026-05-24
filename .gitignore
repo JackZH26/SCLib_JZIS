@@ -48,3 +48,6 @@ logs/
 tmp/
 data/
 !docs/data/
+
+# Drafts (work-in-progress documents, not committed)
+/drafts/
