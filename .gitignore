@@ -51,3 +51,6 @@ data/
 
 # Drafts (work-in-progress documents, not committed)
 /drafts/
+
+# Audit review data (local SQLite + CSV exports for validation tooling)
+/audit/
