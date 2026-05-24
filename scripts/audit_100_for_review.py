@@ -384,6 +384,44 @@ def cmd_serve(args: argparse.Namespace) -> None:
             sample_d["_cities"] = sample_d["_countries"] = []
             sample_d["_affiliations"] = sample_d["_materials"] = []
 
+        # Deduplicate displays so multiple records of the same compound do
+        # not show as visually identical entries in the formula / family /
+        # evidence sections. Per-record Tc detail stays in the Tc section,
+        # where the per-record info (different tc_kelvin, pressure, ...)
+        # is the relevant granularity.
+        mats = sample_d["_materials"]
+        seen_f: set[str] = set()
+        unique_formulas: list[str] = []
+        formula_counts: dict[str, int] = {}
+        for m in mats:
+            f = (m.get("formula") or "").strip()
+            if not f:
+                continue
+            if f not in seen_f:
+                seen_f.add(f)
+                unique_formulas.append(f)
+            formula_counts[f] = formula_counts.get(f, 0) + 1
+        sample_d["_unique_formulas"] = unique_formulas
+        sample_d["_formula_counts"] = formula_counts
+
+        seen_ff: set[tuple[str, str]] = set()
+        unique_family_pairs: list[tuple[str, str]] = []
+        for m in mats:
+            pair = ((m.get("formula") or "").strip(), (m.get("family") or "").strip())
+            if pair[0] and pair not in seen_ff:
+                seen_ff.add(pair)
+                unique_family_pairs.append(pair)
+        sample_d["_unique_family_pairs"] = unique_family_pairs
+
+        seen_ev: set[tuple[str, str]] = set()
+        unique_evidence_pairs: list[tuple[str, str]] = []
+        for m in mats:
+            pair = ((m.get("formula") or "").strip(), (m.get("evidence_type") or "").strip())
+            if pair[0] and pair not in seen_ev:
+                seen_ev.add(pair)
+                unique_evidence_pairs.append(pair)
+        sample_d["_unique_evidence_pairs"] = unique_evidence_pairs
+
         response_d = dict(response) if response else {}
         # Pretty-print existing human-corrected values back as text in form
         for k in (
@@ -682,8 +720,8 @@ raw affiliations:
 
     <fieldset>
       <legend>2. Chemical Formula(s)</legend>
-      <div>LLM extracted formulas:</div>
-      <pre class="llm-show">{% for m in sample._materials %}{{ loop.index }}. {{ m.formula }}
+      <div>LLM extracted formulas ({{ sample._materials | length }} record{{ '' if sample._materials | length == 1 else 's' }}, {{ sample._unique_formulas | length }} distinct compound{{ '' if sample._unique_formulas | length == 1 else 's' }}):</div>
+      <pre class="llm-show">{% for f in sample._unique_formulas %}{{ loop.index }}. {{ f }}{% if sample._formula_counts[f] > 1 %}  (×{{ sample._formula_counts[f] }} records — see Tc section){% endif %}
 {% endfor %}</pre>
       <div class="row">
         <label><input type="radio" name="formula_status" value="correct"
@@ -705,8 +743,8 @@ raw affiliations:
 
     <fieldset>
       <legend>3. Material Family</legend>
-      <div>LLM extracted family per record:</div>
-      <pre class="llm-show">{% for m in sample._materials %}{{ m.formula }} -> {{ m.family or '(none)' }}
+      <div>LLM extracted family per distinct compound:</div>
+      <pre class="llm-show">{% for f, fam in sample._unique_family_pairs %}{{ f }} -> {{ fam or '(none)' }}
 {% endfor %}</pre>
       <div class="row">
         <label><input type="radio" name="family_status" value="correct"
@@ -757,8 +795,8 @@ raw affiliations:
 
     <fieldset>
       <legend>5. Theoretical vs Experimental</legend>
-      <div>LLM evidence_type values:</div>
-      <pre class="llm-show">{% for m in sample._materials %}[{{ loop.index }}] {{ m.formula }} -> {{ m.evidence_type or '(none)' }}
+      <div>LLM evidence_type per distinct compound:</div>
+      <pre class="llm-show">{% for f, ev in sample._unique_evidence_pairs %}{{ f }} -> {{ ev or '(none)' }}
 {% endfor %}</pre>
       <div class="row">
         <label><input type="radio" name="evidence_status" value="correctly_exp"
