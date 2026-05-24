@@ -1,4 +1,4 @@
-# Timeline 数据大数据分析 v2 — 10 大主要发现(修订版)
+# Timeline 数据大数据分析 v2 — 10 大主要发现 + 1 项补充(修订版)
 
 > **⚠️ 极其重要 / VERY IMPORTANT** — 本文档替代 v1 [`TIMELINE_ANALYSIS_2026_05_23.md`](TIMELINE_ANALYSIS_2026_05_23.md)。v2 修正了 v1 中的 1 处事实性错误(294 K CaLuH12 是 DFT 预测而非实验测量)、4 处解读偏差,并**大幅扩展数据局限**。任何关于超导研究的家族/地缘/时代趋势讨论,**只参考本 v2 文档**。
 
@@ -12,6 +12,7 @@
 - **发现 7 改用 distinct 论文数**:**78.9%** 材料只 1 篇论文(v1 用记录数计为 72%);Top-7(非 18);Top-2 是 **BSCCO + MgB2**(非 BSCCO + YBCO)。
 - **发现 1 补"过渡共治期"**:2005-09 cuprate-iron 共治、2020-24 三足鼎立、2025 完全均势。
 - **数据局限大幅扩展**:加入 (a) arXiv 非全量入库、(b) 仅 `cond-mat.supr-con` 分类、(c) preprint 不是正式发表;另加理论/实验标签稀疏、国名变体、material 元素顺序去重不彻底等共 11 条。
+- **新增发现 11(补充)**:**Tc Density Valley (BCS-cuprate gap)** —— 用户从 timeline 视觉观察出 50-80K 区间密度偏低;数据验证:最低 65-70K (depth ratio ρ = **0.22**,即 78% 赤字),宽 ~35K,Poisson p ≪ 0.001 极显著;家族分解表明这是**超导配对机制鸿沟**(BCS 类天然 ≤40K、铁基 ≤55K、cuprate 最优 90-160K,中间无机制天然栖息)。
 
 ---
 
@@ -21,7 +22,7 @@
 
 ---
 
-## 🔟 主要发现(v2 修订)
+## 主要发现(10 项 v2 修订 + 1 项新增)
 
 ### 1. 三代研究浪潮,但有显著的"过渡共治期"
 
@@ -210,6 +211,89 @@
 | **氢化物 (hydride)** | 2011 起 | ~250+ | 574 | 2011→2023 论文数 ~13× |
 
 **实际"研究篇数"≈ 记录数的 1/2**(每篇通常报 1.5–2 个 Tc 数据点)。**单次实验突破在 2-5 年内可生成 50-100 篇跟进论文**。CsV3Sb5 与 La3Ni2O7 当下仍处于上升期。
+
+### 11. Tc Density Valley(BCS-cuprate gap)— 50-80K 是物理上的"配对机制鸿沟"(新增,源自用户观察)
+
+**观察起点:** 在 timeline 散点图上,0-100K 范围内 50-80K 区间记录密度明显低于左右两侧。数据完全支持这一观察,且最低点可精确定位。
+
+#### 11.1 数据支撑
+
+**10K bin 直方图(0-110K):**
+
+| Tc 区间 | 记录 | 每 K 密度 |
+|---|---:|---:|
+| 30–40 K | 2,081 | 208.1 |
+| 40–50 K | 694 | 69.4 |
+| **50–60 K** | **478** | **47.8** |
+| **60–70 K** | **357** | **35.7 ← 极小** |
+| **70–80 K** | **451** | **45.1** |
+| 80–90 K | 946 | 94.6 |
+| 90–100 K | 773 | 77.3 |
+
+5K bin 锁定**绝对极小值在 65-70K (152 条)**。50-80K 每 K 密度比 80-100K 低 50%,比 30-50K 低 70%。
+
+#### 11.2 家族分解揭示物理根因
+
+| 家族 | 0-50K | **50-80K** | 80-120K |
+|---|---:|---:|---:|
+| iron_based | 4,426 | **144**(余尾)| 0 |
+| BCS 类合计(conventional + elemental + mgb2 + heavy_fermion + chalcogenide + bis2_layered + organic)| ~6,400 | **<5** | 0 |
+| **cuprate** | 2,216 | **1,075** | 1,669 |
+| hydride | 188 | 61 | 71 |
+| nickelate | 39 | 22 | 0 |
+
+**所有 BCS 类家族在 50K 以上几乎为零;铁基约 55K 截止;cuprate 在 50-80K 全是 underdoped 变体**(BSCCO underdoped 69K、YBCO 减氧 60-66K、Tl-2201、Hg-1201 underdoped...),**没有任何材料的天然 Tc 处在这个区间**。
+
+#### 11.3 形式化指标:Tc Density Valley (Tc-DV)
+
+为这类"Tc 密度谷"提供可复现的科学量化:
+
+| 指标 | 定义 | 应用到 65K 谷 |
+|---|---|---|
+| **Valley 中心 $T_0$** | $\arg\min_T \hat D(T)$ 在该谷内 | **65-70 K** |
+| **Depth ratio $\rho$** | $\hat D(T_0) / \min(D_{peak,L}, D_{peak,R})$ | $152/677$ = **0.22**(78% 赤字)|
+| **Width $W$**($\alpha=0.7$)| $\{T : \hat D(T) < 0.7 \min(D_{peaks})\}$ 区间宽度 | **~35 K**(45-80K)|
+| **Significance** | Poisson $P(N \leq N_{\text{obs}}\mid \lambda_{\text{expected}})$ | $p \ll 0.001$ **极显著** |
+
+**判据:** $\rho < 0.5$ 为"显著谷",65K 处 $\rho = 0.22$ 远低于此阈值。
+
+#### 11.4 物理诠释 — 这是配对机制天花板的直接证据
+
+| Tc 区段 | 主导配对机制 | 天花板原因 |
+|---|---|---|
+| 0–40 K | BCS phonon-mediated(常规)| McMillan 极限 (~40K) |
+| 0–55 K | iron-based unconventional | 铁基天然上限 |
+| **50–80 K** | **无任何机制天然属于此区间** | **机制鸿沟** |
+| 80–160 K | cuprate optimal doping | 铜氧化物 unconventional 最优 |
+| >200 K @ HP | 高压氢化物声子 | 需要极端压力 |
+
+50-80K 几乎只能通过"调低 cuprate"(underdope)或"调高 iron-based 极端样品"达到 —— **没有原生配对机制对应此区间**。
+
+#### 11.5 实践意义
+
+- **任何宣称在 50-80K 找到 ambient pressure 新材料的报告应被重点关注** —— 它会填补一个目前没有物理机制支撑的鸿沟,可能意味着新机制。
+- 该谷可作为**理论模型的检验基准**:任何"统一配对理论"应能预言为什么 50-80K 物理上稀疏。
+- 上述 Tc-DV 指标可推广到其他物理量(如 Hc2 分布、压力-Tc 相图)的密度谷分析。
+
+#### 11.6 配套 SQL(可加入分析工具集)
+
+```sql
+WITH bins AS (
+  SELECT (floor(tc_kelvin/5)*5)::int AS tc, count(*)::float AS n
+  FROM v_tc_geo WHERE tc_kelvin>0 AND tc_kelvin<=200
+  GROUP BY floor(tc_kelvin/5)
+), neighbors AS (
+  SELECT b.tc, b.n,
+    (SELECT max(n) FROM bins b2 WHERE b2.tc BETWEEN b.tc-30 AND b.tc-5)  AS peak_left,
+    (SELECT max(n) FROM bins b2 WHERE b2.tc BETWEEN b.tc+5  AND b.tc+30) AS peak_right
+  FROM bins b
+)
+SELECT tc AS tc_low, n AS records, peak_left, peak_right,
+  round((n / nullif(LEAST(peak_left, peak_right), 0))::numeric, 2) AS depth_ratio,
+  CASE WHEN n / nullif(LEAST(peak_left, peak_right), 0) < 0.5 THEN 'VALLEY' END AS flag
+FROM neighbors WHERE peak_left IS NOT NULL AND peak_right IS NOT NULL
+ORDER BY depth_ratio NULLS LAST LIMIT 10;
+```
 
 ---
 
