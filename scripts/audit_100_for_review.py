@@ -131,6 +131,55 @@ def init_schema(conn: sqlite3.Connection) -> None:
 
 _FIELDS = ("geography", "formula", "family", "tc", "evidence")
 
+# Mirrors api/routers/timeline.py::_is_theoretical and
+# ingestion/extract/materials_aggregator.py::_record_is_theoretical so the
+# reviewer sees the SAME effective classification the timeline endpoint
+# would apply. The NER's bare `primary` evidence_type is ambiguous and
+# falls back to measurement / paper_type signals.
+_EXPERIMENTAL_MEASUREMENTS = frozenset({
+    "resistivity", "susceptibility", "specific_heat",
+    "arpes", "musr", "stm", "neutron", "nmr", "nqr",
+    "magnetization", "thermal_conductivity",
+    "raman scattering", "raman", "andreev reflection",
+    "nernst", "tunneling", "esr", "torque magnetometry",
+    "hall effect", "hall_effect", "transport",
+})
+_THEORETICAL_MEASUREMENTS = frozenset({
+    "calculation", "dft", "first-principles", "first principles",
+    "computational", "ab initio", "ab-initio",
+    "allen-dynes", "eliashberg", "tight-binding",
+})
+
+
+def effective_classification(record: dict[str, Any]) -> str:
+    """Return 'experimental' | 'theoretical' | 'cited' for a record.
+
+    Mirrors the timeline endpoint's _is_theoretical precedence:
+      1. explicit primary_theoretical -> theoretical
+      2. explicit primary_experimental -> experimental
+      3. explicit cited -> cited
+      4. measurement is a known experimental technique -> experimental
+      5. measurement is a known theoretical technique -> theoretical
+      6. paper_type = theoretical|computational -> theoretical
+      7. fall through -> experimental (most cond-mat.supr-con papers)
+    """
+    ev = (record.get("evidence_type") or "").strip().lower()
+    if ev == "primary_theoretical":
+        return "theoretical"
+    if ev == "primary_experimental":
+        return "experimental"
+    if ev == "cited":
+        return "cited"
+    meas = (record.get("measurement") or "").strip().lower()
+    if meas in _EXPERIMENTAL_MEASUREMENTS:
+        return "experimental"
+    if meas in _THEORETICAL_MEASUREMENTS:
+        return "theoretical"
+    pt = (record.get("paper_type") or "").strip().lower()
+    if pt in ("theoretical", "computational"):
+        return "theoretical"
+    return "experimental"
+
 
 def compute_summary(conn: sqlite3.Connection) -> dict[str, Any]:
     total = conn.execute("SELECT count(*) FROM audit_sample").fetchone()[0]
@@ -413,14 +462,31 @@ def cmd_serve(args: argparse.Namespace) -> None:
                 unique_family_pairs.append(pair)
         sample_d["_unique_family_pairs"] = unique_family_pairs
 
-        seen_ev: set[tuple[str, str]] = set()
-        unique_evidence_pairs: list[tuple[str, str]] = []
+        # Evidence rows: per distinct (formula, evidence_type, measurement,
+        # paper_type) tuple. Includes the effective classification the
+        # timeline endpoint would apply -- the NER's bare `primary` value
+        # is ambiguous and needs supporting signals to be actionable.
+        seen_ev_key: set[tuple[str, str, str, str]] = set()
+        evidence_rows: list[dict[str, str]] = []
         for m in mats:
-            pair = ((m.get("formula") or "").strip(), (m.get("evidence_type") or "").strip())
-            if pair[0] and pair not in seen_ev:
-                seen_ev.add(pair)
-                unique_evidence_pairs.append(pair)
-        sample_d["_unique_evidence_pairs"] = unique_evidence_pairs
+            f = (m.get("formula") or "").strip()
+            if not f:
+                continue
+            ev   = (m.get("evidence_type") or "").strip()
+            meas = (m.get("measurement")   or "").strip()
+            pt   = (m.get("paper_type")    or "").strip()
+            key = (f, ev, meas, pt)
+            if key in seen_ev_key:
+                continue
+            seen_ev_key.add(key)
+            evidence_rows.append({
+                "formula":       f,
+                "evidence_type": ev   or "(none)",
+                "measurement":   meas or "(none)",
+                "paper_type":    pt   or "(none)",
+                "effective":     effective_classification(m),
+            })
+        sample_d["_evidence_rows"] = evidence_rows
 
         response_d = dict(response) if response else {}
         # Pretty-print existing human-corrected values back as text in form
@@ -795,8 +861,16 @@ raw affiliations:
 
     <fieldset>
       <legend>5. Theoretical vs Experimental</legend>
-      <div>LLM evidence_type per distinct compound:</div>
-      <pre class="llm-show">{% for f, ev in sample._unique_evidence_pairs %}{{ f }} -> {{ ev or '(none)' }}
+      <div>LLM evidence signals per distinct compound &middot;
+        <span style="color:#777;font-size:12px">
+          NER raw <code>evidence_type</code> + supporting signals + <b>effective classification</b> the timeline endpoint would apply
+        </span>
+      </div>
+      <pre class="llm-show">{% for r in sample._evidence_rows %}{{ r.formula }}
+  evidence_type = {{ r.evidence_type }}
+  measurement   = {{ r.measurement }}
+  paper_type    = {{ r.paper_type }}
+  &#8594; effective: {{ r.effective | upper }}{% if r.evidence_type == 'primary' %}   (NER raw 'primary' is AMBIGUOUS -- derived from measurement/paper_type){% endif %}
 {% endfor %}</pre>
       <div class="row">
         <label><input type="radio" name="evidence_status" value="correctly_exp"
