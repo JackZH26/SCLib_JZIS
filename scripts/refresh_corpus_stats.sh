@@ -396,7 +396,7 @@ pg "SELECT v.paper_id, v.formula, v.tc_kelvin, v.pressure_gpa, v.evidence_type
     ORDER BY v.tc_kelvin DESC" > "$OUT/q14_fulleride_above100k.csv"
 
 echo "[Q14b] Underlying fulleride papers (all status)"
-pg "SELECT DISTINCT p.id AS paper_id, p.title, p.status, p.retraction_date::text
+pg "SELECT DISTINCT p.id AS paper_id, p.title, p.status, p.retraction_date
     FROM v_tc_geo v JOIN papers p ON p.id=v.paper_id
     WHERE v.family='fulleride' AND v.tc_kelvin > 100
     ORDER BY p.retraction_date NULLS LAST, p.id" > "$OUT/q14b_fulleride_papers.csv"

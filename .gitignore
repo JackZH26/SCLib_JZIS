@@ -54,3 +54,8 @@ data/
 
 # Audit review data (local SQLite + CSV exports for validation tooling)
 /audit/
+
+# Zenodo deposit working tree (full deposit published at
+# https://doi.org/10.5281/zenodo.20428169; the tarball is too large for git)
+/zenodo_v1/
+/SCLib_data_freeze_*.tar.gz
