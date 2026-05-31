@@ -271,6 +271,18 @@ class Paper(Base):
     source: Mapped[str] = mapped_column(String(20), nullable=False)
     arxiv_id: Mapped[str | None] = mapped_column(String(20))
     doi: Mapped[str | None] = mapped_column(String(200))
+    # --- normalized cross-source identity (alembic 0038) ------------------
+    # ``external_id`` is the source-native id (arXiv: arxiv_id; APS: DOI);
+    # ``id_scheme`` names its namespace ('arxiv' | 'nims' | 'doi').
+    # UNIQUE(source, external_id) is the dedup anchor.
+    external_id: Mapped[str | None] = mapped_column(String(200))
+    id_scheme: Mapped[str | None] = mapped_column(String(20))
+    # Self-FK linking an arXiv preprint to its APS published version as the
+    # "same work" — the aggregator collapses identical records across the
+    # pair but keeps a differing Tc as a new value (see APS plan §3①).
+    related_paper_id: Mapped[str | None] = mapped_column(
+        String(100), ForeignKey("papers.id", ondelete="SET NULL")
+    )
     title: Mapped[str] = mapped_column(Text, nullable=False)
     authors: Mapped[list[Any]] = mapped_column(JSONB, nullable=False)
     affiliations: Mapped[list[Any] | None] = mapped_column(JSONB)
@@ -280,6 +292,11 @@ class Paper(Base):
     date_submitted: Mapped[date | None] = mapped_column(Date)
     date_published: Mapped[date | None] = mapped_column(Date)
     journal: Mapped[str | None] = mapped_column(String(300))
+    # APS journal identity (alembic 0038): short handle ('PRB','PRL',...)
+    # + structured bibliographic ref {volume, issue, article_id, page,
+    # published_date}. NULL for arXiv/NIMS rows.
+    journal_abbrev: Mapped[str | None] = mapped_column(String(30))
+    publication_ref: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
     abstract: Mapped[str] = mapped_column(Text, nullable=False)
     categories: Mapped[list[Any] | None] = mapped_column(JSONB)
     material_family: Mapped[str | None] = mapped_column(String(50))
@@ -305,6 +322,24 @@ class Paper(Base):
         Index("idx_papers_date", "date_published"),
         Index("idx_papers_status", "status"),
         Index("idx_papers_arxiv", "arxiv_id"),
+        Index("idx_papers_journal_abbrev", "journal_abbrev"),
+        # Cross-source dedup anchor (alembic 0038). Partial so legacy rows
+        # with a NULL external_id never collide.
+        Index(
+            "uq_papers_source_external", "source", "external_id",
+            unique=True, postgresql_where=text("external_id IS NOT NULL"),
+        ),
+        # APS rows unique by DOI, scoped so an arXiv preprint and its APS
+        # version may share a DOI across sources.
+        Index(
+            "uq_papers_aps_doi", "doi",
+            unique=True,
+            postgresql_where=text("source = 'aps' AND doi IS NOT NULL"),
+        ),
+        Index(
+            "idx_papers_related", "related_paper_id",
+            postgresql_where=text("related_paper_id IS NOT NULL"),
+        ),
     )
 
 
@@ -458,6 +493,69 @@ class StatsCache(Base):
     value: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
         _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False
+    )
+
+
+class TdmAuditLog(Base):
+    """APS TDM compliance / deletion audit trail (alembic 0039).
+
+    One row per APS paper processed. The APS agreement requires a
+    processing log recording the DOI, timestamps, and confirmation that
+    the raw Licensed Materials (BagIt ZIP, full-text XML, PDF, OCR) were
+    deleted after extraction. This table is that record — and the ONLY
+    permanent trace APS full-text processing leaves. The licensed content
+    is never persisted (no GCS upload, never written to ``chunks.text``);
+    only authorized metadata/abstract + extracted structured data are
+    kept, plus this proof the raw content was purged.
+
+    ``deletion_confirmed`` is set True only after the pipeline re-checks
+    the temp path is gone. ``status`` lifecycle: 'pending' -> 'processed'
+    -> 'deleted' (or 'error').
+    """
+
+    __tablename__ = "tdm_audit_log"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True,
+        server_default=sa.text("gen_random_uuid()"),
+        default=uuid.uuid4,
+    )
+    source: Mapped[str] = mapped_column(
+        String(20), nullable=False, server_default="aps"
+    )
+    doi: Mapped[str] = mapped_column(String(200), nullable=False)
+    # Nullable + SET NULL: the audit row must outlive the paper row.
+    paper_id: Mapped[str | None] = mapped_column(
+        String(100), ForeignKey("papers.id", ondelete="SET NULL"), nullable=True
+    )
+    harvested_at: Mapped[datetime | None] = mapped_column(_TZDT)
+    processed_at: Mapped[datetime | None] = mapped_column(_TZDT)
+    bagit_bytes: Mapped[int | None] = mapped_column(sa.BigInteger)
+    # Licensed files that passed through the temp dir (names/sizes only,
+    # never content): [{"name": "...", "bytes": N, "kind": "xml|pdf|ocr"}].
+    files_processed: Mapped[list[Any]] = mapped_column(
+        JSONB, server_default=sa.text("'[]'::jsonb"), default=list, nullable=False
+    )
+    ner_record_count: Mapped[int] = mapped_column(
+        Integer, server_default=sa.text("0"), default=0, nullable=False
+    )
+    deleted_at: Mapped[datetime | None] = mapped_column(_TZDT)
+    deletion_confirmed: Mapped[bool] = mapped_column(
+        Boolean, server_default="false", default=False, nullable=False
+    )
+    temp_path: Mapped[str | None] = mapped_column(Text)
+    status: Mapped[str] = mapped_column(
+        String(20), server_default="pending", default="pending", nullable=False
+    )
+    error: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False
+    )
+
+    __table_args__ = (
+        Index("idx_tdm_audit_doi", "doi"),
+        Index("idx_tdm_audit_status", "status"),
+        Index("idx_tdm_audit_created", "created_at"),
     )
 
 
