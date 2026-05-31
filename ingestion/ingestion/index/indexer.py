@@ -354,6 +354,120 @@ async def upsert_paper_with_chunks(
                 )
 
 
+async def upsert_aps_paper_with_chunks(
+    meta: Any,
+    chunks: list[Chunk],
+    materials_extracted: list[dict[str, Any]],
+    *,
+    related_paper_id: str | None = None,
+) -> None:
+    """Upsert an APS paper row + replace its chunks atomically.
+
+    The APS counterpart of ``upsert_paper_with_chunks``. ``meta`` is an
+    ``ApsArticleMeta`` (duck-typed). Differences from the arXiv path:
+    source='aps', identity anchored on the DOI (external_id=doi,
+    id_scheme='doi'), arxiv_id stays NULL, journal_abbrev +
+    publication_ref are populated, and related_paper_id may link this row
+    to an arXiv preprint of the same work.
+
+    COMPLIANCE: ``chunks`` here must contain ONLY authorized-derived units
+    (abstract + NER fact-sentences) — never APS full-text body. The
+    orchestrator (aps_pipeline) enforces this; the body ParsedPaper is
+    transient and deleted. This function just writes whatever chunks it is
+    given, exactly like the arXiv path.
+    """
+    paper_values: dict[str, Any] = {
+        "id": meta.paper_id,                # "aps:10.1103/..."
+        "source": "aps",
+        "arxiv_id": None,
+        "doi": meta.doi,
+        "external_id": meta.doi,
+        "id_scheme": "doi",
+        "related_paper_id": related_paper_id,
+        "title": meta.title,
+        "authors": meta.authors,
+        "date_submitted": None,
+        "date_published": meta.date_published,
+        "journal": meta.journal,
+        "journal_abbrev": meta.journal_abbrev,
+        "publication_ref": meta.publication_ref(),
+        "abstract": meta.abstract,
+        "categories": meta.categories,
+        "material_family": None,
+        "chunk_count": len(chunks),
+        "materials_extracted": materials_extracted,
+    }
+
+    async with _session_factory()() as session:
+        async with session.begin():
+            stmt = pg_insert(papers_table).values(**paper_values)
+            update_cols = {
+                c: stmt.excluded[c]
+                for c in [
+                    "title", "authors", "abstract", "categories",
+                    "date_published", "journal", "journal_abbrev",
+                    "publication_ref", "related_paper_id",
+                    "chunk_count", "materials_extracted", "doi",
+                ]
+            }
+            update_cols["updated_at"] = func.now()
+            stmt = stmt.on_conflict_do_update(
+                index_elements=[papers_table.c.id],
+                set_=update_cols,
+            )
+            await session.execute(stmt)
+
+            await session.execute(
+                chunks_table.delete().where(chunks_table.c.paper_id == meta.paper_id)
+            )
+            if chunks:
+                year = meta.date_published.year if meta.date_published else None
+                await session.execute(
+                    chunks_table.insert(),
+                    [
+                        {
+                            "id": c.id,
+                            "paper_id": c.paper_id,
+                            "title": meta.title,
+                            "authors_short": ", ".join(meta.authors[:2])
+                                + (" et al." if len(meta.authors) > 2 else ""),
+                            "year": year,
+                            "section": c.section,
+                            "chunk_index": c.chunk_index,
+                            "text": c.text,
+                            "material_family": None,
+                            "materials_mentioned": c.materials_mentioned,
+                            "has_equation": c.has_equation,
+                            "has_table": c.has_table,
+                        }
+                        for c in chunks
+                    ],
+                )
+
+
+async def find_related_arxiv_paper(doi: str) -> str | None:
+    """Return the id of an existing arXiv paper sharing this DOI, if any.
+
+    The cross-source dedup anchor (APS plan §3①): when an APS article's
+    DOI matches an already-ingested arXiv preprint, we link the two rows
+    via ``related_paper_id`` so the aggregator can count them as one
+    work. Returns None if there's no arXiv row with this DOI.
+    """
+    if not doi:
+        return None
+    async with _session_factory()() as session:
+        row = (await session.execute(
+            papers_table.select()
+            .with_only_columns(papers_table.c.id)
+            .where(
+                papers_table.c.doi == doi,
+                papers_table.c.source == "arxiv",
+            )
+            .limit(1)
+        )).first()
+    return row[0] if row else None
+
+
 async def upsert_paper_geo(
     paper_id: str,
     affiliations: list[Any] | None,
@@ -451,6 +565,59 @@ def upsert_chunks_to_vector_search(
 
     index.upsert_datapoints(datapoints=datapoints)
     log.info("upserted %d datapoints to Vertex VS (paper=%s)",
+             len(datapoints), meta.paper_id)
+
+
+def upsert_aps_chunks_to_vector_search(
+    meta: Any,
+    chunks: list[Chunk],
+) -> None:
+    """Streaming upsert of APS chunk vectors + restrict metadata.
+
+    The APS counterpart of ``upsert_chunks_to_vector_search``. ``meta`` is
+    an ``ApsArticleMeta`` (uses ``date_published`` for the year, since APS
+    rows have no ``date_submitted``). Adds a ``source='aps'`` restrict
+    namespace so the search API can filter by source.
+
+    COMPLIANCE: the ``chunks`` passed here are authorized-derived only
+    (abstract + NER fact-sentences) — never APS full-text body.
+    """
+    if not chunks:
+        return
+    index = _index()
+
+    year = meta.date_published.year if meta.date_published else None
+
+    datapoints: list[IndexDatapoint] = []
+    for c in chunks:
+        if c.embedding is None:
+            continue
+        restricts: list[IndexDatapoint.Restriction] = [
+            IndexDatapoint.Restriction(namespace="source", allow_list=["aps"]),
+        ]
+        numeric_restricts: list[IndexDatapoint.NumericRestriction] = []
+        if year is not None:
+            numeric_restricts.append(
+                IndexDatapoint.NumericRestriction(namespace="year", value_int=year)
+            )
+        datapoints.append(
+            IndexDatapoint(
+                datapoint_id=c.id,
+                feature_vector=c.embedding,
+                restricts=restricts,
+                numeric_restricts=numeric_restricts,
+                crowding_tag=IndexDatapoint.CrowdingTag(
+                    crowding_attribute=meta.paper_id
+                ),
+            )
+        )
+
+    if not datapoints:
+        log.warning("no embedded APS datapoints to upsert for %s", meta.paper_id)
+        return
+
+    index.upsert_datapoints(datapoints=datapoints)
+    log.info("upserted %d APS datapoints to Vertex VS (paper=%s)",
              len(datapoints), meta.paper_id)
 
 
