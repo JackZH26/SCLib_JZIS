@@ -49,6 +49,27 @@ class IngestionSettings(BaseSettings):
     #: arXiv primary-category filter applied client-side after OAI-PMH
     arxiv_primary_category: str = "cond-mat.supr-con"
 
+    # --- APS Harvest (TDM) --------------------------------------------------
+    # APS is an additive new source alongside arXiv (see
+    # docs/APS_INGESTION_PLAN.md). Auth is IP-whitelist only: VPS2's egress
+    # IPs (72.62.251.29, 76.13.191.130) are registered with APS, so the
+    # client sends NO credentials — access is granted by source IP. Full
+    # text fetched here is transient TDM working data and must be deleted
+    # after NER (handled in aps_storage / aps_pipeline, not here).
+    aps_harvest_url: str = "https://harvest.aps.org"
+    aps_user_agent: str = "SCLib-JZIS/1.0 (jzis.org; jack@jzis.org)"
+    #: Per-DOI metadata endpoint (JSON). {doi} is substituted verbatim.
+    #: NOTE: confirm exact path against the live Harvest API once a real
+    #: sample is on hand; base + path are configurable so a correction is
+    #: a one-line .env change, not a code edit.
+    aps_metadata_path: str = "/v2/articles/{doi}"
+    #: Per-DOI BagIt ZIP endpoint (full-text XML + PDF + OCR). Same caveat.
+    aps_bagit_path: str = "/v2/articles/{doi}/bag"
+    #: seconds between metadata calls (APS fair use)
+    aps_metadata_delay: float = 2.0
+    #: seconds between BagIt downloads (large payloads)
+    aps_file_delay: float = 3.0
+
     # --- Chunking -----------------------------------------------------------
     chunk_size_tokens: int = 512
     chunk_overlap_tokens: int = 64
