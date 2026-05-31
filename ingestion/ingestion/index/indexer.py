@@ -20,6 +20,7 @@ from google.cloud.aiplatform.matching_engine.matching_engine_index_endpoint impo
 from google.cloud.aiplatform_v1.types import IndexDatapoint
 from sqlalchemy import (
     JSON,
+    BigInteger,
     Boolean,
     CheckConstraint,
     Column,
@@ -34,8 +35,9 @@ from sqlalchemy import (
     Table,
     Text,
     func,
+    text,
 )
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
@@ -56,6 +58,10 @@ papers_table = Table(
     Column("source", String(20), nullable=False),
     Column("arxiv_id", String(20)),
     Column("doi", String(200)),
+    # Normalized cross-source identity (alembic 0038).
+    Column("external_id", String(200)),
+    Column("id_scheme", String(20)),
+    Column("related_paper_id", String(100)),
     Column("title", Text, nullable=False),
     Column("authors", JSONB, nullable=False),
     Column("affiliations", JSONB),
@@ -63,6 +69,9 @@ papers_table = Table(
     Column("date_submitted", Date),
     Column("date_published", Date),
     Column("journal", String(300)),
+    # APS journal identity (alembic 0038).
+    Column("journal_abbrev", String(30)),
+    Column("publication_ref", JSONB),
     Column("abstract", Text, nullable=False),
     Column("categories", JSONB),
     Column("material_family", String(50)),
@@ -213,6 +222,33 @@ manual_overrides_table = Table(
 )
 
 
+# --- APS TDM compliance audit (alembic 0039) -----------------------------
+# One row per APS paper processed: proves the raw Licensed Materials were
+# deleted after extraction. Written by ingestion.aps_storage; never holds
+# licensed content (file names/sizes only).
+tdm_audit_log_table = Table(
+    "tdm_audit_log", metadata,
+    Column(
+        "id", UUID(as_uuid=True), primary_key=True,
+        server_default=text("gen_random_uuid()"),
+    ),
+    Column("source", String(20), nullable=False, server_default="aps"),
+    Column("doi", String(200), nullable=False),
+    Column("paper_id", String(100)),
+    Column("harvested_at", DateTime(timezone=True)),
+    Column("processed_at", DateTime(timezone=True)),
+    Column("bagit_bytes", BigInteger),
+    Column("files_processed", JSONB, nullable=False, server_default="[]"),
+    Column("ner_record_count", Integer, nullable=False, server_default="0"),
+    Column("deleted_at", DateTime(timezone=True)),
+    Column("deletion_confirmed", Boolean, nullable=False, server_default="false"),
+    Column("temp_path", Text),
+    Column("status", String(20), nullable=False, server_default="pending"),
+    Column("error", Text),
+    Column("created_at", DateTime(timezone=True), server_default=func.now()),
+)
+
+
 # ---------------------------------------------------------------------------
 # Async engine
 # ---------------------------------------------------------------------------
@@ -256,6 +292,10 @@ async def upsert_paper_with_chunks(
         "source": "arxiv",
         "arxiv_id": meta.arxiv_id,
         "doi": meta.doi,
+        # Populate the normalized identity anchor (alembic 0038) so arXiv
+        # rows satisfy UNIQUE(source, external_id). Unchanged otherwise.
+        "external_id": meta.arxiv_id,
+        "id_scheme": "arxiv",
         "title": meta.title,
         "authors": meta.authors,
         "date_submitted": meta.date_submitted,
