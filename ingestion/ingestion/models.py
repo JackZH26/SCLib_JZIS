@@ -67,6 +67,142 @@ class PaperMetadata:
         )
 
 
+# ---------------------------------------------------------------------------
+# APS (American Physical Society) — TDM ingestion source
+# ---------------------------------------------------------------------------
+
+#: APS DOIs are minted as ``10.1103/<JournalToken>.<vol>.<article>`` — the
+#: token after ``10.1103/`` and before the first ``.`` reliably identifies
+#: the journal, so we derive ``journal`` / ``journal_abbrev`` from the DOI
+#: itself rather than guessing at metadata-JSON field names. Maps the DOI
+#: token to (full name, short handle stored in papers.journal_abbrev).
+APS_JOURNAL_BY_DOI_TOKEN: dict[str, tuple[str, str]] = {
+    "PhysRev": ("Physical Review", "PR"),
+    "PhysRevLett": ("Physical Review Letters", "PRL"),
+    "PhysRevA": ("Physical Review A", "PRA"),
+    "PhysRevB": ("Physical Review B", "PRB"),
+    "PhysRevC": ("Physical Review C", "PRC"),
+    "PhysRevD": ("Physical Review D", "PRD"),
+    "PhysRevE": ("Physical Review E", "PRE"),
+    "PhysRevX": ("Physical Review X", "PRX"),
+    "RevModPhys": ("Reviews of Modern Physics", "RMP"),
+    "PhysRevApplied": ("Physical Review Applied", "PRApplied"),
+    "PhysRevMaterials": ("Physical Review Materials", "PRMaterials"),
+    "PhysRevFluids": ("Physical Review Fluids", "PRFluids"),
+    "PhysRevAccelBeams": ("Physical Review Accelerators and Beams", "PRAB"),
+    "PhysRevResearch": ("Physical Review Research", "PRResearch"),
+    "PhysRevPhysEducRes": ("Physical Review Physics Education Research", "PRPER"),
+    "PRXQuantum": ("PRX Quantum", "PRXQuantum"),
+    "PRXEnergy": ("PRX Energy", "PRXEnergy"),
+    "PRXLife": ("PRX Life", "PRXLife"),
+}
+
+
+def journal_from_doi(doi: str) -> tuple[str | None, str | None]:
+    """Return (journal_full, journal_abbrev) inferred from an APS DOI.
+
+    ``10.1103/PhysRevB.108.054515`` → ("Physical Review B", "PRB").
+    Returns (None, None) for a non-APS or unrecognised DOI so callers can
+    fall back to whatever the metadata JSON provides.
+    """
+    if not doi:
+        return (None, None)
+    d = doi.strip().lower()
+    # Strip a leading doi.org URL / "doi:" prefix if present.
+    for pre in ("https://doi.org/", "http://doi.org/", "doi:"):
+        if d.startswith(pre):
+            d = d[len(pre):]
+            break
+    if not d.startswith("10.1103/"):
+        return (None, None)
+    suffix = doi.strip().split("10.1103/", 1)[1]
+    token = suffix.split(".", 1)[0]
+    return APS_JOURNAL_BY_DOI_TOKEN.get(token, (None, None))
+
+
+@dataclass
+class ApsArticleMeta:
+    """Authorized metadata for one APS article (from the Harvest API).
+
+    This is the *persistent* slice of an APS paper — title, abstract,
+    authors, and bibliographic reference — all within the agreement's
+    Appendix A scope. The full text (BagIt) is fetched separately and is
+    transient TDM working data, never stored here.
+
+    ``paper_id`` is ``aps:{doi}``, mirroring arXiv's ``arxiv:{id}``.
+    ``id_scheme`` is always ``'doi'`` for APS rows.
+    """
+
+    doi: str
+    title: str
+    authors: list[str]
+    abstract: str
+    journal: str | None = None          # "Physical Review B"
+    journal_abbrev: str | None = None   # "PRB"
+    volume: str | None = None
+    issue: str | None = None
+    article_id: str | None = None       # e.g. "054515"
+    page: str | None = None
+    date_published: date | None = None
+    categories: list[str] = field(default_factory=list)
+
+    @property
+    def paper_id(self) -> str:
+        return f"aps:{self.doi}"
+
+    @property
+    def doi_slug(self) -> str:
+        """Filesystem- / blob-safe DOI for temp paths and audit rows."""
+        return self.doi.replace("/", "_")
+
+    def publication_ref(self) -> dict[str, Any]:
+        """JSONB payload for ``papers.publication_ref`` (drops empty keys)."""
+        ref = {
+            "volume": self.volume,
+            "issue": self.issue,
+            "article_id": self.article_id,
+            "page": self.page,
+            "published_date": self.date_published.isoformat()
+            if self.date_published else None,
+        }
+        return {k: v for k, v in ref.items() if v is not None}
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "doi": self.doi,
+            "title": self.title,
+            "authors": self.authors,
+            "abstract": self.abstract,
+            "journal": self.journal,
+            "journal_abbrev": self.journal_abbrev,
+            "volume": self.volume,
+            "issue": self.issue,
+            "article_id": self.article_id,
+            "page": self.page,
+            "date_published": self.date_published.isoformat()
+            if self.date_published else None,
+            "categories": self.categories,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "ApsArticleMeta":
+        dp = data.get("date_published")
+        return cls(
+            doi=data["doi"],
+            title=data.get("title", ""),
+            authors=list(data.get("authors", [])),
+            abstract=data.get("abstract", ""),
+            journal=data.get("journal"),
+            journal_abbrev=data.get("journal_abbrev"),
+            volume=data.get("volume"),
+            issue=data.get("issue"),
+            article_id=data.get("article_id"),
+            page=data.get("page"),
+            date_published=date.fromisoformat(dp) if dp else None,
+            categories=list(data.get("categories", [])),
+        )
+
+
 @dataclass
 class ParsedPaper:
     """Result of parsing a LaTeX source archive (or PDF fallback)."""
