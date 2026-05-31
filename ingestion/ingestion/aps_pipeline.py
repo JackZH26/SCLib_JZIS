@@ -47,8 +47,8 @@ from typing import Any
 
 from ingestion.aps_storage import TdmAudit, TempBagit, write_audit_log
 from ingestion.collect.aps_harvest import ApsClient
-from ingestion.chunk.chunker import chunk_paper
 from ingestion.embed.embedder import embed_chunks
+from ingestion.extract.fact_sentences import build_authorized_chunks
 from ingestion.extract.material_ner import extract_materials
 from ingestion.index.indexer import (
     dispose,
@@ -56,7 +56,6 @@ from ingestion.index.indexer import (
     upsert_aps_chunks_to_vector_search,
     upsert_aps_paper_with_chunks,
 )
-from ingestion.models import ApsArticleMeta, ParsedPaper
 from ingestion.parse.aps_xml import parse_bagit_dir
 
 log = logging.getLogger("ingestion.aps_pipeline")
@@ -64,21 +63,6 @@ log = logging.getLogger("ingestion.aps_pipeline")
 
 def _now() -> datetime:
     return datetime.now(timezone.utc)
-
-
-def _build_authorized_chunks(meta: ApsArticleMeta) -> list[Any]:
-    """Build the chunks that are allowed to persist / be vectorised.
-
-    Phase 4: the authorized abstract only. ``chunk_paper`` on a
-    sections-less ParsedPaper hits its abstract-only fallback, producing
-    one ``Section: Abstract`` chunk keyed ``aps:{doi}_chunk_000``.
-
-    Phase 5 (extract/fact_sentences) will extend this with NER
-    fact-sentence chunks. Deliberately does NOT take the full-text
-    ParsedPaper — that body must never be chunked.
-    """
-    abstract_only = ParsedPaper(meta=meta, sections=[], has_latex_source=False)
-    return chunk_paper(abstract_only)
 
 
 async def process_aps_paper(
@@ -131,8 +115,10 @@ async def process_aps_paper(
         if not work.deleted:
             log.error("%s: COMPLIANCE — temp dir not confirmed deleted!", doi)
 
-        # 5. Authorized chunks (abstract only — never full-text body).
-        chunks = _build_authorized_chunks(meta)
+        # 5. Authorized chunks: abstract + NER fact-sentences (never the
+        #    full-text body). Fact sentences are derived from our own
+        #    extracted data, keeping Ask/RAG recall high without prose.
+        chunks = build_authorized_chunks(meta, materials)
         result["n_chunks"] = len(chunks)
 
         if dry_run:
