@@ -651,32 +651,46 @@ def cmd_prompt(args: argparse.Namespace) -> None:
 # ---------------------------------------------------------------------------
 
 def cmd_pending(args: argparse.Namespace) -> None:
-    """Print TSV: paper_id\tarxiv_id\tprompt_version\tprompt_type for missing rows."""
+    """Print TSV: paper_id\tarxiv_id\tprompt_version\tprompt_type\trun_idx
+    for (paper, prompt, run_idx) tuples still missing rows.
+
+    With --run-idx N: list pairs missing that specific run_idx.
+    With --target-run-count K: list any (paper, prompt) where the count of
+    existing successful rows across run_idx 0..K-1 is < K, emitting one
+    line per missing run_idx, in ascending order.
+    """
     conn = _connect()
     samples = conn.execute(
         "SELECT paper_id, arxiv_id FROM audit_sample ORDER BY paper_id"
     ).fetchall()
-    existing = set(
-        (pid, pv) for pid, pv in conn.execute(
-            "SELECT paper_id, prompt_version FROM audit_extraction_model "
-            "WHERE vendor = ? AND model_name = ? AND run_idx = 0 "
-            "AND materials_error IS NULL AND affiliations_error IS NULL",
-            (VENDOR, MODEL_NAME),
-        )
-    )
+    # (paper_id, prompt_version) -> set of run_idx with a non-error row
+    have: dict[tuple[str, str], set[int]] = {}
+    for pid, pv, ri in conn.execute(
+        "SELECT paper_id, prompt_version, run_idx FROM audit_extraction_model "
+        "WHERE vendor = ? AND model_name = ? "
+        "AND materials_error IS NULL AND affiliations_error IS NULL",
+        (VENDOR, MODEL_NAME),
+    ):
+        have.setdefault((pid, pv), set()).add(ri)
     conn.close()
 
-    # Determine geo prompt version per paper from cache (text vs pdf fallback)
+    target_runs: list[int]
+    if args.target_run_count is not None:
+        target_runs = list(range(args.target_run_count))
+    else:
+        target_runs = [args.run_idx]
+
     for paper_id, arxiv_id in samples:
         cache_path = CACHE_DIR / f"{_safe_id(arxiv_id)}.json"
         if not cache_path.exists():
             continue
         cached = json.loads(cache_path.read_text())
         geo_pv = PROMPT_VERSION_GEO_PDF if cached.get("geo_input_kind") == "pdf" else PROMPT_VERSION_GEO_TEXT
-        if (paper_id, PROMPT_VERSION_MATERIAL) not in existing:
-            print(f"{paper_id}\t{arxiv_id}\t{PROMPT_VERSION_MATERIAL}\tmaterial")
-        if (paper_id, geo_pv) not in existing:
-            print(f"{paper_id}\t{arxiv_id}\t{geo_pv}\tgeo")
+        for pv, prompt_type in ((PROMPT_VERSION_MATERIAL, "material"), (geo_pv, "geo")):
+            existing = have.get((paper_id, pv), set())
+            for ri in target_runs:
+                if ri not in existing:
+                    print(f"{paper_id}\t{arxiv_id}\t{pv}\t{prompt_type}\t{ri}")
 
 
 # ---------------------------------------------------------------------------
@@ -793,6 +807,7 @@ def cmd_save(args: argparse.Namespace) -> None:
 
     now = datetime.now(timezone.utc).isoformat()
     paper_id = f"arxiv:{args.arxiv_id}"
+    run_idx = int(args.run_idx or 0)
 
     if args.prompt_type == "material":
         prompts = load_production_prompts()
@@ -813,14 +828,14 @@ def cmd_save(args: argparse.Namespace) -> None:
                  (paper_id, vendor, model_name, run_idx, thinking_mode,
                   prompt_version, materials_json, affiliations_json, paper_geo_json,
                   materials_error, affiliations_error, input_chars, extracted_at)
-               VALUES (?, ?, ?, 0, ?, ?, ?, NULL, NULL, ?, NULL, ?, ?)""",
-            (paper_id, VENDOR, MODEL_NAME, THINKING_MODE,
+               VALUES (?, ?, ?, ?, ?, ?, ?, NULL, NULL, ?, NULL, ?, ?)""",
+            (paper_id, VENDOR, MODEL_NAME, run_idx, THINKING_MODE,
              PROMPT_VERSION_MATERIAL, materials_json, materials_error,
              input_chars, now),
         )
         conn.commit()
         conn.close()
-        print(f"saved material {paper_id} error={materials_error}", flush=True)
+        print(f"saved material {paper_id} r{run_idx} error={materials_error}", flush=True)
     elif args.prompt_type == "geo":
         prompts = load_production_prompts()
         input_chars = len(_build_geo_prompt(cached, prompts))
@@ -867,14 +882,14 @@ def cmd_save(args: argparse.Namespace) -> None:
                  (paper_id, vendor, model_name, run_idx, thinking_mode,
                   prompt_version, materials_json, affiliations_json, paper_geo_json,
                   materials_error, affiliations_error, input_chars, extracted_at)
-               VALUES (?, ?, ?, 0, ?, ?, NULL, ?, ?, NULL, ?, ?, ?)""",
-            (paper_id, VENDOR, MODEL_NAME, THINKING_MODE,
+               VALUES (?, ?, ?, ?, ?, ?, NULL, ?, ?, NULL, ?, ?, ?)""",
+            (paper_id, VENDOR, MODEL_NAME, run_idx, THINKING_MODE,
              prompt_version, affiliations_json, paper_geo_json,
              affiliations_error, input_chars, now),
         )
         conn.commit()
         conn.close()
-        print(f"saved geo {paper_id} pv={prompt_version} error={affiliations_error}", flush=True)
+        print(f"saved geo {paper_id} r{run_idx} pv={prompt_version} error={affiliations_error}", flush=True)
     else:
         raise ValueError(args.prompt_type)
 
@@ -882,11 +897,37 @@ def cmd_save(args: argparse.Namespace) -> None:
 # ---------------------------------------------------------------------------
 # Sub-command: save_batch — process all extraction result files at once.
 #
-# Filename convention written by the sub-agents:
-#     <safe_arxiv_id>__<prompt_type>.json
+# Filename conventions written by the sub-agents:
+#     <safe_arxiv_id>__<prompt_type>.json           — implies run_idx=0
+#     <safe_arxiv_id>__<prompt_type>__r<idx>.json   — explicit run_idx
 # where prompt_type is "material" or "geo".  ".err" sibling files mark
 # failures the sub-agent surfaced (one short reason per file).
 # ---------------------------------------------------------------------------
+
+_RUN_SUFFIX_RE = re.compile(r"^(.*)__r(\d+)$")
+
+
+def _parse_result_stem(stem: str) -> tuple[str, str, int] | None:
+    """Parse <safe_id>__<prompt>__r<idx> or <safe_id>__<prompt>.
+
+    Returns (arxiv_id, prompt_type, run_idx) or None when the stem
+    doesn't match either convention.
+    """
+    # First try with explicit __r<idx> suffix.
+    m = _RUN_SUFFIX_RE.match(stem)
+    if m:
+        head, ri = m.group(1), int(m.group(2))
+    else:
+        head, ri = stem, 0
+    try:
+        safe_id, prompt_type = head.rsplit("__", 1)
+    except ValueError:
+        return None
+    if prompt_type not in ("material", "geo"):
+        return None
+    arxiv_id = safe_id.replace("_", "/") if safe_id.startswith("cond-mat") else safe_id
+    return arxiv_id, prompt_type, ri
+
 
 def cmd_save_batch(args: argparse.Namespace) -> None:
     n_ok = 0
@@ -899,37 +940,30 @@ def cmd_save_batch(args: argparse.Namespace) -> None:
     # Process .err files first so the error gets persisted even when a
     # sub-agent also dumped garbage to the .json companion.
     for err_path in sorted(RESULTS_DIR.glob("*.err")):
-        stem = err_path.stem
-        try:
-            safe_id, prompt_type = stem.rsplit("__", 1)
-        except ValueError:
+        parsed = _parse_result_stem(err_path.stem)
+        if parsed is None:
             n_skip += 1
             continue
-        arxiv_id = safe_id.replace("_", "/") if safe_id.startswith("cond-mat") else safe_id
+        arxiv_id, prompt_type, ri = parsed
         msg = err_path.read_text().strip()[:500] or "unknown_error"
-        _run_save(arxiv_id, prompt_type, error=msg)
+        _run_save(arxiv_id, prompt_type, run_idx=ri, error=msg)
         n_err += 1
         if args.archive:
             err_path.rename(archive_dir / err_path.name)
 
     for path in sorted(RESULTS_DIR.glob("*.json")):
-        stem = path.stem
-        try:
-            safe_id, prompt_type = stem.rsplit("__", 1)
-        except ValueError:
+        parsed = _parse_result_stem(path.stem)
+        if parsed is None:
             n_skip += 1
             continue
-        if prompt_type not in ("material", "geo"):
-            n_skip += 1
-            continue
-        arxiv_id = safe_id.replace("_", "/") if safe_id.startswith("cond-mat") else safe_id
+        arxiv_id, prompt_type, ri = parsed
         # Skip if a .err sibling already won.
-        sibling_err = RESULTS_DIR / f"{stem}.err"
+        sibling_err = RESULTS_DIR / f"{path.stem}.err"
         if sibling_err.exists():
             n_skip += 1
             continue
         try:
-            _run_save(arxiv_id, prompt_type, result_path=path)
+            _run_save(arxiv_id, prompt_type, run_idx=ri, result_path=path)
             n_ok += 1
             if args.archive:
                 path.rename(archive_dir / path.name)
@@ -941,11 +975,13 @@ def cmd_save_batch(args: argparse.Namespace) -> None:
 
 
 def _run_save(arxiv_id: str, prompt_type: str, *,
+              run_idx: int = 0,
               result_path: pathlib.Path | None = None,
               error: str | None = None) -> None:
     """In-process equivalent of `multimodel_audit.py save --arxiv-id ...`."""
     ns = argparse.Namespace(
         arxiv_id=arxiv_id, prompt_type=prompt_type,
+        run_idx=run_idx,
         result_file=str(result_path) if result_path else None,
         error=error,
     )
@@ -956,29 +992,53 @@ def _run_save(arxiv_id: str, prompt_type: str, *,
 # Sub-command: gate
 # ---------------------------------------------------------------------------
 
-def cmd_gate(args: argparse.Namespace) -> None:
-    conn = _connect()
-    print("=== Gate (a): rows per (vendor, prompt_version) ===")
-    for row in conn.execute(
-        """SELECT vendor, prompt_version, COUNT(*) FROM audit_extraction_model
-           WHERE vendor IN ('anthropic', 'openai', 'google')
-           GROUP BY vendor, prompt_version ORDER BY vendor, prompt_version"""
-    ):
-        print(f"  {row[0]:10s} {row[1]:30s} n={row[2]}")
+def _target_runs_from_args(args: argparse.Namespace) -> list[int]:
+    if getattr(args, "target_run_count", None) is not None:
+        return list(range(args.target_run_count))
+    return [getattr(args, "run_idx", 0)]
 
-    print(f"\n=== Gate (b): papers without exactly 1 row per prompt for {VENDOR} ===")
-    bad = conn.execute(
-        f"""SELECT paper_id, prompt_version, COUNT(*) AS n
-            FROM audit_extraction_model
-            WHERE vendor=? AND model_name=? AND run_idx=0
-            GROUP BY paper_id, prompt_version
-            HAVING n != 1"""
-        , (VENDOR, MODEL_NAME)).fetchall()
+
+def _expected_prompt_versions(arxiv_id: str) -> list[str]:
+    cached = json.loads((CACHE_DIR / f"{_safe_id(arxiv_id)}.json").read_text())
+    geo_pv = PROMPT_VERSION_GEO_PDF if cached.get("geo_input_kind") == "pdf" else PROMPT_VERSION_GEO_TEXT
+    return [PROMPT_VERSION_MATERIAL, geo_pv]
+
+
+def cmd_gate(args: argparse.Namespace) -> None:
+    target_runs = _target_runs_from_args(args)
+    placeholders = ",".join("?" for _ in target_runs)
+    run_params: tuple[Any, ...] = tuple(target_runs)
+    conn = _connect()
+    print("=== Gate (a): rows per (vendor, model, run_idx, prompt_version) ===")
+    for row in conn.execute(
+        """SELECT vendor, model_name, run_idx, prompt_version, COUNT(*) FROM audit_extraction_model
+           WHERE vendor IN ('anthropic', 'openai', 'google')
+           GROUP BY vendor, model_name, run_idx, prompt_version
+           ORDER BY vendor, model_name, run_idx, prompt_version"""
+    ):
+        print(f"  {row[0]:10s} {row[1]:22s} r{row[2]} {row[3]:30s} n={row[4]}")
+
+    print(f"\n=== Gate (b): missing/duplicate rows for {VENDOR}/{MODEL_NAME} runs {target_runs} ===")
+    samples = conn.execute("SELECT paper_id, arxiv_id FROM audit_sample ORDER BY paper_id").fetchall()
+    bad = []
+    for paper_id, arxiv_id in samples:
+        for ri in target_runs:
+            for pv in _expected_prompt_versions(arxiv_id):
+                n = conn.execute(
+                    """SELECT COUNT(*) FROM audit_extraction_model
+                       WHERE vendor=? AND model_name=? AND run_idx=?
+                         AND paper_id=? AND prompt_version=?""",
+                    (VENDOR, MODEL_NAME, ri, paper_id, pv),
+                ).fetchone()[0]
+                if n != 1:
+                    bad.append((paper_id, ri, pv, n))
     if not bad:
         print("  OK (zero offenders)")
     else:
-        for row in bad:
+        for row in bad[:50]:
             print(f"  BAD {row}")
+        if len(bad) > 50:
+            print(f"  ... {len(bad) - 50} more")
 
     print(f"\n=== Gate (c): error rate per prompt_version ({VENDOR}) ===")
     for row in conn.execute(
@@ -987,9 +1047,9 @@ def cmd_gate(args: argparse.Namespace) -> None:
                         THEN 1 ELSE 0 END) AS errs,
                COUNT(*) AS total
            FROM audit_extraction_model
-           WHERE vendor=? AND model_name=?
+           WHERE vendor=? AND model_name=? AND run_idx IN ({placeholders})
            GROUP BY prompt_version"""
-        , (VENDOR, MODEL_NAME)):
+        , (VENDOR, MODEL_NAME, *run_params)):
         pv, errs, total = row
         pct = 100.0 * errs / total if total else 0.0
         flag = "OK" if pct <= 5.0 else "FAIL"
@@ -1000,8 +1060,9 @@ def cmd_gate(args: argparse.Namespace) -> None:
     n_bad = 0
     for paper_id, mj, aj in conn.execute(
         f"""SELECT paper_id, materials_json, affiliations_json
-            FROM audit_extraction_model WHERE vendor=? AND model_name=?"""
-        , (VENDOR, MODEL_NAME)):
+            FROM audit_extraction_model
+            WHERE vendor=? AND model_name=? AND run_idx IN ({placeholders})"""
+        , (VENDOR, MODEL_NAME, *run_params)):
         n_total += 1
         if mj:
             try:
@@ -1034,32 +1095,36 @@ def cmd_gate(args: argparse.Namespace) -> None:
 # ---------------------------------------------------------------------------
 
 def cmd_summary(args: argparse.Namespace) -> None:
+    target_runs = _target_runs_from_args(args)
+    placeholders = ",".join("?" for _ in target_runs)
     conn = _connect()
     cur = conn.execute(
         f"""SELECT prompt_version,
                    COUNT(*) AS n,
                    SUM(CASE WHEN materials_error IS NOT NULL OR affiliations_error IS NOT NULL
                             THEN 1 ELSE 0 END) AS errs
-            FROM audit_extraction_model WHERE vendor=? AND model_name=? AND run_idx=0
-            GROUP BY prompt_version""", (VENDOR, MODEL_NAME))
+            FROM audit_extraction_model
+            WHERE vendor=? AND model_name=? AND run_idx IN ({placeholders})
+            GROUP BY prompt_version""", (VENDOR, MODEL_NAME, *target_runs))
     counts = {pv: (n, errs) for pv, n, errs in cur.fetchall()}
     total_rows = sum(c[0] for c in counts.values())
     total_errs = sum(c[1] for c in counts.values())
     rate = (100.0 * total_errs / total_rows) if total_rows else 0.0
     n_g = conn.execute("SELECT COUNT(*) FROM audit_extraction_model WHERE vendor='google'").fetchone()[0]
     conn.close()
+    expected_rows = 200 * len(target_runs)
 
     print("Multi-model audit complete.")
     print(f"agent_cli={AGENT_CLI}")
     print(f"vendor={VENDOR}  model={MODEL_NAME}  thinking={THINKING_MODE}  independence=fresh-codex-exec")
-    print(f"papers=100  prompts=2  runs_per=1  rows_written={total_rows}")
+    print(f"papers=100  prompts=2  runs={target_runs}  rows_written={total_rows}")
     print(f"errors={total_errs}  rate={rate:.2f}%")
-    print(f"gate.a {('OK' if total_rows == 200 else 'FAIL')}"
+    print(f"gate.a {('OK' if total_rows == expected_rows else 'FAIL')}"
           f"  gate.b OK  gate.c {rate:.2f}% {('OK' if rate <= 5.0 else 'FAIL')}"
           f"  gate.d OK"
           f"  gate.e {('OK' if n_g == 200 else 'FAIL')}")
     print(f"db=audit/audit_review.db  log=audit/runs/{VENDOR}_*.log")
-    print(f"ready_for_analysis_script: {'yes' if total_rows == 200 and rate <= 5.0 and n_g == 200 else 'no'}")
+    print(f"ready_for_analysis_script: {'yes' if total_rows == expected_rows and rate <= 5.0 and n_g == 200 else 'no'}")
 
 
 # ---------------------------------------------------------------------------
@@ -1077,11 +1142,18 @@ def main() -> None:
     p_prompt.add_argument("--arxiv-id", required=True)
     p_prompt.add_argument("--prompt-type", choices=["material", "geo"], required=True)
 
-    sub.add_parser("pending", help="List pending (paper, prompt_version) pairs")
+    p_pending = sub.add_parser("pending",
+        help="List pending (paper, prompt_version, run_idx) tuples")
+    p_pending.add_argument("--run-idx", type=int, default=0,
+        help="Show pairs missing this specific run_idx (default 0)")
+    p_pending.add_argument("--target-run-count", type=int, default=None,
+        help="Show ALL pairs missing any run_idx in 0..K-1 (overrides --run-idx)")
 
     p_save = sub.add_parser("save", help="Persist a sub-agent JSON reply")
     p_save.add_argument("--arxiv-id", required=True)
     p_save.add_argument("--prompt-type", choices=["material", "geo"], required=True)
+    p_save.add_argument("--run-idx", type=int, default=0,
+                        help="run_idx for this row (default 0)")
     p_save.add_argument("--result-file", default=None,
                         help="Read JSON reply from this file instead of stdin")
     p_save.add_argument("--error", default=None,
@@ -1092,8 +1164,13 @@ def main() -> None:
     p_savebatch.add_argument("--archive", action="store_true",
         help="Move processed files to extraction_results/_archive/ after persisting")
 
-    sub.add_parser("gate", help="Run §9 verification gates")
-    sub.add_parser("summary", help="Print §15 acknowledgement summary")
+    p_gate = sub.add_parser("gate", help="Run §9 verification gates")
+    p_gate.add_argument("--run-idx", type=int, default=0)
+    p_gate.add_argument("--target-run-count", type=int, default=None)
+
+    p_summary = sub.add_parser("summary", help="Print acknowledgement summary")
+    p_summary.add_argument("--run-idx", type=int, default=0)
+    p_summary.add_argument("--target-run-count", type=int, default=None)
 
     args = p.parse_args()
     {
