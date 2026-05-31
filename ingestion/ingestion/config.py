@@ -69,6 +69,14 @@ class IngestionSettings(BaseSettings):
     aps_metadata_delay: float = 2.0
     #: seconds between BagIt downloads (large payloads)
     aps_file_delay: float = 3.0
+    #: Base dir for transient BagIt extraction. Empty → auto: prefer a
+    #: tmpfs (/dev/shm) so Licensed Materials live in RAM and never hit
+    #: persistent disk, else fall back to the system temp dir. Each paper
+    #: gets a 0700 subdir that is force-deleted after NER.
+    aps_temp_base: str = ""
+    #: A janitor (Phase 8 cron) deletes any stray aps-* temp dir older
+    #: than this — a backstop in case a crash skips the try/finally purge.
+    aps_temp_max_age_seconds: int = 1800
 
     # --- Chunking -----------------------------------------------------------
     chunk_size_tokens: int = 512
