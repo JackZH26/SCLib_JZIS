@@ -125,7 +125,10 @@ async def test_chunks_come_from_abstract_not_body(_patch_collaborators):
     # COMPLIANCE: full-text body sentence must NOT be in any stored chunk.
     assert "under pressure" not in blob
     assert "14 K" in blob  # abstract content is allowed
-    assert all(c.section == "Abstract" for c in chunks)
+    # Stored chunks are abstract + NER fact-sentences only (no body section).
+    sections = {c.section for c in chunks}
+    assert sections <= {"Abstract", "Facts"}
+    assert "Abstract" in sections
 
 
 @pytest.mark.asyncio
