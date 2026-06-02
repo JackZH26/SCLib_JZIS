@@ -18,11 +18,15 @@ comes back 401/403, the running host's IP is not on the allow-list
 Rate limits are enforced module-locally via an asyncio throttle, exactly
 like the arXiv client, so concurrent coroutines can't hammer APS.
 
-NOTE: the metadata / BagIt endpoint *paths* (config.aps_metadata_path,
-config.aps_bagit_path) and the metadata JSON field names parsed below are
-built to APS Harvest conventions but should be confirmed against a real
-API response. Both the paths (config) and the parser (``_parse_metadata``,
-tolerant of several key spellings) are isolated so a correction is small.
+NOTE (updated 2026-05-31 after the VPS2 live check): the metadata path
+(/v2/journals/articles/{doi}) and its JSON field mapping are CONFIRMED
+working (200). The full-text path is /v2/journals/articles/{doi}/
+accepted_fulltext — APS serves no BagIt ZIP (there is no /bag endpoint).
+That endpoint currently returns 401 (an APS full-text/TDM authorization
+scope is still pending — separate from the metadata IP whitelist), so
+the full-text response FORMAT (ZIP vs bare XML) is still unconfirmed;
+``download_bagit`` assumes a ZIP and raises clearly if it isn't, leaving
+a small adapter for later once we get a 200.
 """
 from __future__ import annotations
 

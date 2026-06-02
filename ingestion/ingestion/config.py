@@ -59,12 +59,20 @@ class IngestionSettings(BaseSettings):
     aps_harvest_url: str = "https://harvest.aps.org"
     aps_user_agent: str = "SCLib-JZIS/1.0 (jzis.org; jack@jzis.org)"
     #: Per-DOI metadata endpoint (JSON). {doi} is substituted verbatim.
-    #: NOTE: confirm exact path against the live Harvest API once a real
-    #: sample is on hand; base + path are configurable so a correction is
-    #: a one-line .env change, not a code edit.
-    aps_metadata_path: str = "/v2/articles/{doi}"
-    #: Per-DOI BagIt ZIP endpoint (full-text XML + PDF + OCR). Same caveat.
-    aps_bagit_path: str = "/v2/articles/{doi}/bag"
+    #: CONFIRMED against the live Harvest API on VPS2 (2026-05-31): returns
+    #: 200, VPS2 IP is on the metadata allow-list, field mapping verified
+    #: (journal=PRB, title, abstract, DOI all parse correctly).
+    aps_metadata_path: str = "/v2/journals/articles/{doi}"
+    #: Per-DOI full-text endpoint for TDM. CONFIRMED path (2026-05-31):
+    #: APS does NOT serve a BagIt ZIP — there is no /bag endpoint. The
+    #: full text is the "accepted manuscript" at this path. As of the
+    #: VPS2 check this returns 401 (IP whitelist covers metadata but NOT
+    #: full-text TDM yet — an APS authorization scope still pending).
+    #: NOTE: the response FORMAT (ZIP vs bare XML) is unconfirmed until we
+    #: get a 200; aps_storage/aps_harvest currently expect a ZIP and will
+    #: need a small adapter if APS returns bare XML. See
+    #: docs/APS_VALIDATION_FOR_OPENCLAW.md.
+    aps_bagit_path: str = "/v2/journals/articles/{doi}/accepted_fulltext"
     #: seconds between metadata calls (APS fair use)
     aps_metadata_delay: float = 2.0
     #: seconds between BagIt downloads (large payloads)
