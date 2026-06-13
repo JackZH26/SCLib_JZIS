@@ -9,7 +9,7 @@
 
 ## 0. 背景（必读，30 秒）
 
-SCLib 新增了 **APS（American Physical Society）论文入库管线**，作为 arXiv 之外的**新增数据源**（不替换 arXiv）。代码（Phase 1–5）已 push 到 `origin/main`，最新 commit 应为 `1efd6b9`。
+SCLib 新增了 **APS（American Physical Society）论文入库管线**，作为 arXiv 之外的**新增数据源**（不替换 arXiv）。代码（Phase 1–5）已 push 到 `origin/main`，最新 commit 应为 `8ae983b`（APS 全文路径修正）。
 
 **合规红线（APS TDM 协议，最重要）：**
 - APS 全文（BagIt ZIP / 全文 XML / PDF / OCR）是**瞬时工作数据**，只用于 NER 抽取，**抽取后必须立即删除**。
@@ -30,21 +30,21 @@ cd /opt/sclib
 git rev-parse --short HEAD
 ```
 
-- 如果输出 **`1efd6b9`** → 代码已是最新，**跳到 §3（应用迁移）**。
+- 如果输出 **`8ae983b` 或更新（且 `git log --oneline -5` 含 “correct APS full-text endpoint” 这条）** → 代码已含本次修正，**跳到 §3（应用迁移）**。
 - 如果输出**其它值** → 代码未部署，**执行 §2 部署**。
 
 ---
 
-## 2. 部署到 VPS2（仅当 §1 显示 HEAD ≠ 1efd6b9 时执行）
+## 2. 部署到 VPS2（仅当 §1 显示 HEAD 未含 “correct APS full-text endpoint” 修正时执行）
 
 ### 2.1 拉取最新代码
 ```bash
 cd /opt/sclib
 git fetch origin
-git log --oneline -1 origin/main          # 应显示 1efd6b9 test(ingestion): fact-sentence ...
+git log --oneline -1 origin/main          # 应显示 8ae983b fix(ingestion): correct APS full-text endpoint ...
 git status --porcelain                     # 确认无未提交改动会被覆盖；若有，先停下报告 Jack
 git pull --ff-only origin main
-git rev-parse --short HEAD                  # 必须 == 1efd6b9
+git rev-parse --short HEAD                  # 应 == 8ae983b 或更新（含路径修正即可）
 ```
 
 ### 2.2 重建受影响的容器镜像
@@ -317,7 +317,7 @@ docker compose exec api alembic downgrade 0037_paper_geo
 
 ```
 APS 验证报告 — DOI 10.1103/PhysRevB.104.014501
-- VPS2 部署前 HEAD: __________  → 部署后 HEAD: 1efd6b9 (是/否)
+- VPS2 部署前 HEAD: __________  → 部署后 HEAD: 8ae983b (是/否)
 - alembic: 0037 → 0039 (成功/失败)
 - §3.1 5 个新列存在: (是/否)   tdm_audit_log 表存在: (是/否)
 - §3.2 arXiv 行数 迁移前/后: ______ / ______ (一致/不一致)
