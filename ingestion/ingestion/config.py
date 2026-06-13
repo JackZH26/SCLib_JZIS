@@ -63,16 +63,18 @@ class IngestionSettings(BaseSettings):
     #: 200, VPS2 IP is on the metadata allow-list, field mapping verified
     #: (journal=PRB, title, abstract, DOI all parse correctly).
     aps_metadata_path: str = "/v2/journals/articles/{doi}"
-    #: Per-DOI full-text endpoint for TDM. CONFIRMED path (2026-05-31):
-    #: APS does NOT serve a BagIt ZIP — there is no /bag endpoint. The
-    #: full text is the "accepted manuscript" at this path. As of the
-    #: VPS2 check this returns 401 (IP whitelist covers metadata but NOT
-    #: full-text TDM yet — an APS authorization scope still pending).
-    #: NOTE: the response FORMAT (ZIP vs bare XML) is unconfirmed until we
-    #: get a 200; aps_storage/aps_harvest currently expect a ZIP and will
-    #: need a small adapter if APS returns bare XML. See
-    #: docs/APS_VALIDATION_FOR_OPENCLAW.md.
-    aps_bagit_path: str = "/v2/journals/articles/{doi}/accepted_fulltext"
+    #: Per-DOI full-text (ZIP) endpoint for TDM. CORRECTED 2026-06-03 from
+    #: APS IT's own working example:
+    #:   curl -H "accept: application/zip" \
+    #:        "https://harvest.aps.org/v2/journals/articles/10.1103/hbdj-2hgf"
+    #: The full-text ZIP is the SAME base path as the metadata — content is
+    #: negotiated purely by the Accept header (json → metadata, zip → the
+    #: full-text package). There is NO /accepted_fulltext (or /bag) subpath;
+    #: hitting one returns a generic 401 "Unauthorized" (route miss), which
+    #: is exactly the spurious 401 we mistook for a pending TDM scope. APS
+    #: confirmed the ZIP needs NO key — access is the same IP whitelist as
+    #: metadata. See docs/APS_VALIDATION_FOR_OPENCLAW.md.
+    aps_bagit_path: str = "/v2/journals/articles/{doi}"
     #: seconds between metadata calls (APS fair use)
     aps_metadata_delay: float = 2.0
     #: seconds between BagIt downloads (large payloads)

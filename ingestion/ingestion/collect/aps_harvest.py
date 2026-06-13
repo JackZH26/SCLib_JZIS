@@ -18,15 +18,18 @@ comes back 401/403, the running host's IP is not on the allow-list
 Rate limits are enforced module-locally via an asyncio throttle, exactly
 like the arXiv client, so concurrent coroutines can't hammer APS.
 
-NOTE (updated 2026-05-31 after the VPS2 live check): the metadata path
-(/v2/journals/articles/{doi}) and its JSON field mapping are CONFIRMED
-working (200). The full-text path is /v2/journals/articles/{doi}/
-accepted_fulltext — APS serves no BagIt ZIP (there is no /bag endpoint).
-That endpoint currently returns 401 (an APS full-text/TDM authorization
-scope is still pending — separate from the metadata IP whitelist), so
-the full-text response FORMAT (ZIP vs bare XML) is still unconfirmed;
-``download_bagit`` assumes a ZIP and raises clearly if it isn't, leaving
-a small adapter for later once we get a 200.
+NOTE (corrected 2026-06-03): metadata and full-text share ONE base path
+``/v2/journals/articles/{doi}`` and are content-negotiated by the Accept
+header — ``application/json`` returns metadata, ``application/zip`` returns
+the full-text ZIP. There is no ``/accepted_fulltext`` (or ``/bag``) subpath;
+our earlier 401 came from hitting that non-route (a generic 401
+"Unauthorized"), NOT from a pending TDM scope. APS IT confirmed via their
+own working example that the ZIP needs NO key — the same metadata IP
+whitelist (72.62.251.29, 76.13.191.130) grants it. ``download_bagit`` sends
+``Accept: application/zip`` against the base path and validates the ZIP
+magic. The metadata path returns a DOI-specific 401
+("{doi} not authorized") when the caller's IP is off the allow-list, vs the
+generic "Unauthorized" the bad subpath gave — a handy 401 discriminator.
 """
 from __future__ import annotations
 
