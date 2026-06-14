@@ -2,8 +2,9 @@
 
 A self-hosted research platform for superconductivity: **full-text
 semantic search**, a **provenance-traced materials database**, and
-**RAG Q&A with per-paper citations**. Built on arXiv cond-mat plus
-NIMS SuperCon seed data, refreshed hourly.
+**RAG Q&A with per-paper citations**. Built on arXiv cond-mat, a
+small APS TDM pilot, and NIMS SuperCon seed data, with production
+ingest, aggregation, stats refresh, and scoped data-audit jobs.
 
 **Live:** [jzis.org/sclib](https://jzis.org/sclib) ·
 **API:** [api.jzis.org/sclib/v1](https://api.jzis.org/sclib/v1) ·
@@ -13,17 +14,21 @@ NIMS SuperCon seed data, refreshed hourly.
 
 ## What's inside today
 
+Production snapshot checked 2026-06-14 UTC.
+
 | | |
 |---|---|
-| 📄 **Papers indexed** | 6,163 arXiv papers (1993–present), ~100/hour new |
-| 🧪 **Materials** | 8,181 compounds; 1,227 with full NER evidence trail |
-| 📚 **Vector chunks** | 152,933 (Vertex AI Matching Engine, 768-dim) |
-| 🏷 **Families** | 7 (cuprate · iron-based · hydride · MgB₂ · heavy fermion · fulleride · conventional) |
-| 🔄 **Freshness** | Dashboard updated hourly, aggregates rebuilt daily |
+| 📄 **Papers indexed** | 45,763 total: 45,762 arXiv + 1 APS pilot row |
+| 🧪 **Materials** | 15,623 compounds with records; 8,252 public after review filters |
+| 📚 **Vector chunks** | 1,014,882 (Vertex AI Matching Engine, 768-dim) |
+| 🏷 **Families** | 16 populated families, led by iron-based, cuprate, conventional, chalcogenide, hydride, heavy fermion, and MgB₂ |
+| 🔄 **Freshness** | Latest paper indexed 2026-06-14 08:02 UTC; latest scoped data audit 2026-06-14 07:00 UTC |
 
-Paper ingest (arXiv OAI-PMH → LaTeX parse → chunk → embed → Vertex
-VS + Postgres) runs out-of-band and is **idempotent** — every record
-carries enough state to survive restarts and be re-run.
+Paper ingest and material aggregation run out-of-band and are
+**idempotent**: every record carries enough state to survive restarts
+and be re-run. The deployed materials aggregate runs hourly via
+systemd; broad data audits are explicit review passes recorded in
+`audit_reports`.
 
 ---
 
@@ -35,9 +40,10 @@ The flat columns on a material page (Tc max, pairing symmetry,
 crystal structure, …) are **aggregates** of per-paper NER records.
 We show both the aggregate *and* the underlying evidence so readers
 can cross-check. Example: [HgBa₂Ca₂Cu₃O₈](https://jzis.org/sclib/materials/mat:hgba2ca2cu3o8)
-shows `Tc max = 164 K, confirmed by 4 papers`, with a table below
-listing each paper's claim (Tc, pressure, sample form, measurement
-method, pairing, year, arXiv link).
+currently shows `Tc max = 138 K` across 29 source papers after the
+per-compound cap is applied, with the record table below listing each
+paper's claim (Tc, pressure, sample form, measurement method, pairing,
+year, source paper).
 
 ### 2. Conservative aggregation — NULL beats "confidently wrong"
 
@@ -55,46 +61,44 @@ column. Silence is preferred over false precision.
 ### 3. Automatic sanity gates
 
 Numeric outliers that the NER plausibly mis-extracted are held back
-from the public list:
+from the public list with `needs_review=true`:
 
-- **Tc > 250 K at ambient pressure** → `needs_review=true`, hidden
-  from `/materials` (confirmed SC Tc tops out near 140 K at ambient;
-  200 GPa hydrides stay under 260 K). These are usually NER confusing
-  a Curie temperature, melting point, or theoretical estimate with
-  the SC Tc.
-- **`cuprate_*` structure phase without Cu in formula** → rejected
-  (NER over-applies cuprate taxonomy to unfamiliar compounds).
-- **`tc_max` for well-studied materials requires multi-paper
-  corroboration** — at least `min(10, n_papers/20)` independent
-  papers must report ≥ the candidate value. MgB₂ would have shown
-  79 K from one outlier paper under plain `max(tc_kelvin)`; the
-  corroboration rule gives it the correct 40 K confirmed by 36
-  papers.
-- **`tc_ambient` only counts records where NER affirmatively
-  emitted `ambient_sc=true`** — we do not trust the NER's
-  `pressure_gpa=0.0` fallback as an ambient signal.
-- Invariant `tc_max ≥ tc_ambient` is enforced post-hoc.
+- Family-specific and per-compound Tc ceilings catch values above
+  known superconducting records.
+- Ambient-pressure claims above the accepted ambient record are
+  quarantined for review.
+- Hydride claims with high Tc at low pressure are quarantined, since
+  plausible high-Tc hydrides require extreme pressure.
+- Contradictory pressure, family, unconventionality, citation
+  conflation, and retracted-source patterns are audited.
+- Formula-shape rules catch descriptor text, charged/incomplete
+  formulas, and space-group prefixes that slipped through NER.
+- Manual overrides and caps preserve reviewed corrections for
+  well-studied materials such as MgB₂ and Hg cuprates.
 
 ### 4. Formula canonicalization + family taxonomy
 
 `Bi_2Sr_2CaCu_2O_{8+δ}`, `Bi2212`, `BSCCO`, `Bi_2Sr_2CaCu_2O_8-δ`,
 `Bi_2Sr_2CaCu_2O_8+x`, `Bi_2Sr_2CaCu_2O_{8+delta}` — all collapse to
-the same material (388 papers). Implementation: LaTeX subscript
+the same material (572 source papers in the current production
+snapshot). Implementation: LaTeX subscript
 strip + Greek-ASCII fold + variable-stoichiometry suffix collapse +
 acronym alias table + crystallographic polytype prefix strip (2H-,
 3R-, …). Distinct numeric stoichiometries (O₆.₅ vs O₆.₉₅ vs O₇)
 deliberately stay separate as different doping regimes.
 
-### 5. Hourly dashboard / daily aggregates
+### 5. Production refresh and scoped audit workflow
 
 - FastAPI lifespan spawns an async task that rebuilds the
   `stats_cache['dashboard']` row every 3600 s, so the landing
   page reflects the real DB state within the hour.
-- A `systemd` timer at 03:10 UTC reruns
+- A `systemd` timer at `*:30` reruns
   `sclib-ingest --mode aggregate-materials` on all papers,
-  refreshing the per-material summary with any new NER evidence
-  from the previous day's arXiv harvest.
-- Three consecutive failures on either loop send an email via
+  refreshing the per-material summary with new NER evidence.
+- Admin/reviewer audit pages expose `audit_reports`, the review queue,
+  one-click pass/hold actions, and scoped data-audit reports for
+  newly ingested paper windows.
+- Three consecutive aggregate failures send an email via
   Resend to `info@jzis.org`.
 
 ---
@@ -103,8 +107,8 @@ deliberately stay separate as different doping regimes.
 
 | Tier | Auth | Limit |
 |---|---|---|
-| **Guest** | none (IP-based Redis counter) | 3 search + 3 ask / day |
-| **Registered** | email verified, `X-API-Key: scl_…` | unlimited |
+| **Guest** | none (IP-based Redis counter) | 3 quota-checked search/ask requests per day |
+| **Registered** | email verified, `X-API-Key: scl_…` or JWT | 999 quota-checked requests per day by default |
 
 Registered users get a Google OAuth option in addition to
 email+password, using a shared JZIS account that also works at
@@ -163,18 +167,19 @@ Full endpoint reference: [`docs/API.md`](./docs/API.md).
    (rate lim)  (768-dim)      (RAG answer + NER)
 
                          ─── ingest pipeline ───
-                               (one-shot)
+                         (scheduled one-shot jobs)
   arXiv OAI-PMH  →  LaTeX parser  →  chunker  →  text-embedding-005
+  APS TDM pilot  →  transient XML  →  fact chunks  →  deletion audit
        │                                                  │
        ▼                                                  ▼
-  GCS archive                                   Vertex VS + Postgres
+  GCS archive / metadata                       Vertex VS + Postgres
                                                           │
                                          ┌────────────────┘
                                          ▼
                                Gemini NER → per-paper
                                materials_extracted JSONB
                                          │
-                                         ▼       (daily systemd timer)
+                                         ▼       (hourly systemd timer)
                                aggregate-materials
                                   → materials row upsert
 ```
@@ -189,26 +194,26 @@ listener. Deploy details: [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md).
 ```
 api/              FastAPI + SQLAlchemy + Alembic migrations
 frontend/         Next.js 14 (app router, SSR)
-ingestion/        One-shot pipeline: arXiv → Postgres + Vertex VS
-scripts/          Host-side cron / systemd orchestration
-deploy/systemd/   Timer + service units (hourly stats, daily aggregate)
-docs/             API reference, deployment guide
+ingestion/        Pipelines: arXiv/APS → Postgres + Vertex VS
+scripts/          Host-side cron, audit, backup, and systemd orchestration
+deploy/systemd/   Timer + service units for hourly material aggregation
+docs/             API reference, deployment, APS/TDM validation notes
 ```
 
 ---
 
 ## Roadmap
 
-- Backfill remaining NIMS-origin materials (~6,900) with NER evidence
-  as the arXiv archive catches up to their formula mentions
-- Family-specific sanity thresholds (e.g. `fulleride > 60 K →
-  needs_review` — historical record is Cs₃C₆₀ at 38 K)
-- Admin view for `include_pending=true` materials with one-click
-  unflag after manual review
-- Per-material Hc2(T) and Tc(P) plot widgets synthesised from the
-  records array
-- Citation graph (papers ↔ references) for cross-paper consistency
-  checks
+- Expand APS ingestion beyond the current pilot while preserving TDM
+  deletion-proof audit logs.
+- Improve reviewer workflows around the 7k+ `needs_review` queue,
+  including batch review and richer suggested fixes.
+- Per-material Hc2(T), Tc(P), and source-quality widgets synthesised
+  from the records array.
+- Citation and cross-source consistency graph for paper ↔ material
+  provenance checks.
+- Broader Materials Project / parent-variant UI for composition
+  families and doped variants.
 
 ---
 
@@ -231,5 +236,6 @@ docs/             API reference, deployment guide
 | Code | Apache 2.0 |
 | Aggregated material / paper data | CC BY 4.0 |
 | arXiv full-text | original arXiv license (per paper) |
+| APS licensed content | transient processing only; raw content is not redistributed |
 
 © 2026 Jian Zhou / JZIS
