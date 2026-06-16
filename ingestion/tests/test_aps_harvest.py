@@ -103,6 +103,36 @@ def test_parse_metadata_nested_under_article_key():
     assert m.journal_abbrev == "PRL"
 
 
+def test_parse_metadata_unwraps_aps_value_objects_and_markup():
+    doi = "10.1103/PhysRevB.104.014501"
+    payload = {
+        "data": {
+            "title": {
+                "value": (
+                    "Magnetic and superconducting phase diagram of "
+                    "<math><mrow><mi>Eu</mi><mo>(</mo><mi>Fe</mi>"
+                    "<mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow></math>"
+                ),
+                "format": "html",
+            },
+            "abstract": {
+                "value": "<p>We report <i>T</i><sub>c</sub> = 14 K.</p>",
+                "format": "html",
+            },
+            "authors": [{"name": "A B"}],
+            "volume": {"number": "104"},
+            "issue": {"number": "1"},
+            "date": "2021-07-01",
+        }
+    }
+    m = _parse_metadata(doi, payload)
+    assert m.title == "Magnetic and superconducting phase diagram of Eu(Fe1-x)"
+    assert m.abstract == "We report Tc = 14 K."
+    assert m.volume == "104"
+    assert m.issue == "1"
+    assert m.date_published == date(2021, 7, 1)
+
+
 # === ApsClient (MockTransport, no network) =================================
 
 def _mock_client(handler) -> ApsClient:

@@ -34,7 +34,10 @@ generic "Unauthorized" the bad subpath gave — a handy 401 discriminator.
 from __future__ import annotations
 
 import asyncio
+from html import unescape
+from html.parser import HTMLParser
 import logging
+import re
 import time
 from dataclasses import dataclass
 from datetime import date, datetime
@@ -256,20 +259,71 @@ def _parse_categories(art: dict[str, Any]) -> list[str]:
     return out
 
 
+class _MetadataHTMLTextParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._parts: list[str] = []
+
+    def handle_data(self, data: str) -> None:
+        self._parts.append(data)
+
+    def text(self) -> str:
+        return "".join(self._parts)
+
+
+def _clean_metadata_text(s: str) -> str:
+    s = s.strip()
+    if re.search(r"</?[A-Za-z][^>]*>", s):
+        parser = _MetadataHTMLTextParser()
+        try:
+            parser.feed(s)
+            parser.close()
+            s = parser.text()
+        except Exception:
+            log.debug("failed to strip APS metadata markup", exc_info=True)
+    return unescape(s).strip()
+
+
+def _metadata_value_to_str(v: Any) -> str | None:
+    if v is None:
+        return None
+    if isinstance(v, str):
+        s = _clean_metadata_text(v)
+        return s or None
+    if isinstance(v, (int, float, bool)):
+        return str(v)
+    if isinstance(v, dict):
+        for key in (
+            "value",
+            "text",
+            "title",
+            "name",
+            "fullName",
+            "abbreviatedName",
+            "number",
+            "id",
+            "doi",
+        ):
+            s = _metadata_value_to_str(v.get(key))
+            if s:
+                return s
+        return None
+    if isinstance(v, list):
+        parts = [s for item in v if (s := _metadata_value_to_str(item))]
+        return ", ".join(parts) if parts else None
+    s = _clean_metadata_text(str(v))
+    return s or None
+
+
 def _first_str(d: dict[str, Any], *keys: str) -> str | None:
     for k in keys:
-        v = d.get(k)
-        if v is None:
-            continue
-        s = str(v).strip()
+        s = _metadata_value_to_str(d.get(k))
         if s:
             return s
     return None
 
 
 def _collapse_ws(s: str) -> str:
-    import re
-
     return re.sub(r"\s+", " ", s).strip()
 
 

@@ -53,6 +53,8 @@ class _FakeClient:
         return ApsArticleMeta(
             doi=doi, title="Pressure-induced SC", authors=["A B", "C D"],
             abstract="We report superconductivity at 14 K.",
+            journal="Physical Review B",
+            journal_abbrev="PRB",
         )
 
     async def download_bagit(self, doi: str) -> bytes:
