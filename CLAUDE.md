@@ -14,7 +14,7 @@ A full-stack web application with:
 - **PostgreSQL** for all data (papers, materials, users, chunks)
 - **Redis** for rate limiting and caching
 - **Vertex AI Vector Search** for semantic search
-- **Gemini 2.5 Flash** for RAG Q&A
+- **Gemini 3.5 Flash** for RAG Q&A and NER
 
 All services run in **Docker Compose** on VPS2 (72.62.251.29), behind the existing **Nginx** reverse proxy.
 

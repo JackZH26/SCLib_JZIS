@@ -2,7 +2,7 @@
 """A.1 — Prompt-variant exploratory test.
 
 Goal: run a single alternative prompt (variant_B, "primary-only stricter")
-on Gemini-2.5-Flash for 30 cached_inputs papers and report formula-set
+on the configured Gemini Flash model for 30 cached_inputs papers and report formula-set
 Jaccard between prompt_A (original production prompt) and prompt_B.
 
 Reuses cached_inputs/ which were created during the original audit.
@@ -25,6 +25,7 @@ import time
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO / "ingestion"))
 CACHED = REPO / "audit" / "cached_inputs"
 DB = REPO / "audit" / "audit_review.db"
 OUT_DIR = REPO / "audit" / "refresh_2026_05_26" / "prompt_variant_test"
@@ -96,16 +97,16 @@ def jaccard(a: set[str], b: set[str]) -> float:
 
 
 def run_variant_b_on_paper(paper_id: str, body: str, sys_module) -> list[dict]:
-    """Invoke Gemini 2.5 Flash with variant_B prompt on the given body."""
+    """Invoke the configured Gemini Flash model with variant_B prompt."""
     prompt = VARIANT_B_PROMPT.replace("{{BODY}}", body[:_MAX_CHARS])
     client = sys_module["client"]
     types = sys_module["types"]
     try:
         resp = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model=sys_module["model"],
             contents=prompt,
             config=types.GenerateContentConfig(
-                temperature=1.0,
+                temperature=0.0,
                 max_output_tokens=32768,
                 response_mime_type="application/json",
                 thinking_config=types.ThinkingConfig(thinking_budget=0),
@@ -133,12 +134,15 @@ def main() -> int:
     sample = cache_files[:30]
     print(f"Using first 30 alphabetically for prompt-variant test")
 
-    # Initialize Gemini client (via Vertex AI)
+    # Initialize Gemini client from the same config used by ingestion.
     try:
-        from google import genai
         from google.genai import types
-        client = genai.Client(vertexai=True, project="jzis-sclib", location="us-central1")
-        sys_module = {"client": client, "types": types}
+        from ingestion.config import get_settings
+        from ingestion.genai_client import make_genai_client
+
+        settings = get_settings()
+        client = make_genai_client(settings)
+        sys_module = {"client": client, "types": types, "model": settings.gemini_model}
     except ImportError:
         print("Cannot import google.genai. Install: pip install google-genai", file=sys.stderr)
         return 1

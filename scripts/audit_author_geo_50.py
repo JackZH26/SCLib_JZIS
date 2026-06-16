@@ -6,7 +6,7 @@ is declared in the schema but never populated (always NULL) -- so author
 and institution geography is absent from the database. This one-off
 audit samples 50 ingested papers, pulls each paper's original full text
 from GCS (LaTeX .tar.gz, else PDF; falling back to a live arXiv PDF
-fetch), and asks Gemini 2.5 Flash to extract the *distinct* author
+fetch), and asks the configured Gemini Flash model to extract the *distinct* author
 affiliations with city and country.
 
 Per-paper de-duplication: a city or country shared by several authors of
@@ -46,6 +46,7 @@ from sqlalchemy import text
 
 from ingestion import storage
 from ingestion.config import get_settings
+from ingestion.genai_client import make_genai_client
 from ingestion.index.indexer import _session_factory, dispose
 
 # latex_parser strips the preamble (where \author / \affiliation live),
@@ -208,11 +209,7 @@ def fetch_evidence(arxiv_id: str) -> tuple[str, str | None, Any]:
 
 @lru_cache(maxsize=1)
 def _client() -> genai.Client:
-    s = get_settings()
-    return genai.Client(
-        vertexai=True, project=s.gcp_project, location=s.gcp_region,
-        http_options={"timeout": 120_000},
-    )
+    return make_genai_client(get_settings())
 
 
 def _finish_reason(resp: Any) -> str:
@@ -280,7 +277,7 @@ def gemini_extract(kind: str, payload: Any) -> list[dict[str, Any]]:
     cfg = genai_types.GenerateContentConfig(
         temperature=0.0,
         response_mime_type="application/json",
-        # Generous cap: gemini-2.5-flash's dynamic "thinking" tokens
+        # Generous cap: Gemini Flash thinking tokens
         # share the output budget, so a small cap (8k) truncated the
         # JSON mid-object for papers the model thought hard about. 32k
         # clears the max thinking budget (~24k) plus the answer.

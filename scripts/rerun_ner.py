@@ -18,7 +18,7 @@ Usage (inside ingestion container):
 Follow with:
     sclib-ingest --mode aggregate-materials
 
-Cost estimate: ~$20 for ~13k papers at Gemini 2.5 Flash pricing
+Cost estimate: recompute before running; the current default is Gemini 3.5 Flash
                (3-4 hours at concurrency=4).
 """
 from __future__ import annotations
