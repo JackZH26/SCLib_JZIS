@@ -110,6 +110,7 @@ def generate_answer(
         config=genai_types.GenerateContentConfig(
             temperature=0.2,
             max_output_tokens=1024,
+            thinking_config=genai_types.ThinkingConfig(thinking_budget=0),
         ),
     )
 

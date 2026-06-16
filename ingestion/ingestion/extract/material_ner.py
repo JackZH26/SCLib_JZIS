@@ -378,6 +378,7 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
                 config=genai_types.GenerateContentConfig(
                     temperature=0.0,
                     response_mime_type="application/json",
+                    thinking_config=genai_types.ThinkingConfig(thinking_budget=0),
                 ),
             )
             break  # success
