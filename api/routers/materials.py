@@ -8,7 +8,7 @@ offset/limit pagination.
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import func, or_, select
+from sqlalchemy import func, literal_column, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
@@ -23,6 +23,10 @@ from models.search import (
 from routers.deps import Identity, peek_identity
 
 router = APIRouter(tags=["materials"])
+
+_APS_RECORD_JSONPATH = literal_column(
+    "'$[*] ? (@.paper_id like_regex \"^aps:\")'::jsonpath"
+)
 
 
 @router.get("/materials", response_model=MaterialListResponse)
@@ -87,6 +91,10 @@ async def list_materials(
             "content. Turn on to browse the full NIMS index."
         ),
     ),
+    only_aps: bool = Query(
+        False,
+        description="Only show materials that have at least one APS-sourced record.",
+    ),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001 — presence sets guest counter header
     db: AsyncSession = Depends(get_db),
 ) -> MaterialListResponse:
@@ -148,6 +156,8 @@ async def list_materials(
         _apply(Material.pairing_symmetry == pairing_symmetry)
     if structure_phase:
         _apply(Material.structure_phase == structure_phase)
+    if only_aps:
+        _apply(func.jsonb_path_exists(Material.records, _APS_RECORD_JSONPATH))
     if min_tier:
         allowed = {"T1": ["T1"], "T2": ["T1", "T2"], "T3": ["T1", "T2", "T3"]}
         _apply(Material.best_credibility_tier.in_(allowed[min_tier]))

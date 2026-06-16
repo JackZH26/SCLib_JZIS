@@ -27,6 +27,7 @@ type Sp = {
   min_tier?: string;
   min_papers?: string;
   include_skeletons?: string;
+  only_aps?: string;
 };
 
 const DEFAULT_PAGE_SIZE = 50;
@@ -57,6 +58,7 @@ export default async function MaterialsPage({
     (searchParams.sort as MaterialListParams["sort"]) ?? "tc_max";
 
   const includeSkeletons = searchParams.include_skeletons === "true";
+  const onlyAps = searchParams.only_aps === "true";
 
   const minTier = (searchParams.min_tier as MaterialListParams["min_tier"]) || undefined;
   const minPapers = searchParams.min_papers ? Number(searchParams.min_papers) : undefined;
@@ -75,6 +77,7 @@ export default async function MaterialsPage({
     limit: perPage,
     offset: page * perPage,
     include_skeletons: includeSkeletons,
+    only_aps: onlyAps,
   };
 
   const data = await listMaterials(params).catch(() => null);
@@ -214,6 +217,18 @@ export default async function MaterialsPage({
             <option value="arxiv_year">arXiv year</option>
             <option value="total_papers">Paper count</option>
           </select>
+        </label>
+        <label className="flex items-center gap-2 self-end pb-1">
+          <input
+            type="checkbox"
+            name="only_aps"
+            value="true"
+            defaultChecked={onlyAps}
+            className="h-4 w-4 rounded border-slate-300 accent-[color:var(--accent,#3A7D5C)]"
+          />
+          <span className="text-xs font-medium text-slate-600">
+            Only APS Data
+          </span>
         </label>
         {/*
           Library-only entries are NIMS SuperCon catalog rows that

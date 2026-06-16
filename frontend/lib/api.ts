@@ -611,6 +611,7 @@ export interface MaterialListParams {
   limit?: number;
   offset?: number;
   include_skeletons?: boolean;
+  only_aps?: boolean;
 }
 
 export function listMaterials(params: MaterialListParams) {
@@ -631,6 +632,7 @@ export function listMaterials(params: MaterialListParams) {
   if (params.offset != null) qs.set("offset", String(params.offset));
   if (params.parents_only) qs.set("parents_only", "true");
   if (params.include_skeletons) qs.set("include_skeletons", "true");
+  if (params.only_aps) qs.set("only_aps", "true");
   return request<MaterialListResponse>(
     `/materials${qs.toString() ? `?${qs}` : ""}`,
   );
@@ -765,10 +767,12 @@ export interface TimelineResponse {
 export function getTimeline(opts: {
   family?: string;
   experimentalOnly?: boolean;
+  onlyAps?: boolean;
 } = {}) {
   const qs = new URLSearchParams();
   if (opts.family) qs.set("family", opts.family);
   if (opts.experimentalOnly) qs.set("experimental_only", "true");
+  if (opts.onlyAps) qs.set("only_aps", "true");
   const qstr = qs.toString();
   return request<TimelineResponse>(`/timeline${qstr ? `?${qstr}` : ""}`);
 }

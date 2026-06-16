@@ -3,7 +3,7 @@
 Walks ``Material.records`` (JSONB list of TcRecord-shaped dicts) and
 flattens them into one row per *distinct* (material, year, Tc bucket,
 pressure bucket) measurement. Optionally filters to a single family
-("cuprate", "iron_based", "hydride", …).
+("cuprate", "iron_based", "hydride", …) or to APS-sourced records.
 
 Filtering rules (mirrors the /materials list endpoint's "honesty
 defaults" — we never surface data the aggregator already flagged as
@@ -116,6 +116,11 @@ def _is_theoretical(rec: dict) -> bool:
     return p is not None and p > 0
 
 
+def _is_aps_record(rec: dict) -> bool:
+    paper_id = rec.get("paper_id")
+    return isinstance(paper_id, str) and paper_id.startswith("aps:")
+
+
 @router.get("/timeline", response_model=TimelineResponse)
 async def timeline(
     family: str | None = Query(None, description="Restrict to one family"),
@@ -135,6 +140,10 @@ async def timeline(
             "measurement technique survive — useful when the user is "
             "looking for ground truth and not predictions."
         ),
+    ),
+    only_aps: bool = Query(
+        False,
+        description="Only show Tc records whose paper_id is APS-sourced.",
     ),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001
     db: AsyncSession = Depends(get_db),
@@ -159,6 +168,8 @@ async def timeline(
     for m in mats:
         for rec in (m.records or []):
             if not isinstance(rec, dict):
+                continue
+            if only_aps and not _is_aps_record(rec):
                 continue
             tc = rec.get("tc_kelvin")
             year = rec.get("year") or rec.get("measurement_year")
