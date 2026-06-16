@@ -79,6 +79,7 @@ class Settings(BaseSettings):
     gemini_use_enterprise: bool = True
     gemini_api_version: str = "v1"
     embedding_model: str = "text-embedding-005"
+    embedding_output_dimensionality: int = 768
 
 
 @lru_cache(maxsize=1)

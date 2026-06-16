@@ -29,7 +29,7 @@ Per-paper sub-pipeline (see PROJECT_SPEC §9C):
         → GCS upload (idempotent: skip if already present)
         → LaTeX parse → Section list
         → Chunk (512/64 tokens, section-aware)
-        → Embed (Vertex text-embedding-005, batched)
+        → Embed (Google Gen AI text-embedding-005, batched)
         → Postgres upsert (papers, chunks) + Vertex VS upsert
         → Material NER (Gemini) → update papers.materials_extracted
 

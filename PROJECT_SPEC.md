@@ -61,7 +61,7 @@ SSH:      root@72.62.251.29
 Project:  jzis-sclib (create in GCP Console)
 Services:
   - Vertex AI Vector Search  (768d vectors, managed)
-  - Vertex AI Embedding API  (text-embedding-005)
+  - Google Gen AI Embeddings (text-embedding-005, 768d)
   - Gemini API               (gemini-3.5-flash, RAG + NER)
   - Cloud Storage            (PDFs + parsed text)
 ```
@@ -77,7 +77,7 @@ Services:
 | **Cache / Rate Limit** | Redis 7 (Docker on VPS2) |
 | **Email** | Resend API |
 | **Vector DB** | Vertex AI Vector Search |
-| **Embedding** | Vertex AI text-embedding-005 (768d) |
+| **Embedding** | Google Gen AI text-embedding-005 (768d) |
 | **LLM** | Gemini 3.5 Flash (RAG + material NER) |
 | **Object Storage** | Google Cloud Storage |
 | **LaTeX Parser** | Custom Python + Pandoc |
@@ -733,7 +733,7 @@ GCS raw file
     Preserve: equations as atomic units
     │
     ▼
-[3] Embed (Vertex AI text-embedding-005, batch 250)
+[3] Embed (Google Gen AI text-embedding-005, batch 250)
     │
     ├──▶ [4a] Vertex AI VS upsert (vectors + filter metadata)
     └──▶ [4b] PostgreSQL insert (chunks table, paper table)
@@ -853,6 +853,7 @@ GEMINI_LOCATION=global
 GEMINI_USE_ENTERPRISE=true
 GEMINI_API_VERSION=v1
 EMBEDDING_MODEL=text-embedding-005
+EMBEDDING_OUTPUT_DIMENSIONALITY=768
 
 # === Auth ===
 JWT_SECRET=<strong-random-64-char-secret>

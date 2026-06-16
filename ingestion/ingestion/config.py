@@ -33,6 +33,7 @@ class IngestionSettings(BaseSettings):
 
     # --- AI models ----------------------------------------------------------
     embedding_model: str = "text-embedding-005"
+    embedding_output_dimensionality: int = 768
     gemini_model: str = "gemini-3.5-flash"
     gemini_location: str = "global"
     gemini_use_enterprise: bool = True

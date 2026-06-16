@@ -47,7 +47,7 @@ Returns the authenticated user and their API keys.
   "material_family": "cuprate"
 }
 ```
-Embeds the query with `text-embedding-005`, runs an
+Embeds the query with Google Gen AI `text-embedding-005`, runs an
 approximate-nearest-neighbor lookup against the Vertex AI Matching
 Engine index, then joins the hits against Postgres to return full
 paper records + chunk snippets. Each hit carries a `relevance` float

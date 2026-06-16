@@ -1,11 +1,11 @@
 """Query-time Vector Search client.
 
-Wraps Vertex AI text-embedding-005 (for query embedding) and the
-Matching Engine endpoint (for ANN lookup). The ingestion pipeline
-lives in a separate process and imports ``ingestion.embed.embedder``;
-here in the API we deliberately re-implement the thin query path so
-the two packages stay decoupled (the API process would otherwise have
-to import ingestion's pyproject, SQL Core table defs, etc).
+Wraps Google Gen AI text-embedding-005 (for query embedding) and the
+Vertex AI Matching Engine endpoint (for ANN lookup). The ingestion
+pipeline lives in a separate process and imports ``ingestion.embed.embedder``;
+here in the API we deliberately re-implement the thin query path so the
+two packages stay decoupled (the API process would otherwise have to
+import ingestion's pyproject, SQL Core table defs, etc).
 
 Lazy-initialized singletons so import-time startup stays cheap and
 tests can run without touching GCP.
@@ -22,10 +22,10 @@ from google.cloud.aiplatform.matching_engine.matching_engine_index_endpoint impo
     Namespace,
     NumericNamespace,
 )
-from vertexai.language_models import TextEmbeddingInput, TextEmbeddingModel
-import vertexai
+from google.genai import types as genai_types
 
 from config import get_settings
+from services.genai_client import client as genai_client
 
 log = logging.getLogger(__name__)
 
@@ -33,14 +33,6 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Lazy clients
 # ---------------------------------------------------------------------------
-
-@lru_cache(maxsize=1)
-def _embed_model() -> TextEmbeddingModel:
-    settings = get_settings()
-    vertexai.init(project=settings.gcp_project, location=settings.gcp_region)
-    aiplatform.init(project=settings.gcp_project, location=settings.gcp_region)
-    return TextEmbeddingModel.from_pretrained(settings.embedding_model)
-
 
 @lru_cache(maxsize=1)
 def _endpoint() -> MatchingEngineIndexEndpoint:
@@ -71,10 +63,19 @@ def embed_query(text: str) -> list[float]:
     Uses task_type=RETRIEVAL_QUERY so the vector lands in the same
     semantic space the ingestion pipeline indexed with RETRIEVAL_DOCUMENT.
     """
-    out = _embed_model().get_embeddings(
-        [TextEmbeddingInput(text=text, task_type="RETRIEVAL_QUERY")]
+    settings = get_settings()
+    out = genai_client().models.embed_content(
+        model=settings.embedding_model,
+        contents=[text],
+        config=genai_types.EmbedContentConfig(
+            task_type="RETRIEVAL_QUERY",
+            output_dimensionality=settings.embedding_output_dimensionality,
+        ),
     )
-    return list(out[0].values)
+    embeddings = out.embeddings or []
+    if not embeddings:
+        raise RuntimeError("Embedding API returned no query embedding")
+    return list(embeddings[0].values)
 
 
 def find_neighbors(
@@ -140,8 +141,8 @@ def find_neighbors_many(
 
 def dispose() -> None:
     """Clear cached clients. Called from tests."""
-    _embed_model.cache_clear()
     _endpoint.cache_clear()
+    genai_client.cache_clear()
 
 
 # ---------------------------------------------------------------------------

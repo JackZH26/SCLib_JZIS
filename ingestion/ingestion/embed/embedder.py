@@ -1,4 +1,4 @@
-"""Batch text embeddings via Vertex AI ``text-embedding-005``.
+"""Batch text embeddings via Google Gen AI ``text-embedding-005``.
 
 text-embedding-005 caps each request at **20,000 input tokens total**
 across all inputs in the batch. A single 512-token chunk is fine, but
@@ -15,12 +15,12 @@ import logging
 from functools import lru_cache
 from typing import Iterable
 
-from google.cloud import aiplatform
-from vertexai.language_models import TextEmbeddingInput, TextEmbeddingModel
-import vertexai
+from google import genai
+from google.genai import types as genai_types
 
 from ingestion.chunk.chunker import count_tokens
 from ingestion.config import get_settings
+from ingestion.genai_client import make_genai_client
 from ingestion.models import Chunk
 
 log = logging.getLogger(__name__)
@@ -37,38 +37,51 @@ _MAX_INPUTS_PER_REQUEST = 250
 
 
 @lru_cache(maxsize=1)
-def _model() -> TextEmbeddingModel:
-    settings = get_settings()
-    vertexai.init(project=settings.gcp_project, location=settings.gcp_region)
-    aiplatform.init(project=settings.gcp_project, location=settings.gcp_region)
-    return TextEmbeddingModel.from_pretrained(settings.embedding_model)
+def _client() -> genai.Client:
+    return make_genai_client()
 
 
 def embed_chunks(chunks: list[Chunk]) -> None:
     """Mutates each chunk in-place, populating ``.embedding``."""
     if not chunks:
         return
-    model = _model()
+    settings = get_settings()
 
     for batch in _batched_by_tokens(chunks):
-        inputs = [
-            TextEmbeddingInput(text=c.text, task_type="RETRIEVAL_DOCUMENT")
-            for c in batch
-        ]
-        # output_dimensionality defaults to 768 for text-embedding-005.
-        out = model.get_embeddings(inputs)
-        for chunk, emb in zip(batch, out):
+        out = _client().models.embed_content(
+            model=settings.embedding_model,
+            contents=[c.text for c in batch],
+            config=genai_types.EmbedContentConfig(
+                task_type="RETRIEVAL_DOCUMENT",
+                output_dimensionality=settings.embedding_output_dimensionality,
+            ),
+        )
+        embeddings = out.embeddings or []
+        if len(embeddings) != len(batch):
+            raise RuntimeError(
+                f"Embedding API returned {len(embeddings)} embeddings for "
+                f"{len(batch)} inputs"
+            )
+        for chunk, emb in zip(batch, embeddings):
             chunk.embedding = list(emb.values)
         log.info("embedded batch of %d chunks", len(batch))
 
 
 def embed_query(text: str) -> list[float]:
     """One-shot embedding for API search-time use."""
-    model = _model()
-    out = model.get_embeddings(
-        [TextEmbeddingInput(text=text, task_type="RETRIEVAL_QUERY")]
+    settings = get_settings()
+    out = _client().models.embed_content(
+        model=settings.embedding_model,
+        contents=[text],
+        config=genai_types.EmbedContentConfig(
+            task_type="RETRIEVAL_QUERY",
+            output_dimensionality=settings.embedding_output_dimensionality,
+        ),
     )
-    return list(out[0].values)
+    embeddings = out.embeddings or []
+    if not embeddings:
+        raise RuntimeError("Embedding API returned no query embedding")
+    return list(embeddings[0].values)
 
 
 def _batched_by_tokens(chunks: list[Chunk]) -> Iterable[list[Chunk]]:

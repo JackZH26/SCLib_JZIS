@@ -168,7 +168,7 @@ Full endpoint reference: [`docs/API.md`](./docs/API.md).
 
                          ─── ingest pipeline ───
                          (scheduled one-shot jobs)
-  arXiv OAI-PMH  →  LaTeX parser  →  chunker  →  text-embedding-005
+  arXiv OAI-PMH  →  LaTeX parser  →  chunker  →  Gen AI text-embedding-005
   APS TDM pilot  →  transient XML  →  fact chunks  →  deletion audit
        │                                                  │
        ▼                                                  ▼

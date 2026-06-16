@@ -1,7 +1,7 @@
 """POST /search — semantic search over chunks.
 
 Pipeline:
-  1. Embed the query with Vertex text-embedding-005 (RETRIEVAL_QUERY).
+  1. Embed the query with Google Gen AI text-embedding-005 (RETRIEVAL_QUERY).
   2. Ask Matching Engine for the top-K neighbors, with optional
      year / material_family filters pushed into the index namespaces.
   3. Load the matched Chunk rows + their Paper parents in a single

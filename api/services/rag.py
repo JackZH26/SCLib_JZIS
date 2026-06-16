@@ -8,12 +8,11 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from functools import lru_cache
 
-from google import genai
 from google.genai import types as genai_types
 
 from config import get_settings
+from services.genai_client import client as genai_client
 
 log = logging.getLogger(__name__)
 
@@ -45,28 +44,6 @@ class RagSourceInput:
 class RagResult:
     answer: str
     tokens_used: int | None
-
-
-@lru_cache(maxsize=1)
-def _client() -> genai.Client:
-    settings = get_settings()
-    http_options = genai_types.HttpOptions(
-        api_version=settings.gemini_api_version,
-        timeout=120_000,
-    )
-    if settings.gemini_use_enterprise:
-        return genai.Client(
-            enterprise=True,
-            project=settings.gcp_project,
-            location=settings.gemini_location,
-            http_options=http_options,
-        )
-    return genai.Client(
-        vertexai=True,
-        project=settings.gcp_project,
-        location=settings.gcp_region,
-        http_options=http_options,
-    )
 
 
 def _format_sources(sources: list[RagSourceInput]) -> str:
@@ -104,7 +81,7 @@ def generate_answer(
     )
 
     settings = get_settings()
-    resp = _client().models.generate_content(
+    resp = genai_client().models.generate_content(
         model=settings.gemini_model,
         contents=prompt,
         config=genai_types.GenerateContentConfig(
@@ -131,4 +108,4 @@ def generate_answer(
 
 
 def dispose() -> None:
-    _client.cache_clear()
+    genai_client.cache_clear()
