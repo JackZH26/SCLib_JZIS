@@ -34,7 +34,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
-from models.db import Material
+from models.db import Material, Paper
 from models.search import TimelineCoverage, TimelinePoint, TimelineResponse
 from routers.deps import Identity, peek_identity
 
@@ -121,6 +121,10 @@ def _is_aps_record(rec: dict) -> bool:
     return isinstance(paper_id, str) and paper_id.startswith("aps:")
 
 
+def _date_year(value) -> int | None:
+    return value.year if value is not None else None
+
+
 @router.get("/timeline", response_model=TimelineResponse)
 async def timeline(
     family: str | None = Query(None, description="Restrict to one family"),
@@ -156,6 +160,30 @@ async def timeline(
 
     mats = (await db.execute(stmt)).scalars().all()
 
+    missing_year_paper_ids: set[str] = set()
+    for m in mats:
+        for rec in (m.records or []):
+            if not isinstance(rec, dict):
+                continue
+            if only_aps and not _is_aps_record(rec):
+                continue
+            if rec.get("year") is not None or rec.get("measurement_year") is not None:
+                continue
+            paper_id = rec.get("paper_id")
+            if isinstance(paper_id, str):
+                missing_year_paper_ids.add(paper_id)
+
+    paper_years: dict[str, int] = {}
+    if missing_year_paper_ids:
+        paper_rows = await db.execute(
+            select(Paper.id, Paper.date_published, Paper.date_submitted)
+            .where(Paper.id.in_(sorted(missing_year_paper_ids)))
+        )
+        for paper_id, date_published, date_submitted in paper_rows.all():
+            year = _date_year(date_published) or _date_year(date_submitted)
+            if year is not None:
+                paper_years[paper_id] = year
+
     current_year = datetime.now(timezone.utc).year
     year_hi = current_year + 1
 
@@ -172,7 +200,12 @@ async def timeline(
             if only_aps and not _is_aps_record(rec):
                 continue
             tc = rec.get("tc_kelvin")
-            year = rec.get("year") or rec.get("measurement_year")
+            paper_id = rec.get("paper_id")
+            year = (
+                rec.get("year")
+                or rec.get("measurement_year")
+                or (paper_years.get(paper_id) if isinstance(paper_id, str) else None)
+            )
             if tc is None or year is None:
                 continue
             try:
