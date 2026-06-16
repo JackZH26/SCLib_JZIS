@@ -702,6 +702,8 @@ export interface StatsResponse {
   total_materials: number;
   total_chunks: number;
   papers_by_year: Record<string, number>;
+  papers_by_year_arxiv: Record<string, number>;
+  papers_by_year_aps: Record<string, number>;
   top_material_families: Array<{ family: string; count: number }>;
   last_ingest_at: string | null;
   updated_at: string;

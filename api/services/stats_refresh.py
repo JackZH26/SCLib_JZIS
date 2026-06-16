@@ -39,16 +39,31 @@ async def compute_stats(db: AsyncSession) -> dict:
     ).scalar_one()
     total_chunks = (await db.execute(select(func.count()).select_from(Chunk))).scalar_one()
 
-    year_expr = func.extract("year", Paper.date_submitted)
-    by_year_rows = (
+    arxiv_year_expr = func.extract("year", Paper.date_submitted)
+    arxiv_by_year_rows = (
         await db.execute(
-            select(year_expr, func.count())
-            .where(Paper.date_submitted.is_not(None))
-            .group_by(year_expr)
-            .order_by(year_expr)
+            select(arxiv_year_expr, func.count())
+            .where(Paper.source == "arxiv", Paper.date_submitted.is_not(None))
+            .group_by(arxiv_year_expr)
+            .order_by(arxiv_year_expr)
         )
     ).all()
-    papers_by_year = {str(int(y)): int(c) for y, c in by_year_rows if y is not None}
+    papers_by_year_arxiv = {
+        str(int(y)): int(c) for y, c in arxiv_by_year_rows if y is not None
+    }
+
+    aps_year_expr = func.extract("year", Paper.date_published)
+    aps_by_year_rows = (
+        await db.execute(
+            select(aps_year_expr, func.count())
+            .where(Paper.source == "aps", Paper.date_published.is_not(None))
+            .group_by(aps_year_expr)
+            .order_by(aps_year_expr)
+        )
+    ).all()
+    papers_by_year_aps = {
+        str(int(y)): int(c) for y, c in aps_by_year_rows if y is not None
+    }
 
     fam_rows = (
         await db.execute(
@@ -77,7 +92,11 @@ async def compute_stats(db: AsyncSession) -> dict:
         "total_papers": int(total_papers),
         "total_materials": int(total_materials),
         "total_chunks": int(total_chunks),
-        "papers_by_year": papers_by_year,
+        # Keep the legacy field aligned with the default visible tab on
+        # /stats so older clients still receive a sensible histogram.
+        "papers_by_year": papers_by_year_arxiv,
+        "papers_by_year_arxiv": papers_by_year_arxiv,
+        "papers_by_year_aps": papers_by_year_aps,
         "top_material_families": top_material_families,
         "last_ingest_at": last_ingest_iso,
         "dataset_version": dataset_version,

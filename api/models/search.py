@@ -253,6 +253,8 @@ class StatsResponse(BaseModel):
     total_materials: int
     total_chunks: int
     papers_by_year: dict[str, int]
+    papers_by_year_arxiv: dict[str, int] = {}
+    papers_by_year_aps: dict[str, int] = {}
     top_material_families: list[dict[str, Any]]
     last_ingest_at: str | None
     updated_at: str
