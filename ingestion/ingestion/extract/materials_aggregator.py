@@ -329,7 +329,9 @@ def _paper_source_label(paper_id: Any) -> str | None:
     if pid.startswith("arxiv:"):
         return f"arXiv:{pid.removeprefix('arxiv:')}"
     if pid.startswith("aps:"):
-        return f"APS:{pid.removeprefix('aps:')}"
+        return f"DOI: {pid.removeprefix('aps:')}"
+    if pid.startswith("doi:"):
+        return f"DOI: {pid.removeprefix('doi:')}"
     if pid.startswith("nims:"):
         return f"NIMS:{pid.removeprefix('nims:')}"
     return pid
@@ -1396,7 +1398,9 @@ async def aggregate_from_papers() -> int:
         # confidence scaling (T4/T5 records get downweighted).
         stmt = select(
             papers_table.c.id,
+            papers_table.c.source,
             papers_table.c.date_submitted,
+            papers_table.c.date_published,
             papers_table.c.materials_extracted,
             papers_table.c.credibility_tier,
         ).where(
@@ -1422,14 +1426,18 @@ async def aggregate_from_papers() -> int:
         }
 
         n_skipped_t4t5 = 0
-        for paper_id, date_submitted, mats, cred_tier in rows:
+        for paper_id, source, date_submitted, date_published, mats, cred_tier in rows:
             if not isinstance(mats, list) or not mats:
                 continue
-            tier_mult = _TIER_MULTIPLIER.get(cred_tier, 1.0)
+            effective_tier = (
+                "T1" if source == "aps" or str(paper_id).startswith("aps:") else cred_tier
+            )
+            tier_mult = _TIER_MULTIPLIER.get(effective_tier, 1.0)
             if tier_mult <= 0.0:
                 n_skipped_t4t5 += 1
                 continue
-            year = date_submitted.year if date_submitted else None
+            paper_date = date_submitted or date_published
+            year = paper_date.year if paper_date else None
             for m in mats:
                 if not isinstance(m, dict):
                     continue
@@ -1479,7 +1487,7 @@ async def aggregate_from_papers() -> int:
                 # back to the source paper and show per-paper values.
                 record = dict(m)
                 record["paper_id"] = paper_id
-                record["credibility_tier"] = cred_tier
+                record["credibility_tier"] = effective_tier
                 # Apply credibility tier multiplier to record confidence.
                 # T3 papers get 0.7× weight, T4 get 0.3×. This makes the
                 # weighted-mode aggregation prefer focused experimental

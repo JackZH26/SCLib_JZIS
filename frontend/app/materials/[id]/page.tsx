@@ -352,7 +352,7 @@ function RecordsTable({
               const year = num(r.year ?? r.measurement_year);
               const p = num(r.pressure_gpa ?? r.pressure);
               const pid = typeof r.paper_id === "string" ? r.paper_id : null;
-              const arx = pid ? pid.replace(/^arxiv:/, "") : null;
+              const paperRef = paperReference(pid);
               const sample =
                 typeof r.sample_form === "string" ? r.sample_form : "";
               const methods = Array.from(r._methods as Set<string>).join(", ");
@@ -393,17 +393,19 @@ function RecordsTable({
                     })()}
                   </td>
                   <td className="px-3 py-2.5">
-                    {pid && arx ? (
+                    {paperRef?.href ? (
                       <a
-                        href={`https://arxiv.org/abs/${arx}`}
+                        href={paperRef.href}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-accent hover:text-accent-deep hover:underline"
-                        title={`Open ${pid} on arXiv in a new tab`}
+                        title={paperRef.title}
                       >
-                        {arx}
+                        {paperRef.label}
                         <span aria-hidden="true" className="text-[0.7em] text-slate-400">↗</span>
                       </a>
+                    ) : paperRef ? (
+                      <span className="text-slate-600">{paperRef.label}</span>
                     ) : (
                       "—"
                     )}
@@ -416,6 +418,46 @@ function RecordsTable({
       </div>
     </section>
   );
+}
+
+function paperReference(paperId: string | null): {
+  label: string;
+  href?: string;
+  title: string;
+} | null {
+  const id = paperId?.trim();
+  if (!id) return null;
+  if (id.startsWith("aps:")) {
+    const doi = id.slice(4);
+    return {
+      label: `DOI: ${doi}`,
+      href: `https://doi.org/${doi}`,
+      title: `Open DOI ${doi} in a new tab`,
+    };
+  }
+  if (id.startsWith("doi:")) {
+    const doi = id.slice(4);
+    return {
+      label: `DOI: ${doi}`,
+      href: `https://doi.org/${doi}`,
+      title: `Open DOI ${doi} in a new tab`,
+    };
+  }
+  if (id.startsWith("arxiv:")) {
+    const arxivId = id.slice(6);
+    return {
+      label: arxivId,
+      href: `https://arxiv.org/abs/${arxivId}`,
+      title: `Open arXiv ${arxivId} in a new tab`,
+    };
+  }
+  if (id.startsWith("nims:")) {
+    return {
+      label: `NIMS: ${id.slice(5)}`,
+      title: `NIMS reference ${id.slice(5)}`,
+    };
+  }
+  return { label: id, title: id };
 }
 
 function DetailSection({

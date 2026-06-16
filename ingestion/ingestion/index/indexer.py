@@ -394,6 +394,9 @@ async def upsert_aps_paper_with_chunks(
         "abstract": meta.abstract,
         "categories": meta.categories,
         "material_family": None,
+        # APS rows are formal published journal articles with DOI
+        # provenance, so they are first-tier evidence by default.
+        "credibility_tier": "T1",
         "chunk_count": len(chunks),
         "materials_extracted": materials_extracted,
     }
@@ -408,6 +411,7 @@ async def upsert_aps_paper_with_chunks(
                     "date_published", "journal", "journal_abbrev",
                     "publication_ref", "related_paper_id",
                     "chunk_count", "materials_extracted", "doi",
+                    "credibility_tier",
                 ]
             }
             update_cols["updated_at"] = func.now()

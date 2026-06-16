@@ -9,7 +9,8 @@ from ingestion.extract.materials_aggregator import (
 def test_paper_source_label_formats_known_sources():
     assert _paper_source_label("arxiv:2510.12345") == "arXiv:2510.12345"
     assert _paper_source_label("arxiv:cond-mat/0500001") == "arXiv:cond-mat/0500001"
-    assert _paper_source_label("aps:10.1103/PhysRevB.1.1") == "APS:10.1103/PhysRevB.1.1"
+    assert _paper_source_label("aps:10.1103/PhysRevB.1.1") == "DOI: 10.1103/PhysRevB.1.1"
+    assert _paper_source_label("doi:10.1103/PhysRevB.1.1") == "DOI: 10.1103/PhysRevB.1.1"
     assert _paper_source_label("nims:MgB2") == "NIMS:MgB2"
     assert _paper_source_label("custom:paper") == "custom:paper"
     assert _paper_source_label("") is None
@@ -32,7 +33,7 @@ def test_tc_max_conditions_formats_aps_paper_id():
     )
 
     assert summary["tc_max_conditions"] == (
-        "ambient, single crystal, resistivity, APS:10.1103/j98r-9m59"
+        "ambient, single crystal, resistivity, DOI: 10.1103/j98r-9m59"
     )
 
 

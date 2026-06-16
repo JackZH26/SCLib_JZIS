@@ -125,6 +125,9 @@ def score_paper(
     if paper["status"] == "retracted":
         return "T5", "retracted"
 
+    if paper.get("source") == "aps" or str(paper.get("id", "")).startswith("aps:"):
+        return "T1", "aps_published_article"
+
     # Check if all formulas are refuted
     formulas = set()
     for r in records:
@@ -273,7 +276,7 @@ def main():
     with engine.connect() as conn:
         limit_clause = f"LIMIT {args.limit}" if args.limit > 0 else ""
         rows = conn.execute(text(f"""
-            SELECT id, doi, status, citation_count, categories, paper_type,
+            SELECT id, source, doi, status, citation_count, categories, paper_type,
                    materials_extracted
             FROM papers
             WHERE materials_extracted::text != '[]'
@@ -286,7 +289,7 @@ def main():
     # Also score papers without extractions (give them T3 by default)
     with engine.connect() as conn:
         no_ext_rows = conn.execute(text(f"""
-            SELECT id, doi, status, citation_count, categories, paper_type
+            SELECT id, source, doi, status, citation_count, categories, paper_type
             FROM papers
             WHERE materials_extracted::text = '[]'
             ORDER BY id
@@ -302,13 +305,14 @@ def main():
     for row in rows:
         paper = {
             "id": row[0],
-            "doi": row[1],
-            "status": row[2],
-            "citation_count": row[3],
-            "categories": row[4],
-            "paper_type": row[5],
+            "source": row[1],
+            "doi": row[2],
+            "status": row[3],
+            "citation_count": row[4],
+            "categories": row[5],
+            "paper_type": row[6],
         }
-        records = row[6] if isinstance(row[6], list) else json.loads(row[6])
+        records = row[7] if isinstance(row[7], list) else json.loads(row[7])
 
         tier, reason = score_paper(paper, records, caps, refuted)
         tier_counts[tier] = tier_counts.get(tier, 0) + 1
@@ -321,9 +325,12 @@ def main():
     # Score papers without extractions
     for row in no_ext_rows:
         paper_id = row[0]
-        status = row[2]
+        source = row[1]
+        status = row[3]
         if status == "retracted":
             tier = "T5"
+        elif source == "aps" or str(paper_id).startswith("aps:"):
+            tier = "T1"
         else:
             tier = "T3"
         tier_counts[tier] = tier_counts.get(tier, 0) + 1
