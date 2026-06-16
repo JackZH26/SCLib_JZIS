@@ -319,6 +319,22 @@ def _confidence(r: dict[str, Any]) -> float:
     return max(0.0, min(1.0, float(v)))
 
 
+def _paper_source_label(paper_id: Any) -> str | None:
+    """Human-readable provenance label for material summary snippets."""
+    if not isinstance(paper_id, str):
+        return None
+    pid = paper_id.strip()
+    if not pid:
+        return None
+    if pid.startswith("arxiv:"):
+        return f"arXiv:{pid.removeprefix('arxiv:')}"
+    if pid.startswith("aps:"):
+        return f"APS:{pid.removeprefix('aps:')}"
+    if pid.startswith("nims:"):
+        return f"NIMS:{pid.removeprefix('nims:')}"
+    return pid
+
+
 def _max_numeric(records: list[dict[str, Any]], key: str) -> float | None:
     vals = [r[key] for r in records if isinstance(r.get(key), (int, float))]
     return max(vals) if vals else None
@@ -811,7 +827,7 @@ def _derive_summary(
     )
 
     # tc_max_conditions: pick the record tying the max and format as
-    # "P={p} GPa, <sample>, <measurement> (arXiv:<id>)". Appends a
+    # "P={p} GPa, <sample>, <measurement> (<source>:<id>)". Appends a
     # corroboration note ("confirmed by N papers") so users can see
     # how well-supported the headline number is.
     tc_max_cond = None
@@ -831,10 +847,9 @@ def _derive_summary(
                     parts.append(str(r["sample_form"]))
                 if r.get("measurement") and str(r["measurement"]).lower() != "unknown":
                     parts.append(str(r["measurement"]))
-                pid = r.get("paper_id")
-                if pid:
-                    arx = str(pid).removeprefix("arxiv:")
-                    parts.append(f"arXiv:{arx}")
+                source_label = _paper_source_label(r.get("paper_id"))
+                if source_label:
+                    parts.append(source_label)
                 tc_max_cond = ", ".join(parts) or None
                 break
         if tc_max_support >= 2:
