@@ -1,12 +1,8 @@
-"""RAG answer generation on top of Vertex AI Gemini.
+"""RAG answer generation on top of Gemini.
 
 We keep this thin: the router does all the retrieval work and hands
 us a prepared list of sources. This module's job is prompt assembly,
 the LLM call, and usage-count extraction.
-
-Uses vertexai.generative_models.GenerativeModel (vendored with
-google-cloud-aiplatform) so we don't need a second Google SDK in
-the API container.
 """
 from __future__ import annotations
 
@@ -14,8 +10,8 @@ import logging
 from dataclasses import dataclass
 from functools import lru_cache
 
-import vertexai
-from vertexai.generative_models import GenerationConfig, GenerativeModel
+from google import genai
+from google.genai import types as genai_types
 
 from config import get_settings
 
@@ -52,10 +48,25 @@ class RagResult:
 
 
 @lru_cache(maxsize=1)
-def _model() -> GenerativeModel:
+def _client() -> genai.Client:
     settings = get_settings()
-    vertexai.init(project=settings.gcp_project, location=settings.gcp_region)
-    return GenerativeModel(settings.gemini_model)
+    http_options = genai_types.HttpOptions(
+        api_version=settings.gemini_api_version,
+        timeout=120_000,
+    )
+    if settings.gemini_use_enterprise:
+        return genai.Client(
+            enterprise=True,
+            project=settings.gcp_project,
+            location=settings.gemini_location,
+            http_options=http_options,
+        )
+    return genai.Client(
+        vertexai=True,
+        project=settings.gcp_project,
+        location=settings.gcp_region,
+        http_options=http_options,
+    )
 
 
 def _format_sources(sources: list[RagSourceInput]) -> str:
@@ -92,9 +103,11 @@ def generate_answer(
         f"## Answer (markdown, with [n] citations)\n"
     )
 
-    resp = _model().generate_content(
-        prompt,
-        generation_config=GenerationConfig(
+    settings = get_settings()
+    resp = _client().models.generate_content(
+        model=settings.gemini_model,
+        contents=prompt,
+        config=genai_types.GenerateContentConfig(
             temperature=0.2,
             max_output_tokens=1024,
         ),
@@ -117,4 +130,4 @@ def generate_answer(
 
 
 def dispose() -> None:
-    _model.cache_clear()
+    _client.cache_clear()

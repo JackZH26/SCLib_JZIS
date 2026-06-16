@@ -2,7 +2,7 @@
 
 Identical retrieval path to /search (same embedding model, same
 Matching Engine endpoint), but we then feed the top-N chunks into
-Gemini 2.5 Flash with a strict "cite [n] only from the sources"
+Gemini 3.5 Flash with a strict "cite [n] only from the sources"
 prompt and return the grounded markdown answer.
 
 The shape of `sources` in the response maps 1:1 to the [n] markers

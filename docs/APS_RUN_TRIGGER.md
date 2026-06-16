@@ -117,3 +117,49 @@ chunks 不含全文正文、`tdm_audit_log.deletion_confirmed=true`。
 - 步骤 3：`alembic current` 结果；各 source 行数。
 - 步骤 4：dry-run 与正式入库的关键行 + 退出码；§5 SQL 校验结果。
 - 任一「停下报告」点请立即中止并说明现象。
+
+## 批处理试跑 — DOI manifest + checkpoint/resume
+
+单篇链路通过后，APS 全量前先用 DOI manifest 小批量推进。manifest 支持 txt/csv/tsv/json/jsonl；
+checkpoint 是 append-only JSONL，默认会跳过最新状态为 `ok` 的 DOI。`dry_run_ok`、
+`ok_no_vector`、`ok_no_ner` 不会阻止后续正式重跑。
+
+```bash
+cd /opt/SCLib_JZIS
+mkdir -p /opt/sclib_aps_manifests
+
+# 示例：从已冻结 arXiv 库中抽取带 APS DOI 的候选正式发表版。
+docker compose exec -T postgres psql -U sclib -d sclib -At <<'SQL' \
+  > /opt/sclib_aps_manifests/aps_arxiv_overlap_100.txt
+SELECT DISTINCT doi
+FROM papers
+WHERE source='arxiv'
+  AND doi ILIKE '10.1103/%'
+ORDER BY doi
+LIMIT 100;
+SQL
+
+# 先跑 20 篇正式全链路；NER temperature=0，写 DB + Vertex VS + tdm_audit_log。
+docker compose run --rm ingestion \
+  python -m ingestion.aps_batch \
+    --manifest /opt/sclib_aps_manifests/aps_arxiv_overlap_100.txt \
+    --checkpoint /opt/sclib_aps_manifests/aps_arxiv_overlap.checkpoint.jsonl \
+    --limit 20 -v \
+  2>&1 | tee /tmp/aps_batch_20.log
+
+# 20 篇通过后继续推进到 100；resume 会跳过已经 ok 的 20 篇。
+docker compose run --rm ingestion \
+  python -m ingestion.aps_batch \
+    --manifest /opt/sclib_aps_manifests/aps_arxiv_overlap_100.txt \
+    --checkpoint /opt/sclib_aps_manifests/aps_arxiv_overlap.checkpoint.jsonl \
+    --limit 100 -v \
+  2>&1 | tee /tmp/aps_batch_100.log
+```
+
+每批结束后检查：
+
+```bash
+find /dev/shm /tmp -maxdepth 3 -name 'aps-*' -type d 2>/dev/null || echo "无 aps-* 残留"
+docker compose exec -T postgres psql -U sclib -d sclib -c \
+ "SELECT status, deletion_confirmed, count(*) FROM tdm_audit_log GROUP BY 1,2 ORDER BY 1,2;"
+```

@@ -74,7 +74,10 @@ class Settings(BaseSettings):
     vertex_ai_deployed_index_id: str = "sclib_papers_v1"
 
     # === AI models ===
-    gemini_model: str = "gemini-2.5-flash"
+    gemini_model: str = "gemini-3.5-flash"
+    gemini_location: str = "global"
+    gemini_use_enterprise: bool = True
+    gemini_api_version: str = "v1"
     embedding_model: str = "text-embedding-005"
 
 

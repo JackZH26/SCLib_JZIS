@@ -57,7 +57,7 @@ in `[0, 1]`.
 ```json
 { "query": "What is the role of pressure in high-Tc hydrides?" }
 ```
-Runs `POST /search` internally, feeds the top chunks into Gemini 2.5
+Runs `POST /search` internally, feeds the top chunks into Gemini 3.5
 Flash with a system prompt that forces inline `[n]` citations, and
 returns:
 

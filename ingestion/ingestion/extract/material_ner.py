@@ -1,4 +1,4 @@
-"""Material NER v2 via Gemini 2.5 Flash.
+"""Material NER v2 via Gemini Flash.
 
 Returns a list of superconductor records extracted from the full text
 of a paper. The v2 schema (see docs/SCLib_Materials_Schema_v2.md)
@@ -35,6 +35,7 @@ from google.genai import types as genai_types
 
 from ingestion.config import get_settings
 from ingestion.extract import formula_validator
+from ingestion.genai_client import make_genai_client
 from ingestion.models import ParsedPaper
 
 log = logging.getLogger(__name__)
@@ -282,13 +283,7 @@ _MAX_CHARS = 16_000
 
 @lru_cache(maxsize=1)
 def _client() -> genai.Client:
-    settings = get_settings()
-    return genai.Client(
-        vertexai=True,
-        project=settings.gcp_project,
-        location=settings.gcp_region,
-        http_options={"timeout": 120_000},
-    )
+    return make_genai_client()
 
 
 # ---------------------------------------------------------------------------

@@ -35,6 +35,7 @@ dev = [
 sclib-ingest = "ingestion.pipeline:main"
 sclib-import-nims = "ingestion.nims:main"
 sclib-ingest-aps = "ingestion.aps_pipeline:main"
+sclib-ingest-aps-batch = "ingestion.aps_batch:main"
 
 [build-system]
 requires = ["hatchling"]

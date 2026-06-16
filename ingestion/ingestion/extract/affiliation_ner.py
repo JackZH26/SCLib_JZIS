@@ -11,7 +11,7 @@ sample: 100% source hit-rate, ~96-98% per-paper accuracy):
   1. Fetch the paper's own text — GCS LaTeX source -> GCS PDF -> live
      arXiv PDF. The pipeline's latex_parser discards the preamble where
      ``\\author`` / ``\\affiliation`` live, so we re-extract that region.
-  2. Gemini 2.5 Flash extracts the distinct author affiliations with
+  2. Gemini Flash extracts the distinct author affiliations with
      city + country. Thinking is disabled (its tokens otherwise starve
      the JSON answer); stray LaTeX backslashes are escape-repaired.
   3. De-duplicate within the paper — a city or country shared by
@@ -40,6 +40,7 @@ from google.genai import types as genai_types
 
 from ingestion import storage
 from ingestion.config import get_settings
+from ingestion.genai_client import make_genai_client
 
 # latex_parser strips the preamble (where \author / \affiliation live),
 # so we reuse only its tar-extraction internals and re-slice the region.
@@ -220,11 +221,7 @@ def _client() -> genai.Client:
     """
     c = getattr(_tls, "geo_client", None)
     if c is None:
-        s = get_settings()
-        c = genai.Client(
-            vertexai=True, project=s.gcp_project, location=s.gcp_region,
-            http_options={"timeout": 120_000},
-        )
+        c = make_genai_client()
         _tls.geo_client = c
     return c
 
@@ -295,7 +292,7 @@ def _gemini_extract(kind: str, payload: Any) -> list[dict[str, Any]]:
     cfg = genai_types.GenerateContentConfig(
         temperature=0.0,
         response_mime_type="application/json",
-        # gemini-2.5-flash's dynamic "thinking" tokens share the output
+        # Gemini Flash thinking tokens share the output
         # budget; a small cap truncated the JSON for papers it thought
         # hard about. 32k clears max thinking (~24k) plus the answer.
         max_output_tokens=32768,

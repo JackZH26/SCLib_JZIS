@@ -33,7 +33,10 @@ class IngestionSettings(BaseSettings):
 
     # --- AI models ----------------------------------------------------------
     embedding_model: str = "text-embedding-005"
-    gemini_model: str = "gemini-2.5-flash"
+    gemini_model: str = "gemini-3.5-flash"
+    gemini_location: str = "global"
+    gemini_use_enterprise: bool = True
+    gemini_api_version: str = "v1"
 
     # --- arXiv fetch --------------------------------------------------------
     arxiv_oai_url: str = "https://export.arxiv.org/oai2"

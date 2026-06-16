@@ -163,7 +163,7 @@ Full endpoint reference: [`docs/API.md`](./docs/API.md).
                      │
        ┌─────────────┼─────────────┐
        ▼             ▼             ▼
-     Redis      Vertex VS     Gemini 2.5 Flash
+     Redis      Vertex VS     Gemini 3.5 Flash
    (rate lim)  (768-dim)      (RAG answer + NER)
 
                          ─── ingest pipeline ───

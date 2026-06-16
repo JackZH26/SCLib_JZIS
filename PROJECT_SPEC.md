@@ -62,7 +62,7 @@ Project:  jzis-sclib (create in GCP Console)
 Services:
   - Vertex AI Vector Search  (768d vectors, managed)
   - Vertex AI Embedding API  (text-embedding-005)
-  - Gemini API               (gemini-2.5-flash, RAG + NER)
+  - Gemini API               (gemini-3.5-flash, RAG + NER)
   - Cloud Storage            (PDFs + parsed text)
 ```
 
@@ -78,7 +78,7 @@ Services:
 | **Email** | Resend API |
 | **Vector DB** | Vertex AI Vector Search |
 | **Embedding** | Vertex AI text-embedding-005 (768d) |
-| **LLM** | Gemini 2.5 Flash (RAG + material NER) |
+| **LLM** | Gemini 3.5 Flash (RAG + material NER) |
 | **Object Storage** | Google Cloud Storage |
 | **LaTeX Parser** | Custom Python + Pandoc |
 | **PDF Fallback** | opendataloader-pdf v2.2.0 |
@@ -848,7 +848,10 @@ VERTEX_AI_DEPLOYED_INDEX_ID=sclib_papers_v1
 GCS_BUCKET=sclib-jzis
 
 # === AI Models ===
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.5-flash
+GEMINI_LOCATION=global
+GEMINI_USE_ENTERPRISE=true
+GEMINI_API_VERSION=v1
 EMBEDDING_MODEL=text-embedding-005
 
 # === Auth ===
