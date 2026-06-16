@@ -84,6 +84,16 @@ function pressureLabel(p: number | null | undefined): string {
   return `${p.toFixed(1)} GPa`;
 }
 
+function paperIdLabel(paperId: string | null | undefined): string {
+  const id = paperId?.trim();
+  if (!id) return "";
+  if (id.startsWith("aps:")) return `DOI: ${id.slice(4)}`;
+  if (id.startsWith("doi:")) return `DOI: ${id.slice(4)}`;
+  if (id.startsWith("arxiv:")) return `arXiv: ${id.slice(6)}`;
+  if (id.startsWith("nims:")) return `NIMS: ${id.slice(5)}`;
+  return id;
+}
+
 // Deterministic ±0.35-year horizontal jitter seeded by material +
 // Tc so the same point lands in the same spot on every render.
 // Cheap 32-bit string hash — good enough for visual spreading.
@@ -142,7 +152,7 @@ export function TcTimeline({
         //                 defaulted to 0.0 for unstated pressures, so
         //                 this bucket is the most honest fallback.
         pressureLabel(p.pressure_gpa),
-        p.paper_id ?? "",
+        paperIdLabel(p.paper_id),
         p.year,
         // Theory tag, prefixed with <br> so it nests cleanly under
         // the material name in the hover card; empty string for
