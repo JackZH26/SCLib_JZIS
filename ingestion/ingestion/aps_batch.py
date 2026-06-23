@@ -36,6 +36,8 @@ log = logging.getLogger("ingestion.aps_batch")
 
 _DOI_RE = re.compile(r"(?:https?://doi\.org/|doi:)?10\.1103/[^\s,;\"']+", re.I)
 _FULL_OK_STATUSES = {"ok"}
+_TERMINAL_STATUSES = {"unsupported_no_jats", "unsupported_no_text"}
+_COMPLETED_STATUSES = _FULL_OK_STATUSES | _TERMINAL_STATUSES
 _RETRYABLE_PRIOR_STATUSES = {
     "started",
     "dry_run_ok",
@@ -50,6 +52,7 @@ class BatchSummary:
     manifest_count: int
     selected_count: int
     ok: int = 0
+    terminal: int = 0
     error: int = 0
     skipped: int = 0
 
@@ -202,7 +205,7 @@ def select_pending(
     for doi in dois:
         rec = checkpoint.get(doi.lower())
         status = str((rec or {}).get("status") or "")
-        if status in _FULL_OK_STATUSES:
+        if status in _COMPLETED_STATUSES:
             skipped += 1
             continue
         if status and status not in _RETRYABLE_PRIOR_STATUSES and not retry_failed:
@@ -217,6 +220,9 @@ def select_pending(
 def _final_status(result: dict[str, Any], *, dry_run: bool, skip_vector_search: bool,
                   skip_ner: bool) -> str:
     if not result.get("ok"):
+        status = str(result.get("status") or "")
+        if result.get("terminal") and status in _TERMINAL_STATUSES:
+            return status
         return "dry_run_error" if dry_run else "error"
     if dry_run:
         return "dry_run_ok"
@@ -288,6 +294,8 @@ async def run_batch(
                 )
                 if result.get("ok"):
                     summary.ok += 1
+                elif status in _TERMINAL_STATUSES:
+                    summary.terminal += 1
                 else:
                     summary.error += 1
                 append_checkpoint(checkpoint, {
@@ -351,9 +359,9 @@ def main(argv: list[str] | None = None) -> int:
         stop_on_error=args.stop_on_error,
     ))
     log.info(
-        "APS batch done: selected=%d ok=%d error=%d skipped=%d manifest=%d",
-        summary.selected_count, summary.ok, summary.error, summary.skipped,
-        summary.manifest_count,
+        "APS batch done: selected=%d ok=%d terminal=%d error=%d skipped=%d manifest=%d",
+        summary.selected_count, summary.ok, summary.terminal, summary.error,
+        summary.skipped, summary.manifest_count,
     )
     return 0 if summary.error == 0 else 1
 

@@ -56,7 +56,7 @@ from ingestion.index.indexer import (
     upsert_aps_chunks_to_vector_search,
     upsert_aps_paper_with_chunks,
 )
-from ingestion.parse.aps_xml import parse_bagit_dir
+from ingestion.parse.aps_xml import UnsupportedApsFulltextError, parse_bagit_payload
 
 log = logging.getLogger("ingestion.aps_pipeline")
 
@@ -84,6 +84,7 @@ async def process_aps_paper(
     result: dict[str, Any] = {"doi": doi, "ok": False, "dry_run": dry_run}
     audit = TdmAudit(doi=doi)
     work: TempBagit | None = None
+    paper_persisted = False
 
     try:
         # 1. Authorized metadata (persistent slice).
@@ -100,7 +101,10 @@ async def process_aps_paper(
         with TempBagit(meta.doi_slug) as work:
             zip_bytes = await client.download_bagit(doi)
             work.extract(zip_bytes)
-            parsed_full = parse_bagit_dir(work.root, meta)
+            payload = parse_bagit_payload(work.root, meta)
+            parsed_full = payload.parsed
+            result["parser_mode"] = payload.parser_mode
+            result["text_source"] = payload.source_path.name
             result["n_sections"] = len(parsed_full.sections)
             if not skip_ner:
                 # NER is a blocking Gemini call — keep it off the loop.
@@ -140,6 +144,7 @@ async def process_aps_paper(
         await upsert_aps_paper_with_chunks(
             meta, chunks, materials, related_paper_id=related_id,
         )
+        paper_persisted = True
 
         # 9. Vertex VS upsert (source='aps' restrict).
         if not skip_vector_search and chunks:
@@ -149,9 +154,20 @@ async def process_aps_paper(
         result["ok"] = True
         return result
 
+    except UnsupportedApsFulltextError as e:
+        audit.status = e.status
+        audit.error = str(e)[:1000]
+        audit.processed_at = audit.processed_at or _now()
+        result["status"] = e.status
+        result["terminal"] = True
+        result["error"] = str(e)
+        log.warning("%s: APS full text unsupported (%s): %s", doi, e.status, e)
+        return result
+
     except Exception as e:  # noqa: BLE001 — record (incl. ApsError) then summarise
         audit.status = "error"
         audit.error = str(e)[:1000]
+        audit.processed_at = audit.processed_at or _now()
         result["error"] = str(e)
         log.exception("%s: APS pipeline failed: %s", doi, e)
         return result
@@ -161,6 +177,8 @@ async def process_aps_paper(
         # was a dry run, where we logged it above instead).
         if work is not None:
             audit.from_temp(work)
+        if audit.paper_id and not paper_persisted:
+            audit.paper_id = None
         if not dry_run:
             try:
                 await write_audit_log(audit)

@@ -8,7 +8,12 @@ in <body>).
 from __future__ import annotations
 
 from ingestion.models import ApsArticleMeta
-from ingestion.parse.aps_xml import ApsParseError, parse_jats
+from ingestion.parse.aps_xml import (
+    ApsParseError,
+    UnsupportedApsFulltextError,
+    parse_ocr,
+    parse_jats,
+)
 
 
 def _meta() -> ApsArticleMeta:
@@ -89,6 +94,51 @@ def test_parse_jats_no_sec_flattens_body():
     assert parsed.sections[0].name == "Body"
     assert "Loose paragraph one." in parsed.sections[0].text
     assert "Loose two." in parsed.sections[0].text
+
+
+def test_parse_jats_html_entities():
+    xml = b"""<?xml version="1.0"?>
+    <article><body><sec><title>Results</title>
+      <p>Quarter filling &frac14; and range 10&ndash;20 K.</p>
+    </sec></body></article>"""
+    parsed = parse_jats(xml, _meta())
+    assert "Quarter filling \u00bc" in parsed.sections[0].text
+    assert "10\u201320 K" in parsed.sections[0].text
+
+
+def test_parse_ocr_sections_and_trims_references():
+    ocr = b"""
+PHYSICAL REVIEW B
+
+I. INTRODUCTION
+
+We measured MgB2 and observed superconductivity near 39 K.
+
+II. RESULTS
+
+The sample shows zero resistance at 38 K and a diamagnetic transition.
+The temperature dependence was measured on multiple cooling cycles, and
+the superconducting transition remained sharp within the experimental
+resolution of the transport and susceptibility measurements.
+
+REFERENCES
+
+[1] This cited material should not be included.
+"""
+    parsed = parse_ocr(ocr, _meta())
+    assert [s.name for s in parsed.sections] == ["Introduction", "Results"]
+    blob = " ".join(s.text for s in parsed.sections)
+    assert "MgB2" in blob
+    assert "zero resistance" in blob
+    assert "This cited material" not in blob
+
+
+def test_parse_ocr_too_short_is_terminal():
+    import pytest
+
+    with pytest.raises(UnsupportedApsFulltextError) as exc:
+        parse_ocr(b"too short", _meta())
+    assert exc.value.status == "unsupported_no_text"
 
 
 def test_parse_jats_bad_xml_raises():

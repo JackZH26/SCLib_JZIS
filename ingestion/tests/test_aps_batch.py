@@ -53,6 +53,19 @@ def test_select_pending_skips_ok_and_failed_unless_retry_requested():
     )
 
 
+def test_select_pending_never_retries_terminal_statuses():
+    dois = [
+        "10.1103/PhysRevB.1.1",
+        "10.1103/PhysRevB.2.2",
+        "10.1103/PhysRevB.3.3",
+    ]
+    checkpoint = {
+        dois[0].lower(): {"doi": dois[0], "status": "unsupported_no_jats"},
+        dois[1].lower(): {"doi": dois[1], "status": "unsupported_no_text"},
+    }
+    assert B.select_pending(dois, checkpoint, retry_failed=True) == ([dois[2]], 2)
+
+
 @pytest.mark.asyncio
 async def test_run_batch_checkpoint_resume_and_dry_run(monkeypatch, tmp_path):
     monkeypatch.setenv("DATABASE_URL", "postgresql://sclib:test@postgres:5432/sclib")
@@ -100,3 +113,43 @@ async def test_run_batch_checkpoint_resume_and_dry_run(monkeypatch, tmp_path):
     records = [json.loads(line) for line in checkpoint.read_text().splitlines()]
     assert records[-1]["doi"] == "10.1103/PhysRevB.2.2"
     assert records[-1]["status"] == "ok"
+
+
+@pytest.mark.asyncio
+async def test_run_batch_terminal_status_is_not_error(monkeypatch, tmp_path):
+    monkeypatch.setenv("DATABASE_URL", "postgresql://sclib:test@postgres:5432/sclib")
+    B.get_settings.cache_clear()
+
+    manifest = tmp_path / "aps.txt"
+    manifest.write_text("10.1103/PhysRevB.1.1\n")
+    checkpoint = tmp_path / "aps.checkpoint.jsonl"
+
+    class FakeClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *exc):
+            return None
+
+    async def fake_process(client, doi, **kwargs):
+        return {
+            "doi": doi,
+            "ok": False,
+            "terminal": True,
+            "status": "unsupported_no_jats",
+            "error": "no JATS <article> XML or fulltext OCR",
+        }
+
+    async def fake_dispose():
+        return None
+
+    monkeypatch.setattr(B, "ApsClient", FakeClient)
+    monkeypatch.setattr(B, "process_aps_paper", fake_process)
+    monkeypatch.setattr(B, "dispose", fake_dispose)
+
+    summary = await B.run_batch(manifest, checkpoint)
+    assert summary.ok == 0
+    assert summary.terminal == 1
+    assert summary.error == 0
+    records = [json.loads(line) for line in checkpoint.read_text().splitlines()]
+    assert records[-1]["status"] == "unsupported_no_jats"

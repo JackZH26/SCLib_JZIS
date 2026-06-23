@@ -45,9 +45,37 @@ def _bagit_zip() -> bytes:
     return buf.getvalue()
 
 
+def _ocr_bagit_zip() -> bytes:
+    ocr = """
+I. INTRODUCTION
+
+We measured MgB2 and observed superconductivity near 39 K in the sample.
+
+II. RESULTS
+
+The resistivity reaches zero near 38 K. Susceptibility confirms a bulk
+superconducting transition in the same material with reproducible behavior.
+"""
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as zf:
+        zf.writestr("bagit.txt", "BagIt-Version: 1.0")
+        zf.writestr("data/fulltext.ocr", ocr * 3)
+        zf.writestr("data/article.pdf", b"%PDF-1.5 ...")
+    return buf.getvalue()
+
+
+def _pdf_only_bagit_zip() -> bytes:
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as zf:
+        zf.writestr("bagit.txt", "BagIt-Version: 1.0")
+        zf.writestr("data/article.pdf", b"%PDF-1.5 ...")
+    return buf.getvalue()
+
+
 class _FakeClient:
-    def __init__(self, *, fail_bagit: bool = False) -> None:
+    def __init__(self, *, fail_bagit: bool = False, bagit: bytes | None = None) -> None:
         self.fail_bagit = fail_bagit
+        self.bagit = bagit or _bagit_zip()
 
     async def get_article(self, doi: str) -> ApsArticleMeta:
         return ApsArticleMeta(
@@ -61,7 +89,7 @@ class _FakeClient:
         if self.fail_bagit:
             from ingestion.collect.aps_harvest import ApsError
             raise ApsError("BagIt 404")
-        return _bagit_zip()
+        return self.bagit
 
 
 @pytest.fixture(autouse=True)
@@ -102,6 +130,8 @@ async def test_full_flow_persists_and_deletes(_patch_collaborators):
     assert r["ok"] is True
     assert r["paper_id"] == "aps:10.1103/PhysRevB.104.014501"
     assert r["journal_abbrev"] == "PRB"
+    assert r["parser_mode"] == "jats"
+    assert r["text_source"] == "fulltext.xml"
     assert r["n_sections"] == 1
     assert r["n_materials"] == 1
     assert r["deletion_confirmed"] is True
@@ -114,6 +144,21 @@ async def test_full_flow_persists_and_deletes(_patch_collaborators):
     assert audit.status == "deleted"
     assert audit.deletion_confirmed is True
     assert audit.ner_record_count == 1
+
+
+@pytest.mark.asyncio
+async def test_ocr_bagit_fallback_persists_and_deletes(_patch_collaborators):
+    calls = _patch_collaborators
+    client = _FakeClient(bagit=_ocr_bagit_zip())
+    r = await P.process_aps_paper(client, "10.1103/PhysRevB.69.132506")
+
+    assert r["ok"] is True
+    assert r["parser_mode"] == "ocr"
+    assert r["text_source"] == "fulltext.ocr"
+    assert r["n_sections"] >= 1
+    assert r["deletion_confirmed"] is True
+    assert len(calls["paper_upsert"]) == 1
+    assert calls["audit"][0].status == "deleted"
 
 
 @pytest.mark.asyncio
@@ -171,6 +216,21 @@ async def test_error_path_still_deletes_and_audits(_patch_collaborators):
     assert calls["paper_upsert"] == []
     assert len(calls["audit"]) == 1
     assert calls["audit"][0].status == "error"
+
+
+@pytest.mark.asyncio
+async def test_unsupported_payload_is_terminal_and_audited(_patch_collaborators):
+    calls = _patch_collaborators
+    client = _FakeClient(bagit=_pdf_only_bagit_zip())
+    r = await P.process_aps_paper(client, "10.1103/PhysRevB.69.1")
+
+    assert r["ok"] is False
+    assert r["terminal"] is True
+    assert r["status"] == "unsupported_no_jats"
+    assert calls["paper_upsert"] == []
+    assert len(calls["audit"]) == 1
+    assert calls["audit"][0].status == "unsupported_no_jats"
+    assert calls["audit"][0].deletion_confirmed is True
 
 
 def test_normalize_doi():

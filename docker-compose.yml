@@ -70,6 +70,13 @@ services:
     # One-shot job: invoked via `docker compose run --rm ingestion ...`,
     # never as a daemon. `profiles` keeps it out of `docker compose up`.
     profiles: ["tools"]
+    # APS full-text ZIPs are extracted under /dev/shm by default for
+    # compliance (transient RAM-backed storage). Docker's default shm
+    # size is only 64 MB, which is too small for some modern APS BagIt
+    # packages (e.g. ~70 MB compressed before unzip). Give one-shot
+    # ingestion runs enough headroom so they fail on real errors rather
+    # than an artificial tmpfs cap.
+    shm_size: "2gb"
     env_file: .env
     volumes:
       - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
