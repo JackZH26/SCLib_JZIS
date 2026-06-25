@@ -329,6 +329,10 @@ async def _upsert_records(
             "year": year,
         })
 
+    values = _dedupe_upsert_values(values)
+    if not values:
+        return 0
+
     stmt = pg_insert(hydride_tc_parameters_table).values(values)
     update_cols = {
         c.name: stmt.excluded[c.name]
@@ -344,6 +348,26 @@ async def _upsert_records(
     )
     await session.commit()
     return len(values)
+
+
+def _dedupe_upsert_values(values: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    deduped: dict[str, dict[str, Any]] = {}
+    for value in values:
+        key = value["record_key"]
+        existing = deduped.get(key)
+        if existing is None or _confidence_score(value) > _confidence_score(existing):
+            deduped[key] = value
+    if len(deduped) < len(values):
+        log.info(
+            "deduped %d duplicate hydride records before upsert",
+            len(values) - len(deduped),
+        )
+    return list(deduped.values())
+
+
+def _confidence_score(value: dict[str, Any]) -> float:
+    confidence = value.get("confidence")
+    return float(confidence) if isinstance(confidence, (int, float)) else -1.0
 
 
 async def _process_row(
