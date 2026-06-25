@@ -93,6 +93,9 @@ def test_extract_hydride_parameters_raises_on_model_error(monkeypatch: pytest.Mo
             title="Hydride test",
             authors=[],
             abstract="LaH10 has Tc near 250 K at high pressure.",
+            date_submitted=None,
+            categories=[],
+            primary_category=None,
         ),
         sections=[],
     )
