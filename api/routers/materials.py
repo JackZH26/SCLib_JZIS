@@ -12,8 +12,9 @@ from sqlalchemy import func, literal_column, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
-from models.db import Material
+from models.db import HydrideTcParameter, Material
 from models.search import (
+    HydrideTcParameterRecord,
     MaterialDetail,
     MaterialListResponse,
     MaterialSummary,
@@ -233,6 +234,39 @@ async def material_phase_diagram(
             ))
 
     return points
+
+
+@router.get(
+    "/materials/{material_id:path}/hydride_parameters",
+    response_model=list[HydrideTcParameterRecord],
+)
+async def material_hydride_parameters(
+    material_id: str,
+    identity: Identity = Depends(peek_identity),  # noqa: ARG001
+    db: AsyncSession = Depends(get_db),
+) -> list[HydrideTcParameterRecord]:
+    """Return hydride-specific Tc/pressure/lambda/mu*/omega_log rows.
+
+    This is an enrichment layer produced by the independent hydride NER
+    runner. It is intentionally not folded into the generic material detail
+    schema because the parameters are meaningful mainly for superhydrides
+    and need separate validation/provenance.
+    """
+    m = await db.get(Material, material_id)
+    if m is None or m.review_reason == "provenance_quarantine_nims":
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
+
+    stmt = (
+        select(HydrideTcParameter)
+        .where(HydrideTcParameter.material_id == material_id)
+        .order_by(
+            HydrideTcParameter.pressure_gpa.asc().nulls_last(),
+            HydrideTcParameter.tc_kelvin.desc().nulls_last(),
+            HydrideTcParameter.year.desc().nulls_last(),
+        )
+    )
+    rows = (await db.execute(stmt)).scalars().all()
+    return [HydrideTcParameterRecord.model_validate(r) for r in rows]
 
 
 @router.get("/materials/{material_id:path}", response_model=MaterialDetail)

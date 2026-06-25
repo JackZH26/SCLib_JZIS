@@ -148,6 +148,38 @@ class PhaseDiagramPoint(BaseModel):
     year: int | None = None
 
 
+class HydrideTcParameterRecord(BaseModel):
+    """Independent hydride enrichment row shown on material detail pages."""
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    material_id: str | None = None
+    formula: str
+    formula_normalized: str
+    paper_id: str
+    source: str
+    doi: str | None = None
+    arxiv_id: str | None = None
+    year: int | None = None
+    tc_kelvin: float | None = None
+    pressure_gpa: float | None = None
+    lambda_eph: float | None = None
+    mu_star: float | None = None
+    omega_log_k: float | None = None
+    omega_log_source_value: float | None = None
+    omega_log_source_unit: str | None = None
+    method: str | None = None
+    evidence_type: str | None = None
+    confidence: float | None = None
+    source_section: str | None = None
+    validation_flags: list[Any] = Field(default_factory=list)
+    provenance: dict[str, Any] = Field(default_factory=dict)
+    model: str | None = None
+    prompt_version: str
+    created_at: datetime
+    updated_at: datetime
+
+
 class MaterialDetail(MaterialSummary):
     crystal_structure: str | None
     records: list[dict[str, Any]]

@@ -589,6 +589,35 @@ export interface PhaseDiagramPoint {
   year: number | null;
 }
 
+export interface HydrideTcParameterRecord {
+  id: number;
+  material_id: string | null;
+  formula: string;
+  formula_normalized: string;
+  paper_id: string;
+  source: string;
+  doi: string | null;
+  arxiv_id: string | null;
+  year: number | null;
+  tc_kelvin: number | null;
+  pressure_gpa: number | null;
+  lambda_eph: number | null;
+  mu_star: number | null;
+  omega_log_k: number | null;
+  omega_log_source_value: number | null;
+  omega_log_source_unit: string | null;
+  method: string | null;
+  evidence_type: string | null;
+  confidence: number | null;
+  source_section: string | null;
+  validation_flags: unknown[];
+  provenance: Record<string, unknown>;
+  model: string | null;
+  prompt_version: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface MaterialListResponse {
   total: number;
   results: MaterialSummary[];
@@ -645,6 +674,12 @@ export function getMaterial(id: string) {
 export function getMaterialPhaseDiagram(id: string) {
   return request<PhaseDiagramPoint[]>(
     `/materials/${encodeURIComponent(id)}/phase_diagram`,
+  );
+}
+
+export function getMaterialHydrideParameters(id: string) {
+  return request<HydrideTcParameterRecord[]>(
+    `/materials/${encodeURIComponent(id)}/hydride_parameters`,
   );
 }
 

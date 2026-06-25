@@ -248,6 +248,37 @@ tdm_audit_log_table = Table(
     Column("created_at", DateTime(timezone=True), server_default=func.now()),
 )
 
+hydride_tc_parameters_table = Table(
+    "hydride_tc_parameters", metadata,
+    Column("id", BigInteger, primary_key=True, autoincrement=True),
+    Column("record_key", String(80), nullable=False),
+    Column("material_id", String(100)),
+    Column("formula", String(200), nullable=False),
+    Column("formula_normalized", String(200), nullable=False),
+    Column("paper_id", String(100), nullable=False),
+    Column("source", String(20), nullable=False),
+    Column("doi", String(200)),
+    Column("arxiv_id", String(20)),
+    Column("year", SmallInteger),
+    Column("tc_kelvin", Float),
+    Column("pressure_gpa", Float),
+    Column("lambda_eph", Float),
+    Column("mu_star", Float),
+    Column("omega_log_k", Float),
+    Column("omega_log_source_value", Float),
+    Column("omega_log_source_unit", String(20)),
+    Column("method", String(80)),
+    Column("evidence_type", String(40)),
+    Column("confidence", Float),
+    Column("source_section", String(200)),
+    Column("validation_flags", JSONB, nullable=False, server_default="[]"),
+    Column("provenance", JSONB, nullable=False, server_default="{}"),
+    Column("model", String(80)),
+    Column("prompt_version", String(40), nullable=False),
+    Column("created_at", DateTime(timezone=True), server_default=func.now()),
+    Column("updated_at", DateTime(timezone=True), server_default=func.now()),
+)
+
 
 # ---------------------------------------------------------------------------
 # Async engine

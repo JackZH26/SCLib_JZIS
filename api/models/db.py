@@ -465,6 +465,64 @@ class Material(Base):
     )
 
 
+class HydrideTcParameter(Base):
+    """Hydride-specific Tc/pressure/Eliashberg parameter enrichment.
+
+    Written by the independent hydride NER runner, not by the generic
+    material NER aggregator. APS rows store only derived structured facts
+    and short provenance metadata, never licensed full-text snippets.
+    """
+
+    __tablename__ = "hydride_tc_parameters"
+
+    id: Mapped[int] = mapped_column(sa.BigInteger, primary_key=True, autoincrement=True)
+    record_key: Mapped[str] = mapped_column(String(80), unique=True, nullable=False)
+    material_id: Mapped[str | None] = mapped_column(
+        String(100), ForeignKey("materials.id", ondelete="SET NULL"),
+    )
+    formula: Mapped[str] = mapped_column(String(200), nullable=False)
+    formula_normalized: Mapped[str] = mapped_column(String(200), nullable=False)
+    paper_id: Mapped[str] = mapped_column(
+        String(100), ForeignKey("papers.id", ondelete="CASCADE"), nullable=False,
+    )
+    source: Mapped[str] = mapped_column(String(20), nullable=False)
+    doi: Mapped[str | None] = mapped_column(String(200))
+    arxiv_id: Mapped[str | None] = mapped_column(String(20))
+    year: Mapped[int | None] = mapped_column(SmallInteger)
+    tc_kelvin: Mapped[float | None] = mapped_column(Float)
+    pressure_gpa: Mapped[float | None] = mapped_column(Float)
+    lambda_eph: Mapped[float | None] = mapped_column(Float)
+    mu_star: Mapped[float | None] = mapped_column(Float)
+    omega_log_k: Mapped[float | None] = mapped_column(Float)
+    omega_log_source_value: Mapped[float | None] = mapped_column(Float)
+    omega_log_source_unit: Mapped[str | None] = mapped_column(String(20))
+    method: Mapped[str | None] = mapped_column(String(80))
+    evidence_type: Mapped[str | None] = mapped_column(String(40))
+    confidence: Mapped[float | None] = mapped_column(Float)
+    source_section: Mapped[str | None] = mapped_column(String(200))
+    validation_flags: Mapped[list[Any]] = mapped_column(
+        JSONB, server_default=sa.text("'[]'::jsonb"), default=list, nullable=False,
+    )
+    provenance: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, server_default=sa.text("'{}'::jsonb"), default=dict, nullable=False,
+    )
+    model: Mapped[str | None] = mapped_column(String(80))
+    prompt_version: Mapped[str] = mapped_column(String(40), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False,
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False,
+    )
+
+    __table_args__ = (
+        Index("idx_hydride_params_material", "material_id"),
+        Index("idx_hydride_params_paper", "paper_id"),
+        Index("idx_hydride_params_formula", "formula_normalized"),
+        Index("idx_hydride_params_source_year", "source", "year"),
+    )
+
+
 class Chunk(Base):
     __tablename__ = "chunks"
 

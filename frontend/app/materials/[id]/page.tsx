@@ -16,7 +16,8 @@
  */
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getMaterial } from "@/lib/api";
+import { getMaterial, getMaterialHydrideParameters } from "@/lib/api";
+import type { HydrideTcParameterRecord } from "@/lib/api";
 import { ApiError } from "@/lib/api";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { FormulaDisplay } from "@/components/FormulaDisplay";
@@ -34,6 +35,8 @@ export default async function MaterialDetailPage({
     if (e instanceof ApiError && e.status === 404) notFound();
     throw e;
   }
+  const hydrideParameters =
+    mat.family === "hydride" ? await getMaterialHydrideParameters(id) : [];
 
   const flags: [string, boolean | null][] = [
     ["ambient SC", mat.ambient_sc],
@@ -212,6 +215,10 @@ export default async function MaterialDetailPage({
         <RecordsTable records={mat.records} />
       )}
 
+      {hydrideParameters.length > 0 && (
+        <HydrideParametersTable rows={hydrideParameters} />
+      )}
+
       <DetailSection
         title="Structure"
         rows={[
@@ -271,6 +278,101 @@ export default async function MaterialDetailPage({
       />
 
     </main>
+  );
+}
+
+function HydrideParametersTable({
+  rows,
+}: {
+  rows: HydrideTcParameterRecord[];
+}) {
+  return (
+    <section>
+      <div className="mb-3 flex items-baseline justify-between gap-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Hydride Tc parameters ({rows.length})
+        </h2>
+        <span className="text-xs text-slate-400">
+          independent NER enrichment for pressure, λ, μ*, and ωlog
+        </span>
+      </div>
+      <div className="overflow-x-auto rounded-lg border border-sage-border bg-white">
+        <table className="w-full text-sm">
+          <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+            <tr>
+              <th className="px-3 py-3 text-left font-medium">Formula</th>
+              <th className="px-3 py-3 text-right font-medium">Tc (K)</th>
+              <th className="px-3 py-3 text-right font-medium">P (GPa)</th>
+              <th className="px-3 py-3 text-right font-medium">λ</th>
+              <th className="px-3 py-3 text-right font-medium">μ*</th>
+              <th className="px-3 py-3 text-right font-medium">ωlog (K)</th>
+              <th className="px-3 py-3 text-left font-medium">Method</th>
+              <th className="px-3 py-3 text-right font-medium">Year</th>
+              <th className="px-3 py-3 text-left font-medium">Paper</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {rows.map((r) => {
+              const paperRef = paperReference(r.paper_id);
+              return (
+                <tr key={r.id} className="hover:bg-slate-50">
+                  <td className="px-3 py-2.5 font-medium text-slate-800">
+                    <FormulaDisplay formula={r.formula} />
+                  </td>
+                  <td className="px-3 py-2.5 text-right tabular-nums">
+                    {fmtNum(r.tc_kelvin, 1)}
+                  </td>
+                  <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
+                    {formatPressure(r.pressure_gpa)}
+                  </td>
+                  <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
+                    {fmtNum(r.lambda_eph, 2)}
+                  </td>
+                  <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
+                    {fmtNum(r.mu_star, 2)}
+                  </td>
+                  <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
+                    {r.omega_log_k != null ? r.omega_log_k.toFixed(0) : "—"}
+                  </td>
+                  <td className="px-3 py-2.5 text-slate-600">
+                    {r.method || r.evidence_type || "—"}
+                    {r.validation_flags.length > 0 && (
+                      <span
+                        className="ml-2 inline-flex rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-700"
+                        title={r.validation_flags.join(", ")}
+                      >
+                        check
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
+                    {r.year ?? "—"}
+                  </td>
+                  <td className="px-3 py-2.5">
+                    {paperRef?.href ? (
+                      <a
+                        href={paperRef.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-accent hover:text-accent-deep hover:underline"
+                        title={paperRef.title}
+                      >
+                        {paperRef.label}
+                        <span aria-hidden="true" className="text-[0.7em] text-slate-400">↗</span>
+                      </a>
+                    ) : paperRef ? (
+                      <span className="text-slate-600">{paperRef.label}</span>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }
 
@@ -545,6 +647,12 @@ function fmtLattice(
 ): string | null {
   const v = lp?.[key];
   return typeof v === "number" ? v.toFixed(3) : null;
+}
+
+function formatPressure(x: number | null | undefined): string {
+  if (x == null) return "—";
+  if (x === 0) return "ambient";
+  return x.toFixed(1);
 }
 
 function num(x: unknown): number | null {
