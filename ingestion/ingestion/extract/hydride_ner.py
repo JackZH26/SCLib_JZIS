@@ -96,6 +96,10 @@ _OMEGA_UNIT_ALIASES = {
 }
 
 
+class HydrideNerError(RuntimeError):
+    """Raised when the model call itself fails or returns unusable output."""
+
+
 @lru_cache(maxsize=1)
 def _client() -> Any:
     from ingestion.genai_client import make_genai_client
@@ -127,12 +131,12 @@ def extract_hydride_parameters(parsed: ParsedPaper) -> list[dict[str, Any]]:
         )
     except Exception as e:  # noqa: BLE001
         log.warning("%s: hydride NER call failed: %s", parsed.meta.paper_id, e)
-        return []
+        raise HydrideNerError(f"hydride NER call failed: {e}") from e
 
     records = _parse_json((resp.text or "").strip())
     if records is None:
         log.warning("%s: hydride NER returned non-JSON", parsed.meta.paper_id)
-        return []
+        raise HydrideNerError("hydride NER returned non-JSON")
 
     cleaned: list[dict[str, Any]] = []
     for raw in records:

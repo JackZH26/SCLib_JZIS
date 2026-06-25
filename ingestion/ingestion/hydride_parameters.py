@@ -133,13 +133,10 @@ def _read_manifest(path: Path) -> tuple[list[str], list[str]]:
                 continue
         if raw.startswith(("arxiv:", "aps:", "doi:")):
             ids.append(raw)
-            if raw.startswith("aps:"):
-                dois.append(raw.removeprefix("aps:"))
-            elif raw.startswith("doi:"):
+            if raw.startswith("doi:"):
                 dois.append(raw.removeprefix("doi:"))
         elif raw.startswith("10."):
             dois.append(raw)
-            ids.append(f"aps:{raw}")
         elif re.match(r"^(?:[a-z-]+/)?\d{4}\.\d{4,5}", raw):
             ids.append(f"arxiv:{raw}")
         else:

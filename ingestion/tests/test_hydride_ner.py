@@ -3,7 +3,9 @@ from __future__ import annotations
 
 import pytest
 
-from ingestion.extract.hydride_ner import clean_hydride_record
+from ingestion.extract import hydride_ner
+from ingestion.extract.hydride_ner import HydrideNerError, clean_hydride_record
+from ingestion.models import PaperMetadata, ParsedPaper
 
 
 def test_clean_hydride_record_converts_omega_mev() -> None:
@@ -72,3 +74,28 @@ def test_clean_hydride_record_accepts_c_s_h_shorthand() -> None:
 
     assert rec is not None
     assert rec["formula"] == "CSH"
+
+
+def test_extract_hydride_parameters_raises_on_model_error(monkeypatch: pytest.MonkeyPatch) -> None:
+    class BrokenModels:
+        def generate_content(self, **_kwargs: object) -> object:
+            raise RuntimeError("quota exhausted")
+
+    class BrokenClient:
+        models = BrokenModels()
+
+    hydride_ner._client.cache_clear()
+    monkeypatch.setattr(hydride_ner, "_client", lambda: BrokenClient())
+
+    parsed = ParsedPaper(
+        meta=PaperMetadata(
+            arxiv_id="2601.00001",
+            title="Hydride test",
+            authors=[],
+            abstract="LaH10 has Tc near 250 K at high pressure.",
+        ),
+        sections=[],
+    )
+
+    with pytest.raises(HydrideNerError):
+        hydride_ner.extract_hydride_parameters(parsed)
