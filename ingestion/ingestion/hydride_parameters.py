@@ -175,6 +175,14 @@ def _append_checkpoint(path: Path | None, event: dict[str, Any]) -> None:
         fh.write(json.dumps(event, ensure_ascii=False, sort_keys=True) + "\n")
 
 
+def _ensure_checkpoint_writable(path: Path | None) -> None:
+    if path is None:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8"):
+        pass
+
+
 async def _rebuild_parsed_from_chunks(session: Any, row: dict[str, Any]) -> ParsedPaper:
     chunk_rows = (await session.execute(
         select(chunks_table.c.section, chunks_table.c.chunk_index, chunks_table.c.text)
@@ -384,6 +392,7 @@ async def _process_row(
 async def main_async(args: argparse.Namespace) -> int:
     checkpoint = Path(args.checkpoint) if args.checkpoint else None
     manifest = Path(args.manifest) if args.manifest else None
+    _ensure_checkpoint_writable(checkpoint)
     seen = _load_seen(checkpoint, retry_failed=args.retry_failed)
     material_cache: dict[str, str | None] = {}
 
