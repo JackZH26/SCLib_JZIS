@@ -77,15 +77,10 @@ def test_clean_hydride_record_accepts_c_s_h_shorthand() -> None:
 
 
 def test_extract_hydride_parameters_raises_on_model_error(monkeypatch: pytest.MonkeyPatch) -> None:
-    class BrokenModels:
-        def generate_content(self, **_kwargs: object) -> object:
-            raise RuntimeError("quota exhausted")
+    def broken_generate(_model: str, _prompt: str) -> object:
+        raise RuntimeError("quota exhausted")
 
-    class BrokenClient:
-        models = BrokenModels()
-
-    hydride_ner._client.cache_clear()
-    monkeypatch.setattr(hydride_ner, "_client", lambda: BrokenClient())
+    monkeypatch.setattr(hydride_ner, "_generate_content_with_retry", broken_generate)
 
     parsed = ParsedPaper(
         meta=PaperMetadata(

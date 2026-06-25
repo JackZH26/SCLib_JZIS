@@ -18,6 +18,7 @@ import json
 import logging
 import math
 import re
+import time
 from functools import lru_cache
 from typing import Any
 
@@ -28,6 +29,7 @@ log = logging.getLogger(__name__)
 
 PROMPT_VERSION = "hydride-v1-2026-06-25"
 _MAX_CHARS = 32_000
+_MODEL_RETRY_DELAYS = (5.0, 15.0, 45.0)
 
 _PROMPT = """\
 Extract hydride superconductivity parameters from the paper text below.
@@ -107,6 +109,40 @@ def _client() -> Any:
     return make_genai_client()
 
 
+def _generate_content_with_retry(model: str, prompt: str) -> Any:
+    for attempt in range(1, len(_MODEL_RETRY_DELAYS) + 2):
+        try:
+            return _generate_content(model, prompt)
+        except Exception:
+            if attempt > len(_MODEL_RETRY_DELAYS):
+                raise
+            delay = _MODEL_RETRY_DELAYS[attempt - 1]
+            log.warning(
+                "hydride NER model call failed; retrying in %.0fs "
+                "(attempt %d/%d)",
+                delay,
+                attempt + 1,
+                len(_MODEL_RETRY_DELAYS) + 1,
+                exc_info=True,
+            )
+            time.sleep(delay)
+    raise RuntimeError("unreachable hydride NER retry state")
+
+
+def _generate_content(model: str, prompt: str) -> Any:
+    from google.genai import types as genai_types
+
+    return _client().models.generate_content(
+        model=model,
+        contents=prompt,
+        config=genai_types.GenerateContentConfig(
+            temperature=0.0,
+            response_mime_type="application/json",
+            thinking_config=genai_types.ThinkingConfig(thinking_budget=0),
+        ),
+    )
+
+
 def extract_hydride_parameters(parsed: ParsedPaper) -> list[dict[str, Any]]:
     """Run hydride-specific NER and return cleaned structured records."""
     from ingestion.config import get_settings
@@ -118,17 +154,7 @@ def extract_hydride_parameters(parsed: ParsedPaper) -> list[dict[str, Any]]:
 
     prompt = _PROMPT.replace("{{BODY}}", body[:_MAX_CHARS])
     try:
-        from google.genai import types as genai_types
-
-        resp = _client().models.generate_content(
-            model=settings.gemini_model,
-            contents=prompt,
-            config=genai_types.GenerateContentConfig(
-                temperature=0.0,
-                response_mime_type="application/json",
-                thinking_config=genai_types.ThinkingConfig(thinking_budget=0),
-            ),
-        )
+        resp = _generate_content_with_retry(settings.gemini_model, prompt)
     except Exception as e:  # noqa: BLE001
         log.warning("%s: hydride NER call failed: %s", parsed.meta.paper_id, e)
         raise HydrideNerError(f"hydride NER call failed: {e}") from e
