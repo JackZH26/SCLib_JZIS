@@ -293,7 +293,7 @@ function HydrideParametersTable({
           Hydride Tc parameters ({rows.length})
         </h2>
         <span className="text-xs text-slate-400">
-          independent NER enrichment for pressure, λ, μ*, and ωlog
+          independent NER enrichment for pressure, λ, μ*, and ω_log
         </span>
       </div>
       <div className="overflow-x-auto rounded-lg border border-sage-border bg-white">
@@ -303,9 +303,11 @@ function HydrideParametersTable({
               <th className="px-3 py-3 text-left font-medium">Formula</th>
               <th className="px-3 py-3 text-right font-medium">Tc (K)</th>
               <th className="px-3 py-3 text-right font-medium">P (GPa)</th>
-              <th className="px-3 py-3 text-right font-medium">λ</th>
-              <th className="px-3 py-3 text-right font-medium">μ*</th>
-              <th className="px-3 py-3 text-right font-medium">ωlog (K)</th>
+              <th className="px-3 py-3 text-right font-medium normal-case">λ</th>
+              <th className="px-3 py-3 text-right font-medium normal-case">μ*</th>
+              <th className="px-3 py-3 text-right font-medium normal-case">
+                ω_log (K)
+              </th>
               <th className="px-3 py-3 text-left font-medium">Method</th>
               <th className="px-3 py-3 text-right font-medium">Year</th>
               <th className="px-3 py-3 text-left font-medium">Paper</th>
