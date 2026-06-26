@@ -14,6 +14,20 @@ LOCK_PATH="$CACHE_DIR/.pull_discovery_feed.lock"
 
 mkdir -p "$CACHE_DIR"
 
+json_sha256() {
+  python3 - "$1" <<'PY'
+import hashlib
+import json
+import sys
+
+path = sys.argv[1]
+with open(path, "r", encoding="utf-8") as fh:
+    payload = json.load(fh)
+body = json.dumps(payload, sort_keys=True, ensure_ascii=False).encode("utf-8")
+print(hashlib.sha256(body).hexdigest())
+PY
+}
+
 exec 9>"$LOCK_PATH"
 flock -n 9 || {
   echo "another discovery feed pull is already running"
@@ -34,7 +48,7 @@ curl -fsS --connect-timeout 10 --max-time 30 --retry 2 --retry-delay 3 \
 jq . "$META_TMP" >/dev/null
 
 NEW_SHA="$(jq -r '.sha256 // empty' "$META_TMP")"
-OLD_SHA="$([ -f "$FEED_PATH" ] && sha256sum "$FEED_PATH" | awk '{print $1}' || true)"
+OLD_SHA="$([ -f "$FEED_PATH" ] && json_sha256 "$FEED_PATH" || true)"
 
 if [ -n "$NEW_SHA" ] && [ "$NEW_SHA" = "$OLD_SHA" ]; then
   cp "$META_TMP" "$META_PATH"
@@ -47,7 +61,7 @@ curl -fsS --connect-timeout 10 --max-time 60 --retry 2 --retry-delay 3 \
 jq . "$FEED_TMP" >/dev/null
 
 if [ -n "$NEW_SHA" ]; then
-  DOWNLOADED_SHA="$(sha256sum "$FEED_TMP" | awk '{print $1}')"
+  DOWNLOADED_SHA="$(json_sha256 "$FEED_TMP")"
   if [ "$DOWNLOADED_SHA" != "$NEW_SHA" ]; then
     echo "sha256 mismatch: meta=$NEW_SHA downloaded=$DOWNLOADED_SHA" >&2
     exit 1
