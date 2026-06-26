@@ -1,0 +1,12 @@
+[Unit]
+Description=Refresh SC SuperLoop Discovery feed cache every 10 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=10min
+AccuracySec=1min
+Persistent=true
+Unit=sclib-discovery-feed-pull.service
+
+[Install]
+WantedBy=timers.target

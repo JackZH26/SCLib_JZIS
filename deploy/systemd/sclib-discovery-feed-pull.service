@@ -1,0 +1,10 @@
+[Unit]
+Description=Pull SC SuperLoop Discovery feed into SCLib cache
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+Environment=DISCOVERY_FEED_BASE_URL=https://discovery-feed.jzis.org
+Environment=DISCOVERY_CACHE_DIR=/data/sclib/discovery
+ExecStart=/opt/SCLib_JZIS/scripts/pull_discovery_feed.sh
