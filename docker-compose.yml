@@ -46,6 +46,7 @@ services:
     env_file: .env
     volumes:
       - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
+      - ${SCLIB_DISCOVERY_DIR:-/data/sclib/discovery}:/data/sclib/discovery:ro
       # One-shot scripts (refresh_stats.py, sync_mp_ids.py, …) live in
       # the repo's top-level scripts/ dir, but the api image's build
       # context is ./api so they are not baked in. Mount them read-only
