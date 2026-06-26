@@ -25,6 +25,7 @@ from routers import (
     ask,
     auth,
     bookmarks,
+    discovery,
     feedback,
     history,
     materials,
@@ -405,6 +406,7 @@ app.include_router(bookmarks.router, prefix="/v1")
 app.include_router(feedback.router, prefix="/v1")
 app.include_router(version.router, prefix="/v1")
 app.include_router(admin.router, prefix="/v1")
+app.include_router(discovery.router, prefix="/v1")
 
 
 @app.get("/v1/health", tags=["health"])

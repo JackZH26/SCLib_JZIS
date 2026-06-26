@@ -81,6 +81,9 @@ class Settings(BaseSettings):
     embedding_model: str = "text-embedding-005"
     embedding_output_dimensionality: int = 768
 
+    # === Discovery preview ===
+    discovery_feed_path: str = "/data/sclib/discovery/discovery_feed.json"
+
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:

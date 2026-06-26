@@ -748,6 +748,40 @@ export function getStats() {
   return request<StatsResponse>("/stats");
 }
 
+export interface DiscoveryCandidate {
+  formula: string;
+  name: string | null;
+  family: string | null;
+  tc_kelvin: number | null;
+  pressure_gpa: number | null;
+  evidence_level: string | null;
+  checker_status: string | null;
+  dossier_url: string | null;
+  dossier_path: string | null;
+  summary: string | null;
+  source: string | null;
+  updated_at: string | null;
+  metadata: Record<string, unknown>;
+}
+
+export interface DiscoveryResponse {
+  status: string;
+  updated_at: string;
+  message: string | null;
+  candidates: DiscoveryCandidate[];
+  standard: {
+    mode: string;
+    benchmarks_excluded: boolean;
+    minimum_evidence_level: string;
+    dossier_required: boolean;
+    accepted_checker_statuses: string[];
+  };
+}
+
+export function getDiscovery() {
+  return request<DiscoveryResponse>("/discovery");
+}
+
 export interface VersionResponse {
   site_version: string;
   dataset_version: string | null;
