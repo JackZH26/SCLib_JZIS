@@ -757,7 +757,6 @@ export interface DiscoveryCandidate {
   evidence_level: string | null;
   checker_status: string | null;
   dossier_url: string | null;
-  dossier_path: string | null;
   summary: string | null;
   source: string | null;
   updated_at: string | null;

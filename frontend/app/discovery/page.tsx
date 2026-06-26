@@ -120,9 +120,7 @@ function CandidateRow({ candidate }: { candidate: DiscoveryCandidate }) {
             dossier
           </a>
         ) : (
-          <span className="text-slate-500">
-            {candidate.dossier_path ? shortPath(candidate.dossier_path) : "-"}
-          </span>
+          <span className="text-slate-500">-</span>
         )}
       </td>
       <td className="max-w-md px-4 py-3 text-slate-600">
@@ -136,16 +134,11 @@ function formatNumber(value: number | null) {
   return value == null ? "-" : value.toLocaleString(undefined, { maximumFractionDigits: 1 });
 }
 
-function shortPath(path: string) {
-  const parts = path.split("/");
-  return parts[parts.length - 1] || path;
-}
-
 function candidateKey(candidate: DiscoveryCandidate) {
   return [
     candidate.formula,
     candidate.evidence_level || "",
     candidate.checker_status || "",
-    candidate.dossier_url || candidate.dossier_path || "",
+    candidate.dossier_url || "",
   ].join("|");
 }
