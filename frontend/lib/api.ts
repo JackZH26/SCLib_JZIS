@@ -749,32 +749,54 @@ export function getStats() {
 }
 
 export interface DiscoveryCandidate {
+  candidate_id?: string | null;
   formula: string;
-  name: string | null;
-  family: string | null;
+  name?: string | null;
+  normalized_formula?: string | null;
+  family?: string | null;
+  branch?: string | null;
+  prototype_family?: string | null;
   tc_kelvin: number | null;
   pressure_gpa: number | null;
   evidence_level: string | null;
+  public_confidence?: string | null;
   checker_status: string | null;
+  record_role?: string | null;
+  claim_level?: string | null;
+  next_action?: string | null;
+  recommended_next_step?: string | null;
+  discovery_score?: string | number | null;
+  mechanism_hypothesis?: string | null;
+  risk_tags?: string[] | null;
   dossier_url: string | null;
   summary: string | null;
+  review_summary?: string | null;
   source: string | null;
+  provenance_summary?: string | null;
   updated_at: string | null;
-  metadata: Record<string, unknown>;
+  last_reviewed_at_utc?: string | null;
+  published_at_utc?: string | null;
+  metadata?: Record<string, unknown>;
 }
 
 export interface DiscoveryResponse {
   status: string;
-  updated_at: string;
+  updated_at?: string;
+  updated_at_utc?: string;
   message: string | null;
   candidates: DiscoveryCandidate[];
-  standard: {
+  standard?: {
     mode: string;
     benchmarks_excluded: boolean;
     minimum_evidence_level: string;
     dossier_required: boolean;
     accepted_checker_statuses: string[];
   };
+  filter_rules?: Array<{
+    key: string;
+    label: string;
+    value: string;
+  }>;
 }
 
 export function getDiscovery() {
