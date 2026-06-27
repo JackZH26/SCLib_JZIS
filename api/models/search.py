@@ -334,3 +334,45 @@ class TimelineResponse(BaseModel):
     family: str | None
     points: list[TimelinePoint]
     coverage: TimelineCoverage | None = None
+
+
+# ---------------------------------------------------------------------------
+# Discovery (reviewed SC SuperLoop feed)
+# ---------------------------------------------------------------------------
+
+class DiscoveryFilterRule(BaseModel):
+    key: str
+    label: str
+    value: str
+
+
+class DiscoveryCandidate(BaseModel):
+    candidate_id: str
+    formula: str
+    normalized_formula: str | None = None
+    branch: str
+    prototype_family: str | None = None
+    evidence_level: str
+    checker_status: str
+    public_confidence: str
+    record_role: str | None = None
+    claim_level: str | None = None
+    next_action: str | None = None
+    discovery_score: float | None = None
+    mechanism_hypothesis: str | None = None
+    risk_tags: list[str] = []
+    review_summary: str | None = None
+    provenance_summary: str | None = None
+    recommended_next_step: str | None = None
+    last_reviewed_at_utc: datetime | None = None
+    published_at_utc: datetime | None = None
+
+
+class DiscoveryResponse(BaseModel):
+    page_title: str
+    intro: list[str]
+    status: Literal["planned", "active"] = "planned"
+    updated_at_utc: datetime | None = None
+    source: str | None = None
+    filter_rules: list[DiscoveryFilterRule]
+    candidates: list[DiscoveryCandidate]

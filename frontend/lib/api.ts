@@ -748,39 +748,6 @@ export function getStats() {
   return request<StatsResponse>("/stats");
 }
 
-export interface DiscoveryCandidate {
-  formula: string;
-  name: string | null;
-  family: string | null;
-  tc_kelvin: number | null;
-  pressure_gpa: number | null;
-  evidence_level: string | null;
-  checker_status: string | null;
-  dossier_url: string | null;
-  summary: string | null;
-  source: string | null;
-  updated_at: string | null;
-  metadata: Record<string, unknown>;
-}
-
-export interface DiscoveryResponse {
-  status: string;
-  updated_at: string;
-  message: string | null;
-  candidates: DiscoveryCandidate[];
-  standard: {
-    mode: string;
-    benchmarks_excluded: boolean;
-    minimum_evidence_level: string;
-    dossier_required: boolean;
-    accepted_checker_statuses: string[];
-  };
-}
-
-export function getDiscovery() {
-  return request<DiscoveryResponse>("/discovery");
-}
-
 export interface VersionResponse {
   site_version: string;
   dataset_version: string | null;
@@ -845,6 +812,48 @@ export function getTimeline(opts: {
   if (opts.onlyAps) qs.set("only_aps", "true");
   const qstr = qs.toString();
   return request<TimelineResponse>(`/timeline${qstr ? `?${qstr}` : ""}`);
+}
+
+export interface DiscoveryFilterRule {
+  key: string;
+  label: string;
+  value: string;
+}
+
+export interface DiscoveryCandidate {
+  candidate_id: string;
+  formula: string;
+  normalized_formula: string | null;
+  branch: string;
+  prototype_family: string | null;
+  evidence_level: string;
+  checker_status: string;
+  public_confidence: string;
+  record_role: string | null;
+  claim_level: string | null;
+  next_action: string | null;
+  discovery_score: number | null;
+  mechanism_hypothesis: string | null;
+  risk_tags: string[];
+  review_summary: string | null;
+  provenance_summary: string | null;
+  recommended_next_step: string | null;
+  last_reviewed_at_utc: string | null;
+  published_at_utc: string | null;
+}
+
+export interface DiscoveryResponse {
+  page_title: string;
+  intro: string[];
+  status: "planned" | "active";
+  updated_at_utc: string | null;
+  source: string | null;
+  filter_rules: DiscoveryFilterRule[];
+  candidates: DiscoveryCandidate[];
+}
+
+export function getDiscovery() {
+  return request<DiscoveryResponse>("/discovery");
 }
 
 // --- Admin --------------------------------------------------------------
