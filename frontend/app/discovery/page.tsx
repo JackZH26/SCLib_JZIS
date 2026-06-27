@@ -264,7 +264,7 @@ export default async function DiscoveryPage() {
                         key={candidate.candidate_id}
                         className="group rounded-2xl border border-sage-border bg-sage-surface text-sm shadow-sm transition-colors open:bg-sage-soft"
                       >
-                        <summary className="grid cursor-pointer list-none gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden md:grid-cols-[minmax(0,1.3fr)_auto] md:items-center">
+                        <summary className="grid cursor-pointer list-none gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden lg:grid-cols-[minmax(20rem,1fr)_minmax(0,38rem)] lg:items-center">
                           <div className="min-w-0">
                             <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
                               <h4 className="truncate text-lg font-semibold tracking-tight text-sage-ink">
@@ -288,7 +288,7 @@ export default async function DiscoveryPage() {
                             </p>
                           </div>
 
-                          <div className="grid grid-cols-2 gap-2 md:min-w-[28rem] md:grid-cols-5">
+                          <div className="grid min-w-0 grid-cols-2 gap-2 md:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)_minmax(0,1fr)_minmax(0,1.2fr)_auto]">
                             <SummaryFact
                               label="Evidence"
                               value={formatEvidenceLabel(candidate.evidence_level)}
