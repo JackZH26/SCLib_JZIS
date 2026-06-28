@@ -825,7 +825,17 @@ export interface DiscoveryCandidate {
   formula: string;
   normalized_formula: string | null;
   branch: string;
+  lane_id: string | null;
   prototype_family: string | null;
+  candidate_layer: string | null;
+  candidate_quantity_score: number | null;
+  candidate_quality_score: number | null;
+  entry_block_reason: string | null;
+  upgrade_requirements: string[];
+  family_ruleset_id: string | null;
+  validation_recipe_id: string | null;
+  condition_class: string | null;
+  required_condition_vector: string[];
   evidence_level: string;
   checker_status: string;
   public_confidence: string;

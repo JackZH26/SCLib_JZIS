@@ -351,7 +351,17 @@ class DiscoveryCandidate(BaseModel):
     formula: str
     normalized_formula: str | None = None
     branch: str
+    lane_id: str | None = None
     prototype_family: str | None = None
+    candidate_layer: str | None = None
+    candidate_quantity_score: float | None = None
+    candidate_quality_score: float | None = None
+    entry_block_reason: str | None = None
+    upgrade_requirements: list[str] = []
+    family_ruleset_id: str | None = None
+    validation_recipe_id: str | None = None
+    condition_class: str | None = None
+    required_condition_vector: list[str] = []
     evidence_level: str
     checker_status: str
     public_confidence: str

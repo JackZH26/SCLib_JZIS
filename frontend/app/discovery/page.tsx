@@ -95,6 +95,11 @@ function formatDiscoveryScore(value: number | null) {
   return value == null ? "Insufficient data" : value.toFixed(1);
 }
 
+function formatLabel(value: string | null | undefined) {
+  if (!value) return "Unspecified";
+  return value.replaceAll("_", " ");
+}
+
 function SummaryFact({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0">
@@ -277,11 +282,19 @@ export default async function DiscoveryPage() {
                               >
                                 {candidate.public_confidence}
                               </span>
+                              {candidate.lane_id && (
+                                <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-800">
+                                  {candidate.lane_id}
+                                </span>
+                              )}
                             </div>
                             <p className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-xs text-sage-muted">
                               <span>{candidate.branch}</span>
                               {candidate.prototype_family && (
                                 <span>{candidate.prototype_family}</span>
+                              )}
+                              {candidate.condition_class && (
+                                <span>{formatLabel(candidate.condition_class)}</span>
                               )}
                               <span>{formatRoleLabel(candidate.record_role)}</span>
                               <span>{formatClaimLabel(candidate.claim_level)}</span>
@@ -304,6 +317,10 @@ export default async function DiscoveryPage() {
                             <SummaryFact
                               label="Action"
                               value={formatNextAction(candidate.next_action)}
+                            />
+                            <SummaryFact
+                              label="Lane layer"
+                              value={formatLabel(candidate.candidate_layer)}
                             />
                             <div className="flex items-center justify-end text-xs font-semibold text-accent-deep">
                               <span className="rounded-full border border-sage-border bg-white/70 px-3 py-1 group-open:hidden">
@@ -328,6 +345,18 @@ export default async function DiscoveryPage() {
                             <p className="text-sage-muted">Next action</p>
                             <p className="font-medium text-sage-ink">
                               {formatNextAction(candidate.next_action)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sage-muted">Condition class</p>
+                            <p className="font-medium text-sage-ink">
+                              {formatLabel(candidate.condition_class)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sage-muted">Family ruleset</p>
+                            <p className="font-medium text-sage-ink">
+                              {formatLabel(candidate.family_ruleset_id)}
                             </p>
                           </div>
                           </div>
@@ -355,6 +384,42 @@ export default async function DiscoveryPage() {
                                   {tag}
                                 </span>
                               ))}
+                            </div>
+                          )}
+
+                          {candidate.required_condition_vector.length > 0 && (
+                            <div className="mt-4">
+                              <p className="mb-2 text-sm font-medium text-sage-ink">
+                                Required condition vector
+                              </p>
+                              <div className="flex flex-wrap gap-2">
+                                {candidate.required_condition_vector.map((tag) => (
+                                  <span
+                                    key={tag}
+                                    className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs text-sky-800"
+                                  >
+                                    {formatLabel(tag)}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {candidate.upgrade_requirements.length > 0 && (
+                            <div className="mt-4">
+                              <p className="mb-2 text-sm font-medium text-sage-ink">
+                                Upgrade requirements
+                              </p>
+                              <div className="flex flex-wrap gap-2">
+                                {candidate.upgrade_requirements.map((tag) => (
+                                  <span
+                                    key={tag}
+                                    className="rounded-full border border-sage-border bg-white px-3 py-1 text-xs text-sage-muted"
+                                  >
+                                    {formatLabel(tag)}
+                                  </span>
+                                ))}
+                              </div>
                             </div>
                           )}
                         </div>
