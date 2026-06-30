@@ -1,0 +1,12 @@
+[Unit]
+Description=Fire SCLib APS yearly full-text ingest batches
+
+[Timer]
+OnCalendar=*:05:00
+RandomizedDelaySec=120s
+Persistent=true
+Unit=sclib-aps-yearly-ingest.service
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target

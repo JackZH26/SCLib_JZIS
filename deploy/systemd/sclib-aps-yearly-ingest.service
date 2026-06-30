@@ -1,0 +1,21 @@
+[Unit]
+Description=SCLib APS yearly full-text ingest batch
+After=docker.service network-online.target
+Requires=docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+Environment=SCLIB_ROOT=/opt/SCLib_JZIS
+Environment=APS_MANIFEST_ROOT=/opt/sclib_aps_manifests
+Environment=APS_BATCH_SIZE=125
+ExecStart=/opt/SCLib_JZIS/scripts/aps-yearly-ingest-once.sh
+TimeoutStartSec=2h
+SuccessExitStatus=99
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
