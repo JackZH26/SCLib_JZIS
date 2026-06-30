@@ -62,3 +62,7 @@ data/
 
 # Local Claude Code session/config (machine-local, not part of the project)
 /.claude/
+
+# Local agent/workbench files
+/AGENTS.md
+/ASP_SC_ScopeReview/
