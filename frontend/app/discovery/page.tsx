@@ -112,11 +112,11 @@ function SummaryFact({ label, value }: { label: string; value: string }) {
 }
 
 const SECTION_ORDER = [
+  "exploratory_candidate",
+  "conditional_candidate",
   "reference_anchor",
   "mechanism_anchor",
   "benchmark_control",
-  "exploratory_candidate",
-  "conditional_candidate",
   "negative_control",
   "failed_memory",
 ] as const;
