@@ -100,7 +100,9 @@ def find_fulltext_xml(bagit_root: Path) -> Path | None:
             # Peek at the root element only — cheap, avoids full parse of
             # non-article XML (e.g. a BagIt manifest).
             for _evt, el in ET.iterparse(path, events=("start",)):
-                return path if _local(el.tag) == "article" else None
+                if _local(el.tag) == "article":
+                    return path
+                break
         except ET.ParseError:
             continue
     return None

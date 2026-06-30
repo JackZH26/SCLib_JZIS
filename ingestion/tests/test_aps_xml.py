@@ -11,6 +11,7 @@ from ingestion.models import ApsArticleMeta
 from ingestion.parse.aps_xml import (
     ApsParseError,
     UnsupportedApsFulltextError,
+    find_fulltext_xml,
     parse_ocr,
     parse_jats,
 )
@@ -84,6 +85,14 @@ def test_parse_jats_namespaced():
     parsed = parse_jats(ns, _meta())
     assert [s.name for s in parsed.sections] == ["Methods"]
     assert "Sample grown." in parsed.sections[0].text
+
+
+def test_find_fulltext_xml_skips_non_article_xml(tmp_path):
+    (tmp_path / "bag-info.xml").write_text("<bag><metadata /></bag>")
+    article = tmp_path / "fulltext.xml"
+    article.write_text("<article><body><p>Text.</p></body></article>")
+
+    assert find_fulltext_xml(tmp_path) == article
 
 
 def test_parse_jats_no_sec_flattens_body():
