@@ -1,0 +1,3 @@
+# Freeze snapshots are generated artifacts and may be large.
+*
+!.gitignore
