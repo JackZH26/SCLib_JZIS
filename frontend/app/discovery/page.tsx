@@ -95,6 +95,10 @@ function formatDiscoveryScore(value: number | null) {
   return value == null ? "Insufficient data" : value.toFixed(1);
 }
 
+function formatScore(value: number | null | undefined) {
+  return value == null ? "Insufficient data" : value.toFixed(1);
+}
+
 function formatLabel(value: string | null | undefined) {
   if (!value) return "Unspecified";
   return value.replaceAll("_", " ");
@@ -315,6 +319,14 @@ export default async function DiscoveryPage() {
                               value={formatDiscoveryScore(candidate.discovery_score)}
                             />
                             <SummaryFact
+                              label="Readiness"
+                              value={formatLabel(candidate.experiment_readiness)}
+                            />
+                            <SummaryFact
+                              label="Evidence Q"
+                              value={formatScore(candidate.evidence_quality_score)}
+                            />
+                            <SummaryFact
                               label="Action"
                               value={formatNextAction(candidate.next_action)}
                             />
@@ -359,6 +371,30 @@ export default async function DiscoveryPage() {
                               {formatLabel(candidate.family_ruleset_id)}
                             </p>
                           </div>
+                          <div>
+                            <p className="text-sage-muted">Literature gate</p>
+                            <p className="font-medium text-sage-ink">
+                              {formatLabel(candidate.literature_verifier_status)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sage-muted">Correlation gate</p>
+                            <p className="font-medium text-sage-ink">
+                              {formatLabel(candidate.correlation_gate_status)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sage-muted">Synthesis feasibility</p>
+                            <p className="font-medium text-sage-ink">
+                              {formatScore(candidate.synthesis_feasibility_score)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sage-muted">Measurement clarity</p>
+                            <p className="font-medium text-sage-ink">
+                              {formatScore(candidate.measurement_clarity_score)}
+                            </p>
+                          </div>
                           </div>
 
                           {candidate.mechanism_hypothesis && (
@@ -384,6 +420,48 @@ export default async function DiscoveryPage() {
                                   {tag}
                                 </span>
                               ))}
+                            </div>
+                          )}
+
+                          {candidate.failure_mode_taxonomy.length > 0 && (
+                            <div className="mt-4">
+                              <p className="mb-2 text-sm font-medium text-sage-ink">
+                                Failure taxonomy
+                              </p>
+                              <div className="flex flex-wrap gap-2">
+                                {candidate.failure_mode_taxonomy.map((tag) => (
+                                  <span
+                                    key={tag}
+                                    className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs text-red-800"
+                                  >
+                                    {formatLabel(tag)}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {(candidate.literature_verifier_flags.length > 0 ||
+                            candidate.synthesis_feasibility_flags.length > 0 ||
+                            candidate.correlation_gate_flags.length > 0) && (
+                            <div className="mt-4">
+                              <p className="mb-2 text-sm font-medium text-sage-ink">
+                                Gate flags
+                              </p>
+                              <div className="flex flex-wrap gap-2">
+                                {[
+                                  ...candidate.literature_verifier_flags,
+                                  ...candidate.synthesis_feasibility_flags,
+                                  ...candidate.correlation_gate_flags,
+                                ].map((tag) => (
+                                  <span
+                                    key={tag}
+                                    className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs text-amber-800"
+                                  >
+                                    {formatLabel(tag)}
+                                  </span>
+                                ))}
+                              </div>
                             </div>
                           )}
 

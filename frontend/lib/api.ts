@@ -839,6 +839,18 @@ export interface DiscoveryCandidate {
   evidence_level: string;
   checker_status: string;
   public_confidence: string;
+  evidence_schema_version: string | null;
+  evidence_quality_score: number | null;
+  literature_verifier_status: string | null;
+  literature_verifier_flags: string[];
+  failure_mode_taxonomy: string[];
+  synthesis_feasibility_score: number | null;
+  synthesis_feasibility_flags: string[];
+  measurement_clarity_score: number | null;
+  correlation_gate_status: string | null;
+  correlation_gate_flags: string[];
+  experiment_priority_score: number | null;
+  experiment_readiness: string | null;
   record_role: string | null;
   claim_level: string | null;
   next_action: string | null;
