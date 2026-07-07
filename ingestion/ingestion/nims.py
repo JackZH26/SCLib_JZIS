@@ -520,15 +520,23 @@ def is_elemental_superconductor_formula(
     if elements is None:
         elements = re.findall(r"[A-Z][a-z]?", cleaned)
 
+    # Accept only a bare element or an explicit unit stoichiometry. Wider
+    # numeric suffixes (Bi3, Re124, Sn4, Al0.3) are usually shorthand,
+    # OCR/case artifacts, or compound fragments rather than elemental
+    # superconductors.
+    unit_suffix = r"(?:1(?:\.0+)?)?"
+
     if len(elements) == 1 and elements[0] in _ELEMENTAL_SC_ELEMENTS:
         el = re.escape(elements[0])
-        if re.fullmatch(rf"{el}(?:[0-9]+(?:\.[0-9]+)?)?", cleaned):
+        if re.fullmatch(rf"{el}{unit_suffix}", cleaned):
             return True
 
     # Historical NIMS paths sometimes passed normalized lower-case
     # formulas. Keep a narrow compatibility path for simple element
     # formulas while still rejecting compound/prose strings.
-    m = re.fullmatch(r"([a-z]{1,2})(?:[0-9]+(?:\.[0-9]+)?)?", cleaned.lower())
+    if cleaned != cleaned.lower():
+        return False
+    m = re.fullmatch(rf"([a-z]{{1,2}}){unit_suffix}", cleaned)
     return bool(m and m.group(1) in _ELEMENTAL_SC_ELEMENT_SLUGS)
 
 

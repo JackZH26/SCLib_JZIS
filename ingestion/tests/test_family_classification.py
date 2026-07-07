@@ -15,6 +15,11 @@ def test_elemental_rule_does_not_catch_compounds_or_prose() -> None:
     assert classify_family("Nb3Sn") == "conventional"
     assert classify_family("Mercury") is None
     assert classify_family("Pb-doped") is None
+    assert classify_family("BI3") != "elemental"
+    assert classify_family("RE124") != "elemental"
+    assert classify_family("SN1") != "elemental"
+    assert classify_family("Al0.3") != "elemental"
+    assert classify_family("Sn4") != "elemental"
 
 
 def test_aggregator_elemental_rule_overrides_ner_conventional_vote() -> None:
