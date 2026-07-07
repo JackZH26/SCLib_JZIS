@@ -572,6 +572,8 @@ def classify_family(formula: str) -> str | None:
     """
     f = formula.strip()
     fl = f.lower()
+    if re.match(r"^3he[-_]", fl):
+        return None
 
     # ── Pre-processing for element extraction ──────────────────
     # The naive tokenizer ``[A-Z][a-z]?`` greedily eats lowercase

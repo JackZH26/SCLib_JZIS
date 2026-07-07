@@ -31,6 +31,7 @@ def test_elemental_rule_does_not_catch_compounds_or_prose() -> None:
     assert classify_family("Bi:2212") != "elemental"
     assert classify_family("Bechgaardsalts") != "elemental"
     assert classify_family("Bernalbilayergraphene") != "elemental"
+    assert classify_family("3He-B") != "elemental"
 
 
 def test_aggregator_elemental_rule_overrides_ner_conventional_vote() -> None:
