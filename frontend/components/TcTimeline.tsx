@@ -35,6 +35,7 @@
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import type { TimelineCoverage, TimelinePoint } from "@/lib/api";
+import { FAMILY_COLORS, familyLabel } from "@/lib/families";
 import { formulaToHtml } from "@/components/FormulaDisplay";
 
 // `loading: () => null` because we render our own overlay below; the
@@ -44,33 +45,6 @@ const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
   loading: () => null,
 });
-
-// Color palette for each supported family; unknown family falls back
-// to slate. Colors chosen to be discernible on light background and
-// colorblind-friendly-ish.
-const FAMILY_COLORS: Record<string, string> = {
-  cuprate:       "#2563eb",   // blue
-  iron_based:    "#ca8a04",   // amber
-  nickelate:     "#0891b2",   // cyan — distinct from cuprate blue
-  hydride:       "#dc2626",   // red
-  mgb2:          "#059669",   // emerald
-  heavy_fermion: "#7c3aed",   // violet
-  fulleride:     "#db2777",   // pink
-  conventional:  "#64748b",   // slate
-};
-
-// Label shown in the legend (capitalised / punctuated for humans).
-const FAMILY_LABEL: Record<string, string> = {
-  cuprate:       "Cuprate",
-  iron_based:    "Iron-based",
-  nickelate:     "Nickelate",
-  hydride:       "Hydride",
-  mgb2:          "MgB₂",
-  heavy_fermion: "Heavy fermion",
-  fulleride:     "Fulleride",
-  conventional:  "Conventional",
-  unknown:       "Other",
-};
 
 const Y_MAX_DEFAULT = 300;
 // Visual cushion below 0 K so dots clustered around Tc=0 aren't
@@ -140,7 +114,7 @@ export function TcTimeline({
     return {
       type: "scatter" as const,
       mode: "markers" as const,
-      name: FAMILY_LABEL[fam] ?? fam,
+      name: fam === "unknown" ? "Other" : familyLabel(fam),
       x: subset.map((p) => p.year + jitterYear(p.material, p.tc_kelvin)),
       y: subset.map((p) => p.tc_kelvin),
       customdata: subset.map((p) => [

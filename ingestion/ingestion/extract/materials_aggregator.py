@@ -881,7 +881,13 @@ def _derive_summary(
     # hourly sweep keeps reverting these ~60 rows to "chalcogenide".
     _ner_fam = _weighted_mode_str(records, "family")
     _rule_fam = _classify_family(formula_raw)
-    if _rule_fam == "bis2_layered" and _ner_fam in (
+    if _rule_fam == "elemental":
+        # NER sometimes coarse-tags standalone superconducting elements
+        # (Hg, Pb, Sn, Nb...) as "conventional". Keep them in their own
+        # family bucket so materials/timeline filters can separate pure
+        # elemental superconductors from compound BCS materials.
+        family = "elemental"
+    elif _rule_fam == "bis2_layered" and _ner_fam in (
         None, "chalcogenide", "bismuthate"
     ):
         family = "bis2_layered"

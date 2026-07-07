@@ -19,6 +19,7 @@ import { notFound } from "next/navigation";
 import { getMaterial, getMaterialHydrideParameters } from "@/lib/api";
 import type { HydrideTcParameterRecord } from "@/lib/api";
 import { ApiError } from "@/lib/api";
+import { familyLabel } from "@/lib/families";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { FormulaDisplay } from "@/components/FormulaDisplay";
 
@@ -62,7 +63,12 @@ export default async function MaterialDetailPage({
           </div>
         </div>
         <p className="mt-1 text-sm text-slate-600">
-          {[mat.family, mat.subfamily, mat.crystal_structure, mat.structure_phase]
+          {[
+            mat.family ? familyLabel(mat.family) : null,
+            mat.subfamily,
+            mat.crystal_structure,
+            mat.structure_phase,
+          ]
             .filter(Boolean)
             .join(" · ") || "—"}
         </p>

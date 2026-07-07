@@ -10,6 +10,7 @@
  */
 import Link from "next/link";
 import type { MaterialSummary } from "@/lib/api";
+import { familyLabel } from "@/lib/families";
 import { FormulaDisplay } from "@/components/FormulaDisplay";
 
 /**
@@ -132,7 +133,7 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
                   <FormulaDisplay formula={m.formula} />
                 </Link>
               </td>
-              <td className="px-4 py-2 text-slate-600">{m.family ?? "—"}</td>
+              <td className="px-4 py-2 text-slate-600">{familyLabel(m.family)}</td>
               <td className="px-4 py-2 text-right tabular-nums text-slate-800">
                 {m.tc_max != null ? m.tc_max.toFixed(1) : "—"}
               </td>

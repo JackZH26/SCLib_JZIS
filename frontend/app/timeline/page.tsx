@@ -11,18 +11,9 @@
 import { getTimeline } from "@/lib/api";
 import { TcTimeline } from "@/components/TcTimeline";
 import Link from "next/link";
+import { FAMILY_OPTIONS } from "@/lib/families";
 
-const FAMILIES = [
-  { slug: "",              label: "All" },
-  { slug: "cuprate",       label: "Cuprate" },
-  { slug: "iron_based",    label: "Iron-based" },
-  { slug: "nickelate",     label: "Nickelate" },
-  { slug: "hydride",       label: "Hydride" },
-  { slug: "mgb2",          label: "MgB₂" },
-  { slug: "heavy_fermion", label: "Heavy fermion" },
-  { slug: "fulleride",     label: "Fulleride" },
-  { slug: "conventional",  label: "Conventional" },
-];
+const FAMILIES = [{ slug: "", label: "All" }, ...FAMILY_OPTIONS];
 
 function FilterToggleLink({
   href,

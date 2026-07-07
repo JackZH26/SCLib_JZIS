@@ -491,6 +491,47 @@ def detect_interface(canonical: str) -> tuple[str | None, str | None]:
 # Family classification
 # ---------------------------------------------------------------------------
 
+_ELEMENTAL_SC_ELEMENTS = frozenset({
+    "Nb", "Al", "Pb", "Sn", "In", "V", "Ta", "Re", "Ti", "Zr",
+    "Hf", "Mo", "W", "Ru", "Os", "Ir", "Rh", "Zn", "Ga", "La",
+    "Tl", "Bi", "Cd", "Th", "Pa", "Be", "Am", "Hg",
+    # High-pressure elemental superconductors / recent additions.
+    "Au", "Li", "Fe",
+})
+_ELEMENTAL_SC_ELEMENT_SLUGS = frozenset(e.lower() for e in _ELEMENTAL_SC_ELEMENTS)
+
+
+def is_elemental_superconductor_formula(
+    formula_cleaned_for_elements: str,
+    elements: list[str] | None = None,
+) -> bool:
+    """Return True for standalone superconducting element formulas.
+
+    This intentionally accepts only formula-like single-element strings
+    (``Hg``, ``Pb``, ``Nb``, ``Hg1``), not prose names such as
+    ``Mercury`` or partial labels such as ``Pb-doped``. Compound formulas
+    containing the same element, e.g. ``HgBa2Ca2Cu3O8`` or ``Nb3Sn``,
+    must remain in their compound families.
+    """
+    cleaned = formula_cleaned_for_elements.strip()
+    if not cleaned:
+        return False
+
+    if elements is None:
+        elements = re.findall(r"[A-Z][a-z]?", cleaned)
+
+    if len(elements) == 1 and elements[0] in _ELEMENTAL_SC_ELEMENTS:
+        el = re.escape(elements[0])
+        if re.fullmatch(rf"{el}(?:[0-9]+(?:\.[0-9]+)?)?", cleaned):
+            return True
+
+    # Historical NIMS paths sometimes passed normalized lower-case
+    # formulas. Keep a narrow compatibility path for simple element
+    # formulas while still rejecting compound/prose strings.
+    m = re.fullmatch(r"([a-z]{1,2})(?:[0-9]+(?:\.[0-9]+)?)?", cleaned.lower())
+    return bool(m and m.group(1) in _ELEMENTAL_SC_ELEMENT_SLUGS)
+
+
 def classify_family(formula: str) -> str | None:
     """Best-effort family bucket for the frontend family picker.
 
@@ -741,17 +782,7 @@ def classify_family(formula: str) -> str | None:
         return "conventional"
 
     # ── Elemental superconductors ──
-    _SC_ELEMENTS = {
-        "Nb", "Al", "Pb", "Sn", "In", "V", "Ta", "Re", "Ti", "Zr",
-        "Hf", "Mo", "W", "Ru", "Os", "Ir", "Rh", "Zn", "Ga", "La",
-        "Tl", "Bi", "Cd", "Th", "Pa", "Be", "Am",
-        # 2026-05-11 additions
-        "Au", "Li", "Fe",   # Fe SCs under extreme pressure
-    }
-    if len(elements) == 1 and elements[0] in _SC_ELEMENTS:
-        return "elemental"
-    # Hg / Sn / Pb / In as standalone or with simple numerals
-    if re.fullmatch(r"(nb|al|pb|sn|in|v|ta|re|ti|la|bi|hg|au|li|fe)\d*", fl):
+    if is_elemental_superconductor_formula(f_el, elements):
         return "elemental"
 
     # ── Conventional (A15 compounds, nitrides, borides, alloys) ──

@@ -13,21 +13,7 @@
  * the backend's SearchFilters.material_family[] shape.
  */
 import { useEffect, useRef, useState } from "react";
-
-export const FAMILY_OPTIONS: { slug: string; label: string }[] = [
-  { slug: "cuprate",       label: "Cuprate" },
-  { slug: "iron_based",    label: "Iron-based" },
-  { slug: "nickelate",     label: "Nickelate" },
-  { slug: "hydride",       label: "Hydride" },
-  { slug: "mgb2",          label: "MgB₂" },
-  { slug: "heavy_fermion", label: "Heavy fermion" },
-  { slug: "fulleride",     label: "Fulleride" },
-  { slug: "conventional",  label: "Conventional" },
-];
-
-const LABEL_BY_SLUG: Record<string, string> = Object.fromEntries(
-  FAMILY_OPTIONS.map((o) => [o.slug, o.label]),
-);
+import { FAMILY_LABEL, FAMILY_OPTIONS } from "@/lib/families";
 
 export function FamilyMultiSelect({
   value,
@@ -69,7 +55,7 @@ export function FamilyMultiSelect({
     value.length === 0
       ? "All families"
       : value.length === 1
-        ? LABEL_BY_SLUG[value[0]] ?? value[0]
+        ? FAMILY_LABEL[value[0]] ?? value[0]
         : `${value.length} families`;
 
   return (
