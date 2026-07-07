@@ -497,8 +497,18 @@ _ELEMENTAL_SC_ELEMENTS = frozenset({
     "Tl", "Bi", "Cd", "Th", "Pa", "Be", "Am", "Hg",
     # High-pressure elemental superconductors / recent additions.
     "Au", "Li", "Fe",
+    # Element-only rows already present in the APS/arXiv corpus. Some
+    # are high-pressure/theoretical claims; the taxonomy bucket is about
+    # provenance of a one-element material, not about endorsing the claim.
+    "Ag", "As", "B", "Ba", "Ca", "Co", "Cu", "Eu", "Ge", "Lu",
+    "Mg", "Na", "Pd", "Po", "Pt", "Rb", "Sb", "Sc", "Se", "Sr",
+    "Tc", "Te", "Yb",
 })
 _ELEMENTAL_SC_ELEMENT_SLUGS = frozenset(e.lower() for e in _ELEMENTAL_SC_ELEMENTS)
+_ELEMENTAL_ALLOWED_NUMERIC_SUFFIXES: dict[str, set[str]] = {
+    "B": {"4", "17"},
+    "Li": {"6", "7"},
+}
 
 
 def is_elemental_superconductor_formula(
@@ -517,8 +527,12 @@ def is_elemental_superconductor_formula(
     if not cleaned:
         return False
 
-    if elements is None:
-        elements = re.findall(r"[A-Z][a-z]?", cleaned)
+    cleaned = re.sub(r"^(?:[act]|[αβγ])-", "", cleaned)
+    cleaned = re.sub(r"^\([^)]*\)-(?=[A-Z])", "", cleaned)
+    cleaned = re.sub(r"\[[0-9]+\]$", "", cleaned)
+    cleaned = re.sub(r"\((?:[01][01][01]|[0-9]{3})\)$", "", cleaned)
+
+    elements = re.findall(r"[A-Z][a-z]?", cleaned)
 
     # Accept only a bare element or an explicit unit stoichiometry. Wider
     # numeric suffixes (Bi3, Re124, Sn4, Al0.3) are usually shorthand,
@@ -529,6 +543,10 @@ def is_elemental_superconductor_formula(
     if len(elements) == 1 and elements[0] in _ELEMENTAL_SC_ELEMENTS:
         el = re.escape(elements[0])
         if re.fullmatch(rf"{el}{unit_suffix}", cleaned):
+            return True
+        allowed_suffixes = _ELEMENTAL_ALLOWED_NUMERIC_SUFFIXES.get(elements[0], set())
+        suffix_match = re.fullmatch(rf"{el}([0-9]+)", cleaned)
+        if suffix_match and suffix_match.group(1) in allowed_suffixes:
             return True
 
     # Historical NIMS paths sometimes passed normalized lower-case

@@ -8,6 +8,7 @@ safe to run after deploying classifier changes:
 
     python /app/scripts/reclassify_elemental_families.py          # dry run
     python /app/scripts/reclassify_elemental_families.py --apply  # update DB
+    python /app/scripts/reclassify_elemental_families.py --clean-stale --apply
 """
 from __future__ import annotations
 
@@ -24,6 +25,17 @@ from ingestion.nims import classify_family  # noqa: E402
 
 log = logging.getLogger("sclib.reclassify_elemental")
 
+_UNCONVENTIONAL_FAMILIES = {
+    "cuprate",
+    "iron_based",
+    "nickelate",
+    "hydride",
+    "heavy_fermion",
+    "organic",
+    "ruthenate",
+    "kagome",
+}
+
 
 def _async_db_url(url: str) -> str:
     if url.startswith("postgresql://"):
@@ -31,7 +43,7 @@ def _async_db_url(url: str) -> str:
     return url
 
 
-async def main(*, apply: bool) -> None:
+async def main(*, apply: bool, clean_stale: bool) -> None:
     from sqlalchemy import text
     from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
     from sqlalchemy.orm import sessionmaker
@@ -60,6 +72,14 @@ async def main(*, apply: bool) -> None:
             if classify_family(row["formula"]) == "elemental"
             and row["family"] != "elemental"
         ]
+        stale = []
+        if clean_stale:
+            for row in rows:
+                if row["family"] != "elemental":
+                    continue
+                rule_family = classify_family(row["formula"])
+                if rule_family != "elemental":
+                    stale.append((row, rule_family))
 
         action = "Updating" if apply else "Would update"
         log.info("%s %d elemental material rows", action, len(candidates))
@@ -86,6 +106,45 @@ async def main(*, apply: bool) -> None:
             await session.commit()
             log.info("Updated %d rows", len(candidates))
 
+        if clean_stale:
+            clean_action = "Cleaning" if apply else "Would clean"
+            log.info(
+                "%s %d stale elemental material rows",
+                clean_action,
+                len(stale),
+            )
+            for row, rule_family in stale[:50]:
+                log.info(
+                    "  %-40s elemental -> %-16s tc=%s papers=%s id=%s",
+                    row["formula"],
+                    rule_family or "(null)",
+                    row["tc_max"],
+                    row["total_papers"],
+                    row["id"],
+                )
+            if len(stale) > 50:
+                log.info("  ... %d more", len(stale) - 50)
+
+            if apply and stale:
+                cleanup_stmt = text(
+                    "UPDATE materials "
+                    "SET family = :family, is_unconventional = :is_unconventional "
+                    "WHERE id = :id"
+                )
+                for row, rule_family in stale:
+                    await session.execute(
+                        cleanup_stmt,
+                        {
+                            "id": row["id"],
+                            "family": rule_family,
+                            "is_unconventional": bool(
+                                rule_family in _UNCONVENTIONAL_FAMILIES
+                            ),
+                        },
+                    )
+                await session.commit()
+                log.info("Cleaned %d rows", len(stale))
+
         remaining = (
             await session.execute(
                 text("SELECT count(*) FROM materials WHERE family = 'elemental'")
@@ -99,6 +158,11 @@ async def main(*, apply: bool) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--apply", action="store_true", help="Write updates to Postgres")
+    parser.add_argument(
+        "--clean-stale",
+        action="store_true",
+        help="Move rows out of elemental when the current classifier disagrees",
+    )
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(message)s")
-    asyncio.run(main(apply=args.apply))
+    asyncio.run(main(apply=args.apply, clean_stale=args.clean_stale))

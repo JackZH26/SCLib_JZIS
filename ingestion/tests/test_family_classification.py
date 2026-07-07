@@ -8,6 +8,12 @@ def test_elemental_superconductors_are_classified_separately() -> None:
     assert classify_family("Pb") == "elemental"
     assert classify_family("Nb") == "elemental"
     assert classify_family("Sn") == "elemental"
+    assert classify_family("Li6") == "elemental"
+    assert classify_family("Li7") == "elemental"
+    assert classify_family("B4") == "elemental"
+    assert classify_family("α-Ta") == "elemental"
+    assert classify_family("Pb(111)") == "elemental"
+    assert classify_family("(√3×√3)-Sn") == "elemental"
 
 
 def test_elemental_rule_does_not_catch_compounds_or_prose() -> None:
@@ -20,6 +26,11 @@ def test_elemental_rule_does_not_catch_compounds_or_prose() -> None:
     assert classify_family("SN1") != "elemental"
     assert classify_family("Al0.3") != "elemental"
     assert classify_family("Sn4") != "elemental"
+    assert classify_family("Al37") != "elemental"
+    assert classify_family("La214") != "elemental"
+    assert classify_family("Bi:2212") != "elemental"
+    assert classify_family("Bechgaardsalts") != "elemental"
+    assert classify_family("Bernalbilayergraphene") != "elemental"
 
 
 def test_aggregator_elemental_rule_overrides_ner_conventional_vote() -> None:
