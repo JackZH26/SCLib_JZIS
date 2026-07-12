@@ -19,12 +19,12 @@
  * If only the public URL is set (e.g. local dev), both fall back to
  * it so nothing breaks.
  */
-const PUBLIC_BASE =
-  process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000/v1";
-const SERVER_BASE = process.env.API_BASE_SERVER ?? PUBLIC_BASE;
+export const PUBLIC_API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE ?? "https://api.jzis.org/sclib/v1";
+const SERVER_BASE = process.env.API_BASE_SERVER ?? PUBLIC_API_BASE;
 
 export const API_BASE =
-  typeof window === "undefined" ? SERVER_BASE : PUBLIC_BASE;
+  typeof window === "undefined" ? SERVER_BASE : PUBLIC_API_BASE;
 
 export class ApiError extends Error {
   constructor(
