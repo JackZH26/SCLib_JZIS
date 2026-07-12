@@ -21,6 +21,8 @@ function CallbackInner() {
           ? "Google sign-in failed. Please try again."
           : error === "missing_userinfo"
             ? "Could not retrieve account info from Google."
+            : error === "account_inactive"
+              ? "This account is inactive. Contact an administrator if you believe this is a mistake."
             : "An error occurred during sign-in.",
       );
       return;

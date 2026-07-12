@@ -402,6 +402,22 @@ async def google_callback(
             name="Default (created on Google sign-in)",
         ))
     else:
+        # ``is_active=False`` is also how administrators suspend an account.
+        # OAuth proves control of the Google identity, but it must never
+        # override an administrator's authorization decision.  Because the
+        # current schema does not distinguish an unverified account from a
+        # suspended one, fail closed for every existing inactive account.
+        if not user.is_active:
+            log.warning(
+                "Google OAuth rejected for inactive account user=%s email=%s",
+                user.id,
+                user.email,
+            )
+            return RedirectResponse(
+                url=f"{settings.frontend_callback_url}?error=account_inactive",
+                status_code=302,
+            )
+
         # Existing user — bind Google if not already bound
         if not user.google_sub:
             user.google_sub = google_sub
@@ -409,10 +425,9 @@ async def google_callback(
             user.avatar_url = userinfo["picture"]
         if user.auth_provider == "local":
             user.auth_provider = "both"
-        # Ensure user is active (covers edge case where a local user
-        # hadn't verified email yet — Google proves ownership).
+        # Google verifies ownership of the email identity, but the active
+        # account state has already been checked above and is preserved.
         user.email_verified = True
-        user.is_active = True
 
     user.last_login = datetime.now(timezone.utc)
     await db.commit()

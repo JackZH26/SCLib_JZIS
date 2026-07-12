@@ -233,6 +233,47 @@ async def test_google_callback_merges_existing_local_user(client):
 
 
 @pytest.mark.asyncio
+async def test_google_callback_preserves_suspended_user(client):
+    """An admin-suspended user cannot reactivate the account through Google."""
+    email = _unique_email("suspended")
+    sub = f"gsub_{uuid.uuid4().hex[:8]}"
+
+    # Establish an active local account and retain its valid JWT, then apply
+    # the same state transition as POST /admin/users/{id}/ban.
+    jwt = await _register_verify_login(client, email)
+
+    from models.db import get_session_factory
+    factory = get_session_factory()
+    async with factory() as sess:
+        result = await sess.execute(select(User).where(User.email == email))
+        user = result.scalar_one()
+        user.is_active = False
+        await sess.commit()
+
+    response = await _google_callback(client, email, sub, "Suspended User")
+
+    assert response.status_code == 302
+    location = response.headers["location"]
+    assert "error=account_inactive" in location
+    assert "token=" not in location
+
+    # The callback must not reactivate or bind the suspended account.
+    async with factory() as sess:
+        result = await sess.execute(select(User).where(User.email == email))
+        user = result.scalar_one()
+        assert user.is_active is False
+        assert user.google_sub is None
+        assert user.auth_provider == "local"
+
+    # Previously issued credentials remain denied while the account is banned.
+    response = await client.get(
+        "/v1/auth/me",
+        headers={"Authorization": f"Bearer {jwt}"},
+    )
+    assert response.status_code == 401
+
+
+@pytest.mark.asyncio
 async def test_google_callback_handles_oauth_error(client):
     """Google callback gracefully handles token exchange failure."""
     with patch("routers.auth.get_oauth") as mock_get_oauth:
