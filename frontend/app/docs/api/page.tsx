@@ -283,8 +283,26 @@ Content-Type: application/json
         {/* Stats */}
         <Endpoint method="GET" path="/stats" badge="free">
           <p>
-            Site-wide statistics: total papers, materials, families, chunks, and
-            last-updated timestamp.
+            Site-wide statistics with separate aggregate-refresh, data-snapshot,
+            and ingestion-pipeline timestamps/status.
+          </p>
+        </Endpoint>
+
+        {/* Health */}
+        <Endpoint method="GET" path="/health/dependencies" badge="free">
+          <p>
+            Bounded PostgreSQL and Redis dependency probes. Returns{" "}
+            <Code>503</Code> when a required dependency is unavailable. Process
+            liveness and orchestrator readiness are also exposed upstream at{" "}
+            <Code>/livez</Code> and <Code>/readyz</Code>.
+          </p>
+        </Endpoint>
+
+        <Endpoint method="GET" path="/health/data" badge="free">
+          <p>
+            Non-gating data-health metadata for the stats cache, dataset
+            snapshot, ingestion stages, timeline projection, and Discovery feed.
+            Data age is reported without being treated as a readiness failure.
           </p>
         </Endpoint>
       </section>

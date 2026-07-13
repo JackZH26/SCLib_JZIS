@@ -73,6 +73,7 @@ async def test_store_reuses_snapshot_until_file_signature_changes(tmp_path: Path
     assert first_status == "MISS"
     assert second_status == "HIT"
     assert second is first
+    assert first.source_status == "ready"
     assert first.metadata.total_candidates == 1
 
     _write_feed(path, [

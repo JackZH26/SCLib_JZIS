@@ -76,6 +76,7 @@ def _candidate_summary(candidate: DiscoveryCandidate) -> DiscoveryCandidateSumma
 @dataclass(frozen=True, slots=True)
 class DiscoverySnapshot:
     signature: FeedSignature
+    source_status: str
     feed: DiscoveryResponse
     full_json: str
     metadata: DiscoveryMetadata
@@ -97,14 +98,17 @@ def _build_snapshot(
     signature: FeedSignature,
 ) -> DiscoverySnapshot:
     feed = DiscoveryResponse.model_validate(_default_payload())
+    source_status = "missing"
     if signature[1] is not None:
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
             merged = _default_payload()
             merged.update(payload if isinstance(payload, dict) else {})
             feed = DiscoveryResponse.model_validate(merged)
+            source_status = "ready"
         except Exception:  # noqa: BLE001 - invalid feeds degrade to the safe placeholder
             log.exception("discovery feed is unreadable or invalid: %s", path)
+            source_status = "invalid"
 
     summaries = tuple(_candidate_summary(candidate) for candidate in feed.candidates)
     grouped: dict[str, list[DiscoveryCandidateSummary]] = {}
@@ -124,6 +128,7 @@ def _build_snapshot(
     )
     return DiscoverySnapshot(
         signature=signature,
+        source_status=source_status,
         feed=feed,
         full_json=feed.model_dump_json(),
         metadata=metadata,
@@ -198,6 +203,19 @@ def _http_response(request: Request, payload: str, *, cache_status: str) -> Resp
 
 async def _snapshot() -> tuple[DiscoverySnapshot, str]:
     return await _store.get(_configured_path())
+
+
+async def get_discovery_feed_health() -> dict:
+    """Return non-sensitive feed state for the public data-health surface."""
+    snapshot, cache_status = await _snapshot()
+    updated_at = snapshot.metadata.updated_at_utc
+    return {
+        "status": snapshot.source_status,
+        "updated_at": updated_at.isoformat() if updated_at is not None else None,
+        "candidate_count": snapshot.metadata.total_candidates,
+        "size_bytes": snapshot.signature[2],
+        "cache": cache_status,
+    }
 
 
 @router.get(

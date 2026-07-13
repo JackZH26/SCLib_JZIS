@@ -27,6 +27,7 @@ from routers import (
     bookmarks,
     discovery,
     feedback,
+    health,
     history,
     materials,
     papers,
@@ -458,6 +459,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(health.router)
 app.include_router(auth.router, prefix="/v1")
 app.include_router(search.router, prefix="/v1")
 app.include_router(ask.router, prefix="/v1")
@@ -472,8 +474,3 @@ app.include_router(feedback.router, prefix="/v1")
 app.include_router(version.router, prefix="/v1")
 app.include_router(admin.router, prefix="/v1")
 app.include_router(discovery.router, prefix="/v1")
-
-
-@app.get("/v1/health", tags=["health"])
-async def health() -> dict[str, str]:
-    return {"status": "ok", "service": "sclib-api", "version": "0.1.0"}

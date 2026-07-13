@@ -54,7 +54,7 @@ services:
       # without a rebuild whenever a script is added or edited.
       - ./scripts:/app/scripts:ro
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/v1/health"]
+      test: ["CMD", "curl", "-fsS", "--max-time", "4", "http://127.0.0.1:8000/readyz"]
       interval: 15s
       timeout: 5s
       retries: 5
