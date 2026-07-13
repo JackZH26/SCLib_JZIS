@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 
 import { getUsage, type UsageStats } from "@/lib/api";
 import { ProfileCard } from "@/components/dashboard/ProfileCard";
+import { SessionSecurityCard } from "@/components/dashboard/SessionSecurityCard";
 import { UsageStatsCard } from "@/components/dashboard/UsageStats";
 import { useDashboardUser } from "@/components/dashboard/user-context";
 
@@ -39,6 +40,7 @@ export default function OverviewPage() {
   return (
     <div className="space-y-6">
       <ProfileCard user={user} onUpdated={setUser} />
+      <SessionSecurityCard />
       <UsageStatsCard stats={usage} />
     </div>
   );

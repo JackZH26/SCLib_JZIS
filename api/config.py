@@ -52,6 +52,24 @@ class Settings(BaseSettings):
     # dashboard as today-used / today-remaining.
     registered_daily_limit: int = 999
 
+    # Authentication endpoints have a separate, short-window abuse budget.
+    # Both the network address and normalized account identifier must stay
+    # within budget; identifiers are HMACed before they are sent to Redis.
+    auth_login_window_seconds: int = 900
+    auth_login_ip_limit: int = 30
+    auth_login_account_limit: int = 10
+    auth_register_window_seconds: int = 3600
+    auth_register_ip_limit: int = 10
+    auth_register_account_limit: int = 3
+    auth_reset_window_seconds: int = 3600
+    auth_reset_ip_limit: int = 10
+    auth_reset_account_limit: int = 3
+    auth_backoff_base_seconds: int = 2
+    auth_backoff_account_threshold: int = 3
+    auth_backoff_ip_threshold: int = 5
+    auth_backoff_max_seconds: int = 300
+    password_reset_expiry_minutes: int = 30
+
     # === Internal admin hooks ===
     # Shared secret for internal endpoints like POST /stats/refresh that
     # the nightly cron calls. Never exposed via Nginx's public location.

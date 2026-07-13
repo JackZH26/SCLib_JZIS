@@ -45,6 +45,17 @@ async def send_welcome(to: str, name: str, api_key: str) -> None:
     await _dispatch(to, subject, html)
 
 
+async def send_password_reset(to: str, name: str, token: str) -> None:
+    settings = get_settings()
+    url = f"{settings.frontend_url}/reset-password?token={token}"
+    subject = "Reset your JZIS password"
+    html = f"""<p>Hi {_h(name)},</p>
+<p>Use this one-time link to reset your password: <a href="{url}">{url}</a></p>
+<p>The link expires in {settings.password_reset_expiry_minutes} minutes. If you did not request it, no action is required.</p>
+<p>— JZIS Team</p>"""
+    await _dispatch(to, subject, html)
+
+
 async def send_feedback(
     *,
     category: str,

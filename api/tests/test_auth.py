@@ -4,8 +4,7 @@ from __future__ import annotations
 import pytest
 from sqlalchemy import select
 
-from models.db import ApiKey, EmailVerification, User
-
+from models.db import AuthAuditEvent, EmailVerification, User
 
 ALICE = {
     "email": "alice@example.com",
@@ -109,3 +108,121 @@ async def test_age_validation(client):
     bad = {**ALICE, "email": "tooyoung@example.com", "age": 10}
     r = await client.post("/v1/auth/register", json=bad)
     assert r.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_password_reset_is_one_time_and_revokes_old_jwt(client, monkeypatch):
+    email = "password-reset@example.com"
+    password = "old-password-correct-horse"
+    payload = {**ALICE, "email": email, "password": password}
+
+    assert (await client.post("/v1/auth/register", json=payload)).status_code == 201
+    verification = await _fetch_verification_token(email)
+    assert (await client.get(f"/v1/auth/verify?token={verification}")).status_code == 200
+    login_response = await client.post(
+        "/v1/auth/login", json={"email": email, "password": password}
+    )
+    old_jwt = login_response.json()["access_token"]
+
+    captured: dict[str, str] = {}
+
+    async def capture_reset(_to: str, _name: str, token: str) -> None:
+        captured["token"] = token
+
+    monkeypatch.setattr("routers.auth.send_password_reset", capture_reset)
+    response = await client.post(
+        "/v1/auth/password-reset/request", json={"email": email}
+    )
+    assert response.status_code == 200
+    assert "If the account" in response.json()["message"]
+    assert captured["token"]
+
+    # Unknown accounts receive exactly the same public response.
+    unknown = await client.post(
+        "/v1/auth/password-reset/request",
+        json={"email": "unknown-reset@example.com"},
+    )
+    assert unknown.status_code == 200
+    assert unknown.json() == response.json()
+
+    new_password = "new-password-correct-horse"
+    complete = await client.post(
+        "/v1/auth/password-reset/confirm",
+        json={"token": captured["token"], "new_password": new_password},
+    )
+    assert complete.status_code == 200, complete.text
+
+    old_session = await client.get(
+        "/v1/auth/me", headers={"Authorization": f"Bearer {old_jwt}"}
+    )
+    assert old_session.status_code == 401
+
+    reused = await client.post(
+        "/v1/auth/password-reset/confirm",
+        json={"token": captured["token"], "new_password": new_password},
+    )
+    assert reused.status_code == 400
+
+    old_login = await client.post(
+        "/v1/auth/login", json={"email": email, "password": password}
+    )
+    assert old_login.status_code == 401
+    new_login = await client.post(
+        "/v1/auth/login", json={"email": email, "password": new_password}
+    )
+    assert new_login.status_code == 200
+
+    from models.db import get_session_factory
+
+    factory = get_session_factory()
+    async with factory() as session:
+        result = await session.execute(
+            select(AuthAuditEvent).where(AuthAuditEvent.event_type.like("password_reset%"))
+        )
+        events = result.scalars().all()
+        assert any(event.outcome == "issued" for event in events)
+        assert any(event.outcome == "success" for event in events)
+        assert all("@" not in (event.account_hash or "") for event in events)
+
+
+@pytest.mark.asyncio
+async def test_revoke_all_sessions_invalidates_issuing_token(client, registered_user):
+    _user, token = registered_user
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = await client.post("/v1/auth/sessions/revoke-all", headers=headers)
+    assert response.status_code == 200
+    assert "revoked" in response.json()["message"]
+
+    response = await client.get("/v1/auth/me", headers=headers)
+    assert response.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_failed_login_applies_retry_after_backoff(
+    client, registered_user, monkeypatch
+):
+    user, _token = registered_user
+    from config import get_settings
+
+    settings = get_settings()
+    monkeypatch.setattr(settings, "auth_backoff_account_threshold", 1)
+    monkeypatch.setattr(settings, "auth_backoff_ip_threshold", 100)
+
+    failed = await client.post(
+        "/v1/auth/login",
+        json={"email": user.email, "password": "definitely-wrong"},
+    )
+    assert failed.status_code == 401
+    assert failed.headers["retry-after"] == "2"
+
+    blocked = await client.post(
+        "/v1/auth/login",
+        json={
+            "email": user.email,
+            "password": "correcthorsebatterystaple",
+        },
+    )
+    assert blocked.status_code == 429
+    assert blocked.json()["detail"]["error"] == "auth_rate_limited"
+    assert int(blocked.headers["retry-after"]) >= 1

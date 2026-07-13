@@ -149,7 +149,7 @@ export default function ApiDocsPage() {
               <tr>
                 <td className="px-4 py-2">Browser session</td>
                 <td className="px-4 py-2">
-                  <Code>Authorization: Bearer &lt;JWT&gt;</Code>
+                  Secure HttpOnly session cookie
                 </td>
                 <td className="px-4 py-2 text-right font-semibold text-sage-ink">
                   999
@@ -162,6 +162,13 @@ export default function ApiDocsPage() {
           API Key and JWT share the same daily quota per user. Quotas reset at{" "}
           <strong>00:00 UTC</strong>. When the quota is exceeded the API returns{" "}
           <Code>429 Too Many Requests</Code>.
+        </p>
+        <p className="text-sm text-sage-muted">
+          Password resets and “revoke all sessions” invalidate browser and
+          bearer JWT sessions. API keys remain separately revocable from the{" "}
+          <Link href="/dashboard/keys" className="text-accent-deep underline">
+            Keys dashboard
+          </Link>.
         </p>
       </section>
 

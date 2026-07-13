@@ -57,6 +57,12 @@ export function friendlyErrorMessage(
 ): string {
   if (err instanceof ApiError) {
     if (err.status === 429) {
+      const detail = (err.body as { detail?: { error?: string } } | null)?.detail;
+      if (detail?.error === "auth_rate_limited") {
+        return err.retryAfterSec
+          ? `Too many attempts. Try again in about ${err.retryAfterSec} seconds.`
+          : "Too many attempts. Please try again later.";
+      }
       const base =
         "Daily free queries used up. Please register or sign in for more.";
       return err.retryAfterSec
@@ -239,6 +245,26 @@ export function login(email: string, password: string) {
 
 export function logout() {
   return request<{ message: string }>("/auth/logout", { method: "POST" });
+}
+
+export function requestPasswordReset(email: string) {
+  return request<{ message: string }>("/auth/password-reset/request", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+}
+
+export function confirmPasswordReset(token: string, newPassword: string) {
+  return request<{ message: string }>("/auth/password-reset/confirm", {
+    method: "POST",
+    body: JSON.stringify({ token, new_password: newPassword }),
+  });
+}
+
+export function revokeAllSessions() {
+  return request<{ message: string }>("/auth/sessions/revoke-all", {
+    method: "POST",
+  });
 }
 
 export function me() {

@@ -22,7 +22,6 @@ os.environ.setdefault(
 os.environ.setdefault("EMAIL_BACKEND", "stdout")
 os.environ.setdefault("ENVIRONMENT", "test")
 
-import pytest  # noqa: E402
 import pytest_asyncio  # noqa: E402
 from httpx import ASGITransport, AsyncClient  # noqa: E402
 from sqlalchemy.pool import NullPool  # noqa: E402
@@ -150,7 +149,7 @@ async def sample_paper():
     return paper_id
 
 
-@pytest_asyncio.fixture(autouse=True)
+@pytest_asyncio.fixture(autouse=True, loop_scope="function")
 async def _flush_redis_between_tests():
     """Wipe Redis quota counters so a high-traffic test can't starve
     subsequent tests on the same day key. Scoped autouse because the
@@ -161,3 +160,8 @@ async def _flush_redis_between_tests():
     r = get_redis()
     await r.flushdb()
     yield
+    # redis.asyncio pools are bound to the loop that first opens a socket.
+    # pytest creates a fresh function loop, so close and rebuild the cached
+    # client instead of leaking a connection into the next test's loop.
+    await r.aclose()
+    get_redis.cache_clear()

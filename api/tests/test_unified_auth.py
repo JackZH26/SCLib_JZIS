@@ -23,7 +23,6 @@ from sqlalchemy import select
 
 from models.db import EmailVerification, User
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -128,7 +127,7 @@ async def test_new_user_has_default_fields(client):
 
 @pytest.mark.asyncio
 async def test_login_rejects_google_only_user(client):
-    """Email+password login returns 401 for Google-only users with helpful message."""
+    """Google-only and unknown accounts share the generic credential error."""
     email = _unique_email("gonly")
     sub = f"gsub_{uuid.uuid4().hex[:8]}"
 
@@ -142,7 +141,7 @@ async def test_login_rejects_google_only_user(client):
         "password": "doesnt_matter",
     })
     assert r.status_code == 401
-    assert "Google" in r.json()["detail"]
+    assert r.json()["detail"] == "Invalid email or password"
 
 
 # ---------------------------------------------------------------------------

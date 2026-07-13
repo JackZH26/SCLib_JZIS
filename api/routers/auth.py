@@ -18,16 +18,15 @@ from datetime import datetime, timedelta, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Response, status
-from sqlalchemy import or_, select
+from sqlalchemy import func, or_, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 
-log = logging.getLogger(__name__)
-
+from config import allowed_browser_origins, get_settings
 from models import get_db
-from models.db import ApiKey, EmailVerification, User
+from models.db import ApiKey, EmailVerification, PasswordResetToken, User
 from models.user import (
     ApiKeyCreate,
     ApiKeyRead,
@@ -35,6 +34,8 @@ from models.user import (
     BrowserSessionResponse,
     LoginRequest,
     MessageResponse,
+    PasswordResetConfirm,
+    PasswordResetRequest,
     RegisterResponse,
     TokenResponse,
     UsageStats,
@@ -43,24 +44,38 @@ from models.user import (
     UserUpdate,
     VerifyResponse,
 )
-from config import allowed_browser_origins, get_settings
 from services import auth_service
-from services.email import send_verification, send_welcome
+from services.auth_audit import add_auth_audit
+from services.auth_security import (
+    AuthRateLimited,
+    AuthSecurityUnavailable,
+    clear_login_failures,
+    enforce_auth_attempt,
+    normalize_account,
+    record_login_failure,
+)
+from services.email import send_password_reset, send_verification, send_welcome
 from services.google_oauth import get_oauth
+from services.rate_limit import (
+    get_user_remaining,
+    get_user_today_used,
+    get_user_week_used,
+)
+from services.request_context import client_ip
 from services.session_config import (
     BrowserSessionConfig,
     build_browser_session_config,
     clear_browser_session_cookie,
     set_browser_session_cookie,
 )
-from services.rate_limit import (
-    get_user_remaining,
-    get_user_today_used,
-    get_user_week_used,
-)
-from sqlalchemy import func
 
+log = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["auth"])
+
+_GENERIC_LOGIN_ERROR = "Invalid email or password"
+_GENERIC_RESET_MESSAGE = (
+    "If the account can use password sign-in, a reset link has been sent."
+)
 
 
 # ---------------------------------------------------------------------------
@@ -109,6 +124,12 @@ async def current_user_from_jwt(
     user = await db.get(User, user_id)
     if user is None or not user.is_active:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User not found or inactive")
+    try:
+        token_version = int(payload.get("sv", 0))
+    except (TypeError, ValueError):
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Malformed token") from None
+    if token_version != user.session_version:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid token")
     return user
 
 
@@ -129,18 +150,62 @@ def _validate_cookie_request_origin(request: Request) -> None:
         raise HTTPException(status.HTTP_403_FORBIDDEN, "Untrusted request origin")
 
 
+async def _enforce_auth_security(
+    action: str,
+    request: Request,
+    account: str,
+) -> None:
+    """Translate the Redis-backed security layer into stable HTTP errors."""
+    try:
+        await enforce_auth_attempt(action, client_ip(request), account)
+    except AuthRateLimited as exc:
+        log.warning(
+            "auth_rate_limited action=%s scope=%s ip_hash_only=true",
+            action,
+            exc.scope,
+        )
+        raise HTTPException(
+            status.HTTP_429_TOO_MANY_REQUESTS,
+            detail={
+                "error": "auth_rate_limited",
+                "message": "Too many authentication attempts. Try again later.",
+            },
+            headers={"Retry-After": str(exc.retry_after)},
+        ) from None
+    except AuthSecurityUnavailable:
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Authentication service temporarily unavailable",
+            headers={"Retry-After": "30"},
+        ) from None
+
+
 # ---------------------------------------------------------------------------
 # Endpoints
 # ---------------------------------------------------------------------------
 
 @router.post("/register", response_model=RegisterResponse, status_code=201)
-async def register(body: UserCreate, db: AsyncSession = Depends(get_db)):
-    existing = await db.execute(select(User).where(User.email == body.email))
+async def register(
+    body: UserCreate,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+):
+    email = normalize_account(str(body.email))
+    await _enforce_auth_security("register", request, email)
+    existing = await db.execute(select(User).where(func.lower(User.email) == email))
     if existing.scalar_one_or_none():
+        add_auth_audit(
+            db,
+            request,
+            event_type="register",
+            outcome="duplicate",
+            account=email,
+        )
+        await db.commit()
         raise HTTPException(409, "Email already registered")
 
     user = User(
-        email=body.email,
+        email=email,
         name=body.name,
         age=body.age,
         institution=body.institution,
@@ -155,6 +220,14 @@ async def register(body: UserCreate, db: AsyncSession = Depends(get_db)):
         await db.flush()
     except IntegrityError:
         await db.rollback()
+        add_auth_audit(
+            db,
+            request,
+            event_type="register",
+            outcome="duplicate",
+            account=email,
+        )
+        await db.commit()
         raise HTTPException(409, "Email already registered") from None
 
     token = auth_service.generate_verification_token()
@@ -163,6 +236,14 @@ async def register(body: UserCreate, db: AsyncSession = Depends(get_db)):
         token=token,
         expires_at=datetime.now(timezone.utc) + timedelta(hours=24),
     ))
+    add_auth_audit(
+        db,
+        request,
+        event_type="register",
+        outcome="created",
+        account=email,
+        user_id=user.id,
+    )
     await db.commit()
     await db.refresh(user)
 
@@ -175,7 +256,11 @@ async def register(body: UserCreate, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/verify", response_model=VerifyResponse)
-async def verify(token: str, db: AsyncSession = Depends(get_db)):
+async def verify(
+    token: str,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+):
     q = await db.execute(select(EmailVerification).where(EmailVerification.token == token))
     ev = q.scalar_one_or_none()
     if ev is None or ev.used:
@@ -198,6 +283,14 @@ async def verify(token: str, db: AsyncSession = Depends(get_db)):
         key_prefix=key_prefix,
         name="Default (created on verification)",
     ))
+    add_auth_audit(
+        db,
+        request,
+        event_type="email_verify",
+        outcome="verified",
+        account=user.email,
+        user_id=user.id,
+    )
     await db.commit()
     await db.refresh(user)
 
@@ -208,36 +301,94 @@ async def verify(token: str, db: AsyncSession = Depends(get_db)):
 
 async def _authenticate_password(
     body: LoginRequest,
+    request: Request,
     db: AsyncSession,
+    *,
+    flow: str,
 ) -> User:
-    q = await db.execute(select(User).where(User.email == body.email))
+    email = normalize_account(str(body.email))
+    ip = client_ip(request)
+    await _enforce_auth_security("login", request, email)
+    q = await db.execute(select(User).where(func.lower(User.email) == email))
     user = q.scalar_one_or_none()
     # Constant-time branch: run a bcrypt compare even when the user
     # does not exist, so attackers cannot enumerate valid emails by
     # measuring response latency.
     if user is None:
         auth_service.verify_password_dummy(body.password)
-        raise HTTPException(401, "Invalid email or password")
-    # Google-only accounts have no password hash — guide user to Google sign-in.
-    if not user.password_hash:
-        raise HTTPException(
-            401,
-            "This account uses Google Sign-In. Please use the Google button to log in.",
+        password_valid = False
+    elif not user.password_hash:
+        # Keep Google-only and unknown accounts on the same timing/message path.
+        auth_service.verify_password_dummy(body.password)
+        password_valid = False
+    else:
+        password_valid = auth_service.verify_password(body.password, user.password_hash)
+    if not password_valid:
+        try:
+            retry_after = await record_login_failure(ip, email)
+        except AuthSecurityUnavailable:
+            raise HTTPException(
+                status.HTTP_503_SERVICE_UNAVAILABLE,
+                "Authentication service temporarily unavailable",
+                headers={"Retry-After": "30"},
+            ) from None
+        add_auth_audit(
+            db,
+            request,
+            event_type="login",
+            outcome="invalid_credentials",
+            account=email,
+            user_id=user.id if user else None,
+            details={"flow": flow},
         )
-    if not auth_service.verify_password(body.password, user.password_hash):
-        raise HTTPException(401, "Invalid email or password")
+        await db.commit()
+        headers = {"Retry-After": str(retry_after)} if retry_after > 0 else None
+        raise HTTPException(401, _GENERIC_LOGIN_ERROR, headers=headers)
     if not user.is_active:
+        add_auth_audit(
+            db,
+            request,
+            event_type="login",
+            outcome="inactive",
+            account=email,
+            user_id=user.id,
+            details={"flow": flow},
+        )
+        await db.commit()
         raise HTTPException(403, "Email not verified")
+    try:
+        await clear_login_failures(ip, email)
+    except AuthSecurityUnavailable:
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "Authentication service temporarily unavailable",
+            headers={"Retry-After": "30"},
+        ) from None
     user.last_login = datetime.now(timezone.utc)
+    add_auth_audit(
+        db,
+        request,
+        event_type="login",
+        outcome="success",
+        account=email,
+        user_id=user.id,
+        details={"flow": flow},
+    )
     await db.commit()
     return user
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
+async def login(
+    body: LoginRequest,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+):
     """Issue a bearer JWT for non-browser clients."""
-    user = await _authenticate_password(body, db)
-    token, expires_in = auth_service.create_access_token(user.id)
+    user = await _authenticate_password(body, request, db, flow="bearer")
+    token, expires_in = auth_service.create_access_token(
+        user.id, user.session_version
+    )
     return TokenResponse(access_token=token, expires_in=expires_in)
 
 
@@ -250,8 +401,10 @@ async def browser_session_login(
 ):
     """Authenticate a browser without exposing its JWT to JavaScript."""
     _validate_cookie_request_origin(request)
-    user = await _authenticate_password(body, db)
-    token, expires_in = auth_service.create_access_token(user.id)
+    user = await _authenticate_password(body, request, db, flow="browser")
+    token, expires_in = auth_service.create_access_token(
+        user.id, user.session_version
+    )
     set_browser_session_cookie(response, token, _browser_session_config())
     return BrowserSessionResponse(expires_in=expires_in)
 
@@ -265,6 +418,144 @@ async def logout(
     _validate_cookie_request_origin(request)
     clear_browser_session_cookie(response, _browser_session_config())
     return MessageResponse(message="Signed out")
+
+
+@router.post("/password-reset/request", response_model=MessageResponse)
+async def request_password_reset(
+    body: PasswordResetRequest,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+):
+    """Issue a one-time reset link without revealing account existence."""
+    email = normalize_account(str(body.email))
+    await _enforce_auth_security("password_reset", request, email)
+    result = await db.execute(select(User).where(func.lower(User.email) == email))
+    user = result.scalar_one_or_none()
+
+    token: str | None = None
+    if user is not None and user.is_active and user.password_hash:
+        now = datetime.now(timezone.utc)
+        await db.execute(
+            update(PasswordResetToken)
+            .where(
+                PasswordResetToken.user_id == user.id,
+                PasswordResetToken.used_at.is_(None),
+            )
+            .values(used_at=now)
+        )
+        token, token_hash = auth_service.generate_password_reset_token()
+        db.add(PasswordResetToken(
+            user_id=user.id,
+            token_hash=token_hash,
+            expires_at=now + timedelta(
+                minutes=get_settings().password_reset_expiry_minutes
+            ),
+        ))
+
+    add_auth_audit(
+        db,
+        request,
+        event_type="password_reset_request",
+        outcome="issued" if token else "ignored",
+        account=email,
+        user_id=user.id if user else None,
+    )
+    await db.commit()
+
+    if token is not None and user is not None:
+        await send_password_reset(user.email, user.name, token)
+    return MessageResponse(message=_GENERIC_RESET_MESSAGE)
+
+
+@router.post("/password-reset/confirm", response_model=MessageResponse)
+async def confirm_password_reset(
+    body: PasswordResetConfirm,
+    request: Request,
+    response: Response,
+    db: AsyncSession = Depends(get_db),
+):
+    """Consume a reset grant, change the password, and revoke all JWTs."""
+    # The opaque token acts as the account dimension until the grant is
+    # resolved. It is HMACed before reaching Redis and never appears in logs.
+    await _enforce_auth_security("password_reset", request, body.token)
+    token_hash = auth_service.hash_password_reset_token(body.token)
+    result = await db.execute(
+        select(PasswordResetToken)
+        .where(PasswordResetToken.token_hash == token_hash)
+        .with_for_update()
+    )
+    reset = result.scalar_one_or_none()
+    now = datetime.now(timezone.utc)
+    if reset is None or reset.used_at is not None or reset.expires_at <= now:
+        add_auth_audit(
+            db,
+            request,
+            event_type="password_reset_confirm",
+            outcome="invalid_token",
+        )
+        await db.commit()
+        raise HTTPException(400, "Invalid or expired password reset link")
+
+    user = await db.get(User, reset.user_id)
+    if user is None or not user.is_active or not user.password_hash:
+        reset.used_at = now
+        add_auth_audit(
+            db,
+            request,
+            event_type="password_reset_confirm",
+            outcome="ineligible_account",
+            user_id=user.id if user else None,
+        )
+        await db.commit()
+        raise HTTPException(400, "Invalid or expired password reset link")
+
+    user.password_hash = auth_service.hash_password(body.new_password)
+    user.session_version += 1
+    reset.used_at = now
+    await db.execute(
+        update(PasswordResetToken)
+        .where(
+            PasswordResetToken.user_id == user.id,
+            PasswordResetToken.id != reset.id,
+            PasswordResetToken.used_at.is_(None),
+        )
+        .values(used_at=now)
+    )
+    add_auth_audit(
+        db,
+        request,
+        event_type="password_reset_confirm",
+        outcome="success",
+        account=user.email,
+        user_id=user.id,
+    )
+    await db.commit()
+    clear_browser_session_cookie(response, _browser_session_config())
+    return MessageResponse(
+        message="Password updated. Sign in again on each device."
+    )
+
+
+@router.post("/sessions/revoke-all", response_model=MessageResponse)
+async def revoke_all_sessions(
+    request: Request,
+    response: Response,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(current_user_from_jwt),
+):
+    """Invalidate all bearer/browser JWTs issued before this operation."""
+    user.session_version += 1
+    add_auth_audit(
+        db,
+        request,
+        event_type="session_revoke_all",
+        outcome="success",
+        account=user.email,
+        user_id=user.id,
+    )
+    await db.commit()
+    clear_browser_session_cookie(response, _browser_session_config())
+    return MessageResponse(message="All browser and bearer sessions revoked")
 
 
 @router.get("/me", response_model=UserRead)
@@ -438,18 +729,20 @@ async def google_callback(
 
     userinfo = token.get("userinfo", {})
     google_sub = userinfo.get("sub")
-    email = userinfo.get("email")
+    raw_email = userinfo.get("email")
 
-    if not google_sub or not email:
+    if not google_sub or not raw_email:
         log.warning("Google userinfo missing sub/email: %s", userinfo)
         return RedirectResponse(
             url=f"{settings.frontend_callback_url}?error=missing_userinfo",
             status_code=302,
         )
+    email = normalize_account(str(raw_email))
+    await _enforce_auth_security("login", request, email)
 
     # --- Upsert: find by google_sub OR email ---
     stmt = select(User).where(
-        or_(User.google_sub == google_sub, User.email == email)
+        or_(User.google_sub == google_sub, func.lower(User.email) == email)
     )
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
@@ -489,6 +782,15 @@ async def google_callback(
                 user.id,
                 user.email,
             )
+            add_auth_audit(
+                db,
+                request,
+                event_type="google_login",
+                outcome="inactive",
+                account=email,
+                user_id=user.id,
+            )
+            await db.commit()
             return RedirectResponse(
                 url=f"{settings.frontend_callback_url}?error=account_inactive",
                 status_code=302,
@@ -506,11 +808,21 @@ async def google_callback(
         user.email_verified = True
 
     user.last_login = datetime.now(timezone.utc)
+    add_auth_audit(
+        db,
+        request,
+        event_type="google_login",
+        outcome="success",
+        account=email,
+        user_id=user.id,
+    )
     await db.commit()
     await db.refresh(user)
 
     # Issue JWT
-    jwt_token, _ = auth_service.create_access_token(user.id)
+    jwt_token, _ = auth_service.create_access_token(
+        user.id, user.session_version
+    )
     response = RedirectResponse(
         url=str(settings.frontend_callback_url),
         status_code=302,

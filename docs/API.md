@@ -16,24 +16,46 @@ counter, key `guest_quota:YYYY-MM-DD:{ip}`). Exceeding the quota returns
 
 ### `POST /auth/register`
 ```json
-{ "email": "you@example.com", "password": "…" }
+{ "email": "you@example.com", "password": "…", "name": "…", "age": 30, "purpose": "…" }
 ```
-Creates an account and emails a verification link. Returns 202.
+Creates an account and emails a verification link. Returns 201.
 
-### `POST /auth/verify`
-```json
-{ "token": "<one-time-token-from-email>" }
-```
+### `GET /auth/verify?token=<one-time-token-from-email>`
 Marks the account verified and returns the first API key (`scl_…`).
 
 ### `POST /auth/login`
 ```json
 { "email": "…", "password": "…" }
 ```
-Returns a JWT session cookie + the masked API key record.
+Returns a bearer JWT for non-browser clients. Browser clients use
+`POST /auth/session/login`, which establishes an HttpOnly cookie without
+exposing the JWT to JavaScript.
+
+Login, registration, and password-reset attempts are rate-limited by both
+client IP and a keyed digest of the normalized account identifier. Repeated
+login failures trigger an exponential `Retry-After` backoff.
+
+### `POST /auth/password-reset/request`
+```json
+{ "email": "you@example.com" }
+```
+Always returns the same response. Eligible password accounts receive a
+single-use reset link that expires after 30 minutes.
+
+### `POST /auth/password-reset/confirm`
+```json
+{ "token": "<one-time-token-from-email>", "new_password": "…" }
+```
+Consumes the hashed reset grant, changes the password, and invalidates every
+previously issued JWT session.
+
+### `POST /auth/sessions/revoke-all`
+Requires a browser session or bearer JWT. Invalidates all browser and bearer
+sessions for the user. API keys are unaffected and retain their own explicit
+revocation lifecycle.
 
 ### `GET /auth/me`
-Returns the authenticated user and their API keys.
+Returns the authenticated user.
 
 ## Search & Q&A
 

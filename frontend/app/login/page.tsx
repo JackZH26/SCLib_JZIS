@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { login, friendlyErrorMessage, PUBLIC_API_BASE } from "@/lib/api";
+import { ApiError, login, friendlyErrorMessage, PUBLIC_API_BASE } from "@/lib/api";
 import { notifyAuthChange } from "@/lib/auth-session";
 
 export default function LoginPage() {
@@ -23,7 +23,11 @@ export default function LoginPage() {
       notifyAuthChange();
       router.push("/dashboard");
     } catch (err) {
-      setError(friendlyErrorMessage(err, "Login failed"));
+      setError(
+        err instanceof ApiError && (err.status === 401 || err.status === 403)
+          ? err.message
+          : friendlyErrorMessage(err, "Login failed"),
+      );
     } finally {
       setSubmitting(false);
     }
@@ -70,7 +74,12 @@ export default function LoginPage() {
           />
         </label>
         <label className="block">
-          <span className="text-sm font-medium">Password</span>
+          <span className="flex items-center justify-between text-sm font-medium">
+            <span>Password</span>
+            <Link href="/forgot-password" className="font-normal underline">
+              Forgot password?
+            </Link>
+          </span>
           <input
             type="password"
             className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2"

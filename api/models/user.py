@@ -10,7 +10,6 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
 
-
 # ORCID is always 16 digits grouped 4-4-4-4 with hyphens; the final
 # character may be 'X' (ISO 7064 MOD 11-2 check digit). We only enforce
 # shape, not checksum — clients that paste the URL get it stripped.
@@ -109,7 +108,16 @@ class UserUpdate(BaseModel):
 
 class LoginRequest(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=1, max_length=128)
+
+
+class PasswordResetRequest(BaseModel):
+    email: EmailStr
+
+
+class PasswordResetConfirm(BaseModel):
+    token: str = Field(..., min_length=32, max_length=128)
+    new_password: str = Field(..., min_length=8, max_length=128)
 
 
 class TokenResponse(BaseModel):

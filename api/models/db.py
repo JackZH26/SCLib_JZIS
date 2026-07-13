@@ -35,7 +35,6 @@ from sqlalchemy import (
     text,
 )
 
-
 #: All datetime columns use TIMESTAMPTZ. Never store naive datetimes — see
 #: routers/auth.py for how we construct values in UTC.
 _TZDT = DateTime(timezone=True)
@@ -85,6 +84,11 @@ class User(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_reviewer: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    # Incrementing this invalidates every previously issued JWT while API
+    # keys remain governed by their separate revocation lifecycle.
+    session_version: Mapped[int] = mapped_column(
+        Integer, default=0, server_default=sa.text("0"), nullable=False
+    )
 
     # --- Google OAuth / unified auth -------------------------------------
     google_sub: Mapped[str | None] = mapped_column(String(128), unique=True, nullable=True)
@@ -101,6 +105,9 @@ class User(Base):
         back_populates="user", cascade="all, delete-orphan"
     )
     api_keys: Mapped[list["ApiKey"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
+    password_reset_tokens: Mapped[list["PasswordResetToken"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
 
@@ -122,6 +129,62 @@ class EmailVerification(Base):
     created_at: Mapped[datetime] = mapped_column(_TZDT, server_default=func.now(), nullable=False)
 
     user: Mapped[User] = relationship(back_populates="verifications")
+
+
+class PasswordResetToken(Base):
+    """Single-use password reset grant; plaintext tokens are never stored."""
+
+    __tablename__ = "password_reset_tokens"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    token_hash: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
+    used_at: Mapped[datetime | None] = mapped_column(_TZDT, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False
+    )
+
+    user: Mapped[User] = relationship(back_populates="password_reset_tokens")
+
+    __table_args__ = (
+        Index("idx_password_reset_user_created", "user_id", "created_at"),
+        Index("idx_password_reset_expires", "expires_at"),
+    )
+
+
+class AuthAuditEvent(Base):
+    """Privacy-preserving record of accepted authentication operations."""
+
+    __tablename__ = "auth_audit_events"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
+    event_type: Mapped[str] = mapped_column(String(50), nullable=False)
+    outcome: Mapped[str] = mapped_column(String(30), nullable=False)
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
+    account_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    client_ip_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    user_agent_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    details: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, server_default=sa.text("'{}'::jsonb"), default=dict, nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False
+    )
+
+    __table_args__ = (
+        Index("idx_auth_audit_created", "created_at"),
+        Index("idx_auth_audit_user_created", "user_id", "created_at"),
+        Index("idx_auth_audit_account_created", "account_hash", "created_at"),
+    )
 
 
 class ApiKey(Base):

@@ -6,11 +6,13 @@ sibling modules (user.py, paper.py, material.py, search.py, ask.py).
 """
 from .db import (
     ApiKey,
+    AuthAuditEvent,
     Base,
     Chunk,
     EmailVerification,
     Material,
     Paper,
+    PasswordResetToken,
     StatsCache,
     TimelineProjectionPoint,
     TimelineProjectionState,
@@ -25,6 +27,8 @@ __all__ = [
     "User",
     "EmailVerification",
     "ApiKey",
+    "AuthAuditEvent",
+    "PasswordResetToken",
     "Paper",
     "Material",
     "Chunk",

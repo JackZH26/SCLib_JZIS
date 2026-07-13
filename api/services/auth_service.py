@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import secrets
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 from uuid import UUID
 
@@ -15,7 +15,6 @@ import bcrypt
 import jwt
 
 from config import get_settings
-
 
 # --- passwords ------------------------------------------------------------
 
@@ -52,15 +51,18 @@ def verify_password_dummy(plain: str) -> bool:
 
 # --- JWT ------------------------------------------------------------------
 
-def create_access_token(user_id: UUID) -> tuple[str, int]:
+def create_access_token(user_id: UUID, session_version: int = 0) -> tuple[str, int]:
     """Return (token, expires_in_seconds)."""
     settings = get_settings()
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     expires_at = now + timedelta(hours=settings.jwt_expiry_hours)
     payload: dict[str, Any] = {
         "sub": str(user_id),
         "iat": int(now.timestamp()),
         "exp": int(expires_at.timestamp()),
+        # Missing ``sv`` on pre-migration tokens is interpreted as zero, so a
+        # rolling deploy remains compatible until the user revokes sessions.
+        "sv": session_version,
     }
     token = jwt.encode(payload, settings.jwt_secret, algorithm="HS256")
     return token, settings.jwt_expiry_hours * 3600
@@ -94,3 +96,13 @@ def hash_api_key(plain: str) -> str:
 def generate_verification_token() -> str:
     """64-char urlsafe token for email verification."""
     return secrets.token_urlsafe(48)[:64]
+
+
+def generate_password_reset_token() -> tuple[str, str]:
+    """Return a high-entropy plaintext token and its storage-safe digest."""
+    plain = secrets.token_urlsafe(48)
+    return plain, hashlib.sha256(plain.encode("utf-8")).hexdigest()
+
+
+def hash_password_reset_token(plain: str) -> str:
+    return hashlib.sha256(plain.encode("utf-8")).hexdigest()

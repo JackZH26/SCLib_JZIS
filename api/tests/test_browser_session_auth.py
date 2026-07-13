@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 from types import SimpleNamespace
-from uuid import uuid4
 from unittest.mock import AsyncMock, MagicMock, patch
+from uuid import uuid4
 
 import pytest
 from fastapi import HTTPException
@@ -30,6 +30,9 @@ class _FakeDb:
 
 
 class _OAuthDb(_FakeDb):
+    def add(self, _row):
+        return None
+
     async def execute(self, _statement):
         return SimpleNamespace(scalar_one_or_none=lambda: self.user)
 
@@ -63,7 +66,7 @@ def _request(
 
 @pytest.mark.asyncio
 async def test_http_only_cookie_authenticates_browser_session():
-    user = SimpleNamespace(id=uuid4(), is_active=True)
+    user = SimpleNamespace(id=uuid4(), is_active=True, session_version=0)
     token, _ = auth_service.create_access_token(user.id)
 
     resolved = await current_user_from_jwt(_request(token), None, _FakeDb(user))
@@ -73,7 +76,7 @@ async def test_http_only_cookie_authenticates_browser_session():
 
 @pytest.mark.asyncio
 async def test_cookie_authenticated_write_requires_trusted_origin():
-    user = SimpleNamespace(id=uuid4(), is_active=True)
+    user = SimpleNamespace(id=uuid4(), is_active=True, session_version=0)
     token, _ = auth_service.create_access_token(user.id)
 
     with pytest.raises(HTTPException) as exc_info:
@@ -94,7 +97,7 @@ async def test_cookie_authenticated_write_requires_trusted_origin():
 
 @pytest.mark.asyncio
 async def test_bearer_client_remains_compatible_without_browser_origin():
-    user = SimpleNamespace(id=uuid4(), is_active=True)
+    user = SimpleNamespace(id=uuid4(), is_active=True, session_version=0)
     token, _ = auth_service.create_access_token(user.id)
     request = _request("ignored", method="PATCH")
 
@@ -108,6 +111,21 @@ async def test_bearer_client_remains_compatible_without_browser_origin():
 
 
 @pytest.mark.asyncio
+async def test_session_version_revokes_previously_issued_jwt():
+    user = SimpleNamespace(id=uuid4(), is_active=True, session_version=1)
+    old_token, _ = auth_service.create_access_token(user.id, session_version=0)
+
+    with pytest.raises(HTTPException) as exc_info:
+        await current_user_from_jwt(
+            _request(old_token),
+            None,
+            _FakeDb(user),
+        )
+
+    assert exc_info.value.status_code == 401
+
+
+@pytest.mark.asyncio
 async def test_google_callback_redirects_without_exposing_jwt():
     user = SimpleNamespace(
         id=uuid4(),
@@ -118,6 +136,7 @@ async def test_google_callback_redirects_without_exposing_jwt():
         auth_provider="google",
         email_verified=True,
         last_login=None,
+        session_version=0,
     )
     oauth = MagicMock()
     oauth.google.authorize_access_token = AsyncMock(return_value={
@@ -129,7 +148,10 @@ async def test_google_callback_redirects_without_exposing_jwt():
     })
     request = _request("oauth-state")
 
-    with patch("routers.auth.get_oauth", return_value=oauth):
+    with (
+        patch("routers.auth.get_oauth", return_value=oauth),
+        patch("routers.auth._enforce_auth_security", new=AsyncMock()),
+    ):
         response = await google_callback(request, _OAuthDb(user))
 
     assert response.status_code == 302
@@ -147,6 +169,7 @@ async def test_password_browser_login_returns_no_jwt_body():
         is_active=True,
         password_hash=auth_service.hash_password(password),
         last_login=None,
+        session_version=0,
     )
     request = _request(
         "pre-login",
@@ -155,12 +178,16 @@ async def test_password_browser_login_returns_no_jwt_body():
     )
     response = Response()
 
-    result = await browser_session_login(
-        LoginRequest(email=user.email, password=password),
-        request,
-        response,
-        _OAuthDb(user),
-    )
+    with (
+        patch("routers.auth._enforce_auth_security", new=AsyncMock()),
+        patch("routers.auth.clear_login_failures", new=AsyncMock()),
+    ):
+        result = await browser_session_login(
+            LoginRequest(email=user.email, password=password),
+            request,
+            response,
+            _OAuthDb(user),
+        )
 
     assert result.authenticated is True
     assert not hasattr(result, "access_token")
