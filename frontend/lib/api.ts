@@ -737,7 +737,17 @@ export interface StatsResponse {
   papers_by_year_aps: Record<string, number>;
   top_material_families: Array<{ family: string; count: number }>;
   last_ingest_at: string | null;
+  stats_refreshed_at?: string | null;
   updated_at: string;
+  dataset_version?: string | null;
+  data_pipeline?: {
+    status: "complete" | "partial" | "failed" | "unknown";
+    last_run_at: string | null;
+    stages: Record<
+      string,
+      { status: "complete" | "failed" | "unknown"; exit_code: number | null }
+    >;
+  };
 }
 
 export function getStats() {

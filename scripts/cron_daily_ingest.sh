@@ -63,6 +63,14 @@ log() {
     printf '[%s] %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" | tee -a "${LOG_FILE}"
 }
 
+stage_status() {
+    if [[ "$1" -eq 0 ]]; then
+        printf 'complete'
+    else
+        printf 'failed'
+    fi
+}
+
 on_error() {
     local exit_code=$?
     log "FAIL cron_daily_ingest exit=${exit_code} at line ${BASH_LINENO[0]}"
@@ -75,7 +83,7 @@ cd "${SCLIB_ROOT}"
 # ---- 1. Incremental ingest ----------------------------------------------
 
 log "START cron_daily_ingest"
-log "step 1/4: incremental ingest"
+log "step 1/5: incremental ingest"
 
 # --rm so each run is a clean container. `|| true` is deliberate: a
 # partial failure (below failure_success_threshold) returns non-zero
@@ -90,7 +98,7 @@ log "incremental ingest exit=${ingest_rc}"
 
 # ---- 2. Retry pass (drain failure pool) ---------------------------------
 
-log "step 2/4: retry pass (drain failure pool)"
+log "step 2/5: retry pass (drain failure pool)"
 set +e
 docker compose "${COMPOSE_FILES[@]}" run --rm ingestion \
     sclib-ingest --mode retry --limit 20 2>&1 | tee -a "${LOG_FILE}"
@@ -133,9 +141,26 @@ fi
 if [[ -z "${INTERNAL_API_KEY:-}" ]]; then
     log "WARN INTERNAL_API_KEY unset — skipping stats refresh"
 else
+    if [[ "${aggregate_rc}" -ne 0 ]]; then
+        pipeline_status="failed"
+    elif [[ "${ingest_rc}" -ne 0 || "${retry_rc}" -ne 0 ]]; then
+        pipeline_status="partial"
+    else
+        pipeline_status="complete"
+    fi
+    pipeline_completed_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    stats_refresh_payload="$(printf \
+        '{"data_pipeline":{"status":"%s","last_run_at":"%s","stages":{"incremental":{"status":"%s","exit_code":%d},"retry":{"status":"%s","exit_code":%d},"aggregate":{"status":"%s","exit_code":%d}}}}' \
+        "${pipeline_status}" \
+        "${pipeline_completed_at}" \
+        "$(stage_status "${ingest_rc}")" "${ingest_rc}" \
+        "$(stage_status "${retry_rc}")" "${retry_rc}" \
+        "$(stage_status "${aggregate_rc}")" "${aggregate_rc}")"
     curl --fail --silent --show-error \
         -X POST "http://127.0.0.1:8000/v1/stats/refresh" \
         -H "X-Internal-Key: ${INTERNAL_API_KEY}" \
+        -H "Content-Type: application/json" \
+        --data-binary "${stats_refresh_payload}" \
         2>&1 | tee -a "${LOG_FILE}" || log "WARN stats refresh curl failed"
 fi
 

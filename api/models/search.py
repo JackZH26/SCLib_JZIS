@@ -279,21 +279,40 @@ class SimilarResponse(BaseModel):
 # Stats / Timeline (public)
 # ---------------------------------------------------------------------------
 
+class StatsPipelineStage(BaseModel):
+    status: Literal["complete", "failed", "unknown"] = "unknown"
+    exit_code: int | None = Field(None, ge=0, le=255)
+
+
+class StatsDataPipeline(BaseModel):
+    status: Literal["complete", "partial", "failed", "unknown"] = "unknown"
+    last_run_at: str | None = None
+    stages: dict[str, StatsPipelineStage] = Field(default_factory=dict)
+
+
+class StatsRefreshRequest(BaseModel):
+    data_pipeline: StatsDataPipeline | None = None
+
+
 class StatsResponse(BaseModel):
     total_papers: int
     total_materials: int
     total_chunks: int
     papers_by_year: dict[str, int]
-    papers_by_year_arxiv: dict[str, int] = {}
-    papers_by_year_aps: dict[str, int] = {}
+    papers_by_year_arxiv: dict[str, int] = Field(default_factory=dict)
+    papers_by_year_aps: dict[str, int] = Field(default_factory=dict)
     top_material_families: list[dict[str, Any]]
     last_ingest_at: str | None
+    # Explicit cache-computation timestamp. ``updated_at`` remains as a
+    # backward-compatible alias for older clients.
+    stats_refreshed_at: str | None = None
     updated_at: str
     # Calver string ("v2026.04.30") derived from last_ingest_at — gives
     # users a stable, human-readable handle for "which data snapshot is
     # this answer based on", mirroring Materials Project's
     # `database_version`. None when the DB has never been ingested.
     dataset_version: str | None = None
+    data_pipeline: StatsDataPipeline = Field(default_factory=StatsDataPipeline)
 
 
 class TimelinePoint(BaseModel):
