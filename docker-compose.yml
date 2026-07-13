@@ -9,6 +9,7 @@ services:
       # commit. Surfaced on the site footer + GET /version.
       args:
         GIT_SHA: ${GIT_SHA:-dev}
+        NEXT_PUBLIC_WEB_VITALS_SAMPLE_RATE: ${NEXT_PUBLIC_WEB_VITALS_SAMPLE_RATE:-0.1}
     container_name: sclib-frontend
     restart: unless-stopped
     # VPS2 already runs asrp.jzis.org on host port 3000 — bind the

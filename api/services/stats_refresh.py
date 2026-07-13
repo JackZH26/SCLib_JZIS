@@ -16,6 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.db import Chunk, Material, Paper, StatsCache
 from models.search import StatsDataPipeline
+from services.metrics import update_dataset_metrics
 
 log = logging.getLogger(__name__)
 _PIPELINE_CACHE_KEY = "data_pipeline"
@@ -173,6 +174,7 @@ async def refresh_dashboard_cache(
         await db.execute(pipeline_stmt)
     await db.commit()
     payload["data_pipeline"] = current_pipeline.model_dump(mode="json")
+    update_dataset_metrics(payload, current_pipeline.stages)
     log.info(
         "stats_cache[dashboard] refreshed: %d papers / %d materials / %d chunks",
         payload["total_papers"],

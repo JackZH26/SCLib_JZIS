@@ -26,6 +26,7 @@ from models.search import AskRequest, AskResponse, AskSource
 from routers.deps import Identity, require_identity
 from services import provider_resilience, rag, retrieval, vector_search
 from services.authors import short as _authors_short
+from services.metrics import observe_rag
 
 log = logging.getLogger(__name__)
 
@@ -179,6 +180,12 @@ async def ask(
         "+".join(retrieval_modes) or "none",
         result.citation_valid,
         ",".join(result.citation_warnings) or "none",
+    )
+    observe_rag(
+        sources=len(rag_inputs),
+        tokens=result.tokens_used,
+        citation_valid=result.citation_valid,
+        fallback="generation_provider_unavailable" in result.citation_warnings,
     )
 
     latency_ms = int((time.perf_counter() - t0) * 1000)

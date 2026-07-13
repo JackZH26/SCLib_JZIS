@@ -19,7 +19,6 @@ from typing import Any
 import sqlalchemy as sa
 from sqlalchemy import (
     ARRAY,
-    JSON,
     Boolean,
     CheckConstraint,
     Date,
@@ -34,10 +33,6 @@ from sqlalchemy import (
     func,
     text,
 )
-
-#: All datetime columns use TIMESTAMPTZ. Never store naive datetimes — see
-#: routers/auth.py for how we construct values in UTC.
-_TZDT = DateTime(timezone=True)
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -48,6 +43,10 @@ from sqlalchemy.ext.asyncio import (
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 from config import get_settings
+
+#: All datetime columns use TIMESTAMPTZ. Never store naive datetimes — see
+#: routers/auth.py for how we construct values in UTC.
+_TZDT = DateTime(timezone=True)
 
 
 class Base(DeclarativeBase):
@@ -872,12 +871,16 @@ def _to_async_dsn(dsn: str) -> str:
 @lru_cache(maxsize=1)
 def get_engine() -> AsyncEngine:
     settings = get_settings()
-    return create_async_engine(
+    engine = create_async_engine(
         _to_async_dsn(settings.database_url),
         pool_pre_ping=True,
         pool_size=5,
         max_overflow=10,
     )
+    from services.metrics import instrument_sqlalchemy
+
+    instrument_sqlalchemy(engine)
+    return engine
 
 
 @lru_cache(maxsize=1)

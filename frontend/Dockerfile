@@ -16,12 +16,14 @@ COPY . .
 # with --build-arg NEXT_PUBLIC_BASE_PATH= for a root-mounted dev build.
 ARG NEXT_PUBLIC_BASE_PATH=/sclib
 ARG NEXT_PUBLIC_API_BASE=https://api.jzis.org/sclib/v1
+ARG NEXT_PUBLIC_WEB_VITALS_SAMPLE_RATE=0.1
 # GIT_SHA is short commit hash, surfaced on the site footer and
 # /version endpoint so users can correlate UI behaviour with a code
 # revision. Falls back to "dev" for local builds.
 ARG GIT_SHA=dev
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH \
     NEXT_PUBLIC_API_BASE=$NEXT_PUBLIC_API_BASE \
+    NEXT_PUBLIC_WEB_VITALS_SAMPLE_RATE=$NEXT_PUBLIC_WEB_VITALS_SAMPLE_RATE \
     NEXT_PUBLIC_GIT_SHA=$GIT_SHA \
     NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build

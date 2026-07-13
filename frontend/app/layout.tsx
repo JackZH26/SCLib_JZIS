@@ -6,6 +6,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Analytics } from "@/components/Analytics";
 import { CookieConsentBanner } from "@/components/CookieConsent";
+import { WebVitalsReporter } from "@/components/WebVitalsReporter";
 
 // asrp.jzis.org uses Inter as its primary sans stack (falling back to
 // the system font). Load it via next/font so Next handles subsetting +
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body className="flex min-h-screen flex-col bg-sage-bg font-sans antialiased">
         <Analytics />
+        <WebVitalsReporter />
         <Header />
         <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
           {children}

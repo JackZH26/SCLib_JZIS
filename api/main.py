@@ -34,6 +34,7 @@ from routers import (
     health,
     history,
     materials,
+    observability,
     papers,
     search,
     similar,
@@ -41,6 +42,7 @@ from routers import (
     timeline,
     version,
 )
+from services.metrics import HTTP_IN_PROGRESS, observe_http
 from services.request_context import (
     bind_request_id,
     reset_request_id,
@@ -591,15 +593,34 @@ async def request_contract_middleware(request: Request, call_next):
     request_id = resolve_request_id(request)
     request.state.request_id = request_id
     token = bind_request_id(request_id)
+    method = request.method
+    HTTP_IN_PROGRESS.labels(method).inc()
+    started = asyncio.get_running_loop().time()
+    status_code = 500
+    response_bytes = 0
     try:
         response = await call_next(request)
+        status_code = response.status_code
+        content_length = response.headers.get("content-length")
+        if content_length and content_length.isdigit():
+            response_bytes = int(content_length)
     finally:
+        route = getattr(request.scope.get("route"), "path", "unmatched")
+        observe_http(
+            method,
+            route,
+            status_code,
+            asyncio.get_running_loop().time() - started,
+            response_bytes,
+        )
+        HTTP_IN_PROGRESS.labels(method).dec()
         reset_request_id(token)
     response.headers["X-Request-ID"] = request_id
     response.headers["X-API-Version"] = version.API_VERSION
     return response
 
 app.include_router(health.router)
+app.include_router(observability.router)
 app.include_router(auth.router, prefix="/v1")
 app.include_router(search.router, prefix="/v1")
 app.include_router(ask.router, prefix="/v1")

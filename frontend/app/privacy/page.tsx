@@ -57,8 +57,11 @@ export default function PrivacyPolicyPage() {
           keyed hashes rather than the raw values.
         </li>
         <li>
-          Optional analytics data, but only after you enable Analytics in the
-          cookie banner. See our <Link href="/cookies">Cookie Policy</Link>.
+          Optional analytics data and sampled browser-health measurements, but
+          only after you enable Analytics in the cookie banner. Browser errors
+          are counted without sending the error message, stack trace, page URL,
+          account identifier, or raw IP address. See our{" "}
+          <Link href="/cookies">Cookie Policy</Link>.
         </li>
       </ul>
 
@@ -129,7 +132,10 @@ export default function PrivacyPolicyPage() {
           legal claims. After account deletion, the direct user reference is
           removed and only pseudonymous security evidence remains.
         </li>
-        <li>Analytics retention is described in the Cookie Policy.</li>
+        <li>
+          Analytics and aggregate browser-health retention are described in the
+          Cookie Policy.
+        </li>
       </ul>
       <p>
         Deleted data may persist temporarily in protected backups until those

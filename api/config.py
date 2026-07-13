@@ -104,6 +104,7 @@ class Settings(BaseSettings):
     provider_max_attempts: int = Field(2, ge=1, le=3)
     provider_circuit_failure_threshold: int = Field(3, ge=1, le=100)
     provider_circuit_cooldown_seconds: float = Field(60.0, ge=0, le=3600)
+    client_telemetry_per_minute: int = Field(120, ge=1, le=10_000)
 
     # === Discovery preview ===
     discovery_feed_path: str = "/data/sclib/discovery/discovery_feed.json"

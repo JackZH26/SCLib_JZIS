@@ -7,6 +7,8 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import TypeVar
 
+from services.metrics import observe_provider
+
 T = TypeVar("T")
 
 
@@ -38,8 +40,10 @@ async def run_blocking(
     safely cancelled, so timeout failures are never duplicated.
     """
     circuit = _circuits.setdefault(provider, _Circuit())
-    now = time.monotonic()
+    started = time.monotonic()
+    now = started
     if circuit.opened_until > now:
+        observe_provider(provider, "circuit_open", 0.0, 0)
         raise ProviderUnavailable(f"{provider} circuit is open")
 
     attempts = max(1, min(max_attempts, 3))
@@ -53,18 +57,21 @@ async def run_blocking(
             break
         except TimeoutError:
             _record_failure(circuit, failure_threshold, cooldown_seconds)
+            observe_provider(provider, "timeout", time.monotonic() - started, attempt + 1)
             raise ProviderUnavailable(f"{provider} timed out") from None
         except Exception as exc:
             last_exception = exc
             if attempt + 1 < attempts:
                 continue
             _record_failure(circuit, failure_threshold, cooldown_seconds)
+            observe_provider(provider, "failure", time.monotonic() - started, attempt + 1)
             raise ProviderUnavailable(f"{provider} failed") from exc
     else:  # pragma: no cover - the bounded loop always returns or raises
         raise ProviderUnavailable(f"{provider} failed") from last_exception
 
     circuit.failures = 0
     circuit.opened_until = 0.0
+    observe_provider(provider, "success", time.monotonic() - started, attempt + 1)
     return result
 
 

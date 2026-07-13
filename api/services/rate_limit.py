@@ -21,6 +21,7 @@ from uuid import UUID
 import redis.asyncio as aioredis
 
 from config import get_settings
+from services.metrics import instrument_dependency_call
 
 
 @lru_cache(maxsize=1)
@@ -34,7 +35,7 @@ def get_redis() -> aioredis.Redis:
 
 
 def _today() -> str:
-    return dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d")
+    return dt.datetime.now(dt.UTC).strftime("%Y-%m-%d")
 
 
 def _guest_key(ip: str) -> str:
@@ -53,7 +54,9 @@ async def get_guest_remaining(ip: str) -> int:
     """Return queries remaining today for this IP without consuming one."""
     settings = get_settings()
     r = get_redis()
-    used = int(await r.get(_guest_key(ip)) or 0)
+    used = int(
+        await instrument_dependency_call("redis", "get", r.get(_guest_key(ip))) or 0
+    )
     return max(0, settings.guest_daily_limit - used)
 
 
@@ -70,7 +73,9 @@ async def consume_guest(ip: str) -> int:
     pipe = r.pipeline()
     pipe.incr(key, 1)
     pipe.expire(key, 86400, nx=True)
-    used_new, _ = await pipe.execute()
+    used_new, _ = await instrument_dependency_call(
+        "redis", "quota_pipeline", pipe.execute()
+    )
     return settings.guest_daily_limit - int(used_new)
 
 
@@ -81,7 +86,12 @@ async def consume_guest(ip: str) -> int:
 async def get_user_today_used(user_id: UUID) -> int:
     """How many queries the user has run today (UTC)."""
     r = get_redis()
-    return int(await r.get(_user_key(user_id)) or 0)
+    return int(
+        await instrument_dependency_call(
+            "redis", "get", r.get(_user_key(user_id))
+        )
+        or 0
+    )
 
 
 async def get_user_remaining(user_id: UUID) -> int:
@@ -103,7 +113,9 @@ async def consume_user(user_id: UUID) -> int:
     pipe = r.pipeline()
     pipe.incr(key, 1)
     pipe.expire(key, 86400, nx=True)
-    used_new, _ = await pipe.execute()
+    used_new, _ = await instrument_dependency_call(
+        "redis", "quota_pipeline", pipe.execute()
+    )
     return settings.registered_daily_limit - int(used_new)
 
 
@@ -114,10 +126,10 @@ async def get_user_week_used(user_id: UUID) -> int:
     MGET so the whole 7-day window costs one round trip.
     """
     r = get_redis()
-    today = dt.datetime.now(dt.timezone.utc).date()
+    today = dt.datetime.now(dt.UTC).date()
     keys = [
         _user_key(user_id, (today - dt.timedelta(days=d)).strftime("%Y-%m-%d"))
         for d in range(7)
     ]
-    values = await r.mget(keys)
+    values = await instrument_dependency_call("redis", "mget", r.mget(keys))
     return sum(int(v) for v in values if v is not None)
