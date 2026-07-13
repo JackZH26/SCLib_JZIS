@@ -81,14 +81,21 @@ accounts must be demoted before using this endpoint.
 
 ## Search & Q&A
 
+All responses include `X-API-Version` and `X-Request-ID`. Error bodies preserve
+the legacy `detail` field and add stable `error_code` and `request_id` fields.
+See [API versioning and compatibility](API_VERSIONING.md) for the v1 change and
+deprecation policy.
+
 ### `POST /search`
 ```json
 {
   "query": "room temperature superconductors 2023",
   "top_k": 10,
-  "year_min": 2020,
-  "year_max": 2024,
-  "material_family": "cuprate"
+  "filters": {
+    "year_min": 2020,
+    "year_max": 2024,
+    "material_family": ["cuprate"]
+  }
 }
 ```
 Combines Google `text-embedding-005` / Vertex ANN candidates with PostgreSQL
@@ -99,7 +106,7 @@ retrieval. Each hit carries a `relevance_score` float in `[0, 1]`.
 
 ### `POST /ask`
 ```json
-{ "query": "What is the role of pressure in high-Tc hydrides?" }
+{ "question": "What is the role of pressure in high-Tc hydrides?" }
 ```
 Runs the same hybrid candidate strategy, keeps at most one source per paper,
 and feeds bounded untrusted-source JSON into Gemini with a separate system

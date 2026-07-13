@@ -178,6 +178,7 @@ async def search(
         results=matches,
         query_time_ms=int((time.perf_counter() - t0) * 1000),
         guest_remaining=identity.guest_remaining,
+        remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
     )
 
 

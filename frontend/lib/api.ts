@@ -32,6 +32,8 @@ export class ApiError extends Error {
     msg: string,
     /** Seconds the server asked us to wait, parsed from Retry-After. */
     public retryAfterSec?: number,
+    /** Correlation ID to include in support reports. */
+    public requestId?: string,
   ) {
     super(msg);
   }
@@ -151,7 +153,16 @@ async function request<T>(
           : `HTTP ${res.status}`;
     const retryAfterSec =
       res.status === 429 ? parseRetryAfter(res.headers.get("retry-after")) : undefined;
-    throw new ApiError(res.status, body, sanitizeErrorMessage(rawMsg), retryAfterSec);
+    const requestId =
+      res.headers.get("x-request-id") ??
+      ((body as { request_id?: unknown }).request_id as string | undefined);
+    throw new ApiError(
+      res.status,
+      body,
+      sanitizeErrorMessage(rawMsg),
+      retryAfterSec,
+      requestId,
+    );
   }
   return body as T;
 }
@@ -505,6 +516,7 @@ export interface SearchResponse {
   results: SearchMatch[];
   query_time_ms: number;
   guest_remaining: number | null;
+  remaining: number | null;
 }
 
 export function search(req: SearchRequest, opts: { apiKey?: string } = {}) {
@@ -542,6 +554,7 @@ export interface AskResponse {
   citation_valid: boolean;
   citation_warnings: string[];
   guest_remaining: number | null;
+  remaining: number | null;
 }
 
 export function ask(req: AskRequest, opts: { apiKey?: string } = {}) {

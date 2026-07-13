@@ -9,10 +9,13 @@ from __future__ import annotations
 import asyncio
 import logging
 from contextlib import asynccontextmanager
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sqlalchemy import delete
 from starlette.middleware.gzip import GZipMiddleware
 from starlette.middleware.sessions import SessionMiddleware
@@ -20,6 +23,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from config import allowed_browser_origins, get_settings
 from models import get_session_factory
 from models.db import AskHistory, get_engine
+from models.errors import ApiErrorResponse
 from routers import (
     admin,
     ask,
@@ -36,6 +40,11 @@ from routers import (
     stats,
     timeline,
     version,
+)
+from services.request_context import (
+    bind_request_id,
+    reset_request_id,
+    resolve_request_id,
 )
 from services.session_config import build_oauth_session_config
 from services.stats_refresh import refresh_dashboard_cache
@@ -245,7 +254,7 @@ async def _nightly_data_audit(target_hour_utc: int = 20) -> None:
     """
     factory = get_session_factory()
     while True:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         target = now.replace(
             hour=target_hour_utc, minute=0, second=0, microsecond=0,
         )
@@ -285,7 +294,7 @@ async def _periodic_ask_history_prune(interval_sec: int, retention_days: int) ->
     await asyncio.sleep(90)
     while True:
         try:
-            cutoff = datetime.now(timezone.utc) - timedelta(days=retention_days)
+            cutoff = datetime.now(UTC) - timedelta(days=retention_days)
             async with factory() as session:
                 result = await session.execute(
                     delete(AskHistory).where(AskHistory.created_at < cutoff)
@@ -410,13 +419,121 @@ settings = get_settings()
 
 app = FastAPI(
     title="SCLib_JZIS API",
-    version="0.1.0",
+    version="1.0.0",
     description="Superconductivity research library — semantic search, materials DB, RAG Q&A.",
     openapi_url="/v1/openapi.json",
     docs_url="/v1/docs",
     redoc_url="/v1/redoc",
     lifespan=lifespan,
+    responses={
+        400: {"model": ApiErrorResponse, "description": "Bad request"},
+        401: {"model": ApiErrorResponse, "description": "Authentication required"},
+        403: {"model": ApiErrorResponse, "description": "Access denied"},
+        404: {"model": ApiErrorResponse, "description": "Resource not found"},
+        409: {"model": ApiErrorResponse, "description": "Request conflict"},
+        422: {"model": ApiErrorResponse, "description": "Validation failed"},
+        429: {"model": ApiErrorResponse, "description": "Rate limit exceeded"},
+        500: {"model": ApiErrorResponse, "description": "Internal server error"},
+    },
 )
+
+
+_ERROR_CODES = {
+    400: "bad_request",
+    401: "unauthorized",
+    403: "forbidden",
+    404: "not_found",
+    405: "method_not_allowed",
+    409: "conflict",
+    422: "validation_error",
+    429: "rate_limited",
+    500: "internal_error",
+    502: "upstream_error",
+    503: "service_unavailable",
+    504: "upstream_timeout",
+}
+
+
+def _request_id(request: Request) -> str:
+    return getattr(request.state, "request_id", None) or resolve_request_id(request)
+
+
+def _error_code(status_code: int, detail: object) -> str:
+    if isinstance(detail, dict):
+        explicit = detail.get("error")
+        if isinstance(explicit, str) and explicit:
+            return explicit
+    return _ERROR_CODES.get(status_code, "http_error")
+
+
+def _error_response(
+    request: Request,
+    *,
+    status_code: int,
+    detail: object,
+    error_code: str | None = None,
+    headers: dict[str, str] | None = None,
+) -> JSONResponse:
+    request_id = _request_id(request)
+    response_headers = dict(headers or {})
+    response_headers["X-Request-ID"] = request_id
+    response_headers["X-API-Version"] = version.API_VERSION
+    return JSONResponse(
+        status_code=status_code,
+        content=jsonable_encoder(
+            ApiErrorResponse(
+                detail=detail,
+                error_code=error_code or _error_code(status_code, detail),
+                request_id=request_id,
+            ).model_dump()
+        ),
+        headers=response_headers,
+    )
+
+
+@app.exception_handler(HTTPException)
+async def http_error_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    return _error_response(
+        request,
+        status_code=exc.status_code,
+        detail=exc.detail,
+        headers=dict(exc.headers or {}),
+    )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_error_handler(
+    request: Request,
+    exc: RequestValidationError,
+) -> JSONResponse:
+    # FastAPI's default error objects echo the rejected input. Omitting input
+    # and validator context keeps passwords and tokens out of responses/logs.
+    details = [
+        {key: value for key, value in item.items() if key not in {"input", "ctx"}}
+        for item in exc.errors()
+    ]
+    return _error_response(
+        request,
+        status_code=422,
+        detail=details,
+        error_code="validation_error",
+    )
+
+
+@app.exception_handler(Exception)
+async def unexpected_error_handler(request: Request, exc: Exception) -> JSONResponse:
+    request_id = _request_id(request)
+    log.error(
+        "unhandled request error request_id=%s",
+        request_id,
+        exc_info=(type(exc), exc, exc.__traceback__),
+    )
+    return _error_response(
+        request,
+        status_code=500,
+        detail="Internal server error",
+        error_code="internal_error",
+    )
 
 # CORS origins must be scheme+host only (no path). `frontend_url` is a
 # full base URL used for building verification / docs links, so we strip
@@ -457,7 +574,30 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=[
+        "ETag",
+        "Last-Modified",
+        "Retry-After",
+        "X-API-Version",
+        "X-Data-Version",
+        "X-Request-ID",
+    ],
 )
+
+
+@app.middleware("http")
+async def request_contract_middleware(request: Request, call_next):
+    """Attach stable correlation and API-version headers to every response."""
+    request_id = resolve_request_id(request)
+    request.state.request_id = request_id
+    token = bind_request_id(request_id)
+    try:
+        response = await call_next(request)
+    finally:
+        reset_request_id(token)
+    response.headers["X-Request-ID"] = request_id
+    response.headers["X-API-Version"] = version.API_VERSION
+    return response
 
 app.include_router(health.router)
 app.include_router(auth.router, prefix="/v1")

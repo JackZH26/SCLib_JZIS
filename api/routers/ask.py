@@ -197,6 +197,7 @@ async def ask(
         citation_valid=result.citation_valid,
         citation_warnings=result.citation_warnings,
         guest_remaining=identity.guest_remaining,
+        remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
     )
 
 
