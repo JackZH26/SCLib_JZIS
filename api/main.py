@@ -36,6 +36,7 @@ from routers import (
     timeline,
     version,
 )
+from services.session_config import build_oauth_session_config
 from services.stats_refresh import refresh_dashboard_cache
 
 logging.basicConfig(
@@ -377,12 +378,15 @@ if _fe.netloc and not _fe.netloc.startswith("www."):
 
 # SessionMiddleware: stores OAuth state in a signed cookie. Must be
 # inside the CORS layer so preflight OPTIONS never hits session logic.
+_oauth_session = build_oauth_session_config(settings.environment)
 app.add_middleware(
     SessionMiddleware,
     secret_key=settings.jwt_secret,
-    max_age=300,        # OAuth state lives 5 minutes
-    https_only=settings.environment == "production",
-    same_site="lax",    # safe for OAuth redirect (top-level GET)
+    session_cookie=_oauth_session.session_cookie,
+    max_age=_oauth_session.max_age,
+    path=_oauth_session.path,
+    https_only=_oauth_session.https_only,
+    same_site=_oauth_session.same_site,
 )
 
 app.add_middleware(

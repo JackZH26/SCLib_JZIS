@@ -7,8 +7,9 @@ from __future__ import annotations
 
 from functools import lru_cache
 from typing import Literal
+from urllib.parse import urlsplit
 
-from pydantic import Field, HttpUrl
+from pydantic import Field, HttpUrl, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -83,6 +84,29 @@ class Settings(BaseSettings):
 
     # === Discovery preview ===
     discovery_feed_path: str = "/data/sclib/discovery/discovery_feed.json"
+
+    @model_validator(mode="after")
+    def require_https_for_production_auth(self) -> "Settings":
+        """Fail startup before insecure OAuth URLs or cookies reach production."""
+        if self.environment != "production":
+            return self
+
+        public_urls = {
+            "FRONTEND_URL": self.frontend_url,
+            "API_BASE_URL": self.api_base_url,
+            "GOOGLE_REDIRECT_URI": self.google_redirect_uri,
+            "FRONTEND_CALLBACK_URL": self.frontend_callback_url,
+        }
+        insecure = [
+            name
+            for name, value in public_urls.items()
+            if urlsplit(str(value)).scheme.lower() != "https"
+        ]
+        if insecure:
+            raise ValueError(
+                "Production auth URLs must use HTTPS: " + ", ".join(insecure)
+            )
+        return self
 
 
 @lru_cache(maxsize=1)

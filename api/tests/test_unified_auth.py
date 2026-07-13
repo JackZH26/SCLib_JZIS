@@ -177,7 +177,13 @@ async def test_google_login_redirects_to_google(client):
     assert "redirect_uri=" in location
     # Should set a session cookie
     cookies = r.headers.get_list("set-cookie")
-    assert any("session=" in c for c in cookies)
+    session_cookie = next(
+        c for c in cookies if "sclib_oauth_state=" in c
+    ).lower()
+    assert "httponly" in session_cookie
+    assert "max-age=300" in session_cookie
+    assert "path=/" in session_cookie
+    assert "samesite=lax" in session_cookie
 
 
 # ---------------------------------------------------------------------------
