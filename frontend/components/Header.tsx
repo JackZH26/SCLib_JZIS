@@ -13,12 +13,13 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { onAuthChange } from "@/lib/auth-session";
 import { me, type User, ApiError } from "@/lib/api";
 
 const NAV = [
-  { href: "https://jzis.org/sclib", label: "Home" },
+  { href: "/", label: "Home" },
   { href: "/search", label: "Search" },
   { href: "/materials", label: "Materials" },
   { href: "/timeline", label: "Timeline" },
@@ -28,6 +29,8 @@ const NAV = [
 
 export function Header() {
   const [user, setUser] = useState<User | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     function refresh() {
@@ -44,10 +47,23 @@ export function Header() {
     return onAuthChange(refresh);
   }, []);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setMenuOpen(false);
+    }
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [menuOpen]);
+
   return (
     <header className="sticky top-0 z-50 border-b border-sage-border bg-[rgba(240,245,240,0.85)] backdrop-blur-md supports-[backdrop-filter]:bg-[rgba(240,245,240,0.72)]">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-baseline gap-2">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
+        <Link href="/" className="flex shrink-0 items-baseline gap-2">
           <span className="bg-sage-gradient-text bg-clip-text text-xl font-bold tracking-tight text-transparent">
             SCLib
           </span>
@@ -55,7 +71,7 @@ export function Header() {
             JZIS
           </span>
         </Link>
-        <nav className="flex items-center gap-6 text-sm">
+        <nav className="hidden items-center gap-5 text-sm md:flex lg:gap-6">
           {NAV.map((n) => (
             <Link
               key={n.href}
@@ -96,7 +112,75 @@ export function Header() {
             </Link>
           )}
         </nav>
+
+        <button
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-navigation"
+          aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+          onClick={() => setMenuOpen((open) => !open)}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-sage-border bg-white/70 text-sage-muted transition-colors hover:bg-white hover:text-accent-deep focus:outline-none focus:ring-2 focus:ring-accent/30 md:hidden"
+        >
+          <span className="sr-only">
+            {menuOpen ? "Close navigation" : "Open navigation"}
+          </span>
+          <span aria-hidden className="relative block h-4 w-5">
+            <span
+              className={`absolute left-0 top-0.5 h-0.5 w-5 rounded bg-current transition-transform ${
+                menuOpen ? "translate-y-[6px] rotate-45" : ""
+              }`}
+            />
+            <span
+              className={`absolute left-0 top-[7px] h-0.5 w-5 rounded bg-current transition-opacity ${
+                menuOpen ? "opacity-0" : ""
+              }`}
+            />
+            <span
+              className={`absolute bottom-0.5 left-0 h-0.5 w-5 rounded bg-current transition-transform ${
+                menuOpen ? "-translate-y-[6px] -rotate-45" : ""
+              }`}
+            />
+          </span>
+        </button>
       </div>
+
+      {menuOpen && (
+        <nav
+          id="mobile-navigation"
+          aria-label="Mobile navigation"
+          className="absolute inset-x-0 top-full max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-sage-border bg-sage-bg/95 px-4 pb-4 pt-2 shadow-lg backdrop-blur-md md:hidden"
+        >
+          <div className="mx-auto grid max-w-6xl grid-cols-2 gap-2">
+            {NAV.map((item) => {
+              const active =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={
+                    "rounded-lg px-3 py-2.5 text-sm font-medium transition-colors " +
+                    (active
+                      ? "bg-accent-light text-accent-deep"
+                      : "bg-white/60 text-sage-muted hover:bg-white")
+                  }
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+          <Link
+            href="/dashboard"
+            className="mx-auto mt-3 flex max-w-6xl items-center justify-center gap-2 rounded-lg bg-sage-gradient px-4 py-2.5 text-sm font-semibold text-white shadow-sm"
+          >
+            {user ? `Account · ${user.name}` : "Account"}
+          </Link>
+        </nav>
+      )}
     </header>
   );
 }

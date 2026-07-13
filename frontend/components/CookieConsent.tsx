@@ -143,7 +143,7 @@ export function CookieConsentBanner() {
               />
             </label>
 
-            <div className="flex gap-2 pt-1">
+            <div className="flex flex-col gap-2 pt-1 sm:flex-row">
               <button
                 onClick={() => {
                   const checked = (
@@ -165,7 +165,7 @@ export function CookieConsentBanner() {
           </div>
         ) : (
           /* ---- Default buttons ---- */
-          <div className="mt-3 flex gap-2">
+          <div className="mt-3 flex flex-col gap-2 sm:flex-row">
             <button
               onClick={accept}
               className="btn-primary flex-1 whitespace-nowrap rounded-md px-4 py-2 text-xs font-medium"
