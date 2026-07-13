@@ -388,7 +388,13 @@ def _corroborated_max(
     values = sorted(per_paper.values(), reverse=True)
     n_papers = len(values)
     if n_papers < 5:
-        return values[0], n_papers
+        candidate = values[0]
+        # Rare materials may publish the maximum from a single paper, but the
+        # provenance label must still report the number that actually supports
+        # that exact value. Returning ``n_papers`` here used to label a 93 K
+        # outlier plus a 91 K paper as "confirmed by 2 papers".
+        support = sum(1 for value in values if value >= candidate)
+        return candidate, support
 
     min_support = max(2, min(10, n_papers // 20))
     for cand in values:

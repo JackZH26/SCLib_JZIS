@@ -32,6 +32,8 @@ out/
 .pnpm-store/
 pnpm-debug.log*
 npm-debug.log*
+playwright-report/
+test-results/
 
 # OS / editors
 .DS_Store

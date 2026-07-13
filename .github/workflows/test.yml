@@ -57,6 +57,59 @@ jobs:
       - name: Run tests
         run: pytest -q
 
+  migration-tests:
+    name: Migration (empty database to head)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: sclib_migration_test
+          POSTGRES_USER: sclib
+          POSTGRES_PASSWORD: sclib_test_pw
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U sclib -d sclib_migration_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://sclib:sclib_test_pw@localhost:5432/sclib_migration_test
+      JWT_SECRET: test_jwt_secret_not_for_production_use_at_all
+      ENVIRONMENT: test
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: pip install --upgrade pip uv
+      - name: Install API dependencies
+        run: uv pip install --system -e ".[dev]"
+      - name: Upgrade empty database to migration head
+        run: alembic upgrade head
+      - name: Verify migration head and auth schema
+        run: |
+          CURRENT="$(alembic current | awk '{print $1}')"
+          HEAD="$(alembic heads | awk '{print $1}')"
+          test "$CURRENT" = "$HEAD"
+          python - <<'PY'
+          from sqlalchemy import create_engine, inspect
+          from config import get_settings
+
+          engine = create_engine(get_settings().database_url)
+          schema = inspect(engine)
+          assert {"password_reset_tokens", "auth_audit_events"} <= set(schema.get_table_names())
+          user_columns = {column["name"] for column in schema.get_columns("users")}
+          assert "session_version" in user_columns
+          print("migration schema verified")
+          PY
+
   ingestion-tests:
     name: Ingestion (pytest, no production ingest)
     runs-on: ubuntu-latest
@@ -102,3 +155,36 @@ jobs:
         run: pnpm test
       - name: Type-check and build
         run: pnpm build
+
+  frontend-e2e:
+    name: Frontend (Playwright mobile E2E)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Chromium and system dependencies
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run production mobile E2E
+        run: pnpm test:e2e
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: frontend/playwright-report/
+          retention-days: 14

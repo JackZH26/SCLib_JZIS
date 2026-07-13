@@ -29,14 +29,14 @@ const DEFAULT_STATE: ConsentState = {
 export function loadConsent(): ConsentState {
   if (typeof window === "undefined") return DEFAULT_STATE;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw) as ConsentState;
   } catch { /* corrupted — treat as undecided */ }
   return DEFAULT_STATE;
 }
 
 export function saveConsent(state: ConsentState) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   // Notify GA loader and other listeners
   window.dispatchEvent(new CustomEvent("consent-change", { detail: state }));
 }
