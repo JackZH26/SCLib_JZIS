@@ -30,4 +30,7 @@ test("timeline page requests a bounded compact payload", () => {
   assert.match(page, /compact:\s*true/);
   assert.match(api, /next:\s*\{\s*revalidate:\s*60\s*\}/);
   assert.match(api, /cache:\s*["']force-cache["']/);
+  assert.match(api, /schema_version: opts\.schemaVersion \?\? "1"/);
+  assert.match(api, /if \(opts\.offset != null\)/);
+  assert.match(api, /if \(opts\.limit != null\)/);
 });

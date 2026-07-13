@@ -86,6 +86,13 @@ the legacy `detail` field and add stable `error_code` and `request_id` fields.
 See [API versioning and compatibility](API_VERSIONING.md) for the v1 change and
 deprecation policy.
 
+Versioned public data responses include `schema_version` in the body and return
+`ETag`, `X-Data-Version`, and `Last-Modified` validators. Send `If-None-Match`
+or `If-Modified-Since` to receive `304 Not Modified`. Discovery summaries use
+`offset`/`limit`; Timeline supports the same parameters after optional
+deterministic `max_points` downsampling. The response reports `has_more` and
+both available and returned point counts.
+
 ### `POST /search`
 ```json
 {

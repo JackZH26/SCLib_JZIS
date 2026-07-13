@@ -33,6 +33,7 @@ async function safeDiscovery(): Promise<{
       );
       return {
         metadata: {
+          schema_version: "1",
           page_title: legacy.page_title,
           intro: legacy.intro,
           status: legacy.status,
@@ -43,6 +44,7 @@ async function safeDiscovery(): Promise<{
           role_counts: roleCounts,
         },
         page: {
+          schema_version: "1",
           items: legacy.candidates.slice(0, PAGE_SIZE),
           total: legacy.candidates.length,
           offset: 0,

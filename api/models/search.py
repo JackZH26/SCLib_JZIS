@@ -351,12 +351,21 @@ class TimelineCoverage(BaseModel):
     # Number of points included in this response. This can be lower than
     # ``total_points`` when a caller requests deterministic downsampling.
     returned_points: int
+    # Number of points available after optional deterministic downsampling and
+    # before offset/limit pagination.
+    available_points: int | None = None
 
 
 class TimelineResponse(BaseModel):
+    schema_version: Literal["1"] = "1"
+    data_version: str = "timeline-v1-unknown"
+    data_updated_at: datetime | None = None
     family: str | None
     points: list[TimelinePoint]
     coverage: TimelineCoverage | None = None
+    offset: int = 0
+    limit: int | None = None
+    has_more: bool = False
 
 
 # ---------------------------------------------------------------------------
@@ -370,6 +379,7 @@ class DiscoveryFilterRule(BaseModel):
 
 
 class DiscoveryCandidate(BaseModel):
+    schema_version: Literal["1"] = "1"
     candidate_id: str
     formula: str
     normalized_formula: str | None = None
@@ -414,6 +424,7 @@ class DiscoveryCandidate(BaseModel):
 
 
 class DiscoveryResponse(BaseModel):
+    schema_version: Literal["1"] = "1"
     page_title: str
     intro: list[str]
     status: Literal["planned", "active"] = "planned"
@@ -430,6 +441,7 @@ class DiscoveryCandidateSummary(BaseModel):
     list pages do not repeatedly transfer long evidence and provenance arrays.
     """
 
+    schema_version: Literal["1"] = "1"
     candidate_id: str
     formula: str
     branch: str
@@ -449,6 +461,7 @@ class DiscoveryCandidateSummary(BaseModel):
 
 
 class DiscoveryMetadata(BaseModel):
+    schema_version: Literal["1"] = "1"
     page_title: str
     intro: list[str]
     status: Literal["planned", "active"] = "planned"
@@ -460,6 +473,7 @@ class DiscoveryMetadata(BaseModel):
 
 
 class DiscoveryCandidatePage(BaseModel):
+    schema_version: Literal["1"] = "1"
     items: list[DiscoveryCandidateSummary]
     total: int
     offset: int

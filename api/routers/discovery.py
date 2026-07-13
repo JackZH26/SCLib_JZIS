@@ -9,14 +9,14 @@ metadata, paginated-summary, and on-demand detail endpoints.
 from __future__ import annotations
 
 import asyncio
-import hashlib
 import json
 import logging
 import os
 from collections import Counter
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import TypeAlias
+from typing import Literal, TypeAlias
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from fastapi import Path as PathParam
@@ -29,6 +29,7 @@ from models.search import (
     DiscoveryResponse,
 )
 from routers.deps import Identity, peek_identity
+from services.http_cache import conditional_json_response, data_version
 
 router = APIRouter(tags=["discovery"])
 log = logging.getLogger(__name__)
@@ -83,6 +84,8 @@ class DiscoverySnapshot:
     summaries: tuple[DiscoveryCandidateSummary, ...]
     summaries_by_role: dict[str, tuple[DiscoveryCandidateSummary, ...]]
     candidates_by_id: dict[str, DiscoveryCandidate]
+    data_version: str
+    last_modified: datetime | None
 
 
 def _feed_signature(path: Path) -> FeedSignature:
@@ -126,15 +129,23 @@ def _build_snapshot(
         total_candidates=len(feed.candidates),
         role_counts=role_counts,
     )
+    full_json = feed.model_dump_json()
+    last_modified = (
+        datetime.fromtimestamp(signature[1] / 1_000_000_000, tz=UTC)
+        if signature[1] is not None
+        else None
+    )
     return DiscoverySnapshot(
         signature=signature,
         source_status=source_status,
         feed=feed,
-        full_json=feed.model_dump_json(),
+        full_json=full_json,
         metadata=metadata,
         summaries=summaries,
         summaries_by_role=summaries_by_role,
         candidates_by_id={candidate.candidate_id: candidate for candidate in feed.candidates},
+        data_version=data_version("discovery", full_json),
+        last_modified=last_modified,
     )
 
 
@@ -169,36 +180,22 @@ def _configured_path() -> Path:
     return Path(os.getenv("SCLIB_DISCOVERY_FEED_PATH", _DEFAULT_FEED_PATH))
 
 
-def _weak_etag(payload: str) -> str:
-    return f'W/"{hashlib.sha256(payload.encode()).hexdigest()}"'
-
-
-def _etag_matches(if_none_match: str | None, etag: str) -> bool:
-    if not if_none_match:
-        return False
-
-    def weak_value(value: str) -> str:
-        value = value.strip()
-        return value[2:] if value.startswith("W/") else value
-
-    expected = weak_value(etag)
-    return any(
-        candidate.strip() == "*" or weak_value(candidate) == expected
-        for candidate in if_none_match.split(",")
+def _http_response(
+    request: Request,
+    payload: str,
+    *,
+    snapshot: DiscoverySnapshot,
+    cache_status: str,
+) -> Response:
+    return conditional_json_response(
+        request,
+        payload,
+        cache_control=_CACHE_CONTROL,
+        data_version_value=snapshot.data_version,
+        last_modified=snapshot.last_modified,
+        cache_header="X-Discovery-Cache",
+        cache_status=cache_status,
     )
-
-
-def _http_response(request: Request, payload: str, *, cache_status: str) -> Response:
-    etag = _weak_etag(payload)
-    headers = {
-        "Cache-Control": _CACHE_CONTROL,
-        "ETag": etag,
-        "Vary": "Accept-Encoding",
-        "X-Discovery-Cache": cache_status,
-    }
-    if _etag_matches(request.headers.get("if-none-match"), etag):
-        return Response(status_code=304, headers=headers)
-    return Response(content=payload, media_type="application/json", headers=headers)
 
 
 async def _snapshot() -> tuple[DiscoverySnapshot, str]:
@@ -225,11 +222,17 @@ async def get_discovery_feed_health() -> dict:
 )
 async def discovery_feed(
     request: Request,
+    schema_version: Literal["1"] = Query("1", description="Response schema version"),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001, B008
 ) -> Response:
     """Return the original full payload for backward compatibility."""
     snapshot, cache_status = await _snapshot()
-    return _http_response(request, snapshot.full_json, cache_status=cache_status)
+    return _http_response(
+        request,
+        snapshot.full_json,
+        snapshot=snapshot,
+        cache_status=cache_status,
+    )
 
 
 @router.get(
@@ -239,12 +242,14 @@ async def discovery_feed(
 )
 async def discovery_metadata(
     request: Request,
+    schema_version: Literal["1"] = Query("1", description="Response schema version"),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001, B008
 ) -> Response:
     snapshot, cache_status = await _snapshot()
     return _http_response(
         request,
         snapshot.metadata.model_dump_json(),
+        snapshot=snapshot,
         cache_status=cache_status,
     )
 
@@ -259,6 +264,7 @@ async def discovery_candidates(
     offset: int = Query(0, ge=0, le=1_000_000),
     limit: int = Query(24, ge=1, le=100),
     record_role: str | None = Query(None, min_length=1, max_length=64),
+    schema_version: Literal["1"] = Query("1", description="Response schema version"),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001, B008
 ) -> Response:
     snapshot, cache_status = await _snapshot()
@@ -276,7 +282,12 @@ async def discovery_candidates(
         has_more=offset + limit < total,
         record_role=record_role,
     )
-    return _http_response(request, page.model_dump_json(), cache_status=cache_status)
+    return _http_response(
+        request,
+        page.model_dump_json(),
+        snapshot=snapshot,
+        cache_status=cache_status,
+    )
 
 
 @router.get(
@@ -290,6 +301,7 @@ async def discovery_candidates(
 async def discovery_candidate_detail(
     request: Request,
     candidate_id: str = PathParam(..., min_length=1, max_length=160),
+    schema_version: Literal["1"] = Query("1", description="Response schema version"),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001, B008
 ) -> Response:
     snapshot, cache_status = await _snapshot()
@@ -299,5 +311,6 @@ async def discovery_candidate_detail(
     return _http_response(
         request,
         candidate.model_dump_json(),
+        snapshot=snapshot,
         cache_status=cache_status,
     )

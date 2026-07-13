@@ -284,10 +284,25 @@ Content-Type: application/json
           <p>
             Tc timeline measurements grouped by material family. Supports
             deterministic point budgets (<code>max_points</code>) and compact
-            chart payloads (<code>compact=true</code>) while coverage totals
+            chart payloads (<code>compact=true</code>), followed by stable
+            <code> offset</code>/<code>limit</code> pagination. Coverage totals
             continue to describe the complete filtered result.
           </p>
-          <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`GET /v1/timeline?max_points=10000&compact=true`}</pre>
+          <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`GET /v1/timeline?schema_version=1&max_points=10000&offset=0&limit=1000&compact=true`}</pre>
+          <p className="mt-2">
+            Timeline and Discovery data responses return <Code>ETag</Code>,{" "}
+            <Code>Last-Modified</Code>, and <Code>X-Data-Version</Code>. Use
+            conditional requests to avoid retransferring an unchanged snapshot.
+          </p>
+        </Endpoint>
+
+        {/* Discovery */}
+        <Endpoint method="GET" path="/discovery/candidates" badge="free">
+          <p>
+            Versioned, paginated candidate summaries. Fetch full evidence only
+            when needed from <Code>/discovery/candidates/{`{candidate_id}`}</Code>.
+          </p>
+          <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`GET /v1/discovery/candidates?schema_version=1&offset=0&limit=24`}</pre>
         </Endpoint>
 
         {/* Stats */}
@@ -360,6 +375,12 @@ Content-Type: application/json
             </tbody>
           </table>
         </div>
+        <p className="text-sm text-sage-muted">
+          Every response includes <Code>X-Request-ID</Code> and{" "}
+          <Code>X-API-Version</Code>. Error JSON preserves <Code>detail</Code>
+          and adds <Code>error_code</Code> plus <Code>request_id</Code>; include
+          the request ID when reporting an API problem.
+        </p>
       </section>
 
       {/* ── Full example ── */}

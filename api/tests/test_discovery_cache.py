@@ -17,10 +17,16 @@ from routers.discovery import (
 )
 
 
-def _request(path: str, if_none_match: str | None = None) -> Request:
+def _request(
+    path: str,
+    if_none_match: str | None = None,
+    if_modified_since: str | None = None,
+) -> Request:
     headers = []
     if if_none_match:
         headers.append((b"if-none-match", if_none_match.encode()))
+    if if_modified_since:
+        headers.append((b"if-modified-since", if_modified_since.encode()))
     return Request({
         "type": "http",
         "method": "GET",
@@ -75,6 +81,8 @@ async def test_store_reuses_snapshot_until_file_signature_changes(tmp_path: Path
     assert second is first
     assert first.source_status == "ready"
     assert first.metadata.total_candidates == 1
+    assert first.data_version.startswith("discovery-v1-")
+    assert first.last_modified is not None
 
     _write_feed(path, [
         _candidate("lead-1", "exploratory_candidate"),
@@ -104,9 +112,16 @@ async def test_additive_endpoints_page_filter_and_lazy_detail(
     monkeypatch.setenv("SCLIB_DISCOVERY_FEED_PATH", str(path))
     _store.clear()
 
-    metadata_response = await discovery_metadata(_request("/v1/discovery/metadata"), None)  # type: ignore[arg-type]
+    metadata_response = await discovery_metadata(
+        _request("/v1/discovery/metadata"),
+        schema_version="1",
+        identity=None,  # type: ignore[arg-type]
+    )
     metadata = json.loads(metadata_response.body)
     assert metadata_response.headers["x-discovery-cache"] == "MISS"
+    assert metadata_response.headers["x-data-version"].startswith("discovery-v1-")
+    assert "last-modified" in metadata_response.headers
+    assert metadata["schema_version"] == "1"
     assert metadata["total_candidates"] == 3
 
     page_response = await discovery_candidates(
@@ -114,11 +129,13 @@ async def test_additive_endpoints_page_filter_and_lazy_detail(
         offset=0,
         limit=1,
         record_role="exploratory_candidate",
+        schema_version="1",
         identity=None,  # type: ignore[arg-type]
     )
     page = json.loads(page_response.body)
     assert page_response.headers["x-discovery-cache"] == "HIT"
     assert page["total"] == 2
+    assert page["schema_version"] == "1"
     assert page["has_more"] is True
     assert page["items"][0]["candidate_id"] == "lead-1"
     assert "review_summary" not in page["items"][0]
@@ -126,6 +143,7 @@ async def test_additive_endpoints_page_filter_and_lazy_detail(
     detail_response = await discovery_candidate_detail(
         _request("/v1/discovery/candidates/lead-1"),
         candidate_id="lead-1",
+        schema_version="1",
         identity=None,  # type: ignore[arg-type]
     )
     detail = json.loads(detail_response.body)
@@ -134,15 +152,27 @@ async def test_additive_endpoints_page_filter_and_lazy_detail(
 
     etag_response = await discovery_metadata(
         _request("/v1/discovery/metadata", metadata_response.headers["etag"]),
-        None,  # type: ignore[arg-type]
+        schema_version="1",
+        identity=None,  # type: ignore[arg-type]
     )
     assert etag_response.status_code == 304
     assert etag_response.body == b""
+
+    modified_response = await discovery_metadata(
+        _request(
+            "/v1/discovery/metadata",
+            if_modified_since=metadata_response.headers["last-modified"],
+        ),
+        schema_version="1",
+        identity=None,  # type: ignore[arg-type]
+    )
+    assert modified_response.status_code == 304
 
     with pytest.raises(HTTPException) as exc_info:
         await discovery_candidate_detail(
             _request("/v1/discovery/candidates/missing"),
             candidate_id="missing",
+            schema_version="1",
             identity=None,  # type: ignore[arg-type]
         )
     assert exc_info.value.status_code == 404

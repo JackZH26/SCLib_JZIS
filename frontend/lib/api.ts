@@ -872,12 +872,19 @@ export interface TimelineCoverage {
   year_min: number | null;
   year_max: number | null;
   returned_points: number;
+  available_points: number | null;
 }
 
 export interface TimelineResponse {
+  schema_version: "1";
+  data_version: string;
+  data_updated_at: string | null;
   family: string | null;
   points: TimelinePoint[];
   coverage: TimelineCoverage | null;
+  offset: number;
+  limit: number | null;
+  has_more: boolean;
 }
 
 export function getTimeline(opts: {
@@ -886,13 +893,20 @@ export function getTimeline(opts: {
   onlyAps?: boolean;
   maxPoints?: 5000 | 10000 | 20000 | 50000;
   compact?: boolean;
+  offset?: number;
+  limit?: number;
+  schemaVersion?: "1";
 } = {}) {
-  const qs = new URLSearchParams();
+  const qs = new URLSearchParams({
+    schema_version: opts.schemaVersion ?? "1",
+  });
   if (opts.family) qs.set("family", opts.family);
   if (opts.experimentalOnly) qs.set("experimental_only", "true");
   if (opts.onlyAps) qs.set("only_aps", "true");
   if (opts.maxPoints) qs.set("max_points", String(opts.maxPoints));
   if (opts.compact) qs.set("compact", "true");
+  if (opts.offset != null) qs.set("offset", String(opts.offset));
+  if (opts.limit != null) qs.set("limit", String(opts.limit));
   const qstr = qs.toString();
   return request<TimelineResponse>(`/timeline${qstr ? `?${qstr}` : ""}`, {
     cache: "force-cache",
@@ -908,6 +922,7 @@ export interface DiscoveryFilterRule {
 }
 
 export interface DiscoveryCandidate {
+  schema_version: "1";
   candidate_id: string;
   formula: string;
   normalized_formula: string | null;
@@ -952,6 +967,7 @@ export interface DiscoveryCandidate {
 }
 
 export interface DiscoveryResponse {
+  schema_version: "1";
   page_title: string;
   intro: string[];
   status: "planned" | "active";
@@ -962,7 +978,7 @@ export interface DiscoveryResponse {
 }
 
 export function getDiscovery() {
-  return request<DiscoveryResponse>("/discovery", {
+  return request<DiscoveryResponse>("/discovery?schema_version=1", {
     cache: "force-cache",
     credentials: "omit",
     next: { revalidate: 60 },
@@ -990,6 +1006,7 @@ export type DiscoveryCandidateSummary = Pick<
 >;
 
 export interface DiscoveryMetadata {
+  schema_version: "1";
   page_title: string;
   intro: string[];
   status: "planned" | "active";
@@ -1001,6 +1018,7 @@ export interface DiscoveryMetadata {
 }
 
 export interface DiscoveryCandidatePage {
+  schema_version: "1";
   items: DiscoveryCandidateSummary[];
   total: number;
   offset: number;
@@ -1012,7 +1030,7 @@ export interface DiscoveryCandidatePage {
 const DISCOVERY_PAGE_SIZE = 24;
 
 export function getDiscoveryMetadata() {
-  return request<DiscoveryMetadata>("/discovery/metadata", {
+  return request<DiscoveryMetadata>("/discovery/metadata?schema_version=1", {
     cache: "force-cache",
     credentials: "omit",
     next: { revalidate: 60 },
@@ -1027,6 +1045,7 @@ export function getDiscoveryCandidates(opts: {
   const qs = new URLSearchParams({
     offset: String(opts.offset ?? 0),
     limit: String(opts.limit ?? DISCOVERY_PAGE_SIZE),
+    schema_version: "1",
   });
   if (opts.recordRole) qs.set("record_role", opts.recordRole);
   return request<DiscoveryCandidatePage>(`/discovery/candidates?${qs}`, {
@@ -1038,7 +1057,7 @@ export function getDiscoveryCandidates(opts: {
 
 export function getDiscoveryCandidate(candidateId: string) {
   return request<DiscoveryCandidate>(
-    `/discovery/candidates/${encodeURIComponent(candidateId)}`,
+    `/discovery/candidates/${encodeURIComponent(candidateId)}?schema_version=1`,
     {
       cache: "force-cache",
       credentials: "omit",

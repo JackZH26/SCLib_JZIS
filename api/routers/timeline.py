@@ -29,6 +29,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+from datetime import UTC, datetime
 from typing import Literal
 
 from fastapi import APIRouter, Depends, Query, Request, Response
@@ -38,6 +39,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from models import get_db
 from models.db import Material, Paper
 from models.search import TimelineCoverage, TimelinePoint, TimelineResponse
+from services.http_cache import conditional_json_response, weak_etag
 from services.rate_limit import get_redis
 from services.timeline_points import (
     extract_timeline_points,
@@ -48,11 +50,16 @@ from services.timeline_projection import fetch_projected_timeline_points
 router = APIRouter(tags=["timeline"])
 log = logging.getLogger(__name__)
 
-_CACHE_SCHEMA_VERSION = "v3"
+_CACHE_SCHEMA_VERSION = "v4"
 _CACHE_TTL_SECONDS = 900
 _CACHE_CONTROL = (
     "public, max-age=60, s-maxage=900, stale-while-revalidate=3600"
 )
+
+
+def _weak_etag(payload: str) -> str:
+    """Backward-compatible local alias used by cache contract tests."""
+    return weak_etag(payload)
 
 
 def _date_year(value) -> int | None:
@@ -66,6 +73,9 @@ def _cache_key(
     only_aps: bool,
     max_points: int | None,
     compact: bool,
+    offset: int = 0,
+    limit: int | None = None,
+    schema_version: str = "1",
 ) -> str:
     options = json.dumps(
         {
@@ -75,6 +85,9 @@ def _cache_key(
             "max_points": max_points,
             "only_aps": only_aps,
             "compact": compact,
+            "offset": offset,
+            "limit": limit,
+            "schema_version": schema_version,
         },
         sort_keys=True,
         separators=(",", ":"),
@@ -114,46 +127,49 @@ def _serialize_timeline(data: TimelineResponse, *, compact: bool) -> str:
     )
 
 
-def _weak_etag(payload: str) -> str:
-    digest = hashlib.sha256(payload.encode()).hexdigest()
-    return f'W/"{digest}"'
-
-
-def _etag_matches(if_none_match: str | None, etag: str) -> bool:
-    if not if_none_match:
-        return False
-
-    def weak_value(value: str) -> str:
-        value = value.strip()
-        return value[2:] if value.startswith("W/") else value
-
-    expected = weak_value(etag)
-    return any(
-        candidate.strip() == "*" or weak_value(candidate) == expected
-        for candidate in if_none_match.split(",")
-    )
-
-
 def _http_response(
     request: Request,
     payload: str,
     *,
     cache_status: str,
 ) -> Response:
-    etag = _weak_etag(payload)
-    headers = {
-        "Cache-Control": _CACHE_CONTROL,
-        "ETag": etag,
-        "Vary": "Accept-Encoding",
-        "X-Timeline-Cache": cache_status,
-    }
-    if _etag_matches(request.headers.get("if-none-match"), etag):
-        return Response(status_code=304, headers=headers)
-    return Response(
-        content=payload,
-        media_type="application/json",
-        headers=headers,
+    data_version_value, last_modified = _payload_metadata(payload)
+    return conditional_json_response(
+        request,
+        payload,
+        cache_control=_CACHE_CONTROL,
+        data_version_value=data_version_value,
+        last_modified=last_modified,
+        cache_header="X-Timeline-Cache",
+        cache_status=cache_status,
     )
+
+
+def _payload_metadata(payload: str) -> tuple[str, datetime | None]:
+    try:
+        parsed = json.loads(payload)
+    except json.JSONDecodeError:
+        parsed = {}
+    version = parsed.get("data_version") if isinstance(parsed, dict) else None
+    updated_at = parsed.get("data_updated_at") if isinstance(parsed, dict) else None
+    last_modified: datetime | None = None
+    if isinstance(updated_at, str):
+        try:
+            last_modified = datetime.fromisoformat(updated_at.replace("Z", "+00:00"))
+        except ValueError:
+            pass
+    if not isinstance(version, str) or not version:
+        version = "timeline-v1-unknown"
+    return version, last_modified
+
+
+def _timeline_data_version(updated_at: datetime | None) -> str:
+    if updated_at is None:
+        return "timeline-v1-unknown"
+    if updated_at.tzinfo is None:
+        updated_at = updated_at.replace(tzinfo=UTC)
+    stamp = updated_at.astimezone(UTC).strftime("%Y%m%dT%H%M%SZ")
+    return f"timeline-v1-{stamp}"
 
 
 @router.get(
@@ -201,7 +217,15 @@ async def timeline(
         False,
         description="Omit display fields that the interactive chart does not use.",
     ),
-    db: AsyncSession = Depends(get_db),
+    offset: int = Query(0, ge=0, le=1_000_000),
+    limit: int | None = Query(
+        None,
+        ge=1,
+        le=50_000,
+        description="Page size after optional deterministic downsampling.",
+    ),
+    schema_version: Literal["1"] = Query("1", description="Response schema version"),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ) -> Response:
     cache_key = _cache_key(
         family,
@@ -210,6 +234,9 @@ async def timeline(
         only_aps,
         max_points,
         compact,
+        offset,
+        limit,
+        schema_version,
     )
     redis = get_redis()
     try:
@@ -246,6 +273,8 @@ async def timeline(
             experimental_only=experimental_only,
             only_aps=only_aps,
             max_points=max_points,
+            offset=offset,
+            limit=limit,
             db=db,
         )
     else:
@@ -253,6 +282,9 @@ async def timeline(
             family=family,
             points=projected.points,
             max_points=max_points,
+            offset=offset,
+            limit=limit,
+            data_updated_at=projected.refreshed_at,
         )
     payload = _serialize_timeline(data, compact=compact)
     try:
@@ -267,9 +299,14 @@ def _timeline_response(
     family: str | None,
     points: list[TimelinePoint],
     max_points: int | None,
+    offset: int = 0,
+    limit: int | None = None,
+    data_updated_at: datetime | None = None,
 ) -> TimelineResponse:
     total_points = len(points)
-    returned_points = _evenly_sample(points, max_points)
+    available_points = _evenly_sample(points, max_points)
+    end = offset + limit if limit is not None else None
+    returned_points = available_points[offset:end]
     if points:
         years = [point.year for point in points]
         coverage = TimelineCoverage(
@@ -278,6 +315,7 @@ def _timeline_response(
             year_min=min(years),
             year_max=max(years),
             returned_points=len(returned_points),
+            available_points=len(available_points),
         )
     else:
         coverage = TimelineCoverage(
@@ -286,8 +324,18 @@ def _timeline_response(
             year_min=None,
             year_max=None,
             returned_points=0,
+            available_points=0,
         )
-    return TimelineResponse(family=family, points=returned_points, coverage=coverage)
+    return TimelineResponse(
+        data_version=_timeline_data_version(data_updated_at),
+        data_updated_at=data_updated_at,
+        family=family,
+        points=returned_points,
+        coverage=coverage,
+        offset=offset,
+        limit=limit,
+        has_more=offset + len(returned_points) < len(available_points),
+    )
 
 
 async def _build_timeline_fallback(
@@ -297,6 +345,8 @@ async def _build_timeline_fallback(
     experimental_only: bool,
     only_aps: bool,
     max_points: int | None,
+    offset: int,
+    limit: int | None,
     db: AsyncSession,
 ) -> TimelineResponse:
     stmt = select(Material)
@@ -306,6 +356,10 @@ async def _build_timeline_fallback(
         stmt = stmt.where(Material.needs_review.is_(False))
 
     mats = (await db.execute(stmt)).scalars().all()
+    data_updated_at = max(
+        (material.updated_at for material in mats if material.updated_at is not None),
+        default=None,
+    )
 
     paper_ids: set[str] = set()
     for material in mats:
@@ -351,4 +405,7 @@ async def _build_timeline_fallback(
         family=family,
         points=points,
         max_points=max_points,
+        offset=offset,
+        limit=limit,
+        data_updated_at=data_updated_at,
     )

@@ -261,6 +261,9 @@ async def test_endpoint_rolls_back_and_uses_fallback_when_projection_fails(
         only_aps=False,
         max_points=None,
         compact=False,
+        offset=0,
+        limit=None,
+        schema_version="1",
         db=db,  # type: ignore[arg-type]
     )
 
@@ -313,6 +316,9 @@ async def test_endpoint_prefers_ready_projection_over_jsonb_fallback(monkeypatch
         only_aps=False,
         max_points=None,
         compact=False,
+        offset=0,
+        limit=None,
+        schema_version="1",
         db=_FakeSession(),  # type: ignore[arg-type]
     )
 

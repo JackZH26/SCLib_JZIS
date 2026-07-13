@@ -11,6 +11,7 @@ test("discovery server render uses bounded summary pages", () => {
   assert.match(page, /getDiscoveryMetadata\(\)/);
   assert.match(page, /getDiscoveryCandidates\(\{ limit: PAGE_SIZE \}\)/);
   assert.match(api, /\/discovery\/candidates\?\$\{qs\}/);
+  assert.match(api, /schema_version: "1"/);
   assert.match(api, /next:\s*\{ revalidate: 60 \}/);
 });
 

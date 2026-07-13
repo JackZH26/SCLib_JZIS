@@ -53,6 +53,17 @@ async def test_validation_error_uses_stable_envelope_without_echoing_input(clien
     assert all("input" not in error and "ctx" not in error for error in body["detail"])
 
 
+@pytest.mark.asyncio
+async def test_public_data_endpoints_reject_unknown_schema_versions(client) -> None:
+    for path in (
+        "/v1/timeline?schema_version=2",
+        "/v1/discovery/candidates?schema_version=2",
+    ):
+        response = await client.get(path)
+        assert response.status_code == 422
+        assert response.json()["error_code"] == "validation_error"
+
+
 def test_openapi_v1_publishes_error_and_quota_contract() -> None:
     schema = app.openapi()
 
@@ -68,3 +79,15 @@ def test_openapi_v1_publishes_error_and_quota_contract() -> None:
     ]["application/json"]["schema"] == {
         "$ref": "#/components/schemas/ApiErrorResponse"
     }
+    timeline_params = {
+        parameter["name"]
+        for parameter in schema["paths"]["/v1/timeline"]["get"]["parameters"]
+    }
+    discovery_params = {
+        parameter["name"]
+        for parameter in schema["paths"]["/v1/discovery/candidates"]["get"][
+            "parameters"
+        ]
+    }
+    assert {"offset", "limit", "schema_version"} <= timeline_params
+    assert {"offset", "limit", "schema_version"} <= discovery_params
