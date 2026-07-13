@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Cookie Policy — SCLib",
+  title: "Cookie Policy",
   description:
     "How SCLib uses cookies and similar technologies, and how to manage your preferences.",
+  alternates: { canonical: absoluteUrl("/cookies") },
 };
 
 export default function CookiePolicyPage() {

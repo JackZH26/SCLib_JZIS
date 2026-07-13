@@ -8,10 +8,20 @@
  * dropdowns. Everything round-trips via URL query params so the
  * page stays SSR-friendly and shareable.
  */
+import type { Metadata } from "next";
 import { listMaterials, type MaterialListParams } from "@/lib/api";
 import { MaterialTable } from "@/components/MaterialTable";
 import { Pagination } from "@/components/Pagination";
 import { FamilyFilterField } from "@/components/FamilyFilterField";
+import { absoluteUrl } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: "Superconducting materials database",
+  description:
+    "Browse superconducting materials, critical temperatures, structures, pressure conditions, and supporting literature.",
+  alternates: { canonical: absoluteUrl("/materials") },
+  openGraph: { url: absoluteUrl("/materials") },
+};
 
 type Sp = {
   family?: string;

@@ -798,6 +798,44 @@ export function getSimilar(id: string, top_k = 10) {
   );
 }
 
+// --- Search-engine discovery ---------------------------------------------
+
+export type SitemapResourceKind = "paper" | "material";
+
+export interface SitemapResource {
+  kind: SitemapResourceKind;
+  id: string;
+  updated_at: string;
+}
+
+export interface SitemapResourcePage {
+  total: number;
+  limit: number;
+  offset: number;
+  results: SitemapResource[];
+}
+
+/**
+ * Fetch a payload-minimal public inventory for XML sitemap generation.
+ * The API caps pages at 10,000 URLs so each XML document stays well below
+ * the search-engine protocol limit of 50,000 URLs.
+ */
+export function listSitemapResources(
+  kind: SitemapResourceKind,
+  limit = 10_000,
+  offset = 0,
+) {
+  const qs = new URLSearchParams({
+    kind,
+    limit: String(limit),
+    offset: String(offset),
+  });
+  return request<SitemapResourcePage>(`/sitemap/resources?${qs}`, {
+    cache: "force-cache",
+    next: { revalidate: 3600 },
+  });
+}
+
 // --- Stats / timeline -----------------------------------------------------
 
 export interface StatsResponse {

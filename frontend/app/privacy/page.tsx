@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — SCLib",
+  title: "Privacy Policy",
   description: "How SCLib collects, uses, retains, and protects personal data.",
+  alternates: { canonical: absoluteUrl("/privacy") },
 };
 
 export default function PrivacyPolicyPage() {

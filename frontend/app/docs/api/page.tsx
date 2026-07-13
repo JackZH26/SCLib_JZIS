@@ -4,9 +4,19 @@
  * Static server component — no auth needed. Linked from the dashboard
  * API Keys tab so users know how to wire up their key.
  */
+import type { Metadata } from "next";
 import Link from "next/link";
+import { absoluteUrl } from "@/lib/seo";
 
 const API_BASE = "https://api.jzis.org/sclib/v1";
+
+export const metadata: Metadata = {
+  title: "API reference",
+  description:
+    "Use the SCLib API for superconductivity search, grounded Q&A, materials data, and paper metadata.",
+  alternates: { canonical: absoluteUrl("/docs/api") },
+  openGraph: { url: absoluteUrl("/docs/api") },
+};
 
 function Code({ children }: { children: React.ReactNode }) {
   return (

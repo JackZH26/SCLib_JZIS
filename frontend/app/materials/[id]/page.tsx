@@ -14,25 +14,72 @@
  * row with no data; sections themselves hide entirely when every
  * row is empty.
  */
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { getMaterial, getMaterialHydrideParameters } from "@/lib/api";
 import type { HydrideTcParameterRecord } from "@/lib/api";
 import { ApiError } from "@/lib/api";
 import { familyLabel } from "@/lib/families";
+import { absoluteUrl, serializeJsonLd } from "@/lib/seo";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { FormulaDisplay } from "@/components/FormulaDisplay";
 
-export default async function MaterialDetailPage({
-  params,
-}: {
+type MaterialPageProps = {
   params: Promise<{ id: string }>;
-}) {
+};
+
+const loadMaterial = cache(getMaterial);
+
+function materialDescription(mat: Awaited<ReturnType<typeof getMaterial>>): string {
+  const properties = [
+    mat.family ? familyLabel(mat.family) : null,
+    mat.tc_max != null ? `maximum Tc ${mat.tc_max.toFixed(1)} K` : null,
+    mat.total_papers === 1 ? "1 supporting paper" : `${mat.total_papers} supporting papers`,
+  ].filter(Boolean);
+  return `${mat.formula} superconducting material data: ${properties.join(", ")}.`;
+}
+
+export async function generateMetadata({
+  params,
+}: MaterialPageProps): Promise<Metadata> {
+  const { id: encodedId } = await params;
+  const id = decodeURIComponent(encodedId);
+  try {
+    const mat = await loadMaterial(id);
+    const title = `${mat.formula} superconducting material`;
+    const description = materialDescription(mat);
+    const canonical = absoluteUrl(`/materials/${encodeURIComponent(mat.id)}`);
+    return {
+      title,
+      description,
+      alternates: { canonical },
+      openGraph: {
+        type: "website",
+        url: canonical,
+        title,
+        description,
+      },
+      twitter: { card: "summary", title, description },
+    };
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      return {
+        title: "Material not found",
+        robots: { index: false, follow: false },
+      };
+    }
+    throw error;
+  }
+}
+
+export default async function MaterialDetailPage({ params }: MaterialPageProps) {
   const { id: encodedId } = await params;
   const id = decodeURIComponent(encodedId);
   let mat;
   try {
-    mat = await getMaterial(id);
+    mat = await loadMaterial(id);
   } catch (e) {
     if (e instanceof ApiError && e.status === 404) notFound();
     throw e;
@@ -48,9 +95,59 @@ export default async function MaterialDetailPage({
     ["retracted", mat.retracted],
   ];
   const activeFlags = flags.filter(([, v]) => v === true);
+  const canonical = absoluteUrl(`/materials/${encodeURIComponent(mat.id)}`);
+  const materialStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: `${mat.formula} superconducting material data`,
+    description: materialDescription(mat),
+    url: canonical,
+    identifier: mat.id,
+    keywords: [
+      "superconductivity",
+      mat.formula,
+      mat.family,
+      mat.subfamily,
+    ].filter(Boolean),
+    variableMeasured: [
+      mat.tc_max != null
+        ? {
+            "@type": "PropertyValue",
+            name: "Maximum critical temperature",
+            value: mat.tc_max,
+            unitText: "kelvin",
+          }
+        : null,
+      mat.tc_ambient != null
+        ? {
+            "@type": "PropertyValue",
+            name: "Ambient-pressure critical temperature",
+            value: mat.tc_ambient,
+            unitText: "kelvin",
+          }
+        : null,
+    ].filter(Boolean),
+    measurementTechnique: "Scientific literature extraction and validation",
+    includedInDataCatalog: {
+      "@type": "DataCatalog",
+      name: "SCLib — JZIS Superconductivity Library",
+      url: absoluteUrl("/materials"),
+    },
+    creator: {
+      "@type": "Organization",
+      name: "JZ Institute of Science",
+    },
+  };
 
   return (
     <main className="space-y-8">
+      <script
+        id="sclib-material-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(materialStructuredData),
+        }}
+      />
       <div>
         <Link href="/materials" className="text-sm text-slate-500 hover:underline">
           ← Materials

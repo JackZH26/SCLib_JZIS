@@ -57,10 +57,13 @@ and installs `nginx/sclib.conf` into `/etc/nginx/conf.d/`.
    `VERTEX_AI_INDEX_ENDPOINT`, `INTERNAL_API_KEY`.
 2. **Install the frontend proxy block** into
    `/etc/nginx/sites-available/jzis.org` — copy the `location /sclib`
-   stanza from the comment at the top of `nginx/sclib.conf`. Note it
-   points at **port 3100**, not 3000.
-3. `nginx -t && systemctl reload nginx`
-4. Start the stack:
+   stanza from the comment at the top of `nginx/sclib.conf`. It points at
+   **port 3100**, not 3000.
+3. Preserve the main site's existing root `robots.txt` and append this line
+   to its content: `Sitemap: https://jzis.org/sclib/sitemap.xml`. Do not
+   replace or proxy the root file: it may contain rules for other JZIS sites.
+4. `nginx -t && systemctl reload nginx`
+5. Start the stack:
    ```bash
    # Use the three signed digests from one successful Release images run.
    export SCLIB_FRONTEND_IMAGE='ghcr.io/jackzh26/sclib-frontend@sha256:<digest>'
@@ -69,15 +72,17 @@ and installs `nginx/sclib.conf` into `/etc/nginx/conf.d/`.
    docker compose --profile observability \
      -f docker-compose.yml -f docker-compose.prod.yml up -d --no-build
    ```
-5. Run Alembic migrations:
+6. Run Alembic migrations:
    ```bash
    docker compose exec api alembic upgrade head
    ```
-6. Smoke-test:
+7. Smoke-test:
    ```bash
    curl -s http://127.0.0.1:8000/v1/stats | jq .
    curl -s https://api.jzis.org/sclib/v1/stats | jq .
    curl -sI https://jzis.org/sclib/ | head -1
+   curl -fsS https://jzis.org/robots.txt | grep 'Sitemap: https://jzis.org/sclib/sitemap.xml'
+   curl -fsS https://jzis.org/sclib/sitemap.xml | grep '<sitemapindex'
    ```
 
 ## Production Google identity

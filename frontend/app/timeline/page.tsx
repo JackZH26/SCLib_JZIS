@@ -8,10 +8,20 @@
  * revision used "iron" as the slug while the DB stores "iron_based",
  * so the Iron-based filter button produced zero points. Fixed here.
  */
+import type { Metadata } from "next";
 import { getTimeline } from "@/lib/api";
 import { TcTimeline } from "@/components/TcTimeline";
 import Link from "next/link";
 import { FAMILY_OPTIONS } from "@/lib/families";
+import { absoluteUrl } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: "Superconductivity discovery timeline",
+  description:
+    "Explore critical-temperature records and superconducting material discoveries over time.",
+  alternates: { canonical: absoluteUrl("/timeline") },
+  openGraph: { url: absoluteUrl("/timeline") },
+};
 
 const FAMILIES = [{ slug: "", label: "All" }, ...FAMILY_OPTIONS];
 

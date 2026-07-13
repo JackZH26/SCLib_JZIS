@@ -3,9 +3,19 @@
  * page and adds a "papers by year" bar list and the top-10 material
  * families.
  */
+import type { Metadata } from "next";
 import { getStats } from "@/lib/api";
 import { StatsCards } from "@/components/StatsCards";
 import { PapersByYearTabs } from "@/components/PapersByYearTabs";
+import { absoluteUrl } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: "Library statistics",
+  description:
+    "View SCLib paper, material, literature coverage, data snapshot, and ingestion-pipeline statistics.",
+  alternates: { canonical: absoluteUrl("/stats") },
+  openGraph: { url: absoluteUrl("/stats") },
+};
 
 function formatUtc(value: string | null | undefined) {
   if (!value) return "Not recorded";

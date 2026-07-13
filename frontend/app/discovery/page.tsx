@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { DiscoveryFeed } from "@/components/DiscoveryFeed";
 import {
   getDiscovery,
@@ -6,6 +7,15 @@ import {
   type DiscoveryCandidatePage,
   type DiscoveryMetadata,
 } from "@/lib/api";
+import { absoluteUrl } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: "Reviewed superconductivity discovery feed",
+  description:
+    "Review superconductivity candidates that passed physics-informed screening and evidence checks.",
+  alternates: { canonical: absoluteUrl("/discovery") },
+  openGraph: { url: absoluteUrl("/discovery") },
+};
 
 const PAGE_SIZE = 24;
 

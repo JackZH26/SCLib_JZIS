@@ -37,6 +37,7 @@ from routers import (
     observability,
     papers,
     search,
+    seo,
     similar,
     stats,
     timeline,
@@ -626,6 +627,7 @@ app.include_router(search.router, prefix="/v1")
 app.include_router(ask.router, prefix="/v1")
 app.include_router(materials.router, prefix="/v1")
 app.include_router(papers.router, prefix="/v1")
+app.include_router(seo.router, prefix="/v1")
 app.include_router(similar.router, prefix="/v1")
 app.include_router(stats.router, prefix="/v1")
 app.include_router(timeline.router, prefix="/v1")

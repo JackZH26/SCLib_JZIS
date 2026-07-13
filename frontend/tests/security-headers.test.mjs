@@ -8,11 +8,12 @@ const nextConfig = require("../next.config.js");
 
 test("all frontend routes receive the required security headers", async () => {
   const rules = await nextConfig.headers();
-  assert.equal(rules.length, 1);
-  assert.equal(rules[0].source, "/:path*");
+  assert.ok(rules.length > 1);
+  const securityRule = rules.find(({ source }) => source === "/:path*");
+  assert.ok(securityRule);
 
   const headers = Object.fromEntries(
-    rules[0].headers.map(({ key, value }) => [key.toLowerCase(), value]),
+    securityRule.headers.map(({ key, value }) => [key.toLowerCase(), value]),
   );
 
   assert.match(headers["strict-transport-security"], /max-age=63072000/);
@@ -26,7 +27,8 @@ test("all frontend routes receive the required security headers", async () => {
 
 test("production CSP is restrictive and permits required integrations", async () => {
   const rules = await nextConfig.headers();
-  const csp = rules[0].headers.find(
+  const securityRule = rules.find(({ source }) => source === "/:path*");
+  const csp = securityRule?.headers.find(
     ({ key }) => key === "Content-Security-Policy",
   )?.value;
 
@@ -39,4 +41,23 @@ test("production CSP is restrictive and permits required integrations", async ()
   assert.match(csp, /https:\/\/www\.googletagmanager\.com/);
   assert.doesNotMatch(csp, /'unsafe-eval'/);
   assert.doesNotMatch(csp, /localhost|127\.0\.0\.1/);
+});
+
+test("private and authentication routes instruct crawlers not to index", async () => {
+  const rules = await nextConfig.headers();
+  for (const path of [
+    "/auth/:path*",
+    "/dashboard/:path*",
+    "/forgot-password",
+    "/login",
+    "/register",
+    "/reset-password",
+    "/verify",
+  ]) {
+    const rule = rules.find(({ source }) => source === path);
+    assert.ok(rule, `missing noindex rule for ${path}`);
+    assert.deepEqual(rule.headers, [
+      { key: "X-Robots-Tag", value: "noindex, nofollow" },
+    ]);
+  }
 });

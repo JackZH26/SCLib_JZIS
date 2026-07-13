@@ -263,6 +263,21 @@ class PaperDetail(PaperSummary):
     indexed_at: Any  # datetime — serialized by pydantic
 
 
+class SitemapResource(BaseModel):
+    """Minimal public resource identity used to generate XML sitemaps."""
+
+    kind: Literal["paper", "material"]
+    id: str
+    updated_at: datetime
+
+
+class SitemapResourcePage(BaseModel):
+    total: int
+    limit: int
+    offset: int
+    results: list[SitemapResource]
+
+
 class SimilarPaper(BaseModel):
     paper_id: str
     arxiv_id: str | None

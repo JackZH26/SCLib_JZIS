@@ -63,6 +63,22 @@ const securityHeaders = [
   },
 ];
 
+const noIndexHeaders = [
+  {
+    key: "X-Robots-Tag",
+    value: "noindex, nofollow",
+  },
+];
+const noIndexPaths = [
+  "/auth/:path*",
+  "/dashboard/:path*",
+  "/forgot-password",
+  "/login",
+  "/register",
+  "/reset-password",
+  "/verify",
+];
+
 module.exports = {
   reactStrictMode: true,
   output: "standalone",
@@ -74,6 +90,7 @@ module.exports = {
         source: "/:path*",
         headers: securityHeaders,
       },
+      ...noIndexPaths.map((source) => ({ source, headers: noIndexHeaders })),
     ];
   },
 };
