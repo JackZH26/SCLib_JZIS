@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Create (or reuse) the Vertex AI Vector Search index for SCLib_JZIS.
 
-Run once during Phase 0, either on VPS2 (where ADC is already configured at
-/root/.config/gcloud/application_default_credentials.json) or locally with a
-service-account JSON referenced by GOOGLE_APPLICATION_CREDENTIALS.
+Run once during Phase 0 from an approved administrator environment (for example,
+Cloud Shell). Do not install a human ADC or service-account key on production
+VPS2 for this one-time control-plane operation.
 
 Idempotent: if an index or endpoint with the target display name already
 exists, it is reused instead of recreated.

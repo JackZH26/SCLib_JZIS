@@ -88,7 +88,7 @@ class Settings(BaseSettings):
     gcp_project: str = "jzis-sclib"
     gcp_region: str = "us-central1"
     gcs_bucket: str = "sclib-jzis"
-    google_application_credentials: str = "/credentials/gcp-sa.json"
+    google_application_credentials: str = "/credentials/gcp-api.json"
     vertex_ai_index_endpoint: str = ""
     vertex_ai_deployed_index_id: str = "sclib_papers_v1"
 

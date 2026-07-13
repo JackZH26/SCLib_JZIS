@@ -9,7 +9,7 @@
 # Prereqs on VPS2:
 #   - Nginx already installed and serving jzis.org + asrp.jzis.org (do NOT break).
 #   - DNS A record api.jzis.org -> 72.62.251.29.
-#   - GCP ADC already at /root/.config/gcloud/application_default_credentials.json.
+#   - An approved OIDC workload identity provider and rotating token agent.
 #
 # This script does NOT touch the existing jzis.org server block — you must
 # append the `location /sclib` block from nginx/sclib.conf by hand.
@@ -56,10 +56,9 @@ else
     log ".env already present (leaving untouched)"
 fi
 
-mkdir -p credentials
-if [ ! -f credentials/gcp-sa.json ]; then
-    warn "credentials/gcp-sa.json missing — place GCP service account JSON there"
-fi
+mkdir -p credentials /etc/sclib/credentials /run/sclib-identity/{api,ingestion,backup}
+chmod 0755 /etc/sclib/credentials /run/sclib-identity
+warn "Provision the three external-account configs and rotating subject tokens described in docs/WORKLOAD_IDENTITY.md before deployment."
 
 # 4. SSL cert for api.jzis.org (only if not already present)
 if [ ! -f /etc/letsencrypt/live/api.jzis.org/fullchain.pem ]; then
@@ -90,12 +89,12 @@ log "Setup complete. Next steps:"
 cat <<'EOF'
   1. Fill in /opt/SCLib_JZIS/.env (DB_PASSWORD, JWT_SECRET, RESEND_API_KEY,
      VERTEX_AI_INDEX_ENDPOINT, INTERNAL_API_KEY).
-  2. ADC option A: reuse /root/.config/gcloud/application_default_credentials.json
-     via docker-compose.prod.yml (already committed). Alternatively, place a
-     GCP service account JSON at /opt/SCLib_JZIS/credentials/gcp-sa.json.
+  2. Provision API, ingestion, and backup Workload Identity Federation files
+     and run: python3 scripts/validate_gcp_credentials.py validate ...
   3. Append the `location /sclib` block (port 3100!) from nginx/sclib.conf
      into /etc/nginx/sites-available/jzis.org and `systemctl reload nginx`.
-  4. cd /opt/SCLib_JZIS && docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+  4. Deploy the signed digest release through GitHub Actions. Production
+     compose intentionally refuses mutable/local image builds.
   5. docker compose ps          # verify 4 containers (postgres, redis, api, frontend) healthy
   6. curl -s http://127.0.0.1:8000/v1/stats | jq .   # smoke-test api
   7. Install nightly cron:

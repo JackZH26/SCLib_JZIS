@@ -1,26 +1,38 @@
 # Production override for VPS2.
-# Usage on VPS2:
-#   export SCLIB_{FRONTEND,API,INGESTION}_IMAGE=ghcr.io/...@sha256:...
-#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-build
-#
-# Reuses the existing user-level ADC at
-# /root/.config/gcloud/application_default_credentials.json instead of
-# a dedicated service-account JSON file. This is the (A) path from the
-# Phase 0 ADC decision: zero extra GCP console work, fine for MVP.
-# Migrate to a real service account before opening to external users.
+# Production requires three distinct, keyless Workload Identity Federation
+# configurations. Human ADC, refresh tokens, and service-account keys are
+# rejected by scripts/validate_gcp_credentials.py before a process starts.
 services:
   frontend:
-    # CI supplies a signed GHCR image by immutable sha256 digest. The
-    # production deploy always passes --no-build, so VPS2 never rebuilds source.
     image: ${SCLIB_FRONTEND_IMAGE:?set signed frontend image digest}
+
   api:
     image: ${SCLIB_API_IMAGE:?set signed API image digest}
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /credentials/gcp-api.json
+      SCLIB_EXPECTED_GCP_SERVICE_ACCOUNT: sclib-api@jzis-sclib.iam.gserviceaccount.com
+      SCLIB_IDENTITY_TOKEN_PREFIX: /var/run/sclib-identity
+    entrypoint:
+      - python
+      - /app/scripts/validate_gcp_credentials.py
+      - exec
+      - --
+      - /app/entrypoint.sh
     volumes:
-      # Drop the default credentials/gcp-sa.json mount by re-declaring
-      # volumes here (compose v2 replaces list entries by index). We
-      # mount the ADC file read-only at the same path the app expects.
-      - /root/.config/gcloud/application_default_credentials.json:/credentials/gcp-sa.json:ro
+      - /etc/sclib/credentials/api-external-account.json:/credentials/gcp-api.json:ro
+      - /run/sclib-identity/api:/var/run/sclib-identity/api:ro
+
   ingestion:
     image: ${SCLIB_INGESTION_IMAGE:?set signed ingestion image digest}
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /credentials/gcp-ingestion.json
+      SCLIB_EXPECTED_GCP_SERVICE_ACCOUNT: sclib-ingestion@jzis-sclib.iam.gserviceaccount.com
+      SCLIB_IDENTITY_TOKEN_PREFIX: /var/run/sclib-identity
+    entrypoint:
+      - python
+      - /app/scripts/validate_gcp_credentials.py
+      - exec
+      - --
     volumes:
-      - /root/.config/gcloud/application_default_credentials.json:/credentials/gcp-sa.json:ro
+      - /etc/sclib/credentials/ingestion-external-account.json:/credentials/gcp-ingestion.json:ro
+      - /run/sclib-identity/ingestion:/var/run/sclib-identity/ingestion:ro

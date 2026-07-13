@@ -45,8 +45,10 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
     env_file: .env
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/gcp-api.json
     volumes:
-      - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
+      - ./credentials/gcp-api.json:/credentials/gcp-api.json:ro
       - ${SCLIB_DISCOVERY_DIR:-/data/sclib/discovery}:/data/sclib/discovery:ro
       # One-shot scripts (refresh_stats.py, sync_mp_ids.py, …) live in
       # the repo's top-level scripts/ dir, but the api image's build
@@ -80,8 +82,10 @@ services:
     # than an artificial tmpfs cap.
     shm_size: "2gb"
     env_file: .env
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/gcp-ingestion.json
     volumes:
-      - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
+      - ./credentials/gcp-ingestion.json:/credentials/gcp-ingestion.json:ro
       - ./scripts:/app/scripts:ro
     depends_on:
       postgres:

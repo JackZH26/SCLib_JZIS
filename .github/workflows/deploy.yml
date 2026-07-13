@@ -81,6 +81,15 @@ jobs:
 
             git switch --detach "$TARGET_SHA"
             export GIT_SHA="$(git rev-parse --short=7 "$TARGET_SHA")"
+            python3 scripts/validate_gcp_credentials.py validate \
+              --credential /etc/sclib/credentials/api-external-account.json \
+              --expected-service-account sclib-api@jzis-sclib.iam.gserviceaccount.com
+            python3 scripts/validate_gcp_credentials.py validate \
+              --credential /etc/sclib/credentials/ingestion-external-account.json \
+              --expected-service-account sclib-ingestion@jzis-sclib.iam.gserviceaccount.com
+            python3 scripts/validate_gcp_credentials.py validate \
+              --credential /etc/sclib/credentials/backup-external-account.json \
+              --expected-service-account sclib-backup@jzis-sclib.iam.gserviceaccount.com
             bash scripts/install_cosign.sh
             printf '%s' "$GHCR_TOKEN" | docker login ghcr.io \
               --username "$GHCR_USERNAME" --password-stdin

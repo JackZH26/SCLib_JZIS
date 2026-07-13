@@ -27,11 +27,18 @@ application data bucket:
 SCLIB_BACKUP_BUCKET=sclib-jzis-backups
 SCLIB_BACKUP_PREFIX=postgres
 SCLIB_BACKUP_RETAIN_DAYS=35
+SCLIB_BACKUP_CREDENTIALS_FILE=/etc/sclib/credentials/backup-external-account.json
+SCLIB_BACKUP_SERVICE_ACCOUNT=sclib-backup@jzis-sclib.iam.gserviceaccount.com
 ```
 
 Enable GCS bucket retention/versioning and use a dedicated backup identity with
 write/list/delete only on this bucket. Alert when `backup.log` has no `DONE`
 record within 26 hours or a `FAIL` record appears.
+
+The backup script exports this external-account configuration only for its own
+`gcloud` process. It validates the dedicated backup service-account target and
+rotating subject token before accessing GCS; API or ingestion identities cannot
+be reused as a backup credential.
 
 ## Quarterly production-backup drill
 

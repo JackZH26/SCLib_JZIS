@@ -31,6 +31,8 @@ if [[ -f "$SCLIB_ROOT/.env.backup" ]]; then
 fi
 
 : "${SCLIB_BACKUP_BUCKET:?set a dedicated backup bucket in .env.backup}"
+: "${SCLIB_BACKUP_CREDENTIALS_FILE:=/etc/sclib/credentials/backup-external-account.json}"
+: "${SCLIB_BACKUP_SERVICE_ACCOUNT:=sclib-backup@jzis-sclib.iam.gserviceaccount.com}"
 if [[ -n "${GCS_BUCKET:-}" && "$SCLIB_BACKUP_BUCKET" == "$GCS_BUCKET" ]]; then
   log "FAIL backup bucket must differ from the application data bucket"
   exit 1
@@ -47,6 +49,10 @@ for command in docker gcloud python3 git; do
 done
 
 cd "$SCLIB_ROOT"
+python3 scripts/validate_gcp_credentials.py validate \
+  --credential "$SCLIB_BACKUP_CREDENTIALS_FILE" \
+  --expected-service-account "$SCLIB_BACKUP_SERVICE_ACCOUNT"
+export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="$SCLIB_BACKUP_CREDENTIALS_FILE"
 tmpdir="$(mktemp -d)"
 trap 'rm -rf "$tmpdir"' EXIT
 timestamp="$(date -u +%Y%m%dT%H%M%SZ)"

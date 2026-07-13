@@ -29,8 +29,8 @@ RUN uv sync --locked --no-dev --no-install-project
 COPY ingestion ./ingestion
 RUN uv sync --locked --no-dev --no-editable
 
-# Non-root runtime. Shared UID 1001 matches the api image so the
-# mounted credential file (mode 0644) is readable without chowns.
+# Non-root runtime. Shared UID 1001 matches the API image so the host identity
+# agent can grant both workloads narrowly scoped token-file read access.
 RUN groupadd --system --gid 1001 sclib \
  && useradd  --system --uid 1001 --gid sclib --home /app sclib \
  && chown -R sclib:sclib /app

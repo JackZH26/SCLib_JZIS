@@ -204,6 +204,12 @@ jobs:
         run: |
           cp .env.example .env
           docker compose --profile observability config --quiet
+          digest="sha256:$(printf '0%.0s' {1..64})"
+          SCLIB_FRONTEND_IMAGE="ghcr.io/jackzh26/sclib-frontend@$digest" \
+          SCLIB_API_IMAGE="ghcr.io/jackzh26/sclib-api@$digest" \
+          SCLIB_INGESTION_IMAGE="ghcr.io/jackzh26/sclib-ingestion@$digest" \
+            docker compose --profile observability \
+              -f docker-compose.yml -f docker-compose.prod.yml config --quiet
           python - <<'PY'
           import json
           from pathlib import Path
