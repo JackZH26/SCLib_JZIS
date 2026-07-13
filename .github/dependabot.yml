@@ -1,0 +1,55 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
+
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: weekly
+    groups:
+      frontend-production:
+        dependency-type: production
+      frontend-development:
+        dependency-type: development
+
+  - package-ecosystem: pip
+    directory: /api
+    schedule:
+      interval: weekly
+    groups:
+      api-python:
+        patterns: ["*"]
+
+  - package-ecosystem: pip
+    directory: /ingestion
+    schedule:
+      interval: weekly
+    groups:
+      ingestion-python:
+        patterns: ["*"]
+
+  - package-ecosystem: docker
+    directory: /api
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker
+    directory: /frontend
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker
+    directory: /ingestion
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: weekly
