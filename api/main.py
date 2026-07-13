@@ -14,6 +14,7 @@ from datetime import datetime, timedelta, timezone
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import delete
+from starlette.middleware.gzip import GZipMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from config import allowed_browser_origins, get_settings
@@ -363,8 +364,8 @@ _allowed_origins = allowed_browser_origins(settings)
 # --- Middleware stack (order matters!) ---
 # Starlette applies middleware in reverse registration order, so the
 # LAST middleware added is the OUTERMOST (first to run on a request).
-# We need: Request → CORS (handle preflight) → Session → App
-# So register Session first (innermost), then CORS (outermost).
+# We need: Request → CORS (handle preflight) → GZip → Session → App
+# So register Session first (innermost), then compression, then CORS.
 
 # SessionMiddleware: stores OAuth state in a signed cookie. Must be
 # inside the CORS layer so preflight OPTIONS never hits session logic.
@@ -377,6 +378,12 @@ app.add_middleware(
     path=_oauth_session.path,
     https_only=_oauth_session.https_only,
     same_site=_oauth_session.same_site,
+)
+
+app.add_middleware(
+    GZipMiddleware,
+    minimum_size=1024,
+    compresslevel=6,
 )
 
 app.add_middleware(

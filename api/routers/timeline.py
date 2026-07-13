@@ -27,18 +27,28 @@ audit of the NER hallucinations).
 """
 from __future__ import annotations
 
+import hashlib
+import json
+import logging
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Request, Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
 from models.db import Material, Paper
 from models.search import TimelineCoverage, TimelinePoint, TimelineResponse
-from routers.deps import Identity, peek_identity
+from services.rate_limit import get_redis
 
 router = APIRouter(tags=["timeline"])
+log = logging.getLogger(__name__)
+
+_CACHE_SCHEMA_VERSION = "v1"
+_CACHE_TTL_SECONDS = 900
+_CACHE_CONTROL = (
+    "public, max-age=60, s-maxage=900, stale-while-revalidate=3600"
+)
 
 
 # Display ceiling for a single Tc point on the timeline. Set ABOVE the
@@ -125,9 +135,81 @@ def _date_year(value) -> int | None:
     return value.year if value is not None else None
 
 
-@router.get("/timeline", response_model=TimelineResponse)
+def _cache_key(
+    family: str | None,
+    include_pending: bool,
+    experimental_only: bool,
+    only_aps: bool,
+) -> str:
+    options = json.dumps(
+        {
+            "experimental_only": experimental_only,
+            "family": family,
+            "include_pending": include_pending,
+            "only_aps": only_aps,
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    variant = hashlib.sha256(options.encode()).hexdigest()[:20]
+    return f"timeline:{_CACHE_SCHEMA_VERSION}:{variant}"
+
+
+def _weak_etag(payload: str) -> str:
+    digest = hashlib.sha256(payload.encode()).hexdigest()
+    return f'W/"{digest}"'
+
+
+def _etag_matches(if_none_match: str | None, etag: str) -> bool:
+    if not if_none_match:
+        return False
+
+    def weak_value(value: str) -> str:
+        value = value.strip()
+        return value[2:] if value.startswith("W/") else value
+
+    expected = weak_value(etag)
+    return any(
+        candidate.strip() == "*" or weak_value(candidate) == expected
+        for candidate in if_none_match.split(",")
+    )
+
+
+def _http_response(
+    request: Request,
+    payload: str,
+    *,
+    cache_status: str,
+) -> Response:
+    etag = _weak_etag(payload)
+    headers = {
+        "Cache-Control": _CACHE_CONTROL,
+        "ETag": etag,
+        "Vary": "Accept-Encoding",
+        "X-Timeline-Cache": cache_status,
+    }
+    if _etag_matches(request.headers.get("if-none-match"), etag):
+        return Response(status_code=304, headers=headers)
+    return Response(
+        content=payload,
+        media_type="application/json",
+        headers=headers,
+    )
+
+
+@router.get(
+    "/timeline",
+    response_model=TimelineResponse,
+    responses={304: {"description": "Cached representation is still current"}},
+)
 async def timeline(
-    family: str | None = Query(None, description="Restrict to one family"),
+    request: Request,
+    family: str | None = Query(
+        None,
+        min_length=1,
+        max_length=50,
+        description="Restrict to one family",
+    ),
     include_pending: bool = Query(
         False,
         description=(
@@ -149,8 +231,48 @@ async def timeline(
         False,
         description="Only show Tc records whose paper_id is APS-sourced.",
     ),
-    identity: Identity = Depends(peek_identity),  # noqa: ARG001
     db: AsyncSession = Depends(get_db),
+) -> Response:
+    cache_key = _cache_key(
+        family,
+        include_pending,
+        experimental_only,
+        only_aps,
+    )
+    redis = get_redis()
+    try:
+        cached = await redis.get(cache_key)
+    except Exception:  # noqa: BLE001 - cache outage must not break public reads
+        log.warning("timeline cache read failed; falling back to DB", exc_info=True)
+        cached = None
+
+    if isinstance(cached, bytes):
+        cached = cached.decode("utf-8")
+    if isinstance(cached, str):
+        return _http_response(request, cached, cache_status="HIT")
+
+    data = await _build_timeline(
+        family=family,
+        include_pending=include_pending,
+        experimental_only=experimental_only,
+        only_aps=only_aps,
+        db=db,
+    )
+    payload = data.model_dump_json()
+    try:
+        await redis.set(cache_key, payload, ex=_CACHE_TTL_SECONDS)
+    except Exception:  # noqa: BLE001 - serve the computed response regardless
+        log.warning("timeline cache write failed; serving uncached", exc_info=True)
+    return _http_response(request, payload, cache_status="MISS")
+
+
+async def _build_timeline(
+    *,
+    family: str | None,
+    include_pending: bool,
+    experimental_only: bool,
+    only_aps: bool,
+    db: AsyncSession,
 ) -> TimelineResponse:
     stmt = select(Material)
     if family:
