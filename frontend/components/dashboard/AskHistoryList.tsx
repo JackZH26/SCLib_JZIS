@@ -21,7 +21,6 @@ import {
   deleteHistoryEntry,
   type AskHistoryEntry,
 } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 import { ConfirmModal } from "@/components/dashboard/ConfirmModal";
 
 export function AskHistoryList({
@@ -45,11 +44,9 @@ export function AskHistoryList({
   }
 
   async function performDelete(entry: AskHistoryEntry) {
-    const token = loadToken();
-    if (!token) return;
     setError(null);
     try {
-      await deleteHistoryEntry(token, entry.id);
+      await deleteHistoryEntry(entry.id);
       onDeleted();
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Failed to delete");

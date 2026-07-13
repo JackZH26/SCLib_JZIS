@@ -3,12 +3,20 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 from uuid import uuid4
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from fastapi import HTTPException
 from starlette.requests import Request
+from starlette.responses import Response
 
-from routers.auth import current_user_from_jwt
+from models.user import LoginRequest
+from routers.auth import (
+    browser_session_login,
+    current_user_from_jwt,
+    google_callback,
+    logout,
+)
 from services import auth_service
 
 
@@ -19,6 +27,17 @@ class _FakeDb:
     async def get(self, _model, user_id):
         assert user_id == self.user.id
         return self.user
+
+
+class _OAuthDb(_FakeDb):
+    async def execute(self, _statement):
+        return SimpleNamespace(scalar_one_or_none=lambda: self.user)
+
+    async def commit(self):
+        return None
+
+    async def refresh(self, _user):
+        return None
 
 
 def _request(
@@ -86,3 +105,80 @@ async def test_bearer_client_remains_compatible_without_browser_origin():
     )
 
     assert resolved is user
+
+
+@pytest.mark.asyncio
+async def test_google_callback_redirects_without_exposing_jwt():
+    user = SimpleNamespace(
+        id=uuid4(),
+        email="session-user@example.com",
+        is_active=True,
+        google_sub="google-sub",
+        avatar_url=None,
+        auth_provider="google",
+        email_verified=True,
+        last_login=None,
+    )
+    oauth = MagicMock()
+    oauth.google.authorize_access_token = AsyncMock(return_value={
+        "userinfo": {
+            "sub": user.google_sub,
+            "email": user.email,
+            "name": "Session User",
+        },
+    })
+    request = _request("oauth-state")
+
+    with patch("routers.auth.get_oauth", return_value=oauth):
+        response = await google_callback(request, _OAuthDb(user))
+
+    assert response.status_code == 302
+    assert response.headers["location"].endswith("/sclib/auth/callback")
+    assert "token=" not in response.headers["location"]
+    assert "sclib_session=" in response.headers["set-cookie"]
+
+
+@pytest.mark.asyncio
+async def test_password_browser_login_returns_no_jwt_body():
+    password = "browser-session-password"
+    user = SimpleNamespace(
+        id=uuid4(),
+        email="password-user@example.com",
+        is_active=True,
+        password_hash=auth_service.hash_password(password),
+        last_login=None,
+    )
+    request = _request(
+        "pre-login",
+        method="POST",
+        origin="https://jzis.org",
+    )
+    response = Response()
+
+    result = await browser_session_login(
+        LoginRequest(email=user.email, password=password),
+        request,
+        response,
+        _OAuthDb(user),
+    )
+
+    assert result.authenticated is True
+    assert not hasattr(result, "access_token")
+    assert "sclib_session=" in response.headers["set-cookie"]
+
+
+@pytest.mark.asyncio
+async def test_logout_clears_cookie_even_without_valid_session():
+    request = _request(
+        "expired-or-invalid",
+        method="POST",
+        origin="https://jzis.org",
+    )
+    response = Response()
+
+    result = await logout(request, response)
+
+    assert result.message == "Signed out"
+    set_cookie = response.headers["set-cookie"].lower()
+    assert set_cookie.startswith("sclib_session=\"")
+    assert "max-age=0" in set_cookie

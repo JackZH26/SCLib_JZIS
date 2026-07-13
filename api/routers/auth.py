@@ -4,10 +4,11 @@ Endpoints from PROJECT_SPEC.md section 7, extended with Google OAuth.
 The flow is:
   register (user created, is_active=False, verification token emailed)
     -> verify (is_active=True, first API key issued, welcome email)
-    -> login (JWT for session management, e.g. dashboard)
+    -> /login (bearer JWT for non-browser clients)
+    -> /session/login (HttpOnly browser session for the dashboard)
   Google OAuth:
     -> /google/login (redirect to Google consent screen)
-    -> /google/callback (handle Google redirect, upsert user, issue JWT)
+    -> /google/callback (handle Google redirect, establish browser session)
   Other API calls authenticate via X-API-Key header (see deps below).
 """
 from __future__ import annotations
@@ -31,6 +32,7 @@ from models.user import (
     ApiKeyCreate,
     ApiKeyRead,
     ApiKeyWithSecret,
+    BrowserSessionResponse,
     LoginRequest,
     MessageResponse,
     RegisterResponse,
@@ -204,12 +206,10 @@ async def verify(token: str, db: AsyncSession = Depends(get_db)):
     return VerifyResponse(user=UserRead.model_validate(user), api_key=plain)
 
 
-@router.post("/login", response_model=TokenResponse)
-async def login(
+async def _authenticate_password(
     body: LoginRequest,
-    response: Response,
-    db: AsyncSession = Depends(get_db),
-):
+    db: AsyncSession,
+) -> User:
     q = await db.execute(select(User).where(User.email == body.email))
     user = q.scalar_one_or_none()
     # Constant-time branch: run a bcrypt compare even when the user
@@ -230,17 +230,39 @@ async def login(
         raise HTTPException(403, "Email not verified")
     user.last_login = datetime.now(timezone.utc)
     await db.commit()
+    return user
+
+
+@router.post("/login", response_model=TokenResponse)
+async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
+    """Issue a bearer JWT for non-browser clients."""
+    user = await _authenticate_password(body, db)
+    token, expires_in = auth_service.create_access_token(user.id)
+    return TokenResponse(access_token=token, expires_in=expires_in)
+
+
+@router.post("/session/login", response_model=BrowserSessionResponse)
+async def browser_session_login(
+    body: LoginRequest,
+    request: Request,
+    response: Response,
+    db: AsyncSession = Depends(get_db),
+):
+    """Authenticate a browser without exposing its JWT to JavaScript."""
+    _validate_cookie_request_origin(request)
+    user = await _authenticate_password(body, db)
     token, expires_in = auth_service.create_access_token(user.id)
     set_browser_session_cookie(response, token, _browser_session_config())
-    return TokenResponse(access_token=token, expires_in=expires_in)
+    return BrowserSessionResponse(expires_in=expires_in)
 
 
 @router.post("/logout", response_model=MessageResponse)
 async def logout(
+    request: Request,
     response: Response,
-    user: User = Depends(current_user_from_jwt),
 ):
     """End the browser session without invalidating bearer/API credentials."""
+    _validate_cookie_request_origin(request)
     clear_browser_session_cookie(response, _browser_session_config())
     return MessageResponse(message="Signed out")
 
@@ -391,7 +413,7 @@ async def google_callback(
     request: Request,
     db: AsyncSession = Depends(get_db),
 ):
-    """Handle Google OAuth callback: upsert user, issue JWT, redirect to frontend.
+    """Handle Google OAuth callback and establish an HttpOnly browser session.
 
     Flow:
       1. Exchange the authorization code for an access token + ID token.
@@ -399,8 +421,8 @@ async def google_callback(
       3. Upsert: find by google_sub OR email.
          - New user: create with Google info, mark active + email_verified.
          - Existing local user: bind Google account, set auth_provider="both".
-      4. Issue a JZIS JWT and redirect to the frontend callback page with
-         the token as a query parameter.
+      4. Store the JZIS JWT in a host-only HttpOnly cookie and redirect to
+         the clean frontend callback URL.
     """
     settings = get_settings()
     oauth = get_oauth()
@@ -410,8 +432,7 @@ async def google_callback(
     except Exception as exc:
         log.warning("Google OAuth token exchange failed: %s", exc)
         return RedirectResponse(
-            url=f"{settings.frontend_callback_url}"
-            f"?error=oauth_failed&detail={str(exc)[:100]}",
+            url=f"{settings.frontend_callback_url}?error=oauth_failed",
             status_code=302,
         )
 
@@ -491,7 +512,7 @@ async def google_callback(
     # Issue JWT
     jwt_token, _ = auth_service.create_access_token(user.id)
     response = RedirectResponse(
-        url=f"{settings.frontend_callback_url}?token={jwt_token}",
+        url=str(settings.frontend_callback_url),
         status_code=302,
     )
     set_browser_session_cookie(response, jwt_token, _browser_session_config())

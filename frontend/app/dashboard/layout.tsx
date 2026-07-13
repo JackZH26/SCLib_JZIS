@@ -3,9 +3,8 @@
 /**
  * Dashboard shell — auth guard + sidebar + child slot.
  *
- * The shell is a client component because the JWT lives in
- * localStorage (not a cookie) so the whole tree is rendered after
- * client hydration. One `/auth/me` call happens here to keep the
+ * The shell verifies the API-owned HttpOnly browser session after client
+ * hydration. One `/auth/me` call happens here to keep the
  * sidebar badge (username, avatar, sign out) accurate without each
  * child re-fetching. Children still hit their own endpoints for the
  * tab-specific data (/usage, /keys, etc.).
@@ -14,8 +13,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { ApiError, me, type User } from "@/lib/api";
-import { clearToken, loadToken } from "@/lib/auth-storage";
+import { ApiError, logout, me, type User } from "@/lib/api";
+import { notifyAuthChange } from "@/lib/auth-session";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { DashboardUserProvider } from "@/components/dashboard/user-context";
 
@@ -48,16 +47,10 @@ export default function DashboardLayout({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const token = loadToken();
-    if (!token) {
-      router.replace("/login");
-      return;
-    }
-    me(token)
+    me()
       .then(setUser)
       .catch((err) => {
         if (err instanceof ApiError && err.status === 401) {
-          clearToken();
           router.replace("/login");
         } else {
           setError(err instanceof Error ? err.message : "Failed to load profile");
@@ -65,9 +58,15 @@ export default function DashboardLayout({
       });
   }, [router]);
 
-  function onSignOut() {
-    clearToken();
-    router.push("/login");
+  async function onSignOut() {
+    setError(null);
+    try {
+      await logout();
+      notifyAuthChange();
+      router.push("/login");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to sign out");
+    }
   }
 
   if (error) {

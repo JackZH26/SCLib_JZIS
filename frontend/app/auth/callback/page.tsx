@@ -2,7 +2,8 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { saveToken } from "@/lib/auth-storage";
+import { ApiError, me } from "@/lib/api";
+import { notifyAuthChange } from "@/lib/auth-session";
 
 function CallbackInner() {
   const router = useRouter();
@@ -11,7 +12,6 @@ function CallbackInner() {
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    const token = params.get("token");
     const error = params.get("error");
 
     if (error) {
@@ -28,16 +28,19 @@ function CallbackInner() {
       return;
     }
 
-    if (token) {
-      // Store JWT
-      saveToken(token);
-      // Fetch user profile to get API key (auto-created for Google users).
-      // Then redirect to dashboard.
-      router.replace("/dashboard");
-    } else {
-      setStatus("error");
-      setErrorMsg("No token received. Please try again.");
-    }
+    me()
+      .then(() => {
+        notifyAuthChange();
+        router.replace("/dashboard");
+      })
+      .catch((err: unknown) => {
+        setStatus("error");
+        setErrorMsg(
+          err instanceof ApiError && err.status === 401
+            ? "Your sign-in session could not be established. Please try again."
+            : "Could not verify your sign-in. Please try again.",
+        );
+      });
   }, [params, router]);
 
   if (status === "error") {

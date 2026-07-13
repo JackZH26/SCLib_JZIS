@@ -19,7 +19,6 @@ import {
   type BookmarkedMaterial,
   type BookmarkedPaper,
 } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 
 type Tab = "papers" | "materials";
 
@@ -76,10 +75,8 @@ function PapersPanel() {
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const refetch = useCallback(async () => {
-    const token = loadToken();
-    if (!token) return;
     try {
-      const resp = await listPaperBookmarks(token);
+      const resp = await listPaperBookmarks();
       setRows(resp.results);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load bookmarks");
@@ -91,11 +88,9 @@ function PapersPanel() {
   }, [refetch]);
 
   async function onRemove(id: string) {
-    const token = loadToken();
-    if (!token) return;
     setBusyId(id);
     try {
-      await deleteBookmark(token, id);
+      await deleteBookmark(id);
       setRows((prev) => prev?.filter((r) => r.id !== id) ?? prev);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Remove failed");
@@ -182,10 +177,8 @@ function MaterialsPanel() {
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const refetch = useCallback(async () => {
-    const token = loadToken();
-    if (!token) return;
     try {
-      const resp = await listMaterialBookmarks(token);
+      const resp = await listMaterialBookmarks();
       setRows(resp.results);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load bookmarks");
@@ -197,11 +190,9 @@ function MaterialsPanel() {
   }, [refetch]);
 
   async function onRemove(id: string) {
-    const token = loadToken();
-    if (!token) return;
     setBusyId(id);
     try {
-      await deleteBookmark(token, id);
+      await deleteBookmark(id);
       setRows((prev) => prev?.filter((r) => r.id !== id) ?? prev);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Remove failed");

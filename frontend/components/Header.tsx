@@ -1,20 +1,20 @@
 /**
  * Global header with the SCLib wordmark + primary nav.
  *
- * After login the JWT is in localStorage → we fetch /me to get the user
- * name + avatar and render them instead of the generic "Account" button.
+ * The browser session lives in an HttpOnly API cookie, so we fetch /me to get
+ * the user name + avatar and render them instead of the generic button.
  * Falls back to "Account" while loading or when not logged in.
  *
  * Because the header is always mounted, we also subscribe to the
- * same-tab auth-change event (see lib/auth-storage.ts) so the chip
+ * same-tab auth-change event (see lib/auth-session.ts) so the chip
  * flips to the logged-in state the moment /auth/callback or the
- * login form writes a token — no refresh or navigation needed.
+ * login form establishes a session — no refresh or navigation needed.
  */
 "use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { loadValidToken, onAuthChange } from "@/lib/auth-storage";
+import { onAuthChange } from "@/lib/auth-session";
 import { me, type User, ApiError } from "@/lib/api";
 
 const NAV = [
@@ -31,24 +31,17 @@ export function Header() {
 
   useEffect(() => {
     function refresh() {
-      const token = loadValidToken();
-      if (!token) {
-        setUser(null);
-        return;
-      }
-      me(token)
+      me()
         .then(setUser)
         .catch((err) => {
-          // Token expired / invalid — silently ignore, show Account button.
-          // Don't clear token here; let the dashboard shell handle that on
-          // its own /me call.
+          // Expired/missing session: silently show the Account button.
           if (err instanceof ApiError && err.status === 401) {
             setUser(null);
           }
         });
     }
-    refresh(); // on mount — handles a reload with a pre-existing token
-    return onAuthChange(refresh); // and on any same-tab save/clear
+    refresh();
+    return onAuthChange(refresh);
   }, []);
 
   return (

@@ -1,10 +1,9 @@
 /**
  * Thin client for the SCLib API.
  *
- * Server and client components both call through here so base URL and auth
- * header handling live in one place. The API accepts either a bearer JWT
- * (for account management endpoints) or an `X-API-Key` (for search/ask) —
- * we expose both on `request` and let each call pick what it needs.
+ * Server and client components both call through here so base URL and
+ * credential handling live in one place. Browser sessions use a host-only
+ * HttpOnly cookie; programmatic search/ask calls may still use `X-API-Key`.
  */
 
 /**
@@ -110,13 +109,12 @@ function sanitizeErrorMessage(msg: string): string {
 
 async function request<T>(
   path: string,
-  init: RequestInit & { auth?: string; apiKey?: string } = {},
+  init: RequestInit & { apiKey?: string } = {},
 ): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body && !headers.has("content-type")) {
     headers.set("content-type", "application/json");
   }
-  if (init.auth) headers.set("authorization", `Bearer ${init.auth}`);
   if (init.apiKey) headers.set("x-api-key", init.apiKey);
 
   let res: Response;
@@ -125,6 +123,7 @@ async function request<T>(
       ...init,
       headers,
       cache: "no-store",
+      credentials: init.credentials ?? "include",
     });
   } catch (e) {
     // Network-level failure (DNS, refused, aborted). The message can
@@ -229,45 +228,46 @@ export function verifyEmail(token: string) {
 }
 
 export function login(email: string, password: string) {
-  return request<{ access_token: string; token_type: string; expires_in: number }>(
-    "/auth/login",
+  return request<{ authenticated: boolean; expires_in: number }>(
+    "/auth/session/login",
     { method: "POST", body: JSON.stringify({ email, password }) },
   );
 }
 
-export function me(jwt: string) {
-  return request<User>("/auth/me", { auth: jwt });
+export function logout() {
+  return request<{ message: string }>("/auth/logout", { method: "POST" });
 }
 
-export function updateMe(jwt: string, payload: UpdateUserPayload) {
+export function me() {
+  return request<User>("/auth/me");
+}
+
+export function updateMe(payload: UpdateUserPayload) {
   return request<User>("/auth/me", {
     method: "PATCH",
     body: JSON.stringify(payload),
-    auth: jwt,
   });
 }
 
-export function listKeys(jwt: string) {
-  return request<ApiKey[]>("/auth/keys", { auth: jwt });
+export function listKeys() {
+  return request<ApiKey[]>("/auth/keys");
 }
 
-export function createKey(jwt: string, name: string) {
+export function createKey(name: string) {
   return request<ApiKeyWithSecret>("/auth/keys", {
     method: "POST",
     body: JSON.stringify({ name }),
-    auth: jwt,
   });
 }
 
-export function revokeKey(jwt: string, keyId: string) {
+export function revokeKey(keyId: string) {
   return request<{ message: string }>(`/auth/keys/${keyId}`, {
     method: "DELETE",
-    auth: jwt,
   });
 }
 
-export function getUsage(jwt: string) {
-  return request<UsageStats>("/auth/usage", { auth: jwt });
+export function getUsage() {
+  return request<UsageStats>("/auth/usage");
 }
 
 // --- Ask history ----------------------------------------------------------
@@ -299,15 +299,14 @@ export interface AskHistoryListResponse {
   offset: number;
 }
 
-export function listHistory(jwt: string, limit = 50, offset = 0) {
+export function listHistory(limit = 50, offset = 0) {
   const qs = new URLSearchParams({ limit: String(limit), offset: String(offset) });
-  return request<AskHistoryListResponse>(`/history?${qs}`, { auth: jwt });
+  return request<AskHistoryListResponse>(`/history?${qs}`);
 }
 
-export function deleteHistoryEntry(jwt: string, id: string) {
+export function deleteHistoryEntry(id: string) {
   return request<{ message: string }>(`/history/${id}`, {
     method: "DELETE",
-    auth: jwt,
   });
 }
 
@@ -357,30 +356,27 @@ export interface BookmarkedMaterialsResponse {
 }
 
 export function createBookmark(
-  jwt: string,
   target_type: BookmarkTargetType,
   target_id: string,
 ) {
   return request<Bookmark>("/bookmarks", {
     method: "POST",
     body: JSON.stringify({ target_type, target_id }),
-    auth: jwt,
   });
 }
 
-export function deleteBookmark(jwt: string, id: string) {
+export function deleteBookmark(id: string) {
   return request<{ message: string }>(`/bookmarks/${id}`, {
     method: "DELETE",
-    auth: jwt,
   });
 }
 
-export function listPaperBookmarks(jwt: string) {
-  return request<BookmarkedPapersResponse>("/bookmarks/papers", { auth: jwt });
+export function listPaperBookmarks() {
+  return request<BookmarkedPapersResponse>("/bookmarks/papers");
 }
 
-export function listMaterialBookmarks(jwt: string) {
-  return request<BookmarkedMaterialsResponse>("/bookmarks/materials", { auth: jwt });
+export function listMaterialBookmarks() {
+  return request<BookmarkedMaterialsResponse>("/bookmarks/materials");
 }
 
 // --- Feedback -------------------------------------------------------------
@@ -393,11 +389,10 @@ export interface FeedbackPayload {
   contact_email?: string | null;
 }
 
-export function submitFeedback(jwt: string, payload: FeedbackPayload) {
+export function submitFeedback(payload: FeedbackPayload) {
   return request<{ message: string }>("/feedback", {
     method: "POST",
     body: JSON.stringify(payload),
-    auth: jwt,
   });
 }
 
@@ -452,12 +447,11 @@ export interface SearchResponse {
   guest_remaining: number | null;
 }
 
-export function search(req: SearchRequest, opts: { apiKey?: string; auth?: string } = {}) {
+export function search(req: SearchRequest, opts: { apiKey?: string } = {}) {
   return request<SearchResponse>("/search", {
     method: "POST",
     body: JSON.stringify(req),
     apiKey: opts.apiKey,
-    auth: opts.auth,
   });
 }
 
@@ -488,12 +482,11 @@ export interface AskResponse {
   guest_remaining: number | null;
 }
 
-export function ask(req: AskRequest, opts: { apiKey?: string; auth?: string } = {}) {
+export function ask(req: AskRequest, opts: { apiKey?: string } = {}) {
   return request<AskResponse>("/ask", {
     method: "POST",
     body: JSON.stringify(req),
     apiKey: opts.apiKey,
-    auth: opts.auth,
   });
 }
 
@@ -943,7 +936,6 @@ export interface AdminOverview {
 }
 
 export function adminListUsers(
-  jwt: string,
   params: { q?: string; role?: "admin" | "active" | "inactive"; limit?: number; offset?: number } = {},
 ) {
   const qs = new URLSearchParams();
@@ -952,41 +944,40 @@ export function adminListUsers(
   if (params.limit != null) qs.set("limit", String(params.limit));
   if (params.offset != null) qs.set("offset", String(params.offset));
   const suffix = qs.toString() ? `?${qs}` : "";
-  return request<AdminUserListResponse>(`/admin/users${suffix}`, { auth: jwt });
+  return request<AdminUserListResponse>(`/admin/users${suffix}`);
 }
 
-export function adminBanUser(jwt: string, userId: string) {
+export function adminBanUser(userId: string) {
   return request<{ message: string }>(`/admin/users/${userId}/ban`, {
-    method: "POST", auth: jwt,
+    method: "POST",
   });
 }
 
-export function adminUnbanUser(jwt: string, userId: string) {
+export function adminUnbanUser(userId: string) {
   return request<{ message: string }>(`/admin/users/${userId}/unban`, {
-    method: "POST", auth: jwt,
+    method: "POST",
   });
 }
 
-export function adminDeleteUser(jwt: string, userId: string) {
+export function adminDeleteUser(userId: string) {
   return request<{ message: string }>(`/admin/users/${userId}`, {
-    method: "DELETE", auth: jwt,
+    method: "DELETE",
   });
 }
 
-export function adminSetReviewer(jwt: string, userId: string, value: boolean) {
+export function adminSetReviewer(userId: string, value: boolean) {
   return request<{ message: string }>(
     `/admin/users/${userId}/set-reviewer?value=${value}`,
-    { method: "POST", auth: jwt },
+    { method: "POST" },
   );
 }
 
-export function adminListAuditReports(jwt: string, rule?: string) {
+export function adminListAuditReports(rule?: string) {
   const suffix = rule ? `?rule=${encodeURIComponent(rule)}` : "";
-  return request<AuditReportSummary[]>(`/admin/audit/reports${suffix}`, { auth: jwt });
+  return request<AuditReportSummary[]>(`/admin/audit/reports${suffix}`);
 }
 
 export function adminAuditQueue(
-  jwt: string,
   params: { rule?: string; limit?: number; offset?: number } = {},
 ) {
   const qs = new URLSearchParams();
@@ -994,23 +985,23 @@ export function adminAuditQueue(
   if (params.limit != null) qs.set("limit", String(params.limit));
   if (params.offset != null) qs.set("offset", String(params.offset));
   const suffix = qs.toString() ? `?${qs}` : "";
-  return request<AuditQueueResponse>(`/admin/audit/queue${suffix}`, { auth: jwt });
+  return request<AuditQueueResponse>(`/admin/audit/queue${suffix}`);
 }
 
-export function adminOverrideFlag(jwt: string, materialId: string, note: string) {
+export function adminOverrideFlag(materialId: string, note: string) {
   return request<{ message: string }>(
     `/admin/audit/queue/${encodeURIComponent(materialId)}/override`,
-    { method: "POST", body: JSON.stringify({ note }), auth: jwt },
+    { method: "POST", body: JSON.stringify({ note }) },
   );
 }
 
-export function adminConfirmFlag(jwt: string, materialId: string, note: string) {
+export function adminConfirmFlag(materialId: string, note: string) {
   return request<{ message: string }>(
     `/admin/audit/queue/${encodeURIComponent(materialId)}/confirm`,
-    { method: "POST", body: JSON.stringify({ note }), auth: jwt },
+    { method: "POST", body: JSON.stringify({ note }) },
   );
 }
 
-export function adminOverview(jwt: string) {
-  return request<AdminOverview>("/admin/overview", { auth: jwt });
+export function adminOverview() {
+  return request<AdminOverview>("/admin/overview");
 }

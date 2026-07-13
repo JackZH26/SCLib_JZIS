@@ -9,7 +9,6 @@ import {
   type AskResponse,
   friendlyErrorMessage,
 } from "@/lib/api";
-import { loadValidToken } from "@/lib/auth-storage";
 import { SearchBar } from "@/components/SearchBar";
 import { PaperCard } from "@/components/PaperCard";
 import { GuestBanner } from "@/components/GuestBanner";
@@ -63,19 +62,14 @@ function SearchInner() {
     setAskErr(null);
     setManualAsk(false);
 
-    const token = loadValidToken() ?? undefined;
-
-    search(
-      { query: q, top_k: 20, filters: { exclude_retracted: true } },
-      { auth: token },
-    )
+    search({ query: q, top_k: 20, filters: { exclude_retracted: true } })
       .then(setSearchData)
       .catch((e: unknown) => setSearchErr(friendlyErrorMessage(e)))
       .finally(() => setSearchLoading(false));
 
     if (isQuestion(q)) {
       setAskLoading(true);
-      ask({ question: q, max_sources: 8 }, { auth: token })
+      ask({ question: q, max_sources: 8 })
         .then(setAskData)
         .catch((e: unknown) => setAskErr(friendlyErrorMessage(e)))
         .finally(() => setAskLoading(false));
@@ -86,8 +80,7 @@ function SearchInner() {
     setManualAsk(true);
     setAskLoading(true);
     setAskErr(null);
-    const token = loadValidToken() ?? undefined;
-    ask({ question: q, max_sources: 8 }, { auth: token })
+    ask({ question: q, max_sources: 8 })
       .then(setAskData)
       .catch((e: unknown) => setAskErr(friendlyErrorMessage(e)))
       .finally(() => setAskLoading(false));

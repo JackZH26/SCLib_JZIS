@@ -10,7 +10,6 @@
 import { useState } from "react";
 
 import { ApiError, createKey, type ApiKeyWithSecret } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 
 export function NewKeyModal({
   open,
@@ -29,12 +28,10 @@ export function NewKeyModal({
 
   async function onCreate(e: React.FormEvent) {
     e.preventDefault();
-    const token = loadToken();
-    if (!token) return;
     setBusy(true);
     setError(null);
     try {
-      const k = await createKey(token, name.trim() || "default");
+      const k = await createKey(name.trim() || "default");
       setFresh(k);
       onCreated(); // triggers list refetch in parent
     } catch (err) {

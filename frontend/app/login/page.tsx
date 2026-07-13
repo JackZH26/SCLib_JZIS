@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { login, friendlyErrorMessage, PUBLIC_API_BASE } from "@/lib/api";
-import { saveToken } from "@/lib/auth-storage";
+import { notifyAuthChange } from "@/lib/auth-session";
 
 export default function LoginPage() {
   const GOOGLE_LOGIN_URL = `${PUBLIC_API_BASE}/auth/google/login`;
@@ -19,8 +19,8 @@ export default function LoginPage() {
     setError(null);
     setSubmitting(true);
     try {
-      const r = await login(email, password);
-      saveToken(r.access_token);
+      await login(email, password);
+      notifyAuthChange();
       router.push("/dashboard");
     } catch (err) {
       setError(friendlyErrorMessage(err, "Login failed"));

@@ -11,7 +11,7 @@ export default function CookiePolicyPage() {
     <article className="prose prose-slate mx-auto max-w-3xl prose-headings:text-slate-900 prose-a:text-accent-deep">
       <h1>Cookie Policy</h1>
       <p className="lead">
-        Last updated: May 12, 2026
+        Last updated: July 13, 2026
       </p>
 
       <p>
@@ -67,13 +67,22 @@ export default function CookiePolicyPage() {
             <td>Persistent until cleared</td>
           </tr>
           <tr>
-            <td><code>sclib_token</code></td>
+            <td><code>__Host-sclib_session</code></td>
             <td>
-              JSON Web Token (JWT) for authenticated sessions after
-              login. Contains no personal data beyond your user ID.
+              Keeps you signed in. It is restricted to the JZIS API host,
+              sent only over HTTPS, and is not readable by site JavaScript.
             </td>
-            <td>localStorage</td>
-            <td>7 days (auto-refreshed on activity)</td>
+            <td>Secure, HttpOnly cookie</td>
+            <td>24 hours</td>
+          </tr>
+          <tr>
+            <td><code>__Host-sclib_oauth_state</code></td>
+            <td>
+              Protects the short Google sign-in redirect from request
+              forgery and is removed after the sign-in flow.
+            </td>
+            <td>Secure, HttpOnly cookie</td>
+            <td>5 minutes</td>
           </tr>
         </tbody>
       </table>
@@ -224,10 +233,11 @@ export default function CookiePolicyPage() {
 
       <h2>5. Data Retention</h2>
       <p>
-        Necessary data (JWT, consent flag) is stored only on your device
-        and is never transmitted to third parties. Google Analytics data
-        is retained for 14 months, after which it is automatically
-        deleted from Google&apos;s servers.
+        The session cookie is sent only to the JZIS API over HTTPS; the
+        consent flag remains in your browser&apos;s local storage. Neither is
+        sold or sent to advertising providers. Google Analytics data is
+        retained for 14 months, after which it is automatically deleted
+        from Google&apos;s servers.
       </p>
 
       <h2>6. Changes to This Policy</h2>

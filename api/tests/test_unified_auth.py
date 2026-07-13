@@ -74,7 +74,7 @@ async def _register_verify_login(client, email: str, password: str = "test_pass_
     # Login
     r = await client.post("/v1/auth/login", json={"email": email, "password": password})
     assert r.status_code == 200, r.text
-    assert "sclib_session=" in r.headers["set-cookie"]
+    assert "set-cookie" not in r.headers
     return r.json()["access_token"]
 
 
@@ -200,26 +200,19 @@ async def test_google_callback_creates_new_user(client):
     r = await _google_callback(client, email, sub, "Brand New User")
     assert r.status_code == 302
     location = r.headers["location"]
-    assert "token=" in location
+    assert location.endswith("/sclib/auth/callback")
+    assert "token=" not in location
     assert "error" not in location
     assert "sclib_session=" in r.headers["set-cookie"]
 
-    # Extract JWT and check user via /me
-    token = location.split("token=")[1].split("&")[0]
-    r = await client.get("/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
+    # Check the new user using the HttpOnly browser session.
+    r = await client.get("/v1/auth/me")
     assert r.status_code == 200
     body = r.json()
     assert body["email"] == email
     assert body["auth_provider"] == "google"
     assert body["name"] == "Brand New User"
     assert body["is_active"] is True
-
-    # Browser clients authenticate with the HttpOnly cookie, without exposing
-    # the JWT to application JavaScript.
-    r = await client.get("/v1/auth/me")
-    assert r.status_code == 200
-    assert r.json()["email"] == email
-
 
 @pytest.mark.asyncio
 async def test_google_callback_merges_existing_local_user(client):
@@ -236,10 +229,10 @@ async def test_google_callback_merges_existing_local_user(client):
     # Now simulate Google callback with same email
     r = await _google_callback(client, email, sub, "Merged Google")
     assert r.status_code == 302
-    token = r.headers["location"].split("token=")[1].split("&")[0]
+    assert "token=" not in r.headers["location"]
 
     # Check merged user via /me
-    r = await client.get("/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
+    r = await client.get("/v1/auth/me")
     assert r.status_code == 200
     body = r.json()
     assert body["auth_provider"] == "both"

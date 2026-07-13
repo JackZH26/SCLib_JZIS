@@ -12,7 +12,6 @@
 import { useEffect, useState } from "react";
 
 import { getUsage, type UsageStats } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 import { ProfileCard } from "@/components/dashboard/ProfileCard";
 import { UsageStatsCard } from "@/components/dashboard/UsageStats";
 import { useDashboardUser } from "@/components/dashboard/user-context";
@@ -23,9 +22,7 @@ export default function OverviewPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const token = loadToken();
-    if (!token) return;
-    getUsage(token)
+    getUsage()
       .then(setUsage)
       .catch((err) => {
         setError(err instanceof Error ? err.message : "Failed to load usage");

@@ -13,7 +13,6 @@
 import { useState } from "react";
 
 import { ApiError, updateMe, type UpdateUserPayload, type User } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 
 export function ProfileCard({
   user,
@@ -170,8 +169,6 @@ function ProfileEditForm({
 
   async function onSave(e: React.FormEvent) {
     e.preventDefault();
-    const token = loadToken();
-    if (!token) return;
     setSaving(true);
     setError(null);
     // Convert empty strings back to null so the server clears the field
@@ -185,7 +182,7 @@ function ProfileEditForm({
       orcid: form.orcid.trim() || null,
     };
     try {
-      const updated = await updateMe(token, payload);
+      const updated = await updateMe(payload);
       onSaved(updated);
     } catch (err) {
       const msg =

@@ -118,6 +118,11 @@ class TokenResponse(BaseModel):
     expires_in: int
 
 
+class BrowserSessionResponse(BaseModel):
+    authenticated: bool = True
+    expires_in: int
+
+
 class ApiKeyCreate(BaseModel):
     name: str | None = Field(None, max_length=100)
 
