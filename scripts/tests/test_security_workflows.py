@@ -44,6 +44,20 @@ class SecurityWorkflowTests(unittest.TestCase):
         ):
             self.assertIn(required, security)
 
+    def test_release_binds_scan_signature_and_provenance_to_digest(self) -> None:
+        release = (WORKFLOW_DIR / "release-images.yml").read_text()
+        for required in (
+            "workflows: [Test]",
+            "github.event.workflow_run.head_sha",
+            "@${{ steps.build.outputs.digest }}",
+            "cosign sign --yes",
+            "actions/attest-build-provenance@",
+            "anchore/sbom-action@",
+            "aquasecurity/trivy-action@",
+        ):
+            self.assertIn(required, release)
+        self.assertNotIn(":latest", release)
+
     def test_dependabot_tracks_every_package_ecosystem(self) -> None:
         dependabot = (ROOT / ".github" / "dependabot.yml").read_text()
         for ecosystem in ("github-actions", "pip", "npm", "docker-compose"):
