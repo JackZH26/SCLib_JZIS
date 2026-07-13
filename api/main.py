@@ -38,6 +38,7 @@ from routers import (
 )
 from services.session_config import build_oauth_session_config
 from services.stats_refresh import refresh_dashboard_cache
+from services.timeline_projection import refresh_timeline_projection
 
 logging.basicConfig(
     level=logging.INFO,
@@ -74,6 +75,47 @@ async def _periodic_stats_refresh(interval_sec: int) -> None:
             raise
         except Exception:  # noqa: BLE001
             log.exception("stats_cache refresh failed; retrying on next tick")
+        await asyncio.sleep(interval_sec)
+
+
+async def _periodic_timeline_projection(interval_sec: int) -> None:
+    """Refresh the Timeline projection away from request latency."""
+    from services.rate_limit import get_redis
+
+    factory = get_session_factory()
+    # Alembic runs before Uvicorn in entrypoint.sh. The extra delay keeps the
+    # first full projection build away from startup health probes.
+    await asyncio.sleep(60)
+    while True:
+        try:
+            async with factory() as session:
+                async with session.begin():
+                    result = await refresh_timeline_projection(session)
+            log.info(
+                "timeline projection refreshed: %d materials / %d active points%s",
+                result.materials_processed,
+                result.active_points,
+                " (full rebuild)" if result.full_rebuild else "",
+            )
+            if result.full_rebuild or result.materials_processed:
+                try:
+                    redis = get_redis()
+                    keys = [
+                        key async for key in redis.scan_iter(
+                            match="timeline:*", count=200,
+                        )
+                    ]
+                    if keys:
+                        await redis.delete(*keys)
+                except Exception:  # noqa: BLE001 - TTL remains the safe fallback
+                    log.warning(
+                        "timeline cache invalidation failed after projection refresh",
+                        exc_info=True,
+                    )
+        except asyncio.CancelledError:
+            raise
+        except Exception:  # noqa: BLE001
+            log.exception("timeline projection refresh failed; retrying next tick")
         await asyncio.sleep(interval_sec)
 
 
@@ -282,6 +324,22 @@ async def lifespan(app: FastAPI):
         refresh_task = None
         log.info("stats_cache auto-refresh disabled (interval=%d)", interval)
 
+    projection_interval = int(
+        os.environ.get("SCLIB_TIMELINE_PROJECTION_INTERVAL_SEC", "900")
+    )
+    if projection_interval > 0:
+        projection_task = asyncio.create_task(
+            _periodic_timeline_projection(projection_interval),
+            name="sclib-timeline-projection",
+        )
+        log.info(
+            "timeline projection refresh scheduled every %ds",
+            projection_interval,
+        )
+    else:
+        projection_task = None
+        log.info("timeline projection refresh disabled")
+
     # Formula audit — hourly. Catches dirty / descriptive material
     # formulas that slip past the NER + aggregator validators (eg
     # when a new descriptor pattern emerges before the prompt is
@@ -328,7 +386,13 @@ async def lifespan(app: FastAPI):
     try:
         yield
     finally:
-        for t in (refresh_task, prune_task, audit_task, nightly_task):
+        for t in (
+            refresh_task,
+            projection_task,
+            prune_task,
+            audit_task,
+            nightly_task,
+        ):
             if t is None:
                 continue
             t.cancel()

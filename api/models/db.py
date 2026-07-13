@@ -465,6 +465,96 @@ class Material(Base):
     )
 
 
+class TimelineProjectionPoint(Base):
+    """Read-optimized projection of one validated Timeline measurement.
+
+    ``materials.records`` remains the authoritative source. Rows are updated
+    transactionally by the API's projection refresher; stale derived rows are
+    soft-disabled with ``active=False`` so source data is never removed.
+    """
+
+    __tablename__ = "timeline_projection_points"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    material_id: Mapped[str] = mapped_column(
+        String(100),
+        ForeignKey("materials.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    year: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    tc_kelvin: Mapped[float] = mapped_column(Float, nullable=False)
+    pressure_gpa: Mapped[float | None] = mapped_column(Float)
+    paper_id: Mapped[str | None] = mapped_column(String(100))
+    is_theoretical: Mapped[bool] = mapped_column(
+        Boolean, server_default="false", nullable=False,
+    )
+    is_aps: Mapped[bool] = mapped_column(
+        Boolean, server_default="false", nullable=False,
+    )
+    active: Mapped[bool] = mapped_column(
+        Boolean, server_default="true", nullable=False,
+    )
+    source_updated_at: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False,
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "year >= 1900 AND year <= 2200",
+            name="ck_timeline_projection_year",
+        ),
+        CheckConstraint(
+            "tc_kelvin > 0 AND tc_kelvin <= 300",
+            name="ck_timeline_projection_tc",
+        ),
+        Index(
+            "idx_timeline_projection_active_year",
+            "year",
+            postgresql_where=text("active IS TRUE"),
+        ),
+        Index(
+            "idx_timeline_projection_material_active",
+            "material_id",
+            postgresql_where=text("active IS TRUE"),
+        ),
+        Index(
+            "idx_timeline_projection_aps_active",
+            "is_aps",
+            postgresql_where=text("active IS TRUE"),
+        ),
+        Index(
+            "idx_timeline_projection_theory_active",
+            "is_theoretical",
+            postgresql_where=text("active IS TRUE"),
+        ),
+    )
+
+
+class TimelineProjectionState(Base):
+    """Singleton readiness and incremental-refresh watermark."""
+
+    __tablename__ = "timeline_projection_state"
+
+    id: Mapped[int] = mapped_column(
+        SmallInteger, primary_key=True, autoincrement=False,
+    )
+    schema_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    source_year: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    source_watermark: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
+    refreshed_at: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
+    material_count: Mapped[int] = mapped_column(
+        Integer, server_default="0", nullable=False,
+    )
+    active_point_count: Mapped[int] = mapped_column(
+        Integer, server_default="0", nullable=False,
+    )
+
+    __table_args__ = (
+        CheckConstraint("id = 1", name="ck_timeline_projection_state_singleton"),
+    )
+
+
 class HydrideTcParameter(Base):
     """Hydride-specific Tc/pressure/Eliashberg parameter enrichment.
 
