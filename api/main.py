@@ -10,14 +10,13 @@ import asyncio
 import logging
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
-from urllib.parse import urlsplit
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import delete
 from starlette.middleware.sessions import SessionMiddleware
 
-from config import get_settings
+from config import allowed_browser_origins, get_settings
 from models import get_session_factory
 from models.db import AskHistory, get_engine
 from routers import (
@@ -359,16 +358,7 @@ app = FastAPI(
 # for a page served at `https://jzis.org/sclib/search`, and Starlette's
 # middleware does an exact string match — mismatching on the trailing
 # `/sclib` silently fails every POST preflight.
-_fe = urlsplit(str(settings.frontend_url))
-_frontend_origin = f"{_fe.scheme}://{_fe.netloc}" if _fe.scheme and _fe.netloc else str(settings.frontend_url)
-
-# Include the `www.` sibling of the frontend origin. Users may hit the
-# site via either `jzis.org` or `www.jzis.org` (both resolve in DNS),
-# and the browser sends whichever host is in the address bar as the
-# Origin header. Starlette does exact-match so we need both.
-_allowed_origins = [_frontend_origin, "http://localhost:3000", "https://asrp.jzis.org"]
-if _fe.netloc and not _fe.netloc.startswith("www."):
-    _allowed_origins.append(f"{_fe.scheme}://www.{_fe.netloc}")
+_allowed_origins = allowed_browser_origins(settings)
 
 # --- Middleware stack (order matters!) ---
 # Starlette applies middleware in reverse registration order, so the

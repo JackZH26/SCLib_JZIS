@@ -74,6 +74,7 @@ async def _register_verify_login(client, email: str, password: str = "test_pass_
     # Login
     r = await client.post("/v1/auth/login", json={"email": email, "password": password})
     assert r.status_code == 200, r.text
+    assert "sclib_session=" in r.headers["set-cookie"]
     return r.json()["access_token"]
 
 
@@ -201,6 +202,7 @@ async def test_google_callback_creates_new_user(client):
     location = r.headers["location"]
     assert "token=" in location
     assert "error" not in location
+    assert "sclib_session=" in r.headers["set-cookie"]
 
     # Extract JWT and check user via /me
     token = location.split("token=")[1].split("&")[0]
@@ -211,6 +213,12 @@ async def test_google_callback_creates_new_user(client):
     assert body["auth_provider"] == "google"
     assert body["name"] == "Brand New User"
     assert body["is_active"] is True
+
+    # Browser clients authenticate with the HttpOnly cookie, without exposing
+    # the JWT to application JavaScript.
+    r = await client.get("/v1/auth/me")
+    assert r.status_code == 200
+    assert r.json()["email"] == email
 
 
 @pytest.mark.asyncio

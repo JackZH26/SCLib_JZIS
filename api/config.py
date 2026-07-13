@@ -114,3 +114,22 @@ def get_settings() -> Settings:
     """Cached singleton. Import this, not Settings directly, so tests can
     monkeypatch the cache between runs."""
     return Settings()  # type: ignore[call-arg]
+
+
+def allowed_browser_origins(settings: Settings) -> tuple[str, ...]:
+    """Origins trusted to make credentialed browser requests to the API."""
+    frontend = urlsplit(str(settings.frontend_url))
+    frontend_origin = (
+        f"{frontend.scheme}://{frontend.netloc}"
+        if frontend.scheme and frontend.netloc
+        else str(settings.frontend_url)
+    )
+    origins = [
+        frontend_origin,
+        "https://asrp.jzis.org",
+    ]
+    if settings.environment != "production":
+        origins.append("http://localhost:3000")
+    if frontend.netloc and not frontend.netloc.startswith("www."):
+        origins.append(f"{frontend.scheme}://www.{frontend.netloc}")
+    return tuple(dict.fromkeys(origins))

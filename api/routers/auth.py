@@ -16,7 +16,7 @@ import logging
 from datetime import datetime, timedelta, timezone
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Response, status
 from sqlalchemy import or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -41,10 +41,16 @@ from models.user import (
     UserUpdate,
     VerifyResponse,
 )
-from config import get_settings
+from config import allowed_browser_origins, get_settings
 from services import auth_service
 from services.email import send_verification, send_welcome
 from services.google_oauth import get_oauth
+from services.session_config import (
+    BrowserSessionConfig,
+    build_browser_session_config,
+    clear_browser_session_cookie,
+    set_browser_session_cookie,
+)
 from services.rate_limit import (
     get_user_remaining,
     get_user_today_used,
@@ -64,12 +70,29 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 # management endpoints is below.
 
 async def current_user_from_jwt(
+    request: Request,
     authorization: str | None = Header(default=None),
     db: AsyncSession = Depends(get_db),
 ) -> User:
-    if not authorization or not authorization.lower().startswith("bearer "):
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Missing bearer token")
-    token = authorization.split(" ", 1)[1]
+    settings = get_settings()
+    session = build_browser_session_config(
+        settings.environment,
+        settings.jwt_expiry_hours * 3600,
+    )
+    token: str | None = None
+    from_cookie = False
+    if authorization and authorization.lower().startswith("bearer "):
+        token = authorization.split(" ", 1)[1]
+    elif request.cookies.get(session.cookie_name):
+        token = request.cookies[session.cookie_name]
+        from_cookie = True
+    if not token:
+        raise HTTPException(
+            status.HTTP_401_UNAUTHORIZED,
+            "Missing browser session or bearer token",
+        )
+    if from_cookie:
+        _validate_cookie_request_origin(request)
     try:
         payload = auth_service.decode_access_token(token)
     except Exception as e:  # jwt.PyJWTError and variants
@@ -85,6 +108,23 @@ async def current_user_from_jwt(
     if user is None or not user.is_active:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User not found or inactive")
     return user
+
+
+def _browser_session_config() -> BrowserSessionConfig:
+    settings = get_settings()
+    return build_browser_session_config(
+        settings.environment,
+        settings.jwt_expiry_hours * 3600,
+    )
+
+
+def _validate_cookie_request_origin(request: Request) -> None:
+    """Require an allowlisted Origin for cookie-authenticated writes."""
+    if request.method.upper() in {"GET", "HEAD", "OPTIONS"}:
+        return
+    origin = request.headers.get("origin")
+    if not origin or origin not in allowed_browser_origins(get_settings()):
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "Untrusted request origin")
 
 
 # ---------------------------------------------------------------------------
@@ -165,7 +205,11 @@ async def verify(token: str, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
+async def login(
+    body: LoginRequest,
+    response: Response,
+    db: AsyncSession = Depends(get_db),
+):
     q = await db.execute(select(User).where(User.email == body.email))
     user = q.scalar_one_or_none()
     # Constant-time branch: run a bcrypt compare even when the user
@@ -187,7 +231,18 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
     user.last_login = datetime.now(timezone.utc)
     await db.commit()
     token, expires_in = auth_service.create_access_token(user.id)
+    set_browser_session_cookie(response, token, _browser_session_config())
     return TokenResponse(access_token=token, expires_in=expires_in)
+
+
+@router.post("/logout", response_model=MessageResponse)
+async def logout(
+    response: Response,
+    user: User = Depends(current_user_from_jwt),
+):
+    """End the browser session without invalidating bearer/API credentials."""
+    clear_browser_session_cookie(response, _browser_session_config())
+    return MessageResponse(message="Signed out")
 
 
 @router.get("/me", response_model=UserRead)
@@ -435,8 +490,9 @@ async def google_callback(
 
     # Issue JWT
     jwt_token, _ = auth_service.create_access_token(user.id)
-
-    return RedirectResponse(
+    response = RedirectResponse(
         url=f"{settings.frontend_callback_url}?token={jwt_token}",
         status_code=302,
     )
+    set_browser_session_cookie(response, jwt_token, _browser_session_config())
+    return response

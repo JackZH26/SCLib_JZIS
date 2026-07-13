@@ -28,6 +28,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import logging
 from uuid import UUID
 
+from config import allowed_browser_origins, get_settings
 from models import get_db
 from models.db import ApiKey, User
 from services import auth_service
@@ -37,6 +38,7 @@ from services.rate_limit import (
     get_guest_remaining,
     get_user_remaining,
 )
+from services.session_config import build_browser_session_config
 
 log = logging.getLogger(__name__)
 
@@ -87,15 +89,29 @@ async def _resolve_jwt_user(
     request: Request,
     db: AsyncSession,
 ) -> User | None:
-    """Try to extract a valid JWT from the ``Authorization: Bearer`` header.
+    """Try to extract a valid JWT from a bearer header or browser cookie.
 
     Returns the ``User`` if the token is valid and the account is active,
     otherwise ``None`` (fall through to the next auth method).
     """
     auth_header = request.headers.get("authorization")
-    if not auth_header or not auth_header.lower().startswith("bearer "):
+    from_cookie = False
+    if auth_header and auth_header.lower().startswith("bearer "):
+        token = auth_header[7:]
+    else:
+        settings = get_settings()
+        session = build_browser_session_config(
+            settings.environment,
+            settings.jwt_expiry_hours * 3600,
+        )
+        token = request.cookies.get(session.cookie_name)
+        from_cookie = token is not None
+    if not token:
         return None
-    token = auth_header[7:]  # strip "Bearer "
+    if from_cookie and request.method.upper() not in {"GET", "HEAD", "OPTIONS"}:
+        origin = request.headers.get("origin")
+        if not origin or origin not in allowed_browser_origins(get_settings()):
+            raise HTTPException(status.HTTP_403_FORBIDDEN, "Untrusted request origin")
     try:
         payload = auth_service.decode_access_token(token)
         user_id = UUID(payload["sub"])
@@ -151,7 +167,7 @@ async def require_identity(
 
     Priority order:
     1. ``X-API-Key`` header → look up API key
-    2. ``Authorization: Bearer <jwt>`` → decode JWT
+    2. Bearer JWT or HttpOnly browser session → decode JWT
     3. No credentials → guest path (rate-limited by IP)
 
     Registered users (key OR JWT) are subject to
@@ -192,7 +208,7 @@ async def require_identity(
             user_remaining=remaining,
         )
 
-    # 2. JWT Bearer token
+    # 2. Bearer JWT or HttpOnly browser session
     jwt_user = await _resolve_jwt_user(request, db)
     if jwt_user is not None:
         remaining = await _enforce_user_quota(jwt_user)
@@ -250,7 +266,7 @@ async def peek_identity(
                     user_remaining=remaining,
                 )
 
-    # 2. JWT Bearer token
+    # 2. Bearer JWT or HttpOnly browser session
     jwt_user = await _resolve_jwt_user(request, db)
     if jwt_user is not None:
         remaining = await get_user_remaining(jwt_user.id)
