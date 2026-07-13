@@ -272,9 +272,12 @@ Content-Type: application/json
         {/* Timeline */}
         <Endpoint method="GET" path="/timeline" badge="free">
           <p>
-            Tc timeline data — every material plotted by arXiv year
-            and maximum Tc, grouped by family. Powers the Timeline chart.
+            Tc timeline measurements grouped by material family. Supports
+            deterministic point budgets (<code>max_points</code>) and compact
+            chart payloads (<code>compact=true</code>) while coverage totals
+            continue to describe the complete filtered result.
           </p>
+          <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`GET /v1/timeline?max_points=10000&compact=true`}</pre>
         </Endpoint>
 
         {/* Stats */}

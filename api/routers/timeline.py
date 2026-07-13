@@ -31,6 +31,7 @@ import hashlib
 import json
 import logging
 from datetime import datetime, timezone
+from typing import Literal
 
 from fastapi import APIRouter, Depends, Query, Request, Response
 from sqlalchemy import select
@@ -44,7 +45,7 @@ from services.rate_limit import get_redis
 router = APIRouter(tags=["timeline"])
 log = logging.getLogger(__name__)
 
-_CACHE_SCHEMA_VERSION = "v1"
+_CACHE_SCHEMA_VERSION = "v2"
 _CACHE_TTL_SECONDS = 900
 _CACHE_CONTROL = (
     "public, max-age=60, s-maxage=900, stale-while-revalidate=3600"
@@ -140,19 +141,54 @@ def _cache_key(
     include_pending: bool,
     experimental_only: bool,
     only_aps: bool,
+    max_points: int | None,
+    compact: bool,
 ) -> str:
     options = json.dumps(
         {
             "experimental_only": experimental_only,
             "family": family,
             "include_pending": include_pending,
+            "max_points": max_points,
             "only_aps": only_aps,
+            "compact": compact,
         },
         sort_keys=True,
         separators=(",", ":"),
     )
     variant = hashlib.sha256(options.encode()).hexdigest()[:20]
     return f"timeline:{_CACHE_SCHEMA_VERSION}:{variant}"
+
+
+def _evenly_sample(
+    points: list[TimelinePoint],
+    max_points: int | None,
+) -> list[TimelinePoint]:
+    """Return a deterministic sample while preserving timeline density.
+
+    Points are already sorted by year and descending Tc. Selecting evenly
+    spaced indexes therefore retains the temporal distribution and both
+    endpoints without the memory and CPU cost of a second grouping pass.
+    """
+    if max_points is None or len(points) <= max_points:
+        return points
+    if max_points <= 0:
+        raise ValueError("max_points must be positive")
+    if max_points == 1:
+        return [points[0]]
+    total = len(points)
+    return [
+        points[round(index * (total - 1) / (max_points - 1))]
+        for index in range(max_points)
+    ]
+
+
+def _serialize_timeline(data: TimelineResponse, *, compact: bool) -> str:
+    if not compact:
+        return data.model_dump_json()
+    return data.model_dump_json(
+        exclude={"points": {"__all__": {"formula_latex"}}},
+    )
 
 
 def _weak_etag(payload: str) -> str:
@@ -231,6 +267,17 @@ async def timeline(
         False,
         description="Only show Tc records whose paper_id is APS-sourced.",
     ),
+    max_points: Literal[5000, 10000, 20000, 50000] | None = Query(
+        None,
+        description=(
+            "Deterministically downsample large results to one of the supported "
+            "rendering budgets. Coverage totals still describe the full result."
+        ),
+    ),
+    compact: bool = Query(
+        False,
+        description="Omit display fields that the interactive chart does not use.",
+    ),
     db: AsyncSession = Depends(get_db),
 ) -> Response:
     cache_key = _cache_key(
@@ -238,6 +285,8 @@ async def timeline(
         include_pending,
         experimental_only,
         only_aps,
+        max_points,
+        compact,
     )
     redis = get_redis()
     try:
@@ -256,9 +305,10 @@ async def timeline(
         include_pending=include_pending,
         experimental_only=experimental_only,
         only_aps=only_aps,
+        max_points=max_points,
         db=db,
     )
-    payload = data.model_dump_json()
+    payload = _serialize_timeline(data, compact=compact)
     try:
         await redis.set(cache_key, payload, ex=_CACHE_TTL_SECONDS)
     except Exception:  # noqa: BLE001 - serve the computed response regardless
@@ -272,6 +322,7 @@ async def _build_timeline(
     include_pending: bool,
     experimental_only: bool,
     only_aps: bool,
+    max_points: int | None,
     db: AsyncSession,
 ) -> TimelineResponse:
     stmt = select(Material)
@@ -369,21 +420,28 @@ async def _build_timeline(
 
     points = sorted(seen.values(), key=lambda p: (p.year, -p.tc_kelvin))
 
+    total_points = len(points)
+    returned_points = _evenly_sample(points, max_points)
     coverage: TimelineCoverage | None = None
     if points:
         years = [p.year for p in points]
         coverage = TimelineCoverage(
-            total_points=len(points),
+            total_points=total_points,
             total_materials=len({(p.material, p.family) for p in points}),
             year_min=min(years),
             year_max=max(years),
+            returned_points=len(returned_points),
         )
     else:
         coverage = TimelineCoverage(
-            total_points=0, total_materials=0, year_min=None, year_max=None,
+            total_points=0,
+            total_materials=0,
+            year_min=None,
+            year_max=None,
+            returned_points=0,
         )
 
-    return TimelineResponse(family=family, points=points, coverage=coverage)
+    return TimelineResponse(family=family, points=returned_points, coverage=coverage)
 
 
 def _as_float(x) -> float | None:

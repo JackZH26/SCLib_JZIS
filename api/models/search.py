@@ -328,6 +328,9 @@ class TimelineCoverage(BaseModel):
     total_materials: int
     year_min: int | None
     year_max: int | None
+    # Number of points included in this response. This can be lower than
+    # ``total_points`` when a caller requests deterministic downsampling.
+    returned_points: int
 
 
 class TimelineResponse(BaseModel):

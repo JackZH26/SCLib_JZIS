@@ -86,6 +86,8 @@ export default async function TimelinePage({
     family: current || undefined,
     experimentalOnly,
     onlyAps,
+    maxPoints: 10000,
+    compact: true,
   }).catch(() => null);
 
   // Build hrefs that round-trip the *other* filter so toggling one
@@ -162,6 +164,14 @@ export default async function TimelinePage({
         <>
           {data.coverage && data.coverage.total_points > 0 && (
             <p className="text-xs text-slate-500">
+              {data.coverage.returned_points < data.coverage.total_points && (
+                <>
+                  Displaying a representative sample of{" "}
+                  <span className="font-medium text-slate-700">
+                    {data.coverage.returned_points.toLocaleString()}
+                  </span>{" "}from{" "}
+                </>
+              )}
               <span className="font-medium text-slate-700">
                 {data.coverage.total_points.toLocaleString()}
               </span>{" "}

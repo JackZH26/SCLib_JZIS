@@ -33,7 +33,7 @@
  * at import time.
  */
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { TimelineCoverage, TimelinePoint } from "@/lib/api";
 import { FAMILY_COLORS, familyLabel } from "@/lib/families";
 import { formulaToHtml } from "@/components/FormulaDisplay";
@@ -41,7 +41,7 @@ import { formulaToHtml } from "@/components/FormulaDisplay";
 // `loading: () => null` because we render our own overlay below; the
 // default would briefly flash plotly's empty inner div before our
 // spinner appears.
-const Plot = dynamic(() => import("react-plotly.js"), {
+const Plot = dynamic(() => import("@/components/PlotlyGl2d"), {
   ssr: false,
   loading: () => null,
 });
@@ -95,6 +95,81 @@ export function TcTimeline({
   // of markers, and used to show as a blank white box.
   const [isPlotReady, setIsPlotReady] = useState(false);
 
+  const traces = useMemo(() => {
+    const grouped = new Map<string, TimelinePoint[]>();
+    for (const point of points) {
+      const family = point.family ?? "unknown";
+      const familyPoints = grouped.get(family);
+      if (familyPoints) familyPoints.push(point);
+      else grouped.set(family, [point]);
+    }
+
+    return Array.from(grouped, ([fam, subset]) => {
+      const familyColor = FAMILY_COLORS[fam] ?? "#94a3b8";
+      return {
+        type: "scattergl" as const,
+        mode: "markers" as const,
+        name: fam === "unknown" ? "Other" : familyLabel(fam),
+        x: subset.map((p) => p.year + jitterYear(p.material, p.tc_kelvin)),
+        y: subset.map((p) => p.tc_kelvin),
+        customdata: subset.map((p) => [
+          // Pressure label is three-state:
+          //   explicit >0 → "X GPa"
+          //   explicit 0  → "ambient" (the paper confirms ambient P)
+          //   null        → "ambient (unstated)" — we have no evidence
+          //                 one way or the other; historically the NER
+          //                 defaulted to 0.0 for unstated pressures, so
+          //                 this bucket is the most honest fallback.
+          pressureLabel(p.pressure_gpa),
+          paperIdLabel(p.paper_id),
+          p.year,
+          // Theory tag, prefixed with <br> so it nests cleanly under
+          // the material name in the hover card; empty string for
+          // experimental points so the line is suppressed.
+          p.is_theoretical ? "<br>⚠ theoretical (DFT / computational)" : "",
+        ]),
+        text: subset.map((p) => formulaToHtml(p.material)),
+        hovertemplate:
+          "<b>%{text}</b>%{customdata[3]}<br>" +
+          "Tc = %{y} K<br>" +
+          "P = %{customdata[0]}<br>" +
+          "Year = %{customdata[2]}<br>" +
+          "%{customdata[1]}<extra></extra>",
+        marker: {
+          size: 5,
+          // Theoretical points deliberately faded so a single chatty
+          // DFT paper doesn't visually outweigh experimental data.
+          opacity: subset.map((p) => (p.is_theoretical ? 0.35 : 0.7)),
+          color: familyColor,
+          // Hollow ring for theoretical, filled disk for experimental.
+          // Lets readers tell apart "this Tc was measured" from "this
+          // Tc was calculated" at a glance.
+          symbol: subset.map((p) =>
+            p.is_theoretical ? "circle-open" : "circle",
+          ),
+          line: {
+            // - Hollow circles need a stroke wide enough to see at
+            //   5 px size → 1.4
+            // - Filled experimental high-pressure points get a dark
+            //   outline (existing scan-at-a-glance hint) → 1.2
+            // - Plain ambient experimental → no stroke
+            width: subset.map((p) => {
+              if (p.is_theoretical) return 1.4;
+              if (p.pressure_gpa != null && p.pressure_gpa > 0) return 1.2;
+              return 0;
+            }),
+            // Theoretical strokes inherit the family colour (the ring
+            // IS the visible mark); experimental high-P points get the
+            // dark slate outline as before.
+            color: subset.map((p) =>
+              p.is_theoretical ? familyColor : "#0f172a",
+            ),
+          },
+        },
+      };
+    });
+  }, [points]);
+
   if (points.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
@@ -103,76 +178,6 @@ export function TcTimeline({
       </div>
     );
   }
-
-  const families = Array.from(
-    new Set(points.map((p) => p.family ?? "unknown")),
-  );
-
-  const traces = families.map((fam) => {
-    const subset = points.filter((p) => (p.family ?? "unknown") === fam);
-    const familyColor = FAMILY_COLORS[fam] ?? "#94a3b8";
-    return {
-      type: "scatter" as const,
-      mode: "markers" as const,
-      name: fam === "unknown" ? "Other" : familyLabel(fam),
-      x: subset.map((p) => p.year + jitterYear(p.material, p.tc_kelvin)),
-      y: subset.map((p) => p.tc_kelvin),
-      customdata: subset.map((p) => [
-        // Pressure label is three-state:
-        //   explicit >0 → "X GPa"
-        //   explicit 0  → "ambient" (the paper confirms ambient P)
-        //   null        → "ambient (unstated)" — we have no evidence
-        //                 one way or the other; historically the NER
-        //                 defaulted to 0.0 for unstated pressures, so
-        //                 this bucket is the most honest fallback.
-        pressureLabel(p.pressure_gpa),
-        paperIdLabel(p.paper_id),
-        p.year,
-        // Theory tag, prefixed with <br> so it nests cleanly under
-        // the material name in the hover card; empty string for
-        // experimental points so the line is suppressed.
-        p.is_theoretical ? "<br>⚠ theoretical (DFT / computational)" : "",
-      ]),
-      text: subset.map((p) => formulaToHtml(p.material)),
-      hovertemplate:
-        "<b>%{text}</b>%{customdata[3]}<br>" +
-        "Tc = %{y} K<br>" +
-        "P = %{customdata[0]}<br>" +
-        "Year = %{customdata[2]}<br>" +
-        "%{customdata[1]}<extra></extra>",
-      marker: {
-        size: 5,
-        // Theoretical points deliberately faded so a single chatty
-        // DFT paper doesn't visually outweigh experimental data.
-        opacity: subset.map((p) => (p.is_theoretical ? 0.35 : 0.7)),
-        color: familyColor,
-        // Hollow ring for theoretical, filled disk for experimental.
-        // Lets readers tell apart "this Tc was measured" from "this
-        // Tc was calculated" at a glance.
-        symbol: subset.map((p) =>
-          p.is_theoretical ? "circle-open" : "circle",
-        ),
-        line: {
-          // - Hollow circles need a stroke wide enough to see at
-          //   5 px size → 1.4
-          // - Filled experimental high-pressure points get a dark
-          //   outline (existing scan-at-a-glance hint) → 1.2
-          // - Plain ambient experimental → no stroke
-          width: subset.map((p) => {
-            if (p.is_theoretical) return 1.4;
-            if (p.pressure_gpa != null && p.pressure_gpa > 0) return 1.2;
-            return 0;
-          }),
-          // Theoretical strokes inherit the family colour (the ring
-          // IS the visible mark); experimental high-P points get the
-          // dark slate outline as before.
-          color: subset.map((p) =>
-            p.is_theoretical ? familyColor : "#0f172a",
-          ),
-        },
-      },
-    };
-  });
 
   // X range: pad one year either side so outermost dots aren't on
   // the axis line.

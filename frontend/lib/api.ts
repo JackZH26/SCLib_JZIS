@@ -109,7 +109,10 @@ function sanitizeErrorMessage(msg: string): string {
 
 async function request<T>(
   path: string,
-  init: RequestInit & { apiKey?: string } = {},
+  init: RequestInit & {
+    apiKey?: string;
+    next?: { revalidate?: number };
+  } = {},
 ): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body && !headers.has("content-type")) {
@@ -122,7 +125,7 @@ async function request<T>(
     res = await fetch(`${API_BASE}${path}`, {
       ...init,
       headers,
-      cache: "no-store",
+      cache: init.cache ?? "no-store",
       credentials: init.credentials ?? "include",
     });
   } catch (e) {
@@ -771,7 +774,7 @@ export async function getVersion(opts?: {
 
 export interface TimelinePoint {
   material: string;
-  formula_latex: string | null;
+  formula_latex?: string | null;
   family: string | null;
   tc_kelvin: number;
   year: number;
@@ -786,6 +789,7 @@ export interface TimelineCoverage {
   total_materials: number;
   year_min: number | null;
   year_max: number | null;
+  returned_points: number;
 }
 
 export interface TimelineResponse {
@@ -798,13 +802,21 @@ export function getTimeline(opts: {
   family?: string;
   experimentalOnly?: boolean;
   onlyAps?: boolean;
+  maxPoints?: 5000 | 10000 | 20000 | 50000;
+  compact?: boolean;
 } = {}) {
   const qs = new URLSearchParams();
   if (opts.family) qs.set("family", opts.family);
   if (opts.experimentalOnly) qs.set("experimental_only", "true");
   if (opts.onlyAps) qs.set("only_aps", "true");
+  if (opts.maxPoints) qs.set("max_points", String(opts.maxPoints));
+  if (opts.compact) qs.set("compact", "true");
   const qstr = qs.toString();
-  return request<TimelineResponse>(`/timeline${qstr ? `?${qstr}` : ""}`);
+  return request<TimelineResponse>(`/timeline${qstr ? `?${qstr}` : ""}`, {
+    cache: "force-cache",
+    credentials: "omit",
+    next: { revalidate: 60 },
+  });
 }
 
 export interface DiscoveryFilterRule {

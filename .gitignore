@@ -28,6 +28,7 @@ uv.lock
 node_modules/
 .next/
 out/
+*.tsbuildinfo
 .pnpm-store/
 pnpm-debug.log*
 npm-debug.log*
