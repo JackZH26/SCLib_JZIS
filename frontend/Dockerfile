@@ -2,10 +2,8 @@
 FROM node:20-alpine AS deps
 WORKDIR /app
 RUN corepack enable
-COPY package.json ./
-# No lockfile yet during Phase 1 — install fresh. Phase 4 will commit a
-# pnpm-lock.yaml and swap this for `pnpm install --frozen-lockfile`.
-RUN corepack prepare pnpm@9.12.0 --activate && pnpm install
+COPY package.json pnpm-lock.yaml ./
+RUN corepack prepare pnpm@9.12.0 --activate && pnpm install --frozen-lockfile
 
 FROM node:20-alpine AS builder
 WORKDIR /app

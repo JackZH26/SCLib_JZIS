@@ -88,7 +88,7 @@ jobs:
       - name: Install dependencies
         run: |
           if [ -f package.json ]; then
-            pnpm install --frozen-lockfile || pnpm install
+            pnpm install --frozen-lockfile
           else
             echo "frontend/package.json not present yet; skipping"
             exit 0
