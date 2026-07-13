@@ -1,0 +1,107 @@
+groups:
+  - name: sclib-slo
+    interval: 30s
+    rules:
+      - alert: SCLibPublicAPIFastErrorBudgetBurn
+        expr: |
+          (
+            sum(rate(sclib_http_requests_total{route=~"/v1/(stats|version|materials|materials/[{]material_id[}]|paper/[{]paper_id[}]|timeline|discovery/candidates)",status=~"5.."}[5m]))
+            /
+            clamp_min(sum(rate(sclib_http_requests_total{route=~"/v1/(stats|version|materials|materials/[{]material_id[}]|paper/[{]paper_id[}]|timeline|discovery/candidates)"}[5m])), 0.001)
+          ) > 0.0144
+        for: 5m
+        labels:
+          severity: critical
+          slo: public-api
+        annotations:
+          summary: SCLib public API is rapidly consuming its error budget
+          runbook_url: https://github.com/JackZH26/SCLib_JZIS/blob/main/docs/OBSERVABILITY_SLO.md#api-error-budget-alert
+
+      - alert: SCLibAIAPIFastErrorBudgetBurn
+        expr: |
+          (
+            sum(rate(sclib_http_requests_total{route=~"/v1/(search|ask|paper/[{]paper_id[}]/similar)",status=~"5.."}[5m]))
+            /
+            clamp_min(sum(rate(sclib_http_requests_total{route=~"/v1/(search|ask|paper/[{]paper_id[}]/similar)"}[5m])), 0.001)
+          ) > 0.072
+        for: 5m
+        labels:
+          severity: critical
+          slo: ai-api
+        annotations:
+          summary: SCLib search or Ask is rapidly consuming its error budget
+          runbook_url: https://github.com/JackZH26/SCLib_JZIS/blob/main/docs/OBSERVABILITY_SLO.md#api-error-budget-alert
+
+      - alert: SCLibAPILatencyHigh
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum by (le, route) (rate(sclib_http_request_duration_seconds_bucket{route=~"/v1/.*"}[10m]))
+          ) > 2
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: SCLib API p95 latency exceeds 2 seconds on {{ $labels.route }}
+          runbook_url: https://github.com/JackZH26/SCLib_JZIS/blob/main/docs/OBSERVABILITY_SLO.md#latency-alert
+
+      - alert: SCLibProviderFailureRateHigh
+        expr: |
+          (
+            sum by (provider) (rate(sclib_provider_calls_total{outcome=~"failure|timeout|circuit_open"}[10m]))
+            /
+            clamp_min(sum by (provider) (rate(sclib_provider_calls_total[10m])), 0.001)
+          ) > 0.2
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: SCLib provider {{ $labels.provider }} failure rate exceeds 20%
+          runbook_url: https://github.com/JackZH26/SCLib_JZIS/blob/main/docs/OBSERVABILITY_SLO.md#provider-alert
+
+      - alert: SCLibDependencyFailureRateHigh
+        expr: |
+          (
+            sum by (dependency) (rate(sclib_dependency_calls_total{outcome="failure"}[10m]))
+            /
+            clamp_min(sum by (dependency) (rate(sclib_dependency_calls_total[10m])), 0.001)
+          ) > 0.05
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: SCLib dependency {{ $labels.dependency }} failure rate exceeds 5%
+          runbook_url: https://github.com/JackZH26/SCLib_JZIS/blob/main/docs/OBSERVABILITY_SLO.md#dependency-alert
+
+      - alert: SCLibDatasetStale
+        expr: sclib_dataset_age_seconds > 86400
+        for: 30m
+        labels:
+          severity: warning
+          slo: data-freshness
+        annotations:
+          summary: SCLib indexed dataset is more than 24 hours old
+          runbook_url: https://github.com/JackZH26/SCLib_JZIS/blob/main/docs/OBSERVABILITY_SLO.md#data-freshness-alert
+
+      - alert: SCLibPipelineStageFailed
+        expr: sclib_pipeline_stage_status < 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: SCLib pipeline stage {{ $labels.stage }} reports failure
+          runbook_url: https://github.com/JackZH26/SCLib_JZIS/blob/main/docs/OBSERVABILITY_SLO.md#pipeline-alert
+
+      - alert: SCLibRAGCitationValidityLow
+        expr: |
+          (
+            sum(rate(sclib_rag_answers_total{citation_valid="false"}[30m]))
+            /
+            clamp_min(sum(rate(sclib_rag_answers_total[30m])), 0.001)
+          ) > 0.05
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: More than 5% of recent RAG answers have invalid citations
+          runbook_url: https://github.com/JackZH26/SCLib_JZIS/blob/main/docs/OBSERVABILITY_SLO.md#rag-quality-alert

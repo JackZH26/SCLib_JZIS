@@ -67,7 +67,8 @@ and installs `nginx/sclib.conf` into `/etc/nginx/conf.d/`.
 3. `nginx -t && systemctl reload nginx`
 4. Start the stack:
    ```bash
-   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+   docker compose --profile observability \
+     -f docker-compose.yml -f docker-compose.prod.yml up -d
    ```
 5. Run Alembic migrations:
    ```bash
@@ -202,12 +203,18 @@ operators can `tail -f` during the first few nights.
 
 ## Observability
 
-- `docker compose logs -f api frontend`
-- `docker compose ps` — all 4 services should show `healthy`
-- `GET /stats.updated_at` tells you whether the cron ran
-- GCS `metadata/failed_papers.json` — the failure pool; non-empty is
-  fine, the retry pass drains it; only intervene if the same paper IDs
-  persist across runs with `status: dead`
+The loopback-only Prometheus, Alertmanager, and Grafana services are enabled
+with the `observability` Compose profile. Set `GRAFANA_ADMIN_PASSWORD`, configure
+an approved Alertmanager notification receiver, and follow
+[`OBSERVABILITY_SLO.md`](OBSERVABILITY_SLO.md) for dashboard access, SLOs,
+release gates, and alert runbooks.
+
+- `docker compose --profile observability logs -f api frontend prometheus`
+- `docker compose --profile observability ps` — application and monitoring
+  services should be running; API/frontend/PostgreSQL/Redis should be healthy
+- `GET /stats.updated_at` and `sclib_dataset_age_seconds` report freshness
+- GCS `metadata/failed_papers.json` — the failure pool; non-empty is fine, the
+  retry pass drains it; intervene if the same IDs persist with `status: dead`
 
 ## Rollback
 
