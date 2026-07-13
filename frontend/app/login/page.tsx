@@ -51,6 +51,11 @@ export default function LoginPage() {
           </svg>
           <span className="text-sm font-medium text-slate-700">Continue with Google</span>
         </a>
+        <p className="mt-2 text-center text-xs leading-5 text-slate-500">
+          By continuing, you agree to the{" "}
+          <Link href="/terms" className="underline">Terms</Link> and acknowledge
+          the <Link href="/privacy" className="underline">Privacy Policy</Link>.
+        </p>
       </div>
 
       <div className="relative my-6">

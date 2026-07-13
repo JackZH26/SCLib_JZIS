@@ -26,7 +26,16 @@ from starlette.responses import RedirectResponse
 
 from config import allowed_browser_origins, get_settings
 from models import get_db
-from models.db import ApiKey, EmailVerification, PasswordResetToken, User
+from models.db import (
+    ApiKey,
+    AskHistory,
+    AuthAuditEvent,
+    Bookmark,
+    EmailVerification,
+    PasswordResetToken,
+    User,
+)
+from models.privacy import AccountDataExport, AccountDeletionRequest
 from models.user import (
     ApiKeyCreate,
     ApiKeyRead,
@@ -563,6 +572,158 @@ async def me(user: User = Depends(current_user_from_jwt)):
     return UserRead.model_validate(user)
 
 
+@router.get("/me/export", response_model=AccountDataExport)
+async def export_me(
+    response: Response,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(current_user_from_jwt),
+) -> AccountDataExport:
+    """Return a portable copy of data directly associated with the account.
+
+    Password hashes, API-key hashes, and verification/reset token material
+    are excluded because returning authentication secrets would weaken the
+    account. Non-secret metadata is included so the export remains useful
+    for access and audit purposes.
+    """
+    api_keys = (
+        await db.execute(
+            select(ApiKey)
+            .where(ApiKey.user_id == user.id)
+            .order_by(ApiKey.created_at.asc())
+        )
+    ).scalars().all()
+    history = (
+        await db.execute(
+            select(AskHistory)
+            .where(AskHistory.user_id == user.id)
+            .order_by(AskHistory.created_at.asc())
+        )
+    ).scalars().all()
+    bookmarks = (
+        await db.execute(
+            select(Bookmark)
+            .where(Bookmark.user_id == user.id)
+            .order_by(Bookmark.created_at.asc())
+        )
+    ).scalars().all()
+    verifications = (
+        await db.execute(
+            select(EmailVerification)
+            .where(EmailVerification.user_id == user.id)
+            .order_by(EmailVerification.created_at.asc())
+        )
+    ).scalars().all()
+    resets = (
+        await db.execute(
+            select(PasswordResetToken)
+            .where(PasswordResetToken.user_id == user.id)
+            .order_by(PasswordResetToken.created_at.asc())
+        )
+    ).scalars().all()
+    security_events = (
+        await db.execute(
+            select(AuthAuditEvent)
+            .where(AuthAuditEvent.user_id == user.id)
+            .order_by(AuthAuditEvent.created_at.asc())
+        )
+    ).scalars().all()
+
+    response.headers["Cache-Control"] = "no-store"
+    response.headers["Content-Disposition"] = (
+        f'attachment; filename="sclib-account-{user.id}.json"'
+    )
+    return AccountDataExport(
+        generated_at=datetime.now(timezone.utc),
+        profile={
+            "id": user.id,
+            "email": user.email,
+            "email_verified": user.email_verified,
+            "name": user.name,
+            "institution": user.institution,
+            "country": user.country,
+            "age": user.age,
+            "research_area": user.research_area,
+            "purpose": user.purpose,
+            "bio": user.bio,
+            "orcid": user.orcid,
+            "created_at": user.created_at,
+            "updated_at": user.updated_at,
+            "last_login": user.last_login,
+            "is_active": user.is_active,
+            "is_admin": user.is_admin,
+            "is_reviewer": user.is_reviewer,
+            "auth_provider": user.auth_provider,
+            "google_sub": user.google_sub,
+            "avatar_url": user.avatar_url,
+            "scopes": user.scopes,
+            "profile": user.profile,
+        },
+        api_keys=[
+            {
+                "id": key.id,
+                "key_prefix": key.key_prefix,
+                "name": key.name,
+                "created_at": key.created_at,
+                "last_used": key.last_used,
+                "revoked": key.revoked,
+                "revoked_at": key.revoked_at,
+                "total_requests": key.total_requests,
+            }
+            for key in api_keys
+        ],
+        ask_history=[
+            {
+                "id": item.id,
+                "question": item.question,
+                "answer": item.answer,
+                "sources": item.sources,
+                "tokens_used": item.tokens_used,
+                "latency_ms": item.latency_ms,
+                "language": item.language,
+                "created_at": item.created_at,
+            }
+            for item in history
+        ],
+        bookmarks=[
+            {
+                "id": item.id,
+                "target_type": item.target_type,
+                "target_id": item.target_id,
+                "created_at": item.created_at,
+            }
+            for item in bookmarks
+        ],
+        email_verifications=[
+            {
+                "id": item.id,
+                "expires_at": item.expires_at,
+                "used": item.used,
+                "created_at": item.created_at,
+            }
+            for item in verifications
+        ],
+        password_resets=[
+            {
+                "id": item.id,
+                "expires_at": item.expires_at,
+                "used_at": item.used_at,
+                "created_at": item.created_at,
+            }
+            for item in resets
+        ],
+        security_events=[
+            {
+                "id": item.id,
+                "event_type": item.event_type,
+                "outcome": item.outcome,
+                "details": item.details,
+                "created_at": item.created_at,
+            }
+            for item in security_events
+        ],
+    )
+
+
 @router.patch("/me", response_model=UserRead)
 async def update_me(
     body: UserUpdate,
@@ -584,6 +745,53 @@ async def update_me(
     await db.commit()
     await db.refresh(user)
     return UserRead.model_validate(user)
+
+
+@router.delete("/me", response_model=MessageResponse)
+async def delete_me(
+    body: AccountDeletionRequest,
+    request: Request,
+    response: Response,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(current_user_from_jwt),
+) -> MessageResponse:
+    """Permanently delete the current non-admin account and private rows.
+
+    The exact account email and, for password-capable accounts, the current
+    password provide a fresh confirmation beyond possession of a session.
+    Security audit rows are retained only in de-identified form by the
+    database's ``ON DELETE SET NULL`` constraint.
+    """
+    if user.is_admin:
+        raise HTTPException(
+            status.HTTP_409_CONFLICT,
+            "Administrator accounts must be demoted before deletion",
+        )
+    if normalize_account(str(body.email)) != normalize_account(user.email):
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Account confirmation did not match")
+    if user.password_hash and (
+        not body.current_password
+        or not auth_service.verify_password(body.current_password, user.password_hash)
+    ):
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Account confirmation did not match")
+
+    deleted_user_id = user.id
+    add_auth_audit(
+        db,
+        request,
+        event_type="account_delete",
+        outcome="success",
+        account=user.email,
+        user_id=user.id,
+    )
+    # Make the audit row exist before deleting its referenced account; the
+    # FK then clears user_id while retaining the privacy-preserving event.
+    await db.flush()
+    await db.delete(user)
+    await db.commit()
+    clear_browser_session_cookie(response, _browser_session_config())
+    log.warning("account self-deleted user_id=%s", deleted_user_id)
+    return MessageResponse(message="Account and associated private data deleted")
 
 
 @router.get("/keys", response_model=list[ApiKeyRead])

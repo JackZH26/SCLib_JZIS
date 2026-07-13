@@ -10,12 +10,12 @@ export default function RegisterPage() {
     email: "",
     password: "",
     name: "",
-    age: "",
     institution: "",
     country: "",
     research_area: "",
     purpose: "",
   });
+  const [includeProfile, setIncludeProfile] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -33,11 +33,10 @@ export default function RegisterPage() {
         email: form.email,
         password: form.password,
         name: form.name,
-        age: Number(form.age),
-        institution: form.institution || undefined,
-        country: form.country || undefined,
-        research_area: form.research_area || undefined,
-        purpose: form.purpose,
+        institution: includeProfile ? form.institution || undefined : undefined,
+        country: includeProfile ? form.country || undefined : undefined,
+        research_area: includeProfile ? form.research_area || undefined : undefined,
+        purpose: includeProfile ? form.purpose || undefined : undefined,
       });
       setSubmitted(true);
     } catch (err) {
@@ -67,6 +66,12 @@ export default function RegisterPage() {
       <h1 className="text-2xl font-semibold">Create your JZIS account</h1>
       <p className="mt-1 text-sm text-slate-600">
         One account for all JZIS products — SCLib, ASRP, and more.
+      </p>
+      <p className="mt-3 text-xs leading-5 text-slate-500">
+        We only require your sign-in details. By creating an account or
+        continuing with Google, you agree to the{" "}
+        <Link href="/terms" className="underline">Terms</Link> and acknowledge
+        the <Link href="/privacy" className="underline">Privacy Policy</Link>.
       </p>
 
       {/* Google sign-up */}
@@ -101,25 +106,42 @@ export default function RegisterPage() {
                value={form.password} onChange={(v) => update("password", v)} required />
         <Field label="Full name *" value={form.name}
                onChange={(v) => update("name", v)} required />
-        <Field label="Age *" type="number" value={form.age}
-               onChange={(v) => update("age", v)} required />
-        <Field label="Institution" value={form.institution}
-               onChange={(v) => update("institution", v)} />
-        <Field label="Country" value={form.country}
-               onChange={(v) => update("country", v)} />
-        <Field label="Research area" value={form.research_area}
-               onChange={(v) => update("research_area", v)} />
-        <label className="block">
-          <span className="text-sm font-medium">Purpose of use *</span>
-          <textarea
-            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2"
-            value={form.purpose}
-            onChange={(e) => update("purpose", e.target.value)}
-            required
-            minLength={10}
-            rows={3}
+        <label className="flex items-start gap-3 rounded-md border border-slate-200 p-3">
+          <input
+            type="checkbox"
+            className="mt-1 h-4 w-4"
+            checked={includeProfile}
+            onChange={(event) => setIncludeProfile(event.target.checked)}
+            aria-expanded={includeProfile}
           />
+          <span>
+            <span className="block text-sm font-medium">Add an optional research profile</span>
+            <span className="mt-0.5 block text-xs leading-5 text-slate-500">
+              Institution, country, research area, and purpose are optional,
+              are not required for access, and can be cleared later.
+            </span>
+          </span>
         </label>
+        {includeProfile ? (
+          <div className="space-y-4 rounded-md border border-slate-200 bg-white p-4">
+            <Field label="Institution (optional)" value={form.institution}
+                   onChange={(v) => update("institution", v)} />
+            <Field label="Country (optional)" value={form.country}
+                   onChange={(v) => update("country", v)} />
+            <Field label="Research area (optional)" value={form.research_area}
+                   onChange={(v) => update("research_area", v)} />
+            <label className="block">
+              <span className="text-sm font-medium">Purpose of use (optional)</span>
+              <textarea
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2"
+                value={form.purpose}
+                onChange={(e) => update("purpose", e.target.value)}
+                maxLength={500}
+                rows={3}
+              />
+            </label>
+          </div>
+        ) : null}
 
         {error && (
           <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">

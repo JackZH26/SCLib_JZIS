@@ -85,6 +85,18 @@ export async function Footer() {
             Join Us
           </a>
           <Link
+            href="/privacy"
+            className="transition-colors hover:text-accent-deep"
+          >
+            Privacy
+          </Link>
+          <Link
+            href="/terms"
+            className="transition-colors hover:text-accent-deep"
+          >
+            Terms
+          </Link>
+          <Link
             href="/cookies"
             className="transition-colors hover:text-accent-deep"
           >

@@ -165,7 +165,9 @@ export interface User {
   name: string;
   institution: string | null;
   country: string | null;
+  age: number | null;
   research_area: string | null;
+  purpose: string | null;
   bio: string | null;
   orcid: string | null;
   created_at: string;
@@ -182,7 +184,9 @@ export interface UpdateUserPayload {
   name?: string | null;
   institution?: string | null;
   country?: string | null;
+  age?: number | null;
   research_area?: string | null;
+  purpose?: string | null;
   bio?: string | null;
   orcid?: string | null;
 }
@@ -216,11 +220,11 @@ export interface RegisterPayload {
   email: string;
   password: string;
   name: string;
-  age: number;
+  age?: number;
   institution?: string;
   country?: string;
   research_area?: string;
-  purpose: string;
+  purpose?: string;
 }
 
 export function register(data: RegisterPayload) {
@@ -275,6 +279,33 @@ export function updateMe(payload: UpdateUserPayload) {
   return request<User>("/auth/me", {
     method: "PATCH",
     body: JSON.stringify(payload),
+  });
+}
+
+export interface AccountDataExport {
+  schema_version: "1";
+  generated_at: string;
+  profile: Record<string, unknown>;
+  api_keys: Array<Record<string, unknown>>;
+  ask_history: Array<Record<string, unknown>>;
+  bookmarks: Array<Record<string, unknown>>;
+  email_verifications: Array<Record<string, unknown>>;
+  password_resets: Array<Record<string, unknown>>;
+  security_events: Array<Record<string, unknown>>;
+}
+
+export function exportAccountData() {
+  return request<AccountDataExport>("/auth/me/export");
+}
+
+export function deleteAccount(data: {
+  confirmation: "DELETE";
+  email: string;
+  current_password?: string;
+}) {
+  return request<{ message: string }>("/auth/me", {
+    method: "DELETE",
+    body: JSON.stringify(data),
   });
 }
 

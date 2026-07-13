@@ -16,9 +16,11 @@ counter, key `guest_quota:YYYY-MM-DD:{ip}`). Exceeding the quota returns
 
 ### `POST /auth/register`
 ```json
-{ "email": "you@example.com", "password": "…", "name": "…", "age": 30, "purpose": "…" }
+{ "email": "you@example.com", "password": "…", "name": "…" }
 ```
-Creates an account and emails a verification link. Returns 201.
+Creates an account and emails a verification link. Returns 201. `age`,
+`institution`, `country`, `research_area`, and `purpose` are optional for
+backward compatibility; the public form does not request age.
 
 ### `GET /auth/verify?token=<one-time-token-from-email>`
 Marks the account verified and returns the first API key (`scl_…`).
@@ -56,6 +58,26 @@ revocation lifecycle.
 
 ### `GET /auth/me`
 Returns the authenticated user.
+
+### `GET /auth/me/export`
+Returns a downloadable, `no-store` JSON copy of the authenticated user's
+profile, API-key metadata, Ask history, bookmarks, token lifecycle metadata,
+and security events. Password hashes, API-key hashes, reset/verification token
+material, raw IP hashes, and user-agent hashes are never exported.
+
+### `DELETE /auth/me`
+```json
+{
+  "confirmation": "DELETE",
+  "email": "you@example.com",
+  "current_password": "required for password-capable accounts"
+}
+```
+Permanently deletes the current non-admin account and its API keys, Ask
+history, bookmarks, and authentication grants. The exact account email and
+current password (when one exists) are required. Direct user references are
+removed from the retained pseudonymous security audit event. Administrator
+accounts must be demoted before using this endpoint.
 
 ## Search & Q&A
 

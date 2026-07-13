@@ -46,6 +46,7 @@ export default function CookiePolicyPage() {
         These are essential for the site to function and cannot be
         turned off. They do not track you across websites.
       </p>
+      <div className="max-w-full overflow-x-auto" role="region" aria-label="Necessary cookie details">
       <table>
         <thead>
           <tr>
@@ -86,6 +87,7 @@ export default function CookiePolicyPage() {
           </tr>
         </tbody>
       </table>
+      </div>
 
       <h3>2.2 Analytics (optional)</h3>
       <p>
@@ -99,6 +101,7 @@ export default function CookiePolicyPage() {
         &quot;Accept all&quot;</strong> or enable the Analytics toggle in
         the consent banner.
       </p>
+      <div className="max-w-full overflow-x-auto" role="region" aria-label="Analytics cookie details">
       <table>
         <thead>
           <tr>
@@ -128,6 +131,7 @@ export default function CookiePolicyPage() {
           </tr>
         </tbody>
       </table>
+      </div>
       <p>
         Google&apos;s privacy practices for Analytics are described in{" "}
         <a
