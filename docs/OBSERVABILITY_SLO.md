@@ -64,6 +64,11 @@ never pass it in the production deployment workflow. A failed gate freezes
 feature releases. Emergency security and reliability fixes may proceed only
 with an incident record and an explicit rollback owner.
 
+Before enabling the signed-image deployment workflow for the first time, start
+the observability profile manually and validate its targets. The automated gate
+has no bootstrap bypass: it begins deploying only after the required request
+sample and freshness metric exist.
+
 ## Notification routing requirement
 
 The repository default routes alerts to the private Alertmanager console and

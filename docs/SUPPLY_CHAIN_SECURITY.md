@@ -54,3 +54,8 @@ cosign verify \
 SBOM artifacts are retained with the workflow run. Treat a mismatch between an
 SBOM subject digest, provenance subject digest, signature subject, and deployment
 digest as a release-blocking incident.
+
+The deployment workflow downloads the three digest artifacts from that exact
+successful release run, validates their shape, and verifies each Sigstore
+certificate before pulling. VPS2 uses `docker compose up --no-build`; production
+cannot silently rebuild source or substitute a mutable tag.

@@ -2,11 +2,13 @@ name: Deploy to VPS2
 
 on:
   workflow_run:
-    workflows: [Test]
+    workflows: [Release images]
     types: [completed]
 
 permissions:
   contents: read
+  actions: read
+  packages: read
 
 concurrency:
   group: deploy-vps2
@@ -16,53 +18,108 @@ jobs:
   deploy:
     if: >-
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.event == 'workflow_run' &&
       github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment: production
     steps:
-      - name: SSH deploy
+      - name: Download signed image digests
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
+          pattern: image-digest-*
+          merge-multiple: true
+          path: ${{ runner.temp }}/image-digests
+      - name: Validate release manifest
+        id: images
+        env:
+          DIGEST_DIR: ${{ runner.temp }}/image-digests
+        shell: bash
+        run: |
+          set -euo pipefail
+          for component in frontend api ingestion; do
+            file="$DIGEST_DIR/$component.digest"
+            test -f "$file"
+            digest="$(tr -d '\r\n[:space:]' < "$file")"
+            [[ "$digest" =~ ^sha256:[0-9a-f]{64}$ ]]
+            echo "$component=ghcr.io/jackzh26/sclib-$component@$digest" \
+              >> "$GITHUB_OUTPUT"
+          done
+      - name: Deploy verified immutable images
         uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
+        env:
+          GHCR_USERNAME: ${{ github.actor }}
+          GHCR_TOKEN: ${{ github.token }}
+          TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
+          SCLIB_FRONTEND_IMAGE: ${{ steps.images.outputs.frontend }}
+          SCLIB_API_IMAGE: ${{ steps.images.outputs.api }}
+          SCLIB_INGESTION_IMAGE: ${{ steps.images.outputs.ingestion }}
         with:
           host: 72.62.251.29
           username: root
           key: ${{ secrets.VPS2_SSH_KEY }}
           port: 22
+          command_timeout: 25m
           script_stop: true
+          envs: GHCR_USERNAME,GHCR_TOKEN,TARGET_SHA,SCLIB_FRONTEND_IMAGE,SCLIB_API_IMAGE,SCLIB_INGESTION_IMAGE
           script: |
             set -euo pipefail
             cd /opt/SCLib_JZIS
             git fetch --prune origin
-            TARGET_SHA="${{ github.event.workflow_run.head_sha }}"
             git cat-file -e "$TARGET_SHA^{commit}"
             git diff --quiet
             git diff --cached --quiet
+
+            # Fail closed before any pull or migration if the 30-day SLO/error
+            # budget is exhausted or Prometheus has insufficient data. Keep
+            # the working tree on the currently deployed revision on failure.
+            python3 scripts/check_error_budget.py \
+              --prometheus-url http://127.0.0.1:9090 --window 30d
+
             git switch --detach "$TARGET_SHA"
-            # Export GIT_SHA so docker-compose's `args: GIT_SHA: ${GIT_SHA:-dev}`
-            # picks up the real commit instead of falling back to "dev".
-            # Surfaced by the frontend footer + GET /version endpoint.
             export GIT_SHA="$(git rev-parse --short=7 "$TARGET_SHA")"
-            echo "deploy: building images at GIT_SHA=$GIT_SHA"
-            docker compose build --pull
-            docker compose up -d --wait --wait-timeout 60 postgres redis
-            # Run the migration explicitly before switching application containers.
-            # Any migration error stops the deployment immediately.
-            docker compose run --rm --no-deps api alembic upgrade head
-            docker compose up -d --wait --wait-timeout 180
-            docker compose ps
-            # Read-only smoke checks: local API, public API, deployed revision,
+            bash scripts/install_cosign.sh
+            printf '%s' "$GHCR_TOKEN" | docker login ghcr.io \
+              --username "$GHCR_USERNAME" --password-stdin
+            trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
+
+            identity='https://github.com/JackZH26/SCLib_JZIS/.github/workflows/release-images.yml@refs/heads/main'
+            issuer='https://token.actions.githubusercontent.com'
+            for image in \
+              "$SCLIB_FRONTEND_IMAGE" \
+              "$SCLIB_API_IMAGE" \
+              "$SCLIB_INGESTION_IMAGE"; do
+              cosign verify \
+                --certificate-identity "$identity" \
+                --certificate-oidc-issuer "$issuer" \
+                "$image" >/dev/null
+              docker pull "$image"
+            done
+
+            compose=(docker compose --profile observability \
+              -f docker-compose.yml -f docker-compose.prod.yml)
+            "${compose[@]}" up -d --no-build --wait --wait-timeout 60 \
+              postgres redis
+            "${compose[@]}" run --rm --no-deps api alembic upgrade head
+            "${compose[@]}" up -d --no-build --wait --wait-timeout 180 \
+              postgres redis api frontend prometheus alertmanager grafana
+            "${compose[@]}" ps
+
+            # Read-only smoke checks: local/public health, deployed revision,
             # and the existing public frontend. No ingest or data mutation.
             curl --retry 12 --retry-delay 5 --retry-connrefused \
               --max-time 10 --fail --silent --show-error \
               http://127.0.0.1:8000/v1/health >/dev/null
             curl --max-time 15 --fail --silent --show-error \
               https://api.jzis.org/sclib/v1/health >/dev/null
-            VERSION_JSON="$(curl --max-time 15 --fail --silent --show-error \
+            version_json="$(curl --max-time 15 --fail --silent --show-error \
               https://api.jzis.org/sclib/v1/version)"
-            case "$VERSION_JSON" in
+            case "$version_json" in
               *\"site_version\":\"$GIT_SHA\"*) ;;
-              *) echo "deployed revision mismatch: $VERSION_JSON"; exit 1 ;;
+              *) echo "deployed revision mismatch: $version_json"; exit 1 ;;
             esac
             curl --max-time 15 --fail --silent --show-error \
               https://jzis.org/sclib/ >/dev/null

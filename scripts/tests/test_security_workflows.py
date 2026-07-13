@@ -58,6 +58,30 @@ class SecurityWorkflowTests(unittest.TestCase):
             self.assertIn(required, release)
         self.assertNotIn(":latest", release)
 
+    def test_deploy_consumes_only_verified_release_digests(self) -> None:
+        deploy = (WORKFLOW_DIR / "deploy.yml").read_text()
+        compose = (ROOT / "docker-compose.prod.yml").read_text()
+        installer = (ROOT / "scripts" / "install_cosign.sh").read_text()
+        for required in (
+            "workflows: [Release images]",
+            "actions/download-artifact@",
+            "^sha256:[0-9a-f]{64}$",
+            "cosign verify",
+            "scripts/check_error_budget.py",
+            "--no-build",
+        ):
+            self.assertIn(required, deploy)
+        self.assertNotIn("docker compose build", deploy)
+        self.assertNotRegex(deploy, r"(?<!no-)--build\b")
+        for variable in (
+            "SCLIB_FRONTEND_IMAGE",
+            "SCLIB_API_IMAGE",
+            "SCLIB_INGESTION_IMAGE",
+        ):
+            self.assertIn(f"${{{variable}:?", compose)
+        self.assertIn('readonly VERSION="v3.0.6"', installer)
+        self.assertIn("EXPECTED_SHA256", installer)
+
     def test_dependabot_tracks_every_package_ecosystem(self) -> None:
         dependabot = (ROOT / ".github" / "dependabot.yml").read_text()
         for ecosystem in ("github-actions", "pip", "npm", "docker-compose"):

@@ -67,8 +67,12 @@ and installs `nginx/sclib.conf` into `/etc/nginx/conf.d/`.
 3. `nginx -t && systemctl reload nginx`
 4. Start the stack:
    ```bash
+   # Use the three signed digests from one successful Release images run.
+   export SCLIB_FRONTEND_IMAGE='ghcr.io/jackzh26/sclib-frontend@sha256:<digest>'
+   export SCLIB_API_IMAGE='ghcr.io/jackzh26/sclib-api@sha256:<digest>'
+   export SCLIB_INGESTION_IMAGE='ghcr.io/jackzh26/sclib-ingestion@sha256:<digest>'
    docker compose --profile observability \
-     -f docker-compose.yml -f docker-compose.prod.yml up -d
+     -f docker-compose.yml -f docker-compose.prod.yml up -d --no-build
    ```
 5. Run Alembic migrations:
    ```bash
@@ -218,11 +222,18 @@ release gates, and alert runbooks.
 
 ## Rollback
 
-Everything is Docker Compose, so rollback is:
+Application releases use signed, immutable image digests. Select the three
+digests from a previously successful `Release images` run, verify them with the
+command in `SUPPLY_CHAIN_SECURITY.md`, then export them before restarting:
+
 ```bash
-git -C /opt/SCLib_JZIS checkout <previous-commit>
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+export SCLIB_FRONTEND_IMAGE='ghcr.io/jackzh26/sclib-frontend@sha256:<digest>'
+export SCLIB_API_IMAGE='ghcr.io/jackzh26/sclib-api@sha256:<digest>'
+export SCLIB_INGESTION_IMAGE='ghcr.io/jackzh26/sclib-ingestion@sha256:<digest>'
+docker compose --profile observability \
+  -f docker-compose.yml -f docker-compose.prod.yml \
+  up -d --no-build --wait
 ```
 Postgres data lives in the `postgres_data` named volume and survives
-image rebuilds. Alembic migrations are forward-only — if a migration
+image replacement. Alembic migrations are forward-only — if a migration
 needs reverting, write a new migration.
