@@ -5,16 +5,15 @@ on:
     branches: [main]
   push:
     branches: [main]
-    paths:
-      - "api/**"
-      - "ingestion/**"
-      - "frontend/**"
-      - ".github/workflows/test.yml"
+
+permissions:
+  contents: read
 
 jobs:
   api-tests:
     name: API (pytest)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     services:
       postgres:
         image: postgres:16-alpine
@@ -54,24 +53,36 @@ jobs:
       - name: Install uv
         run: pip install --upgrade pip uv
       - name: Install dependencies
-        run: |
-          if [ -f pyproject.toml ]; then
-            uv pip install --system -e ".[dev]" || uv pip install --system -e .
-          else
-            echo "api/pyproject.toml not present yet; skipping"
-            exit 0
-          fi
+        run: uv pip install --system -e ".[dev]"
       - name: Run tests
-        run: |
-          if [ -d tests ]; then
-            pytest -q
-          else
-            echo "No tests yet; skipping"
-          fi
+        run: pytest -q
+
+  ingestion-tests:
+    name: Ingestion (pytest, no production ingest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DATABASE_URL: postgresql://sclib:sclib_test_pw@localhost:5432/sclib_test
+    defaults:
+      run:
+        working-directory: ingestion
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: pip install --upgrade pip uv
+      - name: Install dependencies
+        run: uv pip install --system -e ".[dev]"
+      - name: Run unit tests only
+        run: pytest -q
 
   frontend-build:
-    name: Frontend (pnpm build)
+    name: Frontend (test + pnpm build)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: frontend
@@ -79,22 +90,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 9.12.0
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "pnpm"
           cache-dependency-path: frontend/pnpm-lock.yaml
       - name: Install dependencies
-        run: |
-          if [ -f package.json ]; then
-            pnpm install --frozen-lockfile
-          else
-            echo "frontend/package.json not present yet; skipping"
-            exit 0
-          fi
+        run: pnpm install --frozen-lockfile
+      - name: Run frontend regression tests
+        run: pnpm test
       - name: Type-check and build
-        run: |
-          if [ -f package.json ]; then
-            pnpm run build
-          fi
+        run: pnpm build

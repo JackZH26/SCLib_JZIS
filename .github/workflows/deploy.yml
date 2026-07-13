@@ -1,9 +1,12 @@
 name: Deploy to VPS2
 
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+  workflow_run:
+    workflows: [Test]
+    types: [completed]
+
+permissions:
+  contents: read
 
 concurrency:
   group: deploy-vps2
@@ -11,7 +14,13 @@ concurrency:
 
 jobs:
   deploy:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
     steps:
       - name: SSH deploy
         uses: appleboy/ssh-action@v1.0.3
@@ -25,15 +34,35 @@ jobs:
             set -euo pipefail
             cd /opt/SCLib_JZIS
             git fetch --prune origin
-            git reset --hard origin/main
+            TARGET_SHA="${{ github.event.workflow_run.head_sha }}"
+            git cat-file -e "$TARGET_SHA^{commit}"
+            git diff --quiet
+            git diff --cached --quiet
+            git switch --detach "$TARGET_SHA"
             # Export GIT_SHA so docker-compose's `args: GIT_SHA: ${GIT_SHA:-dev}`
             # picks up the real commit instead of falling back to "dev".
             # Surfaced by the frontend footer + GET /version endpoint.
-            export GIT_SHA="$(git rev-parse --short HEAD)"
+            export GIT_SHA="$(git rev-parse --short=7 "$TARGET_SHA")"
             echo "deploy: building images at GIT_SHA=$GIT_SHA"
             docker compose build --pull
-            docker compose up -d
-            # Apply DB migrations (idempotent); fail the deploy if they fail.
-            docker compose exec -T api alembic upgrade head || \
-              echo "alembic not yet configured (pre-Phase-1)"
+            docker compose up -d --wait --wait-timeout 60 postgres redis
+            # Run the migration explicitly before switching application containers.
+            # Any migration error stops the deployment immediately.
+            docker compose run --rm --no-deps api alembic upgrade head
+            docker compose up -d --wait --wait-timeout 180
             docker compose ps
+            # Read-only smoke checks: local API, public API, deployed revision,
+            # and the existing public frontend. No ingest or data mutation.
+            curl --retry 12 --retry-delay 5 --retry-connrefused \
+              --max-time 10 --fail --silent --show-error \
+              http://127.0.0.1:8000/v1/health >/dev/null
+            curl --max-time 15 --fail --silent --show-error \
+              https://api.jzis.org/sclib/v1/health >/dev/null
+            VERSION_JSON="$(curl --max-time 15 --fail --silent --show-error \
+              https://api.jzis.org/sclib/v1/version)"
+            case "$VERSION_JSON" in
+              *\"site_version\":\"$GIT_SHA\"*) ;;
+              *) echo "deployed revision mismatch: $VERSION_JSON"; exit 1 ;;
+            esac
+            curl --max-time 15 --fail --silent --show-error \
+              https://jzis.org/sclib/ >/dev/null

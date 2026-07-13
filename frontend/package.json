@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "node --test tests/*.test.mjs",
     "test:browser-auth": "node --test tests/browser-session-auth.test.mjs",
     "test:public-urls": "node --test tests/public-auth-links.test.mjs",
     "test:security-headers": "node --test tests/security-headers.test.mjs"
