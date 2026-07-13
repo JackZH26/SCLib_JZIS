@@ -91,19 +91,22 @@ accounts must be demoted before using this endpoint.
   "material_family": "cuprate"
 }
 ```
-Embeds the query with Google Gen AI `text-embedding-005`, runs an
-approximate-nearest-neighbor lookup against the Vertex AI Matching
-Engine index, then joins the hits against Postgres to return full
-paper records + chunk snippets. Each hit carries a `relevance` float
-in `[0, 1]`.
+Combines Google `text-embedding-005` / Vertex ANN candidates with PostgreSQL
+full-text candidates, applies Reciprocal Rank Fusion and a deterministic
+query-coverage reranker, then joins authoritative paper/chunk rows. A Vertex
+timeout, exhausted retry, or open circuit degrades to PostgreSQL lexical
+retrieval. Each hit carries a `relevance_score` float in `[0, 1]`.
 
 ### `POST /ask`
 ```json
 { "query": "What is the role of pressure in high-Tc hydrides?" }
 ```
-Runs `POST /search` internally, feeds the top chunks into Gemini 3.5
-Flash with a system prompt that forces inline `[n]` citations, and
-returns:
+Runs the same hybrid candidate strategy, keeps at most one source per paper,
+and feeds bounded untrusted-source JSON into Gemini with a separate system
+instruction that requires inline `[n]` citations. The response includes
+`citation_valid` and machine-readable `citation_warnings`. Invalid source
+numbers are removed. A Gemini timeout, exhausted retry, or open circuit returns
+cited extractive snippets instead of failing the entire request.
 
 ```json
 {

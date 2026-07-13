@@ -72,7 +72,7 @@ export default function ApiDocsPage() {
           SCLib API Reference
         </h1>
         <p className="mt-2 text-base text-sage-muted">
-          Programmatic access to the JZIS Superconductivity Library — semantic
+          Programmatic access to the JZIS Superconductivity Library — hybrid
           search, RAG Q&amp;A, materials database, paper metadata, and more.
         </p>
       </div>
@@ -183,7 +183,9 @@ export default function ApiDocsPage() {
         {/* Search */}
         <Endpoint method="POST" path="/search" badge="quota">
           <p className="mb-2">
-            Semantic search across the arXiv cond-mat.supr-con corpus.
+            Hybrid search across the arXiv cond-mat.supr-con corpus, combining
+            Vertex semantic retrieval with PostgreSQL full-text search and
+            deterministic reranking.
           </p>
           <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`POST /v1/search
 Content-Type: application/json
@@ -221,7 +223,8 @@ Content-Type: application/json
           <p className="mt-2">
             <strong>Response:</strong> <Code>answer</Code> (Markdown with [1][2]
             citations), <Code>sources[]</Code> (paper_id, title, year),{" "}
-            <Code>tokens_used</Code>, <Code>query_time_ms</Code>.
+            <Code>citation_valid</Code>, <Code>citation_warnings</Code>,{" "}
+            <Code>tokens_used</Code>, and <Code>query_time_ms</Code>.
           </p>
           <p className="mt-1">
             <Code>language</Code> accepts <Code>&quot;auto&quot;</Code>,{" "}

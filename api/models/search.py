@@ -40,7 +40,7 @@ class SearchMatch(BaseModel):
     authors: list[str]
     year: int | None
     date_submitted: date | None
-    relevance_score: float  # higher = better (1 - cosine distance)
+    relevance_score: float  # higher = better (normalized hybrid rerank score)
     matched_chunk: str
     matched_section: str | None
     materials: list[dict[str, Any]]
@@ -86,6 +86,8 @@ class AskResponse(BaseModel):
     sources: list[AskSource]
     tokens_used: int | None
     query_time_ms: int
+    citation_valid: bool = True
+    citation_warnings: list[str] = Field(default_factory=list)
     guest_remaining: int | None = None
     remaining: int | None = None
 

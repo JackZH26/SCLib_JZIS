@@ -1,0 +1,32 @@
+[
+  {
+    "query": "MgB2 critical temperature 39 K",
+    "expected_top": "mgb2",
+    "vector_order": ["generic", "mgb2"],
+    "lexical_order": ["mgb2"],
+    "documents": {
+      "generic": {"title": "Conventional superconductors", "text": "A general review of phonon pairing."},
+      "mgb2": {"title": "Superconductivity at 39 K in MgB2", "text": "MgB2 has a critical temperature near 39 K."}
+    }
+  },
+  {
+    "query": "high pressure H3S hydride superconductivity",
+    "expected_top": "h3s",
+    "vector_order": ["pressure", "h3s"],
+    "lexical_order": ["h3s"],
+    "documents": {
+      "pressure": {"title": "Pressure effects in solids", "text": "A broad discussion of compression."},
+      "h3s": {"title": "High-temperature superconductivity in H3S", "text": "The H3S hydride is superconducting at high pressure."}
+    }
+  },
+  {
+    "query": "d-wave pairing cuprate",
+    "expected_top": "cuprate",
+    "vector_order": ["pairing", "cuprate"],
+    "lexical_order": ["cuprate"],
+    "documents": {
+      "pairing": {"title": "Pairing mechanisms", "text": "A general theoretical survey."},
+      "cuprate": {"title": "D-wave pairing in cuprates", "text": "Experiments support d-wave pairing symmetry in a cuprate."}
+    }
+  }
+]

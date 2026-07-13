@@ -1,34 +1,33 @@
-"""POST /search — semantic search over chunks.
+"""POST /search — hybrid search over chunks.
 
 Pipeline:
-  1. Embed the query with Google Gen AI text-embedding-005 (RETRIEVAL_QUERY).
-  2. Ask Matching Engine for the top-K neighbors, with optional
-     year / material_family filters pushed into the index namespaces.
-  3. Load the matched Chunk rows + their Paper parents in a single
-     JOIN query. Apply the Postgres-side filters the vector index
-     can't express (tc_min, pressure_max, exclude_retracted).
-  4. Assemble SearchMatch rows preserving neighbor order, so
-     relevance-sorted results mirror the ANN ranking exactly.
+  1. Run the Vertex ANN retriever behind timeout/circuit-breaker isolation.
+  2. Run PostgreSQL full-text retrieval so search survives a provider outage.
+  3. Fuse vector and lexical ranks, then apply a deterministic query-coverage
+     reranker.
+  4. Hydrate Paper/Chunk rows and enforce authoritative metadata filters in
+     PostgreSQL, including material families not present in the vector index.
 
-The Vertex search is offloaded to a thread because the google-cloud
-SDK is blocking; Postgres work stays on the main event loop.
+Blocking cloud SDK calls run in a worker thread; PostgreSQL work stays on the
+main event loop.
 """
 from __future__ import annotations
 
-import asyncio
 import logging
 import time
+from datetime import date as _date
 
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from config import get_settings
 from models import get_db
 from models.db import Chunk, Paper
 from models.search import SearchMatch, SearchRequest, SearchResponse
 from routers.deps import Identity, require_identity
-from services import vector_search
+from services import provider_resilience, retrieval, vector_search
 
 log = logging.getLogger(__name__)
 
@@ -38,8 +37,8 @@ router = APIRouter(tags=["search"])
 @router.post("/search", response_model=SearchResponse)
 async def search(
     body: SearchRequest,
-    identity: Identity = Depends(require_identity),
-    db: AsyncSession = Depends(get_db),
+    identity: Identity = Depends(require_identity),  # noqa: B008
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ) -> SearchResponse:
     t0 = time.perf_counter()
 
@@ -53,11 +52,41 @@ async def search(
             top_k=overfetch,
             year_min=body.filters.year_min,
             year_max=body.filters.year_max,
-            material_family=body.filters.material_family,
+            # Existing Vertex datapoints do not yet carry this namespace.
+            # Enforce family against hydrated PostgreSQL metadata below so
+            # requesting a family can never silently produce a fake filter.
+            material_family=None,
         )
 
-    neighbors = await asyncio.to_thread(_vs_lookup)
-    if not neighbors:
+    settings = get_settings()
+    try:
+        neighbors = await provider_resilience.run_blocking(
+            "vector_search",
+            _vs_lookup,
+            timeout_seconds=settings.vector_search_timeout_seconds,
+            max_attempts=settings.provider_max_attempts,
+            failure_threshold=settings.provider_circuit_failure_threshold,
+            cooldown_seconds=settings.provider_circuit_cooldown_seconds,
+        )
+    except provider_resilience.ProviderUnavailable as exc:
+        log.warning("semantic search unavailable; using PostgreSQL lexical fallback: %s", exc)
+        neighbors = []
+
+    candidate_limit = min(body.top_k * 5, 300)
+    lexical_hits = await retrieval.lexical_search(
+        db,
+        body.query,
+        limit=candidate_limit,
+        year_min=body.filters.year_min,
+        year_max=body.filters.year_max,
+        exclude_retracted=body.filters.exclude_retracted,
+    )
+    candidates = retrieval.fuse_rankings(
+        [(item.chunk_id, 1.0 - item.distance) for item in neighbors],
+        lexical_hits,
+        limit=candidate_limit,
+    )
+    if not candidates:
         return SearchResponse(
             total=0,
             results=[],
@@ -71,9 +100,8 @@ async def search(
     # implementation could return more — cap the IN clause so a runaway
     # list cannot blow out the Postgres parser.
     MAX_IN_CLAUSE = 300
-    neighbors = neighbors[:MAX_IN_CLAUSE]
-    chunk_ids = [n.chunk_id for n in neighbors]
-    distance_by_chunk = {n.chunk_id: n.distance for n in neighbors}
+    candidates = candidates[:MAX_IN_CLAUSE]
+    chunk_ids = [candidate.chunk_id for candidate in candidates]
 
     q = (
         select(Chunk)
@@ -82,14 +110,15 @@ async def search(
     )
     rows = (await db.execute(q)).scalars().all()
     chunk_by_id = {c.id: c for c in rows}
+    candidates = retrieval.rerank_candidates(body.query, candidates, chunk_by_id)
 
     # 3. Preserve ANN ordering, apply row-level filters that don't
     #    fit in the index namespaces.
     f = body.filters
     matches: list[SearchMatch] = []
     seen_papers: set[str] = set()  # deduplicate: one result per paper
-    for cid in chunk_ids:
-        chunk = chunk_by_id.get(cid)
+    for candidate in candidates:
+        chunk = chunk_by_id.get(candidate.chunk_id)
         if chunk is None:
             continue  # neighbor not in Postgres (e.g. deleted)
         paper = chunk.paper
@@ -98,6 +127,10 @@ async def search(
         if paper.id in seen_papers:
             continue  # already have a higher-ranked chunk from this paper
         if f.exclude_retracted and paper.status == "retracted":
+            continue
+        if f.material_family and not _matches_material_family(
+            paper, chunk, f.material_family
+        ):
             continue
         if f.tc_min is not None:
             materials = paper.materials_extracted or []
@@ -117,7 +150,7 @@ async def search(
                 authors=list(paper.authors or []),
                 year=(paper.date_submitted.year if paper.date_submitted else None),
                 date_submitted=paper.date_submitted,
-                relevance_score=round(1.0 - distance_by_chunk[cid], 6),
+                relevance_score=round(candidate.rerank_score, 6),
                 matched_chunk=chunk.text,
                 matched_section=chunk.section,
                 materials=list(paper.materials_extracted or []),
@@ -152,8 +185,6 @@ async def search(
 # Helpers
 # ---------------------------------------------------------------------------
 
-from datetime import date as _date
-
 _EPOCH = _date(1900, 1, 1)
 
 
@@ -186,3 +217,16 @@ def _best_tc(m: SearchMatch) -> float:
         if isinstance(tc, (int, float)) and tc > best:
             best = float(tc)
     return best
+
+
+def _matches_material_family(
+    paper: Paper,
+    chunk: Chunk,
+    allowed: list[str],
+) -> bool:
+    """Enforce family filters from Postgres until Vertex metadata is complete."""
+    families = {paper.material_family, chunk.material_family}
+    for material in paper.materials_extracted or []:
+        if isinstance(material, dict):
+            families.add(material.get("family") or material.get("material_family"))
+    return bool(set(allowed) & {family for family in families if isinstance(family, str)})

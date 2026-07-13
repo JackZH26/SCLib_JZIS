@@ -539,6 +539,8 @@ export interface AskResponse {
   sources: AskSource[];
   tokens_used: number | null;
   query_time_ms: number;
+  citation_valid: boolean;
+  citation_warnings: string[];
   guest_remaining: number | null;
 }
 
