@@ -50,27 +50,28 @@ function parseTri(v: string | undefined): boolean | undefined {
 export default async function MaterialsPage({
   searchParams,
 }: {
-  searchParams: Sp;
+  searchParams: Promise<Sp>;
 }) {
-  const page = Math.max(0, Number(searchParams.page ?? "0"));
-  const perPage = resolvePageSize(searchParams.per_page);
+  const query = await searchParams;
+  const page = Math.max(0, Number(query.page ?? "0"));
+  const perPage = resolvePageSize(query.per_page);
   const sort =
-    (searchParams.sort as MaterialListParams["sort"]) ?? "tc_max";
+    (query.sort as MaterialListParams["sort"]) ?? "tc_max";
 
-  const includeSkeletons = searchParams.include_skeletons === "true";
-  const onlyAps = searchParams.only_aps === "true";
+  const includeSkeletons = query.include_skeletons === "true";
+  const onlyAps = query.only_aps === "true";
 
-  const minTier = (searchParams.min_tier as MaterialListParams["min_tier"]) || undefined;
-  const minPapers = searchParams.min_papers ? Number(searchParams.min_papers) : undefined;
+  const minTier = (query.min_tier as MaterialListParams["min_tier"]) || undefined;
+  const minPapers = query.min_papers ? Number(query.min_papers) : undefined;
 
   const params: MaterialListParams = {
-    family: searchParams.family || undefined,
-    tc_min: searchParams.tc_min ? Number(searchParams.tc_min) : undefined,
-    ambient_sc: parseTri(searchParams.ambient_sc),
-    is_unconventional: parseTri(searchParams.is_unconventional),
-    has_competing_order: parseTri(searchParams.has_competing_order),
-    pairing_symmetry: searchParams.pairing_symmetry || undefined,
-    structure_phase: searchParams.structure_phase || undefined,
+    family: query.family || undefined,
+    tc_min: query.tc_min ? Number(query.tc_min) : undefined,
+    ambient_sc: parseTri(query.ambient_sc),
+    is_unconventional: parseTri(query.is_unconventional),
+    has_competing_order: parseTri(query.has_competing_order),
+    pairing_symmetry: query.pairing_symmetry || undefined,
+    structure_phase: query.structure_phase || undefined,
     min_tier: minTier,
     min_papers: minPapers,
     sort,
@@ -120,7 +121,7 @@ export default async function MaterialsPage({
           <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Family
           </span>
-          <FamilyFilterField initial={searchParams.family ?? ""} />
+          <FamilyFilterField initial={query.family ?? ""} />
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
@@ -129,7 +130,7 @@ export default async function MaterialsPage({
           <input
             type="number"
             name="tc_min"
-            defaultValue={searchParams.tc_min ?? ""}
+            defaultValue={query.tc_min ?? ""}
             className="w-24 rounded border border-sage-border px-2 py-1"
           />
         </label>
@@ -139,7 +140,7 @@ export default async function MaterialsPage({
           </span>
           <select
             name="pairing_symmetry"
-            defaultValue={searchParams.pairing_symmetry ?? ""}
+            defaultValue={query.pairing_symmetry ?? ""}
             className="rounded border border-sage-border bg-white px-2 py-1"
           >
             <option value="">any</option>
@@ -157,7 +158,7 @@ export default async function MaterialsPage({
           </span>
           <input
             name="structure_phase"
-            defaultValue={searchParams.structure_phase ?? ""}
+            defaultValue={query.structure_phase ?? ""}
             className="rounded border border-sage-border px-2 py-1 w-32"
             placeholder="e.g. RP_n=1, 1212"
           />
@@ -169,7 +170,7 @@ export default async function MaterialsPage({
           </span>
           <select
             name="min_tier"
-            defaultValue={searchParams.min_tier ?? ""}
+            defaultValue={query.min_tier ?? ""}
             className="rounded border border-sage-border bg-white px-2 py-1"
           >
             <option value="">any tier</option>
@@ -186,21 +187,21 @@ export default async function MaterialsPage({
             type="number"
             name="min_papers"
             min="1"
-            defaultValue={searchParams.min_papers ?? ""}
+            defaultValue={query.min_papers ?? ""}
             className="w-20 rounded border border-sage-border px-2 py-1"
           />
         </label>
 
-        {triOptions("ambient_sc", "Ambient", searchParams.ambient_sc)}
+        {triOptions("ambient_sc", "Ambient", query.ambient_sc)}
         {triOptions(
           "is_unconventional",
           "Unconv.",
-          searchParams.is_unconventional,
+          query.is_unconventional,
         )}
         {triOptions(
           "has_competing_order",
           "Comp. order",
-          searchParams.has_competing_order,
+          query.has_competing_order,
         )}
 
         <label className="flex flex-col gap-1">
@@ -266,7 +267,7 @@ export default async function MaterialsPage({
             limit={perPage}
             offset={page * perPage}
             basePath="/materials"
-            searchParams={searchParams}
+            searchParams={query}
           />
         </>
       )}

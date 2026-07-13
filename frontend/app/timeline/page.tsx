@@ -69,18 +69,19 @@ function FilterToggleLink({
 export default async function TimelinePage({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     family?: string;
     experimental_only?: string;
     only_aps?: string;
-  };
+  }>;
 }) {
-  const current = searchParams.family ?? "";
+  const query = await searchParams;
+  const current = query.family ?? "";
   // Booleans on URL: anything other than the literal string "true"
   // is treated as off, so back-button / shared links don't end up in
   // a half-checked state when query strings are sloppy.
-  const experimentalOnly = searchParams.experimental_only === "true";
-  const onlyAps = searchParams.only_aps === "true";
+  const experimentalOnly = query.experimental_only === "true";
+  const onlyAps = query.only_aps === "true";
   const data = await getTimeline({
     family: current || undefined,
     experimentalOnly,

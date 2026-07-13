@@ -26,9 +26,10 @@ import { FormulaDisplay } from "@/components/FormulaDisplay";
 export default async function MaterialDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const id = decodeURIComponent(params.id);
+  const { id: encodedId } = await params;
+  const id = decodeURIComponent(encodedId);
   let mat;
   try {
     mat = await getMaterial(id);

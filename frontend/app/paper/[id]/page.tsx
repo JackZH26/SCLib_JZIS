@@ -15,9 +15,10 @@ import { PaperCard } from "@/components/PaperCard";
 export default async function PaperDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const id = decodeURIComponent(params.id);
+  const { id: encodedId } = await params;
+  const id = decodeURIComponent(encodedId);
   let paper;
   try {
     paper = await getPaper(id);

@@ -13,6 +13,6 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 module.exports = {
   reactStrictMode: true,
   output: "standalone",
+  outputFileTracingRoot: __dirname,
   basePath,
-  experimental: { instrumentationHook: false },
 };
