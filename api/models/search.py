@@ -11,7 +11,6 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-
 # ---------------------------------------------------------------------------
 # Search
 # ---------------------------------------------------------------------------
@@ -360,23 +359,23 @@ class DiscoveryCandidate(BaseModel):
     candidate_quantity_score: float | None = None
     candidate_quality_score: float | None = None
     entry_block_reason: str | None = None
-    upgrade_requirements: list[str] = []
+    upgrade_requirements: list[str] = Field(default_factory=list)
     evidence_schema_version: str | None = None
     evidence_quality_score: float | None = None
     literature_verifier_status: str | None = None
-    literature_verifier_flags: list[str] = []
-    failure_mode_taxonomy: list[str] = []
+    literature_verifier_flags: list[str] = Field(default_factory=list)
+    failure_mode_taxonomy: list[str] = Field(default_factory=list)
     synthesis_feasibility_score: float | None = None
-    synthesis_feasibility_flags: list[str] = []
+    synthesis_feasibility_flags: list[str] = Field(default_factory=list)
     measurement_clarity_score: float | None = None
     correlation_gate_status: str | None = None
-    correlation_gate_flags: list[str] = []
+    correlation_gate_flags: list[str] = Field(default_factory=list)
     experiment_priority_score: float | None = None
     experiment_readiness: str | None = None
     family_ruleset_id: str | None = None
     validation_recipe_id: str | None = None
     condition_class: str | None = None
-    required_condition_vector: list[str] = []
+    required_condition_vector: list[str] = Field(default_factory=list)
     evidence_level: str
     checker_status: str
     public_confidence: str
@@ -385,7 +384,7 @@ class DiscoveryCandidate(BaseModel):
     next_action: str | None = None
     discovery_score: float | None = None
     mechanism_hypothesis: str | None = None
-    risk_tags: list[str] = []
+    risk_tags: list[str] = Field(default_factory=list)
     review_summary: str | None = None
     provenance_summary: str | None = None
     recommended_next_step: str | None = None
@@ -401,3 +400,48 @@ class DiscoveryResponse(BaseModel):
     source: str | None = None
     filter_rules: list[DiscoveryFilterRule]
     candidates: list[DiscoveryCandidate]
+
+
+class DiscoveryCandidateSummary(BaseModel):
+    """Fields required to render one collapsed discovery result.
+
+    The full dossier remains available from the candidate detail endpoint, so
+    list pages do not repeatedly transfer long evidence and provenance arrays.
+    """
+
+    candidate_id: str
+    formula: str
+    branch: str
+    lane_id: str | None = None
+    prototype_family: str | None = None
+    candidate_layer: str | None = None
+    condition_class: str | None = None
+    evidence_level: str
+    checker_status: str
+    public_confidence: str
+    evidence_quality_score: float | None = None
+    experiment_readiness: str | None = None
+    record_role: str | None = None
+    claim_level: str | None = None
+    next_action: str | None = None
+    discovery_score: float | None = None
+
+
+class DiscoveryMetadata(BaseModel):
+    page_title: str
+    intro: list[str]
+    status: Literal["planned", "active"] = "planned"
+    updated_at_utc: datetime | None = None
+    source: str | None = None
+    filter_rules: list[DiscoveryFilterRule]
+    total_candidates: int
+    role_counts: dict[str, int]
+
+
+class DiscoveryCandidatePage(BaseModel):
+    items: list[DiscoveryCandidateSummary]
+    total: int
+    offset: int
+    limit: int
+    has_more: bool
+    record_role: str | None = None

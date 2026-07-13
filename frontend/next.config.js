@@ -10,6 +10,14 @@
 // the prefix. The Dockerfile builder sets NEXT_PUBLIC_BASE_PATH=/sclib.
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const isDevelopment = process.env.NODE_ENV === "development";
+let developmentApiOrigin = "";
+if (isDevelopment && process.env.NEXT_PUBLIC_API_BASE) {
+  try {
+    developmentApiOrigin = ` ${new URL(process.env.NEXT_PUBLIC_API_BASE).origin}`;
+  } catch {
+    // Invalid values are rejected by fetch as well; do not weaken CSP for them.
+  }
+}
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -17,7 +25,7 @@ const contentSecurityPolicy = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://lh3.googleusercontent.com https://www.google-analytics.com https://*.google-analytics.com",
   "font-src 'self' data:",
-  "connect-src 'self' https://api.jzis.org https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com",
+  `connect-src 'self' https://api.jzis.org https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com${developmentApiOrigin}`,
   "worker-src 'self' blob:",
   "manifest-src 'self'",
   "media-src 'none'",

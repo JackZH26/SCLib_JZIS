@@ -1,171 +1,65 @@
-import { FormulaDisplay } from "@/components/FormulaDisplay";
-import { getDiscovery } from "@/lib/api";
+import { DiscoveryFeed } from "@/components/DiscoveryFeed";
+import {
+  getDiscovery,
+  getDiscoveryCandidates,
+  getDiscoveryMetadata,
+  type DiscoveryCandidatePage,
+  type DiscoveryMetadata,
+} from "@/lib/api";
 
-async function safeDiscovery() {
+const PAGE_SIZE = 24;
+
+async function safeDiscovery(): Promise<{
+  metadata: DiscoveryMetadata;
+  page: DiscoveryCandidatePage;
+} | null> {
   try {
-    return await getDiscovery();
+    const [metadata, page] = await Promise.all([
+      getDiscoveryMetadata(),
+      getDiscoveryCandidates({ limit: PAGE_SIZE }),
+    ]);
+    return { metadata, page };
   } catch {
-    return null;
+    // Rolling-deploy fallback: an older API still exposes the full endpoint.
+    try {
+      const legacy = await getDiscovery();
+      const roleCounts = legacy.candidates.reduce<Record<string, number>>(
+        (counts, candidate) => {
+          const role = candidate.record_role ?? "unclassified";
+          counts[role] = (counts[role] ?? 0) + 1;
+          return counts;
+        },
+        {},
+      );
+      return {
+        metadata: {
+          page_title: legacy.page_title,
+          intro: legacy.intro,
+          status: legacy.status,
+          updated_at_utc: legacy.updated_at_utc,
+          source: legacy.source,
+          filter_rules: legacy.filter_rules,
+          total_candidates: legacy.candidates.length,
+          role_counts: roleCounts,
+        },
+        page: {
+          items: legacy.candidates.slice(0, PAGE_SIZE),
+          total: legacy.candidates.length,
+          offset: 0,
+          limit: PAGE_SIZE,
+          has_more: legacy.candidates.length > PAGE_SIZE,
+          record_role: null,
+        },
+      };
+    } catch {
+      return null;
+    }
   }
 }
-
-function badgeClass(confidence: string) {
-  if (confidence.toLowerCase().includes("reference")) {
-    return "border-stone-200 bg-stone-50 text-stone-800";
-  }
-  if (confidence.toLowerCase().includes("literature")) {
-    return "border-emerald-200 bg-emerald-50 text-emerald-800";
-  }
-  if (confidence.toLowerCase().includes("high")) {
-    return "border-emerald-200 bg-emerald-50 text-emerald-800";
-  }
-  if (confidence.toLowerCase().includes("mechanism")) {
-    return "border-sky-200 bg-sky-50 text-sky-800";
-  }
-  return "border-amber-200 bg-amber-50 text-amber-800";
-}
-
-function formatEvidenceLabel(evidenceLevel: string) {
-  const raw = evidenceLevel.trim();
-  const level = evidenceLevel.trim().toUpperCase();
-  if (level === "E3") {
-    return "DFT-screened";
-  }
-  if (level === "E2") {
-    return "Physics-screened";
-  }
-  if (level === "E1") {
-    return "Heuristic-screened";
-  }
-  if (level === "E0") {
-    return "Early hypothesis";
-  }
-  if (raw.toLowerCase() === "literature-confirmed") {
-    return "Literature-confirmed";
-  }
-  if (raw.toLowerCase() === "reference") {
-    return "Reference";
-  }
-  if (raw.toLowerCase() === "dft-screened") {
-    return "DFT-screened";
-  }
-  return evidenceLevel;
-}
-
-function formatCheckerLabel(checkerStatus: string) {
-  const status = checkerStatus.trim().toLowerCase();
-  if (status === "verified") {
-    return "Verified";
-  }
-  if (status === "pass") {
-    return "Review passed";
-  }
-  if (status === "pending") {
-    return "Under review";
-  }
-  if (status === "revise") {
-    return "Needs revision";
-  }
-  return checkerStatus.replaceAll("_", " ");
-}
-
-function formatRoleLabel(role: string | null | undefined) {
-  const value = (role ?? "").trim().toLowerCase();
-  if (value === "reference_anchor") return "Reference anchor";
-  if (value === "mechanism_anchor") return "Mechanism anchor";
-  if (value === "benchmark_control") return "Benchmark control";
-  if (value === "exploratory_candidate") return "Active candidate";
-  if (value === "conditional_candidate") return "Conditional candidate";
-  if (value === "negative_control") return "Negative control";
-  if (value === "failed_memory") return "Failed memory";
-  return role ?? "Unclassified";
-}
-
-function formatClaimLabel(value: string | null | undefined) {
-  if (!value) return "Unspecified";
-  return value.replaceAll("_", " ");
-}
-
-function formatNextAction(value: string | null | undefined) {
-  if (!value) return "No next action recorded";
-  return value.replaceAll("_", " ");
-}
-
-function formatDiscoveryScore(value: number | null) {
-  return value == null ? "Insufficient data" : value.toFixed(1);
-}
-
-function formatScore(value: number | null | undefined) {
-  return value == null ? "Insufficient data" : value.toFixed(1);
-}
-
-function formatLabel(value: string | null | undefined) {
-  if (!value) return "Unspecified";
-  return value.replaceAll("_", " ");
-}
-
-function SummaryFact({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="min-w-0">
-      <p className="text-[11px] font-medium uppercase tracking-wide text-sage-muted">
-        {label}
-      </p>
-      <p className="truncate font-semibold text-sage-ink">{value}</p>
-    </div>
-  );
-}
-
-const SECTION_ORDER = [
-  "exploratory_candidate",
-  "conditional_candidate",
-  "reference_anchor",
-  "mechanism_anchor",
-  "benchmark_control",
-  "negative_control",
-  "failed_memory",
-] as const;
-
-const SECTION_META: Record<string, { title: string; description: string }> = {
-  reference_anchor: {
-    title: "Reference Anchors",
-    description: "Known superconducting references used for family-level learning, not novelty claims.",
-  },
-  mechanism_anchor: {
-    title: "Mechanism Anchors",
-    description: "Known materials that anchor branch generation and mechanism constraints.",
-  },
-  benchmark_control: {
-    title: "Benchmark Controls",
-    description: "Calibration materials for known superconducting families and baseline checks.",
-  },
-  exploratory_candidate: {
-    title: "Active Exploratory Candidates",
-    description: "Positive exploratory records that remain eligible for further promotion.",
-  },
-  conditional_candidate: {
-    title: "Conditional Candidates",
-    description: "Scientifically interesting records with unmet gates that block immediate promotion.",
-  },
-  negative_control: {
-    title: "Negative Controls",
-    description: "Reviewed records that currently teach the loop what to avoid in the present proxy/phase regime.",
-  },
-  failed_memory: {
-    title: "Failed Memory",
-    description: "Failure records retained so the generator learns explicit avoid rules.",
-  },
-};
 
 export default async function DiscoveryPage() {
   const data = await safeDiscovery();
-  type CandidateList = NonNullable<Awaited<ReturnType<typeof safeDiscovery>>>["candidates"];
-  const grouped = new Map<string, CandidateList>();
-  for (const role of SECTION_ORDER) grouped.set(role, []);
-  for (const candidate of data?.candidates ?? []) {
-    const role = candidate.record_role ?? "reference_anchor";
-    if (!grouped.has(role)) grouped.set(role, []);
-    grouped.get(role)!.push(candidate);
-  }
+  const metadata = data?.metadata;
 
   return (
     <main className="space-y-8">
@@ -175,9 +69,9 @@ export default async function DiscoveryPage() {
         </span>
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-            {data?.page_title ?? "Discovery"}
+            {metadata?.page_title ?? "Discovery"}
           </h1>
-          {(data?.intro ?? [
+          {(metadata?.intro ?? [
             "This page presents reviewed superconductivity candidates exported from SC SuperLoop into SCLib.",
             "Candidates are generated with physics-informed heuristics, then filtered through prescreening, bounded DFT checks, mechanism audit, and checker review before public display.",
           ]).map((line) => (
@@ -194,7 +88,7 @@ export default async function DiscoveryPage() {
             Public Filter
           </h2>
           <div className="mt-4 flex flex-wrap gap-2">
-            {(data?.filter_rules ?? []).map((rule) => (
+            {(metadata?.filter_rules ?? []).map((rule) => (
               <span
                 key={rule.key}
                 className="rounded-full border border-sage-border bg-sage-surface px-3 py-1 text-xs text-sage-muted"
@@ -213,303 +107,34 @@ export default async function DiscoveryPage() {
             <div className="flex items-start justify-between gap-4">
               <dt className="text-sage-muted">Status</dt>
               <dd className="font-medium text-sage-ink">
-                {data?.status === "active" ? "Active" : "Planned / awaiting reviewed feed"}
+                {metadata?.status === "active" ? "Active" : "Planned / awaiting reviewed feed"}
               </dd>
             </div>
             <div className="flex items-start justify-between gap-4">
               <dt className="text-sage-muted">Last update</dt>
-              <dd className="text-right font-medium text-sage-ink">
-                {data?.updated_at_utc ?? "Not published yet"}
+              <dd className="break-all text-right font-medium text-sage-ink">
+                {metadata?.updated_at_utc ?? "Not published yet"}
               </dd>
             </div>
             <div className="flex items-start justify-between gap-4">
               <dt className="text-sage-muted">Visible candidates</dt>
-              <dd className="font-medium text-sage-ink">
-                {data?.candidates.length ?? 0}
-              </dd>
+              <dd className="font-medium text-sage-ink">{metadata?.total_candidates ?? 0}</dd>
             </div>
           </dl>
         </div>
       </section>
 
-      <section className="rounded-2xl border border-sage-border bg-white p-5 shadow-soft">
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <div>
-            <h2 className="text-lg font-semibold text-sage-ink">Role-classified records</h2>
-            <p className="mt-1 text-sm text-sage-muted">
-              The feed separates anchors, controls, active candidates, conditional cases, and negative controls.
-            </p>
-          </div>
-        </div>
-
-        {!data ? (
-          <p className="text-sm text-red-600">Failed to load discovery feed.</p>
-        ) : data.candidates.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-sage-border bg-sage-surface px-6 py-10 text-center">
-            <p className="text-base font-medium text-sage-ink">
-              No public discovery candidates yet.
-            </p>
-            <p className="mt-2 text-sm text-sage-muted">
-              The feed is ready, but only corpus records with explicit evidence
-              labels, provenance, and preview-eligible review status will
-              appear here.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-8">
-            {SECTION_ORDER.map((role) => {
-              const candidates = grouped.get(role) ?? [];
-              if (candidates.length === 0) return null;
-              const meta = SECTION_META[role];
-              return (
-                <section key={role} className="space-y-4">
-                  <div>
-                    <h3 className="text-base font-semibold text-sage-ink">{meta.title}</h3>
-                    <p className="mt-1 text-sm text-sage-muted">{meta.description}</p>
-                  </div>
-                  <div className="space-y-4">
-                    {candidates.map((candidate) => (
-                      <details
-                        key={candidate.candidate_id}
-                        className="group rounded-2xl border border-sage-border bg-sage-surface text-sm shadow-sm transition-colors open:bg-sage-soft"
-                      >
-                        <summary className="grid cursor-pointer list-none gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden lg:grid-cols-[minmax(20rem,1fr)_minmax(0,38rem)] lg:items-center">
-                          <div className="min-w-0">
-                            <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
-                              <h4 className="truncate text-lg font-semibold tracking-tight text-sage-ink">
-                                <FormulaDisplay formula={candidate.formula} />
-                              </h4>
-                              <span
-                                className={`rounded-full border px-3 py-1 text-xs font-semibold ${badgeClass(
-                                  candidate.public_confidence,
-                                )}`}
-                              >
-                                {candidate.public_confidence}
-                              </span>
-                              {candidate.lane_id && (
-                                <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-800">
-                                  {candidate.lane_id}
-                                </span>
-                              )}
-                            </div>
-                            <p className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-xs text-sage-muted">
-                              <span>{candidate.branch}</span>
-                              {candidate.prototype_family && (
-                                <span>{candidate.prototype_family}</span>
-                              )}
-                              {candidate.condition_class && (
-                                <span>{formatLabel(candidate.condition_class)}</span>
-                              )}
-                              <span>{formatRoleLabel(candidate.record_role)}</span>
-                              <span>{formatClaimLabel(candidate.claim_level)}</span>
-                            </p>
-                          </div>
-
-                          <div className="grid min-w-0 grid-cols-2 gap-2 md:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)_minmax(0,1fr)_minmax(0,1.2fr)_auto]">
-                            <SummaryFact
-                              label="Evidence"
-                              value={formatEvidenceLabel(candidate.evidence_level)}
-                            />
-                            <SummaryFact
-                              label="Review"
-                              value={formatCheckerLabel(candidate.checker_status)}
-                            />
-                            <SummaryFact
-                              label="Score"
-                              value={formatDiscoveryScore(candidate.discovery_score)}
-                            />
-                            <SummaryFact
-                              label="Readiness"
-                              value={formatLabel(candidate.experiment_readiness)}
-                            />
-                            <SummaryFact
-                              label="Evidence Q"
-                              value={formatScore(candidate.evidence_quality_score)}
-                            />
-                            <SummaryFact
-                              label="Action"
-                              value={formatNextAction(candidate.next_action)}
-                            />
-                            <SummaryFact
-                              label="Lane layer"
-                              value={formatLabel(candidate.candidate_layer)}
-                            />
-                            <div className="flex items-center justify-end text-xs font-semibold text-accent-deep">
-                              <span className="rounded-full border border-sage-border bg-white/70 px-3 py-1 group-open:hidden">
-                                Details
-                              </span>
-                              <span className="hidden rounded-full border border-sage-border bg-white px-3 py-1 group-open:inline">
-                                Close
-                              </span>
-                            </div>
-                          </div>
-                        </summary>
-
-                        <div className="border-t border-sage-border px-4 pb-4 pt-3">
-                          <div className="grid gap-3 text-sm md:grid-cols-2">
-                          <div>
-                            <p className="text-sage-muted">Claim level</p>
-                            <p className="font-medium text-sage-ink">
-                              {formatClaimLabel(candidate.claim_level)}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-sage-muted">Next action</p>
-                            <p className="font-medium text-sage-ink">
-                              {formatNextAction(candidate.next_action)}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-sage-muted">Condition class</p>
-                            <p className="font-medium text-sage-ink">
-                              {formatLabel(candidate.condition_class)}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-sage-muted">Family ruleset</p>
-                            <p className="font-medium text-sage-ink">
-                              {formatLabel(candidate.family_ruleset_id)}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-sage-muted">Literature gate</p>
-                            <p className="font-medium text-sage-ink">
-                              {formatLabel(candidate.literature_verifier_status)}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-sage-muted">Correlation gate</p>
-                            <p className="font-medium text-sage-ink">
-                              {formatLabel(candidate.correlation_gate_status)}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-sage-muted">Synthesis feasibility</p>
-                            <p className="font-medium text-sage-ink">
-                              {formatScore(candidate.synthesis_feasibility_score)}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-sage-muted">Measurement clarity</p>
-                            <p className="font-medium text-sage-ink">
-                              {formatScore(candidate.measurement_clarity_score)}
-                            </p>
-                          </div>
-                          </div>
-
-                          {candidate.mechanism_hypothesis && (
-                            <p className="mt-4 text-sm leading-6 text-sage-ink">
-                              <span className="font-medium">Mechanism hypothesis:</span>{" "}
-                              {candidate.mechanism_hypothesis}
-                            </p>
-                          )}
-
-                          {candidate.review_summary && (
-                            <p className="mt-3 text-sm leading-6 text-sage-muted">
-                              {candidate.review_summary}
-                            </p>
-                          )}
-
-                          {candidate.risk_tags.length > 0 && (
-                            <div className="mt-4 flex flex-wrap gap-2">
-                              {candidate.risk_tags.map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="rounded-full border border-sage-border bg-white px-3 py-1 text-xs text-sage-muted"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-
-                          {candidate.failure_mode_taxonomy.length > 0 && (
-                            <div className="mt-4">
-                              <p className="mb-2 text-sm font-medium text-sage-ink">
-                                Failure taxonomy
-                              </p>
-                              <div className="flex flex-wrap gap-2">
-                                {candidate.failure_mode_taxonomy.map((tag) => (
-                                  <span
-                                    key={tag}
-                                    className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs text-red-800"
-                                  >
-                                    {formatLabel(tag)}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {(candidate.literature_verifier_flags.length > 0 ||
-                            candidate.synthesis_feasibility_flags.length > 0 ||
-                            candidate.correlation_gate_flags.length > 0) && (
-                            <div className="mt-4">
-                              <p className="mb-2 text-sm font-medium text-sage-ink">
-                                Gate flags
-                              </p>
-                              <div className="flex flex-wrap gap-2">
-                                {[
-                                  ...candidate.literature_verifier_flags,
-                                  ...candidate.synthesis_feasibility_flags,
-                                  ...candidate.correlation_gate_flags,
-                                ].map((tag) => (
-                                  <span
-                                    key={tag}
-                                    className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs text-amber-800"
-                                  >
-                                    {formatLabel(tag)}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {candidate.required_condition_vector.length > 0 && (
-                            <div className="mt-4">
-                              <p className="mb-2 text-sm font-medium text-sage-ink">
-                                Required condition vector
-                              </p>
-                              <div className="flex flex-wrap gap-2">
-                                {candidate.required_condition_vector.map((tag) => (
-                                  <span
-                                    key={tag}
-                                    className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs text-sky-800"
-                                  >
-                                    {formatLabel(tag)}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {candidate.upgrade_requirements.length > 0 && (
-                            <div className="mt-4">
-                              <p className="mb-2 text-sm font-medium text-sage-ink">
-                                Upgrade requirements
-                              </p>
-                              <div className="flex flex-wrap gap-2">
-                                {candidate.upgrade_requirements.map((tag) => (
-                                  <span
-                                    key={tag}
-                                    className="rounded-full border border-sage-border bg-white px-3 py-1 text-xs text-sage-muted"
-                                  >
-                                    {formatLabel(tag)}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </details>
-                    ))}
-                  </div>
-                </section>
-              );
-            })}
-          </div>
-        )}
-      </section>
+      {!data ? (
+        <section className="rounded-2xl border border-red-200 bg-red-50 px-6 py-8 text-sm text-red-700">
+          The reviewed discovery feed is temporarily unavailable.
+        </section>
+      ) : (
+        <DiscoveryFeed
+          initialPage={data.page}
+          roleCounts={data.metadata.role_counts}
+          totalCandidates={data.metadata.total_candidates}
+        />
+      )}
     </main>
   );
 }

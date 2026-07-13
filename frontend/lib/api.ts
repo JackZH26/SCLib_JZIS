@@ -880,7 +880,89 @@ export interface DiscoveryResponse {
 }
 
 export function getDiscovery() {
-  return request<DiscoveryResponse>("/discovery");
+  return request<DiscoveryResponse>("/discovery", {
+    cache: "force-cache",
+    credentials: "omit",
+    next: { revalidate: 60 },
+  });
+}
+
+export type DiscoveryCandidateSummary = Pick<
+  DiscoveryCandidate,
+  | "candidate_id"
+  | "formula"
+  | "branch"
+  | "lane_id"
+  | "prototype_family"
+  | "candidate_layer"
+  | "condition_class"
+  | "evidence_level"
+  | "checker_status"
+  | "public_confidence"
+  | "evidence_quality_score"
+  | "experiment_readiness"
+  | "record_role"
+  | "claim_level"
+  | "next_action"
+  | "discovery_score"
+>;
+
+export interface DiscoveryMetadata {
+  page_title: string;
+  intro: string[];
+  status: "planned" | "active";
+  updated_at_utc: string | null;
+  source: string | null;
+  filter_rules: DiscoveryFilterRule[];
+  total_candidates: number;
+  role_counts: Record<string, number>;
+}
+
+export interface DiscoveryCandidatePage {
+  items: DiscoveryCandidateSummary[];
+  total: number;
+  offset: number;
+  limit: number;
+  has_more: boolean;
+  record_role: string | null;
+}
+
+const DISCOVERY_PAGE_SIZE = 24;
+
+export function getDiscoveryMetadata() {
+  return request<DiscoveryMetadata>("/discovery/metadata", {
+    cache: "force-cache",
+    credentials: "omit",
+    next: { revalidate: 60 },
+  });
+}
+
+export function getDiscoveryCandidates(opts: {
+  offset?: number;
+  limit?: number;
+  recordRole?: string | null;
+} = {}) {
+  const qs = new URLSearchParams({
+    offset: String(opts.offset ?? 0),
+    limit: String(opts.limit ?? DISCOVERY_PAGE_SIZE),
+  });
+  if (opts.recordRole) qs.set("record_role", opts.recordRole);
+  return request<DiscoveryCandidatePage>(`/discovery/candidates?${qs}`, {
+    cache: "force-cache",
+    credentials: "omit",
+    next: { revalidate: 60 },
+  });
+}
+
+export function getDiscoveryCandidate(candidateId: string) {
+  return request<DiscoveryCandidate>(
+    `/discovery/candidates/${encodeURIComponent(candidateId)}`,
+    {
+      cache: "force-cache",
+      credentials: "omit",
+      next: { revalidate: 60 },
+    },
+  );
 }
 
 // --- Admin --------------------------------------------------------------

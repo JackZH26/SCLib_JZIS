@@ -38,4 +38,5 @@ test("production CSP is restrictive and permits required integrations", async ()
   assert.match(csp, /https:\/\/api\.jzis\.org/);
   assert.match(csp, /https:\/\/www\.googletagmanager\.com/);
   assert.doesNotMatch(csp, /'unsafe-eval'/);
+  assert.doesNotMatch(csp, /localhost|127\.0\.0\.1/);
 });
