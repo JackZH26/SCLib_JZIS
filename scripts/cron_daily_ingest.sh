@@ -24,7 +24,7 @@
 #      records (papers.materials_extracted) into the materials table
 #   4. refresh the dashboard stats cache via the api container so the
 #      landing page / GET /stats reflects today's numbers on next hit
-#   5. dump postgres → GCS via scripts/backup_postgres.sh (best-effort)
+#   5. create and verify a PostgreSQL backup in the dedicated backup bucket
 #   6. append a timestamped log line to /var/log/sclib/cron.log
 #
 # Failures DO NOT wake the retry pass off a 2+ exit (hard crash) —
@@ -44,7 +44,7 @@ fi
 
 # ---- Config --------------------------------------------------------------
 
-SCLIB_ROOT="${SCLIB_ROOT:-/opt/sclib}"
+SCLIB_ROOT="${SCLIB_ROOT:-/opt/SCLib_JZIS}"
 LOG_DIR="${SCLIB_LOG_DIR:-/var/log/sclib}"
 LOG_FILE="${LOG_DIR}/cron.log"
 
@@ -166,15 +166,15 @@ fi
 
 # ---- 5. Postgres backup → GCS -------------------------------------------
 #
-# Runs after the ingest + stats refresh so the snapshot includes the
-# day's new rows. Failures here are logged but do not fail the cron —
-# losing one night's backup is preferable to alerting on a noisy
-# transient gcloud error.
+# Runs after the ingest + stats refresh so the snapshot includes the day's new
+# rows. Backup failure fails the job: a silent RPO breach is not a successful
+# nightly operation.
 log "step 5/5: postgres backup → GCS"
 if [[ -x "${SCLIB_ROOT}/scripts/backup_postgres.sh" ]]; then
-    "${SCLIB_ROOT}/scripts/backup_postgres.sh" || log "WARN backup_postgres failed"
+    "${SCLIB_ROOT}/scripts/backup_postgres.sh"
 else
-    log "WARN backup_postgres.sh missing or not executable"
+    log "FAIL backup_postgres.sh missing or not executable"
+    exit 1
 fi
 
 log "DONE cron_daily_ingest ingest_rc=${ingest_rc} retry_rc=${retry_rc} aggregate_rc=${aggregate_rc}"
