@@ -43,6 +43,32 @@ class SecurityWorkflowTests(unittest.TestCase):
             "version: v0.70.0",
         ):
             self.assertIn(required, security)
+        self.assertIn("working-directory: api", security)
+        self.assertIn("working-directory: ingestion", security)
+        self.assertNotIn("uv --quiet export --project", security)
+
+    def test_gitleaks_exceptions_are_exact_fingerprints(self) -> None:
+        ignore_file = ROOT / ".gitleaksignore"
+        fingerprints = [
+            line
+            for line in ignore_file.read_text().splitlines()
+            if line and not line.startswith("#")
+        ]
+        self.assertEqual(
+            set(fingerprints),
+            {
+                "d60f0db35de7e46d3f6e1a6907886b134feacef1:"
+                "README.md:curl-auth-header:133",
+                "7596ef2e5928c46e2b0da6bcfaf48ab6fabe3d35:"
+                "api/tests/test_unified_auth.py:generic-api-key:319",
+                "3477605e37393b8430068d38a822b758816bc025:"
+                "PROJECT_SPEC.md:generic-api-key:892",
+                "c499146b223562c5099ab971a149392067ca047e:"
+                "api/tests/test_session_security.py:generic-api-key:17",
+                "c499146b223562c5099ab971a149392067ca047e:"
+                "api/tests/test_session_security.py:generic-api-key:54",
+            },
+        )
 
     def test_release_binds_scan_signature_and_provenance_to_digest(self) -> None:
         release = (WORKFLOW_DIR / "release-images.yml").read_text()

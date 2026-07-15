@@ -66,13 +66,15 @@ jobs:
       - name: Install audit tools
         run: python -m pip install --disable-pip-version-check uv==0.11.16 pip-audit==2.9.0
       - name: Audit API lock
+        working-directory: api
         run: |
-          uv --quiet export --project api --frozen --no-dev --no-emit-project \
+          uv --quiet export --frozen --no-dev --no-emit-project \
             --format requirements-txt --output-file /tmp/api-requirements.txt
           pip-audit --requirement /tmp/api-requirements.txt --disable-pip
       - name: Audit ingestion lock
+        working-directory: ingestion
         run: |
-          uv --quiet export --project ingestion --frozen --no-dev --no-emit-project \
+          uv --quiet export --frozen --no-dev --no-emit-project \
             --format requirements-txt --output-file /tmp/ingestion-requirements.txt
           pip-audit --requirement /tmp/ingestion-requirements.txt --disable-pip
       - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0

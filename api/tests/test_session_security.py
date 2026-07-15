@@ -150,7 +150,8 @@ def test_production_accepts_https_auth_urls():
 def test_production_browser_origins_exclude_local_development():
     origins = allowed_browser_origins(_production_settings())
 
-    assert "https://jzis.org" in origins
-    assert "https://www.jzis.org" in origins
-    assert "https://asrp.jzis.org" in origins
-    assert "http://localhost:3000" not in origins
+    assert set(origins) == {
+        "https://jzis.org",
+        "https://www.jzis.org",
+        "https://asrp.jzis.org",
+    }

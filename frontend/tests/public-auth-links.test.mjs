@@ -13,7 +13,7 @@ const files = {
 
 test("OAuth links use the public API origin during server rendering", () => {
   assert.match(files.api, /export const PUBLIC_API_BASE\s*=/);
-  assert.match(files.api, /https:\/\/api\.jzis\.org\/sclib\/v1/);
+  assert.ok(files.api.includes("https://api.jzis.org/sclib/v1"));
 
   for (const [page, source] of Object.entries({
     login: files.login,
