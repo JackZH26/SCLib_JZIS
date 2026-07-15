@@ -98,6 +98,71 @@ the backup process uses a third identity through
 start another workload because the validator requires the exact target service
 account.
 
+## GitHub Actions production delivery
+
+The production path is deliberately split into three workflows:
+
+1. `Test` validates the exact `main` revision.
+2. `Release images` builds once, scans, signs, and records immutable image
+   digests only after that test run succeeds.
+3. `Deploy to VPS2` verifies that successful release run, checks the 30-day
+   error budget and workload identities, creates a database backup, verifies
+   the image signatures, migrates, and starts the recorded digests with
+   `--no-build`.
+
+Configure these GitHub Actions repository secrets. Keeping the connection
+values out of workflow source also lets the VPS move without a code change.
+
+| Secret | Production value |
+|---|---|
+| `VPS2_HOST` | VPS2 address or trusted DNS name |
+| `VPS2_USER` | Dedicated deployment login (currently `root`) |
+| `VPS2_DEPLOY_PATH` | `/opt/SCLib_JZIS` |
+| `VPS2_SSH_KEY` | Private half of the dedicated Actions key |
+| `VPS2_HOST_FINGERPRINT` | Trusted host key fingerprint, for example `SHA256:...` |
+
+Generate a key only for Actions on an administrator workstation. Do not reuse a
+personal key, commit the private key, or leave a copy of it on VPS2.
+
+```bash
+ssh-keygen -t ed25519 -a 100 \
+  -f ~/.ssh/sclib_github_actions -C sclib-github-actions
+```
+
+Append the public key to the deployment login's `~/.ssh/authorized_keys` with
+forwarding, PTY, and user startup disabled:
+
+```text
+no-agent-forwarding,no-port-forwarding,no-pty,no-user-rc ssh-ed25519 AAAA... sclib-github-actions
+```
+
+Obtain the server fingerprint over an already trusted administrative SSH
+connection; do not trust a first-seen fingerprint copied from an unverified
+network scan:
+
+```bash
+ssh root@72.62.251.29 \
+  "ssh-keygen -l -E sha256 -f /etc/ssh/ssh_host_ed25519_key.pub"
+```
+
+Create a GitHub environment named `production` and require approval for it.
+The workflows pin every third-party Action to a full commit SHA and ask the SSH
+Action to compare the server key with `VPS2_HOST_FINGERPRINT`; they do not use
+`StrictHostKeyChecking=no`, destructive Git resets, or server-side image builds.
+
+A push to `main` automatically enters the chain above. To redeploy an existing
+release, run `Deploy to VPS2` manually and provide the numeric run ID of a
+successful `Release images` workflow. The deploy workflow retrieves that run
+through the GitHub API and rejects a run from another workflow, branch, event,
+or failed conclusion. Manual deployment therefore cannot bypass tests, scans,
+signatures, or immutable digests.
+
+Before the first automated deployment, complete all three workload-identity
+credentials, backup configuration and restore drill, and the monitoring sample
+required by [`OBSERVABILITY_SLO.md`](OBSERVABILITY_SLO.md). The deployment gate
+fails closed if any prerequisite is missing; SSH connectivity alone is not a
+production-readiness signal.
+
 ## Data bootstrap
 
 ### Papers (Phase 2 smoke)

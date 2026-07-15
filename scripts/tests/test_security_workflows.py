@@ -54,6 +54,7 @@ class SecurityWorkflowTests(unittest.TestCase):
             "actions/attest-build-provenance@",
             "anchore/sbom-action@",
             "aquasecurity/trivy-action@",
+            '${{ matrix.component }}.sha',
         ):
             self.assertIn(required, release)
         self.assertNotIn(":latest", release)
@@ -81,6 +82,55 @@ class SecurityWorkflowTests(unittest.TestCase):
             self.assertIn(f"${{{variable}:?", compose)
         self.assertIn('readonly VERSION="v3.0.6"', installer)
         self.assertIn("EXPECTED_SHA256", installer)
+
+    def test_deploy_connection_and_manual_redeploy_are_fail_closed(self) -> None:
+        deploy = (WORKFLOW_DIR / "deploy.yml").read_text()
+        for required in (
+            "workflow_dispatch:",
+            "release_run_id:",
+            '.name == "Release images"',
+            '.path == ".github/workflows/release-images.yml"',
+            '.head_branch == "main"',
+            '.conclusion == "success"',
+            "secrets.VPS2_HOST",
+            "secrets.VPS2_USER",
+            "secrets.VPS2_DEPLOY_PATH",
+            "secrets.VPS2_HOST_FINGERPRINT",
+            "fingerprint:",
+            "scripts/backup_postgres.sh",
+            "steps.images.outputs.target_sha",
+        ):
+            self.assertIn(required, deploy)
+        for prohibited in (
+            "host: 72.62.251.29",
+            "username: root",
+            "git reset --hard",
+            "StrictHostKeyChecking=no",
+            "script_stop:",
+        ):
+            self.assertNotIn(prohibited, deploy)
+        self.assertLess(
+            deploy.index("scripts/backup_postgres.sh"),
+            deploy.index("alembic upgrade head"),
+        )
+
+    def test_ingest_uses_the_same_verified_ssh_connection(self) -> None:
+        ingest = (WORKFLOW_DIR / "ingest-daily.yml").read_text()
+        for required in (
+            "secrets.VPS2_HOST",
+            "secrets.VPS2_USER",
+            "secrets.VPS2_DEPLOY_PATH",
+            "secrets.VPS2_HOST_FINGERPRINT",
+            "fingerprint:",
+        ):
+            self.assertIn(required, ingest)
+        for prohibited in (
+            "host: 72.62.251.29",
+            "username: root",
+            "StrictHostKeyChecking=no",
+            "script_stop:",
+        ):
+            self.assertNotIn(prohibited, ingest)
 
     def test_dependabot_tracks_every_package_ecosystem(self) -> None:
         dependabot = (ROOT / ".github" / "dependabot.yml").read_text()

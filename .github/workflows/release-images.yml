@@ -118,11 +118,16 @@ jobs:
       - name: Record deployment digest
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
-        run: printf '%s\n' "$DIGEST" > "${{ matrix.component }}.digest"
-      - name: Upload deployment digest
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$DIGEST" > "${{ matrix.component }}.digest"
+          printf '%s\n' "$TARGET_SHA" > "${{ matrix.component }}.sha"
+      - name: Upload deployment manifest
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: image-digest-${{ matrix.component }}
-          path: ${{ matrix.component }}.digest
+          path: |
+            ${{ matrix.component }}.digest
+            ${{ matrix.component }}.sha
           if-no-files-found: error
           retention-days: 30
