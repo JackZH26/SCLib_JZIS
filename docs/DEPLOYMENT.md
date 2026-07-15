@@ -145,10 +145,13 @@ ssh root@72.62.251.29 \
   "ssh-keygen -l -E sha256 -f /etc/ssh/ssh_host_ed25519_key.pub"
 ```
 
-Create a GitHub environment named `production` and require approval for it.
-The workflows pin every third-party Action to a full commit SHA and ask the SSH
-Action to compare the server key with `VPS2_HOST_FINGERPRINT`; they do not use
-`StrictHostKeyChecking=no`, destructive Git resets, or server-side image builds.
+Create a GitHub environment named `production` and restrict its deployment
+branch rule to the exact `main` branch. This preserves automatic delivery after
+a successful `main` test run; organizations that require a manual change window
+may additionally enable required reviewers. The workflows pin every third-party
+Action to a full commit SHA and ask the SSH Action to compare the server key
+with `VPS2_HOST_FINGERPRINT`; they do not use `StrictHostKeyChecking=no`,
+destructive Git resets, or server-side image builds.
 
 A push to `main` automatically enters the chain above. To redeploy an existing
 release, run `Deploy to VPS2` manually and provide the numeric run ID of a
