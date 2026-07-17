@@ -75,6 +75,10 @@ class SecurityWorkflowTests(unittest.TestCase):
         for required in (
             "workflows: [Test]",
             "github.event.workflow_run.head_sha",
+            "Require matching Security success",
+            "actions/workflows/security.yml/runs",
+            ".head_sha == $sha",
+            "needs: verify-security",
             "@${{ steps.build.outputs.digest }}",
             "cosign sign --yes",
             "actions/attest-build-provenance@",
