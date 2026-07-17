@@ -37,8 +37,16 @@ test("production CSP is restrictive and permits required integrations", async ()
   assert.match(csp, /object-src 'none'/);
   assert.match(csp, /frame-ancestors 'none'/);
   assert.match(csp, /base-uri 'self'/);
-  assert.ok(csp.includes("https://api.jzis.org"));
-  assert.ok(csp.includes("https://www.googletagmanager.com"));
+  const directives = new Map(
+    csp.split(";").map((directive) => {
+      const [name, ...values] = directive.trim().split(/\s+/);
+      return [name, new Set(values)];
+    }),
+  );
+  const connectSources = directives.get("connect-src");
+  assert.ok(connectSources);
+  assert.ok(connectSources.has("https://api.jzis.org"));
+  assert.ok(connectSources.has("https://www.googletagmanager.com"));
   assert.doesNotMatch(csp, /'unsafe-eval'/);
   assert.doesNotMatch(csp, /localhost|127\.0\.0\.1/);
 });
