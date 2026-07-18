@@ -10,6 +10,7 @@ import os
 import re
 import secrets
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -191,9 +192,11 @@ def issue_token(workload: Workload, ttl_seconds: int, *, now: int | None = None)
 
 def write_token(workload: Workload, token: str) -> None:
     workload.output.parent.mkdir(mode=0o750, parents=True, exist_ok=True)
-    os.chmod(workload.output.parent, 0o750)
     if os.geteuid() == 0:
         os.chown(workload.output.parent, 0, workload.gid)
+    directory_stat = workload.output.parent.stat()
+    if stat.S_IMODE(directory_stat.st_mode) != 0o750:
+        raise IdentityAgentError("subject-token directory must have mode 0750")
     fd, temporary_name = tempfile.mkstemp(
         prefix=f".{workload.output.name}.",
         dir=workload.output.parent,

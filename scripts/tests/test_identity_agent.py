@@ -102,6 +102,7 @@ class IdentityAgentTests(unittest.TestCase):
             self.assertEqual(payload["sclib_role"], workload.role)
             self.assertEqual(payload["aud"], workload.audience)
             self.assertEqual(payload["exp"] - payload["iat"], 300)
+            self.assertEqual(stat.S_IMODE(workload.output.parent.stat().st_mode), 0o750)
             self.assertEqual(stat.S_IMODE(workload.output.stat().st_mode), 0o440)
 
             public_key = self.root / f"{workload.role}.pub"
