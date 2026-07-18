@@ -43,6 +43,18 @@ ENV NODE_ENV=production \
     GIT_SHA=$GIT_SHA \
     PORT=3000 \
     HOSTNAME=0.0.0.0
+# Refresh the small Alpine runtime to fixed repository packages, then remove
+# npm/Corepack/Yarn. The standalone Next.js server only needs `node`; retaining
+# package managers would expose their large vendored dependency trees at
+# runtime without providing an operational capability.
+RUN apk upgrade --no-cache \
+ && rm -rf /usr/local/lib/node_modules/npm \
+ && rm -f \
+      /usr/local/bin/npm \
+      /usr/local/bin/npx \
+      /usr/local/bin/corepack \
+      /usr/local/bin/yarn \
+      /usr/local/bin/yarnpkg
 RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./

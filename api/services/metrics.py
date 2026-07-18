@@ -110,6 +110,10 @@ DATASET_AGE_SECONDS = Gauge(
     "sclib_dataset_age_seconds",
     "Seconds since the latest indexed paper.",
 )
+PIPELINE_LAST_RUN_AGE_SECONDS = Gauge(
+    "sclib_pipeline_last_run_age_seconds",
+    "Seconds since the latest reported ingestion pipeline run.",
+)
 PIPELINE_STAGE_STATUS = Gauge(
     "sclib_pipeline_stage_status",
     "Pipeline stage status: complete=1, unknown=0, failed=-1.",
@@ -207,7 +211,23 @@ def observe_client_event(
         WEB_VITAL_VALUE.labels(name).observe(max(0.0, value))
 
 
-def update_dataset_metrics(payload: dict, stages: dict) -> None:
+def _set_age_metric(metric: Gauge, timestamp: object) -> None:
+    if not isinstance(timestamp, str):
+        return
+    try:
+        parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+    except ValueError:
+        return
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=UTC)
+    metric.set(max(0.0, (datetime.now(UTC) - parsed).total_seconds()))
+
+
+def update_dataset_metrics(
+    payload: dict,
+    stages: dict,
+    pipeline_last_run_at: str | None = None,
+) -> None:
     for entity, key in (
         ("papers", "total_papers"),
         ("materials", "total_materials"),
@@ -217,16 +237,8 @@ def update_dataset_metrics(payload: dict, stages: dict) -> None:
         if isinstance(value, int):
             DATASET_ROWS.labels(entity).set(value)
 
-    last_ingest_at = payload.get("last_ingest_at")
-    if isinstance(last_ingest_at, str):
-        try:
-            parsed = datetime.fromisoformat(last_ingest_at.replace("Z", "+00:00"))
-        except ValueError:
-            pass
-        else:
-            if parsed.tzinfo is None:
-                parsed = parsed.replace(tzinfo=UTC)
-            DATASET_AGE_SECONDS.set(max(0.0, (datetime.now(UTC) - parsed).total_seconds()))
+    _set_age_metric(DATASET_AGE_SECONDS, payload.get("last_ingest_at"))
+    _set_age_metric(PIPELINE_LAST_RUN_AGE_SECONDS, pipeline_last_run_at)
 
     status_values = {"complete": 1, "unknown": 0, "failed": -1}
     for stage, state in stages.items():

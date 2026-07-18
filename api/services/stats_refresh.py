@@ -174,7 +174,11 @@ async def refresh_dashboard_cache(
         await db.execute(pipeline_stmt)
     await db.commit()
     payload["data_pipeline"] = current_pipeline.model_dump(mode="json")
-    update_dataset_metrics(payload, current_pipeline.stages)
+    update_dataset_metrics(
+        payload,
+        current_pipeline.stages,
+        current_pipeline.last_run_at,
+    )
     log.info(
         "stats_cache[dashboard] refreshed: %d papers / %d materials / %d chunks",
         payload["total_papers"],

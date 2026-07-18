@@ -12,7 +12,7 @@
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
       "id": 1,
       "options": {"legend": {"displayMode": "table", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
-      "targets": [{"expr": "sum by (route) (rate(sclib_http_requests_total{route=~\"/v1/.*\"}[5m]))", "legendFormat": "{{route}}", "refId": "A"}],
+      "targets": [{"expr": "sum by (route) (rate(sclib_http_requests_total{route=~\"/.*\"}[5m]))", "legendFormat": "{{route}}", "refId": "A"}],
       "title": "API request rate",
       "type": "timeseries"
     },
@@ -22,7 +22,7 @@
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
       "id": 2,
       "options": {"legend": {"displayMode": "table", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
-      "targets": [{"expr": "sum by (route) (rate(sclib_http_requests_total{route=~\"/v1/.*\",status=~\"5..\"}[5m])) / clamp_min(sum by (route) (rate(sclib_http_requests_total{route=~\"/v1/.*\"}[5m])), 0.001)", "legendFormat": "{{route}}", "refId": "A"}],
+      "targets": [{"expr": "sum by (route) (rate(sclib_http_requests_total{route=~\"/.*\",status=~\"5..\"}[5m])) / clamp_min(sum by (route) (rate(sclib_http_requests_total{route=~\"/.*\"}[5m])), 0.001)", "legendFormat": "{{route}}", "refId": "A"}],
       "title": "5xx error ratio",
       "type": "timeseries"
     },
@@ -32,7 +32,7 @@
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
       "id": 3,
       "options": {"legend": {"displayMode": "table", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
-      "targets": [{"expr": "histogram_quantile(0.95, sum by (le, route) (rate(sclib_http_request_duration_seconds_bucket{route=~\"/v1/.*\"}[5m])))", "legendFormat": "{{route}}", "refId": "A"}],
+      "targets": [{"expr": "histogram_quantile(0.95, sum by (le, route) (rate(sclib_http_request_duration_seconds_bucket{route=~\"/.*\"}[5m])))", "legendFormat": "{{route}}", "refId": "A"}],
       "title": "API p95 latency",
       "type": "timeseries"
     },
@@ -62,8 +62,8 @@
       "gridPos": {"h": 8, "w": 8, "x": 8, "y": 16},
       "id": 6,
       "options": {"colorMode": "background", "graphMode": "area", "justifyMode": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "values": false}, "textMode": "auto"},
-      "targets": [{"expr": "sclib_dataset_age_seconds", "refId": "A"}],
-      "title": "Dataset age",
+      "targets": [{"expr": "sclib_pipeline_last_run_age_seconds", "refId": "A"}],
+      "title": "Pipeline last-run age",
       "type": "stat"
     },
     {

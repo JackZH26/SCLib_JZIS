@@ -113,6 +113,41 @@ class SecurityWorkflowTests(unittest.TestCase):
         self.assertIn('readonly VERSION="v3.0.6"', installer)
         self.assertIn("EXPECTED_SHA256", installer)
 
+    def test_production_api_command_survives_entrypoint_override(self) -> None:
+        compose = (ROOT / "docker-compose.prod.yml").read_text()
+        api_block = compose.split("\n  ingestion:", 1)[0]
+        self.assertIn("entrypoint:", api_block)
+        self.assertIn("command:", api_block)
+        self.assertIn("- uvicorn", api_block)
+        self.assertIn('- "8000"', api_block)
+
+    def test_scheduled_jobs_reuse_last_signed_release_manifest(self) -> None:
+        deploy = (WORKFLOW_DIR / "deploy.yml").read_text()
+        ingest = (WORKFLOW_DIR / "ingest-daily.yml").read_text()
+        cron = (ROOT / "scripts" / "cron_daily_ingest.sh").read_text()
+        aggregate = (ROOT / "scripts" / "sclib-daily-aggregate.sh").read_text()
+
+        self.assertIn(".env.release", deploy)
+        self.assertIn('mv -f "$release_env"', deploy)
+        self.assertIn("bash scripts/cron_daily_ingest.sh", ingest)
+        for script in (cron, aggregate):
+            self.assertIn(".env.release", script)
+            self.assertIn("docker-compose.prod.yml", script)
+        self.assertNotIn('source "${SCLIB_ROOT}/.env"', cron)
+
+    def test_runtime_images_remove_build_package_managers(self) -> None:
+        api = (ROOT / "api" / "Dockerfile").read_text()
+        ingestion = (ROOT / "ingestion" / "Dockerfile").read_text()
+        frontend = (ROOT / "frontend" / "Dockerfile").read_text()
+        for dockerfile in (api, ingestion):
+            self.assertIn("/usr/local/lib/python3.11/site-packages/pip*", dockerfile)
+            self.assertIn("/usr/local/lib/python3.11/site-packages/setuptools*", dockerfile)
+            self.assertIn("/root/.cache/uv", dockerfile)
+            self.assertIn("/bin/uvx", dockerfile)
+        self.assertIn("apk upgrade --no-cache", frontend)
+        self.assertIn("/usr/local/lib/node_modules/npm", frontend)
+        self.assertIn("/usr/local/bin/corepack", frontend)
+
     def test_deploy_connection_and_manual_redeploy_are_fail_closed(self) -> None:
         deploy = (WORKFLOW_DIR / "deploy.yml").read_text()
         for required in (

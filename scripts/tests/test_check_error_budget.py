@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import argparse
 import unittest
+from unittest.mock import patch
 
 from scripts.check_error_budget import (
     _increase_query,
     _valid_window,
     evaluate_availability,
     evaluate_freshness,
+    run_checks,
 )
 
 
@@ -58,7 +60,19 @@ class ErrorBudgetEvaluationTests(unittest.TestCase):
         )
         self.assertTrue(result.passed)
 
-    def test_data_older_than_24_hours_fails(self) -> None:
+    def test_absent_error_series_is_zero_when_total_traffic_exists(self) -> None:
+        result = evaluate_availability(
+            "public-api",
+            total=250,
+            errors=None,
+            target=0.999,
+            minimum_requests=100,
+            allow_no_data=False,
+        )
+        self.assertTrue(result.passed)
+        self.assertEqual(result.observed, 1.0)
+
+    def test_pipeline_older_than_24_hours_fails(self) -> None:
         result = evaluate_freshness(
             age_seconds=86_401,
             maximum_age_seconds=86_400,
@@ -66,13 +80,32 @@ class ErrorBudgetEvaluationTests(unittest.TestCase):
         )
         self.assertFalse(result.passed)
 
+    def test_release_gate_queries_pipeline_run_age(self) -> None:
+        args = argparse.Namespace(
+            prometheus_url="http://127.0.0.1:9090",
+            window="30d",
+            timeout=10.0,
+            allow_no_data=False,
+        )
+        with patch(
+            "scripts.check_error_budget.prometheus_scalar",
+            side_effect=[100.0, 0.0, 20.0, 0.0, 60.0],
+        ) as scalar:
+            results = run_checks(args)
+
+        self.assertTrue(all(result.passed for result in results))
+        self.assertEqual(
+            scalar.call_args_list[-1].args[1],
+            "max(sclib_pipeline_last_run_age_seconds)",
+        )
+
     def test_prometheus_query_matches_parameterized_route_labels(self) -> None:
         query = _increase_query(
-            r"/v1/paper/[{]paper_id[}]",
+            r"/paper/[{]paper_id:path[}]",
             "30d",
             errors_only=True,
         )
-        self.assertIn('route=~"/v1/paper/[{]paper_id[}]"', query)
+        self.assertIn('route=~"/paper/[{]paper_id:path[}]"', query)
         self.assertIn('status=~"5.."', query)
 
     def test_invalid_window_is_rejected(self) -> None:

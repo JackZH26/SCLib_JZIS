@@ -13,10 +13,10 @@ from urllib.parse import urlencode, urlparse
 from urllib.request import Request, urlopen
 
 PUBLIC_ROUTES = (
-    r'/v1/(stats|version|materials|materials/[{]material_id[}]|'
-    r'paper/[{]paper_id[}]|timeline|discovery/candidates)'
+    r'/(stats|version|materials|materials/[{]material_id:path[}]|'
+    r'paper/[{]paper_id:path[}]|timeline|discovery/candidates)'
 )
-AI_ROUTES = r'/v1/(search|ask|paper/[{]paper_id[}]/similar)'
+AI_ROUTES = r'/(search|ask|similar/[{]paper_id:path[}])'
 _WINDOW_PATTERN = re.compile(r"^[1-9][0-9]*[smhdwy]$")
 
 
@@ -38,7 +38,7 @@ def evaluate_availability(
     minimum_requests: int,
     allow_no_data: bool,
 ) -> CheckResult:
-    if total is None or errors is None or total < minimum_requests:
+    if total is None or total < minimum_requests:
         passed = allow_no_data
         return CheckResult(
             name,
@@ -47,6 +47,10 @@ def evaluate_availability(
             target,
             f"insufficient traffic ({total or 0:.0f}/{minimum_requests} requests)",
         )
+    # Prometheus returns an empty vector when no matching 5xx series has ever
+    # existed. Once total traffic is present, that is a real zero-error result,
+    # not missing telemetry.
+    errors = 0.0 if errors is None else errors
     availability = max(0.0, min(1.0, 1.0 - errors / total))
     return CheckResult(
         name,
@@ -69,14 +73,14 @@ def evaluate_freshness(
             allow_no_data,
             None,
             maximum_age_seconds,
-            "dataset age metric is unavailable",
+            "pipeline age metric is unavailable",
         )
     return CheckResult(
         "data-freshness",
         age_seconds <= maximum_age_seconds,
         age_seconds,
         maximum_age_seconds,
-        f"dataset age is {age_seconds / 3600:.2f} hours",
+        f"pipeline age is {age_seconds / 3600:.2f} hours",
     )
 
 
@@ -136,7 +140,7 @@ def run_checks(args: argparse.Namespace) -> list[CheckResult]:
         )
     age = prometheus_scalar(
         args.prometheus_url,
-        "max(sclib_dataset_age_seconds)",
+        "max(sclib_pipeline_last_run_age_seconds)",
         args.timeout,
     )
     checks.append(

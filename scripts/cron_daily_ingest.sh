@@ -56,11 +56,23 @@ if [[ -f "${SCLIB_ROOT}/.env.cron" ]]; then
     # shellcheck disable=SC1091
     source "${SCLIB_ROOT}/.env.cron"
 fi
+RELEASE_ENV="${SCLIB_RELEASE_ENV:-${SCLIB_ROOT}/.env.release}"
 
 mkdir -p "${LOG_DIR}"
 
 log() {
     printf '[%s] %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" | tee -a "${LOG_FILE}"
+}
+
+_env_get() {
+    local key="$1" file="$2"
+    local line value
+    line=$(grep -E "^${key}=" "${file}" | head -1) || true
+    [[ -z "${line}" ]] && return 0
+    value="${line#${key}=}"
+    if [[ "${value}" =~ ^\".*\"$ ]]; then value="${value:1:-1}"; fi
+    if [[ "${value}" =~ ^\'.*\'$ ]]; then value="${value:1:-1}"; fi
+    printf '%s' "${value}"
 }
 
 stage_status() {
@@ -79,6 +91,15 @@ on_error() {
 trap on_error ERR
 
 cd "${SCLIB_ROOT}"
+
+if [[ ! -r "${RELEASE_ENV}" ]]; then
+    log "FAIL signed release manifest missing: ${RELEASE_ENV}"
+    exit 1
+fi
+set -a
+# shellcheck disable=SC1090
+source "${RELEASE_ENV}"
+set +a
 
 # ---- 1. Incremental ingest ----------------------------------------------
 
@@ -130,11 +151,11 @@ log "aggregate-materials exit=${aggregate_rc}"
 
 log "step 4/5: refresh dashboard stats cache"
 if [[ -z "${INTERNAL_API_KEY:-}" ]]; then
-    # Fall back to sourcing the compose .env so operators don't have to
-    # duplicate the secret in .env.cron.
+    # Read only the required key. A Compose .env file is not necessarily
+    # shell syntax, so sourcing it can misinterpret otherwise valid secrets.
     if [[ -f "${SCLIB_ROOT}/.env" ]]; then
-        # shellcheck disable=SC1091
-        set -a && source "${SCLIB_ROOT}/.env" && set +a
+        INTERNAL_API_KEY=$(_env_get INTERNAL_API_KEY "${SCLIB_ROOT}/.env")
+        export INTERNAL_API_KEY
     fi
 fi
 

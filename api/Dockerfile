@@ -35,10 +35,19 @@ RUN uv sync --locked --no-dev --no-install-project
 ARG GIT_SHA=dev
 ENV GIT_SHA=$GIT_SHA
 
-# Copy application code
+# Copy application code. The application executes only from /opt/venv, so
+# remove the system Python packaging toolchain and uv after installation. Those
+# build-only package managers and their vendored dependency trees are not
+# production runtime capabilities.
 COPY . .
 RUN uv sync --locked --no-dev --no-editable \
- && chmod +x /app/entrypoint.sh
+ && chmod +x /app/entrypoint.sh \
+ && rm -rf \
+      /root/.cache/uv \
+      /usr/local/lib/python3.11/site-packages/pip* \
+      /usr/local/lib/python3.11/site-packages/setuptools* \
+      /usr/local/lib/python3.11/site-packages/wheel* \
+ && rm -f /usr/local/bin/pip* /bin/uv /bin/uvx
 
 # Drop privileges. The API has no reason to run as root — it only
 # needs to read /app, write logs to stdout, and read the mounted keyless
