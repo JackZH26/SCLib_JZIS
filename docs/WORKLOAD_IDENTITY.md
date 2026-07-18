@@ -8,16 +8,44 @@ accounts.
 
 ## External prerequisite
 
-Select an approved OIDC issuer or machine-identity agent that can issue tokens
-to this VPS and rotate them before expiry. This is an infrastructure/security
-decision outside the repository: issuer URL, JWKS trust, claims, token lifetime,
-and revocation must be approved before enabling deployment. Do not emulate an
-issuer with a static JWT file.
+The production decision approved on 2026-07-17 uses three local RSA signing
+identities, three Google WIF OIDC providers with uploaded JWKS, and a root-only
+systemd agent that rotates five-minute JWTs every minute. No public discovery
+endpoint, Google service-account key, human ADC, refresh token, or static JWT is
+used. Each provider accepts only its exact issuer, subject, audience, and
+`sclib_role`; each principal may impersonate only its matching service account.
+
+The signing keys are host machine credentials, not Google credentials. They are
+mode `0600`, never mounted into an application container, and can be revoked by
+disabling the matching WIF provider. Rotate each key and uploaded JWKS at least
+quarterly and immediately after suspected host compromise.
 
 Configure a production workload identity pool/provider with strict issuer,
 audience, attribute mapping, and attribute condition. Give each token a distinct
 subject or `sclib_role` claim. Bind only that principal to the matching service
 account with `roles/iam.workloadIdentityUser`; never grant the entire pool.
+
+## Provisioning
+
+Install the agent on VPS2 after the GCP project number is known:
+
+```bash
+sudo bash scripts/install_identity_agent.sh PROJECT_NUMBER sclib-production
+```
+
+Copy only `/etc/sclib/identity-agent/*.jwks.json` to an isolated administrator
+machine, then provision GCP and render the three non-secret external-account
+configuration files:
+
+```bash
+bash scripts/provision_gcp_wif.sh \
+  jzis-sclib /secure/tmp/jwks /secure/tmp/credentials
+```
+
+Copy the resulting `*-external-account.json` files to
+`/etc/sclib/credentials/` on VPS2 with owner `root:root` and mode `0444`. Remove
+the isolated administrator session and temporary public/config files after
+verification. The private signing keys never leave VPS2.
 
 | Workload | Service account | Minimum resource access |
 |---|---|---|

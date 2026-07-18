@@ -52,21 +52,37 @@ def _service_account_from_url(value: str) -> str:
     return unquote(match.group(1))
 
 
-def _decode_jwt_payload(token: str) -> dict[str, Any]:
+def _decode_jwt(token: str) -> tuple[dict[str, Any], dict[str, Any]]:
     parts = token.split(".")
     if len(parts) != 3:
         raise CredentialPolicyError("subject token must be a compact JWT")
     try:
-        padded = parts[1] + "=" * (-len(parts[1]) % 4)
-        payload = json.loads(base64.urlsafe_b64decode(padded))
+        encoded = []
+        for part in parts[:2]:
+            padded = part + "=" * (-len(part) % 4)
+            encoded.append(json.loads(base64.urlsafe_b64decode(padded)))
     except (ValueError, json.JSONDecodeError) as exc:
-        raise CredentialPolicyError("subject token JWT payload is invalid") from exc
-    if not isinstance(payload, dict):
-        raise CredentialPolicyError("subject token JWT payload must be an object")
-    return payload
+        raise CredentialPolicyError("subject token JWT header or payload is invalid") from exc
+    header, payload = encoded
+    if not isinstance(header, dict) or not isinstance(payload, dict):
+        raise CredentialPolicyError("subject token JWT header and payload must be objects")
+    if (
+        header.get("alg") != "RS256"
+        or header.get("typ") != "JWT"
+        or not isinstance(header.get("kid"), str)
+        or not re.fullmatch(r"[a-f0-9]{32,64}", header["kid"])
+    ):
+        raise CredentialPolicyError("subject token must use a fingerprinted RS256 key")
+    return header, payload
 
 
-def validate_subject_token(path: Path, allowed_prefix: Path) -> None:
+def validate_subject_token(
+    path: Path,
+    allowed_prefix: Path,
+    *,
+    audience: str,
+    expected_role: str,
+) -> None:
     try:
         resolved = path.resolve(strict=True)
         prefix = allowed_prefix.resolve(strict=True)
@@ -77,12 +93,30 @@ def validate_subject_token(path: Path, allowed_prefix: Path) -> None:
         ) from exc
     if not resolved.is_file() or not 0 < resolved.stat().st_size <= 65_536:
         raise CredentialPolicyError("subject token must be a non-empty regular file <=64 KiB")
-    payload = _decode_jwt_payload(resolved.read_text().strip())
+    _, payload = _decode_jwt(resolved.read_text().strip())
+    now = time.time()
     expires_at = payload.get("exp")
-    if not isinstance(expires_at, (int, float)) or expires_at <= time.time() + 60:
+    issued_at = payload.get("iat")
+    not_before = payload.get("nbf")
+    if not isinstance(expires_at, (int, float)) or expires_at <= now + 60:  # noqa: UP038
         raise CredentialPolicyError("subject token is expired or expires within 60 seconds")
-    if not isinstance(payload.get("iss"), str) or not isinstance(payload.get("sub"), str):
-        raise CredentialPolicyError("subject token requires issuer and subject claims")
+    if not isinstance(issued_at, (int, float)) or not isinstance(  # noqa: UP038
+        not_before, (int, float)  # noqa: UP038
+    ):
+        raise CredentialPolicyError("subject token requires issued-at and not-before claims")
+    if issued_at > now + 30 or not_before > now + 30 or expires_at - issued_at > 600:
+        raise CredentialPolicyError("subject token timing exceeds the short-lived policy")
+    expected_issuer = f"https://api.jzis.org/sclib-identity/{expected_role}"
+    expected_subject = f"sclib-{expected_role}-vps2"
+    expected_audience = f"https:{audience}"
+    if payload.get("iss") != expected_issuer:
+        raise CredentialPolicyError("subject token issuer does not match the workload role")
+    if payload.get("sub") != expected_subject:
+        raise CredentialPolicyError("subject token subject does not match the workload role")
+    if payload.get("sclib_role") != expected_role:
+        raise CredentialPolicyError("subject token role claim does not match the workload")
+    if payload.get("aud") != expected_audience:
+        raise CredentialPolicyError("subject token audience does not match the credential")
 
 
 def validate_external_account(
@@ -116,6 +150,12 @@ def validate_external_account(
         raise CredentialPolicyError(
             f"credential impersonates {actual_service_account}, expected {expected_service_account}"
         )
+    role_match = re.fullmatch(
+        r"sclib-(api|ingestion|backup)@jzis-sclib\.iam\.gserviceaccount\.com",
+        expected_service_account,
+    )
+    if not role_match:
+        raise CredentialPolicyError("expected service account is not a production SCLib workload")
     source = payload.get("credential_source")
     if not isinstance(source, dict) or set(source) - {"file", "format"}:
         raise CredentialPolicyError("credential_source must use only a rotating token file")
@@ -126,7 +166,12 @@ def validate_external_account(
     if source_format != {"type": "text"}:
         raise CredentialPolicyError("credential source must contain a text JWT")
     if check_subject_token:
-        validate_subject_token(Path(source_file), token_prefix)
+        validate_subject_token(
+            Path(source_file),
+            token_prefix,
+            audience=audience,
+            expected_role=role_match.group(1),
+        )
     return payload
 
 

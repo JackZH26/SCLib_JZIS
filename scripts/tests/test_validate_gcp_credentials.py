@@ -23,7 +23,10 @@ def _jwt(payload: dict[str, object]) -> str:
         raw = json.dumps(value, separators=(",", ":")).encode()
         return base64.urlsafe_b64encode(raw).rstrip(b"=").decode()
 
-    return f"{encode({'alg': 'RS256'})}.{encode(payload)}.test-signature"
+    return (
+        f"{encode({'alg': 'RS256', 'kid': 'a' * 64, 'typ': 'JWT'})}."
+        f"{encode(payload)}.test-signature"
+    )
 
 
 class CredentialPolicyTests(unittest.TestCase):
@@ -37,9 +40,16 @@ class CredentialPolicyTests(unittest.TestCase):
         self.token.write_text(
             _jwt(
                 {
-                    "iss": "https://identity.example.invalid",
+                    "iss": "https://api.jzis.org/sclib-identity/api",
                     "sub": "sclib-api-vps2",
+                    "aud": (
+                        "https://iam.googleapis.com/projects/123456789/locations/global/"
+                        "workloadIdentityPools/sclib-production/providers/vps2-api"
+                    ),
+                    "iat": int(time.time()),
+                    "nbf": int(time.time()) - 5,
                     "exp": int(time.time()) + 600,
+                    "sclib_role": "api",
                 }
             )
         )
@@ -50,7 +60,7 @@ class CredentialPolicyTests(unittest.TestCase):
             "type": "external_account",
             "audience": (
                 "//iam.googleapis.com/projects/123456789/locations/global/"
-                "workloadIdentityPools/sclib-production/providers/vps-oidc"
+                "workloadIdentityPools/sclib-production/providers/vps2-api"
             ),
             "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
             "token_url": "https://sts.googleapis.com/v1/token",
@@ -98,9 +108,16 @@ class CredentialPolicyTests(unittest.TestCase):
         self.token.write_text(
             _jwt(
                 {
-                    "iss": "https://identity.example.invalid",
+                    "iss": "https://api.jzis.org/sclib-identity/api",
                     "sub": "sclib-api-vps2",
+                    "aud": (
+                        "https://iam.googleapis.com/projects/123456789/locations/global/"
+                        "workloadIdentityPools/sclib-production/providers/vps2-api"
+                    ),
+                    "iat": int(time.time()) - 700,
+                    "nbf": int(time.time()) - 705,
                     "exp": int(time.time()) - 1,
+                    "sclib_role": "api",
                 }
             )
         )
