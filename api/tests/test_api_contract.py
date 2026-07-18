@@ -64,6 +64,16 @@ async def test_public_data_endpoints_reject_unknown_schema_versions(client) -> N
         assert response.json()["error_code"] == "validation_error"
 
 
+@pytest.mark.asyncio
+async def test_timeline_accepts_documented_point_budget_from_query_string(client) -> None:
+    response = await client.get(
+        "/v1/timeline?schema_version=1&max_points=5000&compact=true&limit=5000"
+    )
+
+    assert response.status_code == 200
+    assert response.json()["limit"] == 5000
+
+
 def test_openapi_v1_publishes_error_and_quota_contract() -> None:
     schema = app.openapi()
 
