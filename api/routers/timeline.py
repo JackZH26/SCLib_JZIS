@@ -30,6 +30,7 @@ import hashlib
 import json
 import logging
 from datetime import UTC, datetime
+from enum import IntEnum
 from typing import Literal
 
 from fastapi import APIRouter, Depends, Query, Request, Response
@@ -55,6 +56,15 @@ _CACHE_TTL_SECONDS = 900
 _CACHE_CONTROL = (
     "public, max-age=60, s-maxage=900, stale-while-revalidate=3600"
 )
+
+
+class TimelinePointBudget(IntEnum):
+    """Rendering budgets accepted from URL query strings."""
+
+    POINTS_5000 = 5000
+    POINTS_10000 = 10000
+    POINTS_20000 = 20000
+    POINTS_50000 = 50000
 
 
 def _weak_etag(payload: str) -> str:
@@ -206,7 +216,7 @@ async def timeline(
         False,
         description="Only show Tc records whose paper_id is APS-sourced.",
     ),
-    max_points: Literal[5000, 10000, 20000, 50000] | None = Query(
+    max_points: TimelinePointBudget | None = Query(
         None,
         description=(
             "Deterministically downsample large results to one of the supported "
