@@ -133,6 +133,7 @@ class SecurityWorkflowTests(unittest.TestCase):
         for script in (cron, aggregate):
             self.assertIn(".env.release", script)
             self.assertIn("docker-compose.prod.yml", script)
+        self.assertNotIn('source "${SCLIB_ROOT}/.env"', cron)
 
     def test_runtime_images_remove_build_package_managers(self) -> None:
         api = (ROOT / "api" / "Dockerfile").read_text()
