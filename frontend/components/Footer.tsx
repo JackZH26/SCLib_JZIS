@@ -49,7 +49,7 @@ export async function Footer() {
   const datasetVersion = version?.dataset_version ?? null;
   return (
     <footer className="mt-16 border-t border-sage-border bg-[rgba(232,240,232,0.6)]">
-      <div className="mx-auto max-w-6xl px-6 py-12 text-center">
+      <div className="mx-auto max-w-6xl px-4 py-10 text-center sm:px-6 sm:py-12">
         <nav className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-slate-600">
           <a
             href="https://github.com/JackZH26/SCLib_JZIS"
@@ -84,6 +84,18 @@ export async function Footer() {
           >
             Join Us
           </a>
+          <Link
+            href="/privacy"
+            className="transition-colors hover:text-accent-deep"
+          >
+            Privacy
+          </Link>
+          <Link
+            href="/terms"
+            className="transition-colors hover:text-accent-deep"
+          >
+            Terms
+          </Link>
           <Link
             href="/cookies"
             className="transition-colors hover:text-accent-deep"

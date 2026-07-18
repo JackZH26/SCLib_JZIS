@@ -14,18 +14,23 @@ concurrency:
 jobs:
   ingest:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - name: Trigger incremental ingest on VPS2
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@823bd89e131d8d508129f9443cad5855e9ba96f0 # v1.2.4
+        env:
+          DEPLOY_PATH: ${{ secrets.VPS2_DEPLOY_PATH }}
         with:
-          host: 72.62.251.29
-          username: root
+          host: ${{ secrets.VPS2_HOST }}
+          username: ${{ secrets.VPS2_USER }}
           key: ${{ secrets.VPS2_SSH_KEY }}
+          fingerprint: ${{ secrets.VPS2_HOST_FINGERPRINT }}
           port: 22
-          script_stop: true
+          command_timeout: 55m
+          envs: DEPLOY_PATH
           script: |
             set -euo pipefail
-            cd /opt/SCLib_JZIS
+            cd "$DEPLOY_PATH"
             # The ingestion package lives in its own image (see
             # docker-compose.yml "ingestion" service with profiles=[tools]).
             # It is NOT installed in the api container, so exec'ing into api

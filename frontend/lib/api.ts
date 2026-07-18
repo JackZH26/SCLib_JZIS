@@ -1,10 +1,9 @@
 /**
  * Thin client for the SCLib API.
  *
- * Server and client components both call through here so base URL and auth
- * header handling live in one place. The API accepts either a bearer JWT
- * (for account management endpoints) or an `X-API-Key` (for search/ask) —
- * we expose both on `request` and let each call pick what it needs.
+ * Server and client components both call through here so base URL and
+ * credential handling live in one place. Browser sessions use a host-only
+ * HttpOnly cookie; programmatic search/ask calls may still use `X-API-Key`.
  */
 
 /**
@@ -19,12 +18,12 @@
  * If only the public URL is set (e.g. local dev), both fall back to
  * it so nothing breaks.
  */
-const PUBLIC_BASE =
-  process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000/v1";
-const SERVER_BASE = process.env.API_BASE_SERVER ?? PUBLIC_BASE;
+export const PUBLIC_API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE ?? "https://api.jzis.org/sclib/v1";
+const SERVER_BASE = process.env.API_BASE_SERVER ?? PUBLIC_API_BASE;
 
 export const API_BASE =
-  typeof window === "undefined" ? SERVER_BASE : PUBLIC_BASE;
+  typeof window === "undefined" ? SERVER_BASE : PUBLIC_API_BASE;
 
 export class ApiError extends Error {
   constructor(
@@ -33,6 +32,8 @@ export class ApiError extends Error {
     msg: string,
     /** Seconds the server asked us to wait, parsed from Retry-After. */
     public retryAfterSec?: number,
+    /** Correlation ID to include in support reports. */
+    public requestId?: string,
   ) {
     super(msg);
   }
@@ -58,6 +59,12 @@ export function friendlyErrorMessage(
 ): string {
   if (err instanceof ApiError) {
     if (err.status === 429) {
+      const detail = (err.body as { detail?: { error?: string } } | null)?.detail;
+      if (detail?.error === "auth_rate_limited") {
+        return err.retryAfterSec
+          ? `Too many attempts. Try again in about ${err.retryAfterSec} seconds.`
+          : "Too many attempts. Please try again later.";
+      }
       const base =
         "Daily free queries used up. Please register or sign in for more.";
       return err.retryAfterSec
@@ -110,13 +117,15 @@ function sanitizeErrorMessage(msg: string): string {
 
 async function request<T>(
   path: string,
-  init: RequestInit & { auth?: string; apiKey?: string } = {},
+  init: RequestInit & {
+    apiKey?: string;
+    next?: { revalidate?: number };
+  } = {},
 ): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body && !headers.has("content-type")) {
     headers.set("content-type", "application/json");
   }
-  if (init.auth) headers.set("authorization", `Bearer ${init.auth}`);
   if (init.apiKey) headers.set("x-api-key", init.apiKey);
 
   let res: Response;
@@ -124,7 +133,8 @@ async function request<T>(
     res = await fetch(`${API_BASE}${path}`, {
       ...init,
       headers,
-      cache: "no-store",
+      cache: init.cache ?? "no-store",
+      credentials: init.credentials ?? "include",
     });
   } catch (e) {
     // Network-level failure (DNS, refused, aborted). The message can
@@ -143,7 +153,16 @@ async function request<T>(
           : `HTTP ${res.status}`;
     const retryAfterSec =
       res.status === 429 ? parseRetryAfter(res.headers.get("retry-after")) : undefined;
-    throw new ApiError(res.status, body, sanitizeErrorMessage(rawMsg), retryAfterSec);
+    const requestId =
+      res.headers.get("x-request-id") ??
+      ((body as { request_id?: unknown }).request_id as string | undefined);
+    throw new ApiError(
+      res.status,
+      body,
+      sanitizeErrorMessage(rawMsg),
+      retryAfterSec,
+      requestId,
+    );
   }
   return body as T;
 }
@@ -157,7 +176,9 @@ export interface User {
   name: string;
   institution: string | null;
   country: string | null;
+  age: number | null;
   research_area: string | null;
+  purpose: string | null;
   bio: string | null;
   orcid: string | null;
   created_at: string;
@@ -174,7 +195,9 @@ export interface UpdateUserPayload {
   name?: string | null;
   institution?: string | null;
   country?: string | null;
+  age?: number | null;
   research_area?: string | null;
+  purpose?: string | null;
   bio?: string | null;
   orcid?: string | null;
 }
@@ -208,11 +231,11 @@ export interface RegisterPayload {
   email: string;
   password: string;
   name: string;
-  age: number;
+  age?: number;
   institution?: string;
   country?: string;
   research_area?: string;
-  purpose: string;
+  purpose?: string;
 }
 
 export function register(data: RegisterPayload) {
@@ -229,45 +252,93 @@ export function verifyEmail(token: string) {
 }
 
 export function login(email: string, password: string) {
-  return request<{ access_token: string; token_type: string; expires_in: number }>(
-    "/auth/login",
+  return request<{ authenticated: boolean; expires_in: number }>(
+    "/auth/session/login",
     { method: "POST", body: JSON.stringify({ email, password }) },
   );
 }
 
-export function me(jwt: string) {
-  return request<User>("/auth/me", { auth: jwt });
+export function logout() {
+  return request<{ message: string }>("/auth/logout", { method: "POST" });
 }
 
-export function updateMe(jwt: string, payload: UpdateUserPayload) {
+export function requestPasswordReset(email: string) {
+  return request<{ message: string }>("/auth/password-reset/request", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+}
+
+export function confirmPasswordReset(token: string, newPassword: string) {
+  return request<{ message: string }>("/auth/password-reset/confirm", {
+    method: "POST",
+    body: JSON.stringify({ token, new_password: newPassword }),
+  });
+}
+
+export function revokeAllSessions() {
+  return request<{ message: string }>("/auth/sessions/revoke-all", {
+    method: "POST",
+  });
+}
+
+export function me() {
+  return request<User>("/auth/me");
+}
+
+export function updateMe(payload: UpdateUserPayload) {
   return request<User>("/auth/me", {
     method: "PATCH",
     body: JSON.stringify(payload),
-    auth: jwt,
   });
 }
 
-export function listKeys(jwt: string) {
-  return request<ApiKey[]>("/auth/keys", { auth: jwt });
+export interface AccountDataExport {
+  schema_version: "1";
+  generated_at: string;
+  profile: Record<string, unknown>;
+  api_keys: Array<Record<string, unknown>>;
+  ask_history: Array<Record<string, unknown>>;
+  bookmarks: Array<Record<string, unknown>>;
+  email_verifications: Array<Record<string, unknown>>;
+  password_resets: Array<Record<string, unknown>>;
+  security_events: Array<Record<string, unknown>>;
 }
 
-export function createKey(jwt: string, name: string) {
+export function exportAccountData() {
+  return request<AccountDataExport>("/auth/me/export");
+}
+
+export function deleteAccount(data: {
+  confirmation: "DELETE";
+  email: string;
+  current_password?: string;
+}) {
+  return request<{ message: string }>("/auth/me", {
+    method: "DELETE",
+    body: JSON.stringify(data),
+  });
+}
+
+export function listKeys() {
+  return request<ApiKey[]>("/auth/keys");
+}
+
+export function createKey(name: string) {
   return request<ApiKeyWithSecret>("/auth/keys", {
     method: "POST",
     body: JSON.stringify({ name }),
-    auth: jwt,
   });
 }
 
-export function revokeKey(jwt: string, keyId: string) {
+export function revokeKey(keyId: string) {
   return request<{ message: string }>(`/auth/keys/${keyId}`, {
     method: "DELETE",
-    auth: jwt,
   });
 }
 
-export function getUsage(jwt: string) {
-  return request<UsageStats>("/auth/usage", { auth: jwt });
+export function getUsage() {
+  return request<UsageStats>("/auth/usage");
 }
 
 // --- Ask history ----------------------------------------------------------
@@ -299,15 +370,14 @@ export interface AskHistoryListResponse {
   offset: number;
 }
 
-export function listHistory(jwt: string, limit = 50, offset = 0) {
+export function listHistory(limit = 50, offset = 0) {
   const qs = new URLSearchParams({ limit: String(limit), offset: String(offset) });
-  return request<AskHistoryListResponse>(`/history?${qs}`, { auth: jwt });
+  return request<AskHistoryListResponse>(`/history?${qs}`);
 }
 
-export function deleteHistoryEntry(jwt: string, id: string) {
+export function deleteHistoryEntry(id: string) {
   return request<{ message: string }>(`/history/${id}`, {
     method: "DELETE",
-    auth: jwt,
   });
 }
 
@@ -357,30 +427,27 @@ export interface BookmarkedMaterialsResponse {
 }
 
 export function createBookmark(
-  jwt: string,
   target_type: BookmarkTargetType,
   target_id: string,
 ) {
   return request<Bookmark>("/bookmarks", {
     method: "POST",
     body: JSON.stringify({ target_type, target_id }),
-    auth: jwt,
   });
 }
 
-export function deleteBookmark(jwt: string, id: string) {
+export function deleteBookmark(id: string) {
   return request<{ message: string }>(`/bookmarks/${id}`, {
     method: "DELETE",
-    auth: jwt,
   });
 }
 
-export function listPaperBookmarks(jwt: string) {
-  return request<BookmarkedPapersResponse>("/bookmarks/papers", { auth: jwt });
+export function listPaperBookmarks() {
+  return request<BookmarkedPapersResponse>("/bookmarks/papers");
 }
 
-export function listMaterialBookmarks(jwt: string) {
-  return request<BookmarkedMaterialsResponse>("/bookmarks/materials", { auth: jwt });
+export function listMaterialBookmarks() {
+  return request<BookmarkedMaterialsResponse>("/bookmarks/materials");
 }
 
 // --- Feedback -------------------------------------------------------------
@@ -393,11 +460,10 @@ export interface FeedbackPayload {
   contact_email?: string | null;
 }
 
-export function submitFeedback(jwt: string, payload: FeedbackPayload) {
+export function submitFeedback(payload: FeedbackPayload) {
   return request<{ message: string }>("/feedback", {
     method: "POST",
     body: JSON.stringify(payload),
-    auth: jwt,
   });
 }
 
@@ -450,14 +516,14 @@ export interface SearchResponse {
   results: SearchMatch[];
   query_time_ms: number;
   guest_remaining: number | null;
+  remaining: number | null;
 }
 
-export function search(req: SearchRequest, opts: { apiKey?: string; auth?: string } = {}) {
+export function search(req: SearchRequest, opts: { apiKey?: string } = {}) {
   return request<SearchResponse>("/search", {
     method: "POST",
     body: JSON.stringify(req),
     apiKey: opts.apiKey,
-    auth: opts.auth,
   });
 }
 
@@ -485,15 +551,17 @@ export interface AskResponse {
   sources: AskSource[];
   tokens_used: number | null;
   query_time_ms: number;
+  citation_valid: boolean;
+  citation_warnings: string[];
   guest_remaining: number | null;
+  remaining: number | null;
 }
 
-export function ask(req: AskRequest, opts: { apiKey?: string; auth?: string } = {}) {
+export function ask(req: AskRequest, opts: { apiKey?: string } = {}) {
   return request<AskResponse>("/ask", {
     method: "POST",
     body: JSON.stringify(req),
     apiKey: opts.apiKey,
-    auth: opts.auth,
   });
 }
 
@@ -730,6 +798,44 @@ export function getSimilar(id: string, top_k = 10) {
   );
 }
 
+// --- Search-engine discovery ---------------------------------------------
+
+export type SitemapResourceKind = "paper" | "material";
+
+export interface SitemapResource {
+  kind: SitemapResourceKind;
+  id: string;
+  updated_at: string;
+}
+
+export interface SitemapResourcePage {
+  total: number;
+  limit: number;
+  offset: number;
+  results: SitemapResource[];
+}
+
+/**
+ * Fetch a payload-minimal public inventory for XML sitemap generation.
+ * The API caps pages at 10,000 URLs so each XML document stays well below
+ * the search-engine protocol limit of 50,000 URLs.
+ */
+export function listSitemapResources(
+  kind: SitemapResourceKind,
+  limit = 10_000,
+  offset = 0,
+) {
+  const qs = new URLSearchParams({
+    kind,
+    limit: String(limit),
+    offset: String(offset),
+  });
+  return request<SitemapResourcePage>(`/sitemap/resources?${qs}`, {
+    cache: "force-cache",
+    next: { revalidate: 3600 },
+  });
+}
+
 // --- Stats / timeline -----------------------------------------------------
 
 export interface StatsResponse {
@@ -741,7 +847,17 @@ export interface StatsResponse {
   papers_by_year_aps: Record<string, number>;
   top_material_families: Array<{ family: string; count: number }>;
   last_ingest_at: string | null;
+  stats_refreshed_at?: string | null;
   updated_at: string;
+  dataset_version?: string | null;
+  data_pipeline?: {
+    status: "complete" | "partial" | "failed" | "unknown";
+    last_run_at: string | null;
+    stages: Record<
+      string,
+      { status: "complete" | "failed" | "unknown"; exit_code: number | null }
+    >;
+  };
 }
 
 export function getStats() {
@@ -778,7 +894,7 @@ export async function getVersion(opts?: {
 
 export interface TimelinePoint {
   material: string;
-  formula_latex: string | null;
+  formula_latex?: string | null;
   family: string | null;
   tc_kelvin: number;
   year: number;
@@ -793,25 +909,48 @@ export interface TimelineCoverage {
   total_materials: number;
   year_min: number | null;
   year_max: number | null;
+  returned_points: number;
+  available_points: number | null;
 }
 
 export interface TimelineResponse {
+  schema_version: "1";
+  data_version: string;
+  data_updated_at: string | null;
   family: string | null;
   points: TimelinePoint[];
   coverage: TimelineCoverage | null;
+  offset: number;
+  limit: number | null;
+  has_more: boolean;
 }
 
 export function getTimeline(opts: {
   family?: string;
   experimentalOnly?: boolean;
   onlyAps?: boolean;
+  maxPoints?: 5000 | 10000 | 20000 | 50000;
+  compact?: boolean;
+  offset?: number;
+  limit?: number;
+  schemaVersion?: "1";
 } = {}) {
-  const qs = new URLSearchParams();
+  const qs = new URLSearchParams({
+    schema_version: opts.schemaVersion ?? "1",
+  });
   if (opts.family) qs.set("family", opts.family);
   if (opts.experimentalOnly) qs.set("experimental_only", "true");
   if (opts.onlyAps) qs.set("only_aps", "true");
+  if (opts.maxPoints) qs.set("max_points", String(opts.maxPoints));
+  if (opts.compact) qs.set("compact", "true");
+  if (opts.offset != null) qs.set("offset", String(opts.offset));
+  if (opts.limit != null) qs.set("limit", String(opts.limit));
   const qstr = qs.toString();
-  return request<TimelineResponse>(`/timeline${qstr ? `?${qstr}` : ""}`);
+  return request<TimelineResponse>(`/timeline${qstr ? `?${qstr}` : ""}`, {
+    cache: "force-cache",
+    credentials: "omit",
+    next: { revalidate: 60 },
+  });
 }
 
 export interface DiscoveryFilterRule {
@@ -821,6 +960,7 @@ export interface DiscoveryFilterRule {
 }
 
 export interface DiscoveryCandidate {
+  schema_version: "1";
   candidate_id: string;
   formula: string;
   normalized_formula: string | null;
@@ -865,6 +1005,7 @@ export interface DiscoveryCandidate {
 }
 
 export interface DiscoveryResponse {
+  schema_version: "1";
   page_title: string;
   intro: string[];
   status: "planned" | "active";
@@ -875,7 +1016,92 @@ export interface DiscoveryResponse {
 }
 
 export function getDiscovery() {
-  return request<DiscoveryResponse>("/discovery");
+  return request<DiscoveryResponse>("/discovery?schema_version=1", {
+    cache: "force-cache",
+    credentials: "omit",
+    next: { revalidate: 60 },
+  });
+}
+
+export type DiscoveryCandidateSummary = Pick<
+  DiscoveryCandidate,
+  | "candidate_id"
+  | "formula"
+  | "branch"
+  | "lane_id"
+  | "prototype_family"
+  | "candidate_layer"
+  | "condition_class"
+  | "evidence_level"
+  | "checker_status"
+  | "public_confidence"
+  | "evidence_quality_score"
+  | "experiment_readiness"
+  | "record_role"
+  | "claim_level"
+  | "next_action"
+  | "discovery_score"
+>;
+
+export interface DiscoveryMetadata {
+  schema_version: "1";
+  page_title: string;
+  intro: string[];
+  status: "planned" | "active";
+  updated_at_utc: string | null;
+  source: string | null;
+  filter_rules: DiscoveryFilterRule[];
+  total_candidates: number;
+  role_counts: Record<string, number>;
+}
+
+export interface DiscoveryCandidatePage {
+  schema_version: "1";
+  items: DiscoveryCandidateSummary[];
+  total: number;
+  offset: number;
+  limit: number;
+  has_more: boolean;
+  record_role: string | null;
+}
+
+const DISCOVERY_PAGE_SIZE = 24;
+
+export function getDiscoveryMetadata() {
+  return request<DiscoveryMetadata>("/discovery/metadata?schema_version=1", {
+    cache: "force-cache",
+    credentials: "omit",
+    next: { revalidate: 60 },
+  });
+}
+
+export function getDiscoveryCandidates(opts: {
+  offset?: number;
+  limit?: number;
+  recordRole?: string | null;
+} = {}) {
+  const qs = new URLSearchParams({
+    offset: String(opts.offset ?? 0),
+    limit: String(opts.limit ?? DISCOVERY_PAGE_SIZE),
+    schema_version: "1",
+  });
+  if (opts.recordRole) qs.set("record_role", opts.recordRole);
+  return request<DiscoveryCandidatePage>(`/discovery/candidates?${qs}`, {
+    cache: "force-cache",
+    credentials: "omit",
+    next: { revalidate: 60 },
+  });
+}
+
+export function getDiscoveryCandidate(candidateId: string) {
+  return request<DiscoveryCandidate>(
+    `/discovery/candidates/${encodeURIComponent(candidateId)}?schema_version=1`,
+    {
+      cache: "force-cache",
+      credentials: "omit",
+      next: { revalidate: 60 },
+    },
+  );
 }
 
 // --- Admin --------------------------------------------------------------
@@ -943,7 +1169,6 @@ export interface AdminOverview {
 }
 
 export function adminListUsers(
-  jwt: string,
   params: { q?: string; role?: "admin" | "active" | "inactive"; limit?: number; offset?: number } = {},
 ) {
   const qs = new URLSearchParams();
@@ -952,41 +1177,40 @@ export function adminListUsers(
   if (params.limit != null) qs.set("limit", String(params.limit));
   if (params.offset != null) qs.set("offset", String(params.offset));
   const suffix = qs.toString() ? `?${qs}` : "";
-  return request<AdminUserListResponse>(`/admin/users${suffix}`, { auth: jwt });
+  return request<AdminUserListResponse>(`/admin/users${suffix}`);
 }
 
-export function adminBanUser(jwt: string, userId: string) {
+export function adminBanUser(userId: string) {
   return request<{ message: string }>(`/admin/users/${userId}/ban`, {
-    method: "POST", auth: jwt,
+    method: "POST",
   });
 }
 
-export function adminUnbanUser(jwt: string, userId: string) {
+export function adminUnbanUser(userId: string) {
   return request<{ message: string }>(`/admin/users/${userId}/unban`, {
-    method: "POST", auth: jwt,
+    method: "POST",
   });
 }
 
-export function adminDeleteUser(jwt: string, userId: string) {
+export function adminDeleteUser(userId: string) {
   return request<{ message: string }>(`/admin/users/${userId}`, {
-    method: "DELETE", auth: jwt,
+    method: "DELETE",
   });
 }
 
-export function adminSetReviewer(jwt: string, userId: string, value: boolean) {
+export function adminSetReviewer(userId: string, value: boolean) {
   return request<{ message: string }>(
     `/admin/users/${userId}/set-reviewer?value=${value}`,
-    { method: "POST", auth: jwt },
+    { method: "POST" },
   );
 }
 
-export function adminListAuditReports(jwt: string, rule?: string) {
+export function adminListAuditReports(rule?: string) {
   const suffix = rule ? `?rule=${encodeURIComponent(rule)}` : "";
-  return request<AuditReportSummary[]>(`/admin/audit/reports${suffix}`, { auth: jwt });
+  return request<AuditReportSummary[]>(`/admin/audit/reports${suffix}`);
 }
 
 export function adminAuditQueue(
-  jwt: string,
   params: { rule?: string; limit?: number; offset?: number } = {},
 ) {
   const qs = new URLSearchParams();
@@ -994,23 +1218,23 @@ export function adminAuditQueue(
   if (params.limit != null) qs.set("limit", String(params.limit));
   if (params.offset != null) qs.set("offset", String(params.offset));
   const suffix = qs.toString() ? `?${qs}` : "";
-  return request<AuditQueueResponse>(`/admin/audit/queue${suffix}`, { auth: jwt });
+  return request<AuditQueueResponse>(`/admin/audit/queue${suffix}`);
 }
 
-export function adminOverrideFlag(jwt: string, materialId: string, note: string) {
+export function adminOverrideFlag(materialId: string, note: string) {
   return request<{ message: string }>(
     `/admin/audit/queue/${encodeURIComponent(materialId)}/override`,
-    { method: "POST", body: JSON.stringify({ note }), auth: jwt },
+    { method: "POST", body: JSON.stringify({ note }) },
   );
 }
 
-export function adminConfirmFlag(jwt: string, materialId: string, note: string) {
+export function adminConfirmFlag(materialId: string, note: string) {
   return request<{ message: string }>(
     `/admin/audit/queue/${encodeURIComponent(materialId)}/confirm`,
-    { method: "POST", body: JSON.stringify({ note }), auth: jwt },
+    { method: "POST", body: JSON.stringify({ note }) },
   );
 }
 
-export function adminOverview(jwt: string) {
-  return request<AdminOverview>("/admin/overview", { auth: jwt });
+export function adminOverview() {
+  return request<AdminOverview>("/admin/overview");
 }

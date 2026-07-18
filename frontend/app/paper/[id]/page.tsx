@@ -6,30 +6,128 @@
  * safe when the client encodes it. The "similar papers" section is
  * rendered as a child server fetch so it can cache independently.
  */
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { ApiError, getPaper, getSimilar } from "@/lib/api";
+import { absoluteUrl, serializeJsonLd } from "@/lib/seo";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { PaperCard } from "@/components/PaperCard";
 
-export default async function PaperDetailPage({
+type PaperPageProps = {
+  params: Promise<{ id: string }>;
+};
+
+const loadPaper = cache(getPaper);
+
+function descriptionFromAbstract(abstract: string): string {
+  const normalized = abstract.replace(/\s+/g, " ").trim();
+  return normalized.length > 157
+    ? `${normalized.slice(0, 154).trimEnd()}…`
+    : normalized;
+}
+
+export async function generateMetadata({
   params,
-}: {
-  params: { id: string };
-}) {
-  const id = decodeURIComponent(params.id);
+}: PaperPageProps): Promise<Metadata> {
+  const { id: encodedId } = await params;
+  const id = decodeURIComponent(encodedId);
+  try {
+    const paper = await loadPaper(id);
+    const description = descriptionFromAbstract(paper.abstract);
+    const canonical = absoluteUrl(`/paper/${encodeURIComponent(paper.id)}`);
+    return {
+      title: paper.title,
+      description,
+      alternates: { canonical },
+      openGraph: {
+        type: "article",
+        url: canonical,
+        title: paper.title,
+        description,
+        publishedTime: paper.date_submitted ?? undefined,
+        authors: paper.authors,
+      },
+      twitter: { card: "summary", title: paper.title, description },
+      other: {
+        citation_title: paper.title,
+        citation_author: paper.authors,
+        ...(paper.date_submitted
+          ? { citation_publication_date: paper.date_submitted }
+          : {}),
+        ...(paper.doi ? { citation_doi: paper.doi } : {}),
+        ...(paper.arxiv_id
+          ? {
+              citation_arxiv_id: paper.arxiv_id,
+              citation_pdf_url: `https://arxiv.org/pdf/${paper.arxiv_id}`,
+            }
+          : {}),
+      },
+    };
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      return {
+        title: "Paper not found",
+        robots: { index: false, follow: false },
+      };
+    }
+    throw error;
+  }
+}
+
+export default async function PaperDetailPage({ params }: PaperPageProps) {
+  const { id: encodedId } = await params;
+  const id = decodeURIComponent(encodedId);
   let paper;
   try {
-    paper = await getPaper(id);
+    paper = await loadPaper(id);
   } catch (e) {
     if (e instanceof ApiError && e.status === 404) notFound();
     throw e;
   }
 
   const similar = await getSimilar(id, 6).catch(() => null);
+  const canonical = absoluteUrl(`/paper/${encodeURIComponent(paper.id)}`);
+  const paperStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    headline: paper.title,
+    abstract: paper.abstract,
+    url: canonical,
+    author: paper.authors.map((name) => ({ "@type": "Person", name })),
+    datePublished: paper.date_submitted,
+    dateModified: paper.indexed_at,
+    identifier: [
+      paper.arxiv_id ? `arXiv:${paper.arxiv_id}` : null,
+      paper.doi ? `https://doi.org/${paper.doi}` : null,
+    ].filter(Boolean),
+    sameAs: [
+      paper.arxiv_id ? `https://arxiv.org/abs/${paper.arxiv_id}` : null,
+      paper.doi ? `https://doi.org/${paper.doi}` : null,
+    ].filter(Boolean),
+    ...(paper.journal
+      ? {
+          isPartOf: {
+            "@type": "Periodical",
+            name: paper.journal,
+          },
+        }
+      : {}),
+    ...(paper.material_family ? { about: paper.material_family } : {}),
+    publisher: {
+      "@type": "Organization",
+      name: "JZ Institute of Science",
+    },
+  };
 
   return (
     <main className="space-y-8">
+      <script
+        id="sclib-paper-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(paperStructuredData) }}
+      />
       <div>
         <Link href="/search" className="text-sm text-slate-500 hover:underline">
           ← Back to search

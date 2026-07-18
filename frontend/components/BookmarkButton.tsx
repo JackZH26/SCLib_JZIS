@@ -6,7 +6,7 @@
  * State machine:
  *
  *   loading     (fetching bookmark list to see if this target is saved)
- *   logged-out  (no JWT; render a muted prompt that links to /login)
+ *   logged-out  (no browser session; render a prompt linking to /login)
  *   unsaved     (saved=false; click POSTs and transitions to saved)
  *   saved       (saved=true, holds the bookmark.id; click DELETEs)
  *
@@ -27,7 +27,6 @@ import {
   listPaperBookmarks,
   type BookmarkTargetType,
 } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 
 type State =
   | { kind: "loading" }
@@ -47,33 +46,32 @@ export function BookmarkButton({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const token = loadToken();
-    if (!token) {
-      setState({ kind: "logged-out" });
-      return;
-    }
     const fetcher =
       targetType === "paper" ? listPaperBookmarks : listMaterialBookmarks;
-    fetcher(token)
+    fetcher()
       .then((resp) => {
         const hit = resp.results.find((r) => r.target_id === targetId);
         setState(hit ? { kind: "saved", bookmarkId: hit.id } : { kind: "unsaved" });
       })
-      .catch(() => setState({ kind: "unsaved" }));
+      .catch((err: unknown) => {
+        setState(
+          err instanceof ApiError && err.status === 401
+            ? { kind: "logged-out" }
+            : { kind: "unsaved" },
+        );
+      });
   }, [targetType, targetId]);
 
   async function toggle() {
-    const token = loadToken();
-    if (!token) return; // button is disabled in logged-out state anyway
     if (state.kind === "loading") return;
     setBusy(true);
     setError(null);
     try {
       if (state.kind === "saved") {
-        await deleteBookmark(token, state.bookmarkId);
+        await deleteBookmark(state.bookmarkId);
         setState({ kind: "unsaved" });
       } else {
-        const bm = await createBookmark(token, targetType, targetId);
+        const bm = await createBookmark(targetType, targetId);
         setState({ kind: "saved", bookmarkId: bm.id });
       }
     } catch (err) {

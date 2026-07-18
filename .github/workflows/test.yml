@@ -5,16 +5,15 @@ on:
     branches: [main]
   push:
     branches: [main]
-    paths:
-      - "api/**"
-      - "ingestion/**"
-      - "frontend/**"
-      - ".github/workflows/test.yml"
+
+permissions:
+  contents: read
 
 jobs:
   api-tests:
     name: API (pytest)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     services:
       postgres:
         image: postgres:16-alpine
@@ -46,55 +45,196 @@ jobs:
       run:
         working-directory: api
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.11"
       - name: Install uv
         run: pip install --upgrade pip uv
       - name: Install dependencies
-        run: |
-          if [ -f pyproject.toml ]; then
-            uv pip install --system -e ".[dev]" || uv pip install --system -e .
-          else
-            echo "api/pyproject.toml not present yet; skipping"
-            exit 0
-          fi
+        run: uv pip install --system -e ".[dev]"
       - name: Run tests
+        run: pytest -q
+
+  migration-tests:
+    name: Migration (empty database to head)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: sclib_migration_test
+          POSTGRES_USER: sclib
+          POSTGRES_PASSWORD: sclib_test_pw
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U sclib -d sclib_migration_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://sclib:sclib_test_pw@localhost:5432/sclib_migration_test
+      JWT_SECRET: test_jwt_secret_not_for_production_use_at_all
+      ENVIRONMENT: test
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: pip install --upgrade pip uv
+      - name: Install API dependencies
+        run: uv pip install --system -e ".[dev]"
+      - name: Upgrade empty database to migration head
+        run: alembic upgrade head
+      - name: Verify migration head and auth schema
         run: |
-          if [ -d tests ]; then
-            pytest -q
-          else
-            echo "No tests yet; skipping"
-          fi
+          CURRENT="$(alembic current | awk '{print $1}')"
+          HEAD="$(alembic heads | awk '{print $1}')"
+          test "$CURRENT" = "$HEAD"
+          python - <<'PY'
+          from sqlalchemy import create_engine, inspect
+          from config import get_settings
+
+          engine = create_engine(get_settings().database_url)
+          schema = inspect(engine)
+          assert {"password_reset_tokens", "auth_audit_events"} <= set(schema.get_table_names())
+          user_columns = {column["name"] for column in schema.get_columns("users")}
+          assert "session_version" in user_columns
+          print("migration schema verified")
+          PY
+
+  ingestion-tests:
+    name: Ingestion (pytest, no production ingest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DATABASE_URL: postgresql://sclib:sclib_test_pw@localhost:5432/sclib_test
+    defaults:
+      run:
+        working-directory: ingestion
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: pip install --upgrade pip uv
+      - name: Install dependencies
+        run: uv pip install --system -e ".[dev]"
+      - name: Run unit tests only
+        run: pytest -q
 
   frontend-build:
-    name: Frontend (pnpm build)
+    name: Frontend (test + pnpm build)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
         with:
-          version: 9
-      - uses: actions/setup-node@v4
+          version: 9.12.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "20"
           cache: "pnpm"
           cache-dependency-path: frontend/pnpm-lock.yaml
       - name: Install dependencies
-        run: |
-          if [ -f package.json ]; then
-            pnpm install --frozen-lockfile || pnpm install
-          else
-            echo "frontend/package.json not present yet; skipping"
-            exit 0
-          fi
+        run: pnpm install --frozen-lockfile
+      - name: Run frontend regression tests
+        run: pnpm test
       - name: Type-check and build
+        run: pnpm build
+
+  frontend-e2e:
+    name: Frontend (Playwright mobile E2E)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+        with:
+          version: 9.12.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "20"
+          cache: "pnpm"
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Chromium and system dependencies
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run production mobile E2E
+        run: pnpm test:e2e
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: playwright-report
+          path: frontend/playwright-report/
+          retention-days: 14
+
+  operations-config:
+    name: Operations (SLO and monitoring config)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+      - name: Install config parser
+        run: pip install --disable-pip-version-check pyyaml
+      - name: Validate Compose and provisioning YAML
         run: |
-          if [ -f package.json ]; then
-            pnpm run build
-          fi
+          cp .env.example .env
+          docker compose --profile observability config --quiet
+          digest="sha256:$(printf '0%.0s' {1..64})"
+          SCLIB_FRONTEND_IMAGE="ghcr.io/jackzh26/sclib-frontend@$digest" \
+          SCLIB_API_IMAGE="ghcr.io/jackzh26/sclib-api@$digest" \
+          SCLIB_INGESTION_IMAGE="ghcr.io/jackzh26/sclib-ingestion@$digest" \
+            docker compose --profile observability \
+              -f docker-compose.yml -f docker-compose.prod.yml config --quiet
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          import yaml
+
+          for path in Path("ops").glob("**/*.yml"):
+              with path.open(encoding="utf-8") as handle:
+                  yaml.safe_load(handle)
+          with Path("ops/grafana/dashboards/sclib-overview.json").open(
+              encoding="utf-8"
+          ) as handle:
+              dashboard = json.load(handle)
+          assert len(dashboard["panels"]) >= 8
+          print("observability provisioning parsed")
+          PY
+      - name: Validate Prometheus and Alertmanager
+        run: |
+          docker run --rm --entrypoint promtool \
+            -v "$PWD/ops/prometheus:/etc/prometheus:ro" \
+            prom/prometheus:v3.12.0 \
+            check config /etc/prometheus/prometheus.yml
+          docker run --rm --entrypoint amtool \
+            -v "$PWD/ops/alertmanager:/etc/alertmanager:ro" \
+            quay.io/prometheus/alertmanager:v0.32.1 \
+            check-config /etc/alertmanager/alertmanager.yml
+      - name: Test release-gate calculations
+        run: python -m unittest discover -s scripts/tests -v

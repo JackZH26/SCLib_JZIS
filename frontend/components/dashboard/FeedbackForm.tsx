@@ -9,7 +9,7 @@
  * a user who submitted by mistake can restart cleanly.
  *
  * We do not render the submitter's identity in the form; the server
- * attaches it from the JWT on our behalf (see api/routers/feedback.py).
+ * attaches it from the browser session (see api/routers/feedback.py).
  * The optional contact_email field is purely a hint to the recipient
  * for replies.
  */
@@ -21,7 +21,6 @@ import {
   type FeedbackCategory,
   type FeedbackPayload,
 } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 import { useDashboardUser } from "@/components/dashboard/user-context";
 
 const CATEGORIES: { value: FeedbackCategory; label: string; blurb: string }[] = [
@@ -50,8 +49,6 @@ export function FeedbackForm() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!valid) return;
-    const token = loadToken();
-    if (!token) return;
     setBusy(true);
     setError(null);
     const payload: FeedbackPayload = {
@@ -60,7 +57,7 @@ export function FeedbackForm() {
       contact_email: contactEmail.trim() || null,
     };
     try {
-      await submitFeedback(token, payload);
+      await submitFeedback(payload);
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Failed to submit");

@@ -17,17 +17,16 @@ Usage in a route::
 """
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
-
 from datetime import datetime, timezone
+from uuid import UUID
 
 from fastapi import Depends, Header, HTTPException, Request, status
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-import logging
-from uuid import UUID
-
+from config import allowed_browser_origins, get_settings
 from models import get_db
 from models.db import ApiKey, User
 from services import auth_service
@@ -37,6 +36,8 @@ from services.rate_limit import (
     get_guest_remaining,
     get_user_remaining,
 )
+from services.request_context import client_ip
+from services.session_config import build_browser_session_config
 
 log = logging.getLogger(__name__)
 
@@ -60,42 +61,33 @@ class Identity:
         return self.user is None
 
 
-def _client_ip(request: Request) -> str:
-    """Best-effort client IP.
-
-    Nginx on VPS2 terminates TLS and forwards via ``X-Forwarded-For``.
-    We only trust that header when ``settings.trust_forwarded_for`` is
-    enabled (default True, matching the VPS2 deployment where the API
-    container binds to 127.0.0.1:8000 and is only reachable through
-    Nginx on the host). If the API is ever exposed directly, flip
-    ``TRUST_FORWARDED_FOR=false`` in ``.env`` so clients cannot spoof
-    arbitrary source IPs to bypass the guest daily quota.
-    """
-    from config import get_settings
-
-    peer = request.client.host if request.client else "0.0.0.0"
-    if not get_settings().trust_forwarded_for:
-        return peer
-    xff = request.headers.get("x-forwarded-for")
-    if xff:
-        # first entry in the comma list = original client
-        return xff.split(",", 1)[0].strip()
-    return peer
-
-
 async def _resolve_jwt_user(
     request: Request,
     db: AsyncSession,
 ) -> User | None:
-    """Try to extract a valid JWT from the ``Authorization: Bearer`` header.
+    """Try to extract a valid JWT from a bearer header or browser cookie.
 
     Returns the ``User`` if the token is valid and the account is active,
     otherwise ``None`` (fall through to the next auth method).
     """
     auth_header = request.headers.get("authorization")
-    if not auth_header or not auth_header.lower().startswith("bearer "):
+    from_cookie = False
+    if auth_header and auth_header.lower().startswith("bearer "):
+        token = auth_header[7:]
+    else:
+        settings = get_settings()
+        session = build_browser_session_config(
+            settings.environment,
+            settings.jwt_expiry_hours * 3600,
+        )
+        token = request.cookies.get(session.cookie_name)
+        from_cookie = token is not None
+    if not token:
         return None
-    token = auth_header[7:]  # strip "Bearer "
+    if from_cookie and request.method.upper() not in {"GET", "HEAD", "OPTIONS"}:
+        origin = request.headers.get("origin")
+        if not origin or origin not in allowed_browser_origins(get_settings()):
+            raise HTTPException(status.HTTP_403_FORBIDDEN, "Untrusted request origin")
     try:
         payload = auth_service.decode_access_token(token)
         user_id = UUID(payload["sub"])
@@ -106,6 +98,12 @@ async def _resolve_jwt_user(
         return None
     user = await db.get(User, user_id)
     if user is None or not user.is_active:
+        return None
+    try:
+        token_version = int(payload.get("sv", 0))
+    except (TypeError, ValueError):
+        return None
+    if token_version != user.session_version:
         return None
     return user
 
@@ -151,7 +149,7 @@ async def require_identity(
 
     Priority order:
     1. ``X-API-Key`` header → look up API key
-    2. ``Authorization: Bearer <jwt>`` → decode JWT
+    2. Bearer JWT or HttpOnly browser session → decode JWT
     3. No credentials → guest path (rate-limited by IP)
 
     Registered users (key OR JWT) are subject to
@@ -192,7 +190,7 @@ async def require_identity(
             user_remaining=remaining,
         )
 
-    # 2. JWT Bearer token
+    # 2. Bearer JWT or HttpOnly browser session
     jwt_user = await _resolve_jwt_user(request, db)
     if jwt_user is not None:
         remaining = await _enforce_user_quota(jwt_user)
@@ -202,7 +200,7 @@ async def require_identity(
         )
 
     # 3. Guest path
-    ip = _client_ip(request)
+    ip = client_ip(request)
     remaining = await consume_guest(ip)
     if remaining < 0:
         # Over limit — report the pre-consumption cap so clients can
@@ -250,7 +248,7 @@ async def peek_identity(
                     user_remaining=remaining,
                 )
 
-    # 2. JWT Bearer token
+    # 2. Bearer JWT or HttpOnly browser session
     jwt_user = await _resolve_jwt_user(request, db)
     if jwt_user is not None:
         remaining = await get_user_remaining(jwt_user.id)
@@ -260,6 +258,6 @@ async def peek_identity(
         )
 
     # 3. Guest
-    ip = _client_ip(request)
+    ip = client_ip(request)
     remaining = await get_guest_remaining(ip)
     return Identity(user=None, guest_ip=ip, guest_remaining=remaining)

@@ -23,7 +23,6 @@ import {
   type AuditQueueItem,
   type AuditReportSummary,
 } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 import { useDashboardUser } from "@/components/dashboard/user-context";
 
 const PAGE_SIZE = 50;
@@ -40,13 +39,11 @@ export default function AdminAuditPage() {
   const [acting, setActing] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const token = loadToken();
-    if (!token) return;
     try {
       const [ov, rep, q] = await Promise.all([
-        adminOverview(token),
-        adminListAuditReports(token),
-        adminAuditQueue(token, {
+        adminOverview(),
+        adminListAuditReports(),
+        adminAuditQueue({
           rule: ruleFilter || undefined,
           limit: PAGE_SIZE,
           offset,
@@ -71,8 +68,6 @@ export default function AdminAuditPage() {
     kind: "override" | "confirm" | "approve",
     item: AuditQueueItem,
   ) {
-    const token = loadToken();
-    if (!token) return;
     let note: string;
     if (kind === "approve") {
       // Quick path: one-click "this material is fine, restore". The
@@ -92,9 +87,9 @@ export default function AdminAuditPage() {
     setError(null);
     try {
       if (kind === "approve" || kind === "override") {
-        await adminOverrideFlag(token, item.id, note);
+        await adminOverrideFlag(item.id, note);
       } else {
-        await adminConfirmFlag(token, item.id, note);
+        await adminConfirmFlag(item.id, note);
       }
       await load();
     } catch (err) {

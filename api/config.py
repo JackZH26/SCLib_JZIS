@@ -7,8 +7,9 @@ from __future__ import annotations
 
 from functools import lru_cache
 from typing import Literal
+from urllib.parse import urlsplit
 
-from pydantic import Field, HttpUrl
+from pydantic import Field, HttpUrl, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -51,6 +52,24 @@ class Settings(BaseSettings):
     # dashboard as today-used / today-remaining.
     registered_daily_limit: int = 999
 
+    # Authentication endpoints have a separate, short-window abuse budget.
+    # Both the network address and normalized account identifier must stay
+    # within budget; identifiers are HMACed before they are sent to Redis.
+    auth_login_window_seconds: int = 900
+    auth_login_ip_limit: int = 30
+    auth_login_account_limit: int = 10
+    auth_register_window_seconds: int = 3600
+    auth_register_ip_limit: int = 10
+    auth_register_account_limit: int = 3
+    auth_reset_window_seconds: int = 3600
+    auth_reset_ip_limit: int = 10
+    auth_reset_account_limit: int = 3
+    auth_backoff_base_seconds: int = 2
+    auth_backoff_account_threshold: int = 3
+    auth_backoff_ip_threshold: int = 5
+    auth_backoff_max_seconds: int = 300
+    password_reset_expiry_minutes: int = 30
+
     # === Internal admin hooks ===
     # Shared secret for internal endpoints like POST /stats/refresh that
     # the nightly cron calls. Never exposed via Nginx's public location.
@@ -69,7 +88,7 @@ class Settings(BaseSettings):
     gcp_project: str = "jzis-sclib"
     gcp_region: str = "us-central1"
     gcs_bucket: str = "sclib-jzis"
-    google_application_credentials: str = "/credentials/gcp-sa.json"
+    google_application_credentials: str = "/credentials/gcp-api.json"
     vertex_ai_index_endpoint: str = ""
     vertex_ai_deployed_index_id: str = "sclib_papers_v1"
 
@@ -80,9 +99,38 @@ class Settings(BaseSettings):
     gemini_api_version: str = "v1"
     embedding_model: str = "text-embedding-005"
     embedding_output_dimensionality: int = 768
+    vector_search_timeout_seconds: float = Field(12.0, gt=0, le=120)
+    gemini_timeout_seconds: float = Field(30.0, gt=0, le=120)
+    provider_max_attempts: int = Field(2, ge=1, le=3)
+    provider_circuit_failure_threshold: int = Field(3, ge=1, le=100)
+    provider_circuit_cooldown_seconds: float = Field(60.0, ge=0, le=3600)
+    client_telemetry_per_minute: int = Field(120, ge=1, le=10_000)
 
     # === Discovery preview ===
     discovery_feed_path: str = "/data/sclib/discovery/discovery_feed.json"
+
+    @model_validator(mode="after")
+    def require_https_for_production_auth(self) -> Settings:
+        """Fail startup before insecure OAuth URLs or cookies reach production."""
+        if self.environment != "production":
+            return self
+
+        public_urls = {
+            "FRONTEND_URL": self.frontend_url,
+            "API_BASE_URL": self.api_base_url,
+            "GOOGLE_REDIRECT_URI": self.google_redirect_uri,
+            "FRONTEND_CALLBACK_URL": self.frontend_callback_url,
+        }
+        insecure = [
+            name
+            for name, value in public_urls.items()
+            if urlsplit(str(value)).scheme.lower() != "https"
+        ]
+        if insecure:
+            raise ValueError(
+                "Production auth URLs must use HTTPS: " + ", ".join(insecure)
+            )
+        return self
 
 
 @lru_cache(maxsize=1)
@@ -90,3 +138,22 @@ def get_settings() -> Settings:
     """Cached singleton. Import this, not Settings directly, so tests can
     monkeypatch the cache between runs."""
     return Settings()  # type: ignore[call-arg]
+
+
+def allowed_browser_origins(settings: Settings) -> tuple[str, ...]:
+    """Origins trusted to make credentialed browser requests to the API."""
+    frontend = urlsplit(str(settings.frontend_url))
+    frontend_origin = (
+        f"{frontend.scheme}://{frontend.netloc}"
+        if frontend.scheme and frontend.netloc
+        else str(settings.frontend_url)
+    )
+    origins = [
+        frontend_origin,
+        "https://asrp.jzis.org",
+    ]
+    if settings.environment != "production":
+        origins.append("http://localhost:3000")
+    if frontend.netloc and not frontend.netloc.startswith("www."):
+        origins.append(f"{frontend.scheme}://www.{frontend.netloc}")
+    return tuple(dict.fromkeys(origins))

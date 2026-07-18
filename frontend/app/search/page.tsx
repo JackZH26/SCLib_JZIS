@@ -9,7 +9,6 @@ import {
   type AskResponse,
   friendlyErrorMessage,
 } from "@/lib/api";
-import { loadValidToken } from "@/lib/auth-storage";
 import { SearchBar } from "@/components/SearchBar";
 import { PaperCard } from "@/components/PaperCard";
 import { GuestBanner } from "@/components/GuestBanner";
@@ -63,19 +62,14 @@ function SearchInner() {
     setAskErr(null);
     setManualAsk(false);
 
-    const token = loadValidToken() ?? undefined;
-
-    search(
-      { query: q, top_k: 20, filters: { exclude_retracted: true } },
-      { auth: token },
-    )
+    search({ query: q, top_k: 20, filters: { exclude_retracted: true } })
       .then(setSearchData)
       .catch((e: unknown) => setSearchErr(friendlyErrorMessage(e)))
       .finally(() => setSearchLoading(false));
 
     if (isQuestion(q)) {
       setAskLoading(true);
-      ask({ question: q, max_sources: 8 }, { auth: token })
+      ask({ question: q, max_sources: 8 })
         .then(setAskData)
         .catch((e: unknown) => setAskErr(friendlyErrorMessage(e)))
         .finally(() => setAskLoading(false));
@@ -86,8 +80,7 @@ function SearchInner() {
     setManualAsk(true);
     setAskLoading(true);
     setAskErr(null);
-    const token = loadValidToken() ?? undefined;
-    ask({ question: q, max_sources: 8 }, { auth: token })
+    ask({ question: q, max_sources: 8 })
       .then(setAskData)
       .catch((e: unknown) => setAskErr(friendlyErrorMessage(e)))
       .finally(() => setAskLoading(false));
@@ -128,6 +121,12 @@ function SearchInner() {
           <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-sage-tertiary">
             AI Answer
           </h2>
+          {!askData.citation_valid ? (
+            <p className="mb-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+              Automated citation checks flagged this answer. Verify each claim
+              against the linked source excerpts before relying on it.
+            </p>
+          ) : null}
           <MarkdownAnswer markdown={askData.answer} sources={askData.sources} />
           <div className="mt-4 flex flex-wrap gap-2 border-t border-sage-border pt-4">
             {askData.sources.map((s) => (

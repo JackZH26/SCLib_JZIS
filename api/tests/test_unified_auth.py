@@ -23,7 +23,6 @@ from sqlalchemy import select
 
 from models.db import EmailVerification, User
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -74,6 +73,7 @@ async def _register_verify_login(client, email: str, password: str = "test_pass_
     # Login
     r = await client.post("/v1/auth/login", json={"email": email, "password": password})
     assert r.status_code == 200, r.text
+    assert "set-cookie" not in r.headers
     return r.json()["access_token"]
 
 
@@ -127,7 +127,7 @@ async def test_new_user_has_default_fields(client):
 
 @pytest.mark.asyncio
 async def test_login_rejects_google_only_user(client):
-    """Email+password login returns 401 for Google-only users with helpful message."""
+    """Google-only and unknown accounts share the generic credential error."""
     email = _unique_email("gonly")
     sub = f"gsub_{uuid.uuid4().hex[:8]}"
 
@@ -141,7 +141,7 @@ async def test_login_rejects_google_only_user(client):
         "password": "doesnt_matter",
     })
     assert r.status_code == 401
-    assert "Google" in r.json()["detail"]
+    assert r.json()["detail"] == "Invalid email or password"
 
 
 # ---------------------------------------------------------------------------
@@ -177,7 +177,13 @@ async def test_google_login_redirects_to_google(client):
     assert "redirect_uri=" in location
     # Should set a session cookie
     cookies = r.headers.get_list("set-cookie")
-    assert any("session=" in c for c in cookies)
+    session_cookie = next(
+        c for c in cookies if "sclib_oauth_state=" in c
+    ).lower()
+    assert "httponly" in session_cookie
+    assert "max-age=300" in session_cookie
+    assert "path=/" in session_cookie
+    assert "samesite=lax" in session_cookie
 
 
 # ---------------------------------------------------------------------------
@@ -193,19 +199,19 @@ async def test_google_callback_creates_new_user(client):
     r = await _google_callback(client, email, sub, "Brand New User")
     assert r.status_code == 302
     location = r.headers["location"]
-    assert "token=" in location
+    assert location.endswith("/sclib/auth/callback")
+    assert "token=" not in location
     assert "error" not in location
+    assert "sclib_session=" in r.headers["set-cookie"]
 
-    # Extract JWT and check user via /me
-    token = location.split("token=")[1].split("&")[0]
-    r = await client.get("/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
+    # Check the new user using the HttpOnly browser session.
+    r = await client.get("/v1/auth/me")
     assert r.status_code == 200
     body = r.json()
     assert body["email"] == email
     assert body["auth_provider"] == "google"
     assert body["name"] == "Brand New User"
     assert body["is_active"] is True
-
 
 @pytest.mark.asyncio
 async def test_google_callback_merges_existing_local_user(client):
@@ -222,14 +228,55 @@ async def test_google_callback_merges_existing_local_user(client):
     # Now simulate Google callback with same email
     r = await _google_callback(client, email, sub, "Merged Google")
     assert r.status_code == 302
-    token = r.headers["location"].split("token=")[1].split("&")[0]
+    assert "token=" not in r.headers["location"]
 
     # Check merged user via /me
-    r = await client.get("/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
+    r = await client.get("/v1/auth/me")
     assert r.status_code == 200
     body = r.json()
     assert body["auth_provider"] == "both"
     assert body["email"] == email
+
+
+@pytest.mark.asyncio
+async def test_google_callback_preserves_suspended_user(client):
+    """An admin-suspended user cannot reactivate the account through Google."""
+    email = _unique_email("suspended")
+    sub = f"gsub_{uuid.uuid4().hex[:8]}"
+
+    # Establish an active local account and retain its valid JWT, then apply
+    # the same state transition as POST /admin/users/{id}/ban.
+    jwt = await _register_verify_login(client, email)
+
+    from models.db import get_session_factory
+    factory = get_session_factory()
+    async with factory() as sess:
+        result = await sess.execute(select(User).where(User.email == email))
+        user = result.scalar_one()
+        user.is_active = False
+        await sess.commit()
+
+    response = await _google_callback(client, email, sub, "Suspended User")
+
+    assert response.status_code == 302
+    location = response.headers["location"]
+    assert "error=account_inactive" in location
+    assert "token=" not in location
+
+    # The callback must not reactivate or bind the suspended account.
+    async with factory() as sess:
+        result = await sess.execute(select(User).where(User.email == email))
+        user = result.scalar_one()
+        assert user.is_active is False
+        assert user.google_sub is None
+        assert user.auth_provider == "local"
+
+    # Previously issued credentials remain denied while the account is banned.
+    response = await client.get(
+        "/v1/auth/me",
+        headers={"Authorization": f"Bearer {jwt}"},
+    )
+    assert response.status_code == 401
 
 
 @pytest.mark.asyncio

@@ -13,7 +13,6 @@
 import { useState } from "react";
 
 import { ApiError, updateMe, type UpdateUserPayload, type User } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 
 export function ProfileCard({
   user,
@@ -82,6 +81,7 @@ function ProfileView({ user, onEdit }: { user: User; onEdit: () => void }) {
         />
         <Field label="Institution" value={user.institution ?? "—"} />
         <Field label="Country" value={user.country ?? "—"} />
+        <Field label="Age (legacy, optional)" value={user.age ?? "—"} />
         <Field label="Research area" value={user.research_area ?? "—"} />
         <Field
           label="ORCID"
@@ -102,6 +102,11 @@ function ProfileView({ user, onEdit }: { user: User; onEdit: () => void }) {
         />
         <Field label="Sign-in method" value={user.auth_provider} hint="Read-only" />
         <Field label="Member since" value={created} hint="Read-only" />
+        <Field
+          label="Purpose of use"
+          value={user.purpose ?? "—"}
+          span={2}
+        />
         <Field
           label="Bio"
           value={user.bio ? (
@@ -157,7 +162,9 @@ function ProfileEditForm({
     name: user.name,
     institution: user.institution ?? "",
     country: user.country ?? "",
+    age: user.age?.toString() ?? "",
     research_area: user.research_area ?? "",
+    purpose: user.purpose ?? "",
     bio: user.bio ?? "",
     orcid: user.orcid ?? "",
   });
@@ -170,8 +177,6 @@ function ProfileEditForm({
 
   async function onSave(e: React.FormEvent) {
     e.preventDefault();
-    const token = loadToken();
-    if (!token) return;
     setSaving(true);
     setError(null);
     // Convert empty strings back to null so the server clears the field
@@ -180,12 +185,14 @@ function ProfileEditForm({
       name: form.name.trim() || user.name, // name can't actually clear
       institution: form.institution.trim() || null,
       country: form.country.trim() || null,
+      age: form.age ? Number(form.age) : null,
       research_area: form.research_area.trim() || null,
+      purpose: form.purpose.trim() || null,
       bio: form.bio.trim() || null,
       orcid: form.orcid.trim() || null,
     };
     try {
-      const updated = await updateMe(token, payload);
+      const updated = await updateMe(payload);
       onSaved(updated);
     } catch (err) {
       const msg =
@@ -220,6 +227,14 @@ function ProfileEditForm({
           onChange={(v) => set("country", v)}
         />
         <Input
+          label="Age (legacy, optional)"
+          value={form.age}
+          onChange={(v) => set("age", v)}
+          type="number"
+          min={13}
+          max={120}
+        />
+        <Input
           label="Research area"
           value={form.research_area}
           onChange={(v) => set("research_area", v)}
@@ -232,6 +247,20 @@ function ProfileEditForm({
           placeholder="0000-0002-1825-0097"
           span={2}
         />
+        <div className="sm:col-span-2">
+          <label className="block">
+            <span className="text-xs font-medium uppercase tracking-wide text-sage-tertiary">
+              Purpose of use (optional)
+            </span>
+            <textarea
+              className="mt-1 block w-full rounded-md border border-sage-border px-3 py-2 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              rows={3}
+              maxLength={500}
+              value={form.purpose}
+              onChange={(event) => set("purpose", event.target.value)}
+            />
+          </label>
+        </div>
         <div className="sm:col-span-2">
           <label className="block">
             <span className="text-xs font-medium uppercase tracking-wide text-sage-tertiary">
@@ -284,6 +313,9 @@ function Input({
   placeholder,
   required,
   minLength,
+  type = "text",
+  min,
+  max,
   span = 1,
 }: {
   label: string;
@@ -292,6 +324,9 @@ function Input({
   placeholder?: string;
   required?: boolean;
   minLength?: number;
+  type?: string;
+  min?: number;
+  max?: number;
   span?: 1 | 2;
 }) {
   return (
@@ -306,6 +341,9 @@ function Input({
         placeholder={placeholder}
         required={required}
         minLength={minLength}
+        type={type}
+        min={min}
+        max={max}
       />
     </label>
   );

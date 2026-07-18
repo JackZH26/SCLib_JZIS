@@ -11,7 +11,6 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 
 import { listKeys, type ApiKey } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 import { KeysTable } from "@/components/dashboard/KeysTable";
 import { NewKeyModal } from "@/components/dashboard/NewKeyModal";
 
@@ -21,9 +20,7 @@ export default function KeysPage() {
   const [showModal, setShowModal] = useState(false);
 
   const refetch = useCallback(() => {
-    const token = loadToken();
-    if (!token) return;
-    listKeys(token)
+    listKeys()
       .then(setKeys)
       .catch((err) =>
         setError(err instanceof Error ? err.message : "Failed to load keys"),

@@ -10,7 +10,6 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { listHistory, type AskHistoryEntry } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 import { AskHistoryList } from "@/components/dashboard/AskHistoryList";
 
 const PAGE_SIZE = 50;
@@ -22,10 +21,8 @@ export default function HistoryPage() {
   const [error, setError] = useState<string | null>(null);
 
   const refetch = useCallback(async () => {
-    const token = loadToken();
-    if (!token) return;
     try {
-      const resp = await listHistory(token, PAGE_SIZE, 0);
+      const resp = await listHistory(PAGE_SIZE, 0);
       setEntries(resp.results);
       setTotal(resp.total);
     } catch (err) {
@@ -38,11 +35,10 @@ export default function HistoryPage() {
   }, [refetch]);
 
   async function loadMore() {
-    const token = loadToken();
-    if (!token || entries === null) return;
+    if (entries === null) return;
     setLoadingMore(true);
     try {
-      const resp = await listHistory(token, PAGE_SIZE, entries.length);
+      const resp = await listHistory(PAGE_SIZE, entries.length);
       setEntries([...entries, ...resp.results]);
       setTotal(resp.total);
     } catch (err) {

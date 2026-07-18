@@ -24,7 +24,9 @@ def test_clean_hydride_record_converts_omega_mev() -> None:
 
     assert rec is not None
     assert rec["formula"] == "LaH10"
-    assert rec["formula_normalized"] == "LaH10"
+    # Normalized formulas are lowercase grouping keys; ``formula`` above is
+    # the case-preserving display value.
+    assert rec["formula_normalized"] == "lah10"
     assert rec["tc_kelvin"] == 250
     assert rec["pressure_gpa"] == 170
     assert rec["lambda_eph"] == 2.35

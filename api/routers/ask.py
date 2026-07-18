@@ -1,16 +1,15 @@
-"""POST /ask — retrieval-augmented Q&A.
+"""POST /ask — grounded retrieval-augmented Q&A.
 
-Identical retrieval path to /search (same embedding model, same
-Matching Engine endpoint), but we then feed the top-N chunks into
-Gemini 3.5 Flash with a strict "cite [n] only from the sources"
-prompt and return the grounded markdown answer.
+The hybrid retrieval path fuses Vertex ANN and PostgreSQL full-text results,
+reranks them, and admits no more than one source per paper. Source excerpts are
+passed to Gemini as explicitly untrusted data with a strict citation contract.
+Provider failures degrade to lexical retrieval and an extractive answer.
 
 The shape of `sources` in the response maps 1:1 to the [n] markers
 Gemini emits — frontend just hyperlinks each bracket to the paper.
 """
 from __future__ import annotations
 
-import asyncio
 import logging
 import time
 from uuid import UUID
@@ -20,12 +19,14 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from config import get_settings
 from models import get_db
 from models.db import AskHistory, Chunk
 from models.search import AskRequest, AskResponse, AskSource
 from routers.deps import Identity, require_identity
-from services import rag, vector_search
+from services import provider_resilience, rag, retrieval, vector_search
 from services.authors import short as _authors_short
+from services.metrics import observe_rag
 
 log = logging.getLogger(__name__)
 
@@ -35,18 +36,45 @@ router = APIRouter(tags=["ask"])
 @router.post("/ask", response_model=AskResponse)
 async def ask(
     body: AskRequest,
-    identity: Identity = Depends(require_identity),
-    db: AsyncSession = Depends(get_db),
+    identity: Identity = Depends(require_identity),  # noqa: B008
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ) -> AskResponse:
     t0 = time.perf_counter()
 
     # 1. Retrieve candidate chunks via ANN.
     def _vs_lookup() -> list[vector_search.Neighbor]:
         vec = vector_search.embed_query(body.question)
-        return vector_search.find_neighbors(vec, top_k=body.max_sources)
+        return vector_search.find_neighbors(
+            vec,
+            top_k=min(body.max_sources * 4, 80),
+        )
 
-    neighbors = await asyncio.to_thread(_vs_lookup)
-    if not neighbors:
+    settings = get_settings()
+    try:
+        neighbors = await provider_resilience.run_blocking(
+            "vector_search",
+            _vs_lookup,
+            timeout_seconds=settings.vector_search_timeout_seconds,
+            max_attempts=settings.provider_max_attempts,
+            failure_threshold=settings.provider_circuit_failure_threshold,
+            cooldown_seconds=settings.provider_circuit_cooldown_seconds,
+        )
+    except provider_resilience.ProviderUnavailable as exc:
+        log.warning("Ask semantic retrieval unavailable; using lexical fallback: %s", exc)
+        neighbors = []
+
+    candidate_limit = min(body.max_sources * 5, 100)
+    lexical_hits = await retrieval.lexical_search(
+        db,
+        body.question,
+        limit=candidate_limit,
+    )
+    candidates = retrieval.fuse_rankings(
+        [(item.chunk_id, 1.0 - item.distance) for item in neighbors],
+        lexical_hits,
+        limit=candidate_limit,
+    )
+    if not candidates:
         latency_ms = int((time.perf_counter() - t0) * 1000)
         empty_answer = "No indexed sources match this question."
         if identity.user is not None:
@@ -59,6 +87,8 @@ async def ask(
             sources=[],
             tokens_used=0,
             query_time_ms=latency_ms,
+            citation_valid=True,
+            citation_warnings=[],
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
         )
@@ -67,8 +97,8 @@ async def ask(
     # Defensive cap on the IN clause — schema already bounds max_sources,
     # but a buggy vector_search could still return a runaway list.
     MAX_IN_CLAUSE = 100
-    neighbors = neighbors[:MAX_IN_CLAUSE]
-    chunk_ids = [n.chunk_id for n in neighbors]
+    candidates = candidates[:MAX_IN_CLAUSE]
+    chunk_ids = [candidate.chunk_id for candidate in candidates]
     q = (
         select(Chunk)
         .options(selectinload(Chunk.paper))
@@ -76,16 +106,21 @@ async def ask(
     )
     rows = (await db.execute(q)).scalars().all()
     chunk_by_id = {c.id: c for c in rows}
+    candidates = retrieval.rerank_candidates(body.question, candidates, chunk_by_id)
 
     rag_inputs: list[rag.RagSourceInput] = []
     sources_out: list[AskSource] = []
+    seen_papers: set[str] = set()
     idx = 0
-    for cid in chunk_ids:
-        chunk = chunk_by_id.get(cid)
+    for candidate in candidates:
+        chunk = chunk_by_id.get(candidate.chunk_id)
         if chunk is None or chunk.paper is None:
             continue
         if chunk.paper.status == "retracted":
             continue
+        if chunk.paper.id in seen_papers:
+            continue
+        seen_papers.add(chunk.paper.id)
         idx += 1
         paper = chunk.paper
         authors_short = _authors_short(paper.authors or [])
@@ -93,6 +128,7 @@ async def ask(
         rag_inputs.append(
             rag.RagSourceInput(
                 index=idx,
+                paper_id=paper.id,
                 title=paper.title,
                 authors_short=authors_short,
                 year=year,
@@ -112,13 +148,44 @@ async def ask(
                 snippet=_snippet(chunk.text),
             )
         )
+        if len(rag_inputs) >= body.max_sources:
+            break
 
-    # 3. Gemini call (blocking SDK) on a worker thread.
-    result = await asyncio.to_thread(
-        rag.generate_answer,
-        body.question,
-        rag_inputs,
-        language=body.language,
+    # 3. Gemini call behind a timeout + circuit breaker. A provider outage
+    # degrades to cited excerpts instead of turning the whole endpoint into 5xx.
+    try:
+        result = await provider_resilience.run_blocking(
+            "gemini_generation",
+            lambda: rag.generate_answer(
+                body.question,
+                rag_inputs,
+                language=body.language,
+            ),
+            timeout_seconds=settings.gemini_timeout_seconds,
+            max_attempts=settings.provider_max_attempts,
+            failure_threshold=settings.provider_circuit_failure_threshold,
+            cooldown_seconds=settings.provider_circuit_cooldown_seconds,
+        )
+    except provider_resilience.ProviderUnavailable as exc:
+        log.warning("Gemini generation unavailable; returning extractive fallback: %s", exc)
+        result = rag.extractive_fallback(rag_inputs)
+
+    retrieval_modes = sorted(
+        {mode for candidate in candidates for mode in candidate.retrieval_modes}
+    )
+    log.info(
+        "rag_quality sources=%d papers=%d retrieval=%s citation_valid=%s warnings=%s",
+        len(rag_inputs),
+        len(seen_papers),
+        "+".join(retrieval_modes) or "none",
+        result.citation_valid,
+        ",".join(result.citation_warnings) or "none",
+    )
+    observe_rag(
+        sources=len(rag_inputs),
+        tokens=result.tokens_used,
+        citation_valid=result.citation_valid,
+        fallback="generation_provider_unavailable" in result.citation_warnings,
     )
 
     latency_ms = int((time.perf_counter() - t0) * 1000)
@@ -134,7 +201,10 @@ async def ask(
         sources=sources_out,
         tokens_used=result.tokens_used,
         query_time_ms=latency_ms,
+        citation_valid=result.citation_valid,
+        citation_warnings=result.citation_warnings,
         guest_remaining=identity.guest_remaining,
+        remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
     )
 
 

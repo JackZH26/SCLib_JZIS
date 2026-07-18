@@ -8,15 +8,18 @@ callers just need to pass an ``AsyncSession``.
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.db import Chunk, Material, Paper, StatsCache
+from models.search import StatsDataPipeline
+from services.metrics import update_dataset_metrics
 
 log = logging.getLogger(__name__)
+_PIPELINE_CACHE_KEY = "data_pipeline"
 
 
 async def compute_stats(db: AsyncSession) -> dict:
@@ -88,6 +91,8 @@ async def compute_stats(db: AsyncSession) -> dict:
         f"v{last_ingest_at:%Y.%m.%d}" if last_ingest_at is not None else None
     )
 
+    refreshed_at = datetime.now(UTC)
+    refreshed_at_iso = refreshed_at.isoformat()
     return {
         "total_papers": int(total_papers),
         "total_materials": int(total_materials),
@@ -100,18 +105,43 @@ async def compute_stats(db: AsyncSession) -> dict:
         "top_material_families": top_material_families,
         "last_ingest_at": last_ingest_iso,
         "dataset_version": dataset_version,
-        "updated_at": datetime.now(timezone.utc).isoformat(),
+        "stats_refreshed_at": refreshed_at_iso,
+        # Backward-compatible alias; new clients use stats_refreshed_at.
+        "updated_at": refreshed_at_iso,
     }
 
 
-async def refresh_dashboard_cache(db: AsyncSession) -> dict:
+async def get_data_pipeline_status(db: AsyncSession) -> StatsDataPipeline:
+    """Read pipeline state from its own cache row.
+
+    Keeping this separate from ``stats_cache['dashboard']`` prevents an
+    hourly counter refresh from overwriting the most recent cron stage report.
+    """
+    cached = await db.get(StatsCache, _PIPELINE_CACHE_KEY)
+    if cached is None:
+        return StatsDataPipeline()
+    try:
+        return StatsDataPipeline.model_validate(cached.value or {})
+    except Exception:  # noqa: BLE001 - corrupt optional status must not block stats
+        log.warning("invalid data_pipeline status in stats cache; resetting to unknown")
+        return StatsDataPipeline()
+
+
+async def refresh_dashboard_cache(
+    db: AsyncSession,
+    *,
+    data_pipeline: StatsDataPipeline | None = None,
+) -> dict:
     """Compute stats and upsert the ``dashboard`` row.
 
-    Uses Postgres' ``ON CONFLICT DO UPDATE`` so the first call
-    inserts and subsequent calls replace atomically — no read /
-    modify / write race against a concurrent ``GET /stats``.
+    Uses Postgres' ``ON CONFLICT DO UPDATE`` so the first call inserts and
+    subsequent calls replace atomically. When cron supplies ``data_pipeline``,
+    that state is written to a separate cache row so an unrelated hourly
+    dashboard refresh cannot overwrite it.
     """
     payload = await compute_stats(db)
+    refreshed_at = datetime.fromisoformat(payload["stats_refreshed_at"])
+    current_pipeline = data_pipeline or await get_data_pipeline_status(db)
 
     stmt = (
         pg_insert(StatsCache)
@@ -120,12 +150,31 @@ async def refresh_dashboard_cache(db: AsyncSession) -> dict:
             index_elements=[StatsCache.key],
             set_={
                 "value": payload,
-                "updated_at": datetime.now(timezone.utc),
+                "updated_at": refreshed_at,
             },
         )
     )
     await db.execute(stmt)
+    if data_pipeline is not None:
+        pipeline_stmt = (
+            pg_insert(StatsCache)
+            .values(
+                key=_PIPELINE_CACHE_KEY,
+                value=data_pipeline.model_dump(mode="json"),
+                updated_at=refreshed_at,
+            )
+            .on_conflict_do_update(
+                index_elements=[StatsCache.key],
+                set_={
+                    "value": data_pipeline.model_dump(mode="json"),
+                    "updated_at": refreshed_at,
+                },
+            )
+        )
+        await db.execute(pipeline_stmt)
     await db.commit()
+    payload["data_pipeline"] = current_pipeline.model_dump(mode="json")
+    update_dataset_metrics(payload, current_pipeline.stages)
     log.info(
         "stats_cache[dashboard] refreshed: %d papers / %d materials / %d chunks",
         payload["total_papers"],

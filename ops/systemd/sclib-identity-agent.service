@@ -1,0 +1,31 @@
+[Unit]
+Description=SCLib rotating workload identity agent
+After=local-fs.target
+Before=docker.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+UMask=0027
+RuntimeDirectory=sclib-identity
+RuntimeDirectoryMode=0755
+ExecStart=/usr/bin/python3 /usr/local/lib/sclib/sclib_identity_agent.py run
+Restart=always
+RestartSec=5s
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateNetwork=true
+PrivateTmp=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+ReadOnlyPaths=/etc/sclib/identity-agent /usr/local/lib/sclib
+ReadWritePaths=/run/sclib-identity
+RestrictAddressFamilies=AF_UNIX
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,7 @@
+# Exact fingerprints for non-secret documentation placeholders and validation
+# strings. Do not replace these with path, commit, or rule-wide ignores.
+d60f0db35de7e46d3f6e1a6907886b134feacef1:README.md:curl-auth-header:133
+7596ef2e5928c46e2b0da6bcfaf48ab6fabe3d35:api/tests/test_unified_auth.py:generic-api-key:319
+3477605e37393b8430068d38a822b758816bc025:PROJECT_SPEC.md:generic-api-key:892
+c499146b223562c5099ab971a149392067ca047e:api/tests/test_session_security.py:generic-api-key:17
+c499146b223562c5099ab971a149392067ca047e:api/tests/test_session_security.py:generic-api-key:54

@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { login, friendlyErrorMessage, API_BASE } from "@/lib/api";
-import { saveToken } from "@/lib/auth-storage";
+import { ApiError, login, friendlyErrorMessage, PUBLIC_API_BASE } from "@/lib/api";
+import { notifyAuthChange } from "@/lib/auth-session";
 
 export default function LoginPage() {
-  const GOOGLE_LOGIN_URL = `${API_BASE}/auth/google/login`;
+  const GOOGLE_LOGIN_URL = `${PUBLIC_API_BASE}/auth/google/login`;
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,11 +19,15 @@ export default function LoginPage() {
     setError(null);
     setSubmitting(true);
     try {
-      const r = await login(email, password);
-      saveToken(r.access_token);
+      await login(email, password);
+      notifyAuthChange();
       router.push("/dashboard");
     } catch (err) {
-      setError(friendlyErrorMessage(err, "Login failed"));
+      setError(
+        err instanceof ApiError && (err.status === 401 || err.status === 403)
+          ? err.message
+          : friendlyErrorMessage(err, "Login failed"),
+      );
     } finally {
       setSubmitting(false);
     }
@@ -47,6 +51,11 @@ export default function LoginPage() {
           </svg>
           <span className="text-sm font-medium text-slate-700">Continue with Google</span>
         </a>
+        <p className="mt-2 text-center text-xs leading-5 text-slate-500">
+          By continuing, you agree to the{" "}
+          <Link href="/terms" className="underline">Terms</Link> and acknowledge
+          the <Link href="/privacy" className="underline">Privacy Policy</Link>.
+        </p>
       </div>
 
       <div className="relative my-6">
@@ -70,7 +79,12 @@ export default function LoginPage() {
           />
         </label>
         <label className="block">
-          <span className="text-sm font-medium">Password</span>
+          <span className="flex items-center justify-between text-sm font-medium">
+            <span>Password</span>
+            <Link href="/forgot-password" className="font-normal underline">
+              Forgot password?
+            </Link>
+          </span>
           <input
             type="password"
             className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2"

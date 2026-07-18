@@ -9,6 +9,7 @@ services:
       # commit. Surfaced on the site footer + GET /version.
       args:
         GIT_SHA: ${GIT_SHA:-dev}
+        NEXT_PUBLIC_WEB_VITALS_SAMPLE_RATE: ${NEXT_PUBLIC_WEB_VITALS_SAMPLE_RATE:-0.1}
     container_name: sclib-frontend
     restart: unless-stopped
     # VPS2 already runs asrp.jzis.org on host port 3000 — bind the
@@ -44,8 +45,10 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
     env_file: .env
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/gcp-api.json
     volumes:
-      - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
+      - ./credentials/gcp-api.json:/credentials/gcp-api.json:ro
       - ${SCLIB_DISCOVERY_DIR:-/data/sclib/discovery}:/data/sclib/discovery:ro
       # One-shot scripts (refresh_stats.py, sync_mp_ids.py, …) live in
       # the repo's top-level scripts/ dir, but the api image's build
@@ -54,7 +57,7 @@ services:
       # without a rebuild whenever a script is added or edited.
       - ./scripts:/app/scripts:ro
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/v1/health"]
+      test: ["CMD", "curl", "-fsS", "--max-time", "4", "http://127.0.0.1:8000/readyz"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -79,8 +82,10 @@ services:
     # than an artificial tmpfs cap.
     shm_size: "2gb"
     env_file: .env
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/gcp-ingestion.json
     volumes:
-      - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
+      - ./credentials/gcp-ingestion.json:/credentials/gcp-ingestion.json:ro
       - ./scripts:/app/scripts:ro
     depends_on:
       postgres:
@@ -117,6 +122,63 @@ services:
       retries: 10
     # Internal only — no ports exposed
 
+  prometheus:
+    image: prom/prometheus:v3.12.0-distroless
+    container_name: sclib-prometheus
+    restart: unless-stopped
+    profiles: ["observability"]
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=90d
+      - --web.enable-lifecycle
+    volumes:
+      - ./ops/prometheus:/etc/prometheus:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "127.0.0.1:9090:9090"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  alertmanager:
+    image: quay.io/prometheus/alertmanager:v0.32.1
+    container_name: sclib-alertmanager
+    restart: unless-stopped
+    profiles: ["observability"]
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yml
+      - --storage.path=/alertmanager
+    volumes:
+      - ./ops/alertmanager:/etc/alertmanager:ro
+      - alertmanager_data:/alertmanager
+    ports:
+      - "127.0.0.1:9093:9093"
+
+  grafana:
+    image: grafana/grafana:13.0.2
+    container_name: sclib-grafana
+    restart: unless-stopped
+    profiles: ["observability"]
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-local-observability-only}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_SERVER_ROOT_URL: http://127.0.0.1:3200
+    volumes:
+      - ./ops/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./ops/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "127.0.0.1:3200:3000"
+    depends_on:
+      - prometheus
+      - alertmanager
+
 volumes:
   postgres_data:
   redis_data:
+  prometheus_data:
+  alertmanager_data:
+  grafana_data:

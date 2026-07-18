@@ -4,9 +4,19 @@
  * Static server component — no auth needed. Linked from the dashboard
  * API Keys tab so users know how to wire up their key.
  */
+import type { Metadata } from "next";
 import Link from "next/link";
+import { absoluteUrl } from "@/lib/seo";
 
 const API_BASE = "https://api.jzis.org/sclib/v1";
+
+export const metadata: Metadata = {
+  title: "API reference",
+  description:
+    "Use the SCLib API for superconductivity search, grounded Q&A, materials data, and paper metadata.",
+  alternates: { canonical: absoluteUrl("/docs/api") },
+  openGraph: { url: absoluteUrl("/docs/api") },
+};
 
 function Code({ children }: { children: React.ReactNode }) {
   return (
@@ -72,7 +82,7 @@ export default function ApiDocsPage() {
           SCLib API Reference
         </h1>
         <p className="mt-2 text-base text-sage-muted">
-          Programmatic access to the JZIS Superconductivity Library — semantic
+          Programmatic access to the JZIS Superconductivity Library — hybrid
           search, RAG Q&amp;A, materials database, paper metadata, and more.
         </p>
       </div>
@@ -149,7 +159,7 @@ export default function ApiDocsPage() {
               <tr>
                 <td className="px-4 py-2">Browser session</td>
                 <td className="px-4 py-2">
-                  <Code>Authorization: Bearer &lt;JWT&gt;</Code>
+                  Secure HttpOnly session cookie
                 </td>
                 <td className="px-4 py-2 text-right font-semibold text-sage-ink">
                   999
@@ -162,6 +172,13 @@ export default function ApiDocsPage() {
           API Key and JWT share the same daily quota per user. Quotas reset at{" "}
           <strong>00:00 UTC</strong>. When the quota is exceeded the API returns{" "}
           <Code>429 Too Many Requests</Code>.
+        </p>
+        <p className="text-sm text-sage-muted">
+          Password resets and “revoke all sessions” invalidate browser and
+          bearer JWT sessions. API keys remain separately revocable from the{" "}
+          <Link href="/dashboard/keys" className="text-accent-deep underline">
+            Keys dashboard
+          </Link>.
         </p>
       </section>
 
@@ -176,7 +193,9 @@ export default function ApiDocsPage() {
         {/* Search */}
         <Endpoint method="POST" path="/search" badge="quota">
           <p className="mb-2">
-            Semantic search across the arXiv cond-mat.supr-con corpus.
+            Hybrid search across the arXiv cond-mat.supr-con corpus, combining
+            Vertex semantic retrieval with PostgreSQL full-text search and
+            deterministic reranking.
           </p>
           <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`POST /v1/search
 Content-Type: application/json
@@ -214,7 +233,8 @@ Content-Type: application/json
           <p className="mt-2">
             <strong>Response:</strong> <Code>answer</Code> (Markdown with [1][2]
             citations), <Code>sources[]</Code> (paper_id, title, year),{" "}
-            <Code>tokens_used</Code>, <Code>query_time_ms</Code>.
+            <Code>citation_valid</Code>, <Code>citation_warnings</Code>,{" "}
+            <Code>tokens_used</Code>, and <Code>query_time_ms</Code>.
           </p>
           <p className="mt-1">
             <Code>language</Code> accepts <Code>&quot;auto&quot;</Code>,{" "}
@@ -272,16 +292,52 @@ Content-Type: application/json
         {/* Timeline */}
         <Endpoint method="GET" path="/timeline" badge="free">
           <p>
-            Tc timeline data — every material plotted by arXiv year
-            and maximum Tc, grouped by family. Powers the Timeline chart.
+            Tc timeline measurements grouped by material family. Supports
+            deterministic point budgets (<code>max_points</code>) and compact
+            chart payloads (<code>compact=true</code>), followed by stable
+            <code> offset</code>/<code>limit</code> pagination. Coverage totals
+            continue to describe the complete filtered result.
           </p>
+          <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`GET /v1/timeline?schema_version=1&max_points=10000&offset=0&limit=1000&compact=true`}</pre>
+          <p className="mt-2">
+            Timeline and Discovery data responses return <Code>ETag</Code>,{" "}
+            <Code>Last-Modified</Code>, and <Code>X-Data-Version</Code>. Use
+            conditional requests to avoid retransferring an unchanged snapshot.
+          </p>
+        </Endpoint>
+
+        {/* Discovery */}
+        <Endpoint method="GET" path="/discovery/candidates" badge="free">
+          <p>
+            Versioned, paginated candidate summaries. Fetch full evidence only
+            when needed from <Code>/discovery/candidates/{`{candidate_id}`}</Code>.
+          </p>
+          <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`GET /v1/discovery/candidates?schema_version=1&offset=0&limit=24`}</pre>
         </Endpoint>
 
         {/* Stats */}
         <Endpoint method="GET" path="/stats" badge="free">
           <p>
-            Site-wide statistics: total papers, materials, families, chunks, and
-            last-updated timestamp.
+            Site-wide statistics with separate aggregate-refresh, data-snapshot,
+            and ingestion-pipeline timestamps/status.
+          </p>
+        </Endpoint>
+
+        {/* Health */}
+        <Endpoint method="GET" path="/health/dependencies" badge="free">
+          <p>
+            Bounded PostgreSQL and Redis dependency probes. Returns{" "}
+            <Code>503</Code> when a required dependency is unavailable. Process
+            liveness and orchestrator readiness are also exposed upstream at{" "}
+            <Code>/livez</Code> and <Code>/readyz</Code>.
+          </p>
+        </Endpoint>
+
+        <Endpoint method="GET" path="/health/data" badge="free">
+          <p>
+            Non-gating data-health metadata for the stats cache, dataset
+            snapshot, ingestion stages, timeline projection, and Discovery feed.
+            Data age is reported without being treated as a readiness failure.
           </p>
         </Endpoint>
       </section>
@@ -329,6 +385,12 @@ Content-Type: application/json
             </tbody>
           </table>
         </div>
+        <p className="text-sm text-sage-muted">
+          Every response includes <Code>X-Request-ID</Code> and{" "}
+          <Code>X-API-Version</Code>. Error JSON preserves <Code>detail</Code>
+          and adds <Code>error_code</Code> plus <Code>request_id</Code>; include
+          the request ID when reporting an API problem.
+        </p>
       </section>
 
       {/* ── Full example ── */}

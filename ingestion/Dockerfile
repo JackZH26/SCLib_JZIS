@@ -4,9 +4,15 @@
 # cron job via `docker compose run --rm ingestion sclib-ingest --mode ...`).
 FROM python:3.11-slim AS base
 
+# uv 0.11.16 multi-platform image index, pinned by digest.
+COPY --from=ghcr.io/astral-sh/uv@sha256:440fd6477af86a2f1b38080c539f1672cd22acb1b1a47e321dba5158ab08864d /uv /uvx /bin/
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+    PIP_NO_CACHE_DIR=1 \
+    UV_PROJECT_ENVIRONMENT=/opt/venv \
+    UV_PYTHON_DOWNLOADS=0 \
+    PATH="/opt/venv/bin:$PATH"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
@@ -14,20 +20,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install uv
-
 WORKDIR /app
 
-# Install third-party deps first (cache-friendly), then copy the package
-# source and install the project itself non-editable. We avoid -e because
-# uv + hatch editable installs don't always wire up the top-level
-# `ingestion` package on sys.path inside a container.
-COPY pyproject.toml ./
-COPY ingestion ./ingestion
-RUN uv pip install --system .
+# Install the exact locked graph before copying frequently changing source.
+COPY pyproject.toml uv.lock ./
+RUN uv sync --locked --no-dev --no-install-project
 
-# Non-root runtime. Shared UID 1001 matches the api image so the
-# mounted credential file (mode 0644) is readable without chowns.
+COPY ingestion ./ingestion
+RUN uv sync --locked --no-dev --no-editable
+
+# Non-root runtime. Shared UID 1001 matches the API image so the host identity
+# agent can grant both workloads narrowly scoped token-file read access.
 RUN groupadd --system --gid 1001 sclib \
  && useradd  --system --uid 1001 --gid sclib --home /app sclib \
  && chown -R sclib:sclib /app

@@ -33,14 +33,9 @@ Production target: **VPS2** (`72.62.251.29`), alongside existing
 - Docker + compose plugin
 - DNS `A api.jzis.org → 72.62.251.29`
 - GCP project `jzis-sclib` with Vertex AI + Matching Engine endpoint
-- **Service account `sclib-api@jzis-sclib.iam.gserviceaccount.com`**
-  with `roles/aiplatform.user` and `roles/storage.objectUser`.
-  The API container authenticates as this SA via **impersonation**
-  — we never create or ship a JSON key (org policy forbids it and
-  SA keys are the current anti-pattern per Google's own docs).
-- Host ADC at `/root/.config/gcloud/application_default_credentials.json`
-  wrapped as an `impersonated_service_account` credential. See the
-  "SA impersonation setup" section below.
+- Three workload-scoped service accounts and an approved OIDC workload identity
+  provider/agent, as defined in [`WORKLOAD_IDENTITY.md`](WORKLOAD_IDENTITY.md).
+  Production rejects service-account keys and human OAuth/ADC refresh tokens.
 
 ## Bootstrap
 
@@ -62,98 +57,114 @@ and installs `nginx/sclib.conf` into `/etc/nginx/conf.d/`.
    `VERTEX_AI_INDEX_ENDPOINT`, `INTERNAL_API_KEY`.
 2. **Install the frontend proxy block** into
    `/etc/nginx/sites-available/jzis.org` — copy the `location /sclib`
-   stanza from the comment at the top of `nginx/sclib.conf`. Note it
-   points at **port 3100**, not 3000.
-3. `nginx -t && systemctl reload nginx`
-4. Start the stack:
+   stanza from the comment at the top of `nginx/sclib.conf`. It points at
+   **port 3100**, not 3000.
+3. Preserve the main site's existing root `robots.txt` and append this line
+   to its content: `Sitemap: https://jzis.org/sclib/sitemap.xml`. Do not
+   replace or proxy the root file: it may contain rules for other JZIS sites.
+4. `nginx -t && systemctl reload nginx`
+5. Start the stack:
    ```bash
-   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+   # Use the three signed digests from one successful Release images run.
+   export SCLIB_FRONTEND_IMAGE='ghcr.io/jackzh26/sclib-frontend@sha256:<digest>'
+   export SCLIB_API_IMAGE='ghcr.io/jackzh26/sclib-api@sha256:<digest>'
+   export SCLIB_INGESTION_IMAGE='ghcr.io/jackzh26/sclib-ingestion@sha256:<digest>'
+   docker compose --profile observability \
+     -f docker-compose.yml -f docker-compose.prod.yml up -d --no-build
    ```
-5. Run Alembic migrations:
+6. Run Alembic migrations:
    ```bash
    docker compose exec api alembic upgrade head
    ```
-6. Smoke-test:
+7. Smoke-test:
    ```bash
    curl -s http://127.0.0.1:8000/v1/stats | jq .
    curl -s https://api.jzis.org/sclib/v1/stats | jq .
    curl -sI https://jzis.org/sclib/ | head -1
+   curl -fsS https://jzis.org/robots.txt | grep 'Sitemap: https://jzis.org/sclib/sitemap.xml'
+   curl -fsS https://jzis.org/sclib/sitemap.xml | grep '<sitemapindex'
    ```
 
-## SA impersonation setup (GCP auth)
+## Production Google identity
 
-Org policy `iam.disableServiceAccountKeyCreation` prevents us from
-shipping a JSON key, which is also the current Google-recommended
-stance. The API container instead runs as `sclib-api@jzis-sclib...`
-via **impersonation**: the host ADC is a wrapped credential that
-exchanges a human operator's OAuth refresh token for a short-lived
-(1h) SA access token on every API call.
+Follow [`WORKLOAD_IDENTITY.md`](WORKLOAD_IDENTITY.md) to provision the external
+OIDC provider, three service accounts, external-account configurations, and
+rotating subject-token files. Validate all identities before enabling the first
+signed-image deployment. Do not copy or transform a human ADC onto VPS2.
 
-### One-time GCP side
-Run from any machine that can `gcloud` as a project owner:
+Production Compose mounts API and ingestion identity directories separately;
+the backup process uses a third identity through
+`CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE`. A credential for one workload cannot
+start another workload because the validator requires the exact target service
+account.
 
-```bash
-PROJECT=jzis-sclib
-SA_EMAIL=sclib-api@${PROJECT}.iam.gserviceaccount.com
-ME=jack@jzis.org   # or whichever human owns the source ADC
+## GitHub Actions production delivery
 
-# 1. Create the SA (idempotent; 409 if it already exists)
-gcloud iam service-accounts create sclib-api \
-    --display-name="SCLib API runtime" --project=$PROJECT
+The production path is deliberately split into three workflows:
 
-# 2. Runtime roles
-gcloud projects add-iam-policy-binding $PROJECT \
-    --member="serviceAccount:$SA_EMAIL" \
-    --role="roles/aiplatform.user"
-gcloud projects add-iam-policy-binding $PROJECT \
-    --member="serviceAccount:$SA_EMAIL" \
-    --role="roles/storage.objectUser"
+1. `Test` validates the exact `main` revision.
+2. `Release images` builds once, scans, signs, and records immutable image
+   digests only after that test run succeeds.
+3. `Deploy to VPS2` verifies that successful release run, checks the 30-day
+   error budget and workload identities, creates a database backup, verifies
+   the image signatures, migrates, and starts the recorded digests with
+   `--no-build`.
 
-# 3. Human impersonator (resource-level binding — org policies
-#    typically don't block tokenCreator at this scope)
-gcloud iam service-accounts add-iam-policy-binding $SA_EMAIL \
-    --member="user:$ME" \
-    --role="roles/iam.serviceAccountTokenCreator" \
-    --project=$PROJECT
+Configure these GitHub Actions repository secrets. Keeping the connection
+values out of workflow source also lets the VPS move without a code change.
 
-# 4. Enable IAM Credentials API (required for generateAccessToken)
-gcloud services enable iamcredentials.googleapis.com --project=$PROJECT
-```
+| Secret | Production value |
+|---|---|
+| `VPS2_HOST` | VPS2 address or trusted DNS name |
+| `VPS2_USER` | Dedicated deployment login (currently `root`) |
+| `VPS2_DEPLOY_PATH` | `/opt/SCLib_JZIS` |
+| `VPS2_SSH_KEY` | Private half of the dedicated Actions key |
+| `VPS2_HOST_FINGERPRINT` | Trusted host key fingerprint, for example `SHA256:...` |
 
-### One-time VPS2 side
-The host already has a plain `authorized_user` ADC from a previous
-`gcloud auth application-default login`. Rewrite it in place as an
-impersonated credential via the helper script:
+Generate a key only for Actions on an administrator workstation. Do not reuse a
+personal key, commit the private key, or leave a copy of it on VPS2.
 
 ```bash
-ssh root@72.62.251.29
-python3 /opt/SCLib_JZIS/scripts/wrap_adc_impersonated.py
-docker restart sclib-api
+ssh-keygen -t ed25519 -a 100 \
+  -f ~/.ssh/sclib_github_actions -C sclib-github-actions
 ```
 
-The script keeps a timestamped backup of the original user ADC next
-to the file (so you can roll back by copying back), writes the new
-`impersonated_service_account` form, and relaxes the mode to `0644`
-so uid 1001 inside the api container can read it. Re-running
-`gcloud auth application-default login` by hand will **reset** the
-file back to user form and reset mode to `0600`; always re-run the
-wrap script after any manual ADC refresh.
+Append the public key to the deployment login's `~/.ssh/authorized_keys` with
+forwarding, PTY, and user startup disabled:
 
-### Verify
+```text
+no-agent-forwarding,no-port-forwarding,no-pty,no-user-rc ssh-ed25519 AAAA... sclib-github-actions
+```
+
+Obtain the server fingerprint over an already trusted administrative SSH
+connection; do not trust a first-seen fingerprint copied from an unverified
+network scan:
 
 ```bash
-# gcloud fetches an impersonated token automatically
-TOK=$(gcloud auth application-default print-access-token)
-# tokeninfo will show NO email (SA tokens don't carry one)
-curl -s "https://oauth2.googleapis.com/tokeninfo?access_token=$TOK"
-
-# Real upstream call
-docker exec sclib-redis redis-cli --scan --pattern "guest_quota:*" \
-    | xargs -r -I{} docker exec sclib-redis redis-cli DEL {}
-curl -fsS -X POST http://127.0.0.1:8000/v1/search \
-    -H "content-type: application/json" \
-    -d '{"query":"iron-based superconductor","top_k":1}' | jq .total
+ssh root@72.62.251.29 \
+  "ssh-keygen -l -E sha256 -f /etc/ssh/ssh_host_ed25519_key.pub"
 ```
+
+Create a GitHub environment named `production` and restrict its deployment
+branch rule to the exact `main` branch. This preserves automatic delivery after
+a successful `main` test run; organizations that require a manual change window
+may additionally enable required reviewers. The workflows pin every third-party
+Action to a full commit SHA and ask the SSH Action to compare the server key
+with `VPS2_HOST_FINGERPRINT`; they do not use `StrictHostKeyChecking=no`,
+destructive Git resets, or server-side image builds.
+
+A push to `main` automatically enters the chain above. To redeploy an existing
+release, run `Deploy to VPS2` manually and provide the numeric run ID of a
+successful `Release images` workflow. The deploy workflow retrieves that run
+through the GitHub API and rejects a run from another workflow, branch, event,
+or failed conclusion. Manual deployment therefore cannot bypass tests, scans,
+signatures, or immutable digests.
+
+Before the first automated deployment, complete all three workload-identity
+credentials, backup configuration and restore drill, and the monitoring sample
+required by [`OBSERVABILITY_SLO.md`](OBSERVABILITY_SLO.md). The deployment gate
+fails closed if any prerequisite is missing; SSH connectivity alone is not a
+production-readiness signal.
 
 ## Data bootstrap
 
@@ -202,20 +213,33 @@ operators can `tail -f` during the first few nights.
 
 ## Observability
 
-- `docker compose logs -f api frontend`
-- `docker compose ps` — all 4 services should show `healthy`
-- `GET /stats.updated_at` tells you whether the cron ran
-- GCS `metadata/failed_papers.json` — the failure pool; non-empty is
-  fine, the retry pass drains it; only intervene if the same paper IDs
-  persist across runs with `status: dead`
+The loopback-only Prometheus, Alertmanager, and Grafana services are enabled
+with the `observability` Compose profile. Set `GRAFANA_ADMIN_PASSWORD`, configure
+an approved Alertmanager notification receiver, and follow
+[`OBSERVABILITY_SLO.md`](OBSERVABILITY_SLO.md) for dashboard access, SLOs,
+release gates, and alert runbooks.
+
+- `docker compose --profile observability logs -f api frontend prometheus`
+- `docker compose --profile observability ps` — application and monitoring
+  services should be running; API/frontend/PostgreSQL/Redis should be healthy
+- `GET /stats.updated_at` and `sclib_dataset_age_seconds` report freshness
+- GCS `metadata/failed_papers.json` — the failure pool; non-empty is fine, the
+  retry pass drains it; intervene if the same IDs persist with `status: dead`
 
 ## Rollback
 
-Everything is Docker Compose, so rollback is:
+Application releases use signed, immutable image digests. Select the three
+digests from a previously successful `Release images` run, verify them with the
+command in `SUPPLY_CHAIN_SECURITY.md`, then export them before restarting:
+
 ```bash
-git -C /opt/SCLib_JZIS checkout <previous-commit>
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+export SCLIB_FRONTEND_IMAGE='ghcr.io/jackzh26/sclib-frontend@sha256:<digest>'
+export SCLIB_API_IMAGE='ghcr.io/jackzh26/sclib-api@sha256:<digest>'
+export SCLIB_INGESTION_IMAGE='ghcr.io/jackzh26/sclib-ingestion@sha256:<digest>'
+docker compose --profile observability \
+  -f docker-compose.yml -f docker-compose.prod.yml \
+  up -d --no-build --wait
 ```
 Postgres data lives in the `postgres_data` named volume and survives
-image rebuilds. Alembic migrations are forward-only — if a migration
+image replacement. Alembic migrations are forward-only — if a migration
 needs reverting, write a new migration.

@@ -19,7 +19,6 @@ import {
   adminUnbanUser,
   type AdminUserSummary,
 } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 import { ConfirmModal } from "@/components/dashboard/ConfirmModal";
 import { useDashboardUser } from "@/components/dashboard/user-context";
 
@@ -42,10 +41,8 @@ export default function AdminUsersPage() {
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const token = loadToken();
-    if (!token) return;
     try {
-      const resp = await adminListUsers(token, {
+      const resp = await adminListUsers({
         q: q || undefined,
         role: filter === "all" ? undefined : filter,
         limit: PAGE_SIZE,
@@ -65,14 +62,12 @@ export default function AdminUsersPage() {
   }
 
   async function performAction(a: Action) {
-    const token = loadToken();
-    if (!token) return;
     setBusyId(a.user.id);
     setError(null);
     try {
-      if (a.kind === "ban") await adminBanUser(token, a.user.id);
-      else if (a.kind === "unban") await adminUnbanUser(token, a.user.id);
-      else if (a.kind === "delete") await adminDeleteUser(token, a.user.id);
+      if (a.kind === "ban") await adminBanUser(a.user.id);
+      else if (a.kind === "unban") await adminUnbanUser(a.user.id);
+      else if (a.kind === "delete") await adminDeleteUser(a.user.id);
       await load();
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Action failed");
@@ -83,12 +78,10 @@ export default function AdminUsersPage() {
   }
 
   async function toggleReviewer(u: AdminUserSummary) {
-    const token = loadToken();
-    if (!token) return;
     setBusyId(u.id);
     setError(null);
     try {
-      await adminSetReviewer(token, u.id, !u.is_reviewer);
+      await adminSetReviewer(u.id, !u.is_reviewer);
       await load();
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Action failed");

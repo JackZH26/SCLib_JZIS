@@ -1,0 +1,178 @@
+name: Release images
+
+on:
+  workflow_run:
+    workflows: [Test]
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+  packages: write
+  id-token: write
+  attestations: write
+  security-events: write
+
+concurrency:
+  group: release-images-${{ github.event.workflow_run.head_sha }}
+  cancel-in-progress: false
+
+jobs:
+  verify-security:
+    name: Require matching Security success
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - name: Wait for Security workflow on the tested revision
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 90); do
+            payload="$(curl --fail --silent --show-error \
+              --header "Accept: application/vnd.github+json" \
+              --header "Authorization: Bearer $GH_TOKEN" \
+              --header "X-GitHub-Api-Version: 2022-11-28" \
+              "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/workflows/security.yml/runs?branch=main&event=push&per_page=50")"
+            matching_run="$(jq --compact-output --arg sha "$TARGET_SHA" '
+              [.workflow_runs[] | select(.head_sha == $sha)]
+              | sort_by(.created_at)
+              | last // empty
+            ' <<< "$payload")"
+            if [[ -n "$matching_run" ]]; then
+              status="$(jq --raw-output '.status' <<< "$matching_run")"
+              conclusion="$(jq --raw-output '.conclusion // ""' <<< "$matching_run")"
+              run_url="$(jq --raw-output '.html_url' <<< "$matching_run")"
+              if [[ "$status" == "completed" ]]; then
+                echo "Matching Security workflow: $run_url ($conclusion)"
+                [[ "$conclusion" == "success" ]]
+                exit 0
+              fi
+            fi
+            sleep 10
+          done
+          echo "No successful completed Security workflow found for $TARGET_SHA" >&2
+          exit 1
+
+  publish:
+    name: Publish ${{ matrix.component }}
+    needs: verify-security
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [frontend, api, ingestion]
+    env:
+      TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - name: Resolve immutable release identity
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "short_sha=${TARGET_SHA:0:7}" >> "$GITHUB_OUTPUT"
+          echo "image=ghcr.io/jackzh26/sclib-${{ matrix.component }}" >> "$GITHUB_OUTPUT"
+      - name: Check out tested revision
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          persist-credentials: false
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+      - name: Authenticate to GHCR
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Generate OCI metadata
+        id: metadata
+        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
+        with:
+          images: ${{ steps.release.outputs.image }}
+          tags: type=raw,value=sha-${{ env.TARGET_SHA }}
+          labels: |
+            org.opencontainers.image.revision=${{ env.TARGET_SHA }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+      - name: Build and publish once
+        id: build
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: ./${{ matrix.component }}
+          push: true
+          platforms: linux/amd64
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+          build-args: GIT_SHA=${{ steps.release.outputs.short_sha }}
+          provenance: mode=max
+          sbom: true
+      - name: Scan published digest
+        id: trivy
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          version: v0.70.0
+          image-ref: ${{ steps.release.outputs.image }}@${{ steps.build.outputs.digest }}
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          format: sarif
+          output: trivy-${{ matrix.component }}.sarif
+          exit-code: "1"
+      - name: Upload Trivy SARIF
+        if: ${{ always() && hashFiles(format('trivy-{0}.sarif', matrix.component)) != '' }}
+        uses: github/codeql-action/upload-sarif@99df26d4f13ea111d4ec1a7dddef6063f76b97e9 # v4
+        with:
+          sarif_file: trivy-${{ matrix.component }}.sarif
+          category: trivy-${{ matrix.component }}
+      - name: Generate digest-bound SPDX SBOM
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0
+        with:
+          image: ${{ steps.release.outputs.image }}@${{ steps.build.outputs.digest }}
+          format: spdx-json
+          output-file: sbom-${{ matrix.component }}.spdx.json
+          artifact-name: sbom-${{ matrix.component }}-${{ env.TARGET_SHA }}.spdx.json
+          syft-version: v1.46.0
+          upload-artifact-retention: 30
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.0.6
+      - name: Sign immutable digest with GitHub OIDC
+        env:
+          IMAGE: ${{ steps.release.outputs.image }}
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: cosign sign --yes "$IMAGE@$DIGEST"
+      - name: Attach GitHub build provenance
+        uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
+        with:
+          subject-name: ${{ steps.release.outputs.image }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
+      - name: Record deployment digest
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$DIGEST" > "${{ matrix.component }}.digest"
+          printf '%s\n' "$TARGET_SHA" > "${{ matrix.component }}.sha"
+      - name: Upload deployment manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: image-digest-${{ matrix.component }}
+          path: |
+            ${{ matrix.component }}.digest
+            ${{ matrix.component }}.sha
+          if-no-files-found: error
+          retention-days: 30

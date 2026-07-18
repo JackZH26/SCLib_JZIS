@@ -1,0 +1,117 @@
+name: DAST
+
+on:
+  schedule:
+    - cron: "41 3 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dast-local-ephemeral
+  cancel-in-progress: false
+
+jobs:
+  zap:
+    name: ZAP against ephemeral SCLib
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: sclib_dast
+          POSTGRES_USER: sclib
+          POSTGRES_PASSWORD: sclib_dast_pw
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U sclib -d sclib_dast"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://sclib:sclib_dast_pw@127.0.0.1:5432/sclib_dast
+      REDIS_URL: redis://127.0.0.1:6379
+      JWT_SECRET: dast_only_secret_with_sufficient_length_never_for_production
+      ENVIRONMENT: test
+      EMAIL_BACKEND: stdout
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_PUBLIC_API_BASE: http://127.0.0.1:8000/v1
+      API_BASE_SERVER: http://127.0.0.1:8000/v1
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+      - name: Start ephemeral API
+        run: |
+          python -m pip install --disable-pip-version-check uv==0.11.16
+          UV_PROJECT_ENVIRONMENT=/tmp/sclib-dast-venv \
+            uv sync --project api --locked --no-dev --no-editable
+          (cd api && /tmp/sclib-dast-venv/bin/alembic upgrade head)
+          (cd api && nohup /tmp/sclib-dast-venv/bin/uvicorn main:app \
+            --host 127.0.0.1 --port 8000 \
+            >/tmp/sclib-api-dast.log 2>&1 &)
+          for attempt in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8000/readyz && exit 0
+            sleep 2
+          done
+          cat /tmp/sclib-api-dast.log
+          exit 1
+      - name: Active API scan (ephemeral database only)
+        uses: zaproxy/action-api-scan@5158fe4d9d8fcc75ea204db81317cce7f9e5453d # v0.10.0
+        with:
+          target: http://127.0.0.1:8000/openapi.json
+          format: openapi
+          docker_name: ghcr.io/zaproxy/zaproxy@sha256:8d387b1a63e3425beef4846e39719f5af2a787753af2d8b6558c6257d7a577a2
+          allow_issue_writing: false
+          fail_action: true
+          cmd_options: -I
+          artifact_name: zap-api-report
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+        with:
+          version: 9.12.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "20"
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - name: Start production frontend build
+        working-directory: frontend
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+          nohup pnpm start >/tmp/sclib-frontend-dast.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:3000/sclib/ >/dev/null && exit 0
+            sleep 2
+          done
+          cat /tmp/sclib-frontend-dast.log
+          exit 1
+      - name: Passive frontend baseline scan
+        uses: zaproxy/action-baseline@de8ad967d3548d44ef623df22cf95c3b0baf8b25 # v0.15.0
+        with:
+          target: http://127.0.0.1:3000/sclib/
+          docker_name: ghcr.io/zaproxy/zaproxy@sha256:8d387b1a63e3425beef4846e39719f5af2a787753af2d8b6558c6257d7a577a2
+          allow_issue_writing: false
+          fail_action: true
+          cmd_options: -I -m 3
+          artifact_name: zap-frontend-report
+      - name: Upload service logs
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dast-service-logs
+          path: |
+            /tmp/sclib-api-dast.log
+            /tmp/sclib-frontend-dast.log
+          retention-days: 14

@@ -48,10 +48,11 @@ SSH:      root@72.62.251.29
 
 > **Note:** VPS1 (76.13.191.130) runs OpenClaw only. Do not touch VPS1.
 
-### GCP Infrastructure Status (as of 2026-04-14)
+### GCP Infrastructure Status (updated 2026-07-13)
 - ✅ GCP Project: jzis-sclib (created)
 - ✅ GCS Bucket: gs://sclib-jzis (Coldline, us-central1, created)
-- ✅ VPS2 ADC: /root/.config/gcloud/application_default_credentials.json (configured)
+- ⏳ VPS2 production WIF: provision three workload identities per
+  `docs/WORKLOAD_IDENTITY.md` (human ADC is prohibited)
 - ✅ Vertex AI API: enabled
 - ✅ Cloud Storage API: enabled
 - ⏳ Vertex AI Vector Search index: create via scripts/create_vertex_index.py (Phase 0 Step 6)
@@ -133,7 +134,7 @@ services:
       - "127.0.0.1:8000:8000"
     env_file: .env
     volumes:
-      - ./credentials/gcp-sa.json:/credentials/gcp-sa.json:ro
+      - ./credentials/gcp-api.json:/credentials/gcp-api.json:ro
     depends_on:
       - postgres
       - redis
@@ -842,7 +843,7 @@ REDIS_URL=redis://redis:6379
 # === GCP ===
 GCP_PROJECT=jzis-sclib
 GCP_REGION=us-central1
-GOOGLE_APPLICATION_CREDENTIALS=/credentials/gcp-sa.json
+GOOGLE_APPLICATION_CREDENTIALS=/credentials/gcp-api.json
 VERTEX_AI_INDEX_ENDPOINT=projects/.../locations/.../indexEndpoints/...
 VERTEX_AI_DEPLOYED_INDEX_ID=sclib_papers_v1
 GCS_BUCKET=sclib-jzis
@@ -923,10 +924,10 @@ cd /opt/SCLib_JZIS
 # Clone repo
 git clone https://github.com/JackZH26/SCLib_JZIS.git .
 
-# Create env and credentials
+# Create env; provision production identity per docs/WORKLOAD_IDENTITY.md
 cp .env.example .env
-mkdir -p credentials
-echo "⚠️  Edit .env and place GCP SA JSON at credentials/gcp-sa.json"
+mkdir -p /etc/sclib/credentials /run/sclib-identity/{api,ingestion,backup}
+echo "⚠️  Edit .env and provision the three keyless workload identities"
 
 # Add SSH key for GitHub Actions auto-deploy
 # (Run: cat ~/.ssh/id_rsa or generate new key, add pub to GitHub Deploy Keys)
@@ -978,7 +979,8 @@ echo "Setup complete!"
 4. Run scripts/setup_vps2.sh on VPS2 (72.62.251.29)
 5. Verify all 4 containers start (frontend, api, postgres, redis)
 6. Create Vertex AI VS index: scripts/create_vertex_index.py
-7. Set GitHub Actions secrets (VPS2_SSH_KEY, GCP_SA_KEY, etc.)
+7. Set GitHub Actions secret `VPS2_SSH_KEY`; GCP runtime credentials remain on
+   VPS2 as keyless external-account configurations and are never GitHub secrets
 8. Test deploy.yml on push to main
 ```
 

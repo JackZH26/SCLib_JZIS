@@ -2,33 +2,47 @@
   "name": "sclib-frontend",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@9.12.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "pnpm test:source && pnpm test:unit",
+    "test:source": "node --test tests/*.test.mjs",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "test:browser-auth": "node --test tests/browser-session-auth.test.mjs",
+    "test:public-urls": "node --test tests/public-auth-links.test.mjs",
+    "test:security-headers": "node --test tests/security-headers.test.mjs"
   },
   "dependencies": {
     "clsx": "2.1.1",
     "katex": "^0.16.45",
-    "next": "14.2.13",
-    "plotly.js-dist-min": "2.35.2",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "next": "15.5.18",
+    "plotly.js": "2.35.2",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
     "react-markdown": "9.0.1",
     "react-plotly.js": "2.6.0",
     "rehype-sanitize": "6.0.0",
     "remark-gfm": "4.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.61.1",
     "@tailwindcss/typography": "0.5.15",
-    "@types/node": "20.11.30",
-    "@types/react": "18.2.73",
-    "@types/react-dom": "18.2.22",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@types/node": "20.19.43",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
     "@types/react-plotly.js": "2.6.3",
+    "@vitejs/plugin-react": "6.0.3",
     "autoprefixer": "10.4.19",
+    "jsdom": "29.1.1",
     "postcss": "8.4.38",
     "tailwindcss": "3.4.3",
-    "typescript": "5.4.3"
+    "typescript": "5.4.3",
+    "vitest": "4.1.10"
   }
 }

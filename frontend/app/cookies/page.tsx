@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Cookie Policy — SCLib",
+  title: "Cookie Policy",
   description:
     "How SCLib uses cookies and similar technologies, and how to manage your preferences.",
+  alternates: { canonical: absoluteUrl("/cookies") },
 };
 
 export default function CookiePolicyPage() {
@@ -11,7 +13,7 @@ export default function CookiePolicyPage() {
     <article className="prose prose-slate mx-auto max-w-3xl prose-headings:text-slate-900 prose-a:text-accent-deep">
       <h1>Cookie Policy</h1>
       <p className="lead">
-        Last updated: May 12, 2026
+        Last updated: July 13, 2026
       </p>
 
       <p>
@@ -46,6 +48,7 @@ export default function CookiePolicyPage() {
         These are essential for the site to function and cannot be
         turned off. They do not track you across websites.
       </p>
+      <div className="max-w-full overflow-x-auto" role="region" aria-label="Necessary cookie details">
       <table>
         <thead>
           <tr>
@@ -67,16 +70,26 @@ export default function CookiePolicyPage() {
             <td>Persistent until cleared</td>
           </tr>
           <tr>
-            <td><code>sclib_token</code></td>
+            <td><code>__Host-sclib_session</code></td>
             <td>
-              JSON Web Token (JWT) for authenticated sessions after
-              login. Contains no personal data beyond your user ID.
+              Keeps you signed in. It is restricted to the JZIS API host,
+              sent only over HTTPS, and is not readable by site JavaScript.
             </td>
-            <td>localStorage</td>
-            <td>7 days (auto-refreshed on activity)</td>
+            <td>Secure, HttpOnly cookie</td>
+            <td>24 hours</td>
+          </tr>
+          <tr>
+            <td><code>__Host-sclib_oauth_state</code></td>
+            <td>
+              Protects the short Google sign-in redirect from request
+              forgery and is removed after the sign-in flow.
+            </td>
+            <td>Secure, HttpOnly cookie</td>
+            <td>5 minutes</td>
           </tr>
         </tbody>
       </table>
+      </div>
 
       <h3>2.2 Analytics (optional)</h3>
       <p>
@@ -90,6 +103,16 @@ export default function CookiePolicyPage() {
         &quot;Accept all&quot;</strong> or enable the Analytics toggle in
         the consent banner.
       </p>
+      <p>
+        The same Analytics choice controls SCLib&apos;s first-party browser-health
+        reporting. A random sample of consenting page loads may send Web Vital
+        measurements (CLS, FCP, INP, LCP, and TTFB) and aggregate counts of
+        JavaScript errors or rejected promises to the SCLib API. These reports
+        contain no error text, stack trace, page URL, account identifier, or
+        cookie. The API immediately aggregates accepted signals as service
+        metrics and applies a short-lived, pseudonymous abuse-prevention limit.
+      </p>
+      <div className="max-w-full overflow-x-auto" role="region" aria-label="Analytics cookie details">
       <table>
         <thead>
           <tr>
@@ -119,6 +142,7 @@ export default function CookiePolicyPage() {
           </tr>
         </tbody>
       </table>
+      </div>
       <p>
         Google&apos;s privacy practices for Analytics are described in{" "}
         <a
@@ -145,6 +169,13 @@ export default function CookiePolicyPage() {
           Google Analytics Opt-out Browser Add-on
         </a>{" "}
         for an additional layer of control.
+      </p>
+
+      <h3>2.3 First-party browser-health storage</h3>
+      <p>
+        Browser-health reports do not set a separate cookie or create a
+        per-visitor event log. Only aggregate time-series metrics are retained,
+        for up to 90 days, to detect regressions in site speed and reliability.
       </p>
 
       <h2>3. Cookies We Do Not Use</h2>
@@ -224,10 +255,12 @@ export default function CookiePolicyPage() {
 
       <h2>5. Data Retention</h2>
       <p>
-        Necessary data (JWT, consent flag) is stored only on your device
-        and is never transmitted to third parties. Google Analytics data
-        is retained for 14 months, after which it is automatically
-        deleted from Google&apos;s servers.
+        The session cookie is sent only to the JZIS API over HTTPS; the
+        consent flag remains in your browser&apos;s local storage. Neither is
+        sold or sent to advertising providers. Google Analytics data is
+        retained for 14 months, after which it is automatically deleted
+        from Google&apos;s servers. Aggregate first-party browser-health metrics
+        are retained for no more than 90 days.
       </p>
 
       <h2>6. Changes to This Policy</h2>

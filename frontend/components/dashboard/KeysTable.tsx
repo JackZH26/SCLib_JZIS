@@ -12,7 +12,6 @@
 import { useState } from "react";
 
 import { ApiError, revokeKey, type ApiKey } from "@/lib/api";
-import { loadToken } from "@/lib/auth-storage";
 import { ConfirmModal } from "@/components/dashboard/ConfirmModal";
 
 export function KeysTable({
@@ -27,12 +26,10 @@ export function KeysTable({
   const [confirming, setConfirming] = useState<ApiKey | null>(null);
 
   async function performRevoke(k: ApiKey) {
-    const token = loadToken();
-    if (!token) return;
     setBusy(k.id);
     setError(null);
     try {
-      await revokeKey(token, k.id);
+      await revokeKey(k.id);
       onChanged();
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Failed to revoke");

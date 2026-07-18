@@ -1,97 +1,104 @@
 #!/usr/bin/env bash
-# Nightly Postgres backup → GCS.
-#
-# Dumps the sclib database from the running postgres container, gzips
-# it, uploads to gs://${SCLIB_BACKUP_BUCKET}/postgres/ with a UTC
-# timestamp, and prunes anything older than ${SCLIB_BACKUP_RETAIN_DAYS}
-# (default 14) from the bucket.
-#
-# Designed to be invoked by cron_daily_ingest.sh after the ingest pass
-# finishes, so the backup captures the day's new rows. Runs are also
-# safe to invoke standalone.
-#
-# Required env (sourced from /opt/sclib/.env via the wrapper):
-#   DB_PASSWORD             postgres user password
-#   SCLIB_BACKUP_BUCKET     GCS bucket name (no gs:// prefix)
-#
-# Optional env:
-#   SCLIB_ROOT              repo root, default /opt/sclib
-#   SCLIB_LOG_DIR           log dir, default /var/log/sclib
-#   SCLIB_BACKUP_RETAIN_DAYS  prune horizon, default 14
-#
-# Requires `gcloud` on PATH and active ADC (the same credential the
-# api container uses). On VPS2 that's already provisioned by Phase 0.
-
+# Create and upload a verifiable PostgreSQL custom-format backup.
 set -Eeuo pipefail
 
-SCLIB_ROOT="${SCLIB_ROOT:-/opt/sclib}"
+SCLIB_ROOT="${SCLIB_ROOT:-/opt/SCLib_JZIS}"
 LOG_DIR="${SCLIB_LOG_DIR:-/var/log/sclib}"
 LOG_FILE="${LOG_DIR}/backup.log"
-RETAIN_DAYS="${SCLIB_BACKUP_RETAIN_DAYS:-14}"
+RETAIN_DAYS="${SCLIB_BACKUP_RETAIN_DAYS:-35}"
+BACKUP_PREFIX="${SCLIB_BACKUP_PREFIX:-postgres}"
 
-mkdir -p "${LOG_DIR}"
+mkdir -p "$LOG_DIR"
 
 log() {
-    printf '[%s] %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" | tee -a "${LOG_FILE}"
+  printf '[%s] %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" | tee -a "$LOG_FILE"
 }
 
 on_error() {
-    local rc=$?
-    log "FAIL backup_postgres exit=${rc} at line ${BASH_LINENO[0]}"
-    exit "${rc}"
+  local rc=$?
+  log "FAIL backup_postgres exit=$rc at line ${BASH_LINENO[0]}"
+  exit "$rc"
 }
 trap on_error ERR
 
-if [[ -z "${SCLIB_BACKUP_BUCKET:-}" ]]; then
-    if [[ -f "${SCLIB_ROOT}/.env" ]]; then
-        # shellcheck disable=SC1091
-        set -a && source "${SCLIB_ROOT}/.env" && set +a
-    fi
+if [[ -f "$SCLIB_ROOT/.env" ]]; then
+  # shellcheck disable=SC1091
+  set -a && source "$SCLIB_ROOT/.env" && set +a
+fi
+if [[ -f "$SCLIB_ROOT/.env.backup" ]]; then
+  # shellcheck disable=SC1091
+  set -a && source "$SCLIB_ROOT/.env.backup" && set +a
 fi
 
-if [[ -z "${SCLIB_BACKUP_BUCKET:-}" ]]; then
-    log "WARN SCLIB_BACKUP_BUCKET unset — skipping backup"
-    exit 0
+: "${SCLIB_BACKUP_BUCKET:?set a dedicated backup bucket in .env.backup}"
+: "${SCLIB_BACKUP_CREDENTIALS_FILE:=/etc/sclib/credentials/backup-external-account.json}"
+: "${SCLIB_BACKUP_SERVICE_ACCOUNT:=sclib-backup@jzis-sclib.iam.gserviceaccount.com}"
+if [[ -n "${GCS_BUCKET:-}" && "$SCLIB_BACKUP_BUCKET" == "$GCS_BUCKET" ]]; then
+  log "FAIL backup bucket must differ from the application data bucket"
+  exit 1
 fi
+[[ "$RETAIN_DAYS" =~ ^[1-9][0-9]*$ ]] || {
+  log "FAIL SCLIB_BACKUP_RETAIN_DAYS must be a positive integer"
+  exit 1
+}
+for command in docker gcloud python3 git; do
+  command -v "$command" >/dev/null || {
+    log "FAIL required command not found: $command"
+    exit 1
+  }
+done
 
-cd "${SCLIB_ROOT}"
+cd "$SCLIB_ROOT"
+python3 scripts/validate_gcp_credentials.py validate \
+  --credential "$SCLIB_BACKUP_CREDENTIALS_FILE" \
+  --expected-service-account "$SCLIB_BACKUP_SERVICE_ACCOUNT"
+export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="$SCLIB_BACKUP_CREDENTIALS_FILE"
+tmpdir="$(mktemp -d)"
+trap 'rm -rf "$tmpdir"' EXIT
+timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
+basename="sclib-$timestamp"
+dumpfile="$tmpdir/$basename.dump"
+manifest="$tmpdir/$basename.manifest.json"
+listing="$tmpdir/listing.txt"
+destination="gs://$SCLIB_BACKUP_BUCKET/$BACKUP_PREFIX"
 
-ts="$(date -u +%Y%m%dT%H%M%SZ)"
-dumpfile="/tmp/sclib-${ts}.sql.gz"
-
-log "START backup_postgres bucket=${SCLIB_BACKUP_BUCKET}"
-
-# pg_dump from inside the postgres container. -Fc would be smaller and
-# allow selective restore but plain SQL is friendlier for ad-hoc grep
-# on a recovery host that may not have the same pg_restore version.
+log "START backup_postgres destination=$destination"
 docker compose exec -T postgres \
-    pg_dump --no-owner --no-acl -U sclib -d sclib \
-    | gzip -9 > "${dumpfile}"
+  pg_dump --format=custom --compress=9 --no-owner --no-acl \
+  -U sclib -d sclib > "$dumpfile"
+[[ -s "$dumpfile" ]]
+docker compose exec -T postgres pg_restore --list < "$dumpfile" >/dev/null
 
-bytes="$(stat -c%s "${dumpfile}" 2>/dev/null || stat -f%z "${dumpfile}")"
-log "dump complete bytes=${bytes} path=${dumpfile}"
+postgres_version="$(docker compose exec -T postgres \
+  psql -X -A -t -U sclib -d sclib -c 'SHOW server_version')"
+git_sha="$(git rev-parse HEAD)"
+python3 scripts/backup_manifest.py create \
+  --dump "$dumpfile" \
+  --output "$manifest" \
+  --postgres-version "$postgres_version" \
+  --git-sha "$git_sha"
+python3 scripts/backup_manifest.py verify --dump "$dumpfile" --manifest "$manifest"
 
-# Upload. gsutil cp is idempotent (overwrite-on-collision) but ts in
-# the name guarantees no collisions in practice.
-gcloud storage cp "${dumpfile}" "gs://${SCLIB_BACKUP_BUCKET}/postgres/sclib-${ts}.sql.gz" \
-    2>&1 | tee -a "${LOG_FILE}"
-rm -f "${dumpfile}"
+gcloud storage cp "$dumpfile" "$destination/$basename.dump"
+gcloud storage cp "$manifest" "$destination/$basename.manifest.json"
+local_bytes="$(wc -c < "$dumpfile" | tr -d '[:space:]')"
+remote_bytes="$(gcloud storage ls -l "$destination/$basename.dump" | awk 'NR == 1 {print $1}')"
+[[ "$remote_bytes" == "$local_bytes" ]]
+log "uploaded artifact=$basename.dump bytes=$local_bytes"
 
-# Prune anything older than RETAIN_DAYS. We list, filter by
-# Updated timestamp, and delete in one batch.
-log "prune horizon=${RETAIN_DAYS}d"
+# Retention deletion is strict: an access or delete failure makes the backup
+# job fail so monitoring cannot mistake an unhealthy backup set for success.
+gcloud storage ls -l "$destination/" > "$listing"
 cutoff_epoch=$(( $(date -u +%s) - RETAIN_DAYS * 86400 ))
+while read -r updated uri; do
+  [[ -n "$uri" ]] || continue
+  updated_epoch="$(date -u -d "$updated" +%s)"
+  if (( updated_epoch < cutoff_epoch )); then
+    log "prune $uri"
+    gcloud storage rm "$uri"
+  fi
+done < <(
+  awk '/sclib-.*\.(dump|manifest\.json)$/ {print $2, $3}' "$listing"
+)
 
-# `gcloud storage ls -l` prints `<size> <UTC-iso8601> <gs-uri>`.
-gcloud storage ls -l "gs://${SCLIB_BACKUP_BUCKET}/postgres/" 2>/dev/null \
-    | awk '/sclib-.*\.sql\.gz$/ {print $2, $3}' \
-    | while read -r updated uri; do
-        # Convert the gcloud iso8601 to epoch. GNU date understands it directly.
-        upd_epoch=$(date -u -d "${updated}" +%s 2>/dev/null || echo 0)
-        if (( upd_epoch > 0 && upd_epoch < cutoff_epoch )); then
-            log "prune ${uri}"
-            gcloud storage rm "${uri}" 2>&1 | tee -a "${LOG_FILE}" || true
-        fi
-    done
-
-log "DONE backup_postgres"
+log "DONE backup_postgres artifact=$basename.dump retain_days=$RETAIN_DAYS"

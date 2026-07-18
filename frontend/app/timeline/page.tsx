@@ -8,10 +8,20 @@
  * revision used "iron" as the slug while the DB stores "iron_based",
  * so the Iron-based filter button produced zero points. Fixed here.
  */
+import type { Metadata } from "next";
 import { getTimeline } from "@/lib/api";
 import { TcTimeline } from "@/components/TcTimeline";
 import Link from "next/link";
 import { FAMILY_OPTIONS } from "@/lib/families";
+import { absoluteUrl } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: "Superconductivity discovery timeline",
+  description:
+    "Explore critical-temperature records and superconducting material discoveries over time.",
+  alternates: { canonical: absoluteUrl("/timeline") },
+  openGraph: { url: absoluteUrl("/timeline") },
+};
 
 const FAMILIES = [{ slug: "", label: "All" }, ...FAMILY_OPTIONS];
 
@@ -69,22 +79,25 @@ function FilterToggleLink({
 export default async function TimelinePage({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     family?: string;
     experimental_only?: string;
     only_aps?: string;
-  };
+  }>;
 }) {
-  const current = searchParams.family ?? "";
+  const query = await searchParams;
+  const current = query.family ?? "";
   // Booleans on URL: anything other than the literal string "true"
   // is treated as off, so back-button / shared links don't end up in
   // a half-checked state when query strings are sloppy.
-  const experimentalOnly = searchParams.experimental_only === "true";
-  const onlyAps = searchParams.only_aps === "true";
+  const experimentalOnly = query.experimental_only === "true";
+  const onlyAps = query.only_aps === "true";
   const data = await getTimeline({
     family: current || undefined,
     experimentalOnly,
     onlyAps,
+    maxPoints: 10000,
+    compact: true,
   }).catch(() => null);
 
   // Build hrefs that round-trip the *other* filter so toggling one
@@ -161,6 +174,14 @@ export default async function TimelinePage({
         <>
           {data.coverage && data.coverage.total_points > 0 && (
             <p className="text-xs text-slate-500">
+              {data.coverage.returned_points < data.coverage.total_points && (
+                <>
+                  Displaying a representative sample of{" "}
+                  <span className="font-medium text-slate-700">
+                    {data.coverage.returned_points.toLocaleString()}
+                  </span>{" "}from{" "}
+                </>
+              )}
               <span className="font-medium text-slate-700">
                 {data.coverage.total_points.toLocaleString()}
               </span>{" "}

@@ -10,7 +10,6 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
 
-
 # ORCID is always 16 digits grouped 4-4-4-4 with hyphens; the final
 # character may be 'X' (ISO 7064 MOD 11-2 check digit). We only enforce
 # shape, not checksum — clients that paste the URL get it stripped.
@@ -28,7 +27,10 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=8, max_length=128)
     name: str = Field(..., min_length=2, max_length=255)
-    age: int = Field(..., ge=13, le=120)
+    # Retained as an optional wire field for older API clients. The public
+    # registration form no longer asks for age because it is not necessary
+    # to provide the library.
+    age: int | None = Field(None, ge=13, le=120)
     institution: str | None = Field(None, max_length=500)
     country: str | None = Field(None, max_length=100)
     research_area: str | None = Field(None, max_length=255)
@@ -44,7 +46,9 @@ class UserRead(BaseModel):
     name: str
     institution: str | None
     country: str | None
+    age: int | None = None
     research_area: str | None
+    purpose: str | None = None
     bio: str | None = None
     orcid: str | None = None
     created_at: datetime
@@ -69,7 +73,9 @@ class UserUpdate(BaseModel):
     name: str | None = Field(None, min_length=2, max_length=255)
     institution: str | None = Field(None, max_length=500)
     country: str | None = Field(None, max_length=100)
+    age: int | None = Field(None, ge=13, le=120)
     research_area: str | None = Field(None, max_length=255)
+    purpose: str | None = Field(None, max_length=500)
     bio: str | None = Field(None, max_length=2000)
     orcid: str | None = Field(None)
 
@@ -109,12 +115,26 @@ class UserUpdate(BaseModel):
 
 class LoginRequest(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=1, max_length=128)
+
+
+class PasswordResetRequest(BaseModel):
+    email: EmailStr
+
+
+class PasswordResetConfirm(BaseModel):
+    token: str = Field(..., min_length=32, max_length=128)
+    new_password: str = Field(..., min_length=8, max_length=128)
 
 
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    expires_in: int
+
+
+class BrowserSessionResponse(BaseModel):
+    authenticated: bool = True
     expires_in: int
 
 

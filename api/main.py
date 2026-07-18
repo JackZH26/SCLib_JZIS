@@ -9,17 +9,21 @@ from __future__ import annotations
 import asyncio
 import logging
 from contextlib import asynccontextmanager
-from datetime import datetime, timedelta, timezone
-from urllib.parse import urlsplit
+from datetime import UTC, datetime, timedelta
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sqlalchemy import delete
+from starlette.middleware.gzip import GZipMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
-from config import get_settings
+from config import allowed_browser_origins, get_settings
 from models import get_session_factory
 from models.db import AskHistory, get_engine
+from models.errors import ApiErrorResponse
 from routers import (
     admin,
     ask,
@@ -27,16 +31,27 @@ from routers import (
     bookmarks,
     discovery,
     feedback,
+    health,
     history,
     materials,
+    observability,
     papers,
     search,
+    seo,
     similar,
     stats,
     timeline,
     version,
 )
+from services.metrics import HTTP_IN_PROGRESS, observe_http
+from services.request_context import (
+    bind_request_id,
+    reset_request_id,
+    resolve_request_id,
+)
+from services.session_config import build_oauth_session_config
 from services.stats_refresh import refresh_dashboard_cache
+from services.timeline_projection import refresh_timeline_projection
 
 logging.basicConfig(
     level=logging.INFO,
@@ -73,6 +88,47 @@ async def _periodic_stats_refresh(interval_sec: int) -> None:
             raise
         except Exception:  # noqa: BLE001
             log.exception("stats_cache refresh failed; retrying on next tick")
+        await asyncio.sleep(interval_sec)
+
+
+async def _periodic_timeline_projection(interval_sec: int) -> None:
+    """Refresh the Timeline projection away from request latency."""
+    from services.rate_limit import get_redis
+
+    factory = get_session_factory()
+    # Alembic runs before Uvicorn in entrypoint.sh. The extra delay keeps the
+    # first full projection build away from startup health probes.
+    await asyncio.sleep(60)
+    while True:
+        try:
+            async with factory() as session:
+                async with session.begin():
+                    result = await refresh_timeline_projection(session)
+            log.info(
+                "timeline projection refreshed: %d materials / %d active points%s",
+                result.materials_processed,
+                result.active_points,
+                " (full rebuild)" if result.full_rebuild else "",
+            )
+            if result.full_rebuild or result.materials_processed:
+                try:
+                    redis = get_redis()
+                    keys = [
+                        key async for key in redis.scan_iter(
+                            match="timeline:*", count=200,
+                        )
+                    ]
+                    if keys:
+                        await redis.delete(*keys)
+                except Exception:  # noqa: BLE001 - TTL remains the safe fallback
+                    log.warning(
+                        "timeline cache invalidation failed after projection refresh",
+                        exc_info=True,
+                    )
+        except asyncio.CancelledError:
+            raise
+        except Exception:  # noqa: BLE001
+            log.exception("timeline projection refresh failed; retrying next tick")
         await asyncio.sleep(interval_sec)
 
 
@@ -201,7 +257,7 @@ async def _nightly_data_audit(target_hour_utc: int = 20) -> None:
     """
     factory = get_session_factory()
     while True:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         target = now.replace(
             hour=target_hour_utc, minute=0, second=0, microsecond=0,
         )
@@ -241,7 +297,7 @@ async def _periodic_ask_history_prune(interval_sec: int, retention_days: int) ->
     await asyncio.sleep(90)
     while True:
         try:
-            cutoff = datetime.now(timezone.utc) - timedelta(days=retention_days)
+            cutoff = datetime.now(UTC) - timedelta(days=retention_days)
             async with factory() as session:
                 result = await session.execute(
                     delete(AskHistory).where(AskHistory.created_at < cutoff)
@@ -280,6 +336,22 @@ async def lifespan(app: FastAPI):
     else:
         refresh_task = None
         log.info("stats_cache auto-refresh disabled (interval=%d)", interval)
+
+    projection_interval = int(
+        os.environ.get("SCLIB_TIMELINE_PROJECTION_INTERVAL_SEC", "900")
+    )
+    if projection_interval > 0:
+        projection_task = asyncio.create_task(
+            _periodic_timeline_projection(projection_interval),
+            name="sclib-timeline-projection",
+        )
+        log.info(
+            "timeline projection refresh scheduled every %ds",
+            projection_interval,
+        )
+    else:
+        projection_task = None
+        log.info("timeline projection refresh disabled")
 
     # Formula audit — hourly. Catches dirty / descriptive material
     # formulas that slip past the NER + aggregator validators (eg
@@ -327,7 +399,13 @@ async def lifespan(app: FastAPI):
     try:
         yield
     finally:
-        for t in (refresh_task, prune_task, audit_task, nightly_task):
+        for t in (
+            refresh_task,
+            projection_task,
+            prune_task,
+            audit_task,
+            nightly_task,
+        ):
             if t is None:
                 continue
             t.cancel()
@@ -344,13 +422,121 @@ settings = get_settings()
 
 app = FastAPI(
     title="SCLib_JZIS API",
-    version="0.1.0",
+    version="1.0.0",
     description="Superconductivity research library — semantic search, materials DB, RAG Q&A.",
     openapi_url="/v1/openapi.json",
     docs_url="/v1/docs",
     redoc_url="/v1/redoc",
     lifespan=lifespan,
+    responses={
+        400: {"model": ApiErrorResponse, "description": "Bad request"},
+        401: {"model": ApiErrorResponse, "description": "Authentication required"},
+        403: {"model": ApiErrorResponse, "description": "Access denied"},
+        404: {"model": ApiErrorResponse, "description": "Resource not found"},
+        409: {"model": ApiErrorResponse, "description": "Request conflict"},
+        422: {"model": ApiErrorResponse, "description": "Validation failed"},
+        429: {"model": ApiErrorResponse, "description": "Rate limit exceeded"},
+        500: {"model": ApiErrorResponse, "description": "Internal server error"},
+    },
 )
+
+
+_ERROR_CODES = {
+    400: "bad_request",
+    401: "unauthorized",
+    403: "forbidden",
+    404: "not_found",
+    405: "method_not_allowed",
+    409: "conflict",
+    422: "validation_error",
+    429: "rate_limited",
+    500: "internal_error",
+    502: "upstream_error",
+    503: "service_unavailable",
+    504: "upstream_timeout",
+}
+
+
+def _request_id(request: Request) -> str:
+    return getattr(request.state, "request_id", None) or resolve_request_id(request)
+
+
+def _error_code(status_code: int, detail: object) -> str:
+    if isinstance(detail, dict):
+        explicit = detail.get("error")
+        if isinstance(explicit, str) and explicit:
+            return explicit
+    return _ERROR_CODES.get(status_code, "http_error")
+
+
+def _error_response(
+    request: Request,
+    *,
+    status_code: int,
+    detail: object,
+    error_code: str | None = None,
+    headers: dict[str, str] | None = None,
+) -> JSONResponse:
+    request_id = _request_id(request)
+    response_headers = dict(headers or {})
+    response_headers["X-Request-ID"] = request_id
+    response_headers["X-API-Version"] = version.API_VERSION
+    return JSONResponse(
+        status_code=status_code,
+        content=jsonable_encoder(
+            ApiErrorResponse(
+                detail=detail,
+                error_code=error_code or _error_code(status_code, detail),
+                request_id=request_id,
+            ).model_dump()
+        ),
+        headers=response_headers,
+    )
+
+
+@app.exception_handler(HTTPException)
+async def http_error_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    return _error_response(
+        request,
+        status_code=exc.status_code,
+        detail=exc.detail,
+        headers=dict(exc.headers or {}),
+    )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_error_handler(
+    request: Request,
+    exc: RequestValidationError,
+) -> JSONResponse:
+    # FastAPI's default error objects echo the rejected input. Omitting input
+    # and validator context keeps passwords and tokens out of responses/logs.
+    details = [
+        {key: value for key, value in item.items() if key not in {"input", "ctx"}}
+        for item in exc.errors()
+    ]
+    return _error_response(
+        request,
+        status_code=422,
+        detail=details,
+        error_code="validation_error",
+    )
+
+
+@app.exception_handler(Exception)
+async def unexpected_error_handler(request: Request, exc: Exception) -> JSONResponse:
+    request_id = _request_id(request)
+    log.error(
+        "unhandled request error request_id=%s",
+        request_id,
+        exc_info=(type(exc), exc, exc.__traceback__),
+    )
+    return _error_response(
+        request,
+        status_code=500,
+        detail="Internal server error",
+        error_code="internal_error",
+    )
 
 # CORS origins must be scheme+host only (no path). `frontend_url` is a
 # full base URL used for building verification / docs links, so we strip
@@ -358,31 +544,31 @@ app = FastAPI(
 # for a page served at `https://jzis.org/sclib/search`, and Starlette's
 # middleware does an exact string match — mismatching on the trailing
 # `/sclib` silently fails every POST preflight.
-_fe = urlsplit(str(settings.frontend_url))
-_frontend_origin = f"{_fe.scheme}://{_fe.netloc}" if _fe.scheme and _fe.netloc else str(settings.frontend_url)
-
-# Include the `www.` sibling of the frontend origin. Users may hit the
-# site via either `jzis.org` or `www.jzis.org` (both resolve in DNS),
-# and the browser sends whichever host is in the address bar as the
-# Origin header. Starlette does exact-match so we need both.
-_allowed_origins = [_frontend_origin, "http://localhost:3000", "https://asrp.jzis.org"]
-if _fe.netloc and not _fe.netloc.startswith("www."):
-    _allowed_origins.append(f"{_fe.scheme}://www.{_fe.netloc}")
+_allowed_origins = allowed_browser_origins(settings)
 
 # --- Middleware stack (order matters!) ---
 # Starlette applies middleware in reverse registration order, so the
 # LAST middleware added is the OUTERMOST (first to run on a request).
-# We need: Request → CORS (handle preflight) → Session → App
-# So register Session first (innermost), then CORS (outermost).
+# We need: Request → CORS (handle preflight) → GZip → Session → App
+# So register Session first (innermost), then compression, then CORS.
 
 # SessionMiddleware: stores OAuth state in a signed cookie. Must be
 # inside the CORS layer so preflight OPTIONS never hits session logic.
+_oauth_session = build_oauth_session_config(settings.environment)
 app.add_middleware(
     SessionMiddleware,
     secret_key=settings.jwt_secret,
-    max_age=300,        # OAuth state lives 5 minutes
-    https_only=settings.environment == "production",
-    same_site="lax",    # safe for OAuth redirect (top-level GET)
+    session_cookie=_oauth_session.session_cookie,
+    max_age=_oauth_session.max_age,
+    path=_oauth_session.path,
+    https_only=_oauth_session.https_only,
+    same_site=_oauth_session.same_site,
+)
+
+app.add_middleware(
+    GZipMiddleware,
+    minimum_size=1024,
+    compresslevel=6,
 )
 
 app.add_middleware(
@@ -391,13 +577,57 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=[
+        "ETag",
+        "Last-Modified",
+        "Retry-After",
+        "X-API-Version",
+        "X-Data-Version",
+        "X-Request-ID",
+    ],
 )
 
+
+@app.middleware("http")
+async def request_contract_middleware(request: Request, call_next):
+    """Attach stable correlation and API-version headers to every response."""
+    request_id = resolve_request_id(request)
+    request.state.request_id = request_id
+    token = bind_request_id(request_id)
+    method = request.method
+    HTTP_IN_PROGRESS.labels(method).inc()
+    started = asyncio.get_running_loop().time()
+    status_code = 500
+    response_bytes = 0
+    try:
+        response = await call_next(request)
+        status_code = response.status_code
+        content_length = response.headers.get("content-length")
+        if content_length and content_length.isdigit():
+            response_bytes = int(content_length)
+    finally:
+        route = getattr(request.scope.get("route"), "path", "unmatched")
+        observe_http(
+            method,
+            route,
+            status_code,
+            asyncio.get_running_loop().time() - started,
+            response_bytes,
+        )
+        HTTP_IN_PROGRESS.labels(method).dec()
+        reset_request_id(token)
+    response.headers["X-Request-ID"] = request_id
+    response.headers["X-API-Version"] = version.API_VERSION
+    return response
+
+app.include_router(health.router)
+app.include_router(observability.router)
 app.include_router(auth.router, prefix="/v1")
 app.include_router(search.router, prefix="/v1")
 app.include_router(ask.router, prefix="/v1")
 app.include_router(materials.router, prefix="/v1")
 app.include_router(papers.router, prefix="/v1")
+app.include_router(seo.router, prefix="/v1")
 app.include_router(similar.router, prefix="/v1")
 app.include_router(stats.router, prefix="/v1")
 app.include_router(timeline.router, prefix="/v1")
@@ -407,8 +637,3 @@ app.include_router(feedback.router, prefix="/v1")
 app.include_router(version.router, prefix="/v1")
 app.include_router(admin.router, prefix="/v1")
 app.include_router(discovery.router, prefix="/v1")
-
-
-@app.get("/v1/health", tags=["health"])
-async def health() -> dict[str, str]:
-    return {"status": "ok", "service": "sclib-api", "version": "0.1.0"}

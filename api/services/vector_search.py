@@ -92,9 +92,9 @@ def find_neighbors(
     ``ingestion.index.indexer.upsert_chunks_to_vector_search``:
 
     * numeric ``year`` (int)
-    * categorical ``material_family`` (string, future work — ingestion
-      doesn't populate this yet, so the filter is a no-op today but
-      the plumbing is ready for Phase 5).
+    * categorical ``material_family`` (string, reserved for a future index
+      rebuild; current search callers enforce this field in PostgreSQL because
+      existing datapoints do not populate the namespace).
     """
     settings = get_settings()
 

@@ -19,7 +19,6 @@ from typing import Any
 import sqlalchemy as sa
 from sqlalchemy import (
     ARRAY,
-    JSON,
     Boolean,
     CheckConstraint,
     Date,
@@ -34,11 +33,6 @@ from sqlalchemy import (
     func,
     text,
 )
-
-
-#: All datetime columns use TIMESTAMPTZ. Never store naive datetimes — see
-#: routers/auth.py for how we construct values in UTC.
-_TZDT = DateTime(timezone=True)
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -49,6 +43,10 @@ from sqlalchemy.ext.asyncio import (
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 from config import get_settings
+
+#: All datetime columns use TIMESTAMPTZ. Never store naive datetimes — see
+#: routers/auth.py for how we construct values in UTC.
+_TZDT = DateTime(timezone=True)
 
 
 class Base(DeclarativeBase):
@@ -85,6 +83,11 @@ class User(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_reviewer: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    # Incrementing this invalidates every previously issued JWT while API
+    # keys remain governed by their separate revocation lifecycle.
+    session_version: Mapped[int] = mapped_column(
+        Integer, default=0, server_default=sa.text("0"), nullable=False
+    )
 
     # --- Google OAuth / unified auth -------------------------------------
     google_sub: Mapped[str | None] = mapped_column(String(128), unique=True, nullable=True)
@@ -101,6 +104,9 @@ class User(Base):
         back_populates="user", cascade="all, delete-orphan"
     )
     api_keys: Mapped[list["ApiKey"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
+    password_reset_tokens: Mapped[list["PasswordResetToken"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
 
@@ -122,6 +128,62 @@ class EmailVerification(Base):
     created_at: Mapped[datetime] = mapped_column(_TZDT, server_default=func.now(), nullable=False)
 
     user: Mapped[User] = relationship(back_populates="verifications")
+
+
+class PasswordResetToken(Base):
+    """Single-use password reset grant; plaintext tokens are never stored."""
+
+    __tablename__ = "password_reset_tokens"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    token_hash: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
+    used_at: Mapped[datetime | None] = mapped_column(_TZDT, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False
+    )
+
+    user: Mapped[User] = relationship(back_populates="password_reset_tokens")
+
+    __table_args__ = (
+        Index("idx_password_reset_user_created", "user_id", "created_at"),
+        Index("idx_password_reset_expires", "expires_at"),
+    )
+
+
+class AuthAuditEvent(Base):
+    """Privacy-preserving record of accepted authentication operations."""
+
+    __tablename__ = "auth_audit_events"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
+    event_type: Mapped[str] = mapped_column(String(50), nullable=False)
+    outcome: Mapped[str] = mapped_column(String(30), nullable=False)
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
+    account_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    client_ip_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    user_agent_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    details: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, server_default=sa.text("'{}'::jsonb"), default=dict, nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False
+    )
+
+    __table_args__ = (
+        Index("idx_auth_audit_created", "created_at"),
+        Index("idx_auth_audit_user_created", "user_id", "created_at"),
+        Index("idx_auth_audit_account_created", "account_hash", "created_at"),
+    )
 
 
 class ApiKey(Base):
@@ -465,6 +527,96 @@ class Material(Base):
     )
 
 
+class TimelineProjectionPoint(Base):
+    """Read-optimized projection of one validated Timeline measurement.
+
+    ``materials.records`` remains the authoritative source. Rows are updated
+    transactionally by the API's projection refresher; stale derived rows are
+    soft-disabled with ``active=False`` so source data is never removed.
+    """
+
+    __tablename__ = "timeline_projection_points"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    material_id: Mapped[str] = mapped_column(
+        String(100),
+        ForeignKey("materials.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    year: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    tc_kelvin: Mapped[float] = mapped_column(Float, nullable=False)
+    pressure_gpa: Mapped[float | None] = mapped_column(Float)
+    paper_id: Mapped[str | None] = mapped_column(String(100))
+    is_theoretical: Mapped[bool] = mapped_column(
+        Boolean, server_default="false", nullable=False,
+    )
+    is_aps: Mapped[bool] = mapped_column(
+        Boolean, server_default="false", nullable=False,
+    )
+    active: Mapped[bool] = mapped_column(
+        Boolean, server_default="true", nullable=False,
+    )
+    source_updated_at: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False,
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "year >= 1900 AND year <= 2200",
+            name="ck_timeline_projection_year",
+        ),
+        CheckConstraint(
+            "tc_kelvin > 0 AND tc_kelvin <= 300",
+            name="ck_timeline_projection_tc",
+        ),
+        Index(
+            "idx_timeline_projection_active_year",
+            "year",
+            postgresql_where=text("active IS TRUE"),
+        ),
+        Index(
+            "idx_timeline_projection_material_active",
+            "material_id",
+            postgresql_where=text("active IS TRUE"),
+        ),
+        Index(
+            "idx_timeline_projection_aps_active",
+            "is_aps",
+            postgresql_where=text("active IS TRUE"),
+        ),
+        Index(
+            "idx_timeline_projection_theory_active",
+            "is_theoretical",
+            postgresql_where=text("active IS TRUE"),
+        ),
+    )
+
+
+class TimelineProjectionState(Base):
+    """Singleton readiness and incremental-refresh watermark."""
+
+    __tablename__ = "timeline_projection_state"
+
+    id: Mapped[int] = mapped_column(
+        SmallInteger, primary_key=True, autoincrement=False,
+    )
+    schema_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    source_year: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    source_watermark: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
+    refreshed_at: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
+    material_count: Mapped[int] = mapped_column(
+        Integer, server_default="0", nullable=False,
+    )
+    active_point_count: Mapped[int] = mapped_column(
+        Integer, server_default="0", nullable=False,
+    )
+
+    __table_args__ = (
+        CheckConstraint("id = 1", name="ck_timeline_projection_state_singleton"),
+    )
+
+
 class HydrideTcParameter(Base):
     """Hydride-specific Tc/pressure/Eliashberg parameter enrichment.
 
@@ -719,12 +871,16 @@ def _to_async_dsn(dsn: str) -> str:
 @lru_cache(maxsize=1)
 def get_engine() -> AsyncEngine:
     settings = get_settings()
-    return create_async_engine(
+    engine = create_async_engine(
         _to_async_dsn(settings.database_url),
         pool_pre_ping=True,
         pool_size=5,
         max_overflow=10,
     )
+    from services.metrics import instrument_sqlalchemy
+
+    instrument_sqlalchemy(engine)
+    return engine
 
 
 @lru_cache(maxsize=1)

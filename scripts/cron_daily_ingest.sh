@@ -24,7 +24,7 @@
 #      records (papers.materials_extracted) into the materials table
 #   4. refresh the dashboard stats cache via the api container so the
 #      landing page / GET /stats reflects today's numbers on next hit
-#   5. dump postgres → GCS via scripts/backup_postgres.sh (best-effort)
+#   5. create and verify a PostgreSQL backup in the dedicated backup bucket
 #   6. append a timestamped log line to /var/log/sclib/cron.log
 #
 # Failures DO NOT wake the retry pass off a 2+ exit (hard crash) —
@@ -44,7 +44,7 @@ fi
 
 # ---- Config --------------------------------------------------------------
 
-SCLIB_ROOT="${SCLIB_ROOT:-/opt/sclib}"
+SCLIB_ROOT="${SCLIB_ROOT:-/opt/SCLib_JZIS}"
 LOG_DIR="${SCLIB_LOG_DIR:-/var/log/sclib}"
 LOG_FILE="${LOG_DIR}/cron.log"
 
@@ -63,6 +63,14 @@ log() {
     printf '[%s] %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" | tee -a "${LOG_FILE}"
 }
 
+stage_status() {
+    if [[ "$1" -eq 0 ]]; then
+        printf 'complete'
+    else
+        printf 'failed'
+    fi
+}
+
 on_error() {
     local exit_code=$?
     log "FAIL cron_daily_ingest exit=${exit_code} at line ${BASH_LINENO[0]}"
@@ -75,7 +83,7 @@ cd "${SCLIB_ROOT}"
 # ---- 1. Incremental ingest ----------------------------------------------
 
 log "START cron_daily_ingest"
-log "step 1/4: incremental ingest"
+log "step 1/5: incremental ingest"
 
 # --rm so each run is a clean container. `|| true` is deliberate: a
 # partial failure (below failure_success_threshold) returns non-zero
@@ -90,7 +98,7 @@ log "incremental ingest exit=${ingest_rc}"
 
 # ---- 2. Retry pass (drain failure pool) ---------------------------------
 
-log "step 2/4: retry pass (drain failure pool)"
+log "step 2/5: retry pass (drain failure pool)"
 set +e
 docker compose "${COMPOSE_FILES[@]}" run --rm ingestion \
     sclib-ingest --mode retry --limit 20 2>&1 | tee -a "${LOG_FILE}"
@@ -133,23 +141,40 @@ fi
 if [[ -z "${INTERNAL_API_KEY:-}" ]]; then
     log "WARN INTERNAL_API_KEY unset — skipping stats refresh"
 else
+    if [[ "${aggregate_rc}" -ne 0 ]]; then
+        pipeline_status="failed"
+    elif [[ "${ingest_rc}" -ne 0 || "${retry_rc}" -ne 0 ]]; then
+        pipeline_status="partial"
+    else
+        pipeline_status="complete"
+    fi
+    pipeline_completed_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    stats_refresh_payload="$(printf \
+        '{"data_pipeline":{"status":"%s","last_run_at":"%s","stages":{"incremental":{"status":"%s","exit_code":%d},"retry":{"status":"%s","exit_code":%d},"aggregate":{"status":"%s","exit_code":%d}}}}' \
+        "${pipeline_status}" \
+        "${pipeline_completed_at}" \
+        "$(stage_status "${ingest_rc}")" "${ingest_rc}" \
+        "$(stage_status "${retry_rc}")" "${retry_rc}" \
+        "$(stage_status "${aggregate_rc}")" "${aggregate_rc}")"
     curl --fail --silent --show-error \
         -X POST "http://127.0.0.1:8000/v1/stats/refresh" \
         -H "X-Internal-Key: ${INTERNAL_API_KEY}" \
+        -H "Content-Type: application/json" \
+        --data-binary "${stats_refresh_payload}" \
         2>&1 | tee -a "${LOG_FILE}" || log "WARN stats refresh curl failed"
 fi
 
 # ---- 5. Postgres backup → GCS -------------------------------------------
 #
-# Runs after the ingest + stats refresh so the snapshot includes the
-# day's new rows. Failures here are logged but do not fail the cron —
-# losing one night's backup is preferable to alerting on a noisy
-# transient gcloud error.
+# Runs after the ingest + stats refresh so the snapshot includes the day's new
+# rows. Backup failure fails the job: a silent RPO breach is not a successful
+# nightly operation.
 log "step 5/5: postgres backup → GCS"
 if [[ -x "${SCLIB_ROOT}/scripts/backup_postgres.sh" ]]; then
-    "${SCLIB_ROOT}/scripts/backup_postgres.sh" || log "WARN backup_postgres failed"
+    "${SCLIB_ROOT}/scripts/backup_postgres.sh"
 else
-    log "WARN backup_postgres.sh missing or not executable"
+    log "FAIL backup_postgres.sh missing or not executable"
+    exit 1
 fi
 
 log "DONE cron_daily_ingest ingest_rc=${ingest_rc} retry_rc=${retry_rc} aggregate_rc=${aggregate_rc}"

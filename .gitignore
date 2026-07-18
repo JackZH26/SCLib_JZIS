@@ -21,16 +21,16 @@ htmlcov/
 dist/
 build/
 
-# uv
-uv.lock
-
 # Node / Next.js
 node_modules/
 .next/
 out/
+*.tsbuildinfo
 .pnpm-store/
 pnpm-debug.log*
 npm-debug.log*
+playwright-report/
+test-results/
 
 # OS / editors
 .DS_Store

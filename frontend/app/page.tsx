@@ -6,10 +6,17 @@
  * large heading with a gradient-text highlight on the key phrase,
  * a muted subtitle, and a search bar + two outline CTAs.
  */
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SearchBar } from "@/components/SearchBar";
 import { StatsCards } from "@/components/StatsCards";
 import { getStats } from "@/lib/api";
+import { SITE_BASE_URL } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  alternates: { canonical: `${SITE_BASE_URL}/` },
+  openGraph: { url: `${SITE_BASE_URL}/` },
+};
 
 async function safeStats() {
   try {

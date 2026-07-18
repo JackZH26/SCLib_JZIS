@@ -3,7 +3,8 @@
 Two backends configured by EMAIL_BACKEND env:
   - resend  (production): calls Resend API (synchronous SDK, wrapped in
             asyncio.to_thread so it does not block the event loop)
-  - stdout  (dev/test):   logs the message to the application logger
+  - stdout  (dev/test):   records only that delivery was suppressed; message
+            bodies may contain reset tokens or API keys and are never logged
 
 Spec section 10 for the exact HTML templates.
 """
@@ -41,6 +42,17 @@ async def send_welcome(to: str, name: str, api_key: str) -> None:
 <p>Use header: <code>X-API-Key: {api_key}</code></p>
 <p>API docs: <a href="{docs}">{docs}</a></p>
 <p>This account works across all JZIS products — SCLib, ASRP, and more.</p>
+<p>— JZIS Team</p>"""
+    await _dispatch(to, subject, html)
+
+
+async def send_password_reset(to: str, name: str, token: str) -> None:
+    settings = get_settings()
+    url = f"{settings.frontend_url}/reset-password?token={token}"
+    subject = "Reset your JZIS password"
+    html = f"""<p>Hi {_h(name)},</p>
+<p>Use this one-time link to reset your password: <a href="{url}">{url}</a></p>
+<p>The link expires in {settings.password_reset_expiry_minutes} minutes. If you did not request it, no action is required.</p>
 <p>— JZIS Team</p>"""
     await _dispatch(to, subject, html)
 
@@ -117,10 +129,10 @@ def _ensure_resend_key() -> bool:
 async def _dispatch(to: str, subject: str, html: str) -> None:
     settings = get_settings()
     if settings.email_backend == "stdout":
-        log.info("=== EMAIL (stdout backend) ===\nTo: %s\nSubject: %s\n%s", to, subject, html)
+        log.info("email delivery suppressed by stdout backend")
         return
     if not _ensure_resend_key():
-        log.error("email_backend=resend but RESEND_API_KEY empty; dropping email to %s", to)
+        log.error("email_backend=resend but RESEND_API_KEY empty; dropping email")
         return
     params = {
         "from": settings.email_from,
@@ -131,6 +143,6 @@ async def _dispatch(to: str, subject: str, html: str) -> None:
     # Resend SDK is sync — run in threadpool so we do not block uvicorn
     try:
         await asyncio.to_thread(resend.Emails.send, params)
-        log.info("sent email to=%s subject=%s", to, subject)
-    except Exception as e:  # noqa: BLE001
-        log.exception("email send failed to=%s: %s", to, e)
+        log.info("email sent")
+    except Exception:  # noqa: BLE001
+        log.exception("email send failed")

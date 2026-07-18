@@ -11,7 +11,6 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-
 # ---------------------------------------------------------------------------
 # Search
 # ---------------------------------------------------------------------------
@@ -41,7 +40,7 @@ class SearchMatch(BaseModel):
     authors: list[str]
     year: int | None
     date_submitted: date | None
-    relevance_score: float  # higher = better (1 - cosine distance)
+    relevance_score: float  # higher = better (normalized hybrid rerank score)
     matched_chunk: str
     matched_section: str | None
     materials: list[dict[str, Any]]
@@ -87,6 +86,8 @@ class AskResponse(BaseModel):
     sources: list[AskSource]
     tokens_used: int | None
     query_time_ms: int
+    citation_valid: bool = True
+    citation_warnings: list[str] = Field(default_factory=list)
     guest_remaining: int | None = None
     remaining: int | None = None
 
@@ -262,6 +263,21 @@ class PaperDetail(PaperSummary):
     indexed_at: Any  # datetime — serialized by pydantic
 
 
+class SitemapResource(BaseModel):
+    """Minimal public resource identity used to generate XML sitemaps."""
+
+    kind: Literal["paper", "material"]
+    id: str
+    updated_at: datetime
+
+
+class SitemapResourcePage(BaseModel):
+    total: int
+    limit: int
+    offset: int
+    results: list[SitemapResource]
+
+
 class SimilarPaper(BaseModel):
     paper_id: str
     arxiv_id: str | None
@@ -280,21 +296,40 @@ class SimilarResponse(BaseModel):
 # Stats / Timeline (public)
 # ---------------------------------------------------------------------------
 
+class StatsPipelineStage(BaseModel):
+    status: Literal["complete", "failed", "unknown"] = "unknown"
+    exit_code: int | None = Field(None, ge=0, le=255)
+
+
+class StatsDataPipeline(BaseModel):
+    status: Literal["complete", "partial", "failed", "unknown"] = "unknown"
+    last_run_at: str | None = None
+    stages: dict[str, StatsPipelineStage] = Field(default_factory=dict)
+
+
+class StatsRefreshRequest(BaseModel):
+    data_pipeline: StatsDataPipeline | None = None
+
+
 class StatsResponse(BaseModel):
     total_papers: int
     total_materials: int
     total_chunks: int
     papers_by_year: dict[str, int]
-    papers_by_year_arxiv: dict[str, int] = {}
-    papers_by_year_aps: dict[str, int] = {}
+    papers_by_year_arxiv: dict[str, int] = Field(default_factory=dict)
+    papers_by_year_aps: dict[str, int] = Field(default_factory=dict)
     top_material_families: list[dict[str, Any]]
     last_ingest_at: str | None
+    # Explicit cache-computation timestamp. ``updated_at`` remains as a
+    # backward-compatible alias for older clients.
+    stats_refreshed_at: str | None = None
     updated_at: str
     # Calver string ("v2026.04.30") derived from last_ingest_at — gives
     # users a stable, human-readable handle for "which data snapshot is
     # this answer based on", mirroring Materials Project's
     # `database_version`. None when the DB has never been ingested.
     dataset_version: str | None = None
+    data_pipeline: StatsDataPipeline = Field(default_factory=StatsDataPipeline)
 
 
 class TimelinePoint(BaseModel):
@@ -328,12 +363,24 @@ class TimelineCoverage(BaseModel):
     total_materials: int
     year_min: int | None
     year_max: int | None
+    # Number of points included in this response. This can be lower than
+    # ``total_points`` when a caller requests deterministic downsampling.
+    returned_points: int
+    # Number of points available after optional deterministic downsampling and
+    # before offset/limit pagination.
+    available_points: int | None = None
 
 
 class TimelineResponse(BaseModel):
+    schema_version: Literal["1"] = "1"
+    data_version: str = "timeline-v1-unknown"
+    data_updated_at: datetime | None = None
     family: str | None
     points: list[TimelinePoint]
     coverage: TimelineCoverage | None = None
+    offset: int = 0
+    limit: int | None = None
+    has_more: bool = False
 
 
 # ---------------------------------------------------------------------------
@@ -347,6 +394,7 @@ class DiscoveryFilterRule(BaseModel):
 
 
 class DiscoveryCandidate(BaseModel):
+    schema_version: Literal["1"] = "1"
     candidate_id: str
     formula: str
     normalized_formula: str | None = None
@@ -357,23 +405,23 @@ class DiscoveryCandidate(BaseModel):
     candidate_quantity_score: float | None = None
     candidate_quality_score: float | None = None
     entry_block_reason: str | None = None
-    upgrade_requirements: list[str] = []
+    upgrade_requirements: list[str] = Field(default_factory=list)
     evidence_schema_version: str | None = None
     evidence_quality_score: float | None = None
     literature_verifier_status: str | None = None
-    literature_verifier_flags: list[str] = []
-    failure_mode_taxonomy: list[str] = []
+    literature_verifier_flags: list[str] = Field(default_factory=list)
+    failure_mode_taxonomy: list[str] = Field(default_factory=list)
     synthesis_feasibility_score: float | None = None
-    synthesis_feasibility_flags: list[str] = []
+    synthesis_feasibility_flags: list[str] = Field(default_factory=list)
     measurement_clarity_score: float | None = None
     correlation_gate_status: str | None = None
-    correlation_gate_flags: list[str] = []
+    correlation_gate_flags: list[str] = Field(default_factory=list)
     experiment_priority_score: float | None = None
     experiment_readiness: str | None = None
     family_ruleset_id: str | None = None
     validation_recipe_id: str | None = None
     condition_class: str | None = None
-    required_condition_vector: list[str] = []
+    required_condition_vector: list[str] = Field(default_factory=list)
     evidence_level: str
     checker_status: str
     public_confidence: str
@@ -382,7 +430,7 @@ class DiscoveryCandidate(BaseModel):
     next_action: str | None = None
     discovery_score: float | None = None
     mechanism_hypothesis: str | None = None
-    risk_tags: list[str] = []
+    risk_tags: list[str] = Field(default_factory=list)
     review_summary: str | None = None
     provenance_summary: str | None = None
     recommended_next_step: str | None = None
@@ -391,6 +439,7 @@ class DiscoveryCandidate(BaseModel):
 
 
 class DiscoveryResponse(BaseModel):
+    schema_version: Literal["1"] = "1"
     page_title: str
     intro: list[str]
     status: Literal["planned", "active"] = "planned"
@@ -398,3 +447,51 @@ class DiscoveryResponse(BaseModel):
     source: str | None = None
     filter_rules: list[DiscoveryFilterRule]
     candidates: list[DiscoveryCandidate]
+
+
+class DiscoveryCandidateSummary(BaseModel):
+    """Fields required to render one collapsed discovery result.
+
+    The full dossier remains available from the candidate detail endpoint, so
+    list pages do not repeatedly transfer long evidence and provenance arrays.
+    """
+
+    schema_version: Literal["1"] = "1"
+    candidate_id: str
+    formula: str
+    branch: str
+    lane_id: str | None = None
+    prototype_family: str | None = None
+    candidate_layer: str | None = None
+    condition_class: str | None = None
+    evidence_level: str
+    checker_status: str
+    public_confidence: str
+    evidence_quality_score: float | None = None
+    experiment_readiness: str | None = None
+    record_role: str | None = None
+    claim_level: str | None = None
+    next_action: str | None = None
+    discovery_score: float | None = None
+
+
+class DiscoveryMetadata(BaseModel):
+    schema_version: Literal["1"] = "1"
+    page_title: str
+    intro: list[str]
+    status: Literal["planned", "active"] = "planned"
+    updated_at_utc: datetime | None = None
+    source: str | None = None
+    filter_rules: list[DiscoveryFilterRule]
+    total_candidates: int
+    role_counts: dict[str, int]
+
+
+class DiscoveryCandidatePage(BaseModel):
+    schema_version: Literal["1"] = "1"
+    items: list[DiscoveryCandidateSummary]
+    total: int
+    offset: int
+    limit: int
+    has_more: bool
+    record_role: str | None = None

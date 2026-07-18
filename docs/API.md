@@ -16,50 +16,111 @@ counter, key `guest_quota:YYYY-MM-DD:{ip}`). Exceeding the quota returns
 
 ### `POST /auth/register`
 ```json
-{ "email": "you@example.com", "password": "…" }
+{ "email": "you@example.com", "password": "…", "name": "…" }
 ```
-Creates an account and emails a verification link. Returns 202.
+Creates an account and emails a verification link. Returns 201. `age`,
+`institution`, `country`, `research_area`, and `purpose` are optional for
+backward compatibility; the public form does not request age.
 
-### `POST /auth/verify`
-```json
-{ "token": "<one-time-token-from-email>" }
-```
+### `GET /auth/verify?token=<one-time-token-from-email>`
 Marks the account verified and returns the first API key (`scl_…`).
 
 ### `POST /auth/login`
 ```json
 { "email": "…", "password": "…" }
 ```
-Returns a JWT session cookie + the masked API key record.
+Returns a bearer JWT for non-browser clients. Browser clients use
+`POST /auth/session/login`, which establishes an HttpOnly cookie without
+exposing the JWT to JavaScript.
+
+Login, registration, and password-reset attempts are rate-limited by both
+client IP and a keyed digest of the normalized account identifier. Repeated
+login failures trigger an exponential `Retry-After` backoff.
+
+### `POST /auth/password-reset/request`
+```json
+{ "email": "you@example.com" }
+```
+Always returns the same response. Eligible password accounts receive a
+single-use reset link that expires after 30 minutes.
+
+### `POST /auth/password-reset/confirm`
+```json
+{ "token": "<one-time-token-from-email>", "new_password": "…" }
+```
+Consumes the hashed reset grant, changes the password, and invalidates every
+previously issued JWT session.
+
+### `POST /auth/sessions/revoke-all`
+Requires a browser session or bearer JWT. Invalidates all browser and bearer
+sessions for the user. API keys are unaffected and retain their own explicit
+revocation lifecycle.
 
 ### `GET /auth/me`
-Returns the authenticated user and their API keys.
+Returns the authenticated user.
+
+### `GET /auth/me/export`
+Returns a downloadable, `no-store` JSON copy of the authenticated user's
+profile, API-key metadata, Ask history, bookmarks, token lifecycle metadata,
+and security events. Password hashes, API-key hashes, reset/verification token
+material, raw IP hashes, and user-agent hashes are never exported.
+
+### `DELETE /auth/me`
+```json
+{
+  "confirmation": "DELETE",
+  "email": "you@example.com",
+  "current_password": "required for password-capable accounts"
+}
+```
+Permanently deletes the current non-admin account and its API keys, Ask
+history, bookmarks, and authentication grants. The exact account email and
+current password (when one exists) are required. Direct user references are
+removed from the retained pseudonymous security audit event. Administrator
+accounts must be demoted before using this endpoint.
 
 ## Search & Q&A
+
+All responses include `X-API-Version` and `X-Request-ID`. Error bodies preserve
+the legacy `detail` field and add stable `error_code` and `request_id` fields.
+See [API versioning and compatibility](API_VERSIONING.md) for the v1 change and
+deprecation policy.
+
+Versioned public data responses include `schema_version` in the body and return
+`ETag`, `X-Data-Version`, and `Last-Modified` validators. Send `If-None-Match`
+or `If-Modified-Since` to receive `304 Not Modified`. Discovery summaries use
+`offset`/`limit`; Timeline supports the same parameters after optional
+deterministic `max_points` downsampling. The response reports `has_more` and
+both available and returned point counts.
 
 ### `POST /search`
 ```json
 {
   "query": "room temperature superconductors 2023",
   "top_k": 10,
-  "year_min": 2020,
-  "year_max": 2024,
-  "material_family": "cuprate"
+  "filters": {
+    "year_min": 2020,
+    "year_max": 2024,
+    "material_family": ["cuprate"]
+  }
 }
 ```
-Embeds the query with Google Gen AI `text-embedding-005`, runs an
-approximate-nearest-neighbor lookup against the Vertex AI Matching
-Engine index, then joins the hits against Postgres to return full
-paper records + chunk snippets. Each hit carries a `relevance` float
-in `[0, 1]`.
+Combines Google `text-embedding-005` / Vertex ANN candidates with PostgreSQL
+full-text candidates, applies Reciprocal Rank Fusion and a deterministic
+query-coverage reranker, then joins authoritative paper/chunk rows. A Vertex
+timeout, exhausted retry, or open circuit degrades to PostgreSQL lexical
+retrieval. Each hit carries a `relevance_score` float in `[0, 1]`.
 
 ### `POST /ask`
 ```json
-{ "query": "What is the role of pressure in high-Tc hydrides?" }
+{ "question": "What is the role of pressure in high-Tc hydrides?" }
 ```
-Runs `POST /search` internally, feeds the top chunks into Gemini 3.5
-Flash with a system prompt that forces inline `[n]` citations, and
-returns:
+Runs the same hybrid candidate strategy, keeps at most one source per paper,
+and feeds bounded untrusted-source JSON into Gemini with a separate system
+instruction that requires inline `[n]` citations. The response includes
+`citation_valid` and machine-readable `citation_warnings`. Invalid source
+numbers are removed. A Gemini timeout, exhausted retry, or open circuit returns
+cited extractive snippets instead of failing the entire request.
 
 ```json
 {
