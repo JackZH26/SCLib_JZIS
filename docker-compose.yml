@@ -142,7 +142,7 @@ services:
         condition: service_healthy
 
   alertmanager:
-    image: quay.io/prometheus/alertmanager:v0.32.1
+    image: quay.io/prometheus/alertmanager:v0.33.1
     container_name: sclib-alertmanager
     restart: unless-stopped
     profiles: ["observability"]
