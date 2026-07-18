@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1.7
-FROM node:20-alpine AS deps
+FROM node:26-alpine AS deps
 WORKDIR /app
 RUN corepack enable
 COPY package.json pnpm-lock.yaml ./
 RUN corepack prepare pnpm@9.12.0 --activate && pnpm install --frozen-lockfile
 
-FROM node:20-alpine AS builder
+FROM node:26-alpine AS builder
 WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@9.12.0 --activate
 COPY --from=deps /app/node_modules ./node_modules
@@ -28,7 +28,7 @@ ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH \
     NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build
 
-FROM node:20-alpine AS runner
+FROM node:26-alpine AS runner
 WORKDIR /app
 ARG NEXT_PUBLIC_BASE_PATH=/sclib
 # Re-declare GIT_SHA in the runner stage so it's also baked into the
