@@ -84,6 +84,7 @@ class SecurityWorkflowTests(unittest.TestCase):
             "actions/attest-build-provenance@",
             "anchore/sbom-action@",
             "aquasecurity/trivy-action@",
+            "limit-severities-for-sarif: true",
             '${{ matrix.component }}.sha',
         ):
             self.assertIn(required, release)

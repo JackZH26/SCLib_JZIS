@@ -127,6 +127,7 @@ jobs:
           scanners: vuln
           severity: HIGH,CRITICAL
           ignore-unfixed: true
+          limit-severities-for-sarif: true
           format: sarif
           output: trivy-${{ matrix.component }}.sarif
           exit-code: "1"
