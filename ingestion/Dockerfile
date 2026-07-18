@@ -27,7 +27,15 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --locked --no-dev --no-install-project
 
 COPY ingestion ./ingestion
-RUN uv sync --locked --no-dev --no-editable
+# Ingestion runs exclusively from /opt/venv. Package managers are build-time
+# tools and must not carry their vendored dependencies into production.
+RUN uv sync --locked --no-dev --no-editable \
+ && rm -rf \
+      /root/.cache/uv \
+      /usr/local/lib/python3.11/site-packages/pip* \
+      /usr/local/lib/python3.11/site-packages/setuptools* \
+      /usr/local/lib/python3.11/site-packages/wheel* \
+ && rm -f /usr/local/bin/pip* /bin/uv /bin/uvx
 
 # Non-root runtime. Shared UID 1001 matches the API image so the host identity
 # agent can grant both workloads narrowly scoped token-file read access.

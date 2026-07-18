@@ -58,6 +58,18 @@ class ErrorBudgetEvaluationTests(unittest.TestCase):
         )
         self.assertTrue(result.passed)
 
+    def test_absent_error_series_is_zero_when_total_traffic_exists(self) -> None:
+        result = evaluate_availability(
+            "public-api",
+            total=250,
+            errors=None,
+            target=0.999,
+            minimum_requests=100,
+            allow_no_data=False,
+        )
+        self.assertTrue(result.passed)
+        self.assertEqual(result.observed, 1.0)
+
     def test_data_older_than_24_hours_fails(self) -> None:
         result = evaluate_freshness(
             age_seconds=86_401,
@@ -68,11 +80,11 @@ class ErrorBudgetEvaluationTests(unittest.TestCase):
 
     def test_prometheus_query_matches_parameterized_route_labels(self) -> None:
         query = _increase_query(
-            r"/v1/paper/[{]paper_id[}]",
+            r"/paper/[{]paper_id:path[}]",
             "30d",
             errors_only=True,
         )
-        self.assertIn('route=~"/v1/paper/[{]paper_id[}]"', query)
+        self.assertIn('route=~"/paper/[{]paper_id:path[}]"', query)
         self.assertIn('status=~"5.."', query)
 
     def test_invalid_window_is_rejected(self) -> None:

@@ -5,9 +5,9 @@ groups:
       - alert: SCLibPublicAPIFastErrorBudgetBurn
         expr: |
           (
-            sum(rate(sclib_http_requests_total{route=~"/v1/(stats|version|materials|materials/[{]material_id[}]|paper/[{]paper_id[}]|timeline|discovery/candidates)",status=~"5.."}[5m]))
+            sum(rate(sclib_http_requests_total{route=~"/(stats|version|materials|materials/[{]material_id:path[}]|paper/[{]paper_id:path[}]|timeline|discovery/candidates)",status=~"5.."}[5m]))
             /
-            clamp_min(sum(rate(sclib_http_requests_total{route=~"/v1/(stats|version|materials|materials/[{]material_id[}]|paper/[{]paper_id[}]|timeline|discovery/candidates)"}[5m])), 0.001)
+            clamp_min(sum(rate(sclib_http_requests_total{route=~"/(stats|version|materials|materials/[{]material_id:path[}]|paper/[{]paper_id:path[}]|timeline|discovery/candidates)"}[5m])), 0.001)
           ) > 0.0144
         for: 5m
         labels:
@@ -20,9 +20,9 @@ groups:
       - alert: SCLibAIAPIFastErrorBudgetBurn
         expr: |
           (
-            sum(rate(sclib_http_requests_total{route=~"/v1/(search|ask|paper/[{]paper_id[}]/similar)",status=~"5.."}[5m]))
+            sum(rate(sclib_http_requests_total{route=~"/(search|ask|similar/[{]paper_id:path[}])",status=~"5.."}[5m]))
             /
-            clamp_min(sum(rate(sclib_http_requests_total{route=~"/v1/(search|ask|paper/[{]paper_id[}]/similar)"}[5m])), 0.001)
+            clamp_min(sum(rate(sclib_http_requests_total{route=~"/(search|ask|similar/[{]paper_id:path[}])"}[5m])), 0.001)
           ) > 0.072
         for: 5m
         labels:
@@ -36,7 +36,7 @@ groups:
         expr: |
           histogram_quantile(
             0.95,
-            sum by (le, route) (rate(sclib_http_request_duration_seconds_bucket{route=~"/v1/.*"}[10m]))
+            sum by (le, route) (rate(sclib_http_request_duration_seconds_bucket{route=~"/.*"}[10m]))
           ) > 2
         for: 10m
         labels:

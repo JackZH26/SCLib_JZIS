@@ -18,6 +18,16 @@ services:
       - exec
       - --
       - /app/entrypoint.sh
+    # Compose clears the image CMD when this entrypoint is overridden on some
+    # engine versions. Keep the production process explicit so the credential
+    # validator cannot exit successfully without starting the API.
+    command:
+      - uvicorn
+      - main:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
     volumes:
       - /etc/sclib/credentials/api-external-account.json:/credentials/gcp-api.json:ro
       - /run/sclib-identity/api:/var/run/sclib-identity/api:ro
