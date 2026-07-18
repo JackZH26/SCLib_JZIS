@@ -109,7 +109,7 @@ services:
     # Internal only — no ports exposed
 
   redis:
-    image: redis:7-alpine
+    image: redis:8-alpine
     container_name: sclib-redis
     restart: unless-stopped
     command: redis-server --appendonly yes
