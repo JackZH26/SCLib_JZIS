@@ -2,7 +2,7 @@
 # Ingestion runner. Shares no code with api/ — imports only from its own
 # package — so it can be built and run independently (e.g. as a one-shot
 # cron job via `docker compose run --rm ingestion sclib-ingest --mode ...`).
-FROM python:3.11-slim AS base
+FROM python:3.14-slim AS base
 
 # uv 0.11.16 multi-platform image index, pinned by digest.
 COPY --from=ghcr.io/astral-sh/uv@sha256:440fd6477af86a2f1b38080c539f1672cd22acb1b1a47e321dba5158ab08864d /uv /uvx /bin/
