@@ -62,8 +62,8 @@
       "gridPos": {"h": 8, "w": 8, "x": 8, "y": 16},
       "id": 6,
       "options": {"colorMode": "background", "graphMode": "area", "justifyMode": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "values": false}, "textMode": "auto"},
-      "targets": [{"expr": "sclib_dataset_age_seconds", "refId": "A"}],
-      "title": "Dataset age",
+      "targets": [{"expr": "sclib_pipeline_last_run_age_seconds", "refId": "A"}],
+      "title": "Pipeline last-run age",
       "type": "stat"
     },
     {

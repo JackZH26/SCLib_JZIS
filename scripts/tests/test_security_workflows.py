@@ -121,6 +121,19 @@ class SecurityWorkflowTests(unittest.TestCase):
         self.assertIn("- uvicorn", api_block)
         self.assertIn('- "8000"', api_block)
 
+    def test_scheduled_jobs_reuse_last_signed_release_manifest(self) -> None:
+        deploy = (WORKFLOW_DIR / "deploy.yml").read_text()
+        ingest = (WORKFLOW_DIR / "ingest-daily.yml").read_text()
+        cron = (ROOT / "scripts" / "cron_daily_ingest.sh").read_text()
+        aggregate = (ROOT / "scripts" / "sclib-daily-aggregate.sh").read_text()
+
+        self.assertIn(".env.release", deploy)
+        self.assertIn('mv -f "$release_env"', deploy)
+        self.assertIn("bash scripts/cron_daily_ingest.sh", ingest)
+        for script in (cron, aggregate):
+            self.assertIn(".env.release", script)
+            self.assertIn("docker-compose.prod.yml", script)
+
     def test_runtime_images_remove_build_package_managers(self) -> None:
         api = (ROOT / "api" / "Dockerfile").read_text()
         ingestion = (ROOT / "ingestion" / "Dockerfile").read_text()

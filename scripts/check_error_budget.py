@@ -73,14 +73,14 @@ def evaluate_freshness(
             allow_no_data,
             None,
             maximum_age_seconds,
-            "dataset age metric is unavailable",
+            "pipeline age metric is unavailable",
         )
     return CheckResult(
         "data-freshness",
         age_seconds <= maximum_age_seconds,
         age_seconds,
         maximum_age_seconds,
-        f"dataset age is {age_seconds / 3600:.2f} hours",
+        f"pipeline age is {age_seconds / 3600:.2f} hours",
     )
 
 
@@ -140,7 +140,7 @@ def run_checks(args: argparse.Namespace) -> list[CheckResult]:
         )
     age = prometheus_scalar(
         args.prometheus_url,
-        "max(sclib_dataset_age_seconds)",
+        "max(sclib_pipeline_last_run_age_seconds)",
         args.timeout,
     )
     checks.append(

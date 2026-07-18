@@ -73,14 +73,16 @@ groups:
           summary: SCLib dependency {{ $labels.dependency }} failure rate exceeds 5%
           runbook_url: https://github.com/JackZH26/SCLib_JZIS/blob/main/docs/OBSERVABILITY_SLO.md#dependency-alert
 
-      - alert: SCLibDatasetStale
-        expr: sclib_dataset_age_seconds > 86400
+      - alert: SCLibPipelineStale
+        expr: |
+          (sclib_pipeline_last_run_age_seconds > 86400)
+          or on() (absent(sclib_pipeline_last_run_age_seconds) == 1)
         for: 30m
         labels:
           severity: warning
           slo: data-freshness
         annotations:
-          summary: SCLib indexed dataset is more than 24 hours old
+          summary: SCLib ingestion pipeline has not reported a run in 24 hours
           runbook_url: https://github.com/JackZH26/SCLib_JZIS/blob/main/docs/OBSERVABILITY_SLO.md#data-freshness-alert
 
       - alert: SCLibPipelineStageFailed

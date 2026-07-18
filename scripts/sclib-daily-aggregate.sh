@@ -42,7 +42,8 @@ STATE_DIR="${SCLIB_STATE_DIR:-/var/lib/sclib}"
 FAILURE_COUNTER="${STATE_DIR}/aggregate_consecutive_failures"
 LOCKFILE="${SCLIB_LOCKFILE:-/var/lock/sclib-aggregate.lock}"
 
-COMPOSE_FILES=(-f docker-compose.yml)
+COMPOSE_FILES=(-f docker-compose.yml -f docker-compose.prod.yml)
+RELEASE_ENV="${SCLIB_RELEASE_ENV:-${SCLIB_ROOT}/.env.release}"
 
 ALERT_EMAIL="${SCLIB_ALERT_EMAIL:-info@jzis.org}"
 ALERT_FROM="${SCLIB_ALERT_FROM:-alerts@jzis.org}"
@@ -154,6 +155,16 @@ EOF
 # ---- Main -----------------------------------------------------------------
 
 cd "${SCLIB_ROOT}"
+
+if [[ ! -r "${RELEASE_ENV}" ]]; then
+    log "FAIL signed release manifest missing: ${RELEASE_ENV}"
+    bump_failure "signed release manifest missing"
+    exit 1
+fi
+set -a
+# shellcheck disable=SC1090
+source "${RELEASE_ENV}"
+set +a
 
 log "START daily_aggregate"
 

@@ -39,7 +39,7 @@ explicitly returns 404 for the public `/sclib/metrics` path.
 | Public API latency | p95 request duration for non-generation public routes | < 750 ms | monitored, not a release blocker |
 | Search latency | p95 search duration | < 2 s | monitored, not a release blocker |
 | Ask latency | p95 Ask duration | < 15 s | monitored, not a release blocker |
-| Data freshness | Latest indexed paper age | <= 24 h | 99% of calendar days |
+| Data freshness | Latest reported ingestion pipeline run age | <= 24 h | 99% of calendar days |
 | RAG citations | Answers passing citation validation | >= 95% over 30 minutes | quality alert |
 
 HTTP 4xx responses do not count against availability because they represent a
@@ -58,7 +58,7 @@ python3 scripts/check_error_budget.py \
 ```
 
 The gate fails closed when Prometheus is unavailable, traffic is insufficient,
-the public/AI availability budget is exhausted, or the dataset is stale. Use
+the public/AI availability budget is exhausted, or the ingestion pipeline is stale. Use
 `--allow-no-data` only for local validation or the initial monitoring bootstrap;
 never pass it in the production deployment workflow. A failed gate freezes
 feature releases. Emergency security and reliability fixes may proceed only
@@ -113,8 +113,10 @@ failures must not be bypassed by disabling their controls.
 ### Data-freshness alert
 
 Inspect `scripts/cron_daily_ingest.sh` stage logs, the ingestion container exit
-code, `pipeline_state`, and the failed-paper pool. Retry only the failed stage;
-do not manually advance the freshness metric.
+code, `pipeline_state`, and the failed-paper pool. The separate
+`sclib_dataset_age_seconds` content metric may legitimately grow when arXiv has
+no new records, including weekends. Retry only the failed stage; do not
+manually advance either freshness metric.
 
 ### Pipeline alert
 

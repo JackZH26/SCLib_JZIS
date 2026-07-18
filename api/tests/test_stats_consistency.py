@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from unittest.mock import Mock
 
 from models.search import StatsDataPipeline, StatsResponse
 from routers.stats import stats as stats_endpoint
@@ -86,6 +87,8 @@ async def test_explicit_cron_pipeline_state_replaces_preserved_state(monkeypatch
         return _payload()
 
     monkeypatch.setattr(stats_refresh, "compute_stats", fake_compute_stats)
+    metrics_spy = Mock()
+    monkeypatch.setattr(stats_refresh, "update_dataset_metrics", metrics_spy)
     reported = StatsDataPipeline.model_validate({
         "status": "complete",
         "last_run_at": "2026-07-13T01:00:00Z",
@@ -104,6 +107,11 @@ async def test_explicit_cron_pipeline_state_replaces_preserved_state(monkeypatch
     assert result["data_pipeline"]["status"] == "complete"
     assert result["data_pipeline"]["stages"]["aggregate"]["exit_code"] == 0
     assert len(db.executed) == 2
+    metrics_spy.assert_called_once()
+    metric_payload, metric_stages, metric_last_run = metrics_spy.call_args.args
+    assert metric_payload["last_ingest_at"] == _payload()["last_ingest_at"]
+    assert metric_stages == reported.stages
+    assert metric_last_run == "2026-07-13T01:00:00Z"
 
 
 async def test_cached_row_timestamp_is_authoritative_stats_refresh_time():

@@ -211,3 +211,14 @@ jobs:
             esac
             curl --max-time 15 --fail --silent --show-error \
               https://jzis.org/sclib/ >/dev/null
+
+            # Persist only after every smoke check succeeds. Scheduled ingest
+            # and aggregation then reuse the exact signed immutable images
+            # from this deployment instead of a stale local build.
+            umask 077
+            release_env="$(mktemp "$DEPLOY_PATH/.env.release.XXXXXX")"
+            printf 'SCLIB_FRONTEND_IMAGE=%s\nSCLIB_API_IMAGE=%s\nSCLIB_INGESTION_IMAGE=%s\n' \
+              "$SCLIB_FRONTEND_IMAGE" \
+              "$SCLIB_API_IMAGE" \
+              "$SCLIB_INGESTION_IMAGE" > "$release_env"
+            mv -f "$release_env" "$DEPLOY_PATH/.env.release"

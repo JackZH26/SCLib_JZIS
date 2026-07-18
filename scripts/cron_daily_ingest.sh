@@ -56,6 +56,7 @@ if [[ -f "${SCLIB_ROOT}/.env.cron" ]]; then
     # shellcheck disable=SC1091
     source "${SCLIB_ROOT}/.env.cron"
 fi
+RELEASE_ENV="${SCLIB_RELEASE_ENV:-${SCLIB_ROOT}/.env.release}"
 
 mkdir -p "${LOG_DIR}"
 
@@ -79,6 +80,15 @@ on_error() {
 trap on_error ERR
 
 cd "${SCLIB_ROOT}"
+
+if [[ ! -r "${RELEASE_ENV}" ]]; then
+    log "FAIL signed release manifest missing: ${RELEASE_ENV}"
+    exit 1
+fi
+set -a
+# shellcheck disable=SC1090
+source "${RELEASE_ENV}"
+set +a
 
 # ---- 1. Incremental ingest ----------------------------------------------
 

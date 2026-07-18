@@ -222,7 +222,8 @@ release gates, and alert runbooks.
 - `docker compose --profile observability logs -f api frontend prometheus`
 - `docker compose --profile observability ps` — application and monitoring
   services should be running; API/frontend/PostgreSQL/Redis should be healthy
-- `GET /stats.updated_at` and `sclib_dataset_age_seconds` report freshness
+- `sclib_pipeline_last_run_age_seconds` reports operational ingest freshness;
+  `GET /stats.last_ingest_at` and `sclib_dataset_age_seconds` report content age
 - GCS `metadata/failed_papers.json` — the failure pool; non-empty is fine, the
   retry pass drains it; intervene if the same IDs persist with `status: dead`
 
