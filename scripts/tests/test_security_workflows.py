@@ -220,6 +220,23 @@ class SecurityWorkflowTests(unittest.TestCase):
                 rf'package-ecosystem:\s+["\']?{re.escape(ecosystem)}["\']?',
             )
 
+    def test_observability_config_validation_matches_runtime_versions(self) -> None:
+        compose = (ROOT / "docker-compose.yml").read_text()
+        workflow = (WORKFLOW_DIR / "test.yml").read_text()
+        for image, tool_image in (
+            (
+                "prom/prometheus:v3.13.1-distroless",
+                "prom/prometheus:v3.13.1",
+            ),
+            (
+                "quay.io/prometheus/alertmanager:v0.33.1",
+                "quay.io/prometheus/alertmanager:v0.33.1",
+            ),
+        ):
+            self.assertIn(image, compose)
+            self.assertIn(tool_image, workflow)
+        self.assertIn("grafana/grafana:13.1.0", compose)
+
 
 if __name__ == "__main__":
     unittest.main()

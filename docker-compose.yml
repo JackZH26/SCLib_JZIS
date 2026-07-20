@@ -123,7 +123,7 @@ services:
     # Internal only — no ports exposed
 
   prometheus:
-    image: prom/prometheus:v3.12.0-distroless
+    image: prom/prometheus:v3.13.1-distroless
     container_name: sclib-prometheus
     restart: unless-stopped
     profiles: ["observability"]
@@ -142,7 +142,7 @@ services:
         condition: service_healthy
 
   alertmanager:
-    image: quay.io/prometheus/alertmanager:v0.32.1
+    image: quay.io/prometheus/alertmanager:v0.33.1
     container_name: sclib-alertmanager
     restart: unless-stopped
     profiles: ["observability"]
@@ -156,7 +156,7 @@ services:
       - "127.0.0.1:9093:9093"
 
   grafana:
-    image: grafana/grafana:13.0.2
+    image: grafana/grafana:13.1.0
     container_name: sclib-grafana
     restart: unless-stopped
     profiles: ["observability"]
