@@ -21,7 +21,7 @@ jobs:
       - name: Check VPS2 SSH connectivity
         id: ssh_preflight_primary
         continue-on-error: true
-        uses: appleboy/ssh-action@823bd89e131d8d508129f9443cad5855e9ba96f0 # v1.2.4
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.VPS2_HOST }}
           username: ${{ secrets.VPS2_USER }}
@@ -38,7 +38,7 @@ jobs:
 
       - name: Retry VPS2 SSH connectivity
         if: steps.ssh_preflight_primary.outcome == 'failure'
-        uses: appleboy/ssh-action@823bd89e131d8d508129f9443cad5855e9ba96f0 # v1.2.4
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.VPS2_HOST }}
           username: ${{ secrets.VPS2_USER }}
@@ -50,7 +50,7 @@ jobs:
           script: "true"
 
       - name: Trigger incremental ingest on VPS2
-        uses: appleboy/ssh-action@823bd89e131d8d508129f9443cad5855e9ba96f0 # v1.2.4
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         env:
           DEPLOY_PATH: ${{ secrets.VPS2_DEPLOY_PATH }}
         with:
