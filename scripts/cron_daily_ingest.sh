@@ -83,6 +83,28 @@ stage_status() {
     fi
 }
 
+run_ingestion_stage() {
+    local -a pipeline_statuses
+    local stage_rc
+
+    # A non-zero ingestion stage is expected to be reportable as a partial
+    # pipeline result. Put the pipeline in an explicit conditional so Bash's
+    # inherited ERR trap cannot abort the whole job before aggregate, stats,
+    # and backup have run. Also preserve a rare tee failure instead of
+    # accidentally reporting the stage as successful.
+    if docker compose "${COMPOSE_FILES[@]}" run --rm ingestion \
+        sclib-ingest "$@" 2>&1 | tee -a "${LOG_FILE}"; then
+        return 0
+    else
+        pipeline_statuses=("${PIPESTATUS[@]}")
+        stage_rc="${pipeline_statuses[0]}"
+        if [[ "${stage_rc}" -eq 0 ]]; then
+            stage_rc="${pipeline_statuses[1]}"
+        fi
+        return "${stage_rc}"
+    fi
+}
+
 on_error() {
     local exit_code=$?
     log "FAIL cron_daily_ingest exit=${exit_code} at line ${BASH_LINENO[0]}"
@@ -106,25 +128,24 @@ set +a
 log "START cron_daily_ingest"
 log "step 1/5: incremental ingest"
 
-# --rm so each run is a clean container. `|| true` is deliberate: a
-# partial failure (below failure_success_threshold) returns non-zero
-# but we still want the retry pass + stats refresh to run. We capture
-# the exit code so the final log line reflects it.
-set +e
-docker compose "${COMPOSE_FILES[@]}" run --rm ingestion \
-    sclib-ingest --mode incremental 2>&1 | tee -a "${LOG_FILE}"
-ingest_rc=${PIPESTATUS[0]}
-set -e
+# --rm so each run is a clean container. A partial failure (below
+# failure_success_threshold) returns non-zero, but we still run retry,
+# aggregate, stats refresh, and the verified backup.
+if run_ingestion_stage --mode incremental; then
+    ingest_rc=0
+else
+    ingest_rc=$?
+fi
 log "incremental ingest exit=${ingest_rc}"
 
 # ---- 2. Retry pass (drain failure pool) ---------------------------------
 
 log "step 2/5: retry pass (drain failure pool)"
-set +e
-docker compose "${COMPOSE_FILES[@]}" run --rm ingestion \
-    sclib-ingest --mode retry --limit 20 2>&1 | tee -a "${LOG_FILE}"
-retry_rc=${PIPESTATUS[0]}
-set -e
+if run_ingestion_stage --mode retry --limit 20; then
+    retry_rc=0
+else
+    retry_rc=$?
+fi
 log "retry pass exit=${retry_rc}"
 
 # ---- 3. Aggregate per-paper NER into materials table -------------------
@@ -135,11 +156,11 @@ log "retry pass exit=${retry_rc}"
 # summary from scratch every run.
 
 log "step 3/5: aggregate NER records into materials table"
-set +e
-docker compose "${COMPOSE_FILES[@]}" run --rm ingestion \
-    sclib-ingest --mode aggregate-materials 2>&1 | tee -a "${LOG_FILE}"
-aggregate_rc=${PIPESTATUS[0]}
-set -e
+if run_ingestion_stage --mode aggregate-materials; then
+    aggregate_rc=0
+else
+    aggregate_rc=$?
+fi
 log "aggregate-materials exit=${aggregate_rc}"
 
 # ---- 4. Refresh stats cache ---------------------------------------------
