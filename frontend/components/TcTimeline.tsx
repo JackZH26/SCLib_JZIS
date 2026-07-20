@@ -30,10 +30,11 @@
  *   zoom both axes in tandem.
  *
  * Loaded dynamically (ssr: false) because plotly.js walks `window`
- * at import time.
+ * at import time. WebGL is preferred, with an SVG compatibility
+ * renderer for browsers where WebGL is disabled or unavailable.
  */
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TimelineCoverage, TimelinePoint } from "@/lib/api";
 import { FAMILY_COLORS, familyLabel } from "@/lib/families";
 import { formulaToHtml } from "@/components/FormulaDisplay";
@@ -41,7 +42,12 @@ import { formulaToHtml } from "@/components/FormulaDisplay";
 // `loading: () => null` because we render our own overlay below; the
 // default would briefly flash plotly's empty inner div before our
 // spinner appears.
-const Plot = dynamic(() => import("@/components/PlotlyGl2d"), {
+const PlotWebGL = dynamic(() => import("@/components/PlotlyGl2d"), {
+  ssr: false,
+  loading: () => null,
+});
+
+const PlotSvg = dynamic(() => import("@/components/PlotlyBasic2d"), {
   ssr: false,
   loading: () => null,
 });
@@ -51,6 +57,26 @@ const Y_MAX_DEFAULT = 300;
 // pressed flat against the x-axis. Negative Kelvin is unphysical so
 // these K values never carry data — they're whitespace only.
 const Y_MIN_DEFAULT = -30;
+const SVG_POINT_LIMIT = 3000;
+
+type TimelineRenderer = "detecting" | "webgl" | "svg";
+
+export function browserSupportsWebGL(): boolean {
+  if (typeof document === "undefined") return false;
+  try {
+    const canvas = document.createElement("canvas");
+    // Plotly GL2D requests a WebGL 1 context with these attributes. Do not
+    // probe WebGL 2 first: a successful WebGL 2 context locks that canvas and
+    // can hide the fact that Plotly's required WebGL 1 context is unavailable.
+    const attributes: WebGLContextAttributes = {
+      preserveDrawingBuffer: true,
+      premultipliedAlpha: true,
+    };
+    return Boolean(canvas.getContext("webgl", attributes));
+  } catch {
+    return false;
+  }
+}
 
 function pressureLabel(p: number | null | undefined): string {
   if (p == null) return "ambient (unstated)";
@@ -94,10 +120,45 @@ export function TcTimeline({
   // visible" — that gap is several seconds with tens of thousands
   // of markers, and used to show as a blank white box.
   const [isPlotReady, setIsPlotReady] = useState(false);
+  const [renderer, setRenderer] = useState<TimelineRenderer>("detecting");
+
+  useEffect(() => {
+    setRenderer(browserSupportsWebGL() ? "webgl" : "svg");
+  }, []);
+
+  const fallBackToSvg = useCallback(() => {
+    setIsPlotReady(false);
+    setRenderer("svg");
+  }, []);
+
+  const handleInitialized = useCallback(
+    (_figure: unknown, graphDiv: Readonly<HTMLElement>) => {
+      // Plotly treats an unavailable GL2D context as a successful render and
+      // inserts .no-webgl instead of rejecting, so onError alone cannot catch
+      // this common failure mode.
+      if (renderer === "webgl" && graphDiv.querySelector(".no-webgl")) {
+        fallBackToSvg();
+        return;
+      }
+      setIsPlotReady(true);
+    },
+    [fallBackToSvg, renderer],
+  );
 
   const traces = useMemo(() => {
+    // SVG is deliberately bounded: it creates one DOM marker per point,
+    // unlike scattergl. Evenly sampling preserves the full time span and
+    // avoids freezing older/locked-down browsers while still providing a
+    // useful chart instead of Plotly's fatal WebGL message.
+    const renderPoints =
+      renderer === "svg" && points.length > SVG_POINT_LIMIT
+        ? points.filter(
+            (_, index) =>
+              index % Math.ceil(points.length / SVG_POINT_LIMIT) === 0,
+          )
+        : points;
     const grouped = new Map<string, TimelinePoint[]>();
-    for (const point of points) {
+    for (const point of renderPoints) {
       const family = point.family ?? "unknown";
       const familyPoints = grouped.get(family);
       if (familyPoints) familyPoints.push(point);
@@ -107,7 +168,7 @@ export function TcTimeline({
     return Array.from(grouped, ([fam, subset]) => {
       const familyColor = FAMILY_COLORS[fam] ?? "#94a3b8";
       return {
-        type: "scattergl" as const,
+        type: renderer === "webgl" ? ("scattergl" as const) : ("scatter" as const),
         mode: "markers" as const,
         name: fam === "unknown" ? "Other" : familyLabel(fam),
         x: subset.map((p) => p.year + jitterYear(p.material, p.tc_kelvin)),
@@ -168,7 +229,7 @@ export function TcTimeline({
         },
       };
     });
-  }, [points]);
+  }, [points, renderer]);
 
   if (points.length === 0) {
     return (
@@ -183,6 +244,7 @@ export function TcTimeline({
   // the axis line.
   const xMin = (coverage?.year_min ?? 1990) - 1;
   const xMax = (coverage?.year_max ?? new Date().getUTCFullYear()) + 1;
+  const Plot = renderer === "webgl" ? PlotWebGL : PlotSvg;
 
   return (
     <div
@@ -207,9 +269,26 @@ export function TcTimeline({
           plain React it gets its own row + clean typography, and the
           modebar keeps the chart's top-right to itself. */}
       <SymbolLegend />
-      <Plot
-        onInitialized={() => setIsPlotReady(true)}
-        data={traces}
+      {renderer === "svg" && (
+        <p
+          className="border-b border-amber-100 bg-amber-50 px-4 py-2 text-xs text-amber-900"
+          role="status"
+        >
+          WebGL is unavailable, so the timeline is using its SVG compatibility
+          renderer
+          {points.length > SVG_POINT_LIMIT
+            ? ` (showing up to ${SVG_POINT_LIMIT.toLocaleString()} representative points)`
+            : ""}
+          .
+        </p>
+      )}
+      {renderer !== "detecting" && (
+        <Plot
+          key={renderer}
+          onInitialized={handleInitialized}
+          onError={renderer === "webgl" ? fallBackToSvg : undefined}
+          onWebGlContextLost={renderer === "webgl" ? fallBackToSvg : undefined}
+          data={traces}
         layout={{
           autosize: true,
           height: 560,
@@ -267,8 +346,9 @@ export function TcTimeline({
             scale: 2,
           },
         }}
-        style={{ width: "100%", height: "560px" }}
-      />
+          style={{ width: "100%", height: "560px" }}
+        />
+      )}
     </div>
   );
 }

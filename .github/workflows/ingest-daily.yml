@@ -16,6 +16,39 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
+      # Probe the connection separately so a transient TCP timeout can be
+      # retried without ever starting the long-running ingest twice.
+      - name: Check VPS2 SSH connectivity
+        id: ssh_preflight_primary
+        continue-on-error: true
+        uses: appleboy/ssh-action@823bd89e131d8d508129f9443cad5855e9ba96f0 # v1.2.4
+        with:
+          host: ${{ secrets.VPS2_HOST }}
+          username: ${{ secrets.VPS2_USER }}
+          key: ${{ secrets.VPS2_SSH_KEY }}
+          fingerprint: ${{ secrets.VPS2_HOST_FINGERPRINT }}
+          port: 22
+          timeout: 45s
+          command_timeout: 1m
+          script: "true"
+
+      - name: Back off after transient SSH failure
+        if: steps.ssh_preflight_primary.outcome == 'failure'
+        run: sleep 15
+
+      - name: Retry VPS2 SSH connectivity
+        if: steps.ssh_preflight_primary.outcome == 'failure'
+        uses: appleboy/ssh-action@823bd89e131d8d508129f9443cad5855e9ba96f0 # v1.2.4
+        with:
+          host: ${{ secrets.VPS2_HOST }}
+          username: ${{ secrets.VPS2_USER }}
+          key: ${{ secrets.VPS2_SSH_KEY }}
+          fingerprint: ${{ secrets.VPS2_HOST_FINGERPRINT }}
+          port: 22
+          timeout: 90s
+          command_timeout: 1m
+          script: "true"
+
       - name: Trigger incremental ingest on VPS2
         uses: appleboy/ssh-action@823bd89e131d8d508129f9443cad5855e9ba96f0 # v1.2.4
         env:
@@ -26,6 +59,7 @@ jobs:
           key: ${{ secrets.VPS2_SSH_KEY }}
           fingerprint: ${{ secrets.VPS2_HOST_FINGERPRINT }}
           port: 22
+          timeout: 2m
           command_timeout: 55m
           envs: DEPLOY_PATH
           script: |

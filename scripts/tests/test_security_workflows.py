@@ -198,6 +198,20 @@ class SecurityWorkflowTests(unittest.TestCase):
         ):
             self.assertNotIn(prohibited, ingest)
 
+    def test_ingest_retries_only_the_connection_preflight(self) -> None:
+        ingest = (WORKFLOW_DIR / "ingest-daily.yml").read_text()
+        for required in (
+            "id: ssh_preflight_primary",
+            "continue-on-error: true",
+            "if: steps.ssh_preflight_primary.outcome == 'failure'",
+            "Back off after transient SSH failure",
+            "Retry VPS2 SSH connectivity",
+            "timeout: 2m",
+        ):
+            self.assertIn(required, ingest)
+        self.assertEqual(ingest.count('script: "true"'), 2)
+        self.assertEqual(ingest.count("bash scripts/cron_daily_ingest.sh"), 1)
+
     def test_dependabot_tracks_every_package_ecosystem(self) -> None:
         dependabot = (ROOT / ".github" / "dependabot.yml").read_text()
         for ecosystem in ("github-actions", "pip", "npm", "docker-compose"):
