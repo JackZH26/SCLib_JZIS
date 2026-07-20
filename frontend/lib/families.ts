@@ -12,7 +12,7 @@ export const FAMILY_OPTIONS: FamilyOption[] = [
   { slug: "mgb2",          label: "MgB₂",          color: "#059669" },
   { slug: "heavy_fermion", label: "Heavy fermion", color: "#7c3aed" },
   { slug: "fulleride",     label: "Fulleride",     color: "#db2777" },
-  { slug: "elemental",     label: "元素超导体",       color: "#3f3f46" },
+  { slug: "elemental",     label: "Elemental",       color: "#3f3f46" },
   { slug: "conventional",  label: "Conventional",  color: "#64748b" },
 ];
 
