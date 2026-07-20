@@ -230,11 +230,11 @@ jobs:
         run: |
           docker run --rm --entrypoint promtool \
             -v "$PWD/ops/prometheus:/etc/prometheus:ro" \
-            prom/prometheus:v3.12.0 \
+            prom/prometheus:v3.13.1 \
             check config /etc/prometheus/prometheus.yml
           docker run --rm --entrypoint amtool \
             -v "$PWD/ops/alertmanager:/etc/alertmanager:ro" \
-            quay.io/prometheus/alertmanager:v0.32.1 \
+            quay.io/prometheus/alertmanager:v0.33.1 \
             check-config /etc/alertmanager/alertmanager.yml
       - name: Test release-gate calculations
         run: python -m unittest discover -s scripts/tests -v
