@@ -6,6 +6,7 @@ Usage:
     sclib-ingest --mode incremental
     sclib-ingest --mode smoke --limit 30
     sclib-ingest --mode retry [--limit 20]
+    sclib-ingest --mode ids --ids 2602.22793,2505.00514
 
 Modes:
 
@@ -21,6 +22,9 @@ Modes:
   with an escalating strategy (default → force_pdf → skip_ner → skip_vs
   → abstract_only). Papers that exhaust ``failure_max_attempts`` are
   marked ``dead`` and skipped on future runs. Safe to run in idle hours.
+* ``ids`` — fetch and process an explicit, comma-separated list of arXiv
+  identifiers. Intended for audited gap backfills; avoids replaying a broad
+  historical OAI-PMH date range just to recover a handful of missing papers.
 
 Per-paper sub-pipeline (see PROJECT_SPEC §9C):
 
@@ -252,6 +256,7 @@ async def run(
     skip_vector_search: bool,
     skip_ner: bool,
     skip_geo: bool,
+    arxiv_ids: list[str] | None = None,
 ) -> list[dict[str, Any]]:
 
     if mode == "retry":
@@ -265,7 +270,20 @@ async def run(
         return [{"arxiv_id": "aggregate-materials", "ok": True,
                  "n_materials": n}]
 
-    if mode in ("bulk", "smoke"):
+    if mode == "ids":
+        arxiv_ids = list(dict.fromkeys(
+            arxiv_id.strip()
+            for arxiv_id in (arxiv_ids or [])
+            if arxiv_id.strip()
+        ))
+        if not arxiv_ids:
+            raise ValueError("ids mode requires at least one --ids value")
+        if limit is not None:
+            arxiv_ids = arxiv_ids[:limit]
+        from_date = None
+        until_date = None
+
+    elif mode in ("bulk", "smoke"):
         if mode == "smoke":
             until_date = until_date or date.today()
             from_date = from_date or (until_date - timedelta(days=30))
@@ -282,49 +300,87 @@ async def run(
     else:
         raise ValueError(f"unknown mode: {mode}")
 
-    log.info("pipeline: mode=%s from=%s until=%s limit=%s skip_vs=%s skip_ner=%s",
-             mode, from_date, until_date, limit, skip_vector_search, skip_ner)
+    log.info(
+        "pipeline: mode=%s from=%s until=%s limit=%s ids=%d skip_vs=%s skip_ner=%s",
+        mode,
+        from_date,
+        until_date,
+        limit,
+        len(arxiv_ids or []),
+        skip_vector_search,
+        skip_ner,
+    )
 
     pool = storage.load_failed_papers()
     pool_was_dirty = False
 
     results: list[dict[str, Any]] = []
-    async with ArxivClient() as client:
-        async for meta in client.list_records(
-            from_date, until_date, max_records=limit,
-        ):
-            try:
-                r = await process_paper(
-                    client, meta,
-                    skip_vector_search=skip_vector_search,
-                    skip_ner=skip_ner,
-                    skip_geo=skip_geo,
-                )
-            except Exception as e:  # noqa: BLE001
-                log.exception("pipeline error on %s: %s", meta.arxiv_id, e)
-                r = {"arxiv_id": meta.arxiv_id, "ok": False,
-                     "stage": "unknown", "error": str(e)}
-            results.append(r)
-            _print_status(r)
 
-            # Failure pool bookkeeping: record new failures, clear the
-            # paper if it just succeeded after a prior failure.
-            if r.get("ok"):
-                if storage.clear_failure(pool, meta.arxiv_id):
-                    log.info("%s: recovered — removed from failure pool",
-                             meta.arxiv_id)
-                    pool_was_dirty = True
-            else:
-                storage.record_failure(
-                    pool, meta,
-                    stage=r.get("stage", "unknown"),
-                    error=r.get("error", "unknown"),
-                    strategy="default",
+    async def handle_meta(client: ArxivClient, meta: PaperMetadata) -> None:
+        nonlocal pool_was_dirty
+        try:
+            result = await process_paper(
+                client,
+                meta,
+                skip_vector_search=skip_vector_search,
+                skip_ner=skip_ner,
+                skip_geo=skip_geo,
+            )
+        except Exception as exc:  # noqa: BLE001
+            log.exception("pipeline error on %s: %s", meta.arxiv_id, exc)
+            result = {
+                "arxiv_id": meta.arxiv_id,
+                "ok": False,
+                "stage": "unknown",
+                "error": str(exc),
+            }
+        results.append(result)
+        _print_status(result)
+
+        if result.get("ok"):
+            if storage.clear_failure(pool, meta.arxiv_id):
+                log.info(
+                    "%s: recovered — removed from failure pool",
+                    meta.arxiv_id,
                 )
                 pool_was_dirty = True
+        else:
+            storage.record_failure(
+                pool,
+                meta,
+                stage=result.get("stage", "unknown"),
+                error=result.get("error", "unknown"),
+                strategy="default",
+            )
+            pool_was_dirty = True
 
-            if limit is not None and len(results) >= limit:
-                break
+    async with ArxivClient() as client:
+        if mode == "ids":
+            for arxiv_id in arxiv_ids or []:
+                try:
+                    meta = await client.get_record(arxiv_id)
+                except Exception as exc:  # noqa: BLE001
+                    log.exception("metadata lookup failed on %s: %s", arxiv_id, exc)
+                    result = {
+                        "arxiv_id": arxiv_id,
+                        "ok": False,
+                        "stage": "metadata",
+                        "error": str(exc),
+                    }
+                    results.append(result)
+                    _print_status(result)
+                    continue
+                await handle_meta(client, meta)
+        else:
+            assert from_date is not None and until_date is not None
+            async for meta in client.list_records(
+                from_date,
+                until_date,
+                max_records=limit,
+            ):
+                await handle_meta(client, meta)
+                if limit is not None and len(results) >= limit:
+                    break
 
     if pool_was_dirty:
         storage.save_failed_papers(pool)
@@ -420,12 +476,23 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--mode",
-        choices=["bulk", "incremental", "smoke", "retry", "aggregate-materials"],
+        choices=[
+            "bulk",
+            "incremental",
+            "smoke",
+            "retry",
+            "aggregate-materials",
+            "ids",
+        ],
         required=True,
     )
     parser.add_argument("--from", dest="from_date", type=_parse_date)
     parser.add_argument("--until", dest="until_date", type=_parse_date)
     parser.add_argument("--limit", type=int)
+    parser.add_argument(
+        "--ids",
+        help="Comma-separated arXiv IDs for --mode ids.",
+    )
     parser.add_argument("--skip-vector-search", action="store_true",
                         help="Skip Vertex VS upsert (DB-only).")
     parser.add_argument("--skip-ner", action="store_true",
@@ -453,6 +520,7 @@ def main(argv: list[str] | None = None) -> int:
                 skip_vector_search=args.skip_vector_search,
                 skip_ner=args.skip_ner,
                 skip_geo=args.skip_geo,
+                arxiv_ids=args.ids.split(",") if args.ids else None,
             )
         finally:
             await dispose()

@@ -19,7 +19,7 @@
   "dependencies": {
     "clsx": "2.1.1",
     "katex": "^0.16.45",
-    "next": "15.5.18",
+    "next": "15.5.21",
     "plotly.js": "2.35.2",
     "react": "19.2.7",
     "react-dom": "19.2.7",
@@ -47,7 +47,9 @@
   },
   "pnpm": {
     "overrides": {
-      "postcss": "8.5.18"
+      "fast-uri": "3.1.4",
+      "postcss": "8.5.18",
+      "sharp": "0.35.0"
     }
   }
 }

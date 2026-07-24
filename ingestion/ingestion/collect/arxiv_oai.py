@@ -162,6 +162,37 @@ class ArxivClient:
             # When resuming, all other params must be dropped per OAI-PMH spec
             params = {"verb": "ListRecords", "resumptionToken": token}
 
+    async def get_record(self, arxiv_id: str) -> PaperMetadata:
+        """Fetch one arXiv metadata record by its stable identifier.
+
+        This is the targeted counterpart to :meth:`list_records`, intended
+        for audited gap backfills where replaying an entire historical date
+        window would needlessly reprocess papers already present in SCLib.
+        """
+        arxiv_id = arxiv_id.strip()
+        if not arxiv_id:
+            raise ValueError("arxiv_id must not be empty")
+
+        root = await self._oai_get(
+            {
+                "verb": "GetRecord",
+                "metadataPrefix": "arXiv",
+                "identifier": f"oai:arXiv.org:{arxiv_id}",
+            }
+        )
+        err = root.find("oai:error", OAI_NS)
+        if err is not None:
+            code = err.get("code")
+            raise ArxivError(f"OAI-PMH error {code}: {err.text}")
+
+        record = root.find("oai:GetRecord/oai:record", OAI_NS)
+        if record is None:
+            raise ArxivError(f"arXiv metadata record not found: {arxiv_id}")
+        meta = _parse_record(record)
+        if meta is None:
+            raise ArxivError(f"arXiv metadata record deleted or empty: {arxiv_id}")
+        return meta
+
     # --- File download ------------------------------------------------------
 
     @retry(
