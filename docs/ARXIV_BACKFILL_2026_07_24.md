@@ -2,6 +2,7 @@
 
 Date: 2026-07-24  
 Production baseline: site `3a3783f`, dataset `v2026.07.24`
+Completion: deployed and verified on production at site `8c229b8`
 
 ## Scope and method
 
@@ -78,6 +79,39 @@ retries do not repeat successful papers.
    Timeline pages.
 6. Take and verify the normal PostgreSQL backup.
 
+## Production completion
+
+The canonical backfill completed on 2026-07-24:
+
+| Batch | Result |
+|---|---|
+| A | 6/6 full-pipeline successes |
+| B | 5/6 full-pipeline successes; `2508.00460` retained as withdrawn metadata |
+| C | 6/6 full-pipeline successes |
+
+arXiv withdrew `2508.00460` in v5 and removed its downloadable source/PDF.
+Its database row is marked `retracted`, records the withdrawal date and reason,
+and points to replacement `2508.00499`; it was deliberately excluded from
+embedding, NER, and material aggregation.
+
+Final production verification:
+
+- 18/18 canonical identifiers are present.
+- 17 papers completed full-text parsing, embedding, NER, PostgreSQL, and Vector
+  Search ingestion.
+- The batch added 440 chunks and 29 paper-level material NER records.
+- The canonical primary-category difference is zero and the failure pool is
+  empty.
+- Material aggregation upserted 9,343 canonical formulas and linked 289
+  variants to 6 parents.
+- Timeline projection is ready with 29,645 active points across 9,698
+  materials.
+- Public statistics are 75,037 papers, 11,432 materials, and 1,113,929 chunks;
+  the arXiv 2026 histogram contains 1,246 papers.
+- The production paper, material, statistics, and timeline pages were verified.
+- PostgreSQL backup `sclib-20260724T105325Z.dump` and its manifest were uploaded
+  and size-verified.
+
 ## Extended-candidate disposition
 
 The 193 secondary-category gaps are retained as a separate relevance-review
@@ -85,4 +119,3 @@ backlog. They include superconducting qubits, detectors, accelerators, cold
 atoms, nuclear matter, and papers where superconductivity is contextual rather
 than the primary subject. They should be title/abstract screened before any
 corpus-policy expansion; they are not part of this canonical repair batch.
-
