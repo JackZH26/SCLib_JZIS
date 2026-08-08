@@ -123,7 +123,7 @@ services:
     # Internal only — no ports exposed
 
   prometheus:
-    image: prom/prometheus:v3.13.1-distroless
+    image: prom/prometheus:v3.13.2-distroless
     container_name: sclib-prometheus
     restart: unless-stopped
     profiles: ["observability"]
