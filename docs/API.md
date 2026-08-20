@@ -150,7 +150,27 @@ Returns aggregated rows from the `materials` table. Sort order is
 
 ### `GET /materials/{id}`
 Returns a single material including its full JSONB `records` array
-(every NIMS measurement aggregated under the normalized formula).
+(legacy observations aggregated under the normalized formula). When Phase 1
+composition enrichment has run, the response also includes
+`composition_status`, `composition_data`, and `composition_enriched_at`.
+
+### ML Foundation v1 (typed, read-only)
+
+`GET /claims` returns condition-aware claim rows with UUID keyset pagination.
+Filters include `material_id`, `work_id`, `evidence_role`, `result_status`, and
+`validity_status`. Raw legacy JSON and licensed source text are not returned.
+
+`GET /claims/{claim_id}` returns one typed claim. `GET
+/materials/{id:path}/claims` returns claims for a material while preserving
+slash-containing material IDs. `GET /works/{work_id}` returns the canonical
+work plus its source-specific paper IDs.
+
+`GET /ml/source-snapshots`, `GET /ml/snapshots`, and `GET
+/ml/snapshots/{snapshot_id}/manifest` expose frozen lineage and dataset policy
+metadata. Building snapshots are excluded by default.
+
+These endpoints are an additive shadow path introduced by Alembic revision
+`0044_ml_foundation`; they do not replace `materials.records` in Phase 1.
 
 ### `GET /timeline?family=cuprate`
 Flattens `Material.records` into a list of `(year, tc, formula)`

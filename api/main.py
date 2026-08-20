@@ -34,6 +34,7 @@ from routers import (
     health,
     history,
     materials,
+    ml_foundation,
     observability,
     papers,
     search,
@@ -625,6 +626,9 @@ app.include_router(observability.router)
 app.include_router(auth.router, prefix="/v1")
 app.include_router(search.router, prefix="/v1")
 app.include_router(ask.router, prefix="/v1")
+# Keep the phase-1 material-claim route ahead of the legacy
+# ``/materials/{material_id:path}`` catch-all.
+app.include_router(ml_foundation.router, prefix="/v1")
 app.include_router(materials.router, prefix="/v1")
 app.include_router(papers.router, prefix="/v1")
 app.include_router(seo.router, prefix="/v1")

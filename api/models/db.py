@@ -326,6 +326,147 @@ class Bookmark(Base):
 # Papers / Materials / Chunks
 # ---------------------------------------------------------------------------
 
+
+class SourceSnapshot(Base):
+    """Immutable lineage anchor for one captured SCLib source state.
+
+    A row may be assembled while ``status='building'``.  Once frozen, its
+    manifest hash and timestamp are mandatory and the application must treat
+    it as immutable.  The schema deliberately stores counts and versions, not
+    a copy of source payloads.
+    """
+
+    __tablename__ = "source_snapshots"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        server_default=sa.text("gen_random_uuid()"),
+        default=uuid.uuid4,
+    )
+    dataset_version: Mapped[str] = mapped_column(String(50), nullable=False)
+    site_git_sha: Mapped[str | None] = mapped_column(String(40))
+    database_watermark: Mapped[datetime | None] = mapped_column(_TZDT)
+    paper_count: Mapped[int] = mapped_column(
+        sa.BigInteger, server_default="0", default=0, nullable=False,
+    )
+    material_count: Mapped[int] = mapped_column(
+        sa.BigInteger, server_default="0", default=0, nullable=False,
+    )
+    chunk_count: Mapped[int] = mapped_column(
+        sa.BigInteger, server_default="0", default=0, nullable=False,
+    )
+    schema_version: Mapped[str] = mapped_column(String(30), nullable=False)
+    manifest_sha256: Mapped[str | None] = mapped_column(String(64))
+    license_manifest_sha256: Mapped[str | None] = mapped_column(String(64))
+    status: Mapped[str] = mapped_column(
+        String(20), server_default="building", default="building", nullable=False,
+    )
+    # ``metadata`` is reserved by SQLAlchemy's declarative base; retain the
+    # concise database column name while exposing a safe Python attribute.
+    snapshot_metadata: Mapped[dict[str, Any]] = mapped_column(
+        "metadata",
+        JSONB,
+        server_default=sa.text("'{}'::jsonb"),
+        default=dict,
+        nullable=False,
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False,
+    )
+    frozen_at: Mapped[datetime | None] = mapped_column(_TZDT)
+
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('building', 'validated', 'frozen', 'failed')",
+            name="ck_source_snapshots_status",
+        ),
+        CheckConstraint(
+            "paper_count >= 0 AND material_count >= 0 AND chunk_count >= 0",
+            name="ck_source_snapshots_counts_nonnegative",
+        ),
+        CheckConstraint(
+            "manifest_sha256 IS NULL OR length(manifest_sha256) = 64",
+            name="ck_source_snapshots_manifest_hash",
+        ),
+        CheckConstraint(
+            "license_manifest_sha256 IS NULL OR length(license_manifest_sha256) = 64",
+            name="ck_source_snapshots_license_hash",
+        ),
+        CheckConstraint(
+            "status <> 'frozen' OR (manifest_sha256 IS NOT NULL AND frozen_at IS NOT NULL)",
+            name="ck_source_snapshots_frozen_manifest",
+        ),
+        CheckConstraint(
+            "jsonb_typeof(metadata) = 'object'",
+            name="ck_source_snapshots_metadata_object",
+        ),
+        sa.UniqueConstraint("manifest_sha256", name="uq_source_snapshots_manifest"),
+        Index("idx_source_snapshots_version", "dataset_version"),
+        Index("idx_source_snapshots_status_created", "status", "created_at"),
+    )
+
+
+class Work(Base):
+    """One scholarly work shared by preprint and published paper records."""
+
+    __tablename__ = "works"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        server_default=sa.text("gen_random_uuid()"),
+        default=uuid.uuid4,
+    )
+    canonical_title: Mapped[str] = mapped_column(Text, nullable=False)
+    canonical_doi: Mapped[str | None] = mapped_column(String(200))
+    canonical_arxiv_id: Mapped[str | None] = mapped_column(String(20))
+    publication_status: Mapped[str] = mapped_column(
+        String(20), server_default="unknown", default="unknown", nullable=False,
+    )
+    available_at: Mapped[date | None] = mapped_column(Date)
+    identity_metadata: Mapped[dict[str, Any]] = mapped_column(
+        JSONB,
+        server_default=sa.text("'{}'::jsonb"),
+        default=dict,
+        nullable=False,
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False,
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False,
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "publication_status IN ('active', 'retracted', 'withdrawn', 'corrected', 'unknown')",
+            name="ck_works_publication_status",
+        ),
+        CheckConstraint(
+            "btrim(canonical_title) <> ''",
+            name="ck_works_canonical_title_nonempty",
+        ),
+        CheckConstraint(
+            "jsonb_typeof(identity_metadata) = 'object'",
+            name="ck_works_identity_metadata_object",
+        ),
+        Index(
+            "uq_works_canonical_doi",
+            "canonical_doi",
+            unique=True,
+            postgresql_where=text("canonical_doi IS NOT NULL"),
+        ),
+        Index(
+            "uq_works_canonical_arxiv",
+            "canonical_arxiv_id",
+            unique=True,
+            postgresql_where=text("canonical_arxiv_id IS NOT NULL"),
+        ),
+        Index("idx_works_available_at", "available_at"),
+    )
+
+
 class Paper(Base):
     __tablename__ = "papers"
 
@@ -405,6 +546,58 @@ class Paper(Base):
     )
 
 
+class PaperWorkMap(Base):
+    """Assign each source-specific paper row to exactly one scholarly work."""
+
+    __tablename__ = "paper_work_map"
+
+    paper_id: Mapped[str] = mapped_column(
+        String(100),
+        ForeignKey("papers.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    work_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("works.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    relation_type: Mapped[str] = mapped_column(
+        String(30), server_default="unknown", default="unknown", nullable=False,
+    )
+    match_method: Mapped[str] = mapped_column(String(30), nullable=False)
+    match_score: Mapped[float | None] = mapped_column(Float)
+    review_status: Mapped[str] = mapped_column(
+        String(20), server_default="pending", default="pending", nullable=False,
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False,
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "relation_type IN "
+            "('canonical_version', 'preprint', 'published_version', "
+            "'supplement', 'correction', 'unknown')",
+            name="ck_paper_work_map_relation_type",
+        ),
+        CheckConstraint(
+            "match_method IN "
+            "('exact_doi', 'related_paper', 'exact_arxiv', 'metadata', 'manual', 'singleton')",
+            name="ck_paper_work_map_match_method",
+        ),
+        CheckConstraint(
+            "match_score IS NULL OR (match_score >= 0 AND match_score <= 1)",
+            name="ck_paper_work_map_match_score",
+        ),
+        CheckConstraint(
+            "review_status IN ('pending', 'accepted', 'rejected')",
+            name="ck_paper_work_map_review_status",
+        ),
+        Index("idx_paper_work_map_work", "work_id"),
+        Index("idx_paper_work_map_review", "review_status"),
+    )
+
+
 class Material(Base):
     __tablename__ = "materials"
 
@@ -413,6 +606,12 @@ class Material(Base):
     formula: Mapped[str] = mapped_column(String(200), nullable=False)
     formula_normalized: Mapped[str] = mapped_column(String(200), nullable=False)
     formula_latex: Mapped[str | None] = mapped_column(String(200))
+    # --- ML Foundation v1 composition enrichment ------------------------
+    # NULL means not processed yet. Ambiguous/non-stoichiometric formulae
+    # retain their original spelling and receive an explicit non-exact state.
+    composition_status: Mapped[str | None] = mapped_column(String(20))
+    composition_data: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    composition_enriched_at: Mapped[datetime | None] = mapped_column(_TZDT)
     family: Mapped[str | None] = mapped_column(String(50))
     subfamily: Mapped[str | None] = mapped_column(String(100))
     crystal_structure: Mapped[str | None] = mapped_column(String(100))
@@ -511,8 +710,22 @@ class Material(Base):
     mp_synced_at:     Mapped[datetime | None] = mapped_column(_TZDT)
 
     __table_args__ = (
+        CheckConstraint(
+            "composition_status IS NULL OR composition_status IN "
+            "('exact', 'variable', 'interface', 'mixture', 'invalid')",
+            name="ck_materials_composition_status",
+        ),
+        CheckConstraint(
+            "composition_data IS NULL OR jsonb_typeof(composition_data) = 'object'",
+            name="ck_materials_composition_data_object",
+        ),
+        CheckConstraint(
+            "composition_enriched_at IS NULL OR composition_status IS NOT NULL",
+            name="ck_materials_composition_enriched_status",
+        ),
         Index("idx_materials_family", "family"),
         Index("idx_materials_tc", "tc_max"),  # NULLS LAST handled in query
+        Index("idx_materials_composition_status", "composition_status"),
         Index("idx_materials_pairing", "pairing_symmetry"),
         Index("idx_materials_phase", "structure_phase"),
         Index(
@@ -694,6 +907,488 @@ class Chunk(Base):
     paper: Mapped[Paper] = relationship(back_populates="chunks")
 
     __table_args__ = (Index("idx_chunks_paper", "paper_id"),)
+
+
+class MaterialClaim(Base):
+    """Condition-aware, provenance-bearing superconductivity assertion.
+
+    This table is additive: ``materials.records`` remains available to the
+    existing application while records are migrated and revalidated.  NULL
+    pressure is never interpreted as ambient pressure, and an accepted
+    negative claim must state the experiment's minimum temperature.
+    """
+
+    __tablename__ = "material_claims"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        server_default=sa.text("gen_random_uuid()"),
+        default=uuid.uuid4,
+    )
+    material_id: Mapped[str] = mapped_column(
+        String(100),
+        ForeignKey("materials.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    paper_id: Mapped[str | None] = mapped_column(
+        String(100), ForeignKey("papers.id", ondelete="SET NULL"),
+    )
+    work_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("works.id", ondelete="SET NULL"),
+    )
+    source_snapshot_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("source_snapshots.id", ondelete="RESTRICT"),
+        nullable=False,
+    )
+
+    property_type: Mapped[str] = mapped_column(
+        String(30), server_default="tc", default="tc", nullable=False,
+    )
+    evidence_role: Mapped[str] = mapped_column(
+        String(30), server_default="unknown", default="unknown", nullable=False,
+    )
+    result_status: Mapped[str] = mapped_column(
+        String(20), server_default="unknown", default="unknown", nullable=False,
+    )
+    value_relation: Mapped[str] = mapped_column(
+        String(20), server_default="unreported", default="unreported", nullable=False,
+    )
+    value_kelvin: Mapped[float | None] = mapped_column(Float)
+    value_lower_kelvin: Mapped[float | None] = mapped_column(Float)
+    value_upper_kelvin: Mapped[float | None] = mapped_column(Float)
+    tc_definition: Mapped[str] = mapped_column(
+        String(30), server_default="unknown", default="unknown", nullable=False,
+    )
+
+    pressure_state: Mapped[str] = mapped_column(
+        String(20), server_default="not_reported", default="not_reported", nullable=False,
+    )
+    pressure_gpa: Mapped[float | None] = mapped_column(Float)
+    minimum_temperature_k: Mapped[float | None] = mapped_column(Float)
+    magnetic_field_t: Mapped[float | None] = mapped_column(Float)
+    measurement_method: Mapped[str | None] = mapped_column(String(100))
+    sample_form: Mapped[str | None] = mapped_column(String(50))
+    structure_phase_raw: Mapped[str | None] = mapped_column(String(200))
+    doping_raw: Mapped[str | None] = mapped_column(String(200))
+    sample_label: Mapped[str | None] = mapped_column(String(100))
+
+    source_kind: Mapped[str] = mapped_column(
+        String(30), server_default="legacy", default="legacy", nullable=False,
+    )
+    chunk_id: Mapped[str | None] = mapped_column(
+        String(200), ForeignKey("chunks.id", ondelete="SET NULL"),
+    )
+    source_locator: Mapped[dict[str, Any]] = mapped_column(
+        JSONB,
+        server_default=sa.text("'{}'::jsonb"),
+        default=dict,
+        nullable=False,
+    )
+    extraction_confidence: Mapped[float | None] = mapped_column(Float)
+    relation_confidence: Mapped[float | None] = mapped_column(Float)
+    validity_status: Mapped[str] = mapped_column(
+        String(20), server_default="pending", default="pending", nullable=False,
+    )
+    raw_record: Mapped[dict[str, Any]] = mapped_column(
+        JSONB,
+        server_default=sa.text("'{}'::jsonb"),
+        default=dict,
+        nullable=False,
+    )
+    extraction_metadata: Mapped[dict[str, Any]] = mapped_column(
+        JSONB,
+        server_default=sa.text("'{}'::jsonb"),
+        default=dict,
+        nullable=False,
+    )
+    source_record_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    semantic_fingerprint: Mapped[str | None] = mapped_column(String(64))
+    duplicate_cluster_id: Mapped[str | None] = mapped_column(String(64))
+    available_at: Mapped[date | None] = mapped_column(Date)
+    extractor_version: Mapped[str] = mapped_column(String(80), nullable=False)
+    ingestion_run_id: Mapped[str | None] = mapped_column(String(100))
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False,
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False,
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "property_type IN ('tc', 'non_transition')",
+            name="ck_material_claims_property_type",
+        ),
+        CheckConstraint(
+            "evidence_role IN "
+            "('primary_experimental', 'primary_theoretical', 'cited', 'unknown')",
+            name="ck_material_claims_evidence_role",
+        ),
+        CheckConstraint(
+            "result_status IN ('observed', 'not_detected', 'inconclusive', 'unknown')",
+            name="ck_material_claims_result_status",
+        ),
+        CheckConstraint(
+            "value_relation IN ('exact', 'interval', 'lt', 'le', 'gt', 'ge', 'unreported')",
+            name="ck_material_claims_value_relation",
+        ),
+        CheckConstraint(
+            "tc_definition IN "
+            "('onset', 'zero_resistance', 'midpoint', 'diamagnetic', 'heat_capacity', 'unknown')",
+            name="ck_material_claims_tc_definition",
+        ),
+        CheckConstraint(
+            "pressure_state IN ('explicit_ambient', 'reported', 'not_reported', 'ambiguous')",
+            name="ck_material_claims_pressure_state",
+        ),
+        CheckConstraint(
+            "source_kind IN ('prose', 'abstract', 'table', 'synthetic_fact', 'legacy')",
+            name="ck_material_claims_source_kind",
+        ),
+        CheckConstraint(
+            "validity_status IN ('accepted', 'pending', 'disputed', 'retracted', 'excluded')",
+            name="ck_material_claims_validity_status",
+        ),
+        CheckConstraint(
+            "(value_kelvin IS NULL OR (value_kelvin >= 0 "
+            "AND value_kelvin < 'Infinity'::float8)) AND "
+            "(value_lower_kelvin IS NULL OR (value_lower_kelvin >= 0 "
+            "AND value_lower_kelvin < 'Infinity'::float8)) AND "
+            "(value_upper_kelvin IS NULL OR (value_upper_kelvin >= 0 "
+            "AND value_upper_kelvin < 'Infinity'::float8)) AND "
+            "(value_lower_kelvin IS NULL OR value_upper_kelvin IS NULL "
+            "OR value_lower_kelvin <= value_upper_kelvin)",
+            name="ck_material_claims_value_bounds",
+        ),
+        CheckConstraint(
+            "((value_relation = 'exact' AND value_kelvin IS NOT NULL "
+            "AND value_lower_kelvin IS NULL AND value_upper_kelvin IS NULL) OR "
+            "(value_relation = 'interval' AND value_kelvin IS NULL "
+            "AND value_lower_kelvin IS NOT NULL AND value_upper_kelvin IS NOT NULL) OR "
+            "(value_relation IN ('lt', 'le') AND value_kelvin IS NULL "
+            "AND value_lower_kelvin IS NULL AND value_upper_kelvin IS NOT NULL) OR "
+            "(value_relation IN ('gt', 'ge') AND value_kelvin IS NULL "
+            "AND value_lower_kelvin IS NOT NULL AND value_upper_kelvin IS NULL) OR "
+            "(value_relation = 'unreported' AND value_kelvin IS NULL "
+            "AND value_lower_kelvin IS NULL AND value_upper_kelvin IS NULL))",
+            name="ck_material_claims_value_shape",
+        ),
+        CheckConstraint(
+            "((pressure_state = 'explicit_ambient' AND pressure_gpa = 0) OR "
+            "(pressure_state = 'reported' AND pressure_gpa IS NOT NULL) OR "
+            "(pressure_state = 'not_reported' AND pressure_gpa IS NULL) OR "
+            "pressure_state = 'ambiguous')",
+            name="ck_material_claims_pressure_semantics",
+        ),
+        CheckConstraint(
+            "pressure_gpa IS NULL OR (pressure_gpa >= 0 "
+            "AND pressure_gpa < 'Infinity'::float8)",
+            name="ck_material_claims_pressure_nonnegative",
+        ),
+        CheckConstraint(
+            "minimum_temperature_k IS NULL OR (minimum_temperature_k >= 0 "
+            "AND minimum_temperature_k < 'Infinity'::float8)",
+            name="ck_material_claims_minimum_temperature",
+        ),
+        CheckConstraint(
+            "magnetic_field_t IS NULL OR (magnetic_field_t >= 0 "
+            "AND magnetic_field_t < 'Infinity'::float8)",
+            name="ck_material_claims_magnetic_field",
+        ),
+        CheckConstraint(
+            "extraction_confidence IS NULL OR "
+            "(extraction_confidence >= 0 AND extraction_confidence <= 1)",
+            name="ck_material_claims_extraction_confidence",
+        ),
+        CheckConstraint(
+            "relation_confidence IS NULL OR "
+            "(relation_confidence >= 0 AND relation_confidence <= 1)",
+            name="ck_material_claims_relation_confidence",
+        ),
+        CheckConstraint(
+            "validity_status <> 'accepted' OR result_status <> 'observed' "
+            "OR value_relation <> 'unreported'",
+            name="ck_material_claims_accepted_observed_value",
+        ),
+        CheckConstraint(
+            "validity_status <> 'accepted' OR result_status <> 'not_detected' "
+            "OR minimum_temperature_k IS NOT NULL",
+            name="ck_material_claims_accepted_negative_tmin",
+        ),
+        CheckConstraint(
+            "length(source_record_hash) = 64",
+            name="ck_material_claims_source_hash",
+        ),
+        CheckConstraint(
+            "semantic_fingerprint IS NULL OR length(semantic_fingerprint) = 64",
+            name="ck_material_claims_semantic_hash",
+        ),
+        CheckConstraint(
+            "duplicate_cluster_id IS NULL OR length(duplicate_cluster_id) = 64",
+            name="ck_material_claims_duplicate_cluster_hash",
+        ),
+        CheckConstraint(
+            "jsonb_typeof(source_locator) = 'object' "
+            "AND jsonb_typeof(raw_record) = 'object' "
+            "AND jsonb_typeof(extraction_metadata) = 'object'",
+            name="ck_material_claims_json_objects",
+        ),
+        sa.UniqueConstraint(
+            "material_id", "source_record_hash",
+            name="uq_material_claims_material_source_hash",
+        ),
+        Index("idx_material_claims_material_validity", "material_id", "validity_status"),
+        Index("idx_material_claims_paper", "paper_id"),
+        Index("idx_material_claims_work", "work_id"),
+        Index("idx_material_claims_source_snapshot", "source_snapshot_id"),
+        Index(
+            "idx_material_claims_semantic_fingerprint",
+            "semantic_fingerprint",
+            postgresql_where=text("semantic_fingerprint IS NOT NULL"),
+        ),
+        Index(
+            "idx_material_claims_duplicate_cluster",
+            "duplicate_cluster_id",
+            postgresql_where=text("duplicate_cluster_id IS NOT NULL"),
+        ),
+        Index("idx_material_claims_available_at", "available_at"),
+    )
+
+
+class ClaimQC(Base):
+    """Current automated and human quality decision for one claim."""
+
+    __tablename__ = "claim_qc"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        server_default=sa.text("gen_random_uuid()"),
+        default=uuid.uuid4,
+    )
+    claim_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("material_claims.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    automated_checks: Mapped[dict[str, Any]] = mapped_column(
+        JSONB,
+        server_default=sa.text("'{}'::jsonb"),
+        default=dict,
+        nullable=False,
+    )
+    quality_flags: Mapped[list[Any]] = mapped_column(
+        JSONB,
+        server_default=sa.text("'[]'::jsonb"),
+        default=list,
+        nullable=False,
+    )
+    review_status: Mapped[str] = mapped_column(
+        String(20), server_default="pending", default="pending", nullable=False,
+    )
+    reviewed_by: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"),
+    )
+    reviewed_at: Mapped[datetime | None] = mapped_column(_TZDT)
+    reviewer_notes: Mapped[str | None] = mapped_column(Text)
+    is_gold: Mapped[bool] = mapped_column(
+        Boolean, server_default="false", default=False, nullable=False,
+    )
+    qc_version: Mapped[str] = mapped_column(String(40), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False,
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False,
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "review_status IN ('pending', 'needs_review', 'approved', 'rejected')",
+            name="ck_claim_qc_review_status",
+        ),
+        CheckConstraint(
+            "NOT is_gold OR "
+            "(review_status = 'approved' AND reviewed_at IS NOT NULL)",
+            name="ck_claim_qc_gold_reviewed",
+        ),
+        CheckConstraint(
+            "jsonb_typeof(automated_checks) = 'object' "
+            "AND jsonb_typeof(quality_flags) = 'array'",
+            name="ck_claim_qc_json_shapes",
+        ),
+        sa.UniqueConstraint("claim_id", name="uq_claim_qc_claim_id"),
+        Index("idx_claim_qc_review_status", "review_status"),
+        Index(
+            "idx_claim_qc_gold",
+            "is_gold",
+            postgresql_where=text("is_gold IS TRUE"),
+        ),
+    )
+
+
+class MlDatasetSnapshot(Base):
+    """Versioned, reproducible manifest for one ML-ready data product."""
+
+    __tablename__ = "ml_dataset_snapshots"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        server_default=sa.text("gen_random_uuid()"),
+        default=uuid.uuid4,
+    )
+    source_snapshot_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("source_snapshots.id", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    version: Mapped[str] = mapped_column(String(50), nullable=False)
+    status: Mapped[str] = mapped_column(
+        String(20), server_default="building", default="building", nullable=False,
+    )
+    label_policy_version: Mapped[str] = mapped_column(String(40), nullable=False)
+    feature_schema_version: Mapped[str] = mapped_column(String(40), nullable=False)
+    split_ruleset_version: Mapped[str] = mapped_column(String(40), nullable=False)
+    manifest_sha256: Mapped[str | None] = mapped_column(String(64))
+    row_count: Mapped[int] = mapped_column(
+        sa.BigInteger, server_default="0", default=0, nullable=False,
+    )
+    filters: Mapped[dict[str, Any]] = mapped_column(
+        JSONB,
+        server_default=sa.text("'{}'::jsonb"),
+        default=dict,
+        nullable=False,
+    )
+    data_card_uri: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False,
+    )
+    frozen_at: Mapped[datetime | None] = mapped_column(_TZDT)
+
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('building', 'validated', 'frozen', 'failed')",
+            name="ck_ml_dataset_snapshots_status",
+        ),
+        CheckConstraint(
+            "row_count >= 0",
+            name="ck_ml_dataset_snapshots_row_count",
+        ),
+        CheckConstraint(
+            "manifest_sha256 IS NULL OR length(manifest_sha256) = 64",
+            name="ck_ml_dataset_snapshots_manifest_hash",
+        ),
+        CheckConstraint(
+            "status <> 'frozen' OR (manifest_sha256 IS NOT NULL AND frozen_at IS NOT NULL)",
+            name="ck_ml_dataset_snapshots_frozen_manifest",
+        ),
+        CheckConstraint(
+            "jsonb_typeof(filters) = 'object'",
+            name="ck_ml_dataset_snapshots_filters_object",
+        ),
+        sa.UniqueConstraint("name", "version", name="uq_ml_dataset_snapshots_name_version"),
+        sa.UniqueConstraint("manifest_sha256", name="uq_ml_dataset_snapshots_manifest"),
+        Index("idx_ml_dataset_snapshots_source", "source_snapshot_id"),
+        Index("idx_ml_dataset_snapshots_status_created", "status", "created_at"),
+    )
+
+
+class MlExample(Base):
+    """Frozen example assignment with all keys required for leakage audits."""
+
+    __tablename__ = "ml_examples"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        server_default=sa.text("gen_random_uuid()"),
+        default=uuid.uuid4,
+    )
+    dataset_snapshot_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("ml_dataset_snapshots.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    example_key: Mapped[str] = mapped_column(String(100), nullable=False)
+    claim_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("material_claims.id", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    material_id: Mapped[str] = mapped_column(
+        String(100),
+        ForeignKey("materials.id", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    work_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("works.id", ondelete="SET NULL"),
+    )
+    split: Mapped[str] = mapped_column(String(20), nullable=False)
+    task_type: Mapped[str] = mapped_column(String(40), nullable=False)
+    label_data: Mapped[dict[str, Any]] = mapped_column(
+        JSONB,
+        server_default=sa.text("'{}'::jsonb"),
+        default=dict,
+        nullable=False,
+    )
+    work_group: Mapped[str] = mapped_column(String(100), nullable=False)
+    material_group: Mapped[str] = mapped_column(String(100), nullable=False)
+    parent_series_group: Mapped[str | None] = mapped_column(String(100))
+    chemical_system_group: Mapped[str | None] = mapped_column(String(200))
+    duplicate_group: Mapped[str] = mapped_column(String(100), nullable=False)
+    available_at: Mapped[date | None] = mapped_column(Date)
+    assignment_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        _TZDT, server_default=func.now(), nullable=False,
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "split IN ('train', 'validation', 'test')",
+            name="ck_ml_examples_split",
+        ),
+        CheckConstraint(
+            "task_type IN ('tc_regression', 'superconductivity_classification')",
+            name="ck_ml_examples_task_type",
+        ),
+        CheckConstraint(
+            "length(assignment_hash) = 64",
+            name="ck_ml_examples_assignment_hash",
+        ),
+        CheckConstraint(
+            "jsonb_typeof(label_data) = 'object'",
+            name="ck_ml_examples_label_data_object",
+        ),
+        sa.UniqueConstraint(
+            "dataset_snapshot_id", "example_key",
+            name="uq_ml_examples_dataset_example",
+        ),
+        sa.UniqueConstraint(
+            "dataset_snapshot_id", "claim_id", "task_type",
+            name="uq_ml_examples_dataset_claim_task",
+        ),
+        Index("idx_ml_examples_dataset_split", "dataset_snapshot_id", "split"),
+        Index("idx_ml_examples_dataset_work_group", "dataset_snapshot_id", "work_group"),
+        Index(
+            "idx_ml_examples_dataset_material_group",
+            "dataset_snapshot_id",
+            "material_group",
+        ),
+        Index(
+            "idx_ml_examples_dataset_parent_group",
+            "dataset_snapshot_id",
+            "parent_series_group",
+        ),
+        Index(
+            "idx_ml_examples_dataset_duplicate_group",
+            "dataset_snapshot_id",
+            "duplicate_group",
+        ),
+    )
 
 
 class StatsCache(Base):

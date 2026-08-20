@@ -173,7 +173,15 @@ async def list_materials(
     }[sort]
     # Postgres treats NULLS LAST as an extension — spell it out so
     # "sort by tc_max" doesn't put unmeasured materials on top.
-    stmt = stmt.order_by(sort_col.desc().nulls_last()).limit(limit).offset(offset)
+    # A deterministic tie-breaker is required for reproducible exports and
+    # pagination.  Many materials share the same sort value (especially NULL),
+    # so ordering by the headline field alone can move rows between pages as
+    # PostgreSQL changes query plans.
+    stmt = (
+        stmt.order_by(sort_col.desc().nulls_last(), Material.id.asc())
+        .limit(limit)
+        .offset(offset)
+    )
 
     total = (await db.execute(count_stmt)).scalar_one()
     rows = (await db.execute(stmt)).scalars().all()
@@ -227,7 +235,14 @@ async def material_phase_diagram(
             points.append(PhaseDiagramPoint(
                 formula=mat.formula,
                 tc_kelvin=float(tc),
-                doping_level=r.get("doping_level") if isinstance(r.get("doping_level"), (int, float)) else mat.doping_level,
+                # Doping is an observation-level condition.  Falling back to
+                # the material aggregate silently assigns one value to every
+                # pressure/sample record and creates false phase-diagram data.
+                doping_level=(
+                    r.get("doping_level")
+                    if isinstance(r.get("doping_level"), (int, float))
+                    else None
+                ),
                 pressure_gpa=r.get("pressure_gpa") if isinstance(r.get("pressure_gpa"), (int, float)) else None,
                 paper_id=r.get("paper_id"),
                 year=r.get("year") if isinstance(r.get("year"), int) else None,

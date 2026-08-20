@@ -109,6 +109,10 @@ class Settings(BaseSettings):
     # === Discovery preview ===
     discovery_feed_path: str = "/data/sclib/discovery/discovery_feed.json"
 
+    # === ML Foundation shadow read path ===
+    # Keep typed claims private until backfill QC and shadow parity gates pass.
+    ml_foundation_public_enabled: bool = False
+
     @model_validator(mode="after")
     def require_https_for_production_auth(self) -> Settings:
         """Fail startup before insecure OAuth URLs or cookies reach production."""

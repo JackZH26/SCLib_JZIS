@@ -184,6 +184,12 @@ class HydrideTcParameterRecord(BaseModel):
 class MaterialDetail(MaterialSummary):
     crystal_structure: str | None
     records: list[dict[str, Any]]
+    # ML Foundation v1 composition enrichment. ``None`` means the legacy row
+    # has not yet been processed; ambiguous formulas retain an explicit state
+    # instead of fabricated fixed-composition values.
+    composition_status: str | None = None
+    composition_data: dict[str, Any] | None = None
+    composition_enriched_at: datetime | None = None
     # v2 structural
     space_group: str | None = None
     lattice_params: dict[str, Any] | None = None

@@ -21,6 +21,7 @@ os.environ.setdefault(
 )
 os.environ.setdefault("EMAIL_BACKEND", "stdout")
 os.environ.setdefault("ENVIRONMENT", "test")
+os.environ.setdefault("ML_FOUNDATION_PUBLIC_ENABLED", "true")
 
 import pytest_asyncio  # noqa: E402
 from httpx import ASGITransport, AsyncClient  # noqa: E402
