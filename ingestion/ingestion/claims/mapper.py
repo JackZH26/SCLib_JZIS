@@ -137,6 +137,30 @@ _AMBIENT_RE = re.compile(
 )
 
 
+def source_record_identity(
+    *,
+    material_id: str,
+    paper_id: str | None,
+    raw_record: Mapping[str, Any],
+    source_locator: Mapping[str, Any],
+) -> tuple[str, uuid.UUID]:
+    """Return the canonical source-record hash and deterministic claim UUID.
+
+    Keeping this identity contract public lets the independent parity layer
+    verify persisted payloads instead of merely checking that a supplied hash
+    looks like 64 hexadecimal characters.
+    """
+    hash_input = {
+        "hash_schema": "sclib-source-record/v1",
+        "material_id": material_id.strip(),
+        "paper_id": paper_id,
+        "raw_record": _json_safe(dict(raw_record)),
+        "source_locator": _json_safe(dict(source_locator)),
+    }
+    source_record_hash = _sha256_json(hash_input)
+    return source_record_hash, uuid.uuid5(_CLAIM_NAMESPACE, source_record_hash)
+
+
 @dataclass(frozen=True)
 class _TemperatureClaim:
     relation: str = "unreported"
@@ -308,15 +332,12 @@ def map_record_to_claim(
     if pressure_state == "explicit_ambient" and pressure_gpa != 0.0:
         raise AssertionError("explicit_ambient pressure must be exactly 0 GPa")
 
-    hash_input = {
-        "hash_schema": "sclib-source-record/v1",
-        "material_id": material_id.strip(),
-        "paper_id": paper_id,
-        "raw_record": raw_record,
-        "source_locator": locator,
-    }
-    source_record_hash = _sha256_json(hash_input)
-    claim_id = uuid.uuid5(_CLAIM_NAMESPACE, source_record_hash)
+    source_record_hash, claim_id = source_record_identity(
+        material_id=material_id,
+        paper_id=paper_id,
+        raw_record=raw_record,
+        source_locator=locator,
+    )
 
     semantic_input = {
         "fingerprint_schema": "sclib-material-claim/v1",
