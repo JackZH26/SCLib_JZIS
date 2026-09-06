@@ -1,0 +1,1336 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-05",
+  "published_at_utc": "2026-09-05T15:52:26Z",
+  "repository": "JackZH26/SCLib_JZIS",
+  "source_report": "SCLib_Comprehensive_Review_2026-09-05.md",
+  "audit": {
+    "local_branch": "codex/sclib-research-v2",
+    "local_base_commit": "44fd6ce377c89d4b4e1b78dbe082f420c33b8814",
+    "includes_uncommitted_changes": true,
+    "public_default_branch_commit": "d26fc098565492b78b416fb30b6b1ec7087b24c7",
+    "production_incidence_not_established": true
+  },
+  "status_policy": "This is a publication snapshot, not a synchronization service. GitHub issue state is authoritative; update this manifest deliberately after approved scope changes.",
+  "counts": {
+    "execution": 37,
+    "tracking": 1,
+    "P1": 22,
+    "P2": 15
+  },
+  "tracker": {
+    "number": 41,
+    "title": "[Tracking] SCLib scientific integrity and research-platform upgrade — 2026-09-05 review",
+    "url": "https://github.com/JackZH26/SCLib_JZIS/issues/41",
+    "body_sha256": "cc3ba1fc65c07fc7303b0df7a28aa2543b9d98a6390f6ae89d460dadc40413db"
+  },
+  "milestones": {
+    "A": {
+      "number": 1,
+      "title": "A — Scientific correctness and operational safeguards",
+      "url": "https://github.com/JackZH26/SCLib_JZIS/milestone/1"
+    },
+    "B": {
+      "number": 2,
+      "title": "B — Reviewed evidence pilot",
+      "url": "https://github.com/JackZH26/SCLib_JZIS/milestone/2"
+    },
+    "C": {
+      "number": 3,
+      "title": "C — Versioned research data foundation",
+      "url": "https://github.com/JackZH26/SCLib_JZIS/milestone/3"
+    },
+    "D": {
+      "number": 4,
+      "title": "D — Reproducible datasets and research interfaces",
+      "url": "https://github.com/JackZH26/SCLib_JZIS/milestone/4"
+    },
+    "E": {
+      "number": 5,
+      "title": "E — Validated discovery and active-learning policy",
+      "url": "https://github.com/JackZH26/SCLib_JZIS/milestone/5"
+    }
+  },
+  "source_files": [
+    "issues-science.json",
+    "issues-ml.json",
+    "issues-discovery-rag.json",
+    "issues-platform-ux.json"
+  ],
+  "issues": [
+    {
+      "id": "SC01",
+      "number": 44,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/44",
+      "title": "[P1][SC01] Preserve raw scientific values, units, intervals, censoring and uncertainties during extraction",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:science",
+        "bug"
+      ],
+      "depends_on": [],
+      "dependency_issue_numbers": [],
+      "suggested_owner_role": "Data engineer with superconductivity reviewer",
+      "acceptance_count": 6,
+      "body_sha256": "3851c49e02941424d753d31eaec17100ae8bfabef936ec88f3479c1ce3e04d15"
+    },
+    {
+      "id": "SC02",
+      "number": 47,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/47",
+      "title": "[P1][SC02] Keep every aggregated property atomic with its state, method and source result",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:science",
+        "bug"
+      ],
+      "depends_on": [
+        "SC01",
+        "SC04",
+        "SC05"
+      ],
+      "dependency_issue_numbers": [
+        44,
+        45,
+        46
+      ],
+      "suggested_owner_role": "Backend/data engineer with superconductivity reviewer",
+      "acceptance_count": 6,
+      "body_sha256": "742c7b002d52a9efa939439992f0b9dc2c85198b8dc1d66b1934e57d44d388dc"
+    },
+    {
+      "id": "SC03",
+      "number": 48,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/48",
+      "title": "[P1][SC03] Replace scientific value caps and destructive threshold filtering with versioned anomaly review",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:science",
+        "bug"
+      ],
+      "depends_on": [
+        "SC01",
+        "SC02"
+      ],
+      "dependency_issue_numbers": [
+        44,
+        47
+      ],
+      "suggested_owner_role": "Scientific data engineer and curator",
+      "acceptance_count": 6,
+      "body_sha256": "32e94908407a51335d8ee87941ab88d5a7b9c1ae14afcc797b1ef1c8a297effa"
+    },
+    {
+      "id": "SC04",
+      "number": 45,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/45",
+      "title": "[P1][SC04] Make pressure explicit and require compound scientific filters to match the same result",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:science",
+        "bug"
+      ],
+      "depends_on": [
+        "SC01"
+      ],
+      "dependency_issue_numbers": [
+        44
+      ],
+      "suggested_owner_role": "Backend engineer with data engineer and frontend support",
+      "acceptance_count": 6,
+      "body_sha256": "805617eebd909353ff9f73f888bae2d3e89bbc7c722a9981f90ef4eae5d7f5bf"
+    },
+    {
+      "id": "SC05",
+      "number": 46,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/46",
+      "title": "[P1][SC05] Share a result-level Observed/Computed/Inferred classification and independent source-role policy",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:science",
+        "bug"
+      ],
+      "depends_on": [],
+      "dependency_issue_numbers": [],
+      "suggested_owner_role": "Backend/domain engineer with superconductivity reviewer",
+      "acceptance_count": 6,
+      "body_sha256": "9dceaedd36f1b4091cda4108a589cfde251a9809a2303af253be55e1ccb9eaca"
+    },
+    {
+      "id": "SC06",
+      "number": 50,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/50",
+      "title": "[P1][SC06] Rebuild Timeline semantics around result identity, explicit dates and honest sampling",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:science",
+        "bug"
+      ],
+      "depends_on": [
+        "SC04",
+        "SC05",
+        "SC07"
+      ],
+      "dependency_issue_numbers": [
+        45,
+        46,
+        49
+      ],
+      "suggested_owner_role": "Backend projection engineer and frontend visualization engineer",
+      "acceptance_count": 7,
+      "body_sha256": "76d383d84b8dba29b73badeb1343b50d659075e3cb66950d513a7390141f61c6"
+    },
+    {
+      "id": "SC07",
+      "number": 49,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/49",
+      "title": "[P1][SC07] Apply shared review visibility and warning policies to all material read surfaces",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:science",
+        "bug"
+      ],
+      "depends_on": [
+        "SC05"
+      ],
+      "dependency_issue_numbers": [
+        46
+      ],
+      "suggested_owner_role": "Backend and frontend engineers with curator",
+      "acceptance_count": 6,
+      "body_sha256": "873bc83920dc9fea56e7f2fcbdd1f3a46108b065a61e1e4903ead671cefb18cf"
+    },
+    {
+      "id": "SC08",
+      "number": 66,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/66",
+      "title": "[P1][SC08] Propagate source corrections and retractions through reviews, projections, caches and releases",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:science",
+        "bug"
+      ],
+      "depends_on": [
+        "SC07",
+        "ML01",
+        "ML03",
+        "ML04"
+      ],
+      "dependency_issue_numbers": [
+        49,
+        57,
+        61,
+        64
+      ],
+      "suggested_owner_role": "Backend/data lifecycle engineer with curator",
+      "acceptance_count": 7,
+      "body_sha256": "3d60dda22040565ab06422c5ba0e46e6a0bea1067c3795ab550b9a483fca859d"
+    },
+    {
+      "id": "SC09",
+      "number": 51,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/51",
+      "title": "[P1][SC09] Make composition parsing isotope-aware before emitting exact formula features",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:science",
+        "bug"
+      ],
+      "depends_on": [],
+      "dependency_issue_numbers": [],
+      "suggested_owner_role": "Scientific data engineer with materials informatics reviewer",
+      "acceptance_count": 6,
+      "body_sha256": "e00fe47dfa31a6dc9584b2604cac298d493d7c8bd1ff6bb101d83c40017f07b7"
+    },
+    {
+      "id": "SC10",
+      "number": 53,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/53",
+      "title": "[P2][SC10] Separate unknowns, priors, conflicts and independent support in material semantics",
+      "priority": "P2",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:science",
+        "bug"
+      ],
+      "depends_on": [
+        "SC05"
+      ],
+      "dependency_issue_numbers": [
+        46
+      ],
+      "suggested_owner_role": "Scientific domain engineer and curator with frontend support",
+      "acceptance_count": 6,
+      "body_sha256": "c948bc3669c851b99ab4f578fede5ee7203111cb031608b4bb34b1a0719bb2cc"
+    },
+    {
+      "id": "SC11",
+      "number": 63,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/63",
+      "title": "[P2][SC11] Bind structure and phase extraction to local material/state evidence instead of whole-paper fallback",
+      "priority": "P2",
+      "type": "bug",
+      "phase": "B",
+      "milestone": 2,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:science",
+        "bug"
+      ],
+      "depends_on": [
+        "SC01",
+        "SC02",
+        "SC05"
+      ],
+      "dependency_issue_numbers": [
+        44,
+        47,
+        46
+      ],
+      "suggested_owner_role": "LLM extraction engineer with superconductivity curator",
+      "acceptance_count": 6,
+      "body_sha256": "8292ebe9fe03536c748c1c50b614c93d18e582b8efc303e310277c4dc27fe0d7"
+    },
+    {
+      "id": "ML01",
+      "number": 57,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/57",
+      "title": "[P1][ML01] Preserve source revisions and result-level availability for temporal research",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:ml-data",
+        "bug"
+      ],
+      "depends_on": [
+        "EN01"
+      ],
+      "dependency_issue_numbers": [
+        42
+      ],
+      "suggested_owner_role": "Data engineer with research-provenance review",
+      "acceptance_count": 6,
+      "body_sha256": "13837ada0e02eeb39abd8e98fa0db8faf77b94bba87ec61ace6ad3e5a6daa755"
+    },
+    {
+      "id": "ML02",
+      "number": 43,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/43",
+      "title": "[P1][ML02] Enforce claim/example integrity and quarantine contradictory negative labels",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:ml-data",
+        "bug"
+      ],
+      "depends_on": [
+        "EN01"
+      ],
+      "dependency_issue_numbers": [
+        42
+      ],
+      "suggested_owner_role": "Backend/data engineer with superconductivity domain reviewer",
+      "acceptance_count": 6,
+      "body_sha256": "cb5a1befd7d608a4daee624c1dd2bcb8baa1cb8c6978c2da70175af25bddcf2a"
+    },
+    {
+      "id": "ML03",
+      "number": 61,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/61",
+      "title": "[P1][ML03] Implement a revision-aware, idempotent shadow research loader",
+      "priority": "P1",
+      "type": "enhancement",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:ml-data",
+        "enhancement"
+      ],
+      "depends_on": [
+        "ML01",
+        "ML02",
+        "SC01",
+        "SC04",
+        "SC05",
+        "SC07",
+        "SC09",
+        "EN01"
+      ],
+      "dependency_issue_numbers": [
+        57,
+        43,
+        44,
+        45,
+        46,
+        49,
+        51,
+        42
+      ],
+      "suggested_owner_role": "Data engineer / backend engineer",
+      "acceptance_count": 7,
+      "body_sha256": "8cc36fecb69008e2dfd9a8c023711384009cbd7a4badd196c774496a1d10b8b0"
+    },
+    {
+      "id": "ML04",
+      "number": 64,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/64",
+      "title": "[P1][ML04] Freeze complete research dependency closures with concurrency-safe DAG integrity",
+      "priority": "P1",
+      "type": "enhancement",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:ml-data",
+        "enhancement"
+      ],
+      "depends_on": [
+        "ML03",
+        "EN01"
+      ],
+      "dependency_issue_numbers": [
+        61,
+        42
+      ],
+      "suggested_owner_role": "Backend/database engineer with scientific data governance reviewer",
+      "acceptance_count": 7,
+      "body_sha256": "861fb2c0a6eac050c83dbfe4f06ebd2add94323dd5ebaddf074eb04b7b527ae1"
+    },
+    {
+      "id": "ML05",
+      "number": 67,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/67",
+      "title": "[P2][ML05] Implement a limited scientific property importer with state, structure and run validation",
+      "priority": "P2",
+      "type": "enhancement",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:ml-data",
+        "enhancement"
+      ],
+      "depends_on": [
+        "ML03",
+        "SC02",
+        "SC11"
+      ],
+      "dependency_issue_numbers": [
+        61,
+        47,
+        63
+      ],
+      "suggested_owner_role": "Scientific software/data engineer with condensed-matter reviewer",
+      "acceptance_count": 7,
+      "body_sha256": "8f705971754b6f6712b7fbab2e3938bf403b2c8ea071d4c30d0e04207b69f74b"
+    },
+    {
+      "id": "ML06",
+      "number": 70,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/70",
+      "title": "[P1][ML06] Build task-specific ML datasets with split, temporal and dependency-leakage gates",
+      "priority": "P1",
+      "type": "enhancement",
+      "phase": "D",
+      "milestone": 4,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:ml-data",
+        "enhancement"
+      ],
+      "depends_on": [
+        "ML01",
+        "ML02",
+        "ML04",
+        "ML05",
+        "SC09",
+        "SC10"
+      ],
+      "dependency_issue_numbers": [
+        57,
+        43,
+        64,
+        67,
+        51,
+        53
+      ],
+      "suggested_owner_role": "ML/data engineer with domain and benchmark reviewer",
+      "acceptance_count": 7,
+      "body_sha256": "6417c3cb612c2dfe65d69a1d23d12a3d15e2e75b4c5affec1ce0d30257aa3e8c"
+    },
+    {
+      "id": "ML07",
+      "number": 68,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/68",
+      "title": "[P1][ML07] Restrict public research access to approved releases and enforce recursive export policies",
+      "priority": "P1",
+      "type": "enhancement",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:ml-data",
+        "enhancement"
+      ],
+      "depends_on": [
+        "ML04",
+        "SC07"
+      ],
+      "dependency_issue_numbers": [
+        64,
+        49
+      ],
+      "suggested_owner_role": "Backend/security engineer with data-governance reviewer",
+      "acceptance_count": 6,
+      "body_sha256": "e3392d534ea1fcfd1ded85cf894b28562818b65cd47b052f59b577dc621bb064"
+    },
+    {
+      "id": "ML08",
+      "number": 54,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/54",
+      "title": "[P1][ML08] Run a 60-event reviewed pilot and publish data quality, missingness and curation effort",
+      "priority": "P1",
+      "type": "enhancement",
+      "phase": "B",
+      "milestone": 2,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:ml-data",
+        "enhancement"
+      ],
+      "depends_on": [],
+      "dependency_issue_numbers": [],
+      "suggested_owner_role": "Condensed-matter reviewer with data-curation engineer and independent reviewer",
+      "acceptance_count": 7,
+      "body_sha256": "4fbc87b814e0cda0c9c5efd6032f6eadf1ec13e2c3b372a176ef5ec266ce974d"
+    },
+    {
+      "id": "ML09",
+      "number": 76,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/76",
+      "title": "[P2][ML09] Publish reproducible ML baseline evaluations against audited dataset releases",
+      "priority": "P2",
+      "type": "enhancement",
+      "phase": "D",
+      "milestone": 4,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:ml-data",
+        "enhancement"
+      ],
+      "depends_on": [
+        "ML06",
+        "ML07",
+        "ML08"
+      ],
+      "dependency_issue_numbers": [
+        70,
+        68,
+        54
+      ],
+      "suggested_owner_role": "ML researcher with scientific reviewer and research-budget owner",
+      "acceptance_count": 7,
+      "body_sha256": "3cf6afffb8077cc49e27cd313f8d30fb09f2c6824b50a6116d20bc6025ff438f"
+    },
+    {
+      "id": "EN01",
+      "number": 42,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/42",
+      "title": "[P1][EN01] Fail closed before tests can connect to non-disposable PostgreSQL or Redis",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:platform",
+        "bug"
+      ],
+      "depends_on": [],
+      "dependency_issue_numbers": [],
+      "suggested_owner_role": "Platform engineer / test infrastructure",
+      "acceptance_count": 6,
+      "body_sha256": "7ea553139bd8b7ace33f5f3006b63d380c14a8ca997800b1d011a63354bc3732"
+    },
+    {
+      "id": "EN02",
+      "number": 58,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/58",
+      "title": "[P2][EN02] Separate production schema migration from API startup and define reversible shadow rollout",
+      "priority": "P2",
+      "type": "enhancement",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:platform",
+        "enhancement"
+      ],
+      "depends_on": [
+        "EN01"
+      ],
+      "dependency_issue_numbers": [
+        42
+      ],
+      "suggested_owner_role": "Platform engineer + database maintainer",
+      "acceptance_count": 6,
+      "body_sha256": "e8f63f043683c1b44c20f786eed89367ac14e19dd738fc27c91c1aa41a2d651f"
+    },
+    {
+      "id": "EN03",
+      "number": 59,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/59",
+      "title": "[P2][EN03] Make scheduled refresh and audit tasks single-executor and idempotent across replicas",
+      "priority": "P2",
+      "type": "bug",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:platform",
+        "bug"
+      ],
+      "depends_on": [
+        "EN01"
+      ],
+      "dependency_issue_numbers": [
+        42
+      ],
+      "suggested_owner_role": "Backend / platform engineer",
+      "acceptance_count": 5,
+      "body_sha256": "a1e0d93eabdcec4adadc74d10e47cdc809d0964934dca4a643b234aef6ab5ca2"
+    },
+    {
+      "id": "EN04",
+      "number": 52,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/52",
+      "title": "[P2][EN04] Test the same locked Python runtime dependencies that are shipped in release images",
+      "priority": "P2",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:platform",
+        "bug"
+      ],
+      "depends_on": [
+        "EN01"
+      ],
+      "dependency_issue_numbers": [
+        42
+      ],
+      "suggested_owner_role": "Build / CI maintainer",
+      "acceptance_count": 5,
+      "body_sha256": "b5827b626d1f0c40bf8acead2e55bb2078a39fc2fa289329ed324451b71c9c6d"
+    },
+    {
+      "id": "EN05",
+      "number": 60,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/60",
+      "title": "[P2][EN05] Measure retrieval and API performance and bound provider work after timeout",
+      "priority": "P2",
+      "type": "enhancement",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:platform",
+        "enhancement"
+      ],
+      "depends_on": [
+        "EN01"
+      ],
+      "dependency_issue_numbers": [
+        42
+      ],
+      "suggested_owner_role": "Backend performance / platform engineer",
+      "acceptance_count": 5,
+      "body_sha256": "00878c7ff7b31801c84f1bf2e0d0428c71705c15523369ea858ee2ab666cf507"
+    },
+    {
+      "id": "EN06",
+      "number": 71,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/71",
+      "title": "[P2][EN06] Restore a complete scientific release including artifacts, provenance and index rebuild state",
+      "priority": "P2",
+      "type": "enhancement",
+      "phase": "D",
+      "milestone": 4,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:platform",
+        "enhancement"
+      ],
+      "depends_on": [
+        "EN01",
+        "ML04",
+        "ML07"
+      ],
+      "dependency_issue_numbers": [
+        42,
+        64,
+        68
+      ],
+      "suggested_owner_role": "Platform engineer + research data steward",
+      "acceptance_count": 5,
+      "body_sha256": "1f5fb1913de82bef83773303a84d66d5703f4c14808e8ce908510ebf1bf53f98"
+    },
+    {
+      "id": "UX01",
+      "number": 72,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/72",
+      "title": "[P2][UX01] Expose evidence-first materials views and honest dataset coverage across the public site",
+      "priority": "P2",
+      "type": "enhancement",
+      "phase": "D",
+      "milestone": 4,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:ux",
+        "enhancement"
+      ],
+      "depends_on": [
+        "SC02",
+        "SC05",
+        "SC07",
+        "SC10",
+        "ML03",
+        "ML05"
+      ],
+      "dependency_issue_numbers": [
+        47,
+        46,
+        49,
+        53,
+        61,
+        67
+      ],
+      "suggested_owner_role": "Frontend engineer + scientific UX reviewer",
+      "acceptance_count": 6,
+      "body_sha256": "d6ec56079289161d4dbb350f92990c5dc9a42cd989a1622017da8c3cbab8e71a"
+    },
+    {
+      "id": "UX02",
+      "number": 73,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/73",
+      "title": "[P2][UX02] Build a revision-aware curator workflow with side-by-side evidence and impact preview",
+      "priority": "P2",
+      "type": "enhancement",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:ux",
+        "enhancement"
+      ],
+      "depends_on": [
+        "SC07",
+        "SC08",
+        "ML03",
+        "ML07"
+      ],
+      "dependency_issue_numbers": [
+        49,
+        66,
+        61,
+        68
+      ],
+      "suggested_owner_role": "Frontend/backend engineer + scientific curator",
+      "acceptance_count": 6,
+      "body_sha256": "6d1fc00fefd2191b9ff5b84c438679019aaaf0b7492a48c322b91fe4ed184ac9"
+    },
+    {
+      "id": "AL01",
+      "number": 78,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/78",
+      "title": "[P2][AL01] Validate RPS and multi-fidelity action selection with a fixed-budget, leakage-safe replay",
+      "priority": "P2",
+      "type": "enhancement",
+      "phase": "E",
+      "milestone": 5,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:ml-data",
+        "enhancement"
+      ],
+      "depends_on": [
+        "ML09",
+        "DR01",
+        "DR02",
+        "ML05"
+      ],
+      "dependency_issue_numbers": [
+        76,
+        55,
+        74,
+        67
+      ],
+      "suggested_owner_role": "ML researcher + condensed-matter reviewer",
+      "acceptance_count": 7,
+      "body_sha256": "e057ae2b6063c75d23901604afdbb80234e2a3951027bab6344cb72b2ca342c9"
+    },
+    {
+      "id": "DR01",
+      "number": 55,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/55",
+      "title": "[P1][DR01] Gate RPS actions on verified prerequisites and complete resources, and explain contributions honestly",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:discovery",
+        "bug"
+      ],
+      "depends_on": [],
+      "dependency_issue_numbers": [],
+      "suggested_owner_role": "Backend policy engineer with a scientific reviewer and frontend collaborator",
+      "acceptance_count": 7,
+      "body_sha256": "f98017249fe02543bf90a07b9a3bce646f38662be7d7659f444a1067f998fa43"
+    },
+    {
+      "id": "DR02",
+      "number": 74,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/74",
+      "title": "[P1][DR02] Publish independently verifiable RPS bundles and isolate catalog failures with revision-safe caching",
+      "priority": "P1",
+      "type": "enhancement",
+      "phase": "D",
+      "milestone": 4,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:discovery",
+        "enhancement"
+      ],
+      "depends_on": [
+        "DR01",
+        "ML07"
+      ],
+      "dependency_issue_numbers": [
+        55,
+        68
+      ],
+      "suggested_owner_role": "Backend release engineer with frontend, operations and scientific publication reviewers",
+      "acceptance_count": 7,
+      "body_sha256": "1f4137c9e94cb0030b81468e4aff45c65bd978248f4d6cdec63f0e7ad7f09581"
+    },
+    {
+      "id": "DR03",
+      "number": 56,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/56",
+      "title": "[P1][DR03] Validate legacy Discovery feeds before atomic publication and pin pagination/detail to one version",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:discovery",
+        "bug"
+      ],
+      "depends_on": [],
+      "dependency_issue_numbers": [],
+      "suggested_owner_role": "Backend/feed engineer with frontend and operations collaborators",
+      "acceptance_count": 7,
+      "body_sha256": "9234b5161df87d07fb994c24a26f80654f795ff731ec41f6cca0cf2e8d890595"
+    },
+    {
+      "id": "DR04",
+      "number": 77,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/77",
+      "title": "[P2][DR04] Connect the scientific Discovery matrix to reviewed data with explicit representative actions and calibration limits",
+      "priority": "P2",
+      "type": "enhancement",
+      "phase": "D",
+      "milestone": 4,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:discovery",
+        "enhancement"
+      ],
+      "depends_on": [
+        "DR01",
+        "DR02",
+        "ML05",
+        "ML04",
+        "SC07",
+        "ML08"
+      ],
+      "dependency_issue_numbers": [
+        55,
+        74,
+        67,
+        64,
+        49,
+        54
+      ],
+      "suggested_owner_role": "Frontend and backend scientific-data engineers with a superconductivity reviewer and ML evaluation lead",
+      "acceptance_count": 7,
+      "body_sha256": "42afe166f8fafc18cb1c7966ef7bdbf16ee87051700eca8107ed9c8788f66941"
+    },
+    {
+      "id": "RG01",
+      "number": 62,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/62",
+      "title": "[P1][RG01] Separate citation-index validity from scientific support and validate numerical/material-state claims",
+      "priority": "P1",
+      "type": "bug",
+      "phase": "A",
+      "milestone": 1,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:rag",
+        "bug"
+      ],
+      "depends_on": [
+        "SC01",
+        "SC04",
+        "SC05"
+      ],
+      "dependency_issue_numbers": [
+        44,
+        45,
+        46
+      ],
+      "suggested_owner_role": "RAG backend engineer with a scientific evidence reviewer and frontend collaborator",
+      "acceptance_count": 7,
+      "body_sha256": "b98d9ca3d9a177256687c589333e59d864f7f2028958e4135c4e6c643798b1ff"
+    },
+    {
+      "id": "RG02",
+      "number": 65,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/65",
+      "title": "[P1][RG02] Type original versus derived Facts evidence and prevent circular provenance from validating extracted claims",
+      "priority": "P1",
+      "type": "enhancement",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P1",
+        "area:rag",
+        "enhancement"
+      ],
+      "depends_on": [
+        "ML01",
+        "ML03",
+        "SC05",
+        "SC04"
+      ],
+      "dependency_issue_numbers": [
+        57,
+        61,
+        46,
+        45
+      ],
+      "suggested_owner_role": "Ingestion/provenance engineer with scientific and source-permission reviewers",
+      "acceptance_count": 7,
+      "body_sha256": "e13236f42d651d8164a353521f2ee19f2ecc3ae9387d9e5cc039323459080bf7"
+    },
+    {
+      "id": "RG03",
+      "number": 69,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/69",
+      "title": "[P2][RG03] Version chunks and embedding generations, enforce hard token bounds and reconcile SQL/vector indexes safely",
+      "priority": "P2",
+      "type": "bug",
+      "phase": "C",
+      "milestone": 3,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:rag",
+        "bug"
+      ],
+      "depends_on": [
+        "RG02",
+        "EN01"
+      ],
+      "dependency_issue_numbers": [
+        65,
+        42
+      ],
+      "suggested_owner_role": "Retrieval/ingestion engineer with operations and scientific-data reviewers",
+      "acceptance_count": 7,
+      "body_sha256": "750fdb775ed6a507fbb78152247c81e144e1a846de0bde81c30fa3efb267d4fb"
+    },
+    {
+      "id": "RG04",
+      "number": 75,
+      "url": "https://github.com/JackZH26/SCLib_JZIS/issues/75",
+      "title": "[P2][RG04] Route scientific queries to state-aware results or complementary source evidence and establish an adjudicated gold evaluation",
+      "priority": "P2",
+      "type": "enhancement",
+      "phase": "D",
+      "milestone": 4,
+      "labels": [
+        "review:2026-09-05",
+        "priority:P2",
+        "area:rag",
+        "enhancement"
+      ],
+      "depends_on": [
+        "RG01",
+        "RG02",
+        "RG03",
+        "SC04",
+        "SC09",
+        "ML07"
+      ],
+      "dependency_issue_numbers": [
+        62,
+        65,
+        69,
+        45,
+        51,
+        68
+      ],
+      "suggested_owner_role": "Scientific retrieval/ML engineer with superconductivity adjudicators and backend/frontend collaborators",
+      "acceptance_count": 7,
+      "body_sha256": "05d63a6db6131b2ca1bf3a18f754ed19573c24613b0b5e3e5498495fabb49f8f"
+    }
+  ],
+  "topological_order": [
+    "SC01",
+    "SC05",
+    "SC09",
+    "ML08",
+    "EN01",
+    "DR01",
+    "DR03",
+    "SC04",
+    "SC07",
+    "SC10",
+    "ML01",
+    "ML02",
+    "EN02",
+    "EN03",
+    "EN04",
+    "EN05",
+    "SC02",
+    "SC06",
+    "ML03",
+    "RG01",
+    "SC03",
+    "SC11",
+    "ML04",
+    "RG02",
+    "SC08",
+    "ML05",
+    "ML07",
+    "RG03",
+    "ML06",
+    "EN06",
+    "UX01",
+    "UX02",
+    "DR02",
+    "RG04",
+    "ML09",
+    "DR04",
+    "AL01"
+  ],
+  "hard_acceptance_coverage": [
+    {
+      "review_checklist_item": 1,
+      "invariant": "Units, scientific notation and non-exact values",
+      "issue_ids": [
+        "SC01"
+      ],
+      "issue_numbers": [
+        44
+      ]
+    },
+    {
+      "review_checklist_item": 2,
+      "invariant": "Unknown pressure and same-result filters",
+      "issue_ids": [
+        "SC04"
+      ],
+      "issue_numbers": [
+        45
+      ]
+    },
+    {
+      "review_checklist_item": 3,
+      "invariant": "Result-level observed/computed and primary/cited semantics",
+      "issue_ids": [
+        "SC05"
+      ],
+      "issue_numbers": [
+        46
+      ]
+    },
+    {
+      "review_checklist_item": 4,
+      "invariant": "Atomic property/state pairing",
+      "issue_ids": [
+        "SC02",
+        "ML05"
+      ],
+      "issue_numbers": [
+        47,
+        67
+      ]
+    },
+    {
+      "review_checklist_item": 5,
+      "invariant": "No manufactured Tc and traceable public values",
+      "issue_ids": [
+        "SC03",
+        "SC07"
+      ],
+      "issue_numbers": [
+        48,
+        49
+      ]
+    },
+    {
+      "review_checklist_item": 6,
+      "invariant": "Isotope/variable/formula identity",
+      "issue_ids": [
+        "SC09"
+      ],
+      "issue_numbers": [
+        51
+      ]
+    },
+    {
+      "review_checklist_item": 7,
+      "invariant": "Timeline identity and input-order independence",
+      "issue_ids": [
+        "SC06"
+      ],
+      "issue_numbers": [
+        50
+      ]
+    },
+    {
+      "review_checklist_item": 8,
+      "invariant": "No conflicting accepted negative labels",
+      "issue_ids": [
+        "ML02"
+      ],
+      "issue_numbers": [
+        43
+      ]
+    },
+    {
+      "review_checklist_item": 9,
+      "invariant": "Database rejection of ambient+NULL, cross-material targets and nonfinite values",
+      "issue_ids": [
+        "ML02"
+      ],
+      "issue_numbers": [
+        43
+      ]
+    },
+    {
+      "review_checklist_item": 10,
+      "invariant": "Result availability, source revisions and temporal leakage",
+      "issue_ids": [
+        "ML01",
+        "ML06"
+      ],
+      "issue_numbers": [
+        57,
+        70
+      ]
+    },
+    {
+      "review_checklist_item": 11,
+      "invariant": "Immutable dependency closure and concurrent cycle protection",
+      "issue_ids": [
+        "ML04"
+      ],
+      "issue_numbers": [
+        64
+      ]
+    },
+    {
+      "review_checklist_item": 12,
+      "invariant": "Split-group and preprocessing leakage",
+      "issue_ids": [
+        "ML06"
+      ],
+      "issue_numbers": [
+        70
+      ]
+    },
+    {
+      "review_checklist_item": 13,
+      "invariant": "Scientific claim support and anti-circular Facts",
+      "issue_ids": [
+        "RG01",
+        "RG02"
+      ],
+      "issue_numbers": [
+        62,
+        65
+      ]
+    },
+    {
+      "review_checklist_item": 14,
+      "invariant": "Hard chunk bounds, truncation detection and index reconciliation",
+      "issue_ids": [
+        "RG03"
+      ],
+      "issue_numbers": [
+        69
+      ]
+    },
+    {
+      "review_checklist_item": 15,
+      "invariant": "Action prerequisites and complete resources",
+      "issue_ids": [
+        "DR01"
+      ],
+      "issue_numbers": [
+        55
+      ]
+    },
+    {
+      "review_checklist_item": 16,
+      "invariant": "Recomputable public RPS, contribution conservation and honest reasons",
+      "issue_ids": [
+        "DR01",
+        "DR02"
+      ],
+      "issue_numbers": [
+        55,
+        74
+      ]
+    },
+    {
+      "review_checklist_item": 17,
+      "invariant": "Last-good feed, unique IDs and version-pinned pagination",
+      "issue_ids": [
+        "DR03"
+      ],
+      "issue_numbers": [
+        56
+      ]
+    },
+    {
+      "review_checklist_item": 18,
+      "invariant": "Revision/retraction propagation and historical notices",
+      "issue_ids": [
+        "SC08",
+        "RG02",
+        "ML04"
+      ],
+      "issue_numbers": [
+        66,
+        65,
+        64
+      ]
+    },
+    {
+      "review_checklist_item": 19,
+      "invariant": "Release-only public access and recursive export permissions",
+      "issue_ids": [
+        "ML07"
+      ],
+      "issue_numbers": [
+        68
+      ]
+    },
+    {
+      "review_checklist_item": 20,
+      "invariant": "Pre-connect test safeguards, migration/task idempotence and recovery",
+      "issue_ids": [
+        "EN01",
+        "EN02",
+        "EN03",
+        "EN06"
+      ],
+      "issue_numbers": [
+        42,
+        58,
+        59,
+        71
+      ]
+    }
+  ]
+}

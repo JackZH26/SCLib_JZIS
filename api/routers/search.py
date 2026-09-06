@@ -24,10 +24,11 @@ from sqlalchemy.orm import selectinload
 
 from config import get_settings
 from models import get_db
-from models.db import Chunk, Paper
+from models.db import Chunk
 from models.search import SearchMatch, SearchRequest, SearchResponse
 from routers.deps import Identity, require_identity
 from services import provider_resilience, retrieval, vector_search
+from services.scientific_filters import ResultFilters, matching_result_references, tc_lower_bound
 
 log = logging.getLogger(__name__)
 
@@ -115,6 +116,13 @@ async def search(
     # 3. Preserve ANN ordering, apply row-level filters that don't
     #    fit in the index namespaces.
     f = body.filters
+    scientific_filters = ResultFilters(
+        families=tuple(f.material_family or []), tc_min=f.tc_min,
+        pressure_min=f.pressure_min, pressure_max=f.pressure_max,
+        ambient_only=f.ambient_only, include_unknown_pressure=f.include_unknown_pressure,
+        origins=tuple(f.knowledge_origin or []), source_role=f.source_role,
+        experimental_only=f.experimental_only,
+    )
     matches: list[SearchMatch] = []
     seen_papers: set[str] = set()  # deduplicate: one result per paper
     for candidate in candidates:
@@ -128,18 +136,11 @@ async def search(
             continue  # already have a higher-ranked chunk from this paper
         if f.exclude_retracted and paper.status == "retracted":
             continue
-        if f.material_family and not _matches_material_family(
-            paper, chunk, f.material_family
-        ):
+        matched_results = matching_result_references(
+            paper.materials_extracted, scientific_filters, scope_id=paper.id,
+        )
+        if scientific_filters.active and not matched_results:
             continue
-        if f.tc_min is not None:
-            materials = paper.materials_extracted or []
-            if not _any_tc_meets(materials, f.tc_min):
-                continue
-        if f.pressure_max is not None:
-            materials = paper.materials_extracted or []
-            if not _any_pressure_below(materials, f.pressure_max):
-                continue
 
         seen_papers.add(paper.id)
         matches.append(
@@ -158,6 +159,7 @@ async def search(
                 material_family=paper.material_family,
                 has_equation=bool(chunk.has_equation),
                 has_table=bool(chunk.has_table),
+                matching_results=matched_results if scientific_filters.active else [],
             )
         )
         if len(matches) >= body.top_k:
@@ -189,45 +191,14 @@ async def search(
 _EPOCH = _date(1900, 1, 1)
 
 
-def _any_tc_meets(materials: list[dict], tc_min: float) -> bool:
-    for m in materials:
-        tc = m.get("tc_kelvin") if isinstance(m, dict) else None
-        if isinstance(tc, (int, float)) and tc >= tc_min:
-            return True
-    return False
-
-
-def _any_pressure_below(materials: list[dict], pressure_max: float) -> bool:
-    # Ambient (None/0) always satisfies "pressure_max" — the caller
-    # wants "no more than this much pressure".
-    for m in materials:
-        if not isinstance(m, dict):
-            continue
-        p = m.get("pressure_gpa")
-        if p is None or (isinstance(p, (int, float)) and p <= pressure_max):
-            return True
-    return False
-
-
 def _best_tc(m: SearchMatch) -> float:
+    if m.matching_results:
+        return max((r["tc_lower_bound_k"] or 0 for r in m.matching_results), default=0.0)
     best = 0.0
     for mat in m.materials:
         if not isinstance(mat, dict):
             continue
-        tc = mat.get("tc_kelvin")
-        if isinstance(tc, (int, float)) and tc > best:
-            best = float(tc)
+        tc = tc_lower_bound(mat)
+        if tc is not None and tc > best:
+            best = tc
     return best
-
-
-def _matches_material_family(
-    paper: Paper,
-    chunk: Chunk,
-    allowed: list[str],
-) -> bool:
-    """Enforce family filters from Postgres until Vertex metadata is complete."""
-    families = {paper.material_family, chunk.material_family}
-    for material in paper.materials_extracted or []:
-        if isinstance(material, dict):
-            families.add(material.get("family") or material.get("material_family"))
-    return bool(set(allowed) & {family for family in families if isinstance(family, str)})

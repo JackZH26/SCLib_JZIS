@@ -14,33 +14,6 @@ jobs:
     name: API (pytest)
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_DB: sclib_test
-          POSTGRES_USER: sclib
-          POSTGRES_PASSWORD: sclib_test_pw
-        ports: ["5432:5432"]
-        options: >-
-          --health-cmd "pg_isready -U sclib -d sclib_test"
-          --health-interval 5s
-          --health-timeout 3s
-          --health-retries 10
-      redis:
-        image: redis:7-alpine
-        ports: ["6379:6379"]
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 5s
-          --health-timeout 3s
-          --health-retries 10
-    env:
-      DATABASE_URL: postgresql://sclib:sclib_test_pw@localhost:5432/sclib_test
-      REDIS_URL: redis://localhost:6379
-      JWT_SECRET: test_jwt_secret_not_for_production_use_at_all
-      ENVIRONMENT: test
-      EMAIL_BACKEND: stdout
     defaults:
       run:
         working-directory: api
@@ -51,33 +24,30 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install uv
-        run: pip install --upgrade pip uv
+        run: python -m pip install --disable-pip-version-check uv==0.11.16
       - name: Install dependencies
-        run: uv pip install --system -e ".[dev]"
-      - name: Run tests
-        run: pytest -q
+        run: uv sync --locked --extra dev --python 3.11
+      - name: Verify connection-before-import safety guards (no services)
+        run: .venv/bin/python -m unittest discover -s ../scripts/tests -p test_test_safety.py -v
+      - name: Capture test runtime dependency inventory
+        run: .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock > runtime-inventory.json
+      - name: Prepare ephemeral service images
+        run: |
+          docker pull postgres:16-alpine
+          docker pull redis:7-alpine
+      - name: Run tests against owned disposable services
+        run: .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q
+      - name: Upload test runtime inventory
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: api-test-runtime-inventory
+          path: api/runtime-inventory.json
 
   migration-tests:
     name: Migration (empty database to head)
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_DB: sclib_migration_test
-          POSTGRES_USER: sclib
-          POSTGRES_PASSWORD: sclib_test_pw
-        ports: ["5432:5432"]
-        options: >-
-          --health-cmd "pg_isready -U sclib -d sclib_migration_test"
-          --health-interval 5s
-          --health-timeout 3s
-          --health-retries 10
-    env:
-      DATABASE_URL: postgresql://sclib:sclib_test_pw@localhost:5432/sclib_migration_test
-      JWT_SECRET: test_jwt_secret_not_for_production_use_at_all
-      ENVIRONMENT: test
     defaults:
       run:
         working-directory: api
@@ -88,34 +58,31 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install uv
-        run: pip install --upgrade pip uv
+        run: python -m pip install --disable-pip-version-check uv==0.11.16
       - name: Install API dependencies
-        run: uv pip install --system -e ".[dev]"
-      - name: Upgrade empty database to migration head
-        run: alembic upgrade head
-      - name: Verify migration head and auth schema
+        run: uv sync --locked --extra dev --python 3.11
+      - name: Capture migration runtime dependency inventory
+        run: .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock > runtime-inventory.json
+      - name: Prepare ephemeral service images
         run: |
-          CURRENT="$(alembic current | awk '{print $1}')"
-          HEAD="$(alembic heads | awk '{print $1}')"
-          test "$CURRENT" = "$HEAD"
-          python - <<'PY'
-          from sqlalchemy import create_engine, inspect
-          from config import get_settings
-
-          engine = create_engine(get_settings().database_url)
-          schema = inspect(engine)
-          assert {"password_reset_tokens", "auth_audit_events"} <= set(schema.get_table_names())
-          user_columns = {column["name"] for column in schema.get_columns("users")}
-          assert "session_version" in user_columns
-          print("migration schema verified")
-          PY
+          docker pull postgres:16-alpine
+          docker pull redis:7-alpine
+      - name: Upgrade and verify an owned disposable database
+        run: .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite migrations
+      - name: Upload migration runtime inventory
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: migration-test-runtime-inventory
+          path: api/runtime-inventory.json
 
   ingestion-tests:
     name: Ingestion (pytest, no production ingest)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      DATABASE_URL: postgresql://sclib:sclib_test_pw@localhost:5432/sclib_test
+      # Unit tests have no service. This cannot identify a real SCLib database.
+      DATABASE_URL: postgresql://unavailable:unavailable@127.0.0.1:1/unavailable
     defaults:
       run:
         working-directory: ingestion
@@ -126,11 +93,19 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install uv
-        run: pip install --upgrade pip uv
+        run: python -m pip install --disable-pip-version-check uv==0.11.16
       - name: Install dependencies
-        run: uv pip install --system -e ".[dev]"
+        run: uv sync --locked --extra dev --python 3.11
+      - name: Capture ingestion runtime dependency inventory
+        run: .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock > runtime-inventory.json
       - name: Run unit tests only
-        run: pytest -q
+        run: .venv/bin/python -m pytest -q
+      - name: Upload ingestion runtime inventory
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ingestion-test-runtime-inventory
+          path: ingestion/runtime-inventory.json
 
   frontend-build:
     name: Frontend (test + pnpm build)

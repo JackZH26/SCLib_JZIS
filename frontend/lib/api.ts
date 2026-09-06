@@ -405,6 +405,8 @@ export interface BookmarkedPaper {
 }
 
 export interface BookmarkedMaterial {
+  anomaly_review?: MaterialAnomalyReview;
+  property_evidence?: MaterialPropertyEvidence;
   id: string;
   target_id: string;
   created_at: string;
@@ -475,6 +477,12 @@ export interface SearchFilters {
   material_family?: string[] | null;
   tc_min?: number | null;
   pressure_max?: number | null;
+  pressure_min?: number | null;
+  ambient_only?: boolean;
+  include_unknown_pressure?: boolean;
+  knowledge_origin?: string[];
+  source_role?: "primary" | "cited";
+  experimental_only?: boolean;
   exclude_retracted?: boolean;
 }
 
@@ -490,8 +498,20 @@ export interface MaterialExtract {
   tc_kelvin?: number | null;
   tc_type?: string | null;
   pressure_gpa?: number | null;
+  pressure_semantics?: Record<string, unknown>;
   measurement?: string | null;
   confidence?: number | null;
+}
+
+export interface MatchingScientificResult {
+  result_id: string;
+  record_index: number;
+  formula: string | null;
+  family: string | null;
+  tc_lower_bound_k: number | null;
+  pressure_semantics: Record<string, unknown>;
+  result_classification: Record<string, unknown>;
+  filter_policy_version: string;
 }
 
 export interface SearchMatch {
@@ -509,6 +529,8 @@ export interface SearchMatch {
   material_family: string | null;
   has_equation: boolean;
   has_table: boolean;
+  matching_results?: MatchingScientificResult[];
+  filter_policy_version?: string;
 }
 
 export interface SearchResponse {
@@ -567,7 +589,112 @@ export function ask(req: AskRequest, opts: { apiKey?: string } = {}) {
 
 // --- Materials ------------------------------------------------------------
 
+/** Operational anomaly checks are not scientific acceptance or source corrections. */
+export interface ScientificAnomalyFinding {
+  finding_id: string;
+  result_id: string;
+  rule_id: string;
+  rule_version: string;
+  category: "format_invalid" | "metadata_conflict" | "unusual";
+  field: string;
+  affected_properties: string[];
+  applicability: Record<string, unknown>;
+  reason: string;
+  description: string;
+  severity: string;
+  outcome: "pending";
+  action: "retain_raw_and_review";
+  quantity: Record<string, unknown> | null;
+  default_view_disposition: "review_required";
+}
+
+export interface ScientificAnomalyAssessment {
+  version: "anomaly-review/1.0.0";
+  result_id: string;
+  status: "no_findings" | "review_required" | "format_invalid";
+  findings: ScientificAnomalyFinding[];
+  total_findings: number;
+  findings_truncated: boolean;
+  review_required_properties: string[];
+  raw_preserved: true;
+  scientific_acceptance: false;
+}
+
+export interface MaterialAnomalyReview {
+  version: "anomaly-review/1.0.0";
+  needs_review: boolean;
+  counts: { no_findings: number; review_required: number; format_invalid: number; total_records: number };
+  rule_counts: Record<string, number>;
+  records: ScientificAnomalyAssessment[];
+  total_records: number;
+  records_truncated: boolean;
+  raw_preserved: true;
+  scientific_acceptance: false;
+  warnings: string[];
+}
+
+export interface MaterialRawArchive {
+  version: "anomaly-review/1.0.0";
+  scope: "material_retained_records";
+  raw_field_policy: "scientific_allowlist_not_full_source";
+  records: { result_id: string; record_index: number; raw: Record<string, unknown>; assessment: ScientificAnomalyAssessment }[];
+  total: number;
+  returned: number;
+  truncated: boolean;
+}
+
+export interface PropertyEvidenceItem {
+  anomaly_review?: ScientificAnomalyAssessment;
+  result_id: string;
+  property: string;
+  value: unknown;
+  quantity: Record<string, unknown> | null;
+  conditions: Record<string, unknown>;
+  state: Record<string, unknown>;
+  source: Record<string, unknown>;
+  origin: Record<string, unknown>;
+  structure: Record<string, unknown>;
+  warnings?: string[];
+}
+
+export interface PropertyEvidenceSelection {
+  status: "supported" | "untraceable" | "not_reported" | "pending";
+  selection: "legacy_exact_support" | "deterministic_result" | "none";
+  selected: PropertyEvidenceItem | null;
+  evidence: PropertyEvidenceItem[];
+  warnings: string[];
+  statistic?: "catalogue_median" | null;
+  total_evidence_count?: number;
+  truncated?: boolean;
+}
+
+export interface MaterialPropertyEvidence {
+  version: "property-evidence/1.1.0";
+  anomaly_policy_version: "anomaly-review/1.0.0";
+  not_joint_observation: true;
+  properties: Record<string, PropertyEvidenceSelection>;
+  evidence_scope?: "selected_only" | "bounded_alternatives";
+  joint_epc: {
+    status: "eligible" | "pending" | "not_reported" | "not_evaluated";
+    pairs: Record<string, unknown>[];
+    selected?: Record<string, unknown> | null;
+    warnings: string[];
+    total_pair_count?: number | null;
+    total_pair_count_exact?: boolean;
+    total_pair_count_lower_bound?: number;
+    truncated?: boolean;
+  };
+}
+
 export interface MaterialSummary {
+  anomaly_review?: MaterialAnomalyReview;
+  property_evidence?: MaterialPropertyEvidence;
+  matching_results?: MatchingScientificResult[];
+  filter_policy_version?: string;
+  result_classification_version?: string;
+  result_origin_counts?: Record<string, number>;
+  classification_conflicts?: number;
+  tc_max_origin?: string;
   id: string;
   formula: string;
   formula_latex: string | null;
@@ -596,6 +723,7 @@ export interface MaterialSummary {
 }
 
 export interface MaterialDetail extends MaterialSummary {
+  raw_archive?: MaterialRawArchive;
   crystal_structure: string | null;
   records: Record<string, unknown>[];
   // v2 structural
@@ -639,6 +767,8 @@ export interface MaterialDetail extends MaterialSummary {
 }
 
 export interface VariantSummary {
+  anomaly_review?: MaterialAnomalyReview;
+  property_evidence?: MaterialPropertyEvidence;
   id: string;
   formula: string;
   tc_max: number | null;
@@ -658,6 +788,7 @@ export interface PhaseDiagramPoint {
 }
 
 export interface HydrideTcParameterRecord {
+  pressure_semantics?: Record<string, unknown>;
   id: number;
   material_id: string | null;
   formula: string;
@@ -691,12 +822,20 @@ export interface MaterialListResponse {
   results: MaterialSummary[];
   limit: number;
   offset: number;
+  sort_basis?: "legacy_catalogue";
+  scientific_display_policy?: "atomic_property_evidence";
 }
 
 export interface MaterialListParams {
   family?: string;
   tc_min?: number;
   ambient_sc?: boolean;
+  pressure_min?: number;
+  pressure_max?: number;
+  include_unknown_pressure?: boolean;
+  knowledge_origin?: string;
+  source_role?: "primary" | "cited";
+  experimental_only?: boolean;
   is_unconventional?: boolean;
   has_competing_order?: boolean;
   pairing_symmetry?: string;
@@ -716,6 +855,12 @@ export function listMaterials(params: MaterialListParams) {
   if (params.family) qs.set("family", params.family);
   if (params.tc_min != null) qs.set("tc_min", String(params.tc_min));
   if (params.ambient_sc != null) qs.set("ambient_sc", String(params.ambient_sc));
+  if (params.pressure_min != null) qs.set("pressure_min", String(params.pressure_min));
+  if (params.pressure_max != null) qs.set("pressure_max", String(params.pressure_max));
+  if (params.include_unknown_pressure) qs.set("include_unknown_pressure", "true");
+  if (params.knowledge_origin) qs.set("knowledge_origin", params.knowledge_origin);
+  if (params.source_role) qs.set("source_role", params.source_role);
+  if (params.experimental_only) qs.set("experimental_only", "true");
   if (params.is_unconventional != null)
     qs.set("is_unconventional", String(params.is_unconventional));
   if (params.has_competing_order != null)
@@ -893,6 +1038,7 @@ export async function getVersion(opts?: {
 }
 
 export interface TimelinePoint {
+  pressure_semantics?: Record<string, unknown>;
   material: string;
   formula_latex?: string | null;
   family: string | null;
@@ -900,8 +1046,12 @@ export interface TimelinePoint {
   year: number;
   pressure_gpa: number | null;
   paper_id: string | null;
-  /** True for DFT / first-principles records, false for experimental. */
+  /** Compatibility flag only: false does not establish an observation. */
   is_theoretical: boolean;
+  knowledge_origin?: string;
+  classification_status?: string;
+  source_role?: string;
+  classifier_version?: string;
 }
 
 export interface TimelineCoverage {
@@ -1002,6 +1152,12 @@ export interface DiscoveryCandidate {
   recommended_next_step: string | null;
   last_reviewed_at_utc: string | null;
   published_at_utc: string | null;
+  base_discovery_score?: number | null;
+  condition_badges?: string[];
+  display_class?: string | null;
+  family_gate_stage?: string | null;
+  legacy_candidate_id?: string | null;
+  taxonomy_bucket?: string | null;
 }
 
 export interface DiscoveryResponse {
@@ -1043,7 +1199,14 @@ export type DiscoveryCandidateSummary = Pick<
   | "discovery_score"
 >;
 
-export interface DiscoveryMetadata {
+export interface DiscoveryVersion {
+  data_version: string;
+  source_status: "ready" | "stale" | "missing" | "invalid";
+  last_successful_at: string | null;
+  source_error: "invalid_update" | "source_missing" | null;
+}
+
+export interface DiscoveryMetadata extends DiscoveryVersion {
   schema_version: "1";
   page_title: string;
   intro: string[];
@@ -1055,7 +1218,7 @@ export interface DiscoveryMetadata {
   role_counts: Record<string, number>;
 }
 
-export interface DiscoveryCandidatePage {
+export interface DiscoveryCandidatePage extends DiscoveryVersion {
   schema_version: "1";
   items: DiscoveryCandidateSummary[];
   total: number;
@@ -1069,39 +1232,77 @@ const DISCOVERY_PAGE_SIZE = 24;
 
 export function getDiscoveryMetadata() {
   return request<DiscoveryMetadata>("/discovery/metadata?schema_version=1", {
-    cache: "force-cache",
+    cache: "no-store",
     credentials: "omit",
-    next: { revalidate: 60 },
   });
 }
 
 export function getDiscoveryCandidates(opts: {
+  dataVersion: string;
   offset?: number;
   limit?: number;
   recordRole?: string | null;
-} = {}) {
+}) {
   const qs = new URLSearchParams({
     offset: String(opts.offset ?? 0),
     limit: String(opts.limit ?? DISCOVERY_PAGE_SIZE),
     schema_version: "1",
+    data_version: opts.dataVersion,
   });
   if (opts.recordRole) qs.set("record_role", opts.recordRole);
   return request<DiscoveryCandidatePage>(`/discovery/candidates?${qs}`, {
-    cache: "force-cache",
+    cache: "no-store",
     credentials: "omit",
-    next: { revalidate: 60 },
   });
 }
 
-export function getDiscoveryCandidate(candidateId: string) {
-  return request<DiscoveryCandidate>(
-    `/discovery/candidates/${encodeURIComponent(candidateId)}?schema_version=1`,
+export function getDiscoveryCandidate(candidateId: string, dataVersion: string) {
+  const qs = new URLSearchParams({ schema_version: "1", data_version: dataVersion });
+  return request<DiscoveryCandidate & DiscoveryVersion>(
+    `/discovery/candidates/${encodeURIComponent(candidateId)}?${qs}`,
     {
-      cache: "force-cache",
+      cache: "no-store",
       credentials: "omit",
-      next: { revalidate: 60 },
     },
   );
+}
+
+export class DiscoveryVersionError extends Error {
+  constructor() { super("The Discovery feed changed or could not be verified. Reload the latest feed."); }
+}
+
+export function isDiscoveryVersionConflict(error: unknown): boolean {
+  return error instanceof DiscoveryVersionError || (error instanceof ApiError && [409, 428].includes(error.status));
+}
+
+export function verifyDiscoveryPage(
+  page: DiscoveryCandidatePage, version: string, offset: number,
+  previous: DiscoveryCandidateSummary[] = [], role: string | null = null, expectedTotal?: number,
+): void {
+  if (!/^discovery-v1-[a-f0-9]{16}$/.test(version) || page.data_version !== version ||
+      page.schema_version !== "1" || !["ready", "stale"].includes(page.source_status) ||
+      page.offset !== offset || page.record_role !== role || !Number.isInteger(page.total) || page.total < 0 ||
+      !Number.isInteger(page.limit) || page.limit < 1 || page.limit > 100 ||
+      (expectedTotal !== undefined && page.total !== expectedTotal) ||
+      page.items.length > page.limit || offset + page.items.length > page.total ||
+      page.has_more !== (offset + page.items.length < page.total) || (page.has_more && page.items.length === 0)) {
+    throw new DiscoveryVersionError();
+  }
+  const ids = new Set(previous.map(item => item.candidate_id));
+  for (const item of page.items) {
+    if (!item.candidate_id?.trim() || ids.has(item.candidate_id) ||
+        (role !== null && (item.record_role ?? "unclassified") !== role) ||
+        [item.discovery_score, item.evidence_quality_score].some(value => value != null && !Number.isFinite(value))) {
+      throw new DiscoveryVersionError();
+    }
+    ids.add(item.candidate_id);
+  }
+}
+
+export function verifyDiscoveryDetail(detail: DiscoveryCandidate & DiscoveryVersion, version: string, candidateId: string): void {
+  if (detail.data_version !== version || detail.candidate_id !== candidateId || !["ready", "stale"].includes(detail.source_status)) {
+    throw new DiscoveryVersionError();
+  }
 }
 
 // --- Admin --------------------------------------------------------------

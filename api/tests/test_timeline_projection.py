@@ -8,6 +8,9 @@ from types import SimpleNamespace
 import pytest
 
 from models.search import TimelineCoverage, TimelineResponse
+from services.anomaly_review import ANOMALY_POLICY_VERSION
+from services.pressure_semantics import PRESSURE_POLICY_VERSION, classify_pressure
+from services.result_semantics import CLASSIFIER_VERSION, is_observed_result
 from services.timeline_points import extract_timeline_points, is_theoretical
 from services.timeline_projection import (
     PROJECTION_SCHEMA_VERSION,
@@ -45,7 +48,7 @@ class _FakeSession:
         return next(self.results)
 
 
-def test_classifier_preserves_audited_experimental_precedence():
+def test_classifier_uses_result_evidence_not_paper_genre_or_pressure():
     assert not is_theoretical({
         "measurement": "resistivity",
         "paper_type": "theoretical",
@@ -53,10 +56,13 @@ def test_classifier_preserves_audited_experimental_precedence():
     })
     assert is_theoretical({"measurement": "DFT"})
     assert not is_theoretical({"paper_type": "computational"})
-    assert is_theoretical({
+    assert not is_theoretical({
         "paper_type": "computational",
         "pressure_gpa": 150,
     })
+    assert is_theoretical({"evidence_type": "primary_theoretical", "pressure_gpa": None})
+    assert is_theoretical({"evidence_type": "primary_theoretical", "pressure_gpa": 0})
+    assert not is_observed_result({"paper_type": "experimental"})
 
 
 def test_extraction_is_stable_deduplicated_and_uses_paper_year_fallback():
@@ -79,6 +85,7 @@ def test_extraction_is_stable_deduplicated_and_uses_paper_year_fallback():
             "tc_kelvin": 250,
             "pressure_gpa": 180,
             "paper_type": "theoretical",
+            "evidence_type": "primary_theoretical",
             "paper_id": "aps:10.1103/test",
         },
         {"tc_kelvin": 301, "year": 2021},
@@ -92,11 +99,13 @@ def test_extraction_is_stable_deduplicated_and_uses_paper_year_fallback():
         current_year=2026,
     )
 
-    assert len(points) == 2
+    # Legacy zero is ambiguous, not the same pressure state as reported 0.2.
+    assert len(points) == 3
     assert points[0].tc_kelvin == pytest.approx(92.04)
-    assert points[1].year == 2024
-    assert points[1].is_theoretical
-    assert points[1].is_aps
+    assert points[1].pressure_gpa == 0.2
+    assert points[2].year == 2024
+    assert points[2].is_theoretical
+    assert points[2].is_aps
     assert points == extract_timeline_points(
         "mat:test",
         records,
@@ -123,15 +132,33 @@ async def test_projection_read_returns_none_until_compatible_state_exists():
 
 
 @pytest.mark.asyncio
+async def test_classifier_version_change_requires_rebuild_before_reading():
+    session = _FakeSession(state=SimpleNamespace(
+        schema_version=PROJECTION_SCHEMA_VERSION, source_year=2026,
+        classifier_version="legacy/unclassified",
+    ))
+    result = await fetch_projected_timeline_points(
+        session, family=None, include_pending=False, experimental_only=True,
+        only_aps=False, current_year=2026,
+    )
+    assert result is None
+    assert session.statements == []
+
+
+@pytest.mark.asyncio
 async def test_projection_read_uses_flat_rows_without_material_records():
     refreshed_at = datetime(2026, 7, 13, tzinfo=UTC)
     state = SimpleNamespace(
         schema_version=PROJECTION_SCHEMA_VERSION,
+        classifier_version=CLASSIFIER_VERSION,
+        pressure_policy_version=PRESSURE_POLICY_VERSION,
+        anomaly_policy_version=ANOMALY_POLICY_VERSION,
         source_year=2026,
         refreshed_at=refreshed_at,
     )
     rows = [
-        ("H3S", "H_3S", "hydride", 203.0, 2015, 150.0, "aps:test", True),
+        ("H3S", "H_3S", "hydride", 203.0, 2015, 150.0, classify_pressure({"pressure_gpa": 150}).to_dict(), "aps:test", True,
+         "Computed", "resolved", "primary", CLASSIFIER_VERSION),
     ]
     session = _FakeSession(state=state, results=[_Result(rows)])
 
@@ -148,6 +175,8 @@ async def test_projection_read_uses_flat_rows_without_material_records():
     assert result.refreshed_at == refreshed_at
     assert result.points[0].material == "H3S"
     assert result.points[0].is_theoretical
+    assert result.points[0].knowledge_origin == "Computed"
+    assert result.points[0].classifier_version == CLASSIFIER_VERSION
     assert "records" not in str(session.statements[0]).lower()
 
 
@@ -165,7 +194,7 @@ async def test_initial_refresh_soft_disables_then_atomically_upserts_projection(
         state=None,
         results=[
             _Result(),
-            _Result([("mat:test", records, now)]),
+            _Result([("mat:test", records, now, "hydride", {})]),
             _Result(),
             _Result(),
             _Result((1, 1)),

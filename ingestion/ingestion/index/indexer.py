@@ -125,6 +125,9 @@ materials_table = Table(
     Column("total_papers", Integer, nullable=False, server_default="0"),
     Column("status", String(50), nullable=False, server_default="active_research"),
     Column("records", JSONB, nullable=False, server_default="[]"),
+    # SC03: derived, versioned review context; raw records remain separate.
+    Column("anomaly_review", JSONB, nullable=False, server_default="{}"),
+    Column("anomaly_context", JSONB, nullable=False, server_default="{}"),
     Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
     # --- v2 structural ----------------------------------------------------
     Column("space_group", String(50)),

@@ -9,24 +9,29 @@ metadata, paginated-summary, and on-demand detail endpoints.
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
 import os
 from collections import Counter
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from email.utils import format_datetime
 from pathlib import Path
-from typing import Literal, TypeAlias
+from typing import Annotated, Literal, TypeAlias
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from fastapi import Path as PathParam
 
-from models.search import (
+from services.discovery_contract import (
     DiscoveryCandidate,
+    DiscoveryCandidateDetail,
     DiscoveryCandidatePage,
     DiscoveryCandidateSummary,
     DiscoveryMetadata,
     DiscoveryResponse,
+)
+from services.discovery_feed import (
+    FeedDocument, atomic_write_document, last_good_path, read_document,
+    update_failed_after, update_status_path,
 )
 from routers.deps import Identity, peek_identity
 from services.http_cache import conditional_json_response, data_version
@@ -34,7 +39,7 @@ from services.http_cache import conditional_json_response, data_version
 router = APIRouter(tags=["discovery"])
 log = logging.getLogger(__name__)
 
-_CACHE_CONTROL = "public, max-age=60, s-maxage=300, stale-while-revalidate=900"
+_CACHE_CONTROL = "public, no-cache, must-revalidate"
 _DEFAULT_FEED_PATH = "/data/sclib/discovery/discovery_feed.json"
 _UNCLASSIFIED_ROLE = "unclassified"
 
@@ -51,7 +56,7 @@ _DEFAULT_FILTER_RULES = [
     {"key": "require_dossier", "label": "Dossier", "value": "Required"},
 ]
 
-FeedSignature: TypeAlias = tuple[str, int | None, int | None]
+FeedSignature: TypeAlias = tuple[str, int | None, int | None, int | None, tuple]
 
 
 def _default_payload() -> dict:
@@ -71,7 +76,9 @@ def _candidate_role(candidate: DiscoveryCandidate) -> str:
 
 
 def _candidate_summary(candidate: DiscoveryCandidate) -> DiscoveryCandidateSummary:
-    return DiscoveryCandidateSummary.model_validate(candidate.model_dump())
+    return DiscoveryCandidateSummary.model_validate(
+        candidate.model_dump(include=set(DiscoveryCandidateSummary.model_fields))
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -86,32 +93,43 @@ class DiscoverySnapshot:
     candidates_by_id: dict[str, DiscoveryCandidate]
     data_version: str
     last_modified: datetime | None
+    document: FeedDocument | None
 
 
 def _feed_signature(path: Path) -> FeedSignature:
     try:
+        update_stat = update_status_path(path).stat()
+        update_signature = (update_stat.st_mtime_ns, update_stat.st_size, update_stat.st_ino)
+    except OSError:
+        update_signature = ()
+    try:
         stat = path.stat()
     except OSError:
-        return (str(path), None, None)
-    return (str(path), stat.st_mtime_ns, stat.st_size)
+        return (str(path), None, None, None, update_signature)
+    return (str(path), stat.st_mtime_ns, stat.st_size, stat.st_ino, update_signature)
 
 
 def _build_snapshot(
     path: Path,
     signature: FeedSignature,
 ) -> DiscoverySnapshot:
-    feed = DiscoveryResponse.model_validate(_default_payload())
-    source_status = "missing"
-    if signature[1] is not None:
-        try:
-            payload = json.loads(path.read_text(encoding="utf-8"))
-            merged = _default_payload()
-            merged.update(payload if isinstance(payload, dict) else {})
-            feed = DiscoveryResponse.model_validate(merged)
-            source_status = "ready"
-        except Exception:  # noqa: BLE001 - invalid feeds degrade to the safe placeholder
-            log.exception("discovery feed is unreadable or invalid: %s", path)
-            source_status = "invalid"
+    document = read_document(path)
+    try:
+        failed = update_failed_after(path, document.validated_at)
+    except (OSError, ValueError, TypeError, KeyError):
+        failed = True
+    return _project_snapshot(signature, document, "stale" if failed else "ready")
+
+
+def _project_snapshot(
+    signature: FeedSignature,
+    document: FeedDocument | None,
+    source_status: Literal["ready", "stale", "missing", "invalid"],
+) -> DiscoverySnapshot:
+    feed = document.feed if document else DiscoveryResponse.model_validate(_default_payload())
+    full_json = feed.model_dump_json()
+    version = data_version("discovery", full_json)
+    last_modified = document.validated_at if document else None
 
     summaries = tuple(_candidate_summary(candidate) for candidate in feed.candidates)
     grouped: dict[str, list[DiscoveryCandidateSummary]] = {}
@@ -128,12 +146,13 @@ def _build_snapshot(
         filter_rules=feed.filter_rules,
         total_candidates=len(feed.candidates),
         role_counts=role_counts,
-    )
-    full_json = feed.model_dump_json()
-    last_modified = (
-        datetime.fromtimestamp(signature[1] / 1_000_000_000, tz=UTC)
-        if signature[1] is not None
-        else None
+        data_version=version,
+        source_status=source_status,
+        last_successful_at=last_modified,
+        source_error=(
+            None if source_status == "ready" else
+            "source_missing" if signature[1] is None else "invalid_update"
+        ),
     )
     return DiscoverySnapshot(
         signature=signature,
@@ -144,8 +163,9 @@ def _build_snapshot(
         summaries=summaries,
         summaries_by_role=summaries_by_role,
         candidates_by_id={candidate.candidate_id: candidate for candidate in feed.candidates},
-        data_version=data_version("discovery", full_json),
+        data_version=version,
         last_modified=last_modified,
+        document=document,
     )
 
 
@@ -164,7 +184,24 @@ class DiscoveryFeedStore:
         async with self._lock:
             if self._snapshot is not None and self._snapshot.signature == signature:
                 return self._snapshot, "HIT"
-            snapshot = await asyncio.to_thread(_build_snapshot, path, signature)
+            try:
+                snapshot = await asyncio.to_thread(_build_snapshot, path, signature)
+                # A local raw feed accepted on first startup also gains durable
+                # recovery. Pull publication already preserves the previous pair.
+                await asyncio.to_thread(atomic_write_document, last_good_path(path), snapshot.document)
+            except (OSError, ValueError, TypeError, KeyError):
+                log.warning("Discovery update unavailable; attempting last-good recovery")
+                previous = self._snapshot
+                document = (
+                    previous.document if previous and previous.signature[0] == str(path) else None
+                )
+                if document is None:
+                    try:
+                        document = await asyncio.to_thread(read_document, last_good_path(path))
+                    except (OSError, ValueError, TypeError, KeyError):
+                        document = None
+                status = "stale" if document else "missing" if signature[1] is None else "invalid"
+                snapshot = _project_snapshot(signature, document, status)
             self._snapshot = snapshot
             return snapshot, "MISS"
 
@@ -187,15 +224,40 @@ def _http_response(
     snapshot: DiscoverySnapshot,
     cache_status: str,
 ) -> Response:
-    return conditional_json_response(
+    response = conditional_json_response(
         request,
         payload,
         cache_control=_CACHE_CONTROL,
         data_version_value=snapshot.data_version,
-        last_modified=snapshot.last_modified,
+        # The source timestamp alone cannot validate status transitions (or
+        # multiple updates within one second). Use ETags for conditional reads.
+        last_modified=None,
         cache_header="X-Discovery-Cache",
         cache_status=cache_status,
     )
+    response.headers["X-Discovery-Source-Status"] = snapshot.source_status
+    if snapshot.last_modified is not None:
+        response.headers["Last-Modified"] = format_datetime(snapshot.last_modified.astimezone(UTC), usegmt=True)
+    return response
+
+
+def _version_fields(snapshot: DiscoverySnapshot) -> dict:
+    return snapshot.metadata.model_dump(include={
+        "data_version", "source_status", "last_successful_at", "source_error",
+    })
+
+
+def _require_version(snapshot: DiscoverySnapshot, expected: str | None, *, required: bool = False) -> None:
+    if snapshot.source_status in {"missing", "invalid"}:
+        raise HTTPException(503, "Discovery feed unavailable; no validated version is available", headers={"Cache-Control": "no-store"})
+    if required and expected is None:
+        raise HTTPException(428, "data_version is required; load Discovery metadata first", headers={"Cache-Control": "no-store"})
+    if expected is not None and expected != snapshot.data_version:
+        raise HTTPException(409, {
+            "code": "discovery_version_conflict",
+            "message": "Discovery feed changed; restart from metadata before loading more records.",
+            "current_data_version": snapshot.data_version,
+        }, headers={"Cache-Control": "no-store"})
 
 
 async def _snapshot() -> tuple[DiscoverySnapshot, str]:
@@ -212,6 +274,9 @@ async def get_discovery_feed_health() -> dict:
         "candidate_count": snapshot.metadata.total_candidates,
         "size_bytes": snapshot.signature[2],
         "cache": cache_status,
+        "data_version": snapshot.data_version,
+        "last_successful_at": snapshot.metadata.last_successful_at.isoformat() if snapshot.metadata.last_successful_at else None,
+        "source_error": snapshot.metadata.source_error,
     }
 
 
@@ -227,6 +292,7 @@ async def discovery_feed(
 ) -> Response:
     """Return the original full payload for backward compatibility."""
     snapshot, cache_status = await _snapshot()
+    _require_version(snapshot, None)
     return _http_response(
         request,
         snapshot.full_json,
@@ -266,8 +332,10 @@ async def discovery_candidates(
     record_role: str | None = Query(None, min_length=1, max_length=64),
     schema_version: Literal["1"] = Query("1", description="Response schema version"),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001, B008
+    data_version: Annotated[str | None, Query(pattern=r"^discovery-v1-[a-f0-9]{16}$")] = None,
 ) -> Response:
     snapshot, cache_status = await _snapshot()
+    _require_version(snapshot, data_version, required=offset > 0)
     summaries = (
         snapshot.summaries_by_role.get(record_role, ())
         if record_role is not None
@@ -281,6 +349,7 @@ async def discovery_candidates(
         limit=limit,
         has_more=offset + limit < total,
         record_role=record_role,
+        **_version_fields(snapshot),
     )
     return _http_response(
         request,
@@ -292,7 +361,7 @@ async def discovery_candidates(
 
 @router.get(
     "/discovery/candidates/{candidate_id}",
-    response_model=DiscoveryCandidate,
+    response_model=DiscoveryCandidateDetail,
     responses={
         304: {"description": "Cached representation is still current"},
         404: {"description": "Candidate not found"},
@@ -303,14 +372,16 @@ async def discovery_candidate_detail(
     candidate_id: str = PathParam(..., min_length=1, max_length=160),
     schema_version: Literal["1"] = Query("1", description="Response schema version"),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001, B008
+    data_version: Annotated[str | None, Query(pattern=r"^discovery-v1-[a-f0-9]{16}$")] = None,
 ) -> Response:
     snapshot, cache_status = await _snapshot()
+    _require_version(snapshot, data_version, required=True)
     candidate = snapshot.candidates_by_id.get(candidate_id)
     if candidate is None:
         raise HTTPException(status_code=404, detail="Discovery candidate not found")
     return _http_response(
         request,
-        candidate.model_dump_json(),
+        DiscoveryCandidateDetail(**candidate.model_dump(), **_version_fields(snapshot)).model_dump_json(),
         snapshot=snapshot,
         cache_status=cache_status,
     )

@@ -1,0 +1,44 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "dimension": {
+      "maxLength": 120,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Dimension",
+      "type": "string"
+    },
+    "profiles": {
+      "items": {
+        "maxLength": 120,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_.:-]+$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Profiles",
+      "type": "array"
+    },
+    "anchors": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Anchors",
+      "type": "object"
+    },
+    "required_evidence": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Required Evidence",
+      "type": "string"
+    }
+  },
+  "required": [
+    "dimension",
+    "profiles",
+    "anchors",
+    "required_evidence"
+  ],
+  "title": "RubricContent",
+  "type": "object"
+}

@@ -7,6 +7,8 @@
  */
 import Link from "next/link";
 import { LatexText } from "@/components/LatexText";
+import { ScientificMatches } from "@/components/ScientificMatches";
+import type { MatchingScientificResult } from "@/lib/api";
 
 export interface PaperCardInput {
   paper_id: string;
@@ -19,6 +21,7 @@ export interface PaperCardInput {
   score?: number | null;
   scoreLabel?: string;
   badges?: string[];
+  matchingResults?: MatchingScientificResult[];
 }
 
 export function PaperCard(p: PaperCardInput) {
@@ -55,6 +58,7 @@ export function PaperCard(p: PaperCardInput) {
           {p.snippet}
         </p>
       )}
+      <ScientificMatches results={p.matchingResults} />
       {p.badges && p.badges.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5">
           {p.badges.map((b) => (

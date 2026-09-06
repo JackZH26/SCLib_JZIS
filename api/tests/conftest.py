@@ -1,20 +1,26 @@
 """Pytest bootstrap for API tests.
 
-Tests require a live Postgres + Redis (the test workflow provisions both
-as services; locally, spin them up via docker compose). Environment
-variables are set here before importing the app so pydantic-settings
-picks up test values.
+Destructive fixtures require the private capability created by
+scripts/run_disposable_tests.py. Inherited or hand-written DSNs are refused
+before importing application code or creating any DB/Redis client.
 """
 from __future__ import annotations
 
 import os
+import sys
+from pathlib import Path
 
-# --- env overrides (must come BEFORE any app import) ----------------------
-os.environ.setdefault(
-    "DATABASE_URL",
-    "postgresql://sclib:sclib_test_pw@localhost:5432/sclib_test",
+# --- fail closed BEFORE any app, client or pytest fixture import ----------
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
+from test_safety import (  # noqa: E402
+    validate_test_environment,
+    verify_postgres_identity,
+    verify_redis_identity,
 )
-os.environ.setdefault("REDIS_URL", "redis://localhost:6379")
+
+_test_capability = validate_test_environment()
+
+# Only non-connection settings may have test defaults, after the safety gate.
 os.environ.setdefault(
     "JWT_SECRET",
     "test_jwt_secret_with_sufficient_length_for_pydantic_validation_0000",
@@ -27,8 +33,10 @@ import pytest_asyncio  # noqa: E402
 from httpx import ASGITransport, AsyncClient  # noqa: E402
 from sqlalchemy.pool import NullPool  # noqa: E402
 
-from config import get_settings  # noqa: E402
+from config import Settings, get_settings  # noqa: E402
 
+# A local .env must not supply cloud/email/service secrets to tests.
+Settings.model_config = {**Settings.model_config, "env_file": None}
 get_settings.cache_clear()
 
 # --- Override engine to use NullPool ------------------------------------
@@ -46,6 +54,7 @@ from sqlalchemy.ext.asyncio import create_async_engine  # noqa: E402
 
 def _test_engine():
     settings = get_settings()
+    validate_test_environment(database_url=settings.database_url, redis_url=settings.redis_url)
     dsn = _db_mod._to_async_dsn(settings.database_url)
     return create_async_engine(dsn, poolclass=NullPool)
 
@@ -65,11 +74,14 @@ async def _schema():
     engine = get_engine()
     async with engine.begin() as conn:
         from sqlalchemy import text
+        await conn.run_sync(verify_postgres_identity, _test_capability)
         await conn.execute(text("CREATE EXTENSION IF NOT EXISTS pgcrypto"))
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
     yield
+    validate_test_environment()
     async with engine.begin() as conn:
+        await conn.run_sync(verify_postgres_identity, _test_capability)
         await conn.run_sync(Base.metadata.drop_all)
     await engine.dispose()
 
@@ -158,7 +170,12 @@ async def _flush_redis_between_tests():
     significant for quota-sensitive assertions."""
     from services.rate_limit import get_redis
 
+    settings = get_settings()
+    capability = validate_test_environment(
+        database_url=settings.database_url, redis_url=settings.redis_url,
+    )
     r = get_redis()
+    await verify_redis_identity(r, capability)
     await r.flushdb()
     yield
     # redis.asyncio pools are bound to the loop that first opens a socket.

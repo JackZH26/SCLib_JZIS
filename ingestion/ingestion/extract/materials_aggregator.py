@@ -37,10 +37,10 @@ Key design choices, in order of how much they affect visible data:
 6. **Numeric dispute detection** — when two+ ambient-pressure papers
    disagree on Tc by >30%, flag ``disputed=True``.
 
-The aggregator is idempotent and safe to re-run: every call rebuilds
-the summary from scratch. We also merge NER records with any records
-already present on the material (e.g. NIMS imports) so the two
-ingestion paths coexist.
+The aggregator rebuilds summaries from the current paper snapshot. Numeric
+anomalies are retained in ``records`` and excluded only from affected property
+views. It does not restore records absent from this snapshot: that requires
+an independently authorized source-history recovery, not a blind merge.
 
 Invoked by:
   sclib-ingest --mode aggregate-materials
@@ -50,15 +50,31 @@ harvest has finished writing ``papers.materials_extracted``.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 import logging
+import math
 import re
 from collections import Counter, defaultdict
+from datetime import UTC, datetime
 from statistics import median
 from typing import Any
 
 from sqlalchemy import case, select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
+from ingestion.anomaly_review import (
+    ANOMALY_POLICY_VERSION,
+    assess_record_anomalies,
+    build_anomaly_review,
+    eligible_for_property,
+)
+from ingestion.claims.outcomes import outcome_conflicts_with_positive
+
+# Canonicalization + family rules live in nims.py and are shared so
+# both import paths (NIMS CSV + arXiv NER) agree on the grouping key.
+from ingestion.extract import formula_validator as _formula_validator
+from ingestion.extract.scientific_values import legacy_scalar, record_quantity
 from ingestion.index.indexer import (
     _session_factory,
     manual_overrides_table,
@@ -67,15 +83,22 @@ from ingestion.index.indexer import (
     pipeline_state_table,
     refuted_claims_table,
 )
-# Canonicalization + family rules live in nims.py and are shared so
-# both import paths (NIMS CSV + arXiv NER) agree on the grouping key.
-from ingestion.extract import formula_validator as _formula_validator
+from ingestion.nims import NORMALIZE_SCHEMA_VERSION, normalize_formula
 from ingestion.nims import classify_family as _classify_family
 from ingestion.nims import detect_interface as _detect_interface
 from ingestion.nims import infer_unconventional as _infer_unconventional
-from ingestion.nims import NORMALIZE_SCHEMA_VERSION
-from ingestion.nims import normalize_formula
 from ingestion.nims import parent_formula_key as _parent_formula_key
+from ingestion.pressure_semantics import classify_pressure
+from ingestion.property_evidence import (
+    ATOMIC_SELECTION_POLICY,
+    build_property_evidence,
+    legacy_result_id,
+)
+from ingestion.result_semantics import (
+    classify_result,
+    is_computed_result,
+    is_observed_result,
+)
 
 log = logging.getLogger(__name__)
 
@@ -124,52 +147,8 @@ _MIN_VOTERS_MULTIPAPER = 2
 # as "disputed" — 30% means one paper reports 100 K, another 65 K.
 _TC_DISPUTE_THRESHOLD = 0.30
 
-# Physically implausible Tc. Confirmed ambient-pressure SC Tc tops out
-# at ~140 K (cuprates); even 200 GPa hydrides stay under 260 K. Any
-# record above this at ambient pressure is almost certainly an NER
-# confusion with Curie / melting / mechanical transitions. We flag
-# those materials ``needs_review=True`` and the API hides them by
-# default (?include_pending=true surfaces them for admin review).
-_TC_SANITY_MAX_K = 250.0
-
-# Family-specific Tc ceilings (K). A headline tc_max above the ceiling
-# for its family is physically implausible (NER confusing a gap 2Δ/k_B,
-# Hc2, Curie/structural transition, or a theoretical value with the SC
-# Tc) and gets needs_review=True so the API hides it pending human
-# review — it is NOT deleted or altered. Ceilings are deliberately set
-# well ABOVE each family's record-high (generous margin) so only gross
-# 2x-type errors are caught and no legitimate (incl. high-pressure)
-# material is flagged. ``hydride`` is intentionally absent: super-
-# hydrides legitimately reach ~250-294 K and are already governed by
-# the global _TC_SANITY_MAX_K rule. Families not in the table (None /
-# "Other") are not judged on Tc — plausibility is unknown without a
-# family.
-_FAMILY_TC_CEILING_K = {
-    "cuprate":      180.0,  # Hg-1223 ~134 K ambient, ~164 K @ pressure
-    "iron_based":   110.0,  # bulk ~56 K; FeSe/STO monolayer extreme ~100
-    "nickelate":    110.0,  # La3Ni2O7 ~80 K @ pressure
-    "mgb2":          50.0,  # ~39 K pure
-    "fulleride":     50.0,  # Cs3C60 ~38 K
-    "bismuthate":    45.0,  # Ba1-xKxBiO3 ~32 K
-    "conventional":  45.0,  # A15 Nb3Ge ~23 K
-    "chalcogenide":  40.0,  # TMDs / Bi2Se3-type ~3-15 K
-    "elemental":     40.0,  # elements under pressure ~30 K
-    "borocarbide":   30.0,  # YPd2B2C ~23 K
-    "bis2_layered":  30.0,  # LaOBiS2 ~11 K
-    "heavy_fermion": 30.0,  # PuCoGa5 ~18.5 K
-    "organic":       25.0,  # κ-(BEDT-TTF) ~12-14 K
-    "kagome":        15.0,  # CsV3Sb5 ~3 K
-    "ruthenate":     10.0,  # Sr2RuO4 ~1.5 K
-}
-
-# Numeric fields subject to float32 artifact rounding (Step 0.6 / C4).
-_NUMERIC_FIELDS = (
-    "tc_max", "tc_ambient", "tc_max_experimental", "tc_max_theoretical",
-    "pressure_gpa", "hc2_tesla",
-    "lambda_london_nm", "xi_gl_nm", "lambda_eph", "omega_log_k",
-    "rho_s_mev", "t_cdw_k", "t_sdw_k", "t_afm_k", "rho_exponent",
-    "doping_level",
-)
+# Numeric plausibility rules live in ingestion.anomaly_review. They are
+# versioned review references, not universal physical limits or replacements.
 
 
 # ---------------------------------------------------------------------------
@@ -178,20 +157,22 @@ _NUMERIC_FIELDS = (
 
 class _OverrideEntry:
     """In-memory representation of one manual_overrides row."""
-    __slots__ = ("field", "value_str", "is_cap", "source", "reason")
+    __slots__ = ("field", "is_cap", "reason", "reference_id", "source", "value_str")
 
     def __init__(self, field: str, value_str: str, is_cap: bool,
-                 source: str, reason: str | None):
+                 source: str, reason: str | None, reference_id: str | None = None):
         self.field = field
         self.value_str = value_str
         self.is_cap = is_cap
         self.source = source
         self.reason = reason
+        self.reference_id = reference_id
 
     @property
     def numeric_value(self) -> float | None:
         try:
-            return float(self.value_str)
+            value = float(self.value_str)
+            return value if math.isfinite(value) else None
         except (ValueError, TypeError):
             return None
 
@@ -225,6 +206,7 @@ async def _load_all_overrides(db: Any) -> dict[str, list[_OverrideEntry]]:
     result: dict[str, list[_OverrideEntry]] = defaultdict(list)
     rows = (await db.execute(
         select(
+            manual_overrides_table.c.id,
             manual_overrides_table.c.canonical,
             manual_overrides_table.c.field,
             manual_overrides_table.c.override_value,
@@ -233,9 +215,10 @@ async def _load_all_overrides(db: Any) -> dict[str, list[_OverrideEntry]]:
             manual_overrides_table.c.reason,
         )
     )).all()
-    for canonical, field, value, is_cap, source, reason in rows:
+    for row_id, canonical, field, value, is_cap, source, reason in rows:
         result[canonical].append(
-            _OverrideEntry(field, value, is_cap, source, reason)
+            _OverrideEntry(field, value, is_cap, source, reason,
+                           reference_id=f"manual_overrides:{row_id}")
         )
     return dict(result)
 
@@ -265,14 +248,15 @@ def _apply_overrides(
     summary: dict[str, Any],
     overrides: list[_OverrideEntry],
 ) -> list[str]:
-    """Apply manual overrides to a computed summary dict.
+    """Apply only legacy categorical overrides to a computed summary dict.
 
     Returns a list of human-readable notes describing what was changed,
     for appending to review_reason.
     """
     notes: list[str] = []
 
-    # Group overrides by field: exact overrides take priority over caps
+    # Numeric requests have no source-backed correction identity. They are
+    # review inputs, never measurements or permission to replace a value.
     by_field: dict[str, list[_OverrideEntry]] = defaultdict(list)
     for ov in overrides:
         by_field[ov.field].append(ov)
@@ -280,7 +264,6 @@ def _apply_overrides(
     for field, entries in by_field.items():
         # Exact overrides (is_cap=False) first
         exact = [e for e in entries if not e.is_cap]
-        caps = [e for e in entries if e.is_cap]
 
         if exact:
             ov = exact[0]  # take the first exact override
@@ -290,25 +273,32 @@ def _apply_overrides(
                 old = summary.get(field)
                 summary[field] = ov.string_value
                 notes.append(f"{field}: {old!r} -> {ov.string_value!r} (override: {ov.source})")
-            else:
-                val = ov.numeric_value
-                if val is not None:
-                    old = summary.get(field)
-                    summary[field] = val
-                    notes.append(f"{field}: {old} -> {val} (override: {ov.source})")
-        elif caps:
-            cap_entry = caps[0]
-            cap_val = cap_entry.numeric_value
-            if cap_val is not None:
-                current = summary.get(field)
-                if isinstance(current, (int, float)) and current > cap_val:
-                    summary[field] = cap_val
-                    notes.append(
-                        f"{field}: {current} clamped to {cap_val} "
-                        f"(per-compound cap: {cap_entry.source})"
-                    )
 
     return notes
+
+
+def _override_review_inputs(overrides: list[_OverrideEntry] | None) -> list[dict[str, Any]]:
+    """Non-authorizing numeric review references, without source free text."""
+    inputs = []
+    for entry in overrides or ():
+        value = entry.numeric_value
+        categorical_targets = {
+            "pairing_symmetry", "gap_structure", "competing_order", "crystal_structure",
+            "space_group", "structure_phase",
+        }
+        if entry.field in categorical_targets:
+            continue
+        mode = "upper_reference" if entry.is_cap else "unreviewed_exact_override"
+        # A malformed legacy numeric request remains an unresolved review
+        # input; silently dropping it could expose previously withheld data.
+        identity = json.dumps([entry.field, value if value is not None else entry.value_str, mode],
+                              separators=(",", ":"))
+        reference_id = entry.reference_id or (
+            "unpersisted_override:" + hashlib.sha256(identity.encode()).hexdigest()[:20]
+        )
+        inputs.append({"field": entry.field, "threshold": value,
+                       "reference_id": reference_id, "mode": mode})
+    return sorted(inputs, key=lambda item: (item["field"], item["mode"], item["reference_id"]))
 
 
 def _confidence(r: dict[str, Any]) -> float:
@@ -337,8 +327,13 @@ def _paper_source_label(paper_id: Any) -> str | None:
     return pid
 
 
+def _source_scalar(record: dict[str, Any], key: str) -> float | None:
+    """Canonical source-backed point; never a midpoint, bound or cached guess."""
+    return legacy_scalar(record_quantity(record, key, *(("tc",) if key == "tc_kelvin" else ())))
+
+
 def _max_numeric(records: list[dict[str, Any]], key: str) -> float | None:
-    vals = [r[key] for r in records if isinstance(r.get(key), (int, float))]
+    vals = [value for r in records if (value := _source_scalar(r, key)) is not None]
     return max(vals) if vals else None
 
 
@@ -377,11 +372,10 @@ def _corroborated_max(
     """
     per_paper: dict[str, float] = {}
     for r in records:
-        v = r.get(key)
+        v = _source_scalar(r, key)
         pid = r.get("paper_id")
-        if isinstance(v, (int, float)) and v > 0 and isinstance(pid, str) and pid:
-            if v > per_paper.get(pid, 0):
-                per_paper[pid] = float(v)
+        if isinstance(v, (int, float)) and v > 0 and isinstance(pid, str) and pid and v > per_paper.get(pid, 0):
+            per_paper[pid] = float(v)
     if not per_paper:
         return None, 0
 
@@ -407,60 +401,13 @@ def _corroborated_max(
     return values[-1], n_papers
 
 
-# Experimental vs calculation technique tags. Mirrors
-# routers/timeline.py::_is_theoretical so the chart and the aggregated
-# headline classify a record the same way — keep the two in lockstep.
-_EXPERIMENTAL_MEASUREMENTS = frozenset({
-    "resistivity", "susceptibility", "specific_heat",
-    "arpes", "musr", "stm", "neutron", "nmr", "nqr",
-    "magnetization", "thermal_conductivity",
-    "raman scattering", "raman", "andreev reflection",
-    "nernst", "tunneling", "esr", "torque magnetometry",
-    "hall effect", "hall_effect", "transport",
-})
-_THEORETICAL_MEASUREMENTS = frozenset({
-    "calculation", "dft", "first-principles", "first principles",
-    "computational", "ab initio", "ab-initio",
-    "allen-dynes", "eliashberg", "tight-binding",
-})
-
-
 def _record_is_theoretical(r: dict[str, Any]) -> bool:
-    """Was THIS record's Tc calculated rather than measured?
-
-    Single source of truth for the evidence split. NER's
-    ``evidence_type`` is under-populated, so a real DFT/Eliashberg
-    prediction frequently arrives evidence_type-untagged and used to
-    leak into the experimental headline (audit category E). Precedence:
-
-      1. explicit ``evidence_type`` wins ONLY when unambiguous
-         (primary_theoretical → theory; primary_experimental → exp).
-         The legacy bare "primary" is ambiguous and must NOT override
-         a paper that is itself theoretical (e.g. a DFT superhydride
-         prediction NER tagged ev=primary, pt=computational) — it
-         falls through to the measurement/paper_type signals.
-      2. else an explicit experimental technique in ``measurement``
-         → experimental (a named technique outranks a missing tag).
-      3. else an explicit calculation tag in ``measurement`` → theory.
-      4. else fall back to ``paper_type`` (theoretical|computational).
-      5. else experimental — most cond-mat.supr-con papers measure.
-    """
-    et = r.get("evidence_type") or ""
-    if et == "primary_theoretical":
-        return True
-    if et == "primary_experimental":
-        return False
-    m = (r.get("measurement") or "").strip().lower()
-    if m in _EXPERIMENTAL_MEASUREMENTS:
-        return False
-    if m in _THEORETICAL_MEASUREMENTS:
-        return True
-    pt = (r.get("paper_type") or "").strip().lower()
-    return pt in ("theoretical", "computational")
+    """Compatibility wrapper: False does not imply Observed; use the full policy."""
+    return is_computed_result(r)
 
 
 def _median_numeric(records: list[dict[str, Any]], key: str) -> float | None:
-    vals = [r[key] for r in records if isinstance(r.get(key), (int, float))]
+    vals = [value for r in records if (value := _source_scalar(r, key)) is not None]
     return float(median(vals)) if vals else None
 
 
@@ -675,69 +622,40 @@ def _derive_summary(
     *,
     overrides: list[_OverrideEntry] | None = None,
     refuted: _RefutedEntry | None = None,
+    current_year: int | None = None,
 ) -> dict[str, Any]:
-    """Build the v2 material-level summary from its record list.
+    """Derive field-scoped scientific summaries while retaining current raw input.
 
-    See module docstring for the rule overview; this is the
-    implementation.
-
-    P0 additions:
-    - Record-level flagging (Step 0.5): individual records that fail
-      sanity checks are excluded from aggregation instead of hiding
-      the entire material. Only if ALL records fail does the material
-      get needs_review=True.
-    - Override application (Step 0.4): manual_overrides values are
-      applied after natural aggregation.
-    - Float rounding (Step 0.6): all numeric outputs are rounded to
-      3 decimal places to eliminate float32 artifacts.
+    Numeric anomalies and legacy numeric override requests never delete a
+    source record or manufacture a measurement. Eligibility is versioned and
+    independent of the pre-existing non-numeric catalogue visibility policy.
     """
-    # -------------------------------------------------------------------
-    # Step 0.5: Record-level flagging — exclude bad records, not the
-    # whole material. Per-compound caps from manual_overrides further
-    # tighten what "sane" means for well-known compounds.
-    # -------------------------------------------------------------------
-    per_compound_tc_cap: float | None = None
-    if overrides:
-        for ov in overrides:
-            if ov.field == "tc_max" and ov.is_cap:
-                cap_val = ov.numeric_value
-                if cap_val is not None:
-                    per_compound_tc_cap = cap_val
-                    break
+    norm_key = normalize_formula(formula_raw)
+    scope_id = _material_id(norm_key)
+    current_year = datetime.now(UTC).year if current_year is None else current_year
+    if isinstance(current_year, bool) or not isinstance(current_year, int) or not 1900 <= current_year <= 9999:
+        raise ValueError("current_year must be an explicit integer chronology reference")
+    _ner_fam = _weighted_mode_str(records, "family")
+    _rule_fam = _classify_family(formula_raw)
+    if _rule_fam == "elemental":
+        family = "elemental"
+    elif _rule_fam == "bis2_layered" and _ner_fam in (None, "chalcogenide", "bismuthate"):
+        family = "bis2_layered"
+    else:
+        family = _ner_fam or _rule_fam
+    compound_thresholds = _override_review_inputs(overrides)
+    anomaly_context = {"policy_version": ANOMALY_POLICY_VERSION, "family": family,
+                       "compound_thresholds": compound_thresholds,
+                       "selection_policy": ATOMIC_SELECTION_POLICY,
+                       "current_year": current_year}
+    assessments = [assess_record_anomalies(r, scope_id=scope_id, family=family,
+                                          compound_thresholds=compound_thresholds,
+                                          current_year=current_year)
+                   for r in records]
 
-    clean_records: list[dict[str, Any]] = []
-    flagged_count = 0
-    for r in records:
-        tc_val = r.get("tc_kelvin")
-        tc_is_numeric = isinstance(tc_val, (int, float))
-        # Global sanity ceiling
-        if tc_is_numeric and tc_val > _TC_SANITY_MAX_K:
-            flagged_count += 1
-            continue
-        # Per-compound cap: record exceeds known physical ceiling by >50%
-        if (
-            per_compound_tc_cap is not None
-            and tc_is_numeric
-            and tc_val > per_compound_tc_cap * 1.5
-        ):
-            flagged_count += 1
-            continue
-        clean_records.append(r)
-
-    # If ALL records were flagged, mark the material for review.
-    # Otherwise, aggregate from the clean subset only.
-    all_records_bad = len(clean_records) == 0 and len(records) > 0
-    if all_records_bad:
-        # Fall back to original records so we still produce *something*
-        # (the needs_review flag will hide it from public API).
-        clean_records = records
-    elif flagged_count > 0:
-        log.info(
-            "record-level flagging: %s — dropped %d/%d records "
-            "(per-compound cap=%s)",
-            formula_raw, flagged_count, len(records), per_compound_tc_cap,
-        )
-    records = clean_records
+    def eligible(field: str) -> list[dict[str, Any]]:
+        return [record for record, assessment in zip(records, assessments)
+                if eligible_for_property(assessment, field)]
 
     # -----------------------------------------------------------------
     # A2: Evidence-tier split — separate experimental vs theoretical
@@ -749,11 +667,21 @@ def _derive_summary(
     theo_records = [r for r in records if _record_is_theoretical(r)]
     exp_records = [
         r for r in records
-        if not _record_is_theoretical(r)
-        and r.get("evidence_type") != "cited"
+        if is_observed_result(r)
+        and classify_result(r).source_role != "cited"
     ]
-    tc_max_exp, sup_exp = _corroborated_max(exp_records, "tc_kelvin")
-    tc_max_theo, sup_theo = _corroborated_max(theo_records, "tc_kelvin")
+    def origin_pool(field: str, *, computed: bool = False) -> list[dict[str, Any]]:
+        return [r for r in eligible(field) if not outcome_conflicts_with_positive(r) and (
+            _record_is_theoretical(r) if computed else
+            is_observed_result(r) and classify_result(r).source_role != "cited"
+        )]
+
+    tc_max_exp, _ = _corroborated_max(origin_pool("tc_max_experimental"), "tc_kelvin")
+    tc_max_theo, _ = _corroborated_max(origin_pool("tc_max_theoretical", computed=True), "tc_kelvin")
+    headline_exp = origin_pool("tc_max")
+    headline_theo = origin_pool("tc_max", computed=True)
+    headline_exp_max, sup_exp = _corroborated_max(headline_exp, "tc_kelvin")
+    headline_theo_max, sup_theo = _corroborated_max(headline_theo, "tc_kelvin")
     dominant_evidence = _classify_evidence(exp_records, theo_records, records)
 
     # tc_max is the record-high Tc in ANY condition (high pressure,
@@ -764,70 +692,46 @@ def _derive_summary(
     # tc_max_theoretical, and the conditions string is tagged
     # "theoretical" for prediction-only materials. Each side keeps the
     # corroboration rule (≥2 papers) against single-paper outliers.
-    if tc_max_exp is not None:
-        tc_max, tc_max_support, _tc_basis = tc_max_exp, sup_exp, "experimental"
-    elif tc_max_theo is not None:
-        tc_max, tc_max_support, _tc_basis = tc_max_theo, sup_theo, "theoretical"
+    if headline_exp_max is not None:
+        tc_max, tc_max_support, _tc_basis = headline_exp_max, sup_exp, "experimental"
+    elif headline_theo_max is not None:
+        tc_max, tc_max_support, _tc_basis = headline_theo_max, sup_theo, "theoretical"
     else:
         tc_max, tc_max_support, _tc_basis = None, 0, None
 
-    # tc_ambient is intentionally *stricter*: only records where NER
-    # affirmatively emitted ``ambient_sc: true`` count. We deliberately
-    # do NOT trust ``pressure_gpa == 0`` alone because the NER uses
-    # 0.0 as a "value unknown" fallback. When no paper explicitly
-    # confirmed ambient SC, we leave tc_ambient NULL — honest
-    # "unknown" beats a wrong answer.
+    # Ambient is a pressure condition, not a family/sample/regime default.
+    # Require same-result explicit pressure evidence and an observed Tc.
     ambient_records = [
-        r for r in records
-        if isinstance(r.get("tc_kelvin"), (int, float))
-        and r.get("ambient_sc") is True
-        and r.get("tc_regime", "bulk_equilibrium") not in ("high_pressure", "interface")
-        and not _record_is_theoretical(r)
+        r for r in origin_pool("tc_ambient")
+        if _source_scalar(r, "tc_kelvin") is not None
+        and _source_scalar(r, "tc_kelvin") > 0
+        and r.get("ambient_sc") is not False
+        and classify_pressure(r).pressure_state == "explicit_ambient"
     ]
     # Apply the same corroboration rule here so an outlier
     # ambient-pressure claim doesn't dominate either.
     tc_ambient, _ = _corroborated_max(ambient_records, "tc_kelvin")
 
-    # Invariant: tc_max >= tc_ambient (by definition, "record high
-    # in any condition" cannot be below "record high at ambient").
-    # The corroboration rule uses a support threshold that scales
-    # with the sample size, so the stricter full-set threshold can
-    # reject a value that the smaller ambient subset accepts — the
-    # subset then returns a number higher than the full-set max.
-    # Promote tc_max to match so the summary stays consistent.
-    if (
-        tc_max is not None
-        and tc_ambient is not None
-        and tc_ambient > tc_max
-    ):
-        tc_max = tc_ambient
-        tc_max_support = max(tc_max_support, 1)
+    # These catalogue views can have different review filters/support pools.
+    # Do not copy a value across views to force an ordering invariant.
     # Numeric dispute: ambient-pressure Tc values from 2+ papers span
     # more than 30% of the max. Typical cause is over/under-doped
     # samples in different papers; worth surfacing to the user.
     numeric_disputed = False
     if len(ambient_records) >= 2:
-        tc_vals = [r["tc_kelvin"] for r in ambient_records]
+        tc_vals = [_source_scalar(r, "tc_kelvin") for r in ambient_records]
         tc_max_v = max(tc_vals)
         if tc_max_v > 0:
             spread = (tc_max_v - min(tc_vals)) / tc_max_v
             numeric_disputed = spread > _TC_DISPUTE_THRESHOLD
 
-    # The summary flag ``ambient_sc`` follows the same strict rule:
-    # true iff at least one record has ambient_sc==True AND no record
-    # denies it (weighted-boolean handles the "denied by most"
-    # case). Without evidence either way we return None, not False.
-    ambient_sc = _weighted_boolean(records, "ambient_sc")
-    # If any record directly confirmed ambient, that wins regardless
-    # of how the weighted vote came out — one good observation is
-    # enough to say the material has an ambient-pressure SC phase.
-    if any(r.get("ambient_sc") is True for r in records):
-        ambient_sc = True
+    # No eligible ambient observation is not a material-wide negative label.
+    ambient_sc = True if ambient_records else None
 
     competing_order = _weighted_mode_str(records, "competing_order")
-    t_cdw = _max_numeric(records, "t_cdw_k")
-    t_sdw = _max_numeric(records, "t_sdw_k")
-    t_afm = _max_numeric(records, "t_afm_k")
+    t_cdw = _max_numeric(eligible("t_cdw_k"), "t_cdw_k")
+    t_sdw = _max_numeric(eligible("t_sdw_k"), "t_sdw_k")
+    t_afm = _max_numeric(eligible("t_afm_k"), "t_afm_k")
 
     has_competing_order = bool(
         competing_order or t_cdw is not None
@@ -840,17 +744,31 @@ def _derive_summary(
     # how well-supported the headline number is.
     tc_max_cond = None
     if tc_max is not None:
-        _basis_recs = theo_records if _tc_basis == "theoretical" else exp_records
-        for r in _basis_recs:
-            if r.get("tc_kelvin") == tc_max:
+        _basis_recs = headline_theo if _tc_basis == "theoretical" else headline_exp
+        _tc_scope = _material_id(normalize_formula(formula_raw))
+        for r in sorted(_basis_recs, key=lambda item: legacy_result_id(item, scope_id=_tc_scope)):
+            if _source_scalar(r, "tc_kelvin") == tc_max:
                 parts: list[str] = []
                 if _tc_basis == "theoretical":
                     parts.append("theoretical (DFT/computational)")
-                p = r.get("pressure_gpa")
-                if isinstance(p, (int, float)) and p > 0:
-                    parts.append(f"P={p:g} GPa")
-                elif isinstance(p, (int, float)):
+                pressure = classify_pressure(r)
+                if pressure.pressure_state == "explicit_ambient":
                     parts.append("ambient")
+                elif pressure.pressure_state == "reported" and pressure.pressure_gpa is not None:
+                    value = f"{pressure.pressure_gpa:g}"
+                    if pressure.uncertainty_gpa is not None:
+                        value += f" ± {pressure.uncertainty_gpa:g}"
+                    parts.append(f"P={'approximately ' if pressure.approximate else ''}{value} GPa")
+                elif pressure.pressure_state == "reported" and pressure.relation == "interval":
+                    parts.append(f"P=[{pressure.value_lower_gpa:g}, {pressure.value_upper_gpa:g}] GPa")
+                elif pressure.pressure_state == "reported":
+                    operator = {"lt": "<", "le": "≤", "gt": ">", "ge": "≥"}[pressure.relation]
+                    value = pressure.value_upper_gpa if pressure.relation in {"lt", "le"} else pressure.value_lower_gpa
+                    parts.append(f"P {operator} {value:g} GPa")
+                elif pressure.pressure_state == "ambiguous":
+                    parts.append("pressure unresolved")
+                else:
+                    parts.append("pressure not reported")
                 if r.get("sample_form"):
                     parts.append(str(r["sample_form"]))
                 if r.get("measurement") and str(r["measurement"]).lower() != "unknown":
@@ -868,7 +786,7 @@ def _derive_summary(
 
     paper_ids = {r.get("paper_id") for r in records if r.get("paper_id")}
     years = [
-        r.get("year") for r in records
+        r.get("year") for r in eligible("year")
         if isinstance(r.get("year"), int) and r.get("year") > 1900
     ]
     arxiv_year = min(years) if years else None
@@ -876,29 +794,6 @@ def _derive_summary(
     # Structure phase with cross-family sanity check
     raw_phase = _weighted_mode_str(records, "structure_phase")
     structure_phase = _sanity_check_structure_phase(formula_raw, raw_phase)
-
-    # Family: trust NER's weighted mode first, fall back to the
-    # rule-based classifier when NER is silent (the common case).
-    # EXCEPTION — BiS2-layered: NER systematically coarse-votes
-    # "chalcogenide"/"bismuthate" for the LaO1-xFxBiS2 family, but
-    # classify_family's Bi+S+RE+O rule is precise and verified
-    # false-positive-free corpus-wide (190/190 carry the BiS2 motif),
-    # so it overrides a coarser NER vote here. Without this the
-    # hourly sweep keeps reverting these ~60 rows to "chalcogenide".
-    _ner_fam = _weighted_mode_str(records, "family")
-    _rule_fam = _classify_family(formula_raw)
-    if _rule_fam == "elemental":
-        # NER sometimes coarse-tags standalone superconducting elements
-        # (Hg, Pb, Sn, Nb...) as "conventional". Keep them in their own
-        # family bucket so materials/timeline filters can separate pure
-        # elemental superconductors from compound BCS materials.
-        family = "elemental"
-    elif _rule_fam == "bis2_layered" and _ner_fam in (
-        None, "chalcogenide", "bismuthate"
-    ):
-        family = "bis2_layered"
-    else:
-        family = _ner_fam or _rule_fam
 
     # is_unconventional: trust NER weighted-boolean first; when NER is
     # silent (the common case — 61.8% missing), infer from family.
@@ -919,84 +814,18 @@ def _derive_summary(
     # -------------------------------------------------------------------
     # Sanity gate: needs_review
     # -------------------------------------------------------------------
-    # P0 change (Step 0.5): record-level flagging already excluded the
-    # worst outliers above. `needs_review` is now set only when ALL
-    # records failed (all_records_bad) or when the *aggregated* values
-    # still exceed the ceiling after record-level filtering.
-    needs_review = False
-    review_reason: str | None = None
-    if all_records_bad:
-        needs_review = True
-        review_reason = (
-            f"all_{len(records)}_records_failed_sanity_checks"
-        )
-    elif tc_max is not None and tc_max > _TC_SANITY_MAX_K:
-        needs_review = True
-        review_reason = "tc_max_exceeds_250K"
-    elif tc_ambient is not None and tc_ambient > _TC_SANITY_MAX_K:
-        needs_review = True
-        review_reason = "tc_ambient_exceeds_250K"
-
-    # B4: Single-value distrust — if only 1 paper contributed a Tc
-    # that exceeds the per-compound cap by >50%, flag for review
-    # instead of accepting it blindly. This catches one-off NER errors
-    # in rare materials where corroboration can't help.
-    if (
-        not needs_review
-        and per_compound_tc_cap is not None
-        and tc_max is not None
-        and len(paper_ids) == 1
-        and tc_max > per_compound_tc_cap * 1.5
-    ):
-        needs_review = True
-        review_reason = (
-            f"single_paper_exceeds_cap: tc_max={tc_max:.1f} > "
-            f"cap={per_compound_tc_cap:.1f}*1.5"
-        )
-
-    # P1: family-specific Tc ceiling. Coarse net for materials WITHOUT
-    # a manual per-compound cap: a tc_max physically impossible for the
-    # family (SmOFeAs=116 K, Bi2Te3=80 K, Mg0.019WO3=76 K …) is almost
-    # always an NER mis-extraction surviving corroboration. Skipped when
-    # a manual override cap exists (that is authoritative) or the family
-    # is unrecognized (plausibility unknown).
-    _fam_ceil = _FAMILY_TC_CEILING_K.get(family) if family else None
-    if (
-        not needs_review
-        and per_compound_tc_cap is None
-        and tc_max is not None
-        and _fam_ceil is not None
-        and tc_max > _fam_ceil
-    ):
-        needs_review = True
-        review_reason = (
-            f"tc_max_{tc_max:.1f}_implausible_for_{family}"
-            f"_ceiling_{_fam_ceil:.0f}K"
-        )
-
-    # T1.1: family=null absolute Tc sanity — the blind spot of the
-    # per-family ceiling above. A material with NO recognised family
-    # is never guarded, so an implausibly high tc_max (MgxWO3
-    # 140-280 K, NaxCoO2 58 K, CB 55.9 K, LK-99 300 K) stays public.
-    # Flag needs_review unless it carries a superhydride signature
-    # (H with a >=2 subscript) — those legitimately reach ~250 K and
-    # are governed by the global _TC_SANITY_MAX_K rule. ``not family``
-    # (not ``_fam_ceil is None``) so family='hydride' — intentionally
-    # absent from the ceiling table — is NOT swept in here.
-    if (
-        not needs_review
-        and per_compound_tc_cap is None
-        and tc_max is not None
-        and not family
-        and tc_max > 45.0
-        and not re.search(
-            r"H(?:[2-9][0-9]*(?:\.[0-9]+)?|1[0-9]+)", formula_raw
-        )
-    ):
-        needs_review = True
-        review_reason = (
-            f"tc_max_{tc_max:.1f}_implausible_for_null_family_ceiling_45K"
-        )
+    # The material-level flag is retained for a material with reported Tc but
+    # no eligible headline Tc. Mixed records remain discoverable through their
+    # valid properties; anomaly_review exposes every affected raw result.
+    has_reported_tc = any(r.get("tc_kelvin") is not None for r in records)
+    tc_review_required = has_reported_tc and tc_max is None and any(
+        not eligible_for_property(assessment, "tc_max") for assessment in assessments
+    )
+    needs_review = tc_review_required
+    review_reason: str | None = (
+        f"numeric_review_pending:{ANOMALY_POLICY_VERSION}:tc_max"
+        if tc_review_required else None
+    )
 
     # T1.3 (P3a): non-superconductor contaminants NER scraped as
     # "materials". Two random-100 audits independently recurred CMR
@@ -1034,6 +863,20 @@ def _derive_summary(
     norm_key = normalize_formula(formula_raw)
     overlayer, substrate_mat = _detect_interface(norm_key)
 
+    # Atomic source selection applies the same versioned, field-scoped review
+    # context. Raw records and unrelated properties remain intact.
+    atomic = build_property_evidence(
+        records, scope_id=_material_id(norm_key), include_joint_epc=False,
+        property_fields=("hc2_tesla", "lattice_params", "crystal_structure", "space_group"),
+        anomaly_context=anomaly_context,
+    )
+    properties = atomic["properties"]
+    structural_result = next((properties[field]["selected"] for field in (
+        "lattice_params", "crystal_structure", "space_group",
+    ) if properties[field]["selected"] is not None), None)
+    structural_group = structural_result["structure"] if structural_result else {}
+    hc2_result = properties["hc2_tesla"]["selected"]
+
     # Every string going into a varchar column passes through _clip
     # so a chatty NER hallucination (e.g. "single Fe vacancy for every
     # eight Fe-sites arranged in a √10×√8 parallelogram structure"
@@ -1053,29 +896,32 @@ def _derive_summary(
         "ambient_sc": ambient_sc,
         "arxiv_year": arxiv_year,
         "total_papers": len(paper_ids),
-        # Structure (earliest paper wins for structural claims)
+        # One complete source result; unknown components stay unknown. The
+        # independent structure_phase consensus below is a catalogue category,
+        # not a constituent of this source's crystallographic observation.
         "crystal_structure": _clip("crystal_structure",
-                                   _earliest_non_null(records, "crystal_structure")),
+                                   structural_group.get("crystal_structure")),
         "space_group":       _clip("space_group",
-                                   _earliest_non_null(records, "space_group")),
+                                   structural_group.get("space_group")),
         "structure_phase":   _clip("structure_phase", structure_phase),
-        "lattice_params":    _lattice_params(records),
+        "lattice_params":    (properties["lattice_params"]["selected"]["value"]
+                              if properties["lattice_params"]["selected"] else None),
         # SC parameters (discrete → weighted mode, scalar → max)
         "pairing_symmetry":  _clip("pairing_symmetry",
                                    _weighted_mode_str(records, "pairing_symmetry")),
         "gap_structure":     _clip("gap_structure",
                                    _weighted_mode_str(records, "gap_structure")),
-        "hc2_tesla":         _max_numeric(records, "hc2_tesla"),
+        "hc2_tesla":         hc2_result["value"] if hc2_result else None,
         "hc2_conditions":    _clip("hc2_conditions",
-                                   _first_non_null(records, "hc2_conditions")),
-        "lambda_eph":        _max_numeric(records, "lambda_eph"),
-        "omega_log_k":       _max_numeric(records, "omega_log_k"),
-        "rho_s_mev":         _max_numeric(records, "rho_s_mev"),
+                                   hc2_result["conditions"].get("hc2_conditions") if hc2_result else None),
+        "lambda_eph":        _max_numeric(eligible("lambda_eph"), "lambda_eph"),
+        "omega_log_k":       _max_numeric(eligible("omega_log_k"), "omega_log_k"),
+        "rho_s_mev":         _max_numeric(eligible("rho_s_mev"), "rho_s_mev"),
         # Competing orders
         "t_cdw_k":           t_cdw,
         "t_sdw_k":           t_sdw,
         "t_afm_k":           t_afm,
-        "rho_exponent":      _median_numeric(records, "rho_exponent"),
+        "rho_exponent":      _median_numeric(eligible("rho_exponent"), "rho_exponent"),
         "competing_order":   _clip("competing_order", competing_order),
         "has_competing_order": has_competing_order,
         # Samples / pressure
@@ -1087,7 +933,7 @@ def _derive_summary(
                                    _weighted_mode_str(records, "pressure_type")),
         "doping_type":       _clip("doping_type",
                                    _weighted_mode_str(records, "doping_type")),
-        "doping_level":      _median_numeric(records, "doping_level"),
+        "doping_level":      _median_numeric(eligible("doping_level"), "doping_level"),
         # Flags (weighted-boolean → None when weak / disputed)
         "is_unconventional":   is_unconventional,
         "disputed":            disputed,
@@ -1103,10 +949,16 @@ def _derive_summary(
         "needs_review":        needs_review,
         "review_reason":       _clip("review_reason", review_reason),
         "records": records,
+        "anomaly_context": anomaly_context,
+        "anomaly_review": build_anomaly_review(
+            records, scope_id=scope_id, family=family,
+            compound_thresholds=compound_thresholds,
+            current_year=current_year,
+        ),
     }
 
     # -------------------------------------------------------------------
-    # Step 0.4: Apply manual overrides (exact replacements + caps)
+    # Legacy categorical overrides only; numeric requests remain review inputs.
     # -------------------------------------------------------------------
     if overrides:
         override_notes = _apply_overrides(summary, overrides)
@@ -1141,26 +993,10 @@ def _derive_summary(
             "refuted claim matched: %s (%s)", formula_raw, refuted.claim_type,
         )
 
-    # -------------------------------------------------------------------
-    # Invariant: tc_ambient <= tc_max (overrides may have clamped tc_max
-    # below the naturally-aggregated tc_ambient)
-    # -------------------------------------------------------------------
-    _tc_max = summary.get("tc_max")
-    _tc_amb = summary.get("tc_ambient")
-    if (
-        isinstance(_tc_max, (int, float))
-        and isinstance(_tc_amb, (int, float))
-        and _tc_amb > _tc_max
-    ):
-        summary["tc_ambient"] = _tc_max
-
-    # -------------------------------------------------------------------
-    # Step 0.6: Round all numeric fields to 3 decimals (float32 fix)
-    # -------------------------------------------------------------------
-    for key in _NUMERIC_FIELDS:
-        val = summary.get(key)
-        if isinstance(val, float):
-            summary[key] = round(val, 3)
+    # Source precision is retained. Formatting belongs in the UI; neither a
+    # legacy cap nor rounding may create a new unsupported scalar here.
+    if hc2_result is None or summary.get("hc2_tesla") != hc2_result["value"]:
+        summary["hc2_conditions"] = None
 
     # -------------------------------------------------------------------
     # C3 Fix 4: Cuprate pairing symmetry default
@@ -1198,15 +1034,15 @@ def _classify_evidence(
     # the tc split, so dominant_evidence can't disagree with which
     # pool drove the headline tc_max.
     n_cited = sum(
-        1 for r in all_records if r.get("evidence_type") == "cited"
+        1 for r in all_records if classify_result(r).source_role == "cited"
     )
     n_theo = sum(
         1 for r in all_records
-        if r.get("evidence_type") != "cited" and _record_is_theoretical(r)
+        if classify_result(r).source_role != "cited" and is_computed_result(r)
     )
     n_exp = sum(
         1 for r in all_records
-        if r.get("evidence_type") != "cited" and not _record_is_theoretical(r)
+        if classify_result(r).source_role != "cited" and is_observed_result(r)
     )
     total = len(all_records)
     if total == 0:
@@ -1481,17 +1317,8 @@ async def aggregate_from_papers() -> int:
                 conf = m.get("confidence")
                 if isinstance(conf, (int, float)) and conf < _MIN_CONFIDENCE:
                     continue
-                # Numeric sanity: tc_kelvin must land in a Postgres-safe
-                # double range AND be physically meaningful. The NER
-                # occasionally hallucinates 1e-100 K ("essentially zero")
-                # for placeholder materials; that triggers asyncpg's
-                # NumericValueOutOfRangeError on the float column. Drop
-                # records with tc_kelvin outside (0.01, 300) — the
-                # confidence=0.3 floor in NER post-processing should
-                # have caught these but it's a soft bound, not enforced.
-                tc = m.get("tc_kelvin")
-                if isinstance(tc, (int, float)) and (tc < 0.01 or tc > 300):
-                    continue
+                # Numeric anomalies stay recoverable. The property-specific
+                # versioned review below excludes values, not source records.
                 norm = normalize_formula(raw)
                 if not norm:
                     continue

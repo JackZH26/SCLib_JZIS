@@ -22,10 +22,11 @@ import asyncio
 import hashlib
 import json
 import logging
+import os
 import re
 import sys
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -57,7 +58,7 @@ _HYDRIDE_RE = (
 
 
 def _now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 async def _candidate_rows(
@@ -166,15 +167,17 @@ def _load_seen(path: Path | None, *, retry_failed: bool) -> set[str]:
 
 def _append_checkpoint(path: Path | None, event: dict[str, Any]) -> None:
     if path is None:
-        return
+        raise ValueError("A local proposal checkpoint is required")
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as fh:
-        fh.write(json.dumps(event, ensure_ascii=False, sort_keys=True) + "\n")
+        fh.write(json.dumps(event, ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n")
+        fh.flush()
+        os.fsync(fh.fileno())
 
 
 def _ensure_checkpoint_writable(path: Path | None) -> None:
     if path is None:
-        return
+        raise ValueError("A local proposal checkpoint is required before extraction")
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8"):
         pass
@@ -256,7 +259,7 @@ async def _extract_aps_records(
         if not dry_run:
             await write_audit_log(audit)
         return records, result
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         audit.status = "error"
         audit.error = str(e)[:1000]
         audit.processed_at = audit.processed_at or _now()
@@ -377,6 +380,7 @@ async def _process_row(
     aps_client: ApsClient | None,
     dry_run: bool,
     material_cache: dict[str, str | None],
+    proposal_checkpoint: Path | None = None,
 ) -> dict[str, Any]:
     event: dict[str, Any] = {
         "ts": _now().isoformat(),
@@ -398,12 +402,24 @@ async def _process_row(
 
         event["n_records"] = len(records)
         event["n_flagged_records"] = sum(1 for r in records if r.get("validation_flags"))
+        proposals = getattr(records, "proposals", [])
+        event["n_proposals"] = len(proposals)
+        event["n_unpersisted_proposals"] = sum(not p["scalar_row_eligible"] for p in proposals)
+        if proposals:
+            # Journal raw structured proposals before any SQL write. Rejected
+            # intervals/isotopes must survive without entering a scalar table.
+            _append_checkpoint(proposal_checkpoint, {
+                "ts": _now().isoformat(), "paper_id": row["id"],
+                "source": row["source"], "stage": "extraction_proposals",
+                "ok": False, "dry_run": dry_run, "proposals": proposals,
+            })
+            event["proposal_checkpoint"] = str(proposal_checkpoint)
         if dry_run:
             event["persisted"] = 0
         else:
             event["persisted"] = await _upsert_records(session, row, records, material_cache)
         event["ok"] = True
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         await session.rollback()
         event["error"] = str(e)
         log.exception("%s: hydride parameter NER failed", row["id"])
@@ -439,6 +455,7 @@ async def main_async(args: argparse.Namespace) -> int:
                     aps_client=aps_client,
                     dry_run=args.dry_run,
                     material_cache=material_cache,
+                    proposal_checkpoint=checkpoint,
                 )
                 _append_checkpoint(checkpoint, event)
                 _log_event(event)
@@ -451,6 +468,7 @@ async def main_async(args: argparse.Namespace) -> int:
                         aps_client=aps_client,
                         dry_run=args.dry_run,
                         material_cache=material_cache,
+                        proposal_checkpoint=checkpoint,
                     )
                     _append_checkpoint(checkpoint, event)
                     _log_event(event)

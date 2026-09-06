@@ -27,7 +27,24 @@ from datetime import UTC, date, datetime
 from decimal import Decimal
 from typing import Any
 
-CLAIM_MAPPER_VERSION = "legacy-material-record/v1"
+from ingestion.claims.outcomes import (
+    OUTCOME_CONTRACT_VERSION,
+    negative_outcome_issues,
+    outcome_conflicts_with_positive,
+)
+from ingestion.extract.scientific_values import (
+    FIELD_UNITS,
+    legacy_scalar,
+    parse_scientific_value,
+    record_quantity,
+)
+from ingestion.extract.scientific_values import (
+    PARSER_VERSION as VALUE_PARSER_VERSION,
+)
+from ingestion.result_semantics import classify_result, legacy_evidence_role
+from ingestion.pressure_semantics import classify_pressure
+
+CLAIM_MAPPER_VERSION = "legacy-material-record/v1.3"
 
 # A fixed application namespace makes claim UUIDs deterministic without
 # coupling their identity to a database sequence.
@@ -148,13 +165,20 @@ def source_record_identity(
 
     Keeping this identity contract public lets the independent parity layer
     verify persisted payloads instead of merely checking that a supplied hash
-    looks like 64 hexadecimal characters.
+    looks like 64 hexadecimal characters. Reserved result_classification,
+    pressure_semantics, property_evidence and anomaly_review envelopes are
+    derived API annotations, not source evidence. Excluding them
+    preserves existing (unannotated) v1 identities and API export round trips;
+    arbitrary scientific/raw fields remain part of identity.
     """
     hash_input = {
         "hash_schema": "sclib-source-record/v1",
         "material_id": material_id.strip(),
         "paper_id": paper_id,
-        "raw_record": _json_safe(dict(raw_record)),
+        "raw_record": _json_safe({
+            key: value for key, value in raw_record.items()
+            if key not in {"result_classification", "pressure_semantics", "property_evidence", "anomaly_review"}
+        }),
         "source_locator": _json_safe(dict(source_locator)),
     }
     source_record_hash = _sha256_json(hash_input)
@@ -213,6 +237,10 @@ def map_record_to_claim(
         _first_text(record, "measurement_method", "measurement", "method")
     )
     evidence_role = _normalise_evidence_role(record, paper_data, measurement)
+    result_classification = classify_result(record)
+    if result_classification.classification_status == "conflicted" or result_classification.source_role == "conflicted":
+        warnings.append("result_classification_conflict")
+    tc_proposal = record_quantity(record, "tc_kelvin", "value_kelvin", "tc")
     tc = _parse_temperature_claim(record)
     warnings.extend(tc.warnings)
 
@@ -229,8 +257,23 @@ def map_record_to_claim(
     else:
         result_status = "unknown"
 
-    if result_status == "not_detected" and tc.relation == "exact" and tc.value is not None:
-        warnings.append("negative_result_conflicts_with_exact_tc")
+    if result_status == "observed" and outcome_conflicts_with_positive(record):
+        warnings.append("positive_result_conflicts_with_outcome_markers")
+        result_status = "inconclusive"
+
+    negative_conflict = (
+        result_status == "not_detected" and tc.relation in {"exact", "interval", "gt", "ge"}
+        and tc.has_threshold
+    )
+    if negative_conflict:
+        warnings.append(f"negative_result_conflicts_with_{tc.relation}_tc")
+        result_status = "inconclusive"
+    negative_origin_conflict = result_status == "not_detected" and (
+        evidence_role == "primary_theoretical"
+        or result_classification.knowledge_origin in {"Computed", "Inferred", "AI-Proposed"}
+    )
+    if negative_origin_conflict:
+        warnings.append("negative_result_requires_experimental_evidence")
         result_status = "inconclusive"
 
     property_type = "non_transition" if result_status == "not_detected" else "tc"
@@ -265,6 +308,7 @@ def map_record_to_claim(
         warnings.append("negative_magnetic_field_discarded")
 
     pressure_state, pressure_gpa, pressure_warnings = _normalise_pressure(record)
+    pressure_assessment = classify_pressure(record)
     warnings.extend(pressure_warnings)
 
     tc_definition = _normalise_tc_definition(
@@ -315,9 +359,19 @@ def map_record_to_claim(
         warnings.append(f"relation_confidence_{relation_confidence_issue}")
 
     validity_status = _normalise_validity_status(record, paper_data, warnings)
-    if result_status == "not_detected" and minimum_temperature_k is None:
-        warnings.append("negative_result_missing_minimum_temperature")
-        if validity_status == "accepted":
+    if "result_classification_conflict" in warnings and validity_status == "accepted":
+        validity_status = "pending"
+    if (negative_conflict or negative_origin_conflict) and validity_status == "accepted":
+        validity_status = "pending"
+    if result_status == "not_detected":
+        negative_issues = negative_outcome_issues({
+            "result_status": result_status, "property_type": property_type,
+            "value_relation": tc.relation, "value_kelvin": tc.value,
+            "value_lower_kelvin": tc.lower, "value_upper_kelvin": tc.upper,
+            "minimum_temperature_k": minimum_temperature_k, "measurement_method": measurement,
+        })
+        warnings.extend(negative_issues)
+        if negative_issues and validity_status == "accepted":
             validity_status = "pending"
     if result_status == "observed" and tc.relation == "unreported":
         warnings.append("observed_result_missing_tc_value")
@@ -344,14 +398,26 @@ def map_record_to_claim(
         "material_id": material_id.strip(),
         "property_type": property_type,
         "evidence_role": evidence_role,
+        "knowledge_origin": result_classification.knowledge_origin,
+        "source_role": result_classification.source_role,
+        "classification_status": result_classification.classification_status,
+        "classifier_version": result_classification.classifier_version,
         "result_status": result_status,
         "value_relation": tc.relation,
         "value_kelvin": _canonical_number(tc.value),
         "value_lower_kelvin": _canonical_number(tc.lower),
         "value_upper_kelvin": _canonical_number(tc.upper),
+        "value_uncertainty_kelvin": _canonical_number(tc_proposal.get("uncertainty")),
+        "uncertainty_interpretation": tc_proposal.get("uncertainty_interpretation"),
+        "approximate": tc_proposal.get("approximate", False),
         "tc_definition": tc_definition,
         "pressure_state": pressure_state,
         "pressure_gpa": _canonical_number(pressure_gpa),
+        "pressure_relation": pressure_assessment.relation,
+        "pressure_lower_gpa": _canonical_number(pressure_assessment.value_lower_gpa),
+        "pressure_upper_gpa": _canonical_number(pressure_assessment.value_upper_gpa),
+        "pressure_uncertainty_gpa": _canonical_number(pressure_assessment.uncertainty_gpa),
+        "pressure_approximate": pressure_assessment.approximate,
         "minimum_temperature_k": _canonical_number(minimum_temperature_k),
         "magnetic_field_t": _canonical_number(magnetic_field_t),
         "measurement_method": measurement,
@@ -365,8 +431,21 @@ def map_record_to_claim(
     metadata: dict[str, Any] = {
         "mapper": "legacy_material_record",
         "mapper_version": CLAIM_MAPPER_VERSION,
+        "outcome_contract_version": OUTCOME_CONTRACT_VERSION,
         "source_schema": "materials.records",
+        "result_classification": result_classification.as_dict(),
+        "scientific_value_parser_version": VALUE_PARSER_VERSION,
+        "scientific_values": {"tc_kelvin": tc_proposal},
+        "pressure_semantics": pressure_assessment.to_dict(),
     }
+    # Preserve complete normalized proposals in JSON metadata; v1 scalar
+    # columns cannot represent e.g. a pressure interval or Tc uncertainty.
+    supplied_values = record.get("scientific_values")
+    for field in FIELD_UNITS:
+        if field in record or (isinstance(supplied_values, Mapping) and field in supplied_values):
+            metadata["scientific_values"][field] = record_quantity(record, field)
+    if "pressure" in record and "pressure_gpa" not in metadata["scientific_values"]:
+        metadata["scientific_values"]["pressure_gpa"] = record_quantity(record, "pressure_gpa", "pressure")
     if material_formula:
         metadata["material_formula"] = material_formula
     if warnings:
@@ -421,36 +500,8 @@ def _normalise_evidence_role(
     paper: Mapping[str, Any],
     measurement: str | None,
 ) -> str:
-    raw = _first_text(record, "evidence_role", "evidence_type", "claim_kind")
-    value = _slug(raw)
-    aliases = {
-        "experimental": "primary_experimental",
-        "experiment": "primary_experimental",
-        "measured": "primary_experimental",
-        "theoretical": "primary_theoretical",
-        "theory": "primary_theoretical",
-        "calculated": "primary_theoretical",
-        "predicted": "primary_theoretical",
-        "secondary": "cited",
-        "citation": "cited",
-        "referenced": "cited",
-    }
-    value = aliases.get(value, value)
-    if value in _EVIDENCE_ROLES:
-        return value
-
-    # Legacy "primary" is explicitly ambiguous.  Resolve it only when an
-    # independent technique or paper-type signal is available.
-    if measurement in _EXPERIMENTAL_MEASUREMENTS:
-        return "primary_experimental"
-    if measurement in _THEORETICAL_MEASUREMENTS:
-        return "primary_theoretical"
-    paper_type = _slug(_first_text(record, "paper_type") or _first_text(paper, "paper_type"))
-    if paper_type in {"computational", "theoretical"}:
-        return "primary_theoretical"
-    if paper_type == "experimental":
-        return "primary_experimental"
-    return "unknown"
+    """Adapt the shared result/role contract without inferring primary from genre."""
+    return legacy_evidence_role(record)
 
 
 def _explicit_result_status(record: Mapping[str, Any]) -> str | None:
@@ -487,8 +538,7 @@ def _parse_temperature_claim(record: Mapping[str, Any]) -> _TemperatureClaim:
     explicit_relation = _normalise_relation(
         _first_text(record, "value_relation", "tc_relation", "relation")
     )
-    raw_value = _first_present(record, "value_kelvin", "tc_kelvin", "tc")
-    parsed = _parse_temperature_value(raw_value)
+    parsed = _temperature_from_proposal(record_quantity(record, "tc_kelvin", "value_kelvin", "tc"))
     warnings = list(parsed.warnings)
 
     lower, lower_issue = _first_quantity_scalar(
@@ -583,107 +633,40 @@ def _parse_temperature_claim(record: Mapping[str, Any]) -> _TemperatureClaim:
 
 
 def _parse_temperature_value(value: Any) -> _TemperatureClaim:
-    if value is None or value == "":
-        return _TemperatureClaim()
-    if _is_number(value):
-        return _TemperatureClaim("exact", float(value))
-    if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):
-        if len(value) == 2:
-            lower, lower_issue = _quantity_scalar(value[0], frozenset({"k", "kelvin"}))
-            upper, upper_issue = _quantity_scalar(value[1], frozenset({"k", "kelvin"}))
-            if lower is not None and upper is not None:
-                return _TemperatureClaim("interval", lower=lower, upper=upper)
-            if "unit_mismatch" in {lower_issue, upper_issue}:
-                return _TemperatureClaim(warnings=("invalid_tc_unit",))
-        return _TemperatureClaim(warnings=("unparseable_tc_sequence",))
-    if not isinstance(value, str):
-        return _TemperatureClaim(warnings=("unparseable_tc_value",))
+    return _temperature_from_proposal(parse_scientific_value(value, "tc_kelvin"))
 
-    text = value.strip()
-    match = _RANGE_RE.match(text)
-    if match:
-        lower = _finite_float_token(match.group(1))
-        upper = _finite_float_token(match.group(2))
-        if lower is None or upper is None:
-            return _TemperatureClaim(warnings=("nonfinite_tc_range",))
-        return _TemperatureClaim(
-            "interval",
-            lower=lower,
-            upper=upper,
-        )
-    match = _INEQUALITY_RE.match(text)
-    if match:
-        relation = {"<": "lt", "<=": "le", "≤": "le", ">": "gt", ">=": "ge", "≥": "ge"}[
-            match.group(1)
-        ]
-        threshold = _finite_float_token(match.group(2))
-        if threshold is None:
-            return _TemperatureClaim(warnings=("nonfinite_tc_threshold",))
-        if relation in {"lt", "le"}:
-            return _TemperatureClaim(relation, upper=threshold)
-        return _TemperatureClaim(relation, lower=threshold)
-    number, issue = _quantity_scalar(text, frozenset({"k", "kelvin"}))
-    if number is not None:
-        warning = ()
-        if re.match(r"\s*(?:~|≈|about|approximately)", text, re.IGNORECASE):
-            warning = ("approximate_tc_collapsed_to_exact",)
-        return _TemperatureClaim("exact", number, warnings=warning)
-    if issue == "unit_mismatch":
-        return _TemperatureClaim(warnings=("invalid_tc_unit",))
-    if issue == "nonfinite":
-        return _TemperatureClaim(warnings=("nonfinite_tc_value",))
-    return _TemperatureClaim(warnings=("unparseable_tc_text",))
+
+def _temperature_from_proposal(proposal: Mapping[str, Any]) -> _TemperatureClaim:
+    if proposal["status"] == "unreported":
+        return _TemperatureClaim()
+    if proposal["status"] == "invalid":
+        error = proposal["errors"][0]
+        if error in {"unit_mismatch", "conflicting_units"}:
+            warning = "invalid_tc_unit"
+        elif error == "nonfinite_quantity":
+            raw = str(proposal["raw_value"])
+            suffix = "threshold" if _INEQUALITY_RE.match(raw) else "range" if _RANGE_RE.match(raw) else "value"
+            warning = f"nonfinite_tc_{suffix}"
+        else:
+            warning = f"tc_parse:{error}"
+        return _TemperatureClaim(warnings=(warning,))
+    warnings = ("approximate_tc_point_preserved_in_metadata",) if proposal["approximate"] else ()
+    return _TemperatureClaim(proposal["relation"], proposal["value"], proposal["lower"], proposal["upper"], warnings)
 
 
 def _normalise_pressure(record: Mapping[str, Any]) -> tuple[str, float | None, list[str]]:
-    warnings: list[str] = []
-    explicit_state = _slug(_first_text(record, "pressure_state"))
-    raw = _first_present(record, "pressure_gpa", "pressure")
-
-    if raw is None or raw == "":
-        if explicit_state == "explicit_ambient":
-            # The state claims ambient, but manufacturing the numeric zero
-            # would violate the Phase-1 missingness rule.  Keep it ambiguous.
-            warnings.append("explicit_ambient_missing_numeric_pressure")
-            return "ambiguous", None, warnings
-        if explicit_state == "reported":
-            warnings.append("reported_pressure_missing_value")
-            return "ambiguous", None, warnings
-        if record.get("ambient_sc") is True:
-            warnings.append("ambient_flag_without_pressure_value")
-            return "ambiguous", None, warnings
-        return "not_reported", None, warnings
-
-    if isinstance(raw, str) and _AMBIENT_RE.fullmatch(raw.strip()):
-        return "explicit_ambient", 0.0, warnings
-
-    pressure, pressure_issue = _quantity_scalar(raw, frozenset({"gpa"}))
-    if pressure is None:
-        warnings.append(
-            "pressure_unit_mismatch"
-            if pressure_issue == "unit_mismatch"
-            else "unparseable_pressure"
-        )
-        return "ambiguous", None, warnings
-    if pressure < 0:
-        warnings.append("negative_pressure_discarded")
-        return "ambiguous", None, warnings
-    if pressure > 0:
-        if explicit_state == "not_reported":
-            warnings.append("pressure_state_conflicts_with_value")
-        return "reported", pressure, warnings
-
-    # Numeric zero in old NER records was historically used as a missing
-    # fallback.  Require an independent ambient signal before calling it an
-    # explicit ambient measurement; otherwise preserve 0 but mark ambiguous.
-    if (
-        explicit_state == "explicit_ambient"
-        or record.get("ambient_sc") is True
-        or _slug(_first_text(record, "pressure_type")) == "none"
-    ):
-        return "explicit_ambient", 0.0, warnings
-    warnings.append("legacy_zero_pressure_not_explicitly_ambient")
-    return "ambiguous", 0.0, warnings
+    assessment = classify_pressure(record)
+    warnings = list(assessment.reasons)
+    state, pressure = assessment.pressure_state, assessment.pressure_gpa
+    if state == "reported" and pressure is None:
+        # V1 has only a scalar pressure column. Keep the full interval/bound in
+        # extraction_metadata.pressure_semantics, never invent a midpoint.
+        state = "ambiguous"
+        warnings.append("pressure_extent_not_representable_in_v1_scalar")
+    if pressure is not None and pressure < 0:
+        pressure = None
+        warnings.append("negative_pressure_retained_in_metadata_only")
+    return state, pressure, warnings
 
 
 def _normalise_tc_definition(value: str | None) -> str:
@@ -903,19 +886,15 @@ def _quantity_scalar(
     value: Any,
     allowed_units: frozenset[str],
 ) -> tuple[float | None, str | None]:
-    if value is None or value == "":
+    field = "tc_kelvin" if "k" in allowed_units else "pressure_gpa" if "gpa" in allowed_units else "magnetic_field_t" if "t" in allowed_units else "confidence"
+    proposal = parse_scientific_value(value, field)
+    if proposal["status"] == "unreported":
         return None, None
-    if _is_number(value):
-        return float(value), None
-    if isinstance(value, str):
-        match = _QUANTITY_RE.match(value.strip())
-        if match:
-            unit = (match.group(2) or "").lower()
-            if unit and unit not in allowed_units:
-                return None, "unit_mismatch"
-            number = _finite_float_token(match.group(1))
-            return (number, None) if number is not None else (None, "nonfinite")
-    return None, "unparseable"
+    number = legacy_scalar(proposal)
+    if number is not None:
+        return number, None
+    error = proposal["errors"][0] if proposal["errors"] else "non_scalar"
+    return None, {"unit_mismatch": "unit_mismatch", "conflicting_units": "unit_mismatch", "nonfinite_quantity": "nonfinite"}.get(error, "unparseable")
 
 
 def _finite_float_token(value: str) -> float | None:

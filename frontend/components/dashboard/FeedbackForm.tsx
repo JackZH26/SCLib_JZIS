@@ -168,7 +168,7 @@ export function FeedbackForm() {
                 msgLen > MAX_LEN - 100 ? "text-amber-700" : "text-sage-tertiary"
               }
             >
-              {msgLen.toLocaleString()} / {MAX_LEN.toLocaleString()}
+              {msgLen.toLocaleString("en-US")} / {MAX_LEN.toLocaleString("en-US")}
             </span>
           </div>
         </label>

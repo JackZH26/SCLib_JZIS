@@ -1,0 +1,494 @@
+[
+  {
+    "id": "EN01",
+    "title": "Fail closed before tests can connect to non-disposable PostgreSQL or Redis",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "platform",
+    "evidence_level": "Code-confirmed unsafe test bootstrap; no destructive fixture was executed during the review",
+    "report_sections": [
+      "2 / E01",
+      "10.2",
+      "13 / 20"
+    ],
+    "summary": "API test fixtures preserve inherited DSNs with setdefault, then run metadata.drop_all and Redis.flushdb. A normal test invocation can therefore target a non-test service if the environment is wrong. This issue records a potential destructive path, not an observed production data-loss incident.",
+    "evidence": [
+      {
+        "path": "api/tests/conftest.py",
+        "line": 13,
+        "detail": "Inherited DATABASE_URL and REDIS_URL are retained."
+      },
+      {
+        "path": "api/tests/conftest.py",
+        "line": 69,
+        "detail": "Schema fixture invokes drop_all."
+      },
+      {
+        "path": "api/tests/conftest.py",
+        "line": 162,
+        "detail": "Redis cleanup invokes flushdb."
+      }
+    ],
+    "scope": [
+      "Validate disposable PostgreSQL and Redis identity before creating clients or opening connections; a database name containing test alone is insufficient.",
+      "Use dedicated ephemeral instances and least-privileged test credentials; isolate inherited production configuration.",
+      "Require an explicit test-run sentinel and validated target policy; provide one safe developer/CI entry point.",
+      "Make cleanup target only the instance created/approved for this run and document safe failure recovery."
+    ],
+    "acceptance": [
+      "A production-like or unapproved PostgreSQL DSN aborts before any connection attempt; prove using instrumented client mocks.",
+      "An unapproved Redis target aborts before connection or cleanup.",
+      "A missing/invalid disposable-run sentinel fails closed even when database names contain test.",
+      "The approved ephemeral path can run schema and Redis tests and clean up only its own resources.",
+      "CI and local documentation use the same guard; no credentials appear in failure output.",
+      "Existing reviewed source data is never used for destructive tests; integration evidence comes from a disposable database."
+    ],
+    "out_of_scope": [
+      "Running existing destructive fixtures against the development or production database.",
+      "Changing production data or weakening the guard to make CI pass."
+    ],
+    "depends_on": [],
+    "owner_role": "Platform engineer / test infrastructure"
+  },
+  {
+    "id": "EN02",
+    "title": "Separate production schema migration from API startup and define reversible shadow rollout",
+    "priority": "P2",
+    "type": "enhancement",
+    "phase": "C",
+    "area": "platform",
+    "evidence_level": "Code-confirmed duplicate migration entry points; normal sequential second invocation is usually a no-op",
+    "report_sections": [
+      "10.3",
+      "12"
+    ],
+    "summary": "The deployment job invokes Alembic and API entrypoint invokes it again before uvicorn. The issue is lifecycle/privilege coupling and concurrent entry points, not a claim that every DDL executes twice. Research schema rollout also needs explicit shadow backfill, parity checks and read-model rollback.",
+    "evidence": [
+      {
+        "path": ".github/workflows/deploy.yml",
+        "line": 194,
+        "detail": "Dedicated deployment migration command."
+      },
+      {
+        "path": "api/entrypoint.sh",
+        "line": 7,
+        "detail": "API startup repeats upgrade head."
+      },
+      {
+        "path": "api/alembic/env.py",
+        "line": 55,
+        "detail": "Migration execution does not establish an application-wide advisory lock."
+      }
+    ],
+    "scope": [
+      "Use one controlled migration job/role; API startup checks compatible schema revision without mutating schema.",
+      "Serialize concurrent migration attempts using a database-level mechanism covering manual and automated entry points.",
+      "Document expand, shadow load, parity audit, read cutover, rollback and later contract stages; never rewrite released migration semantics.",
+      "Keep deployment backup and image verification gates; specify which failures prevent traffic cutover."
+    ],
+    "acceptance": [
+      "Restarting or scaling an API container cannot execute schema-changing DDL.",
+      "Two concurrent migration attempts produce at most one upgrader with explicit wait/failure behavior.",
+      "An incompatible or failed migration prevents the new API from serving traffic.",
+      "An isolated old-schema upgrade and read-model rollback rehearsal preserves original records and released snapshots.",
+      "Released schema modules/migrations have an immutability check or documented versioned replacement mechanism.",
+      "A cutover report includes source/target counts, reason-coded exclusions, version identity and rollback instructions."
+    ],
+    "out_of_scope": [
+      "Deploying 0045 or backfilling production as part of issue creation.",
+      "Destructive down-migrations as the normal rollback strategy."
+    ],
+    "depends_on": [
+      "EN01"
+    ],
+    "owner_role": "Platform engineer + database maintainer"
+  },
+  {
+    "id": "EN03",
+    "title": "Make scheduled refresh and audit tasks single-executor and idempotent across replicas",
+    "priority": "P2",
+    "type": "bug",
+    "phase": "C",
+    "area": "platform",
+    "evidence_level": "Code-confirmed scale-up risk; current Compose does not explicitly enable multiple workers",
+    "report_sections": [
+      "10.3"
+    ],
+    "summary": "Each application lifespan starts statistics, timeline, formula audit, nightly audit and history-pruning tasks. Multiple workers or replicas can independently run a cycle, duplicate audit reports or commit stale projection watermarks. Row upserts do not serialize the entire job.",
+    "evidence": [
+      {
+        "path": "api/main.py",
+        "line": 331,
+        "detail": "Background tasks created for each lifespan."
+      },
+      {
+        "path": "api/services/timeline_projection.py",
+        "line": 59,
+        "detail": "Projection state read without job-level serialization."
+      },
+      {
+        "path": "api/services/audit_runner.py",
+        "line": 115,
+        "detail": "Audit cycle writes reports without a unique cycle identity."
+      }
+    ],
+    "scope": [
+      "Use a separate scheduler or cross-process job locks, with stable cycle/idempotency keys per job.",
+      "Define retry, lease/crash recovery and monotonic projection watermark behavior.",
+      "Expose last successful run, active owner, duration, failure and duplicate-suppression metrics."
+    ],
+    "acceptance": [
+      "Two independent processes triggering one cycle produce one effective audit/report set.",
+      "An older refresh finishing later cannot move the watermark backward.",
+      "A crashed executor can be recovered safely without losing or duplicating a cycle.",
+      "Statistics and timeline serving continue using the last valid projection during a failed refresh.",
+      "Audit deltas compare intended adjacent cycles rather than racing worker output."
+    ],
+    "out_of_scope": [
+      "Adding replicas before concurrency tests pass.",
+      "Introducing a general-purpose distributed workflow platform without demonstrated need."
+    ],
+    "depends_on": [
+      "EN01"
+    ],
+    "owner_role": "Backend / platform engineer"
+  },
+  {
+    "id": "EN04",
+    "title": "Test the same locked Python runtime dependencies that are shipped in release images",
+    "priority": "P2",
+    "type": "bug",
+    "phase": "A",
+    "area": "platform",
+    "evidence_level": "Code-confirmed CI/build dependency resolution mismatch; no specific deployed version divergence asserted",
+    "report_sections": [
+      "10.4"
+    ],
+    "summary": "API, migration and ingestion CI resolve ranges from pyproject while Docker uses uv.lock. A passing test run does not necessarily test the runtime dependency graph that is released.",
+    "evidence": [
+      {
+        "path": ".github/workflows/test.yml",
+        "line": 54,
+        "detail": "CI installs editable dev dependencies without consuming the lock."
+      },
+      {
+        "path": "api/Dockerfile",
+        "line": 28,
+        "detail": "Production image uses uv sync --locked."
+      },
+      {
+        "path": "ingestion/Dockerfile",
+        "line": 26,
+        "detail": "Ingestion release also uses the lock."
+      }
+    ],
+    "scope": [
+      "Pin the CI package-management tool and use each project's checked-in lock for release-gating tests.",
+      "Run API, migration and ingestion tests in the resolved locked environment.",
+      "Compare normalized runtime package inventories between CI and images; optional unlocked compatibility testing stays separate."
+    ],
+    "acceptance": [
+      "CI fails if pyproject and lock are inconsistent rather than silently resolving a new graph.",
+      "Runtime package versions in test and image inventories match, excluding documented dev-only packages.",
+      "API, migration and ingestion test jobs all consume their relevant lockfiles.",
+      "Changing a locked runtime package invalidates the correct test/build cache and is visible in provenance.",
+      "Existing frontend frozen-lockfile behavior is preserved."
+    ],
+    "out_of_scope": [
+      "Mass dependency upgrades or major Python/Node changes.",
+      "Claiming a vulnerability solely from a version mismatch."
+    ],
+    "depends_on": [
+      "EN01"
+    ],
+    "owner_role": "Build / CI maintainer"
+  },
+  {
+    "id": "EN05",
+    "title": "Measure retrieval and API performance and bound provider work after timeout",
+    "priority": "P2",
+    "type": "enhancement",
+    "phase": "C",
+    "area": "platform",
+    "evidence_level": "Code-confirmed thread-timeout limitation and sequential retrieval; performance impact requires measurement",
+    "report_sections": [
+      "10.5",
+      "8.5"
+    ],
+    "summary": "asyncio.wait_for around to_thread returns on timeout without terminating the underlying provider call. Existing retries and breakers are useful, but capacity must remain bounded under slow upstreams. Retrieval branches currently execute sequentially. Measure before optimizing or claiming an SLO.",
+    "evidence": [
+      {
+        "path": "api/services/provider_resilience.py",
+        "line": 39,
+        "detail": "Timeout cannot safely cancel the worker thread."
+      },
+      {
+        "path": "api/services/provider_resilience.py",
+        "line": 53,
+        "detail": "Provider work wrapped in wait_for/to_thread."
+      },
+      {
+        "path": "api/routers/search.py",
+        "line": 45,
+        "detail": "Semantic and lexical stages are sequential."
+      },
+      {
+        "path": "api/alembic/versions/0043_chunks_full_text_index.py",
+        "line": 23,
+        "detail": "Full-text GIN index already exists; do not duplicate it."
+      }
+    ],
+    "scope": [
+      "Add transport deadlines, bounded concurrency/queueing and per-provider backpressure while preserving lexical/extractive fallback.",
+      "Establish latency, payload, query-plan, queue and cost baselines on an isolated representative dataset.",
+      "Evaluate concurrent retrieval using independent sessions/resources; never share one AsyncSession concurrently.",
+      "Set justified SLO thresholds after measurement and document degraded-state behavior."
+    ],
+    "acceptance": [
+      "Slow/hung provider simulations cannot create unbounded threads, queued work or repeated timed-out billable calls.",
+      "Timeout, circuit-open, fallback and queue saturation are distinguishable in metrics without logging secrets or restricted text.",
+      "Retrieval concurrency tests confirm session isolation and deterministic filtering.",
+      "A reproducible benchmark records p50/p95/p99, throughput, DB query plans and provider costs before/after changes.",
+      "Performance improvements preserve scientific filter/citation regression cases and last-valid read availability."
+    ],
+    "out_of_scope": [
+      "Unapproved production load tests.",
+      "Replacing the database/vector platform or claiming arbitrary latency improvements."
+    ],
+    "depends_on": [
+      "EN01"
+    ],
+    "owner_role": "Backend performance / platform engineer"
+  },
+  {
+    "id": "EN06",
+    "title": "Restore a complete scientific release including artifacts, provenance and index rebuild state",
+    "priority": "P2",
+    "type": "enhancement",
+    "phase": "D",
+    "area": "platform",
+    "evidence_level": "Research-release recovery capability gap; existing PostgreSQL backup and restore automation is retained",
+    "report_sections": [
+      "10.6",
+      "13 / 20"
+    ],
+    "summary": "A successful PostgreSQL restore alone does not prove recoverability of coordinate files, calculation artifacts, evidence metadata, licenses and frozen release manifests. Define recovery at the level of one reproducible scientific release and rebuildable search index.",
+    "evidence": [
+      {
+        "path": "scripts/backup_postgres.sh",
+        "line": 1,
+        "detail": "Existing database backup is a useful baseline."
+      },
+      {
+        "path": ".github/workflows/restore-drill.yml",
+        "line": 1,
+        "detail": "Extend existing restore-drill coverage to research release dependencies."
+      },
+      {
+        "path": "api/models/research_schema_v2.py",
+        "line": 1,
+        "detail": "Research state references artifacts, runs and evidence outside a single flat table."
+      }
+    ],
+    "scope": [
+      "Inventory release dependency closure across DB, object storage, manifests, access policies and registry/protocol versions.",
+      "Document retention, tombstones, immutable-object policies and operator-approved RPO/RTO.",
+      "Rehearse recovery in an isolated environment, verify hashes and rebuild the selected search generation.",
+      "Keep external secrets out of backups/manifests intended for public download."
+    ],
+    "acceptance": [
+      "A disposable restore can resolve every required dependency of one audited release and reproduce its manifest hash.",
+      "Missing/corrupt coordinate or run artifacts cause an explicit failed recovery check, not a healthy-but-incomplete release.",
+      "Restricted artifacts retain correct access controls after restore.",
+      "A documented index rebuild reconciles restored source/result identities and versions.",
+      "Measured recovery duration/data-loss window and operator runbook are recorded; original production remains untouched."
+    ],
+    "out_of_scope": [
+      "Deleting existing backups or changing retention without approval.",
+      "Using successful DB startup as the only scientific recovery criterion."
+    ],
+    "depends_on": [
+      "EN01",
+      "ML04",
+      "ML07"
+    ],
+    "owner_role": "Platform engineer + research data steward"
+  },
+  {
+    "id": "UX01",
+    "title": "Expose evidence-first materials views and honest dataset coverage across the public site",
+    "priority": "P2",
+    "type": "enhancement",
+    "phase": "D",
+    "area": "ux",
+    "evidence_level": "Public-interface capability gap; current legacy aggregates and v2 scaffolding must remain explicitly distinct",
+    "report_sections": [
+      "3",
+      "4",
+      "11"
+    ],
+    "summary": "Public pages should show what is known about specific states/results without implying all listed properties describe one sample or that every indexed chunk/material is reviewed. Deliver readable materials views on top of validated projections rather than adding a 126-column default table.",
+    "evidence": [
+      {
+        "path": "frontend/app/materials/page.tsx",
+        "line": 1,
+        "detail": "Materials catalog entry point."
+      },
+      {
+        "path": "frontend/app/materials/[id]/page.tsx",
+        "line": 1,
+        "detail": "Material detail currently presents legacy summaries and records."
+      },
+      {
+        "path": "frontend/components/StatsCards.tsx",
+        "line": 1,
+        "detail": "Global counts need distinct coverage and reviewed-data semantics."
+      }
+    ],
+    "scope": [
+      "Show Observed/Computed Tc, criterion, pressure/state and review status beside primary values.",
+      "Provide Overview, States & Trajectories, Evidence & Results, and Structures & Runs views with result-level links.",
+      "Show pipeline-specific freshness, independent works, reviewed result counts and explicit unknown/unavailable states; do not invent counts where unsupported.",
+      "Maintain compact tables, responsive details, keyboard-accessible interactions and English-default copy; preserve source-language quotations."
+    ],
+    "acceptance": [
+      "Each displayed scientific value can navigate to its source result/state/criterion and review status.",
+      "Purely theoretical materials are never described as having a measured maximum solely because a value exists.",
+      "No-data, unknown, not-applicable, pending and conflict states remain distinct, including accessible text.",
+      "Counts and freshness have explicit definitions/denominators and do not conflate chunks, works, events or ML examples.",
+      "Mobile/table/keyboard tests pass without requiring color alone to distinguish science states.",
+      "English-default regression coverage includes new empty, error, tooltip and accessibility strings."
+    ],
+    "out_of_scope": [
+      "Implementing Discovery or Timeline internals owned by their issues.",
+      "Showing mock material properties on production pages or relabeling legacy rows as reviewed."
+    ],
+    "depends_on": [
+      "SC02",
+      "SC05",
+      "SC07",
+      "SC10",
+      "ML03",
+      "ML05"
+    ],
+    "owner_role": "Frontend engineer + scientific UX reviewer"
+  },
+  {
+    "id": "UX02",
+    "title": "Build a revision-aware curator workflow with side-by-side evidence and impact preview",
+    "priority": "P2",
+    "type": "enhancement",
+    "phase": "C",
+    "area": "ux",
+    "evidence_level": "Review workflow capability gap; existing admin audit pages are not a complete scientific adjudication console",
+    "report_sections": [
+      "3.5",
+      "7.3",
+      "10.6",
+      "11"
+    ],
+    "summary": "Scientific acceptance needs explicit evidence, state association, versioned decisions and downstream impact, not a permanent material-wide approval flag. Provide a bounded curator/reviewer/publisher workflow without turning NER model confidence into acceptance.",
+    "evidence": [
+      {
+        "path": "frontend/app/dashboard/admin/audit/page.tsx",
+        "line": 1,
+        "detail": "Existing audit interface to extend, not replace wholesale."
+      },
+      {
+        "path": "api/services/audit_runner.py",
+        "line": 44,
+        "detail": "Old admin decisions can exempt material-level future audit behavior."
+      },
+      {
+        "path": "api/models/research_schema_v2.py",
+        "line": 224,
+        "detail": "Research events provide the future revision/review context."
+      }
+    ],
+    "scope": [
+      "Present permitted source evidence/locator beside typed results, sample/state matching and extraction warnings.",
+      "Record reviewer role, decision, reason, source hash and result revision; original scientific observations remain Observed with extraction provenance.",
+      "Separate curator, reviewer and publisher permissions, with conflict handling and explicit batch-approval limits.",
+      "Preview affected summaries/releases and issue new revisions rather than editing frozen facts."
+    ],
+    "acceptance": [
+      "A reviewer can accept, reject or request clarification on one exact result revision with an auditable reason.",
+      "Stale concurrent review is detected; a decision about an old source hash does not approve a new revision.",
+      "Unauthorized users cannot adjudicate or publish; model output and source text cannot choose the approver or execute actions.",
+      "Batch actions enumerate affected results and refuse incompatible/conflicted entries rather than blanket-approving a material.",
+      "Restricted source content is not exposed through preview/export; locator-only access is supported.",
+      "Frozen release dependencies remain unchanged after a new review; affected public views receive the correct new status."
+    ],
+    "out_of_scope": [
+      "A full laboratory information management system.",
+      "Automatic acceptance based only on LLM confidence, citation count or publisher tier."
+    ],
+    "depends_on": [
+      "SC07",
+      "SC08",
+      "ML03",
+      "ML07"
+    ],
+    "owner_role": "Frontend/backend engineer + scientific curator"
+  },
+  {
+    "id": "AL01",
+    "title": "Validate RPS and multi-fidelity action selection with a fixed-budget, leakage-safe replay",
+    "priority": "P2",
+    "type": "enhancement",
+    "phase": "E",
+    "area": "ml-data",
+    "evidence_level": "Gated research validation work; no current efficacy or calibrated acquisition function is claimed",
+    "report_sections": [
+      "6.7",
+      "9",
+      "12"
+    ],
+    "summary": "Test whether a declared priority policy selects useful actions within one campaign, rather than assuming a high RPS is a probability or guaranteed discovery benefit. Start with a tractable mechanism-specific candidate pool and action/protocol graph; methods are not a universal fidelity ladder.",
+    "evidence": [
+      {
+        "path": "api/services/research_priority.py",
+        "line": 1,
+        "detail": "RPS is a deterministic policy requiring empirical validation."
+      },
+      {
+        "path": "api/routers/discovery_priority.py",
+        "line": 56,
+        "detail": "Policy explicitly limits comparability and acknowledges pending calibration."
+      },
+      {
+        "path": "docs/RESEARCH_V2_IMPLEMENTATION.md",
+        "line": 65,
+        "detail": "Current RPS implementation and action/budget semantics."
+      }
+    ],
+    "scope": [
+      "Preregister candidate pool, campaign objective, source cutoff, protocols, action prerequisites and complete resource budget.",
+      "Use rubric anchors independently assessed by at least two reviewers, record disagreements and adjudication, and report weight/cost sensitivity, rank stability and family/evidence coverage.",
+      "Compare random, cost-first, physical-only and RPS/information-informed policies using identical budgets and accessible information.",
+      "Capture successful, negative, failed and inconclusive actions plus actual costs; require paired data before learning cross-fidelity bias.",
+      "Use replay/shadow mode first; any prospective expensive calculation or experiment requires a separate approved execution plan."
+    ],
+    "acceptance": [
+      "Replay cannot access hidden outcomes through features, prompts, future source revisions or derived evidence; document opaque LLM pretraining contamination limits.",
+      "At least the declared simple baselines run on identical candidate/action/budget snapshots with reproducible seeds and manifests.",
+      "Results report useful completed decisions, uncertainty resolved, failure costs and family-level coverage; no arbitrary efficacy threshold is imposed.",
+      "A documented two-reviewer anchor audit and adjudication accompany sensitivity analysis; unstable rankings and low statistical power are reported rather than presenting small score differences as measured certainty.",
+      "Negative controls are not converted to experimental y=0; only task-qualified observed outcomes become labels.",
+      "If prerequisites/independent sample support are insufficient, publish a reasoned no-go or reduced-scope result instead of inventing data or claiming validated acquisition.",
+      "Published reports retain the original policy/release and record later evidence separately; RPS is never used as superconductivity ground truth."
+    ],
+    "out_of_scope": [
+      "Automatically launching high-cost DFT/DFPT or physical experiments.",
+      "Training a universal cross-family deep model or promising new superconductors."
+    ],
+    "depends_on": [
+      "ML09",
+      "DR01",
+      "DR02",
+      "ML05"
+    ],
+    "owner_role": "ML researcher + condensed-matter reviewer"
+  }
+]

@@ -100,7 +100,7 @@ def test_unrepresentable_numeric_values_do_not_abort_mapping() -> None:
     assert claim["pressure_gpa"] is None
     assert claim["extraction_confidence"] is None
     assert claim["raw_record"]["tc_kelvin"] == huge
-    assert "unparseable_pressure" in claim["extraction_metadata"]["warnings"]
+    assert "nonfinite_pressure" in claim["extraction_metadata"]["warnings"]
 
 
 @pytest.mark.parametrize(
@@ -353,11 +353,11 @@ def test_invalid_interval_bound_is_discarded_without_breaking_typed_shape() -> N
 
 def test_explicit_ambient_signal_allows_zero_but_null_is_never_filled() -> None:
     explicit = map_record_to_claim(
-        {"tc_kelvin": 10, "pressure_gpa": 0.0, "ambient_sc": True},
+        {"tc_kelvin": 10, "pressure_gpa": 0.0, "pressure_state": "explicit_ambient"},
         material_id="mat:x",
     )
     missing = map_record_to_claim(
-        {"tc_kelvin": 10, "pressure_gpa": None, "ambient_sc": True},
+        {"tc_kelvin": 10, "pressure_gpa": None, "pressure_state": "explicit_ambient"},
         material_id="mat:x",
     )
 

@@ -13,8 +13,8 @@ Design:
      from DFT / Eliashberg papers — so we pick a prompt specialised for
      that bucket.
   2. Call Gemini with the v2 prompt, temperature 0, JSON-only response.
-  3. Defensively parse + coerce numeric fields (strings like "150 T"
-     become 150.0, ranges like "80-95 K" become the midpoint).
+  3. Preserve raw extraction proposals and deterministically normalize units,
+     bounds, intervals and uncertainties without inventing midpoint values.
   4. Fallback: apply STRUCTURE_PHASE_PATTERNS regex to the raw text so
      RP / cuprate family tags (1212, 2222, infinite_layer, YBCO…) get
      filled in even when the LLM misses them.
@@ -35,8 +35,11 @@ from google.genai import types as genai_types
 
 from ingestion.config import get_settings
 from ingestion.extract import formula_validator
+from ingestion.extract.formula_enrichment import enrich_formula, isotope_notation
+from ingestion.extract.scientific_values import json_safe_raw, legacy_scalar, parse_scientific_value
 from ingestion.genai_client import make_genai_client
 from ingestion.models import ParsedPaper
+from ingestion.pressure_semantics import annotate_pressure_records
 
 log = logging.getLogger(__name__)
 
@@ -94,12 +97,12 @@ STRUCTURE_PHASE_PATTERNS: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r"\bRuddlesden[- ]Popper\s*n\s*=\s*1\b"),  "RP_n1"),
     (re.compile(r"\bRuddlesden[- ]Popper\s*n\s*=\s*2\b"),  "RP_n2"),
     (re.compile(r"\bRuddlesden[- ]Popper\s*n\s*=\s*3\b"),  "RP_n3"),
-    (re.compile(r"\b(?:La214|LSCO|La2CuO4)\b",  re.I),     "cuprate_214"),
-    (re.compile(r"\b(?:YBCO|Y[- ]?123|YBa2Cu3O)\b", re.I), "cuprate_123"),
-    (re.compile(r"\bBi[- ]?2212\b", re.I),                 "cuprate_2212"),
-    (re.compile(r"\bBi[- ]?2223\b", re.I),                 "cuprate_2223"),
-    (re.compile(r"\bHg12(?:01|12|23)\b", re.I),            "cuprate_Hg"),
-    (re.compile(r"\bTl[- ]?2212\b|\bTl[- ]?2223\b", re.I), "cuprate_Tl"),
+    (re.compile(r"\b(?:La214|LSCO|La2CuO4)\b",  re.IGNORECASE),     "cuprate_214"),
+    (re.compile(r"\b(?:YBCO|Y[- ]?123|YBa2Cu3O)\b", re.IGNORECASE), "cuprate_123"),
+    (re.compile(r"\bBi[- ]?2212\b", re.IGNORECASE),                 "cuprate_2212"),
+    (re.compile(r"\bBi[- ]?2223\b", re.IGNORECASE),                 "cuprate_2223"),
+    (re.compile(r"\bHg12(?:01|12|23)\b", re.IGNORECASE),            "cuprate_Hg"),
+    (re.compile(r"\bTl[- ]?2212\b|\bTl[- ]?2223\b", re.IGNORECASE), "cuprate_Tl"),
 ]
 
 
@@ -125,9 +128,16 @@ JSON array only. One object per (material, measurement) pair. If no
 superconducting material is measured, return [].
 
 REQUIRED per record:
+- formula_raw: exact source formula notation, retaining isotope superscripts,
+  D/T labels and variable occupancy. Never flatten an isotope mass into an
+  atom count. Preserve isotope notation in formula as well.
+- evidence_text and source_locator: the local source quotation and its
+  section/table/page or other locator supporting THIS measurement. Do not
+  invent unavailable locators. Copy numeric strings with their source units,
+  inequality signs, ranges and uncertainty; do not pre-convert or average.
 - formula: chemical formula in PLAIN TEXT only. STRIP all LaTeX
            markup BEFORE emitting — subscripts go inline as plain
-           digits/letters. NEVER include any of: $ _ { } \  in this
+           digits/letters. NEVER include any of: $ _ { } \\  in this
            field. Greek letters (δ ε α β γ) stay as Unicode.
            Examples (input → emit):
              "La$_{3}$Ni$_{2}$O$_{7}$"                 → "La3Ni2O7"
@@ -138,14 +148,20 @@ REQUIRED per record:
            If the source has math-mode wrappers ``$...$`` around a
            subscript, drop the dollars AND the underscore AND the
            braces — keep only the text content.
-- tc_kelvin: critical temperature in Kelvin, null if not stated
+- tc_kelvin: reported critical-temperature quantity (e.g. "80–95 K",
+             "<2 K", "1e-3 K"), null if not stated. Keep original units.
 - tc_type: "onset" | "zero_resistance" | "midpoint" | "unknown"
+- pressure_condition: copy an explicit local pressure condition such as
+  "ambient pressure" ONLY if stated for THIS measurement. Otherwise null.
+  Bulk, sample form, ambient_sc and absence of applied-pressure discussion do
+  not establish ambient pressure. Retain this evidence alongside numeric zero.
 - pressure_gpa: MUST be null unless the paper explicitly states a
                 pressure for THIS measurement. Use 0.0 ONLY when the
                 text literally says "ambient pressure", "atmospheric
                 pressure", "P = 0", or "zero pressure". If the paper
                 doesn't mention pressure, emit null — do NOT default
-                to 0.0. Emit the numeric value in GPa when stated.
+                to 0.0. Keep the original value and pressure unit when stated
+                (e.g. "20 kbar"); deterministic software converts it to GPa.
 - measurement: "resistivity" | "susceptibility" | "specific_heat" |
                "muSR" | "ARPES" | "STM" | "neutron" | "unknown"
 - confidence: 0.0-1.0 — your confidence the text actually reports this
@@ -233,7 +249,10 @@ RULES:
   "chiral molecule intercalated TaS2 hybrid superlattice").
 - Only extract materials explicitly measured for superconductivity.
 - Do not invent data. Fields not in the text must be null / omitted.
-- If Tc > 300 K or Tc < 0.01 K, set confidence <= 0.3.
+- Preserve the reported Tc, units, bounds and conditions even when the value
+  is unusually high or low. Do not clip, omit or lower extraction confidence
+  solely because of its magnitude. Scientific plausibility is a separate,
+  versioned review step; confidence describes fidelity to the source text.
 - Distinguish experimental measurements from theoretical predictions.
   If the paper only predicts Tc from DFT, mark measurement="unknown"
   and confidence <= 0.5.
@@ -293,7 +312,7 @@ def _client() -> genai.Client:
 # Complete list of v2 fields we expose on each extracted record. The
 # aggregator later consumes these to build the material-level summary.
 _V2_FIELDS = (
-    "tc_kelvin", "tc_type", "pressure_gpa", "measurement", "confidence",
+    "tc_kelvin", "tc_type", "pressure_gpa", "pressure_condition", "measurement", "confidence",
     "evidence_type", "tc_regime", "family",
     "pairing_symmetry", "gap_structure",
     "crystal_structure", "space_group", "structure_phase",
@@ -411,6 +430,15 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
                     parsed.meta.paper_id, text[:200])
         return []
 
+    return normalize_material_records(records, paper_type=paper_type, body=body,
+                                      paper_id=parsed.meta.paper_id)
+
+
+def normalize_material_records(
+    records: list[Any], *, paper_type: PaperType, body: str = "", paper_id: str = "unknown",
+) -> list[dict[str, Any]]:
+    """Pure normalization boundary shared by ingestion and offline tests."""
+
     # Fallback: if the LLM didn't tag a structure_phase anywhere,
     # try the regex pass over the full body. That's good enough to
     # catch RP / cuprate labels that the LLM sometimes hallucinates
@@ -429,7 +457,7 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         if raw_f.lower().replace("-", "").replace(" ", "") in _SEMANTIC_BLACKLIST_LOWER:
             log.info(
                 "%s: dropping blacklisted formula=%r",
-                parsed.meta.paper_id, raw_f,
+                paper_id, raw_f,
             )
             continue
 
@@ -437,14 +465,15 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         # "MgB₂" or "La₂₋ₓSrₓCuO₄" normalizes to the same ASCII form
         # as the aggregator's normalize_formula(). Without this, the
         # record's formula and the material's grouping key can diverge.
+        original_formula = str(r.get("formula_raw") or r["formula"])
+        isotope_info = isotope_notation(original_formula)
         raw_f = raw_f.translate(str.maketrans(
             "₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₕₖₗₘₙₒₚₛₜₓ",
             "0123456789+-=()aehklmnopstx",
         ))
-        raw_f = raw_f.translate(str.maketrans(
-            "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾",
-            "0123456789+-=()",
-        ))
+        if isotope_info:
+            # An unresolved original is safer than a different exact formula.
+            raw_f = original_formula
         raw_f = raw_f.replace("−", "-")  # Unicode minus → hyphen
 
         # Whitespace-normalize + validate. Records the LLM produced as
@@ -453,27 +482,43 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         # then re-pollute materials.records on every aggregator pass.
         raw_formula = formula_validator.normalize_whitespace(raw_f)
         ok, reject_reason = formula_validator.validate_formula(raw_formula)
-        if not ok:
+        if not ok and not isotope_info:
             log.info(
                 "%s: dropping NER record formula=%r reason=%s",
-                parsed.meta.paper_id, r.get("formula"), reject_reason,
+                paper_id, r.get("formula"), reject_reason,
             )
             continue
         record: dict[str, Any] = {
             "formula": raw_formula,
+            "formula_raw": original_formula,
             "paper_type": paper_type,
+            "raw_extraction": json_safe_raw(r),
+            "scientific_values": {},
         }
+        if isotope_info:
+            record["composition_status"] = "invalid"
+            record["composition_proposal"] = enrich_formula(original_formula)
+        for key in ("evidence_text", "source_locator", "source_quote", "source_section", "source_page", "source_table"):
+            if key in r:
+                record[key] = json_safe_raw(r[key])
         for field in _V2_FIELDS:
             if field not in r:
                 continue
             value = r[field]
-            if value is None or value == "":
-                continue
             if field in _NUMERIC_FIELDS:
-                coerced = _coerce_float(value)
-                if coerced is None:
-                    continue
-                record[field] = coerced
+                proposal = parse_scientific_value(
+                    value, field, raw_unit=r.get(f"{field}_unit"),
+                    source_context=r.get("evidence_text") or r.get("source_quote"),
+                    source_locator=r.get("source_locator") if isinstance(r.get("source_locator"), dict) else {},
+                )
+                record["scientific_values"][field] = proposal
+                scalar = legacy_scalar(proposal)
+                if scalar is not None:
+                    record[field] = scalar
+                if proposal["status"] == "invalid":
+                    record.setdefault("validation_flags", []).append(f"{field}:{proposal['errors'][0]}")
+            elif value is None or value == "":
+                continue
             elif field in _BOOL_FIELDS:
                 record[field] = _coerce_bool(value)
             else:
@@ -516,12 +561,9 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
             else:
                 record.pop("family", None)
 
-        # Defensive: enforce the spec's confidence-downgrade for
-        # implausibly high Tc values.
-        tc = record.get("tc_kelvin")
-        conf = record.get("confidence") or 0.0
-        if tc is not None and (tc > 300 or tc < 0.01) and conf >= 0.3:
-            record["confidence"] = 0.3
+        # Extraction confidence is not a scientific plausibility score.
+        # Retain unusual values; the shared anomaly-review policy decides
+        # their property-scoped eligibility without rewriting source data.
 
         # NOTE: we used to default ambient_sc=True when pressure_gpa==0,
         # but ambient vs unknown is exactly what the new prompt asks
@@ -531,9 +573,11 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         # alembic 0009). We rely entirely on the LLM's ambient_sc
         # field now; if it's missing, ambient_sc stays None / unknown.
 
+        # The API/claim mapper derive origin separately; a classifier version
+        # must not become part of raw-source occurrence identity.
         cleaned.append(record)
 
-    return cleaned
+    return annotate_pressure_records(cleaned)
 
 
 # ---------------------------------------------------------------------------
@@ -567,36 +611,9 @@ def _parse_json(text: str) -> list[Any] | None:
     return None
 
 
-# Some NER replies stuff units into the number: "150 T", "80-95 K",
-# "14.0 GPa", "0.16±0.02". Strip units, take midpoints, drop ± errors.
-_RANGE_RE = re.compile(r"^\s*([-+]?\d*\.?\d+)\s*[-–—]\s*([-+]?\d*\.?\d+)")
-_NUM_RE   = re.compile(r"[-+]?\d*\.?\d+")
-
-
 def _coerce_float(v: Any) -> float | None:
-    if v is None or v == "":
-        return None
-    if isinstance(v, (int, float)):
-        return float(v)
-    s = str(v).strip()
-    if not s:
-        return None
-    # Range — take the midpoint.
-    m = _RANGE_RE.match(s)
-    if m:
-        try:
-            return (float(m.group(1)) + float(m.group(2))) / 2
-        except (TypeError, ValueError):
-            return None
-    # Pick the first number in the string — handles "150 T",
-    # "14.0 GPa", "0.16 +/- 0.02".
-    nm = _NUM_RE.search(s)
-    if not nm:
-        return None
-    try:
-        return float(nm.group(0))
-    except (TypeError, ValueError):
-        return None
+    """Legacy dimensionless helper: never strip arbitrary units or bounds."""
+    return legacy_scalar(parse_scientific_value(v, "confidence"))
 
 
 def _coerce_bool(v: Any) -> bool | None:

@@ -36,6 +36,8 @@
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TimelineCoverage, TimelinePoint } from "@/lib/api";
+import { recordClassification } from "@/lib/result-semantics";
+import { pressureLabel } from "@/lib/pressure-semantics";
 import { FAMILY_COLORS, familyLabel } from "@/lib/families";
 import { formulaToHtml } from "@/components/FormulaDisplay";
 
@@ -76,12 +78,6 @@ export function browserSupportsWebGL(): boolean {
   } catch {
     return false;
   }
-}
-
-function pressureLabel(p: number | null | undefined): string {
-  if (p == null) return "ambient (unstated)";
-  if (p <= 0) return "ambient";
-  return `${p.toFixed(1)} GPa`;
 }
 
 function paperIdLabel(paperId: string | null | undefined): string {
@@ -174,20 +170,16 @@ export function TcTimeline({
         x: subset.map((p) => p.year + jitterYear(p.material, p.tc_kelvin)),
         y: subset.map((p) => p.tc_kelvin),
         customdata: subset.map((p) => [
-          // Pressure label is three-state:
-          //   explicit >0 → "X GPa"
-          //   explicit 0  → "ambient" (the paper confirms ambient P)
-          //   null        → "ambient (unstated)" — we have no evidence
-          //                 one way or the other; historically the NER
-          //                 defaulted to 0.0 for unstated pressures, so
-          //                 this bucket is the most honest fallback.
-          pressureLabel(p.pressure_gpa),
+          pressureLabel(p.pressure_semantics, p.pressure_gpa),
           paperIdLabel(p.paper_id),
           p.year,
           // Theory tag, prefixed with <br> so it nests cleanly under
           // the material name in the hover card; empty string for
           // experimental points so the line is suppressed.
-          p.is_theoretical ? "<br>⚠ theoretical (DFT / computational)" : "",
+          (() => {
+            const c = recordClassification({ result_classification: p });
+            return `<br>${c.status === "conflicted" || c.role === "conflicted" ? "Classification conflict" : c.origin} · ${c.role} source role`;
+          })(),
         ]),
         text: subset.map((p) => formulaToHtml(p.material)),
         hovertemplate:
@@ -200,22 +192,26 @@ export function TcTimeline({
           size: 5,
           // Theoretical points deliberately faded so a single chatty
           // DFT paper doesn't visually outweigh experimental data.
-          opacity: subset.map((p) => (p.is_theoretical ? 0.35 : 0.7)),
+          opacity: subset.map((p) => (p.knowledge_origin === "Observed" && p.classification_status === "resolved" && p.source_role !== "conflicted" ? 0.7 : 0.4)),
           color: familyColor,
           // Hollow ring for theoretical, filled disk for experimental.
           // Lets readers tell apart "this Tc was measured" from "this
           // Tc was calculated" at a glance.
-          symbol: subset.map((p) =>
-            p.is_theoretical ? "circle-open" : "circle",
-          ),
+          symbol: subset.map((p) => {
+            const c = recordClassification({ result_classification: p });
+            if (c.status !== "resolved" || c.role === "conflicted") return "x";
+            if (c.origin === "Observed") return "circle";
+            if (c.origin === "Computed") return "circle-open";
+            return "diamond-open";
+          }),
           line: {
             // - Hollow circles need a stroke wide enough to see at
             //   5 px size → 1.4
-            // - Filled experimental high-pressure points get a dark
+            // - Reported non-zero pressure points get a dark
             //   outline (existing scan-at-a-glance hint) → 1.2
-            // - Plain ambient experimental → no stroke
+            // - No stroke does not establish ambient pressure.
             width: subset.map((p) => {
-              if (p.is_theoretical) return 1.4;
+              if (p.knowledge_origin !== "Observed") return 1.4;
               if (p.pressure_gpa != null && p.pressure_gpa > 0) return 1.2;
               return 0;
             }),
@@ -223,7 +219,7 @@ export function TcTimeline({
             // IS the visible mark); experimental high-P points get the
             // dark slate outline as before.
             color: subset.map((p) =>
-              p.is_theoretical ? familyColor : "#0f172a",
+              p.knowledge_origin !== "Observed" ? familyColor : "#0f172a",
             ),
           },
         },
@@ -277,7 +273,7 @@ export function TcTimeline({
           WebGL is unavailable, so the timeline is using its SVG compatibility
           renderer
           {points.length > SVG_POINT_LIMIT
-            ? ` (showing up to ${SVG_POINT_LIMIT.toLocaleString()} representative points)`
+            ? ` (showing up to ${SVG_POINT_LIMIT.toLocaleString("en-US")} representative points)`
             : ""}
           .
         </p>
@@ -363,9 +359,11 @@ export function TcTimeline({
 function SymbolLegend() {
   return (
     <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 border-b border-slate-100 px-4 py-2 text-xs text-slate-500">
-      <LegendItem variant="filled" label="experimental" />
-      <LegendItem variant="hollow" label="theoretical (DFT)" />
-      <LegendItem variant="outlined" label="high-pressure" />
+      <LegendItem variant="filled" label="Observed" />
+      <LegendItem variant="hollow" label="Computed" />
+      <LegendItem variant="unknown" label="Unknown / conflict" />
+      <LegendItem variant="inferred" label="Inferred / AI-Proposed" />
+      <LegendItem variant="outlined" label="reported non-zero pressure" />
     </div>
   );
 }
@@ -374,12 +372,14 @@ function LegendItem({
   variant,
   label,
 }: {
-  variant: "filled" | "hollow" | "outlined";
+  variant: "filled" | "hollow" | "outlined" | "unknown" | "inferred";
   label: string;
 }) {
   return (
     <span className="inline-flex items-center gap-1.5">
       <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+        {variant === "unknown" && <path d="M2 2l8 8M10 2l-8 8" fill="none" stroke="#64748b" strokeWidth="1.4" />}
+        {variant === "inferred" && <path d="M6 1l5 5-5 5-5-5z" fill="none" stroke="#64748b" strokeWidth="1.4" />}
         {variant === "filled" && (
           <circle cx="6" cy="6" r="4" fill="#64748b" />
         )}

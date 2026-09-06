@@ -70,15 +70,14 @@ export default function AdminAuditPage() {
   ) {
     let note: string;
     if (kind === "approve") {
-      // Quick path: one-click "this material is fine, restore". The
-      // backend stores the auto-note + reviewer + timestamp in
-      // materials.admin_decision so we still have provenance.
-      note = `approved: ${item.review_reason ?? "n/a"} verified valid by admin`;
+      // A legacy governance flag override is not a scientific approval.
+      // Versioned anomaly decisions and source corrections use separate review.
+      note = `Legacy flag override requested: ${item.review_reason ?? "n/a"}. Does not approve anomalous scientific values or source corrections.`;
     } else {
       const prompted = window.prompt(
         kind === "override"
-          ? `Override flag on ${item.formula}? Add a short justification:`
-          : `Confirm the flag on ${item.formula} after review. Add notes:`,
+          ? `Request a legacy flag override on ${item.formula}. This does not approve scientific values or source corrections. Add a justification:`
+          : `Keep the legacy flag on ${item.formula}. This is a governance decision, not a scientific finding. Add notes:`,
       );
       if (!prompted || !prompted.trim()) return;
       note = prompted.trim();
@@ -117,6 +116,9 @@ export default function AdminAuditPage() {
           <strong>{overview?.last_audit_total_flagged ?? 0}</strong> new rows.
           Review queue size: <strong>{overview?.flagged_materials ?? 0}</strong>.
         </p>
+        <p className="mt-2 rounded border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
+          These controls only request legacy flag changes. They do not approve anomalous scientific values, validate a source or apply source corrections. Versioned anomaly review is separate; the server may reject a legacy override. Historical thresholds are review triggers, not physical upper limits.
+        </p>
       </div>
 
       {error && (
@@ -143,7 +145,7 @@ export default function AdminAuditPage() {
                   ].join(" ")}
                 >
                   <code className="font-mono text-xs">{reason}</code>
-                  <span className="font-semibold tabular-nums">{n.toLocaleString()}</span>
+                  <span className="font-semibold tabular-nums">{n.toLocaleString("en-US")}</span>
                 </button>
               ))}
           </div>
@@ -210,7 +212,7 @@ export default function AdminAuditPage() {
               <tr>
                 <th className="px-3 py-2 text-left font-medium">Material</th>
                 <th className="px-2 py-2 text-left font-medium">Family</th>
-                <th className="px-2 py-2 text-right font-medium">Tc</th>
+                <th className="px-2 py-2 text-right font-medium">Catalogue Tc</th>
                 <th className="px-2 py-2 text-right font-medium">Papers</th>
                 <th className="px-2 py-2 text-left font-medium">Reason</th>
                 <th className="px-2 py-2 text-right font-medium">Actions</th>
@@ -252,19 +254,19 @@ export default function AdminAuditPage() {
                       <button
                         onClick={() => act("approve", m)}
                         disabled={acting === m.id}
-                        title="One-click: clear the flag with an auto-generated note. The material reappears on /materials immediately."
+                        title="Request a legacy flag override with a generated note. Does not approve anomalous scientific values or source corrections; publication is controlled by the server."
                         className="rounded-md border border-accent bg-[rgba(58,125,92,0.08)] px-2 py-1 text-xs font-medium text-accent-deep hover:bg-[rgba(58,125,92,0.18)] disabled:opacity-60"
-                      >✓ Pass</button>
+                      >Legacy override</button>
                       <button
                         onClick={() => act("override", m)}
                         disabled={acting === m.id}
-                        title="Clear the flag with a custom note (will prompt)."
+                        title="Request a legacy flag override with a custom note. This does not edit source values."
                         className="rounded-md border border-sage-border bg-white px-2 py-1 text-xs text-accent-deep hover:bg-[rgba(58,125,92,0.08)] disabled:opacity-60"
-                      >Edit…</button>
+                      >Override with note…</button>
                       <button
                         onClick={() => act("confirm", m)}
                         disabled={acting === m.id}
-                        title="Keep the flag (the row stays hidden) but record that an admin has reviewed it."
+                        title="Keep the legacy flag and record a governance note. This does not establish a scientific outcome."
                         className="rounded-md border border-sage-border bg-white px-2 py-1 text-xs text-sage-muted hover:bg-slate-50 disabled:opacity-60"
                       >Hold…</button>
                     </div>
@@ -310,9 +312,9 @@ export default function AdminAuditPage() {
 // queue's Reason column. Full string stays in the title attribute so a
 // hover surfaces the canonical name.
 const REASON_LABELS: Record<string, string> = {
-  tc_max_exceeds_250K:                "Tc > 250 K",
-  tc_exceeds_family_cap:              "Tc > family cap",
-  tc_at_ambient_above_record:         "ambient > record",
+  tc_max_exceeds_250K:                "historical Tc threshold review",
+  tc_exceeds_family_cap:              "historical family threshold review",
+  tc_at_ambient_above_record:         "historical ambient reference review",
   ambient_sc_with_high_pressure:      "ambient + P>0",
   implausible_pressure:               "P out of range",
   hydride_low_pressure_high_tc:       "hydride low-P high-Tc",

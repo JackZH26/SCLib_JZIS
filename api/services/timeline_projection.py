@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 
-from sqlalchemy import func, select, update
+from sqlalchemy import func, or_, select, update
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,10 +15,13 @@ from models.db import (
     TimelineProjectionState,
 )
 from models.search import TimelinePoint
+from services.anomaly_review import ANOMALY_POLICY_VERSION
+from services.material_anomalies import review_context
+from services.pressure_semantics import PRESSURE_POLICY_VERSION
+from services.result_semantics import CLASSIFIER_VERSION
 from services.timeline_points import extract_timeline_points, missing_year_paper_ids
 
-
-PROJECTION_SCHEMA_VERSION = 1
+PROJECTION_SCHEMA_VERSION = 4
 _STATE_ID = 1
 _WATERMARK_OVERLAP = timedelta(minutes=5)
 
@@ -60,6 +63,9 @@ async def refresh_timeline_projection(
     full_rebuild = (
         state is None
         or state.schema_version != PROJECTION_SCHEMA_VERSION
+        or getattr(state, "classifier_version", None) != CLASSIFIER_VERSION
+        or getattr(state, "pressure_policy_version", None) != PRESSURE_POLICY_VERSION
+        or getattr(state, "anomaly_policy_version", None) != ANOMALY_POLICY_VERSION
         or state.source_year != current_year
     )
     if full_rebuild:
@@ -74,6 +80,8 @@ async def refresh_timeline_projection(
         Material.id,
         Material.records,
         Material.updated_at,
+        Material.family,
+        Material.anomaly_context,
     ).where(Material.updated_at <= refreshed_at)
     if not full_rebuild and state is not None:
         materials_stmt = materials_stmt.where(
@@ -83,7 +91,7 @@ async def refresh_timeline_projection(
     materials = (await session.execute(materials_stmt)).all()
 
     paper_ids: set[str] = set()
-    for _material_id, records, _source_updated_at in materials:
+    for _material_id, records, _source_updated_at, _family, _context in materials:
         paper_ids.update(missing_year_paper_ids(records))
 
     paper_years: dict[str, int] = {}
@@ -99,12 +107,14 @@ async def refresh_timeline_projection(
                 paper_years[paper_id] = year
 
     projection_table = TimelineProjectionPoint.__table__
-    for material_id, records, source_updated_at in materials:
+    for material_id, records, source_updated_at, family, context in materials:
         points = extract_timeline_points(
             material_id,
             records,
             paper_years,
             current_year=current_year,
+            family=family,
+            compound_thresholds=review_context({"family": family, "anomaly_context": context})["compound_thresholds"],
         )
         await session.execute(
             update(TimelineProjectionPoint)
@@ -121,8 +131,13 @@ async def refresh_timeline_projection(
                 "year": point.year,
                 "tc_kelvin": point.tc_kelvin,
                 "pressure_gpa": point.pressure_gpa,
+                "pressure_semantics": point.pressure_semantics,
                 "paper_id": point.paper_id,
                 "is_theoretical": point.is_theoretical,
+                "knowledge_origin": point.knowledge_origin,
+                "classification_status": point.classification_status,
+                "source_role": point.source_role,
+                "classifier_version": point.classifier_version,
                 "is_aps": point.is_aps,
                 "active": True,
                 "source_updated_at": source_updated_at,
@@ -137,8 +152,13 @@ async def refresh_timeline_projection(
                     "year": insert_stmt.excluded.year,
                     "tc_kelvin": insert_stmt.excluded.tc_kelvin,
                     "pressure_gpa": insert_stmt.excluded.pressure_gpa,
+                    "pressure_semantics": insert_stmt.excluded.pressure_semantics,
                     "paper_id": insert_stmt.excluded.paper_id,
                     "is_theoretical": insert_stmt.excluded.is_theoretical,
+                    "knowledge_origin": insert_stmt.excluded.knowledge_origin,
+                    "classification_status": insert_stmt.excluded.classification_status,
+                    "source_role": insert_stmt.excluded.source_role,
+                    "classifier_version": insert_stmt.excluded.classifier_version,
                     "is_aps": insert_stmt.excluded.is_aps,
                     "active": True,
                     "source_updated_at": insert_stmt.excluded.source_updated_at,
@@ -163,6 +183,9 @@ async def refresh_timeline_projection(
     state_insert = pg_insert(state_table).values(
         id=_STATE_ID,
         schema_version=PROJECTION_SCHEMA_VERSION,
+        classifier_version=CLASSIFIER_VERSION,
+        pressure_policy_version=PRESSURE_POLICY_VERSION,
+        anomaly_policy_version=ANOMALY_POLICY_VERSION,
         source_year=current_year,
         source_watermark=next_watermark,
         refreshed_at=refreshed_at,
@@ -174,6 +197,9 @@ async def refresh_timeline_projection(
             index_elements=[state_table.c.id],
             set_={
                 "schema_version": state_insert.excluded.schema_version,
+                "classifier_version": state_insert.excluded.classifier_version,
+                "pressure_policy_version": state_insert.excluded.pressure_policy_version,
+                "anomaly_policy_version": state_insert.excluded.anomaly_policy_version,
                 "source_year": state_insert.excluded.source_year,
                 "source_watermark": state_insert.excluded.source_watermark,
                 "refreshed_at": state_insert.excluded.refreshed_at,
@@ -207,6 +233,9 @@ async def fetch_projected_timeline_points(
     if (
         state is None
         or state.schema_version != PROJECTION_SCHEMA_VERSION
+        or getattr(state, "classifier_version", None) != CLASSIFIER_VERSION
+        or getattr(state, "pressure_policy_version", None) != PRESSURE_POLICY_VERSION
+        or getattr(state, "anomaly_policy_version", None) != ANOMALY_POLICY_VERSION
         or state.source_year != expected_year
     ):
         return None
@@ -220,18 +249,28 @@ async def fetch_projected_timeline_points(
             point.tc_kelvin,
             point.year,
             point.pressure_gpa,
+            point.pressure_semantics,
             point.paper_id,
             point.is_theoretical,
+            point.knowledge_origin,
+            point.classification_status,
+            point.source_role,
+            point.classifier_version,
         )
         .join(point, point.material_id == Material.id)
-        .where(point.active.is_(True))
+        .where(point.active.is_(True), point.classifier_version == CLASSIFIER_VERSION,
+               or_(Material.review_reason.is_(None), Material.review_reason != "provenance_quarantine_nims"))
     )
     if family:
         stmt = stmt.where(Material.family == family)
     if not include_pending:
         stmt = stmt.where(Material.needs_review.is_(False))
     if experimental_only:
-        stmt = stmt.where(point.is_theoretical.is_(False))
+        stmt = stmt.where(
+            point.knowledge_origin == "Observed",
+            point.classification_status == "resolved",
+            point.source_role != "conflicted",
+        )
     if only_aps:
         stmt = stmt.where(point.is_aps.is_(True))
     stmt = stmt.order_by(point.year, point.tc_kelvin.desc(), point.id)
@@ -245,8 +284,13 @@ async def fetch_projected_timeline_points(
             tc_kelvin=tc_kelvin,
             year=year,
             pressure_gpa=pressure_gpa,
+            pressure_semantics=pressure_semantics,
             paper_id=paper_id,
             is_theoretical=is_theoretical,
+            knowledge_origin=knowledge_origin,
+            classification_status=classification_status,
+            source_role=source_role,
+            classifier_version=classifier_version,
         )
         for (
             formula,
@@ -255,8 +299,13 @@ async def fetch_projected_timeline_points(
             tc_kelvin,
             year,
             pressure_gpa,
+            pressure_semantics,
             paper_id,
             is_theoretical,
+            knowledge_origin,
+            classification_status,
+            source_role,
+            classifier_version,
         ) in rows
     ]
     return ProjectionReadResult(points=points, refreshed_at=state.refreshed_at)

@@ -12,8 +12,10 @@ but the output must remain derived structured facts only. The prompt asks
 for source section names, not quoted evidence snippets, and the validator
 does not persist prose.
 """
+
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import math
@@ -23,11 +25,19 @@ from functools import lru_cache
 from typing import Any
 
 from ingestion.extract import formula_validator
+from ingestion.extract.formula_enrichment import isotope_notation
+from ingestion.extract.scientific_values import (
+    json_safe_raw,
+    legacy_scalar,
+    parse_scientific_value,
+)
 from ingestion.models import ParsedPaper
+from ingestion.pressure_semantics import classify_pressure
+from ingestion.result_semantics import classify_result
 
 log = logging.getLogger(__name__)
 
-PROMPT_VERSION = "hydride-v1-2026-06-25"
+PROMPT_VERSION = "hydride-v2-2026-09-06"
 _MAX_CHARS = 32_000
 _MODEL_RETRY_DELAYS = (5.0, 15.0, 45.0)
 
@@ -43,15 +53,21 @@ Target compounds:
 - The formula must contain H or D plus at least one other element.
 
 Required fields:
-- formula: plain text chemical formula, no LaTeX markup.
-- tc_kelvin: superconducting Tc in Kelvin for THIS condition.
-- pressure_gpa: pressure in GPa for THIS condition. Use null if absent.
+- formula: chemical formula preserving any isotope/charge notation.
+- formula_raw: exact source formula, including isotope superscripts and D/T.
+- tc_kelvin: original Tc quantity for THIS condition, retaining units,
+  inequalities, ranges and uncertainty (e.g. "1e-3 K", "80-95 K", "<2 K").
+- pressure_gpa: original pressure quantity including units (e.g. "20 kbar")
+  for THIS condition. Use null if absent. Software converts units.
+- pressure_condition: explicit local pressure wording, e.g. "ambient pressure",
+  only when stated for THIS condition. Bulk/sample form does not establish it.
 - confidence: 0.0-1.0.
 
 Extract these if present for the SAME material/condition:
 - lambda_eph: electron-phonon coupling constant lambda.
 - mu_star: Coulomb pseudopotential mu* / mu^* / μ* used with Tc.
-- omega_log_k: logarithmic average phonon frequency converted to Kelvin.
+- omega_log_k: omega_log as reported in Kelvin; null when only another unit
+  is reported. Do not use the model to convert units.
 - omega_log_source_value: raw omega_log number if the paper uses meV,
   cm^-1, THz, or K.
 - omega_log_source_unit: "K" | "meV" | "cm^-1" | "THz" | null.
@@ -68,10 +84,9 @@ Rules:
 - Prefer primary values produced in this paper. If a value is only in
   the introduction, comparison text, or a cited benchmark table, mark
   evidence_type="cited".
-- If omega_log is in meV, cm^-1, or THz, still emit omega_log_k converted
-  to Kelvin using:
-  meV * 11.6045, cm^-1 * 1.43877, THz * 47.9924.
-- Extract numerical values only. If a range is reported, use the midpoint.
+- Preserve omega_log_source_value and its unit; software applies an explicit
+  energy/frequency convention. Never invent a converted omega_log_k.
+- Preserve all numeric ranges, bounds and uncertainties; never use midpoints.
 - Do not invent missing mu*. If the paper says "mu*=0.10" or "μ*=0.13",
   emit that exact number.
 - Do not emit evidence quotes or full sentences.
@@ -83,8 +98,6 @@ Text:
 """
 
 _JSON_FENCE_RE = re.compile(r"^```(?:json)?\s*|\s*```$", re.MULTILINE)
-_RANGE_RE = re.compile(r"^\s*([-+]?\d*\.?\d+)\s*[-–—]\s*([-+]?\d*\.?\d+)")
-_NUM_RE = re.compile(r"[-+]?\d*\.?\d+")
 _ELEMENT_RE = re.compile(r"[A-Z][a-z]?")
 _OMEGA_UNIT_ALIASES = {
     "k": "K",
@@ -100,6 +113,92 @@ _OMEGA_UNIT_ALIASES = {
 
 class HydrideNerError(RuntimeError):
     """Raised when the model call itself fails or returns unusable output."""
+
+
+class HydrideExtractionBatch(list):
+    """Scalar-compatible rows plus an archive of every structured proposal.
+
+    The runner journals proposals before DB writes. Existing callers consuming
+    this as a list still see only compatible parameter rows, never midpoints.
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.proposals: list[dict[str, Any]] = []
+
+
+_QUANTITY_FIELDS = (
+    "tc_kelvin",
+    "pressure_gpa",
+    "lambda_eph",
+    "mu_star",
+    "omega_log_k",
+    "omega_log_source_value",
+    "confidence",
+)
+
+
+def _bounded_structured_raw(raw: dict[str, Any]) -> dict[str, Any]:
+    """Allowlist structured facts; never archive arbitrary model prose.
+
+    Unexpected oversized values are represented by hash/length and a reason.
+    This protects the transient-APS-text boundary rather than caching a model
+    response verbatim. Normal numeric/unit/formula strings remain lossless.
+    """
+    allowed = (
+        *_QUANTITY_FIELDS,
+        "formula",
+        "formula_raw",
+        "omega_log_source_unit",
+        "method",
+        "evidence_type",
+        "source_role",
+        "source_section",
+        "pressure_condition",
+    )
+    output = {}
+    for key in allowed:
+        if key not in raw:
+            continue
+        value = json_safe_raw(raw[key])
+        encoded = json.dumps(value, ensure_ascii=False, allow_nan=False)
+        if len(encoded) > 512:
+            value = {
+                "status": "oversized_structured_value_not_retained",
+                "length": len(encoded),
+                "sha256": hashlib.sha256(encoded.encode()).hexdigest(),
+            }
+        output[key] = value
+    return output
+
+
+def hydride_proposal(raw: dict[str, Any], *, model: str | None = None) -> dict[str, Any]:
+    structured = _bounded_structured_raw(raw)
+    values = {}
+    for field in _QUANTITY_FIELDS:
+        if field not in structured:
+            continue
+        unit = (
+            _normalize_unit(structured.get("omega_log_source_unit"))
+            if field == "omega_log_source_value"
+            else None
+        )
+        values[field] = parse_scientific_value(
+            structured[field],
+            field,
+            raw_unit=unit,
+            source_locator={"section": structured.get("source_section")},
+        )
+    return {
+        "raw_extraction": structured,
+        "scientific_values": values,
+        "formula_raw": structured.get("formula_raw") or structured.get("formula"),
+        "result_classification": classify_result(structured).as_dict(),
+        "pressure_semantics": classify_pressure({**structured, "scientific_values": values}).to_dict(),
+        "model": model,
+        "prompt_version": PROMPT_VERSION,
+        "review_status": "pending",
+    }
 
 
 @lru_cache(maxsize=1)
@@ -118,8 +217,7 @@ def _generate_content_with_retry(model: str, prompt: str) -> Any:
                 raise
             delay = _MODEL_RETRY_DELAYS[attempt - 1]
             log.warning(
-                "hydride NER model call failed; retrying in %.0fs "
-                "(attempt %d/%d)",
+                "hydride NER model call failed; retrying in %.0fs (attempt %d/%d)",
                 delay,
                 attempt + 1,
                 len(_MODEL_RETRY_DELAYS) + 1,
@@ -155,7 +253,7 @@ def extract_hydride_parameters(parsed: ParsedPaper) -> list[dict[str, Any]]:
     prompt = _PROMPT.replace("{{BODY}}", body[:_MAX_CHARS])
     try:
         resp = _generate_content_with_retry(settings.gemini_model, prompt)
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         log.warning("%s: hydride NER call failed: %s", parsed.meta.paper_id, e)
         raise HydrideNerError(f"hydride NER call failed: {e}") from e
 
@@ -164,11 +262,17 @@ def extract_hydride_parameters(parsed: ParsedPaper) -> list[dict[str, Any]]:
         log.warning("%s: hydride NER returned non-JSON", parsed.meta.paper_id)
         raise HydrideNerError("hydride NER returned non-JSON")
 
-    cleaned: list[dict[str, Any]] = []
+    cleaned = HydrideExtractionBatch()
     for raw in records:
         if not isinstance(raw, dict):
             continue
         record = clean_hydride_record(raw, model=settings.gemini_model)
+        proposal = hydride_proposal(raw, model=settings.gemini_model)
+        proposal["scalar_row_eligible"] = record is not None
+        proposal["exclusion_reason"] = (
+            None if record is not None else "legacy_parameter_shape_or_validation_requires_review"
+        )
+        cleaned.proposals.append(proposal)
         if record is not None:
             cleaned.append(record)
     return cleaned
@@ -184,7 +288,14 @@ def clean_hydride_record(
     Returns None for records that should not be persisted. Non-fatal
     scientific consistency concerns are kept in ``validation_flags``.
     """
-    formula = _normalize_formula_text(str(raw.get("formula") or ""))
+    original_formula = str(raw.get("formula_raw") or raw.get("formula") or "")
+    if isotope_notation(original_formula):
+        # Keep the raw proposal in the batch archive; do not alias it into a
+        # potentially different exact-formula parameter record.
+        return None
+    proposal = hydride_proposal(raw, model=model)
+    values = proposal["scientific_values"]
+    formula = _normalize_formula_text(original_formula)
     formula = formula_validator.normalize_whitespace(formula)
     ok, reject_reason = formula_validator.validate_formula(formula)
     if not ok:
@@ -194,20 +305,34 @@ def clean_hydride_record(
         log.debug("dropping non-hydride formula from hydride NER: %r", formula)
         return None
 
-    tc = _coerce_float(raw.get("tc_kelvin"))
-    if tc is None or not (0.01 <= tc <= 400.0):
+    tc = legacy_scalar(values.get("tc_kelvin", {}))
+    if tc is None or not (0.0 < tc <= 400.0):
         return None
 
-    pressure = _coerce_float(raw.get("pressure_gpa"))
-    lambda_eph = _coerce_float(raw.get("lambda_eph"))
-    mu_star = _coerce_float(raw.get("mu_star"))
-    omega_raw = _coerce_float(raw.get("omega_log_source_value"))
+    pressure = legacy_scalar(values.get("pressure_gpa", {}))
+    lambda_eph = legacy_scalar(values.get("lambda_eph", {}))
+    mu_star = legacy_scalar(values.get("mu_star", {}))
     omega_unit = _normalize_unit(raw.get("omega_log_source_unit"))
-    omega_log_k = _coerce_float(raw.get("omega_log_k"))
-    if omega_log_k is None and omega_raw is not None:
-        omega_log_k = _convert_omega_to_k(omega_raw, omega_unit)
+    if omega_unit is None:
+        omega_unit = _normalize_unit(values.get("omega_log_source_value", {}).get("raw_unit"))
+    source_omega_k = legacy_scalar(values.get("omega_log_source_value", {}))
+    factor = _convert_omega_to_k(1, omega_unit)
+    omega_raw = source_omega_k / factor if source_omega_k is not None and factor else None
+    omega_log_k = legacy_scalar(values.get("omega_log_k", {}))
+    if omega_log_k is None:
+        omega_log_k = source_omega_k
 
     flags: list[str] = []
+    for field, parsed in values.items():
+        if parsed["status"] == "invalid" or parsed["relation"] not in {"exact", "unreported"}:
+            flags.append(f"{field}:non_scalar_or_invalid_preserved_in_provenance")
+    if (
+        source_omega_k is not None
+        and omega_log_k is not None
+        and not math.isclose(source_omega_k, omega_log_k, rel_tol=1e-5, abs_tol=1e-6)
+    ):
+        omega_log_k = None
+        flags.append("omega_log_source_conversion_conflict")
     if pressure is not None and not (0.0 <= pressure <= 500.0):
         return None
     if lambda_eph is not None and not (0.01 <= lambda_eph <= 10.0):
@@ -221,11 +346,11 @@ def clean_hydride_record(
         # This table is for condition parameters, not a second generic Tc list.
         return None
 
-    confidence = _coerce_float(raw.get("confidence"))
+    confidence = legacy_scalar(values.get("confidence", {}))
     if confidence is not None:
-        confidence = max(0.0, min(1.0, confidence))
+        confidence = confidence if 0 <= confidence <= 1 else None
 
-    provenance: dict[str, Any] = {}
+    provenance: dict[str, Any] = {"extraction_proposal": proposal}
     if omega_raw is not None or omega_unit is not None:
         provenance["omega_log_raw"] = {
             "value": omega_raw,
@@ -292,18 +417,18 @@ def _parse_json(text: str) -> list[Any] | None:
 
 
 def _normalize_formula_text(raw: str) -> str:
+    if isotope_notation(raw):
+        return raw
     table = str.maketrans(
         "₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₕₖₗₘₙₒₚₛₜₓ",
         "0123456789+-=()aehklmnopstx",
     )
     raw = raw.translate(table)
-    raw = raw.translate(str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾", "0123456789+-=()"))
     raw = raw.replace("−", "-")
     raw = raw.replace("\\mathrm", "")
     raw = re.sub(r"[\$_{}\\]", "", raw).strip()
-    if (
-        re.fullmatch(r"(?:[A-Z][a-z]?[-·]){1,}[A-Z][a-z]?", raw)
-        and re.search(r"(?:^|[-·])[HD](?:$|[-·])", raw)
+    if re.fullmatch(r"(?:[A-Z][a-z]?[-·]){1,}[A-Z][a-z]?", raw) and re.search(
+        r"(?:^|[-·])[HD](?:$|[-·])", raw
     ):
         raw = raw.replace("-", "").replace("·", "")
     return raw
@@ -325,28 +450,7 @@ def _normalize_formula_for_storage(formula: str) -> str:
 
 
 def _coerce_float(value: Any) -> float | None:
-    if value is None or value == "":
-        return None
-    if isinstance(value, (int, float)):
-        v = float(value)
-        return v if math.isfinite(v) else None
-    s = str(value).strip()
-    if not s:
-        return None
-    m = _RANGE_RE.match(s)
-    if m:
-        try:
-            return (float(m.group(1)) + float(m.group(2))) / 2
-        except (TypeError, ValueError):
-            return None
-    nm = _NUM_RE.search(s)
-    if not nm:
-        return None
-    try:
-        v = float(nm.group(0))
-    except (TypeError, ValueError):
-        return None
-    return v if math.isfinite(v) else None
+    return legacy_scalar(parse_scientific_value(value, "confidence"))
 
 
 def _normalize_unit(value: Any) -> str | None:
@@ -355,12 +459,7 @@ def _normalize_unit(value: Any) -> str | None:
     raw = str(value).strip()
     if not raw:
         return None
-    key = (
-        raw.lower()
-        .replace(" ", "")
-        .replace("−", "-")
-        .replace("^-1", "^-1")
-    )
+    key = raw.lower().replace(" ", "").replace("−", "-").replace("^-1", "^-1")
     return _OMEGA_UNIT_ALIASES.get(key, raw[:20])
 
 

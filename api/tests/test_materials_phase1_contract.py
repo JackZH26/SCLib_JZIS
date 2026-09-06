@@ -5,6 +5,7 @@ from __future__ import annotations
 import pytest
 
 from models.db import Material, get_session_factory
+from services.pressure_semantics import classify_pressure
 
 
 @pytest.mark.asyncio
@@ -66,6 +67,7 @@ async def test_phase_diagram_does_not_inherit_material_level_doping(client) -> N
             "tc_kelvin": 8.0,
             "doping_level": None,
             "pressure_gpa": 1.0,
+            "pressure_semantics": classify_pressure({"pressure_gpa": 1.0}).to_dict(),
             "paper_id": "arxiv:phase1",
             "year": 2026,
         }

@@ -191,6 +191,7 @@ function SearchInner() {
                 section={r.matched_section}
                 score={r.relevance_score}
                 scoreLabel="relevance"
+                matchingResults={r.matching_results}
                 badges={[
                   ...(r.material_family ? [r.material_family] : []),
                   ...(r.has_equation ? ["equations"] : []),

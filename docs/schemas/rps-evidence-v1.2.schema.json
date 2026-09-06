@@ -1,0 +1,77 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "source_kind": {
+      "enum": [
+        "literature",
+        "calculation",
+        "curation"
+      ],
+      "title": "Source Kind",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "url": {
+      "format": "uri",
+      "maxLength": 2083,
+      "minLength": 1,
+      "title": "Url",
+      "type": "string"
+    },
+    "doi": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Doi"
+    },
+    "source_version": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Source Version",
+      "type": "string"
+    },
+    "locator": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Locator",
+      "type": "string"
+    },
+    "license": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "License",
+      "type": "string"
+    },
+    "validity": {
+      "enum": [
+        "accepted",
+        "disputed",
+        "retracted"
+      ],
+      "title": "Validity",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_kind",
+    "title",
+    "url",
+    "source_version",
+    "locator",
+    "license",
+    "validity"
+  ],
+  "title": "EvidenceContent",
+  "type": "object"
+}

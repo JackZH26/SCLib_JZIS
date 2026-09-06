@@ -9,19 +9,42 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
+from services.material_property_projection import project_material_properties
+from services.pressure_semantics import annotate_pressure_records, classify_pressure
+from services.result_semantics import (
+    CLASSIFIER_VERSION,
+    annotate_records,
+    classification_summary,
+    evidence_summary,
+)
+from services.scientific_filters import FILTER_POLICY_VERSION
 
 # ---------------------------------------------------------------------------
 # Search
 # ---------------------------------------------------------------------------
 
 class SearchFilters(BaseModel):
+    model_config = ConfigDict(allow_inf_nan=False)
     year_min: int | None = Field(None, ge=1900, le=2100)
     year_max: int | None = Field(None, ge=1900, le=2100)
     material_family: list[str] | None = None
     tc_min: float | None = Field(None, ge=0)
     pressure_max: float | None = Field(None, ge=0)
+    pressure_min: float | None = Field(None, ge=0)
+    ambient_only: bool = False
+    include_unknown_pressure: bool = False
+    knowledge_origin: list[Literal["Observed", "Computed", "Inferred", "AI-Proposed", "Unknown"]] | None = None
+    source_role: Literal["primary", "cited"] | None = None
+    experimental_only: bool = False
     exclude_retracted: bool = True
+
+    @model_validator(mode="after")
+    def consistent_bounds(self):
+        if self.pressure_min is not None and self.pressure_max is not None and self.pressure_min > self.pressure_max:
+            raise ValueError("pressure_min cannot exceed pressure_max")
+        return self
 
 
 class SearchRequest(BaseModel):
@@ -33,6 +56,11 @@ class SearchRequest(BaseModel):
 
 class SearchMatch(BaseModel):
     """One hit in a search response."""
+
+    @field_validator("materials")
+    @classmethod
+    def classify_materials(cls, value: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        return annotate_pressure_records(annotate_records(value))
 
     paper_id: str
     arxiv_id: str | None
@@ -48,6 +76,8 @@ class SearchMatch(BaseModel):
     material_family: str | None
     has_equation: bool
     has_table: bool
+    matching_results: list[dict[str, Any]] = Field(default_factory=list)
+    filter_policy_version: str = FILTER_POLICY_VERSION
 
 
 class SearchResponse(BaseModel):
@@ -79,7 +109,7 @@ class AskSource(BaseModel):
     year: int | None
     section: str | None
     snippet: str
-
+    material_evidence: list[dict[str, Any]] = Field(default_factory=list)
 
 class AskResponse(BaseModel):
     answer: str  # markdown with [1][2] citations
@@ -98,6 +128,33 @@ class AskResponse(BaseModel):
 
 class MaterialSummary(BaseModel):
     model_config = ConfigDict(from_attributes=True)
+
+    @model_validator(mode="before")
+    @classmethod
+    def add_result_origin_summary(cls, value: Any) -> Any:
+        records = value.get("records") if isinstance(value, dict) else getattr(value, "records", None)
+        records = [record for record in records if isinstance(record, dict)] if isinstance(records, list) else []
+        payload = project_material_properties(value, cls.model_fields, compact="records" not in cls.model_fields)
+        summary = classification_summary(records)
+        selected_tc = payload["property_evidence"]["properties"].get("tc_max", {}).get("selected")
+        payload.update(
+            result_classification_version=summary["classifier_version"],
+            result_origin_counts=summary["origin_counts"],
+            classification_conflicts=summary["conflicted_records"],
+            tc_max_origin=selected_tc["origin"].get("knowledge_origin", "Unknown") if selected_tc else "Unknown",
+            dominant_evidence=evidence_summary(records),
+        )
+        return payload
+
+    result_classification_version: str = CLASSIFIER_VERSION
+    result_origin_counts: dict[str, int] = Field(default_factory=dict)
+    classification_conflicts: int = 0
+    tc_max_origin: str = "Unknown"
+    matching_results: list[dict[str, Any]] = Field(default_factory=list)
+    filter_policy_version: str = FILTER_POLICY_VERSION
+
+    property_evidence: dict[str, Any] = Field(default_factory=dict)
+    anomaly_review: dict[str, Any] = Field(default_factory=dict)
 
     id: str
     formula: str
@@ -130,6 +187,11 @@ class VariantSummary(BaseModel):
     """Compact representation of a doping/oxygen variant for the detail page."""
     model_config = ConfigDict(from_attributes=True)
 
+    @model_validator(mode="before")
+    @classmethod
+    def check_ambient_summary(cls, value: Any) -> Any:
+        return project_material_properties(value, cls.model_fields, compact=True)
+
     id: str
     formula: str
     tc_max: float | None = None
@@ -138,6 +200,9 @@ class VariantSummary(BaseModel):
     doping_level: float | None = None
     pressure_type: str | None = None
 
+    property_evidence: dict[str, Any] = Field(default_factory=dict)
+    anomaly_review: dict[str, Any] = Field(default_factory=dict)
+
 
 class PhaseDiagramPoint(BaseModel):
     """One dot on the Tc-vs-doping phase diagram."""
@@ -145,6 +210,7 @@ class PhaseDiagramPoint(BaseModel):
     tc_kelvin: float
     doping_level: float | None = None
     pressure_gpa: float | None = None
+    pressure_semantics: dict[str, Any] = Field(default_factory=dict)
     paper_id: str | None = None
     year: int | None = None
 
@@ -152,6 +218,15 @@ class PhaseDiagramPoint(BaseModel):
 class HydrideTcParameterRecord(BaseModel):
     """Independent hydride enrichment row shown on material detail pages."""
     model_config = ConfigDict(from_attributes=True)
+
+    @model_validator(mode="before")
+    @classmethod
+    def pressure_metadata(cls, value: Any) -> Any:
+        payload = dict(value) if isinstance(value, dict) else {
+            name: getattr(value, name) for name in cls.model_fields if hasattr(value, name)
+        }
+        payload["pressure_semantics"] = classify_pressure(payload).to_dict()
+        return payload
 
     id: int
     material_id: str | None = None
@@ -164,6 +239,7 @@ class HydrideTcParameterRecord(BaseModel):
     year: int | None = None
     tc_kelvin: float | None = None
     pressure_gpa: float | None = None
+    pressure_semantics: dict[str, Any] = Field(default_factory=dict)
     lambda_eph: float | None = None
     mu_star: float | None = None
     omega_log_k: float | None = None
@@ -184,6 +260,12 @@ class HydrideTcParameterRecord(BaseModel):
 class MaterialDetail(MaterialSummary):
     crystal_structure: str | None
     records: list[dict[str, Any]]
+    raw_archive: dict[str, Any] = Field(default_factory=dict)
+
+    @field_validator("records")
+    @classmethod
+    def classify_records(cls, value: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        return annotate_pressure_records(annotate_records(value))
     # ML Foundation v1 composition enrichment. ``None`` means the legacy row
     # has not yet been processed; ambiguous formulas retain an explicit state
     # instead of fabricated fixed-composition values.
@@ -237,6 +319,8 @@ class MaterialListResponse(BaseModel):
     results: list[MaterialSummary]
     limit: int
     offset: int
+    sort_basis: Literal["legacy_catalogue"] = "legacy_catalogue"
+    scientific_display_policy: Literal["atomic_property_evidence"] = "atomic_property_evidence"
 
 
 # ---------------------------------------------------------------------------
@@ -267,6 +351,11 @@ class PaperDetail(PaperSummary):
     materials_extracted: list[dict[str, Any]]
     quality_flags: list[Any]
     indexed_at: Any  # datetime — serialized by pydantic
+
+    @field_validator("materials_extracted")
+    @classmethod
+    def classify_materials(cls, value: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        return annotate_pressure_records(annotate_records(value))
 
 
 class SitemapResource(BaseModel):
@@ -347,14 +436,15 @@ class TimelinePoint(BaseModel):
     tc_kelvin: float
     year: int
     pressure_gpa: float | None
+    pressure_semantics: dict[str, Any] = Field(default_factory=dict)
     paper_id: str | None
-    # True iff the underlying record is a calculation rather than an
-    # experimental measurement. The frontend renders these as hollow
-    # rings so users can distinguish DFT predictions (e.g. P/Cl-doped
-    # H₃S at 200 K) from confirmed lab measurements. Defaults False
-    # so any caller that doesn't set it gets the safer "experimental"
-    # styling rather than mis-marking real data as theory.
+    # Legacy compatibility flag only: False does NOT establish an observation.
+    # New consumers must use the explicit origin/status fields below.
     is_theoretical: bool = False
+    knowledge_origin: str = "Unknown"
+    classification_status: str = "unknown"
+    source_role: str = "unknown"
+    classifier_version: str = CLASSIFIER_VERSION
 
 
 class TimelineCoverage(BaseModel):
@@ -378,6 +468,7 @@ class TimelineCoverage(BaseModel):
 
 
 class TimelineResponse(BaseModel):
+    anomaly_policy_version: str | None = None
     schema_version: Literal["1"] = "1"
     data_version: str = "timeline-v1-unknown"
     data_updated_at: datetime | None = None
@@ -393,111 +484,14 @@ class TimelineResponse(BaseModel):
 # Discovery (reviewed SC SuperLoop feed)
 # ---------------------------------------------------------------------------
 
-class DiscoveryFilterRule(BaseModel):
-    key: str
-    label: str
-    value: str
-
-
-class DiscoveryCandidate(BaseModel):
-    schema_version: Literal["1"] = "1"
-    candidate_id: str
-    formula: str
-    normalized_formula: str | None = None
-    branch: str
-    lane_id: str | None = None
-    prototype_family: str | None = None
-    candidate_layer: str | None = None
-    candidate_quantity_score: float | None = None
-    candidate_quality_score: float | None = None
-    entry_block_reason: str | None = None
-    upgrade_requirements: list[str] = Field(default_factory=list)
-    evidence_schema_version: str | None = None
-    evidence_quality_score: float | None = None
-    literature_verifier_status: str | None = None
-    literature_verifier_flags: list[str] = Field(default_factory=list)
-    failure_mode_taxonomy: list[str] = Field(default_factory=list)
-    synthesis_feasibility_score: float | None = None
-    synthesis_feasibility_flags: list[str] = Field(default_factory=list)
-    measurement_clarity_score: float | None = None
-    correlation_gate_status: str | None = None
-    correlation_gate_flags: list[str] = Field(default_factory=list)
-    experiment_priority_score: float | None = None
-    experiment_readiness: str | None = None
-    family_ruleset_id: str | None = None
-    validation_recipe_id: str | None = None
-    condition_class: str | None = None
-    required_condition_vector: list[str] = Field(default_factory=list)
-    evidence_level: str
-    checker_status: str
-    public_confidence: str
-    record_role: str | None = None
-    claim_level: str | None = None
-    next_action: str | None = None
-    discovery_score: float | None = None
-    mechanism_hypothesis: str | None = None
-    risk_tags: list[str] = Field(default_factory=list)
-    review_summary: str | None = None
-    provenance_summary: str | None = None
-    recommended_next_step: str | None = None
-    last_reviewed_at_utc: datetime | None = None
-    published_at_utc: datetime | None = None
-
-
-class DiscoveryResponse(BaseModel):
-    schema_version: Literal["1"] = "1"
-    page_title: str
-    intro: list[str]
-    status: Literal["planned", "active"] = "planned"
-    updated_at_utc: datetime | None = None
-    source: str | None = None
-    filter_rules: list[DiscoveryFilterRule]
-    candidates: list[DiscoveryCandidate]
-
-
-class DiscoveryCandidateSummary(BaseModel):
-    """Fields required to render one collapsed discovery result.
-
-    The full dossier remains available from the candidate detail endpoint, so
-    list pages do not repeatedly transfer long evidence and provenance arrays.
-    """
-
-    schema_version: Literal["1"] = "1"
-    candidate_id: str
-    formula: str
-    branch: str
-    lane_id: str | None = None
-    prototype_family: str | None = None
-    candidate_layer: str | None = None
-    condition_class: str | None = None
-    evidence_level: str
-    checker_status: str
-    public_confidence: str
-    evidence_quality_score: float | None = None
-    experiment_readiness: str | None = None
-    record_role: str | None = None
-    claim_level: str | None = None
-    next_action: str | None = None
-    discovery_score: float | None = None
-
-
-class DiscoveryMetadata(BaseModel):
-    schema_version: Literal["1"] = "1"
-    page_title: str
-    intro: list[str]
-    status: Literal["planned", "active"] = "planned"
-    updated_at_utc: datetime | None = None
-    source: str | None = None
-    filter_rules: list[DiscoveryFilterRule]
-    total_candidates: int
-    role_counts: dict[str, int]
-
-
-class DiscoveryCandidatePage(BaseModel):
-    schema_version: Literal["1"] = "1"
-    items: list[DiscoveryCandidateSummary]
-    total: int
-    offset: int
-    limit: int
-    has_more: bool
-    record_role: str | None = None
+# Re-export the DB-independent contract so pull validation and public routes
+# use exactly the same models without the pull process importing ORM/settings.
+from services.discovery_contract import (  # noqa: E402,F401
+    DiscoveryCandidate,
+    DiscoveryCandidateDetail,
+    DiscoveryCandidatePage,
+    DiscoveryCandidateSummary,
+    DiscoveryFilterRule,
+    DiscoveryMetadata,
+    DiscoveryResponse,
+)

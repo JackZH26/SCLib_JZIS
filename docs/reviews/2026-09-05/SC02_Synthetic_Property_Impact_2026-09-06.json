@@ -1,0 +1,508 @@
+{
+  "input_sha256": "b9bcab6c40cac38ea3ffcf3f50859304130cd1d9adfaa15f1191781357a7fcb7",
+  "limitations": [
+    "The proposed value is the source-supported view, not a proposed database rewrite.",
+    "A capped/overridden value without exact support is withheld; a higher raw value is not revived.",
+    "Absent prior result ids are provenance additions, not proof of previously wrong provenance.",
+    "Absent legacy summary fields cannot be compared; a records-only source export is not a zero-impact baseline.",
+    "Input records must already reflect the intended visibility/review scope; this tool cannot reconstruct missing override or exclusion history.",
+    "Matching a source value does not validate the measurement or authorize a joint ML feature row."
+  ],
+  "mode": "offline_read_only_view_audit",
+  "property_evidence_versions": [
+    "property-evidence/1.0.0"
+  ],
+  "report_sha256": "7cbeb395528946c32aa88f67cede06b7b9ad60f415ef17c60775d025f640e58c",
+  "sample_limit": 3,
+  "samples": [
+    {
+      "joint_epc": {
+        "comparison_budget": 10000,
+        "evaluated_pair_count": 0,
+        "pairs": [],
+        "selected": null,
+        "status": "not_reported",
+        "total_pair_count": 0,
+        "total_pair_count_exact": true,
+        "total_pair_count_lower_bound": 0,
+        "truncated": false,
+        "warnings": [
+          "independent_property_selections_are_not_an_epc_pair",
+          "allen_dynes_applicability_not_assessed"
+        ]
+      },
+      "material_id": "synthetic:hc2",
+      "properties": [
+        {
+          "comparison_status": "compared",
+          "conditions_added_fields": [
+            "measurement"
+          ],
+          "conditions_changed_fields": [
+            "hc2_conditions"
+          ],
+          "legacy_catalogue_value": 100.0,
+          "old_conditions": {
+            "hc2_conditions": "along c at 5 K"
+          },
+          "old_result_id": null,
+          "old_state": {},
+          "old_structure": {},
+          "property": "hc2_tesla",
+          "proposed_conditions": {
+            "calculation_method": null,
+            "calculation_protocol": null,
+            "field_orientation": null,
+            "hc2_conditions": "along ab at 0 K",
+            "hc2_direction": null,
+            "hc2_temperature_k": null,
+            "magnetic_field_orientation": null,
+            "measurement": "resistivity",
+            "measurement_method": null,
+            "measurement_temperature_k": null,
+            "method": null,
+            "protocol_id": null,
+            "tc_conditions": null,
+            "tc_criterion": null,
+            "tc_type": null,
+            "temperature_k": null
+          },
+          "proposed_result_id": "legacy-result:b61915e6b3c3aad8d6694f47448e0655059f2c6ea30423d14276c752046247ba",
+          "proposed_source_supported_value": 100.0,
+          "proposed_state": {
+            "doping_level": null,
+            "doping_type": null,
+            "formula": null,
+            "formula_raw": null,
+            "pressure_semantics": {
+              "approximate": false,
+              "classifier_version": "pressure-policy/1.0.0",
+              "pressure_gpa": null,
+              "pressure_state": "not_reported",
+              "raw_unit": null,
+              "raw_value": null,
+              "reasons": {
+                "redacted": "unsupported_or_oversize_value",
+                "sha256": "96df9a8f2a9c0d06968a051f09648d21c1a90f52dfe3431637c81376e899557a"
+              },
+              "relation": "unreported",
+              "uncertainty_gpa": null,
+              "uncertainty_interpretation": null,
+              "unit_basis": "unreported",
+              "value_lower_gpa": null,
+              "value_upper_gpa": null
+            },
+            "run_id": null,
+            "sample_form": null,
+            "sample_id": null,
+            "state_id": null,
+            "structure_id": null,
+            "substrate": null
+          },
+          "proposed_structure": {
+            "crystal_structure": null,
+            "lattice_params": null,
+            "space_group": null,
+            "structure_phase": null
+          },
+          "provenance_change": "added",
+          "selected_source": {
+            "arxiv_id": null,
+            "doi": null,
+            "paper_id": "synthetic:B",
+            "source_locator": {},
+            "year": null
+          },
+          "state_added_fields": [
+            "pressure_semantics"
+          ],
+          "state_changed_fields": [],
+          "status": "supported",
+          "structure_added_fields": [],
+          "structure_changed_fields": [],
+          "supported_value_changes": false,
+          "warnings": [
+            "state_structure_association_incomplete"
+          ]
+        }
+      ]
+    },
+    {
+      "joint_epc": {
+        "comparison_budget": 10000,
+        "evaluated_pair_count": 0,
+        "pairs": [],
+        "selected": null,
+        "status": "pending",
+        "total_pair_count": 0,
+        "total_pair_count_exact": true,
+        "total_pair_count_lower_bound": 0,
+        "truncated": false,
+        "warnings": [
+          "independent_property_selections_are_not_an_epc_pair",
+          "allen_dynes_applicability_not_assessed",
+          "missing_or_conflicting_state_structure_run_protocol"
+        ]
+      },
+      "material_id": "synthetic:independent-epc",
+      "properties": [
+        {
+          "comparison_status": "compared",
+          "conditions_added_fields": [
+            "calculation_method"
+          ],
+          "conditions_changed_fields": [],
+          "legacy_catalogue_value": 3.0,
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_state": {},
+          "old_structure": {},
+          "property": "lambda_eph",
+          "proposed_conditions": {
+            "calculation_method": "DFT",
+            "calculation_protocol": null,
+            "field_orientation": null,
+            "hc2_conditions": null,
+            "hc2_direction": null,
+            "hc2_temperature_k": null,
+            "magnetic_field_orientation": null,
+            "measurement": null,
+            "measurement_method": null,
+            "measurement_temperature_k": null,
+            "method": null,
+            "protocol_id": null,
+            "tc_conditions": null,
+            "tc_criterion": null,
+            "tc_type": null,
+            "temperature_k": null
+          },
+          "proposed_result_id": "legacy-result:194617676e9cde8699868cfb1e00b3ff4bd149f6b1c8da9546beee093a81a351",
+          "proposed_source_supported_value": 3.0,
+          "proposed_state": {
+            "doping_level": null,
+            "doping_type": null,
+            "formula": null,
+            "formula_raw": null,
+            "pressure_semantics": {
+              "approximate": false,
+              "classifier_version": "pressure-policy/1.0.0",
+              "pressure_gpa": null,
+              "pressure_state": "not_reported",
+              "raw_unit": null,
+              "raw_value": null,
+              "reasons": {
+                "redacted": "unsupported_or_oversize_value",
+                "sha256": "96df9a8f2a9c0d06968a051f09648d21c1a90f52dfe3431637c81376e899557a"
+              },
+              "relation": "unreported",
+              "uncertainty_gpa": null,
+              "uncertainty_interpretation": null,
+              "unit_basis": "unreported",
+              "value_lower_gpa": null,
+              "value_upper_gpa": null
+            },
+            "run_id": "run-D",
+            "sample_form": null,
+            "sample_id": null,
+            "state_id": "state-D",
+            "structure_id": "structure-D",
+            "substrate": null
+          },
+          "proposed_structure": {
+            "crystal_structure": null,
+            "lattice_params": null,
+            "space_group": null,
+            "structure_phase": null
+          },
+          "provenance_change": "added",
+          "selected_source": {
+            "arxiv_id": null,
+            "doi": null,
+            "paper_id": "synthetic:D",
+            "source_locator": {},
+            "year": null
+          },
+          "state_added_fields": [
+            "pressure_semantics",
+            "run_id",
+            "state_id",
+            "structure_id"
+          ],
+          "state_changed_fields": [],
+          "status": "supported",
+          "structure_added_fields": [],
+          "structure_changed_fields": [],
+          "supported_value_changes": false,
+          "warnings": []
+        },
+        {
+          "comparison_status": "compared",
+          "conditions_added_fields": [
+            "calculation_method"
+          ],
+          "conditions_changed_fields": [],
+          "legacy_catalogue_value": 1000.0,
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_state": {},
+          "old_structure": {},
+          "property": "omega_log_k",
+          "proposed_conditions": {
+            "calculation_method": "DFT",
+            "calculation_protocol": null,
+            "field_orientation": null,
+            "hc2_conditions": null,
+            "hc2_direction": null,
+            "hc2_temperature_k": null,
+            "magnetic_field_orientation": null,
+            "measurement": null,
+            "measurement_method": null,
+            "measurement_temperature_k": null,
+            "method": null,
+            "protocol_id": null,
+            "tc_conditions": null,
+            "tc_criterion": null,
+            "tc_type": null,
+            "temperature_k": null
+          },
+          "proposed_result_id": "legacy-result:bf2e43802258a9e8e02d4c42e3177254f5fb08f8a5d8156093a463e4a70dc37a",
+          "proposed_source_supported_value": 1000.0,
+          "proposed_state": {
+            "doping_level": null,
+            "doping_type": null,
+            "formula": null,
+            "formula_raw": null,
+            "pressure_semantics": {
+              "approximate": false,
+              "classifier_version": "pressure-policy/1.0.0",
+              "pressure_gpa": null,
+              "pressure_state": "not_reported",
+              "raw_unit": null,
+              "raw_value": null,
+              "reasons": {
+                "redacted": "unsupported_or_oversize_value",
+                "sha256": "96df9a8f2a9c0d06968a051f09648d21c1a90f52dfe3431637c81376e899557a"
+              },
+              "relation": "unreported",
+              "uncertainty_gpa": null,
+              "uncertainty_interpretation": null,
+              "unit_basis": "unreported",
+              "value_lower_gpa": null,
+              "value_upper_gpa": null
+            },
+            "run_id": "run-E",
+            "sample_form": null,
+            "sample_id": null,
+            "state_id": "state-E",
+            "structure_id": "structure-E",
+            "substrate": null
+          },
+          "proposed_structure": {
+            "crystal_structure": null,
+            "lattice_params": null,
+            "space_group": null,
+            "structure_phase": null
+          },
+          "provenance_change": "added",
+          "selected_source": {
+            "arxiv_id": null,
+            "doi": null,
+            "paper_id": "synthetic:E",
+            "source_locator": {},
+            "year": null
+          },
+          "state_added_fields": [
+            "pressure_semantics",
+            "run_id",
+            "state_id",
+            "structure_id"
+          ],
+          "state_changed_fields": [],
+          "status": "supported",
+          "structure_added_fields": [],
+          "structure_changed_fields": [],
+          "supported_value_changes": false,
+          "warnings": []
+        },
+        {
+          "comparison_status": "compared",
+          "conditions_added_fields": [],
+          "conditions_changed_fields": [],
+          "legacy_catalogue_value": 2.0,
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_state": {},
+          "old_structure": {},
+          "property": "rho_exponent",
+          "proposed_conditions": {},
+          "proposed_result_id": null,
+          "proposed_source_supported_value": null,
+          "proposed_state": {},
+          "proposed_structure": {},
+          "provenance_change": "unavailable",
+          "selected_source": null,
+          "state_added_fields": [],
+          "state_changed_fields": [],
+          "status": "untraceable",
+          "structure_added_fields": [],
+          "structure_changed_fields": [],
+          "supported_value_changes": true,
+          "warnings": [
+            "catalogue_statistic_not_joint_observation",
+            "legacy_summary_has_no_exact_source_support"
+          ]
+        }
+      ]
+    },
+    {
+      "joint_epc": {
+        "comparison_budget": 10000,
+        "evaluated_pair_count": 0,
+        "pairs": [],
+        "selected": null,
+        "status": "not_reported",
+        "total_pair_count": 0,
+        "total_pair_count_exact": true,
+        "total_pair_count_lower_bound": 0,
+        "truncated": false,
+        "warnings": [
+          "independent_property_selections_are_not_an_epc_pair",
+          "allen_dynes_applicability_not_assessed"
+        ]
+      },
+      "material_id": "synthetic:legacy-cap",
+      "properties": [
+        {
+          "comparison_status": "legacy_summary_field_missing",
+          "conditions_added_fields": [],
+          "conditions_changed_fields": [],
+          "legacy_catalogue_value": null,
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_state": {},
+          "old_structure": {},
+          "property": "tc_ambient",
+          "proposed_conditions": {},
+          "proposed_result_id": null,
+          "proposed_source_supported_value": null,
+          "proposed_state": {},
+          "proposed_structure": {},
+          "provenance_change": "unavailable",
+          "selected_source": null,
+          "state_added_fields": [],
+          "state_changed_fields": [],
+          "status": "not_reported",
+          "structure_added_fields": [],
+          "structure_changed_fields": [],
+          "supported_value_changes": null,
+          "warnings": [
+            "legacy_summary_missing_not_recomputed"
+          ]
+        },
+        {
+          "comparison_status": "compared",
+          "conditions_added_fields": [],
+          "conditions_changed_fields": [],
+          "legacy_catalogue_value": 45.0,
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_state": {},
+          "old_structure": {},
+          "property": "tc_max",
+          "proposed_conditions": {},
+          "proposed_result_id": null,
+          "proposed_source_supported_value": null,
+          "proposed_state": {},
+          "proposed_structure": {},
+          "provenance_change": "unavailable",
+          "selected_source": null,
+          "state_added_fields": [],
+          "state_changed_fields": [],
+          "status": "untraceable",
+          "structure_added_fields": [],
+          "structure_changed_fields": [],
+          "supported_value_changes": true,
+          "warnings": [
+            "legacy_summary_has_no_exact_source_support"
+          ]
+        },
+        {
+          "comparison_status": "legacy_summary_field_missing",
+          "conditions_added_fields": [],
+          "conditions_changed_fields": [],
+          "legacy_catalogue_value": null,
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_state": {},
+          "old_structure": {},
+          "property": "tc_max_experimental",
+          "proposed_conditions": {},
+          "proposed_result_id": null,
+          "proposed_source_supported_value": null,
+          "proposed_state": {},
+          "proposed_structure": {},
+          "provenance_change": "unavailable",
+          "selected_source": null,
+          "state_added_fields": [],
+          "state_changed_fields": [],
+          "status": "not_reported",
+          "structure_added_fields": [],
+          "structure_changed_fields": [],
+          "supported_value_changes": null,
+          "warnings": [
+            "legacy_summary_missing_not_recomputed"
+          ]
+        },
+        {
+          "comparison_status": "legacy_summary_field_missing",
+          "conditions_added_fields": [],
+          "conditions_changed_fields": [],
+          "legacy_catalogue_value": null,
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_state": {},
+          "old_structure": {},
+          "property": "tc_max_theoretical",
+          "proposed_conditions": {},
+          "proposed_result_id": null,
+          "proposed_source_supported_value": null,
+          "proposed_state": {},
+          "proposed_structure": {},
+          "provenance_change": "unavailable",
+          "selected_source": null,
+          "state_added_fields": [],
+          "state_changed_fields": [],
+          "status": "not_reported",
+          "structure_added_fields": [],
+          "structure_changed_fields": [],
+          "supported_value_changes": null,
+          "warnings": [
+            "legacy_summary_missing_not_recomputed"
+          ]
+        }
+      ]
+    }
+  ],
+  "schema": "sclib-property-aggregation-impact/v1",
+  "scientific_acceptance_implied": false,
+  "scientific_semantics": "catalogue_summary_not_joint_observation",
+  "stored_values_rewritten": 0,
+  "totals": {
+    "conditions_added": 3,
+    "conditions_changed": 1,
+    "materials_evaluated": 3,
+    "not_comparable_properties": 88,
+    "properties_evaluated": 93,
+    "provenance_added": 3,
+    "provenance_changed": 0,
+    "provenance_removed": 0,
+    "provenance_unavailable": 90,
+    "provenance_unchanged": 0,
+    "state_added": 3,
+    "state_changed": 0,
+    "structure_added": 0,
+    "structure_changed": 0,
+    "supported_value_changes": 2,
+    "untraceable_properties": 2
+  }
+}

@@ -1,0 +1,588 @@
+[
+  {
+    "id": "SC01",
+    "title": "Preserve raw scientific values, units, intervals, censoring and uncertainties during extraction",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "Scientific values / extraction",
+    "evidence_level": "Local code confirmed; synthetic pure-function counterexamples reproduced in the 2026-09-05 review; production prevalence not measured.",
+    "report_sections": [
+      "3.1 S01",
+      "4.2",
+      "13 / checklist 1"
+    ],
+    "summary": "The current NER postprocessor discards information before typed claims can preserve it: scientific notation can change magnitude, unit-bearing values lose their units, ranges become midpoints and bounds become exact values. Make extraction proposals raw-preserving and normalize them with a deterministic, property-aware parser before acceptance.",
+    "evidence": [
+      {
+        "path": "ingestion/ingestion/extract/material_ner.py",
+        "line": 570,
+        "detail": "The coercion helper explicitly strips units, takes range midpoints and drops uncertainty; the reviewed synthetic input 1e-3 K became 1."
+      },
+      {
+        "path": "ingestion/ingestion/extract/material_ner.py",
+        "line": 473,
+        "detail": "Numeric NER fields pass through _coerce_float before being stored, so downstream mapping cannot reconstruct discarded semantics."
+      }
+    ],
+    "scope": [
+      "Persist raw value, raw unit, local source context and parser version before normalization; retain failed proposals for review.",
+      "Implement property-aware canonical units and typed exact, interval, upper/lower bound and uncertainty representations; reject incompatible units and non-finite values.",
+      "Route NER, legacy import and claim mapping through the same normalization contract; mark irrecoverable legacy records for source re-extraction instead of guessing.",
+      "Add a versioned dry-run impact report for parser changes before any separately approved production backfill."
+    ],
+    "acceptance": [
+      "Golden cases preserve 1e-3 K as 0.001 K and convert 20 kbar to 2 GPa while retaining the original strings.",
+      "<2 K remains an upper-bound/censored result and 80–95 K remains an interval; neither is emitted as an exact Tc label.",
+      "0.16±0.02 preserves the reported uncertainty with its interpretation; missing uncertainty conventions remain explicit rather than inferred.",
+      "NaN, Infinity, booleans used as numbers and incompatible or ambiguous units cannot enter accepted numeric results.",
+      "Every normalized value links to its raw proposal, evidence locator and parser version; parse failures remain visible to reviewers.",
+      "The end-to-end extraction-to-claim fixture demonstrates that no earlier coercion destroys the typed information; legacy records with lost units are listed as unresolved in a dry run."
+    ],
+    "out_of_scope": [
+      "Full-corpus LLM re-extraction or automatic production backfill.",
+      "Inferring missing physical values or measurement errors from family priors."
+    ],
+    "depends_on": [],
+    "owner_role": "Data engineer with superconductivity reviewer"
+  },
+  {
+    "id": "SC02",
+    "title": "Keep every aggregated property atomic with its state, method and source result",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "Materials aggregation / result provenance",
+    "evidence_level": "Local code confirmed and synthetic aggregation counterexample reproduced; no claim about the number of affected production records.",
+    "report_sections": [
+      "3.2 S02",
+      "4.1",
+      "4.3",
+      "13 / checklist 4"
+    ],
+    "summary": "Independent maxima and first/earliest conditions can synthesize a material row that never existed. Treat catalog statistics as derived views of individually identified results, not a jointly observed state or an ML feature row.",
+    "evidence": [
+      {
+        "path": "ingestion/ingestion/extract/materials_aggregator.py",
+        "line": 1056,
+        "detail": "Structure values use earliest non-null records, Hc2 uses a maximum with first non-null conditions, and lambda/omega_log use separate maxima."
+      }
+    ],
+    "scope": [
+      "Select each display statistic as a complete value/result/state/method/provenance object; preserve a legacy compatibility projection with explicit non-ML semantics.",
+      "Add result references and condition summaries to per-property API/frontend cells, including Hc2 direction/temperature and structure association.",
+      "Require a shared structure, state and compatible run protocol for joint EPC features or an explicit reviewed matching operation.",
+      "Audit affected aggregation outputs in shadow mode and report changed values separately from changed provenance or conditions."
+    ],
+    "acceptance": [
+      "For A=20 T along c at 5 K and B=100 T along ab at 0 K, the maximum Hc2 displays B's conditions and source, never A's.",
+      "Lambda=3 and omega_log=1000 K from different states/runs are not automatically exposed as a valid paired calculation input.",
+      "Every material-level displayed maximum or selected property resolves to the contributing result and its state and method.",
+      "Reordering input records does not change the selected provenance under a documented deterministic tie policy.",
+      "Cross-state values remain browsable but are visibly identified as separate results; missing state association is not fabricated.",
+      "The scientific export path cannot silently consume the legacy summary as one joint observation; a dry-run impact report is generated without rewriting production data."
+    ],
+    "out_of_scope": [
+      "Automatically resolving all historical sample/structure matches.",
+      "A new cross-material Tc prediction model."
+    ],
+    "depends_on": [
+      "SC01",
+      "SC04",
+      "SC05"
+    ],
+    "owner_role": "Backend/data engineer with superconductivity reviewer"
+  },
+  {
+    "id": "SC03",
+    "title": "Replace scientific value caps and destructive threshold filtering with versioned anomaly review",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "Scientific validation / audit rules",
+    "evidence_level": "Local synthetic Tc cap counterexample reproduced and inconsistent threshold paths confirmed; live execution of those exact paths is not established.",
+    "report_sections": [
+      "3.3 S03",
+      "13 / checklist 5"
+    ],
+    "summary": "A cap can replace a reported Tc with a number unsupported by the source, while separate filtering paths apply inconsistent ceilings. Anomaly rules must flag, quarantine or exclude a claim from a specified view without inventing a new scientific measurement or erasing the raw record.",
+    "evidence": [
+      {
+        "path": "ingestion/ingestion/extract/materials_aggregator.py",
+        "line": 299,
+        "detail": "The cap branch clamps a summary field directly to cap_val; the review reproduced a raw 60 K result displayed as 45 K."
+      },
+      {
+        "path": "ingestion/ingestion/extract/materials_aggregator.py",
+        "line": 714,
+        "detail": "A cleaning path filters high-Tc records independently of the page's stated ambient-pressure policy."
+      },
+      {
+        "path": "api/services/audit_rules.py",
+        "line": 59,
+        "detail": "Separate family-level threshold rules provide another policy path requiring reconciliation and versioning."
+      }
+    ],
+    "scope": [
+      "Remove cap-as-value mutation; require source-backed, revisioned corrections for any changed scientific number.",
+      "Represent anomalies with rule ID/version, applicability conditions, reason, severity and review outcome; preserve excluded raw records in an appropriate Archive view.",
+      "Centralize threshold policy and distinguish data-format invalidity from unusual but potentially real physics.",
+      "Provide a dry-run comparison of old/new rule versions, including counts and reasons for status changes, before controlled backfill."
+    ],
+    "acceptance": [
+      "The synthetic 60 K source plus a 45 K cap never produces a public 45 K result unless a separate source explicitly supports 45 K.",
+      "A high-Tc/high-pressure anomaly retains its original value and evidence and receives a review state rather than silent deletion or clipping.",
+      "Every public maximum resolves to an eligible source result; excluded records remain recoverable with their reasons.",
+      "A corrected scientific value creates an auditable revision with supporting evidence and does not overwrite historical raw data.",
+      "API, ingestion, audit and page explanations reference the same rule version and correctly stated applicability conditions.",
+      "Rule-version dry runs report status/value/provenance differences and are idempotent; no full production rewrite is performed as part of validation."
+    ],
+    "out_of_scope": [
+      "Declaring a universal physical upper bound on superconducting Tc.",
+      "Automatically accepting extraordinary claims solely because they pass numeric checks."
+    ],
+    "depends_on": [
+      "SC01",
+      "SC02"
+    ],
+    "owner_role": "Scientific data engineer and curator"
+  },
+  {
+    "id": "SC04",
+    "title": "Make pressure explicit and require compound scientific filters to match the same result",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "Pressure semantics / Search / Materials / Timeline",
+    "evidence_level": "Local code confirmed and synthetic search/fact-sentence counterexamples reproduced; corpus-wide impact not measured.",
+    "report_sections": [
+      "3.4 S04",
+      "8.2",
+      "13 / checklist 2"
+    ],
+    "summary": "Unknown pressure currently satisfies low-pressure searches or becomes ambient text, and separate Tc/pressure checks may be satisfied by different materials. Use a shared explicit pressure representation and an existential predicate over one result/state, not independent paper-wide predicates.",
+    "evidence": [
+      {
+        "path": "api/routers/search.py",
+        "line": 135,
+        "detail": "Tc and pressure filters are applied independently to the paper's extracted material list."
+      },
+      {
+        "path": "api/routers/search.py",
+        "line": 202,
+        "detail": "Unknown pressure is treated as satisfying the pressure upper-bound predicate."
+      },
+      {
+        "path": "ingestion/ingestion/extract/fact_sentences.py",
+        "line": 102,
+        "detail": "bulk_equilibrium can produce 'at ambient pressure' without reported pressure evidence."
+      },
+      {
+        "path": "frontend/components/TcTimeline.tsx",
+        "line": 81,
+        "detail": "Null pressure is rendered as ambient (unstated), conflating absence of information with a physical condition."
+      }
+    ],
+    "scope": [
+      "Define explicit_ambient, reported, not_reported and ambiguous pressure states with raw evidence and canonical values where justified.",
+      "Implement a shared same-result predicate for family, Tc, pressure and evidence policy; return the matching result IDs to explain a hit.",
+      "Use the pressure contract in API filters, Timeline/Materials labels and generated fact sentences; bulk/sample-form metadata must not infer pressure.",
+      "Document and quarantine ambiguous legacy zero/null encodings; do not blindly convert historical zeros to explicit ambient."
+    ],
+    "acceptance": [
+      "Unknown or ambiguous pressure never matches ambient-only or a numeric pressure bound unless an explicitly named include-unknown mode is selected.",
+      "A paper containing A=300 K at 200 GPa and B=5 K at 0 GPa does not match Tc>=200 K AND P<=1 GPa.",
+      "Family, Tc, pressure and evidence filters must be satisfied by the same result/state; the response identifies that matching result.",
+      "A bulk_equilibrium record with no pressure evidence does not produce an ambient-pressure derived sentence.",
+      "All UI, API and export fixtures preserve the difference between explicit ambient and missing/ambiguous pressure; website-owned labels are English.",
+      "Legacy zeros require documented evidence or remain unresolved; supported tensile/negative-pressure representations, if any, are never mislabeled ambient."
+    ],
+    "out_of_scope": [
+      "Inferring pressure from material family or sample form.",
+      "Redesigning general paper-level relevance ranking beyond the scientific filter predicate."
+    ],
+    "depends_on": [
+      "SC01"
+    ],
+    "owner_role": "Backend engineer with data engineer and frontend support"
+  },
+  {
+    "id": "SC05",
+    "title": "Share a result-level Observed/Computed/Inferred classification and independent source-role policy",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "Scientific classification / shared domain contract",
+    "evidence_level": "Local classifier counterexamples reproduced; the review also observed theoretical high-Tc entries with T1 labels publicly, without claiming the predictions themselves are invalid.",
+    "report_sections": [
+      "3.6",
+      "4.3",
+      "5.1 S05",
+      "13 / checklist 3"
+    ],
+    "summary": "Timeline infers experiment/theory partly from pressure and defaults missing categories to experimental. Separate result origin, primary/cited source role, extraction method, review state and source tier, and apply the same classifier throughout the website and research exports.",
+    "evidence": [
+      {
+        "path": "api/services/timeline_points.py",
+        "line": 55,
+        "detail": "is_theoretical ignores evidence_type, defaults unrecognized paper types to experiment and requires positive pressure for computational/theoretical papers."
+      },
+      {
+        "path": "ingestion/ingestion/extract/materials_aggregator.py",
+        "line": 1444,
+        "detail": "APS source assignment uses a T1 tier that must not be presented as experimental confirmation."
+      },
+      {
+        "path": "ingestion/ingestion/extract/material_ner.py",
+        "line": 486,
+        "detail": "Legacy evidence_type values mix primary/cited role with experiment/theory and need an explicit compatibility mapping."
+      }
+    ],
+    "scope": [
+      "Define a versioned classifier using explicit result-level evidence and method with documented precedence and a conflict/unknown outcome.",
+      "Keep Observed, Computed, Inferred and AI-Proposed distinct from source role, extraction tool, review state and source-quality metadata.",
+      "Use the shared classification in Materials, Timeline, Search/RAG evidence and exports; provide an explicit legacy mapping that does not silently upgrade unknown cases.",
+      "Display experiment/computation clearly next to Tc and relabel T1 as a source-tier concept rather than confirmation."
+    ],
+    "acceptance": [
+      "Primary theoretical results at unknown or zero pressure classify as Computed and are excluded from observed-only views.",
+      "Missing evidence/method information yields Unknown, not Observed; contradictory result-level labels create a reviewable conflict.",
+      "A mixed experimental/computational paper classifies each result independently rather than assigning one paper-wide type.",
+      "An LLM-extracted experimental result can remain Observed with LLM recorded as the extraction method; an LLM-generated hypothesis remains AI-Proposed.",
+      "Cited versus primary is an independent field and neither source role nor T1 constitutes independent experimental replication.",
+      "A cross-surface contract fixture gives identical classification in Materials, Timeline, Search evidence and export, with English labels and an explicit classifier version."
+    ],
+    "out_of_scope": [
+      "Automatically adjudicating whether every experimental claim is scientifically valid.",
+      "A universal ranking of experimental versus computational fidelity across mechanisms."
+    ],
+    "depends_on": [],
+    "owner_role": "Backend/domain engineer with superconductivity reviewer"
+  },
+  {
+    "id": "SC06",
+    "title": "Rebuild Timeline semantics around result identity, explicit dates and honest sampling",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "Tc Timeline / projection / scientific visualization",
+    "evidence_level": "Local order-dependent deduplication and classification paths confirmed; public coverage was sampled in the review and is not a complete discovery history.",
+    "report_sections": [
+      "5.2 S06",
+      "5.3",
+      "11",
+      "13 / checklist 7"
+    ],
+    "summary": "Timeline currently deduplicates by rounded year/Tc/pressure and a theory flag, which can remove independent results and make source filtering depend on input order. Preserve scientific result identities and move overlap handling into the visualization, with clear year basis, finite-value handling and sampling disclosures.",
+    "evidence": [
+      {
+        "path": "api/services/timeline_points.py",
+        "line": 95,
+        "detail": "Point IDs are derived from rounded display properties rather than result identity and revision."
+      },
+      {
+        "path": "api/services/timeline_points.py",
+        "line": 143,
+        "detail": "The deduplication key omits paper, sample and Tc criterion, so first input wins for close values."
+      },
+      {
+        "path": "frontend/components/TcTimeline.tsx",
+        "line": 81,
+        "detail": "The current pressure tooltip contributes to an ambiguous scientific interpretation of chart points."
+      }
+    ],
+    "scope": [
+      "Use result_id/revision identity; for legacy occurrences use a documented provenance-preserving transitional identifier rather than numeric buckets.",
+      "Separate factual deduplication from visual clustering and expose all cluster members and source counts.",
+      "Expose year_basis and source-version/date metadata; label the existing page Reported Tc Timeline and disclose actual collection coverage.",
+      "Validate finite values per record and add deterministic stratified sampling with full/returned counts and a separately computed record summary.",
+      "Improve low-temperature significant figures, non-color symbols, accessible table alternatives and result-level tooltips without treating unreviewed data as verified."
+    ],
+    "acceptance": [
+      "Same-year, close-Tc/pressure results from different works, samples or onset/zero criteria are retained; permuting input order gives the same result set and source-filter results.",
+      "Each point or expanded cluster member links to its result/revision, state, Tc criterion, pressure status, classification, source role and source location.",
+      "Publication/report dates are labeled with year_basis; missing date basis is not advertised as the discovery or measurement date.",
+      "NaN/Infinity or malformed values are quarantined individually and cannot fail an entire Timeline response.",
+      "Sampling is deterministic for a versioned request, displays sampled/full counts and preserves explicitly defined record/rare-group summaries without deriving records from the sample alone.",
+      "A 0.03 K result remains meaningfully visible using significant figures or mK; keyboard-accessible detail/table views and non-color class markers are available.",
+      "Observed-only excludes Computed/Unknown, and reviewed-only is enabled only for genuinely reviewed results; otherwise the UI explicitly states legacy/unreviewed mode."
+    ],
+    "out_of_scope": [
+      "Claiming a complete 1911-to-present history from the current corpus.",
+      "Automatically publishing a verified world-record progression or connecting incomparable pressure trajectories."
+    ],
+    "depends_on": [
+      "SC04",
+      "SC05",
+      "SC07"
+    ],
+    "owner_role": "Backend projection engineer and frontend visualization engineer"
+  },
+  {
+    "id": "SC07",
+    "title": "Apply shared review visibility and warning policies to all material read surfaces",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "Materials / visibility / review UX",
+    "evidence_level": "Local API/model visibility mismatch confirmed; the issue concerns consistent read behavior, not a measured rate of misleading production pages.",
+    "report_sections": [
+      "3.5 S07",
+      "11",
+      "13 / checklist 18"
+    ],
+    "summary": "Direct access to pending materials can be a useful Archive feature, but the response currently omits review warnings and child queries do not apply a common policy. Define explicit Archive versus eligible/verified views and apply them consistently, including machine-readable metadata.",
+    "evidence": [
+      {
+        "path": "api/routers/materials.py",
+        "line": 288,
+        "detail": "Material detail permits direct access except a specific provenance quarantine and fetches variants with a separate query."
+      },
+      {
+        "path": "api/models/search.py",
+        "line": 184,
+        "detail": "MaterialDetail lacks the general needs_review/review_reason fields needed to explain direct-access Archive status."
+      }
+    ],
+    "scope": [
+      "Define shared visibility eligibility and review-warning DTOs for public catalog, Archive and reviewed views; preserve intentional provenance quarantines.",
+      "Apply the same policy to lists, details, variants, hydride/phase subqueries, Timeline, downloads and JSON-LD; document intentional differences.",
+      "Expose review reason, validity state, source status and revision-aware warning metadata without disclosing private reviewer data.",
+      "Add clear English warning/empty states and ensure search-engine metadata never presents a quarantined or unreviewed claim as verified."
+    ],
+    "acceptance": [
+      "A needs-review material reached by direct URL shows an unambiguous Archive/pending warning with a reason rather than a verified-looking result.",
+      "Verified/eligible endpoints exclude unapproved results consistently; an Archive inclusion flag cannot accidentally change default API or JSON-LD eligibility.",
+      "Variants and specialized subqueries cannot reintroduce records excluded by their parent visibility policy.",
+      "Quarantined source classes remain unavailable through alternate routes, cached response variants or structured metadata.",
+      "A policy-matrix test covers list, detail, variants, Timeline, download and JSON-LD for accepted, pending, disputed, corrected and retracted fixtures.",
+      "All website-authored warnings, labels and accessibility text default to English; original source text retains its language and private review metadata remains private."
+    ],
+    "out_of_scope": [
+      "Automatically approving pending science.",
+      "Full historical retraction/correction propagation, which is tracked separately in SC08."
+    ],
+    "depends_on": [
+      "SC05"
+    ],
+    "owner_role": "Backend and frontend engineers with curator"
+  },
+  {
+    "id": "SC08",
+    "title": "Propagate source corrections and retractions through reviews, projections, caches and releases",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "C",
+    "area": "Evidence lifecycle / invalidation / review revisions",
+    "evidence_level": "Conditional propagation gaps confirmed in local code; no production-wide retraction contamination rate or incident is asserted.",
+    "report_sections": [
+      "3.5 S07",
+      "7.3",
+      "13 / checklist 18"
+    ],
+    "summary": "Re-aggregation excludes retracted inputs, but orphan preservation, persistent manual approval and material-only projection watermarks can leave stale derived claims. Bind approval to specific revisions and provide dependency-aware, idempotent invalidation for source status and date changes.",
+    "evidence": [
+      {
+        "path": "ingestion/ingestion/extract/materials_aggregator.py",
+        "line": 1315,
+        "detail": "Valid-formula orphan preservation may retain old material records when the only eligible source disappears."
+      },
+      {
+        "path": "api/services/audit_runner.py",
+        "line": 44,
+        "detail": "Critical audit updates exclude rows with admin_decision, so old manual decisions can mask later source changes."
+      },
+      {
+        "path": "api/services/timeline_projection.py",
+        "line": 73,
+        "detail": "Incremental refresh is driven by Material.updated_at; a source-date-only correction is not itself represented by that watermark."
+      }
+    ],
+    "scope": [
+      "Bind review decisions to result/source revision hashes and supersede approval when relevant evidence changes; retain audit history.",
+      "Track affected dependencies and trigger idempotent refresh/invalidation for materials, Timeline, retrieval/RAG eligibility, caches and prospective releases.",
+      "Handle only-source and mixed-source retraction differently; recompute eligible support instead of deleting material identities.",
+      "Keep historical releases reproducible while publishing append-only withdrawal/supersession notices; agree a measurable propagation SLA and monitor lag."
+    ],
+    "acceptance": [
+      "Only-source retraction removes the claim from eligible views while retaining an appropriately warned Archive record and stable identity.",
+      "Mixed-source retraction recomputes eligible support and selected summaries without hiding independently supported results.",
+      "A previously approved result is reassessed when its bound source/revision changes; a stale admin_decision cannot bypass retraction handling.",
+      "A date-only source correction refreshes affected Timeline points and their date basis without requiring an unrelated material edit.",
+      "Repeated or out-of-order invalidation events converge without duplicate revisions or stale cache resurrection, and completion is observable against the agreed SLA.",
+      "New datasets/RPS releases exclude invalidated dependencies; historical releases retain their original bytes and expose a later withdrawal or supersession notice.",
+      "Isolated integration fixtures verify propagation across Materials, Timeline, RAG eligibility and caches without connecting to production services."
+    ],
+    "out_of_scope": [
+      "Deleting historical research artifacts or rewriting published release bytes.",
+      "Treating a retraction notice as automatic proof that every claim in a multi-source material is false."
+    ],
+    "depends_on": [
+      "SC07",
+      "ML01",
+      "ML03",
+      "ML04"
+    ],
+    "owner_role": "Backend/data lifecycle engineer with curator"
+  },
+  {
+    "id": "SC09",
+    "title": "Make composition parsing isotope-aware before emitting exact formula features",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "Composition identity / ML feature integrity",
+    "evidence_level": "Synthetic local parser counterexample reproduced: isotope superscripts can become stoichiometric counts while composition_status remains exact.",
+    "report_sections": [
+      "3.6",
+      "7.1 S08",
+      "13 / checklist 6"
+    ],
+    "summary": "Unicode normalization currently erases the distinction between isotope superscripts and stoichiometric subscripts. Recognize isotope syntax before normalization; unsupported or ambiguous forms must remain unresolved rather than generating exact atom fractions and misleading ML features.",
+    "evidence": [
+      {
+        "path": "ingestion/ingestion/extract/formula_enrichment.py",
+        "line": 472,
+        "detail": "NFKC normalization collapses Unicode sub/superscript digits; the review's La₂Cu¹⁸O₄ fixture became exact LaCu9O2 with Cu fraction 0.75."
+      },
+      {
+        "path": "ingestion/ingestion/extract/material_ner.py",
+        "line": 442,
+        "detail": "The earlier NER normalization also translates superscript digits, so the fix must preserve isotope semantics before this path loses them."
+      }
+    ],
+    "scope": [
+      "Preserve raw formula and distinguish isotope labels, ordinary stoichiometry, variable occupancy, charge and structural aliases before Unicode/LaTeX normalization.",
+      "Support an explicitly documented minimal isotope grammar; return unresolved with reasons outside that grammar rather than guessing.",
+      "Separate isotope-resolved composition from element-only descriptors and record deliberate projections between them.",
+      "Version the parser/descriptor outputs and invalidate affected cached features by dependency version, with a dry-run impact list."
+    ],
+    "acceptance": [
+      "La₂Cu¹⁸O₄ is never accepted as a composition containing Cu18; supported parsing preserves the isotope or returns unresolved without exact fractions.",
+      "Golden cases separately cover MgB₂, La₂₋ₓSrₓCuO₄, D/H, 18O labels, mixed isotopic occupancy and supported LaTeX notation.",
+      "Element totals/fractions and isotope occupancy are checked under their respective definitions; isotope mass numbers never become atom counts.",
+      "Unsupported isotope or variable-occupancy syntax carries a machine-readable unresolved reason and cannot enter an exact-composition feature set.",
+      "The NER-to-enrichment path preserves the original isotope syntax or parsed representation before normalization and produces stable versioned output.",
+      "Parser-version changes generate an affected-feature manifest and prevent silent reuse of old exact features; no full production backfill occurs without separate review."
+    ],
+    "out_of_scope": [
+      "Inferring crystal structure, polymorph, moire state or doping from formula alone.",
+      "Merging scientifically distinct samples solely because their element-only formulas match."
+    ],
+    "depends_on": [],
+    "owner_role": "Scientific data engineer with materials informatics reviewer"
+  },
+  {
+    "id": "SC10",
+    "title": "Separate unknowns, priors, conflicts and independent support in material semantics",
+    "priority": "P2",
+    "type": "bug",
+    "phase": "A",
+    "area": "Scientific vocabulary / evidence semantics",
+    "evidence_level": "Local aggregation defaults and terminology confirmed; rates of affected production records are not measured.",
+    "report_sections": [
+      "3.6",
+      "4.3",
+      "4.4",
+      "11"
+    ],
+    "summary": "Missing competing-order evidence becomes False, a family prior can appear as an observed pairing property, Tc variation is conflated with dispute, and paper counts are called confirmation. Introduce explicit scientific status semantics and avoid upgrading absence, priors or repeated citations into measured facts.",
+    "evidence": [
+      {
+        "path": "ingestion/ingestion/extract/materials_aggregator.py",
+        "line": 832,
+        "detail": "has_competing_order uses bool(...) so absent extracted evidence becomes False."
+      },
+      {
+        "path": "ingestion/ingestion/extract/materials_aggregator.py",
+        "line": 1171,
+        "detail": "A cuprate family default fills d-wave pairing symmetry without record-specific evidence."
+      },
+      {
+        "path": "ingestion/ingestion/extract/materials_aggregator.py",
+        "line": 805,
+        "detail": "Cross-record Tc spread contributes to a dispute flag without requiring comparable sample/state context."
+      },
+      {
+        "path": "ingestion/ingestion/extract/materials_aggregator.py",
+        "line": 345,
+        "detail": "Summary support wording uses paper-count confirmation rather than independent work/sample replication."
+      }
+    ],
+    "scope": [
+      "Define shared unknown, not_reported, not_extracted, not_computed, failed, conflicted and not_applicable semantics with reasons where applicable.",
+      "Store family/physics priors as explicitly Inferred with applicability and provenance, separate from observed/computed result fields.",
+      "Separate state_variability, extraction_conflict and scientific_dispute; require comparability/evidence before declaring a scientific conflict.",
+      "Rename source counts to support/occurrence statistics and represent independent work/sample replication only where identity and comparable conditions justify it.",
+      "Publish a small versioned vocabulary/mapping table shared by ingestion, API and frontend rather than expanding all scientific fields at once."
+    ],
+    "acceptance": [
+      "No mention of competing order yields unknown/not_reported, while an explicit absence claim retains its method, detection conditions and evidence.",
+      "A cuprate record with no pairing evidence is not presented as an observed d-wave result; any prior is separately labeled Inferred with its source and applicability.",
+      "Different doping or sample states produce state variability rather than an automatic scientific-dispute claim; extraction contradictions remain separately reviewable.",
+      "An arXiv/journal pair and repeated citations to one work do not count as independent replication, and ambiguous identities are not assumed independent.",
+      "Website and API wording distinguishes source support from confirmation; T1, model confidence and paper counts cannot imply independent experimental verification.",
+      "Contract fixtures preserve unknown versus false versus not-applicable across storage, API, display and export; migration mappings include unresolved cases and a vocabulary version."
+    ],
+    "out_of_scope": [
+      "Manually adjudicating every pairing mechanism or disputed claim in the corpus.",
+      "Assigning universal positive/negative scoring weights to physical properties across material families."
+    ],
+    "depends_on": [
+      "SC05"
+    ],
+    "owner_role": "Scientific domain engineer and curator with frontend support"
+  },
+  {
+    "id": "SC11",
+    "title": "Bind structure and phase extraction to local material/state evidence instead of whole-paper fallback",
+    "priority": "P2",
+    "type": "bug",
+    "phase": "B",
+    "area": "Relation extraction / structures / pilot curation",
+    "evidence_level": "Local full-body fallback and per-record assignment confirmed; document-level misassociation prevalence requires the bounded pilot.",
+    "report_sections": [
+      "3.6",
+      "4.1",
+      "4.2",
+      "12 stage B"
+    ],
+    "summary": "A phase found anywhere in a paper is currently copied into records lacking a phase. In multi-material or multi-pressure papers this can attach the wrong structure to a result. Extract evidence-bound material/sample/state/phase relations and leave unresolved mentions as candidates for review.",
+    "evidence": [
+      {
+        "path": "ingestion/ingestion/extract/material_ner.py",
+        "line": 418,
+        "detail": "extract_structure_phase(body) scans the full paper body to obtain a fallback phase."
+      },
+      {
+        "path": "ingestion/ingestion/extract/material_ner.py",
+        "line": 482,
+        "detail": "The same phase_fallback is assigned to each record lacking structure_phase, without local material/state linkage."
+      }
+    ],
+    "scope": [
+      "Remove whole-paper phase broadcasting and retain unmatched phase mentions as unassigned proposals with local evidence spans.",
+      "Extract explicit relations among formula/sample label, pressure/doping state, phase and supporting paragraph/table/caption; require review for ambiguous links.",
+      "Distinguish text-only structure claims from coordinate artifacts and record how an experimental state matches a computed or reported structure.",
+      "Use the bounded pilot to measure association accuracy, unresolved cases and review time; report missingness rather than filling a quota with inferred links."
+    ],
+    "acceptance": [
+      "A fixture containing two materials and one phase mention assigns that phase only to the explicitly supported material/state or leaves it unassigned.",
+      "A pressure-driven phase change produces separate state-bound claims, not a single paper-wide structure for all results.",
+      "Each accepted phase/structure relation has a locator, source revision and evidence text/table reference supporting the association.",
+      "Textual space-group or phase labels are not treated as coordinate structures, and no structural descriptor is generated without its required artifact/context.",
+      "Ambiguous sample labels, cited structures and unmatched mentions stay pending with reasons rather than being silently promoted to accepted properties.",
+      "Pilot results report reviewed association outcomes, extraction errors, unresolved counts and curator effort using identified cases; repeated import is idempotent."
+    ],
+    "out_of_scope": [
+      "Full-corpus structure reconstruction or CIF generation from prose.",
+      "Automatic formula-only matching to third-party structures as verified experimental identity."
+    ],
+    "depends_on": [
+      "SC01",
+      "SC02",
+      "SC05"
+    ],
+    "owner_role": "LLM extraction engineer with superconductivity curator"
+  }
+]

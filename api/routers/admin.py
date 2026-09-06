@@ -35,6 +35,7 @@ from models.admin import (
 from models.db import AuditReport, Material, User
 from models.user import MessageResponse
 from routers.auth import current_user_from_jwt
+from services.material_anomalies import material_review, review_context
 
 log = logging.getLogger(__name__)
 
@@ -284,13 +285,17 @@ async def override_flag(
     db: AsyncSession = Depends(get_db),
     reviewer: User = Depends(current_reviewer_or_admin),
 ) -> MessageResponse:
-    """Clear the flag and record the reviewer's decision. Subsequent
-    nightly runs check ``admin_decision->>'rule'`` and skip rows
-    whose flag has been overridden — so manual review work persists
-    across audits."""
-    m = await db.get(Material, material_id)
-    if m is None:
+    """Legacy governance override; never scientific correction or acceptance."""
+    m = (await db.execute(select(Material).where(Material.id == material_id).with_for_update())).scalar_one_or_none()
+    if m is None or m.review_reason == "provenance_quarantine_nims":
         raise HTTPException(404, "Material not found")
+    assessment = material_review(m.records, scope_id=m.id, context=review_context(m))
+    numeric_legacy = (m.review_reason or "").startswith(("tc_", "scientific_anomaly_review:", "unphysical_")) or m.review_reason in {
+        "implausible_pressure", "hydride_low_pressure_high_tc", "ambient_sc_with_high_pressure",
+        "record_year_out_of_range", "high_tc_unknown_family",
+    }
+    if assessment["needs_review"] or numeric_legacy:
+        raise HTTPException(409, "Scientific anomaly review requires source-linked evidence and revisioned review; a legacy override cannot correct or approve these results")
     if not m.needs_review:
         raise HTTPException(400, "Material is not currently flagged")
     m.admin_decision = {
@@ -319,7 +324,7 @@ async def confirm_flag(
     """Keep the flag but record that a reviewer has reviewed and
     confirmed it (audit trail)."""
     m = await db.get(Material, material_id)
-    if m is None:
+    if m is None or m.review_reason == "provenance_quarantine_nims":
         raise HTTPException(404, "Material not found")
     m.admin_decision = {
         "rule": m.review_reason,

@@ -121,10 +121,10 @@ export default async function TimelinePage({
         <h1 className="text-3xl font-bold tracking-tight">Tc timeline</h1>
         <p className="mt-1 text-sm text-slate-600">
           Transition temperature versus year, one dot per reported
-          measurement. Colour by material family. Implausible Tc
-          values (&gt;250&nbsp;K at ambient pressure — usually NER
-          confusing a Curie / melting / structural transition with
-          the SC Tc) are filtered out automatically.
+          result. Colour by material family. Hover for result origin and
+          explicit, reported, missing or unresolved pressure. Legacy review
+          and numeric visibility rules still apply; this is not an exhaustive
+          list of independently confirmed superconductors.
         </p>
       </div>
 
@@ -178,17 +178,17 @@ export default async function TimelinePage({
                 <>
                   Displaying a representative sample of{" "}
                   <span className="font-medium text-slate-700">
-                    {data.coverage.returned_points.toLocaleString()}
+                    {data.coverage.returned_points.toLocaleString("en-US")}
                   </span>{" "}from{" "}
                 </>
               )}
               <span className="font-medium text-slate-700">
-                {data.coverage.total_points.toLocaleString()}
+                {data.coverage.total_points.toLocaleString("en-US")}
               </span>{" "}
               measurement{data.coverage.total_points === 1 ? "" : "s"}{" "}
               from{" "}
               <span className="font-medium text-slate-700">
-                {data.coverage.total_materials.toLocaleString()}
+                {data.coverage.total_materials.toLocaleString("en-US")}
               </span>{" "}
               materials
               {data.coverage.year_min != null &&

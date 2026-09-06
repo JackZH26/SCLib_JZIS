@@ -6,9 +6,9 @@ error in one rule does not block the others.
 
 For each rule:
 
-1. Run the UPDATE that flips needs_review=TRUE on matching rows.
-   We skip rows that already have a matching ``admin_decision`` so
-   admin overrides survive subsequent runs.
+1. Recompute raw-preserving numeric findings using the shared versioned
+   policy. Legacy administrative notes never override scientific findings.
+   Separate legacy governance SQL rules retain their earlier decision policy.
 2. Snapshot the first 10 ids that the rule now points at (for the
    admin UI's "what got flagged" sample).
 3. Look up yesterday's count for the same rule to compute
@@ -19,19 +19,59 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
-from sqlalchemy import text
+from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from services.audit_rules import RULES, AuditRule
+from models.db import Material
+from services.audit_rules import ANOMALY_RULE_NAME, RULES, AuditRule
+from services.material_anomalies import material_review, review_context
 
 log = logging.getLogger(__name__)
+
+
+async def _run_anomaly_policy(session: AsyncSession) -> dict:
+    """Recompute derived findings without changing records or scientific values.
+
+    Count all currently affected materials (not only newly hidden rows), making
+    trends repeatable. Existing governance flags, quarantines and holds are never
+    cleared. A free-text legacy admin override is not a scientific acceptance.
+    """
+    last_id = None
+    affected = 0
+    sample_ids = []
+    findings = []
+    while True:
+        stmt = select(Material).order_by(Material.id).limit(200).with_for_update()
+        if last_id is not None:
+            stmt = stmt.where(Material.id > last_id)
+        rows = (await session.execute(stmt)).scalars().all()
+        if not rows:
+            break
+        for material in rows:
+            review = material_review(material.records, scope_id=material.id, context=review_context(material))
+            if material.anomaly_review != review:
+                material.anomaly_review = review
+            if review["needs_review"]:
+                affected += 1
+                if len(sample_ids) < 10:
+                    sample_ids.append(material.id)
+                    findings.append({"material_id": material.id, "policy_version": review["version"],
+                                     "rule_counts": review["rule_counts"], "action": "retain_raw_and_review"})
+                if not material.needs_review:
+                    material.needs_review = True
+                    material.review_reason = material.review_reason or ANOMALY_RULE_NAME
+        last_id = rows[-1].id
+        await session.flush()
+    return {"flagged": affected, "sample_ids": sample_ids, "suggested_fixes": findings}
 
 
 async def _run_rule(session: AsyncSession, rule: AuditRule) -> dict:
     """Execute a single rule. Returns a dict with the flag count and
     sample ids; the runner aggregates these into the report rows."""
+    if rule.name == ANOMALY_RULE_NAME:
+        return await _run_anomaly_policy(session)
     # Critical rules flip needs_review; warn/info rules just count
     # (we still want them in audit_reports for trends, but they
     # don't hide the row from default views).
@@ -112,7 +152,7 @@ async def run_audit(session: AsyncSession) -> dict[str, int]:
     passed in is the outer caller's; we ``commit()`` per rule and
     re-use it for the next.
     """
-    started_at = datetime.now(timezone.utc)
+    started_at = datetime.now(UTC)
     summary: dict[str, int] = {}
 
     for rule in RULES:
@@ -152,7 +192,7 @@ async def run_audit(session: AsyncSession) -> dict[str, int]:
             """),
             {
                 "started":   started_at,
-                "completed": datetime.now(timezone.utc),
+                "completed": datetime.now(UTC),
                 "name":      rule.name,
                 "sev":       rule.severity,
                 "rows":      outcome["flagged"],
@@ -172,7 +212,7 @@ async def run_audit(session: AsyncSession) -> dict[str, int]:
             )
 
     log.info(
-        "nightly audit done: %d rules, %d total new flags",
+        "nightly audit done: %d rules, %d summed rule matches (not distinct materials)",
         len(RULES),
         sum(v for v in summary.values() if v > 0),
     )

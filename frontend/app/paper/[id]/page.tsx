@@ -14,6 +14,7 @@ import { ApiError, getPaper, getSimilar } from "@/lib/api";
 import { absoluteUrl, serializeJsonLd } from "@/lib/seo";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { PaperCard } from "@/components/PaperCard";
+import { pressureLabel } from "@/lib/pressure-semantics";
 
 type PaperPageProps = {
   params: Promise<{ id: string }>;
@@ -215,7 +216,7 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
                       {m.tc_kelvin ?? "—"}
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums text-slate-600">
-                      {m.pressure_gpa ?? "ambient"}
+                      {pressureLabel(m.pressure_semantics, m.pressure_gpa)}
                     </td>
                     <td className="px-4 py-3 text-slate-600">
                       {m.tc_type ?? "—"}

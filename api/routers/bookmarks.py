@@ -30,15 +30,16 @@ from models import get_db
 from models.db import Bookmark, Material, Paper, User
 from models.personal import (
     BookmarkCreate,
-    BookmarkRead,
     BookmarkedMaterial,
     BookmarkedMaterialsResponse,
     BookmarkedPaper,
     BookmarkedPapersResponse,
+    BookmarkRead,
 )
 from models.user import MessageResponse
 from routers.auth import current_user_from_jwt
 from services.authors import names as _author_names
+from services.material_property_projection import project_material_properties
 
 router = APIRouter(prefix="/bookmarks", tags=["bookmarks"])
 
@@ -185,6 +186,9 @@ async def list_material_bookmarks(
     )
     rows: list[BookmarkedMaterial] = []
     for bm, mat in q.all():
+        properties = project_material_properties(
+            mat, BookmarkedMaterial.model_fields, scope_id=mat.id, compact=True,
+        )
         rows.append(BookmarkedMaterial(
             id=bm.id,
             target_id=bm.target_id,
@@ -192,10 +196,10 @@ async def list_material_bookmarks(
             formula=mat.formula,
             formula_latex=mat.formula_latex,
             family=mat.family,
-            tc_max=mat.tc_max,
-            tc_ambient=mat.tc_ambient,
+            tc_max=properties["tc_max"],
+            tc_ambient=properties["tc_ambient"],
             arxiv_year=mat.arxiv_year,
+            property_evidence=properties["property_evidence"],
+            anomaly_review=properties["anomaly_review"],
         ))
     return BookmarkedMaterialsResponse(total=total, results=rows)
-
-

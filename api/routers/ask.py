@@ -27,6 +27,7 @@ from routers.deps import Identity, require_identity
 from services import provider_resilience, rag, retrieval, vector_search
 from services.authors import short as _authors_short
 from services.metrics import observe_rag
+from services.result_semantics import evidence_classifications
 
 log = logging.getLogger(__name__)
 
@@ -134,6 +135,7 @@ async def ask(
                 year=year,
                 section=chunk.section,
                 text=chunk.text,
+                material_evidence=chunk.materials_mentioned or [],
             )
         )
         sources_out.append(
@@ -146,6 +148,7 @@ async def ask(
                 year=year,
                 section=chunk.section,
                 snippet=_snippet(chunk.text),
+                material_evidence=evidence_classifications(chunk.materials_mentioned),
             )
         )
         if len(rag_inputs) >= body.max_sources:

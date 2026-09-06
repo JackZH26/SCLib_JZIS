@@ -1,0 +1,369 @@
+{
+  "counts": {
+    "condition_changes": 1,
+    "fields_compared": 6,
+    "fields_not_comparable": 78,
+    "legacy_dropped_before_grouping": 2,
+    "legacy_dropped_from_material_records": 1,
+    "legacy_retained_numeric_branch": 4,
+    "material_visibility_changes": 1,
+    "material_visibility_compared": 2,
+    "materials_seen": 6,
+    "proposed_no_findings": 3,
+    "proposed_raw_records_retained": 7,
+    "proposed_review_required": 4,
+    "provenance_added": 4,
+    "provenance_unavailable": 2,
+    "records_seen": 7,
+    "records_with_disposition_difference_or_review": 5,
+    "value_changes": 4
+  },
+  "current_year": 2026,
+  "database_connections": 0,
+  "database_rewrites": 0,
+  "historical_values": "compared_only_when_supplied_in_legacy_summary",
+  "input_sha256": "7e0424329db62898ec512ccad818d60c064f32e92a472b79f3326ee4b4bf5048",
+  "joint_epc": "not_evaluated",
+  "legacy_replay": "numeric_driver_and_record_deletion_branches_only",
+  "limitations": [
+    "No production census is implied by a local or synthetic snapshot.",
+    "Previously deleted records require authorized original source snapshots; this tool cannot recover them.",
+    "Non-numeric source/quality exclusions and historical curator decisions are not replayed or undone.",
+    "Cross-view Tc summaries can differ because eligibility and support pools differ.",
+    "No-findings is not approval, scientific acceptance, or ML admission."
+  ],
+  "old_rule_version": "legacy-numeric-gates/2026-09-05-code-inventory",
+  "proposed_rule_counts": {
+    "legacy_compound_reference_review": 1,
+    "legacy_numeric_override_requires_revision": 1,
+    "tc_family_reference_review": 3,
+    "tc_high_review": 2
+  },
+  "proposed_rule_version": "anomaly-review/1.0.0",
+  "report_sha256": "ffb4365f282423470ccae66e27307cdb9ebf11dcdaf0e536c8cea40d627d39c5",
+  "report_version": "anomaly-aggregation-impact/1.0.0",
+  "sample_limit": 50,
+  "samples": [
+    {
+      "input_id": "synthetic:high-pressure-high-tc",
+      "input_record_count": 1,
+      "old_needs_review": null,
+      "property_changes": [],
+      "proposed_needs_review": true,
+      "proposed_record_count": 1,
+      "proposed_scope_id": "mat:lah10",
+      "record_changes": [
+        {
+          "excluded_properties": [
+            "tc_max",
+            "tc_max_experimental",
+            "tc_max_theoretical",
+            "tc_ambient"
+          ],
+          "old_numeric_disposition": {
+            "reason": "legacy_tc_outside_0.01_to_300_K",
+            "status": "dropped_before_grouping"
+          },
+          "proposed_raw_preserved": true,
+          "proposed_status": "review_required",
+          "result_id": "legacy-result:a51c8dcc578ecef8b13044ea12ab824053783cfcbdfe84b59065bee17a6a348d",
+          "rule_ids": [
+            "tc_family_reference_review",
+            "tc_high_review"
+          ],
+          "scientific_acceptance": false
+        }
+      ],
+      "record_changes_truncated": false
+    },
+    {
+      "input_id": "synthetic:cap-counterexample",
+      "input_record_count": 1,
+      "old_needs_review": false,
+      "property_changes": [
+        {
+          "conditions_changed_fields": [],
+          "field": "tc_max",
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_value": 45,
+          "proposed_conditions": {
+            "tc_conditions": null
+          },
+          "proposed_evidence_status": "not_reported",
+          "proposed_result_id": null,
+          "proposed_value": null,
+          "provenance_comparison": "unavailable",
+          "value_changed": true
+        }
+      ],
+      "proposed_needs_review": true,
+      "proposed_record_count": 1,
+      "proposed_scope_id": "mat:mgb2",
+      "record_changes": [
+        {
+          "excluded_properties": [
+            "tc_max",
+            "tc_max_experimental",
+            "tc_max_theoretical",
+            "tc_ambient"
+          ],
+          "old_numeric_disposition": {
+            "reason": null,
+            "status": "retained_numeric_branch"
+          },
+          "proposed_raw_preserved": true,
+          "proposed_status": "review_required",
+          "result_id": "legacy-result:5977a1d16a38b4fd15fbd7e9e8721f73f509d9f1b406b444d5eecc67e569807b",
+          "rule_ids": [
+            "legacy_compound_reference_review",
+            "tc_family_reference_review"
+          ],
+          "scientific_acceptance": false
+        }
+      ],
+      "record_changes_truncated": false
+    },
+    {
+      "input_id": "synthetic:exact-override-request",
+      "input_record_count": 1,
+      "old_needs_review": null,
+      "property_changes": [
+        {
+          "conditions_changed_fields": [],
+          "field": "tc_max",
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_value": 45,
+          "proposed_conditions": {
+            "tc_conditions": null
+          },
+          "proposed_evidence_status": "not_reported",
+          "proposed_result_id": null,
+          "proposed_value": null,
+          "provenance_comparison": "unavailable",
+          "value_changed": true
+        },
+        {
+          "conditions_changed_fields": [],
+          "field": "tc_max_experimental",
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_value": 39,
+          "proposed_conditions": {
+            "calculation_method": null,
+            "calculation_protocol": null,
+            "field_orientation": null,
+            "hc2_conditions": null,
+            "hc2_direction": null,
+            "hc2_temperature_k": null,
+            "magnetic_field_orientation": null,
+            "measurement": "resistivity",
+            "measurement_method": null,
+            "measurement_temperature_k": null,
+            "method": null,
+            "protocol_id": null,
+            "tc_conditions": null,
+            "tc_criterion": null,
+            "tc_type": null,
+            "temperature_k": null
+          },
+          "proposed_evidence_status": "supported",
+          "proposed_result_id": "legacy-result:68db8ecdc8af8c525101b18428c06ed0a7e5fa058f51586231dd75efbeafb761",
+          "proposed_value": 39.0,
+          "provenance_comparison": "added",
+          "value_changed": false
+        }
+      ],
+      "proposed_needs_review": true,
+      "proposed_record_count": 1,
+      "proposed_scope_id": "mat:mgb2",
+      "record_changes": [
+        {
+          "excluded_properties": [
+            "tc_max"
+          ],
+          "old_numeric_disposition": {
+            "reason": null,
+            "status": "retained_numeric_branch"
+          },
+          "proposed_raw_preserved": true,
+          "proposed_status": "review_required",
+          "result_id": "legacy-result:68db8ecdc8af8c525101b18428c06ed0a7e5fa058f51586231dd75efbeafb761",
+          "rule_ids": [
+            "legacy_numeric_override_requires_revision"
+          ],
+          "scientific_acceptance": false
+        }
+      ],
+      "record_changes_truncated": false
+    },
+    {
+      "input_id": "synthetic:low-positive-tc",
+      "input_record_count": 1,
+      "old_needs_review": null,
+      "property_changes": [],
+      "proposed_needs_review": false,
+      "proposed_record_count": 1,
+      "proposed_scope_id": "mat:mgb2",
+      "record_changes": [
+        {
+          "excluded_properties": [],
+          "old_numeric_disposition": {
+            "reason": "legacy_tc_outside_0.01_to_300_K",
+            "status": "dropped_before_grouping"
+          },
+          "proposed_raw_preserved": true,
+          "proposed_status": "no_findings",
+          "result_id": "legacy-result:ff277acf2e0fff162ab0a0f3de50817f88e5c5c664cd67e34e21750362aac7f8",
+          "rule_ids": [],
+          "scientific_acceptance": false
+        }
+      ],
+      "record_changes_truncated": false
+    },
+    {
+      "input_id": "synthetic:mixed-records",
+      "input_record_count": 2,
+      "old_needs_review": false,
+      "property_changes": [
+        {
+          "conditions_changed_fields": [],
+          "field": "tc_max",
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_value": 39,
+          "proposed_conditions": {
+            "calculation_method": null,
+            "calculation_protocol": null,
+            "field_orientation": null,
+            "hc2_conditions": "c-axis at 2 K",
+            "hc2_direction": null,
+            "hc2_temperature_k": null,
+            "magnetic_field_orientation": null,
+            "measurement": "resistivity",
+            "measurement_method": null,
+            "measurement_temperature_k": null,
+            "method": null,
+            "protocol_id": null,
+            "tc_conditions": "pressure not reported, resistivity, synthetic:normal",
+            "tc_criterion": null,
+            "tc_type": null,
+            "temperature_k": null
+          },
+          "proposed_evidence_status": "supported",
+          "proposed_result_id": "legacy-result:fbf64536bf5ffdd818fccfe7948d6fc3d59564e7dbea8ba2dd0e743271b3d3b4",
+          "proposed_value": 39.0,
+          "provenance_comparison": "added",
+          "value_changed": false
+        },
+        {
+          "conditions_changed_fields": [
+            "hc2_conditions"
+          ],
+          "field": "hc2_tesla",
+          "old_conditions": {
+            "hc2_conditions": "c-axis at 2 K"
+          },
+          "old_result_id": null,
+          "old_value": 14,
+          "proposed_conditions": {
+            "calculation_method": null,
+            "calculation_protocol": null,
+            "field_orientation": null,
+            "hc2_conditions": "ab-plane at 1 K",
+            "hc2_direction": null,
+            "hc2_temperature_k": null,
+            "magnetic_field_orientation": null,
+            "measurement": "resistivity",
+            "measurement_method": null,
+            "measurement_temperature_k": null,
+            "method": null,
+            "protocol_id": null,
+            "tc_conditions": null,
+            "tc_criterion": null,
+            "tc_type": null,
+            "temperature_k": null
+          },
+          "proposed_evidence_status": "supported",
+          "proposed_result_id": "legacy-result:b22c6dc46c9d403848a777f29b4e2ef48bed3c1f0efc34a2df3ec6c15e1d731c",
+          "proposed_value": 100.0,
+          "provenance_comparison": "added",
+          "value_changed": true
+        }
+      ],
+      "proposed_needs_review": false,
+      "proposed_record_count": 2,
+      "proposed_scope_id": "mat:mgb2",
+      "record_changes": [
+        {
+          "excluded_properties": [
+            "tc_max",
+            "tc_max_experimental",
+            "tc_max_theoretical",
+            "tc_ambient"
+          ],
+          "old_numeric_disposition": {
+            "reason": "legacy_tc_above_250_K",
+            "status": "dropped_from_material_records"
+          },
+          "proposed_raw_preserved": true,
+          "proposed_status": "review_required",
+          "result_id": "legacy-result:b22c6dc46c9d403848a777f29b4e2ef48bed3c1f0efc34a2df3ec6c15e1d731c",
+          "rule_ids": [
+            "tc_family_reference_review",
+            "tc_high_review"
+          ],
+          "scientific_acceptance": false
+        }
+      ],
+      "record_changes_truncated": false
+    },
+    {
+      "input_id": "synthetic:precision",
+      "input_record_count": 1,
+      "old_needs_review": null,
+      "property_changes": [
+        {
+          "conditions_changed_fields": [],
+          "field": "tc_max",
+          "old_conditions": {},
+          "old_result_id": null,
+          "old_value": 39.123,
+          "proposed_conditions": {
+            "calculation_method": null,
+            "calculation_protocol": null,
+            "field_orientation": null,
+            "hc2_conditions": null,
+            "hc2_direction": null,
+            "hc2_temperature_k": null,
+            "magnetic_field_orientation": null,
+            "measurement": "resistivity",
+            "measurement_method": null,
+            "measurement_temperature_k": null,
+            "method": null,
+            "protocol_id": null,
+            "tc_conditions": "pressure not reported, resistivity, synthetic:precise",
+            "tc_criterion": null,
+            "tc_type": null,
+            "temperature_k": null
+          },
+          "proposed_evidence_status": "supported",
+          "proposed_result_id": "legacy-result:2f44a745c14e17afb561d43ddb0bf423389486ba18a579d8f6f307425626b7dc",
+          "proposed_value": 39.123456789,
+          "provenance_comparison": "added",
+          "value_changed": true
+        }
+      ],
+      "proposed_needs_review": false,
+      "proposed_record_count": 1,
+      "proposed_scope_id": "mat:mgb2",
+      "record_changes": [],
+      "record_changes_truncated": false
+    }
+  ],
+  "scientific_acceptance": false,
+  "scope": "local_current_input_after_non_numeric_source_filters",
+  "source_rewrites": 0,
+  "summary_semantics": "catalogue_summary_not_joint_observation"
+}

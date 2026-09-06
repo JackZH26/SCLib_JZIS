@@ -30,6 +30,7 @@ from routers import (
     auth,
     bookmarks,
     discovery,
+    discovery_priority,
     feedback,
     health,
     history,
@@ -38,6 +39,7 @@ from routers import (
     observability,
     papers,
     search,
+    scientific_corrections,
     seo,
     similar,
     stats,
@@ -640,4 +642,6 @@ app.include_router(bookmarks.router, prefix="/v1")
 app.include_router(feedback.router, prefix="/v1")
 app.include_router(version.router, prefix="/v1")
 app.include_router(admin.router, prefix="/v1")
+app.include_router(scientific_corrections.router, prefix="/v1")
 app.include_router(discovery.router, prefix="/v1")
+app.include_router(discovery_priority.router, prefix="/v1")

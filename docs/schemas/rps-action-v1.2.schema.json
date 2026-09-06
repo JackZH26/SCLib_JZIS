@@ -1,0 +1,91 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "sha256"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "state_id": {
+      "maxLength": 120,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "State Id",
+      "type": "string"
+    },
+    "assessment_action_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Assessment Action Hash",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "verification",
+        "calculation",
+        "conversion",
+        "measurement"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "conversion_target_pressure_gpa": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Conversion Target Pressure Gpa"
+    },
+    "conversion_rationale": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Conversion Rationale"
+    },
+    "conversion_evidence": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Conversion Evidence",
+      "type": "array"
+    }
+  },
+  "required": [
+    "state_id",
+    "assessment_action_hash",
+    "kind"
+  ],
+  "title": "ActionContent",
+  "type": "object"
+}

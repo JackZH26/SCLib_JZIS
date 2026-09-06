@@ -197,7 +197,7 @@ function truncate(s: string, n: number): string {
 
 function formatDate(iso: string): string {
   try {
-    return new Date(iso).toLocaleString(undefined, {
+    return new Date(iso).toLocaleString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",

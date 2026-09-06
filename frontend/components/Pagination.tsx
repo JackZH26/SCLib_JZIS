@@ -121,7 +121,7 @@ export function Pagination({
         <span className="text-slate-500">
           Total of{" "}
           <span className="font-semibold text-slate-800">
-            {total.toLocaleString()}
+            {total.toLocaleString("en-US")}
           </span>{" "}
           entries :
         </span>

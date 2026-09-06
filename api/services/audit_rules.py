@@ -1,244 +1,42 @@
-"""Nightly data-audit rule registry.
+"""Nightly governance rules and the shared versioned anomaly-review policy.
 
-Each rule is one ``AuditRule`` row with:
-
-* ``name`` — also written into ``materials.review_reason`` so the
-  admin queue groups by it.
-* ``severity`` — ``critical`` rows are hidden from default views;
-  ``warn``/``info`` are observed in audit_reports without flipping
-  needs_review (use them for trend-watching).
-* ``description`` — short human gloss surfaced in the admin UI.
-* ``predicate`` — SQL fragment slotted into ``WHERE … AND (…)`` of
-  the runner. Must reference ``materials`` columns directly; CTEs
-  go in ``setup`` if the rule needs row-aware joins.
-* ``setup`` — optional CTE prefix, joined via ``WITH`` before the
-  UPDATE. Used by rules that need cross-table joins (citation
-  conflation, retracted-source) so the predicate stays readable.
-* ``suggested_fix`` — human-readable action the admin should take
-  when this rule fires. Surfaced in the admin queue as guidance.
-* ``fix_query`` — optional SQL that returns
-  ``(material_id, field, current_val, suggested_val)`` for every
-  flagged row. The runner stores the first 10 rows in
-  ``audit_reports.suggested_fixes`` so the admin queue can show
-  concrete per-row fix proposals.
-
-Two important guarantees the runner enforces:
-
-1. **Idempotent.** A rule only flips ``needs_review`` from FALSE
-   to TRUE. Re-running the same rule is a no-op once steady state
-   is reached.
-2. **Admin-override aware.** If
-   ``materials.admin_decision->>'rule' = '<this rule>'`` an
-   admin has already reviewed and signed off; the runner skips it
-   so manual review work isn't undone the next night.
-
-Rule names line up with the categories in the design proposal:
-  A naming, B Tc, C pressure, D evidence, E year, F citation,
-  G cross-field, H retraction. D and G land later — left here as
-  empty stubs once the corpus has matured.
+Numeric findings retain raw values and require source-backed review. Thresholds
+are operational references, not physical limits or replacement measurements.
+Legacy governance rules remain distinct from scientific acceptance.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 
+from services.anomaly_review import ANOMALY_POLICY_VERSION
+
 
 @dataclass(frozen=True, slots=True)
 class AuditRule:
     name: str
-    severity: str  # 'critical' | 'warn' | 'info'
+    severity: str
     description: str
     predicate: str
-    setup: str = ""  # optional CTE prefixed before the UPDATE
-    suggested_fix: str = ""  # human-readable fix guidance for admin
-    fix_query: str = ""  # SQL → (material_id, field, current_val, suggested_val)
+    setup: str = ""
+    suggested_fix: str = ""
+    fix_query: str = ""
 
 
-# Family-specific Tc ceilings. Anything above this is implausible at
-# *any* pressure for that family. Source: 2026-04 reference sheet
-# (see project memory).
-_FAMILY_TC_CAPS = {
-    "cuprate":       165.0,
-    "iron_based":    110.0,
-    "nickelate":      85.0,
-    "hydride":       270.0,
-    "mgb2":           42.0,
-    "heavy_fermion":  25.0,
-    "fulleride":      45.0,
-    "conventional":   28.0,
-    "kagome":         10.0,
-    "organic":        15.0,
-    "bismuthate":     35.0,
-    "bis2_layered":   12.0,
-    "borocarbide":    25.0,
-    "ruthenate":       4.0,
-    "chalcogenide":   20.0,
-    "elemental":      12.0,
-}
-
-# Build the SQL VALUES list for the join in the Tc-cap rule.
-_TC_CAPS_SQL = ", ".join(
-    f"('{f}', {cap})" for f, cap in _FAMILY_TC_CAPS.items()
+ANOMALY_RULE_NAME = f"scientific_anomaly_review:{ANOMALY_POLICY_VERSION}"
+ANOMALY_RULE = AuditRule(
+    name=ANOMALY_RULE_NAME,
+    severity="critical",
+    description="Versioned raw-preserving scientific anomaly review; no automatic acceptance.",
+    predicate="FALSE",  # Evaluated by the canonical Python engine, never scalar SQL caps.
+    suggested_fix=(
+        "Inspect the retained source result and rule findings. Submit a source-linked "
+        "revision proposal when warranted; never clip, delete or approve a measurement "
+        "solely because of a threshold or a legacy override."
+    ),
 )
 
-
-# ============================================================
-# Rule registry
-# ============================================================
-
 RULES: list[AuditRule] = [
-    # --------------------------------------------------------
-    # B. Tc temperature — physical-plausibility caps per family
-    # --------------------------------------------------------
-    AuditRule(
-        name="tc_exceeds_family_cap",
-        severity="critical",
-        description=(
-            "Aggregated tc_max above the family's known physical "
-            "ceiling (any pressure)."
-        ),
-        setup=f"""
-            WITH caps(family, cap) AS (
-                VALUES {_TC_CAPS_SQL}
-            )
-        """,
-        predicate="""
-            EXISTS (
-                SELECT 1 FROM caps
-                WHERE caps.family = materials.family
-                  AND materials.tc_max > caps.cap
-            )
-        """,
-        suggested_fix=(
-            "Clamp tc_max to the family ceiling, or reclassify "
-            "the material to the correct family."
-        ),
-        fix_query=f"""
-            WITH caps(family, cap) AS (
-                VALUES {_TC_CAPS_SQL}
-            )
-            SELECT m.id, 'tc_max',
-                   m.tc_max::text,
-                   caps.cap::text
-            FROM materials m
-            JOIN caps ON caps.family = m.family
-            WHERE m.review_reason = 'tc_exceeds_family_cap'
-              AND m.tc_max > caps.cap
-            LIMIT 10
-        """,
-    ),
-    AuditRule(
-        name="tc_at_ambient_above_record",
-        severity="critical",
-        description=(
-            "ambient_sc=true but tc_max above the documented ambient "
-            "record (Hg-1223 quench, 152 K, Deng PNAS 2026)."
-        ),
-        predicate="ambient_sc = TRUE AND tc_max > 152",
-        suggested_fix=(
-            "Clamp tc_max to 152 K, or set ambient_sc=false if "
-            "the material is a high-pressure superconductor."
-        ),
-        fix_query="""
-            SELECT id, 'tc_max',
-                   tc_max::text,
-                   '152'
-            FROM materials
-            WHERE review_reason = 'tc_at_ambient_above_record'
-            LIMIT 10
-        """,
-    ),
-
-    # --------------------------------------------------------
-    # C. Pressure
-    # --------------------------------------------------------
-    AuditRule(
-        name="implausible_pressure",
-        severity="critical",
-        description=(
-            "Any record with pressure_gpa < 0 or > 500."
-        ),
-        predicate="""
-            EXISTS (
-                SELECT 1 FROM jsonb_array_elements(materials.records) r
-                WHERE jsonb_typeof(r.value->'pressure_gpa') = 'number'
-                  AND ((r.value->>'pressure_gpa')::float < 0
-                    OR (r.value->>'pressure_gpa')::float > 500)
-            )
-        """,
-        suggested_fix=(
-            "Remove or correct the bad record-level pressure value. "
-            "Likely an NER parse error (unit confusion or OCR artifact)."
-        ),
-    ),
-    AuditRule(
-        name="hydride_low_pressure_high_tc",
-        severity="critical",
-        description=(
-            "Hydride material with a record claiming Tc > 100 K and "
-            "pressure < 50 GPa (ambient hydride SC tops at ~10 K)."
-        ),
-        predicate="""
-            family = 'hydride'
-            AND EXISTS (
-                SELECT 1 FROM jsonb_array_elements(materials.records) r
-                WHERE jsonb_typeof(r.value->'tc_kelvin') = 'number'
-                  AND (r.value->>'tc_kelvin')::float > 100
-                  AND jsonb_typeof(r.value->'pressure_gpa') = 'number'
-                  AND (r.value->>'pressure_gpa')::float < 50
-            )
-        """,
-        suggested_fix=(
-            "Likely citation conflation or misclassified family. "
-            "Check if the record is from a review paper; if so, "
-            "exclude it. Otherwise reclassify the material."
-        ),
-    ),
-    AuditRule(
-        name="ambient_sc_with_high_pressure",
-        severity="critical",
-        description=(
-            "ambient_sc=true on a record but pressure_gpa > 1 — "
-            "self-contradictory."
-        ),
-        predicate="""
-            EXISTS (
-                SELECT 1 FROM jsonb_array_elements(materials.records) r
-                WHERE (r.value->>'ambient_sc') = 'true'
-                  AND jsonb_typeof(r.value->'pressure_gpa') = 'number'
-                  AND (r.value->>'pressure_gpa')::float > 1
-            )
-        """,
-        suggested_fix=(
-            "Set ambient_sc=false on the offending record, or "
-            "zero out pressure_gpa if the material is genuinely "
-            "ambient-pressure."
-        ),
-    ),
-
-    # --------------------------------------------------------
-    # E. Year sanity
-    # --------------------------------------------------------
-    AuditRule(
-        name="record_year_out_of_range",
-        severity="warn",
-        description=(
-            "Record year outside [1980, current_year + 1] — likely a "
-            "parse error."
-        ),
-        predicate="""
-            EXISTS (
-                SELECT 1 FROM jsonb_array_elements(materials.records) r
-                WHERE jsonb_typeof(r.value->'year') = 'number'
-                  AND ((r.value->>'year')::int < 1980
-                    OR (r.value->>'year')::int >
-                       EXTRACT(YEAR FROM NOW())::int + 1)
-            )
-        """,
-        suggested_fix=(
-            "Correct the record year (NER parse error) or remove "
-            "the record if the year is unrecoverable."
-        ),
-    ),
+    ANOMALY_RULE,
     AuditRule(
         name="arxiv_year_mismatch",
         severity="info",
@@ -256,9 +54,8 @@ RULES: list[AuditRule] = [
             )
         """,
         suggested_fix=(
-            "Replace arxiv_year with the earliest record year. "
-            "The current value is likely a cited reference date "
-            "rather than the paper's own publication year."
+            "Check publication and measurement dates against their source. "
+            "Do not replace one kind of date with another or overwrite raw evidence."
         ),
     ),
 
@@ -286,54 +83,9 @@ RULES: list[AuditRule] = [
             AND (records->0->>'paper_id') IN (SELECT id FROM review_papers)
         """,
         suggested_fix=(
-            "Mark the material as disputed or delete it. The Tc "
-            "was extracted from a review paper and likely belongs "
-            "to a different material cited in that review."
+            "Review cited versus original source attribution and retain the raw "
+            "claim and locator. A review-paper heuristic is not proof of an error."
         ),
-    ),
-
-    # --------------------------------------------------------
-    # D. Per-compound Tc cap (tighter than family cap)
-    # --------------------------------------------------------
-    AuditRule(
-        name="tc_exceeds_compound_cap",
-        severity="critical",
-        description=(
-            "tc_max exceeds the per-compound cap from manual_overrides "
-            "(tighter than the family ceiling)."
-        ),
-        setup="""
-            WITH compound_caps AS (
-                SELECT canonical, (override_value)::float AS cap
-                FROM manual_overrides
-                WHERE field = 'tc_max' AND is_cap = true
-            )
-        """,
-        predicate="""
-            EXISTS (
-                SELECT 1 FROM compound_caps cc
-                WHERE cc.canonical = materials.formula_normalized
-                  AND materials.tc_max > cc.cap
-            )
-        """,
-        suggested_fix=(
-            "Clamp tc_max to the per-compound cap. The cap is based "
-            "on established experimental records for this specific "
-            "material."
-        ),
-        fix_query="""
-            SELECT m.id, 'tc_max',
-                   m.tc_max::text,
-                   mo.override_value
-            FROM materials m
-            JOIN manual_overrides mo
-              ON mo.canonical = m.formula_normalized
-             AND mo.field = 'tc_max'
-             AND mo.is_cap = true
-            WHERE m.review_reason = 'tc_exceeds_compound_cap'
-              AND m.tc_max > (mo.override_value)::float
-            LIMIT 10
-        """,
     ),
 
     # --------------------------------------------------------

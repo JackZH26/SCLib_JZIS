@@ -79,7 +79,10 @@ class _FakeSession:
             })
         if model is TimelineProjectionState and key == 1:
             return SimpleNamespace(
-                schema_version=1,
+                schema_version=health.PROJECTION_SCHEMA_VERSION,
+                classifier_version=health.CLASSIFIER_VERSION,
+                pressure_policy_version=health.PRESSURE_POLICY_VERSION,
+                anomaly_policy_version=health.ANOMALY_POLICY_VERSION,
                 source_year=datetime.now(UTC).year,
                 refreshed_at=datetime(2026, 7, 13, 1, 30, tzinfo=UTC),
                 material_count=20,

@@ -1,28 +1,13 @@
-"""GET /timeline — Tc-vs-year scatter points for the Plotly chart.
+"""GET /timeline — raw-backed Tc/year points from one shared read policy.
 
-Reads the incremental Timeline projection when it is ready. During rollout or
-if that derived read path fails, the endpoint safely falls back to flattening
-``Material.records`` with the exact same classification rules.
+Projection and fallback both apply versioned anomaly rules to source records.
+Operational thresholds hold unusual claims for review; they neither establish
+physical limits nor replace a reported measurement. include_pending permits
+pending materials, not invalid/review-required points or provenance quarantines.
+Raw retained records and findings remain available in the material detail view.
 
-Filtering rules (mirrors the /materials list endpoint's "honesty
-defaults" — we never surface data the aggregator already flagged as
-implausible):
-
-1. **needs_review materials are excluded.** Xe at 5000 K, manganites
-   at 347 K etc. are held back from both the list and the chart
-   until a human confirms.
-2. **Per-record Tc sanity:** any individual record with
-   ``tc_kelvin > 300`` or ``tc_kelvin < 0`` is skipped even on
-   non-flagged materials (the headline aggregate may be fine while
-   a single NER-mis-extracted record pollutes the chart).
-3. **Year validity:** record year must be in [1900, current_year + 1];
-   anything else is probably a parse error.
-4. **Deduplication:** records collapsed by (material_id, year,
-   round(Tc, 1), round(pressure, 0)) — same claim reported multiple
-   times in one paper doesn't render as N overlapping dots.
-
-Set ``?include_pending=true`` to surface the filtered-out rows (admin
-audit of the NER hallucinations).
+Coarse historical point deduplication and year provenance are separate SC06 work;
+passing these numeric checks is not scientific acceptance.
 """
 from __future__ import annotations
 
@@ -34,14 +19,18 @@ from enum import IntEnum
 from typing import Literal
 
 from fastapi import APIRouter, Depends, Query, Request, Response
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
 from models.db import Material, Paper
 from models.search import TimelineCoverage, TimelinePoint, TimelineResponse
+from services.anomaly_review import ANOMALY_POLICY_VERSION
 from services.http_cache import conditional_json_response, weak_etag
+from services.material_anomalies import review_context
+from services.pressure_semantics import PRESSURE_POLICY_VERSION
 from services.rate_limit import get_redis
+from services.result_semantics import CLASSIFIER_VERSION
 from services.timeline_points import (
     extract_timeline_points,
     missing_year_paper_ids,
@@ -51,7 +40,7 @@ from services.timeline_projection import fetch_projected_timeline_points
 router = APIRouter(tags=["timeline"])
 log = logging.getLogger(__name__)
 
-_CACHE_SCHEMA_VERSION = "v4"
+_CACHE_SCHEMA_VERSION = "v7-anomaly-review"
 _CACHE_TTL_SECONDS = 900
 _CACHE_CONTROL = (
     "public, max-age=60, s-maxage=900, stale-while-revalidate=3600"
@@ -98,6 +87,9 @@ def _cache_key(
             "offset": offset,
             "limit": limit,
             "schema_version": schema_version,
+            "classifier_version": CLASSIFIER_VERSION,
+            "pressure_policy_version": PRESSURE_POLICY_VERSION,
+            "anomaly_policy_version": ANOMALY_POLICY_VERSION,
         },
         sort_keys=True,
         separators=(",", ":"),
@@ -143,13 +135,16 @@ def _http_response(
     *,
     cache_status: str,
 ) -> Response:
-    data_version_value, last_modified = _payload_metadata(payload)
+    data_version_value, _source_updated_at = _payload_metadata(payload)
     return conditional_json_response(
         request,
         payload,
         cache_control=_CACHE_CONTROL,
         data_version_value=data_version_value,
-        last_modified=last_modified,
+        # A pressure/origin policy change can change the representation without
+        # touching source timestamps. Only the body ETag is a valid conditional
+        # validator; keep source update time in the JSON, not Last-Modified.
+        last_modified=None,
         cache_header="X-Timeline-Cache",
         cache_status=cache_status,
     )
@@ -174,12 +169,13 @@ def _payload_metadata(payload: str) -> tuple[str, datetime | None]:
 
 
 def _timeline_data_version(updated_at: datetime | None) -> str:
+    policy_tag = hashlib.sha256(f"{CLASSIFIER_VERSION}|{PRESSURE_POLICY_VERSION}|{ANOMALY_POLICY_VERSION}".encode()).hexdigest()[:12]
     if updated_at is None:
-        return "timeline-v1-unknown"
+        return f"timeline-v4-anomaly-{policy_tag}-unknown"
     if updated_at.tzinfo is None:
         updated_at = updated_at.replace(tzinfo=UTC)
     stamp = updated_at.astimezone(UTC).strftime("%Y%m%dT%H%M%SZ")
-    return f"timeline-v1-{stamp}"
+    return f"timeline-v4-anomaly-{policy_tag}-{stamp}"
 
 
 @router.get(
@@ -198,25 +194,24 @@ async def timeline(
     include_pending: bool = Query(
         False,
         description=(
-            "Surface materials flagged needs_review=True (implausible "
-            "Tc). Off by default so the chart reflects vetted data only."
+            "Include pending materials, but retain result-level scientific anomaly "
+            "filters and provenance quarantines. Neither mode establishes validation."
         ),
     ),
     experimental_only: bool = Query(
         False,
         description=(
-            "Drop records classified as theoretical (DFT / first-"
-            "principles calculations, see _is_theoretical()). When set, "
-            "only points originating from a real experimental "
-            "measurement technique survive — useful when the user is "
-            "looking for ground truth and not predictions."
+            "Only results with resolved Observed origin and non-conflicting "
+            "source roles survive. Unknown, Computed, Inferred and AI-Proposed "
+            "results are excluded. Observed identifies a reported method, "
+            "not scientific validation or independent replication."
         ),
     ),
     only_aps: bool = Query(
         False,
         description="Only show Tc records whose paper_id is APS-sourced.",
     ),
-    max_points: TimelinePointBudget | None = Query(
+    max_points: TimelinePointBudget | None = Query(  # noqa: B008 — FastAPI parameter metadata
         None,
         description=(
             "Deterministically downsample large results to one of the supported "
@@ -337,6 +332,7 @@ def _timeline_response(
             available_points=0,
         )
     return TimelineResponse(
+        anomaly_policy_version=ANOMALY_POLICY_VERSION,
         data_version=_timeline_data_version(data_updated_at),
         data_updated_at=data_updated_at,
         family=family,
@@ -359,7 +355,7 @@ async def _build_timeline_fallback(
     limit: int | None,
     db: AsyncSession,
 ) -> TimelineResponse:
-    stmt = select(Material)
+    stmt = select(Material).where(or_(Material.review_reason.is_(None), Material.review_reason != "provenance_quarantine_nims"))
     if family:
         stmt = stmt.where(Material.family == family)
     if not include_pending:
@@ -394,10 +390,16 @@ async def _build_timeline_fallback(
             material.id,
             material.records,
             paper_years,
+            family=material.family,
+            compound_thresholds=review_context(material)["compound_thresholds"],
         ):
             if only_aps and not projected.is_aps:
                 continue
-            if experimental_only and projected.is_theoretical:
+            if experimental_only and (
+                projected.knowledge_origin != "Observed"
+                or projected.classification_status != "resolved"
+                or projected.source_role == "conflicted"
+            ):
                 continue
             points.append(TimelinePoint(
                 material=material.formula,
@@ -406,8 +408,13 @@ async def _build_timeline_fallback(
                 tc_kelvin=projected.tc_kelvin,
                 year=projected.year,
                 pressure_gpa=projected.pressure_gpa,
+                pressure_semantics=projected.pressure_semantics,
                 paper_id=projected.paper_id,
                 is_theoretical=projected.is_theoretical,
+                knowledge_origin=projected.knowledge_origin,
+                classification_status=projected.classification_status,
+                source_role=projected.source_role,
+                classifier_version=projected.classifier_version,
             ))
 
     points.sort(key=lambda point: (point.year, -point.tc_kelvin))

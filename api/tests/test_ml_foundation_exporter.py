@@ -233,6 +233,8 @@ async def test_export_uses_one_stable_read_only_snapshot_and_public_material_sco
 
     assert hook_state is not None
     assert manifest["schema_version"] == "sclib-source-export/v1"
+    assert manifest["scientific_semantics"]["material_row"] == "catalogue_summary_not_joint_observation"
+    assert manifest["scientific_semantics"]["joint_feature_rows_exported"] is False
     assert manifest["source_snapshot_id"] == str(snapshot_id)
     assert manifest["database"]["transaction_isolation"] == "repeatable read"
     assert manifest["database"]["transaction_read_only"] == "on"
@@ -250,6 +252,32 @@ async def test_export_uses_one_stable_read_only_snapshot_and_public_material_sco
     assert pending_material_id not in material_ids
     assert quarantine_material_id not in material_ids
     assert skeleton_material_id not in material_ids
+    assert all(set(row) == {"id", "formula", "formula_normalized", "records"}
+               for row in _read_jsonl(bundle / "materials.jsonl"))
+
+    # Even re-signed files cannot turn a source occurrence export into one
+    # synthetic material-level row of joint physical inputs.
+    for field, value in (("lambda_eph", 3.0), ("omega_log_k", 1000.0),
+                         ("hc2_tesla", 100.0), ("lattice_params", {"a": 3.0, "c": 7.0})):
+        summary_bundle = tmp_path / f"joint-summary-{field}"
+        shutil.copytree(bundle, summary_bundle)
+        material_path = summary_bundle / "materials.jsonl"
+        material_rows = _read_jsonl(material_path)
+        next(row for row in material_rows if row["id"] == public_material_id)[field] = value
+        _write_canonical_jsonl(material_path, material_rows)
+        _refresh_bundle_integrity(summary_bundle)
+        with pytest.raises(EXPORTER.VerificationError, match=rf"unknown fields: {field}"):
+            EXPORTER.verify_export_bundle(summary_bundle)
+
+    mislabeled_bundle = tmp_path / "joint-semantics"
+    shutil.copytree(bundle, mislabeled_bundle)
+    mislabeled_manifest_path = mislabeled_bundle / EXPORTER.MANIFEST_FILE
+    mislabeled_manifest = json.loads(mislabeled_manifest_path.read_text())
+    mislabeled_manifest["scientific_semantics"]["joint_feature_rows_exported"] = True
+    mislabeled_manifest_path.write_text(json.dumps(mislabeled_manifest))
+    _refresh_bundle_integrity(mislabeled_bundle)
+    with pytest.raises(EXPORTER.VerificationError, match="cannot declare joint-observation"):
+        EXPORTER.verify_export_bundle(mislabeled_bundle)
 
     paper_ids = {row["id"] for row in _read_jsonl(bundle / "papers.jsonl")}
     assert paper_id in paper_ids

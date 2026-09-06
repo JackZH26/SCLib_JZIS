@@ -8,27 +8,19 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass
+import math
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
 
-
-TIMELINE_TC_MAX_K = 300.0
-
-_EXPERIMENTAL_MEASUREMENTS = frozenset({
-    "resistivity", "susceptibility", "specific_heat",
-    "arpes", "musr", "stm", "neutron", "nmr", "nqr",
-    "magnetization", "thermal_conductivity",
-    "raman scattering", "raman", "andreev reflection",
-    "nernst", "tunneling", "esr", "torque magnetometry",
-    "hall effect", "hall_effect", "transport",
-})
-
-_THEORETICAL_MEASUREMENTS = frozenset({
-    "calculation", "dft", "first-principles", "first principles",
-    "computational", "ab initio", "ab-initio",
-    "allen-dynes", "eliashberg", "tight-binding",
-})
+from services.anomaly_review import (
+    ANOMALY_POLICY_VERSION,
+    assess_record_anomalies,
+    eligible_for_property,
+)
+from services.pressure_semantics import PRESSURE_POLICY_VERSION, classify_pressure
+from services.result_semantics import CLASSIFIER_VERSION, classify_result, is_computed_result
+from services.scientific_values import record_quantity
 
 
 @dataclass(frozen=True, slots=True)
@@ -41,29 +33,26 @@ class ProjectedTimelinePoint:
     paper_id: str | None
     is_theoretical: bool
     is_aps: bool
+    knowledge_origin: str = "Unknown"
+    classification_status: str = "unknown"
+    source_role: str = "unknown"
+    classifier_version: str = CLASSIFIER_VERSION
+    pressure_semantics: dict = field(default_factory=dict)
 
 
 def as_float(value: Any) -> float | None:
-    if value is None:
+    if value is None or isinstance(value, bool):
         return None
     try:
-        return float(value)
-    except (TypeError, ValueError):
+        result = float(value)
+        return result if math.isfinite(result) else None
+    except (TypeError, ValueError, OverflowError):
         return None
 
 
 def is_theoretical(record: dict[str, Any]) -> bool:
-    """Classify one Tc record using the chart's audited precedence rules."""
-    measurement = (record.get("measurement") or "").strip().lower()
-    if measurement in _EXPERIMENTAL_MEASUREMENTS:
-        return False
-    if measurement in _THEORETICAL_MEASUREMENTS:
-        return True
-    paper_type = (record.get("paper_type") or "").strip().lower()
-    if paper_type not in {"theoretical", "computational"}:
-        return False
-    pressure = as_float(record.get("pressure_gpa"))
-    return pressure is not None and pressure > 0
+    """Compatibility flag only; its negation is not an Observed predicate."""
+    return is_computed_result(record)
 
 
 def is_aps_record(record: dict[str, Any]) -> bool:
@@ -96,9 +85,11 @@ def _point_id(
     tc_bin: float,
     pressure_bin: int | None,
     theoretical: bool,
+    classification: tuple[str, str, str],
+    pressure_key: str,
 ) -> str:
     identity = json.dumps(
-        [material_id, year, tc_bin, pressure_bin, theoretical],
+        [material_id, year, tc_bin, pressure_bin, theoretical, classification, CLASSIFIER_VERSION, pressure_key, PRESSURE_POLICY_VERSION, ANOMALY_POLICY_VERSION],
         separators=(",", ":"),
     )
     return hashlib.sha256(identity.encode()).hexdigest()
@@ -110,15 +101,18 @@ def extract_timeline_points(
     paper_years: dict[str, int],
     *,
     current_year: int | None = None,
+    family: str | None = None,
+    compound_thresholds: tuple | list = (),
 ) -> list[ProjectedTimelinePoint]:
     """Validate and de-duplicate all Timeline points for one material."""
     year_hi = (current_year or datetime.now(UTC).year) + 1
-    seen: dict[tuple[int, float, int | None, bool], ProjectedTimelinePoint] = {}
+    seen: dict[tuple, ProjectedTimelinePoint] = {}
 
     for record in records or []:
         if not isinstance(record, dict):
             continue
-        tc = record.get("tc_kelvin")
+        proposal = record_quantity(record, "tc_kelvin", "tc")
+        tc = proposal["value"]
         paper_id_value = record.get("paper_id")
         paper_id = paper_id_value if isinstance(paper_id_value, str) else None
         year = (
@@ -126,23 +120,38 @@ def extract_timeline_points(
             or record.get("measurement_year")
             or (paper_years.get(paper_id) if paper_id else None)
         )
-        if tc is None or year is None:
+        if (tc is None or year is None or proposal["status"] != "parsed" or proposal["relation"] != "exact"
+                or proposal["errors"] or proposal["approximate"] or proposal["uncertainty"] is not None):
+            continue
+        tc_value = as_float(tc)
+        if tc_value is None or isinstance(year, bool):
             continue
         try:
-            tc_value = float(tc)
             year_value = int(year)
-        except (TypeError, ValueError):
+            if float(year) != year_value:
+                continue
+        except (TypeError, ValueError, OverflowError):
             continue
-        if tc_value <= 0 or tc_value > TIMELINE_TC_MAX_K:
+        assessment = assess_record_anomalies(record, scope_id=material_id, family=family,
+                                              compound_thresholds=compound_thresholds, current_year=year_hi - 1)
+        if tc_value <= 0 or not all(eligible_for_property(assessment, field) for field in ("tc_kelvin", "year", "pressure_gpa")):
             continue
         if year_value < 1900 or year_value > year_hi:
             continue
 
-        pressure = as_float(record.get("pressure_gpa"))
+        assessment = classify_pressure(record)
+        pressure_metadata = assessment.to_dict()
+        pressure = assessment.pressure_gpa if assessment.pressure_state in {"reported", "explicit_ambient"} else None
+        pressure_key = json.dumps(pressure_metadata, sort_keys=True, separators=(",", ":"))
+        classification = classify_result(record)
+        classification_key = (
+            classification.knowledge_origin, classification.classification_status,
+            classification.source_role,
+        )
         theoretical = is_theoretical(record)
         tc_bin = round(tc_value, 1)
         pressure_bin = round(pressure) if pressure is not None else None
-        dedup_key = (year_value, tc_bin, pressure_bin, theoretical)
+        dedup_key = (year_value, tc_bin, pressure_bin, theoretical, classification_key, pressure_key)
         if dedup_key in seen:
             continue
         seen[dedup_key] = ProjectedTimelinePoint(
@@ -152,6 +161,8 @@ def extract_timeline_points(
                 tc_bin,
                 pressure_bin,
                 theoretical,
+                classification_key,
+                pressure_key,
             ),
             material_id=material_id,
             tc_kelvin=tc_value,
@@ -160,6 +171,10 @@ def extract_timeline_points(
             paper_id=paper_id,
             is_theoretical=theoretical,
             is_aps=is_aps_record(record),
+            knowledge_origin=classification.knowledge_origin,
+            classification_status=classification.classification_status,
+            source_role=classification.source_role,
+            pressure_semantics=pressure_metadata,
         )
 
     return sorted(seen.values(), key=lambda point: (point.year, -point.tc_kelvin))

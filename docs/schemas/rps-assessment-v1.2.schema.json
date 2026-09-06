@@ -1,0 +1,363 @@
+{
+  "$defs": {
+    "ActionAnchor": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "title": "Anchor",
+          "type": "number"
+        },
+        "lower": {
+          "title": "Lower",
+          "type": "number"
+        },
+        "upper": {
+          "title": "Upper",
+          "type": "number"
+        },
+        "rationale": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "anchor",
+        "lower",
+        "upper",
+        "rationale",
+        "evidence"
+      ],
+      "title": "ActionAnchor",
+      "type": "object"
+    },
+    "Cost": {
+      "additionalProperties": false,
+      "properties": {
+        "resource": {
+          "enum": [
+            "cpu_core_hours",
+            "gpu_hours",
+            "memory_gib",
+            "storage_gib",
+            "human_hours"
+          ],
+          "title": "Resource",
+          "type": "string"
+        },
+        "lower": {
+          "minimum": 0,
+          "title": "Lower",
+          "type": "number"
+        },
+        "upper": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Upper"
+        },
+        "basis": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Basis",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "resource",
+        "lower",
+        "upper",
+        "basis",
+        "evidence"
+      ],
+      "title": "Cost",
+      "type": "object"
+    },
+    "Dimension": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "assessed",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "anchor": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Anchor"
+        },
+        "lower": {
+          "title": "Lower",
+          "type": "number"
+        },
+        "upper": {
+          "title": "Upper",
+          "type": "number"
+        },
+        "rule_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "rationale": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 100,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "missing_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Reason"
+        }
+      },
+      "required": [
+        "status",
+        "anchor",
+        "lower",
+        "upper",
+        "rule_id",
+        "rationale"
+      ],
+      "title": "Dimension",
+      "type": "object"
+    },
+    "Outcome": {
+      "additionalProperties": false,
+      "properties": {
+        "observation": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Observation",
+          "type": "string"
+        },
+        "decision": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Decision",
+          "type": "string"
+        }
+      },
+      "required": [
+        "observation",
+        "decision"
+      ],
+      "title": "Outcome",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "sha256"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "rps-assessment/1.2",
+      "default": "rps-assessment/1.2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "id": {
+      "maxLength": 120,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Id",
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "material": {
+      "$ref": "#/$defs/Reference"
+    },
+    "state": {
+      "$ref": "#/$defs/Reference"
+    },
+    "action": {
+      "$ref": "#/$defs/Reference"
+    },
+    "profile_assignment": {
+      "$ref": "#/$defs/Reference"
+    },
+    "formula": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Formula",
+      "type": "string"
+    },
+    "family": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Family",
+      "type": "string"
+    },
+    "state_summary": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "State Summary",
+      "type": "string"
+    },
+    "action_summary": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Action Summary",
+      "type": "string"
+    },
+    "role": {
+      "enum": [
+        "new_candidate",
+        "conditional_candidate",
+        "mechanism_anchor",
+        "reference_anchor",
+        "benchmark_control",
+        "negative_control"
+      ],
+      "title": "Role",
+      "type": "string"
+    },
+    "target_fit": {
+      "enum": [
+        "matches",
+        "approved_conversion",
+        "mismatch",
+        "unresolved"
+      ],
+      "title": "Target Fit",
+      "type": "string"
+    },
+    "problem_resolved": {
+      "default": false,
+      "title": "Problem Resolved",
+      "type": "boolean"
+    },
+    "dimensions": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Dimension"
+      },
+      "title": "Dimensions",
+      "type": "object"
+    },
+    "decision_impact": {
+      "$ref": "#/$defs/ActionAnchor"
+    },
+    "discrimination": {
+      "$ref": "#/$defs/ActionAnchor"
+    },
+    "readiness": {
+      "$ref": "#/$defs/ActionAnchor"
+    },
+    "outcomes": {
+      "items": {
+        "$ref": "#/$defs/Outcome"
+      },
+      "maxItems": 10,
+      "minItems": 2,
+      "title": "Outcomes",
+      "type": "array"
+    },
+    "costs": {
+      "items": {
+        "$ref": "#/$defs/Cost"
+      },
+      "maxItems": 5,
+      "minItems": 1,
+      "title": "Costs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "revision",
+    "material",
+    "state",
+    "action",
+    "profile_assignment",
+    "formula",
+    "family",
+    "state_summary",
+    "action_summary",
+    "role",
+    "target_fit",
+    "dimensions",
+    "decision_impact",
+    "discrimination",
+    "readiness",
+    "outcomes",
+    "costs"
+  ],
+  "title": "Assessment",
+  "type": "object"
+}

@@ -10,6 +10,8 @@
  */
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { PropertyEvidenceValue } from "@/components/PropertyEvidence";
+import { ScientificAnomalyNotice } from "@/components/ScientificAnomalies";
 
 import {
   ApiError,
@@ -237,13 +239,14 @@ function MaterialsPanel() {
                 >
                   {m.formula}
                 </Link>
+                <ScientificAnomalyNotice review={m.anomaly_review} compact />
               </td>
               <td className="px-4 py-2 text-sage-muted">{m.family ?? "—"}</td>
               <td className="px-4 py-2 text-right tabular-nums text-sage-ink">
-                {m.tc_max != null ? m.tc_max.toFixed(1) : "—"}
+                <PropertyEvidenceValue evidence={m.property_evidence} field="tc_max" compact includeUnit={false} />
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-sage-muted">
-                {m.tc_ambient != null ? m.tc_ambient.toFixed(1) : "—"}
+                <PropertyEvidenceValue evidence={m.property_evidence} field="tc_ambient" compact />
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-sage-muted">
                 {m.arxiv_year ?? "—"}
@@ -290,7 +293,7 @@ function shortAuthors(authors: string[]): string {
 
 function formatAbs(iso: string): string {
   try {
-    return new Date(iso).toLocaleDateString(undefined, {
+    return new Date(iso).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",

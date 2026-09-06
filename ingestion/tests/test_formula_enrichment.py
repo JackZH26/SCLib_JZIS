@@ -14,7 +14,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from ingestion.extract.formula_enrichment import (
     PARSER_NAME,
     PARSER_VERSION,
+    composition_cache_is_current,
     enrich_formula,
+    enrich_material_composition,
 )
 
 
@@ -222,6 +224,45 @@ def test_none_input_is_invalid_and_still_hashable_for_audit():
     assert first["composition_status"] == "invalid"
     assert first["errors"] == ["empty_formula"]
     assert len(first["input_hash"]) == 64
+
+
+@pytest.mark.parametrize("formula", [
+    "La₂Cu¹⁸O₄", "^{18}O", "$La_2Cu^{18}O_4$", "18O", "[18O]2",
+    "D2O", "LaD10", "H0.5D0.5", "H/D", "La₂Cu¹⁶O₂¹⁸O₂", "O²⁻",
+])
+def test_isotope_and_charge_notation_fails_closed_before_normalization(formula):
+    result = enrich_formula(formula)
+    assert result["composition_status"] == "invalid"
+    assert result["errors"] == ["isotope_or_charge_requires_resolution"]
+    assert result["formula_raw"] == formula
+    assert result["isotope_notation"]["mentions"]
+    _assert_has_no_exact_descriptors(result)
+
+
+def test_unicode_variables_and_ordinary_subscripts_are_not_isotope_counts():
+    assert enrich_formula("La₂₋ₓSrₓCuO₄")["composition_status"] == "variable"
+    assert enrich_formula("MgB₂")["element_amounts"] == {"Mg": 1, "B": 2}
+    assert enrich_formula("TaB2")["composition_status"] == "exact"
+    assert enrich_formula("DyB2")["composition_status"] == "exact"
+
+
+def test_cached_old_or_tampered_exact_features_cannot_be_reused():
+    current = enrich_formula("MgB2")
+    assert composition_cache_is_current("MgB2", current)
+    assert not composition_cache_is_current("MgB2", {**current, "parser_version": "1.0.3"})
+    assert not composition_cache_is_current("MgB2", {**current, "atomic_fractions": {"Mg": .9, "B": .1}})
+    assert not composition_cache_is_current("La₂Cu¹⁸O₄", enrich_formula("La2Cu18O4"))
+
+
+def test_material_composition_does_not_override_raw_isotope_with_catalog_alias():
+    result = enrich_material_composition({
+        "formula": "La2Cu18O4",
+        "records": [{"formula_raw": "La₂Cu¹⁸O₄"}],
+    })
+    assert result["composition_status"] == "invalid"
+    assert result["errors"] == ["source_isotope_identity_requires_resolution"]
+    assert result["catalog_formula"] == "La2Cu18O4"
+    _assert_has_no_exact_descriptors(result)
 
 
 def _assert_has_no_exact_descriptors(result):

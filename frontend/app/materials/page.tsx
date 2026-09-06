@@ -26,6 +26,8 @@ export const metadata: Metadata = {
 type Sp = {
   family?: string;
   tc_min?: string;
+  pressure_max?: string;
+  experimental_only?: string;
   sort?: string;
   page?: string;
   per_page?: string;
@@ -77,6 +79,8 @@ export default async function MaterialsPage({
   const params: MaterialListParams = {
     family: query.family || undefined,
     tc_min: query.tc_min ? Number(query.tc_min) : undefined,
+    pressure_max: query.pressure_max ? Number(query.pressure_max) : undefined,
+    experimental_only: query.experimental_only === "true",
     ambient_sc: parseTri(query.ambient_sc),
     is_unconventional: parseTri(query.is_unconventional),
     has_competing_order: parseTri(query.has_competing_order),
@@ -120,9 +124,11 @@ export default async function MaterialsPage({
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Materials</h1>
         <p className="mt-1 text-sm text-slate-600">
-          Aggregated per-compound records: Tc, pairing, structure phase,
-          competing orders, and literature coverage. Filters combine with
-          AND semantics.
+          Catalogue selections for Tc, pairing, structure and competing orders,
+          with per-property source records. A material row is not a joint
+          observation. Tc, pressure and origin filters match one result.
+          Pairing, phase and classification flags filter catalogue columns,
+          not verified result evidence; their displayed selections may be unavailable.
         </p>
       </div>
 
@@ -146,7 +152,7 @@ export default async function MaterialsPage({
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Pairing
+            Catalogue pairing
           </span>
           <select
             name="pairing_symmetry"
@@ -164,7 +170,7 @@ export default async function MaterialsPage({
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Phase
+            Catalogue phase
           </span>
           <input
             name="structure_phase"
@@ -176,7 +182,7 @@ export default async function MaterialsPage({
 
         <label className="flex flex-col gap-1">
           <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Evidence
+            Result source tier
           </span>
           <select
             name="min_tier"
@@ -202,15 +208,31 @@ export default async function MaterialsPage({
           />
         </label>
 
-        {triOptions("ambient_sc", "Ambient", query.ambient_sc)}
+        <label className="flex flex-col gap-1">
+          <span className="text-xs font-medium uppercase tracking-wide text-slate-500">Ambient result</span>
+          <select name="ambient_sc" defaultValue={query.ambient_sc ?? ""}
+            className="rounded border border-sage-border bg-white px-2 py-1">
+            <option value="">Any</option>
+            <option value="true">Explicit ambient + observed Tc</option>
+          </select>
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-xs font-medium uppercase tracking-wide text-slate-500">P ≤ (GPa)</span>
+          <input type="number" name="pressure_max" min="0" step="any" defaultValue={query.pressure_max ?? ""}
+            className="w-24 rounded border border-sage-border px-2 py-1" />
+        </label>
+        <label className="flex items-center gap-2 text-xs text-slate-600">
+          <input type="checkbox" name="experimental_only" value="true" defaultChecked={query.experimental_only === "true"} />
+          Observed results only
+        </label>
         {triOptions(
           "is_unconventional",
-          "Unconv.",
+          "Catalogue unconv.",
           query.is_unconventional,
         )}
         {triOptions(
           "has_competing_order",
-          "Comp. order",
+          "Catalogue comp. order",
           query.has_competing_order,
         )}
 
@@ -223,8 +245,8 @@ export default async function MaterialsPage({
             defaultValue={sort}
             className="rounded border border-sage-border bg-white px-2 py-1"
           >
-            <option value="tc_max">Tc max</option>
-            <option value="tc_ambient">Tc ambient</option>
+            <option value="tc_max">Catalogue Tc max</option>
+            <option value="tc_ambient">Catalogue Tc ambient</option>
             <option value="arxiv_year">arXiv year</option>
             <option value="total_papers">Paper count</option>
           </select>
@@ -264,12 +286,21 @@ export default async function MaterialsPage({
         </button>
       </form>
 
+      <p className="text-xs text-slate-500">
+        Family, Tc, pressure and result-evidence filters must match the same extracted result.
+        Unknown pressure does not satisfy a pressure limit. Catalogue summary values may describe other results.
+      </p>
+
       {data == null ? (
-        <p className="text-sm text-red-600">Failed to load materials.</p>
+        <p className="text-sm text-red-600">
+          {query.ambient_sc === "false"
+            ? "The negative ambient filter is unsupported: missing ambient evidence is not a negative experiment. Choose Any or Explicit ambient + observed Tc."
+            : "Failed to load materials."}
+        </p>
       ) : (
         <>
           <div className="text-xs text-slate-500">
-            {data.total.toLocaleString()} materials
+            {data.total.toLocaleString("en-US")} materials
           </div>
           <MaterialTable rows={data.results} />
           <Pagination

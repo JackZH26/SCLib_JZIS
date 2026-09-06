@@ -29,6 +29,13 @@ from typing import Any
 EXPORT_SCHEMA_VERSION = "sclib-source-export/v1"
 EXPORTER_VERSION = "sclib-ml-source-exporter/v1"
 LICENSE_SCHEMA_VERSION = "sclib-license-manifest/v1"
+SCIENTIFIC_SEMANTICS = {
+    "material_row": "catalogue_summary_not_joint_observation",
+    "records": "source_occurrences_require_result_state_and_method_review",
+    "legacy_summary_fields_exported": False,
+    "joint_feature_rows_exported": False,
+    "scientific_acceptance": "not_implied_by_export_or_verification",
+}
 
 MATERIALS_FILE = "materials.jsonl"
 PAPERS_FILE = "papers.jsonl"
@@ -589,6 +596,7 @@ def build_export_manifest(
         "chunk_count": state.counts["chunks"],
         "license_manifest_sha256": license_hash,
         "material_scope": material_scope,
+        "scientific_semantics": dict(SCIENTIFIC_SEMANTICS),
         "files": {key: dict(value) for key, value in files.items()},
         "counts": {
             **state.counts,
@@ -961,6 +969,12 @@ def verify_export_bundle(bundle_dir: Path) -> dict[str, Any]:
         raise VerificationError("unsupported export manifest schema")
     if manifest.get("exporter_version") != EXPORTER_VERSION:
         raise VerificationError("unsupported exporter version")
+    # Historical v1 bundles predate this explicit annotation, but already use
+    # the same strict id/formula/records-only egress schema. Never reinterpret
+    # either generation as a joint observed feature row. A supplied declaration
+    # must not claim stronger scientific semantics than the exporter provides.
+    if "scientific_semantics" in manifest and manifest["scientific_semantics"] != SCIENTIFIC_SEMANTICS:
+        raise VerificationError("source export cannot declare joint-observation or accepted-label semantics")
     try:
         uuid.UUID(str(manifest["source_snapshot_id"]))
     except (KeyError, ValueError) as exc:

@@ -1,0 +1,85 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "maxLength": 120,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Id",
+      "type": "string"
+    },
+    "version": {
+      "maxLength": 120,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Version",
+      "type": "string"
+    },
+    "objective": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Objective",
+      "type": "string"
+    },
+    "target_pressure_max_gpa": {
+      "minimum": 0,
+      "title": "Target Pressure Max Gpa",
+      "type": "number"
+    },
+    "budget": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "number"
+      },
+      "propertyNames": {
+        "enum": [
+          "cpu_core_hours",
+          "gpu_hours",
+          "memory_gib",
+          "storage_gib",
+          "human_hours"
+        ]
+      },
+      "title": "Budget",
+      "type": "object"
+    },
+    "profile_mixes": {
+      "patternProperties": {
+        "^[A-Za-z0-9_.:-]+$": {
+          "additionalProperties": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "type": "object"
+        }
+      },
+      "propertyNames": {
+        "maxLength": 120,
+        "minLength": 1
+      },
+      "title": "Profile Mixes",
+      "type": "object"
+    },
+    "dimension_rules": {
+      "additionalProperties": {
+        "maxLength": 120,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_.:-]+$",
+        "type": "string"
+      },
+      "title": "Dimension Rules",
+      "type": "object"
+    }
+  },
+  "required": [
+    "id",
+    "version",
+    "objective",
+    "target_pressure_max_gpa",
+    "budget",
+    "profile_mixes",
+    "dimension_rules"
+  ],
+  "title": "Campaign",
+  "type": "object"
+}

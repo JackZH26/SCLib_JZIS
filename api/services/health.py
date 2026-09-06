@@ -12,7 +12,10 @@ from models import get_session_factory
 from models.db import StatsCache, TimelineProjectionState
 from models.health import DataComponentHealth, DependencyCheck, DependencyHealth
 from models.search import StatsDataPipeline
+from services.anomaly_review import ANOMALY_POLICY_VERSION
+from services.pressure_semantics import PRESSURE_POLICY_VERSION
 from services.rate_limit import get_redis
+from services.result_semantics import CLASSIFIER_VERSION
 from services.timeline_projection import PROJECTION_SCHEMA_VERSION
 
 _PROBE_TIMEOUT_SECONDS = 2.0
@@ -82,6 +85,9 @@ async def collect_database_data_health() -> dict[str, DataComponentHealth]:
     timeline_ready = (
         timeline is not None
         and timeline.schema_version == PROJECTION_SCHEMA_VERSION
+        and getattr(timeline, "classifier_version", None) == CLASSIFIER_VERSION
+        and getattr(timeline, "pressure_policy_version", None) == PRESSURE_POLICY_VERSION
+        and getattr(timeline, "anomaly_policy_version", None) == ANOMALY_POLICY_VERSION
         and timeline.source_year == datetime.now(UTC).year
     )
 
@@ -118,6 +124,7 @@ async def collect_database_data_health() -> dict[str, DataComponentHealth]:
             details={
                 "schema_version": timeline.schema_version if timeline is not None else None,
                 "source_year": timeline.source_year if timeline is not None else None,
+                "anomaly_policy_version": getattr(timeline, "anomaly_policy_version", None),
                 "material_count": timeline.material_count if timeline is not None else None,
                 "active_point_count": (
                     timeline.active_point_count if timeline is not None else None

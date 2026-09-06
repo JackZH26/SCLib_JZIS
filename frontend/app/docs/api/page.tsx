@@ -252,6 +252,9 @@ Content-Type: application/json
           <p className="mt-2">
             <strong>Filters:</strong> <Code>family</Code> (comma-separated),{" "}
             <Code>tc_min</Code>, <Code>ambient_sc</Code>,{" "}
+            <Code>pressure_min</Code>, <Code>pressure_max</Code>,{" "}
+            <Code>experimental_only</Code>, <Code>knowledge_origin</Code>,{" "}
+            <Code>source_role</Code>,{" "}
             <Code>is_unconventional</Code>,{" "}
             <Code>pairing_symmetry</Code>, <Code>structure_phase</Code>.
           </p>
@@ -260,6 +263,15 @@ Content-Type: application/json
             <Code>tc_ambient</Code> | <Code>arxiv_year</Code> |{" "}
             <Code>total_papers</Code>. Pagination via <Code>limit</Code> &amp;{" "}
             <Code>offset</Code>.
+          </p>
+          <p className="mt-2">
+            Family, Tc, pressure and evidence filters must match one extracted result;
+            <Code>matching_results</Code> identifies the matching occurrences and their pressure semantics.
+            Unknown pressure is excluded from pressure limits unless
+            <Code>include_unknown_pressure=true</Code> is explicitly requested.
+            <Code>ambient_sc=true</Code> requires an observed positive result with explicit ambient evidence;
+            <Code>ambient_sc=false</Code> returns 422 because absence is not a negative experiment.
+            These references are legacy occurrence identifiers, not reviewed ML labels.
           </p>
         </Endpoint>
 

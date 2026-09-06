@@ -11,7 +11,6 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
-
 # ---------------------------------------------------------------------------
 # Ask history
 # ---------------------------------------------------------------------------
@@ -95,6 +94,8 @@ class BookmarkedMaterial(BaseModel):
     tc_max: float | None
     tc_ambient: float | None
     arxiv_year: int | None
+    property_evidence: dict[str, Any] = Field(default_factory=dict)
+    anomaly_review: dict[str, Any] = Field(default_factory=dict)
 
 
 class BookmarkedPapersResponse(BaseModel):

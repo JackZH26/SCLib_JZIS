@@ -38,6 +38,7 @@ import math
 import re
 import unicodedata
 from collections import defaultdict
+from collections.abc import Mapping
 from decimal import Decimal, InvalidOperation
 from functools import reduce
 from typing import Any, Literal
@@ -47,7 +48,99 @@ from ingestion.extract import formula_validator
 CompositionStatus = Literal["exact", "variable", "interface", "mixture", "invalid"]
 
 PARSER_NAME = "sclib_formula_enrichment"
-PARSER_VERSION = "1.0.3"
+PARSER_VERSION = "1.1.0"
+
+# Phase 1 recognizes isotope notation but deliberately does not emit exact
+# isotope compositions: occupancy and isotope masses need a reviewed grammar
+# and table. This guard runs BEFORE Unicode/LaTeX normalization. Unsupported
+# superscripts may also be charge notation; those must not become atom counts.
+_ISOTOPE_SUPERSCRIPT = re.compile(r"[⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻]+")
+_ISOTOPE_LATEX = re.compile(r"\^\s*(?:\{[^{}]*\}|[-+]?\d+)")
+_ISOTOPE_PREFIX = re.compile(r"^\s*\[?\d+\s*[A-Z][a-z]?")
+_ISOTOPE_BRACKET = re.compile(r"\[\s*\d+\s*[A-Z][a-z]?\s*\]")
+_HYDROGEN_ISOTOPE = re.compile(r"[DT](?![a-z])")
+
+
+def isotope_notation(raw: Any) -> dict[str, Any] | None:
+    """Recognize isotope/charge syntax without erasing or interpreting it.
+
+    Supported recognition: Unicode mass superscripts, LaTeX superscripts,
+    bracket/prefix mass labels and D/T aliases. Ambiguous ASCII interior mass
+    labels cannot be inferred retrospectively; callers must preserve raw text.
+    """
+    if not isinstance(raw, str):
+        return None
+    mentions = []
+    for pattern, kind in (
+        (_ISOTOPE_SUPERSCRIPT, "superscript_isotope_or_charge"),
+        (_ISOTOPE_LATEX, "latex_isotope_or_charge"),
+        (_ISOTOPE_PREFIX, "leading_mass_or_multiplier"),
+        (_ISOTOPE_BRACKET, "bracket_mass_label"),
+        (_HYDROGEN_ISOTOPE, "hydrogen_isotope_alias"),
+    ):
+        for match in pattern.finditer(raw):
+            mentions.append(
+                {"text": match.group(), "start": match.start(), "end": match.end(), "kind": kind}
+            )
+    return {"status": "requires_resolution", "mentions": mentions} if mentions else None
+
+
+def composition_cache_is_current(raw: str, cached: Any) -> bool:
+    """Fail closed for stale or tampered composition descriptors.
+
+    Version checking alone cannot certify a cache's values. Recompute this
+    cheap parser and compare the entire payload before reusing exact features.
+    """
+    if not isinstance(cached, dict):
+        return False
+    expected = enrich_formula(raw)
+    candidate = dict(cached)
+    # Database composition_data stores status in an adjacent column.
+    if "composition_status" not in candidate:
+        expected.pop("composition_status")
+    return candidate == expected
+
+
+def enrich_material_composition(material: Mapping[str, Any]) -> dict[str, Any]:
+    """Do not certify a normalized catalog formula over raw isotope evidence.
+
+    Catalog aliases may group records but cannot establish scientific identity.
+    The offline planner and independent parity validator share this guard. It
+    does not attempt to reconstruct isotope notation already lost everywhere.
+    """
+    formula = (
+        material.get("formula_raw")
+        or material.get("formula")
+        or material.get("formula_normalized")
+        or ""
+    )
+    result = enrich_formula(str(formula))
+    records = material.get("records") or []
+    if isinstance(records, str):
+        try:
+            import json
+
+            records = json.loads(records)
+        except (TypeError, ValueError):
+            return _invalid(_empty_result(formula), "unreadable_source_records")
+    for record in records if isinstance(records, list) else []:
+        if not isinstance(record, Mapping):
+            continue
+        extraction = record.get("raw_extraction")
+        extraction = extraction if isinstance(extraction, Mapping) else {}
+        original = (
+            record.get("formula_raw")
+            or extraction.get("formula_raw")
+            or extraction.get("formula")
+            or record.get("formula")
+        )
+        if isotope_notation(original):
+            guarded = enrich_formula(original)
+            guarded["catalog_formula"] = str(formula)
+            guarded["errors"] = ["source_isotope_identity_requires_resolution"]
+            return guarded
+    return result
+
 
 # ``CuSO4.5H2O`` is commonly an ASCII rendering of ``CuSO4·5H2O``, but it
 # is also syntactically compatible with a fractional oxygen stoichiometry.
@@ -346,6 +439,11 @@ def enrich_formula(raw: str) -> dict[str, Any]:
     if _TC_QUANTITY_NOTATION.fullmatch(raw):
         return _invalid(result, "physical_quantity_not_formula")
 
+    isotopes = isotope_notation(raw)
+    if isotopes:
+        result["isotope_notation"] = isotopes
+        return _invalid(result, "isotope_or_charge_requires_resolution")
+
     formula = _clean_input(raw)
     if not formula:
         return _invalid(result, "empty_formula")
@@ -420,6 +518,8 @@ def enrich_formula(raw: str) -> dict[str, Any]:
 def _empty_result(raw: Any) -> dict[str, Any]:
     return {
         "composition_status": "invalid",
+        "formula_raw": raw if isinstance(raw, str) else None,
+        "isotope_notation": None,
         "formula_reduced": None,
         "formula_anonymous": None,
         "chemical_system": None,
@@ -531,7 +631,12 @@ def _variable_symbols(formula: str) -> list[str]:
     ):
         symbols.add("delta")
     symbols.update(match.group(1).lower() for match in _VARIABLE_AFTER_OPERATOR.finditer(formula))
-    symbols.update(match.group(1).lower() for match in _VARIABLE_AFTER_ELEMENT.finditer(formula))
+    # Regex backtracking must not reinterpret the valid element Dy as D+y.
+    symbols.update(
+        match.group(1).lower()
+        for match in _VARIABLE_AFTER_ELEMENT.finditer(formula)
+        if match.group(0) not in _ELEMENTS
+    )
     symbols.update(match.group(1).lower() for match in _VARIABLE_SUFFIX.finditer(formula))
     return sorted(symbols)
 
@@ -620,5 +725,8 @@ __all__ = [
     "PARSER_NAME",
     "PARSER_VERSION",
     "CompositionStatus",
+    "composition_cache_is_current",
     "enrich_formula",
+    "enrich_material_composition",
+    "isotope_notation",
 ]

@@ -38,8 +38,10 @@ def _rows(
         "paper_id": paper_id,
         "tc_kelvin": 39.0,
         "pressure_gpa": 0.0,
+        "pressure_state": "explicit_ambient",
         "ambient_sc": True,
         "measurement": "resistivity",
+        "source_role": "primary",
     }
     if record is not None:
         material_record = record
@@ -160,6 +162,7 @@ def test_legacy_zero_without_ambient_evidence_is_preserved_as_ambiguous() -> Non
     assert report["hard_semantics"]["pressure"]["preserved_finite_nonnegative_values"] == 1
     assert report["distributions"]["mapper_warnings"] == {
         "legacy_zero_pressure_not_explicitly_ambient": 1,
+        "legacy_field_unit_assumed_gpa": 1,
     }
 
 

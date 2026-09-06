@@ -42,7 +42,10 @@ from ingestion.claims import (
     plan_work_identities,
 )
 from ingestion.claims.shadow_parity import build_shadow_parity_report
-from ingestion.extract.formula_enrichment import PARSER_VERSION, enrich_formula
+from ingestion.extract.formula_enrichment import (
+    PARSER_VERSION,
+    enrich_material_composition,
+)
 
 from scripts.export_ml_foundation_snapshot import (
     MANIFEST_FILE as SOURCE_EXPORT_MANIFEST_FILE,
@@ -219,7 +222,7 @@ def build_backfill_plan(
         if records is None:
             records = []
         formula = material.get("formula") or material.get("formula_normalized") or ""
-        enrichment = enrich_formula(formula)
+        enrichment = enrich_material_composition(material)
         composition_status = enrichment.pop("composition_status")
         compositions.append(
             {

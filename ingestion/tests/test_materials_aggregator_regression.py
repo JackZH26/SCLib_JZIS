@@ -17,6 +17,7 @@ def _record(
         "paper_id": paper_id,
         "tc_kelvin": tc_kelvin,
         "pressure_gpa": 0.0,
+        "pressure_state": "explicit_ambient",
         "ambient_sc": ambient_sc,
         "evidence_type": evidence_type,
         "measurement": measurement,
@@ -52,7 +53,7 @@ def test_cross_paper_summary_separates_theory_and_flags_tc_disagreement():
     assert summary["needs_review"] is False
 
 
-def test_bad_record_is_removed_without_hiding_a_corroborated_material():
+def test_numeric_outlier_is_retained_without_hiding_valid_material_properties():
     good = {
         **_record("arxiv:0101446", 39.0),
         "formula": "MgB2",
@@ -66,8 +67,9 @@ def test_bad_record_is_removed_without_hiding_a_corroborated_material():
 
     assert summary["family"] == "mgb2"
     assert summary["tc_max"] == 39.0
-    assert summary["total_papers"] == 1
-    assert summary["records"] == [good]
+    assert summary["total_papers"] == 2  # catalogue provenance, not positive-Tc support
+    assert summary["records"] == [good, impossible]
+    assert summary["anomaly_review"]["counts"]["review_required"] == 1
     assert summary["needs_review"] is False
 
 

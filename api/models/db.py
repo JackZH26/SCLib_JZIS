@@ -627,6 +627,10 @@ class Material(Base):
     total_papers: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     status: Mapped[str] = mapped_column(String(50), default="active_research", nullable=False)
     records: Mapped[list[Any]] = mapped_column(JSONB, default=list, nullable=False)
+    # Rebuildable review projection and bounded legacy review-rule inputs.
+    # Neither field is permission to alter raw records or approve a claim.
+    anomaly_review: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict, server_default=text("'{}'::jsonb"), nullable=False)
+    anomaly_context: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict, server_default=text("'{}'::jsonb"), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
         _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False
     )
@@ -759,10 +763,15 @@ class TimelineProjectionPoint(Base):
     year: Mapped[int] = mapped_column(SmallInteger, nullable=False)
     tc_kelvin: Mapped[float] = mapped_column(Float, nullable=False)
     pressure_gpa: Mapped[float | None] = mapped_column(Float)
+    pressure_semantics: Mapped[dict] = mapped_column(JSONB, server_default=text("'{}'::jsonb"), nullable=False)
     paper_id: Mapped[str | None] = mapped_column(String(100))
     is_theoretical: Mapped[bool] = mapped_column(
         Boolean, server_default="false", nullable=False,
     )
+    knowledge_origin: Mapped[str] = mapped_column(String(20), server_default="Unknown", nullable=False)
+    classification_status: Mapped[str] = mapped_column(String(20), server_default="unknown", nullable=False)
+    source_role: Mapped[str] = mapped_column(String(20), server_default="unknown", nullable=False)
+    classifier_version: Mapped[str] = mapped_column(String(80), server_default="legacy/unclassified", nullable=False)
     is_aps: Mapped[bool] = mapped_column(
         Boolean, server_default="false", nullable=False,
     )
@@ -780,7 +789,7 @@ class TimelineProjectionPoint(Base):
             name="ck_timeline_projection_year",
         ),
         CheckConstraint(
-            "tc_kelvin > 0 AND tc_kelvin <= 300",
+            "tc_kelvin > 0 AND tc_kelvin < 'Infinity'::float8 AND tc_kelvin <> 'NaN'::float8",
             name="ck_timeline_projection_tc",
         ),
         Index(
@@ -815,6 +824,9 @@ class TimelineProjectionState(Base):
         SmallInteger, primary_key=True, autoincrement=False,
     )
     schema_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    classifier_version: Mapped[str] = mapped_column(String(80), server_default="legacy/unclassified", nullable=False)
+    pressure_policy_version: Mapped[str] = mapped_column(String(80), server_default="legacy/unclassified", nullable=False)
+    anomaly_policy_version: Mapped[str] = mapped_column(String(80), server_default="legacy/unclassified", nullable=False)
     source_year: Mapped[int] = mapped_column(SmallInteger, nullable=False)
     source_watermark: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
     refreshed_at: Mapped[datetime] = mapped_column(_TZDT, nullable=False)
@@ -1004,6 +1016,10 @@ class MaterialClaim(Base):
         nullable=False,
     )
     source_record_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    # Shadow v2 binding. Legacy IDs, source hashes and labels are not rewritten.
+    event_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
+    result_key: Mapped[str | None] = mapped_column(String(120))
+    interpretation_revision: Mapped[int | None] = mapped_column(sa.Integer)
     semantic_fingerprint: Mapped[str | None] = mapped_column(String(64))
     duplicate_cluster_id: Mapped[str | None] = mapped_column(String(64))
     available_at: Mapped[date | None] = mapped_column(Date)
@@ -1139,6 +1155,19 @@ class MaterialClaim(Base):
             "material_id", "source_record_hash",
             name="uq_material_claims_material_source_hash",
         ),
+        sa.ForeignKeyConstraint(
+            ["event_id", "material_id"], ["research_events.id", "research_events.material_id"],
+            ondelete="RESTRICT", name="fk_rv2_claim_event_material",
+        ),
+        sa.UniqueConstraint("id", "event_id", name="uq_rv2_claim_event"),
+        CheckConstraint(
+            "(event_id IS NULL AND result_key IS NULL AND interpretation_revision IS NULL) OR "
+            "(event_id IS NOT NULL AND result_key IS NOT NULL AND btrim(result_key)<>'' "
+            "AND interpretation_revision IS NOT NULL AND interpretation_revision>=1)",
+            name="ck_rv2_claim_binding",
+        ),
+        Index("uq_rv2_claim_result", "event_id", "result_key", unique=True,
+              postgresql_where=sa.text("event_id IS NOT NULL")),
         Index("idx_material_claims_material_validity", "material_id", "validity_status"),
         Index("idx_material_claims_paper", "paper_id"),
         Index("idx_material_claims_work", "work_id"),
@@ -1496,18 +1525,56 @@ class RefutedClaim(Base):
     )
 
 
+class ScientificCorrectionProposal(Base):
+    """Source-backed, append-only proposed revisions; never auto-applied.
+
+    Opaque actor/source identifiers retain provenance without copying account
+    names, emails or licensed source text. This is not a scientific acceptance
+    table. Controlled retention/deletion needs an explicit migration plan.
+    """
+
+    __tablename__ = "scientific_correction_proposals"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    material_id: Mapped[str] = mapped_column(String(100), ForeignKey("materials.id", ondelete="RESTRICT"), nullable=False)
+    source_result_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    field: Mapped[str] = mapped_column(String(50), nullable=False)
+    revision: Mapped[int] = mapped_column(Integer, nullable=False)
+    supersedes_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("scientific_correction_proposals.id", ondelete="RESTRICT"))
+    source_quantity: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    proposed_quantity: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    evidence_paper_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    evidence_locator: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    reason: Mapped[str] = mapped_column(Text, nullable=False)
+    reviewer_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
+    policy_version: Mapped[str] = mapped_column(String(80), nullable=False)
+    disposition: Mapped[str] = mapped_column(String(30), server_default="proposed", nullable=False)
+    created_at: Mapped[datetime] = mapped_column(_TZDT, server_default=func.now(), nullable=False)
+
+    __table_args__ = (
+        sa.UniqueConstraint("material_id", "source_result_id", "field", "revision", name="uq_correction_revision"),
+        CheckConstraint("revision > 0", name="ck_correction_positive_revision"),
+        CheckConstraint("disposition = 'proposed'", name="ck_correction_proposed_only"),
+        CheckConstraint("jsonb_typeof(source_quantity) = 'object' AND jsonb_typeof(proposed_quantity) = 'object'", name="ck_correction_quantity_objects"),
+        CheckConstraint("jsonb_typeof(evidence_locator) = 'object' AND evidence_locator <> '{}'::jsonb", name="ck_correction_locator"),
+    )
+
+
+from models.correction_ledger import CREATE_GUARD, CREATE_TRIGGER  # noqa: E402
+
+sa.event.listen(ScientificCorrectionProposal.__table__, "after_create", sa.DDL(CREATE_GUARD).execute_if(dialect="postgresql"))
+sa.event.listen(ScientificCorrectionProposal.__table__, "after_create", sa.DDL(CREATE_TRIGGER).execute_if(dialect="postgresql"))
+
+
 class ManualOverride(Base):
-    """Curated per-compound corrections and Tc caps.
+    """Legacy requests, retained for traceability rather than scientific approval.
 
-    Two modes (``is_cap`` flag):
-
-    * **Exact override** (``is_cap=False``): replaces the aggregated value
-      unconditionally. Used for P0 hotfixes (LSCO tc_max=38, FeSe tc_ambient=8.5).
-    * **Cap** (``is_cap=True``): clamps the aggregated value to an upper bound.
-      Used for per-compound physical ceilings (LSCO tc_max ≤ 45 K).
-
-    The nightly re-aggregation reads this table; values here are never
-    overwritten by automated pipeline runs.
+    SC03 numeric entries become versioned review context: is_cap=True is an
+    upper review reference, False is an unapplied proposed replacement requiring
+    source-linked revision. Neither mode may clip or overwrite a measurement.
+    Separate legacy categorical overrides remain scoped to their prior behavior.
+    Aggregation does not overwrite these input rows or trust free-text citations
+    as proof that a correction was reviewed.
     """
 
     __tablename__ = "manual_overrides"
@@ -1525,7 +1592,7 @@ class ManualOverride(Base):
     )
     is_cap: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default="false", nullable=False,
-        comment="True = upper-bound clamp; False = exact replacement",
+        comment="Legacy numeric request: True = upper review reference; False = unapplied exact proposal (SC03)",
     )
     source: Mapped[str] = mapped_column(
         String(200), nullable=False,
@@ -1547,6 +1614,15 @@ class ManualOverride(Base):
 # ---------------------------------------------------------------------------
 # Engine / session (async, module-level cached)
 # ---------------------------------------------------------------------------
+
+from models.research_schema_v2 import register as _register_research_v2  # noqa: E402
+
+RESEARCH_V2_TABLES = _register_research_v2(Base.metadata)
+
+# Forward-only current metadata additions; the 0045 registrar stays immutable.
+from models.claim_integrity import register as _register_claim_integrity  # noqa: E402
+
+_register_claim_integrity(Base.metadata)
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.

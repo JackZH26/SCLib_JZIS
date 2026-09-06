@@ -28,7 +28,7 @@ def test_fact_sentence_full():
     s = fact_sentence({
         "formula": "MgB2", "tc_kelvin": 39, "method": "experimental",
         "measurement": "resistivity", "family": "iron-based",
-        "pressure_condition_normalized": "ambient",
+        "pressure_condition": "ambient pressure",
     })
     assert s == ("MgB2 has a critical temperature Tc = 39 K "
                  "(experimental, resistivity) at ambient pressure. [iron-based]")
@@ -58,13 +58,13 @@ def test_fact_sentence_doping_type_and_level():
     assert "doping: hole x=0.15" in s
 
 
-def test_fact_sentence_regime_colours_but_is_not_sole_signal():
+def test_fact_sentence_regime_does_not_manufacture_pressure():
     # Regime alone (no Tc, no other context) is still noise.
     assert fact_sentence({"formula": "X", "tc_regime": "bulk_equilibrium"}) is None
-    # But with a Tc, high_pressure regime colours the sentence.
+    # A coarse regime is not same-result pressure evidence, even with Tc.
     s = fact_sentence({"formula": "H3S", "tc_kelvin": 203,
                        "tc_regime": "high_pressure"})
-    assert "under high pressure" in s
+    assert "under high pressure" not in s
 
 
 def test_fact_sentence_bare_formula_is_noise():

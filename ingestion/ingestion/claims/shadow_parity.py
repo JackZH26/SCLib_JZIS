@@ -20,7 +20,7 @@ from typing import Any
 
 from ingestion.claims.mapper import map_record_to_claim, source_record_identity
 from ingestion.claims.work_identity import plan_work_identities
-from ingestion.extract.formula_enrichment import enrich_formula
+from ingestion.extract.formula_enrichment import enrich_material_composition
 
 PARITY_SCHEMA_VERSION = "sclib-typed-claim-shadow-parity/v1"
 _TC_FIELDS = ("value_kelvin", "tc_kelvin", "tc")
@@ -569,8 +569,7 @@ def _verify_compositions(
         if not material_id or material_id in expected_material_ids:
             continue
         expected_material_ids.add(material_id)
-        formula = _first(material, "formula", "formula_normalized") or ""
-        enrichment = enrich_formula(str(formula))
+        enrichment = enrich_material_composition(material)
         expected = {
             "material_id": material_id,
             "composition_status": enrichment.pop("composition_status"),

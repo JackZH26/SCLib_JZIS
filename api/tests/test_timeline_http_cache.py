@@ -70,7 +70,7 @@ def test_timeline_response_has_public_cache_headers_and_etag():
     assert response.headers["vary"] == "Accept-Encoding"
     assert response.headers["x-timeline-cache"] == "MISS"
     assert response.headers["x-data-version"] == "timeline-v1-20260713T120000Z"
-    assert response.headers["last-modified"] == "Mon, 13 Jul 2026 12:00:00 GMT"
+    assert "last-modified" not in response.headers
 
 
 def test_matching_if_none_match_returns_empty_304_with_required_headers():
@@ -93,7 +93,7 @@ def test_matching_if_none_match_returns_empty_304_with_required_headers():
     assert response.headers["vary"] == "Accept-Encoding"
     assert response.headers["x-timeline-cache"] == "HIT"
     assert response.headers["x-data-version"] == "timeline-v1-20260713T120000Z"
-    assert "last-modified" in response.headers
+    assert "last-modified" not in response.headers
 
 
 def test_if_none_match_uses_weak_comparison():
@@ -109,7 +109,7 @@ def test_if_none_match_uses_weak_comparison():
     assert response.status_code == 304
 
 
-def test_if_modified_since_returns_304_without_an_etag_condition():
+def test_source_timestamp_alone_cannot_return_304_for_a_policy_derived_representation():
     payload = (
         '{"data_version":"timeline-v1-20260713T120000Z",'
         '"data_updated_at":"2026-07-13T12:00:00Z","points":[]}'
@@ -121,7 +121,8 @@ def test_if_modified_since_returns_304_without_an_etag_condition():
         cache_status="HIT",
     )
 
-    assert response.status_code == 304
+    assert response.status_code == 200
+    assert response.body == payload.encode()
 
 
 def _point(index: int) -> TimelinePoint:
@@ -183,7 +184,8 @@ def test_timeline_pagination_is_stable_after_optional_sampling():
 
     assert [point.material for point in page.points] == ["M3", "M4", "M5", "M6"]
     assert page.schema_version == "1"
-    assert page.data_version == "timeline-v1-20260713T120000Z"
+    assert page.data_version.startswith("timeline-v4-anomaly-")
+    assert page.data_version.endswith("-20260713T120000Z")
     assert page.offset == 3
     assert page.limit == 4
     assert page.has_more is True

@@ -28,6 +28,7 @@ from typing import Any
 
 from ingestion.chunk.chunker import chunk_paper
 from ingestion.models import ApsArticleMeta, Chunk, ParsedPaper
+from ingestion.pressure_semantics import classify_pressure
 
 log = logging.getLogger(__name__)
 
@@ -49,13 +50,7 @@ def fact_sentence(record: dict[str, Any]) -> str | None:
         return None
 
     tc = record.get("tc_kelvin")
-    pressure = record.get("pressure_gpa")
-    cond = record.get("pressure_condition_normalized") or record.get(
-        "pressure_condition"
-    )
-    # tc_regime is the always-present pressure-context signal
-    # (bulk_equilibrium | high_pressure | interface).
-    regime = record.get("tc_regime")
+    pressure = classify_pressure(record)
     method = record.get("method")
     measurement = record.get("measurement")
     family = record.get("family")
@@ -73,7 +68,7 @@ def fact_sentence(record: dict[str, Any]) -> str | None:
     # formula + regime is still noise (the abstract already mentions the
     # compound). It only colours the sentence when other signal exists.
     if not has_tc and not any(
-        (pressure, family, doping, structure, sample, comment)
+        (pressure.pressure_state in {"explicit_ambient", "reported"}, family, doping, structure, sample, comment)
     ):
         return None
 
@@ -91,14 +86,25 @@ def fact_sentence(record: dict[str, Any]) -> str | None:
             quals = [q for q in (method, measurement) if q]
             sentence += f" ({', '.join(quals)})"
 
-    # Pressure clause: explicit GPa wins, else fall back to the
-    # pressure_condition / tc_regime category.
-    if isinstance(pressure, (int, float)) and pressure > 0:
-        sentence += f" at {pressure:g} GPa"
-    elif cond == "ambient" or regime == "bulk_equilibrium":
+    # Pressure evidence is result-bound. Neither bulk nor a qualitative
+    # regime label can manufacture an ambient/numeric pressure assertion.
+    if pressure.pressure_state == "explicit_ambient":
         sentence += " at ambient pressure"
-    elif cond == "high_pressure" or regime == "high_pressure":
-        sentence += " under high pressure"
+    elif pressure.pressure_state == "reported":
+        if pressure.pressure_gpa is not None:
+            value = f"{pressure.pressure_gpa:g}"
+            if pressure.uncertainty_gpa is not None:
+                value += f" ± {pressure.uncertainty_gpa:g}"
+            prefix = "approximately " if pressure.approximate else ""
+            sentence += f" at {prefix}{value} GPa"
+        elif pressure.relation == "interval":
+            sentence += f" at pressure in [{pressure.value_lower_gpa:g}, {pressure.value_upper_gpa:g}] GPa"
+        elif pressure.relation in {"lt", "le", "gt", "ge"}:
+            operator = {"lt": "<", "le": "≤", "gt": ">", "ge": "≥"}[pressure.relation]
+            value = pressure.value_upper_gpa if pressure.relation in {"lt", "le"} else pressure.value_lower_gpa
+            sentence += f" at pressure {operator} {value:g} GPa"
+    elif pressure.pressure_state == "ambiguous":
+        sentence += " (pressure unresolved)"
 
     parts.append(sentence + ".")
 

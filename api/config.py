@@ -112,6 +112,10 @@ class Settings(BaseSettings):
     # === ML Foundation shadow read path ===
     # Keep typed claims private until backfill QC and shadow parity gates pass.
     ml_foundation_public_enabled: bool = False
+    # RPS bundles are inert until a curator pins a reviewed manifest digest.
+    discovery_rps_public_enabled: bool = False
+    discovery_rps_release_dir: str = "/data/sclib/discovery/rps"
+    discovery_rps_approved_releases: dict[str, str] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def require_https_for_production_auth(self) -> Settings:
