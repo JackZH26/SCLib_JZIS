@@ -165,6 +165,14 @@ the same NIMS provenance quarantine as the existing materials API. Raw legacy
 records and licensed source text are intentionally excluded from public claim
 responses.
 
+ML01 adds an optional timezone-aware, inclusive `cutoff` to the two claim
+collection routes, using only server-resolved source-version witnesses. Each
+claim exposes a `temporal_provenance` assessment; `available_at` is a qualified
+known-by UTC date or null, while `legacy_available_at` preserves the old,
+unverified hint. This is a live filter, not an immutable historical snapshot or
+ML-release approval. See [Temporal consumers](TEMPORAL_CONSUMERS.md) for trust
+boundaries, dependency propagation and remaining release gates.
+
 All ML Foundation routes fail closed with HTTP 404 while
 `ML_FOUNDATION_PUBLIC_ENABLED=false` (the default). Staging may enable the flag
 for shadow validation; production must not enable it until typed-claim QC,

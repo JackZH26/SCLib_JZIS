@@ -111,6 +111,13 @@ query-coverage reranker, then joins authoritative paper/chunk rows. A Vertex
 timeout, exhausted retry, or open circuit degrades to PostgreSQL lexical
 retrieval. Each hit carries a `relevance_score` float in `[0, 1]`.
 
+`year_min` / `year_max` are bibliographic Chunk/index-year filters, not
+source-revision or result-availability cutoffs. They do not establish a
+historical knowledge snapshot. Ask has no supported historical cutoff
+parameter; an "as of" year in a question is not a database filter. The
+[temporal consumer contract](TEMPORAL_CONSUMERS.md) describes the separate,
+opt-in ML Foundation claim `cutoff` and its live-read limitations.
+
 ### `POST /ask`
 ```json
 { "question": "What is the role of pressure in high-Tc hydrides?" }

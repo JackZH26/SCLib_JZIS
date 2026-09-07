@@ -70,7 +70,10 @@ def test_observed_claim_keeps_missing_pressure_missing_and_adds_provenance() -> 
     assert claim["tc_definition"] == "onset"
     assert claim["pressure_state"] == "not_reported"
     assert claim["pressure_gpa"] is None
-    assert claim["available_at"] == date(2001, 1, 29)
+    assert claim["available_at"] is None
+    temporal = claim["extraction_metadata"]["temporal_provenance"]
+    assert temporal["status"] == "unknown"
+    assert temporal["work_first_public_at"] == "2001-01-29"
     assert claim["source_locator"] == {"locator_quality": "paper_only"}
     assert claim["source_kind"] == "legacy"
     assert claim["validity_status"] == "pending"

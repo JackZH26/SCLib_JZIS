@@ -132,6 +132,7 @@ The 15 finding groups S01–S08, M01–M02, R01, D01–D03 and E01 are covered a
 
 ## Files and maintenance
 
+- [Tenth implementation batch — 2026-09-07](Priority_Tenth_Batch_Implementation_2026-09-07.md): ML01 additive source-revision/capture/occurrence registry, exact known-by claim reads, arXiv capture diagnostics and bounded temporal dependency gates. Real source review, correction/supersession and historical release gates remain open; no production backfill.
 - [Ninth implementation batch — 2026-09-07](Priority_Ninth_Batch_Implementation_2026-09-07.md): EN04 release-image/test runtime comparison gate, SC11 pending-only structure evidence and public interactions, and ML08 offline pilot preparation. Real Linux CI and human scientific pilot gates remain open. Prior batches five through eight are checkpointed locally in `52930eb`.
 - [Eighth implementation batch — 2026-09-07](Phase_A_Eighth_Batch_Implementation_2026-09-07.md): SC10 separates missingness, reported classifications, Inferred family priors, conflict diagnostics and bibliographic support; no automatic negative labels, dispute adjudication or replication counts.
 - [Seventh implementation batch — 2026-09-07](Phase_A_Seventh_Batch_Implementation_2026-09-07.md): RG01 separate citation-index and bounded scientific-support checks, fail-closed draft delivery and inspectable evidence; synthetic regression evidence is not human-adjudicated validation.

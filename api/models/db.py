@@ -1628,6 +1628,10 @@ from models.claim_integrity import register as _register_claim_integrity  # noqa
 
 _register_claim_integrity(Base.metadata)
 
+from models.source_provenance_v1 import register as _register_source_provenance  # noqa: E402
+
+SOURCE_PROVENANCE_TABLES = _register_source_provenance(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

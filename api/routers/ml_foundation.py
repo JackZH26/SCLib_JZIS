@@ -11,10 +11,13 @@ from __future__ import annotations
 import hashlib
 import json
 import uuid
+from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from pydantic import AwareDatetime, BeforeValidator
 from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from config import get_settings
@@ -39,7 +42,10 @@ from models.ml_foundation import (
 from routers.deps import Identity, peek_identity
 from services.material_visibility import MATERIAL_VISIBILITY_VERSION, sanitize_review_metadata
 from services.material_visibility_adapter import material_view, prepare_material_views
+from services.source_registry import resolve_claim_source_witnesses
 from services.source_visibility import occurrence_visibility, source_visibility
+from services.temporal_provenance import result_temporal_provenance, utc_datetime
+from services.temporal_snapshots import utc_instant
 
 
 async def require_ml_foundation_public_enabled() -> None:
@@ -56,12 +62,33 @@ router = APIRouter(
 PublicIdentity = Annotated[Identity, Depends(peek_identity)]
 DatabaseSession = Annotated[AsyncSession, Depends(get_db)]
 
+MAX_CLAIM_SCAN_ROWS = 5_000
+
+
+def _cutoff_instant(value):
+    parsed = utc_instant(value)
+    if parsed is None:
+        raise ValueError("cutoff requires a timezone-aware ISO 8601 instant")
+    return parsed
+
+
+TemporalCutoff = Annotated[AwareDatetime, BeforeValidator(_cutoff_instant)]
+
 
 def claims_no_store(response: Response) -> None:
     response.headers["Cache-Control"] = "no-store"
 
 
-def _claim_response(claim, material_context, paper_status, work_status):
+async def _resolved_witnesses(db, claim_ids):
+    try:
+        return await resolve_claim_source_witnesses(db, claim_ids)
+    except SQLAlchemyError:
+        # Registry unavailability is not evidence that there are no witnesses.
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Temporal provenance registry unavailable",
+                            headers={"Cache-Control": "no-store"}) from None
+
+
+def _claim_response(claim, material_context, paper_status, work_status, witnesses=()):
     """Keep claim validity distinct from current material and source visibility."""
     occurrence = occurrence_visibility(
         claim.raw_record if isinstance(claim.raw_record, dict) else {}, paper_status=paper_status,
@@ -106,7 +133,11 @@ def _claim_response(claim, material_context, paper_status, work_status):
                    "claim_id": str(claim.id), "claim_updated_at": str(claim.updated_at)}
     claim_visibility["review_revision"] = hashlib.sha256(json.dumps(fingerprint, sort_keys=True).encode()).hexdigest()
     payload = {name: getattr(claim, name) for name in MaterialClaimResponse.model_fields if hasattr(claim, name)}
-    payload.update(visibility=material_context.visibility, claim_visibility=claim_visibility)
+    temporal = result_temporal_provenance(claim_id=str(claim.id), witnesses=witnesses)
+    known_at = utc_datetime(temporal["result_available_at"]) if temporal["status"] == "known_by" else None
+    payload.update(visibility=material_context.visibility, claim_visibility=claim_visibility,
+                   temporal_provenance=temporal, legacy_available_at=claim.available_at,
+                   available_at=known_at.date() if known_at is not None else None)
     typed = MaterialClaimResponse.model_validate(payload)
     return MaterialClaimResponse.model_validate(sanitize_review_metadata(typed.model_dump(mode="json")))
 
@@ -118,6 +149,16 @@ def _claim_allowed(response, *, include_pending, include_retracted):
     if visibility["state"] == "retracted" and not include_retracted:
         return False
     return visibility["public_claim_eligible"] or include_pending
+
+
+def _claim_known_by(response, cutoff: datetime | None) -> bool:
+    if cutoff is None:
+        return True
+    temporal = response.temporal_provenance
+    known_at = utc_datetime(temporal.result_available_at)
+    return (temporal.status == "known_by" and temporal.assessment_complete is True
+            and temporal.availability_basis == "source_version_witness"
+            and known_at is not None and known_at <= cutoff.astimezone(UTC))
 
 
 def _source_snapshot_response(row: SourceSnapshot) -> SourceSnapshotResponse:
@@ -151,6 +192,7 @@ async def _claim_page(
     include_pending: bool,
     cursor: uuid.UUID | None,
     limit: int,
+    cutoff: datetime | None = None,
 ) -> MaterialClaimPage:
     stmt = (
         select(MaterialClaim, Material, Paper.status, Work.publication_status)
@@ -173,21 +215,40 @@ async def _claim_page(
     visible = []
     scan_cursor = cursor
     batch_size = max(100, limit * 2)
+    scanned_rows = 0
     while len(visible) <= limit:
         query = stmt.where(MaterialClaim.id > scan_cursor) if scan_cursor is not None else stmt
-        rows = (await db.execute(query.order_by(MaterialClaim.id.asc()).limit(batch_size))).all()
+        remaining = MAX_CLAIM_SCAN_ROWS - scanned_rows
+        if remaining <= 0:
+            # Exactly-at-budget EOF is valid. Probe only one identifier, without
+            # material hydration or source resolution, to distinguish EOF from
+            # an incomplete scan. Never return a misleading partial/empty page.
+            probe = query.with_only_columns(MaterialClaim.id, maintain_column_froms=True)
+            more = (await db.execute(probe.order_by(MaterialClaim.id.asc()).limit(1))).first()
+            if more is not None:
+                raise HTTPException(
+                    status.HTTP_503_SERVICE_UNAVAILABLE,
+                    "Claim scan budget exceeded; narrow material or work filters.",
+                    headers={"Cache-Control": "no-store"},
+                )
+            break
+        fetch_size = min(batch_size, remaining)
+        rows = (await db.execute(query.order_by(MaterialClaim.id.asc()).limit(fetch_size))).all()
         if not rows:
             break
+        scanned_rows += len(rows)
         material_rows = {material.id: material for _, material, _, _ in rows}
         contexts = {context.id: context for context in await prepare_material_views(db, material_rows.values())}
+        resolved = await _resolved_witnesses(db, [claim.id for claim, _, _, _ in rows])
         for claim, material, paper_status, work_status in rows:
-            response = _claim_response(claim, contexts[material.id], paper_status, work_status)
-            if _claim_allowed(response, include_pending=include_pending, include_retracted=include_retracted):
+            response = _claim_response(claim, contexts[material.id], paper_status, work_status, resolved.get(str(claim.id), []))
+            if (_claim_allowed(response, include_pending=include_pending, include_retracted=include_retracted)
+                    and _claim_known_by(response, cutoff)):
                 visible.append(response)
                 if len(visible) > limit:
                     break
         scan_cursor = rows[-1][0].id
-        if len(rows) < batch_size:
+        if len(rows) < fetch_size:
             break
     has_more = len(visible) > limit
     visible = visible[:limit]
@@ -197,6 +258,7 @@ async def _claim_page(
         next_cursor=visible[-1].id if has_more and visible else None,
         has_more=has_more,
         view_scope="archive" if include_pending else "catalogue",
+        temporal_filter={"active": cutoff is not None, "cutoff": cutoff.astimezone(UTC) if cutoff else None},
     )
 
 
@@ -213,6 +275,7 @@ async def list_claims(
     include_pending: Annotated[bool, Query()] = False,
     cursor: Annotated[uuid.UUID | None, Query()] = None,
     limit: Annotated[int, Query(ge=1, le=200)] = 100,
+    cutoff: Annotated[TemporalCutoff | None, Query(description="Inclusive result known-by cutoff (timezone-aware instant). Live filtering, not a frozen historical snapshot.")] = None,
 ) -> MaterialClaimPage:
     return await _claim_page(
         db,
@@ -225,6 +288,7 @@ async def list_claims(
         include_pending=include_pending,
         cursor=cursor,
         limit=limit,
+        cutoff=cutoff,
     )
 
 
@@ -243,7 +307,8 @@ async def claim_detail(
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Claim {claim_id!s} not found")
     paper = await db.get(Paper, claim.paper_id) if claim.paper_id else None
     work = await db.get(Work, claim.work_id) if claim.work_id else None
-    response = _claim_response(claim, context, paper.status if paper else None, work.publication_status if work else None)
+    resolved = await _resolved_witnesses(db, [claim.id])
+    response = _claim_response(claim, context, paper.status if paper else None, work.publication_status if work else None, resolved.get(str(claim.id), []))
     if not response.claim_visibility["archive_available"]:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Claim {claim_id!s} not found")
     return response
@@ -258,6 +323,7 @@ async def material_claims(
     include_pending: Annotated[bool, Query()] = False,
     cursor: Annotated[uuid.UUID | None, Query()] = None,
     limit: Annotated[int, Query(ge=1, le=200)] = 100,
+    cutoff: Annotated[TemporalCutoff | None, Query(description="Inclusive result known-by cutoff (timezone-aware instant). Unknown availability is excluded.")] = None,
 ) -> MaterialClaimPage:
     material = await db.get(Material, material_id)
     if await material_view(db, material) is None:
@@ -276,6 +342,7 @@ async def material_claims(
         include_pending=include_pending,
         cursor=cursor,
         limit=limit,
+        cutoff=cutoff,
     )
 
 

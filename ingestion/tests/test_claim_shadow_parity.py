@@ -163,6 +163,7 @@ def test_legacy_zero_without_ambient_evidence_is_preserved_as_ambiguous() -> Non
     assert report["distributions"]["mapper_warnings"] == {
         "legacy_zero_pressure_not_explicitly_ambient": 1,
         "legacy_field_unit_assumed_gpa": 1,
+        "result_availability_not_source_revision_verified": 1,
     }
 
 

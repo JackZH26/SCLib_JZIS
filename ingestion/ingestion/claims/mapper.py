@@ -43,8 +43,13 @@ from ingestion.extract.scientific_values import (
 )
 from ingestion.pressure_semantics import classify_pressure
 from ingestion.result_semantics import classify_result, legacy_evidence_role
+from ingestion.temporal_provenance import (
+    SourceAvailabilityWitness,
+    result_temporal_provenance,
+    utc_datetime,
+)
 
-CLAIM_MAPPER_VERSION = "legacy-material-record/v1.3"
+CLAIM_MAPPER_VERSION = "legacy-material-record/v1.4"
 
 # A fixed application namespace makes claim UUIDs deterministic without
 # coupling their identity to a database sequence.
@@ -177,7 +182,7 @@ def source_record_identity(
         "paper_id": paper_id,
         "raw_record": _json_safe({
             key: value for key, value in raw_record.items()
-            if key not in {"result_classification", "pressure_semantics", "property_evidence", "anomaly_review", "visibility", "structure_evidence"}
+            if key not in {"result_classification", "pressure_semantics", "property_evidence", "anomaly_review", "visibility", "structure_evidence", "ingestion_capture", "temporal_provenance"}
         }),
         "source_locator": _json_safe(dict(source_locator)),
     }
@@ -210,12 +215,15 @@ def map_record_to_claim(
     source_locator: Mapping[str, Any] | None = None,
     extractor_version: str | None = None,
     ingestion_run_id: uuid.UUID | str | None = None,
+    temporal_witnesses: Sequence[SourceAvailabilityWitness] | None = None,
 ) -> dict[str, Any]:
     """Map one legacy record to a ``material_claims`` insert payload.
 
     ``paper`` is optional context from the papers table.  It is consulted for
-    source identity, retraction status, and the earliest exact availability
-    date.  No material summary field (for example ``materials.tc_max``) is
+    source identity, retraction status and bibliographic date hints only.
+    Result availability requires separately resolved revision witnesses; neither
+    a paper date nor an extracted date can supply it. No material summary field
+    (for example ``materials.tc_max``) is
     used to fill a missing record-level value.
     """
     if not isinstance(record, Mapping):
@@ -340,7 +348,6 @@ def map_record_to_claim(
         source_kind or _first_text(record, "source_kind"),
         locator,
     )
-    available_at = _available_at(record, paper_data)
 
     extraction_confidence, extraction_confidence_issue = _confidence(
         record.get("extraction_confidence")
@@ -392,6 +399,13 @@ def map_record_to_claim(
         raw_record=raw_record,
         source_locator=locator,
     )
+    temporal = result_temporal_provenance(
+        claim_id=str(claim_id), record=record, paper=paper_data, witnesses=temporal_witnesses,
+    )
+    available_instant = utc_datetime(temporal["result_available_at"])
+    available_at = available_instant.date() if available_instant is not None else None
+    if temporal["status"] != "known_by":
+        warnings.append("result_availability_not_source_revision_verified")
 
     semantic_input = {
         "fingerprint_schema": "sclib-material-claim/v1",
@@ -437,6 +451,7 @@ def map_record_to_claim(
         "scientific_value_parser_version": VALUE_PARSER_VERSION,
         "scientific_values": {"tc_kelvin": tc_proposal},
         "pressure_semantics": pressure_assessment.to_dict(),
+        "temporal_provenance": temporal,
     }
     # Preserve complete normalized proposals in JSON metadata; v1 scalar
     # columns cannot represent e.g. a pressure interval or Tc uncertainty.
@@ -833,36 +848,6 @@ def _normalise_relation(value: str | None) -> str | None:
     }
     slug = aliases.get(slug, slug)
     return slug if slug in _VALUE_RELATIONS else None
-
-
-def _available_at(record: Mapping[str, Any], paper: Mapping[str, Any]) -> date | None:
-    explicit = _parse_date(_first_present(record, "available_at"))
-    if explicit:
-        return explicit
-    candidates = [
-        _parse_date(_first_present(paper, "available_at")),
-        _parse_date(_first_present(paper, "date_submitted")),
-        _parse_date(_first_present(paper, "date_published")),
-    ]
-    exact = [candidate for candidate in candidates if candidate is not None]
-    return min(exact) if exact else None
-
-
-def _parse_date(value: Any) -> date | None:
-    if isinstance(value, datetime):
-        return value.date()
-    if isinstance(value, date):
-        return value
-    if not isinstance(value, str) or not value.strip():
-        return None
-    text = value.strip().replace("Z", "+00:00")
-    try:
-        return datetime.fromisoformat(text).date()
-    except ValueError:
-        try:
-            return date.fromisoformat(text)
-        except ValueError:
-            return None
 
 
 def _confidence(value: Any) -> tuple[float | None, str | None]:

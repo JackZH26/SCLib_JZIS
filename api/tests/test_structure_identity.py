@@ -40,9 +40,10 @@ def _identities(record):
     {"version": "future-version", "proposals": [{"scientific_acceptance": True}]},
     ["malformed-derived-envelope"],
 ])
-def test_annotation_only_changes_preserve_all_original_identity_paths(annotation):
+@pytest.mark.parametrize("key", ["structure_evidence", "ingestion_capture", "temporal_provenance"])
+def test_annotation_only_changes_preserve_all_original_identity_paths(annotation, key):
     record = _record()
-    assert _identities({**record, "structure_evidence": annotation}) == _identities(record)
+    assert _identities({**record, key: annotation}) == _identities(record)
 
 
 def test_real_extraction_annotation_and_public_redaction_preserve_identity():

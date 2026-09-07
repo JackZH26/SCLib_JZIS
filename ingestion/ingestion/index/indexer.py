@@ -19,10 +19,8 @@ from google.cloud.aiplatform.matching_engine.matching_engine_index_endpoint impo
 )
 from google.cloud.aiplatform_v1.types import IndexDatapoint
 from sqlalchemy import (
-    JSON,
     BigInteger,
     Boolean,
-    CheckConstraint,
     Column,
     Date,
     DateTime,
@@ -34,12 +32,18 @@ from sqlalchemy import (
     String,
     Table,
     Text,
+    case,
     func,
     text,
 )
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.dialects.postgresql import insert as pg_insert
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from ingestion.config import get_settings
 from ingestion.models import Chunk, ParsedPaper
@@ -340,6 +344,7 @@ async def upsert_paper_with_chunks(
         "material_family": None,
         "chunk_count": len(chunks),
         "materials_extracted": materials_extracted,
+        "publication_ref": {"ingestion_capture": parsed.ingestion_capture},
     }
 
     async with _session_factory()() as session:
@@ -354,6 +359,15 @@ async def upsert_paper_with_chunks(
                 ]
             }
             update_cols["updated_at"] = func.now()
+            # Keep unrelated bibliographic/operator metadata. This envelope is
+            # diagnostic only, NOT the authoritative result-availability registry.
+            existing_ref = case(
+                (func.jsonb_typeof(papers_table.c.publication_ref) == "object",
+                 papers_table.c.publication_ref),
+                (papers_table.c.publication_ref.is_(None), text("'{}'::jsonb")),
+                else_=func.jsonb_build_object("legacy_publication_ref", papers_table.c.publication_ref),
+            )
+            update_cols["publication_ref"] = existing_ref.op("||")(stmt.excluded.publication_ref)
             stmt = stmt.on_conflict_do_update(
                 index_elements=[papers_table.c.id],
                 set_=update_cols,

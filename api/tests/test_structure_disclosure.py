@@ -26,7 +26,10 @@ def record(**changes):
             "structure_claims": claims, "structure_evidence": stored,
             "raw_extraction": {"formula": "Nb", "tc_kelvin": 8, "structure_claims": deepcopy(claims),
                                "alternate": [{"Structure-Evidence": deepcopy(stored)}]},
-            "other_metadata": {"nested": [{"structure_claims": deepcopy(claims)}]}, **changes}
+            "ingestion_capture": {"storage_object": PRIVATE},
+            "temporal_provenance": {"status": "known_by", "review_reference": PRIVATE},
+            "other_metadata": {"nested": [{"structure_claims": deepcopy(claims),
+                                            "IngestionCapture": {"storage_object": PRIVATE}}]}, **changes}
 
 
 def material(row):
@@ -36,7 +39,8 @@ def material(row):
             "tc_max_conditions": None, "tc_ambient": None, "crystal_structure": None}
 
 
-@pytest.mark.parametrize("key", ["structure_claims", "structure_evidence", "Structure-Claims", "STRUCTURE_EVIDENCE", "structureClaims"])
+@pytest.mark.parametrize("key", ["structure_claims", "structure_evidence", "Structure-Claims", "STRUCTURE_EVIDENCE", "structureClaims",
+                                     "ingestion_capture", "IngestionCapture", "temporal_provenance", "Temporal-Provenance"])
 def test_guard_removes_nested_stored_containers_without_changing_scientific_values(key):
     raw = {"tc_kelvin": 8, "raw_extraction": {"a": [{key: {"text": PRIVATE}, "pressure_gpa": 1}]}}
     before = deepcopy(raw)

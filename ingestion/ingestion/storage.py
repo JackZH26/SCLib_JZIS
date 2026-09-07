@@ -12,6 +12,7 @@ of the pipeline never imports it directly — easier to mock in tests.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 from dataclasses import asdict, dataclass, field
@@ -19,8 +20,10 @@ from datetime import datetime, timezone
 from functools import lru_cache
 from typing import Any
 
+from google.api_core.exceptions import PreconditionFailed
 from google.cloud import storage
 
+from ingestion.collect.arxiv_oai import ArxivCaptureError, ArxivDownload
 from ingestion.config import get_settings
 from ingestion.models import PaperMetadata
 
@@ -81,6 +84,59 @@ def download_source(arxiv_id: str, yymm: str) -> bytes:
 
 def download_pdf(arxiv_id: str, yymm: str) -> bytes:
     return _bucket().blob(_pdf_blob_name(arxiv_id, yymm)).download_as_bytes()
+
+
+def _create_or_verify(name: str, data: bytes, content_type: str) -> None:
+    """Create only; a competing/existing object must contain identical bytes.
+
+    No existence-check/write race and no fallback unconditional overwrite.
+    GCS failures propagate; an unverifiable existing object is not a cache hit.
+    """
+    blob = _bucket().blob(name)
+    try:
+        blob.upload_from_string(data, content_type=content_type, if_generation_match=0)
+    except PreconditionFailed:
+        blob.reload()
+        existing = blob.download_as_bytes(if_generation_match=blob.generation)
+        if existing != data:
+            raise ArxivCaptureError("immutable arXiv capture object content mismatch") from None
+
+
+def archive_arxiv_capture(capture: ArxivDownload) -> dict[str, Any]:
+    """Archive fresh bytes with immutable digest key and optional version anchor.
+
+    The old work-level src/pdf cache is left intact and is never promoted to
+    version-resolved evidence. This helper is not used by APS transient TDM.
+    """
+    from ingestion.models import split_arxiv_id
+
+    provenance = capture.provenance()
+    work, version = split_arxiv_id(capture.requested_id)
+    prefix = f"captures/arxiv/{work.replace('/', '_')}/{capture.kind}"
+    name = f"{prefix}/sha256/{provenance['sha256']}"
+    _create_or_verify(name, capture.data,
+                      "application/pdf" if capture.kind == "pdf" else "application/gzip")
+    if version:
+        # Do not include observation time: re-observing identical bytes is OK.
+        anchor = json.dumps({
+            "canonical_paper_id": f"arxiv:{work}", "source_version": version,
+            "kind": capture.kind, "sha256": provenance["sha256"],
+            "storage_object": name,
+        }, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        _create_or_verify(f"{prefix}/versions/{version}.json", anchor, "application/json")
+    return {**provenance, "storage_object": name}
+
+
+def archive_arxiv_capture_manifest(capture: dict[str, Any]) -> str:
+    """Keep diagnostic observation metadata append-only, without source text."""
+    data = json.dumps(capture, sort_keys=True, separators=(",", ":"),
+                      allow_nan=False).encode("utf-8")
+    if len(data) > 16384:
+        raise ArxivCaptureError("arXiv capture manifest exceeds bounded metadata size")
+    digest = hashlib.sha256(data).hexdigest()
+    name = f"captures/arxiv/manifests/sha256/{digest}.json"
+    _create_or_verify(name, data, "application/json")
+    return name
 
 
 # --- harvest state ---------------------------------------------------------
@@ -222,10 +278,11 @@ def record_failure(
 ) -> FailedPaper:
     """Add or update a paper in the failure pool. Returns the updated record."""
     now = datetime.now(timezone.utc).isoformat()
-    existing = pool.get(meta.arxiv_id)
+    # Retries for explicit v1/v2 must not overwrite or clear one another.
+    existing = pool.get(meta.download_id)
     if existing is None:
         fp = FailedPaper(
-            arxiv_id=meta.arxiv_id,
+            arxiv_id=meta.download_id,
             yymm=meta.yymm,
             meta=meta.to_dict(),
             first_failed_at=now,
@@ -243,7 +300,7 @@ def record_failure(
         if strategy not in existing.strategies_tried:
             existing.strategies_tried.append(strategy)
         fp = existing
-    pool[meta.arxiv_id] = fp
+    pool[meta.download_id] = fp
     return fp
 
 

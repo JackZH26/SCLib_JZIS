@@ -56,6 +56,25 @@ from scripts.export_ml_foundation_snapshot import verify_export_bundle
 SOURCE_EXPORT_SCHEMA = "sclib-source-export/v1"
 
 
+def _legacy_available_at_hint(record: dict, paper: dict) -> date | None:
+    """Reproduce the retired v1.3 date fallback for diagnostics, never admission."""
+    def parsed(value: Any) -> date | None:
+        if isinstance(value, datetime):
+            return value.date()
+        if isinstance(value, date):
+            return value
+        if not isinstance(value, str):
+            return None
+        try:
+            return datetime.fromisoformat(value.strip().replace("Z", "+00:00")).date()
+        except ValueError:
+            return None
+
+    explicit = parsed(record.get("available_at"))
+    candidates = [parsed(paper.get(key)) for key in ("available_at", "date_submitted", "date_published")]
+    return explicit or min((value for value in candidates if value is not None), default=None)
+
+
 def _load_json_object(path: Path) -> dict[str, Any]:
     def reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
         result: dict[str, Any] = {}
@@ -205,6 +224,7 @@ def build_backfill_plan(
     input_records = 0
     seen_material_ids: set[str] = set()
     planner_warnings: list[dict[str, Any]] = []
+    temporal_audit_rows: list[dict[str, Any]] = []
 
     for material in material_rows:
         material_id = str(material.get("id") or "").strip()
@@ -306,6 +326,17 @@ def build_backfill_plan(
                 exact_duplicates += 1
                 continue
             seen_source_keys.add(source_key)
+            legacy_date = _legacy_available_at_hint(record, paper_by_id.get(paper_id, {}))
+            # Keep diagnostics outside proposed claim payloads so the shadow
+            # parity verifier still compares exact mapper output unchanged.
+            temporal_audit_rows.append({
+                "claim_id": str(claim["id"]),
+                "legacy_mapper_available_at_hint": legacy_date.isoformat() if legacy_date else None,
+                "proposed_available_at": claim["available_at"].isoformat() if claim["available_at"] else None,
+                "projection_change": "changed" if legacy_date != claim["available_at"] else "unchanged",
+                "source_version_verifiable": False,
+                "reason": "v1_source_export_has_no_reviewed_result_version_witness",
+            })
             claims.append(claim)
 
     claims.sort(key=lambda row: (row["material_id"], row["source_record_hash"]))
@@ -335,6 +366,20 @@ def build_backfill_plan(
             ),
             "exact_duplicate_records": exact_duplicates,
             "failures": len(failures),
+            "temporal_projection_audit": {
+                "version": "legacy-temporal-projection-audit/1.0.0",
+                "comparison_scope": "retired_v1.3_mapper_not_live_database",
+                "changed_projection_claims": sum(
+                    row["projection_change"] == "changed" for row in temporal_audit_rows
+                ),
+                "unchanged_projection_claims": sum(
+                    row["projection_change"] == "unchanged" for row in temporal_audit_rows
+                ),
+                "unverifiable_source_version_claims": len(claims),
+                "unverifiable_is_separate_axis": True,
+                "claims": sorted(temporal_audit_rows, key=lambda row: row["claim_id"]),
+                "database_mutated": False,
+            },
         },
     }
 

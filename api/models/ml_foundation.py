@@ -9,11 +9,12 @@ from __future__ import annotations
 
 import uuid
 from datetime import date, datetime
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from services.material_visibility import MATERIAL_VISIBILITY_VERSION, sanitize_review_metadata
+from services.temporal_provenance import public_locator
 
 _PUBLIC_LOCATOR_STRING_LIMITS = {
     "chunk_id": 200,
@@ -71,10 +72,57 @@ class WorkResponse(BaseModel):
     canonical_arxiv_id: str | None = None
     publication_status: str
     available_at: date | None = None
+    available_at_basis: Literal["legacy_work_date_hint_not_result_availability"] = "legacy_work_date_hint_not_result_availability"
     identity_metadata: dict[str, Any] = Field(default_factory=dict)
     paper_ids: list[str] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
+
+
+class TemporalSourceWitnessResponse(BaseModel):
+    """Explicit public allowlist; no review reference, URI, notes or source text."""
+
+    source_revision_id: str
+    capture_id: str
+    paper_id: str
+    work_id: str
+    source_version: str
+    source_version_public_at: datetime
+    captured_at: datetime
+    bytes_sha256: str
+    representation: str
+    locator: dict[str, Any] = Field(default_factory=dict)
+
+    @field_validator("locator", mode="before")
+    @classmethod
+    def public_coordinates_only(cls, value: Any) -> dict[str, Any]:
+        return public_locator(value)
+
+
+class TemporalProvenanceResponse(BaseModel):
+    """Server-derived conservative known-by bound; not first discovery or approval."""
+
+    version: Literal["temporal-provenance/1.0.0"] = "temporal-provenance/1.0.0"
+    status: Literal["known_by", "unknown", "uncertain"] = "unknown"
+    result_available_at: datetime | None = None
+    source_version_public_at: datetime | None = None
+    captured_at: datetime | None = None
+    availability_basis: Literal["source_version_witness", "unknown", "unresolved_source_evidence"] = "unknown"
+    assessment_complete: bool = False
+    first_appearance_established: Literal[False] = False
+    scientific_acceptance: Literal[False] = False
+    llm_pretraining_contamination_assessed: Literal[False] = False
+    witnesses: list[TemporalSourceWitnessResponse] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
+
+
+class ClaimTemporalFilterResponse(BaseModel):
+    version: Literal["claim-temporal-filter/1.0.0"] = "claim-temporal-filter/1.0.0"
+    scope: Literal["live_claim_known_by_filter"] = "live_claim_known_by_filter"
+    active: bool = False
+    cutoff: datetime | None = None
+    unknown_policy: Literal["excluded_when_cutoff_active"] = "excluded_when_cutoff_active"
+    reproducible_snapshot_established: Literal[False] = False
 
 
 class MaterialClaimResponse(BaseModel):
@@ -112,6 +160,9 @@ class MaterialClaimResponse(BaseModel):
     semantic_fingerprint: str | None = None
     duplicate_cluster_id: str | None = None
     available_at: date | None = None
+    available_at_basis: Literal["result_known_by_utc_date_or_null"] = "result_known_by_utc_date_or_null"
+    legacy_available_at: date | None = None
+    temporal_provenance: TemporalProvenanceResponse = Field(default_factory=TemporalProvenanceResponse)
     extractor_version: str
     ingestion_run_id: str | None = None
     created_at: datetime
@@ -156,6 +207,7 @@ class MaterialClaimPage(BaseModel):
     visibility_policy_version: str = MATERIAL_VISIBILITY_VERSION
     view_scope: str = "catalogue"
     scientific_acceptance: bool = False
+    temporal_filter: ClaimTemporalFilterResponse = Field(default_factory=ClaimTemporalFilterResponse)
 
 
 class MlDatasetSnapshotResponse(BaseModel):

@@ -58,6 +58,12 @@ def main() -> None:
             assert "anomaly_policy_version" in {c["name"] for c in schema.get_columns("timeline_projection_state")}
             assert "result_metadata" in {c["name"] for c in schema.get_columns("timeline_projection_points")}
             assert connection.execute(text("SELECT count(*) FROM pg_trigger WHERE tgname = 'scientific_correction_append_only' AND NOT tgisinternal")).scalar_one() == 1
+            assert {"source_revisions", "source_captures", "claim_source_occurrences"} <= set(schema.get_table_names())
+            assert connection.execute(text("""SELECT count(*) FROM pg_trigger
+                WHERE NOT tgisinternal AND tgname IN (
+                    'source_revisions_immutable_row', 'source_revisions_immutable_truncate',
+                    'source_captures_immutable_row', 'source_captures_immutable_truncate',
+                    'claim_source_occurrences_immutable_row', 'claim_source_occurrences_immutable_truncate')""")).scalar_one() == 6
         with engine.begin() as connection:
             verify_postgres_identity(connection, capability)
             legacy = connection.execute(text("""SELECT records, has_competing_order, pairing_symmetry,
@@ -139,7 +145,29 @@ def main() -> None:
             assert "material_semantics" in {c["name"] for c in inspect(connection).get_columns("materials")}
             assert connection.execute(text("SELECT has_competing_order FROM materials WHERE id = 'mat:semantics-unknown'")).scalar_one() is None
             assert set(MigrationContext.configure(connection).get_current_heads()) == set(ScriptDirectory.from_config(config).get_heads())
-        print("Disposable migration head, material-semantics/NULL-default and Timeline metadata round trips, raw/governance preservation and correction-ledger rollback guard verified.")
+        # A single unresolved synthetic source row is still evidence and must
+        # prevent destructive downgrade. No public-time inference is involved.
+        with engine.begin() as connection:
+            verify_postgres_identity(connection, capability)
+            connection.execute(text("""INSERT INTO papers (id, source, title, authors, abstract, status)
+                VALUES ('synthetic:ml01-migration', 'arxiv', 'Synthetic migration guard', '{}', '', 'published')"""))
+            connection.execute(text("""INSERT INTO source_revisions
+                (id, paper_id, revision_key, metadata_sha256, record_sha256)
+                VALUES ('2a6a3c2e-bf22-4862-8a77-dc80b89d2779', 'synthetic:ml01-migration',
+                        'unresolved-fixture', :digest, :digest)"""), {"digest": "a" * 64})
+        try:
+            validate_test_environment()
+            command.downgrade(config, "0051_material_semantics")
+        except RuntimeError as exc:
+            assert "registry contains records" in str(exc)
+        else:
+            raise AssertionError("Nonempty source registry downgrade must fail closed")
+        with engine.connect() as connection:
+            verify_postgres_identity(connection, capability)
+            assert connection.execute(text("SELECT count(*) FROM source_revisions")).scalar_one() == 1
+            assert connection.execute(text("SELECT source_version_public_at FROM source_revisions")).scalar_one() is None
+            assert set(MigrationContext.configure(connection).get_current_heads()) == set(ScriptDirectory.from_config(config).get_heads())
+        print("Disposable migration head, material-semantics/NULL-default and Timeline metadata round trips, raw/governance preservation, correction-ledger and source-registry rollback guards verified.")
     finally:
         engine.dispose()
 

@@ -10,7 +10,12 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
-_STORED_STRUCTURE_KEYS = frozenset({"structureclaims", "structureevidence"})
+# Capture manifests are internal diagnostics, not source-redistribution grants.
+# Stored temporal envelopes are likewise untrusted. Only the claims router may
+# publish its separately resolved, typed temporal contract after this raw guard.
+_STORED_STRUCTURE_KEYS = frozenset({
+    "structureclaims", "structureevidence", "ingestioncapture", "temporalprovenance",
+})
 
 
 def redact_structure_payloads(value: Any) -> Any:

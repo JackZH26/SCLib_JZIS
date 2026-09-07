@@ -61,6 +61,27 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def test_temporal_dry_run_distinguishes_changed_and_unverifiable_without_backdating():
+    materials, papers = _sample_rows()
+    materials[0]["records"].append({"tc_kelvin": 12})
+    materials[0]["records"].append({"paper_id": papers[0]["id"], "tc_kelvin": 20,
+                                     "available_at": "2020-01-02"})
+    original = json.dumps([materials, papers], sort_keys=True)
+    snapshot_id = uuid.UUID("de419872-4383-4227-b16d-67cebd598cb3")
+    plan = build_backfill_plan(materials, papers, source_snapshot_id=snapshot_id)
+    assert plan == build_backfill_plan(materials, papers, source_snapshot_id=snapshot_id)
+    assert json.dumps([materials, papers], sort_keys=True) == original
+    audit = plan["summary"]["temporal_projection_audit"]
+    assert audit["changed_projection_claims"] == 2
+    assert audit["unchanged_projection_claims"] == 1
+    assert audit["unverifiable_source_version_claims"] == 3
+    assert audit["database_mutated"] is False
+    assert all(row["available_at"] is None for row in plan["claims"])
+    per_claim = audit["claims"]
+    assert {row["legacy_mapper_available_at_hint"] for row in per_claim} == {None, "2020-01-02", "2023-06-12"}
+    assert all(row["source_version_verifiable"] is False for row in per_claim)
+
+
 def _source_export(tmp_path: Path) -> Path:
     export_dir = tmp_path / "source-export"
     export_dir.mkdir()
