@@ -405,6 +405,7 @@ export interface BookmarkedPaper {
 }
 
 export interface BookmarkedMaterial {
+  structure_evidence?: MaterialStructureEvidence;
   material_semantics?: MaterialSemantics;
   visibility?: MaterialVisibility;
   needs_review?: boolean;
@@ -759,6 +760,7 @@ export interface SourceOccurrenceVisibility extends Omit<MaterialVisibility, "re
 }
 
 export interface MaterialSummary {
+  structure_evidence?: MaterialStructureEvidence;
   material_semantics?: MaterialSemantics;
   visibility?: MaterialVisibility;
   needs_review?: boolean;
@@ -843,6 +845,7 @@ export interface MaterialDetail extends MaterialSummary {
 }
 
 export interface VariantSummary {
+  structure_evidence?: MaterialStructureEvidence;
   material_semantics?: MaterialSemantics;
   visibility?: MaterialVisibility;
   needs_review?: boolean;
@@ -856,6 +859,17 @@ export interface VariantSummary {
   total_papers: number;
   doping_level: number | null;
   pressure_type: string | null;
+}
+
+export interface MaterialStructureEvidence {
+  version: string;
+  scientific_acceptance: false;
+  coordinate_status: string;
+  properties: Record<string, { status: string; value: null; proposal_count: number }>;
+  proposals: Record<string, unknown>[];
+  unassigned_mentions: Record<string, unknown>[];
+  coverage: Record<string, unknown>;
+  warnings: string[];
 }
 
 export type MaterialSemanticField = "has_competing_order" | "is_unconventional" | "pairing_symmetry";

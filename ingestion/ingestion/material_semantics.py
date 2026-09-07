@@ -27,7 +27,7 @@ MAX_RECORDS = 10000
 MAX_EVIDENCE = 20
 MAX_COMPARISONS = 10000
 _ORDERS = frozenset({"CDW", "AFM", "SDW", "Mott_insulator", "PDW"})
-_DERIVED = frozenset({"material_semantics", "property_evidence", "anomaly_review", "visibility", "pressure_semantics", "result_classification", "result_metadata",
+_DERIVED = frozenset({"material_semantics", "property_evidence", "anomaly_review", "visibility", "pressure_semantics", "result_classification", "result_metadata", "structure_evidence",
                       "admin_decision", "review_reason", "reviewed_by", "reviewed_at"})
 _STATE_TEXT = ("state_id", "sample_id", "structure_id", "run_id", "sample_form", "substrate", "structure_phase", "doping_type")
 _LOCATOR = ("page", "table", "figure", "row", "column", "section", "chunk_id", "span_id")

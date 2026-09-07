@@ -95,7 +95,11 @@ export default async function MaterialsPage({
     only_aps: onlyAps,
   };
 
-  const data = await listMaterials(params).catch(() => null);
+  const data = query.structure_phase ? null : await listMaterials(params).catch(() => null);
+  const withoutPhase = new URLSearchParams(Object.entries(query).filter(([key, value]) => key !== "structure_phase" && key !== "page" && typeof value === "string") as [string, string][]);
+  // Recovery deliberately requests a fresh document, discarding stale client
+  // route state. Plain anchors must include the deployment base path themselves.
+  const phaseRecoveryHref = `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/materials?${withoutPhase.toString()}`;
 
   // Small helper: render a tri-state select for boolean filters.
   const triOptions = (
@@ -130,7 +134,8 @@ export default async function MaterialsPage({
           Pairing and classification filters use current declared reports, not
           family priors or legacy aggregate flags. A reported classification
           is not verified science or necessarily the same state as a selected Tc.
-          The phase filter still uses a catalogue column.
+          Phase and structure labels remain pending proposals; reviewed phase
+          filtering is unavailable until material/state associations are reviewed.
         </p>
       </div>
 
@@ -172,14 +177,16 @@ export default async function MaterialsPage({
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Catalogue phase
+            Reviewed phase · unavailable
           </span>
           <input
             name="structure_phase"
+            disabled
             defaultValue={query.structure_phase ?? ""}
             className="rounded border border-sage-border px-2 py-1 w-32"
-            placeholder="e.g. RP_n=1, 1212"
+            placeholder="Pending source review"
           />
+          <span className="max-w-48 text-[10px] text-slate-500">Text proposals are not reviewed material/state associations.</span>
         </label>
 
         <label className="flex flex-col gap-1">
@@ -288,6 +295,8 @@ export default async function MaterialsPage({
         </button>
       </form>
 
+      {query.structure_phase && <p className="rounded border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">Reviewed phase filtering is unavailable. Your saved phase filter was not silently ignored. <a className="underline" href={phaseRecoveryHref}>Remove the phase filter and reload</a>.</p>}
+
       <p className="text-xs text-slate-500">
         Family, Tc, pressure and result-evidence filters must match the same extracted result.
         Unknown pressure does not satisfy a pressure limit. Catalogue summary values may describe other results.
@@ -297,7 +306,7 @@ export default async function MaterialsPage({
 
       {data == null ? (
         <p className="text-sm text-red-600">
-          {query.ambient_sc === "false"
+          {query.structure_phase ? "Pending structure proposals cannot be used as reviewed material/state filters." : query.ambient_sc === "false"
             ? "The negative ambient filter is unsupported: missing ambient evidence is not a negative experiment. Choose Any or Explicit ambient + observed Tc."
             : "Failed to load materials."}
         </p>

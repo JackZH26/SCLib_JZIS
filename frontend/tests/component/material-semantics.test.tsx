@@ -11,7 +11,7 @@ describe("material classification semantics", () => {
   it("does not turn stale legacy flags or old atomic classifications into reported cells", () => {
     const row = { id: "synthetic", formula: "SYNTHETIC", family: "cuprate", pairing_symmetry: "stale-d-wave", is_unconventional: true, has_competing_order: false, total_papers: 7, variant_count: 0, property_evidence: propertyEnvelope(atomicItem("pairing_symmetry", "old-d-wave"), atomicItem("is_unconventional", true), atomicItem("has_competing_order", false)) } as MaterialSummary;
     const { container } = render(<MaterialTable rows={[row]} />);
-    expect(screen.getAllByText("Unknown")).toHaveLength(3);
+    expect(screen.getAllByText("Unknown")).toHaveLength(4); // Three classifications plus the separate SC11 phase.
     expect(screen.getByText("0/6")).toBeInTheDocument();
     expect(screen.getByText("7 legacy links")).toBeInTheDocument();
     expect(container.textContent).not.toMatch(/stale-d-wave|old-d-wave|Reported false|Reported true/);

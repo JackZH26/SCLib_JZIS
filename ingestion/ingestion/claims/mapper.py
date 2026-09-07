@@ -166,7 +166,7 @@ def source_record_identity(
     Keeping this identity contract public lets the independent parity layer
     verify persisted payloads instead of merely checking that a supplied hash
     looks like 64 hexadecimal characters. Reserved result_classification,
-    pressure_semantics, property_evidence, anomaly_review and visibility envelopes are
+    pressure_semantics, property_evidence, anomaly_review, visibility and structure_evidence envelopes are
     derived API annotations, not source evidence. Excluding them
     preserves existing (unannotated) v1 identities and API export round trips;
     arbitrary scientific/raw fields remain part of identity.
@@ -177,7 +177,7 @@ def source_record_identity(
         "paper_id": paper_id,
         "raw_record": _json_safe({
             key: value for key, value in raw_record.items()
-            if key not in {"result_classification", "pressure_semantics", "property_evidence", "anomaly_review", "visibility"}
+            if key not in {"result_classification", "pressure_semantics", "property_evidence", "anomaly_review", "visibility", "structure_evidence"}
         }),
         "source_locator": _json_safe(dict(source_locator)),
     }

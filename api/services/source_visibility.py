@@ -16,6 +16,7 @@ from services.material_visibility import (
     sanitize_review_metadata,
 )
 from services.result_semantics import evidence_classifications
+from services.structure_disclosure import redact_structure_payloads
 
 _HELD_SOURCE_STATES = {"retracted", "corrected", "disputed"}
 
@@ -169,7 +170,7 @@ def project_source_occurrences(
         if not visibility["archive_available"]:
             omitted += 1
             continue
-        retained.append({**sanitize_review_metadata(record), "visibility": visibility})
+        retained.append({**redact_structure_payloads(sanitize_review_metadata(record)), "visibility": visibility})
     return retained, {
         "version": MATERIAL_VISIBILITY_VERSION,
         "total_occurrences": sum(counts.values()),

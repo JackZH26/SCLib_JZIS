@@ -20,6 +20,7 @@ import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice"
 import { visibilityIsRestricted } from "@/lib/material-visibility";
 import { MaterialSemanticValue } from "@/components/MaterialSemantics";
 import { materialSemanticProperty, materialSourceCountLabel } from "@/lib/material-semantics";
+import { StructureEvidenceValue } from "@/components/StructureEvidence";
 
 /**
  * Count source-linked selections, not arbitrary non-null legacy scalars.
@@ -31,7 +32,7 @@ const COMPLETENESS_FIELDS = COVERAGE_FIELDS.length;
 function completeness(m: MaterialSummary): number {
   return COVERAGE_FIELDS.filter(field => ["pairing_symmetry", "is_unconventional", "has_competing_order"].includes(field)
     ? materialSemanticProperty(m.material_semantics, field as "pairing_symmetry" | "is_unconventional" | "has_competing_order")?.status === "reported"
-    : selectedProperty(m.property_evidence, field)).length;
+    : field !== "structure_phase" && selectedProperty(m.property_evidence, field)).length;
 }
 
 function CompletenessBar({ filled }: { filled: number }) {
@@ -116,7 +117,7 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
                 <MaterialSemanticValue semantics={m.material_semantics} field="pairing_symmetry" />
               </td>
               <td className="px-4 py-2">
-                <PropertyEvidenceValue evidence={m.property_evidence} field="structure_phase" compact />
+                <StructureEvidenceValue evidence={m.structure_evidence} />
               </td>
               <td className="px-4 py-2">
                 <MaterialSemanticValue semantics={m.material_semantics} field="is_unconventional" />

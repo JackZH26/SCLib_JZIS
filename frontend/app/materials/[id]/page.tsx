@@ -33,6 +33,7 @@ import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice"
 import { eligibleForScientificSeo, visibilityIsRestricted, visibilityLabel } from "@/lib/material-visibility";
 import { MaterialSemanticsMini, MaterialSemanticsPanel } from "@/components/MaterialSemantics";
 import { materialSourceCountLabel } from "@/lib/material-semantics";
+import { StructureEvidencePanel, StructureEvidenceValue } from "@/components/StructureEvidence";
 
 export const dynamic = "force-dynamic";
 
@@ -280,7 +281,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
                     <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
                       {materialSourceCountLabel(v.material_semantics, v.total_papers)}
                     </td>
-                    <td className="min-w-[12rem] px-3 py-2.5"><MaterialSemanticsMini semantics={v.material_semantics} /></td>
+                    <td className="min-w-[12rem] px-3 py-2.5"><MaterialSemanticsMini semantics={v.material_semantics} /><div className="mt-2"><span className="text-xs text-slate-500">Structure association</span><StructureEvidenceValue evidence={v.structure_evidence} /></div></td>
                     <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
                       <PropertyEvidenceValue evidence={v.property_evidence} field="doping_level" compact />
                     </td>
@@ -312,7 +313,8 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
         <HydrideParametersTable rows={hydrideParameters} />
       )}
 
-      <PropertyEvidenceSection title="Structure — separate source selections" fields={STRUCTURE_FIELDS} evidence={mat.property_evidence} />
+      <StructureEvidencePanel evidence={mat.structure_evidence} />
+      <PropertyEvidenceSection title="Lattice parameters — separate source selections" fields={STRUCTURE_FIELDS.filter(field => field === "lattice_params")} evidence={mat.property_evidence} />
       <PropertyEvidenceSection title="Superconducting parameters" fields={SC_FIELDS.filter(field => field !== "pairing_symmetry")} evidence={mat.property_evidence} />
       <JointEpcNotice evidence={mat.property_evidence} />
       <PropertyEvidenceSection title="Competing orders" fields={ORDER_FIELDS} evidence={mat.property_evidence} />

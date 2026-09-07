@@ -111,16 +111,16 @@ before removing that exact abandoned resource. Never infer cleanup targets from
 a broad name glob or from inherited DSNs. A failed ownership check requires
 operator investigation, not a forced bypass.
 
-## Locked dependencies and remaining EN04 gate
+## Locked dependencies and image parity (EN04)
 
 API, migration and ingestion CI jobs pin `uv==0.11.16` (the tool version used by
 the current API/ingestion Dockerfiles), consume their own `uv.lock` using
 `uv sync --locked --extra dev`, and upload an actual installed-package inventory
-with the lock digest and Python/platform identity. Lock inconsistency fails the
+with both lock/pyproject digests and Python/platform identity. Lock inconsistency fails the
 install instead of resolving a fresh dependency graph. Frontend
 `pnpm install --frozen-lockfile` behavior is unchanged.
 
-`scripts/runtime_inventory.py --lock api/uv.lock` captures the current interpreter,
+`scripts/runtime_inventory.py --lock api/uv.lock --pyproject api/pyproject.toml --revision <full-checked-out-git-sha>` captures the current interpreter,
 not the interpreter selected by the path to the lock. Run it inside each actual
 environment to avoid inventing parity. Compare an actual runtime-image inventory
 against its test inventory with:
@@ -129,12 +129,62 @@ against its test inventory with:
 python scripts/runtime_inventory.py --runtime image-runtime.json --tests test-runtime.json
 ```
 
-Comparison requires matching lock digest/Python minor and every runtime package
-version, allowing only the documented test-only pytest/ruff dependency set.
-Unknown extras fail. Inventory contains no environment values or DSNs.
+Version 2 rejects old/malformed inventories, duplicate package identities,
+unrepresented installed versions, absent project distributions and duplicate
+JSON keys. Comparisons require matching lock, pyproject, collector bytes, full
+source revision, Python minor/implementation, OS and architecture, and every
+runtime package version. Test-only allowances are exactly `pytest`,
+`pytest-asyncio`, `ruff`, `iniconfig`, `pluggy`, and `pygments`: test tools and
+their exclusive dependencies from the current dev extras. These are not wildcards;
+any package also present in runtime must match its runtime version. Unknown
+extras fail. Python patch versions are recorded but not required equal; OS native
+libraries, wheel bytes/ABI, Python patch parity and application behavior are not
+proved by this package-version comparison. Inventories contain no environment
+values, DSNs, source text or credentials. Re-capture v1 artifacts; do not relabel
+them as v2.
 
-**Still required for full EN04 closure:** run the Docker-mode integration job and
-capture/compare the actual release image inventories in the same Linux/Python
-environment. Consuming the same lock and a successful native test are not proof
-that a production image was tested. This change does not rebuild, deploy, pull
-production images or claim that this final image-level comparison has happened.
+All three Python CI jobs now run `scripts/run_runtime_parity.py`: API and
+migration jobs each build `api/Dockerfile`, while ingestion builds
+`ingestion/Dockerfile`. This checks the actual independent test environment in
+each job, rather than assuming API/migration inventories are interchangeable.
+The existing six jobs and frontend frozen-lockfile paths are preserved. An
+image mismatch fails the job before API/migration/ingestion execution. Tests
+still use the owned-service guard; the parity tool never supplies a test DSN.
+
+The helper matches the current release workflow's `linux/amd64` platform and
+requires Linux/x86_64 test inventories, a local default Unix Docker daemon, clean tracked
+build inputs and no untracked project inputs. It refuses inherited Docker
+connection overrides. It builds the checked-out release Dockerfile without
+publishing/tagging an image, records the immutable local image ID and Dockerfile
+digest, and binds/validates build-input labels. Build dependency downloads need
+ordinary CI network access. Only the **inventory process** is network-isolated:
+it explicitly overrides ENTRYPOINT to `/opt/venv/bin/python -I -B -`, disables
+healthchecks, runs as UID 1001 with read-only rootfs/no capabilities and
+`--network none`, and receives only the identical collector script via stdin.
+There are no volume/secret/socket mounts or inherited environment settings.
+Neither the API entrypoint/migration, ingestion default command, application
+imports nor service probes are executed. Exact-ID/run-label checks scope
+interrupted-container cleanup; no image prune or shared-service cleanup occurs.
+Local build layers remain only in the disposable CI runner cache until that
+runner is destroyed.
+
+Test/image inventories and the parity report are uploaded per job outside the
+Docker build context, including on comparison failure. Missing artifacts fail
+upload; build/preflight failures may have only the test inventory and a failing
+job, never a fabricated passing report. Fresh runner builds use the exact lock
+and pyproject COPY layers, so changed inputs invalidate those layers; there is
+no independently keyed stale parity cache.
+
+Run the no-network mocked checks locally without Docker or uv:
+
+```bash
+api/.venv/bin/python -m unittest discover -s scripts/tests -p 'test_runtime_*.py' -v
+```
+
+**Still required for full EN04 closure:** execute these jobs in Linux CI and
+review the actual image/test inventory artifacts, owned-service integration and
+release-gating configuration. Local mocked tests are not image execution proof.
+These candidate-image checks do not establish that an already published or
+deployed image matches them; an approved release must bind its final image
+digest to the tested revision. No production image, registry, database,
+deployment or remote CI run was used to implement this follow-up.

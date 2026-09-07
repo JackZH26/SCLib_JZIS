@@ -97,7 +97,7 @@ describe("atomic evidence across material surfaces", () => {
     fireEvent.click(screen.getByRole("button", { name: "Materials" }));
     expect(await screen.findByText("SEMANTICS-BOOKMARK")).toBeInTheDocument();
     expect(screen.getByLabelText("Reported material classifications")).toHaveTextContent("Reported true");
-    expect(screen.getAllByText("Unknown")).toHaveLength(2);
+    expect(screen.getAllByText("Unknown")).toHaveLength(3); // Includes the separate SC11 structure association.
     expect(screen.queryByText("9999")).not.toBeInTheDocument();
   });
 

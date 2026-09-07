@@ -28,7 +28,7 @@ def test_missing_hc2_conditions_never_borrow_a_different_measurement():
     assert _derive_summary("MgB2", rows)["hc2_conditions"] is None
 
 
-def test_lattice_and_structure_remain_one_record_and_selection_is_order_invariant():
+def test_lattice_remains_one_record_while_text_structure_aliases_wait_for_relation_review():
     rows = [record("a", year=2010, lattice_a=3.0, crystal_structure="hexagonal", space_group="P6/mmm"),
             record("b", year=2001, lattice_a=4.0, lattice_c=7.0,
                    crystal_structure="tetragonal", space_group="P4/mmm")]
@@ -37,8 +37,9 @@ def test_lattice_and_structure_remain_one_record_and_selection_is_order_invarian
         result = _derive_summary("MgB2", list(ordered))
         selected.append((result["lattice_params"], result["crystal_structure"], result["space_group"]))
     assert selected[0] == selected[1]
-    assert selected[0] in [({"a": 3.0}, "hexagonal", "P6/mmm"),
-                          ({"a": 4.0, "c": 7.0}, "tetragonal", "P4/mmm")]
+    assert selected[0] in [({"a": 3.0}, None, None),
+                          ({"a": 4.0, "c": 7.0}, None, None)]
+    assert rows[0]["space_group"] == "P6/mmm"  # Raw text is retained.
 
 
 def test_tied_hc2_provenance_and_conditions_are_order_invariant():
@@ -93,11 +94,12 @@ def test_different_run_epc_maxima_are_not_joint_inputs_and_median_is_not_an_obse
     assert rows == before
 
 
-def test_exact_structure_override_is_preserved_but_not_mislabeled_source_supported():
+def test_exact_structure_override_cannot_bypass_pending_relation_policy():
     rows = [record("a", lattice_a=3.0, lattice_c=7.0,
                    crystal_structure="tetragonal", space_group="P4/mmm")]
     summary = _derive_summary("MgB2", rows, overrides=[
         _OverrideEntry("space_group", '"P1"', False, "legacy curator text", None)])
-    assert summary["space_group"] == "P1"
+    assert summary["space_group"] is None
     bundle = build_property_evidence(summary["records"], scope_id="mat:MgB2", legacy_summary=summary)
-    assert bundle["properties"]["space_group"]["status"] == "untraceable"
+    assert bundle["properties"]["space_group"]["selected"] is None
+    assert rows[0]["space_group"] == "P4/mmm"

@@ -19,6 +19,8 @@ from services.material_semantics import MATERIAL_SEMANTICS_FIELDS, build_materia
 from services.material_visibility import sanitize_review_metadata, visibility_for_material
 from services.material_visibility_adapter import MaterialReadContext
 from services.property_evidence import PROPERTY_FIELDS, build_property_evidence
+from services.structure_disclosure import redact_structure_payloads
+from services.structure_evidence import STRUCTURE_EVIDENCE_FIELDS, build_structure_evidence
 
 
 def project_material_semantics(value: Any, *, scope_id: str | None = None) -> dict[str, Any]:
@@ -61,6 +63,15 @@ def project_material_properties(
     identity = scope_id or str(payload.get("id") or "unknown-material")
     context = review_context(value)
     semantics = project_material_semantics(value, scope_id=identity)
+    structures = build_structure_evidence(
+        raw_records, scope_id=identity,
+        source_statuses=value.source_statuses if isinstance(value, MaterialReadContext) else None,
+    )
+    # SC11 currently supplies pending text relations, not reviewed structure
+    # associations or coordinate artifacts. Never approve a stored envelope.
+    for field in STRUCTURE_EVIDENCE_FIELDS:
+        if field in names:
+            payload[field] = None
     # SC10 aliases come from reported classification semantics, not stale
     # weighted votes, family priors or defaults. Other legacy properties retain
     # their existing atomic-selection policy.
@@ -101,6 +112,16 @@ def project_material_properties(
                     *properties[field]["warnings"], "classification_summary_uses_material_semantics",
                 ]))
     payload["material_semantics"] = semantics
+    payload["structure_evidence"] = structures
+    for field in STRUCTURE_EVIDENCE_FIELDS:
+        if field in names:
+            payload[field] = None
+            if field in properties:
+                properties[field]["selected"] = None
+                properties[field]["warnings"] = sorted(set([
+                    *properties[field]["warnings"], "structure_association_pending_source_review",
+                    "text_label_is_not_a_coordinate_structure",
+                ]))
 
     if compact:
         # Lists/bookmarks carry selected tuples only; detailed alternative
@@ -122,7 +143,7 @@ def project_material_properties(
         payload.pop(private, None)
     if not compact and "records" in names:
         payload["records"] = [
-            {**sanitize_review_metadata(record), "anomaly_review": record_assessment(record, scope_id=identity, context=context), "visibility": visibility}
+            {**redact_structure_payloads(sanitize_review_metadata(record)), "anomaly_review": record_assessment(record, scope_id=identity, context=context), "visibility": visibility}
             for record in records if isinstance(record, dict)
         ]
         payload["raw_archive"] = retained_record_archive(records, scope_id=identity, context=context)
@@ -130,7 +151,14 @@ def project_material_properties(
     # Derived evidence includes source locators as well as retained records.
     # Strip private structured review metadata only after computing identities
     # and all scientific decisions from the untouched originals.
-    public = {key: sanitize_review_metadata(item) if isinstance(item, (dict, list)) else item
-              for key, item in payload.items()}
+    # Only this freshly rebuilt top-level envelope has its own excerpt policy.
+    # Raw records/archive/other nested containers must never republish stored
+    # structure_claims or structure_evidence merely because a source is active.
+    public = {
+        key: (sanitize_review_metadata(item) if key == "structure_evidence"
+              else redact_structure_payloads(sanitize_review_metadata(item)))
+        if isinstance(item, (dict, list)) else item
+        for key, item in payload.items()
+    }
     public["review_reason"] = payload["review_reason"]
     return public

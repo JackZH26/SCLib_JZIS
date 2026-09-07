@@ -990,6 +990,13 @@ def _derive_summary(
         property_view = semantics["properties"][field]
         summary[field] = property_view["value"] if property_view["status"] == "reported" else None
 
+    # SC11: raw and locally linked text remain pending relation proposals.
+    # No authoritative source-revision/curator relation workflow exists yet;
+    # a legacy vote, override, or exact quotation cannot populate these aliases.
+    # Original records and persisted override decisions remain untouched.
+    for field in ("structure_phase", "crystal_structure", "space_group"):
+        summary[field] = None
+
     return summary
 
 

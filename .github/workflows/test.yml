@@ -13,7 +13,7 @@ jobs:
   api-tests:
     name: API (pytest)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: api
@@ -30,7 +30,11 @@ jobs:
       - name: Verify connection-before-import safety guards (no services)
         run: .venv/bin/python -m unittest discover -s ../scripts/tests -p test_test_safety.py -v
       - name: Capture test runtime dependency inventory
-        run: .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock > runtime-inventory.json
+        run: |
+          mkdir -p ../runtime-parity-api
+          .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock --pyproject pyproject.toml --revision "$GITHUB_SHA" > ../runtime-parity-api/test-runtime.json
+      - name: Compare built API release image with the locked test runtime
+        run: .venv/bin/python ../scripts/run_runtime_parity.py --project api --tests ../runtime-parity-api/test-runtime.json --output ../runtime-parity-api
       - name: Prepare ephemeral service images
         run: |
           docker pull postgres:16-alpine
@@ -42,12 +46,13 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: api-test-runtime-inventory
-          path: api/runtime-inventory.json
+          path: runtime-parity-api/
+          if-no-files-found: error
 
   migration-tests:
     name: Migration (empty database to head)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: api
@@ -62,7 +67,11 @@ jobs:
       - name: Install API dependencies
         run: uv sync --locked --extra dev --python 3.11
       - name: Capture migration runtime dependency inventory
-        run: .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock > runtime-inventory.json
+        run: |
+          mkdir -p ../runtime-parity-migration
+          .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock --pyproject pyproject.toml --revision "$GITHUB_SHA" > ../runtime-parity-migration/test-runtime.json
+      - name: Compare built API release image with the locked migration runtime
+        run: .venv/bin/python ../scripts/run_runtime_parity.py --project api --tests ../runtime-parity-migration/test-runtime.json --output ../runtime-parity-migration
       - name: Prepare ephemeral service images
         run: |
           docker pull postgres:16-alpine
@@ -74,12 +83,13 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: migration-test-runtime-inventory
-          path: api/runtime-inventory.json
+          path: runtime-parity-migration/
+          if-no-files-found: error
 
   ingestion-tests:
     name: Ingestion (pytest, no production ingest)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
       # Unit tests have no service. This cannot identify a real SCLib database.
       DATABASE_URL: postgresql://unavailable:unavailable@127.0.0.1:1/unavailable
@@ -97,7 +107,11 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked --extra dev --python 3.11
       - name: Capture ingestion runtime dependency inventory
-        run: .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock > runtime-inventory.json
+        run: |
+          mkdir -p ../runtime-parity-ingestion
+          .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock --pyproject pyproject.toml --revision "$GITHUB_SHA" > ../runtime-parity-ingestion/test-runtime.json
+      - name: Compare built ingestion release image with the locked test runtime
+        run: .venv/bin/python ../scripts/run_runtime_parity.py --project ingestion --tests ../runtime-parity-ingestion/test-runtime.json --output ../runtime-parity-ingestion
       - name: Run unit tests only
         run: .venv/bin/python -m pytest -q
       - name: Upload ingestion runtime inventory
@@ -105,7 +119,8 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ingestion-test-runtime-inventory
-          path: ingestion/runtime-inventory.json
+          path: runtime-parity-ingestion/
+          if-no-files-found: error
 
   frontend-build:
     name: Frontend (test + pnpm build)

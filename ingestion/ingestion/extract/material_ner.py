@@ -15,9 +15,8 @@ Design:
   2. Call Gemini with the v2 prompt, temperature 0, JSON-only response.
   3. Preserve raw extraction proposals and deterministically normalize units,
      bounds, intervals and uncertainties without inventing midpoint values.
-  4. Fallback: apply STRUCTURE_PHASE_PATTERNS regex to the raw text so
-     RP / cuprate family tags (1212, 2222, infinite_layer, YBCO…) get
-     filled in even when the LLM misses them.
+  4. Preserve bounded local structure proposals and unassigned mentions.
+     Paper-wide phase labels never fill a material's structural fields.
 
 The module calls google-genai synchronously; the pipeline wraps calls
 in ``asyncio.to_thread`` to keep the orchestration loop non-blocking.
@@ -40,6 +39,7 @@ from ingestion.extract.scientific_values import json_safe_raw, legacy_scalar, pa
 from ingestion.genai_client import make_genai_client
 from ingestion.models import ParsedPaper
 from ingestion.pressure_semantics import annotate_pressure_records
+from ingestion.structure_evidence import annotate_structure_records
 
 log = logging.getLogger(__name__)
 
@@ -84,7 +84,7 @@ def classify_paper_type(title: str, abstract: str) -> PaperType:
 
 
 # ---------------------------------------------------------------------------
-# Structure-phase regex fallback
+# Legacy phase-mention recognizer (never a material assignment fallback)
 # ---------------------------------------------------------------------------
 
 # Patterns go from most-specific (RP numeric labels) to family aliases.
@@ -217,6 +217,15 @@ EXTRACT IF PRESENT (omit or set null otherwise):
 - space_group: space group symbol or number (e.g. "I4/mmm (#139)")
 - structure_phase: RP or cuprate phase label ("1212", "2222", "1313",
                    "infinite_layer", "cuprate_214", "cuprate_123", ...)
+- structure_claims: optional array of separate text-structure proposals.
+  Each object has field (structure_phase, crystal_structure, or space_group),
+  value, evidence_text (an EXACT local sentence/table-row quotation), and
+  source_locator if actually supplied. The quotation must name THIS formula
+  or sample and support THIS state/pressure/doping association. Keep separate
+  states separate; never use a phase found elsewhere in the paper as fallback.
+  Do not infer coordinates, CIF files, structure descriptors, or accepted
+  reviews from a textual phase/space-group label. Ambiguous/cited mentions
+  remain proposals. Preserve source sample_id/sample_label/state_id if given.
 - lattice_a, lattice_c: lattice parameters in angstrom (numbers)
 - t_cdw_k, t_sdw_k, t_afm_k: competing-order transition temps in K
 - rho_exponent: normal-state resistivity exponent n (rho ~ T^n)
@@ -455,12 +464,6 @@ def normalize_material_records(
 ) -> list[dict[str, Any]]:
     """Pure normalization boundary shared by ingestion and offline tests."""
 
-    # Fallback: if the LLM didn't tag a structure_phase anywhere,
-    # try the regex pass over the full body. That's good enough to
-    # catch RP / cuprate labels that the LLM sometimes hallucinates
-    # its way past.
-    phase_fallback = extract_structure_phase(body)
-
     cleaned: list[dict[str, Any]] = []
     for r in records:
         if not isinstance(r, dict) or "formula" not in r:
@@ -549,10 +552,6 @@ def normalize_material_records(
             else:
                 record[field] = str(value).strip() or None
 
-        # Regex fallback for structure_phase
-        if "structure_phase" not in record and phase_fallback:
-            record["structure_phase"] = phase_fallback
-
         # Normalize evidence_type to a known enum value or drop it.
         # Missing/invalid is left absent — the aggregator treats absent
         # as "primary" for backward compatibility with legacy records.
@@ -602,7 +601,9 @@ def normalize_material_records(
         # must not become part of raw-source occurrence identity.
         cleaned.append(record)
 
-    return annotate_pressure_records(cleaned)
+    return annotate_structure_records(
+        annotate_pressure_records(cleaned), body=body, paper_id=paper_id,
+    )
 
 
 # ---------------------------------------------------------------------------

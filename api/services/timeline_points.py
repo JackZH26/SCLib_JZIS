@@ -21,7 +21,7 @@ from services.scientific_values import record_quantity
 
 TIMELINE_RESULT_CONTRACT_VERSION = "timeline-result/1.0.0"
 _DERIVED_FIELDS = frozenset({
-    "result_classification", "pressure_semantics", "property_evidence",
+    "result_classification", "pressure_semantics", "property_evidence", "structure_evidence",
     "anomaly_review", "visibility", "result_metadata", "occurrence_count",
     "review_status", "review_reason", "reviewed_at", "reviewed_by",
     "admin_decision", "review_metadata", "needs_review", "scientific_acceptance",

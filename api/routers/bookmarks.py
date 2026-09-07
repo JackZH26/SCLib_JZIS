@@ -193,6 +193,7 @@ async def list_material_bookmarks(
             arxiv_year=mat.arxiv_year,
             property_evidence=properties["property_evidence"],
             material_semantics=properties["material_semantics"],
+            structure_evidence=properties["structure_evidence"],
             anomaly_review=properties["anomaly_review"],
             visibility=properties["visibility"], needs_review=properties["needs_review"], review_reason=properties["review_reason"],
         ))

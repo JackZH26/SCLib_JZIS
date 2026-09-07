@@ -99,6 +99,7 @@ class BookmarkedMaterial(BaseModel):
     arxiv_year: int | None
     property_evidence: dict[str, Any] = Field(default_factory=dict)
     material_semantics: dict[str, Any] = Field(default_factory=dict)
+    structure_evidence: dict[str, Any] = Field(default_factory=dict)
     anomaly_review: dict[str, Any] = Field(default_factory=dict)
 
 

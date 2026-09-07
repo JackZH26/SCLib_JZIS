@@ -67,7 +67,7 @@ async def list_materials(
     is_unconventional: bool | None = Query(None, description="Reported classification summary, not a family prior or a joint Tc/state predicate."),
     has_competing_order: bool | None = Query(None, description="Reported classification summary. False requires qualified explicit absence; missing evidence does not match."),
     pairing_symmetry: str | None = Query(None, max_length=100, description="Reported pairing classification, not a family default or joint Tc/state predicate."),
-    structure_phase: str | None = Query(None),
+    structure_phase: str | None = Query(None, max_length=100, description="Unavailable until reviewed local material/state/structure associations exist. Nonempty values return 422; pending text proposals are not filterable physical properties."),
     # P2: parent grouping — when true, only return parent materials
     # (those with no parent_material_id) and include rolled-up
     # total_papers from all variants.
@@ -118,6 +118,8 @@ async def list_materials(
     identity: Identity = Depends(peek_identity),  # noqa: ARG001 — presence sets guest counter header
     db: AsyncSession = Depends(get_db),
 ) -> MaterialListResponse:
+    if structure_phase:
+        raise HTTPException(422, "structure_phase filtering is unavailable until reviewed material/state associations exist. Inspect pending structure_evidence proposals; text labels are not coordinate structures.")
     if ambient_sc is False:
         raise HTTPException(422, "ambient_sc=false is unsupported: missing ambient evidence is not a negative experiment.")
     if pressure_min is not None and pressure_max is not None and pressure_min > pressure_max:
@@ -174,8 +176,6 @@ async def list_materials(
             "pairing_symmetry": pairing_symmetry,
         }.items() if value is not None and value != ""
     }
-    if structure_phase:
-        _apply(Material.structure_phase == structure_phase)
     if min_papers is not None:
         _apply(Material.total_papers >= min_papers)
 

@@ -22,6 +22,7 @@ from services.result_semantics import (
     evidence_summary,
 )
 from services.scientific_filters import FILTER_POLICY_VERSION
+from services.structure_disclosure import redact_structure_payloads
 
 # ---------------------------------------------------------------------------
 # Search
@@ -65,7 +66,7 @@ class SearchMatch(BaseModel):
     @field_validator("materials")
     @classmethod
     def classify_materials(cls, value: list[dict[str, Any]]) -> list[dict[str, Any]]:
-        return annotate_pressure_records(annotate_records(value))
+        return redact_structure_payloads(annotate_pressure_records(annotate_records(value)))
 
     paper_id: str
     arxiv_id: str | None
@@ -191,6 +192,7 @@ class MaterialSummary(BaseModel):
     filter_policy_version: str = FILTER_POLICY_VERSION
 
     material_semantics: dict[str, Any] = Field(default_factory=dict)
+    structure_evidence: dict[str, Any] = Field(default_factory=dict)
     classification_filter_policy_version: str = MATERIAL_SEMANTICS_VERSION
     classification_filter_scope: str = "material_reported_summary_not_joint_state"
     property_evidence: dict[str, Any] = Field(default_factory=dict)
@@ -245,6 +247,7 @@ class VariantSummary(BaseModel):
 
     property_evidence: dict[str, Any] = Field(default_factory=dict)
     material_semantics: dict[str, Any] = Field(default_factory=dict)
+    structure_evidence: dict[str, Any] = Field(default_factory=dict)
     anomaly_review: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -312,7 +315,7 @@ class MaterialDetail(MaterialSummary):
     @field_validator("records")
     @classmethod
     def classify_records(cls, value: list[dict[str, Any]]) -> list[dict[str, Any]]:
-        return annotate_pressure_records(annotate_records(value))
+        return redact_structure_payloads(annotate_pressure_records(annotate_records(value)))
     # ML Foundation v1 composition enrichment. ``None`` means the legacy row
     # has not yet been processed; ambiguous formulas retain an explicit state
     # instead of fabricated fixed-composition values.
@@ -404,7 +407,7 @@ class PaperDetail(PaperSummary):
     @field_validator("materials_extracted")
     @classmethod
     def classify_materials(cls, value: list[dict[str, Any]]) -> list[dict[str, Any]]:
-        return annotate_pressure_records(annotate_records(value))
+        return redact_structure_payloads(annotate_pressure_records(annotate_records(value)))
 
 
 class SitemapResource(BaseModel):

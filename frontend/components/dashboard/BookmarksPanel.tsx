@@ -15,6 +15,7 @@ import { ScientificAnomalyNotice } from "@/components/ScientificAnomalies";
 import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice";
 import { visibilityIsRestricted } from "@/lib/material-visibility";
 import { MaterialSemanticsMini } from "@/components/MaterialSemantics";
+import { StructureEvidenceValue } from "@/components/StructureEvidence";
 
 import {
   ApiError,
@@ -253,7 +254,7 @@ function MaterialsPanel() {
               <td className="px-4 py-2 text-right tabular-nums text-sage-muted">
                 <PropertyEvidenceValue evidence={m.property_evidence} field="tc_ambient" compact />
               </td>
-              <td className="min-w-[12rem] px-4 py-2"><MaterialSemanticsMini semantics={m.material_semantics} /></td>
+              <td className="min-w-[12rem] px-4 py-2"><MaterialSemanticsMini semantics={m.material_semantics} /><div className="mt-2"><span className="text-xs text-slate-500">Structure association</span><StructureEvidenceValue evidence={m.structure_evidence} /></div></td>
               <td className="px-4 py-2 text-right tabular-nums text-sage-muted">
                 {m.arxiv_year ?? "—"}
               </td>

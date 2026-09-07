@@ -315,6 +315,13 @@ Content-Type: application/json
             <Code>support.count_basis</Code> explains why identifier aliases and <Code>support.legacy_total_papers</Code>
             may differ, including parent rollups and other catalogue policies. Legacy responses without this envelope remain unchecked.
           </p>
+          <p className="mt-2">
+            <Code>structure_evidence</Code> contains pending text proposals and unassigned mentions under <Code>structure-evidence/1.0.0</Code>.
+            Structure, phase and space-group summary aliases remain null until local material/state associations and source revisions can be reviewed.
+            Nonempty <Code>structure_phase</Code> filters return 422 rather than matching unverified catalogue labels.
+            A source-content hash and assembled-text span are provenance proposals, not a verified publication revision, coordinate artifact or scientific approval.
+            Structure evidence excerpts are withheld pending source access and redistribution review; raw response records do not export the new extraction-only quotation containers.
+          </p>
         </Endpoint>
 
         {/* Material detail */}
