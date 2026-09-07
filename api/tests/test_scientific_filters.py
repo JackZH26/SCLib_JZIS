@@ -143,7 +143,8 @@ async def test_pressure_policy_version_change_invalidates_projection_before_read
     from services.result_semantics import CLASSIFIER_VERSION
 
     class Session:
-        async def get(self, *_):
+        async def get(self, *_, populate_existing=False):
+            assert populate_existing is True
             return SimpleNamespace(schema_version=PROJECTION_SCHEMA_VERSION, classifier_version=CLASSIFIER_VERSION,
                                    pressure_policy_version="old", source_year=2026)
 

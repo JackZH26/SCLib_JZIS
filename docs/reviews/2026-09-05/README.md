@@ -132,6 +132,7 @@ The 15 finding groups S01–S08, M01–M02, R01, D01–D03 and E01 are covered a
 
 ## Files and maintenance
 
+- [Seventeenth implementation batch — 2026-09-07](Priority_Seventeenth_Batch_Implementation_2026-09-07.md): SC08 immutable exact-source task requests, bounded attempt/retry history, atomic Timeline readiness invalidation and private receipt inspection. Rebuild, external caches, worker delivery and scientific reinstatement remain separate unfinished gates.
 - [Sixteenth implementation batch — 2026-09-07](Priority_Sixteenth_Batch_Implementation_2026-09-07.md): SC08 indexed, exact-event impact manifests and operator-only snapshot inspection; includes zero-point Timeline candidates and historical references. Plans are not scheduled refreshes or persisted receipts; broader lineage and execution tracking remain open.
 - [Fifteenth implementation batch — 2026-09-07](Priority_Fifteenth_Batch_Implementation_2026-09-07.md): SC08 append-only Paper/Work negative observations, exact-version processing reviews, durable current-read holds after status reset, migration/concurrency and audit-retention guards. Positive reinstatement, canonical supersession, indexed propagation and measured SLA remain open.
 - [Fourteenth implementation batch — 2026-09-07](Priority_Fourteenth_Batch_Implementation_2026-09-07.md): SC08 current-source safeguards across aggregation, audit, Timeline and bounded historical-answer metadata; retains raw evidence and frozen bytes. Revisioned review/event ledgers, mixed-result admission, RPS/RAG completion and propagation SLA remain open.

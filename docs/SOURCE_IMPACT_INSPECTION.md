@@ -1,6 +1,7 @@
 # Exact-source impact inspection — SC08, version 1.0.0
 
-Date: 2026-09-07. Local schema head: `0057_source_impact`.
+Date: 2026-09-07. Inspector introduced in `0057_source_impact`; current local
+schema head: `0058_source_tasks`.
 Issue: [SC08 / #66](https://github.com/JackZH26/SCLib_JZIS/issues/66).
 Prerequisite: [Observed source lifecycle ledger](SOURCE_LIFECYCLE_LEDGER.md).
 
@@ -172,12 +173,14 @@ nonempty; attempting to continue into a protected nonempty ledger is refused
 and rolls back the transaction. The migration rehearsal verifies both directions
 and compares existing application rows, including old immutable histories.
 
-## Next implementation boundary
+## Execution boundary
 
-The next step is a narrowly scoped, durable request/attempt/receipt protocol
-using the exact source and graph fingerprints, with retries, stale/superseded
-states and clearly defined target-specific completion. Then connect bounded
-executors and measure them in staging. SQL projection, Redis invalidation,
+The additive [source-task protocol](SOURCE_TASK_EXECUTION.md) now persists exact
+requests and bounded attempt history and implements atomic Timeline readiness
+invalidation only. The inspector itself remains read-only and never schedules
+work; its `not_scheduled` fields describe inspection, not later task history.
+Worker delivery and rebuild measurement remain separate staging gates.
+SQL projection, Redis invalidation,
 vector maintenance, prospective dataset review and historical notices are
 different operations; one successful operation cannot acknowledge all of them.
 

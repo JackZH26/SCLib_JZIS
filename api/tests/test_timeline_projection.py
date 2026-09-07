@@ -45,7 +45,7 @@ class _FakeSession:
         self.results = iter(results)
         self.statements = []
 
-    async def get(self, model, identity):  # noqa: ARG002
+    async def get(self, model, identity, **options):  # noqa: ARG002
         return self.state
 
     async def execute(self, statement):
@@ -218,6 +218,7 @@ async def test_initial_refresh_soft_disables_then_atomically_upserts_projection(
         state=None,
         results=[
             _Result(),
+            _Result(),
             _Result([("mat:test", records, now, "hydride", {})]),
             _Result([("aps:test", None, None, now, "published")]),
             _Result(),
@@ -236,9 +237,10 @@ async def test_initial_refresh_soft_disables_then_atomically_upserts_projection(
     assert result.materials_processed == 1
     assert result.active_points == 1
     statements = [str(statement).lower() for statement in session.statements]
-    assert "update timeline_projection_points" in statements[0]
+    assert "sclib_source_task_lock_v1" in statements[0]
+    assert "update timeline_projection_points" in statements[1]
     assert any("on conflict" in statement for statement in statements)
-    assert all("materials.records" not in statement for statement in statements[2:])
+    assert all("materials.records" not in statement for statement in statements[3:])
 
 
 @pytest.mark.asyncio
@@ -248,7 +250,7 @@ async def test_refresh_batches_uncompressed_occurrences_below_driver_parameter_l
     points = [replace(seed, id=f"{index:064x}") for index in range(1001)]
     monkeypatch.setattr("services.timeline_projection.extract_timeline_points", lambda *args, **kwargs: points)
     session = _FakeSession(state=None, results=[
-        _Result(), _Result([("mat:many", [], now, "other", {})]), _Result(),
+        _Result(), _Result(), _Result([("mat:many", [], now, "other", {})]), _Result(),
         _Result(), _Result(), _Result((1001, 1)), _Result(),
     ])
     result = await refresh_timeline_projection(session, now=now)

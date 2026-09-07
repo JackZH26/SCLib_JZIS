@@ -118,7 +118,6 @@ async def test_cookie_session_is_not_cleared_or_invalidated_by_audit_hold(client
 
 async def test_lifecycle_review_identity_remains_after_reviewer_grant_revocation(client):
     from services.source_lifecycle import record_source_review
-
     from tests.test_source_lifecycle_service import prepared_review
 
     engine = get_engine().execution_options(isolation_level="SERIALIZABLE")
@@ -149,6 +148,52 @@ async def test_lifecycle_review_identity_remains_after_reviewer_grant_revocation
     assert await snapshot(reviewer_id) == before
     async with get_session_factory()() as db:
         assert (await db.execute(query)).scalars().all() == saved_reviews
+
+
+@pytest.mark.parametrize("actor_kind", ["requester", "executor"])
+async def test_source_task_actor_identity_is_retained_after_grant_revocation(client, actor_kind):
+    from services.research_publication import grant_role
+    from services.source_impact import inspect_source_impact
+    from services.source_tasks import enqueue_source_task, execute_source_task
+    from tests.test_research_publication import actors
+    from tests.test_source_impact import observation
+
+    engine = get_engine().execution_options(isolation_level="SERIALIZABLE")
+    try:
+        async with AsyncSession(engine, expire_on_commit=False) as db:
+            people = await actors(db)
+            executor_grant = await grant_role(db, actor_user_id=people["admin"], user_id=people["reviewer"],
+                role="curator", reason_code="synthetic_task_executor", dry_run=False)
+            _, event_args = await observation(db)
+            inventory = await inspect_source_impact(db, **event_args)
+            request = (await enqueue_source_task(db, actor_user_id=people["curator"], **event_args,
+                expected_inventory_sha256=inventory["inventory_sha256"],
+                request_key="synthetic-retained-task", dry_run=False))["request"]
+            await execute_source_task(db, actor_user_id=people["reviewer"], request_id=request["id"],
+                expected_request_sha256=request["record_sha256"], execution_key="synthetic-retained-attempt", dry_run=False)
+            await db.commit()
+    finally:
+        await engine.dispose()
+    identifier, grant_id = (people["curator"], people["grants"]["curator"]) if actor_kind == "requester" else (
+        people["reviewer"], executor_grant["id"])
+    await revoke_research_grant(grant_id=grant_id, revoked_by=people["admin"])
+    await private_rows(identifier)
+    before = await snapshot(identifier)
+    table = Base.metadata.tables["source_task_requests" if actor_kind == "requester" else "source_task_attempts"]
+    query = sa.select(sa.func.to_jsonb(table.table_valued())).where(table.c[f"{actor_kind}_id"] == identifier)
+    async with get_session_factory()() as db:
+        history = (await db.execute(query)).scalars().all()
+        assert len(history) == 1
+        assert await has_research_audit_references(db, identifier) is True
+    administrator = await research_user(is_admin=True)
+    response = await client.delete(f"/v1/admin/users/{identifier}", headers=administrator["headers"])
+    assert response.status_code == 409, response.text
+    assert response.json()["detail"] == RETENTION_MESSAGE
+    assert response.headers["cache-control"] == "no-store"
+    assert "set-cookie" not in response.headers
+    assert await snapshot(identifier) == before
+    async with get_session_factory()() as db:
+        assert (await db.execute(query)).scalars().all() == history
 
 
 @pytest.mark.parametrize("via", ["self", "admin"])
@@ -246,6 +291,11 @@ async def test_preflight_is_read_only_and_covers_actual_user_foreign_keys(regist
 @pytest.mark.parametrize("state,constraint,expected", [
     ("23503", "research_role_grants_user_id_fkey", True),
     ("23503", "source_lifecycle_reviews_reviewer_id_fkey", True),
+    ("23503", "source_task_requests_requester_id_fkey", True),
+    ("23503", "source_task_attempts_executor_id_fkey", True),
+    ("23505", "source_task_requests_requester_id_fkey", False),
+    ("23503", "source_task_requests_requester_grant_id_fkey", False),
+    ("23503", "source_task_attempts_executor_grant_id_fkey", False),
     ("23505", "source_lifecycle_reviews_reviewer_id_fkey", False),
     ("23503", "source_lifecycle_reviews_reviewer_grant_id_fkey", False),
     ("23505", "research_role_grants_user_id_fkey", False),

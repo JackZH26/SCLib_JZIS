@@ -1,6 +1,7 @@
 """Operator-only point-in-time lifecycle and dependency inspections.
 
 These GET routes do not enqueue refresh, persist receipts or clear source holds.
+Task history is historical operator metadata, not live projection readiness.
 Authentication and live grant checks remain separate from manifest checksums.
 """
 from __future__ import annotations
@@ -59,6 +60,19 @@ async def operator_snapshot(
 
 router = APIRouter(prefix="/ml/source-lifecycle", tags=["source-impact"], dependencies=[Depends(enabled)])
 OperatorSnapshot = Annotated[AsyncSession, Depends(operator_snapshot)]
+
+
+@router.get("/tasks/{request_id}")
+async def source_task_history(request_id: UUID, db: OperatorSnapshot):
+    from services.source_tasks import SourceTaskError, inspect_source_task
+
+    try:
+        body = await inspect_source_task(db, request_id)
+        return Response(canonical(body), media_type="application/json", headers=_HEADERS)
+    except (SourceTaskError, SourceLifecycleError):
+        raise HTTPException(404, "Source task unavailable", headers=_HEADERS) from None
+    except SQLAlchemyError:
+        raise HTTPException(503, "Source task registry unavailable", headers=_HEADERS) from None
 
 
 @router.get("")

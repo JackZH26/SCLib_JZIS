@@ -35,7 +35,7 @@ def _assert_source_impact_indexes(connection, *, present=True):
 
 
 def _source_impact_indexes_on_migrated_schema(capability, engine, config):
-    """0057 may drop/recreate its indexes while retaining populated history."""
+    """0057 may round-trip with history while the later 0058 queue is empty."""
     from alembic import command
     from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
     from sqlalchemy import inspect, text
@@ -45,11 +45,13 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
         # including historical capsule bytes and lifecycle/source identities.
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name != "alembic_version"}
+                if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts"}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
         _assert_source_impact_indexes(connection)
+        assert connection.execute(text("SELECT count(*) FROM source_task_requests")).scalar_one() == 0
+        assert connection.execute(text("SELECT count(*) FROM source_task_attempts")).scalar_one() == 0
         before = snapshot(connection)
         assert before["source_lifecycle_events"]
     validate_test_environment()
@@ -71,6 +73,8 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
         _assert_source_impact_indexes(connection)
+        assert connection.execute(text("SELECT count(*) FROM source_task_requests")).scalar_one() == 0
+        assert connection.execute(text("SELECT count(*) FROM source_task_attempts")).scalar_one() == 0
         assert snapshot(connection) == before
 
 
@@ -286,6 +290,155 @@ def _source_lifecycle_on_migrated_schema(capability, engine, config):
         assert saved_history(connection) == original_history
 
 
+async def _source_tasks_on_migrated_schema(capability, api_root):
+    """Exercise the real queue's SQL effect and rollback on migrated tables.
+
+    This is an explicitly synthetic, narrow cache-invalidation receipt. It
+    proves neither Timeline rebuilding nor source reinstatement/ML approval.
+    Populate this ledger only after each older downgrade guard was exercised.
+    """
+    validate_test_environment()
+    sys.path.insert(0, str(api_root / "tests"))
+    from models.db import Base, _to_async_dsn
+    from services.research_release_manifest import digest
+    from services.source_impact import inspect_source_impact
+    from services.source_tasks import (
+        enqueue_source_task,
+        execute_source_task,
+        record_source_task_failure,
+    )
+    from sqlalchemy import text
+    from sqlalchemy.exc import DBAPIError
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from test_research_freeze import add, state
+    from test_research_publication import actors
+    from test_source_impact import material, observation
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), poolclass=NullPool,
+                                 isolation_level="SERIALIZABLE")
+    try:
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            connection = await session.connection()
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+            people = await actors(session)
+            source, event_args = await observation(session)
+            await material(session, source=source)
+            inventory = await inspect_source_impact(session, **event_args)
+            body = {key: value for key, value in inventory.items() if key not in {"observation", "inventory_sha256"}}
+            assert digest(body) == inventory["inventory_sha256"]
+            await session.execute(text("UPDATE timeline_projection_state SET schema_version=6 WHERE id=1"))
+            request_args = dict(
+                **event_args, actor_user_id=people["curator"], expected_inventory_sha256=inventory["inventory_sha256"],
+                request_key="synthetic-migrated-queue")
+            before_request = await state(session)
+            rehearsal = await enqueue_source_task(session, **request_args)
+            assert rehearsal["dry_run"] is True
+            assert await state(session) == before_request
+            request = (await enqueue_source_task(session, **request_args, dry_run=False))["request"]
+            await session.commit()
+            execute_args = dict(actor_user_id=people["curator"], request_id=request["id"],
+                                expected_request_sha256=request["record_sha256"])
+
+            async def append_attempt(number, predecessor=None, *, success):
+                return await add(session, "source_task_attempts", request_id=request["id"],
+                    attempt_number=number, predecessor_id=predecessor,
+                    executor_id=people["curator"], executor_grant_id=people["grants"]["curator"],
+                    execution_key=f"synthetic-attempt-{number}",
+                    status="succeeded" if success else "retryable_failure",
+                    outcome_code="timeline_cache_invalidated" if success else "database_busy")
+
+            # A savepoint rollback must revert both the receipt and its actual
+            # cache readiness effect, including all participating fence epochs.
+            before_attempt = await state(session)
+            assert before_attempt["timeline_projection_state"][0]["schema_version"] == 6
+            rehearsal = (await execute_source_task(session, **execute_args, execution_key="synthetic-attempt-1"))["attempt"]
+            assert rehearsal["state_present"] is True and rehearsal["state_changed"] is True
+            assert await state(session) == before_attempt
+
+            # Explicit attributed report after the rehearsal transaction ends;
+            # this does not pretend to have witnessed a real database outage.
+            await session.rollback()
+            failure = (await record_source_task_failure(session, **execute_args,
+                execution_key="synthetic-attempt-1", outcome_code="database_busy", dry_run=False))["attempt"]
+            assert failure["state_present"] is False and failure["state_changed"] is False
+            assert await session.scalar(text("SELECT schema_version FROM timeline_projection_state WHERE id=1")) == 6
+            await session.commit()
+            success = (await execute_source_task(session, **execute_args,
+                execution_key="synthetic-attempt-2", dry_run=False))["attempt"]
+            assert success["state_present"] is True and success["state_changed"] is True
+            after_attempt = await state(session)
+            expected_state = [dict(row, schema_version=0) for row in before_attempt["timeline_projection_state"]]
+            assert after_attempt["timeline_projection_state"] == expected_state
+            changed_tables = {"source_task_attempts", "source_task_epoch", "source_lifecycle_epoch",
+                              "research_integrity_epoch", "research_publication_epoch", "timeline_projection_state"}
+            assert {key: value for key, value in after_attempt.items() if key not in changed_tables} == {
+                key: value for key, value in before_attempt.items() if key not in changed_tables}
+            assert len([row for row in after_attempt["source_task_attempts"] if row["request_id"] == str(request["id"])]) == 2
+            for name in ("source_task_requests", "source_task_attempts"):
+                for statement in (f"UPDATE {name} SET record_sha256=record_sha256", f"DELETE FROM {name}", f"TRUNCATE {name} CASCADE"):
+                    try:
+                        async with session.begin_nested():
+                            await session.execute(text(statement))
+                    except DBAPIError as exc:
+                        assert getattr(exc.orig, "sqlstate", None) == "55000"
+                    else:
+                        raise AssertionError("Source-task requests and attempts must remain immutable")
+            assert await state(session) == after_attempt
+            # The terminal receipt cannot acquire another successor.
+            try:
+                async with session.begin_nested():
+                    await append_attempt(3, success["id"], success=True)
+            except DBAPIError as exc:
+                assert getattr(exc.orig, "sqlstate", None) == "23514"
+            else:
+                raise AssertionError("A terminal source-task receipt must not be executed again")
+            assert await state(session) == after_attempt
+            await session.commit()
+            await session.execute(text("UPDATE timeline_projection_state SET schema_version=6 WHERE id=1"))
+            await session.commit()
+            replay = await execute_source_task(session, **execute_args, execution_key="synthetic-attempt-2", dry_run=False)
+            assert replay["replayed"] is True and replay["attempt"] == success
+            assert await session.scalar(text("SELECT schema_version FROM timeline_projection_state WHERE id=1")) == 6
+            await session.commit()
+            # Actual FK policy retains both actor identities. The account API's
+            # separate preflight also treats these references as an audit hold.
+            for name, column in (("source_task_requests", "requester_id"), ("source_task_attempts", "executor_id")):
+                table = Base.metadata.tables[name]
+                assert next(iter(table.c[column].foreign_keys)).ondelete == "RESTRICT"
+            return str(request["id"])
+    finally:
+        await engine.dispose()
+
+
+def _source_task_downgrade_guard(capability, engine, config, request_id):
+    """A populated 0058 refusal preserves the whole latest schema and data."""
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert any(row["id"] == request_id for row in before["source_task_requests"])
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0057_source_impact")
+    except RuntimeError as exc:
+        assert "task" in str(exc).lower() and "records" in str(exc).lower()
+    else:
+        raise AssertionError("Nonempty source-task downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_source_impact_indexes(connection)
+        assert snapshot(connection) == before
+
+
 def main() -> None:
     # This must run before importing config, Alembic or any database client.
     capability = validate_test_environment()
@@ -352,6 +505,7 @@ def main() -> None:
                     "research_publication_reviews", "research_publication_actions"} <= set(schema.get_table_names())
             assert {"source_lifecycle_epoch", "source_lifecycle_events",
                     "source_lifecycle_reviews"} <= set(schema.get_table_names())
+            assert {"source_task_epoch", "source_task_requests", "source_task_attempts"} <= set(schema.get_table_names())
             _assert_source_impact_indexes(connection)
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
                 WHERE NOT tgisinternal AND tgname LIKE 'research_import_%_immutable_%'""")).scalar_one() == 10
@@ -515,7 +669,9 @@ def main() -> None:
                                       {"id": publication_id}).scalar_one() == 1
         _source_lifecycle_on_migrated_schema(capability, engine, config)
         _source_impact_indexes_on_migrated_schema(capability, engine, config)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip and independent nonempty history rollback guards verified.")
+        request_id = asyncio.run(_source_tasks_on_migrated_schema(capability, api_root))
+        _source_task_downgrade_guard(capability, engine, config, request_id)
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 

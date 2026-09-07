@@ -1,7 +1,7 @@
 # Current-source lifecycle guards and observed-change ledger
 
 Issue: [SC08 / #66](https://github.com/JackZH26/SCLib_JZIS/issues/66).
-Date: 2026-09-07. Local database head: `0057_source_impact`.
+Date: 2026-09-07. Local database head: `0058_source_tasks`.
 
 This is a local implementation of current-read/recomputation safeguards and an
 append-only negative source-governance ledger. It is not a completed dependency
@@ -11,6 +11,9 @@ source update, data backfill, automatic scientific approval, source revision
 promotion, push or deployment. See the [ledger contract](SOURCE_LIFECYCLE_LEDGER.md).
 The next additive [impact inspector](SOURCE_IMPACT_INSPECTION.md) provides an
 indexed, snapshot-bound dependency plan; it does not schedule or acknowledge refresh.
+The subsequent [task ledger](SOURCE_TASK_EXECUTION.md) adds controlled durable
+requests and atomic Timeline readiness invalidation, not a complete refresh or
+cross-system propagation guarantee.
 
 ## Scientific contract
 

@@ -1,6 +1,7 @@
 """Dependency-free source and executable entrypoint guards for EN02."""
 from __future__ import annotations
 
+import ast
 import subprocess
 import tempfile
 import unittest
@@ -66,6 +67,33 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
         environment = (ROOT / "api/alembic/env.py").read_text().split("def run_migrations_online", 1)[1]
         self.assertLess(environment.index("acquire_migration_lock"), environment.index("context.run_migrations"))
         self.assertIn("pool.NullPool", environment)
+
+    def test_populated_task_history_does_not_mask_independent_older_guards(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        tree = ast.parse(source)
+        main = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "main")
+        called = sorted((node.lineno, node.func.id) for node in ast.walk(main)
+                        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name))
+        positions = {name: line for line, name in called}
+        ordered = [positions[name] for name in (
+            "_freeze_on_migrated_schema", "_publication_on_migrated_schema",
+            "_source_lifecycle_on_migrated_schema", "_source_impact_indexes_on_migrated_schema",
+            "_source_tasks_on_migrated_schema", "_source_task_downgrade_guard",
+        )]
+        self.assertEqual(ordered, sorted(ordered))
+        for marker in ("preserve scientific correction proposals", "registry contains records",
+                       "shadow history contains records", "release history contains records",
+                       "governance history contains records"):
+            self.assertLess(source.index(marker), source.index("request_id = asyncio.run(_source_tasks_on_migrated_schema"))
+
+    def test_migrated_task_checks_exercise_effect_and_rollback_not_only_metadata(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        body = source.split("async def _source_tasks_on_migrated_schema", 1)[1].split("\ndef _source_task_downgrade_guard", 1)[0]
+        for marker in ("enqueue_source_task(session", "execute_source_task(session", "record_source_task_failure(session",
+                       "assert await state(session) == before_request", "assert await state(session) == before_attempt",
+                       'assert after_attempt["timeline_projection_state"] == expected_state',
+                       'assert replay["replayed"] is True', 'assert await state(session) == after_attempt'):
+            self.assertIn(marker, body)
 
 
 if __name__ == "__main__":

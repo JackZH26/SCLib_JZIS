@@ -196,8 +196,10 @@ authorized migration plan, backup/restore rehearsal and staging acceptance.
 2. An indexed dependency inventory and bounded refresh queue with exact
    requested/completed revisions, retries, failures and lag measurements.
    [The 0057 impact inspector](SOURCE_IMPACT_INSPECTION.md) now supplies a bounded
-   read-only inventory for its explicit scope; durable queue/receipts and execution
-   tracking remain unfinished.
+   read-only inventory for its explicit scope. The additive
+   [0058 task protocol](SOURCE_TASK_EXECUTION.md) now persists requests/attempts
+   and atomically invalidates Timeline readiness; worker delivery, rebuild
+   receipts, other targets and measured propagation lag remain unfinished.
 3. Result-scoped mixed-source admission and explicit dependency identity for
    zero-point Timeline candidates, chunks, prospective ML membership and RPS.
 4. RG02 post-generation live-source validation, explicit historical release

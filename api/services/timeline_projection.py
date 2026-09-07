@@ -6,7 +6,7 @@ from datetime import UTC, date, datetime, timedelta
 from math import isfinite
 
 from pydantic import ValidationError
-from sqlalchemy import String, cast, func, or_, select, update
+from sqlalchemy import String, cast, func, or_, select, text, update
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -201,10 +201,16 @@ async def refresh_timeline_projection(
     A controlled source invalidation can request a full rebuild, including
     records that had no projectable date and therefore no prior point. This is
     a recomputation request, not permission to accept a corrected source.
+
+    Acquire the shared task/projection fence before reading any build input.
+    Otherwise a READ COMMITTED refresher could decide on an incremental build
+    before a queued invalidation and later overwrite its unready marker. The
+    database guard also fences stale REPEATABLE READ/SERIALIZABLE snapshots.
     """
+    await session.execute(text("SELECT public.sclib_source_task_lock_v1()"))
     refreshed_at = now or datetime.now(UTC)
     current_year = refreshed_at.year
-    state = await session.get(TimelineProjectionState, _STATE_ID)
+    state = await session.get(TimelineProjectionState, _STATE_ID, populate_existing=True)
     full_rebuild = (
         force_full_rebuild
         or state is None
@@ -394,7 +400,9 @@ async def fetch_projected_timeline_points(
 ) -> ProjectionReadResult | None:
     """Return projected points, or ``None`` until a compatible build is ready."""
     expected_year = current_year or datetime.now(UTC).year
-    state = await session.get(TimelineProjectionState, _STATE_ID)
+    # Readiness can be invalidated through a Core statement or another writer
+    # while this ORM identity is already loaded. Never reuse cached readiness.
+    state = await session.get(TimelineProjectionState, _STATE_ID, populate_existing=True)
     if (
         state is None
         or state.schema_version != PROJECTION_SCHEMA_VERSION

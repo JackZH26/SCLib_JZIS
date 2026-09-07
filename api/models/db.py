@@ -1653,6 +1653,10 @@ from models.source_impact_indexes_v1 import (
 
 SOURCE_IMPACT_INDEXES = _register_source_impact_indexes(Base.metadata)
 
+from models.source_tasks_v1 import register as _register_source_tasks  # noqa: E402
+
+SOURCE_TASK_TABLES = _register_source_tasks(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 
