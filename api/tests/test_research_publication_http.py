@@ -212,3 +212,33 @@ async def test_read_session_setup_failure_is_a_private_sanitized_503(client, mon
         assert response.json()["detail"] == "Publication registry unavailable"
         assert "PRIVATE-ML07" not in response.text
         assert_private(response)
+
+
+@pytest.mark.parametrize("status", ["retracted", "withdrawn", "corrected", "disputed"])
+async def test_source_lifecycle_hold_removes_public_access_without_rewriting_frozen_bytes(client, db_session, status):
+    context = await published(db_session)
+    await db_session.commit()
+    proposal = context["proposal"]
+    before = await client.get(paths(proposal["id"])[0])
+    assert before.status_code == 200
+    await db_session.execute(sa.text("UPDATE papers SET status=:status WHERE id=:id"),
+                             {"status": status, "id": context["fixture"]["paper"]})
+    await db_session.commit()
+    for path in paths(proposal["id"]):
+        held = await client.get(path, headers={"If-None-Match": before.headers["x-public-manifest-sha256"]})
+        assert held.status_code == 404 and "objects" not in held.json()
+        assert_private(held)
+    inventory = await client.get("/v1/ml/releases")
+    assert proposal["id"] not in {item["id"] for item in inventory.json()["items"]}
+    release = context["release"]
+    historical = await freeze.inspect_research_release(
+        db_session, release_id=release["release_id"], expected_manifest_sha256=release["manifest_sha256"],
+        artifact_bytes=context["arguments"]["artifact_bytes"],
+    )
+    assert canonical(historical["manifest"]) == canonical(release["manifest"])
+    assert historical["current_eligibility_reassessed"] is False
+    # Live hold checks are not a human-authenticated withdrawal notice. No
+    # automatic review artifact or scientific judgment is manufactured here.
+    notices = await db_session.scalar(sa.text("SELECT count(*) FROM research_release_notices WHERE release_id=:id"),
+                                      {"id": release["release_id"]})
+    assert notices == 0

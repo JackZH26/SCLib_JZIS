@@ -21,7 +21,8 @@ class AskHistoryEntry(BaseModel):
     ``sources`` is the JSONB snapshot saved at answer time. It mirrors
     the :class:`AskSource` shape from ``models.search`` but we type it
     as a generic list so the history API doesn't break when AskSource
-    grows new fields (older rows wouldn't have them).
+    grows new fields (older rows wouldn't have them). ``current_evidence`` is a
+    separate read-time metadata projection, not a review of the saved answer.
     """
 
     model_config = ConfigDict(from_attributes=True)
@@ -30,6 +31,7 @@ class AskHistoryEntry(BaseModel):
     question: str
     answer: str
     sources: list[dict[str, Any]] = Field(default_factory=list)
+    current_evidence: dict[str, Any] = Field(default_factory=dict)
     tokens_used: int | None = None
     latency_ms: int
     language: str | None = None

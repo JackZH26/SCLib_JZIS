@@ -180,9 +180,9 @@ async def _periodic_formula_audit(interval_sec: int) -> None:
     initial backfills; this loop is the safety net for anything that
     lands between releases.
 
-    Each rule writes a distinct ``review_reason`` so admins can
-    audit / unflag per-category. The set of rules mirrors
-    ``ingestion/.../formula_validator.py``.
+    Each rule supplies a distinct ``review_reason`` only when no older reason
+    exists. Legacy notes do not exempt a row from reevaluation. The set of
+    rules mirrors ``ingestion/.../formula_validator.py``.
     """
     from sqlalchemy import text
 
@@ -225,9 +225,8 @@ async def _periodic_formula_audit(interval_sec: int) -> None:
                     result = await session.execute(text(f"""
                         UPDATE materials
                         SET needs_review = TRUE,
-                            review_reason = '{reason}'
+                            review_reason = COALESCE(review_reason, '{reason}')
                         WHERE needs_review = FALSE
-                          AND admin_decision IS NULL
                           AND ({predicate});
                     """))
                     total_flagged += result.rowcount or 0
@@ -626,7 +625,7 @@ async def request_contract_middleware(request: Request, call_next):
         reset_request_id(token)
     response.headers["X-Request-ID"] = request_id
     response.headers["X-API-Version"] = version.API_VERSION
-    if request.url.path.startswith(("/v1/materials", "/v1/claims", "/v1/works", "/v1/ml", "/v1/bookmarks", "/v1/paper/", "/v1/search", "/v1/ask", "/v1/timeline", "/v1/sitemap/")):
+    if request.url.path.startswith(("/v1/materials", "/v1/claims", "/v1/works", "/v1/ml", "/v1/bookmarks", "/v1/history", "/v1/admin/audit", "/v1/paper/", "/v1/search", "/v1/ask", "/v1/timeline", "/v1/sitemap/")):
         # Mutable governance must be checked on every read, including 404s.
         # A release-bound cache epoch is a separate future optimization.
         response.headers["Cache-Control"] = "private, no-store"

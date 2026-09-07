@@ -6,8 +6,7 @@
  * Two stacked panels:
  *   1. Last-night summary + per-rule report timeline
  *   2. Review queue: every flagged material, with Override / Confirm
- *      actions that record an admin_decision so the nightly job
- *      respects the call.
+ *      legacy notes. Notes do not exempt current evidence from fresh audits.
  */
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -112,8 +111,8 @@ export default function AdminAuditPage() {
         <h2 className="text-lg font-semibold text-sage-ink">Data audit</h2>
         <p className="mt-1 text-sm text-sage-muted">
           Nightly data audit ran most recently at{" "}
-          <strong>{overview?.last_audit_started ?? "—"}</strong> and flagged{" "}
-          <strong>{overview?.last_audit_total_flagged ?? 0}</strong> new rows.
+          <strong>{overview?.last_audit_started ?? "—"}</strong>. Reported rule matches:{" "}
+          <strong>{overview?.last_audit_total_flagged ?? 0}</strong> (successful checks only; not distinct or newly flagged materials).
           Review queue size: <strong>{overview?.flagged_materials ?? 0}</strong>.
         </p>
         <p className="mt-2 rounded border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
@@ -162,6 +161,7 @@ export default function AdminAuditPage() {
         <h3 className="text-sm font-semibold uppercase tracking-wide text-sage-tertiary">
           Recent audit runs
         </h3>
+        <p className="mt-2 text-xs text-sage-muted">A material can match multiple rules while retaining an older queue reason. Queue filters use that stored reason. Failed checks are not zero matches; older reports may count newly flagged rows instead of current matches.</p>
         <div className="mt-3 overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-xs uppercase tracking-wide text-sage-tertiary">
@@ -169,8 +169,8 @@ export default function AdminAuditPage() {
                 <th className="px-3 py-1.5 text-left font-medium">When</th>
                 <th className="px-3 py-1.5 text-left font-medium">Rule</th>
                 <th className="px-3 py-1.5 text-left font-medium">Severity</th>
-                <th className="px-3 py-1.5 text-right font-medium">Flagged</th>
-                <th className="px-3 py-1.5 text-right font-medium">Δ vs prev</th>
+                <th className="px-3 py-1.5 text-right font-medium">Reported matches</th>
+                <th className="px-3 py-1.5 text-right font-medium">Δ vs comparable run</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -186,7 +186,7 @@ export default function AdminAuditPage() {
                                                 : "bg-slate-100 text-slate-700",
                     ].join(" ")}>{r.severity}</span>
                   </td>
-                  <td className="px-3 py-1.5 text-right tabular-nums text-sage-ink">{r.rows_flagged}</td>
+                  <td className="px-3 py-1.5 text-right tabular-nums text-sage-ink">{r.rows_flagged < 0 ? "Check failed" : r.rows_flagged}</td>
                   <td className="px-3 py-1.5 text-right tabular-nums text-sage-muted">
                     {r.delta_vs_previous == null ? "—" : (r.delta_vs_previous > 0 ? `+${r.delta_vs_previous}` : r.delta_vs_previous)}
                   </td>
@@ -254,13 +254,13 @@ export default function AdminAuditPage() {
                       <button
                         onClick={() => act("approve", m)}
                         disabled={acting === m.id}
-                        title="Request a legacy flag override with a generated note. Does not approve anomalous scientific values or source corrections; publication is controlled by the server."
+                        title="Request a legacy flag override with a generated note. Current source and scientific holds cannot be cleared, and later audits re-evaluate the evidence."
                         className="rounded-md border border-accent bg-[rgba(58,125,92,0.08)] px-2 py-1 text-xs font-medium text-accent-deep hover:bg-[rgba(58,125,92,0.18)] disabled:opacity-60"
                       >Legacy override</button>
                       <button
                         onClick={() => act("override", m)}
                         disabled={acting === m.id}
-                        title="Request a legacy flag override with a custom note. This does not edit source values."
+                        title="Request a legacy flag override with a custom note. This does not edit source values or exempt evidence from fresh audits."
                         className="rounded-md border border-sage-border bg-white px-2 py-1 text-xs text-accent-deep hover:bg-[rgba(58,125,92,0.08)] disabled:opacity-60"
                       >Override with note…</button>
                       <button
@@ -321,6 +321,7 @@ const REASON_LABELS: Record<string, string> = {
   citation_conflation_review_paper:   "citation conflation",
   family_unconv_contradiction:        "family vs unconv",
   sole_source_retracted:              "all sources retracted",
+  source_eligibility_review_required: "source eligibility review",
   ner_extracted_descriptive_text:     "NER caught text not formula",
   english_element_name:               "English element name",
   system_designator_not_compound:     "system, not compound",

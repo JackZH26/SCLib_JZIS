@@ -122,6 +122,25 @@ describe("scientific-support metadata compatibility and attribution", () => {
     expect(screen.getByText(/Scientific support status is unknown for this saved answer snapshot/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Synthetic source/ })).toBeInTheDocument();
     expect(screen.queryByText(/Excerpt consistency checks passed/)).not.toBeInTheDocument();
+    expect(screen.getByText(/Current source status is unavailable/)).toBeInTheDocument();
+  });
+  it("shows a live retraction beside the untouched saved citation without approving the old answer", () => {
+    render(<AskHistoryList entries={[{ id: "history:1", question: "What was reported?", answer: "A saved claim [1].", sources: [source], tokens_used: 5, latency_ms: 10, language: "en", created_at: "2026-09-07T00:00:00Z", current_evidence: { scope: "current_paper_metadata_not_saved_excerpt", saved_answer_revalidated: false, warning_codes: [], sources: [{ saved_source_position: 0, paper_id: source.paper_id, metadata_status: "checked", source_visibility: { source_status: "retracted", reported_claim_filter_eligible: false }, occurrence_visibility_summary: { total_occurrences: 2, state_counts: { retracted: 1, quarantined: 1 }, omitted_occurrences: 1 }, warning_codes: ["source_retracted"] }] } }]} onDeleted={() => {}} />);
+    fireEvent.click(screen.getByRole("button", { name: "Expand" }));
+    expect(screen.getByText("A saved claim [1].")).toBeInTheDocument();
+    expect(screen.getByText(/Current source status: retracted/)).toHaveTextContent("claim-support eligibility is withheld; review is required");
+    expect(screen.getByText(/Current paper occurrences/)).toHaveTextContent("Explicit material links only; no matching by formula");
+    expect(screen.getByText(/not a revalidation of the saved excerpt or answer/)).toBeInTheDocument();
+    expect(screen.getByText(/Scientific support status is unknown for this saved answer snapshot/)).toBeInTheDocument();
+    expect(screen.queryByText(/Excerpt consistency checks passed/)).not.toBeInTheDocument();
+  });
+  it("does not attach current metadata to a different saved citation identity", () => {
+    render(<AskHistoryList entries={[{ id: "history:1", question: "What was reported?", answer: "A saved claim [1].", sources: [source], tokens_used: 5, latency_ms: 10, language: "en", created_at: "2026-09-07T00:00:00Z", current_evidence: { scope: "current_paper_metadata_not_saved_excerpt", saved_answer_revalidated: false, warning_codes: ["saved_source_inventory_truncated", "current_evidence_output_budget_exhausted"], sources: [{ saved_source_position: 0, paper_id: "different-source", metadata_status: "checked", source_visibility: { source_status: "active", reported_claim_filter_eligible: true }, occurrence_visibility_summary: null, warning_codes: [] }] } }]} onDeleted={() => {}} />);
+    fireEvent.click(screen.getByRole("button", { name: "Expand" }));
+    expect(screen.getByText(/Current source status is unavailable/)).toBeInTheDocument();
+    expect(screen.getByText(/Some saved sources exceed the current-check limit/)).toBeInTheDocument();
+    expect(screen.getByText(/Some current source summaries exceed the response limit/)).toHaveTextContent("Missing summaries do not establish current support");
+    expect(screen.queryByText(/Current source status: active/)).not.toBeInTheDocument();
   });
   it("renders claim text, evidence and warnings as literal text, preserving CJK source content", () => {
     const input = response({ support_warnings: ["<img src=x onerror=alert(1)>"] });

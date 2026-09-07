@@ -682,10 +682,9 @@ class Material(Base):
         Boolean, server_default="false", nullable=False,
     )
     review_reason: Mapped[str | None] = mapped_column(String(200), nullable=True)
-    # Admin override channel: when an admin reviews a flagged row and
-    # signs off, the JSON blob records the rule, reviewer, timestamp,
-    # and free-form note. The nightly audit checks this to skip rows
-    # whose flag has already been adjudicated.
+    # Legacy governance note, not revision-bound scientific approval. Fresh
+    # audits must reevaluate current evidence regardless of this field. The
+    # historical note is retained, never silently erased by re-aggregation.
     admin_decision: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
 
     # Best credibility tier across all records (T1 < T2 < T3).

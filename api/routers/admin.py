@@ -19,7 +19,7 @@ from datetime import datetime, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func, or_, select
+from sqlalchemy import case, func, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -37,6 +37,7 @@ from models.db import AuditReport, Material, User
 from models.user import MessageResponse
 from routers.auth import current_user_from_jwt
 from services.material_anomalies import material_review, review_context
+from services.material_visibility_adapter import prepare_material_views
 from services.research_audit_retention import (
     RETENTION_MESSAGE,
     has_research_audit_references,
@@ -301,7 +302,7 @@ async def override_flag(
 ) -> MessageResponse:
     """Legacy governance override; never scientific correction or acceptance."""
     m = (await db.execute(select(Material).where(Material.id == material_id).with_for_update())).scalar_one_or_none()
-    if m is None or m.review_reason == "provenance_quarantine_nims":
+    if m is None or (m.review_reason or "").strip().lower().startswith("provenance_quarantine"):
         raise HTTPException(404, "Material not found")
     assessment = material_review(m.records, scope_id=m.id, context=review_context(m))
     numeric_legacy = (m.review_reason or "").startswith(("tc_", "scientific_anomaly_review:", "unphysical_")) or m.review_reason in {
@@ -310,6 +311,16 @@ async def override_flag(
     }
     if assessment["needs_review"] or numeric_legacy:
         raise HTTPException(409, "Scientific anomaly review requires source-linked evidence and revisioned review; a legacy override cannot correct or approve these results")
+    if (m.review_reason or "").startswith((
+        "source_support_unavailable", "source_eligibility_review_required", "sole_source_retracted",
+    )):
+        raise HTTPException(409, "A retained source lifecycle hold requires revisioned review, even if the current publication status has changed")
+    context = (await prepare_material_views(db, [m]))[0]
+    # Clearing the legacy queue flag is not authority to clear current source,
+    # record, ancestry or material governance. In particular, an old approval
+    # cannot be reused after the supporting paper changes lifecycle status.
+    if set(context.visibility["reason_codes"]) - {"material_review_required"}:
+        raise HTTPException(409, "Current evidence or provenance requires review; a legacy override cannot clear source, record, material or parent holds")
     if not m.needs_review:
         raise HTTPException(400, "Material is not currently flagged")
     m.admin_decision = {
@@ -325,7 +336,7 @@ async def override_flag(
     await db.commit()
     log.info("reviewer %s overrode flag on material %s: %s",
              reviewer.email, material_id, body.note)
-    return MessageResponse(message=f"Override recorded for {material_id}")
+    return MessageResponse(message=f"Legacy override recorded for {material_id}; current evidence remains subject to fresh audits")
 
 
 @router.post("/audit/queue/{material_id:path}/confirm", response_model=MessageResponse)
@@ -338,7 +349,7 @@ async def confirm_flag(
     """Keep the flag but record that a reviewer has reviewed and
     confirmed it (audit trail)."""
     m = await db.get(Material, material_id)
-    if m is None or m.review_reason == "provenance_quarantine_nims":
+    if m is None or (m.review_reason or "").strip().lower().startswith("provenance_quarantine"):
         raise HTTPException(404, "Material not found")
     m.admin_decision = {
         "rule": m.review_reason,
@@ -392,7 +403,7 @@ async def admin_overview(
     }
 
     last_audit_q = await db.execute(
-        select(AuditReport.started_at, func.sum(AuditReport.rows_flagged))
+        select(AuditReport.started_at, func.sum(case((AuditReport.rows_flagged >= 0, AuditReport.rows_flagged), else_=0)))
         .group_by(AuditReport.started_at)
         .order_by(AuditReport.started_at.desc())
         .limit(1)

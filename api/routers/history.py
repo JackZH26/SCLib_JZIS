@@ -10,26 +10,43 @@ need to read, so we don't expose it on the X-API-Key path.
 """
 from __future__ import annotations
 
+import asyncio
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func, select
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
+from sqlalchemy import func, select, text
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
-from models.db import AskHistory, User
+from models.db import AskHistory, User, get_engine
 from models.personal import AskHistoryEntry, AskHistoryListResponse
 from models.user import MessageResponse
 from routers.auth import current_user_from_jwt
+from services.history_evidence import current_history_evidence
 
 router = APIRouter(prefix="/history", tags=["history"])
 
 
+async def history_read_session():
+    """Check mutable evidence in a bounded, request-local read-only snapshot."""
+    try:
+        async with asyncio.timeout(10):
+            async with AsyncSession(get_engine().execution_options(isolation_level="REPEATABLE READ")) as session:
+                async with session.begin():
+                    await session.execute(text("SET TRANSACTION READ ONLY"))
+                    await session.execute(text("SET LOCAL statement_timeout = '5000ms'"))
+                    yield session
+    except (SQLAlchemyError, TimeoutError):
+        raise HTTPException(503, "Current history evidence unavailable", headers={"Cache-Control": "private, no-store"}) from None
+
+
 @router.get("", response_model=AskHistoryListResponse)
 async def list_history(
+    response: Response,
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(history_read_session),
     user: User = Depends(current_user_from_jwt),
 ) -> AskHistoryListResponse:
     """List the current user's Ask history, newest first.
@@ -53,9 +70,13 @@ async def list_history(
         .limit(limit)
     )
     rows = q.scalars().all()
+    current_evidence = await current_history_evidence(db, rows)
+    response.headers["Cache-Control"] = "private, no-store"
     return AskHistoryListResponse(
         total=total,
-        results=[AskHistoryEntry.model_validate(r) for r in rows],
+        results=[AskHistoryEntry.model_validate(r).model_copy(update={
+            "current_evidence": current_evidence[r.id],
+        }) for r in rows],
         limit=limit,
         offset=offset,
     )

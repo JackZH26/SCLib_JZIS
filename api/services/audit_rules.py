@@ -111,26 +111,29 @@ RULES: list[AuditRule] = [
     ),
 
     # --------------------------------------------------------
-    # H. Retracted-source contagion
+    # H. Source lifecycle eligibility (not a scientific refutation)
     # --------------------------------------------------------
     AuditRule(
         name="sole_source_retracted",
         severity="critical",
         description=(
-            "All source papers of this material are retracted "
-            "(papers.status='retracted')."
+            "Every retained record resolves to a currently retracted or "
+            "withdrawn paper. This is an eligibility hold, not proof that "
+            "the material cannot superconduct."
         ),
         setup="""
             WITH per_mat AS (
                 SELECT m.id AS mat_id,
                        COUNT(*) AS n_records,
                        COUNT(*) FILTER (
-                           WHERE p.status = 'retracted'
+                           WHERE lower(btrim(p.status)) IN ('retracted', 'withdrawn')
                        ) AS n_retracted
                 FROM materials m
-                CROSS JOIN LATERAL jsonb_array_elements(m.records) AS r
+                CROSS JOIN LATERAL jsonb_array_elements(
+                    CASE WHEN jsonb_typeof(m.records) = 'array' THEN m.records ELSE '[]'::jsonb END
+                ) AS r
                 LEFT JOIN papers p ON p.id = (r.value->>'paper_id')
-                WHERE jsonb_typeof(r.value->'paper_id') = 'string'
+                    AND jsonb_typeof(r.value->'paper_id') = 'string'
                 GROUP BY m.id
             )
         """,
@@ -141,17 +144,36 @@ RULES: list[AuditRule] = [
             )
         """,
         suggested_fix=(
-            "Set disputed=true. All supporting papers are retracted "
-            "so the material's claims are unreliable."
+            "Retain the material identity and source records in Archive. "
+            "Recompute eligible support from current sources and require "
+            "source-linked revision review; do not set the material's "
+            "scientific disputed/retracted flags from source status alone."
         ),
-        fix_query="""
-            SELECT id, 'disputed',
-                   COALESCE(disputed::text, 'false'),
-                   'true'
-            FROM materials
-            WHERE review_reason = 'sole_source_retracted'
-            LIMIT 10
+    ),
+    AuditRule(
+        name="source_eligibility_review_required",
+        severity="critical",
+        description=(
+            "At least one explicitly linked source is retracted, withdrawn, "
+            "corrected or disputed. Current catalogue policy conservatively "
+            "holds the material pending dependency-level review."
+        ),
+        predicate="""
+            EXISTS (
+                SELECT 1 FROM jsonb_array_elements(
+                    CASE WHEN jsonb_typeof(materials.records) = 'array'
+                         THEN materials.records ELSE '[]'::jsonb END
+                ) r
+                JOIN papers p ON p.id = r.value->>'paper_id'
+                WHERE jsonb_typeof(r.value->'paper_id') = 'string'
+                  AND lower(btrim(p.status)) IN ('retracted', 'withdrawn', 'corrected', 'disputed')
+            )
         """,
+        suggested_fix=(
+            "Re-evaluate the affected source-dependent results, keeping "
+            "independent support separate. A legacy note cannot lift the "
+            "hold, and a source correction is not a material-level refutation."
+        ),
     ),
 ]
 

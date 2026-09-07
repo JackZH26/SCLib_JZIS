@@ -27,6 +27,7 @@ describe("legacy audit controls do not imply scientific approval", () => {
     expect(screen.getByText(/Historical thresholds are review triggers, not physical upper limits/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Pass/ })).not.toBeInTheDocument();
     expect(screen.queryByTitle(/reappears.*immediately/)).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Legacy override" })).toHaveAttribute("title", expect.stringContaining("later audits re-evaluate"));
   });
 
   it("shows the server's refusal instead of claiming an anomaly was approved", async () => {

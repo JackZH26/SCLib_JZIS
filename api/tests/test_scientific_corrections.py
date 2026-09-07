@@ -321,3 +321,44 @@ async def test_nims_quarantine_is_not_accessible_through_legacy_audit_actions(cl
                                  json={"note": "This synthetic attempt must not touch quarantine"})
     assert response.status_code == 404, response.text
     assert await _source_snapshot(case["material_id"]) == before
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("status", ["retracted", "withdrawn", "corrected", "disputed"])
+async def test_legacy_override_cannot_clear_a_changed_source_even_without_numeric_anomaly(client, correction_case, status):
+    case = correction_case
+    async with get_session_factory()() as session:
+        material = await session.get(Material, case["material_id"])
+        material.records = [{"paper_id": case["paper_id"], "tc_kelvin": 10}]
+        material.tc_max = material.tc_max_experimental = material.tc_ambient = 10
+        material.review_reason = "legacy_governance_hold"
+        material.admin_decision = {"action": "override", "note": "Historical synthetic note"}
+        (await session.get(Paper, case["paper_id"])).status = status
+        await session.commit()
+    before = await _source_snapshot(case["material_id"])
+    response = await client.post(f"/v1/admin/audit/queue/{case['material_id']}/override", headers=case["headers"],
+                                 json={"note": "A new source hold cannot be cleared by an old review note"})
+    assert response.status_code == 409, response.text
+    assert response.headers["cache-control"] == "private, no-store"
+    assert "Current evidence or provenance" in response.json()["detail"]
+    assert await _source_snapshot(case["material_id"]) == before
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("reason", ["source_eligibility_review_required", "sole_source_retracted",
+                                    "source_support_unavailable: current linked sources require review"])
+async def test_restoring_source_status_does_not_authorize_legacy_override_of_lifecycle_hold(client, correction_case, reason):
+    case = correction_case
+    async with get_session_factory()() as session:
+        material = await session.get(Material, case["material_id"])
+        material.records = [{"paper_id": case["paper_id"], "tc_kelvin": 10}]
+        material.tc_max = material.tc_max_experimental = material.tc_ambient = 10
+        material.review_reason = reason
+        (await session.get(Paper, case["paper_id"])).status = "published"
+        await session.commit()
+    before = await _source_snapshot(case["material_id"])
+    response = await client.post(f"/v1/admin/audit/queue/{case['material_id']}/override", headers=case["headers"],
+                                 json={"note": "Lifecycle changes still require exact revision review"})
+    assert response.status_code == 409, response.text
+    assert "retained source lifecycle hold" in response.json()["detail"]
+    assert await _source_snapshot(case["material_id"]) == before

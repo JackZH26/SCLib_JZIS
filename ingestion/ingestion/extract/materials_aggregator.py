@@ -39,8 +39,10 @@ Key design choices, in order of how much they affect visible data:
 
 The aggregator rebuilds summaries from the current paper snapshot. Numeric
 anomalies are retained in ``records`` and excluded only from affected property
-views. It does not restore records absent from this snapshot: that requires
-an independently authorized source-history recovery, not a blind merge.
+views. Already-retained source-held records remain available for Archive
+traceability but cannot supply current summaries. The sweep does not restore
+missing historical records: that requires an independently authorized
+source-history recovery, not a blind merge.
 
 Invoked by:
   sclib-ingest --mode aggregate-materials
@@ -60,7 +62,7 @@ from datetime import UTC, datetime
 from statistics import median
 from typing import Any
 
-from sqlalchemy import case, select
+from sqlalchemy import case, func, or_, select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from ingestion.anomaly_review import (
@@ -143,8 +145,35 @@ _BOOL_DISSENT_MAX = 0.2
 # voters pointing at the winning value. For single-paper materials
 # we accept the single vote (otherwise everything would be NULL).
 _MIN_VOTERS_MULTIPAPER = 2
+# A lifecycle hold removes support from current summaries, not the historical
+# existence of the source, its records, or the material. Unknown status is not
+# an affirmative hold and must not be used to retire source-less NIMS rows.
+_HELD_SOURCE_STATUSES = frozenset({"retracted", "withdrawn", "corrected", "disputed"})
 # Numeric plausibility rules live in ingestion.anomaly_review. They are
 # versioned review references, not universal physical limits or replacements.
+
+
+def _source_is_held(status: Any) -> bool:
+    return isinstance(status, str) and status.strip().lower() in _HELD_SOURCE_STATUSES
+
+
+def _record_source_is_held(record: dict[str, Any], source_statuses: dict[str, Any]) -> bool:
+    paper_id = record.get("paper_id")
+    return isinstance(paper_id, str) and _source_is_held(source_statuses.get(paper_id))
+
+
+def _only_held_source_support(records: Any, source_statuses: dict[str, Any]) -> bool:
+    """Require a positive current hold for *every* explicitly linked record.
+
+    Missing sources, unknown status, malformed records and absent extractions
+    are not evidence of retraction. This is deliberately narrower than general
+    review eligibility, and never infers identity from a formula or DOI.
+    """
+    return isinstance(records, list) and bool(records) and all(
+        isinstance(record, dict)
+        and _record_source_is_held(record, source_statuses)
+        for record in records
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -629,6 +658,12 @@ def _derive_summary(
     source record or manufacture a measurement. Eligibility is versioned and
     independent of the pre-existing non-numeric catalogue visibility policy.
     """
+    raw_records = records
+    # Callers may retain held records for Archive traceability. They cannot
+    # contribute to any numerical, categorical or bibliographic summary.
+    # Keeping this in the pure derivation also protects non-driver callers.
+    records = [record for record in raw_records
+               if not _record_source_is_held(record, source_statuses or {})]
     norm_key = normalize_formula(formula_raw)
     scope_id = _material_id(norm_key)
     current_year = datetime.now(UTC).year if current_year is None else current_year
@@ -798,8 +833,11 @@ def _derive_summary(
     tc_review_required = has_reported_tc and tc_max is None and any(
         not eligible_for_property(assessment, "tc_max") for assessment in assessments
     )
-    needs_review = tc_review_required
+    source_support_unavailable = bool(raw_records) and not records
+    needs_review = tc_review_required or source_support_unavailable
     review_reason: str | None = (
+        "source_support_unavailable: current linked sources require review"
+        if source_support_unavailable else
         f"numeric_review_pending:{ANOMALY_POLICY_VERSION}:tc_max"
         if tc_review_required else None
     )
@@ -925,10 +963,10 @@ def _derive_summary(
         # Automatic sanity gate
         "needs_review":        needs_review,
         "review_reason":       _clip("review_reason", review_reason),
-        "records": records,
+        "records": raw_records,
         "anomaly_context": anomaly_context,
         "anomaly_review": build_anomaly_review(
-            records, scope_id=scope_id, family=family,
+            raw_records, scope_id=scope_id, family=family,
             compound_thresholds=compound_thresholds,
             current_year=current_year,
         ),
@@ -982,7 +1020,7 @@ def _derive_summary(
         summary["disputed"] = True
         semantic_legacy["disputed"] = True
     semantics = build_material_semantics(
-        records, scope_id=scope_id, family=family,
+        raw_records, scope_id=scope_id, family=family,
         legacy_summary=semantic_legacy, source_statuses=source_statuses,
     )
     summary["material_semantics"] = semantics
@@ -1170,21 +1208,40 @@ def _is_purgeable_orphan(
     return not ok
 
 
-def _material_upsert_statement(mat_id: str, summary: dict[str, Any]):
+def _material_upsert_statement(
+    mat_id: str, summary: dict[str, Any], *, preserve_identity: bool = False,
+):
     """Keep governance holds sticky while refreshing rebuildable summaries."""
     stmt = pg_insert(materials_table).values(id=mat_id, status="active_research", **summary)
     update_cols = {key: stmt.excluded[key] for key in summary}
+    if preserve_identity:
+        for key in ("formula", "formula_normalized", "family", "formula_substrate", "formula_overlayer"):
+            update_cols.pop(key, None)
     mt = materials_table.c
     # Neither fresh numeric heterogeneity nor absence of an extraction is an
     # adjudication of a historical dispute. Clearing it needs a review action.
     update_cols["disputed"] = case((mt.disputed.is_(True), True), else_=stmt.excluded["disputed"])
+    existing_hold = mt.needs_review.is_(True) | func.lower(func.ltrim(mt.review_reason)).like(
+        "provenance_quarantine%",
+    )
     update_cols["needs_review"] = case(
+        (existing_hold, True),
+        (stmt.excluded.needs_review.is_(True), True),
         (mt.admin_decision.isnot(None), mt.needs_review), else_=stmt.excluded["needs_review"],
     )
     update_cols["review_reason"] = case(
+        # All existing holds require explicit revision review to clear, not
+        # merely a new extraction snapshot. A historical positive decision
+        # cannot mask a new source/anomaly hold. Decisions remain history.
+        (existing_hold, mt.review_reason),
+        (stmt.excluded.needs_review.is_(True), stmt.excluded.review_reason),
         (mt.admin_decision.isnot(None), mt.review_reason), else_=stmt.excluded["review_reason"],
     )
-    return stmt.on_conflict_do_update(index_elements=[mt.id], set_=update_cols)
+    # Repeated snapshots converge without advancing a watermark on a no-op.
+    # Actual changes must advance it so dependent projections can invalidate.
+    changed = or_(*(mt[key].is_distinct_from(value) for key, value in update_cols.items()))
+    update_cols["updated_at"] = func.now()
+    return stmt.on_conflict_do_update(index_elements=[mt.id], set_=update_cols, where=changed)
 
 
 async def aggregate_from_papers() -> int:
@@ -1241,18 +1298,22 @@ async def aggregate_from_papers() -> int:
         legacy_fields = ("pairing_symmetry", "is_unconventional", "has_competing_order", "disputed")
         legacy_rows = (await db.execute(select(
             materials_table.c.id, *(materials_table.c[name] for name in legacy_fields),
+            materials_table.c.records,
         ))).all()
         legacy_by_id = {row[0]: dict(zip(legacy_fields, row[1:])) for row in legacy_rows}
+        retained_by_id = {
+            row[0]: row[1 + len(legacy_fields)]
+            for row in legacy_rows if len(row) > 1 + len(legacy_fields)
+        }
 
         # Stream all papers with their extracted materials. Each paper
         # is small (materials_extracted is a short list) so we can pull
         # them all at once rather than page.
         #
-        # Retracted papers are excluded so their fabricated / flagged
-        # claims do not re-pollute materials.records on every aggregator
-        # run. This is what makes the alembic 0010 Schön-fraud cleanup
-        # *durable* — without this filter, the retracted papers would
-        # stay in papers.materials_extracted and get re-aggregated here.
+        # Load all statuses to distinguish positive lifecycle holds from
+        # absent extractions. Held sources are skipped below; their current
+        # NER records are never reintroduced by this sweep. Previously stored
+        # only-source material records remain recoverable in Archive.
         #
         # credibility_tier is loaded so we can apply tier-based
         # confidence scaling (T4/T5 records get downweighted).
@@ -1264,10 +1325,7 @@ async def aggregate_from_papers() -> int:
             papers_table.c.materials_extracted,
             papers_table.c.credibility_tier,
             papers_table.c.status,
-        ).where(
-            (papers_table.c.status != "retracted")
-            | (papers_table.c.status.is_(None))
-        )
+        ).order_by(papers_table.c.id)
         rows = (await db.execute(stmt)).all()
         source_statuses = {row[0]: row[-1] for row in rows}
         log.info("aggregator: scanning %d papers", len(rows))
@@ -1289,6 +1347,8 @@ async def aggregate_from_papers() -> int:
 
         n_skipped_t4t5 = 0
         for paper_id, source, date_submitted, date_published, mats, cred_tier, _paper_status in rows:
+            if _source_is_held(_paper_status):
+                continue
             if not isinstance(mats, list) or not mats:
                 continue
             effective_tier = (
@@ -1372,6 +1432,18 @@ async def aggregate_from_papers() -> int:
             top_count = candidates[0][1]
             top_raws = [r for r, c in candidates if c == top_count]
             display_raw = min(top_raws, key=len)
+            mat_id = _material_id(norm)
+            retained = retained_by_id.get(mat_id)
+            if isinstance(retained, list):
+                # Preserve the existing Archive audit path for a mixed-source
+                # material. Do not import new held extractions or reconstruct
+                # records missing from historical material rows. Current
+                # summaries below use only the independently eligible pool.
+                # SC07 may conservatively keep the whole material on hold
+                # until a result-scoped admission workflow is implemented.
+                records = records + [record for record in retained
+                    if isinstance(record, dict)
+                    and _record_source_is_held(record, source_statuses)]
 
             summary = _derive_summary(
                 display_raw, records,
@@ -1380,7 +1452,6 @@ async def aggregate_from_papers() -> int:
                 source_statuses=source_statuses,
                 legacy_summary=legacy_by_id.get(_material_id(norm)),
             )
-            mat_id = _material_id(norm)
             await db.execute(_material_upsert_statement(mat_id, summary))
             upserted += 1
             if upserted % 200 == 0:
@@ -1439,22 +1510,42 @@ async def aggregate_from_papers() -> int:
         # "orphans". The upsert path only ever inserts/updates present
         # canonicals and never deletes, so stale pre-validator NER
         # garbage from a looser era lingers visibly forever. Soft-retire
-        # ONLY positively-identified garbage (see _is_purgeable_orphan);
-        # NIMS-only and valid source-less rows are preserved. Skips
-        # admin-reviewed rows so manual decisions are never undone.
+        # ONLY positively-identified garbage (see _is_purgeable_orphan) or
+        # a material whose every stored record has an explicit current source
+        # hold. NIMS-only and temporarily source-less rows are preserved.
+        # Historical manual decisions cannot authorize stale source support.
         live_ids = {_material_id(n) for n in all_norms}
         candidates = (await db.execute(
             select(
                 materials_table.c.id,
                 materials_table.c.formula,
                 materials_table.c.review_reason,
+                materials_table.c.records,
+                materials_table.c.needs_review,
+                materials_table.c.admin_decision,
             )
-            .where(materials_table.c.needs_review.is_(False))
-            .where(materials_table.c.admin_decision.is_(None))
         )).all()
         retired = 0
-        for oid, oformula, orr in candidates:
+        source_held = 0
+        for oid, oformula, orr, old_records, old_needs_review, old_decision in candidates:
             if oid in live_ids:
+                continue
+            if not oid.startswith("nims:") and _only_held_source_support(old_records, source_statuses):
+                summary = _derive_summary(
+                    oformula, old_records,
+                    source_statuses=source_statuses,
+                    legacy_summary=legacy_by_id.get(oid),
+                )
+                if old_needs_review and orr:
+                    # A source hold is additional information, not permission
+                    # to erase an unrelated pre-existing provenance hold.
+                    summary["review_reason"] = orr
+                # Preserve the existing ID, records, independent governance
+                # flags and manual decision; only the derived view changes.
+                await db.execute(_material_upsert_statement(oid, summary, preserve_identity=True))
+                source_held += 1
+                continue
+            if old_needs_review or old_decision is not None:
                 continue
             if not _is_purgeable_orphan(oformula, orr, oid):
                 continue
@@ -1475,8 +1566,9 @@ async def aggregate_from_papers() -> int:
         await db.commit()
         log.info(
             "aggregator: soft-retired %d stale orphan rows "
-            "(scanned %d non-reviewed candidates, %d live this sweep)",
+            "(scanned %d existing materials, %d live this sweep)",
             retired, len(candidates), len(live_ids),
         )
+        log.info("aggregator: refreshed %d only-source held material views", source_held)
 
     return upserted

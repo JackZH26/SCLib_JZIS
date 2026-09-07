@@ -6,7 +6,7 @@ from datetime import UTC, date, datetime, timedelta
 from math import isfinite
 
 from pydantic import ValidationError
-from sqlalchemy import func, or_, select, update
+from sqlalchemy import String, cast, func, or_, select, update
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -29,7 +29,7 @@ from services.timeline_points import (
     referenced_paper_ids,
 )
 
-PROJECTION_SCHEMA_VERSION = 5
+PROJECTION_SCHEMA_VERSION = 6
 _STATE_ID = 1
 _WATERMARK_OVERLAP = timedelta(minutes=5)
 _SOURCE_SNAPSHOT_KEY = "_projection_source_snapshot"
@@ -140,9 +140,12 @@ def _valid_result_metadata(metadata: dict) -> bool:
 
 def _source_snapshot(metadata: dict | None) -> dict:
     """Internal cache dependency metadata, never a scientific source version."""
-    return {"present": metadata is not None, **{
+    updated_at = (metadata or {}).get("updated_at")
+    return {"present": metadata is not None, "status": (metadata or {}).get("status"),
+        "updated_at": (updated_at.astimezone(UTC).isoformat(timespec="microseconds")
+                       if updated_at is not None else None), **{
         key: value.isoformat() if value is not None else None
-        for key in ("date_published", "date_submitted", "updated_at")
+        for key in ("date_published", "date_submitted")
         for value in ((metadata or {}).get(key),)
     }}
 
@@ -156,19 +159,37 @@ async def _sources_changed_since(session: AsyncSession, watermark: datetime) -> 
     return bool(changed.all())
 
 
-async def _projected_sources_removed(session: AsyncSession) -> bool:
+async def _projected_sources_changed(session: AsyncSession) -> bool:
+    """Compare live dependencies even when an upstream timestamp moved backwards.
+
+    The database returns at most one mismatch, not the full projection payload.
+    Canonical JSON comparison avoids casting corrupt cached values to dates.
+    Records with no previous point still need a timestamp signal or an explicit
+    invalidation-driven full rebuild; no synthetic scientific points are stored.
+    """
     point = TimelineProjectionPoint
-    removed = await session.execute(select(point.id).outerjoin(Paper, Paper.id == point.paper_id).where(
-        point.active.is_(True), Paper.id.is_(None),
-        point.result_metadata[_SOURCE_SNAPSHOT_KEY]["present"].as_boolean().is_(True),
+    snapshot = point.result_metadata[_SOURCE_SNAPSHOT_KEY]
+    updated_at = func.to_char(
+        func.timezone("UTC", Paper.updated_at), 'YYYY-MM-DD"T"HH24:MI:SS.US"+00:00"',
+    )
+    expected = func.jsonb_build_object(
+        cast("present", String), Paper.id.is_not(None),
+        cast("date_published", String), func.to_char(Paper.date_published, "YYYY-MM-DD"),
+        cast("date_submitted", String), func.to_char(Paper.date_submitted, "YYYY-MM-DD"),
+        cast("updated_at", String), updated_at,
+        cast("status", String), Paper.status,
+    )
+    changed = await session.execute(select(point.id).outerjoin(Paper, Paper.id == point.paper_id).where(
+        point.active.is_(True), snapshot.is_distinct_from(expected),
     ).limit(1))
-    return bool(removed.all())
+    return bool(changed.all())
 
 
 async def refresh_timeline_projection(
     session: AsyncSession,
     *,
     now: datetime | None = None,
+    force_full_rebuild: bool = False,
 ) -> ProjectionRefreshResult:
     """Refresh changed materials atomically without touching source JSONB.
 
@@ -176,12 +197,17 @@ async def refresh_timeline_projection(
     are soft-disabled before the current deterministic point set is upserted.
     If any statement fails, the transaction rolls back and the previous ready
     projection remains visible.
+
+    A controlled source invalidation can request a full rebuild, including
+    records that had no projectable date and therefore no prior point. This is
+    a recomputation request, not permission to accept a corrected source.
     """
     refreshed_at = now or datetime.now(UTC)
     current_year = refreshed_at.year
     state = await session.get(TimelineProjectionState, _STATE_ID)
     full_rebuild = (
-        state is None
+        force_full_rebuild
+        or state is None
         or state.schema_version != PROJECTION_SCHEMA_VERSION
         or getattr(state, "classifier_version", None) != CLASSIFIER_VERSION
         or getattr(state, "pressure_policy_version", None) != PRESSURE_POLICY_VERSION
@@ -191,7 +217,7 @@ async def refresh_timeline_projection(
     if not full_rebuild and state is not None:
         full_rebuild = (
             await _sources_changed_since(session, state.source_watermark)
-            or await _projected_sources_removed(session)
+            or await _projected_sources_changed(session)
         )
     if full_rebuild:
         await session.execute(
@@ -223,15 +249,16 @@ async def refresh_timeline_projection(
     ordered_paper_ids = sorted(paper_ids)
     for start in range(0, len(ordered_paper_ids), 1000):
         paper_rows = await session.execute(
-            select(Paper.id, Paper.date_published, Paper.date_submitted, Paper.updated_at).where(
+            select(Paper.id, Paper.date_published, Paper.date_submitted, Paper.updated_at, Paper.status).where(
                 Paper.id.in_(ordered_paper_ids[start:start + 1000])
             )
         )
-        for paper_id, date_published, date_submitted, updated_at in paper_rows.all():
+        for paper_id, date_published, date_submitted, updated_at, status in paper_rows.all():
             paper_metadata[paper_id] = {
                 "date_published": date_published,
                 "date_submitted": date_submitted,
                 "updated_at": updated_at,
+                "status": status,
             }
 
     projection_table = TimelineProjectionPoint.__table__
@@ -410,6 +437,7 @@ async def fetch_projected_timeline_points(
             Paper.date_published,
             Paper.date_submitted,
             Paper.updated_at,
+            Paper.status,
         )
         .join(point, point.material_id == Material.id)
         .outerjoin(Paper, Paper.id == point.paper_id)
@@ -454,7 +482,7 @@ async def fetch_projected_timeline_points(
         pressure_gpa, pressure_semantics, paper_id, is_theoretical,
         knowledge_origin, classification_status, source_role, classifier_version,
         material_id, _source_updated_at, point_id, result_metadata,
-        live_paper_id, live_date_published, live_date_submitted, live_paper_updated,
+        live_paper_id, live_date_published, live_date_submitted, live_paper_updated, live_paper_status,
     ) in eligible_rows:
         if (
             not isinstance(result_metadata, dict)
@@ -479,6 +507,7 @@ async def fetch_projected_timeline_points(
             "date_published": live_date_published,
             "date_submitted": live_date_submitted,
             "updated_at": live_paper_updated,
+            "status": live_paper_status,
         } if live_paper_id is not None else None)
         if result_metadata.get(_SOURCE_SNAPSHOT_KEY) != live_source_snapshot:
             return None

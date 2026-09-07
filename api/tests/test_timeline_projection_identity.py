@@ -6,14 +6,47 @@ from datetime import UTC, date, datetime, timedelta
 from uuid import uuid4
 
 import pytest
-from sqlalchemy import select, update
+import pytest_asyncio
+from sqlalchemy import select, text, update
 
-from models.db import Material, Paper, TimelineProjectionPoint, TimelineProjectionState
+from models.db import (
+    Material,
+    Paper,
+    TimelineProjectionPoint,
+    TimelineProjectionState,
+    get_session_factory,
+)
 from routers.timeline import _build_timeline_fallback
 from services.timeline_projection import (
+    _projected_sources_changed,
+    _sources_changed_since,
     fetch_projected_timeline_points,
     refresh_timeline_projection,
 )
+
+
+@pytest_asyncio.fixture(loop_scope="function")
+async def db_session():
+    # Keep rollback/close on the same loop even when an assertion fails; other
+    # modules legitimately retain append-only fixture history in this database.
+    async with get_session_factory()() as session:
+        yield session
+
+
+async def _assert_content_converged(session):
+    """Content repair converges independently of the global overlap watermark.
+
+    Other tests or real ingestion may have written unrelated papers within the
+    five-minute overlap. Such papers intentionally request another full rebuild
+    even when every active point's source snapshot already matches exactly.
+    """
+    assert await _projected_sources_changed(session) is False
+    state = await session.get(TimelineProjectionState, 1)
+    timestamp_trigger = await _sources_changed_since(session, state.source_watermark)
+    repeated = await refresh_timeline_projection(session)
+    assert repeated.full_rebuild is timestamp_trigger
+    assert await _projected_sources_changed(session) is False
+    return repeated
 
 
 async def _seed(session, *, with_year=False, with_dates=True):
@@ -108,6 +141,7 @@ async def test_paper_date_change_without_material_change_invalidates_and_refresh
     papers[0].updated_at = datetime.now(UTC)
     await db_session.flush()
     assert material.updated_at == original_updated
+    assert await _projected_sources_changed(db_session) is True
     assert await _read(db_session, material) is None
     raw = await _fallback(db_session, material)
     assert {point.year for point in raw.points} == {2020, 2021}
@@ -116,6 +150,189 @@ async def test_paper_date_change_without_material_change_invalidates_and_refresh
     current = await _read(db_session, material)
     assert current is not None
     assert [point.model_dump() for point in current.points] == [point.model_dump() for point in raw.points]
+    await db_session.rollback()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("field,corrected", (
+    ("date_published", date(2021, 6, 7)),
+    ("date_published", None),
+    ("date_submitted", date(2018, 1, 2)),
+))
+async def test_source_date_correction_with_unchanged_timestamp_converges(db_session, field, corrected):
+    material, papers = await _seed(db_session)
+    await refresh_timeline_projection(db_session)
+    assert await _projected_sources_changed(db_session) is False
+    original_updated = material.updated_at
+    paper_updated = papers[0].updated_at
+    # External metadata imports can preserve provider timestamps. Content, not
+    # timestamp ordering alone, must decide whether a projection needs repair.
+    await db_session.execute(update(Paper).where(Paper.id == papers[0].id).values(
+        **{field: corrected, "updated_at": paper_updated},
+    ))
+    assert material.updated_at == original_updated
+    assert await _projected_sources_changed(db_session) is True
+    assert await _read(db_session, material) is None
+    raw = await _fallback(db_session, material)
+    refreshed = await refresh_timeline_projection(db_session)
+    assert refreshed.full_rebuild
+    current = await _read(db_session, material)
+    assert current is not None
+    assert [point.model_dump() for point in current.points] == [point.model_dump() for point in raw.points]
+    await _assert_content_converged(db_session)
+    repeated_read = await _read(db_session, material)
+    assert repeated_read is not None
+    assert [point.model_dump() for point in repeated_read.points] == [point.model_dump() for point in current.points]
+    await db_session.rollback()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("future", [False, True])
+async def test_unrelated_timestamp_trigger_is_distinct_from_stale_content(db_session, future):
+    material, _ = await _seed(db_session)
+    unrelated = Paper(
+        id=f"arxiv:unrelated-projection-{uuid4().hex}", source="arxiv",
+        title="Synthetic unrelated timestamp signal", authors=[], abstract="Test only.",
+        status="published", updated_at=datetime.now(UTC) + (
+            timedelta(days=1) if future else -timedelta(minutes=1)
+        ),
+    )
+    db_session.add(unrelated)
+    await db_session.flush()
+    await refresh_timeline_projection(db_session)
+    ids = (await db_session.execute(select(TimelineProjectionPoint.id).where(
+        TimelineProjectionPoint.material_id == material.id,
+    ).order_by(TimelineProjectionPoint.id))).scalars().all()
+    assert len(ids) == 2
+    for _ in range(2):
+        # Both ordinary overlapping writes and future provider timestamps
+        # intentionally cause conservative rebuilds even without dependencies.
+        # The latter also retains the pre-existing fail-closed raw read path.
+        assert (await _assert_content_converged(db_session)).full_rebuild is True
+        current = await _read(db_session, material)
+        if future:
+            assert current is None
+            assert len((await _fallback(db_session, material)).points) == 2
+        else:
+            assert current is not None and len(current.points) == 2
+        current_ids = (await db_session.execute(select(TimelineProjectionPoint.id).where(
+            TimelineProjectionPoint.material_id == material.id,
+        ).order_by(TimelineProjectionPoint.id))).scalars().all()
+        assert current_ids == ids
+    await db_session.rollback()
+
+
+@pytest.mark.asyncio
+async def test_backdated_source_timestamp_does_not_leave_permanent_fallback(db_session):
+    material, papers = await _seed(db_session)
+    await refresh_timeline_projection(db_session)
+    initial = await _read(db_session, material)
+    assert initial is not None
+    await db_session.execute(update(Paper).where(Paper.id == papers[0].id).values(
+        updated_at=papers[0].updated_at - timedelta(days=1),
+    ))
+    assert await _projected_sources_changed(db_session) is True
+    assert await _read(db_session, material) is None
+    assert (await refresh_timeline_projection(db_session)).full_rebuild
+    current = await _read(db_session, material)
+    assert current is not None
+    # A provider timestamp is a dependency token, not a new scientific result.
+    assert [point.point_id for point in current.points] == [point.point_id for point in initial.points]
+    await _assert_content_converged(db_session)
+    await db_session.rollback()
+
+
+@pytest.mark.asyncio
+async def test_status_correction_with_old_timestamp_rebuilds_without_approving_claims(db_session):
+    material, papers = await _seed(db_session)
+    await refresh_timeline_projection(db_session)
+    initial = await _read(db_session, material)
+    assert initial is not None
+    await db_session.execute(update(Paper).where(Paper.id == papers[0].id).values(
+        status="retracted", updated_at=papers[0].updated_at,
+    ))
+    assert await _projected_sources_changed(db_session) is True
+    # SC07 deliberately keeps a conservative material-wide hold until explicit
+    # occurrence-scoped dependencies and independent result reviews are ready.
+    held = await _read(db_session, material)
+    assert held is not None and held.points == []
+    assert (await refresh_timeline_projection(db_session)).full_rebuild
+    archive = await fetch_projected_timeline_points(
+        db_session, family=material.family, include_pending=True,
+        experimental_only=False, only_aps=False,
+    )
+    assert archive is not None and len(archive.points) == 2
+    assert [point.point_id for point in archive.points] == [point.point_id for point in initial.points]
+    assert all(not point.visibility["public_catalogue_eligible"] for point in archive.points)
+    assert all("source_retracted" in point.visibility["reason_codes"] for point in archive.points)
+    await _assert_content_converged(db_session)
+    await db_session.rollback()
+
+
+@pytest.mark.asyncio
+async def test_explicit_invalidation_recovers_missing_date_without_timestamp_signal(db_session):
+    material, papers = await _seed(db_session, with_dates=False)
+    await refresh_timeline_projection(db_session)
+    initial = await _read(db_session, material)
+    assert initial is not None and initial.points == []
+    await db_session.execute(update(Paper).where(Paper.id == papers[0].id).values(
+        date_submitted=date(2019, 5, 1), updated_at=papers[0].updated_at,
+    ))
+    refreshed = await refresh_timeline_projection(db_session, force_full_rebuild=True)
+    assert refreshed.full_rebuild
+    current = await _read(db_session, material)
+    assert current is not None and len(current.points) == 1
+    assert current.points[0].result_metadata["year_basis"] == "source_submission_date"
+    assert [point.model_dump() for point in current.points] == [
+        point.model_dump() for point in (await _fallback(db_session, material)).points
+    ]
+    repeated = await refresh_timeline_projection(db_session, force_full_rebuild=True)
+    assert repeated.full_rebuild
+    repeated_read = await _read(db_session, material)
+    assert repeated_read is not None
+    assert [point.point_id for point in repeated_read.points] == [point.point_id for point in current.points]
+    rows = (await db_session.execute(select(TimelineProjectionPoint.id).where(
+        TimelineProjectionPoint.material_id == material.id,
+    ))).all()
+    assert len(rows) == 1
+    await db_session.rollback()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("mutation", ("invalid_scalar", "extra_field", "missing_field"))
+async def test_malformed_dependency_snapshot_is_rebuilt_without_timestamp_cast(db_session, mutation):
+    material, _ = await _seed(db_session)
+    await refresh_timeline_projection(db_session)
+    point = (await db_session.execute(select(TimelineProjectionPoint).where(
+        TimelineProjectionPoint.material_id == material.id,
+    ).limit(1))).scalar_one()
+    snapshot = deepcopy(point.result_metadata["_projection_source_snapshot"])
+    if mutation == "invalid_scalar":
+        snapshot.update({"present": "not a boolean", "date_published": {"unsafe": "not a date"},
+                         "updated_at": "not a timestamp"})
+    elif mutation == "extra_field":
+        snapshot["not_in_dependency_contract"] = True
+    else:
+        snapshot.pop("status")
+    await db_session.execute(update(TimelineProjectionPoint).where(
+        TimelineProjectionPoint.id == point.id,
+    ).values(result_metadata={**point.result_metadata, "_projection_source_snapshot": snapshot}))
+    assert await _read(db_session, material) is None
+    assert (await refresh_timeline_projection(db_session)).full_rebuild
+    assert await _read(db_session, material) is not None
+    await db_session.rollback()
+
+
+@pytest.mark.asyncio
+async def test_dependency_comparison_is_independent_of_database_timezone_and_date_style(db_session):
+    material, papers = await _seed(db_session)
+    papers[0].updated_at = papers[0].updated_at.replace(microsecond=0)
+    await db_session.flush()
+    await refresh_timeline_projection(db_session)
+    await db_session.execute(text("SET LOCAL TIME ZONE 'Asia/Singapore'"))
+    await db_session.execute(text("SET LOCAL DateStyle TO 'German, DMY'"))
+    await _assert_content_converged(db_session)
+    assert await _read(db_session, material) is not None
     await db_session.rollback()
 
 

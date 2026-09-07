@@ -134,9 +134,15 @@ export function AskHistoryList({
                       <h4 className="mt-4 text-xs font-semibold uppercase tracking-wide text-sage-tertiary">
                         Sources
                       </h4>
-                      <p className="mt-1 text-xs text-amber-900">Saved answer snapshot: source status may have changed. Open each source for its current review warnings before reusing a claim.</p>
+                      <p className="mt-1 text-xs text-amber-900">Saved citations are historical. Current source and material warnings below describe a request-time metadata snapshot, not a revalidation of the saved excerpt or answer.</p>
+                      {e.current_evidence?.metadata_snapshot_at && <p className="mt-1 text-xs text-sage-muted">Metadata snapshot: {formatDate(e.current_evidence.metadata_snapshot_at)}. Later source changes require a new read.</p>}
+                      {e.current_evidence?.warning_codes.includes("saved_source_inventory_truncated") && <p className="mt-1 text-xs text-amber-900">Some saved sources exceed the current-check limit. Their present evidence status is unknown.</p>}
+                      {e.current_evidence?.warning_codes.includes("current_evidence_output_budget_exhausted") && <p className="mt-1 text-xs text-amber-900">Some current source summaries exceed the response limit and were omitted. Missing summaries do not establish current support.</p>}
                       <ol className="mt-1 space-y-1 text-xs text-sage-muted">
-                        {e.sources.map((s, i) => (
+                        {e.sources.map((s, i) => {
+                          const current = e.current_evidence?.sources.find((item) => item.saved_source_position === i && item.paper_id === s.paper_id);
+                          const states = current?.occurrence_visibility_summary?.state_counts;
+                          return (
                           <li key={i} className="flex gap-2">
                             <span className="font-semibold text-accent-deep">
                               [{s.index ?? i + 1}]
@@ -154,9 +160,16 @@ export function AskHistoryList({
                               )}
                               {s.authors_short ? ` — ${s.authors_short}` : ""}
                               {s.year ? ` (${s.year})` : ""}
+                              <span className="mt-1 block text-amber-900">
+                                {current && current.metadata_status !== "unavailable" ? `Current source status: ${current.source_visibility.source_status}.` : "Current source status is unavailable; do not treat saved citations as current support."}
+                                {current?.source_visibility.reported_claim_filter_eligible === false && current.metadata_status !== "unavailable" && " Current claim-support eligibility is withheld; review is required."}
+                                {current?.metadata_status === "incomplete" && " Current material occurrence checks are incomplete."}
+                              </span>
+                              {states && <span className="mt-1 block">Current paper occurrences: {Object.entries(states).map(([state, count]) => `${state}: ${count}`).join("; ") || "none"}. Explicit material links only; no matching by formula.</span>}
                             </span>
                           </li>
-                        ))}
+                          );
+                        })}
                       </ol>
                     </>
                   )}

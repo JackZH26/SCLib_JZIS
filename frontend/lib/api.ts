@@ -343,6 +343,21 @@ export function getUsage() {
 
 // --- Ask history ----------------------------------------------------------
 
+export interface AskHistoryCurrentEvidence {
+  scope: "current_paper_metadata_not_saved_excerpt";
+  metadata_snapshot_at?: string;
+  saved_answer_revalidated: false;
+  sources: Array<{
+    saved_source_position: number;
+    paper_id: string | null;
+    metadata_status: "checked" | "incomplete" | "unavailable";
+    source_visibility: { source_status: string; reported_claim_filter_eligible: boolean };
+    occurrence_visibility_summary: { total_occurrences: number; state_counts: Record<string, number>; omitted_occurrences: number } | null;
+    warning_codes: string[];
+  }>;
+  warning_codes: string[];
+}
+
 export interface AskHistoryEntry {
   id: string;
   question: string;
@@ -357,6 +372,7 @@ export interface AskHistoryEntry {
     section?: string | null;
     snippet?: string;
   }>;
+  current_evidence?: AskHistoryCurrentEvidence;
   tokens_used: number | null;
   latency_ms: number;
   language: string | null;

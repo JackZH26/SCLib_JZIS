@@ -172,8 +172,8 @@ async def test_projection_read_rechecks_live_material_governance_after_flat_poin
         **extract_timeline_points("mat:flat", material.records, {}, current_year=2026)[0].result_metadata,
         "_projection_source_snapshot": {"present": True,
             "date_published": None, "date_submitted": None,
-            "updated_at": refreshed_at.isoformat()},
-    }, "aps:test", None, None, refreshed_at) for row in rows]
+            "status": "published", "updated_at": refreshed_at.isoformat(timespec="microseconds")},
+    }, "aps:test", None, None, refreshed_at, "published") for row in rows]
     session = _FakeSession(state=state, results=[
         _Result([]), _Result([]), _Result(rows), _Result([material]),
         _Result([("aps:test", "published")]),
@@ -216,7 +216,7 @@ async def test_initial_refresh_soft_disables_then_atomically_upserts_projection(
         results=[
             _Result(),
             _Result([("mat:test", records, now, "hydride", {})]),
-            _Result([("aps:test", None, None, now)]),
+            _Result([("aps:test", None, None, now, "published")]),
             _Result(),
             _Result(),
             _Result((1, 1)),
