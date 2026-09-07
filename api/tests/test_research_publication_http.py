@@ -214,22 +214,26 @@ async def test_read_session_setup_failure_is_a_private_sanitized_503(client, mon
         assert_private(response)
 
 
-@pytest.mark.parametrize("status", ["retracted", "withdrawn", "corrected", "disputed"])
-async def test_source_lifecycle_hold_removes_public_access_without_rewriting_frozen_bytes(client, db_session, status):
+@pytest.mark.parametrize("kind,status", [(kind, status) for kind in ("paper", "work")
+    for status in ("retracted", "withdrawn", "corrected", "disputed") if kind != "work" or status != "disputed"])
+async def test_source_lifecycle_hold_removes_public_access_without_rewriting_frozen_bytes(client, db_session, status, kind):
     context = await published(db_session)
     await db_session.commit()
     proposal = context["proposal"]
     before = await client.get(paths(proposal["id"])[0])
     assert before.status_code == 200
-    await db_session.execute(sa.text("UPDATE papers SET status=:status WHERE id=:id"),
-                             {"status": status, "id": context["fixture"]["paper"]})
-    await db_session.commit()
-    for path in paths(proposal["id"]):
-        held = await client.get(path, headers={"If-None-Match": before.headers["x-public-manifest-sha256"]})
-        assert held.status_code == 404 and "objects" not in held.json()
-        assert_private(held)
-    inventory = await client.get("/v1/ml/releases")
-    assert proposal["id"] not in {item["id"] for item in inventory.json()["items"]}
+    table, field, restored = ("papers", "status", "published") if kind == "paper" else ("works", "publication_status", "active")
+    for current_status in (status, restored):
+        await db_session.execute(sa.text(f"UPDATE {table} SET {field}=:status WHERE id=:id"),
+                                 {"status": current_status, "id": context["fixture"][kind]})
+        await db_session.commit()
+        for path in paths(proposal["id"]):
+            held = await client.get(path, headers={"If-None-Match": before.headers["x-public-manifest-sha256"]})
+            assert held.status_code == 404 and "objects" not in held.json()
+            assert_private(held)
+        inventory = await client.get("/v1/ml/releases")
+        assert inventory.status_code == 200
+        assert proposal["id"] not in {item["id"] for item in inventory.json()["items"]}
     release = context["release"]
     historical = await freeze.inspect_research_release(
         db_session, release_id=release["release_id"], expected_manifest_sha256=release["manifest_sha256"],
@@ -242,3 +246,21 @@ async def test_source_lifecycle_hold_removes_public_access_without_rewriting_fro
     notices = await db_session.scalar(sa.text("SELECT count(*) FROM research_release_notices WHERE release_id=:id"),
                                       {"id": release["release_id"]})
     assert notices == 0
+
+
+async def test_invalid_lifecycle_registry_is_held_without_disclosing_internal_diagnostic(client, db_session, monkeypatch):
+    from services.source_lifecycle import SourceLifecycleError
+    context = await published(db_session)
+    await db_session.commit()
+    async def invalid(*_args):
+        raise SourceLifecycleError("PRIVATE-LIFECYCLE-BINDING-DIAGNOSTIC")
+    monkeypatch.setattr("services.source_lifecycle.resolve_paper_lifecycle", invalid)
+    for path in paths(context["proposal"]["id"]):
+        response = await client.get(path)
+        assert response.status_code == 404
+        assert response.json()["detail"] == "Publication unavailable"
+        assert "PRIVATE-LIFECYCLE" not in response.text
+        assert_private(response)
+    inventory = await client.get("/v1/ml/releases")
+    assert inventory.status_code == 200
+    assert context["proposal"]["id"] not in {item["id"] for item in inventory.json()["items"]}

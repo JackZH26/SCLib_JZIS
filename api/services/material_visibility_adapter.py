@@ -11,9 +11,10 @@ from typing import Any
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.db import Material, Paper
+from models.db import Material
 from services.material_anomalies import material_review, review_context
 from services.material_visibility import visibility_allows_view, visibility_for_material
+from services.source_lifecycle import resolve_paper_lifecycle
 
 MAX_PARENT_DEPTH = 32
 _SQL_BATCH_SIZE = 1000
@@ -23,7 +24,7 @@ _SQL_BATCH_SIZE = 1000
 class MaterialReadContext:
     material: Any
     visibility: dict[str, Any]
-    source_statuses: dict[str, str | None]
+    source_statuses: dict[str, Any]
 
     def __getattr__(self, name):
         source = object.__getattribute__(self, "material")
@@ -71,11 +72,9 @@ async def prepare_material_views(session: AsyncSession, materials) -> list[Mater
         if isinstance(r, dict) and isinstance(r.get("paper_id"), str) and r["paper_id"]
     }
     statuses = {}
-    # Avoid unbounded SQL parameter lists when a material has many sources.
     identifiers = sorted(paper_ids)
     for start in range(0, len(identifiers), _SQL_BATCH_SIZE):
-        rows = (await session.execute(select(Paper.id, Paper.status).where(Paper.id.in_(identifiers[start:start + _SQL_BATCH_SIZE])))).all()
-        statuses.update(rows)
+        statuses.update(await resolve_paper_lifecycle(session, identifiers[start:start + _SQL_BATCH_SIZE]))
     own_sources = {
         material.id: {
             r["paper_id"]: statuses.get(r["paper_id"])

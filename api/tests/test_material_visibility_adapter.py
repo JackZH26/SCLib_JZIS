@@ -9,6 +9,7 @@ from datetime import UTC, datetime
 from types import SimpleNamespace
 
 import pytest
+from sqlalchemy import select
 
 from models.db import Material, Paper
 from services.material_visibility_adapter import (
@@ -16,6 +17,20 @@ from services.material_visibility_adapter import (
     material_view,
     prepare_material_views,
 )
+
+
+@pytest.fixture(autouse=True)
+def bounded_lifecycle_read_seam(monkeypatch):
+    """This unit suite supplies trusted source results, not ledger SQL tests."""
+    async def resolve(session, identifiers):
+        assert isinstance(session, _ReadSession)
+        result = {}
+        identifiers = sorted(identifiers)
+        for start in range(0, len(identifiers), 1000):
+            result.update((await session.execute(select(Paper.id, Paper.status)
+                .where(Paper.id.in_(identifiers[start:start + 1000])))).all())
+        return result
+    monkeypatch.setattr("services.material_visibility_adapter.resolve_paper_lifecycle", resolve)
 
 
 def _material(identity, *, parent=None, records=None, **changes):
@@ -161,6 +176,18 @@ async def test_context_sources_are_material_scoped_and_missing_sources_remain_un
     assert views[0].source_statuses == {"p": "published"}
     assert views[1].source_statuses == {"missing": None}
     assert views[1].visibility["source_status"] == "unknown"
+
+
+@pytest.mark.asyncio
+async def test_persistent_lifecycle_overlay_is_inherited_without_relabeling_publication():
+    from services.source_lifecycle_status import overlay_source_lifecycle
+    parent = _material("parent", records=[{"paper_id": "p", "tc_kelvin": 10}])
+    child = _material("child", parent="parent")
+    context = (await prepare_material_views(_ReadSession([parent, child],
+        {"p": overlay_source_lifecycle("published", "a" * 64)}), [child]))[0]
+    assert context.visibility["state"] == "pending"
+    assert context.visibility["archive_available"]
+    assert "parent_review_hold" in context.visibility["reason_codes"]
 
 
 @pytest.mark.asyncio

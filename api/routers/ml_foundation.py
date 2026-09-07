@@ -46,6 +46,8 @@ from routers.auth import current_user_from_jwt
 from services.material_visibility import MATERIAL_VISIBILITY_VERSION, sanitize_review_metadata
 from services.material_visibility_adapter import material_view, prepare_material_views
 from services.research_access import ResearchAccessDenied, require_research_operator
+from services.source_lifecycle import resolve_paper_lifecycle, resolve_work_lifecycle
+from services.source_lifecycle_status import lifecycle_fingerprint, lifecycle_review_required
 from services.source_registry import resolve_claim_source_witnesses
 from services.source_visibility import occurrence_visibility, source_visibility
 from services.temporal_provenance import result_temporal_provenance, utc_datetime
@@ -133,6 +135,9 @@ def _claim_response(claim, material_context, paper_status, work_status, witnesse
         reasons.add("claim_validity_" + claim.validity_status)
     if work["source_status"] in {"retracted", "corrected", "disputed"}:
         reasons.add("claim_work_" + work["source_status"])
+    if work.get("lifecycle_review_required"):
+        reasons.add("claim_work_lifecycle_review_required")
+        warnings.add("source_lifecycle_review_required")
     if claim.work_id and work["source_status"] == "unknown":
         warnings.add("claim_work_status_unknown")
     state = occurrence["state"]
@@ -145,7 +150,7 @@ def _claim_response(claim, material_context, paper_status, work_status, witnesse
         state = "disputed"
     elif "corrected" in lifecycle_states:
         state = "corrected"
-    elif claim.validity_status != "accepted" and state == "catalogue":
+    elif (claim.validity_status != "accepted" or work.get("lifecycle_review_required")) and state == "catalogue":
         state = "pending"
     eligible = (occurrence["public_catalogue_eligible"] and claim.validity_status == "accepted"
                 and work["reported_claim_filter_eligible"] and source["reported_claim_filter_eligible"])
@@ -161,6 +166,8 @@ def _claim_response(claim, material_context, paper_status, work_status, witnesse
     }
     fingerprint = {**claim_visibility, "material_revision": material_context.visibility["review_revision"],
                    "claim_id": str(claim.id), "claim_updated_at": str(claim.updated_at)}
+    if lifecycle_review_required(paper_status) or lifecycle_review_required(work_status):
+        fingerprint.update(paper_lifecycle=lifecycle_fingerprint(paper_status), work_lifecycle=lifecycle_fingerprint(work_status))
     claim_visibility["review_revision"] = hashlib.sha256(json.dumps(fingerprint, sort_keys=True).encode()).hexdigest()
     payload = {name: getattr(claim, name) for name in MaterialClaimResponse.model_fields if hasattr(claim, name)}
     temporal = result_temporal_provenance(claim_id=str(claim.id), witnesses=witnesses)
@@ -270,7 +277,11 @@ async def _claim_page(
         material_rows = {material.id: material for _, material, _, _ in rows}
         contexts = {context.id: context for context in await prepare_material_views(db, material_rows.values())}
         resolved = await _resolved_witnesses(db, [claim.id for claim, _, _, _ in rows])
+        paper_lifecycle = await resolve_paper_lifecycle(db, {claim.paper_id for claim, _, _, _ in rows if claim.paper_id})
+        work_lifecycle = await resolve_work_lifecycle(db, {claim.work_id for claim, _, _, _ in rows if claim.work_id})
         for claim, material, paper_status, work_status in rows:
+            paper_status = paper_lifecycle.get(claim.paper_id)
+            work_status = work_lifecycle.get(str(claim.work_id))
             response = _claim_response(claim, contexts[material.id], paper_status, work_status, resolved.get(str(claim.id), []))
             if (_claim_allowed(response, include_pending=include_pending, include_retracted=include_retracted)
                     and _claim_known_by(response, cutoff)):
@@ -333,10 +344,10 @@ async def claim_detail(
     context = await material_view(db, material)
     if context is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Claim {claim_id!s} not found")
-    paper = await db.get(Paper, claim.paper_id) if claim.paper_id else None
-    work = await db.get(Work, claim.work_id) if claim.work_id else None
+    paper_status = (await resolve_paper_lifecycle(db, [claim.paper_id] if claim.paper_id else [])).get(claim.paper_id)
+    work_status = (await resolve_work_lifecycle(db, [claim.work_id] if claim.work_id else [])).get(str(claim.work_id))
     resolved = await _resolved_witnesses(db, [claim.id])
-    response = _claim_response(claim, context, paper.status if paper else None, work.publication_status if work else None, resolved.get(str(claim.id), []))
+    response = _claim_response(claim, context, paper_status, work_status, resolved.get(str(claim.id), []))
     if not response.claim_visibility["archive_available"]:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Claim {claim_id!s} not found")
     return response

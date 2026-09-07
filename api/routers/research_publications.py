@@ -20,6 +20,7 @@ from services.research_publication import (
     public_inventory,
 )
 from services.research_release_manifest import ResearchReleaseVerificationError, canonical
+from services.source_lifecycle import SourceLifecycleError
 
 
 def enabled():
@@ -43,7 +44,7 @@ async def publication_read_session():
 
 router = APIRouter(prefix="/ml/releases", tags=["research-publications"], dependencies=[Depends(enabled)])
 _UNAVAILABLE = (PublicationUnavailable, ResearchAccessDenied, ResearchFreezeError, PublicResearchVerificationError,
-                ResearchReleaseVerificationError)
+                ResearchReleaseVerificationError, SourceLifecycleError)
 _HEADERS = {"Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff"}
 
 

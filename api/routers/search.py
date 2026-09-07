@@ -30,6 +30,7 @@ from routers.deps import Identity, require_identity
 from services import provider_resilience, retrieval, vector_search
 from services.anomaly_review import eligible_for_property
 from services.scientific_filters import ResultFilters, matching_result_references
+from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import (
     occurrence_visibility,
     project_source_occurrences,
@@ -122,6 +123,7 @@ async def search(
     linked_materials = await resolve_explicit_materials(
         db, [chunk.paper.materials_extracted for chunk in rows if chunk.paper is not None],
     )
+    source_statuses = await resolve_paper_lifecycle(db, {chunk.paper_id for chunk in rows})
 
     # 3. Preserve ANN ordering, apply row-level filters that don't
     #    fit in the index namespaces.
@@ -144,10 +146,11 @@ async def search(
             continue
         if paper.id in seen_papers:
             continue  # already have a higher-ranked chunk from this paper
-        if f.exclude_retracted and source_visibility(paper.status)["source_status"] == "retracted":
+        paper_status = source_statuses.get(paper.id)
+        if f.exclude_retracted and source_visibility(paper_status)["source_status"] == "retracted":
             continue
         materials, occurrence_summary = project_source_occurrences(
-            paper.materials_extracted, paper_status=paper.status, linked_materials=linked_materials,
+            paper.materials_extracted, paper_status=paper_status, linked_materials=linked_materials,
         )
         # Compute identities/indices from the original source records, then
         # apply visibility by index. Derived envelopes must not change IDs.
@@ -156,7 +159,7 @@ async def search(
             if isinstance(record, dict):
                 material_id = record.get("material_id")
                 visibility_by_index[index] = occurrence_visibility(
-                    record, paper_status=paper.status,
+                    record, paper_status=paper_status,
                     linked_visibility=linked_materials.get(material_id) if isinstance(material_id, str) else None,
                 )
         matched_results = matching_result_references(
@@ -188,7 +191,7 @@ async def search(
                 has_equation=bool(chunk.has_equation),
                 has_table=bool(chunk.has_table),
                 matching_results=matched_results if scientific_filters.active else [],
-                source_visibility=source_visibility(paper.status),
+                source_visibility=source_visibility(paper_status),
                 occurrence_visibility_summary=occurrence_summary,
             )
         )

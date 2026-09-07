@@ -7,6 +7,7 @@ from copy import deepcopy
 import pytest
 
 from ingestion.extract import materials_aggregator as aggregator
+from ingestion.source_lifecycle_status import overlay_source_lifecycle
 
 
 def record(paper_id="synthetic:held", **changes):
@@ -52,6 +53,15 @@ def test_mixed_source_recomputes_selected_value_conditions_and_support(status):
     assert "synthetic:held" not in result["tc_max_conditions"]
     assert result["needs_review"] is False and result["disputed"] is False
     assert result["records"] == [held, independent]
+
+
+def test_restored_bibliographic_status_does_not_restore_lifecycle_held_summary():
+    raw = record()
+    result = aggregator._derive_summary("YBa2Cu3O7", [raw],
+        source_statuses={raw["paper_id"]: overlay_source_lifecycle("published", "a" * 64)}, current_year=2026)
+    assert result["tc_max"] is None and result["total_papers"] == 0
+    assert result["needs_review"] is True
+    assert result["records"] == [raw]
 
 
 @pytest.mark.parametrize("rows,statuses", (
@@ -106,8 +116,9 @@ class Result:
 
 
 class Database:
-    def __init__(self, papers, materials):
+    def __init__(self, papers, materials, *, lifecycle=None, work_lifecycle=None):
         self.papers, self.materials, self.inserts = papers, materials, []
+        self.lifecycle, self.work_lifecycle = lifecycle or [], work_lifecycle or []
     async def __aenter__(self): return self
     async def __aexit__(self, *args): pass
     async def commit(self): pass
@@ -116,6 +127,10 @@ class Database:
             self.inserts.append(statement.compile().params)
             return Result([])
         sql = str(statement)
+        if "FROM source_lifecycle_events" in sql:
+            return Result(self.lifecycle)
+        if "FROM paper_work_map" in sql:
+            return Result(self.work_lifecycle)
         if "FROM pipeline_state" in sql:
             return Result([(str(aggregator.NORMALIZE_SCHEMA_VERSION),)])
         if "FROM papers" in sql:
@@ -125,6 +140,20 @@ class Database:
         if "materials.admin_decision" in sql and "FROM materials" in sql:
             return Result(self.materials)
         return Result([])
+
+
+@pytest.mark.parametrize("mapped_work", (False, True))
+def test_driver_consumes_persistent_ledger_after_raw_published_reset(monkeypatch, mapped_work):
+    raw = record()
+    holds = [(raw["paper_id"], "a" * 64)]
+    db = Database([(raw["paper_id"], "arxiv", None, None, [raw], "T1", "published")],
+        [("mat:stable", raw["formula"], None, [raw], False, None)],
+        lifecycle=[] if mapped_work else holds, work_lifecycle=holds if mapped_work else [])
+    monkeypatch.setattr(aggregator, "_session_factory", lambda: lambda: db)
+    assert asyncio.run(aggregator.aggregate_from_papers()) == 0
+    assert db.inserts[0]["id"] == "mat:stable"
+    assert db.inserts[0]["tc_max"] is None
+    assert db.inserts[0]["records"] == [raw]
 
 
 @pytest.mark.parametrize("status", ("retracted", "withdrawn", "corrected", "disputed"))

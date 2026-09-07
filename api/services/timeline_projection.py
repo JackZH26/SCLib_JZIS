@@ -466,9 +466,17 @@ async def fetch_projected_timeline_points(
             select(Material).where(Material.id.in_(material_ids[start:start + 1000]))
         )).scalars().all())
     contexts = {m.id: m for m in await prepare_material_views(session, material_rows)}
+    from services.source_lifecycle import resolve_paper_lifecycle
+    from services.source_visibility import source_visibility
+    source_lifecycle = {}
+    identifiers = sorted({row[7] for row in rows if row[7]})
+    for offset in range(0, len(identifiers), 1000):
+        source_lifecycle.update(await resolve_paper_lifecycle(session, identifiers[offset:offset + 1000]))
     eligible_rows = []
     for row in rows:
         material = contexts.get(row[13])
+        if not include_pending and not source_visibility(source_lifecycle.get(row[7]))["reported_claim_filter_eligible"]:
+            continue
         if material is None or not visibility_allows_view(material.visibility, include_archive=include_pending):
             continue
         if material.updated_at and row[14] and material.updated_at > row[14]:

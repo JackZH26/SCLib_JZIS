@@ -20,6 +20,8 @@ from models.db import RESEARCH_IMPORT_TABLES, Base, Material
 from services.claim_outcomes import negative_outcome_issues
 from services.material_visibility import normalize_source_status
 from services.material_visibility_adapter import prepare_material_views
+from services.source_lifecycle import resolve_paper_lifecycle, resolve_work_lifecycle
+from services.source_visibility import source_visibility
 from services.temporal_provenance import utc_datetime
 
 LOADER_VERSION = "shadow-research-loader/1.0.0"
@@ -202,6 +204,8 @@ async def _prepare(db, verified):
     works = await _load(db, "works", {_id(row["work_id"]) for row in v["claims"] if row.get("work_id")})
     material_orm = (await db.execute(sa.select(Material).where(Material.id.in_(materials)))).scalars().all() if materials else []
     contexts = {ctx.id: ctx for ctx in await prepare_material_views(db, material_orm)}
+    paper_lifecycle = await resolve_paper_lifecycle(db, papers.keys())
+    work_lifecycle = await resolve_work_lifecycle(db, works.keys())
     source_materials = {row["id"]: row for row in v["materials"]}
     source_papers = {row["id"]: row for row in v["papers"]}
     if len(source_materials) != len(v["materials"]) or len(source_papers) != len(v["papers"]):
@@ -275,6 +279,8 @@ async def _prepare(db, verified):
             action = "failed"
         elif (not contexts[mid].visibility["public_catalogue_eligible"] or normalize_source_status(paper["status"]) != "active"
               or normalize_source_status(work["publication_status"]) != "active"
+              or not source_visibility(paper_lifecycle.get(pid))["reported_claim_filter_eligible"]
+              or not source_visibility(work_lifecycle.get(wid))["reported_claim_filter_eligible"]
               or claim["validity_status"] in {"retracted", "disputed", "excluded"}):
             action, reasons = "quarantined", ["current_governance_or_source_hold"]
         elif claim["result_status"] == "not_detected" and negative_outcome_issues(claim):

@@ -214,6 +214,41 @@ async def test_ask_does_not_restore_omitted_occurrences_and_passes_visibility_to
     provider_resilience.reset()
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize("held_status", ("corrected", "retracted"))
+async def test_published_reset_keeps_unlinked_sources_out_of_scientific_search_and_rag(client, db_session, monkeypatch, held_status):
+    paper_id, chunk_id = await _seed(db_session)
+    paper = await db_session.get(Paper, paper_id)
+    paper.status = held_status
+    await db_session.commit()
+    paper.status = "published"
+    await db_session.commit()
+    provider_resilience.reset()
+    def offline(_query):
+        raise RuntimeError("offline synthetic test")
+    async def lexical(*_args, **_kwargs):
+        return [retrieval.LexicalHit(chunk_id, 1.0)]
+    def forbidden_generation(*_args, **_kwargs):
+        raise AssertionError("A lifecycle-held source reached generation")
+    monkeypatch.setattr("routers.search.vector_search.embed_query", offline)
+    monkeypatch.setattr("routers.ask.vector_search.embed_query", offline)
+    monkeypatch.setattr("routers.search.retrieval.lexical_search", lexical)
+    monkeypatch.setattr("routers.ask.retrieval.lexical_search", lexical)
+    monkeypatch.setattr("routers.ask.rag.generate_answer", forbidden_generation)
+    detail = await client.get(f"/v1/paper/{paper_id}")
+    assert detail.status_code == 200, detail.text
+    assert detail.json()["status"] == "published"
+    assert detail.json()["source_visibility"]["source_status"] == "active"
+    assert detail.json()["source_visibility"]["lifecycle_review_required"] is True
+    bibliography = await client.post("/v1/search", json={"query": "MgB2 report"})
+    assert bibliography.status_code == 200 and len(bibliography.json()["results"]) == 1
+    filtered = await client.post("/v1/search", json={"query": "MgB2 report", "filters": {"tc_min": 37}})
+    assert filtered.status_code == 200 and filtered.json()["results"] == []
+    answer = await client.post("/v1/ask", json={"question": "MgB2 report"})
+    assert answer.status_code == 200 and answer.json()["sources"] == []
+    provider_resilience.reset()
+
+
 def _audit_module():
     path = Path(__file__).resolve().parents[2] / "scripts/audit_source_visibility_snapshot.py"
     spec = importlib.util.spec_from_file_location("source_visibility_audit", path)

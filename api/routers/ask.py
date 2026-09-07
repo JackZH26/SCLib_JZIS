@@ -27,6 +27,7 @@ from routers.deps import Identity, require_identity
 from services import provider_resilience, rag, retrieval, vector_search
 from services.authors import short as _authors_short
 from services.metrics import observe_rag
+from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import (
     citation_evidence,
     project_source_occurrences,
@@ -118,6 +119,7 @@ async def ask(
     chunk_by_id = {c.id: c for c in rows}
     candidates = retrieval.rerank_candidates(body.question, candidates, chunk_by_id)
     linked_materials = await resolve_explicit_materials(db, [chunk.materials_mentioned for chunk in rows])
+    source_statuses = await resolve_paper_lifecycle(db, {chunk.paper_id for chunk in rows})
 
     rag_inputs: list[rag.RagSourceInput] = []
     sources_out: list[AskSource] = []
@@ -127,7 +129,8 @@ async def ask(
         chunk = chunk_by_id.get(candidate.chunk_id)
         if chunk is None or chunk.paper is None:
             continue
-        if source_visibility(chunk.paper.status)["source_status"] in {"retracted", "corrected", "disputed"}:
+        paper_status = source_statuses.get(chunk.paper.id)
+        if not source_visibility(paper_status)["reported_claim_filter_eligible"]:
             continue
         if chunk.paper.id in seen_papers:
             continue
@@ -137,9 +140,9 @@ async def ask(
         authors_short = _authors_short(paper.authors or [])
         year = paper.date_submitted.year if paper.date_submitted else None
         occurrences, occurrence_summary = project_source_occurrences(
-            chunk.materials_mentioned, paper_status=paper.status, linked_materials=linked_materials,
+            chunk.materials_mentioned, paper_status=paper_status, linked_materials=linked_materials,
         )
-        source_review = source_visibility(paper.status)
+        source_review = source_visibility(paper_status)
         source_review["warning_codes"] = sorted(set(source_review["warning_codes"] + occurrence_summary["warning_codes"]))
         rag_inputs.append(
             rag.RagSourceInput(

@@ -29,6 +29,7 @@ from services.research_freeze import (
     _stored,
     _verify_pins,
 )
+from services.source_lifecycle import SourceLifecycleError
 
 VERSION = "research-publication-service/1.0.0"
 MAX_PROPOSAL_SCAN = 100
@@ -179,8 +180,9 @@ async def _permissions(db, release):
 
 async def _current_catalogue(db, release):
     """Conservative source/material holds; metadata rights do not waive them."""
-    from models.db import Material, Paper, Work
+    from models.db import Material
     from services.material_visibility_adapter import prepare_material_views
+    from services.source_lifecycle import resolve_paper_lifecycle, resolve_work_lifecycle
     from services.source_visibility import source_visibility
     ids = {name: [row["row_id"] for row in release["manifest"]["rows"] if row["table"] == name]
            for name in ("materials", "papers", "works")}
@@ -215,10 +217,10 @@ async def _current_catalogue(db, release):
     views = await prepare_material_views(db, materials)
     if any(not view.visibility.get("public_catalogue_eligible") for view in views):
         raise PublicationUnavailable("Current material governance hold")
-    for model, name, field in ((Paper, "papers", Paper.status), (Work, "works", Work.publication_status)):
+    for name, resolver in (("papers", resolve_paper_lifecycle), ("works", resolve_work_lifecycle)):
         keys = [_uuid(value) for value in ids[name]] if name == "works" else ids[name]
-        states = (await db.execute(sa.select(field).where(model.id.in_(keys)))).scalars().all()
-        if len(states) != len(keys) or any(not source_visibility(value)["reported_claim_filter_eligible"] for value in states):
+        states = await resolver(db, keys)
+        if len(states) != len(keys) or any(not source_visibility(value)["reported_claim_filter_eligible"] for value in states.values()):
             raise PublicationUnavailable("Current source governance hold")
 
 
@@ -377,7 +379,7 @@ async def public_inventory(db):
     for identifier in ids:
         try:
             proposal = await admitted_publication(db, identifier)
-        except (PublicationUnavailable, ResearchAccessDenied, ResearchFreezeError,
+        except (PublicationUnavailable, ResearchAccessDenied, ResearchFreezeError, SourceLifecycleError,
                 public.PublicResearchVerificationError, capsule.ResearchReleaseVerificationError):
             continue
         result.append({"id": str(proposal["id"]), "payload_sha256": proposal["payload_sha256"],

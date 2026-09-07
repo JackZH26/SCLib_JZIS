@@ -84,6 +84,138 @@ async def _publication_on_migrated_schema(capability, api_root):
         await engine.dispose()
 
 
+def _source_lifecycle_on_migrated_schema(capability, engine, config):
+    """Observe real 0056 bootstrap and raw SQL transitions after older guards.
+
+    Source state is synthetic. Observation time is not a provider revision or
+    the historical time at which a source first became held.
+    """
+    from alembic import command
+    from services.schema_lifecycle import (
+        SchemaLifecycleError,
+        check_connection_schema,
+    )
+    from sqlalchemy import text
+    from sqlalchemy.exc import DBAPIError
+
+    held_paper = "synthetic:sc08-migration-held"
+    fresh_paper = "synthetic:sc08-migration-fresh"
+    held_work = "2a6a3c2e-bf22-4862-8a77-dc80b89d2781"
+    fresh_work = "2a6a3c2e-bf22-4862-8a77-dc80b89d2782"
+    frozen_tables = ("research_releases", "research_release_pins", "research_release_notices",
+                     "research_publication_proposals", "research_publication_reviews",
+                     "research_publication_actions")
+
+    def saved_history(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY id")).scalars().all()
+                for name in frozen_tables}
+
+    def events(connection):
+        return connection.execute(text("SELECT to_jsonb(e) FROM source_lifecycle_events e ORDER BY paper_id,work_id,revision")).scalars().all()
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        assert connection.execute(text("SELECT count(*) FROM source_lifecycle_events")).scalar_one() == 0
+        assert connection.execute(text("SELECT count(*) FROM source_lifecycle_reviews")).scalar_one() == 0
+        original_history = saved_history(connection)
+    # This drops only the still-empty 0056 ledger. Older immutable history and
+    # its independently verified downgrade guards remain in place.
+    validate_test_environment()
+    command.downgrade(config, "0055_research_publication")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError as exc:
+            assert "exact revision" in str(exc)
+        else:
+            raise AssertionError("The new application must refuse the previous schema head")
+    with engine.begin() as connection:
+        verify_postgres_identity(connection, capability)
+        connection.execute(text("""INSERT INTO papers(id,source,title,authors,abstract,status)
+            VALUES (:held,'arxiv','Synthetic held bootstrap','[]'::jsonb,'','retracted'),
+                   (:fresh,'arxiv','Synthetic unheld bootstrap','[]'::jsonb,'','published')"""),
+            {"held": held_paper, "fresh": fresh_paper})
+        connection.execute(text("""INSERT INTO works(id,canonical_title,publication_status)
+            VALUES (CAST(:held AS uuid),'Synthetic held work','corrected'),
+                   (CAST(:fresh AS uuid),'Synthetic unheld work','active')"""),
+            {"held": held_work, "fresh": fresh_work})
+        originals = {
+            "paper": connection.execute(text("SELECT to_jsonb(p) FROM papers p WHERE id=:id"), {"id": held_paper}).scalar_one(),
+            "work": connection.execute(text("SELECT to_jsonb(w) FROM works w WHERE id=CAST(:id AS uuid)"), {"id": held_work}).scalar_one(),
+        }
+        observation_start = connection.execute(text("SELECT clock_timestamp()")).scalar_one()
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+    with engine.begin() as connection:
+        verify_postgres_identity(connection, capability)
+        baseline = events(connection)
+        assert len(baseline) == 2
+        assert all(row["revision"] == 1 and row["predecessor_id"] is None
+                   and row["event_kind"] == "baseline_observed" for row in baseline)
+        assert {row["observed_status"] for row in baseline} == {"retracted", "corrected"}
+        assert connection.execute(text("SELECT min(created_at)>=:start AND max(created_at)<=clock_timestamp() FROM source_lifecycle_events"),
+                                  {"start": observation_start}).scalar_one() is True
+        assert connection.execute(text("SELECT to_jsonb(p) FROM papers p WHERE id=:id"), {"id": held_paper}).scalar_one() == originals["paper"]
+        assert connection.execute(text("SELECT to_jsonb(w) FROM works w WHERE id=CAST(:id AS uuid)"), {"id": held_work}).scalar_one() == originals["work"]
+        # Removing a live status flag cannot remove observed negative history.
+        connection.execute(text("UPDATE papers SET status='published' WHERE id=:id"), {"id": held_paper})
+        connection.execute(text("UPDATE works SET publication_status='active' WHERE id=CAST(:id AS uuid)"), {"id": held_work})
+        # Bibliographic dates are semantic revisions even without a material edit.
+        connection.execute(text("UPDATE papers SET date_published=DATE '2026-09-07' WHERE id=:id"), {"id": held_paper})
+        connection.execute(text("UPDATE works SET available_at=DATE '2026-09-07' WHERE id=CAST(:id AS uuid)"), {"id": held_work})
+        after_dates = events(connection)
+        assert len(after_dates) == 6
+        for key, identifier in (("paper_id", held_paper), ("work_id", held_work)):
+            chain = [row for row in after_dates if row[key] == identifier]
+            assert [row["revision"] for row in chain] == [1, 2, 3]
+            assert [row["event_kind"] for row in chain] == ["baseline_observed", "lifecycle_change", "catalogue_revision"]
+            assert [row["predecessor_id"] for row in chain[1:]] == [row["id"] for row in chain[:-1]]
+            assert [row["old_snapshot_sha256"] for row in chain[1:]] == [row["snapshot_sha256"] for row in chain[:-1]]
+        # Idempotent semantic retries and operational counters add no revision.
+        connection.execute(text("UPDATE papers SET date_published=DATE '2026-09-07',citation_count=citation_count+1,updated_at=clock_timestamp() WHERE id=:id"),
+                           {"id": held_paper})
+        connection.execute(text("UPDATE works SET available_at=DATE '2026-09-07',updated_at=clock_timestamp() WHERE id=CAST(:id AS uuid)"),
+                           {"id": held_work})
+        assert events(connection) == after_dates
+        # Sources that were not held at migration time start tracking on their
+        # first negative transition; ordinary pre-hold updates do not backfill.
+        connection.execute(text("UPDATE papers SET status='retracted' WHERE id=:id"), {"id": fresh_paper})
+        connection.execute(text("UPDATE works SET publication_status='withdrawn' WHERE id=CAST(:id AS uuid)"), {"id": fresh_work})
+        connection.execute(text("UPDATE papers SET status='published' WHERE id=:id"), {"id": fresh_paper})
+        connection.execute(text("UPDATE works SET publication_status='active' WHERE id=CAST(:id AS uuid)"), {"id": fresh_work})
+        all_events = events(connection)
+        assert len(all_events) == 10
+        assert connection.execute(text("SELECT bool_and(record_sha256=public.sclib_source_lifecycle_record_hash_v1(to_jsonb(e))) FROM source_lifecycle_events e")).scalar_one() is True
+        for statement, parameters, expected_state in (
+            ("DELETE FROM papers WHERE id=:id", {"id": held_paper}, "23503"),
+            ("DELETE FROM works WHERE id=CAST(:id AS uuid)", {"id": held_work}, "23503"),
+            ("UPDATE source_lifecycle_events SET event_kind=event_kind", {}, "55000"),
+        ):
+            try:
+                with connection.begin_nested():
+                    connection.execute(text(statement), parameters)
+            except DBAPIError as exc:
+                assert exc.orig.pgcode == expected_state
+            else:
+                raise AssertionError("Observed source identities and lifecycle history must be retained")
+        assert events(connection) == all_events
+        assert saved_history(connection) == original_history
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0055_research_publication")
+    except RuntimeError as exc:
+        assert "lifecycle history contains records" in str(exc)
+    else:
+        raise AssertionError("Nonempty lifecycle downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert events(connection) == all_events
+        assert saved_history(connection) == original_history
+
+
 def main() -> None:
     # This must run before importing config, Alembic or any database client.
     capability = validate_test_environment()
@@ -148,6 +280,8 @@ def main() -> None:
             assert {"research_publication_epoch", "research_role_grants", "research_role_revocations",
                     "research_publication_permissions", "research_publication_proposals",
                     "research_publication_reviews", "research_publication_actions"} <= set(schema.get_table_names())
+            assert {"source_lifecycle_epoch", "source_lifecycle_events",
+                    "source_lifecycle_reviews"} <= set(schema.get_table_names())
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
                 WHERE NOT tgisinternal AND tgname LIKE 'research_import_%_immutable_%'""")).scalar_one() == 10
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
@@ -207,6 +341,8 @@ def main() -> None:
             assert connection.execute(text("SELECT result_metadata FROM timeline_projection_points WHERE material_id = 'mat:timeline-migration'")).scalar_one() == {}
             assert connection.execute(text("SELECT schema_version FROM timeline_projection_state WHERE id = 1")).scalar_one() == 0
         # Empty-ledger round trip and nonempty-ledger refusal are local-only.
+        # Keep the 0056 lifecycle ledger empty through all earlier downgrade
+        # refusal checks: its own fail-closed guard must not mask older guards.
         validate_test_environment()
         command.downgrade(config, "0048_pressure_projection")
         command.upgrade(config, "head")
@@ -306,7 +442,8 @@ def main() -> None:
             verify_postgres_identity(connection, capability)
             assert connection.execute(text("SELECT count(*) FROM research_publication_proposals WHERE id=CAST(:id AS uuid)"),
                                       {"id": publication_id}).scalar_one() == 1
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal and nonempty history rollback guards verified.")
+        _source_lifecycle_on_migrated_schema(capability, engine, config)
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 

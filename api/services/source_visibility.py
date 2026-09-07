@@ -16,23 +16,34 @@ from services.material_visibility import (
     sanitize_review_metadata,
 )
 from services.result_semantics import evidence_classifications
+from services.source_lifecycle_status import (
+    lifecycle_review_required,
+    lifecycle_revision,
+    lifecycle_status,
+)
 from services.structure_disclosure import redact_structure_payloads
 
 _HELD_SOURCE_STATES = {"retracted", "corrected", "disputed"}
 
 
 def source_visibility(status: Any) -> dict[str, Any]:
+    held = lifecycle_review_required(status)
+    revision = lifecycle_revision(status)
+    status = lifecycle_status(status)
     normalized = normalize_source_status(status)
     disputed = isinstance(status, str) and status.strip().lower() == "disputed"
     state = "disputed" if disputed else normalized
     warnings = [f"source_{state}"] if state != "active" else []
+    if held:
+        warnings.append("source_lifecycle_review_required")
     return {
         "version": MATERIAL_VISIBILITY_VERSION,
         "source_status": state,
         "bibliography_available": True,
-        "reported_claim_filter_eligible": state not in _HELD_SOURCE_STATES,
+        "reported_claim_filter_eligible": state not in _HELD_SOURCE_STATES and not held,
         "scientific_acceptance": False,
         "warning_codes": warnings,
+        **({"lifecycle_review_required": True, "lifecycle_revision": revision} if held else {}),
     }
 
 
@@ -109,6 +120,9 @@ def occurrence_visibility(
     if source["source_status"] in _HELD_SOURCE_STATES:
         holds.add(source["source_status"])
         reasons.append(f"source_{source['source_status']}")
+    if source.get("lifecycle_review_required"):
+        holds.add("pending")
+        reasons.append("source_lifecycle_review_required")
     if holds:
         state = next(item for item in ("quarantined", "retracted", "disputed", "corrected", "pending") if item in holds)
     held = bool(holds)
@@ -126,6 +140,7 @@ def occurrence_visibility(
             if linked_visibility is None else []))),
         "review_revision": review_revision,
         "source_status": source["source_status"],
+        **({"lifecycle_revision": source.get("lifecycle_revision")} if source.get("lifecycle_review_required") else {}),
     }
 
 

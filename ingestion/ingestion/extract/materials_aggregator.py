@@ -101,6 +101,8 @@ from ingestion.result_semantics import (
     is_computed_result,
     is_observed_result,
 )
+from ingestion.source_lifecycle import overlay_paper_lifecycle
+from ingestion.source_lifecycle_status import lifecycle_review_required, lifecycle_status
 
 log = logging.getLogger(__name__)
 
@@ -154,6 +156,9 @@ _HELD_SOURCE_STATUSES = frozenset({"retracted", "withdrawn", "corrected", "dispu
 
 
 def _source_is_held(status: Any) -> bool:
+    if lifecycle_review_required(status):
+        return True
+    status = lifecycle_status(status)
     return isinstance(status, str) and status.strip().lower() in _HELD_SOURCE_STATUSES
 
 
@@ -1327,7 +1332,7 @@ async def aggregate_from_papers() -> int:
             papers_table.c.status,
         ).order_by(papers_table.c.id)
         rows = (await db.execute(stmt)).all()
-        source_statuses = {row[0]: row[-1] for row in rows}
+        source_statuses = await overlay_paper_lifecycle(db, {row[0]: row[-1] for row in rows})
         log.info("aggregator: scanning %d papers", len(rows))
 
         # Credibility tier → confidence multiplier. T4/T5 papers are
@@ -1347,7 +1352,7 @@ async def aggregate_from_papers() -> int:
 
         n_skipped_t4t5 = 0
         for paper_id, source, date_submitted, date_published, mats, cred_tier, _paper_status in rows:
-            if _source_is_held(_paper_status):
+            if _source_is_held(source_statuses.get(paper_id)):
                 continue
             if not isinstance(mats, list) or not mats:
                 continue

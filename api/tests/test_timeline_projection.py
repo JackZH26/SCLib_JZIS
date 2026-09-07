@@ -151,7 +151,11 @@ async def test_classifier_version_change_requires_rebuild_before_reading():
 
 
 @pytest.mark.asyncio
-async def test_projection_read_rechecks_live_material_governance_after_flat_points():
+async def test_projection_read_rechecks_live_material_governance_after_flat_points(monkeypatch):
+    async def source_statuses(_session, identifiers):
+        return {identifier: "published" for identifier in identifiers}
+    monkeypatch.setattr("services.source_lifecycle.resolve_paper_lifecycle", source_statuses)
+    monkeypatch.setattr("services.material_visibility_adapter.resolve_paper_lifecycle", source_statuses)
     refreshed_at = datetime(2026, 7, 13, tzinfo=UTC)
     state = SimpleNamespace(
         schema_version=PROJECTION_SCHEMA_VERSION,
@@ -176,7 +180,6 @@ async def test_projection_read_rechecks_live_material_governance_after_flat_poin
     }, "aps:test", None, None, refreshed_at, "published") for row in rows]
     session = _FakeSession(state=state, results=[
         _Result([]), _Result([]), _Result(rows), _Result([material]),
-        _Result([("aps:test", "published")]),
     ])
 
     result = await fetch_projected_timeline_points(

@@ -14,6 +14,7 @@ from models.db import Paper
 from models.search import PaperDetail
 from routers.deps import Identity, peek_identity
 from services.material_visibility import sanitize_review_metadata
+from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import (
     project_source_occurrences,
     resolve_explicit_materials,
@@ -33,10 +34,11 @@ async def paper_detail(
     if paper is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Paper {paper_id!r} not found")
     linked_materials = await resolve_explicit_materials(db, [paper.materials_extracted])
+    paper_status = (await resolve_paper_lifecycle(db, [paper.id])).get(paper.id)
     records, summary = project_source_occurrences(
-        paper.materials_extracted, paper_status=paper.status, linked_materials=linked_materials,
+        paper.materials_extracted, paper_status=paper_status, linked_materials=linked_materials,
     )
     payload = {name: getattr(paper, name) for name in PaperDetail.model_fields if hasattr(paper, name)}
-    payload.update(materials_extracted=records, source_visibility=source_visibility(paper.status),
+    payload.update(materials_extracted=records, source_visibility=source_visibility(paper_status),
                    occurrence_visibility_summary=summary, quality_flags=sanitize_review_metadata(paper.quality_flags))
     return PaperDetail.model_validate(payload)

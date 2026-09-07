@@ -172,6 +172,11 @@ operating limitation, not a blanket legal retention policy. Real-data rollout
 must resolve the account/privacy workflow; ordinary unrelated accounts keep
 their existing deletion behavior.
 
+The same deletion hold and exact foreign-key race handling also cover the
+`source_lifecycle_reviews.reviewer_id` reference introduced by SC08 / `0056`.
+A source-lifecycle review is retained even when it only preserves a hold; it
+does not authorize deleting its reviewer or changing earlier review history.
+
 ## Offline verification and release gates
 
 Save the exact canonical public response as `public-manifest.json` and retain

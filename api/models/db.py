@@ -1643,6 +1643,10 @@ from models.research_publication_v1 import register as _register_research_public
 
 RESEARCH_PUBLICATION_TABLES = _register_research_publication(Base.metadata)
 
+from models.source_lifecycle_v1 import register as _register_source_lifecycle  # noqa: E402
+
+SOURCE_LIFECYCLE_TABLES = _register_source_lifecycle(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

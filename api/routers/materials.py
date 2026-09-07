@@ -16,7 +16,7 @@ from sqlalchemy.dialects.postgresql import JSONPATH
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
-from models.db import HydrideTcParameter, Material, Paper
+from models.db import HydrideTcParameter, Material
 from models.search import (
     HydrideTcParameterRecord,
     MaterialDetail,
@@ -331,7 +331,8 @@ async def material_hydride_parameters(
         return []
     rows = (await db.execute(stmt)).scalars().all()
     paper_ids = {r.paper_id for r in rows}
-    statuses = dict((await db.execute(select(Paper.id, Paper.status).where(Paper.id.in_(paper_ids)))).all()) if paper_ids else {}
+    from services.source_lifecycle import resolve_paper_lifecycle
+    statuses = await resolve_paper_lifecycle(db, paper_ids)
     result = []
     for row in rows:
         raw = {column.name: getattr(row, column.name) for column in HydrideTcParameter.__table__.columns}

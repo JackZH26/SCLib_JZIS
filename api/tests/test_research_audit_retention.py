@@ -14,6 +14,7 @@ from models.db import (
     ApiKey,
     AskHistory,
     AuthAuditEvent,
+    Base,
     Bookmark,
     User,
     get_engine,
@@ -115,6 +116,41 @@ async def test_cookie_session_is_not_cleared_or_invalidated_by_audit_hold(client
     assert (await client.get("/v1/auth/me")).status_code == 200
 
 
+async def test_lifecycle_review_identity_remains_after_reviewer_grant_revocation(client):
+    from services.source_lifecycle import record_source_review
+
+    from tests.test_source_lifecycle_service import prepared_review
+
+    engine = get_engine().execution_options(isolation_level="SERIALIZABLE")
+    try:
+        async with AsyncSession(engine, expire_on_commit=False) as db:
+            fixture = await prepared_review(db)
+            await record_source_review(db, **fixture["review_args"], dry_run=False)
+            await db.commit()
+    finally:
+        await engine.dispose()
+    reviewer_id = fixture["actors"]["reviewer"]
+    await revoke_research_grant(grant_id=fixture["actors"]["grants"]["reviewer"],
+                               revoked_by=fixture["actors"]["admin"])
+    await private_rows(reviewer_id)
+    before = await snapshot(reviewer_id)
+    reviews = Base.metadata.tables["source_lifecycle_reviews"]
+    query = sa.select(sa.func.to_jsonb(reviews.table_valued())).where(reviews.c.reviewer_id == reviewer_id)
+    async with get_session_factory()() as db:
+        saved_reviews = (await db.execute(query)).scalars().all()
+        assert len(saved_reviews) == 1
+        assert await has_research_audit_references(db, reviewer_id) is True
+    administrator = await research_user(is_admin=True)
+    response = await client.delete(f"/v1/admin/users/{reviewer_id}", headers=administrator["headers"])
+    assert response.status_code == 409, response.text
+    assert response.json()["detail"] == RETENTION_MESSAGE
+    assert response.headers["cache-control"] == "no-store"
+    assert "set-cookie" not in response.headers
+    assert await snapshot(reviewer_id) == before
+    async with get_session_factory()() as db:
+        assert (await db.execute(query)).scalars().all() == saved_reviews
+
+
 @pytest.mark.parametrize("via", ["self", "admin"])
 async def test_concurrent_grant_after_preflight_rolls_back_private_deletion(client, registered_user, monkeypatch, via):
     import routers.admin as admin_router
@@ -209,6 +245,9 @@ async def test_preflight_is_read_only_and_covers_actual_user_foreign_keys(regist
 
 @pytest.mark.parametrize("state,constraint,expected", [
     ("23503", "research_role_grants_user_id_fkey", True),
+    ("23503", "source_lifecycle_reviews_reviewer_id_fkey", True),
+    ("23505", "source_lifecycle_reviews_reviewer_id_fkey", False),
+    ("23503", "source_lifecycle_reviews_reviewer_grant_id_fkey", False),
     ("23505", "research_role_grants_user_id_fkey", False),
     ("23503", "unrelated_private_fkey", False),
     (None, "research_role_grants_user_id_fkey", False),

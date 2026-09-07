@@ -13,7 +13,7 @@ import pytest
 import pytest_asyncio
 from sqlalchemy import select
 
-from models.db import Bookmark, Material, Paper, get_session_factory
+from models.db import Bookmark, Material, Paper, PaperWorkMap, Work, get_session_factory
 from services.material_visibility import MATERIAL_VISIBILITY_VERSION
 from services.timeline_projection import (
     fetch_projected_timeline_points,
@@ -235,3 +235,46 @@ async def test_timeline_rechecks_live_source_status_before_conditional_response(
     assert corrected.status_code == 200, corrected.text
     assert corrected.headers["etag"] != old_archive_etag
     _assert_policy(corrected.json()["points"][0]["visibility"], "corrected")
+    paper.status = "published"
+    await db_session.commit()
+    restored = await client.get("/v1/timeline", params=params, headers={"If-None-Match": etag})
+    assert restored.status_code == 200 and restored.json()["points"] == []
+    archived_reset = await client.get("/v1/timeline", params={**params, "include_pending": True})
+    assert archived_reset.status_code == 200 and len(archived_reset.json()["points"]) == 1
+    _assert_policy(archived_reset.json()["points"][0]["visibility"], "pending")
+    assert "source_lifecycle_review_required" in archived_reset.json()["points"][0]["visibility"]["reason_codes"]
+    assert archived_reset.headers["etag"] != corrected.headers["etag"]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("mode", ("fallback", "projection"))
+async def test_timeline_inherits_accepted_work_hold_after_work_status_reset(client, db_session, monkeypatch, mode):
+    row, paper, _ = await _material(db_session)
+    work = Work(canonical_title="Synthetic lifecycle Work", publication_status="active")
+    db_session.add(work)
+    await db_session.flush()
+    db_session.add(PaperWorkMap(paper_id=paper.id, work_id=work.id, match_method="manual",
+                               relation_type="published_version", review_status="accepted"))
+    await db_session.commit()
+    if mode == "fallback":
+        async def no_projection(*args, **kwargs):
+            return None
+        monkeypatch.setattr("routers.timeline.fetch_projected_timeline_points", no_projection)
+    else:
+        await refresh_timeline_projection(db_session)
+        await db_session.commit()
+    initial = await client.get("/v1/timeline", params={"family": row.family})
+    assert initial.status_code == 200 and len(initial.json()["points"]) == 1
+    work.publication_status = "retracted"
+    await db_session.commit()
+    work.publication_status = "active"
+    await db_session.commit()
+    for _ in range(2):
+        response = await client.get("/v1/timeline", params={"family": row.family},
+                                    headers={"If-None-Match": initial.headers["etag"]})
+        assert response.status_code == 200 and response.json()["points"] == []
+    archive = await client.get("/v1/timeline", params={"family": row.family, "include_pending": True})
+    assert archive.status_code == 200 and len(archive.json()["points"]) == 1
+    _assert_policy(archive.json()["points"][0]["visibility"], "pending")
+    await db_session.refresh(paper)
+    assert paper.status == "published"

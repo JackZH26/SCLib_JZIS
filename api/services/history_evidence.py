@@ -122,8 +122,11 @@ async def current_history_evidence(db, rows):
             records[identifier] = value
             metadata[identifier] = (status, metadata[identifier][1], metadata[identifier][2])
     linked, materials_checked = await _bounded_explicit_materials(db, list(records.values()))
+    from services.source_lifecycle import resolve_paper_lifecycle
+    source_statuses = await resolve_paper_lifecycle(db, metadata.keys())
     projected = {}
     for identifier, (status, _, _) in metadata.items():
+        status = source_statuses.get(identifier)
         visibility = source_visibility(status)
         checked = identifier in records and materials_checked and visibility["source_status"] != "unknown"
         if not checked:

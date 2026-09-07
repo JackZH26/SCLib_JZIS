@@ -1,12 +1,14 @@
-# Current-source lifecycle guards — SC08 first implementation
+# Current-source lifecycle guards and observed-change ledger
 
 Issue: [SC08 / #66](https://github.com/JackZH26/SCLib_JZIS/issues/66).
-Date: 2026-09-07. Database head remains `0055_research_publication`.
+Date: 2026-09-07. Local database head: `0056_source_lifecycle`.
 
-This is a local implementation of current-read and recomputation safeguards,
-not a completed source-event propagation system. SC08 remains open. There is no
-production source update, data backfill, automatic scientific approval, source
-revision promotion, new migration, push or deployment in this batch.
+This is a local implementation of current-read/recomputation safeguards and an
+append-only negative source-governance ledger. It is not a completed dependency
+propagation or scientific reinstatement system. SC08 remains open. The additive
+migration has been rehearsed on disposable PostgreSQL only; there is no production
+source update, data backfill, automatic scientific approval, source revision
+promotion, push or deployment. See the [ledger contract](SOURCE_LIFECYCLE_LEDGER.md).
 
 ## Scientific contract
 
@@ -52,7 +54,10 @@ true SQL no-op (`IS DISTINCT FROM` guard), preventing repeated sweeps from
 unnecessarily invalidating downstream projections. This is local convergence
 for identical snapshots, **not** ordering guarantees for concurrent/out-of-order
 upstream events. The sweep still operates with its existing transactions and
-does not implement a source-event lock/ledger.
+does not implement a dependency refresh receipt or source-event acknowledgement.
+The 0056 source-write ledger now independently orders observed changes. The sweep
+reads durable negative overlays in addition to raw status, including a Work hold
+through an explicitly accepted current Paper/Work identity map.
 
 ## Audit and legacy-review safeguards
 
@@ -154,10 +159,11 @@ capsule inspection still yields exactly the original manifest bytes/hash.
 
 This read-time hold does **not** manufacture an authenticated reviewer, a notice
 artifact or an append-only withdrawal decision. Reviewed `append_release_notice`
-and publication withdrawal remain explicit existing workflows. Without such a
-durable decision, merely restoring mutable source status can restore eligibility
-under the existing live-read policy. This is an outstanding SC08 lifecycle-ledger
-gate, not guaranteed protection against out-of-order event resurrection.
+and publication withdrawal remain explicit existing workflows. The 0056 ledger
+now keeps a durable review hold once a source has a negative observation, even
+after mutable status is restored. Both supported review decisions retain that
+hold. The original public payload and capsule are unchanged; positive source
+reinstatement and canonical supersession are still separate unfinished gates.
 
 Internal ML04 capsules and the legacy raw source exporter remain non-training,
 non-public scientific artifacts. This batch does not promote accepted ML labels
@@ -166,11 +172,11 @@ are a separate subsystem and are not silently governed by ML07's SQL notices.
 
 ## Remaining acceptance gates and next work
 
-1. Add an append-only source-change/review ledger with exact old/new revision
-   hashes, explicit predecessor/idempotency keys, authenticated actors and
-   durable hold/supersession semantics. Preserve every prior review; a checksum
-   alone is not reviewer authority. Bind canonical result promotion to this
-   ledger rather than clearing flags in place.
+1. Extend the implemented negative-only source-change/review ledger into an
+   explicitly authorized canonical supersession and reinstatement workflow.
+   Preserve exact source/result revisions and every prior review; a checksum
+   alone is not reviewer authority. Never clear flags or revive frozen labels
+   merely because an upstream status has changed back to active.
 2. Build an indexed dependency inventory for material results, zero-point
    Timeline candidates, chunks/retrieval context, dataset membership and RPS
    evidence. Never infer dependency identity from formula similarity.

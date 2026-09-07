@@ -13,6 +13,11 @@ from datetime import date, datetime
 from typing import Any
 
 from services.anomaly_review import ANOMALY_POLICY_VERSION
+from services.source_lifecycle_status import (
+    lifecycle_fingerprint,
+    lifecycle_review_required,
+    lifecycle_status,
+)
 
 MATERIAL_VISIBILITY_VERSION = "material-visibility/1.0.0"
 _SOURCE_LIMIT = 20_000
@@ -28,6 +33,7 @@ _REASONS = {
     "material_retracted": "This material is marked as retracted.",
     "material_disputed": "This material is marked as disputed and requires review.",
     "material_corrected": "A correction is recorded; the resulting scientific claims require review.",
+    "source_lifecycle_review_required": "A source changed; revision-bound review and supersession are required.",
     "material_review_required": "This material is awaiting review.",
     "scientific_anomaly_review_required": "Retained scientific values require anomaly review.",
     "source_retracted": "At least one linked source is retracted or withdrawn; source-dependent claims require review.",
@@ -81,7 +87,7 @@ def normalize_source_status(value: Any) -> str:
     A withdrawn source is held like a retracted source for read eligibility; this
     does not assert that withdrawal and retraction are bibliographically equal.
     """
-    token = _token(value)
+    token = _token(lifecycle_status(value))
     if token in {"active", "published"}:
         return "active"
     if token in {"retracted", "withdrawn"}:
@@ -90,6 +96,10 @@ def normalize_source_status(value: Any) -> str:
 
 
 def _source_state(source_statuses: Any) -> tuple[str, set[str], list[Any], bool]:
+    def identity(value):
+        original = (normalize_source_status(value), _token(lifecycle_status(value)) == "disputed")
+        return original + ((_digest(lifecycle_fingerprint(value)),) if lifecycle_review_required(value) else ())
+
     if source_statuses is None:
         return "unknown", {"unknown"}, [], False
     if isinstance(source_statuses, Mapping):
@@ -98,8 +108,7 @@ def _source_state(source_statuses: Any) -> tuple[str, set[str], list[Any], bool]
         values = list(source_statuses.values())
         # Identifiers affect the fingerprint, never the public reason strings.
         identities = [
-            (_digest(key) if isinstance(key, str) and len(key) <= 500 else "invalid-id",
-             normalize_source_status(value), _token(value) == "disputed")
+            (_digest(key) if isinstance(key, str) and len(key) <= 500 else "invalid-id",) + identity(value)
             for key, value in source_statuses.items()
         ]
         malformed = any(not isinstance(key, str) or not key or len(key) > 500 for key in source_statuses)
@@ -107,14 +116,16 @@ def _source_state(source_statuses: Any) -> tuple[str, set[str], list[Any], bool]
         if len(source_statuses) > _SOURCE_LIMIT:
             return "unknown", {"unknown"}, [], True
         values = list(source_statuses)
-        identities = [(normalize_source_status(value), _token(value) == "disputed") for value in values]
+        identities = [identity(value) for value in values]
         malformed = False
     else:
         return "unknown", {"unknown"}, [], True
-    malformed |= any(value is not None and not isinstance(value, str) for value in values)
+    malformed |= any(value is not None and not isinstance(value, (str, Mapping)) for value in values)
     normalized = {normalize_source_status(value) for value in values} or {"unknown"}
     # "disputed" has no independent lifecycle enum, but still imposes a hold.
-    states = normalized | ({"disputed"} if any(_token(value) == "disputed" for value in values) else set())
+    states = normalized | ({"disputed"} if any(_token(lifecycle_status(value)) == "disputed" for value in values) else set())
+    if any(lifecycle_review_required(value) for value in values):
+        states.add("lifecycle_review_required")
     aggregate = next(iter(normalized)) if len(normalized) == 1 else "mixed"
     return aggregate, states, sorted(identities), malformed
 
@@ -257,6 +268,8 @@ def visibility_for_material(
         reasons.add("source_corrected")
     if "disputed" in source_states:
         reasons.add("source_disputed")
+    if "lifecycle_review_required" in source_states:
+        reasons.add("source_lifecycle_review_required")
     if "unknown" in source_states:
         warnings.add("source_status_unknown" if source_status == "unknown" else "source_status_incomplete")
 
@@ -308,13 +321,13 @@ def visibility_for_material(
 
     if quarantine:
         state = "quarantined"
-    elif "material_retracted" in reasons or source_states == {"retracted"}:
+    elif "material_retracted" in reasons or source_states - {"lifecycle_review_required"} == {"retracted"}:
         state = "retracted"
     elif {"material_disputed", "source_disputed"} & reasons:
         state = "disputed"
     elif {"material_corrected", "source_corrected"} & reasons:
         state = "corrected"
-    elif ({"material_review_required", "scientific_anomaly_review_required", "source_retracted", "parent_review_hold"} & reasons
+    elif ({"material_review_required", "scientific_anomaly_review_required", "source_retracted", "source_lifecycle_review_required", "parent_review_hold"} & reasons
           or record_reasons - {"record_governance_unresolved", "record_provenance_quarantined"}):
         state = "pending"
     elif reasons:

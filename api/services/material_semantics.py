@@ -14,6 +14,7 @@ from typing import Any
 
 from .pressure_semantics import classify_pressure
 from .result_semantics import classify_result
+from .source_lifecycle_status import lifecycle_review_required, lifecycle_status
 
 if __package__ == "ingestion":
     from .extract.scientific_values import record_quantity
@@ -117,7 +118,12 @@ def _sources(record: Mapping, statuses: Any) -> tuple[list[dict], str, list[str]
         state = "unknown"
         reasons.append("source_status_map_invalid")
     else:
-        state = _source_status(statuses.get(paper_id)) if paper_id else "unknown"
+        status_value = statuses.get(paper_id) if paper_id else None
+        state = _source_status(lifecycle_status(status_value))
+        if lifecycle_review_required(status_value):
+            reasons.append("source_lifecycle_review_required")
+            if state in {"active", "unknown"}:
+                state = "pending"
         if state != "active":
             reasons.append("current_source_" + state)
     raw_status = _source_status(record.get("source_status"))
