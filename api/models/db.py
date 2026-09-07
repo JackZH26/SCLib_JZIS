@@ -1632,6 +1632,10 @@ from models.source_provenance_v1 import register as _register_source_provenance 
 
 SOURCE_PROVENANCE_TABLES = _register_source_provenance(Base.metadata)
 
+from models.research_import_v1 import register as _register_research_import  # noqa: E402
+
+RESEARCH_IMPORT_TABLES = _register_research_import(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

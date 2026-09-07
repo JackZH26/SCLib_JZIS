@@ -1,8 +1,10 @@
 # SCLib ML Foundation v1
 
-Status: implementation branch `codex/sclib-ml-foundation-v1`
-Schema revision: `0044_ml_foundation`
-Design date: 2026-08-20
+Original foundation schema: `0044_ml_foundation`
+
+Original design date: 2026-08-20
+
+Additive shadow import increment: `0053_research_import` (ML03 / #61)
 
 ## Purpose
 
@@ -15,7 +17,10 @@ claim that legacy extracted records are automatically ML labels.
 The legacy JSONB data and API remain authoritative while the new path runs in
 shadow mode.
 
-## Implemented data flow
+## Foundation model and implemented shadow boundary
+
+The diagram below describes the foundation model, not an automatically
+approved loading or ML-release pipeline:
 
 ```text
 papers -----------------------> works + paper_work_map
@@ -42,6 +47,14 @@ The new tables are:
 composition descriptors. Variable formulas, interfaces, mixtures, and invalid
 inputs remain explicitly non-exact.
 
+ML03 adds five separate append-only `research_import_*` tables for verified
+capture snapshots, stable source occurrences, pending interpretation revisions,
+exact snapshot memberships, and immutable import receipts. The bounded internal
+loader writes **only** those five tables; it does not populate the canonical
+tables in the diagram, apply work proposals, update composition aggregates, or
+promote Tc/state/event copies. See [Bounded shadow research import](SHADOW_RESEARCH_IMPORT.md)
+for the exact verification, review, transaction and canary protocol.
+
 ## Safety invariants
 
 - Missing pressure stays missing; it is never rewritten as ambient pressure.
@@ -64,22 +77,20 @@ inputs remain explicitly non-exact.
 Do not build an ML snapshot from the public offset API or from separate
 `psql` commands. Those reads do not share one database snapshot. The Phase-1
 exporter uses one PostgreSQL `REPEATABLE READ READ ONLY` transaction,
-server-side cursors, and stable primary-key ordering:
+server-side cursors, and stable primary-key ordering. Source capture requires
+separate environment authorization; this document supplies no production
+connection or import invocation. Verify an already captured local bundle with:
 
 ```bash
-DATABASE_URL='postgresql://...' api/.venv/bin/python \
-  scripts/export_ml_foundation_snapshot.py export \
-  --output-dir /secure/sclib-exports/v2026.08.20 \
-  --dataset-version v2026.08.20 \
-  --site-git-sha d26fc098565492b78b416fb30b6b1ec7087b24c7
-
 api/.venv/bin/python scripts/export_ml_foundation_snapshot.py verify \
-  --bundle /secure/sclib-exports/v2026.08.20
+  --bundle /absolute/local/source-export
 ```
 
 `DATABASE_URL` is read only from the environment and is never copied into the
-manifest or logs. The default export scope matches the public material list:
-NIMS-quarantined, `needs_review`, and zero-paper skeleton rows are excluded.
+manifest or logs. Its default legacy SQL export predicate excludes
+NIMS-quarantined, `needs_review`, and zero-paper skeleton rows; this predicate
+is not the complete current public-visibility or scientific-eligibility policy.
+The shadow loader separately checks live governance before selecting records.
 All paper rows are retained so every exported record can resolve its source.
 The million-row chunk text/vector inventory is not exported; only its count is
 bound to the snapshot.
@@ -127,10 +138,11 @@ work identities, reports, and manifest hashes.
 
 Plan publication is atomic and fail-closed: the final directory must not
 already exist, partial directories are removed on failure, the directory is
-mode `0700`, and artifacts are mode `0600`. `source_snapshots.jsonl` is a
-convenience proposal created after the plan manifest; a future loader must
-derive and verify the authoritative snapshot row from the reviewed manifest
-rather than trusting that convenience file by itself.
+mode `0700`, and artifacts are mode `0600`. `source_snapshots.jsonl` is an
+unchecksummed convenience proposal created after the plan manifest. The ML03
+offline verifier independently derives the expected snapshot from pinned
+source/plan manifests and replayed counts, and requires that file to match.
+The shadow loader does not insert the proposal into legacy `source_snapshots`.
 
 The hard shadow-parity report independently proves source-record accounting
 and independently replays formula enrichment, accepted persisted work
@@ -140,13 +152,21 @@ deterministic distributions. Timeline and material-headline parity are
 explicitly deferred:
 the typed v1 schema does not yet carry every legacy year and `tc_regime`
 policy input. The proposed source snapshot therefore remains `building` even
-when the offline hard gate passes. Only license review, an idempotent database
-dry-run, and post-load parity may advance it to `validated`/`frozen`.
+when the offline hard gate passes. Neither a successful shadow dry-run nor a
+committed shadow receipt advances it to `validated`/`frozen`. Scientific QC,
+source-rights review, release policy and canonical promotion remain separate
+unimplemented approval transitions in this increment.
 
 If a source export contains an existing `paper_work_map`, only `accepted`
 mappings are authoritative identity edges. `pending` and `rejected` mappings
 remain in the warning audit; their old work IDs and decisions are not silently
 transferred to a newly resolved pair.
+
+Before a shadow import, the live material/paper/work must exist and the live
+paper/work mapping must be `accepted` and agree with the proposal. The loader
+does not create missing works or adjudicate proposed merges. Every shadow
+interpretation remains `pending`; source capture and temporal diagnostics do
+not confer known-by availability or accepted scientific labels.
 
 ## Read-only API
 
@@ -178,19 +198,23 @@ All ML Foundation routes fail closed with HTTP 404 while
 for shadow validation; production must not enable it until typed-claim QC,
 license review, and legacy/typed parity gates have passed.
 
-## Deployment order
+## Controlled operational acceptance order
 
 1. Take and hash a database backup; record the dataset version and row counts.
-2. Apply revision `0044_ml_foundation` in staging.
+2. Review and apply required migrations, including `0053_research_import`, only
+   in the explicitly authorized disposable/canary environment.
 3. Run and verify the single-transaction source exporter.
 4. Run the offline planner only through `--source-export-manifest`.
 5. Review formula status, work merges, mapper warnings, exact duplicates, and
    all failures. Run a distinct-formula audit for acronym/shorthand values
    misclassified as exact; known cuprate and claim shorthands must remain
    unresolved. Do not load a plan with unexplained failures.
-6. Implement and canary an idempotent database writer in the order
-   `source_snapshots -> works -> paper_work_map -> material_claims`.
-7. Keep every loaded legacy claim `pending` until QC policy accepts it.
+6. Run the ML03 offline verifier with independently pinned source and plan
+   hashes. Preview through the internal service and independently review the
+   complete payload, preview/governance hash, selections and accounting.
+7. Rehearse the separately approved **shadow-only** loader in a clean
+   `SERIALIZABLE` transaction with full dry-run rollback. A non-dry run still
+   requires caller-controlled outer commit; interpretation rows remain pending.
 8. Compare typed rows with the legacy read path in shadow mode before enabling
    any public or ML export.
 9. Create ML snapshots only after work/material/series/time leakage tests pass.
@@ -198,11 +222,12 @@ license review, and legacy/typed parity gates have passed.
 No production migration or backfill is performed by the development changes
 in this branch.
 
-The Phase-1 API is read-only and the loader policy must reject changes to a
-frozen snapshot. Database-level triggers that prevent a privileged operator
-from updating an already-frozen snapshot are intentionally deferred; until
-those are added, “frozen” is an application and release-process invariant,
-not an absolute PostgreSQL immutability guarantee.
+The Phase-1 API remains read-only. The five new shadow tables reject
+update/delete/truncate, and migration downgrade refuses a populated ledger.
+These safeguards do not retroactively make legacy `source_snapshots` or
+`ml_dataset_snapshots` immutable, nor protect against administrators disabling
+database safeguards. A shadow receipt records historical processing, not a
+frozen ML release or current eligibility.
 
 ## Acceptance gates before ML training
 
@@ -228,9 +253,18 @@ polymorph, import DFT/DFPT/EPC results, create full structure graphs, or train a
 discovery model. Those activities depend on a reviewed claim layer and a
 separate structure/calculation manifest.
 
-The current increment also does not load a bundle into staging or production.
-The database writer remains a separate gate because v1 claims have one source
-snapshot lineage and existing works/compositions do not yet carry load-run
-ownership. Its required policy is `insert-or-verify-identical`, one
-`SERIALIZABLE` transaction, full dry-run rollback, no overwrite upsert, and no
-generic post-commit delete rollback.
+The current increment provides an internal shadow writer but does not itself
+load a real bundle into staging or production. Canonical v1 claim promotion
+remains separate because existing claims have one source-snapshot lineage and
+works/compositions do not carry this shadow load's ownership. Shadow writes use
+insert-or-verify-identical semantics, a savepoint within a caller-owned clean
+`SERIALIZABLE` transaction, full dry-run rollback, nonblocking advisory-lock
+failure/retry, and no overwrite or generic post-commit delete rollback.
+
+Canary verification is bounded to 1,000 raw occurrences, 1,000 materials and
+2,000 papers, with separate byte limits. The existing full exporter may exceed
+those limits because it retains every paper. Do not silently slice/reseal a
+full export. An authorized controlled canary export or reviewed clone with
+truthful provenance remains an operational gate. Public routes, production
+import CLI, scientific acceptance, ML readiness and automatic known-by transfer
+are not added by ML03; see the [shadow import protocol](SHADOW_RESEARCH_IMPORT.md).

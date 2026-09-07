@@ -8,6 +8,7 @@ typed claim columns.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import re
@@ -19,12 +20,14 @@ from decimal import Decimal
 from typing import Any
 
 from ingestion.claims.mapper import map_record_to_claim, source_record_identity
+from ingestion.claims.outcomes import negative_outcome_issues
 from ingestion.claims.work_identity import plan_work_identities
 from ingestion.extract.formula_enrichment import enrich_material_composition
+from ingestion.extract.scientific_values import record_quantity
+from ingestion.pressure_semantics import classify_pressure
 
 PARITY_SCHEMA_VERSION = "sclib-typed-claim-shadow-parity/v1"
 _TC_FIELDS = ("value_kelvin", "tc_kelvin", "tc")
-_PRESSURE_FIELDS = ("pressure_gpa", "pressure")
 _DISTRIBUTION_FIELDS = (
     "property_type",
     "evidence_role",
@@ -144,7 +147,12 @@ def build_shadow_parity_report(
     summary_input = _summary_count(summary, "input_records", issues)
     summary_claims = _summary_count(summary, "unique_claims", issues)
     summary_exact_duplicates = _summary_count(summary, "exact_duplicate_records", issues)
-    source_exact_duplicates = sum(max(count - 1, 0) for count in source["records"].values())
+    # The planner's historical "exact duplicate" name denotes identical
+    # canonical source identity, not byte-identical observation envelopes.
+    # Raw occurrence accounting remains a separate, full-payload inventory.
+    source_exact_duplicates = sum(
+        max(count - 1, 0) for count in source["source_identities"].values()
+    )
     _compare_count(
         issues,
         "exact_duplicate_count_mismatch",
@@ -318,21 +326,29 @@ def build_shadow_parity_report(
 
         if not _valid_tc_shape(claim):
             issues.add("typed_tc_shape_invalid", key)
+        # Raw-record identity/membership above checks lossless preservation.
+        # Compare physical quantities after dimensional normalization: 1800 mK
+        # and 1.8 K must not be called different values. A malformed quantity is
+        # retained as raw/proposal evidence, never forced into a valid scalar.
         raw_tc = _finite(_first(raw_record, *_TC_FIELDS))
-        if raw_tc is not None:
-            if raw_tc < 0:
-                metrics["negative_source_tc"] += 1
+        if raw_tc is not None and raw_tc < 0:
+            metrics["negative_source_tc"] += 1
+        tc_proposal = record_quantity(raw_record, "tc_kelvin", "value_kelvin", "tc")
+        normalized_tc = _finite(tc_proposal.get("value"))
+        if tc_proposal.get("status") == "parsed" and normalized_tc is not None and normalized_tc >= 0:
+            metrics["finite_tc"] += 1
+            if _preserves_tc(claim, normalized_tc):
+                metrics["preserved_tc"] += 1
             else:
-                metrics["finite_tc"] += 1
-                if _preserves_tc(claim, raw_tc):
-                    metrics["preserved_tc"] += 1
-                else:
-                    issues.add("finite_source_tc_not_preserved", key)
+                issues.add("finite_source_tc_not_preserved", key)
 
-        raw_pressure_value = _first(raw_record, *_PRESSURE_FIELDS)
+        pressure_assessment = classify_pressure(raw_record)
+        raw_pressure_value = pressure_assessment.raw_value
         typed_pressure = _finite(claim.get("pressure_gpa"))
         pressure_state = _slug(claim.get("pressure_state"))
-        if raw_pressure_value in (None, ""):
+        normalized_pressure = _finite(pressure_assessment.pressure_gpa)
+        if (raw_pressure_value in (None, "") and normalized_pressure is None
+                and pressure_assessment.relation == "unreported"):
             metrics["missing_pressure"] += 1
             if typed_pressure is not None or pressure_state in {
                 "reported",
@@ -340,12 +356,11 @@ def build_shadow_parity_report(
             }:
                 metrics["manufactured_pressure"] += 1
                 issues.add("missing_pressure_was_manufactured", key)
-        raw_pressure = _finite(raw_pressure_value)
-        if raw_pressure is not None:
-            if raw_pressure >= 0:
+        if normalized_pressure is not None:
+            if normalized_pressure >= 0:
                 metrics["finite_pressure"] += 1
                 if typed_pressure is not None and math.isclose(
-                    raw_pressure,
+                    normalized_pressure,
                     typed_pressure,
                     rel_tol=0,
                     abs_tol=1e-12,
@@ -366,11 +381,14 @@ def build_shadow_parity_report(
             metrics["negative_claims"] += 1
             if not _explicit_negative(raw_record):
                 issues.add("implicit_negative_claim", key)
-            if (
-                _slug(claim.get("property_type")) != "non_transition"
-                or _slug(claim.get("value_relation")) != "unreported"
-            ):
+            negative_issues = negative_outcome_issues(claim)
+            if set(negative_issues) & {
+                "negative_result_property_mismatch", "negative_result_conflicts_with_tc_relation",
+                "negative_result_invalid_value_shape",
+            }:
                 issues.add("negative_claim_shape_invalid", key)
+            if negative_issues and _slug(claim.get("validity_status")) == "accepted":
+                issues.add("accepted_negative_not_qualified", key)
             if claim.get("minimum_temperature_k") is None:
                 metrics["negative_missing_tmin"] += 1
                 if _slug(claim.get("validity_status")) == "accepted":
@@ -413,6 +431,7 @@ def build_shadow_parity_report(
             "claim_raw_record_matches": metrics["raw_record_matches"],
             "unconsumed_source_records": remaining_source_records,
         },
+        "source_occurrence_inventory": source["occurrence_inventory"],
         "lineage": {
             "claim_snapshot_mismatches": issues.counts["claim_snapshot_mismatch"],
             "claim_unknown_materials": issues.counts["claim_unknown_material"],
@@ -497,6 +516,8 @@ def _source_inventory(materials: Sequence[Mapping[str, Any]], issues: _Issues) -
     material_ids: set[str] = set()
     formula_by_id: dict[str, str | None] = {}
     records: Counter[tuple[str, str]] = Counter()
+    source_identities: Counter[str] = Counter()
+    occurrences: list[tuple[str, int, Any]] = []
     input_records = object_records = 0
     for material in materials:
         material_id = _id(material.get("id"))
@@ -520,17 +541,48 @@ def _source_inventory(materials: Sequence[Mapping[str, Any]], issues: _Issues) -
             continue
         input_records += len(raw_records)
         for ordinal, record in enumerate(raw_records):
+            # Retain every input ordinal in the digest, including a malformed
+            # record that independently fails the gate. This is an inventory
+            # of source-export input, not a claim that deduplicated claims
+            # themselves contain every original observation payload.
+            occurrences.append((material_id, ordinal, record))
             if not isinstance(record, Mapping):
                 issues.add("source_record_not_object", f"material:{material_id}|record:{ordinal}")
                 continue
             object_records += 1
             records[(material_id, _canonical_json(record))] += 1
+            # Use the public mapper's exclusion contract without copying its
+            # reserved-key list. Fixed outer paper/locator arguments only
+            # establish an equivalence key: the original paper and locator
+            # fields inside raw_record remain identity-bearing. This key is
+            # never emitted as a claim hash. The claim loop separately checks
+            # each actual mapper ID, locator, and complete raw representative.
+            equivalence_hash, _ = source_record_identity(
+                material_id=material_id, paper_id=None,
+                raw_record=record, source_locator={},
+            )
+            source_identities[equivalence_hash] += 1
+    occurrence_digest = hashlib.sha256()
+    for material_id, ordinal, record in sorted(occurrences, key=lambda row: (row[0], row[1])):
+        occurrence_digest.update(_canonical_json({
+            "material_id": material_id, "record_ordinal": ordinal, "raw_record": record,
+        }).encode("utf-8") + b"\n")
     return {
         "material_ids": material_ids,
         "formula_by_id": formula_by_id,
         "records": records,
+        "source_identities": source_identities,
         "input_records": input_records,
         "object_records": object_records,
+        "occurrence_inventory": {
+            "schema_version": "sclib-source-occurrence-inventory/v1",
+            "scope": "source_export_input_not_unique_claim_payloads",
+            "hash_basis": "canonical_jsonl_sorted_by_material_id_and_record_ordinal",
+            "sha256": occurrence_digest.hexdigest(),
+            "raw_occurrences": len(occurrences),
+            "unique_source_identities": len(source_identities),
+            "exact_raw_duplicate_records": sum(max(count - 1, 0) for count in records.values()),
+        },
     }
 
 
@@ -836,9 +888,11 @@ def _valid_pressure_shape(claim: Mapping[str, Any]) -> bool:
         return False
     return {
         "explicit_ambient": value == 0,
-        "reported": value is not None and value > 0,
+        "reported": value is not None and value >= 0,
         "not_reported": raw is None,
-        "ambiguous": raw is None or value == 0,
+        # V1 preserves a finite conflicting value alongside ambiguous status;
+        # source metadata/replay keep the conflict. V2 states use NULL instead.
+        "ambiguous": raw is None or value is not None and value >= 0,
     }.get(state, False)
 
 

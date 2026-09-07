@@ -59,6 +59,10 @@ def main() -> None:
             assert "result_metadata" in {c["name"] for c in schema.get_columns("timeline_projection_points")}
             assert connection.execute(text("SELECT count(*) FROM pg_trigger WHERE tgname = 'scientific_correction_append_only' AND NOT tgisinternal")).scalar_one() == 1
             assert {"source_revisions", "source_captures", "claim_source_occurrences"} <= set(schema.get_table_names())
+            assert {"research_import_snapshots", "research_import_occurrences", "research_import_revisions",
+                    "research_import_memberships", "research_import_receipts"} <= set(schema.get_table_names())
+            assert connection.execute(text("""SELECT count(*) FROM pg_trigger
+                WHERE NOT tgisinternal AND tgname LIKE 'research_import_%_immutable_%'""")).scalar_one() == 10
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
                 WHERE NOT tgisinternal AND tgname IN (
                     'source_revisions_immutable_row', 'source_revisions_immutable_truncate',
@@ -167,7 +171,28 @@ def main() -> None:
             assert connection.execute(text("SELECT count(*) FROM source_revisions")).scalar_one() == 1
             assert connection.execute(text("SELECT source_version_public_at FROM source_revisions")).scalar_one() is None
             assert set(MigrationContext.configure(connection).get_current_heads()) == set(ScriptDirectory.from_config(config).get_heads())
-        print("Disposable migration head, material-semantics/NULL-default and Timeline metadata round trips, raw/governance preservation, correction-ledger and source-registry rollback guards verified.")
+        with engine.begin() as connection:
+            verify_postgres_identity(connection, capability)
+            connection.execute(text("""INSERT INTO research_import_snapshots
+                (id, export_manifest_sha256, export_manifest, dataset_version, site_git_sha,
+                 database_watermark, source_alembic_revision, schema_version, paper_count,
+                 material_count, chunk_count, input_record_count, license_manifest_sha256, record_sha256)
+                VALUES ('2a6a3c2e-bf22-4862-8a77-dc80b89d2780', :digest, '{"synthetic": true}'::jsonb,
+                        'synthetic-migration', :git, now(), '0053_research_import', 'synthetic/1',
+                        0, 0, 0, 0, :digest, :digest)"""), {"digest": "b" * 64, "git": "a" * 40})
+        try:
+            validate_test_environment()
+            command.downgrade(config, "0052_source_provenance")
+        except RuntimeError as exc:
+            assert "shadow history contains records" in str(exc)
+        else:
+            raise AssertionError("Nonempty shadow import downgrade must fail closed")
+        with engine.connect() as connection:
+            verify_postgres_identity(connection, capability)
+            assert connection.execute(text("SELECT status FROM research_import_snapshots")).scalar_one() == "captured"
+            assert connection.execute(text("SELECT count(*) FROM source_revisions")).scalar_one() == 1
+            assert set(MigrationContext.configure(connection).get_current_heads()) == set(ScriptDirectory.from_config(config).get_heads())
+        print("Disposable migration head and empty round trips, legacy raw/governance preservation, correction/source/shadow-import nonempty rollback guards verified.")
     finally:
         engine.dispose()
 

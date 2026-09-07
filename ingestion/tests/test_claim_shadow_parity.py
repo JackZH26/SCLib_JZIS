@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import sys
 import uuid
@@ -198,6 +199,106 @@ def test_explicit_negative_is_valid_but_accepted_negative_requires_tmin() -> Non
     assert "accepted_negative_missing_tmin" in _failure_codes(failed)
 
 
+@pytest.mark.parametrize("bound", ["< 1.8 K", "<= 1.8 K"])
+def test_explicit_censored_negative_is_representable_without_automatic_acceptance(bound):
+    materials, papers = _rows({
+        "paper_id": "arxiv:2306.07275", "tc_kelvin": bound,
+        "result_status": "not_detected", "minimum_temperature_k": 1.8,
+        "measurement": "resistivity", "source_role": "primary",
+    })
+    plan = _plan(materials, papers)
+    before = copy.deepcopy(materials)
+    report = build_shadow_parity_report(materials, papers, plan)
+    assert report["gate_status"] == "pass", report["gate_failures"]
+    claim = plan["claims"][0]
+    assert claim["property_type"] == "non_transition"
+    assert claim["value_relation"] in {"lt", "le"}
+    assert claim["value_kelvin"] is None and claim["value_upper_kelvin"] == 1.8
+    assert claim["validity_status"] == "pending"
+    assert claim["raw_record"] == before[0]["records"][0]
+    assert materials == before
+
+
+def test_accepted_censored_negative_without_method_fails_even_with_tmin():
+    materials, papers = _rows({
+        "paper_id": "arxiv:2306.07275", "tc_kelvin": "< 1.8 K",
+        "result_status": "not_detected", "minimum_temperature_k": 1.8,
+    })
+    plan = _plan(materials, papers)
+    plan["claims"][0]["validity_status"] = "accepted"
+    report = build_shadow_parity_report(materials, papers, plan)
+    assert report["gate_status"] == "fail"
+    assert "accepted_negative_not_qualified" in _failure_codes(report)
+
+
+@pytest.mark.parametrize("pressure,unit,gpa", [(20, "kbar", 2), (2000, "MPa", 2),
+                                              (2_000_000_000, "Pa", 2), (2, "GPa", 2)])
+def test_pressure_parity_compares_normalized_gpa_and_preserves_raw_units(pressure, unit, gpa):
+    materials, papers = _rows({
+        "paper_id": "arxiv:2306.07275", "tc_kelvin": 39,
+        "pressure_gpa": pressure, "pressure_unit": unit, "measurement": "resistivity",
+    })
+    plan = _plan(materials, papers)
+    report = build_shadow_parity_report(materials, papers, plan)
+    assert report["gate_status"] == "pass", report["gate_failures"]
+    assert plan["claims"][0]["pressure_gpa"] == gpa
+    assert plan["claims"][0]["raw_record"] == materials[0]["records"][0]
+    assert report["hard_semantics"]["pressure"]["preserved_finite_nonnegative_values"] == 1
+    changed = copy.deepcopy(plan)
+    changed["claims"][0]["pressure_gpa"] = gpa + 1
+    failed = build_shadow_parity_report(materials, papers, changed)
+    assert "finite_source_pressure_not_preserved" in _failure_codes(failed)
+
+
+def test_temperature_parity_compares_kelvin_not_millikelvin_raw_number():
+    materials, papers = _rows({
+        "paper_id": "arxiv:2306.07275", "tc_kelvin": 1800,
+        "tc_kelvin_unit": "mK", "measurement": "resistivity",
+    })
+    plan = _plan(materials, papers)
+    report = build_shadow_parity_report(materials, papers, plan)
+    assert report["gate_status"] == "pass", report["gate_failures"]
+    assert plan["claims"][0]["value_kelvin"] == 1.8
+    assert plan["claims"][0]["raw_record"]["tc_kelvin"] == 1800
+    assert report["hard_semantics"]["tc"]["preserved_values"] == 1
+
+
+def test_normalized_equivalence_does_not_authorize_rewriting_original_pressure():
+    materials, papers = _rows({
+        "paper_id": "arxiv:2306.07275", "tc_kelvin": 39,
+        "pressure_gpa": 20, "pressure_unit": "kbar", "measurement": "resistivity",
+    })
+    plan = _plan(materials, papers)
+    plan["claims"][0]["raw_record"].update(pressure_gpa=2, pressure_unit="GPa")
+    report = build_shadow_parity_report(materials, papers, plan)
+    assert report["gate_status"] == "fail"
+    assert "claim_raw_record_not_in_source" in _failure_codes(report)
+
+
+@pytest.mark.parametrize("pressure_fields,expected", [
+    ({"scientific_values": {"pressure_gpa": {"raw_value": 20, "input_unit": "kbar"}}}, 2),
+    ({"pressure_condition": "ambient pressure"}, 0),
+    ({"pressure_gpa": 2, "pressure_state": "ambiguous"}, 2),
+    ({"pressure_gpa": 2, "pressure_condition": "ambient pressure"}, 2),
+    ({"pressure_gpa": "1–2 GPa"}, None),
+    ({"pressure_gpa": "< 2 GPa"}, None),
+    ({"pressure_gpa": 2, "pressure_unit": "nonsense"}, None),
+])
+def test_pressure_proposals_ambient_and_conflicts_are_not_fabricated_or_discarded(
+    pressure_fields, expected,
+):
+    materials, papers = _rows({
+        "paper_id": "arxiv:2306.07275", "tc_kelvin": 39,
+        "measurement": "resistivity", **pressure_fields,
+    })
+    plan = _plan(materials, papers)
+    report = build_shadow_parity_report(materials, papers, plan)
+    assert report["gate_status"] == "pass", report["gate_failures"]
+    assert report["hard_semantics"]["pressure"]["manufactured_values"] == 0
+    assert plan["claims"][0]["pressure_gpa"] == expected
+    assert plan["claims"][0]["raw_record"] == materials[0]["records"][0]
+
+
 def test_tampering_detects_snapshot_work_retraction_tc_pressure_and_negative_errors() -> None:
     materials, papers = _rows(
         {
@@ -284,6 +385,132 @@ def test_distinct_claim_loss_cannot_be_hidden_as_an_exact_duplicate() -> None:
         "record_accounting_mismatch",
         "unconsumed_source_records",
     } <= _failure_codes(report)
+
+
+@pytest.mark.parametrize("derived_field", [
+    "result_classification", "pressure_semantics", "property_evidence",
+    "anomaly_review", "visibility", "structure_evidence", "ingestion_capture",
+    "temporal_provenance",
+])
+def test_derived_only_observations_share_identity_but_retain_full_raw_inventory(derived_field):
+    materials, papers = _rows()
+    first = materials[0]["records"][0]
+    first[derived_field] = {"synthetic_observation": "first"}
+    second = copy.deepcopy(first)
+    second[derived_field] = {"synthetic_observation": "second"}
+    materials[0]["records"].append(second)
+    before = copy.deepcopy(materials)
+
+    plan = _plan(materials, papers)
+    report = build_shadow_parity_report(materials, papers, plan)
+
+    assert report["gate_status"] == "pass", report["gate_failures"]
+    assert len(plan["claims"]) == 1
+    assert plan["summary"]["exact_duplicate_records"] == 1
+    assert report["reconciliation"]["accounted_records"] == 2
+    assert report["reconciliation"]["claim_raw_record_matches"] == 1
+    assert report["reconciliation"]["unconsumed_source_records"] == 1
+    inventory = report["source_occurrence_inventory"]
+    assert inventory["raw_occurrences"] == 2
+    assert inventory["unique_source_identities"] == 1
+    assert inventory["exact_raw_duplicate_records"] == 0
+    assert inventory["scope"] == "source_export_input_not_unique_claim_payloads"
+    # Independently bind both complete per-input payloads, not just the one
+    # representative retained by the claim planner.
+    expected = "".join(json.dumps({
+        "material_id": "mat:mgb2", "record_ordinal": ordinal, "raw_record": record,
+    }, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n"
+                       for ordinal, record in enumerate(before[0]["records"]))
+    assert inventory["sha256"] == hashlib.sha256(expected.encode("utf-8")).hexdigest()
+    assert materials == before
+
+
+def test_duplicate_raw_inventory_binds_observation_changes_and_original_ordinals():
+    materials, papers = _rows()
+    first = materials[0]["records"][0]
+    second = copy.deepcopy(first)
+    first["ingestion_capture"] = {"captured_at": "2026-09-01T00:00:00Z"}
+    second["ingestion_capture"] = {"captured_at": "2026-09-02T00:00:00Z"}
+    materials[0]["records"].append(second)
+    plan = _plan(materials, papers)
+    initial = build_shadow_parity_report(materials, papers, plan)
+    # A changed duplicate can legitimately leave the unique claim unchanged;
+    # its export-input digest must still change. Bundle verification and the
+    # loader's all-ordinal raw membership check bind that separate inventory.
+    second["ingestion_capture"]["captured_at"] = "2026-09-03T00:00:00Z"
+    changed = build_shadow_parity_report(materials, papers, plan)
+    assert changed["gate_status"] == "pass"
+    assert initial["source_occurrence_inventory"]["sha256"] != (
+        changed["source_occurrence_inventory"]["sha256"]
+    )
+    assert plan["claims"][0]["id"] == _plan(materials, papers)["claims"][0]["id"]
+    materials[0]["records"].reverse()
+    reordered = build_shadow_parity_report(materials, papers, _plan(materials, papers))
+    assert reordered["gate_status"] == "pass"
+    assert changed["source_occurrence_inventory"]["sha256"] != (
+        reordered["source_occurrence_inventory"]["sha256"]
+    )
+
+
+def test_derived_raw_representative_tampering_cannot_hide_behind_stable_identity():
+    materials, papers = _rows()
+    materials[0]["records"].append(copy.deepcopy(materials[0]["records"][0]))
+    plan = _plan(materials, papers)
+    valid = build_shadow_parity_report(materials, papers, plan)
+    assert valid["gate_status"] == "pass"
+    assert valid["source_occurrence_inventory"]["exact_raw_duplicate_records"] == 1
+    plan["claims"][0]["raw_record"]["ingestion_capture"] = {"fabricated": True}
+    report = build_shadow_parity_report(materials, papers, plan)
+    assert report["gate_status"] == "fail"
+    assert "claim_raw_record_not_in_source" in _failure_codes(report)
+
+
+@pytest.mark.parametrize("scientific_update", [
+    {"tc_kelvin": 40}, {"pressure_gpa": 2}, {"measurement": "magnetometry"},
+    {"source_locator": {"page": 2}}, {"structure_claims": [{"space_group": "P6/mmm"}]},
+    {"source_role": "background"},
+])
+def test_scientific_differences_cannot_be_reclassified_as_derived_duplicates(scientific_update):
+    materials, papers = _rows()
+    second = copy.deepcopy(materials[0]["records"][0])
+    second.update(scientific_update)
+    materials[0]["records"].append(second)
+    plan = _plan(materials, papers)
+    report = build_shadow_parity_report(materials, papers, plan)
+    assert report["gate_status"] == "pass", report["gate_failures"]
+    assert len(plan["claims"]) == 2
+    assert report["source_occurrence_inventory"]["unique_source_identities"] == 2
+    plan["claims"].pop()
+    plan["summary"]["unique_claims"] = 1
+    plan["summary"]["exact_duplicate_records"] = 1
+    failed = build_shadow_parity_report(materials, papers, plan)
+    assert failed["gate_status"] == "fail"
+    assert "exact_duplicate_count_mismatch" in _failure_codes(failed)
+
+
+def test_missing_duplicate_occurrence_is_not_silently_accounted():
+    materials, papers = _rows()
+    duplicate = copy.deepcopy(materials[0]["records"][0])
+    duplicate["ingestion_capture"] = {"synthetic_observation": "second"}
+    materials[0]["records"].append(duplicate)
+    plan = _plan(materials, papers)
+    materials[0]["records"].pop()
+    report = build_shadow_parity_report(materials, papers, plan)
+    assert report["gate_status"] == "fail"
+    assert {"source_record_count_mismatch", "exact_duplicate_count_mismatch"} <= (
+        _failure_codes(report)
+    )
+
+
+def test_same_raw_record_in_different_materials_is_never_a_duplicate():
+    materials, papers = _rows()
+    other = copy.deepcopy(materials[0])
+    other["id"] = "mat:other-mgb2"
+    materials.append(other)
+    report = build_shadow_parity_report(materials, papers, _plan(materials, papers))
+    assert report["gate_status"] == "pass"
+    assert report["source_occurrence_inventory"]["unique_source_identities"] == 2
+    assert report["counts"]["exact_duplicate_records"] == 0
 
 
 def test_claim_identity_and_full_mapper_payload_are_recomputed() -> None:
