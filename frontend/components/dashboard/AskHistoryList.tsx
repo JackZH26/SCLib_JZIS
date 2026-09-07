@@ -1,4 +1,5 @@
 "use client";
+import { EvidenceProvenanceNotice } from "@/components/EvidenceProvenanceNotice";
 
 /**
  * Collapsible list of past /ask questions.
@@ -160,6 +161,7 @@ export function AskHistoryList({
                               )}
                               {s.authors_short ? ` — ${s.authors_short}` : ""}
                               {s.year ? ` (${s.year})` : ""}
+                              <EvidenceProvenanceNotice evidence={s.evidence_provenance} historical />
                               <span className="mt-1 block text-amber-900">
                                 {current && current.metadata_status !== "unavailable" ? `Current source status: ${current.source_visibility.source_status}.` : "Current source status is unavailable; do not treat saved citations as current support."}
                                 {current?.source_visibility.reported_claim_filter_eligible === false && current.metadata_status !== "unavailable" && " Current claim-support eligibility is withheld; review is required."}

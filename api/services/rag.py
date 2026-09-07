@@ -55,6 +55,10 @@ Do not replace a bound or range by an exact value, a measurement temperature by
 Tc, a computed value by an observation, or a negative observation by a positive
 transition. Do not combine separate excerpts into an invented result tuple.
 Derived Facts are retrieval aids, not independently confirming original evidence.
+Evidence provenance is separate from source visibility and text permissions.
+Unresolved roots, unknown permissions and immutable machine-extraction revisions
+are not reviewed original evidence. Do not count multiple derived texts as
+independent replications. Preserve evidence-type and currentness warnings.
 Use short, self-contained claims; repeat material and conditions rather than
 relying on ambiguous pronouns. Unknown conditions must remain unknown.
 Never claim that citation syntax or automated checks establish scientific truth.
@@ -74,6 +78,7 @@ class RagSourceInput:
     material_evidence: list[dict] = field(default_factory=list)
     source_visibility: dict = field(default_factory=dict)
     visibility_resolved: bool = False
+    evidence_provenance: dict = field(default_factory=dict)
 
 
 @dataclass(slots=True)
@@ -124,9 +129,11 @@ def _format_sources(sources: list[RagSourceInput]) -> str:
             "authors": source.authors_short,
             "year": source.year,
             "section": source.section,
-            "excerpt": source.text.strip(),
-            "material_evidence": citation_evidence(source.material_evidence, visibility_resolved=source.visibility_resolved),
+            "excerpt": source.text.strip() if _evidence_text_available(source) else "",
+            "material_evidence": citation_evidence(source.material_evidence, visibility_resolved=source.visibility_resolved)
+            if _evidence_text_available(source) else [],
             "source_visibility": source.source_visibility,
+            "evidence_provenance": _checked_evidence(source),
         }
         for source in sources
     ]
@@ -135,6 +142,27 @@ def _format_sources(sources: list[RagSourceInput]) -> str:
         .replace("<", "\\u003c")
         .replace(">", "\\u003e")
     )
+
+
+def _checked_evidence(source: RagSourceInput) -> dict:
+    if type(source.evidence_provenance) is dict and not source.evidence_provenance:
+        return {}
+    from services.rag_evidence_contract import validate_evidence_descriptor
+
+    try:
+        return validate_evidence_descriptor(source.evidence_provenance)
+    except (ValueError, TypeError):
+        return {"status": "invalid_evidence_descriptor"}
+
+
+def _evidence_text_available(source: RagSourceInput) -> bool:
+    descriptor = _checked_evidence(source)
+    if not descriptor:
+        return True  # Legacy text policy is unchanged; this is not root approval.
+    return (descriptor.get("version") == "rag-evidence/1.0.0"
+            and descriptor.get("permission_status") != "restricted"
+            and descriptor.get("currentness") != "stale"
+            and descriptor.get("content_sha256") == hashlib.sha256(source.text.encode()).hexdigest())
 
 
 def build_user_prompt(question: str, sources: list[RagSourceInput]) -> str:
@@ -320,16 +348,23 @@ def extractive_fallback(
             ) for record in records
         ):
             continue
+        if not _evidence_text_available(source):
+            continue
         compact = " ".join(source.text.split())
         if len(compact) > 240:
             compact = compact[:239].rstrip() + "…"
         compact = re.sub(r"[\\`*_{}\[\]()!|]", lambda m: f"&#{ord(m.group())};", escape(compact, quote=False))
-        excerpts.append(f"> {compact}\n\nSource excerpt [{source.index}].")
+        kind = _checked_evidence(source).get("chunk_kind")
+        label = ("Derived fact (not original source text)" if kind == "derived_fact" else
+                 "Unresolved Facts text (not independently confirming evidence)" if not kind and claim_support.is_derived_source_hint(
+                     section=source.section, paper_id=source.paper_id, text=source.text) else
+                 "Unverified indexed text" if kind == "legacy_unknown" else "Source excerpt")
+        excerpts.append(f"> {compact}\n\n{label} [{source.index}].")
         if len(excerpts) == 3:
             break
     answer = (
         "I could not substantiate a synthesized scientific answer. "
-        "The following are quoted source excerpts, not verified conclusions; "
+        "The following are indexed text excerpts with evidence-type labels, not verified conclusions; "
         "truncation may omit important context. Consult the full sources.\n\n"
         if excerpts else
         "I could not substantiate a synthesized scientific answer. "
@@ -375,7 +410,7 @@ def _result_fingerprint(result: RagResult, sources: list[RagSourceInput]) -> str
     payload = {"answer": result.answer, "quality": result.quality_fields(), "sources": [
         {name: getattr(source, name) for name in (
             "index", "paper_id", "title", "authors_short", "year", "section", "text",
-            "material_evidence", "source_visibility", "visibility_resolved",
+            "material_evidence", "source_visibility", "visibility_resolved", "evidence_provenance",
         )} for source in sources
     ]}
     try:

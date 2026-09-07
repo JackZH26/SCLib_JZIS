@@ -397,6 +397,7 @@ export interface AskHistoryEntry {
   question: string;
   answer: string;
   sources: Array<{
+    evidence_provenance?: EvidenceProvenance;
     index?: number;
     paper_id?: string;
     arxiv_id?: string | null;
@@ -572,6 +573,7 @@ export interface MatchingScientificResult {
 }
 
 export interface SearchMatch {
+  evidence_provenance?: EvidenceProvenance;
   source_visibility?: SourceVisibility;
   occurrence_visibility_summary?: Record<string, unknown>;
   paper_id: string;
@@ -617,6 +619,7 @@ export interface AskRequest {
 }
 
 export interface AskSource {
+  evidence_provenance?: EvidenceProvenance;
   source_visibility?: SourceVisibility;
   index: number;
   paper_id: string;
@@ -626,6 +629,27 @@ export interface AskSource {
   year: number | null;
   section: string | null;
   snippet: string;
+}
+
+export interface EvidenceProvenance {
+  version: "rag-evidence/1.0.0";
+  chunk_kind: "original_passage" | "abstract" | "derived_fact" | "legacy_unknown";
+  evidence_revision_id: string | null;
+  evidence_record_sha256: string | null;
+  content_sha256: string;
+  parent_result_revision_id: string | null;
+  parent_result_sha256: string | null;
+  extraction_version: string | null;
+  rendering_version: string | null;
+  source_capture_id: string | null;
+  source_locator: Record<string, string | number>;
+  root_status: "unresolved";
+  permission_status: "unresolved" | "restricted";
+  currentness: "current" | "stale" | "unresolved";
+  warning_codes: string[];
+  support_eligible: false;
+  independent_evidence: false;
+  scientific_acceptance: false;
 }
 
 export interface AskResponse {

@@ -223,6 +223,15 @@ def _parse(text: str) -> tuple[_Tuple | None, str]:
     return _Tuple(formula, tc, temperature_role, pressure, "negative" if negations else "positive", origin, role, criterion, tuple(sorted(state.items()))), "tuple_parsed"
 
 
+def is_derived_source_hint(*, section: object, paper_id: object, text: object) -> bool:
+    """Legacy retrieval hint only: never establishes an original evidence kind."""
+    return bool(
+        isinstance(section, str) and re.search(r"\b(?:facts?|derived|generated|summary)\b", re.sub(r"[_-]", " ", section), re.I)
+        or isinstance(paper_id, str) and re.match(r"(?:facts?|derived|generated):", paper_id, re.I)
+        or isinstance(text, str) and re.search(r"^\s*Section:\s*(?:Facts?|Derived)\b", text, re.I | re.M)
+    )
+
+
 def _source_gate(source: Any) -> str | None:
     section = _get(source, "section", "")
     paper = _get(source, "paper_id", "")
@@ -232,9 +241,25 @@ def _source_gate(source: Any) -> str | None:
         return "source_metadata_invalid"
     if len(body) > LIMITS["source_chars"]:
         return "source_character_limit"
-    if (isinstance(section, str) and re.search(r"\b(?:facts?|derived|generated|summary)\b", re.sub(r"[_-]", " ", section), re.I)
-            or re.match(r"(?:facts?|derived|generated):", paper, re.I)
-            or re.search(r"^\s*Section:\s*(?:Facts?|Derived)\b", body, re.I | re.M)):
+    descriptor = _get(source, "evidence_provenance", {})
+    if type(descriptor) is not dict or descriptor:
+        from services.rag_evidence_contract import validate_evidence_descriptor
+
+        try:
+            descriptor = validate_evidence_descriptor(descriptor)
+        except (TypeError, ValueError):
+            return "evidence_descriptor_invalid"
+        if descriptor["currentness"] == "stale":
+            return "evidence_revision_stale"
+        if descriptor["permission_status"] == "restricted":
+            return "evidence_permission_restricted"
+        # A generated sentence is never its parent's independent original.
+        # v1 intentionally has no scientific-acceptance/permission upgrade path.
+        if descriptor["chunk_kind"] == "derived_fact":
+            return "derived_evidence_root_unresolved"
+        if descriptor["root_status"] != "resolved" or descriptor["support_eligible"] is not True:
+            return "evidence_root_unresolved"
+    if is_derived_source_hint(section=section, paper_id=paper, text=body):
         return "derived_evidence_root_unresolved"
     visibility = _get(source, "source_visibility", {})
     if _get(source, "visibility_resolved", False) is not True or not isinstance(visibility, Mapping):

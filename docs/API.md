@@ -111,6 +111,16 @@ query-coverage reranker, then joins authoritative paper/chunk rows. A Vertex
 timeout, exhausted retry, or open circuit degrades to PostgreSQL lexical
 retrieval. Each hit carries a `relevance_score` float in `[0, 1]`.
 
+Each result now carries `evidence_provenance` under `rag-evidence/1.0.0`:
+`chunk_kind` (`original_passage`, `abstract`, `derived_fact`, `legacy_unknown`),
+exact retained evidence/parent identifiers and hashes when available, producer
+versions, bounded source coordinates, `root_status`, `permission_status`,
+`currentness`, warnings and three always-false scientific-authority flags.
+`matched_chunk` is empty for known restricted or stale evidence. Unavailable,
+malformed or timed-out provenance resolution returns a sanitized 503, not a
+previously hydrated excerpt. Legacy kind/permissions remain unresolved; this
+does not establish permission to reuse text. See [RAG evidence lineage](RAG_EVIDENCE_LINEAGE.md).
+
 `year_min` / `year_max` are bibliographic Chunk/index-year filters, not
 source-revision or result-availability cutoffs. They do not establish a
 historical knowledge snapshot. Ask has no supported historical cutoff
@@ -138,6 +148,24 @@ cited extractive snippets instead of failing the entire request.
 
 Gemini is called from a thread offload so the FastAPI event loop stays
 responsive. Limits: temperature 0.2, max 1024 output tokens.
+
+Each `sources[]` entry also carries `evidence_provenance`. Generation runs without
+a retained database transaction. Before delivering a generated or fallback
+answer, a fresh bounded read-only snapshot rechecks the selected chunk bytes,
+material occurrences, Paper/Work holds and typed provenance. Any change or
+unavailable check withdraws the draft and its old citations/assessments and
+returns an explicit abstention. This check is point-in-time input consistency,
+not scientific validation or a permanent currentness promise.
+
+The v1 lineage has no reviewed-original-root or text-permission approval path:
+all descriptors have `support_eligible=false`, `independent_evidence=false` and
+`scientific_acceptance=false`. Consequently, newly served live sources cannot
+establish a positive scientific-support result through this descriptor version.
+Eligible existing-policy text may appear as a clearly labeled unverified
+extractive fallback; derived Facts are not original quotations. Known restricted,
+stale or malformed evidence supplies neither text nor extracted material data
+to the model/fallback. Saved answers retain their historical metadata; displaying
+a saved descriptor does not revalidate that saved answer or its excerpt.
 
 ## Papers & Materials
 

@@ -13,12 +13,14 @@ main event loop.
 """
 from __future__ import annotations
 
+import asyncio
 import logging
 import time
 from datetime import date as _date
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -124,6 +126,19 @@ async def search(
         db, [chunk.paper.materials_extracted for chunk in rows if chunk.paper is not None],
     )
     source_statuses = await resolve_paper_lifecycle(db, {chunk.paper_id for chunk in rows})
+    from services.rag_evidence import resolve_chunk_evidence
+    from services.rag_evidence_contract import validate_evidence_descriptor
+
+    try:
+        async with asyncio.timeout(10):
+            evidence_by_chunk = await resolve_chunk_evidence(db, rows)
+            if set(evidence_by_chunk) != set(chunk_by_id):
+                raise ValueError("Evidence inventory mismatch")
+            evidence_by_chunk = {key: validate_evidence_descriptor(value) for key, value in evidence_by_chunk.items()}
+    except (TimeoutError, SQLAlchemyError, ValueError, TypeError):
+        # Never return previously hydrated text when its current provenance
+        # cannot be checked; omit SQL/provider details from the public error.
+        raise HTTPException(503, "Evidence provenance is unavailable") from None
 
     # 3. Preserve ANN ordering, apply row-level filters that don't
     #    fit in the index namespaces.
@@ -183,7 +198,8 @@ async def search(
                 year=(paper.date_submitted.year if paper.date_submitted else None),
                 date_submitted=paper.date_submitted,
                 relevance_score=round(candidate.rerank_score, 6),
-                matched_chunk=chunk.text,
+                matched_chunk=chunk.text if evidence_by_chunk[chunk.id]["permission_status"] != "restricted"
+                and evidence_by_chunk[chunk.id]["currentness"] != "stale" else "",
                 matched_section=chunk.section,
                 materials=materials,
                 citation_count=paper.citation_count or 0,
@@ -193,6 +209,7 @@ async def search(
                 matching_results=matched_results if scientific_filters.active else [],
                 source_visibility=source_visibility(paper_status),
                 occurrence_visibility_summary=occurrence_summary,
+                evidence_provenance=evidence_by_chunk[chunk.id],
             )
         )
         if len(matches) >= body.top_k:

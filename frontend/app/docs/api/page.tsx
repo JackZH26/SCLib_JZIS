@@ -268,6 +268,23 @@ Content-Type: application/json
             <Code>&quot;en&quot;</Code>, or <Code>&quot;zh&quot;</Code>. Auto
             detects the question language and replies in kind.
           </p>
+          <p className="mt-2">
+            Search results and Ask sources carry <Code>evidence_provenance</Code>
+            with evidence kind, exact revision hashes, producer versions, source
+            coordinates and currentness. Version <Code>rag-evidence/1.0.0</Code>
+            leaves original roots and text permissions unreviewed; its scientific
+            authority flags are always false. It cannot establish independent
+            confirmation or an ML training label. Derived Facts are labeled as
+            generated extraction text, not original quotations. Known restricted
+            or stale excerpts are withheld.
+          </p>
+          <p className="mt-2">
+            Ask rechecks its selected database inputs after generation. A changed
+            or unavailable check withdraws the draft and returns an abstention.
+            A matching snapshot is not scientific acceptance or a permanent
+            currentness guarantee. Saved provenance is historical and does not
+            revalidate a saved answer.
+          </p>
         </Endpoint>
 
         {/* Materials list */}

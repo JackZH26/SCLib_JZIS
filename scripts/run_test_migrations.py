@@ -6,6 +6,15 @@ from pathlib import Path
 
 from test_safety import validate_test_environment, verify_postgres_identity
 
+_RAG_EVIDENCE_TABLES = ("rag_extraction_revisions", "rag_evidence_revisions", "chunk_evidence_current")
+
+
+def _assert_empty_rag_evidence(connection):
+    from sqlalchemy import text
+
+    for name in _RAG_EVIDENCE_TABLES:
+        assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
+
 
 def _assert_source_impact_indexes(connection, *, present=True):
     """Verify real migrated reverse indexes, not merely ORM declarations."""
@@ -46,7 +55,7 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts",
-                                "background_job_cycles"}}
+                                "background_job_cycles", *_RAG_EVIDENCE_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -54,6 +63,7 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
         assert connection.execute(text("SELECT count(*) FROM source_task_requests")).scalar_one() == 0
         assert connection.execute(text("SELECT count(*) FROM source_task_attempts")).scalar_one() == 0
         assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
+        _assert_empty_rag_evidence(connection)
         before = snapshot(connection)
         assert before["source_lifecycle_events"]
     validate_test_environment()
@@ -78,6 +88,7 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
         assert connection.execute(text("SELECT count(*) FROM source_task_requests")).scalar_one() == 0
         assert connection.execute(text("SELECT count(*) FROM source_task_attempts")).scalar_one() == 0
         assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
+        _assert_empty_rag_evidence(connection)
         assert snapshot(connection) == before
 
 
@@ -453,12 +464,13 @@ def _background_jobs_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", "background_job_cycles"}}
+                if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
         assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
+        _assert_empty_rag_evidence(connection)
         before = snapshot(connection)
         assert before["source_task_requests"] and before["source_task_attempts"]
     validate_test_environment()
@@ -479,6 +491,7 @@ def _background_jobs_empty_roundtrip(capability, engine, config):
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
         assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
+        _assert_empty_rag_evidence(connection)
         assert snapshot(connection) == before
 
 
@@ -572,6 +585,7 @@ def _background_job_downgrade_guard(capability, engine, config, cycle_id):
         verify_postgres_identity(connection, capability)
         before = snapshot(connection)
         assert any(row["id"] == cycle_id and row["status"] == "succeeded" for row in before["background_job_cycles"])
+        _assert_empty_rag_evidence(connection)
     try:
         validate_test_environment()
         command.downgrade(config, "0058_source_tasks")
@@ -579,6 +593,149 @@ def _background_job_downgrade_guard(capability, engine, config, cycle_id):
         assert "background-job" in str(exc) and "cycle history contains records" in str(exc)
     else:
         raise AssertionError("Nonempty background-job downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+
+
+def _rag_evidence_empty_roundtrip(capability, engine, config):
+    """0060 alone round-trips while every independently tested older ledger survives."""
+    from alembic import command
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")
+                if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES}}
+
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_rag_evidence(connection)
+        before = snapshot(connection)
+        assert before["background_job_cycles"] and before["source_task_requests"]
+    validate_test_environment()
+    command.downgrade(config, "0059_background_jobs")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError as exc:
+            assert "exact revision" in str(exc)
+        else:
+            raise AssertionError("The RAG-lineage application must refuse the previous schema head")
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        assert not set(_RAG_EVIDENCE_TABLES) & set(inspect(connection).get_table_names(schema="public"))
+        assert snapshot(connection) == before
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_rag_evidence(connection)
+        assert snapshot(connection) == before
+
+
+async def _rag_evidence_on_migrated_schema(capability, api_root):
+    """Actual 0060 parent/envelope writes, dry-run, invalidation and exact replay."""
+    validate_test_environment()
+    sys.path.insert(0, str(api_root / "tests"))
+    from models.db import _to_async_dsn
+    from services import rag_evidence
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import text
+    from sqlalchemy.exc import DBAPIError
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from test_rag_evidence import chunk_row, seed
+    from test_research_freeze import state
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), poolclass=NullPool)
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            connection = await session.connection()
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+            chunk_id, candidate = await seed(session)
+            await session.commit()
+            before = await state(session)
+            assert all(before[name] == [] for name in _RAG_EVIDENCE_TABLES)
+            rehearsal = await rag_evidence.register_chunk_evidence(session, chunk_id=chunk_id, candidate=candidate)
+            assert rehearsal["dry_run"] is True and rehearsal["committed"] is False
+            assert await state(session) == before
+            first = await rag_evidence.register_chunk_evidence(session, chunk_id=chunk_id, candidate=candidate, dry_run=False)
+            await session.commit()
+            written = await state(session)
+            assert [len(written[name]) for name in _RAG_EVIDENCE_TABLES] == [1, 1, 1]
+            parent = written["rag_extraction_revisions"][0]
+            assert parent["scientific_acceptance"] is False and "PRIVATE ORIGINAL WORDING" not in str(parent)
+            descriptor = (await rag_evidence.resolve_chunk_evidence(session, [await chunk_row(session, chunk_id)]))[chunk_id]
+            assert descriptor["currentness"] == "current" and descriptor["chunk_kind"] == "derived_fact"
+            assert descriptor["support_eligible"] is descriptor["independent_evidence"] is descriptor["scientific_acceptance"] is False
+            replay = await rag_evidence.register_chunk_evidence(session, chunk_id=chunk_id, candidate=candidate, dry_run=False)
+            assert replay == first
+            await session.commit()
+            assert await state(session) == written
+
+            await session.execute(text("UPDATE chunks SET text='Synthetic changed rendering' WHERE id=:id"), {"id": chunk_id})
+            invalidated = await state(session)
+            assert invalidated["chunk_evidence_current"] == []
+            assert invalidated["rag_extraction_revisions"] == written["rag_extraction_revisions"]
+            assert invalidated["rag_evidence_revisions"] == written["rag_evidence_revisions"]
+            # Even immutable rows appended in this outer effect set must roll
+            # back with an interrupted chunk replacement.
+            await rag_evidence.register_chunk_evidence(session, chunk_id=chunk_id, candidate=candidate, dry_run=False)
+            await session.rollback()
+            assert await state(session) == written
+
+            await session.execute(text("UPDATE chunks SET text='Synthetic changed rendering' WHERE id=:id"), {"id": chunk_id})
+            await session.commit()
+            try:
+                await rag_evidence.bind_chunk_evidence(session, chunk_id=chunk_id,
+                    evidence_revision_id=first["evidence_revision_id"], dry_run=False)
+            except DBAPIError as exc:
+                assert "exact_live_chunk" in str(exc)
+            else:
+                raise AssertionError("An old rendering cannot be rebound to changed content")
+            second = await rag_evidence.register_chunk_evidence(session, chunk_id=chunk_id, candidate=candidate, dry_run=False)
+            await session.commit()
+            assert second["evidence_revision_id"] != first["evidence_revision_id"]
+            final = await state(session)
+            assert [len(final[name]) for name in _RAG_EVIDENCE_TABLES] == [1, 2, 1]
+            assert written["rag_evidence_revisions"][0] in final["rag_evidence_revisions"]
+            assert await rag_evidence.register_chunk_evidence(session, chunk_id=chunk_id, candidate=candidate, dry_run=False) == second
+            await session.commit()
+            assert await state(session) == final
+            return second["evidence_revision_id"]
+    finally:
+        await engine.dispose()
+
+
+def _rag_evidence_downgrade_guard(capability, engine, config, evidence_id):
+    """Populated 0060 refuses destructive downgrade without masking older guards."""
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert any(row["id"] == evidence_id for row in before["rag_evidence_revisions"])
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0059_background_jobs")
+    except RuntimeError as exc:
+        assert "RAG-evidence" in str(exc) and "lineage history contains records" in str(exc)
+    else:
+        raise AssertionError("Nonempty RAG lineage downgrade must fail closed")
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
@@ -653,6 +810,8 @@ def main() -> None:
                     "source_lifecycle_reviews"} <= set(schema.get_table_names())
             assert {"source_task_epoch", "source_task_requests", "source_task_attempts"} <= set(schema.get_table_names())
             assert "background_job_cycles" in schema.get_table_names()
+            assert set(_RAG_EVIDENCE_TABLES) <= set(schema.get_table_names())
+            _assert_empty_rag_evidence(connection)
             assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
             _assert_source_impact_indexes(connection)
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
@@ -822,7 +981,10 @@ def main() -> None:
         _background_jobs_empty_roundtrip(capability, engine, config)
         cycle_id = asyncio.run(_background_jobs_on_migrated_schema(capability, api_root))
         _background_job_downgrade_guard(capability, engine, config, cycle_id)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay and independent nonempty history rollback guards verified.")
+        _rag_evidence_empty_roundtrip(capability, engine, config)
+        evidence_id = asyncio.run(_rag_evidence_on_migrated_schema(capability, api_root))
+        _rag_evidence_downgrade_guard(capability, engine, config, evidence_id)
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 

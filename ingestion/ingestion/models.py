@@ -296,3 +296,7 @@ class Chunk:
     #: filled in after embedding
     embedding: list[float] | None = None
     materials_mentioned: list[dict[str, Any]] = field(default_factory=list)
+    #: Producer-declared lineage proposal. The trusted SQL writer recomputes
+    #: content/parent hashes and stores it separately from the frozen chunk
+    #: row contract. Legacy chunks without a candidate remain unresolved.
+    evidence_candidate: dict[str, Any] | None = None

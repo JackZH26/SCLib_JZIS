@@ -111,7 +111,14 @@ Known derived Facts sections, derived/generated source identifiers, and embedded
 `Section: Facts` headers cannot independently support a scientific claim without
 resolved original evidence roots. Normalizing section separators prevents
 `derived_facts` from evading that restriction. This is a conservative first-phase
-guard, not the complete root/derivation graph planned under RG02.
+guard, not a positive root resolver. The additive
+[RG02 evidence-lineage contract](RAG_EVIDENCE_LINEAGE.md) now supplies typed
+descriptors from the current database. Its v1 roots remain unresolved and its
+authority flags are always false, so all newly served live descriptors withhold
+positive scientific support. This intentionally limits live answer delivery to
+unverified extractive fallback or abstention until a separately reviewed
+original-root/permission workflow exists. Shape-invalid metadata is not legacy
+absence; only the exact empty dictionary retains internal compatibility.
 
 Titles are not evidence clauses. Source instructions are untrusted data and
 cannot change validation, status, citation numbers, or policy. Recognized
@@ -140,7 +147,8 @@ coverage:
 ```
 
 The source protocol reads `index`, `paper_id`, `text`, `section`,
-`material_evidence`, `source_visibility`, and `visibility_resolved`. A caller must
+`material_evidence`, `source_visibility`, `visibility_resolved`, and
+`evidence_provenance`. A caller must
 not mark untrusted source-written visibility as freshly resolved metadata.
 
 The initial limits are 12,000 answer characters; 32 answer segments; 800

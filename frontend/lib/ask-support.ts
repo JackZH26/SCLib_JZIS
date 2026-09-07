@@ -1,5 +1,6 @@
 import type { AskResponse, AskScientificSupportStatus, AskSource } from "@/lib/api";
 import { knownSourceVisibility } from "@/lib/material-visibility";
+import { knownEvidenceProvenance } from "@/lib/evidence-provenance";
 
 export const SCIENTIFIC_SUPPORT_POLICY_VERSION = "scientific-claim-support/1.0.0";
 
@@ -17,6 +18,11 @@ export function supportEvidenceSource(index: unknown, paperId: unknown, sources:
 }
 
 export function excerptSourceIsHeld(source: AskSource): boolean {
+  const raw = source.evidence_provenance;
+  if (raw !== undefined && !(raw && typeof raw === "object" && !Array.isArray(raw) && Object.keys(raw).length === 0)) {
+    const evidence = knownEvidenceProvenance(raw);
+    if (!evidence || evidence.permission_status === "restricted" || evidence.currentness === "stale") return true;
+  }
   const visibility = knownSourceVisibility(source.source_visibility);
   return !!visibility && (!visibility.bibliography_available || !visibility.reported_claim_filter_eligible || ["retracted", "corrected", "disputed"].includes(visibility.source_status));
 }
@@ -50,7 +56,9 @@ export function displayedAskSupportStatus(response: AskResponse): AskScientificS
       typeof evidence.excerpt === "string" && evidence.excerpt.trim() &&
       claim.cited_indices.includes(evidence.source_index) && (() => {
         const source = supportEvidenceSource(evidence.source_index, evidence.paper_id, response.sources);
-        return source && !excerptSourceIsHeld(source);
+        // v1 lineage records have unresolved original roots and no positive
+        // permission/support path. A forged success flag must not upgrade them.
+        return source && !excerptSourceIsHeld(source) && !source.evidence_provenance;
       })()))) return "undetermined";
   return "supported";
 }

@@ -10,6 +10,7 @@ Gemini emits — frontend just hyperlinks each bracket to the paper.
 """
 from __future__ import annotations
 
+import asyncio
 import logging
 import time
 from uuid import UUID
@@ -24,7 +25,7 @@ from models import get_db
 from models.db import AskHistory, Chunk
 from models.search import AskRequest, AskResponse, AskSource
 from routers.deps import Identity, require_identity
-from services import provider_resilience, rag, retrieval, vector_search
+from services import provider_resilience, rag, retrieval, retrieval_currentness, vector_search
 from services.authors import short as _authors_short
 from services.metrics import observe_rag
 from services.source_lifecycle import resolve_paper_lifecycle
@@ -38,6 +39,7 @@ from services.source_visibility import (
 log = logging.getLogger(__name__)
 
 router = APIRouter(tags=["ask"])
+EVIDENCE_RESOLUTION_TIMEOUT_SECONDS = 10.0
 
 
 @router.post("/ask", response_model=AskResponse)
@@ -47,6 +49,9 @@ async def ask(
     db: AsyncSession = Depends(get_db),  # noqa: B008
 ) -> AskResponse:
     t0 = time.perf_counter()
+    # The catalogue read transaction is closed before provider generation.
+    # Retain primitives, not an ORM User that rollback would expire.
+    history_user_id = identity.user.id if identity.user is not None else None
 
     # 1. Retrieve candidate chunks via ANN.
     def _vs_lookup() -> list[vector_search.Neighbor]:
@@ -89,9 +94,9 @@ async def ask(
             citation_indices_valid=result.citation_indices_valid,
             scientific_support_status=result.scientific_support_status, answer_mode=result.answer_mode,
         )
-        if identity.user is not None:
+        if history_user_id is not None:
             await _persist_history(
-                db, identity.user.id, body.question, result.answer,
+                db, history_user_id, body.question, result.answer,
                 [], 0, latency_ms, body.language,
             )
         return AskResponse(
@@ -120,14 +125,34 @@ async def ask(
     candidates = retrieval.rerank_candidates(body.question, candidates, chunk_by_id)
     linked_materials = await resolve_explicit_materials(db, [chunk.materials_mentioned for chunk in rows])
     source_statuses = await resolve_paper_lifecycle(db, {chunk.paper_id for chunk in rows})
+    evidence_failure_reason = None
+    try:
+        evidence_by_chunk = await _resolve_evidence(db, rows)
+    except TimeoutError:
+        log.warning("Ask typed evidence resolution timed out; selected text withheld")
+        evidence_by_chunk = None
+        evidence_failure_reason = "retrieval_currentness_timeout"
+    except Exception:  # no raw error/source payload reaches the answer
+        log.warning("Ask typed evidence resolution unavailable; selected text withheld")
+        evidence_by_chunk = None
+        evidence_failure_reason = "retrieval_currentness_unavailable"
 
     rag_inputs: list[rag.RagSourceInput] = []
     sources_out: list[AskSource] = []
+    selected_pins: list[retrieval_currentness.SelectionPin] = []
+    pin_unavailable = evidence_by_chunk is None
     seen_papers: set[str] = set()
     idx = 0
     for candidate in candidates:
+        if pin_unavailable:
+            break
         chunk = chunk_by_id.get(candidate.chunk_id)
         if chunk is None or chunk.paper is None:
+            continue
+        evidence = evidence_by_chunk[chunk.id]
+        # Never send or quote a known-restricted/stale evidence projection.
+        # Other unresolved lineage is navigation data, not original support.
+        if evidence["permission_status"] == "restricted" or evidence["currentness"] == "stale":
             continue
         paper_status = source_statuses.get(chunk.paper.id)
         if not source_visibility(paper_status)["reported_claim_filter_eligible"]:
@@ -144,6 +169,13 @@ async def ask(
         )
         source_review = source_visibility(paper_status)
         source_review["warning_codes"] = sorted(set(source_review["warning_codes"] + occurrence_summary["warning_codes"]))
+        try:
+            selected_pins.append(retrieval_currentness.selection_pin(
+                chunk, material_evidence=occurrences, source_review=source_review, evidence=evidence,
+            ))
+        except retrieval_currentness.CurrentnessUnavailable:
+            pin_unavailable = True
+            break
         rag_inputs.append(
             rag.RagSourceInput(
                 index=idx,
@@ -156,6 +188,7 @@ async def ask(
                 material_evidence=occurrences,
                 source_visibility=source_review,
                 visibility_resolved=True,
+                evidence_provenance=evidence,
             )
         )
         sources_out.append(
@@ -170,10 +203,17 @@ async def ask(
                 snippet=_snippet(chunk.text),
                 material_evidence=citation_evidence(occurrences, visibility_resolved=True),
                 source_visibility=source_review,
+                evidence_provenance=evidence,
             )
         )
         if len(rag_inputs) >= body.max_sources:
             break
+
+    # No transaction, snapshot or table locks span a potentially slow provider
+    # call. API-key accounting has already committed in require_identity.
+    await db.rollback()
+    if pin_unavailable:
+        rag_inputs, sources_out, selected_pins = [], [], []
 
     # 3. Gemini call behind a timeout + circuit breaker. A provider outage
     # degrades to cited excerpts instead of turning the whole endpoint into 5xx.
@@ -197,8 +237,22 @@ async def ask(
         log.warning("Gemini generation unavailable; returning extractive fallback: %s", exc)
         result = rag.extractive_fallback(rag_inputs)
 
-    # Alternate/legacy generation adapters cannot bypass the server's checks.
-    result = rag.finalize_result(result, rag_inputs)
+    # A seal only checks in-memory consistency. Re-read selected catalogue
+    # inputs in a new bounded snapshot before accepting that provisional seal.
+    currentness = (await retrieval_currentness.check_selected_sources(selected_pins, evidence_resolver=_resolve_evidence)
+                   if rag_inputs else None)
+    if pin_unavailable or currentness is not None and currentness.status != "unchanged":
+        reason = (currentness.reason_code if currentness is not None
+                  else evidence_failure_reason or "retrieval_currentness_unavailable")
+        tokens_used = result.tokens_used if isinstance(result, rag.RagResult) else None
+        # Never pass an already replaced fallback through the draft checker
+        # again. No old excerpt, source label, or draft assessment is retained.
+        result = _currentness_abstention(reason, tokens_used)
+        rag_inputs, sources_out = [], []
+    else:
+        # Alternate/legacy generators still cannot bypass server checks. Stable
+        # sources preserve the existing seal and original draft assessment.
+        result = rag.finalize_result(result, rag_inputs)
 
     retrieval_modes = sorted(
         {mode for candidate in candidates for mode in candidate.retrieval_modes}
@@ -225,9 +279,9 @@ async def ask(
     )
 
     latency_ms = int((time.perf_counter() - t0) * 1000)
-    if identity.user is not None:
+    if history_user_id is not None:
         await _persist_history(
-            db, identity.user.id, body.question, result.answer,
+            db, history_user_id, body.question, result.answer,
             [s.model_dump(mode="json") for s in sources_out],
             result.tokens_used, latency_ms, body.language,
         )
@@ -240,6 +294,28 @@ async def ask(
         **result.quality_fields(),
         guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
+    )
+
+
+async def _resolve_evidence(db, chunks):
+    """One strict resolver path for initial hydration and the fresh snapshot."""
+    from services.rag_evidence import resolve_chunk_evidence
+    from services.rag_evidence_contract import validate_evidence_descriptor
+
+    async with asyncio.timeout(EVIDENCE_RESOLUTION_TIMEOUT_SECONDS):
+        resolved = await resolve_chunk_evidence(db, chunks)
+        if not isinstance(resolved, dict) or set(resolved) != {chunk.id for chunk in chunks}:
+            raise retrieval_currentness.CurrentnessUnavailable("incomplete typed evidence inventory")
+        return {identifier: validate_evidence_descriptor(value) for identifier, value in resolved.items()}
+
+
+def _currentness_abstention(reason: str, tokens_used: int | None) -> rag.RagResult:
+    return rag.RagResult(
+        answer="The selected evidence changed or could not be checked. "
+               "No synthesized answer or old excerpt is provided. Please ask again to retrieve current sources.",
+        tokens_used=tokens_used, citation_valid=False, citation_warnings=[reason],
+        citation_indices_valid=True, support_warnings=[reason],
+        answer_mode="abstention", assessment_scope="none",
     )
 
 

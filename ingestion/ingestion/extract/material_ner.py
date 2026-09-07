@@ -43,6 +43,8 @@ from ingestion.structure_evidence import annotate_structure_records
 
 log = logging.getLogger(__name__)
 
+NER_EXTRACTOR_VERSION = "sclib-material-ner/2.1.0"
+
 
 # ---------------------------------------------------------------------------
 # Paper-type classifier
@@ -124,8 +126,9 @@ def extract_structure_phase(text: str) -> str | None:
 
 _V2_PROMPT_CORE = """\
 Extract superconducting material data from the text below. Return a
-JSON array only. One object per (material, measurement) pair. If no
-superconducting material is measured, return [].
+JSON array only. One object per (material, result, sample/state) pair. Include
+explicit superconductivity non-detections as well as measured transitions and
+calculated/predicted results. If no such result is reported, return [].
 
 REQUIRED per record:
 - formula_raw: exact source formula notation, retaining isotope superscripts,
@@ -150,6 +153,24 @@ REQUIRED per record:
            braces — keep only the text content.
 - tc_kelvin: reported critical-temperature quantity (e.g. "80–95 K",
              "<2 K", "1e-3 K"), null if not stated. Keep original units.
+- result_status: "observed" | "not_detected" | "inconclusive" | "unknown".
+  Use "not_detected" ONLY for an explicit statement that no superconducting
+  transition was detected for THIS sample under the stated measurement
+  conditions. Missing Tc, a Tc upper bound, a failed calculation, or a material
+  omitted from a table does not establish a negative experimental result.
+  "observed" records a reported transition/result, not scientific acceptance;
+  its experimental or computed origin is specified separately below.
+- knowledge_origin: "Observed" | "Computed" | "Inferred" | "AI-Proposed" |
+  "Unknown", based ONLY on THIS result's stated origin. A measured result is
+  Observed; a DFT/Eliashberg result is Computed; an explicitly inferred result
+  is Inferred; a source-reported generated hypothesis is AI-Proposed. Using an
+  LLM for extraction does NOT make a result AI-Proposed. Paper genre, family,
+  pressure and confidence cannot fill in a missing result origin.
+- source_role: "primary" | "cited" | "unknown", independently of origin.
+  "primary" means THIS paper supplies THIS result; "cited" means prior work.
+  Preserve an explicitly cited computed or measured result with its own origin.
+  Do not reconcile conflicting result-level statements; keep separate source
+  statements separate and retain their local evidence.
 - tc_type: "onset" | "zero_resistance" | "midpoint" | "unknown"
 - pressure_condition: copy an explicit local pressure condition such as
   "ambient pressure" ONLY if stated for THIS measurement. Otherwise null.
@@ -166,18 +187,19 @@ REQUIRED per record:
                "muSR" | "ARPES" | "STM" | "neutron" | "unknown"
 - confidence: 0.0-1.0 — your confidence the text actually reports this
 - evidence_type: MUST be one of:
-  "primary_experimental" — Tc was MEASURED in THIS paper for THIS
-    specific formula (resistivity, susceptibility, specific heat, etc.)
-  "primary_theoretical" — Tc was CALCULATED/PREDICTED (DFT, Eliashberg,
-    McMillan, etc.) in THIS paper for THIS formula
-  "cited" — Tc value is mentioned but comes from a DIFFERENT paper.
+  "primary_experimental" — the superconductivity measurement (transition
+    or explicit non-detection) was made in THIS paper for THIS specific
+    formula/state (resistivity, susceptibility, specific heat, etc.)
+  "primary_theoretical" — the result was CALCULATED/PREDICTED (DFT,
+    Eliashberg, McMillan, etc.) in THIS paper for THIS formula/state
+  "cited" — the result is mentioned but comes from a DIFFERENT paper.
     Introduction surveys, comparison tables, "previously reported"
     mentions, reference to prior work by other groups are ALL "cited"
     (e.g. "LaH10 has Tc≈260 K [Drozdov 2019]" in the intro).
-  When in doubt, default to "cited". A formula whose Tc comes
+  When the source role is unclear, omit evidence_type and use source_role
+  "unknown". A formula whose Tc comes
   right before/after a bracketed citation "[12]" or a phrase like
   "reported by X et al" is ALWAYS "cited".
-  Rule: if confidence < 0.5, set evidence_type = "cited" as default.
 - tc_regime: one of "bulk_equilibrium" | "thin_film" | "interface" |
              "high_pressure" | "unknown".
   "bulk_equilibrium" — bulk sample at ambient or low pressure (<1 GPa)
@@ -235,6 +257,15 @@ EXTRACT IF PRESENT (omit or set null otherwise):
   competition with superconductivity. Preserve the explicit order label above.
 - measurement_method: the source-reported method supporting an explicit
   presence/absence assertion (short text; do not infer from the paper genre)
+- minimum_temperature_k: lowest temperature explicitly reached in the
+  superconductivity detection measurement for THIS sample/state; retain
+  source units, bounds and uncertainty (e.g. "300 mK"). Missing is null, never
+  inferred from a Tc bound or another sample. This is a detection condition,
+  NOT a critical temperature. Extract it also at this top level when supplied
+  alongside detection_conditions so a non-detection retains its tested window.
+- magnetic_field_t: source-reported magnetic field of THIS measurement;
+  preserve units (e.g. "10 mT"). Missing is null, never default zero, and do
+  not substitute the upper critical field hc2_tesla.
 - detection_conditions: optional JSON object containing the source-reported
   conditions/limits for that same method and sample. Allowed keys: description,
   temperature_min_k, temperature_max_k, magnetic_field_t, pressure_gpa,
@@ -271,7 +302,9 @@ RULES:
   When in doubt, return only the explicit chemical formula
   (e.g. "FeSe" instead of "12%-S doped FeSe", "TaS2" instead of
   "chiral molecule intercalated TaS2 hybrid superlattice").
-- Only extract materials explicitly measured for superconductivity.
+- Only extract materials with an explicit superconductivity measurement,
+  non-detection, or theoretical/computational result. Negative results must
+  remain sample-, method- and condition-specific, never a universal absence.
 - Do not invent data. Fields not in the text must be null / omitted.
 - Do not generate pipeline statuses such as not_extracted, failed, reviewed,
   or accepted. Missingness and review states are determined by the pipeline.
@@ -280,8 +313,10 @@ RULES:
   solely because of its magnitude. Scientific plausibility is a separate,
   versioned review step; confidence describes fidelity to the source text.
 - Distinguish experimental measurements from theoretical predictions.
-  If the paper only predicts Tc from DFT, mark measurement="unknown"
-  and confidence <= 0.5.
+  If THIS result predicts Tc from DFT, use knowledge_origin="Computed" and
+  record the actual computational measurement_method (e.g. "DFT"); do not
+  invent an experimental measurement or lower source-fidelity confidence
+  merely because the result is computed.
 - evidence_type is orthogonal to confidence. A paper may cite a
   prior measurement with 100% confidence — that's still "cited",
   not "primary". primary == THIS paper IS the source. Review /
@@ -303,7 +338,10 @@ Text:
 # The computational bucket adds stronger emphasis on DFT outputs, and
 # tells the model it *should* see lambda_eph / omega_log_k.
 _V2_PROMPT_COMPUTATIONAL_PREFIX = """\
-This paper reports first-principles / DFT / Eliashberg calculations.
+Keyword routing suggests first-principles / DFT / Eliashberg content.
+This routing is NOT evidence of any individual result's origin or source role;
+use the local source statement, including measured or cited results in the
+same paper, and leave unsupported origins unknown.
 Pay particular attention to the computed electron-phonon coupling
 constant (lambda_eph), logarithmic-average phonon frequency
 (omega_log_k, in Kelvin), and any McMillan / Allen-Dynes formula
@@ -340,6 +378,10 @@ def _client() -> genai.Client:
 _V2_FIELDS = (
     "tc_kelvin", "tc_type", "pressure_gpa", "pressure_condition", "measurement", "confidence",
     "evidence_type", "tc_regime", "family",
+    "result_status", "outcome_state", "outcome",
+    "knowledge_origin", "result_origin", "evidence_role", "claim_kind", "source_role", "method",
+    "no_transition", "not_detected", "superconductivity_observed", "transition_observed", "is_superconducting",
+    "minimum_temperature_k", "magnetic_field_t",
     "pairing_symmetry", "gap_structure",
     "crystal_structure", "space_group", "structure_phase",
     "lattice_a", "lattice_c",
@@ -353,10 +395,18 @@ _V2_FIELDS = (
     "disputed",
 )
 
-# evidence_type is a string enum with a strict value set. Anything
-# outside the set is dropped so aggregator filtering stays a simple
-# equality check ("cited" → skip).
-_EVIDENCE_TYPES = {"primary", "primary_experimental", "primary_theoretical", "cited"}
+# Keep every independent result signal for the shared classifier/outcome
+# contract. Choosing one alias or dropping a conflicting origin/role can turn
+# an unresolved result into an apparently unambiguous observation.
+_RESULT_TEXT_FIELDS = {
+    "result_status", "outcome_state", "outcome", "knowledge_origin", "result_origin",
+    "evidence_role", "evidence_type", "claim_kind", "source_role",
+    "measurement", "measurement_method", "method",
+}
+_OUTCOME_BOOL_FIELDS = {
+    "no_transition", "not_detected", "superconductivity_observed",
+    "transition_observed", "is_superconducting",
+}
 
 # tc_regime enum — drives which records contribute to tc_ambient
 _TC_REGIMES = {"bulk_equilibrium", "thin_film", "interface", "high_pressure", "unknown"}
@@ -372,6 +422,7 @@ _FAMILY_ENUM = {
 
 _NUMERIC_FIELDS = {
     "tc_kelvin", "pressure_gpa", "confidence",
+    "minimum_temperature_k", "magnetic_field_t",
     "lattice_a", "lattice_c",
     "t_cdw_k", "t_sdw_k", "t_afm_k", "rho_exponent",
     "hc2_tesla", "lambda_eph", "omega_log_k", "rho_s_mev",
@@ -511,6 +562,7 @@ def normalize_material_records(
             "formula": raw_formula,
             "formula_raw": original_formula,
             "paper_type": paper_type,
+            "extractor_version": NER_EXTRACTOR_VERSION,
             "raw_extraction": json_safe_raw(r),
             "scientific_values": {},
         }
@@ -542,28 +594,29 @@ def normalize_material_records(
                 # Preserve structure, including invalid proposals, for the
                 # bounded shared semantics validator. Never stringify a map.
                 record[field] = json_safe_raw(value)
-            elif field in {"has_competing_order", "is_unconventional"}:
+            elif field in _OUTCOME_BOOL_FIELDS | {"has_competing_order", "is_unconventional"}:
                 if type(value) is bool:
                     record[field] = value
                 else:
                     record.setdefault("validation_flags", []).append(f"{field}:explicit_boolean_required")
+            elif field in _RESULT_TEXT_FIELDS:
+                if isinstance(value, str):
+                    record[field] = value.strip()
+                else:
+                    record.setdefault("validation_flags", []).append(f"{field}:explicit_text_required")
             elif field in _BOOL_FIELDS:
                 record[field] = _coerce_bool(value)
             else:
                 record[field] = str(value).strip() or None
 
-        # Normalize evidence_type to a known enum value or drop it.
-        # Missing/invalid is left absent — the aggregator treats absent
-        # as "primary" for backward compatibility with legacy records.
-        # B1: "primary" is accepted for backward compat; new records
-        # should use "primary_experimental" or "primary_theoretical".
+        # Normalize spelling only. The shared result classifier recognizes
+        # legacy aliases too; never erase a conflicting origin/role merely
+        # because it is outside the new prompt's smaller vocabulary. Unknown
+        # strings stay unresolved, and malformed types remain in raw_extraction
+        # with a validation flag, not coerced into a source assertion.
         ev = record.get("evidence_type")
         if ev is not None:
-            ev_lower = str(ev).strip().lower()
-            if ev_lower in _EVIDENCE_TYPES:
-                record["evidence_type"] = ev_lower
-            else:
-                record.pop("evidence_type", None)
+            record["evidence_type"] = ev.lower()
 
         # B2: Normalize tc_regime to a known enum value or drop it.
         regime = record.get("tc_regime")

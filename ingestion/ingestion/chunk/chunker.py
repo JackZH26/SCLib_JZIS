@@ -27,6 +27,7 @@ import tiktoken
 
 from ingestion.config import get_settings
 from ingestion.models import Chunk, ParsedPaper, Section
+from ingestion.rag_evidence_contract import VERSION as EVIDENCE_VERSION
 
 log = logging.getLogger(__name__)
 
@@ -45,6 +46,28 @@ def _count_tokens(text: str) -> int:
 #: Public alias so callers outside the chunker (e.g. the embedder's
 #: per-request token budgeter) can share the same tokenizer.
 count_tokens = _count_tokens
+
+CHUNKER_VERSION = "sclib-section-chunker/1.0.0"
+
+
+def _original_evidence_candidate(kind: str, section: str) -> dict:
+    """Declare the producer's source kind, not rights or an accepted root.
+
+    The existing arXiv capture diagnostics are not source_captures witnesses.
+    A missing verified capture stays explicit rather than being inferred from
+    a paper ID, section name, or access to the text.
+    """
+    return {
+        "version": EVIDENCE_VERSION,
+        "chunk_kind": kind,
+        "parent_record": None,
+        "extraction_version": None,
+        "rendering_version": CHUNKER_VERSION,
+        "source_capture_id": None,
+        "source_locator": {"section": section},
+        "unresolved_reason": "original_binding_unreviewed",
+        "permission_status": "unresolved",
+    }
 
 
 @dataclass
@@ -87,6 +110,7 @@ def chunk_paper(parsed: ParsedPaper) -> list[Chunk]:
                     token_count=prefix_tokens + w.tokens,
                     has_equation=section.has_equation,
                     has_table=section.has_table,
+                    evidence_candidate=_original_evidence_candidate("original_passage", section.name),
                 )
             )
             idx += 1
@@ -104,6 +128,7 @@ def chunk_paper(parsed: ParsedPaper) -> list[Chunk]:
                     section="Abstract",
                     text=text,
                     token_count=_count_tokens(text),
+                    evidence_candidate=_original_evidence_candidate("abstract", "Abstract"),
                 )
             )
     return out

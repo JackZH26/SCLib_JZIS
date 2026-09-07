@@ -1661,6 +1661,10 @@ from models.background_jobs_v1 import register as _register_background_jobs  # n
 
 BACKGROUND_JOB_CYCLES = _register_background_jobs(Base.metadata)
 
+from models.rag_evidence_v1 import register as _register_rag_evidence  # noqa: E402
+
+RAG_EVIDENCE_TABLES = _register_rag_evidence(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

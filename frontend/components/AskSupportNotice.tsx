@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { AskClaimAssessment, AskResponse, AskSupportCoverage } from "@/lib/api";
 import { SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
+import { EvidenceProvenanceNotice } from "@/components/EvidenceProvenanceNotice";
 import { displayedAskSupportStatus, excerptSourceIsHeld, resolveAskSource, SCIENTIFIC_SUPPORT_POLICY_VERSION, supportEvidenceSource, supportStatusLabel } from "@/lib/ask-support";
 
 const ANSWER_MODE_LABELS = {
@@ -54,7 +55,7 @@ function SupportCoverage({ coverage }: { coverage?: AskSupportCoverage }) {
 function ClaimAssessment({ claim, sources, knownPolicy }: { claim: AskClaimAssessment; sources: AskResponse["sources"]; knownPolicy: boolean }) {
   const supportedEvidence = claim.evidence.some(evidence => {
     const source = supportEvidenceSource(evidence.source_index, evidence.paper_id, sources);
-    return claim.cited_indices.includes(evidence.source_index) && evidence.excerpt.trim() && source && !excerptSourceIsHeld(source);
+    return claim.cited_indices.includes(evidence.source_index) && evidence.excerpt.trim() && source && !excerptSourceIsHeld(source) && !source.evidence_provenance;
   });
   const status = !knownPolicy ? "not_checked" : claim.status === "supported" && !supportedEvidence ? "undetermined" : claim.status;
   return <li className="rounded border border-slate-200 bg-white p-3 text-sage-ink">
@@ -66,8 +67,8 @@ function ClaimAssessment({ claim, sources, knownPolicy }: { claim: AskClaimAsses
     {claim.evidence.length > 0 ? <ul className="mt-2 space-y-2">{claim.evidence.map((evidence, index) => {
       const source = claim.cited_indices.includes(evidence.source_index) ? supportEvidenceSource(evidence.source_index, evidence.paper_id, sources) : null;
       return <li className="border-l-2 border-slate-200 pl-3" key={index}>
-        {source ? <div className="text-xs"><Link href={`/paper/${encodeURIComponent(source.paper_id)}`} className="text-sky-800 underline">[{source.index}] {source.title || source.paper_id}</Link><SourceVisibilityNotice visibility={source.source_visibility} compact /></div> : <p className="text-xs text-amber-900">Evidence source could not be matched to a unique cited source. No source link is asserted.</p>}
-        <blockquote className="mt-1 whitespace-pre-wrap break-words text-xs leading-relaxed">{evidence.excerpt || "No excerpt supplied."}</blockquote>
+        {source ? <div className="text-xs"><Link href={`/paper/${encodeURIComponent(source.paper_id)}`} className="text-sky-800 underline">[{source.index}] {source.title || source.paper_id}</Link><SourceVisibilityNotice visibility={source.source_visibility} compact />{source.evidence_provenance !== undefined && <EvidenceProvenanceNotice evidence={source.evidence_provenance} />}</div> : <p className="text-xs text-amber-900">Evidence source could not be matched to a unique cited source. No source link is asserted.</p>}
+        <blockquote className="mt-1 whitespace-pre-wrap break-words text-xs leading-relaxed">{!source || excerptSourceIsHeld(source) ? "Excerpt withheld: current evidence is restricted, stale, or unavailable." : evidence.excerpt || "No excerpt supplied."}</blockquote>
       </li>;
     })}</ul> : <p className="mt-2 text-xs text-slate-600">No supporting or conflicting excerpts were supplied for this claim.</p>}
   </li>;

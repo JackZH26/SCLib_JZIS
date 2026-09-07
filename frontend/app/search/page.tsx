@@ -1,4 +1,5 @@
 "use client";
+import { EvidenceProvenanceNotice } from "@/components/EvidenceProvenanceNotice";
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
@@ -133,7 +134,7 @@ function SearchInner() {
                 key={`${s.index}:${sourcePosition}`}
                 id={resolveAskSource(s.index, askData.sources) ? `src-${s.index}` : undefined}
                 href={`/paper/${encodeURIComponent(s.paper_id)}`}
-                className="group flex items-baseline gap-1.5 rounded-md border border-sage-border px-2.5 py-1.5 text-xs transition-colors hover:bg-sage-bg"
+                className="group flex max-w-sm flex-col items-start gap-1.5 rounded-md border border-sage-border px-2.5 py-1.5 text-xs transition-colors hover:bg-sage-bg"
               >
                 <span className="font-semibold text-accent">[{s.index}]</span>
                 <span className="max-w-[200px] truncate text-sage-muted group-hover:text-sage-ink">
@@ -143,6 +144,7 @@ function SearchInner() {
                   <span className="text-sage-tertiary">{s.year}</span>
                 )}
                 <SourceVisibilityNotice visibility={s.source_visibility} compact />
+                <EvidenceProvenanceNotice evidence={s.evidence_provenance} />
               </Link>
             ))}
           </div>
@@ -193,6 +195,7 @@ function SearchInner() {
                 scoreLabel="relevance"
                 matchingResults={r.matching_results}
                 sourceVisibility={r.source_visibility}
+                evidenceProvenance={r.evidence_provenance}
                 badges={[
                   ...(r.material_family ? [r.material_family] : []),
                   ...(r.has_equation ? ["equations"] : []),

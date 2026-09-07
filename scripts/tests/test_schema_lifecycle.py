@@ -80,6 +80,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
             "_source_lifecycle_on_migrated_schema", "_source_impact_indexes_on_migrated_schema",
             "_source_tasks_on_migrated_schema", "_source_task_downgrade_guard",
             "_background_jobs_empty_roundtrip", "_background_jobs_on_migrated_schema", "_background_job_downgrade_guard",
+            "_rag_evidence_empty_roundtrip", "_rag_evidence_on_migrated_schema", "_rag_evidence_downgrade_guard",
         )]
         self.assertEqual(ordered, sorted(ordered))
         for marker in ("preserve scientific correction proposals", "registry contains records",
@@ -116,6 +117,39 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
                        'assert replay["status"] == "already_succeeded"', "assert await snapshot() == after_success",
                        "run_sync(check_connection_schema)", "pg_locks"):
             self.assertIn(marker, body)
+
+    def test_rag_history_never_masks_older_guards_and_empty_roundtrip_preserves_rows(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        main = source.split("def main()", 1)[1]
+        positions = [main.index(value) for value in (
+            "_source_task_downgrade_guard(capability", "_background_jobs_empty_roundtrip(capability",
+            "_background_job_downgrade_guard(capability", "_rag_evidence_empty_roundtrip(capability",
+            "_rag_evidence_on_migrated_schema(capability", "_rag_evidence_downgrade_guard(capability")]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn('_RAG_EVIDENCE_TABLES = ("rag_extraction_revisions", "rag_evidence_revisions", "chunk_evidence_current")', source)
+        for function, end in (("_source_impact_indexes_on_migrated_schema", "async def _freeze_on_migrated_schema"),
+                              ("_background_jobs_empty_roundtrip", "async def _background_jobs_on_migrated_schema")):
+            body = source.split("def " + function, 1)[1].split(end, 1)[0]
+            self.assertIn("*_RAG_EVIDENCE_TABLES", body)
+            self.assertEqual(body.count("_assert_empty_rag_evidence(connection)"), 2)
+        body = source.split("def _rag_evidence_empty_roundtrip", 1)[1].split("async def _rag_evidence_on_migrated_schema", 1)[0]
+        self.assertIn('command.downgrade(config, "0059_background_jobs")', body)
+        self.assertEqual(body.count("assert snapshot(connection) == before"), 2)
+        self.assertEqual(body.count("_assert_empty_rag_evidence(connection)"), 2)
+
+    def test_real_migrated_rag_service_proves_projection_rollback_invalidation_and_replay(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        body = source.split("async def _rag_evidence_on_migrated_schema", 1)[1].split("\ndef _rag_evidence_downgrade_guard", 1)[0]
+        for marker in ("run_sync(check_connection_schema)", "register_chunk_evidence(session",
+                       "assert await state(session) == before", "assert replay == first",
+                       'assert invalidated["chunk_evidence_current"] == []', "await session.rollback()",
+                       "assert await state(session) == written", 'assert "exact_live_chunk" in str(exc)',
+                       'assert [len(final[name]) for name in _RAG_EVIDENCE_TABLES] == [1, 2, 1]',
+                       "assert await state(session) == final", '"PRIVATE ORIGINAL WORDING" not in str(parent)'):
+            self.assertIn(marker, body)
+        guard = source.split("def _rag_evidence_downgrade_guard", 1)[1].split("def main()", 1)[0]
+        self.assertIn('"lineage history contains records" in str(exc)', guard)
+        self.assertIn("assert snapshot(connection) == before", guard)
 
 
 if __name__ == "__main__":

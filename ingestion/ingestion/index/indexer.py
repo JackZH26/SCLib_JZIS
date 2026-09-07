@@ -12,6 +12,7 @@ from __future__ import annotations
 import logging
 from functools import lru_cache
 from typing import Any
+from uuid import UUID as PythonUUID
 
 from google.cloud import aiplatform
 from google.cloud.aiplatform.matching_engine.matching_engine_index_endpoint import (
@@ -34,6 +35,7 @@ from sqlalchemy import (
     Text,
     case,
     func,
+    select,
     text,
 )
 from sqlalchemy.dialects.postgresql import JSONB, UUID
@@ -47,6 +49,7 @@ from sqlalchemy.ext.asyncio import (
 
 from ingestion.config import get_settings
 from ingestion.models import Chunk, ParsedPaper
+from ingestion.rag_evidence_contract import build_revision_rows, canonical, validate_candidate
 
 log = logging.getLogger(__name__)
 
@@ -106,6 +109,46 @@ chunks_table = Table(
     Column("materials_mentioned", JSONB, nullable=False, server_default="[]"),
     Column("has_equation", Boolean, nullable=False, server_default="false"),
     Column("has_table", Boolean, nullable=False, server_default="false"),
+)
+
+# 0060 is deliberately separate from the frozen ML04 chunks row contract.
+# No original text/raw NER payload is copied into these immutable parents.
+rag_extraction_revisions_table = Table(
+    "rag_extraction_revisions", metadata,
+    Column("id", UUID(as_uuid=True), primary_key=True),
+    Column("paper_id", String(100), nullable=False),
+    Column("input_record_sha256", String(64), nullable=False),
+    Column("extractor_version", String(160), nullable=False),
+    Column("projection_version", String(50), nullable=False),
+    Column("projection_json", JSONB, nullable=False),
+    Column("source_snapshot_sha256", String(64), nullable=False),
+    Column("scientific_acceptance", Boolean, nullable=False),
+)
+
+rag_evidence_revisions_table = Table(
+    "rag_evidence_revisions", metadata,
+    Column("id", UUID(as_uuid=True), primary_key=True),
+    Column("paper_id", String(100), nullable=False),
+    Column("version", String(50), nullable=False),
+    Column("chunk_kind", String(30), nullable=False),
+    Column("chunk_key", String(200), nullable=False),
+    Column("content_sha256", String(64), nullable=False),
+    Column("chunk_binding_sha256", String(64), nullable=False),
+    Column("parent_extraction_revision_id", UUID(as_uuid=True)),
+    Column("source_capture_id", UUID(as_uuid=True)),
+    Column("source_locator", JSONB, nullable=False),
+    Column("extraction_version", String(160)),
+    Column("rendering_version", String(160)),
+    Column("source_snapshot_sha256", String(64), nullable=False),
+    Column("root_status", String(30), nullable=False),
+    Column("unresolved_reason", String(50), nullable=False),
+    Column("permission_status", String(30), nullable=False),
+)
+
+chunk_evidence_current_table = Table(
+    "chunk_evidence_current", metadata,
+    Column("chunk_id", String(200), primary_key=True),
+    Column("evidence_revision_id", UUID(as_uuid=True), nullable=False),
 )
 
 materials_table = Table(
@@ -319,6 +362,82 @@ def _session_factory() -> async_sessionmaker[AsyncSession]:
 # Writes
 # ---------------------------------------------------------------------------
 
+async def _insert_evidence_revision(session: AsyncSession, table: Table, values: dict) -> None:
+    """Append or verify an exact replay; never overwrite an immutable revision."""
+    values = dict(values)
+    for key in ("id", "parent_extraction_revision_id", "source_capture_id"):
+        if values.get(key) is not None:
+            values[key] = PythonUUID(values[key])
+    await session.execute(pg_insert(table).values(**values).on_conflict_do_nothing(index_elements=[table.c.id]))
+    # A pre-existing identifier is not evidence of an equivalent payload.
+    # Verify every input field, including JSON projection and SQL source hash.
+    exact = (await session.execute(select(table.c.id).where(
+        *(table.c[key] == value for key, value in values.items())
+    ))).scalar_one_or_none()
+    if exact is None:
+        raise ValueError("Conflicting immutable evidence revision")
+
+
+async def _persist_chunk_evidence(session: AsyncSession, paper_id: str, chunks: list[Chunk]) -> None:
+    """Bind real producer candidates to the actual rows in the caller's SQL tx.
+
+    Missing legacy candidates create no invented lineage. The paper/chunk
+    write and these append-only revisions/current pointers either all commit
+    or all roll back. No helper owns a transaction or calls vector services.
+    """
+    candidates = {}
+    for chunk in chunks:
+        if chunk.paper_id != paper_id or chunk.id in candidates:
+            raise ValueError("Evidence chunk identity does not match the paper")
+        if chunk.evidence_candidate is not None:
+            candidates[chunk.id] = validate_candidate(chunk.evidence_candidate)
+    if not candidates:
+        return
+    # The paper upsert already acquired this shared research-integrity fence
+    # through its 0054 trigger. Take it explicitly/reentrantly before reads.
+    await session.execute(text("SELECT public.sclib_research_integrity_lock_v1()"))
+    query = select(
+        chunks_table.c.id, chunks_table.c.text, chunks_table.c.materials_mentioned,
+        papers_table.c.materials_extracted,
+        func.public.sclib_rag_chunk_hash_v1(func.to_jsonb(chunks_table.table_valued())).label("chunk_binding_sha256"),
+        func.public.sclib_source_lifecycle_snapshot_hash_v1(
+            "paper", func.to_jsonb(papers_table.table_valued())
+        ).label("source_snapshot_sha256"),
+    ).join(papers_table, papers_table.c.id == chunks_table.c.paper_id).where(
+        chunks_table.c.paper_id == paper_id, chunks_table.c.id.in_(candidates),
+    )
+    rows = (await session.execute(query)).mappings().all()
+    if {row["id"] for row in rows} != set(candidates):
+        raise ValueError("Evidence requires every actual persisted chunk")
+    for row in rows:
+        candidate = candidates[row["id"]]
+        if candidate["chunk_kind"] == "derived_fact":
+            parent_key = canonical(candidate["parent_record"])
+            actual_parent = next((record for record in row["materials_mentioned"]
+                                  if canonical(record) == parent_key), None)
+            if actual_parent is None or not any(
+                canonical(record) == parent_key for record in row["materials_extracted"]
+            ):
+                raise ValueError("Derived evidence parent must match the actual paper and chunk extraction")
+            # Recompute the parent input hash/projection from persisted JSON,
+            # not an ID, digest, or cached projection supplied by a candidate.
+            candidate = {**candidate, "parent_record": actual_parent}
+        values = build_revision_rows(
+            paper_id=paper_id, chunk_id=row["id"], chunk_text=row["text"],
+            chunk_binding_sha256=row["chunk_binding_sha256"],
+            source_snapshot_sha256=row["source_snapshot_sha256"], candidate=candidate,
+        )
+        if values["extraction"] is not None:
+            await _insert_evidence_revision(session, rag_extraction_revisions_table, values["extraction"])
+        await _insert_evidence_revision(session, rag_evidence_revisions_table, values["evidence"])
+        pointer = pg_insert(chunk_evidence_current_table).values(
+            chunk_id=row["id"], evidence_revision_id=PythonUUID(values["evidence"]["id"]),
+        )
+        await session.execute(pointer.on_conflict_do_update(
+            index_elements=[chunk_evidence_current_table.c.chunk_id],
+            set_={"evidence_revision_id": pointer.excluded.evidence_revision_id},
+        ))
+
 async def upsert_paper_with_chunks(
     parsed: ParsedPaper,
     chunks: list[Chunk],
@@ -342,6 +461,11 @@ async def upsert_paper_with_chunks(
         "abstract": meta.abstract,
         "categories": meta.categories,
         "material_family": None,
+        # Explicit INSERT-only counterparts of 0001's server defaults. Never
+        # include these in update_cols: re-ingestion cannot clear source holds.
+        "status": "published",
+        "citation_count": 0,
+        "quality_flags": [],
         "chunk_count": len(chunks),
         "materials_extracted": materials_extracted,
         "publication_ref": {"ingestion_capture": parsed.ingestion_capture},
@@ -401,6 +525,7 @@ async def upsert_paper_with_chunks(
                         for c in chunks
                     ],
                 )
+            await _persist_chunk_evidence(session, meta.paper_id, chunks)
 
 
 async def upsert_aps_paper_with_chunks(
@@ -443,6 +568,9 @@ async def upsert_aps_paper_with_chunks(
         "abstract": meta.abstract,
         "categories": meta.categories,
         "material_family": None,
+        "status": "published",
+        "citation_count": 0,
+        "quality_flags": [],
         # APS rows are formal published journal articles with DOI
         # provenance, so they are first-tier evidence by default.
         "credibility_tier": "T1",
@@ -496,6 +624,7 @@ async def upsert_aps_paper_with_chunks(
                         for c in chunks
                     ],
                 )
+            await _persist_chunk_evidence(session, meta.paper_id, chunks)
 
 
 async def find_related_arxiv_paper(doi: str) -> str | None:

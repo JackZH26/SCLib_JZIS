@@ -62,6 +62,13 @@ class SearchMatch(BaseModel):
 
     source_visibility: dict[str, Any] = Field(default_factory=dict)
     occurrence_visibility_summary: dict[str, Any] = Field(default_factory=dict)
+    evidence_provenance: dict[str, Any] = Field(default_factory=dict)
+
+    @field_validator("evidence_provenance")
+    @classmethod
+    def validate_evidence(cls, value):
+        from services.rag_evidence_contract import validate_evidence_descriptor
+        return validate_evidence_descriptor(value) if value else {}
 
     @field_validator("materials")
     @classmethod
@@ -117,6 +124,13 @@ class AskSource(BaseModel):
     snippet: str
     material_evidence: list[dict[str, Any]] = Field(default_factory=list)
     source_visibility: dict[str, Any] = Field(default_factory=dict)
+    evidence_provenance: dict[str, Any] = Field(default_factory=dict)
+
+    @field_validator("evidence_provenance")
+    @classmethod
+    def validate_evidence(cls, value):
+        from services.rag_evidence_contract import validate_evidence_descriptor
+        return validate_evidence_descriptor(value) if value else {}
 
 SupportStatus = Literal["supported", "contradicted", "undetermined", "not_checked"]
 
