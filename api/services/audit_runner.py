@@ -1,8 +1,8 @@
 """Run the audit_rules registry, persist counts in audit_reports.
 
 Invoked by the lifespan ``_nightly_data_audit`` task at 20:00 UTC
-(== 04:00 Beijing). One run = one transaction per rule so a regex
-error in one rule does not block the others.
+(== 04:00 Beijing). Scheduled runs share one coordinator transaction; a failed
+rule rolls back all effects. Manual callers retain the per-rule commit mode.
 
 For each rule:
 
@@ -24,6 +24,7 @@ from datetime import UTC, datetime
 from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from models.background_jobs_v1 import JOB_LOCK_KEYS
 from models.db import Material
 from services.audit_rules import ANOMALY_RULE_NAME, RULES, AuditRule
 from services.material_anomalies import material_review, review_context
@@ -157,25 +158,46 @@ async def _run_rule(session: AsyncSession, rule: AuditRule) -> dict:
     }
 
 
-async def run_audit(session: AsyncSession) -> dict[str, int]:
+async def run_audit(session: AsyncSession, *, commit: bool = True,
+                    scheduled_for: datetime | None = None, cycle_id=None) -> dict[str, int]:
     """Run every rule in the registry, return ``{rule_name: count}``.
 
     Each rule runs in its own transaction so a malformed predicate
     on one rule doesn't take the whole audit down. The session
     passed in is the outer caller's; we ``commit()`` per rule and
-    re-use it for the next.
+    re-use it for the next. With ``commit=False``, use per-rule savepoints and
+    let the background coordinator own the single outer commit or rollback.
     """
-    started_at = datetime.now(UTC)
+    if type(commit) is not bool:
+        raise ValueError("commit must be Boolean")
+    if scheduled_for is not None and (scheduled_for.tzinfo is None or scheduled_for.utcoffset() is None):
+        raise ValueError("scheduled_for must identify an aware instant")
+    if not commit and (scheduled_for is None or cycle_id is None):
+        raise ValueError("Atomic scheduled audit requires a cycle and scheduled instant")
+    if commit and (scheduled_for is not None or cycle_id is not None):
+        raise ValueError("Manual audits cannot claim a scheduled cycle identity")
+    started_at = scheduled_for.astimezone(UTC) if scheduled_for is not None else datetime.now(UTC)
     summary: dict[str, int] = {}
 
     for rule in RULES:
+        if commit:
+            # A manual rule's effect/report transaction cannot race a scheduled
+            # owner. Unlike session locks this is safe across per-rule commits.
+            await session.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": JOB_LOCK_KEYS["nightly_audit"]})
         try:
-            outcome = await _run_rule(session, rule)
-            await session.commit()
+            async with session.begin_nested():
+                outcome = await _run_rule(session, rule)
+                if not commit and outcome["flagged"] < 0:
+                    raise RuntimeError("Scheduled audit rule unavailable")
         except Exception:  # noqa: BLE001
             log.exception("audit rule %s failed; rolling back its tx",
                           rule.name)
+            if not commit:
+                # The coordinator rolls back every preceding rule's flags and
+                # report together, then records the failed cycle separately.
+                raise RuntimeError("Scheduled audit did not complete every rule") from None
             await session.rollback()
+            await session.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": JOB_LOCK_KEYS["nightly_audit"]})
             outcome = {"flagged": -1, "sample_ids": []}
 
         # Compare only a successful report with the same count semantics.
@@ -184,14 +206,22 @@ async def run_audit(session: AsyncSession) -> dict[str, int]:
         metric = _metric_marker(rule)
         prev = await session.execute(
             text("""
-                SELECT rows_flagged FROM audit_reports
+                SELECT rows_flagged FROM audit_reports AS report
                 WHERE rule_name = :name
                   AND rows_flagged >= 0
                   AND suggested_fixes @> CAST(:metric AS jsonb)
-                ORDER BY started_at DESC
+                  AND started_at < :started
+                  AND (:scheduled IS FALSE OR EXISTS (
+                    SELECT 1 FROM jsonb_array_elements(CASE WHEN jsonb_typeof(report.suggested_fixes)='array'
+                        THEN report.suggested_fixes ELSE '[]'::jsonb END) AS marker
+                    JOIN background_job_cycles AS cycle ON cycle.id::text=marker->>'cycle_id'
+                    WHERE marker->>'kind'='background_cycle' AND marker->>'version'='background-cycle/1.0.0'
+                      AND cycle.job_name='nightly_audit' AND cycle.status='succeeded'
+                      AND cycle.scheduled_for=report.started_at))
+                ORDER BY started_at DESC, id DESC
                 LIMIT 1;
             """),
-            {"name": rule.name, "metric": json.dumps(metric)},
+            {"name": rule.name, "metric": json.dumps(metric), "started": started_at, "scheduled": not commit},
         )
         prev_count = prev.scalar_one_or_none()
         delta = (outcome["flagged"] - prev_count) if prev_count is not None and outcome["flagged"] >= 0 else None
@@ -216,10 +246,13 @@ async def run_audit(session: AsyncSession) -> dict[str, int]:
                 "delta":     delta,
                 "samples":   json.dumps(outcome["sample_ids"]),
                 "fix_text":  rule.suggested_fix or None,
-                "fixes":     json.dumps(metric + outcome.get("suggested_fixes", [])),
+                "fixes":     json.dumps(metric + ([{"kind": "background_cycle", "version": "background-cycle/1.0.0",
+                    "cycle_id": str(cycle_id), "scheduled_for": started_at.isoformat()}] if cycle_id is not None else [])
+                    + outcome.get("suggested_fixes", [])),
             },
         )
-        await session.commit()
+        if commit:
+            await session.commit()
         summary[rule.name] = outcome["flagged"]
 
         if outcome["flagged"] > 0:
@@ -229,7 +262,8 @@ async def run_audit(session: AsyncSession) -> dict[str, int]:
             )
 
     log.info(
-        "nightly audit done: %d rules, %d summed rule matches (not distinct materials)",
+        "nightly audit %s: %d rules, %d summed rule matches (not distinct materials)",
+        "committed" if commit else "computed; outer commit pending",
         len(RULES),
         sum(v for v in summary.values() if v > 0),
     )

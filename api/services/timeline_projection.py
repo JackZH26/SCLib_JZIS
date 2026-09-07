@@ -209,8 +209,12 @@ async def refresh_timeline_projection(
     """
     await session.execute(text("SELECT public.sclib_source_task_lock_v1()"))
     refreshed_at = now or datetime.now(UTC)
-    current_year = refreshed_at.year
     state = await session.get(TimelineProjectionState, _STATE_ID, populate_existing=True)
+    # A delayed explicit refresh or a worker clock moving backwards must not
+    # regress a successfully built projection's chronology/watermark.
+    if state is not None and getattr(state, "refreshed_at", None) is not None:
+        refreshed_at = max(refreshed_at, state.refreshed_at)
+    current_year = refreshed_at.year
     full_rebuild = (
         force_full_rebuild
         or state is None
@@ -368,8 +372,8 @@ async def refresh_timeline_projection(
                 "pressure_policy_version": state_insert.excluded.pressure_policy_version,
                 "anomaly_policy_version": state_insert.excluded.anomaly_policy_version,
                 "source_year": state_insert.excluded.source_year,
-                "source_watermark": state_insert.excluded.source_watermark,
-                "refreshed_at": state_insert.excluded.refreshed_at,
+                "source_watermark": func.greatest(state_table.c.source_watermark, state_insert.excluded.source_watermark),
+                "refreshed_at": func.greatest(state_table.c.refreshed_at, state_insert.excluded.refreshed_at),
                 "material_count": state_insert.excluded.material_count,
                 "active_point_count": state_insert.excluded.active_point_count,
             },

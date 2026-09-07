@@ -75,7 +75,7 @@ async def test_periodic_refresh_preserves_last_reported_pipeline_state(monkeypat
 
     assert result["data_pipeline"] == pipeline
     assert db.committed is True
-    assert len(db.executed) == 1
+    assert len(db.executed) == 2  # shared job lock before reading, then upsert
 
 
 async def test_explicit_cron_pipeline_state_replaces_preserved_state(monkeypatch):
@@ -106,7 +106,7 @@ async def test_explicit_cron_pipeline_state_replaces_preserved_state(monkeypatch
 
     assert result["data_pipeline"]["status"] == "complete"
     assert result["data_pipeline"]["stages"]["aggregate"]["exit_code"] == 0
-    assert len(db.executed) == 2
+    assert len(db.executed) == 3  # shared job lock and two independent cache rows
     metrics_spy.assert_called_once()
     metric_payload, metric_stages, metric_last_run = metrics_spy.call_args.args
     assert metric_payload["last_ingest_at"] == _payload()["last_ingest_at"]

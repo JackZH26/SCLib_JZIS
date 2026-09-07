@@ -190,6 +190,40 @@ export interface User {
   scopes: string[];
 }
 
+export interface BackgroundCycle {
+  status: "running" | "failed" | "succeeded";
+  cycle_id: string;
+  scheduled_for: string;
+  started_at: string;
+  completed_at: string | null;
+  duration_ms: number | null;
+  attempts: number;
+  recovered: boolean;
+  result: Record<string, unknown>;
+  error_code: string | null;
+  next_retry_at: string | null;
+  completion_scope: "database_effects_only";
+}
+
+export interface BackgroundJobStatus {
+  job_name: "stats_refresh" | "timeline_projection" | "formula_audit" | "nightly_audit" | "ask_history_prune";
+  active_owner_id: string | null;
+  lock_observation: "current_query_only";
+  last_success: BackgroundCycle | null;
+  oldest_unfinished: BackgroundCycle | null;
+  recent_cycles: BackgroundCycle[];
+}
+
+export interface BackgroundJobsResponse {
+  version: string;
+  jobs: BackgroundJobStatus[];
+  scope: "database_cycles_not_external_cache_delivery";
+}
+
+export function adminBackgroundJobs(): Promise<BackgroundJobsResponse> {
+  return request<BackgroundJobsResponse>("/admin/background-jobs");
+}
+
 /** PATCH /auth/me payload — only the fields the user may edit. */
 export interface UpdateUserPayload {
   name?: string | null;

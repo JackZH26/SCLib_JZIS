@@ -79,6 +79,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
             "_freeze_on_migrated_schema", "_publication_on_migrated_schema",
             "_source_lifecycle_on_migrated_schema", "_source_impact_indexes_on_migrated_schema",
             "_source_tasks_on_migrated_schema", "_source_task_downgrade_guard",
+            "_background_jobs_empty_roundtrip", "_background_jobs_on_migrated_schema", "_background_job_downgrade_guard",
         )]
         self.assertEqual(ordered, sorted(ordered))
         for marker in ("preserve scientific correction proposals", "registry contains records",
@@ -93,6 +94,27 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
                        "assert await state(session) == before_request", "assert await state(session) == before_attempt",
                        'assert after_attempt["timeline_projection_state"] == expected_state',
                        'assert replay["replayed"] is True', 'assert await state(session) == after_attempt'):
+            self.assertIn(marker, body)
+
+    def test_background_history_is_populated_only_after_every_prior_guard(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        main = source.split("def main()", 1)[1]
+        positions = [main.index(value) for value in (
+            "_source_impact_indexes_on_migrated_schema(capability", "_source_tasks_on_migrated_schema(capability",
+            "_source_task_downgrade_guard(capability", "_background_jobs_empty_roundtrip(capability",
+            "_background_jobs_on_migrated_schema(capability", "_background_job_downgrade_guard(capability")]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn('assert before["background_job_cycles"] == []', source)
+        self.assertGreaterEqual(source.count('SELECT count(*) FROM background_job_cycles'), 5)
+
+    def test_migrated_background_service_proves_effect_rollback_and_exact_replay(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        body = source.split("async def _background_jobs_on_migrated_schema", 1)[1].split("\ndef _background_job_downgrade_guard", 1)[0]
+        for marker in ("run_background_cycle(", "insert(AuditReport)", 'assert failed["status"] == "failed"',
+                       'assert after_failure["audit_reports"] == before["audit_reports"]',
+                       'assert succeeded["status"] == "succeeded"', 'assert len(reports) == 1',
+                       'assert replay["status"] == "already_succeeded"', "assert await snapshot() == after_success",
+                       "run_sync(check_connection_schema)", "pg_locks"):
             self.assertIn(marker, body)
 
 

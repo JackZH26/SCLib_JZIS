@@ -35,7 +35,7 @@ def _assert_source_impact_indexes(connection, *, present=True):
 
 
 def _source_impact_indexes_on_migrated_schema(capability, engine, config):
-    """0057 may round-trip with history while the later 0058 queue is empty."""
+    """0057 may round-trip with history while the later ledgers are empty."""
     from alembic import command
     from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
     from sqlalchemy import inspect, text
@@ -45,13 +45,15 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
         # including historical capsule bytes and lifecycle/source identities.
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts"}}
+                if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts",
+                                "background_job_cycles"}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
         _assert_source_impact_indexes(connection)
         assert connection.execute(text("SELECT count(*) FROM source_task_requests")).scalar_one() == 0
         assert connection.execute(text("SELECT count(*) FROM source_task_attempts")).scalar_one() == 0
+        assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
         before = snapshot(connection)
         assert before["source_lifecycle_events"]
     validate_test_environment()
@@ -75,6 +77,7 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
         _assert_source_impact_indexes(connection)
         assert connection.execute(text("SELECT count(*) FROM source_task_requests")).scalar_one() == 0
         assert connection.execute(text("SELECT count(*) FROM source_task_attempts")).scalar_one() == 0
+        assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
         assert snapshot(connection) == before
 
 
@@ -188,6 +191,7 @@ def _source_lifecycle_on_migrated_schema(capability, engine, config):
         verify_postgres_identity(connection, capability)
         assert connection.execute(text("SELECT count(*) FROM source_lifecycle_events")).scalar_one() == 0
         assert connection.execute(text("SELECT count(*) FROM source_lifecycle_reviews")).scalar_one() == 0
+        assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
         original_history = saved_history(connection)
     # This drops 0057's rebuildable indexes and the still-empty 0056 ledger.
     # Older immutable history and independently verified guards remain in place.
@@ -425,6 +429,7 @@ def _source_task_downgrade_guard(capability, engine, config, request_id):
         verify_postgres_identity(connection, capability)
         before = snapshot(connection)
         assert any(row["id"] == request_id for row in before["source_task_requests"])
+        assert before["background_job_cycles"] == []
     try:
         validate_test_environment()
         command.downgrade(config, "0057_source_impact")
@@ -436,6 +441,147 @@ def _source_task_downgrade_guard(capability, engine, config, request_id):
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
         _assert_source_impact_indexes(connection)
+        assert snapshot(connection) == before
+
+
+def _background_jobs_empty_roundtrip(capability, engine, config):
+    """0059 alone can round-trip without losing populated 0052–0058 history."""
+    from alembic import command
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")
+                if name not in {"alembic_version", "background_job_cycles"}}
+
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
+        before = snapshot(connection)
+        assert before["source_task_requests"] and before["source_task_attempts"]
+    validate_test_environment()
+    command.downgrade(config, "0058_source_tasks")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError as exc:
+            assert "exact revision" in str(exc)
+        else:
+            raise AssertionError("The background-job application must refuse the previous schema head")
+        verify_postgres_identity(connection, capability)
+        assert "background_job_cycles" not in inspect(connection).get_table_names(schema="public")
+        assert snapshot(connection) == before
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
+        assert snapshot(connection) == before
+
+
+async def _background_jobs_on_migrated_schema(capability, api_root):
+    """Real session-locked service effects and failure rollback after all old guards."""
+    validate_test_environment()
+    sys.path.insert(0, str(api_root / "tests"))
+    from models.db import AuditReport, _to_async_dsn
+    from services.background_jobs import due_cycle, run_background_cycle
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import insert, text
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from test_research_freeze import state
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), poolclass=NullPool)
+
+    async def snapshot():
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+            async with AsyncSession(connection, expire_on_commit=False) as session:
+                return await state(session)
+
+    async def effect(session, scheduled_for, cycle_id, *, fail=False):
+        await session.execute(insert(AuditReport).values(started_at=scheduled_for,
+            completed_at=sa.func.clock_timestamp(), rule_name="en03-migration-synthetic",
+            severity="info", rows_flagged=1, sample_ids=[str(cycle_id)],
+            suggested_fixes=[{"synthetic": True, "cycle_id": str(cycle_id)}]))
+        if fail:
+            raise RuntimeError("Synthetic transaction rollback rehearsal")
+        return {"audit_reports_created": 1, "synthetic": True}
+
+    # Imports remain inside the already-validated native disposable boundary.
+    import sqlalchemy as sa
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+            now = (await connection.execute(text("SELECT clock_timestamp()"))).scalar_one()
+        due = due_cycle(now, 1)
+        before = await snapshot()
+        assert before["background_job_cycles"] == []
+
+        async def failed_effect(session, scheduled_for, cycle_id):
+            return await effect(session, scheduled_for, cycle_id, fail=True)
+
+        failed = await run_background_cycle("formula_audit", interval_seconds=1, handler=failed_effect,
+            engine=engine, scheduled_for=due, config={"synthetic_migration": "rollback"})
+        assert failed["status"] == "failed" and failed["error_code"] == "execution_failed"
+        after_failure = await snapshot()
+        assert after_failure["audit_reports"] == before["audit_reports"]
+        assert len(after_failure["background_job_cycles"]) == 1
+        assert {key: value for key, value in after_failure.items() if key != "background_job_cycles"} == {
+            key: value for key, value in before.items() if key != "background_job_cycles"}
+
+        arguments = dict(interval_seconds=1, handler=effect, engine=engine,
+                         scheduled_for=due, config={"synthetic_migration": "success"})
+        succeeded = await run_background_cycle("nightly_audit", **arguments)
+        assert succeeded["status"] == "succeeded" and succeeded["attempts"] == 1
+        after_success = await snapshot()
+        assert len(after_success["background_job_cycles"]) == 2
+        reports = [row for row in after_success["audit_reports"] if row["rule_name"] == "en03-migration-synthetic"]
+        assert len(reports) == 1 and reports[0]["sample_ids"] == [succeeded["cycle_id"]]
+        assert {key: value for key, value in after_success.items() if key not in {"background_job_cycles", "audit_reports"}} == {
+            key: value for key, value in before.items() if key not in {"background_job_cycles", "audit_reports"}}
+        replay = await run_background_cycle("nightly_audit", **arguments)
+        assert replay["status"] == "already_succeeded" and replay["cycle_id"] == succeeded["cycle_id"]
+        assert await snapshot() == after_success
+        async with engine.connect() as connection:
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+            assert not (await connection.execute(text("""SELECT EXISTS(SELECT 1 FROM pg_locks
+                WHERE locktype='advisory' AND classid=0 AND objid IN (589017031,589017032,589017033,589017034,589017035)
+                AND objsubid=1 AND database=(SELECT oid FROM pg_database WHERE datname=current_database()))"""))).scalar_one()
+        return succeeded["cycle_id"]
+    finally:
+        await engine.dispose()
+
+
+def _background_job_downgrade_guard(capability, engine, config, cycle_id):
+    """A populated 0059 refusal preserves successful work and every older ledger."""
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert any(row["id"] == cycle_id and row["status"] == "succeeded" for row in before["background_job_cycles"])
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0058_source_tasks")
+    except RuntimeError as exc:
+        assert "background-job" in str(exc) and "cycle history contains records" in str(exc)
+    else:
+        raise AssertionError("Nonempty background-job downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
         assert snapshot(connection) == before
 
 
@@ -506,6 +652,8 @@ def main() -> None:
             assert {"source_lifecycle_epoch", "source_lifecycle_events",
                     "source_lifecycle_reviews"} <= set(schema.get_table_names())
             assert {"source_task_epoch", "source_task_requests", "source_task_attempts"} <= set(schema.get_table_names())
+            assert "background_job_cycles" in schema.get_table_names()
+            assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
             _assert_source_impact_indexes(connection)
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
                 WHERE NOT tgisinternal AND tgname LIKE 'research_import_%_immutable_%'""")).scalar_one() == 10
@@ -671,7 +819,10 @@ def main() -> None:
         _source_impact_indexes_on_migrated_schema(capability, engine, config)
         request_id = asyncio.run(_source_tasks_on_migrated_schema(capability, api_root))
         _source_task_downgrade_guard(capability, engine, config, request_id)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback and independent nonempty history rollback guards verified.")
+        _background_jobs_empty_roundtrip(capability, engine, config)
+        cycle_id = asyncio.run(_background_jobs_on_migrated_schema(capability, api_root))
+        _background_job_downgrade_guard(capability, engine, config, cycle_id)
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 

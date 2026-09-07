@@ -92,6 +92,24 @@ async def _fallback(session, material, *, only_aps=False):
 
 
 @pytest.mark.asyncio
+async def test_delayed_refresh_preserves_successful_watermark_and_chronology(db_session):
+    material, _ = await _seed(db_session)
+    now = datetime.now(UTC)
+    first = await refresh_timeline_projection(db_session, now=now)
+    original = (await db_session.execute(select(TimelineProjectionState.__table__))).mappings().one()
+    delayed = await refresh_timeline_projection(
+        db_session, now=now - timedelta(days=366), force_full_rebuild=True,
+    )
+    current = (await db_session.execute(select(TimelineProjectionState.__table__))).mappings().one()
+    assert delayed.refreshed_at == first.refreshed_at
+    assert current["refreshed_at"] == original["refreshed_at"]
+    assert current["source_watermark"] == original["source_watermark"]
+    assert current["source_year"] == original["source_year"]
+    assert await _read(db_session, material) is not None
+    await db_session.rollback()
+
+
+@pytest.mark.asyncio
 async def test_projection_fallback_parity_keeps_distinct_sources_and_ids(db_session):
     material, _ = await _seed(db_session)
     raw_before = deepcopy(material.records)

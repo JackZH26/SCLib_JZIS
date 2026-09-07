@@ -1657,6 +1657,10 @@ from models.source_tasks_v1 import register as _register_source_tasks  # noqa: E
 
 SOURCE_TASK_TABLES = _register_source_tasks(Base.metadata)
 
+from models.background_jobs_v1 import register as _register_background_jobs  # noqa: E402
+
+BACKGROUND_JOB_CYCLES = _register_background_jobs(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

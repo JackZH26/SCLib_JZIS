@@ -124,6 +124,17 @@ PIPELINE_STAGE_STATUS = Gauge(
     "Pipeline stage status: complete=1, unknown=0, failed=-1.",
     ("stage",),
 )
+BACKGROUND_RESULTS = Counter(
+    "sclib_background_cycle_results_total",
+    "Background cycle outcomes, including busy and already-successful duplicate suppression.",
+    ("job", "outcome"),
+)
+BACKGROUND_DURATION = Histogram(
+    "sclib_background_cycle_duration_seconds",
+    "Committed database cycle attempt duration, not external cache delivery latency.",
+    ("job", "outcome"),
+    buckets=(0.1, 1, 5, 15, 30, 60, 120, 300, 600, 900, 1800, 3600),
+)
 
 _T = TypeVar("_T")
 _instrumented_engines: weakref.WeakSet[object] = weakref.WeakSet()

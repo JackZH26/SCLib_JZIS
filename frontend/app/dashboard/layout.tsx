@@ -30,6 +30,7 @@ const NAV_BASE = [
 const NAV_ADMIN = [
   { href: "/dashboard/admin/users", label: "Admin · Users",  hint: "admin" },
   { href: "/dashboard/admin/audit", label: "Admin · Audit",  hint: "admin" },
+  { href: "/dashboard/admin/jobs", label: "Admin · Jobs", hint: "admin" },
 ];
 
 // Reviewer-only: audit queue (no user management).
