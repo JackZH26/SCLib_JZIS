@@ -7,6 +7,73 @@ from pathlib import Path
 from test_safety import validate_test_environment, verify_postgres_identity
 
 
+def _assert_source_impact_indexes(connection, *, present=True):
+    """Verify real migrated reverse indexes, not merely ORM declarations."""
+    from models.source_impact_indexes_v1 import INDEX_SPECS
+    from sqlalchemy import text
+
+    for name, table, column, method, operator_class in INDEX_SPECS:
+        row = connection.execute(text("""SELECT t.relname AS table_name,
+            a.attname AS column_name, am.amname AS method, opc.opcname AS operator_class,
+            i.indisvalid, i.indisready, i.indpred IS NULL AS nonpartial,
+            i.indisunique, i.indnkeyatts
+            FROM pg_index i JOIN pg_class ix ON ix.oid=i.indexrelid
+            JOIN pg_namespace ns ON ns.oid=ix.relnamespace
+            JOIN pg_class t ON t.oid=i.indrelid JOIN pg_am am ON am.oid=ix.relam
+            JOIN pg_attribute a ON a.attrelid=t.oid AND a.attnum=i.indkey[0]
+            JOIN pg_opclass opc ON opc.oid=i.indclass[0]
+            WHERE ns.nspname='public' AND ix.relname=:name"""), {"name": name}).mappings().one_or_none()
+        if not present:
+            assert row is None
+            continue
+        assert row is not None
+        assert (row["table_name"], row["column_name"], row["method"]) == (table, column, method)
+        assert row["indisvalid"] and row["indisready"] and row["nonpartial"]
+        assert row["indisunique"] is False and row["indnkeyatts"] == 1
+        if operator_class:
+            assert row["operator_class"] == operator_class
+
+
+def _source_impact_indexes_on_migrated_schema(capability, engine, config):
+    """0057 may drop/recreate its indexes while retaining populated history."""
+    from alembic import command
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        # Local synthetic database only: compare every application table row,
+        # including historical capsule bytes and lifecycle/source identities.
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")
+                if name != "alembic_version"}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        _assert_source_impact_indexes(connection)
+        before = snapshot(connection)
+        assert before["source_lifecycle_events"]
+    validate_test_environment()
+    command.downgrade(config, "0056_source_lifecycle")
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        _assert_source_impact_indexes(connection, present=False)
+        assert snapshot(connection) == before
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError as exc:
+            assert "exact revision" in str(exc)
+        else:
+            raise AssertionError("The impact application must refuse the previous schema head")
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_source_impact_indexes(connection)
+        assert snapshot(connection) == before
+
+
 async def _freeze_on_migrated_schema(capability, api_root):
     """Reuse reviewed synthetic test inputs on actual migrations, never create_all."""
     validate_test_environment()
@@ -118,8 +185,8 @@ def _source_lifecycle_on_migrated_schema(capability, engine, config):
         assert connection.execute(text("SELECT count(*) FROM source_lifecycle_events")).scalar_one() == 0
         assert connection.execute(text("SELECT count(*) FROM source_lifecycle_reviews")).scalar_one() == 0
         original_history = saved_history(connection)
-    # This drops only the still-empty 0056 ledger. Older immutable history and
-    # its independently verified downgrade guards remain in place.
+    # This drops 0057's rebuildable indexes and the still-empty 0056 ledger.
+    # Older immutable history and independently verified guards remain in place.
     validate_test_environment()
     command.downgrade(config, "0055_research_publication")
     with engine.connect() as connection:
@@ -212,6 +279,9 @@ def _source_lifecycle_on_migrated_schema(capability, engine, config):
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
+        # 0056 refusal also rolls back preceding index drops in the same
+        # migration transaction, leaving the exact latest schema admitted.
+        _assert_source_impact_indexes(connection)
         assert events(connection) == all_events
         assert saved_history(connection) == original_history
 
@@ -282,6 +352,7 @@ def main() -> None:
                     "research_publication_reviews", "research_publication_actions"} <= set(schema.get_table_names())
             assert {"source_lifecycle_epoch", "source_lifecycle_events",
                     "source_lifecycle_reviews"} <= set(schema.get_table_names())
+            _assert_source_impact_indexes(connection)
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
                 WHERE NOT tgisinternal AND tgname LIKE 'research_import_%_immutable_%'""")).scalar_one() == 10
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
@@ -443,7 +514,8 @@ def main() -> None:
             assert connection.execute(text("SELECT count(*) FROM research_publication_proposals WHERE id=CAST(:id AS uuid)"),
                                       {"id": publication_id}).scalar_one() == 1
         _source_lifecycle_on_migrated_schema(capability, engine, config)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions and independent nonempty history rollback guards verified.")
+        _source_impact_indexes_on_migrated_schema(capability, engine, config)
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 

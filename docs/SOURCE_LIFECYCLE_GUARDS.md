@@ -1,7 +1,7 @@
 # Current-source lifecycle guards and observed-change ledger
 
 Issue: [SC08 / #66](https://github.com/JackZH26/SCLib_JZIS/issues/66).
-Date: 2026-09-07. Local database head: `0056_source_lifecycle`.
+Date: 2026-09-07. Local database head: `0057_source_impact`.
 
 This is a local implementation of current-read/recomputation safeguards and an
 append-only negative source-governance ledger. It is not a completed dependency
@@ -9,6 +9,8 @@ propagation or scientific reinstatement system. SC08 remains open. The additive
 migration has been rehearsed on disposable PostgreSQL only; there is no production
 source update, data backfill, automatic scientific approval, source revision
 promotion, push or deployment. See the [ledger contract](SOURCE_LIFECYCLE_LEDGER.md).
+The next additive [impact inspector](SOURCE_IMPACT_INSPECTION.md) provides an
+indexed, snapshot-bound dependency plan; it does not schedule or acknowledge refresh.
 
 ## Scientific contract
 

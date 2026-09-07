@@ -1647,6 +1647,12 @@ from models.source_lifecycle_v1 import register as _register_source_lifecycle  #
 
 SOURCE_LIFECYCLE_TABLES = _register_source_lifecycle(Base.metadata)
 
+from models.source_impact_indexes_v1 import (
+    register as _register_source_impact_indexes,  # noqa: E402
+)
+
+SOURCE_IMPACT_INDEXES = _register_source_impact_indexes(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

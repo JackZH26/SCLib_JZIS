@@ -195,6 +195,9 @@ authorized migration plan, backup/restore rehearsal and staging acceptance.
    regain publication visibility through in-place source edits or checkbox overrides.
 2. An indexed dependency inventory and bounded refresh queue with exact
    requested/completed revisions, retries, failures and lag measurements.
+   [The 0057 impact inspector](SOURCE_IMPACT_INSPECTION.md) now supplies a bounded
+   read-only inventory for its explicit scope; durable queue/receipts and execution
+   tracking remain unfinished.
 3. Result-scoped mixed-source admission and explicit dependency identity for
    zero-point Timeline candidates, chunks, prospective ML membership and RPS.
 4. RG02 post-generation live-source validation, explicit historical release
