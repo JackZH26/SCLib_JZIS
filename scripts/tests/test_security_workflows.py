@@ -6,7 +6,6 @@ import re
 import unittest
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW_DIR = ROOT / ".github" / "workflows"
 PINNED_ACTION = re.compile(r"^\s*-?\s*uses:\s+[^\s@]+@[0-9a-f]{40}(?:\s+#.*)?$")
@@ -177,7 +176,7 @@ class SecurityWorkflowTests(unittest.TestCase):
             self.assertNotIn(prohibited, deploy)
         self.assertLess(
             deploy.index("scripts/backup_postgres.sh"),
-            deploy.index("alembic upgrade head"),
+            deploy.index('run --rm --no-deps migration'),
         )
 
     def test_ingest_uses_the_same_verified_ssh_connection(self) -> None:

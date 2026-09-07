@@ -163,6 +163,9 @@ jobs:
             python3 "$preflight_dir/scripts/validate_gcp_credentials.py" validate \
               --credential /etc/sclib/credentials/backup-external-account.json \
               --expected-service-account sclib-backup@jzis-sclib.iam.gserviceaccount.com
+            # Provisioned migration-only credential; never reuse API .env or
+            # grant schema privileges as a deployment side effect.
+            test -s /etc/sclib/credentials/migration-database-url
             cleanup_preflight
             trap - EXIT
 
@@ -191,7 +194,12 @@ jobs:
               -f docker-compose.yml -f docker-compose.prod.yml)
             "${compose[@]}" up -d --no-build --wait --wait-timeout 60 \
               postgres redis
-            "${compose[@]}" run --rm --no-deps api alembic upgrade head
+            # All Alembic entrypoints share a nonblocking database session lock.
+            # Failure (including another upgrader) stops before API replacement.
+            "${compose[@]}" run --rm --no-deps migration
+            # Check using the new API image's own runtime credential as well.
+            "${compose[@]}" run --rm --no-deps api \
+              python -m services.schema_lifecycle check
             "${compose[@]}" up -d --no-build --wait --wait-timeout 180 \
               postgres redis api frontend prometheus alertmanager grafana
             "${compose[@]}" ps

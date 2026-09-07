@@ -12,6 +12,17 @@ ingest, aggregation, stats refresh, and scoped data-audit jobs.
 
 ---
 
+## Research-v2 development status
+
+The local research branch has separate [implementation records](docs/reviews/2026-09-05/README.md).
+Its latest infrastructure adds [bounded internal research integrity capsules](docs/RESEARCH_RELEASE_FREEZE.md)
+and [explicit schema migration with read-only API admission](docs/SCHEMA_ROLLOUT.md).
+These are not a production rollout, scientifically approved training datasets,
+or permission to redistribute source text and artifacts. The production snapshot
+below is historical and must not be read as validation of these local upgrades.
+
+---
+
 ## What's inside today
 
 Production snapshot checked 2026-06-14 UTC.
@@ -121,8 +132,11 @@ email+password, using a shared JZIS account that also works at
 ```bash
 cp .env.example .env        # fill DB_PASSWORD, JWT_SECRET,
                             # INTERNAL_API_KEY, GCP creds, RESEND_API_KEY
-docker compose up -d        # postgres + redis + api + frontend
-docker compose exec api alembic upgrade head
+docker compose up -d postgres redis
+# Set SCLIB_MIGRATION_DATABASE_URL in this shell to the local-only migration
+# credential; do not store it in the API's .env. See docs/SCHEMA_ROLLOUT.md.
+docker compose run --rm migration
+docker compose up -d api frontend  # startup checks schema; never migrates it
 docker compose run --rm ingestion sclib-ingest --mode smoke --limit 30
 ```
 

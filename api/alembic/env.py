@@ -1,24 +1,26 @@
 """Alembic migration environment (sync driver via psycopg2).
 
-The app runs asyncpg, but alembic has limited async support and we want
-`docker compose exec api alembic upgrade head` to be fast and boring. So
-we translate the DATABASE_URL to a sync DSN here.
+The app runs asyncpg; the dedicated migration job uses a sync DSN.
+Every online Alembic entrypoint
+uses the same database-wide session lock, including manual invocations.
 """
 from __future__ import annotations
 
 import os
-from logging.config import fileConfig
-
-from alembic import context
-from sqlalchemy import engine_from_config, pool
 
 # Make `api/` importable so we can grab Base metadata.
 import sys
+from logging.config import fileConfig
 from pathlib import Path
+
+from sqlalchemy import engine_from_config, pool
+
+from alembic import context
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from models.db import Base  # noqa: E402
+from services.schema_lifecycle import acquire_migration_lock  # noqa: E402
 
 config = context.config
 if config.config_file_name is not None:
@@ -57,6 +59,9 @@ def run_migrations_online() -> None:
     cfg["sqlalchemy.url"] = _get_url()
     connectable = engine_from_config(cfg, prefix="sqlalchemy.", poolclass=pool.NullPool)
     with connectable.connect() as connection:
+        # Session-scoped: migration 0043's autocommit block must not release it.
+        # NullPool closes the physical session (and lock) on success/failure.
+        acquire_migration_lock(connection)
         context.configure(
             connection=connection,
             target_metadata=target_metadata,

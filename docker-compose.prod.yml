@@ -32,6 +32,16 @@ services:
       - /etc/sclib/credentials/api-external-account.json:/credentials/gcp-api.json:ro
       - /run/sclib-identity/api:/var/run/sclib-identity/api:ro
 
+  migration:
+    image: ${SCLIB_API_IMAGE:?set signed API image digest}
+    environment:
+      # No fallback to API credentials in production. This file is provisioned
+      # separately for a migration-only PostgreSQL role; never put it in .env.
+      DATABASE_URL: ""
+      SCLIB_MIGRATION_DATABASE_URL_FILE: /run/secrets/sclib-migration-database-url
+    volumes:
+      - /etc/sclib/credentials/migration-database-url:/run/secrets/sclib-migration-database-url:ro
+
   ingestion:
     image: ${SCLIB_INGESTION_IMAGE:?set signed ingestion image digest}
     environment:

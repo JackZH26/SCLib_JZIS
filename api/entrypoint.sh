@@ -1,12 +1,11 @@
 #!/bin/sh
-# Docker entrypoint: run alembic migrations, then exec uvicorn (or whatever
-# CMD was given). Idempotent — alembic upgrade head is a no-op when DB is
-# already at head.
+# API startup is schema-read-only. Schema changes belong to the explicit
+# one-shot migration service, never restart/scaling of an API container.
 set -e
 
 if [ "$1" = "uvicorn" ]; then
-    echo "[entrypoint] alembic upgrade head"
-    alembic upgrade head
+    echo "[entrypoint] checking required schema revision (read-only)"
+    python -m services.schema_lifecycle check
 fi
 
 exec "$@"

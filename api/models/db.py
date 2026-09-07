@@ -1636,6 +1636,10 @@ from models.research_import_v1 import register as _register_research_import  # n
 
 RESEARCH_IMPORT_TABLES = _register_research_import(Base.metadata)
 
+from models.research_release_v1 import register as _register_research_release  # noqa: E402
+
+RESEARCH_RELEASE_TABLES = _register_research_release(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

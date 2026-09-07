@@ -75,7 +75,7 @@ async def _periodic_stats_refresh(interval_sec: int) -> None:
     """
     factory = get_session_factory()
     # Small delay on startup so the first tick doesn't race with
-    # alembic upgrade + initial request traffic.
+    # schema admission + initial request traffic.
     await asyncio.sleep(30)
     while True:
         try:
@@ -99,7 +99,7 @@ async def _periodic_timeline_projection(interval_sec: int) -> None:
     from services.rate_limit import get_redis
 
     factory = get_session_factory()
-    # Alembic runs before Uvicorn in entrypoint.sh. The extra delay keeps the
+    # Schema admission runs before Uvicorn in entrypoint.sh. The extra delay keeps the
     # first full projection build away from startup health probes.
     await asyncio.sleep(60)
     while True:
@@ -320,6 +320,10 @@ async def _periodic_ask_history_prune(interval_sec: int, retention_days: int) ->
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = get_settings()
+    # Also covers direct ASGI/uvicorn starts that bypass the container entrypoint.
+    # Complete read-only admission before spawning any background writer.
+    from services.schema_lifecycle import check_application_schema
+    await check_application_schema(get_engine())
     log.info("SCLib API starting (env=%s, backend=%s)",
              settings.environment, settings.email_backend)
 

@@ -7,6 +7,42 @@ from pathlib import Path
 from test_safety import validate_test_environment, verify_postgres_identity
 
 
+async def _freeze_on_migrated_schema(capability, api_root):
+    """Reuse reviewed synthetic test inputs on actual migrations, never create_all."""
+    validate_test_environment()
+    sys.path.insert(0, str(api_root / "tests"))
+    from models.db import _to_async_dsn
+    from services.research_freeze import (
+        freeze_research_release,
+        inspect_research_release,
+    )
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from test_research_freeze import approved, seed
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), poolclass=NullPool,
+                                 isolation_level="SERIALIZABLE")
+    try:
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            connection = await session.connection()
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+            fixture = await seed(session)
+            _, arguments = await approved(session, fixture)
+            rehearsal = await freeze_research_release(session, **arguments)
+            assert rehearsal["dry_run"] is True
+            report = await freeze_research_release(session, **arguments, dry_run=False)
+            await session.commit()
+            replay = await freeze_research_release(session, **arguments, dry_run=False)
+            assert replay["release_id"] == report["release_id"] and replay["rows_inserted"] == 0
+            checked = await inspect_research_release(session, release_id=report["release_id"],
+                expected_manifest_sha256=report["manifest_sha256"], artifact_bytes=arguments["artifact_bytes"])
+            assert checked["scientific_acceptance"] is False and checked["ml_training_approved"] is False
+            await session.commit()
+            return report["release_id"]
+    finally:
+        await engine.dispose()
+
+
 def main() -> None:
     # This must run before importing config, Alembic or any database client.
     capability = validate_test_environment()
@@ -19,6 +55,7 @@ def main() -> None:
     from alembic.config import Config
     from alembic.migration import MigrationContext
     from alembic.script import ScriptDirectory
+    from services.schema_lifecycle import check_connection_schema
     from sqlalchemy import create_engine, inspect, text
 
     engine = create_engine(capability.database_url)
@@ -44,6 +81,10 @@ def main() -> None:
             assert connection.execute(text("SELECT has_competing_order FROM materials WHERE id = 'mat:semantics-missing'")).scalar_one() is None
         command.upgrade(config, "head")
         with engine.connect() as connection:
+            admission = check_connection_schema(connection)
+            assert admission["status"] == "compatible" and admission["database_mutated"] is False
+            verify_postgres_identity(connection, capability)
+        with engine.connect() as connection:
             verify_postgres_identity(connection, capability)
             heads = set(MigrationContext.configure(connection).get_current_heads())
             assert heads == set(ScriptDirectory.from_config(config).get_heads())
@@ -61,6 +102,8 @@ def main() -> None:
             assert {"source_revisions", "source_captures", "claim_source_occurrences"} <= set(schema.get_table_names())
             assert {"research_import_snapshots", "research_import_occurrences", "research_import_revisions",
                     "research_import_memberships", "research_import_receipts"} <= set(schema.get_table_names())
+            assert {"research_integrity_epoch", "research_releases", "research_release_pins",
+                    "research_release_notices"} <= set(schema.get_table_names())
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
                 WHERE NOT tgisinternal AND tgname LIKE 'research_import_%_immutable_%'""")).scalar_one() == 10
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
@@ -192,7 +235,21 @@ def main() -> None:
             assert connection.execute(text("SELECT status FROM research_import_snapshots")).scalar_one() == "captured"
             assert connection.execute(text("SELECT count(*) FROM source_revisions")).scalar_one() == 1
             assert set(MigrationContext.configure(connection).get_current_heads()) == set(ScriptDirectory.from_config(config).get_heads())
-        print("Disposable migration head and empty round trips, legacy raw/governance preservation, correction/source/shadow-import nonempty rollback guards verified.")
+        import asyncio
+        release_id = asyncio.run(_freeze_on_migrated_schema(capability, api_root))
+        try:
+            validate_test_environment()
+            command.downgrade(config, "0053_research_import")
+        except RuntimeError as exc:
+            assert "release history contains records" in str(exc)
+        else:
+            raise AssertionError("Nonempty research release downgrade must fail closed")
+        with engine.connect() as connection:
+            assert check_connection_schema(connection)["status"] == "compatible"
+            verify_postgres_identity(connection, capability)
+            assert connection.execute(text("SELECT count(*) FROM research_releases WHERE id=CAST(:id AS uuid)"),
+                                      {"id": release_id}).scalar_one() == 1
+        print("Disposable migration head/admission and empty round trips, legacy preservation, real migrated-schema freeze/replay, and nonempty correction/source/import/release rollback guards verified.")
     finally:
         engine.dispose()
 
