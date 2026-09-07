@@ -17,6 +17,7 @@ ingest, aggregation, stats refresh, and scoped data-audit jobs.
 The local research branch has separate [implementation records](docs/reviews/2026-09-05/README.md).
 Its latest infrastructure adds [bounded internal research integrity capsules](docs/RESEARCH_RELEASE_FREEZE.md)
 and [explicit schema migration with read-only API admission](docs/SCHEMA_ROLLOUT.md).
+The next boundary adds [explicit research-role access and reviewed metadata-only publications](docs/RESEARCH_PUBLICATION_ACCESS.md).
 These are not a production rollout, scientifically approved training datasets,
 or permission to redistribute source text and artifacts. The production snapshot
 below is historical and must not be read as validation of these local upgrades.

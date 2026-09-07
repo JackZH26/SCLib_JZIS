@@ -20,6 +20,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import func, or_, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
@@ -36,6 +37,11 @@ from models.db import AuditReport, Material, User
 from models.user import MessageResponse
 from routers.auth import current_user_from_jwt
 from services.material_anomalies import material_review, review_context
+from services.research_audit_retention import (
+    RETENTION_MESSAGE,
+    has_research_audit_references,
+    is_research_audit_reference_violation,
+)
 
 log = logging.getLogger(__name__)
 
@@ -167,9 +173,17 @@ async def delete_user(
         raise HTTPException(
             400, "Cannot delete another admin; demote first via SQL",
         )
+    if await has_research_audit_references(db, target.id):
+        raise HTTPException(409, RETENTION_MESSAGE, headers={"Cache-Control": "no-store"})
     email = target.email
-    await db.delete(target)
-    await db.commit()
+    try:
+        await db.delete(target)
+        await db.commit()
+    except IntegrityError as exc:
+        await db.rollback()
+        if is_research_audit_reference_violation(exc):
+            raise HTTPException(409, RETENTION_MESSAGE, headers={"Cache-Control": "no-store"}) from None
+        raise
     log.warning("admin %s deleted user %s", admin.email, email)
     return MessageResponse(message=f"Deleted {email}")
 

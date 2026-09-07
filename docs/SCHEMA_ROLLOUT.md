@@ -147,6 +147,10 @@ dependencies unchanged, including `research_schema_v1.py`,
 `services/research_release_spec.py`, despite the latter's service-directory name.
 Do not edit that wire specification in place when introducing future fields or
 foreign keys; add a new versioned specification/schema module and migration.
+Revision 0055 similarly freezes `models/research_publication_v1.py`, including
+its closed metadata projection and SQL object-hash rules. Extend public egress
+with a new policy version and reviewed migration; do not broaden old stored
+permission scopes or amend historical approvals in place.
 Extend released modules using a new revision, never by redefining old semantics.
 The current branch's new release schema follows this rule once released. Reviewers must compare
 these files against the exact deployed/released Git commit and signed image;

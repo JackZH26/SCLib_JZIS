@@ -14,7 +14,10 @@ from sqlalchemy.exc import SQLAlchemyError
 from models.db import MaterialClaim
 from routers import ml_foundation
 from services.temporal_provenance import SourceAvailabilityWitness
+from tests import research_access_helpers
 from tests.test_ml_claim_visibility import _seed
+
+client = research_access_helpers.research_operator_client
 
 EARLY = datetime(2020, 1, 1, tzinfo=UTC)
 LATE = datetime(2021, 1, 1, tzinfo=UTC)

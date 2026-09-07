@@ -1,7 +1,9 @@
-"""Read-only endpoints for auditable SCLib ML Foundation data.
+"""Internal read-only endpoints for auditable SCLib ML Foundation data.
 
-Phase 1 deliberately exposes typed claims and immutable snapshot metadata
-without changing the legacy material-detail response.  UUID keyset cursors
+The legacy feature flag is an operational kill switch, never public release
+approval. Authenticated, explicitly granted research operators can inspect
+typed claims and snapshot metadata without changing material-detail responses.
+UUID keyset cursors
 avoid the unstable offset pagination that is unsuitable for reproducible
 training exports.
 """
@@ -29,6 +31,7 @@ from models.db import (
     Paper,
     PaperWorkMap,
     SourceSnapshot,
+    User,
     Work,
 )
 from models.ml_foundation import (
@@ -39,9 +42,10 @@ from models.ml_foundation import (
     SourceSnapshotResponse,
     WorkResponse,
 )
-from routers.deps import Identity, peek_identity
+from routers.auth import current_user_from_jwt
 from services.material_visibility import MATERIAL_VISIBILITY_VERSION, sanitize_review_metadata
 from services.material_visibility_adapter import material_view, prepare_material_views
+from services.research_access import ResearchAccessDenied, require_research_operator
 from services.source_registry import resolve_claim_source_witnesses
 from services.source_visibility import occurrence_visibility, source_visibility
 from services.temporal_provenance import result_temporal_provenance, utc_datetime
@@ -49,18 +53,44 @@ from services.temporal_snapshots import utc_instant
 
 
 async def require_ml_foundation_public_enabled() -> None:
-    """Fail closed until the reviewed shadow dataset is approved for release."""
+    """Retain the legacy kill switch without treating it as release authority."""
     if not get_settings().ml_foundation_public_enabled:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Not found")
 
 
+DatabaseSession = Annotated[AsyncSession, Depends(get_db)]
+
+
+async def require_ml_foundation_operator(
+    user: Annotated[User, Depends(current_user_from_jwt)],
+    db: DatabaseSession,
+) -> None:
+    """A live, explicit research role is required even for a site administrator."""
+    try:
+        await require_research_operator(db, user.id)
+    except ResearchAccessDenied:
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Research operator access required",
+            headers={"Cache-Control": "private, no-store"},
+        ) from None
+    except SQLAlchemyError:
+        # Admission registry failure is not evidence that access is allowed.
+        # Never disclose database/driver details to the authenticated caller.
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "Research access registry unavailable",
+            headers={"Cache-Control": "private, no-store"},
+        ) from None
+
+
 router = APIRouter(
     tags=["ml-foundation"],
-    dependencies=[Depends(require_ml_foundation_public_enabled)],
+    dependencies=[
+        Depends(require_ml_foundation_public_enabled),
+        Depends(require_ml_foundation_operator),
+    ],
 )
-
-PublicIdentity = Annotated[Identity, Depends(peek_identity)]
-DatabaseSession = Annotated[AsyncSession, Depends(get_db)]
 
 MAX_CLAIM_SCAN_ROWS = 5_000
 
@@ -264,7 +294,6 @@ async def _claim_page(
 
 @router.get("/claims", response_model=MaterialClaimPage, dependencies=[Depends(claims_no_store)])
 async def list_claims(
-    identity: PublicIdentity,  # noqa: ARG001
     db: DatabaseSession,
     material_id: Annotated[str | None, Query()] = None,
     work_id: Annotated[uuid.UUID | None, Query()] = None,
@@ -295,7 +324,6 @@ async def list_claims(
 @router.get("/claims/{claim_id}", response_model=MaterialClaimResponse, dependencies=[Depends(claims_no_store)])
 async def claim_detail(
     claim_id: uuid.UUID,
-    identity: PublicIdentity,  # noqa: ARG001
     db: DatabaseSession,
 ) -> MaterialClaimResponse:
     claim = await db.get(MaterialClaim, claim_id)
@@ -317,7 +345,6 @@ async def claim_detail(
 @router.get("/materials/{material_id:path}/claims", response_model=MaterialClaimPage, dependencies=[Depends(claims_no_store)])
 async def material_claims(
     material_id: str,
-    identity: PublicIdentity,  # noqa: ARG001
     db: DatabaseSession,
     include_retracted: Annotated[bool, Query()] = False,
     include_pending: Annotated[bool, Query()] = False,
@@ -349,7 +376,6 @@ async def material_claims(
 @router.get("/works/{work_id}", response_model=WorkResponse)
 async def work_detail(
     work_id: uuid.UUID,
-    identity: PublicIdentity,  # noqa: ARG001
     db: DatabaseSession,
 ) -> WorkResponse:
     work = await db.get(Work, work_id)
@@ -382,7 +408,6 @@ async def work_detail(
 
 @router.get("/ml/source-snapshots", response_model=list[SourceSnapshotResponse])
 async def list_source_snapshots(
-    identity: PublicIdentity,  # noqa: ARG001
     db: DatabaseSession,
     include_unfrozen: Annotated[bool, Query()] = False,
     limit: Annotated[int, Query(ge=1, le=100)] = 20,
@@ -406,7 +431,6 @@ async def list_source_snapshots(
 
 @router.get("/ml/snapshots", response_model=list[MlDatasetSnapshotResponse])
 async def list_ml_snapshots(
-    identity: PublicIdentity,  # noqa: ARG001
     db: DatabaseSession,
     include_unfrozen: Annotated[bool, Query()] = False,
     limit: Annotated[int, Query(ge=1, le=100)] = 20,
@@ -435,7 +459,6 @@ async def list_ml_snapshots(
 )
 async def ml_snapshot_manifest(
     snapshot_id: uuid.UUID,
-    identity: PublicIdentity,  # noqa: ARG001
     db: DatabaseSession,
 ) -> MlDatasetManifestResponse:
     snapshot = await db.get(MlDatasetSnapshot, snapshot_id)

@@ -38,6 +38,7 @@ from routers import (
     ml_foundation,
     observability,
     papers,
+    research_publications,
     scientific_corrections,
     search,
     seo,
@@ -625,7 +626,7 @@ async def request_contract_middleware(request: Request, call_next):
         reset_request_id(token)
     response.headers["X-Request-ID"] = request_id
     response.headers["X-API-Version"] = version.API_VERSION
-    if request.url.path.startswith(("/v1/materials", "/v1/claims", "/v1/bookmarks", "/v1/paper/", "/v1/search", "/v1/ask", "/v1/timeline", "/v1/sitemap/")):
+    if request.url.path.startswith(("/v1/materials", "/v1/claims", "/v1/works", "/v1/ml", "/v1/bookmarks", "/v1/paper/", "/v1/search", "/v1/ask", "/v1/timeline", "/v1/sitemap/")):
         # Mutable governance must be checked on every read, including 404s.
         # A release-bound cache epoch is a separate future optimization.
         response.headers["Cache-Control"] = "private, no-store"
@@ -638,6 +639,7 @@ app.include_router(search.router, prefix="/v1")
 app.include_router(ask.router, prefix="/v1")
 # Keep the phase-1 material-claim route ahead of the legacy
 # ``/materials/{material_id:path}`` catch-all.
+app.include_router(research_publications.router, prefix="/v1")
 app.include_router(ml_foundation.router, prefix="/v1")
 app.include_router(materials.router, prefix="/v1")
 app.include_router(papers.router, prefix="/v1")

@@ -43,6 +43,47 @@ async def _freeze_on_migrated_schema(capability, api_root):
         await engine.dispose()
 
 
+async def _publication_on_migrated_schema(capability, api_root):
+    """Synthetic role/review/publication history on real 0055 migration tables."""
+    validate_test_environment()
+    sys.path.insert(0, str(api_root / "tests"))
+    from models.db import _to_async_dsn
+    from services.research_publication import (
+        PublicationUnavailable,
+        admitted_publication,
+        publication_action,
+    )
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from test_research_publication import published
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), poolclass=NullPool,
+                                 isolation_level="SERIALIZABLE")
+    try:
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            connection = await session.connection()
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+            fixture = await published(session)
+            await session.commit()
+            proposal = fixture["proposal"]
+            result = await admitted_publication(session, proposal["id"])
+            assert result["public_payload"] == proposal["public_payload"]
+            await publication_action(session, actor_user_id=fixture["actors"]["publisher"],
+                proposal_id=proposal["id"], review_id=fixture["review"]["id"],
+                expected_payload_sha256=proposal["payload_sha256"], kind="withdraw",
+                reason_code="synthetic_migration_withdrawal", dry_run=False)
+            await session.commit()
+            try:
+                await admitted_publication(session, proposal["id"])
+            except PublicationUnavailable:
+                pass
+            else:
+                raise AssertionError("Withdrawn metadata publication remained accessible")
+            return proposal["id"]
+    finally:
+        await engine.dispose()
+
+
 def main() -> None:
     # This must run before importing config, Alembic or any database client.
     capability = validate_test_environment()
@@ -104,6 +145,9 @@ def main() -> None:
                     "research_import_memberships", "research_import_receipts"} <= set(schema.get_table_names())
             assert {"research_integrity_epoch", "research_releases", "research_release_pins",
                     "research_release_notices"} <= set(schema.get_table_names())
+            assert {"research_publication_epoch", "research_role_grants", "research_role_revocations",
+                    "research_publication_permissions", "research_publication_proposals",
+                    "research_publication_reviews", "research_publication_actions"} <= set(schema.get_table_names())
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
                 WHERE NOT tgisinternal AND tgname LIKE 'research_import_%_immutable_%'""")).scalar_one() == 10
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger
@@ -249,7 +293,20 @@ def main() -> None:
             verify_postgres_identity(connection, capability)
             assert connection.execute(text("SELECT count(*) FROM research_releases WHERE id=CAST(:id AS uuid)"),
                                       {"id": release_id}).scalar_one() == 1
-        print("Disposable migration head/admission and empty round trips, legacy preservation, real migrated-schema freeze/replay, and nonempty correction/source/import/release rollback guards verified.")
+        publication_id = asyncio.run(_publication_on_migrated_schema(capability, api_root))
+        try:
+            validate_test_environment()
+            command.downgrade(config, "0054_research_release")
+        except RuntimeError as exc:
+            assert "governance history contains records" in str(exc)
+        else:
+            raise AssertionError("Nonempty research governance downgrade must fail closed")
+        with engine.connect() as connection:
+            assert check_connection_schema(connection)["status"] == "compatible"
+            verify_postgres_identity(connection, capability)
+            assert connection.execute(text("SELECT count(*) FROM research_publication_proposals WHERE id=CAST(:id AS uuid)"),
+                                      {"id": publication_id}).scalar_one() == 1
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal and nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 

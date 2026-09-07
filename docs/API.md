@@ -161,7 +161,15 @@ Returns a single material including its full JSONB `records` array
 composition enrichment has run, the response also includes
 `composition_status`, `composition_data`, and `composition_enriched_at`.
 
-### ML Foundation v1 (typed, read-only)
+### ML Foundation (internal typed reads and public metadata releases)
+
+All research routes remain disabled by default. When
+`ML_FOUNDATION_PUBLIC_ENABLED=true`, the original endpoints below still require
+a valid JWT/browser session, an active verified account and an explicit current
+curator/reviewer/publisher research grant. API-key-only credentials, ordinary
+membership and legacy administrator/reviewer flags do not authorize these reads.
+The switch is not publication approval. Responses and errors use
+`Cache-Control: private, no-store`.
 
 `GET /claims` returns condition-aware claim rows with UUID keyset pagination.
 Filters include `material_id`, `work_id`, `evidence_role`, `result_status`, and
@@ -174,10 +182,27 @@ work plus its source-specific paper IDs.
 
 `GET /ml/source-snapshots`, `GET /ml/snapshots`, and `GET
 /ml/snapshots/{snapshot_id}/manifest` expose frozen lineage and dataset policy
-metadata. Building snapshots are excluded by default.
+metadata to authorized operators. Building snapshots are excluded by default;
+operator-only inclusion options never enable anonymous access.
 
 These endpoints are an additive shadow path introduced by Alembic revision
 `0044_ml_foundation`; they do not replace `materials.records` in Phase 1.
+
+The separate `GET /ml/releases` collection returns only currently admitted
+metadata publications. `GET /ml/releases/{publication_id}`, the `/manifest`
+suffix and the `/download` suffix return identical canonical JSON bytes and an
+`X-Public-Manifest-SHA256` header. These reads do not require a user identity,
+but require the global switch and independently approved/published version with
+current per-object permissions. Drafts, raw snapshot/capsule IDs, withdrawals,
+negative reviews, revoked permissions/roles and current catalogue/source holds
+cannot bypass admission through any alias or list/count route.
+
+Version `research-public-metadata/1.0.0` contains table counts and opaque hashed
+object/permission receipts only. It excludes material identifiers, scientific
+values, source text, all flexible JSON, coordinates, URIs and artifact bytes.
+It is not a training dataset. No HTTP write/role-provisioning routes are added.
+See [Research publication access](RESEARCH_PUBLICATION_ACCESS.md) for the internal
+workflow, bounded-read behavior and remaining scientific/permission gates.
 
 ### `GET /timeline?family=cuprate`
 Flattens `Material.records` into a list of `(year, tc, formula)`

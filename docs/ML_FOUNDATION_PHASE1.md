@@ -170,7 +170,9 @@ not confer known-by availability or accepted scientific labels.
 
 ## Read-only API
 
-Migration 0044 enables the following additive endpoints:
+Migration 0044 introduced the following additive endpoints. The ML07 upgrade
+restricts them to authenticated, explicitly authorized research operators; the
+global feature switch alone no longer permits anonymous access:
 
 - `GET /v1/claims`
 - `GET /v1/claims/{claim_id}`
@@ -182,7 +184,7 @@ Migration 0044 enables the following additive endpoints:
 
 Claim collections use a UUID keyset cursor. The global claim endpoint applies
 the same NIMS provenance quarantine as the existing materials API. Raw legacy
-records and licensed source text are intentionally excluded from public claim
+records and licensed source text are intentionally excluded from typed claim
 responses.
 
 ML01 adds an optional timezone-aware, inclusive `cutoff` to the two claim
@@ -194,9 +196,14 @@ ML-release approval. See [Temporal consumers](TEMPORAL_CONSUMERS.md) for trust
 boundaries, dependency propagation and remaining release gates.
 
 All ML Foundation routes fail closed with HTTP 404 while
-`ML_FOUNDATION_PUBLIC_ENABLED=false` (the default). Staging may enable the flag
-for shadow validation; production must not enable it until typed-claim QC,
-license review, and legacy/typed parity gates have passed.
+`ML_FOUNDATION_PUBLIC_ENABLED=false` (the default). When enabled, these seven
+raw routes additionally require a valid JWT/browser session, active verified
+account and explicit unrevoked research role. Building/frozen JSON status is
+not public release authority. Separate `/v1/ml/releases` routes expose only
+independently admitted, metadata-only publication bodies. No scientific values
+or training examples are released by that v1 policy. See
+[Research publication access](RESEARCH_PUBLICATION_ACCESS.md); production still
+requires separately approved source rights, review and rollout gates.
 
 ## Controlled operational acceptance order
 

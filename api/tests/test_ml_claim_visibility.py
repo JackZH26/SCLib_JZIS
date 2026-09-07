@@ -6,6 +6,9 @@ import uuid
 import pytest
 
 from models.db import Material, MaterialClaim, Paper, SourceSnapshot, Work
+from tests import research_access_helpers
+
+client = research_access_helpers.research_operator_client
 
 
 async def _seed(db, *, material_changes=None, paper_status="published", work_status="active", validity="accepted", raw=None):

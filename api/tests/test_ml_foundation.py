@@ -20,6 +20,9 @@ from models.db import (
     Work,
     get_session_factory,
 )
+from tests import research_access_helpers
+
+client = research_access_helpers.research_operator_client
 
 
 @pytest.mark.asyncio
