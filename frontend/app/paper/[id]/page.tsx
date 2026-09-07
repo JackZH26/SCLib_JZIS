@@ -15,6 +15,10 @@ import { absoluteUrl, serializeJsonLd } from "@/lib/seo";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { PaperCard } from "@/components/PaperCard";
 import { pressureLabel } from "@/lib/pressure-semantics";
+import { MaterialVisibilityNotice, SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
+import { knownSourceVisibility, sourceVisibilityLabel, visibilityIsRestricted } from "@/lib/material-visibility";
+
+export const dynamic = "force-dynamic";
 
 type PaperPageProps = {
   params: Promise<{ id: string }>;
@@ -36,11 +40,13 @@ export async function generateMetadata({
   const id = decodeURIComponent(encodedId);
   try {
     const paper = await loadPaper(id);
-    const description = descriptionFromAbstract(paper.abstract);
+    const sourceActive = knownSourceVisibility(paper.source_visibility)?.source_status === "active";
+    const description = sourceActive ? descriptionFromAbstract(paper.abstract) : `Bibliographic source Archive. ${sourceVisibilityLabel(paper.source_visibility)}. Retained for source inspection, not scientific approval.`;
     const canonical = absoluteUrl(`/paper/${encodeURIComponent(paper.id)}`);
     return {
       title: paper.title,
       description,
+      robots: sourceActive ? undefined : { index: false, follow: false, noarchive: true },
       alternates: { canonical },
       openGraph: {
         type: "article",
@@ -89,12 +95,13 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
   }
 
   const similar = await getSimilar(id, 6).catch(() => null);
+  const sourceActive = knownSourceVisibility(paper.source_visibility)?.source_status === "active";
   const canonical = absoluteUrl(`/paper/${encodeURIComponent(paper.id)}`);
   const paperStructuredData = {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
     headline: paper.title,
-    abstract: paper.abstract,
+    ...(sourceActive ? { abstract: paper.abstract } : { description: sourceVisibilityLabel(paper.source_visibility) }),
     url: canonical,
     author: paper.authors.map((name) => ({ "@type": "Person", name })),
     datePublished: paper.date_submitted,
@@ -180,6 +187,7 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
         </div>
       </div>
 
+      <SourceVisibilityNotice visibility={paper.source_visibility} />
       <section>
         <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
           Abstract
@@ -192,14 +200,14 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
       {paper.materials_extracted.length > 0 && (
         <section>
           <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
-            Extracted materials
+            Source-reported materials — not catalogue approval
           </h2>
           <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
             <table className="w-full text-sm">
               <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                 <tr>
                   <th className="px-4 py-3 text-left font-medium">Formula</th>
-                  <th className="px-4 py-3 text-right font-medium">Tc (K)</th>
+                  <th className="px-4 py-3 text-right font-medium">Reported Tc (K)</th>
                   <th className="px-4 py-3 text-right font-medium">
                     Pressure (GPa)
                   </th>
@@ -207,10 +215,11 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {paper.materials_extracted.map((m, i) => (
+                {paper.materials_extracted.filter(m => !visibilityIsRestricted(m.visibility)).map((m, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="px-4 py-3 font-medium text-slate-900">
                       {m.formula ?? "—"}
+                      <MaterialVisibilityNotice visibility={m.visibility} compact scope="source occurrence" />
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums">
                       {m.tc_kelvin ?? "—"}

@@ -41,8 +41,8 @@ from ingestion.extract.scientific_values import (
 from ingestion.extract.scientific_values import (
     PARSER_VERSION as VALUE_PARSER_VERSION,
 )
-from ingestion.result_semantics import classify_result, legacy_evidence_role
 from ingestion.pressure_semantics import classify_pressure
+from ingestion.result_semantics import classify_result, legacy_evidence_role
 
 CLAIM_MAPPER_VERSION = "legacy-material-record/v1.3"
 
@@ -166,7 +166,7 @@ def source_record_identity(
     Keeping this identity contract public lets the independent parity layer
     verify persisted payloads instead of merely checking that a supplied hash
     looks like 64 hexadecimal characters. Reserved result_classification,
-    pressure_semantics, property_evidence and anomaly_review envelopes are
+    pressure_semantics, property_evidence, anomaly_review and visibility envelopes are
     derived API annotations, not source evidence. Excluding them
     preserves existing (unannotated) v1 identities and API export round trips;
     arbitrary scientific/raw fields remain part of identity.
@@ -177,7 +177,7 @@ def source_record_identity(
         "paper_id": paper_id,
         "raw_record": _json_safe({
             key: value for key, value in raw_record.items()
-            if key not in {"result_classification", "pressure_semantics", "property_evidence", "anomaly_review"}
+            if key not in {"result_classification", "pressure_semantics", "property_evidence", "anomaly_review", "visibility"}
         }),
         "source_locator": _json_safe(dict(source_locator)),
     }

@@ -208,8 +208,8 @@ def test_driver_retains_high_and_low_numeric_records_but_keeps_source_quality_fi
             if "FROM pipeline_state" in query:
                 return Result([(str(aggregator.NORMALIZE_SCHEMA_VERSION),)])
             if "FROM papers" in query:
-                return Result([("arxiv:synthetic", "arxiv", None, None, input_records, "T1"),
-                               ("arxiv:excluded-tier", "arxiv", None, None, [record()], "T4")])
+                return Result([("arxiv:synthetic", "arxiv", None, None, input_records, "T1", "published"),
+                               ("arxiv:excluded-tier", "arxiv", None, None, [record()], "T4", "published")])
             return Result([])
 
     db = FakeDatabase()

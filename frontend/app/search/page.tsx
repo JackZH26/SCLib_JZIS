@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
   search,
@@ -11,8 +12,11 @@ import {
 } from "@/lib/api";
 import { SearchBar } from "@/components/SearchBar";
 import { PaperCard } from "@/components/PaperCard";
+import { SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
 import { GuestBanner } from "@/components/GuestBanner";
 import { MarkdownAnswer } from "@/components/MarkdownAnswer";
+import { AskSupportNotice } from "@/components/AskSupportNotice";
+import { resolveAskSource } from "@/lib/ask-support";
 
 export default function SearchPage() {
   return (
@@ -121,18 +125,13 @@ function SearchInner() {
           <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-sage-tertiary">
             AI Answer
           </h2>
-          {!askData.citation_valid ? (
-            <p className="mb-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-              Automated citation checks flagged this answer. Verify each claim
-              against the linked source excerpts before relying on it.
-            </p>
-          ) : null}
+          <AskSupportNotice response={askData} />
           <MarkdownAnswer markdown={askData.answer} sources={askData.sources} />
           <div className="mt-4 flex flex-wrap gap-2 border-t border-sage-border pt-4">
-            {askData.sources.map((s) => (
-              <a
-                key={s.index}
-                id={`src-${s.index}`}
+            {askData.sources.map((s, sourcePosition) => (
+              <Link
+                key={`${s.index}:${sourcePosition}`}
+                id={resolveAskSource(s.index, askData.sources) ? `src-${s.index}` : undefined}
                 href={`/paper/${encodeURIComponent(s.paper_id)}`}
                 className="group flex items-baseline gap-1.5 rounded-md border border-sage-border px-2.5 py-1.5 text-xs transition-colors hover:bg-sage-bg"
               >
@@ -143,7 +142,8 @@ function SearchInner() {
                 {s.year && (
                   <span className="text-sage-tertiary">{s.year}</span>
                 )}
-              </a>
+                <SourceVisibilityNotice visibility={s.source_visibility} compact />
+              </Link>
             ))}
           </div>
           <div className="mt-2 text-xs text-sage-tertiary">
@@ -192,6 +192,7 @@ function SearchInner() {
                 score={r.relevance_score}
                 scoreLabel="relevance"
                 matchingResults={r.matching_results}
+                sourceVisibility={r.source_visibility}
                 badges={[
                   ...(r.material_family ? [r.material_family] : []),
                   ...(r.has_equation ? ["equations"] : []),

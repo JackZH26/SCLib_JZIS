@@ -128,6 +128,7 @@ materials_table = Table(
     # SC03: derived, versioned review context; raw records remain separate.
     Column("anomaly_review", JSONB, nullable=False, server_default="{}"),
     Column("anomaly_context", JSONB, nullable=False, server_default="{}"),
+    Column("material_semantics", JSONB, nullable=False, server_default="{}"),
     Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
     # --- v2 structural ----------------------------------------------------
     Column("space_group", String(50)),
@@ -155,7 +156,7 @@ materials_table = Table(
     Column("doping_level", Float),
     # --- v2 flags ---------------------------------------------------------
     Column("is_unconventional", Boolean),
-    Column("has_competing_order", Boolean, server_default="false"),
+    Column("has_competing_order", Boolean),
     Column("retracted", Boolean, server_default="false"),
     Column("disputed", Boolean, server_default="false"),
     # Aggregate best credibility tier across a material's papers. Added

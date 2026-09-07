@@ -15,7 +15,11 @@ test("sitemap inventory is paginated and produces canonical encoded URLs", async
   ]);
 
   assert.match(api, /\/sitemap\/resources\?/);
-  assert.match(api, /next: \{ revalidate: 3600 \}/);
+  const inventoryFetch = api.slice(api.indexOf("export function listSitemapResources("), api.indexOf("export interface StatsResponse"));
+  assert.match(inventoryFetch, /cache: "no-store"/);
+  assert.doesNotMatch(inventoryFetch, /force-cache|revalidate/);
+  assert.match(indexRoute, /dynamic = "force-dynamic"/);
+  assert.match(resourceRoute, /dynamic = "force-dynamic"/);
   assert.match(indexRoute, /SITEMAP_PAGE_SIZE/);
   assert.match(indexRoute, /sitemaps\/static\.xml/);
   assert.match(resourceRoute, /encodeURIComponent\(resource\.id\)/);

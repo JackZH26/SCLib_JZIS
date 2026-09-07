@@ -92,7 +92,7 @@ describe("scientific anomaly display", () => {
     expect(container.querySelector("script")).toBeNull();
     expect(screen.getByText(/not a full historical archive/)).toBeInTheDocument();
     expect(screen.getByText(/not necessarily a verbatim source quotation/)).toBeInTheDocument();
-    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Download authorized Archive with review metadata/ })).toHaveAttribute("download", "sclib-retained-scientific-archive.json");
   });
 
   it("does not use missing, unknown-version or differently scoped Archive payloads", () => {

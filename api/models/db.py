@@ -631,6 +631,8 @@ class Material(Base):
     # Neither field is permission to alter raw records or approve a claim.
     anomaly_review: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict, server_default=text("'{}'::jsonb"), nullable=False)
     anomaly_context: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict, server_default=text("'{}'::jsonb"), nullable=False)
+    # SC10: rebuildable reported-property/heterogeneity view, not approval.
+    material_semantics: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict, server_default=text("'{}'::jsonb"), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
         _TZDT, server_default=func.now(), onupdate=func.now(), nullable=False
     )
@@ -665,7 +667,7 @@ class Material(Base):
 
     # --- v2 flags ---------------------------------------------------------
     is_unconventional:   Mapped[bool | None] = mapped_column(Boolean)
-    has_competing_order: Mapped[bool | None] = mapped_column(Boolean, server_default="false")
+    has_competing_order: Mapped[bool | None] = mapped_column(Boolean)
     retracted:           Mapped[bool | None] = mapped_column(Boolean, server_default="false")
     disputed:            Mapped[bool | None] = mapped_column(Boolean, server_default="false")
 
@@ -745,7 +747,7 @@ class Material(Base):
 
 
 class TimelineProjectionPoint(Base):
-    """Read-optimized projection of one validated Timeline measurement.
+    """Read-optimized projection of one source-reported Timeline occurrence.
 
     ``materials.records`` remains the authoritative source. Rows are updated
     transactionally by the API's projection refresher; stale derived rows are
@@ -764,6 +766,8 @@ class TimelineProjectionPoint(Base):
     tc_kelvin: Mapped[float] = mapped_column(Float, nullable=False)
     pressure_gpa: Mapped[float | None] = mapped_column(Float)
     pressure_semantics: Mapped[dict] = mapped_column(JSONB, server_default=text("'{}'::jsonb"), nullable=False)
+    # Rebuildable identity/date provenance; never an accepted result ledger.
+    result_metadata: Mapped[dict] = mapped_column(JSONB, server_default=text("'{}'::jsonb"), nullable=False)
     paper_id: Mapped[str | None] = mapped_column(String(100))
     is_theoretical: Mapped[bool] = mapped_column(
         Boolean, server_default="false", nullable=False,

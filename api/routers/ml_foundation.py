@@ -8,10 +8,12 @@ training exports.
 
 from __future__ import annotations
 
+import hashlib
+import json
 import uuid
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -21,6 +23,7 @@ from models.db import (
     Material,
     MaterialClaim,
     MlDatasetSnapshot,
+    Paper,
     PaperWorkMap,
     SourceSnapshot,
     Work,
@@ -34,6 +37,9 @@ from models.ml_foundation import (
     WorkResponse,
 )
 from routers.deps import Identity, peek_identity
+from services.material_visibility import MATERIAL_VISIBILITY_VERSION, sanitize_review_metadata
+from services.material_visibility_adapter import material_view, prepare_material_views
+from services.source_visibility import occurrence_visibility, source_visibility
 
 
 async def require_ml_foundation_public_enabled() -> None:
@@ -49,6 +55,69 @@ router = APIRouter(
 
 PublicIdentity = Annotated[Identity, Depends(peek_identity)]
 DatabaseSession = Annotated[AsyncSession, Depends(get_db)]
+
+
+def claims_no_store(response: Response) -> None:
+    response.headers["Cache-Control"] = "no-store"
+
+
+def _claim_response(claim, material_context, paper_status, work_status):
+    """Keep claim validity distinct from current material and source visibility."""
+    occurrence = occurrence_visibility(
+        claim.raw_record if isinstance(claim.raw_record, dict) else {}, paper_status=paper_status,
+        linked_visibility=material_context.visibility,
+    )
+    source = source_visibility(paper_status)
+    work = source_visibility(work_status)
+    reasons = set(occurrence["reason_codes"])
+    warnings = set(occurrence["warning_codes"])
+    warnings.add("stored_claim_validity_is_not_material_or_ml_approval")
+    if claim.validity_status != "accepted":
+        reasons.add("claim_validity_" + claim.validity_status)
+    if work["source_status"] in {"retracted", "corrected", "disputed"}:
+        reasons.add("claim_work_" + work["source_status"])
+    if claim.work_id and work["source_status"] == "unknown":
+        warnings.add("claim_work_status_unknown")
+    state = occurrence["state"]
+    lifecycle_states = {state, source["source_status"], work["source_status"], claim.validity_status}
+    if not occurrence["archive_available"]:
+        state = "quarantined"
+    elif "retracted" in lifecycle_states:
+        state = "retracted"
+    elif "disputed" in lifecycle_states:
+        state = "disputed"
+    elif "corrected" in lifecycle_states:
+        state = "corrected"
+    elif claim.validity_status != "accepted" and state == "catalogue":
+        state = "pending"
+    eligible = (occurrence["public_catalogue_eligible"] and claim.validity_status == "accepted"
+                and work["reported_claim_filter_eligible"] and source["reported_claim_filter_eligible"])
+    if not eligible:
+        warnings.add("archive_only")
+    claim_visibility = {
+        "version": MATERIAL_VISIBILITY_VERSION, "state": state,
+        "public_claim_eligible": eligible, "archive_available": occurrence["archive_available"],
+        "scientific_acceptance": False, "ml_training_eligibility_established": False,
+        "stored_validity_status": claim.validity_status,
+        "source_status": source["source_status"], "work_status": work["source_status"],
+        "reason_codes": sorted(reasons), "warning_codes": sorted(warnings),
+    }
+    fingerprint = {**claim_visibility, "material_revision": material_context.visibility["review_revision"],
+                   "claim_id": str(claim.id), "claim_updated_at": str(claim.updated_at)}
+    claim_visibility["review_revision"] = hashlib.sha256(json.dumps(fingerprint, sort_keys=True).encode()).hexdigest()
+    payload = {name: getattr(claim, name) for name in MaterialClaimResponse.model_fields if hasattr(claim, name)}
+    payload.update(visibility=material_context.visibility, claim_visibility=claim_visibility)
+    typed = MaterialClaimResponse.model_validate(payload)
+    return MaterialClaimResponse.model_validate(sanitize_review_metadata(typed.model_dump(mode="json")))
+
+
+def _claim_allowed(response, *, include_pending, include_retracted):
+    visibility = response.claim_visibility
+    if not visibility["archive_available"]:
+        return False
+    if visibility["state"] == "retracted" and not include_retracted:
+        return False
+    return visibility["public_claim_eligible"] or include_pending
 
 
 def _source_snapshot_response(row: SourceSnapshot) -> SourceSnapshotResponse:
@@ -79,20 +148,15 @@ async def _claim_page(
     result_status: str | None,
     validity_status: str | None,
     include_retracted: bool,
+    include_pending: bool,
     cursor: uuid.UUID | None,
     limit: int,
 ) -> MaterialClaimPage:
-    # Apply the same provenance quarantine as the legacy materials API. A
-    # global claim query must not make hidden material rows visible through a
-    # different endpoint.
     stmt = (
-        select(MaterialClaim)
+        select(MaterialClaim, Material, Paper.status, Work.publication_status)
         .join(Material, Material.id == MaterialClaim.material_id)
+        .outerjoin(Paper, Paper.id == MaterialClaim.paper_id)
         .outerjoin(Work, Work.id == MaterialClaim.work_id)
-    )
-    stmt = stmt.where(
-        (Material.review_reason.is_(None))
-        | (Material.review_reason != "provenance_quarantine_nims")
     )
     if material_id is not None:
         stmt = stmt.where(MaterialClaim.material_id == material_id)
@@ -104,27 +168,39 @@ async def _claim_page(
         stmt = stmt.where(MaterialClaim.result_status == result_status)
     if validity_status is not None:
         stmt = stmt.where(MaterialClaim.validity_status == validity_status)
-    if not include_retracted:
-        stmt = stmt.where(
-            MaterialClaim.validity_status != "retracted",
-            (MaterialClaim.work_id.is_(None)) | (Work.publication_status != "retracted"),
-        )
-    if cursor is not None:
-        stmt = stmt.where(MaterialClaim.id > cursor)
-
-    rows = (
-        (await db.execute(stmt.order_by(MaterialClaim.id.asc()).limit(limit + 1))).scalars().all()
-    )
-    has_more = len(rows) > limit
-    visible = rows[:limit]
+    # Continue scanning after held rows until limit+1 *eligible* claims exist.
+    # Cursor remains the last returned eligible ID, never the lookahead ID.
+    visible = []
+    scan_cursor = cursor
+    batch_size = max(100, limit * 2)
+    while len(visible) <= limit:
+        query = stmt.where(MaterialClaim.id > scan_cursor) if scan_cursor is not None else stmt
+        rows = (await db.execute(query.order_by(MaterialClaim.id.asc()).limit(batch_size))).all()
+        if not rows:
+            break
+        material_rows = {material.id: material for _, material, _, _ in rows}
+        contexts = {context.id: context for context in await prepare_material_views(db, material_rows.values())}
+        for claim, material, paper_status, work_status in rows:
+            response = _claim_response(claim, contexts[material.id], paper_status, work_status)
+            if _claim_allowed(response, include_pending=include_pending, include_retracted=include_retracted):
+                visible.append(response)
+                if len(visible) > limit:
+                    break
+        scan_cursor = rows[-1][0].id
+        if len(rows) < batch_size:
+            break
+    has_more = len(visible) > limit
+    visible = visible[:limit]
     return MaterialClaimPage(
-        items=[MaterialClaimResponse.model_validate(row) for row in visible],
+        items=visible,
         limit=limit,
         next_cursor=visible[-1].id if has_more and visible else None,
+        has_more=has_more,
+        view_scope="archive" if include_pending else "catalogue",
     )
 
 
-@router.get("/claims", response_model=MaterialClaimPage)
+@router.get("/claims", response_model=MaterialClaimPage, dependencies=[Depends(claims_no_store)])
 async def list_claims(
     identity: PublicIdentity,  # noqa: ARG001
     db: DatabaseSession,
@@ -134,6 +210,7 @@ async def list_claims(
     result_status: Annotated[str | None, Query()] = None,
     validity_status: Annotated[str | None, Query()] = None,
     include_retracted: Annotated[bool, Query()] = False,
+    include_pending: Annotated[bool, Query()] = False,
     cursor: Annotated[uuid.UUID | None, Query()] = None,
     limit: Annotated[int, Query(ge=1, le=200)] = 100,
 ) -> MaterialClaimPage:
@@ -145,12 +222,13 @@ async def list_claims(
         result_status=result_status,
         validity_status=validity_status,
         include_retracted=include_retracted,
+        include_pending=include_pending,
         cursor=cursor,
         limit=limit,
     )
 
 
-@router.get("/claims/{claim_id}", response_model=MaterialClaimResponse)
+@router.get("/claims/{claim_id}", response_model=MaterialClaimResponse, dependencies=[Depends(claims_no_store)])
 async def claim_detail(
     claim_id: uuid.UUID,
     identity: PublicIdentity,  # noqa: ARG001
@@ -160,22 +238,29 @@ async def claim_detail(
     if claim is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Claim {claim_id!s} not found")
     material = await db.get(Material, claim.material_id)
-    if material is None or material.review_reason == "provenance_quarantine_nims":
+    context = await material_view(db, material)
+    if context is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Claim {claim_id!s} not found")
-    return MaterialClaimResponse.model_validate(claim)
+    paper = await db.get(Paper, claim.paper_id) if claim.paper_id else None
+    work = await db.get(Work, claim.work_id) if claim.work_id else None
+    response = _claim_response(claim, context, paper.status if paper else None, work.publication_status if work else None)
+    if not response.claim_visibility["archive_available"]:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"Claim {claim_id!s} not found")
+    return response
 
 
-@router.get("/materials/{material_id:path}/claims", response_model=MaterialClaimPage)
+@router.get("/materials/{material_id:path}/claims", response_model=MaterialClaimPage, dependencies=[Depends(claims_no_store)])
 async def material_claims(
     material_id: str,
     identity: PublicIdentity,  # noqa: ARG001
     db: DatabaseSession,
     include_retracted: Annotated[bool, Query()] = False,
+    include_pending: Annotated[bool, Query()] = False,
     cursor: Annotated[uuid.UUID | None, Query()] = None,
     limit: Annotated[int, Query(ge=1, le=200)] = 100,
 ) -> MaterialClaimPage:
     material = await db.get(Material, material_id)
-    if material is None or material.review_reason == "provenance_quarantine_nims":
+    if await material_view(db, material) is None:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND,
             f"Material {material_id!r} not found",
@@ -188,6 +273,7 @@ async def material_claims(
         result_status=None,
         validity_status=None,
         include_retracted=include_retracted,
+        include_pending=include_pending,
         cursor=cursor,
         limit=limit,
     )

@@ -125,6 +125,7 @@ export function AskHistoryList({
                   <h4 className="mt-4 text-xs font-semibold uppercase tracking-wide text-sage-tertiary">
                     Answer
                   </h4>
+                  <p className="mt-1 text-xs text-amber-900">Scientific support status is unknown for this saved answer snapshot. Historical citations are not evidence of scientific verification; the current claim-check audit is not stored here.</p>
                   <pre className="mt-1 whitespace-pre-wrap break-words rounded-md bg-white p-3 text-sm leading-relaxed text-sage-ink">
                     {e.answer}
                   </pre>
@@ -133,6 +134,7 @@ export function AskHistoryList({
                       <h4 className="mt-4 text-xs font-semibold uppercase tracking-wide text-sage-tertiary">
                         Sources
                       </h4>
+                      <p className="mt-1 text-xs text-amber-900">Saved answer snapshot: source status may have changed. Open each source for its current review warnings before reusing a claim.</p>
                       <ol className="mt-1 space-y-1 text-xs text-sage-muted">
                         {e.sources.map((s, i) => (
                           <li key={i} className="flex gap-2">

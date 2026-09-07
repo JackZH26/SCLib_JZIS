@@ -405,6 +405,10 @@ export interface BookmarkedPaper {
 }
 
 export interface BookmarkedMaterial {
+  material_semantics?: MaterialSemantics;
+  visibility?: MaterialVisibility;
+  needs_review?: boolean;
+  review_reason?: string | null;
   anomaly_review?: MaterialAnomalyReview;
   property_evidence?: MaterialPropertyEvidence;
   id: string;
@@ -494,6 +498,7 @@ export interface SearchRequest {
 }
 
 export interface MaterialExtract {
+  visibility?: SourceOccurrenceVisibility;
   formula?: string | null;
   tc_kelvin?: number | null;
   tc_type?: string | null;
@@ -504,6 +509,7 @@ export interface MaterialExtract {
 }
 
 export interface MatchingScientificResult {
+  visibility?: MaterialVisibility | SourceOccurrenceVisibility;
   result_id: string;
   record_index: number;
   formula: string | null;
@@ -515,6 +521,8 @@ export interface MatchingScientificResult {
 }
 
 export interface SearchMatch {
+  source_visibility?: SourceVisibility;
+  occurrence_visibility_summary?: Record<string, unknown>;
   paper_id: string;
   arxiv_id: string | null;
   title: string;
@@ -558,6 +566,7 @@ export interface AskRequest {
 }
 
 export interface AskSource {
+  source_visibility?: SourceVisibility;
   index: number;
   paper_id: string;
   arxiv_id: string | null;
@@ -573,10 +582,41 @@ export interface AskResponse {
   sources: AskSource[];
   tokens_used: number | null;
   query_time_ms: number;
+  /** @deprecated Legacy mechanical citation check; never scientific approval. */
   citation_valid: boolean;
   citation_warnings: string[];
   guest_remaining: number | null;
   remaining: number | null;
+  support_policy_version?: string;
+  citation_indices_valid?: boolean;
+  lexical_support_checked?: boolean;
+  scientific_support_status?: AskScientificSupportStatus;
+  claim_assessments?: AskClaimAssessment[];
+  support_warnings?: string[];
+  support_coverage?: AskSupportCoverage;
+  answer_mode?: "synthesis" | "limited_synthesis" | "extractive_fallback" | "abstention";
+  assessment_scope?: "generated_draft" | "none";
+}
+
+export interface AskSupportCoverage {
+  total_claims?: number;
+  assessed_claims?: number;
+  supported_claims?: number;
+  contradicted_claims?: number;
+  undetermined_claims?: number;
+  truncated?: boolean;
+  limits?: Record<string, unknown>;
+}
+
+export type AskScientificSupportStatus = "supported" | "contradicted" | "undetermined" | "not_checked";
+
+export interface AskClaimAssessment {
+  claim_id: string;
+  text: string;
+  cited_indices: number[];
+  status: AskScientificSupportStatus;
+  reason_codes: string[];
+  evidence: { source_index: number; paper_id: string | null; excerpt: string }[];
 }
 
 export function ask(req: AskRequest, opts: { apiKey?: string } = {}) {
@@ -634,6 +674,7 @@ export interface MaterialAnomalyReview {
 }
 
 export interface MaterialRawArchive {
+  visibility?: MaterialVisibility;
   version: "anomaly-review/1.0.0";
   scope: "material_retained_records";
   raw_field_policy: "scientific_allowlist_not_full_source";
@@ -686,7 +727,42 @@ export interface MaterialPropertyEvidence {
   };
 }
 
+export interface MaterialVisibility {
+  version: "material-visibility/1.0.0";
+  state: "catalogue" | "pending" | "disputed" | "corrected" | "retracted" | "quarantined" | "unknown";
+  public_catalogue_eligible: boolean;
+  archive_available: boolean;
+  scientific_acceptance: false;
+  reason_codes: string[];
+  warning_codes: string[];
+  reason_messages?: string[];
+  warning_messages?: string[];
+  review_revision: string;
+  source_status: "active" | "retracted" | "corrected" | "mixed" | "unknown";
+  scope?: string;
+}
+
+export interface SourceVisibility {
+  version: "material-visibility/1.0.0";
+  source_status: "active" | "retracted" | "corrected" | "disputed" | "unknown";
+  bibliography_available: boolean;
+  reported_claim_filter_eligible: boolean;
+  scientific_acceptance: false;
+  warning_codes: string[];
+}
+
+export interface SourceOccurrenceVisibility extends Omit<MaterialVisibility, "review_revision" | "source_status"> {
+  review_revision: string | null;
+  source_status: SourceVisibility["source_status"] | "mixed";
+  material_link_status: "resolved" | "unresolved" | "unlinked";
+  reported_claim_filter_eligible: boolean;
+}
+
 export interface MaterialSummary {
+  material_semantics?: MaterialSemantics;
+  visibility?: MaterialVisibility;
+  needs_review?: boolean;
+  review_reason?: string | null;
   anomaly_review?: MaterialAnomalyReview;
   property_evidence?: MaterialPropertyEvidence;
   matching_results?: MatchingScientificResult[];
@@ -767,6 +843,10 @@ export interface MaterialDetail extends MaterialSummary {
 }
 
 export interface VariantSummary {
+  material_semantics?: MaterialSemantics;
+  visibility?: MaterialVisibility;
+  needs_review?: boolean;
+  review_reason?: string | null;
   anomaly_review?: MaterialAnomalyReview;
   property_evidence?: MaterialPropertyEvidence;
   id: string;
@@ -778,7 +858,68 @@ export interface VariantSummary {
   pressure_type: string | null;
 }
 
+export type MaterialSemanticField = "has_competing_order" | "is_unconventional" | "pairing_symmetry";
+export type MaterialSemanticStatus = "reported" | "unknown" | "not_reported" | "not_extracted" | "not_computed" | "failed" | "conflicted" | "not_applicable";
+
+export interface MaterialSemanticEvidence {
+  result_id: string;
+  result_revision?: string | number | null;
+  paper_id?: string | null;
+  bibliographic_identifiers?: { kind: string; value: string }[];
+  source_status?: string;
+  status: MaterialSemanticStatus;
+  value: boolean | string | null;
+  basis: string;
+  eligible_for_summary: boolean;
+  negative_qualified: boolean;
+  knowledge_origin?: string;
+  classification_status?: string;
+  source_role?: string;
+  state?: Record<string, unknown>;
+  method?: string | null;
+  detection_conditions?: Record<string, unknown>;
+  source_locator?: Record<string, unknown>;
+  reason_codes?: string[];
+  source_value?: unknown;
+  status_reason?: string | null;
+  occurrence_id?: string;
+  occurrence_count?: number;
+}
+
+export interface MaterialSemanticProperty {
+  status: MaterialSemanticStatus;
+  value: boolean | string | null;
+  basis: string;
+  reason_codes: string[];
+  evidence: MaterialSemanticEvidence[];
+  total_evidence: number;
+  total_occurrences?: number;
+  evidence_truncated: boolean;
+}
+
+export interface MaterialSemantics {
+  version: string;
+  scientific_acceptance?: false;
+  properties: Partial<Record<MaterialSemanticField, MaterialSemanticProperty>>;
+  priors: { property: string; value: unknown; knowledge_origin: string; basis: string; policy_version?: string; provenance?: unknown; applicability?: unknown; warning_codes?: string[] }[];
+  conflicts: {
+    state_variability?: { detected?: boolean; count?: number; properties?: string[]; evidence?: unknown[]; [key: string]: unknown };
+    extraction_conflict?: { detected?: boolean; count?: number; properties?: string[]; evidence?: unknown[]; [key: string]: unknown };
+    scientific_dispute?: { status?: string; count?: number; evidence?: unknown[]; [key: string]: unknown };
+  };
+  support: {
+    occurrence_count?: number;
+    bibliographic_identifier_count?: number;
+    source_backed_occurrence_count?: number;
+    independent_work_count?: number | null;
+    independent_replication_count?: number | null;
+    [key: string]: unknown;
+  };
+  warnings: string[];
+}
+
 export interface PhaseDiagramPoint {
+  visibility?: MaterialVisibility;
   formula: string;
   tc_kelvin: number;
   doping_level: number | null;
@@ -788,6 +929,7 @@ export interface PhaseDiagramPoint {
 }
 
 export interface HydrideTcParameterRecord {
+  visibility?: MaterialVisibility;
   pressure_semantics?: Record<string, unknown>;
   id: number;
   material_id: string | null;
@@ -824,6 +966,8 @@ export interface MaterialListResponse {
   offset: number;
   sort_basis?: "legacy_catalogue";
   scientific_display_policy?: "atomic_property_evidence";
+  classification_filter_policy_version?: string;
+  classification_filter_scope?: "material_reported_summary_not_joint_state";
 }
 
 export interface MaterialListParams {
@@ -899,6 +1043,8 @@ export function getMaterialHydrideParameters(id: string) {
 // --- Papers ---------------------------------------------------------------
 
 export interface PaperDetail {
+  source_visibility?: SourceVisibility;
+  occurrence_visibility_summary?: Record<string, unknown>;
   id: string;
   arxiv_id: string | null;
   doi: string | null;
@@ -976,8 +1122,7 @@ export function listSitemapResources(
     offset: String(offset),
   });
   return request<SitemapResourcePage>(`/sitemap/resources?${qs}`, {
-    cache: "force-cache",
-    next: { revalidate: 3600 },
+    cache: "no-store",
   });
 }
 
@@ -1038,6 +1183,10 @@ export async function getVersion(opts?: {
 }
 
 export interface TimelinePoint {
+  point_id?: string | null;
+  material_id?: string | null;
+  result_metadata?: TimelineResultMetadata;
+  visibility?: MaterialVisibility;
   pressure_semantics?: Record<string, unknown>;
   material: string;
   formula_latex?: string | null;
@@ -1052,6 +1201,59 @@ export interface TimelinePoint {
   classification_status?: string;
   source_role?: string;
   classifier_version?: string;
+}
+
+export interface TimelineResultMetadata {
+  version?: string;
+  source_date_basis?: string | null;
+  chronology_warnings?: string[];
+  identity_warnings?: string[];
+  identity_conflict?: boolean;
+  result_id?: string | null;
+  result_revision?: string | number | null;
+  identity_basis?: string;
+  year_basis?: string;
+  source_date?: string | null;
+  source_version?: string | number | null;
+  state?: Record<string, unknown>;
+  tc_criterion?: string;
+  source_locator?: Record<string, unknown>;
+  occurrence_count?: number;
+  review_status?: string;
+}
+
+export interface TimelineSampling {
+  policy_version: string;
+  method: string;
+  requested_max_points: number | null;
+  total_points: number;
+  selected_points: number;
+  returned_points: number;
+  is_sampled: boolean;
+  strata_total: number;
+  strata_represented: number;
+  rare_groups_omitted: number;
+  display_only: true;
+  strata_by?: string[];
+  selected_source_count?: number;
+  source_count?: number;
+}
+
+export interface TimelineRecordSummary {
+  scope: "full_filtered_unsampled";
+  total_points: number;
+  total_materials: number;
+  source_count: number;
+  max_tc_kelvin: number | null;
+  min_tc_kelvin: number | null;
+  by_family: Record<string, number>;
+  by_origin: Record<string, number>;
+  by_year_basis: Record<string, number>;
+  by_pressure_state: Record<string, number>;
+  record_candidates: TimelinePoint[];
+  record_candidate_count?: number;
+  record_candidates_truncated?: boolean;
+  label?: string;
 }
 
 export interface TimelineCoverage {
@@ -1073,6 +1275,12 @@ export interface TimelineResponse {
   offset: number;
   limit: number | null;
   has_more: boolean;
+  timeline_policy_version?: string;
+  visibility_policy_version?: string;
+  sampling?: TimelineSampling;
+  record_summary?: TimelineRecordSummary;
+  review_mode?: string;
+  reviewed_only_available?: boolean;
 }
 
 export function getTimeline(opts: {
@@ -1097,9 +1305,8 @@ export function getTimeline(opts: {
   if (opts.limit != null) qs.set("limit", String(opts.limit));
   const qstr = qs.toString();
   return request<TimelineResponse>(`/timeline${qstr ? `?${qstr}` : ""}`, {
-    cache: "force-cache",
+    cache: "no-store",
     credentials: "omit",
-    next: { revalidate: 60 },
   });
 }
 

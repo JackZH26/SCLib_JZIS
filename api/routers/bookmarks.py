@@ -22,7 +22,7 @@ from __future__ import annotations
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func, insert, literal, or_, select
+from sqlalchemy import func, insert, literal, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -40,6 +40,12 @@ from models.user import MessageResponse
 from routers.auth import current_user_from_jwt
 from services.authors import names as _author_names
 from services.material_property_projection import project_material_properties
+from services.material_visibility import visibility_allows_view
+from services.material_visibility_adapter import (
+    material_prefilter,
+    material_view,
+    prepare_material_views,
+)
 
 router = APIRouter(prefix="/bookmarks", tags=["bookmarks"])
 
@@ -60,6 +66,8 @@ async def create_bookmark(
     Duplicate row → IntegrityError → 409 as before.
     """
     target_table = Paper if body.target_type == "paper" else Material
+    if body.target_type == "material" and await material_view(db, await db.get(Material, body.target_id)) is None:
+        raise HTTPException(404, "Material not found")
 
     src = (
         select(
@@ -155,37 +163,21 @@ async def list_material_bookmarks(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(current_user_from_jwt),
 ) -> BookmarkedMaterialsResponse:
-    # Hide NIMS provenance-quarantine rows from saved lists too — they
-    # 404 on click, so showing them as bookmarks would be inconsistent.
-    _not_quarantined = or_(
-        Material.review_reason.is_(None),
-        Material.review_reason != "provenance_quarantine_nims",
-    )
-    total_q = await db.execute(
-        select(func.count()).select_from(Bookmark)
-        .join(Material, Material.id == Bookmark.target_id)
-        .where(
-            Bookmark.user_id == user.id,
-            Bookmark.target_type == "material",
-            _not_quarantined,
-        )
-    )
-    total = int(total_q.scalar_one() or 0)
-
+    # Saved materials are Archive-capable, but inherited quarantine is still
+    # unavailable. Count and paginate only after the shared current policy.
     q = await db.execute(
-        select(Bookmark, Material)
-        .join(Material, Material.id == Bookmark.target_id)
-        .where(
-            Bookmark.user_id == user.id,
-            Bookmark.target_type == "material",
-            _not_quarantined,
-        )
-        .order_by(Bookmark.created_at.desc())
-        .offset(offset)
-        .limit(limit)
+        select(Bookmark, Material).join(Material, Material.id == Bookmark.target_id)
+        .where(Bookmark.user_id == user.id, Bookmark.target_type == "material",
+               *material_prefilter(include_archive=True))
+        .order_by(Bookmark.created_at.desc(), Bookmark.id)
     )
+    saved = q.all()
+    contexts = await prepare_material_views(db, [mat for _, mat in saved])
+    available = [(bm, mat) for (bm, _), mat in zip(saved, contexts)
+                 if visibility_allows_view(mat.visibility, include_archive=True)]
+    total = len(available)
     rows: list[BookmarkedMaterial] = []
-    for bm, mat in q.all():
+    for bm, mat in available[offset:offset + limit]:
         properties = project_material_properties(
             mat, BookmarkedMaterial.model_fields, scope_id=mat.id, compact=True,
         )
@@ -200,6 +192,8 @@ async def list_material_bookmarks(
             tc_ambient=properties["tc_ambient"],
             arxiv_year=mat.arxiv_year,
             property_evidence=properties["property_evidence"],
+            material_semantics=properties["material_semantics"],
             anomaly_review=properties["anomaly_review"],
+            visibility=properties["visibility"], needs_review=properties["needs_review"], review_reason=properties["review_reason"],
         ))
     return BookmarkedMaterialsResponse(total=total, results=rows)

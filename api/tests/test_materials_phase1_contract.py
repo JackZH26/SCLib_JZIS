@@ -61,7 +61,10 @@ async def test_phase_diagram_does_not_inherit_material_level_doping(client) -> N
 
     response = await client.get(f"/v1/materials/{material_id}/phase_diagram")
     assert response.status_code == 200
-    assert response.json() == [
+    row = response.json()[0]
+    assert row.pop("material_id") == material_id
+    assert row.pop("visibility")["public_catalogue_eligible"] is True
+    assert [row] == [
         {
             "formula": "Phase1D",
             "tc_kelvin": 8.0,

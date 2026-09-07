@@ -23,6 +23,17 @@ map_record_to_claim = partial(
 )
 
 
+def test_visibility_annotations_do_not_mint_new_source_record_or_claim_identity() -> None:
+    record = {"formula": "Nb", "tc_kelvin": 9.2, "paper_id": "paper:synthetic"}
+    original = map_record_to_claim(record, material_id="mat:nb")
+    annotated = map_record_to_claim(
+        {**record, "visibility": {"version": "material-visibility/1.0.0", "state": "pending"}},
+        material_id="mat:nb",
+    )
+    assert annotated["source_record_hash"] == original["source_record_hash"]
+    assert annotated["id"] == original["id"]
+
+
 def test_source_snapshot_is_required_and_must_be_a_uuid() -> None:
     with pytest.raises(TypeError, match="source_snapshot_id"):
         _map_record_to_claim({}, material_id="mat:x")

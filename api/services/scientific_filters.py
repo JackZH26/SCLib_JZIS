@@ -142,7 +142,7 @@ def matching_result_references(
             continue
         identity_record = {
             k: v for k, v in record.items()
-            if k not in {"result_classification", "pressure_semantics", "property_evidence", "anomaly_review"}
+            if k not in {"result_classification", "pressure_semantics", "property_evidence", "anomaly_review", "visibility"}
         }
         identity = json.dumps([scope_id, identity_record], sort_keys=True, separators=(",", ":"), default=str)
         matches.append({

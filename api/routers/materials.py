@@ -16,7 +16,7 @@ from sqlalchemy.dialects.postgresql import JSONPATH
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import get_db
-from models.db import HydrideTcParameter, Material
+from models.db import HydrideTcParameter, Material, Paper
 from models.search import (
     HydrideTcParameterRecord,
     MaterialDetail,
@@ -27,7 +27,18 @@ from models.search import (
 )
 from routers.deps import Identity, peek_identity
 from services.anomaly_review import eligible_for_property
-from services.material_anomalies import record_assessment, review_context
+from services.material_anomalies import material_review, record_assessment, review_context
+from services.material_property_projection import project_material_semantics
+from services.material_visibility import (
+    sanitize_review_metadata,
+    visibility_allows_view,
+    visibility_for_material,
+)
+from services.material_visibility_adapter import (
+    material_prefilter,
+    material_view,
+    prepare_material_views,
+)
 from services.pressure_semantics import classify_pressure
 from services.scientific_filters import ResultFilters, matching_result_references
 from services.scientific_values import record_quantity
@@ -53,9 +64,9 @@ async def list_materials(
     experimental_only: bool = Query(False),
     # v2 filter params
     ambient_sc: bool | None = Query(None, description="True requires an explicit ambient, observed positive result. False is unsupported: absence is not a negative experiment."),
-    is_unconventional: bool | None = Query(None),
-    has_competing_order: bool | None = Query(None),
-    pairing_symmetry: str | None = Query(None),
+    is_unconventional: bool | None = Query(None, description="Reported classification summary, not a family prior or a joint Tc/state predicate."),
+    has_competing_order: bool | None = Query(None, description="Reported classification summary. False requires qualified explicit absence; missing evidence does not match."),
+    pairing_symmetry: str | None = Query(None, max_length=100, description="Reported pairing classification, not a family default or joint Tc/state predicate."),
     structure_phase: str | None = Query(None),
     # P2: parent grouping — when true, only return parent materials
     # (those with no parent_material_id) and include rolled-up
@@ -78,7 +89,7 @@ async def list_materials(
     min_papers: int | None = Query(
         None,
         ge=1,
-        description="Only show materials cited in at least this many papers.",
+        description="Legacy catalogue source-link threshold; may include parent rollups and does not count independent replications.",
     ),
     sort: str = Query("tc_max", pattern="^(tc_max|arxiv_year|total_papers|tc_ambient)$"),
     limit: int = Query(50, ge=1, le=200),
@@ -86,10 +97,8 @@ async def list_materials(
     include_pending: bool = Query(
         False,
         description=(
-            "Include materials flagged needs_review=True (physically "
-            "implausible values, usually NER confusing Curie temp / "
-            "melting point with Tc). Off by default so the list stays "
-            "trustworthy; admins set it to audit / unflag."
+            "Include Archive materials with explicit pending/disputed/source warnings. "
+            "This does not waive provenance quarantine or establish scientific acceptance."
         ),
     ),
     include_skeletons: bool = Query(
@@ -123,32 +132,12 @@ async def list_materials(
         only_aps=only_aps, min_tier=min_tier,
     )
     stmt = select(Material)
-    count_stmt = select(func.count()).select_from(Material)
-
     def _apply(where_clause):
-        nonlocal stmt, count_stmt
+        nonlocal stmt
         stmt = stmt.where(where_clause)
-        count_stmt = count_stmt.where(where_clause)
 
-    # NIMS provenance quarantine — UNCONDITIONAL: the broken NIMS
-    # import left the whole NIMS set without Tc/papers, so it is
-    # hidden site-wide until re-ingested. Excluded even when admins
-    # pass include_pending / include_skeletons (those toggles are for
-    # auditing data-quality flags, not for resurfacing quarantined
-    # provenance).
-    _apply(
-        or_(
-            Material.review_reason.is_(None),
-            Material.review_reason != "provenance_quarantine_nims",
-        )
-    )
-
-    # Automatic sanity gate. Rows where the aggregator detected an
-    # implausible Tc (>250 K at ambient pressure) are hidden from the
-    # public list; they remain fetchable via GET /materials/{id} so
-    # old bookmarks keep working and admins can reach them to review.
-    if not include_pending:
-        _apply(Material.needs_review.is_(False))
+    for clause in material_prefilter(include_archive=include_pending):
+        _apply(clause)
 
     # Skeleton entries are rows that came from the NIMS CSV as a bare
     # DOI reference — no Tc, no pressure, total_papers = 0. Hiding
@@ -176,12 +165,15 @@ async def list_materials(
     if only_aps:
         _apply(func.jsonb_path_exists(Material.records, cast('$[*] ? (@.paper_id like_regex "^aps:")', JSONPATH)))
 
-    if is_unconventional is not None:
-        _apply(Material.is_unconventional.is_(is_unconventional))
-    if has_competing_order is not None:
-        _apply(Material.has_competing_order.is_(has_competing_order))
-    if pairing_symmetry:
-        _apply(Material.pairing_symmetry == pairing_symmetry)
+    # Historical scalar/default/weighted-vote columns are not valid necessary
+    # prefilters: they can both include a prior and exclude a reported value.
+    classification_filters = {
+        key: value for key, value in {
+            "is_unconventional": is_unconventional,
+            "has_competing_order": has_competing_order,
+            "pairing_symmetry": pairing_symmetry,
+        }.items() if value is not None and value != ""
+    }
     if structure_phase:
         _apply(Material.structure_phase == structure_phase)
     if min_papers is not None:
@@ -201,48 +193,45 @@ async def list_materials(
     # PostgreSQL changes query plans.
     stmt = stmt.order_by(sort_col.desc().nulls_last(), Material.id.asc())
 
-    if scientific_filters.active:
-        # One canonical predicate for Search and Materials. Stream bounded
-        # batches so rich/raw pressure notation is not reinterpreted by a
-        # divergent SQL shortcut. Count *all* matches before applying paging;
-        # never return a capped/estimated count as exact. A versioned indexed
-        # result projection is the later performance path, not an implicit
-        # relaxation of scientific semantics.
-        stream = await db.stream_scalars(stmt.execution_options(yield_per=128))
-        selected = []
-        total = 0
-        try:
-            async for material in stream:
+    # Count after the SAME live visibility/record policy used for returned rows.
+    # SQL is only a necessary prefilter; stale aggregate holds cannot approve a row.
+    stream = await db.stream_scalars(stmt.execution_options(yield_per=128))
+    selected, total = [], 0
+    try:
+        async for batch in stream.partitions(128):
+            for material in await prepare_material_views(db, batch):
+                if not visibility_allows_view(material.visibility, include_archive=include_pending):
+                    continue
+                if classification_filters:
+                    semantics = project_material_semantics(material)
+                    if any(
+                        semantics["properties"][field]["status"] != "reported"
+                        or type(semantics["properties"][field]["value"]) is not type(expected)
+                        or semantics["properties"][field]["value"] != expected
+                        for field, expected in classification_filters.items()
+                    ):
+                        continue
                 matching = matching_result_references(
                     material.records, scientific_filters, scope_id=material.id,
                     material_family=material.family,
                     compound_thresholds=review_context(material)["compound_thresholds"],
-                )
-                if not matching:
+                ) if scientific_filters.active else []
+                if scientific_filters.active and not matching:
                     continue
                 if offset <= total < offset + limit:
                     summary = MaterialSummary.model_validate(material)
-                    summary.matching_results = matching
+                    summary.matching_results = [{**record, "visibility": material.visibility} for record in matching]
                     selected.append(summary)
                 total += 1
-        finally:
-            await stream.close()
-        return MaterialListResponse(total=total, results=selected, limit=limit, offset=offset)
-
-    total = (await db.execute(count_stmt)).scalar_one()
-    rows = (await db.execute(stmt.limit(limit).offset(offset))).scalars().all()
-
-    return MaterialListResponse(
-        total=total,
-        results=[MaterialSummary.model_validate(m) for m in rows],
-        limit=limit,
-        offset=offset,
-    )
+    finally:
+        await stream.close()
+    return MaterialListResponse(total=total, results=selected, limit=limit, offset=offset)
 
 
 @router.get("/materials/{material_id:path}/phase_diagram", response_model=list[PhaseDiagramPoint])
 async def material_phase_diagram(
     material_id: str,
+    include_pending: bool = Query(False, description="Archive opt-in; scientific anomaly gates still apply."),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001
     db: AsyncSession = Depends(get_db),
 ) -> list[PhaseDiagramPoint]:
@@ -252,27 +241,27 @@ async def material_phase_diagram(
     Collects record-level data from the parent and all children, extracting
     tc_kelvin, doping_level (or x composition), and pressure_gpa.
     """
-    parent = await db.get(Material, material_id)
+    parent = await material_view(db, await db.get(Material, material_id))
     if parent is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
-    # NIMS provenance quarantine — hidden site-wide (see material_detail).
-    if parent.review_reason == "provenance_quarantine_nims":
-        raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
+    if not visibility_allows_view(parent.visibility, include_archive=include_pending):
+        return []
 
     # Collect this material + all variants
-    materials = [parent]
-    if parent.variant_count > 0:
-        variant_stmt = (
-            select(Material)
-            .where(Material.parent_material_id == material_id)
-            .where(or_(Material.review_reason.is_(None), Material.review_reason != "provenance_quarantine_nims"))
-            .order_by(Material.formula)
-        )
-        variants = (await db.execute(variant_stmt)).scalars().all()
-        materials.extend(variants)
+    materials = [parent.material]
+    variant_stmt = (
+        select(Material)
+        .where(Material.parent_material_id == material_id)
+        .where(*material_prefilter(include_archive=include_pending))
+        .order_by(Material.formula, Material.id)
+    )
+    variants = (await db.execute(variant_stmt)).scalars().all()
+    materials.extend(variants)
 
     points: list[PhaseDiagramPoint] = []
-    for mat in materials:
+    for mat in await prepare_material_views(db, materials):
+        if not visibility_allows_view(mat.visibility, include_archive=include_pending):
+            continue
         if not isinstance(mat.records, list):
             continue
         for r in mat.records:
@@ -288,7 +277,7 @@ async def material_phase_diagram(
             pressure = classify_pressure(r)
             doping = record_quantity(r, "doping_level")
             points.append(PhaseDiagramPoint(
-                formula=mat.formula,
+                formula=mat.formula, material_id=mat.id, visibility=mat.visibility,
                 tc_kelvin=float(tc),
                 # Doping is an observation-level condition.  Falling back to
                 # the material aggregate silently assigns one value to every
@@ -300,7 +289,7 @@ async def material_phase_diagram(
                     else None
                 ),
                 pressure_gpa=pressure.pressure_gpa if pressure.pressure_state in {"reported", "explicit_ambient"} else None,
-                pressure_semantics=pressure.to_dict(),
+                pressure_semantics=sanitize_review_metadata(pressure.to_dict()),
                 paper_id=r.get("paper_id"),
                 year=r.get("year") if isinstance(r.get("year"), int) else None,
             ))
@@ -314,6 +303,7 @@ async def material_phase_diagram(
 )
 async def material_hydride_parameters(
     material_id: str,
+    include_pending: bool = Query(False, description="Archive opt-in; not validated paired calculation inputs."),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001
     db: AsyncSession = Depends(get_db),
 ) -> list[HydrideTcParameterRecord]:
@@ -324,8 +314,8 @@ async def material_hydride_parameters(
     schema because the parameters are meaningful mainly for superhydrides
     and need separate validation/provenance.
     """
-    m = await db.get(Material, material_id)
-    if m is None or m.review_reason == "provenance_quarantine_nims":
+    m = await material_view(db, await db.get(Material, material_id))
+    if m is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
 
     stmt = (
@@ -337,8 +327,41 @@ async def material_hydride_parameters(
             HydrideTcParameter.year.desc().nulls_last(),
         )
     )
+    if not visibility_allows_view(m.visibility, include_archive=include_pending):
+        return []
     rows = (await db.execute(stmt)).scalars().all()
-    return [HydrideTcParameterRecord.model_validate(r) for r in rows]
+    paper_ids = {r.paper_id for r in rows}
+    statuses = dict((await db.execute(select(Paper.id, Paper.status).where(Paper.id.in_(paper_ids)))).all()) if paper_ids else {}
+    result = []
+    for row in rows:
+        raw = {column.name: getattr(row, column.name) for column in HydrideTcParameter.__table__.columns}
+        raw["status"] = "active_research"
+        flags = raw.get("validation_flags")
+        raw["needs_review"] = not isinstance(flags, list) or bool(flags)
+        # Use the retained typed proposal when present: a normalized scalar
+        # must not erase an original range, unit conflict or invalid value.
+        provenance = raw.get("provenance")
+        proposal = provenance.get("extraction_proposal") if isinstance(provenance, dict) else None
+        if isinstance(proposal, dict) and "scientific_values" in proposal:
+            raw["scientific_values"] = proposal["scientific_values"]
+        # This enrichment row is independently sourced, not a scientific approval
+        # inherited from a material catalogue entry.
+        anomaly = material_review([raw], scope_id=f"hydride:{row.id}", context=review_context(m), compact=True)
+        visibility = visibility_for_material(raw, anomaly_review=anomaly,
+                        source_statuses={row.paper_id: statuses.get(row.paper_id)}, parent_visibility=m.visibility)
+        if not visibility_allows_view(visibility, include_archive=include_pending):
+            continue
+        public = sanitize_review_metadata(raw)
+        public["created_at"], public["updated_at"] = row.created_at, row.updated_at
+        # Malformed legacy JSON remains held, but must not crash Archive reads.
+        if not isinstance(flags, list):
+            public["validation_flags"] = ["invalid_validation_flags_requires_review"]
+        if not isinstance(public.get("provenance"), dict):
+            public["provenance"] = {}
+        dto = HydrideTcParameterRecord.model_validate(public)
+        dto.visibility = visibility
+        result.append(dto)
+    return result
 
 
 @router.get("/materials/{material_id:path}", response_model=MaterialDetail)
@@ -347,28 +370,22 @@ async def material_detail(
     identity: Identity = Depends(peek_identity),  # noqa: ARG001
     db: AsyncSession = Depends(get_db),
 ) -> MaterialDetail:
-    m = await db.get(Material, material_id)
+    m = await material_view(db, await db.get(Material, material_id))
     if m is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
-    # NIMS provenance quarantine: treat as non-existent publicly (the
-    # NIMS import is broken — Tc/papers missing — so the whole NIMS
-    # set is hidden site-wide until re-ingested). Same 404 as missing
-    # so it's indistinguishable from a bad id.
-    if m.review_reason == "provenance_quarantine_nims":
-        raise HTTPException(status.HTTP_404_NOT_FOUND, f"Material {material_id!r} not found")
-
     detail = MaterialDetail.model_validate(m)
-
-    # P2: populate variants list if this material has children
-    if m.variant_count > 0:
-        variant_stmt = (
-            select(Material)
-            .where(Material.parent_material_id == material_id)
-            .where(or_(Material.review_reason.is_(None), Material.review_reason != "provenance_quarantine_nims"))
-            .order_by(Material.tc_max.desc().nulls_last(), Material.id.asc())
-            .limit(100)
-        )
-        variants = (await db.execute(variant_stmt)).scalars().all()
-        detail.variants = [VariantSummary.model_validate(v) for v in variants]
+    # Do not use a stale aggregate variant_count as an authorization/existence
+    # gate. Count currently Archive-accessible children before limiting display.
+    variant_stmt = (
+        select(Material)
+        .where(Material.parent_material_id == material_id)
+        .where(*material_prefilter(include_archive=True))
+        .order_by(Material.tc_max.desc().nulls_last(), Material.id.asc())
+    )
+    variants = (await db.execute(variant_stmt)).scalars().all()
+    views = [v for v in await prepare_material_views(db, variants)
+             if visibility_allows_view(v.visibility, include_archive=True)]
+    detail.variant_count = len(views)
+    detail.variants = [VariantSummary.model_validate(v) for v in views[:100]]
 
     return detail

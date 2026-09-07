@@ -15,10 +15,12 @@ import Link from "next/link";
 import { FAMILY_OPTIONS } from "@/lib/families";
 import { absoluteUrl } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
-  title: "Superconductivity discovery timeline",
+  title: "Reported Tc Timeline",
   description:
-    "Explore critical-temperature records and superconducting material discoveries over time.",
+    "Explore reported superconducting transition temperatures with result identity, source-date basis, provenance, and explicit display-sampling limits.",
   alternates: { canonical: absoluteUrl("/timeline") },
   openGraph: { url: absoluteUrl("/timeline") },
 };
@@ -118,14 +120,15 @@ export default async function TimelinePage({
   return (
     <main className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Tc timeline</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Reported Tc Timeline</h1>
         <p className="mt-1 text-sm text-slate-600">
-          Transition temperature versus year, one dot per reported
-          result. Colour by material family. Hover for result origin and
-          explicit, reported, missing or unresolved pressure. Legacy review
-          and numeric visibility rules still apply; this is not an exhaustive
-          list of independently confirmed superconductors.
+          Reported transition temperature versus year, with the date basis,
+          result origin, sample state, pressure, and source retained for each
+          result. Marker colours identify families; symbols identify origins.
+          This is neither a discovery-history chronology nor a world-record
+          leaderboard. Legacy reports are not independently confirmed results.
         </p>
+        <p className="mt-2 text-xs text-amber-900">Reviewed-only mode is unavailable until accepted result-level reviews exist. “Observed only” selects a reported result origin, not experimental confirmation or scientific approval.</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -158,12 +161,12 @@ export default async function TimelinePage({
           <FilterToggleLink
             href={buildHref(current, !experimentalOnly, onlyAps)}
             active={experimentalOnly}
-            label="Only experimental"
+            label="Observed only"
           />
           <FilterToggleLink
             href={buildHref(current, experimentalOnly, !onlyAps)}
             active={onlyAps}
-            label="Only APS Data"
+            label="APS sources only"
           />
         </div>
       </div>
@@ -172,43 +175,7 @@ export default async function TimelinePage({
         <p className="text-sm text-red-600">Failed to load timeline.</p>
       ) : (
         <>
-          {data.coverage && data.coverage.total_points > 0 && (
-            <p className="text-xs text-slate-500">
-              {data.coverage.returned_points < data.coverage.total_points && (
-                <>
-                  Displaying a representative sample of{" "}
-                  <span className="font-medium text-slate-700">
-                    {data.coverage.returned_points.toLocaleString("en-US")}
-                  </span>{" "}from{" "}
-                </>
-              )}
-              <span className="font-medium text-slate-700">
-                {data.coverage.total_points.toLocaleString("en-US")}
-              </span>{" "}
-              measurement{data.coverage.total_points === 1 ? "" : "s"}{" "}
-              from{" "}
-              <span className="font-medium text-slate-700">
-                {data.coverage.total_materials.toLocaleString("en-US")}
-              </span>{" "}
-              materials
-              {data.coverage.year_min != null &&
-                data.coverage.year_max != null && (
-                  <>
-                    {" "}
-                    · years{" "}
-                    <span className="font-medium text-slate-700">
-                      {data.coverage.year_min}
-                    </span>
-                    –
-                    <span className="font-medium text-slate-700">
-                      {data.coverage.year_max}
-                    </span>
-                  </>
-                )}
-              {" "}· drag to pan, scroll to zoom
-            </p>
-          )}
-          <TcTimeline points={data.points} coverage={data.coverage} />
+          <TcTimeline points={data.points} coverage={data.coverage} sampling={data.sampling} recordSummary={data.record_summary} />
         </>
       )}
     </main>

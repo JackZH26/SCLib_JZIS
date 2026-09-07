@@ -31,6 +31,14 @@ function show(initialPage = page) {
 describe("legacy Discovery version contract", () => {
   beforeEach(() => vi.resetAllMocks());
 
+  it("labels the legacy literature stage as a report, without changing the stage code", () => {
+    const item = { ...candidate, evidence_level: "literature-confirmed" };
+    show({ ...page, items: [item] });
+    expect(screen.getByText("Literature-reported")).toBeInTheDocument();
+    expect(screen.queryByText("Literature-confirmed")).not.toBeInTheDocument();
+    expect(item.evidence_level).toBe("literature-confirmed");
+  });
+
   it("verifies stable IDs, roles, totals and version before adding rows", () => {
     expect(() => verifyDiscoveryPage(page, version, 0, [], null, 2)).not.toThrow();
     expect(() => verifyDiscoveryPage({ ...page, data_version: "other" }, version, 0)).toThrow();

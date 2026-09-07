@@ -1,6 +1,8 @@
-import type { MaterialAnomalyReview, MaterialRawArchive, ScientificAnomalyFinding } from "@/lib/api";
+import type { MaterialAnomalyReview, MaterialRawArchive, MaterialVisibility, ScientificAnomalyFinding } from "@/lib/api";
 import { evidenceText, objectValue } from "@/lib/property-evidence";
 import { anomalyStatus, archiveJson, hasAnomalyPolicy, hasMaterialAnomalyReview, hasRawArchive, RAW_ARCHIVE_DISPLAY_LIMIT } from "@/lib/scientific-anomalies";
+import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice";
+import { archiveExport, visibilityIsRestricted } from "@/lib/material-visibility";
 
 const label = (value: unknown) => evidenceText(value)?.replaceAll("_", " ") ?? "Not reported";
 
@@ -59,16 +61,19 @@ export function ScientificAnomalyNotice({ review, compact = false }: { review?: 
 }
 
 /** No fetch or permission inference: render only this server-provided archive contract. */
-export function RawScientificArchive({ archive }: { archive?: MaterialRawArchive }) {
-  const known = hasRawArchive(archive);
+export function RawScientificArchive({ archive, visibility }: { archive?: MaterialRawArchive; visibility?: MaterialVisibility }) {
+  const governingVisibility = visibility ?? archive?.visibility;
+  const known = hasRawArchive(archive) && !visibilityIsRestricted(governingVisibility);
   const records = known ? archive!.records.slice(0, RAW_ARCHIVE_DISPLAY_LIMIT) : [];
   return <section>
     <details className="rounded-lg border border-slate-200 bg-slate-50 p-4">
       <summary className="cursor-pointer text-sm font-semibold text-slate-700">Retained-record Archive</summary>
+      <MaterialVisibilityNotice visibility={governingVisibility} />
       <p className="mt-2 text-xs text-slate-600">Only scientific fields authorized by the server for this material are shown. This is not a full historical archive, the complete source document or a guarantee that all previously excluded data can be recovered. Restricted or quarantined data is not retrieved through another route.</p>
       {!known ? <p className="mt-3 text-sm text-slate-600">Archive unavailable in this response. No raw records are reconstructed from catalogue values or another endpoint.</p> : <>
         <p className="mt-2 break-all text-xs text-slate-600">Policy: {archive!.version} · scope: retained material records · field policy: scientific allowlist, not full source</p>
         <p className="mt-1 text-xs text-slate-600">Showing {records.length.toLocaleString("en-US")} returned records. Raw means the retained extraction representation; it is not necessarily a verbatim source quotation or an accepted scientific result.</p>
+        <a className="mt-2 inline-block text-xs underline" download="sclib-retained-scientific-archive.json" href={`data:application/json;charset=utf-8,${encodeURIComponent(archiveJson(archiveExport(archive!, governingVisibility)))}`}>Download authorized Archive with review metadata (JSON)</a>
         {(archive!.truncated || archive!.records.length > RAW_ARCHIVE_DISPLAY_LIMIT) && <p className="mt-2 text-xs text-amber-900">This Archive response is truncated. Omitted records are not treated as absent or approved.</p>}
         {records.length === 0 && <p className="mt-3 text-sm text-slate-600">No retained records were returned in this authorized Archive response.</p>}
         <ul className="mt-3 space-y-3">{records.map((record, index) => <li key={`${record.result_id}:${record.record_index}:${index}`}>

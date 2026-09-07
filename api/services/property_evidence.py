@@ -28,7 +28,7 @@ PROPERTY_EVIDENCE_VERSION = "property-evidence/1.1.0"
 ATOMIC_SELECTION_POLICY = "atomic-anomaly-aggregation/1.0.0"
 EVIDENCE_LIMIT = 20
 EPC_COMPARISON_BUDGET = 10_000
-DERIVED_ENVELOPES = frozenset({"result_classification", "pressure_semantics", "property_evidence", "anomaly_review"})
+DERIVED_ENVELOPES = frozenset({"result_classification", "pressure_semantics", "property_evidence", "anomaly_review", "visibility"})
 NUMERIC_PROPERTIES = {
     "tc_max": "tc_kelvin",
     "tc_max_experimental": "tc_kelvin",

@@ -236,6 +236,33 @@ Content-Type: application/json
             <Code>citation_valid</Code>, <Code>citation_warnings</Code>,{" "}
             <Code>tokens_used</Code>, and <Code>query_time_ms</Code>.
           </p>
+          <p className="mt-2">
+            Scientific support metadata is additive: <Code>support_policy_version</Code>,{" "}
+            <Code>citation_indices_valid</Code>, <Code>lexical_support_checked</Code>,{" "}
+            <Code>scientific_support_status</Code>, <Code>claim_assessments[]</Code>,{" "}
+            <Code>support_warnings</Code>, <Code>support_coverage</Code>,{" "}
+            <Code>assessment_scope</Code>, and <Code>answer_mode</Code>.
+            The legacy <Code>citation_valid</Code> flag is deprecated and mechanical
+            only; valid citation indices do not demonstrate that a claim is supported.
+          </p>
+          <p className="mt-2">
+            <Code>scientific_support_status</Code> is <Code>supported</Code>,{" "}
+            <Code>contradicted</Code>, <Code>undetermined</Code>, or <Code>not_checked</Code>.
+            “Supported” means narrow excerpt consistency checks passed, not scientific
+            truth, experimental confirmation, or approval as an ML label. Claim assessments
+            include draft text, cited indices, reason codes, and attributable evidence excerpts.
+            Coverage counts and limits describe bounded checks, not exhaustive scientific validation.
+          </p>
+          <p className="mt-2">
+            <Code>assessment_scope=generated_draft</Code> refers to an attempted generated
+            draft, not to verification of a delivered fallback. <Code>answer_mode</Code>
+            distinguishes <Code>synthesis</Code>, <Code>limited_synthesis</Code>,{" "}
+            <Code>extractive_fallback</Code>, and <Code>abstention</Code>.
+            Conflicted or unresolved draft assertions are withheld rather than shown
+            as supported conclusions. A fallback supplies source excerpts, not verified
+            findings. Missing or incompatible metadata is displayed as unchecked;
+            historical saved answers do not contain this current audit envelope.
+          </p>
           <p className="mt-1">
             <Code>language</Code> accepts <Code>&quot;auto&quot;</Code>,{" "}
             <Code>&quot;en&quot;</Code>, or <Code>&quot;zh&quot;</Code>. Auto
@@ -255,7 +282,7 @@ Content-Type: application/json
             <Code>pressure_min</Code>, <Code>pressure_max</Code>,{" "}
             <Code>experimental_only</Code>, <Code>knowledge_origin</Code>,{" "}
             <Code>source_role</Code>,{" "}
-            <Code>is_unconventional</Code>,{" "}
+            <Code>is_unconventional</Code>, <Code>has_competing_order</Code>,{" "}
             <Code>pairing_symmetry</Code>, <Code>structure_phase</Code>.
           </p>
           <p className="mt-1">
@@ -272,6 +299,21 @@ Content-Type: application/json
             <Code>ambient_sc=true</Code> requires an observed positive result with explicit ambient evidence;
             <Code>ambient_sc=false</Code> returns 422 because absence is not a negative experiment.
             These references are legacy occurrence identifiers, not reviewed ML labels.
+          </p>
+          <p className="mt-2">
+            Classification filters <Code>pairing_symmetry</Code>, <Code>is_unconventional</Code> and{" "}
+            <Code>has_competing_order</Code> use the current source-reported material summary under{" "}
+            <Code>material-semantics/1.0.0</Code>, not a same-result Tc/state predicate.
+            The response declares <Code>classification_filter_scope=material_reported_summary_not_joint_state</Code>.
+            Unknown or missing values never mean false; reported false requires source-linked method and detection conditions.
+            Family priors and stale aggregate classifications do not match these filters.
+          </p>
+          <p className="mt-2">
+            The additive <Code>material_semantics</Code> envelope separates reported properties, inferred priors,
+            state variability, extraction conflicts and unadjudicated dispute reports. Its support counts are
+            occurrences and bibliographic identifiers, not independent works or replications.
+            <Code>support.count_basis</Code> explains why identifier aliases and <Code>support.legacy_total_papers</Code>
+            may differ, including parent rollups and other catalogue policies. Legacy responses without this envelope remain unchecked.
           </p>
         </Endpoint>
 
@@ -304,17 +346,23 @@ Content-Type: application/json
         {/* Timeline */}
         <Endpoint method="GET" path="/timeline" badge="free">
           <p>
-            Tc timeline measurements grouped by material family. Supports
-            deterministic point budgets (<code>max_points</code>) and compact
-            chart payloads (<code>compact=true</code>), followed by stable
-            <code> offset</code>/<code>limit</code> pagination. Coverage totals
-            continue to describe the complete filtered result.
+            Reported Tc Timeline results retain result identity, revision,
+            year basis, state, criterion, and source provenance. Deterministic
+            stratified display budgets (<code>max_points</code>) precede stable
+            <code> offset</code>/<code>limit</code> pagination.
+            <Code>sampling</Code> describes display selection; <Code>record_summary</Code>
+            describes the full filtered, unsampled dataset. Neither is an
+            approved training dataset or a world-record chronology.
           </p>
           <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`GET /v1/timeline?schema_version=1&max_points=10000&offset=0&limit=1000&compact=true`}</pre>
           <p className="mt-2">
-            Timeline and Discovery data responses return <Code>ETag</Code>,{" "}
-            <Code>Last-Modified</Code>, and <Code>X-Data-Version</Code>. Use
-            conditional requests to avoid retransferring an unchanged snapshot.
+            Timeline returns <Code>ETag</Code> and <Code>X-Data-Version</Code>
+            after current governance checks, with <Code>Cache-Control: private, no-store</Code>.
+            Compact mode retains result provenance. Legacy results are unreviewed;
+            <Code>reviewed_only=true</Code> is unavailable and returns 422 until
+            accepted result-level review data exists. The compatibility filter
+            <Code>experimental_only=true</Code> means reported Observed origin,
+            not independent experimental confirmation.
           </p>
         </Endpoint>
 

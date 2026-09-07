@@ -1,8 +1,11 @@
 import type { MatchingScientificResult } from "@/lib/api";
 import { pressureLabel } from "@/lib/pressure-semantics";
 import { resultOrigin, scientificNumber } from "@/lib/result-semantics";
+import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice";
+import { visibilityIsRestricted } from "@/lib/material-visibility";
 
-export function ScientificMatches({ results }: { results?: MatchingScientificResult[] }) {
+export function ScientificMatches({ results, scope = "source occurrence" }: { results?: MatchingScientificResult[]; scope?: "material" | "source occurrence" }) {
+  results = results?.filter(result => !visibilityIsRestricted(result.visibility));
   if (!results?.length) return null;
   return (
     <div className="mt-2 text-xs font-normal text-slate-500">
@@ -13,6 +16,7 @@ export function ScientificMatches({ results }: { results?: MatchingScientificRes
             {r.formula ? `${r.formula} · ` : ""}
             {r.tc_lower_bound_k != null ? `Tc lower bound ${scientificNumber(r.tc_lower_bound_k)} K · ` : ""}
             {pressureLabel(r.pressure_semantics)} · {resultOrigin(r.result_classification.knowledge_origin)}
+            <MaterialVisibilityNotice visibility={r.visibility} compact scope={scope} />
           </li>
         ))}
       </ul>

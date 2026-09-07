@@ -16,6 +16,10 @@ import { FormulaDisplay } from "@/components/FormulaDisplay";
 import { PropertyEvidenceValue } from "@/components/PropertyEvidence";
 import { selectedProperty } from "@/lib/property-evidence";
 import { ScientificAnomalyNotice } from "@/components/ScientificAnomalies";
+import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice";
+import { visibilityIsRestricted } from "@/lib/material-visibility";
+import { MaterialSemanticValue } from "@/components/MaterialSemantics";
+import { materialSemanticProperty, materialSourceCountLabel } from "@/lib/material-semantics";
 
 /**
  * Count source-linked selections, not arbitrary non-null legacy scalars.
@@ -25,7 +29,9 @@ const COVERAGE_FIELDS = ["tc_max", "tc_ambient", "pairing_symmetry", "structure_
 const COMPLETENESS_FIELDS = COVERAGE_FIELDS.length;
 
 function completeness(m: MaterialSummary): number {
-  return COVERAGE_FIELDS.filter(field => selectedProperty(m.property_evidence, field)).length;
+  return COVERAGE_FIELDS.filter(field => ["pairing_symmetry", "is_unconventional", "has_competing_order"].includes(field)
+    ? materialSemanticProperty(m.material_semantics, field as "pairing_symmetry" | "is_unconventional" | "has_competing_order")?.status === "reported"
+    : selectedProperty(m.property_evidence, field)).length;
 }
 
 function CompletenessBar({ filled }: { filled: number }) {
@@ -56,6 +62,7 @@ function CompletenessBar({ filled }: { filled: number }) {
 }
 
 export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
+  rows = rows.filter(row => !visibilityIsRestricted(row.visibility));
   if (rows.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
@@ -66,7 +73,7 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
   return (
     <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
       <table className="w-full text-sm">
-        <caption className="border-b border-slate-200 px-4 py-3 text-left text-xs text-slate-500">Catalogue selections: expand each property for its own source and conditions. A material row is not a joint observation or an ML feature row. Sorting uses legacy catalogue columns, not validated property values; unsupported selections may remain near the top.</caption>
+        <caption className="border-b border-slate-200 px-4 py-3 text-left text-xs text-slate-500">Catalogue selections: expand each numeric property for its own source and conditions. Classification cells use current reported semantics, never family priors. A material row is not a joint observation or an ML feature row. Sorting uses legacy catalogue columns, not validated property values; unsupported selections may remain near the top. Source identifiers and legacy links are not independent replications.</caption>
         <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
           <tr>
             <th className="px-4 py-2 text-left font-medium">Formula</th>
@@ -75,9 +82,10 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
             <th className="px-4 py-2 text-right font-medium">Tc ambient (K)</th>
             <th className="px-4 py-2 text-left font-medium">Pairing</th>
             <th className="px-4 py-2 text-left font-medium">Phase</th>
-            <th className="px-4 py-2 text-left font-medium">Supported flags</th>
+            <th className="px-4 py-2 text-left font-medium">Unconventional</th>
+            <th className="px-4 py-2 text-left font-medium">Competing order</th>
             <th className="px-4 py-2 text-right font-medium">arXiv year</th>
-            <th className="px-4 py-2 text-right font-medium">Papers</th>
+            <th className="px-4 py-2 text-right font-medium">Source links</th>
             <th className="px-4 py-2 text-center font-medium" title="Source tier is not experimental confirmation">Source tier</th>
             <th className="px-4 py-2 text-left font-medium">Linked fields</th>
           </tr>
@@ -93,8 +101,9 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
                 >
                   <FormulaDisplay formula={m.formula} />
                 </Link>
-                <ScientificMatches results={m.matching_results} />
+                <ScientificMatches results={m.matching_results} scope="material" />
                 <ScientificAnomalyNotice review={m.anomaly_review} compact />
+                <MaterialVisibilityNotice visibility={m.visibility} compact />
               </td>
               <td className="px-4 py-2 text-slate-600" title="Catalogue family classification, not a measured property or source">{familyLabel(m.family)}</td>
               <td className="px-4 py-2 text-right tabular-nums text-slate-800">
@@ -104,21 +113,22 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
                 <PropertyEvidenceValue evidence={m.property_evidence} field="tc_ambient" compact includeUnit={false} />
               </td>
               <td className="px-4 py-2">
-                <PropertyEvidenceValue evidence={m.property_evidence} field="pairing_symmetry" compact />
+                <MaterialSemanticValue semantics={m.material_semantics} field="pairing_symmetry" />
               </td>
               <td className="px-4 py-2">
                 <PropertyEvidenceValue evidence={m.property_evidence} field="structure_phase" compact />
               </td>
               <td className="px-4 py-2">
-                <div className="flex flex-wrap gap-1">
-                  {[["is_unconventional", "Unconventional"], ["has_competing_order", "Competing order"]].map(([field, label]) => selectedProperty(m.property_evidence, field)?.value === true ? <div key={field} className="rounded border border-slate-200 p-1 text-[10px]"><span>{label}</span><PropertyEvidenceValue evidence={m.property_evidence} field={field} compact /></div> : null)}
-                </div>
+                <MaterialSemanticValue semantics={m.material_semantics} field="is_unconventional" />
+              </td>
+              <td className="px-4 py-2">
+                <MaterialSemanticValue semantics={m.material_semantics} field="has_competing_order" />
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-slate-600">
                 {m.arxiv_year ?? "—"}
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-slate-600">
-                {m.total_papers}
+                {materialSourceCountLabel(m.material_semantics, m.total_papers)}
                 {m.variant_count > 0 && (
                   <span className="ml-1 text-[10px] text-slate-400" title={`${m.variant_count} doping variant${m.variant_count === 1 ? "" : "s"}`}>
                     +{m.variant_count}v

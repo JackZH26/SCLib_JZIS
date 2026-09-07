@@ -67,7 +67,8 @@ def test_raw_records_remain_unchanged_and_annotations_do_not_mint_new_identity()
     record = {"tc_kelvin": "39 K", "formula": "MgB2", "source_locator": {"page": 2}}
     original = deepcopy(record)
     identity = legacy_result_id(record, scope_id="mat:synthetic")
-    derived = {**record, "result_classification": {}, "pressure_semantics": {}, "property_evidence": {}}
+    derived = {**record, "result_classification": {}, "pressure_semantics": {}, "property_evidence": {},
+               "visibility": {"version": "material-visibility/1.0.0", "state": "pending"}}
     assert legacy_result_id(derived, scope_id="mat:synthetic") == identity
     assert legacy_result_id({**record, "tc_kelvin": 40}, scope_id="mat:synthetic") != identity
     build([record])

@@ -80,7 +80,7 @@ function formatEvidenceLabel(evidenceLevel: string) {
     E0: "Early hypothesis",
   };
   if (labels[raw.toUpperCase()]) return labels[raw.toUpperCase()];
-  if (raw.toLowerCase() === "literature-confirmed") return "Literature-confirmed";
+  if (raw.toLowerCase() === "literature-confirmed") return "Literature-reported";
   if (raw.toLowerCase() === "reference") return "Reference";
   if (raw.toLowerCase() === "dft-screened") return "DFT-screened";
   return evidenceLevel;

@@ -29,6 +29,12 @@ import { pressureLabel } from "@/lib/pressure-semantics";
 import { JointEpcNotice, PropertyEvidenceFact, PropertyEvidenceSection, PropertyEvidenceValue } from "@/components/PropertyEvidence";
 import { RawScientificArchive, RecordAnomalyReview, ScientificAnomalyNotice } from "@/components/ScientificAnomalies";
 import { evidenceText, objectValue, ORDER_FIELDS, propertyJsonLd, SAMPLE_FIELDS, SC_FIELDS, selectedProperty, STRUCTURE_FIELDS, supportedPropertyDescription } from "@/lib/property-evidence";
+import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice";
+import { eligibleForScientificSeo, visibilityIsRestricted, visibilityLabel } from "@/lib/material-visibility";
+import { MaterialSemanticsMini, MaterialSemanticsPanel } from "@/components/MaterialSemantics";
+import { materialSourceCountLabel } from "@/lib/material-semantics";
+
+export const dynamic = "force-dynamic";
 
 type MaterialPageProps = {
   params: Promise<{ id: string }>;
@@ -37,12 +43,13 @@ type MaterialPageProps = {
 const loadMaterial = cache(getMaterial);
 
 function materialDescription(mat: Awaited<ReturnType<typeof getMaterial>>): string {
+  if (!eligibleForScientificSeo(mat.visibility)) return `${mat.formula} source-inspection Archive. ${visibilityLabel(mat.visibility)}. Not an accepted superconductivity result.`;
   const properties = [
     mat.family ? familyLabel(mat.family) : null,
     supportedPropertyDescription(mat.property_evidence, "tc_max"),
-    mat.total_papers === 1 ? "1 indexed paper" : `${mat.total_papers} indexed papers`,
+    `${materialSourceCountLabel(mat.material_semantics, mat.total_papers)} (not independent confirmations)`,
   ].filter(Boolean);
-  return `${mat.formula} superconducting material data: ${properties.join(", ")}.`;
+  return `${mat.formula} source-linked material catalogue: ${properties.join(", ")}. Catalogue eligibility is not scientific approval.`;
 }
 
 export async function generateMetadata({
@@ -52,12 +59,15 @@ export async function generateMetadata({
   const id = decodeURIComponent(encodedId);
   try {
     const mat = await loadMaterial(id);
-    const title = `${mat.formula} superconducting material`;
+    const eligible = eligibleForScientificSeo(mat.visibility);
+    if (visibilityIsRestricted(mat.visibility)) return { title: "Material not found", robots: { index: false, follow: false } };
+    const title = `${mat.formula} ${eligible ? "material catalogue" : "material Archive"}`;
     const description = materialDescription(mat);
     const canonical = absoluteUrl(`/materials/${encodeURIComponent(mat.id)}`);
     return {
       title,
       description,
+      robots: eligible ? undefined : { index: false, follow: false, noarchive: true },
       alternates: { canonical },
       openGraph: {
         type: "website",
@@ -88,8 +98,10 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
     if (e instanceof ApiError && e.status === 404) notFound();
     throw e;
   }
+  if (visibilityIsRestricted(mat.visibility)) notFound();
+  const catalogueEligible = eligibleForScientificSeo(mat.visibility);
   const hydrideParameters =
-    mat.family === "hydride" ? await getMaterialHydrideParameters(id) : [];
+    mat.family === "hydride" && catalogueEligible ? await getMaterialHydrideParameters(id) : [];
 
   const flags: [string, boolean | null][] = [
     ["Catalogue risk flag: disputed", mat.disputed],
@@ -100,7 +112,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
   const materialStructuredData = {
     "@context": "https://schema.org",
     "@type": "Dataset",
-    name: `${mat.formula} superconducting material data`,
+    name: `${mat.formula} ${catalogueEligible ? "material catalogue" : "material Archive"}`,
     description: materialDescription(mat),
     url: canonical,
     identifier: mat.id,
@@ -110,16 +122,16 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
       mat.family,
       mat.subfamily,
     ].filter(Boolean),
-    variableMeasured: [
+    variableMeasured: catalogueEligible ? [
       propertyJsonLd(mat.property_evidence, "tc_max"),
       propertyJsonLd(mat.property_evidence, "tc_ambient"),
-    ].filter(Boolean),
+    ].filter(Boolean) : [],
     measurementTechnique: "Scientific literature extraction; result origin is not scientific validation",
-    includedInDataCatalog: {
+    ...(catalogueEligible ? { includedInDataCatalog: {
       "@type": "DataCatalog",
       name: "SCLib — JZIS Superconductivity Library",
       url: absoluteUrl("/materials"),
-    },
+    } } : {}),
     creator: {
       "@type": "Organization",
       name: "JZ Institute of Science",
@@ -210,15 +222,17 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
         )}
       </div>
 
-      <p className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">These are catalogue property selections, not a joint observation or an ML feature row. Expand each value for its contributing result, source and conditions. Observed/Computed labels describe the source record, not independent validation of each property. Missing source/state associations are not filled from another record. Family labels are catalogue classifications, not measurement evidence.</p>
+      <MaterialVisibilityNotice visibility={mat.visibility} />
+      <p className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">These are source-linked property selections, not a joint observation or an ML feature row. Archive status applies to every property below; a source-linked value does not override a material review hold. Expand each value for its contributing result, source and conditions. Observed/Computed labels describe the source record, not independent validation of each property. Missing source/state associations are not filled from another record. Family labels are catalogue classifications, not measurement evidence.</p>
       <ScientificAnomalyNotice review={mat.anomaly_review} />
 
       <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <PropertyEvidenceFact evidence={mat.property_evidence} field="tc_max" />
         <PropertyEvidenceFact evidence={mat.property_evidence} field="tc_ambient" />
         <Fact label="arXiv year" value={String(mat.arxiv_year ?? "—")} />
-        <Fact label="Papers" value={mat.total_papers.toString()} />
+        <Fact label="Source links · not replications" value={materialSourceCountLabel(mat.material_semantics, mat.total_papers)} />
       </section>
+      <MaterialSemanticsPanel semantics={mat.material_semantics} />
       {(selectedProperty(mat.property_evidence, "tc_max_experimental") || selectedProperty(mat.property_evidence, "tc_max_theoretical")) && (
         <section className="-mt-2 grid grid-cols-2 gap-4 md:grid-cols-4">
           <PropertyEvidenceFact evidence={mat.property_evidence} field="tc_max_experimental" />
@@ -239,12 +253,13 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
                   <th className="px-3 py-3 text-left font-medium">Formula</th>
                   <th className="px-3 py-3 text-right font-medium">Tc max (K)</th>
                   <th className="px-3 py-3 text-right font-medium">Tc amb. (K)</th>
-                  <th className="px-3 py-3 text-right font-medium">Papers</th>
+                  <th className="px-3 py-3 text-right font-medium">Source links</th>
+                  <th className="px-3 py-3 text-left font-medium">Reported classifications</th>
                   <th className="px-3 py-3 text-right font-medium">Doping</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {mat.variants.map((v) => (
+                {mat.variants.filter(v => !visibilityIsRestricted(v.visibility)).map((v) => (
                   <tr key={v.id} className="hover:bg-slate-50">
                     <td className="px-3 py-2.5">
                       <Link
@@ -254,6 +269,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
                         <FormulaDisplay formula={v.formula} />
                       </Link>
                       <ScientificAnomalyNotice review={v.anomaly_review} compact />
+                      <MaterialVisibilityNotice visibility={v.visibility} compact />
                     </td>
                     <td className="px-3 py-2.5 text-right tabular-nums">
                       <PropertyEvidenceValue evidence={v.property_evidence} field="tc_max" compact includeUnit={false} />
@@ -262,8 +278,9 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
                       <PropertyEvidenceValue evidence={v.property_evidence} field="tc_ambient" compact includeUnit={false} />
                     </td>
                     <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
-                      {v.total_papers}
+                      {materialSourceCountLabel(v.material_semantics, v.total_papers)}
                     </td>
+                    <td className="min-w-[12rem] px-3 py-2.5"><MaterialSemanticsMini semantics={v.material_semantics} /></td>
                     <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
                       <PropertyEvidenceValue evidence={v.property_evidence} field="doping_level" compact />
                     </td>
@@ -287,18 +304,19 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
       {mat.records.length > 0 && (
         <RecordsTable records={mat.records} />
       )}
-      <RawScientificArchive archive={mat.raw_archive} />
+      <RawScientificArchive archive={mat.raw_archive} visibility={mat.visibility} />
+
+      {mat.family === "hydride" && !catalogueEligible && <p className="rounded border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">Specialized hydride results are not loaded for this Archive record. An alternate endpoint cannot bypass its review status.</p>}
 
       {hydrideParameters.length > 0 && (
         <HydrideParametersTable rows={hydrideParameters} />
       )}
 
       <PropertyEvidenceSection title="Structure — separate source selections" fields={STRUCTURE_FIELDS} evidence={mat.property_evidence} />
-      <PropertyEvidenceSection title="Superconducting parameters" fields={SC_FIELDS} evidence={mat.property_evidence} />
+      <PropertyEvidenceSection title="Superconducting parameters" fields={SC_FIELDS.filter(field => field !== "pairing_symmetry")} evidence={mat.property_evidence} />
       <JointEpcNotice evidence={mat.property_evidence} />
       <PropertyEvidenceSection title="Competing orders" fields={ORDER_FIELDS} evidence={mat.property_evidence} />
       <PropertyEvidenceSection title="Samples & pressure" fields={SAMPLE_FIELDS} evidence={mat.property_evidence} />
-      <PropertyEvidenceSection title="Source-linked classifications" fields={["is_unconventional", "has_competing_order"]} evidence={mat.property_evidence} />
 
     </main>
   );
@@ -338,12 +356,13 @@ function HydrideParametersTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {rows.map((r) => {
+            {rows.filter(r => !visibilityIsRestricted(r.visibility)).map((r) => {
               const paperRef = paperReference(r.paper_id);
               return (
                 <tr key={r.id} className="hover:bg-slate-50">
                   <td className="px-3 py-2.5 font-medium text-slate-800">
                     <FormulaDisplay formula={r.formula} />
+                    <MaterialVisibilityNotice visibility={r.visibility} compact />
                   </td>
                   <td className="px-3 py-2.5 text-right tabular-nums">
                     <HydrideExtractedField row={r} field="tc_kelvin" fallback={r.tc_kelvin} unit="K" />
@@ -439,7 +458,7 @@ function RecordsTable({
 }) {
   // Preserve individual extracted results: equal Tc/pressure is not enough
   // to merge sample, method, origin, criterion or source-role evidence.
-  const rowsWithMethods = records.map<Record<string, unknown> & { _methods: Set<string> }>((record) => ({
+  const rowsWithMethods = records.filter(record => !visibilityIsRestricted(record.visibility)).map<Record<string, unknown> & { _methods: Set<string> }>((record) => ({
     ...record,
     _methods: new Set(
       typeof record.measurement === "string" && record.measurement.toLowerCase() !== "unknown"
@@ -461,8 +480,7 @@ function RecordsTable({
       <div className="mb-3 flex items-baseline justify-between">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
           Evidence ({rows.length} record{rows.length === 1 ? "" : "s"} from{" "}
-          {new Set(rows.map((r) => r.paper_id)).size} paper
-          {new Set(rows.map((r) => r.paper_id)).size === 1 ? "" : "s"})
+          {new Set(rows.map((r) => r.paper_id).filter(id => typeof id === "string" && id.trim())).size} linked bibliographic IDs)
         </h2>
         <span className="text-xs text-slate-400">
           retained extraction records, including proposals that may need review;
@@ -508,7 +526,7 @@ function RecordsTable({
                     <span className="block">{classification.status === "conflicted" ? "Classification conflict" : classification.origin}</span>
                     <span className="text-slate-400">{classification.role} source role</span>
                   </td>
-                  <td className="px-3 py-2.5"><RecordAnomalyReview assessment={r.anomaly_review} /></td>
+                  <td className="px-3 py-2.5"><RecordAnomalyReview assessment={r.anomaly_review} /><MaterialVisibilityNotice visibility={r.visibility} compact scope={objectValue(r.visibility).material_link_status ? "source occurrence" : "material"} /></td>
                   <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
                     {pressureLabel(r.pressure_semantics, p)}
                   </td>

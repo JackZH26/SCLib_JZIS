@@ -13,6 +13,8 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from services.material_visibility import MATERIAL_VISIBILITY_VERSION, sanitize_review_metadata
+
 _PUBLIC_LOCATOR_STRING_LIMITS = {
     "chunk_id": 200,
     "equation": 100,
@@ -114,6 +116,8 @@ class MaterialClaimResponse(BaseModel):
     ingestion_run_id: str | None = None
     created_at: datetime
     updated_at: datetime
+    visibility: dict[str, Any] = Field(default_factory=dict)
+    claim_visibility: dict[str, Any] = Field(default_factory=dict)
 
     @field_validator("source_locator", mode="before")
     @classmethod
@@ -138,11 +142,20 @@ class MaterialClaimResponse(BaseModel):
                     visible[key] = item.lower()
         return visible
 
+    @field_validator("visibility", "claim_visibility", mode="before")
+    @classmethod
+    def remove_private_review_metadata(cls, value: Any) -> dict[str, Any]:
+        return sanitize_review_metadata(value) if isinstance(value, dict) else {}
+
 
 class MaterialClaimPage(BaseModel):
     items: list[MaterialClaimResponse]
     limit: int
     next_cursor: uuid.UUID | None = None
+    has_more: bool = False
+    visibility_policy_version: str = MATERIAL_VISIBILITY_VERSION
+    view_scope: str = "catalogue"
+    scientific_acceptance: bool = False
 
 
 class MlDatasetSnapshotResponse(BaseModel):

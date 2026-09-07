@@ -15,7 +15,22 @@ from services.material_anomalies import (
     retained_record_archive,
     review_context,
 )
+from services.material_semantics import MATERIAL_SEMANTICS_FIELDS, build_material_semantics
+from services.material_visibility import sanitize_review_metadata, visibility_for_material
+from services.material_visibility_adapter import MaterialReadContext
 from services.property_evidence import PROPERTY_FIELDS, build_property_evidence
+
+
+def project_material_semantics(value: Any, *, scope_id: str | None = None) -> dict[str, Any]:
+    """Rebuild from current raw records; a stored envelope is never evidence."""
+    def read(name: str, default=None):
+        return value.get(name, default) if isinstance(value, dict) else getattr(value, name, default)
+    legacy = {name: read(name) for name in (*MATERIAL_SEMANTICS_FIELDS, "disputed", "total_papers")}
+    return build_material_semantics(
+        read("records"), scope_id=scope_id or str(read("id") or "unknown-material"),
+        family=read("family"), legacy_summary=legacy,
+        source_statuses=value.source_statuses if isinstance(value, MaterialReadContext) else None,
+    )
 
 
 def project_material_properties(
@@ -27,9 +42,10 @@ def project_material_properties(
 ) -> dict[str, Any]:
     """Bind existing selections without resurrecting capped/hidden values.
 
-    A missing aggregate stays missing even when other raw results exist.
-    Unsupported historical scalars become null in this *response*, with the
-    reason and independently browsable evidence retained in the envelope.
+    Missing quantitative aggregates remain missing even when other raw results
+    exist. SC10 classifications instead use their explicit reported-summary
+    policy. Unsupported historical scalars become null in this *response*,
+    with independently browsable raw evidence retained in the envelopes.
     """
     names = set(field_names)
     payload = dict(value) if isinstance(value, dict) else {
@@ -44,6 +60,14 @@ def project_material_properties(
     records = raw_records if isinstance(raw_records, list) else []
     identity = scope_id or str(payload.get("id") or "unknown-material")
     context = review_context(value)
+    semantics = project_material_semantics(value, scope_id=identity)
+    # SC10 aliases come from reported classification semantics, not stale
+    # weighted votes, family priors or defaults. Other legacy properties retain
+    # their existing atomic-selection policy.
+    for field in MATERIAL_SEMANTICS_FIELDS:
+        if field in names:
+            item = semantics["properties"][field]
+            payload[field] = item["value"] if item["status"] == "reported" else None
     envelope = build_property_evidence(
         records, scope_id=identity, legacy_summary=payload,
         property_fields=[field for field in PROPERTY_FIELDS if field in names],
@@ -68,6 +92,16 @@ def project_material_properties(
     if "ambient_sc" in names:
         payload["ambient_sc"] = True if payload.get("tc_ambient") is not None else None
 
+    for field in MATERIAL_SEMANTICS_FIELDS:
+        if field in names:
+            item = semantics["properties"][field]
+            payload[field] = item["value"] if item["status"] == "reported" else None
+            if field in properties:
+                properties[field]["warnings"] = sorted(set([
+                    *properties[field]["warnings"], "classification_summary_uses_material_semantics",
+                ]))
+    payload["material_semantics"] = semantics
+
     if compact:
         # Lists/bookmarks carry selected tuples only; detailed alternative
         # evidence remains on the detail endpoint. Keep counts and warnings.
@@ -80,10 +114,23 @@ def project_material_properties(
         envelope["evidence_scope"] = "bounded_alternatives"
     payload["property_evidence"] = envelope
     payload["anomaly_review"] = material_review(records, scope_id=identity, context=context, compact=compact)
+    visibility = value.visibility if isinstance(value, MaterialReadContext) else visibility_for_material(value, anomaly_review=payload["anomaly_review"])
+    payload["visibility"] = visibility
+    payload["needs_review"] = not visibility["public_catalogue_eligible"]
+    payload["review_reason"] = "; ".join(visibility.get("reason_messages", [])) or None
+    for private in ("admin_decision", "anomaly_context", "reviewer_id", "reviewer_email"):
+        payload.pop(private, None)
     if not compact and "records" in names:
         payload["records"] = [
-            {**record, "anomaly_review": record_assessment(record, scope_id=identity, context=context)}
+            {**sanitize_review_metadata(record), "anomaly_review": record_assessment(record, scope_id=identity, context=context), "visibility": visibility}
             for record in records if isinstance(record, dict)
         ]
         payload["raw_archive"] = retained_record_archive(records, scope_id=identity, context=context)
-    return payload
+        payload["raw_archive"]["visibility"] = visibility
+    # Derived evidence includes source locators as well as retained records.
+    # Strip private structured review metadata only after computing identities
+    # and all scientific decisions from the untouched originals.
+    public = {key: sanitize_review_metadata(item) if isinstance(item, (dict, list)) else item
+              for key, item in payload.items()}
+    public["review_reason"] = payload["review_reason"]
+    return public

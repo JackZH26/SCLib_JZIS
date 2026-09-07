@@ -28,7 +28,14 @@ from models.db import Chunk
 from models.search import SearchMatch, SearchRequest, SearchResponse
 from routers.deps import Identity, require_identity
 from services import provider_resilience, retrieval, vector_search
-from services.scientific_filters import ResultFilters, matching_result_references, tc_lower_bound
+from services.anomaly_review import eligible_for_property
+from services.scientific_filters import ResultFilters, matching_result_references
+from services.source_visibility import (
+    occurrence_visibility,
+    project_source_occurrences,
+    resolve_explicit_materials,
+    source_visibility,
+)
 
 log = logging.getLogger(__name__)
 
@@ -112,6 +119,9 @@ async def search(
     rows = (await db.execute(q)).scalars().all()
     chunk_by_id = {c.id: c for c in rows}
     candidates = retrieval.rerank_candidates(body.query, candidates, chunk_by_id)
+    linked_materials = await resolve_explicit_materials(
+        db, [chunk.paper.materials_extracted for chunk in rows if chunk.paper is not None],
+    )
 
     # 3. Preserve ANN ordering, apply row-level filters that don't
     #    fit in the index namespaces.
@@ -134,11 +144,29 @@ async def search(
             continue
         if paper.id in seen_papers:
             continue  # already have a higher-ranked chunk from this paper
-        if f.exclude_retracted and paper.status == "retracted":
+        if f.exclude_retracted and source_visibility(paper.status)["source_status"] == "retracted":
             continue
+        materials, occurrence_summary = project_source_occurrences(
+            paper.materials_extracted, paper_status=paper.status, linked_materials=linked_materials,
+        )
+        # Compute identities/indices from the original source records, then
+        # apply visibility by index. Derived envelopes must not change IDs.
+        visibility_by_index = {}
+        for index, record in enumerate(paper.materials_extracted or []):
+            if isinstance(record, dict):
+                material_id = record.get("material_id")
+                visibility_by_index[index] = occurrence_visibility(
+                    record, paper_status=paper.status,
+                    linked_visibility=linked_materials.get(material_id) if isinstance(material_id, str) else None,
+                )
         matched_results = matching_result_references(
             paper.materials_extracted, scientific_filters, scope_id=paper.id,
         )
+        matched_results = [
+            {**result, "visibility": visibility_by_index[result["record_index"]]}
+            for result in matched_results
+            if visibility_by_index[result["record_index"]]["reported_claim_filter_eligible"]
+        ]
         if scientific_filters.active and not matched_results:
             continue
 
@@ -154,12 +182,14 @@ async def search(
                 relevance_score=round(candidate.rerank_score, 6),
                 matched_chunk=chunk.text,
                 matched_section=chunk.section,
-                materials=list(paper.materials_extracted or []),
+                materials=materials,
                 citation_count=paper.citation_count or 0,
                 material_family=paper.material_family,
                 has_equation=bool(chunk.has_equation),
                 has_table=bool(chunk.has_table),
                 matching_results=matched_results if scientific_filters.active else [],
+                source_visibility=source_visibility(paper.status),
+                occurrence_visibility_summary=occurrence_summary,
             )
         )
         if len(matches) >= body.top_k:
@@ -193,12 +223,9 @@ _EPOCH = _date(1900, 1, 1)
 
 def _best_tc(m: SearchMatch) -> float:
     if m.matching_results:
-        return max((r["tc_lower_bound_k"] or 0 for r in m.matching_results), default=0.0)
-    best = 0.0
-    for mat in m.materials:
-        if not isinstance(mat, dict):
-            continue
-        tc = tc_lower_bound(mat)
-        if tc is not None and tc > best:
-            best = tc
-    return best
+        return max((r["tc_lower_bound_k"] or 0 for r in m.matching_results
+                    if eligible_for_property(r.get("anomaly_review", {}), "tc_kelvin")), default=0.0)
+    eligible = [mat for mat in m.materials if isinstance(mat, dict)
+                and mat.get("visibility", {}).get("reported_claim_filter_eligible", False)]
+    matches = matching_result_references(eligible, ResultFilters(positive_tc=True), scope_id=m.paper_id)
+    return max((record["tc_lower_bound_k"] or 0 for record in matches), default=0.0)

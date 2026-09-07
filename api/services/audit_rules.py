@@ -95,14 +95,18 @@ RULES: list[AuditRule] = [
         name="family_unconv_contradiction",
         severity="critical",
         description=(
-            "is_unconventional=TRUE but family='conventional'."
+            "Legacy catalogue classification mismatch: is_unconventional=TRUE "
+            "but family='conventional'. This is not an adjudicated physical contradiction."
         ),
         predicate=(
             "is_unconventional = TRUE AND family = 'conventional'"
         ),
         suggested_fix=(
-            "Set is_unconventional=false (if genuinely BCS), or "
-            "reclassify the family to the correct unconventional type."
+            "Inspect the source-specific classification, sample/state, method and "
+            "reported conditions alongside material_semantics. Never infer false "
+            "from a family label or overwrite raw evidence to force agreement. "
+            "A correction requires a source-linked review; unresolved reports "
+            "and family priors remain separate."
         ),
     ),
 

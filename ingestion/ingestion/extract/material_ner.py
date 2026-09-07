@@ -210,7 +210,8 @@ EXTRACT IF PRESENT (omit or set null otherwise):
           chalcogenide = non-iron chalcogenide (NbSe2, TaS2, TiSe2…)
           elemental = elemental metals (Nb, Pb, Sn, Al, V…)
           conventional = other BCS / phonon-mediated not in above families
-- pairing_symmetry: "d-wave" | "s-wave" | "s_pm" | "p-wave" | "unknown"
+- pairing_symmetry: "d-wave" | "s-wave" | "s_pm" | "p-wave" | "unknown";
+  only when explicitly reported for this material/state, never inferred from family
 - gap_structure: "full_gap" | "nodal" | "multi_gap" | "unknown"
 - crystal_structure: space group or structure type (e.g. "I4/mmm")
 - space_group: space group symbol or number (e.g. "I4/mmm (#139)")
@@ -220,6 +221,16 @@ EXTRACT IF PRESENT (omit or set null otherwise):
 - t_cdw_k, t_sdw_k, t_afm_k: competing-order transition temps in K
 - rho_exponent: normal-state resistivity exponent n (rho ~ T^n)
 - competing_order: "CDW" | "AFM" | "SDW" | "Mott_insulator" | "PDW"
+- has_competing_order: optional JSON true/false ONLY for an explicit same-state
+  assertion. Omit when silent. An order temperature alone does not establish
+  competition with superconductivity. Preserve the explicit order label above.
+- measurement_method: the source-reported method supporting an explicit
+  presence/absence assertion (short text; do not infer from the paper genre)
+- detection_conditions: optional JSON object containing the source-reported
+  conditions/limits for that same method and sample. Allowed keys: description,
+  temperature_min_k, temperature_max_k, magnetic_field_t, pressure_gpa,
+  detection_limit, protocol_id. Do not manufacture limits or claim absence
+  outside the tested conditions. Retain only explicit facts.
 - hc2_tesla: upper critical field in Tesla
 - hc2_conditions: conditions string for Hc2 (e.g. "0 K, H parallel c")
 - lambda_eph: electron-phonon coupling constant lambda
@@ -233,7 +244,11 @@ EXTRACT IF PRESENT (omit or set null otherwise):
 - doping_type: "hole" | "electron" | "isovalent" | "none"
 - doping_level: numeric doping x (0..1 range)
 - is_unconventional: true iff explicitly described as unconventional
-                     / non-BCS
+                     / non-BCS for this material/state, never a family default.
+  False requires an explicit qualified statement, not silence or a family rule.
+- For either boolean false, also extract the same-source measurement_method
+  and detection_conditions. If these are absent, retain the reported false
+  without inventing evidence; downstream validation will keep it unresolved.
 - disputed: true iff the paper mentions contested / retracted results
 
 RULES:
@@ -249,6 +264,8 @@ RULES:
   "chiral molecule intercalated TaS2 hybrid superlattice").
 - Only extract materials explicitly measured for superconductivity.
 - Do not invent data. Fields not in the text must be null / omitted.
+- Do not generate pipeline statuses such as not_extracted, failed, reviewed,
+  or accepted. Missingness and review states are determined by the pipeline.
 - Preserve the reported Tc, units, bounds and conditions even when the value
   is unusually high or low. Do not clip, omit or lower extraction confidence
   solely because of its magnitude. Scientific plausibility is a separate,
@@ -318,6 +335,7 @@ _V2_FIELDS = (
     "crystal_structure", "space_group", "structure_phase",
     "lattice_a", "lattice_c",
     "t_cdw_k", "t_sdw_k", "t_afm_k", "rho_exponent", "competing_order",
+    "has_competing_order", "measurement_method", "detection_conditions",
     "hc2_tesla", "hc2_conditions",
     "lambda_eph", "omega_log_k", "rho_s_mev",
     "ambient_sc", "sample_form", "substrate",
@@ -350,9 +368,7 @@ _NUMERIC_FIELDS = {
     "hc2_tesla", "lambda_eph", "omega_log_k", "rho_s_mev",
     "doping_level",
 }
-_BOOL_FIELDS = {
-    "ambient_sc", "is_unconventional", "disputed",
-}
+_BOOL_FIELDS = {"ambient_sc", "is_unconventional", "has_competing_order", "disputed"}
 
 # B3: Semantic blacklist — formulas that are syntactically valid but
 # refer to refuted materials, generic placeholders, or family-name
@@ -519,6 +535,15 @@ def normalize_material_records(
                     record.setdefault("validation_flags", []).append(f"{field}:{proposal['errors'][0]}")
             elif value is None or value == "":
                 continue
+            elif field == "detection_conditions":
+                # Preserve structure, including invalid proposals, for the
+                # bounded shared semantics validator. Never stringify a map.
+                record[field] = json_safe_raw(value)
+            elif field in {"has_competing_order", "is_unconventional"}:
+                if type(value) is bool:
+                    record[field] = value
+                else:
+                    record.setdefault("validation_flags", []).append(f"{field}:explicit_boolean_required")
             elif field in _BOOL_FIELDS:
                 record[field] = _coerce_bool(value)
             else:

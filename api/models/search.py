@@ -11,7 +11,9 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from services.claim_support import SUPPORT_POLICY_VERSION
 from services.material_property_projection import project_material_properties
+from services.material_semantics import MATERIAL_SEMANTICS_VERSION
 from services.pressure_semantics import annotate_pressure_records, classify_pressure
 from services.result_semantics import (
     CLASSIFIER_VERSION,
@@ -56,6 +58,9 @@ class SearchRequest(BaseModel):
 
 class SearchMatch(BaseModel):
     """One hit in a search response."""
+
+    source_visibility: dict[str, Any] = Field(default_factory=dict)
+    occurrence_visibility_summary: dict[str, Any] = Field(default_factory=dict)
 
     @field_validator("materials")
     @classmethod
@@ -110,14 +115,43 @@ class AskSource(BaseModel):
     section: str | None
     snippet: str
     material_evidence: list[dict[str, Any]] = Field(default_factory=list)
+    source_visibility: dict[str, Any] = Field(default_factory=dict)
+
+SupportStatus = Literal["supported", "contradicted", "undetermined", "not_checked"]
+
+
+class ClaimSupportEvidence(BaseModel):
+    source_index: int = Field(ge=1)
+    paper_id: str
+    excerpt: str
+
+
+class ClaimSupportAssessment(BaseModel):
+    claim_id: str
+    text: str
+    cited_indices: list[int] = Field(default_factory=list)
+    status: SupportStatus
+    reason_codes: list[str] = Field(default_factory=list)
+    evidence: list[ClaimSupportEvidence] = Field(default_factory=list)
+    quantities: dict[str, Any] | list[dict[str, Any]] = Field(default_factory=dict)
+
 
 class AskResponse(BaseModel):
     answer: str  # markdown with [1][2] citations
     sources: list[AskSource]
     tokens_used: int | None
     query_time_ms: int
-    citation_valid: bool = True
+    citation_valid: bool = Field(False, deprecated=True, description="Legacy citation/lexical heuristic; not scientific support or acceptance.")
     citation_warnings: list[str] = Field(default_factory=list)
+    support_policy_version: str = SUPPORT_POLICY_VERSION
+    citation_indices_valid: bool = False
+    lexical_support_checked: bool = False
+    scientific_support_status: SupportStatus = "not_checked"
+    claim_assessments: list[ClaimSupportAssessment] = Field(default_factory=list)
+    support_warnings: list[str] = Field(default_factory=list)
+    support_coverage: dict[str, Any] = Field(default_factory=dict)
+    answer_mode: Literal["synthesis", "limited_synthesis", "extractive_fallback", "abstention"] = "abstention"
+    assessment_scope: Literal["generated_draft", "none"] = "none"
     guest_remaining: int | None = None
     remaining: int | None = None
 
@@ -128,6 +162,9 @@ class AskResponse(BaseModel):
 
 class MaterialSummary(BaseModel):
     model_config = ConfigDict(from_attributes=True)
+    visibility: dict[str, Any] = Field(default_factory=dict)
+    needs_review: bool = True
+    review_reason: str | None = None
 
     @model_validator(mode="before")
     @classmethod
@@ -153,6 +190,9 @@ class MaterialSummary(BaseModel):
     matching_results: list[dict[str, Any]] = Field(default_factory=list)
     filter_policy_version: str = FILTER_POLICY_VERSION
 
+    material_semantics: dict[str, Any] = Field(default_factory=dict)
+    classification_filter_policy_version: str = MATERIAL_SEMANTICS_VERSION
+    classification_filter_scope: str = "material_reported_summary_not_joint_state"
     property_evidence: dict[str, Any] = Field(default_factory=dict)
     anomaly_review: dict[str, Any] = Field(default_factory=dict)
 
@@ -186,6 +226,9 @@ class MaterialSummary(BaseModel):
 class VariantSummary(BaseModel):
     """Compact representation of a doping/oxygen variant for the detail page."""
     model_config = ConfigDict(from_attributes=True)
+    visibility: dict[str, Any] = Field(default_factory=dict)
+    needs_review: bool = True
+    review_reason: str | None = None
 
     @model_validator(mode="before")
     @classmethod
@@ -201,11 +244,14 @@ class VariantSummary(BaseModel):
     pressure_type: str | None = None
 
     property_evidence: dict[str, Any] = Field(default_factory=dict)
+    material_semantics: dict[str, Any] = Field(default_factory=dict)
     anomaly_review: dict[str, Any] = Field(default_factory=dict)
 
 
 class PhaseDiagramPoint(BaseModel):
     """One dot on the Tc-vs-doping phase diagram."""
+    material_id: str | None = None
+    visibility: dict[str, Any] = Field(default_factory=dict)
     formula: str
     tc_kelvin: float
     doping_level: float | None = None
@@ -218,6 +264,7 @@ class PhaseDiagramPoint(BaseModel):
 class HydrideTcParameterRecord(BaseModel):
     """Independent hydride enrichment row shown on material detail pages."""
     model_config = ConfigDict(from_attributes=True)
+    visibility: dict[str, Any] = Field(default_factory=dict)
 
     @model_validator(mode="before")
     @classmethod
@@ -346,6 +393,8 @@ class PaperSummary(BaseModel):
 
 
 class PaperDetail(PaperSummary):
+    source_visibility: dict[str, Any] = Field(default_factory=dict)
+    occurrence_visibility_summary: dict[str, Any] = Field(default_factory=dict)
     abstract: str
     categories: list[str] | None
     materials_extracted: list[dict[str, Any]]
@@ -428,7 +477,12 @@ class StatsResponse(BaseModel):
 
 
 class TimelinePoint(BaseModel):
-    """One dot on the Tc-vs-year Plotly scatter."""
+    """One provenance-bearing reported result, not a display cluster."""
+
+    point_id: str | None = None
+    result_metadata: dict[str, Any] = Field(default_factory=dict)
+    material_id: str | None = None
+    visibility: dict[str, Any] = Field(default_factory=dict)
 
     material: str
     formula_latex: str | None
@@ -468,6 +522,10 @@ class TimelineCoverage(BaseModel):
 
 
 class TimelineResponse(BaseModel):
+    timeline_policy_version: str = "reported-tc-timeline/2.0.0"
+    sampling: dict[str, Any] = Field(default_factory=dict)
+    record_summary: dict[str, Any] = Field(default_factory=dict)
+    visibility_policy_version: str | None = None
     anomaly_policy_version: str | None = None
     schema_version: Literal["1"] = "1"
     data_version: str = "timeline-v1-unknown"

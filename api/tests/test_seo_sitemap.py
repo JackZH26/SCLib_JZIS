@@ -32,6 +32,16 @@ class _Session:
         self.statements.append(statement)
         return next(self.results)
 
+    async def stream_scalars(self, statement):
+        self.statements.append(statement)
+        class EmptyStream:
+            async def partitions(self, size):
+                for batch in []:
+                    yield batch
+            async def close(self):
+                pass
+        return EmptyStream()
+
 
 @pytest.mark.asyncio
 async def test_paper_inventory_selects_only_id_and_update_time():
@@ -57,7 +67,7 @@ async def test_paper_inventory_selects_only_id_and_update_time():
     sql = str(db.statements[1])
     assert "papers.id" in sql and "papers.updated_at" in sql
     assert "papers.abstract" not in sql and "materials_extracted" not in sql
-    assert response.headers["cache-control"].startswith("public")
+    assert response.headers["cache-control"] == "private, no-store"
 
 
 @pytest.mark.asyncio
@@ -72,7 +82,7 @@ async def test_material_inventory_applies_public_quality_filters():
     )
 
     assert page.offset == 20_000
-    sql = str(db.statements[1])
+    sql = str(db.statements[0])
     assert "materials.needs_review IS false" in sql
     assert "materials.total_papers >" in sql
-    assert "provenance_quarantine_nims" in repr(db.statements[1].compile().params)
+    assert "provenance_quarantine" in repr(db.statements[0].compile().params)

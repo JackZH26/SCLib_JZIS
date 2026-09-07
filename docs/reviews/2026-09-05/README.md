@@ -132,6 +132,10 @@ The 15 finding groups S01–S08, M01–M02, R01, D01–D03 and E01 are covered a
 
 ## Files and maintenance
 
+- [Eighth implementation batch — 2026-09-07](Phase_A_Eighth_Batch_Implementation_2026-09-07.md): SC10 separates missingness, reported classifications, Inferred family priors, conflict diagnostics and bibliographic support; no automatic negative labels, dispute adjudication or replication counts.
+- [Seventh implementation batch — 2026-09-07](Phase_A_Seventh_Batch_Implementation_2026-09-07.md): RG01 separate citation-index and bounded scientific-support checks, fail-closed draft delivery and inspectable evidence; synthetic regression evidence is not human-adjudicated validation.
+- [Sixth implementation batch — 2026-09-06](Phase_A_Sixth_Batch_Implementation_2026-09-06.md): SC06 provenance-bearing Reported Tc Timeline, explicit chronology, display-only sampling and accessible result inspection; no complete discovery-history or world-record claim.
+- [Fifth implementation batch — 2026-09-06](Phase_A_Fifth_Batch_Implementation_2026-09-06.md): SC07 shared Catalogue/Archive visibility, current source/parent holds, consistent read surfaces and cache/metadata guards; no scientific approval or production rollout.
 - [Fourth implementation batch — 2026-09-06](Phase_A_Fourth_Batch_Implementation_2026-09-06.md): SC03 raw-preserving anomaly review, source-linked proposed revisions and integrated scientific read gates; no production rollout or scientific acceptance.
 - [Third implementation batch — 2026-09-06](Phase_A_Third_Batch_Implementation_2026-09-06.md): SC02 atomic property evidence, conditions, EPC association and offline impact audit; local implementation, not a production rollout.
 - [Second implementation batch — 2026-09-06](Phase_A_Second_Batch_Implementation_2026-09-06.md): ML02/SC04/DR01 implementation, integrated verification and explicit rollout/research limits; issues remain open for review and release gates.

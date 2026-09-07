@@ -16,15 +16,14 @@ Key design choices, in order of how much they affect visible data:
    Without this ~20 BSCCO variants stayed split, hiding that
    300+ papers talk about the same compound.
 
-2. **Confidence-weighted MODE** for discrete fields (pairing,
-   structure_phase, …). A single high-confidence paper beats two
+2. **Confidence-weighted MODE** for legacy catalogue categories (such as
+   structure_phase). A single high-confidence paper beats two
    hedged mentions; ties below a 60% share threshold fall back to
    NULL. Keeps disputed / weak signals out of the flat columns.
 
-3. **Dual-threshold boolean consensus** (0.7 for / 0.2 against) for
-   ``is_unconventional`` & peers. Without this, every material that a
-   single paper labelled ``False`` (common NER default) showed up as
-   "confirmed conventional", which is dishonest.
+3. **Source-backed scientific-property semantics** — pairing, unconventional
+   behavior and competing-order indicators use a separate versioned contract.
+   Missing evidence remains unknown; family priors never fill observed fields.
 
 4. **Cross-family phase sanity check** — drops ``cuprate_*`` when the
    formula has no Cu (Gemini over-applies the cuprate taxonomy to
@@ -34,8 +33,9 @@ Key design choices, in order of how much they affect visible data:
    material, fall back to the rule-based ``classify_family`` shared
    with the NIMS importer.
 
-6. **Numeric dispute detection** — when two+ ambient-pressure papers
-   disagree on Tc by >30%, flag ``disputed=True``.
+6. **Heterogeneity is not scientific dispute** — numerical spreads and
+   different sample states are descriptive only. Explicit reported disputes,
+   curated refutations and pre-existing governance holds are retained.
 
 The aggregator rebuilds summaries from the current paper snapshot. Numeric
 anomalies are retained in ``records`` and excluded only from affected property
@@ -83,10 +83,10 @@ from ingestion.index.indexer import (
     pipeline_state_table,
     refuted_claims_table,
 )
+from ingestion.material_semantics import build_material_semantics
 from ingestion.nims import NORMALIZE_SCHEMA_VERSION, normalize_formula
 from ingestion.nims import classify_family as _classify_family
 from ingestion.nims import detect_interface as _detect_interface
-from ingestion.nims import infer_unconventional as _infer_unconventional
 from ingestion.nims import parent_formula_key as _parent_formula_key
 from ingestion.pressure_semantics import classify_pressure
 from ingestion.property_evidence import (
@@ -143,10 +143,6 @@ _BOOL_DISSENT_MAX = 0.2
 # voters pointing at the winning value. For single-paper materials
 # we accept the single vote (otherwise everything would be NULL).
 _MIN_VOTERS_MULTIPAPER = 2
-# Ambient-pressure Tc spread threshold above which we flag the material
-# as "disputed" — 30% means one paper reports 100 K, another 65 K.
-_TC_DISPUTE_THRESHOLD = 0.30
-
 # Numeric plausibility rules live in ingestion.anomaly_review. They are
 # versioned review references, not universal physical limits or replacements.
 
@@ -341,7 +337,7 @@ def _corroborated_max(
     records: list[dict[str, Any]],
     key: str,
 ) -> tuple[float | None, int]:
-    """Highest value corroborated by multiple independent papers.
+    """Bibliographic numeric-pool selection heuristic, not confirmation.
 
     NER sometimes mistakes a paper's gap energy (2Δ/k_B), Hc2
     extrapolation, or Curie / structural transition for the SC Tc.
@@ -368,7 +364,8 @@ def _corroborated_max(
     Requiring papers to claim at least as high as the candidate
     avoids that false confirmation.
 
-    Returns (value, supporting_paper_count).
+    Source IDs are not independent laboratories, studies or replications.
+    Returns (value, bibliographic_source_count); it does not infer acceptance.
     """
     per_paper: dict[str, float] = {}
     for r in records:
@@ -623,6 +620,8 @@ def _derive_summary(
     overrides: list[_OverrideEntry] | None = None,
     refuted: _RefutedEntry | None = None,
     current_year: int | None = None,
+    source_statuses: dict[str, str | None] | None = None,
+    legacy_summary: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Derive field-scoped scientific summaries while retaining current raw input.
 
@@ -714,16 +713,8 @@ def _derive_summary(
 
     # These catalogue views can have different review filters/support pools.
     # Do not copy a value across views to force an ordering invariant.
-    # Numeric dispute: ambient-pressure Tc values from 2+ papers span
-    # more than 30% of the max. Typical cause is over/under-doped
-    # samples in different papers; worth surfacing to the user.
-    numeric_disputed = False
-    if len(ambient_records) >= 2:
-        tc_vals = [_source_scalar(r, "tc_kelvin") for r in ambient_records]
-        tc_max_v = max(tc_vals)
-        if tc_max_v > 0:
-            spread = (tc_max_v - min(tc_vals)) / tc_max_v
-            numeric_disputed = spread > _TC_DISPUTE_THRESHOLD
+    # Numerical spread is described by material_semantics below, never by a
+    # scientific-dispute flag. States/conditions may differ across reports.
 
     # No eligible ambient observation is not a material-wide negative label.
     ambient_sc = True if ambient_records else None
@@ -733,15 +724,11 @@ def _derive_summary(
     t_sdw = _max_numeric(eligible("t_sdw_k"), "t_sdw_k")
     t_afm = _max_numeric(eligible("t_afm_k"), "t_afm_k")
 
-    has_competing_order = bool(
-        competing_order or t_cdw is not None
-        or t_sdw is not None or t_afm is not None
-    )
+    has_competing_order = None  # Shared source-backed contract resolves below.
 
     # tc_max_conditions: pick the record tying the max and format as
     # "P={p} GPa, <sample>, <measurement> (<source>:<id>)". Appends a
-    # corroboration note ("confirmed by N papers") so users can see
-    # how well-supported the headline number is.
+    # bibliographic support note; counts do not establish replication.
     tc_max_cond = None
     if tc_max is not None:
         _basis_recs = headline_theo if _tc_basis == "theoretical" else headline_exp
@@ -779,7 +766,7 @@ def _derive_summary(
                 tc_max_cond = ", ".join(parts) or None
                 break
         if tc_max_support >= 2:
-            note = f"confirmed by {tc_max_support} papers"
+            note = f"numeric-pool support from {tc_max_support} bibliographic identifiers (not independent replication)"
             tc_max_cond = (
                 f"{tc_max_cond}, {note}" if tc_max_cond else note
             )
@@ -795,21 +782,11 @@ def _derive_summary(
     raw_phase = _weighted_mode_str(records, "structure_phase")
     structure_phase = _sanity_check_structure_phase(formula_raw, raw_phase)
 
-    # is_unconventional: trust NER weighted-boolean first; when NER is
-    # silent (the common case — 61.8% missing), infer from family.
-    # Family-based inference is definitive for clear-cut families
-    # (cuprate → True, elemental → False) and returns None for
-    # ambiguous ones (hydride, chalcogenide).
-    is_unconv_ner = _weighted_boolean(records, "is_unconventional")
-    is_unconventional = (
-        is_unconv_ner
-        if is_unconv_ner is not None
-        else _infer_unconventional(family)
-    )
+    is_unconventional = None  # Never populated by a family rule or vote.
 
-    # disputed: union of NER-reported disputes and numeric-Tc dispute
-    disputed_ner = _weighted_boolean(records, "disputed")
-    disputed = bool(numeric_disputed) or bool(disputed_ner)
+    # An explicit dispute must not be voted away by more numerous silent or
+    # negative records. Existing database holds are also sticky at upsert.
+    disputed = any(record.get("disputed") is True for record in records)
 
     # -------------------------------------------------------------------
     # Sanity gate: needs_review
@@ -906,9 +883,9 @@ def _derive_summary(
         "structure_phase":   _clip("structure_phase", structure_phase),
         "lattice_params":    (properties["lattice_params"]["selected"]["value"]
                               if properties["lattice_params"]["selected"] else None),
-        # SC parameters (discrete → weighted mode, scalar → max)
-        "pairing_symmetry":  _clip("pairing_symmetry",
-                                   _weighted_mode_str(records, "pairing_symmetry")),
+        # Reported pairing is resolved by the shared semantics below, never a
+        # transient vote that could be mistaken for a source-backed binding.
+        "pairing_symmetry":  None,
         "gap_structure":     _clip("gap_structure",
                                    _weighted_mode_str(records, "gap_structure")),
         "hc2_tesla":         hc2_result["value"] if hc2_result else None,
@@ -934,7 +911,7 @@ def _derive_summary(
         "doping_type":       _clip("doping_type",
                                    _weighted_mode_str(records, "doping_type")),
         "doping_level":      _median_numeric(eligible("doping_level"), "doping_level"),
-        # Flags (weighted-boolean → None when weak / disputed)
+        # Scientific flags remain unknown until source-backed resolution.
         "is_unconventional":   is_unconventional,
         "disputed":            disputed,
         # P2: Interface material decomposition
@@ -998,14 +975,20 @@ def _derive_summary(
     if hc2_result is None or summary.get("hc2_tesla") != hc2_result["value"]:
         summary["hc2_conditions"] = None
 
-    # -------------------------------------------------------------------
-    # C3 Fix 4: Cuprate pairing symmetry default
-    # -------------------------------------------------------------------
-    # All known cuprates (including infinite-layer) are d-wave. If the
-    # aggregation didn't produce a pairing_symmetry (no NER records
-    # mention it), default to "d-wave" for cuprate-family materials.
-    if summary.get("family") == "cuprate" and not summary.get("pairing_symmetry"):
-        summary["pairing_symmetry"] = "d-wave"
+    # Existing governance holds and legacy summary inputs are review context,
+    # not accepted physical observations. Keep them separate from raw records.
+    semantic_legacy = {**summary, **(legacy_summary or {})}
+    if summary["disputed"] is True or semantic_legacy.get("disputed") is True:
+        summary["disputed"] = True
+        semantic_legacy["disputed"] = True
+    semantics = build_material_semantics(
+        records, scope_id=scope_id, family=family,
+        legacy_summary=semantic_legacy, source_statuses=source_statuses,
+    )
+    summary["material_semantics"] = semantics
+    for field in ("pairing_symmetry", "is_unconventional", "has_competing_order"):
+        property_view = semantics["properties"][field]
+        summary[field] = property_view["value"] if property_view["status"] == "reported" else None
 
     return summary
 
@@ -1180,6 +1163,23 @@ def _is_purgeable_orphan(
     return not ok
 
 
+def _material_upsert_statement(mat_id: str, summary: dict[str, Any]):
+    """Keep governance holds sticky while refreshing rebuildable summaries."""
+    stmt = pg_insert(materials_table).values(id=mat_id, status="active_research", **summary)
+    update_cols = {key: stmt.excluded[key] for key in summary}
+    mt = materials_table.c
+    # Neither fresh numeric heterogeneity nor absence of an extraction is an
+    # adjudication of a historical dispute. Clearing it needs a review action.
+    update_cols["disputed"] = case((mt.disputed.is_(True), True), else_=stmt.excluded["disputed"])
+    update_cols["needs_review"] = case(
+        (mt.admin_decision.isnot(None), mt.needs_review), else_=stmt.excluded["needs_review"],
+    )
+    update_cols["review_reason"] = case(
+        (mt.admin_decision.isnot(None), mt.review_reason), else_=stmt.excluded["review_reason"],
+    )
+    return stmt.on_conflict_do_update(index_elements=[mt.id], set_=update_cols)
+
+
 async def aggregate_from_papers() -> int:
     """Sweep papers.materials_extracted → upsert into materials.
 
@@ -1231,6 +1231,11 @@ async def aggregate_from_papers() -> int:
             "aggregator: loaded %d override entries, %d refuted entries",
             sum(len(v) for v in override_map.values()), len(refuted_map),
         )
+        legacy_fields = ("pairing_symmetry", "is_unconventional", "has_competing_order", "disputed")
+        legacy_rows = (await db.execute(select(
+            materials_table.c.id, *(materials_table.c[name] for name in legacy_fields),
+        ))).all()
+        legacy_by_id = {row[0]: dict(zip(legacy_fields, row[1:])) for row in legacy_rows}
 
         # Stream all papers with their extracted materials. Each paper
         # is small (materials_extracted is a short list) so we can pull
@@ -1251,11 +1256,13 @@ async def aggregate_from_papers() -> int:
             papers_table.c.date_published,
             papers_table.c.materials_extracted,
             papers_table.c.credibility_tier,
+            papers_table.c.status,
         ).where(
             (papers_table.c.status != "retracted")
             | (papers_table.c.status.is_(None))
         )
         rows = (await db.execute(stmt)).all()
+        source_statuses = {row[0]: row[-1] for row in rows}
         log.info("aggregator: scanning %d papers", len(rows))
 
         # Credibility tier → confidence multiplier. T4/T5 papers are
@@ -1274,7 +1281,7 @@ async def aggregate_from_papers() -> int:
         }
 
         n_skipped_t4t5 = 0
-        for paper_id, source, date_submitted, date_published, mats, cred_tier in rows:
+        for paper_id, source, date_submitted, date_published, mats, cred_tier, _paper_status in rows:
             if not isinstance(mats, list) or not mats:
                 continue
             effective_tier = (
@@ -1363,33 +1370,11 @@ async def aggregate_from_papers() -> int:
                 display_raw, records,
                 overrides=override_map.get(norm),
                 refuted=refuted_map.get(norm),
+                source_statuses=source_statuses,
+                legacy_summary=legacy_by_id.get(_material_id(norm)),
             )
             mat_id = _material_id(norm)
-
-            stmt = pg_insert(materials_table).values(
-                id=mat_id,
-                status="active_research",
-                **summary,
-            )
-            update_cols = {k: stmt.excluded[k] for k in summary}
-            # Preserve admin review decisions: when admin_decision is
-            # set (admin already reviewed this material), keep the
-            # existing needs_review + review_reason values so automated
-            # re-aggregation can't undo manual approvals/confirmations.
-            mt = materials_table.c
-            update_cols["needs_review"] = case(
-                (mt.admin_decision.isnot(None), mt.needs_review),
-                else_=stmt.excluded["needs_review"],
-            )
-            update_cols["review_reason"] = case(
-                (mt.admin_decision.isnot(None), mt.review_reason),
-                else_=stmt.excluded["review_reason"],
-            )
-            stmt = stmt.on_conflict_do_update(
-                index_elements=[mt.id],
-                set_=update_cols,
-            )
-            await db.execute(stmt)
+            await db.execute(_material_upsert_statement(mat_id, summary))
             upserted += 1
             if upserted % 200 == 0:
                 await db.commit()

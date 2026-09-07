@@ -112,9 +112,9 @@ export default async function MaterialsPage({
         defaultValue={current ?? ""}
         className="rounded border border-sage-border bg-white px-2 py-1"
       >
-        <option value="">any</option>
-        <option value="true">yes</option>
-        <option value="false">no</option>
+        <option value="">Any status</option>
+        <option value="true">Reported true</option>
+        <option value="false">Qualified reported false</option>
       </select>
     </label>
   );
@@ -127,8 +127,10 @@ export default async function MaterialsPage({
           Catalogue selections for Tc, pairing, structure and competing orders,
           with per-property source records. A material row is not a joint
           observation. Tc, pressure and origin filters match one result.
-          Pairing, phase and classification flags filter catalogue columns,
-          not verified result evidence; their displayed selections may be unavailable.
+          Pairing and classification filters use current declared reports, not
+          family priors or legacy aggregate flags. A reported classification
+          is not verified science or necessarily the same state as a selected Tc.
+          The phase filter still uses a catalogue column.
         </p>
       </div>
 
@@ -152,7 +154,7 @@ export default async function MaterialsPage({
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Catalogue pairing
+            Reported pairing
           </span>
           <select
             name="pairing_symmetry"
@@ -197,7 +199,7 @@ export default async function MaterialsPage({
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Papers ≥
+            Legacy paper links ≥
           </span>
           <input
             type="number"
@@ -227,12 +229,12 @@ export default async function MaterialsPage({
         </label>
         {triOptions(
           "is_unconventional",
-          "Catalogue unconv.",
+          "Reported unconventional",
           query.is_unconventional,
         )}
         {triOptions(
           "has_competing_order",
-          "Catalogue comp. order",
+          "Reported competing order",
           query.has_competing_order,
         )}
 
@@ -289,6 +291,8 @@ export default async function MaterialsPage({
       <p className="text-xs text-slate-500">
         Family, Tc, pressure and result-evidence filters must match the same extracted result.
         Unknown pressure does not satisfy a pressure limit. Catalogue summary values may describe other results.
+        Pairing and classification filters apply to the material reported-summary scope, not a joint Tc/state result.
+        A false classification filter requires an explicit negative report with method and detection conditions; missing data does not match false.
       </p>
 
       {data == null ? (

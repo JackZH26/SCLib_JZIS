@@ -5,6 +5,8 @@ import { BookmarksPanel } from "@/components/dashboard/BookmarksPanel";
 import { ApiError, getMaterial, getMaterialHydrideParameters, listMaterialBookmarks, listPaperBookmarks, type MaterialDetail } from "@/lib/api";
 import { atomicItem, propertyEnvelope } from "../fixtures/property-evidence";
 import { anomalyAssessment, materialAnomalyReview, rawArchive } from "../fixtures/scientific-anomalies";
+import { materialVisibility } from "../fixtures/material-visibility";
+import { materialSemantics, semanticProperty, semanticReport } from "../fixtures/material-semantics";
 
 vi.mock("@/lib/api", async importOriginal => {
   const actual = await importOriginal<typeof import("@/lib/api")>();
@@ -47,6 +49,9 @@ describe("atomic evidence across material surfaces", () => {
 
   it("shows selected uncertainty in all headlines and keeps B's Hc2 context", async () => {
     const mat = material();
+    mat.visibility = materialVisibility();
+    mat.disputed = false;
+    mat.retracted = false;
     const tc = atomicItem("tc_max", 0.001);
     tc.quantity = { ...tc.quantity, approximate: true, uncertainty: 0.0001 };
     mat.property_evidence = propertyEnvelope(tc, atomicItem("hc2_tesla", 100, {
@@ -74,6 +79,28 @@ describe("atomic evidence across material surfaces", () => {
     expect(screen.getAllByText("Source unavailable")).toHaveLength(2);
   });
 
+  it("detail and variants use their own classification semantics, never inherited legacy flags", async () => {
+    const mat = material();
+    mat.material_semantics = materialSemantics({ pairing_symmetry: semanticProperty("synthetic parent symmetry") });
+    mat.variants = [{ id: "variant", formula: "TEST-variant", tc_max: null, tc_ambient: null, total_papers: 1, doping_level: null, pressure_type: null, material_semantics: materialSemantics({ is_unconventional: semanticProperty(false, semanticReport(false, { negative_qualified: true, detection_conditions: { pressure_gpa: 0 } })) }) }];
+    vi.mocked(getMaterial).mockResolvedValue(mat);
+    render(await MaterialDetailPage({ params: Promise.resolve({ id: mat.id }) }));
+    expect(screen.getByLabelText("Material classification semantics")).toHaveTextContent("synthetic parent symmetry");
+    const variant = screen.getByLabelText("Reported material classifications");
+    expect(variant).toHaveTextContent("Reported false (scoped)");
+    expect(variant).not.toHaveTextContent("synthetic parent symmetry");
+  });
+
+  it("bookmarks expose reported classifications without borrowing stale numeric or prior labels", async () => {
+    vi.mocked(listMaterialBookmarks).mockResolvedValue({ total: 1, results: [{ id: "bookmark", target_id: "synthetic", created_at: "2026-09-06T00:00:00Z", formula: "SEMANTICS-BOOKMARK", formula_latex: null, family: "cuprate", tc_max: 9999, tc_ambient: null, arxiv_year: 2026, material_semantics: materialSemantics({ is_unconventional: semanticProperty(true) }) }] });
+    render(<BookmarksPanel />);
+    fireEvent.click(screen.getByRole("button", { name: "Materials" }));
+    expect(await screen.findByText("SEMANTICS-BOOKMARK")).toBeInTheDocument();
+    expect(screen.getByLabelText("Reported material classifications")).toHaveTextContent("Reported true");
+    expect(screen.getAllByText("Unknown")).toHaveLength(2);
+    expect(screen.queryByText("9999")).not.toBeInTheDocument();
+  });
+
   it("retains anomalous raw values in a clearly scoped Archive but not headline or SEO", async () => {
     const mat = material();
     const tc = atomicItem("tc_max", 60, { anomaly_review: anomalyAssessment() });
@@ -98,5 +125,52 @@ describe("atomic evidence across material surfaces", () => {
     vi.mocked(getMaterial).mockRejectedValue(new ApiError(404, {}, "Material not found"));
     await expect(MaterialDetailPage({ params: Promise.resolve({ id: "restricted" }) })).rejects.toThrow();
     expect(vi.mocked(getMaterialHydrideParameters)).not.toHaveBeenCalled();
+  });
+
+  it.each(["pending", "disputed", "corrected", "retracted", "unknown"] as const)("%s material stays inspectable but never publishes quantitative SEO", async state => {
+    const mat = material();
+    mat.family = "hydride";
+    mat.visibility = materialVisibility(state);
+    mat.property_evidence = propertyEnvelope(atomicItem("tc_max", 20));
+    vi.mocked(getMaterial).mockResolvedValue(mat);
+    const metadata = await generateMetadata({ params: Promise.resolve({ id: mat.id }) });
+    expect(metadata.robots).toMatchObject({ index: false, follow: false });
+    expect(metadata.description).not.toContain("20 K");
+    expect(metadata.title).toContain("Archive");
+    const { container } = render(await MaterialDetailPage({ params: Promise.resolve({ id: mat.id }) }));
+    for (const notice of screen.getAllByLabelText("material visibility")) expect(notice).toHaveTextContent("Archive");
+    expect(screen.getByText(/source-linked value does not override a material review hold/)).toBeInTheDocument();
+    const jsonld = JSON.parse(container.querySelector("#sclib-material-structured-data")!.textContent!);
+    expect(jsonld.variableMeasured).toEqual([]);
+    expect(jsonld.includedInDataCatalog).toBeUndefined();
+    expect(vi.mocked(getMaterialHydrideParameters)).not.toHaveBeenCalled();
+  });
+
+  it("missing policy does not gain scientific SEO merely from complete property evidence", async () => {
+    const mat = material();
+    mat.property_evidence = propertyEnvelope(atomicItem("tc_max", 20));
+    vi.mocked(getMaterial).mockResolvedValue(mat);
+    const metadata = await generateMetadata({ params: Promise.resolve({ id: mat.id }) });
+    expect(metadata.robots).toMatchObject({ index: false });
+    expect(metadata.description).not.toContain("20 K");
+    expect(metadata.description).toContain("visibility unverified");
+  });
+
+  it("explicit quarantine suppresses page data even in a stale successful API response", async () => {
+    const mat = material();
+    mat.visibility = materialVisibility("quarantined");
+    vi.mocked(getMaterial).mockResolvedValue(mat);
+    const metadata = await generateMetadata({ params: Promise.resolve({ id: mat.id }) });
+    expect(metadata.title).toBe("Material not found");
+    await expect(MaterialDetailPage({ params: Promise.resolve({ id: mat.id }) })).rejects.toThrow();
+    expect(vi.mocked(getMaterialHydrideParameters)).not.toHaveBeenCalled();
+  });
+
+  it("pending bookmarks display the same Archive policy warning", async () => {
+    vi.mocked(listMaterialBookmarks).mockResolvedValue({ total: 1, results: [{ id: "bookmark", target_id: "synthetic", created_at: "2026-09-06T00:00:00Z", formula: "PENDING-BOOKMARK", formula_latex: null, family: null, tc_max: 20, tc_ambient: null, arxiv_year: 2026, visibility: materialVisibility("pending") }] });
+    render(<BookmarksPanel />);
+    fireEvent.click(screen.getByRole("button", { name: "Materials" }));
+    expect(await screen.findByText("PENDING-BOOKMARK")).toBeInTheDocument();
+    expect(screen.getByText("Archive — review pending")).toBeInTheDocument();
   });
 });

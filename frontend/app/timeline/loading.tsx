@@ -8,7 +8,7 @@ export default function Loading() {
   return (
     <main className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Tc timeline</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Reported Tc Timeline</h1>
         <p className="mt-1 text-sm text-slate-600">
           Transition temperature versus year, one dot per reported
           measurement.

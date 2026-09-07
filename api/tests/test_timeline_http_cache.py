@@ -8,12 +8,12 @@ from starlette.requests import Request
 from models.search import TimelineCoverage, TimelinePoint, TimelineResponse
 from routers.timeline import (
     _cache_key,
-    _evenly_sample,
     _http_response,
     _serialize_timeline,
     _timeline_response,
     _weak_etag,
 )
+from services.timeline_sampling import sample_timeline
 
 
 def _request(
@@ -53,7 +53,7 @@ def test_cache_key_is_stable_and_varies_with_every_filter():
     )
 
 
-def test_timeline_response_has_public_cache_headers_and_etag():
+def test_timeline_response_revalidates_live_governance_before_etag():
     payload = (
         '{"schema_version":"1","data_version":"timeline-v1-20260713T120000Z",'
         '"data_updated_at":"2026-07-13T12:00:00Z","family":null,'
@@ -65,7 +65,7 @@ def test_timeline_response_has_public_cache_headers_and_etag():
     assert response.status_code == 200
     assert response.body == payload.encode()
     assert response.headers["content-type"] == "application/json"
-    assert response.headers["cache-control"].startswith("public, max-age=60")
+    assert response.headers["cache-control"] == "private, no-store"
     assert response.headers["etag"] == _weak_etag(payload)
     assert response.headers["vary"] == "Accept-Encoding"
     assert response.headers["x-timeline-cache"] == "MISS"
@@ -89,7 +89,7 @@ def test_matching_if_none_match_returns_empty_304_with_required_headers():
     assert response.status_code == 304
     assert response.body == b""
     assert response.headers["etag"] == etag
-    assert response.headers["cache-control"].startswith("public")
+    assert response.headers["cache-control"] == "private, no-store"
     assert response.headers["vary"] == "Accept-Encoding"
     assert response.headers["x-timeline-cache"] == "HIT"
     assert response.headers["x-data-version"] == "timeline-v1-20260713T120000Z"
@@ -137,15 +137,17 @@ def _point(index: int) -> TimelinePoint:
     )
 
 
-def test_even_sampling_is_bounded_deterministic_and_keeps_order():
+def test_stratified_sampling_is_bounded_deterministic_and_keeps_order():
     points = [_point(index) for index in range(10)]
 
-    sampled = _evenly_sample(points, 4)
+    sampled, metadata = sample_timeline(points, 4)
 
-    assert [point.material for point in sampled] == ["M0", "M3", "M6", "M9"]
-    assert _evenly_sample(points, 4) == sampled
-    assert _evenly_sample(points, None) is points
-    assert _evenly_sample(points, 10) is points
+    assert len(sampled) == 4
+    assert sampled[0] == points[0] and sampled[-1] == points[-1]
+    assert metadata["display_only"] is True
+    assert sample_timeline(list(reversed(points)), 4)[0] == sampled
+    assert sample_timeline(points, None)[0] == points
+    assert sample_timeline(points, 10)[0] == points
 
 
 def test_compact_serialization_only_omits_unused_formula_latex():
@@ -184,8 +186,8 @@ def test_timeline_pagination_is_stable_after_optional_sampling():
 
     assert [point.material for point in page.points] == ["M3", "M4", "M5", "M6"]
     assert page.schema_version == "1"
-    assert page.data_version.startswith("timeline-v4-anomaly-")
-    assert page.data_version.endswith("-20260713T120000Z")
+    assert page.data_version.startswith("timeline-v5-result-")
+    assert "-20260713T120000Z-" in page.data_version
     assert page.offset == 3
     assert page.limit == 4
     assert page.has_more is True

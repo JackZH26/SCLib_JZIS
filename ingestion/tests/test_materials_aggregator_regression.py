@@ -27,7 +27,7 @@ def _record(
     }
 
 
-def test_cross_paper_summary_separates_theory_and_flags_tc_disagreement():
+def test_cross_paper_summary_separates_theory_without_inventing_a_dispute_or_pairing():
     records = [
         _record("arxiv:2401.00001", 92.0),
         _record("aps:10.1103/example", 58.0),
@@ -48,8 +48,8 @@ def test_cross_paper_summary_separates_theory_and_flags_tc_disagreement():
     assert summary["tc_max_theoretical"] == 155.0
     assert summary["tc_ambient"] == 92.0
     assert summary["total_papers"] == 3
-    assert summary["disputed"] is True
-    assert summary["pairing_symmetry"] == "d-wave"
+    assert summary["disputed"] is False
+    assert summary["pairing_symmetry"] is None
     assert summary["needs_review"] is False
 
 
@@ -88,7 +88,7 @@ def test_duplicate_records_from_one_paper_do_not_inflate_paper_support():
     assert "confirmed by" not in summary["tc_max_conditions"]
 
 
-def test_equal_maximum_from_two_papers_is_labelled_as_confirmed():
+def test_equal_maximum_from_two_papers_is_labelled_bibliographic_not_confirmed():
     summary = _derive_summary(
         "YBa2Cu3O7",
         [
@@ -98,4 +98,6 @@ def test_equal_maximum_from_two_papers_is_labelled_as_confirmed():
     )
 
     assert summary["total_papers"] == 2
-    assert "confirmed by 2 papers" in summary["tc_max_conditions"]
+    assert "numeric-pool support from 2 bibliographic identifiers" in summary["tc_max_conditions"]
+    assert "not independent replication" in summary["tc_max_conditions"]
+    assert "confirmed" not in summary["tc_max_conditions"]

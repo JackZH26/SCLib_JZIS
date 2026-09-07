@@ -10,6 +10,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import type { AskSource } from "@/lib/api";
+import { resolveAskSource } from "@/lib/ask-support";
 
 export function MarkdownAnswer({
   markdown,
@@ -22,8 +23,8 @@ export function MarkdownAnswer({
   // as an anchor, so we don't need custom tokenization inside MDAST.
   const linked = markdown.replace(/\[(\d+)\]/g, (m, n) => {
     const idx = Number(n);
-    if (!sources.some((s) => s.index === idx)) return m;
-    return `[[${n}]](#src-${n})`;
+    if (!resolveAskSource(idx, sources)) return m;
+    return `[[${n}]](#src-${idx})`;
   });
 
   return (
@@ -35,6 +36,15 @@ export function MarkdownAnswer({
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeSanitize]}
+        components={{
+          a: ({ href, children }) => {
+            const citation = /^#src-(\d+)$/.exec(href ?? "");
+            if (!href || (href.startsWith("#src-") && (!citation || !resolveAskSource(Number(citation[1]), sources)))) return <span>{children}</span>;
+            return <a href={citation ? `#src-${Number(citation[1])}` : href} rel="noreferrer">{children}</a>;
+          },
+          // Generated external images are not source evidence and must not load.
+          img: ({ alt }) => <span>[Image omitted: {alt || "unverified external image"}]</span>,
+        }}
       >
         {linked}
       </ReactMarkdown>

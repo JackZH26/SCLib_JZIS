@@ -84,6 +84,9 @@ class BookmarkedPaper(BaseModel):
 class BookmarkedMaterial(BaseModel):
     """Bookmark entry joined with materials.* for the dashboard list view."""
 
+    visibility: dict[str, Any] = Field(default_factory=dict)
+    needs_review: bool = True
+    review_reason: str | None = None
     id: UUID
     target_id: str
     created_at: datetime
@@ -95,6 +98,7 @@ class BookmarkedMaterial(BaseModel):
     tc_ambient: float | None
     arxiv_year: int | None
     property_evidence: dict[str, Any] = Field(default_factory=dict)
+    material_semantics: dict[str, Any] = Field(default_factory=dict)
     anomaly_review: dict[str, Any] = Field(default_factory=dict)
 
 

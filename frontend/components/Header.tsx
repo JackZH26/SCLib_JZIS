@@ -22,7 +22,7 @@ const NAV = [
   { href: "/", label: "Home" },
   { href: "/search", label: "Search" },
   { href: "/materials", label: "Materials" },
-  { href: "/timeline", label: "Timeline" },
+  { href: "/timeline", label: "Reported Tc Timeline" },
   { href: "/discovery", label: "Discovery" },
   { href: "/stats", label: "Stats" },
 ];

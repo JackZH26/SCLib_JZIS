@@ -12,6 +12,9 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { PropertyEvidenceValue } from "@/components/PropertyEvidence";
 import { ScientificAnomalyNotice } from "@/components/ScientificAnomalies";
+import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice";
+import { visibilityIsRestricted } from "@/lib/material-visibility";
+import { MaterialSemanticsMini } from "@/components/MaterialSemantics";
 
 import {
   ApiError,
@@ -223,13 +226,14 @@ function MaterialsPanel() {
             <th className="px-4 py-2 text-left font-medium">Family</th>
             <th className="px-4 py-2 text-right font-medium">Tc max (K)</th>
             <th className="px-4 py-2 text-right font-medium">Tc ambient</th>
+            <th className="px-4 py-2 text-left font-medium">Reported classifications</th>
             <th className="px-4 py-2 text-right font-medium">arXiv year</th>
             <th className="px-4 py-2 text-left font-medium">Saved</th>
             <th className="px-4 py-2 text-right font-medium">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">
-          {rows.map((m) => (
+          {rows.filter(m => !visibilityIsRestricted(m.visibility)).map((m) => (
             <tr key={m.id} className="hover:bg-slate-50/60">
               <td className="px-4 py-2">
                 <Link
@@ -240,6 +244,7 @@ function MaterialsPanel() {
                   {m.formula}
                 </Link>
                 <ScientificAnomalyNotice review={m.anomaly_review} compact />
+                <MaterialVisibilityNotice visibility={m.visibility} compact />
               </td>
               <td className="px-4 py-2 text-sage-muted">{m.family ?? "—"}</td>
               <td className="px-4 py-2 text-right tabular-nums text-sage-ink">
@@ -248,6 +253,7 @@ function MaterialsPanel() {
               <td className="px-4 py-2 text-right tabular-nums text-sage-muted">
                 <PropertyEvidenceValue evidence={m.property_evidence} field="tc_ambient" compact />
               </td>
+              <td className="min-w-[12rem] px-4 py-2"><MaterialSemanticsMini semantics={m.material_semantics} /></td>
               <td className="px-4 py-2 text-right tabular-nums text-sage-muted">
                 {m.arxiv_year ?? "—"}
               </td>

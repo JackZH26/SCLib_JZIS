@@ -27,7 +27,12 @@ from routers.deps import Identity, require_identity
 from services import provider_resilience, rag, retrieval, vector_search
 from services.authors import short as _authors_short
 from services.metrics import observe_rag
-from services.result_semantics import evidence_classifications
+from services.source_visibility import (
+    citation_evidence,
+    project_source_occurrences,
+    resolve_explicit_materials,
+    source_visibility,
+)
 
 log = logging.getLogger(__name__)
 
@@ -77,19 +82,23 @@ async def ask(
     )
     if not candidates:
         latency_ms = int((time.perf_counter() - t0) * 1000)
-        empty_answer = "No indexed sources match this question."
+        result = rag.no_source_result()
+        observe_rag(
+            sources=0, tokens=0, citation_valid=result.citation_valid, fallback=False,
+            citation_indices_valid=result.citation_indices_valid,
+            scientific_support_status=result.scientific_support_status, answer_mode=result.answer_mode,
+        )
         if identity.user is not None:
             await _persist_history(
-                db, identity.user.id, body.question, empty_answer,
+                db, identity.user.id, body.question, result.answer,
                 [], 0, latency_ms, body.language,
             )
         return AskResponse(
-            answer=empty_answer,
+            answer=result.answer,
             sources=[],
             tokens_used=0,
             query_time_ms=latency_ms,
-            citation_valid=True,
-            citation_warnings=[],
+            **result.quality_fields(),
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
         )
@@ -108,6 +117,7 @@ async def ask(
     rows = (await db.execute(q)).scalars().all()
     chunk_by_id = {c.id: c for c in rows}
     candidates = retrieval.rerank_candidates(body.question, candidates, chunk_by_id)
+    linked_materials = await resolve_explicit_materials(db, [chunk.materials_mentioned for chunk in rows])
 
     rag_inputs: list[rag.RagSourceInput] = []
     sources_out: list[AskSource] = []
@@ -117,7 +127,7 @@ async def ask(
         chunk = chunk_by_id.get(candidate.chunk_id)
         if chunk is None or chunk.paper is None:
             continue
-        if chunk.paper.status == "retracted":
+        if source_visibility(chunk.paper.status)["source_status"] in {"retracted", "corrected", "disputed"}:
             continue
         if chunk.paper.id in seen_papers:
             continue
@@ -126,6 +136,11 @@ async def ask(
         paper = chunk.paper
         authors_short = _authors_short(paper.authors or [])
         year = paper.date_submitted.year if paper.date_submitted else None
+        occurrences, occurrence_summary = project_source_occurrences(
+            chunk.materials_mentioned, paper_status=paper.status, linked_materials=linked_materials,
+        )
+        source_review = source_visibility(paper.status)
+        source_review["warning_codes"] = sorted(set(source_review["warning_codes"] + occurrence_summary["warning_codes"]))
         rag_inputs.append(
             rag.RagSourceInput(
                 index=idx,
@@ -135,7 +150,9 @@ async def ask(
                 year=year,
                 section=chunk.section,
                 text=chunk.text,
-                material_evidence=chunk.materials_mentioned or [],
+                material_evidence=occurrences,
+                source_visibility=source_review,
+                visibility_resolved=True,
             )
         )
         sources_out.append(
@@ -148,7 +165,8 @@ async def ask(
                 year=year,
                 section=chunk.section,
                 snippet=_snippet(chunk.text),
-                material_evidence=evidence_classifications(chunk.materials_mentioned),
+                material_evidence=citation_evidence(occurrences, visibility_resolved=True),
+                source_visibility=source_review,
             )
         )
         if len(rag_inputs) >= body.max_sources:
@@ -157,38 +175,50 @@ async def ask(
     # 3. Gemini call behind a timeout + circuit breaker. A provider outage
     # degrades to cited excerpts instead of turning the whole endpoint into 5xx.
     try:
-        result = await provider_resilience.run_blocking(
-            "gemini_generation",
-            lambda: rag.generate_answer(
-                body.question,
-                rag_inputs,
-                language=body.language,
-            ),
-            timeout_seconds=settings.gemini_timeout_seconds,
-            max_attempts=settings.provider_max_attempts,
-            failure_threshold=settings.provider_circuit_failure_threshold,
-            cooldown_seconds=settings.provider_circuit_cooldown_seconds,
-        )
+        if not rag_inputs:
+            result = rag.no_source_result()
+        else:
+            result = await provider_resilience.run_blocking(
+                "gemini_generation",
+                lambda: rag.generate_answer(
+                    body.question,
+                    rag_inputs,
+                    language=body.language,
+                ),
+                timeout_seconds=settings.gemini_timeout_seconds,
+                max_attempts=settings.provider_max_attempts,
+                failure_threshold=settings.provider_circuit_failure_threshold,
+                cooldown_seconds=settings.provider_circuit_cooldown_seconds,
+            )
     except provider_resilience.ProviderUnavailable as exc:
         log.warning("Gemini generation unavailable; returning extractive fallback: %s", exc)
         result = rag.extractive_fallback(rag_inputs)
+
+    # Alternate/legacy generation adapters cannot bypass the server's checks.
+    result = rag.finalize_result(result, rag_inputs)
 
     retrieval_modes = sorted(
         {mode for candidate in candidates for mode in candidate.retrieval_modes}
     )
     log.info(
-        "rag_quality sources=%d papers=%d retrieval=%s citation_valid=%s warnings=%s",
+        "rag_quality sources=%d papers=%d retrieval=%s citation_valid=%s warnings=%s indices_valid=%s support=%s mode=%s",
         len(rag_inputs),
         len(seen_papers),
         "+".join(retrieval_modes) or "none",
         result.citation_valid,
         ",".join(result.citation_warnings) or "none",
+        result.citation_indices_valid,
+        result.scientific_support_status,
+        result.answer_mode,
     )
     observe_rag(
         sources=len(rag_inputs),
         tokens=result.tokens_used,
         citation_valid=result.citation_valid,
         fallback="generation_provider_unavailable" in result.citation_warnings,
+        citation_indices_valid=result.citation_indices_valid,
+        scientific_support_status=result.scientific_support_status,
+        answer_mode=result.answer_mode,
     )
 
     latency_ms = int((time.perf_counter() - t0) * 1000)
@@ -204,8 +234,7 @@ async def ask(
         sources=sources_out,
         tokens_used=result.tokens_used,
         query_time_ms=latency_ms,
-        citation_valid=result.citation_valid,
-        citation_warnings=result.citation_warnings,
+        **result.quality_fields(),
         guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
     )
