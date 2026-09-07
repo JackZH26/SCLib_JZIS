@@ -174,9 +174,17 @@ Path matches include colons: `/paper/arxiv:2512.20530`. Returns full
 paper metadata, abstract, authors, linked materials, and `chunk_count`.
 
 ### `GET /similar/{id:path}?top_k=10`
-Fetches up to 20 chunks for the given paper, runs a batched ANN lookup,
+Fetches up to 20 chunks for the given paper, re-embeds their complete text
+using `RETRIEVAL_QUERY`, runs a batched ANN lookup,
 aggregates neighbor paper IDs by mean distance, excludes self-hits,
 and returns the top-k similar papers.
+
+Embedding completeness/ANN failures and provider timeout return a sanitized
+`503`; only a successful lookup can return an empty result. The provider phase
+has one bounded attempt. A blocking SDK call already in progress cannot be
+forcibly cancelled, but a timed-out request starts no further embedding/ANN
+calls after that call returns. This is a retrieval heuristic, not a scientific
+support score or proof that the index and SQL share an active generation.
 
 ### `GET /materials?family=cuprate&tc_min=77&limit=100`
 Returns aggregated rows from the `materials` table. Sort order is

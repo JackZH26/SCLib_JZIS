@@ -7,6 +7,13 @@ from pathlib import Path
 from test_safety import validate_test_environment, verify_postgres_identity
 
 _RAG_EVIDENCE_TABLES = ("rag_extraction_revisions", "rag_evidence_revisions", "chunk_evidence_current")
+_EMBEDDING_RECEIPT_TABLE = "embedding_completion_receipts"
+
+
+def _assert_empty_embedding_receipts(connection):
+    from sqlalchemy import text
+
+    assert connection.execute(text("SELECT count(*) FROM public.embedding_completion_receipts")).scalar_one() == 0
 
 
 def _assert_empty_rag_evidence(connection):
@@ -14,6 +21,7 @@ def _assert_empty_rag_evidence(connection):
 
     for name in _RAG_EVIDENCE_TABLES:
         assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
+    _assert_empty_embedding_receipts(connection)
 
 
 def _assert_source_impact_indexes(connection, *, present=True):
@@ -55,7 +63,7 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts",
-                                "background_job_cycles", *_RAG_EVIDENCE_TABLES}}
+                                "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -464,7 +472,7 @@ def _background_jobs_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES}}
+                if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -608,7 +616,7 @@ def _rag_evidence_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES}}
+                if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -727,6 +735,7 @@ def _rag_evidence_downgrade_guard(capability, engine, config, evidence_id):
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
+        _assert_empty_embedding_receipts(connection)
         before = snapshot(connection)
         assert any(row["id"] == evidence_id for row in before["rag_evidence_revisions"])
     try:
@@ -736,6 +745,124 @@ def _rag_evidence_downgrade_guard(capability, engine, config, evidence_id):
         assert "RAG-evidence" in str(exc) and "lineage history contains records" in str(exc)
     else:
         raise AssertionError("Nonempty RAG lineage downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+
+
+def _embedding_receipts_empty_roundtrip(capability, engine, config):
+    """0061 alone round-trips after all older independent nonempty guards."""
+    from alembic import command
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")
+                if name not in {"alembic_version", _EMBEDDING_RECEIPT_TABLE}}
+
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_embedding_receipts(connection)
+        before = snapshot(connection)
+        assert before["rag_evidence_revisions"] and before["source_task_requests"] and before["background_job_cycles"]
+    validate_test_environment()
+    command.downgrade(config, "0060_rag_evidence")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError as exc:
+            assert "exact revision" in str(exc)
+        else:
+            raise AssertionError("Embedding-receipt application must refuse the previous schema head")
+        verify_postgres_identity(connection, capability)
+        assert _EMBEDDING_RECEIPT_TABLE not in inspect(connection).get_table_names(schema="public")
+        assert snapshot(connection) == before
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_embedding_receipts(connection)
+        assert snapshot(connection) == before
+
+
+async def _embedding_receipts_on_migrated_schema(capability, api_root, evidence_id):
+    """Real validated response receipt without provider or vector-upload calls."""
+    validate_test_environment()
+    sys.path.insert(0, str(api_root / "tests"))
+    from models.db import _to_async_dsn
+    from services.embedding_receipts import append_embedding_receipt
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import text
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from test_embedding_receipts import completion
+    from test_research_freeze import state
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), poolclass=NullPool)
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            connection = await session.connection()
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+            chunk = (await session.execute(text("SELECT c.id,c.text FROM chunks c JOIN chunk_evidence_current p ON p.chunk_id=c.id "
+                "WHERE p.evidence_revision_id=CAST(:id AS uuid)"), {"id": evidence_id})).mappings().one()
+            vector, receipt = completion(chunk["text"])
+            before = await state(session)
+            assert before[_EMBEDDING_RECEIPT_TABLE] == []
+            dry = await append_embedding_receipt(session, chunk_id=chunk["id"], vector=vector, receipt=receipt)
+            assert dry["dry_run"] is True and dry["completion_scope"] == "embedding_response_only"
+            assert await state(session) == before
+            # An outer rollback must discard a non-dry-run receipt too.
+            await append_embedding_receipt(session, chunk_id=chunk["id"], vector=vector, receipt=receipt, dry_run=False)
+            await session.rollback()
+            assert await state(session) == before
+            first = await append_embedding_receipt(session, chunk_id=chunk["id"], vector=vector, receipt=receipt, dry_run=False)
+            await session.commit()
+            written = await state(session)
+            assert len(written[_EMBEDDING_RECEIPT_TABLE]) == 1
+            stored = written[_EMBEDDING_RECEIPT_TABLE][0]
+            assert stored["evidence_revision_id"] == evidence_id
+            assert stored["vector_sha256"] == receipt["vector_sha256"]
+            assert stored["metadata_json"]["provider_truncated"] is False
+            assert "PRIVATE ORIGINAL WORDING" not in str(stored) and "text" not in stored and "vector" not in stored
+            assert {key: value for key, value in written.items() if key not in {_EMBEDDING_RECEIPT_TABLE, "research_integrity_epoch"}} == {
+                key: value for key, value in before.items() if key not in {_EMBEDDING_RECEIPT_TABLE, "research_integrity_epoch"}}
+            replay = await append_embedding_receipt(session, chunk_id=chunk["id"], vector=vector, receipt=receipt, dry_run=False)
+            assert replay == first
+            await session.commit()
+            assert await state(session) == written
+            return first["receipt_id"]
+    finally:
+        await engine.dispose()
+
+
+def _embedding_receipt_downgrade_guard(capability, engine, config, receipt_id):
+    """Nonempty 0061 refusal retains every receipt and earlier audit object."""
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert any(row["id"] == receipt_id for row in before[_EMBEDDING_RECEIPT_TABLE])
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0060_rag_evidence")
+    except RuntimeError as exc:
+        assert "embedding-receipt" in str(exc) and "receipt history contains records" in str(exc)
+    else:
+        raise AssertionError("Nonempty embedding receipt downgrade must fail closed")
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
@@ -984,7 +1111,10 @@ def main() -> None:
         _rag_evidence_empty_roundtrip(capability, engine, config)
         evidence_id = asyncio.run(_rag_evidence_on_migrated_schema(capability, api_root))
         _rag_evidence_downgrade_guard(capability, engine, config, evidence_id)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay and independent nonempty history rollback guards verified.")
+        _embedding_receipts_empty_roundtrip(capability, engine, config)
+        receipt_id = asyncio.run(_embedding_receipts_on_migrated_schema(capability, api_root, evidence_id))
+        _embedding_receipt_downgrade_guard(capability, engine, config, receipt_id)
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts/rollback/replay and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 

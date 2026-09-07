@@ -68,8 +68,14 @@ ML04 v1 capsules remain unchanged and do not claim to include this new graph.
 
 ## Scientific rendering and normalization
 
-Facts renderer: `sclib-fact-renderer/2.0.0`.
+Facts renderer: `sclib-fact-renderer/2.1.0`.
 NER normalizer: `sclib-material-ner/2.1.0`.
+
+Renderer 2.1.0 adds a full-input token bound and disclosed shortened metadata
+prefix. An oversized atomic fact is rejected without splitting its scientific
+qualifications. Historical 2.0.0 revisions remain retained, not rewritten or
+automatically current. See [complete-input and embedding contracts](EMBEDDING_COMPLETENESS.md)
+for the rollout boundary and additive 0061 completion observations.
 
 - Preserve Observed, Computed, Inferred, AI-Proposed and Unknown origins,
   primary/cited roles and classification conflicts. Paper genre or extraction

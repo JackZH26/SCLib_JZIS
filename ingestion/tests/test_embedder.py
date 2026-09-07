@@ -16,10 +16,12 @@ class _FakeModels:
             "contents": contents,
             "task_type": config.task_type,
             "output_dimensionality": config.output_dimensionality,
+            "auto_truncate": config.auto_truncate,
         })
         return SimpleNamespace(
             embeddings=[
-                SimpleNamespace(values=[float(i)] * config.output_dimensionality)
+                SimpleNamespace(values=[float(i)] * config.output_dimensionality,
+                                statistics=SimpleNamespace(truncated=False, token_count=1.0))
                 for i, _ in enumerate(contents, 1)
             ]
         )
@@ -50,6 +52,7 @@ def test_embed_chunks_uses_genai_document_task(monkeypatch):
         "contents": ["alpha", "beta"],
         "task_type": "RETRIEVAL_DOCUMENT",
         "output_dimensionality": 768,
+        "auto_truncate": False,
     }]
     assert chunks[0].embedding == [1.0] * 768
     assert chunks[1].embedding == [2.0] * 768
@@ -69,4 +72,5 @@ def test_embed_query_uses_genai_query_task(monkeypatch):
         "contents": ["why superconductivity?"],
         "task_type": "RETRIEVAL_QUERY",
         "output_dimensionality": 768,
+        "auto_truncate": False,
     }]

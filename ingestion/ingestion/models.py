@@ -300,3 +300,6 @@ class Chunk:
     #: content/parent hashes and stores it separately from the frozen chunk
     #: row contract. Legacy chunks without a candidate remain unresolved.
     evidence_candidate: dict[str, Any] | None = None
+    #: Closed response-completeness metadata. This is a writer attestation,
+    #: not proof of index publication, source permission, or scientific truth.
+    embedding_provenance: dict[str, Any] | None = None

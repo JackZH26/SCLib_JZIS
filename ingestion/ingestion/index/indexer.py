@@ -33,6 +33,7 @@ from sqlalchemy import (
     String,
     Table,
     Text,
+    bindparam,
     case,
     func,
     select,
@@ -47,7 +48,15 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
+from ingestion.chunk.chunker import require_token_budget
 from ingestion.config import get_settings
+from ingestion.embedding_contract import (
+    LOCAL_DOCUMENT_COUNT_METHOD,
+    validate_embedding_provenance,
+    validate_profile,
+    validate_vector,
+)
+from ingestion.embedding_receipt_contract import build_embedding_receipt_row
 from ingestion.models import Chunk, ParsedPaper
 from ingestion.rag_evidence_contract import build_revision_rows, canonical, validate_candidate
 
@@ -149,6 +158,21 @@ chunk_evidence_current_table = Table(
     "chunk_evidence_current", metadata,
     Column("chunk_id", String(200), primary_key=True),
     Column("evidence_revision_id", UUID(as_uuid=True), nullable=False),
+)
+
+# Immutable completion observations, not evidence of upload or active index
+# membership. Actual binding checks live in additive migration 0061.
+embedding_completion_receipts_table = Table(
+    "embedding_completion_receipts", metadata,
+    Column("id", UUID(as_uuid=True), primary_key=True),
+    Column("chunk_key", String(200), nullable=False),
+    Column("evidence_revision_id", UUID(as_uuid=True), nullable=False),
+    Column("evidence_record_sha256", String(64), nullable=False),
+    Column("chunk_binding_sha256", String(64), nullable=False),
+    Column("content_sha256", String(64), nullable=False),
+    Column("vector_sha256", String(64), nullable=False),
+    Column("metadata_json", JSONB, nullable=False),
+    Column("completion_scope", String(40), nullable=False),
 )
 
 materials_table = Table(
@@ -365,7 +389,7 @@ def _session_factory() -> async_sessionmaker[AsyncSession]:
 async def _insert_evidence_revision(session: AsyncSession, table: Table, values: dict) -> None:
     """Append or verify an exact replay; never overwrite an immutable revision."""
     values = dict(values)
-    for key in ("id", "parent_extraction_revision_id", "source_capture_id"):
+    for key in ("id", "parent_extraction_revision_id", "source_capture_id", "evidence_revision_id"):
         if values.get(key) is not None:
             values[key] = PythonUUID(values[key])
     await session.execute(pg_insert(table).values(**values).on_conflict_do_nothing(index_elements=[table.c.id]))
@@ -437,6 +461,58 @@ async def _persist_chunk_evidence(session: AsyncSession, paper_id: str, chunks: 
             index_elements=[chunk_evidence_current_table.c.chunk_id],
             set_={"evidence_revision_id": pointer.excluded.evidence_revision_id},
         ))
+
+def _complete_embedding(chunk: Chunk) -> tuple[list[float], dict]:
+    """Recheck exact current inputs, never trusting cached token counts."""
+    settings = get_settings()
+    validate_profile(model=settings.embedding_model, dimension=settings.embedding_output_dimensionality,
+                     task_type="RETRIEVAL_DOCUMENT")
+    actual_count = require_token_budget(chunk.text, max_tokens=settings.chunk_size_tokens)
+    vector = validate_vector(chunk.embedding)
+    report = validate_embedding_provenance(chunk.embedding_provenance, text=chunk.text, vector=vector,
+                                          expected_task="RETRIEVAL_DOCUMENT")
+    if report["local_count_method"] != LOCAL_DOCUMENT_COUNT_METHOD or report["local_count"] != actual_count:
+        raise ValueError("Embedding local count does not match actual complete chunk text")
+    if type(chunk.token_count) is not int or chunk.token_count != actual_count:
+        raise ValueError("Chunk token count does not match its current complete text")
+    return vector, report
+
+
+async def _persist_embedding_completions(session: AsyncSession, paper_id: str, chunks: list[Chunk]) -> None:
+    """Append completion metadata in the same transaction as SQL and lineage.
+
+    Pure SQL-only legacy chunks remain possible. A supplied vector or report
+    requires its complete counterpart, exact text and the current 0060 binding.
+    A later vector upload is separate and not attested by these rows.
+    """
+    completed = {}
+    seen = set()
+    for chunk in chunks:
+        if chunk.paper_id != paper_id or chunk.id in seen:
+            raise ValueError("Embedding chunk inventory does not match the paper")
+        seen.add(chunk.id)
+        if chunk.embedding is not None or chunk.embedding_provenance is not None:
+            completed[chunk.id] = _complete_embedding(chunk)
+    if not completed:
+        return
+    await session.execute(text("SELECT public.sclib_research_integrity_lock_v1()"))
+    rows = (await session.execute(text("""SELECT c.id,c.text,link.evidence_revision_id,
+        e.record_sha256 AS evidence_record_sha256,
+        public.sclib_rag_chunk_hash_v1(to_jsonb(c)) AS chunk_binding_sha256
+        FROM chunks c JOIN chunk_evidence_current link ON link.chunk_id=c.id
+        JOIN rag_evidence_revisions e ON e.id=link.evidence_revision_id
+        WHERE c.paper_id=:paper AND c.id IN :ids""").bindparams(
+            bindparam("ids", expanding=True)),
+        {"paper": paper_id, "ids": list(completed)})).mappings().all()
+    if {row["id"] for row in rows} != set(completed):
+        raise ValueError("Embedding completion requires every current chunk evidence binding")
+    for row in rows:
+        vector, report = completed[row["id"]]
+        validate_embedding_provenance(report, text=row["text"], vector=vector, expected_task="RETRIEVAL_DOCUMENT")
+        values = build_embedding_receipt_row(chunk_key=row["id"], receipt=report,
+            **{key: row[key] for key in ("evidence_revision_id", "evidence_record_sha256", "chunk_binding_sha256")})
+        await _insert_evidence_revision(session, embedding_completion_receipts_table, values)
+
 
 async def upsert_paper_with_chunks(
     parsed: ParsedPaper,
@@ -526,6 +602,7 @@ async def upsert_paper_with_chunks(
                     ],
                 )
             await _persist_chunk_evidence(session, meta.paper_id, chunks)
+            await _persist_embedding_completions(session, meta.paper_id, chunks)
 
 
 async def upsert_aps_paper_with_chunks(
@@ -625,6 +702,7 @@ async def upsert_aps_paper_with_chunks(
                     ],
                 )
             await _persist_chunk_evidence(session, meta.paper_id, chunks)
+            await _persist_embedding_completions(session, meta.paper_id, chunks)
 
 
 async def find_related_arxiv_paper(doi: str) -> str | None:
@@ -701,6 +779,27 @@ def _index() -> Any:
     )
 
 
+def _publication_inputs(paper_id: str, chunks: list[Chunk]) -> list[tuple[str, list[float]]]:
+    """Validate the entire batch before resolving a cloud client or uploading.
+
+    This checks in-process completion, not shared SQL/vector generation
+    atomicity. A valid receipt cannot establish current index membership.
+    """
+    prepared = []
+    seen = set()
+    for chunk in chunks:
+        if (type(chunk.id) is not str or not 1 <= len(chunk.id) <= 200
+                or chunk.paper_id != paper_id or chunk.id in seen):
+            raise ValueError("Vector publication requires an exact unique chunk inventory")
+        seen.add(chunk.id)
+        candidate = validate_candidate(chunk.evidence_candidate)
+        if candidate["permission_status"] == "restricted":
+            raise ValueError("Restricted evidence cannot be published to vector search")
+        vector, _ = _complete_embedding(chunk)
+        prepared.append((chunk.id, vector))
+    return prepared
+
+
 def upsert_chunks_to_vector_search(
     parsed: ParsedPaper,
     chunks: list[Chunk],
@@ -712,15 +811,12 @@ def upsert_chunks_to_vector_search(
     """
     if not chunks:
         return
-    index = _index()
-
     meta = parsed.meta
+    completed = _publication_inputs(meta.paper_id, chunks)
     year = meta.date_submitted.year if meta.date_submitted else None
 
     datapoints: list[IndexDatapoint] = []
-    for c in chunks:
-        if c.embedding is None:
-            continue
+    for chunk_id, vector in completed:
         restricts: list[IndexDatapoint.Restriction] = []
         numeric_restricts: list[IndexDatapoint.NumericRestriction] = []
         if year is not None:
@@ -731,8 +827,8 @@ def upsert_chunks_to_vector_search(
             )
         datapoints.append(
             IndexDatapoint(
-                datapoint_id=c.id,
-                feature_vector=c.embedding,
+                datapoint_id=chunk_id,
+                feature_vector=vector,
                 restricts=restricts,
                 numeric_restricts=numeric_restricts,
                 crowding_tag=IndexDatapoint.CrowdingTag(
@@ -741,10 +837,7 @@ def upsert_chunks_to_vector_search(
             )
         )
 
-    if not datapoints:
-        log.warning("no embedded datapoints to upsert for %s", meta.paper_id)
-        return
-
+    index = _index()
     index.upsert_datapoints(datapoints=datapoints)
     log.info("upserted %d datapoints to Vertex VS (paper=%s)",
              len(datapoints), meta.paper_id)
@@ -766,14 +859,11 @@ def upsert_aps_chunks_to_vector_search(
     """
     if not chunks:
         return
-    index = _index()
-
+    completed = _publication_inputs(meta.paper_id, chunks)
     year = meta.date_published.year if meta.date_published else None
 
     datapoints: list[IndexDatapoint] = []
-    for c in chunks:
-        if c.embedding is None:
-            continue
+    for chunk_id, vector in completed:
         restricts: list[IndexDatapoint.Restriction] = [
             IndexDatapoint.Restriction(namespace="source", allow_list=["aps"]),
         ]
@@ -784,8 +874,8 @@ def upsert_aps_chunks_to_vector_search(
             )
         datapoints.append(
             IndexDatapoint(
-                datapoint_id=c.id,
-                feature_vector=c.embedding,
+                datapoint_id=chunk_id,
+                feature_vector=vector,
                 restricts=restricts,
                 numeric_restricts=numeric_restricts,
                 crowding_tag=IndexDatapoint.CrowdingTag(
@@ -794,10 +884,7 @@ def upsert_aps_chunks_to_vector_search(
             )
         )
 
-    if not datapoints:
-        log.warning("no embedded APS datapoints to upsert for %s", meta.paper_id)
-        return
-
+    index = _index()
     index.upsert_datapoints(datapoints=datapoints)
     log.info("upserted %d APS datapoints to Vertex VS (paper=%s)",
              len(datapoints), meta.paper_id)

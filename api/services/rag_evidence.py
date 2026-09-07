@@ -21,7 +21,7 @@ from services.rag_evidence_contract import (
     validate_evidence_descriptor,
 )
 
-CURRENT_FACT_RENDERER_VERSION = "sclib-fact-renderer/2.0.0"
+CURRENT_FACT_RENDERER_VERSION = "sclib-fact-renderer/2.1.0"
 MAX_CHUNKS = 300
 
 

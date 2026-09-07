@@ -1665,6 +1665,10 @@ from models.rag_evidence_v1 import register as _register_rag_evidence  # noqa: E
 
 RAG_EVIDENCE_TABLES = _register_rag_evidence(Base.metadata)
 
+from models.embedding_receipts_v1 import register as _register_embedding_receipts  # noqa: E402
+
+EMBEDDING_COMPLETION_RECEIPTS = _register_embedding_receipts(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

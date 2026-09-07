@@ -1,28 +1,26 @@
 """GET /similar/{paper_id} — "more like this" via vector search.
 
-Approach: pull every chunk id for the source paper, look each one up
-in Vertex VS (batched via find_neighbors_many), then aggregate by
-paper_id using the average distance across all matching chunks.
-Exclude the source paper itself from the results.
-
-We deliberately do NOT re-embed — the chunks are already indexed,
-and the indexer stores the same vector we would compute now.
-Re-embedding would double-charge for no benefit.
+Approach: re-embed at most 20 stored chunk texts with RETRIEVAL_QUERY,
+perform a batched ANN lookup, then aggregate by paper_id using the
+average distance across matching chunks. Exclude the source paper itself.
+This request-time retrieval heuristic does not fetch stored document vectors
+or establish scientific support. Unchecked embeddings cannot yield a success.
 """
 from __future__ import annotations
 
-import asyncio
+import threading
 from collections import defaultdict
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from config import get_settings
 from models import get_db
 from models.db import Paper
 from models.search import SimilarPaper, SimilarResponse
 from routers.deps import Identity, peek_identity
-from services import vector_search
+from services import provider_resilience, vector_search
 
 router = APIRouter(tags=["similar"])
 
@@ -54,8 +52,16 @@ async def similar_papers(
     if not chunk_rows:
         return SimilarResponse(source_paper_id=paper_id, results=[])
 
+    stopped = threading.Event()
+
     def _compute() -> list[tuple[str, float]]:
-        vectors = [vector_search.embed_query(t) for t in chunk_rows]
+        vectors = []
+        for chunk_text in chunk_rows:
+            if stopped.is_set():
+                raise provider_resilience.ProviderUnavailable("Similarity lookup stopped")
+            vectors.append(vector_search.embed_query(chunk_text))
+        if stopped.is_set():
+            raise provider_resilience.ProviderUnavailable("Similarity lookup stopped")
         per_chunk = vector_search.find_neighbors_many(vectors, top_k=top_k + 5)
         # Aggregate: mean distance per paper, ignoring self-hits.
         acc: dict[str, list[float]] = defaultdict(list)
@@ -69,7 +75,26 @@ async def similar_papers(
         scored.sort(key=lambda x: x[1])  # smaller distance = closer
         return scored[:top_k]
 
-    scored = await asyncio.to_thread(_compute)
+    settings = get_settings()
+    try:
+        scored = await provider_resilience.run_blocking(
+            "similar_search", _compute,
+            timeout_seconds=settings.vector_search_timeout_seconds,
+            failure_threshold=settings.provider_circuit_failure_threshold,
+            cooldown_seconds=settings.provider_circuit_cooldown_seconds,
+            # A failed per-paper batch may already have embedded earlier
+            # members. Do not replay that batch or retry incomplete inputs.
+            max_attempts=1,
+        )
+    except provider_resilience.ProviderUnavailable:
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "Similarity search is temporarily unavailable. Please try again later.",
+        ) from None
+    finally:
+        # A blocking SDK call cannot be forcibly cancelled. Once it returns,
+        # a timed-out request must not start more embeddings or ANN calls.
+        stopped.set()
     if not scored:
         return SimilarResponse(source_paper_id=paper_id, results=[])
 

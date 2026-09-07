@@ -23,7 +23,11 @@ from ingestion.models import ApsArticleMeta, Chunk, PaperMetadata, ParsedPaper  
 from ingestion.rag_evidence_contract import VERSION, canonical  # noqa: E402
 
 from models.db import get_session_factory  # noqa: E402
-from services.rag_evidence import register_chunk_evidence, resolve_chunk_evidence  # noqa: E402
+from services.rag_evidence import (  # noqa: E402
+    CURRENT_FACT_RENDERER_VERSION,
+    register_chunk_evidence,
+    resolve_chunk_evidence,
+)
 
 
 @pytest_asyncio.fixture(loop_scope="function")
@@ -54,7 +58,7 @@ def fixture_values():
                   "source_quote": "PRIVATE_SOURCE_QUOTE_SENTINEL"}}
     candidate = {"version": VERSION, "chunk_kind": "derived_fact", "parent_record": record,
                  "extraction_version": record["extractor_version"],
-                 "rendering_version": "sclib-fact-renderer/2.0.0", "source_capture_id": None,
+                 "rendering_version": CURRENT_FACT_RENDERER_VERSION, "source_capture_id": None,
                  "source_locator": {}, "unresolved_reason": "missing_original_source",
                  "permission_status": "unresolved"}
     chunk = Chunk(id=meta.paper_id + "_fact_000", paper_id=meta.paper_id, chunk_index=0,

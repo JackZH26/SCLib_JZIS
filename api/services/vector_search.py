@@ -25,6 +25,14 @@ from google.cloud.aiplatform.matching_engine.matching_engine_index_endpoint impo
 from google.genai import types as genai_types
 
 from config import get_settings
+from services.embedding_contract import (
+    LOCAL_QUERY_COUNT_METHOD,
+    LOCAL_QUERY_INPUT_LIMIT,
+    LOCAL_QUERY_REQUEST_LIMIT,
+    EmbeddingCompletenessError,
+    validate_embedding_inputs,
+    validate_embedding_response,
+)
 from services.genai_client import client as genai_client
 
 log = logging.getLogger(__name__)
@@ -64,18 +72,37 @@ def embed_query(text: str) -> list[float]:
     semantic space the ingestion pipeline indexed with RETRIEVAL_DOCUMENT.
     """
     settings = get_settings()
-    out = genai_client().models.embed_content(
-        model=settings.embedding_model,
-        contents=[text],
-        config=genai_types.EmbedContentConfig(
-            task_type="RETRIEVAL_QUERY",
-            output_dimensionality=settings.embedding_output_dimensionality,
-        ),
+    # UTF-8 bytes are a bounded admission measure, not the model tokenizer.
+    try:
+        count = len(text.encode("utf-8")) if type(text) is str else 0
+    except UnicodeError as exc:
+        raise EmbeddingCompletenessError("Embedding input is not valid UTF-8") from exc
+    arguments = {
+        "model": settings.embedding_model,
+        "dimension": settings.embedding_output_dimensionality,
+        "task_type": "RETRIEVAL_QUERY", "local_counts": [count],
+        "local_count_method": LOCAL_QUERY_COUNT_METHOD,
+        "local_input_limit": LOCAL_QUERY_INPUT_LIMIT,
+        "local_request_limit": LOCAL_QUERY_REQUEST_LIMIT,
+    }
+    validate_embedding_inputs([text], **arguments)
+    config = genai_types.EmbedContentConfig(
+        task_type="RETRIEVAL_QUERY",
+        output_dimensionality=settings.embedding_output_dimensionality,
+        auto_truncate=False,
     )
-    embeddings = out.embeddings or []
-    if not embeddings:
-        raise RuntimeError("Embedding API returned no query embedding")
-    return list(embeddings[0].values)
+    if getattr(config, "auto_truncate", None) is not False:
+        raise EmbeddingCompletenessError("Embedding SDK cannot disable input truncation")
+    try:
+        out = genai_client().models.embed_content(
+            model=settings.embedding_model,
+            contents=[text],
+            config=config,
+        )
+    except Exception:
+        # Raw provider errors may include query bodies or credentials.
+        raise EmbeddingCompletenessError("Embedding provider request failed") from None
+    return validate_embedding_response([text], out, **arguments)[0][0]
 
 
 def find_neighbors(

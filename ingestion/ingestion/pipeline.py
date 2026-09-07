@@ -51,9 +51,11 @@ from __future__ import annotations
 import argparse
 import asyncio
 import copy
+import json
 import logging
 import sys
 from datetime import date, datetime, timedelta, timezone
+from time import perf_counter
 from typing import Any
 
 from ingestion import storage
@@ -62,6 +64,7 @@ from ingestion.collect.arxiv_oai import ArxivClient, ArxivError
 from ingestion.config import get_settings
 from ingestion.embed.embedder import embed_chunks
 from ingestion.extract.affiliation_ner import extract_paper_geo
+from ingestion.extract.fact_sentences import FactChunkLimitError
 from ingestion.extract.material_ner import _MAX_CHARS, _assemble_text, extract_materials
 from ingestion.extract.materials_aggregator import aggregate_from_papers
 from ingestion.index.indexer import (
@@ -70,6 +73,7 @@ from ingestion.index.indexer import (
     upsert_paper_geo,
     upsert_paper_with_chunks,
 )
+from ingestion.input_observation import new_input_observation, observe_chunks, observe_embeddings
 from ingestion.models import PaperMetadata, ParsedPaper
 from ingestion.parse.latex_parser import LatexParseError, parse_source_tarball
 from ingestion.source_capture import build_ingestion_capture
@@ -118,6 +122,7 @@ async def process_paper(
         "title": meta.title[:80],
         "ok": False,
         "strategy": strategy,
+        "input_observation": new_input_observation(),
     }
 
     # Abstract-only skips artifact download/parsing, not the later service calls.
@@ -178,6 +183,7 @@ async def _finish(
     skip_geo: bool,
     result: dict[str, Any],
 ) -> dict[str, Any]:
+    observation = result.setdefault("input_observation", new_input_observation())
     # Preserve the source observation and exact prepared NER document before a
     # downstream chunk/embed failure can discard the only capture timestamp.
     # Preparation is not evidence that a provider call actually occurred.
@@ -196,22 +202,39 @@ async def _finish(
         return result
 
     # 3. Chunk
+    stage_started = perf_counter()
     try:
         chunks = chunk_paper(parsed)
+    except FactChunkLimitError:
+        reason = FactChunkLimitError.reason_code
+        observation["chunk"] = observe_chunks(status="failed", reason_code=reason,
+                                               duration_seconds=perf_counter() - stage_started)
+        result.update({"stage": "chunk", "error": reason, "reason_code": reason})
+        return result
     except Exception as e:  # noqa: BLE001
+        observation["chunk"] = observe_chunks(status="failed", reason_code="chunk_stage_failed",
+                                               duration_seconds=perf_counter() - stage_started)
         result.update({"stage": "chunk", "error": f"{e}"})
         return result
+    observation["chunk"] = observe_chunks(chunks, status="returned",
+                                           duration_seconds=perf_counter() - stage_started)
     result["n_chunks"] = len(chunks)
     if not chunks:
+        observation["chunk"].update(stage_status="failed", reason_code="no_chunks_produced")
         result.update({"stage": "chunk", "error": "no chunks produced"})
         return result
 
     # 4. Embed (sync SDK call — run in a thread to keep the event loop free)
+    stage_started = perf_counter()
     try:
         await asyncio.to_thread(embed_chunks, chunks)
     except Exception as e:  # noqa: BLE001
+        observation["embedding"] = observe_embeddings(chunks, status="failed",
+            reason_code="embedding_stage_failed", duration_seconds=perf_counter() - stage_started)
         result.update({"stage": "embed", "error": f"{e}"})
         return result
+    observation["embedding"] = observe_embeddings(chunks, status="returned",
+                                                  duration_seconds=perf_counter() - stage_started)
 
     # 5. Material NER (optional — skipped for smoke runs without Gemini access)
     materials: list[dict[str, Any]] = []
@@ -529,6 +552,8 @@ def _print_status(r: dict[str, Any]) -> None:
     )
     log.info("[%s] %s %s — %s",
              status, r["arxiv_id"], r.get("title", ""), extra)
+    if "input_observation" in r:
+        log.info("input_observation=%s", json.dumps(r["input_observation"], sort_keys=True, allow_nan=False))
 
 
 # ---------------------------------------------------------------------------

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from functools import lru_cache
 
-from pydantic import Field
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -93,8 +93,8 @@ class IngestionSettings(BaseSettings):
     aps_temp_max_age_seconds: int = 1800
 
     # --- Chunking -----------------------------------------------------------
-    chunk_size_tokens: int = 512
-    chunk_overlap_tokens: int = 64
+    chunk_size_tokens: int = Field(512, ge=64)
+    chunk_overlap_tokens: int = Field(64, ge=0)
     #: Vertex embedding batch size (text-embedding-005 allows up to 250)
     embed_batch_size: int = 100
 
@@ -106,6 +106,19 @@ class IngestionSettings(BaseSettings):
     #: How many times to retry a failed paper (across all escalation
     #: strategies) before marking it ``dead``.
     failure_max_attempts: int = 5
+
+    @field_validator("chunk_size_tokens", "chunk_overlap_tokens", mode="before")
+    @classmethod
+    def strict_chunk_integers(cls, value):
+        if type(value) is int or type(value) is str and value.isascii() and value.isdigit():
+            return value
+        raise ValueError("Chunk settings require explicit integers")
+
+    @model_validator(mode="after")
+    def complete_chunk_budget(self):
+        if self.chunk_overlap_tokens >= self.chunk_size_tokens:
+            raise ValueError("Chunk overlap must be smaller than the complete-text limit")
+        return self
 
 
 @lru_cache(maxsize=1)

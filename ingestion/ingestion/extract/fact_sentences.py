@@ -13,8 +13,14 @@ from collections.abc import Mapping
 from dataclasses import replace
 from typing import Any
 
-from ingestion.chunk.chunker import chunk_paper
+from ingestion.chunk.chunker import (
+    build_bounded_prefix,
+    chunk_paper,
+    require_token_budget,
+    validate_chunk_settings,
+)
 from ingestion.claims.outcomes import outcome_conflicts_with_positive
+from ingestion.config import get_settings
 from ingestion.extract.scientific_values import record_quantity
 from ingestion.models import ApsArticleMeta, Chunk, ParsedPaper
 from ingestion.pressure_semantics import classify_pressure
@@ -26,7 +32,7 @@ log = logging.getLogger(__name__)
 #: with a huge cited-materials table can't blow up the index. Primary
 #: (the paper's own) records are kept ahead of cited ones.
 _MAX_FACT_CHUNKS = 40
-FACT_RENDERER_VERSION = "sclib-fact-renderer/2.0.0"
+FACT_RENDERER_VERSION = "sclib-fact-renderer/2.1.0"
 _OUTCOME_KEYS = ("result_status", "outcome_state", "outcome")
 _BOOL_OUTCOMES = ("no_transition", "not_detected", "superconductivity_observed", "transition_observed", "is_superconducting")
 _ORIGIN_KEYS = ("knowledge_origin", "result_origin", "evidence_role", "evidence_type", "claim_kind", "source_role", "measurement", "measurement_method", "method")
@@ -268,6 +274,12 @@ def _ordered_records(materials: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return sorted(records, key=lambda record: {"primary": 0, "unknown": 1, "conflicted": 2, "cited": 3}[_classification(record)[2]])
 
 
+class FactChunkLimitError(ValueError):
+    """An atomic fact cannot fit; no partial fact or successful paper is emitted."""
+
+    reason_code = "atomic_fact_exceeds_complete_text_limit"
+
+
 def build_fact_chunks(
     meta: ApsArticleMeta,
     materials: list[dict[str, Any]],
@@ -282,7 +294,11 @@ def build_fact_chunks(
     continues the chunk numbering after the abstract chunk(s) so ids stay
     unique within the paper.
     """
-    title = meta.title
+    settings = get_settings()
+    validate_chunk_settings(settings.chunk_size_tokens, settings.chunk_overlap_tokens)
+    if type(start_index) is not int or not 0 <= start_index <= 32767:
+        raise ValueError("Invalid Facts starting index")
+    prefix = build_bounded_prefix(meta.title, "Facts", max_tokens=settings.chunk_size_tokens)
     out: list[Chunk] = []
     idx = start_index
     for record in _ordered_records(materials):
@@ -294,14 +310,22 @@ def build_fact_chunks(
         sentence = fact_sentence(record)
         if not sentence:
             continue
-        text = f"Title: {title}\nSection: Facts\n\n{sentence}"
+        text = prefix + sentence
+        try:
+            token_count = require_token_budget(text, max_tokens=settings.chunk_size_tokens)
+        except ValueError:
+            # Do not split away a negation, pressure, or origin qualifier, and
+            # do not expose original/result text in operational error output.
+            raise FactChunkLimitError(FactChunkLimitError.reason_code) from None
+        if idx > 32767:
+            raise ValueError("Facts chunk index exceeds storage limit")
         out.append(Chunk(
             id=f"{meta.paper_id}_fact_{idx:03d}",
             paper_id=meta.paper_id,
             chunk_index=idx,
             section="Facts",
             text=text,
-            token_count=len(text) // 4,  # rough; exact count not needed here
+            token_count=token_count,
             materials_mentioned=[record],
             evidence_candidate={
                 "version": "rag-evidence/1.0.0", "chunk_kind": "derived_fact",
