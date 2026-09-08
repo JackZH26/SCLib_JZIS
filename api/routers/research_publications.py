@@ -20,6 +20,7 @@ from services.research_publication import (
     public_inventory,
 )
 from services.research_release_manifest import ResearchReleaseVerificationError, canonical
+from services.scientific_result_effects import ScientificResultStatusUnavailable
 from services.source_lifecycle import SourceLifecycleError
 
 
@@ -55,7 +56,7 @@ async def list_publications(db=Depends(publication_read_session)):
         return Response(canonical(body), media_type="application/json", headers=_HEADERS)
     except _UNAVAILABLE:
         raise HTTPException(503, "Publication inventory unavailable", headers=_HEADERS) from None
-    except SQLAlchemyError:
+    except (SQLAlchemyError, ScientificResultStatusUnavailable):
         raise HTTPException(503, "Publication registry unavailable", headers=_HEADERS) from None
 
 
@@ -71,5 +72,5 @@ async def public_publication(publication_id: UUID, db=Depends(publication_read_s
                         headers={**_HEADERS, "X-Public-Manifest-SHA256": proposal["payload_sha256"]})
     except _UNAVAILABLE:
         raise HTTPException(404, "Publication unavailable", headers=_HEADERS) from None
-    except SQLAlchemyError:
+    except (SQLAlchemyError, ScientificResultStatusUnavailable):
         raise HTTPException(503, "Publication registry unavailable", headers=_HEADERS) from None

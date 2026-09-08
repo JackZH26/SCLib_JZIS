@@ -11,6 +11,30 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class SchemaLifecycleBoundaryTests(unittest.TestCase):
+    def test_adjudication_history_is_populated_after_every_old_guard(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        main = source.split("def main()", 1)[1]
+        markers = ("_ml_feature_binding_downgrade_guard(capability", "_scientific_imports_empty_roundtrip(capability",
+                   "_scientific_import_downgrade_guard(capability", "_result_impact_indexes_roundtrip(capability, engine, config, populated=True)",
+                   "_adjudications_empty_roundtrip(capability", "_adjudications_on_migrated_schema(capability",
+                   "_adjudication_downgrade_guard(capability")
+        positions = [main.index(marker) for marker in markers]
+        self.assertEqual(positions, sorted(positions))
+        body = source.split("async def _adjudications_on_migrated_schema", 1)[1].split("def _adjudication_downgrade_guard", 1)[0]
+        for marker in ("capture_result_subject(session", "service.adjudicate(session", "assert await state(session) == before",
+                       "await session.commit()", 'assert replay["replayed"] is True', "assert await state(session) == after"):
+            self.assertIn(marker, body)
+        guard = source.split("def _adjudication_downgrade_guard", 1)[1].split("def main()", 1)[0]
+        self.assertIn("retained exact review history", guard)
+        self.assertIn("assert snapshot(connection) == before", guard)
+
+    def test_adjudication_migration_removes_only_own_empty_objects(self):
+        source = (ROOT / "api/alembic/versions/0067_scientific_adjudication.py").read_text()
+        self.assertIn('down_revision = "0066_result_impact_indexes"', source)
+        self.assertLess(source.index("retained exact review history"), source.index("DROP TRIGGER sa67_catalogue_writer"))
+        self.assertNotIn("CASCADE", source)
+        self.assertIn("reversed(FUNCTION_SIGNATURES)", source)
+
     def test_entrypoint_never_migrates_and_executes_only_after_admission(self):
         entrypoint = ROOT / "api/entrypoint.sh"
         source = entrypoint.read_text()
@@ -325,7 +349,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
         populated = "_result_impact_indexes_roundtrip(capability, engine, config, populated=True)"
         self.assertLess(main.index(empty), main.index("_scientific_imports_on_migrated_schema(capability"))
         self.assertGreater(main.index(populated), main.index("_scientific_import_downgrade_guard(capability"))
-        body = source.split("def _result_impact_indexes_roundtrip", 1)[1].split("def main()", 1)[0]
+        body = source.split("def _result_impact_indexes_roundtrip", 1)[1].split("def _adjudications_empty_roundtrip", 1)[0]
         self.assertIn('command.downgrade(config, "0065_scientific_import")', body)
         self.assertIn("_assert_result_impact_indexes(connection, present=False)", body)
         self.assertEqual(body.count("assert snapshot(connection) == before"), 3)

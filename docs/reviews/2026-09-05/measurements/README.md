@@ -153,3 +153,58 @@ worktree. Exactly one source entry differs from `-02`:
 and final import accounting are identical to `-02`. Both earlier receipts'
 complete file hashes were rechecked and remained unchanged. No additional
 full-script run was claimed for this documentation/measurement follow-up.
+
+## 0067 adjudication checkpoint
+
+[EN02_Schema_Rehearsal_2026-09-08-04.json](EN02_Schema_Rehearsal_2026-09-08-04.json)
+is a new complete native rehearsal after batch34 API, schema, gate and boundary
+edits, before the subsequent publication preflight-order correction. It was not
+derived by editing an earlier report or relabelled after that correction.
+
+| Measurement | Actual 0067 value |
+| --- | --- |
+| Full file SHA-256 | `a3ff06ee98d626ac52b015cab17599e30b93857dc5f7d9ff8c3238a799d1bd1f` |
+| Body SHA-256 | `024e4fab33e3f9121f806fb61414fb1482391e33b739400dc0732b15e5e2ec88` |
+| Exact file size / initial permissions | 83,418 bytes / `0600` |
+| UTC start / completion | `2026-09-08T09:48:20.116238Z` / `2026-09-08T09:48:46.893948Z` |
+| Measured rehearsal time | 26,777 ms; not a production latency benchmark |
+| Captured source inventory | 525 files; digest `58b0842610e2b05ee3325b509b7e1e8f792a6808932950e9b0164f8638dd766b` |
+| HEAD / worktree | `11e674a6a20093416e6ffc00631dca85c9765686`; actual dirty-worktree input bytes pinned |
+| Schema | Actual `0050_timeline_identity` to `0067_scientific_adjudication` |
+| Result | Exit 0; full historical guards, 0067 empty roundtrip, actual preview/commit/replay, retained-history downgrade refusal and cleanup passed |
+
+The closed schema/body hash and current full source inventory were independently
+validated after report publication. Legacy/source/frozen retention signatures
+still match; actual import accounting remains one pending success and one
+quarantine with two overlapping reason codes. The report's unchanged v1 named
+outcome/count vocabulary remains the earlier sixteen outcomes and listed
+tables: it does not add named 0067 audit-table counts. The source-pinned extended
+harness executed the additional 0067 assertions before `finish`; its exit and
+native test evidence are documented in
+[batch34](../Priority_Thirty_Fourth_Batch_Implementation_2026-09-08.md).
+Neither the unchanged report vocabulary nor an accepted synthetic test decision
+is reinterpreted as real scientific review or production approval.
+
+## Final 0067 source checkpoint after publication preflight correction
+
+[EN02_Schema_Rehearsal_2026-09-08-05.json](EN02_Schema_Rehearsal_2026-09-08-05.json)
+reruns the entire migration rehearsal after restoring the original publication
+material/source preflight order. The prior `-04` report remains unchanged.
+
+| Measurement | Actual final checkpoint |
+| --- | --- |
+| Full file SHA-256 | `d65d8b6e66ce5df9aa94d49986e8441d05161ff82bd877e7ccb4a7eae71caf18` |
+| Body SHA-256 | `e90e7c36e95462ad3c1c8c5959d8065e3a0a0611ea09c3b8c5d2f8de18392837` |
+| UTC start / completion | `2026-09-08T09:54:14.950437Z` / `2026-09-08T09:54:41.161294Z` |
+| Measured rehearsal time | 26,210 ms; excludes startup, cleanup and report publication |
+| Captured source inventory | 525 files; digest `b53a701dda3836d59ab1ff394ab6c3efd10614f1312e4dfc8896f31810366113` |
+| HEAD / worktree | Same `11e674a` base, explicitly pinned dirty-worktree bytes |
+| Result | Exit 0, `0050` to `0067`, all original and new history guards passed, owned cleanup verified |
+
+Independent closed report/body and exact current source verification passed.
+The sole source-input difference from `-04` is `api/services/research_publication.py`;
+the corrected ordering keeps the review gate inside the same stable transaction,
+after existing resource/source preflights and before admission. Its targeted
+69-test publication/public-gate rerun passed without changing old limit assertions.
+The v1 report vocabulary and non-production authority limitations remain as
+described above.

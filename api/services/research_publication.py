@@ -182,6 +182,10 @@ async def _current_catalogue(db, release):
     """Conservative source/material holds; metadata rights do not waive them."""
     from models.db import Material
     from services.material_visibility_adapter import prepare_material_views
+    from services.scientific_result_effects import (
+        ScientificResultReviewHeld,
+        gate_exact_property_reviews,
+    )
     from services.source_lifecycle import resolve_paper_lifecycle, resolve_work_lifecycle
     from services.source_visibility import source_visibility
     ids = {name: [row["row_id"] for row in release["manifest"]["rows"] if row["table"] == name]
@@ -222,6 +226,14 @@ async def _current_catalogue(db, release):
         states = await resolver(db, keys)
         if len(states) != len(keys) or any(not source_visibility(value)["reported_claim_filter_eligible"] for value in states.values()):
             raise PublicationUnavailable("Current source governance hold")
+    # Preserve the original pre-hydration material/source budgets before the
+    # additional exact-review read. This is still a required admission gate in
+    # the same stable snapshot, not a check after publication has been served.
+    try:
+        await gate_exact_property_reviews(db, [row["row_id"] for row in release["manifest"]["rows"]
+                                              if row["table"] == "event_properties"])
+    except ScientificResultReviewHeld:
+        raise PublicationUnavailable("Exact scientific result has a review hold") from None
 
 
 async def _release(db, release_id):

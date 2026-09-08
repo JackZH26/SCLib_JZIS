@@ -82,7 +82,7 @@ describe("scientific evidence workbench", () => {
     expect(screen.queryByText("0 GPa")).not.toBeInTheDocument();
     expect(screen.getByText("Locator not disclosed")).toBeVisible();
     expect(screen.getByText(/An extraction run is not an attested upstream calculation/)).toBeVisible();
-    expect(screen.getByText(/Scientific adjudication is not available/)).toBeVisible();
+    expect(screen.getByText(/Scope-limited review requires a current reviewer grant/)).toBeVisible();
     expect(screen.getByText(/browser has not independently verified original files/)).toBeVisible();
     expect(screen.getByText(/database relationship inventory, not a prediction/)).toBeVisible();
     expect(screen.getByText(/no global total is reported/)).toBeVisible();

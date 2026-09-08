@@ -54,6 +54,26 @@ export function scientificReviewDossier(propertyId: string, signal?: AbortSignal
   return request(`/ml/scientific-review/results/${encodeURIComponent(propertyId)}`, { signal, cache: "no-store" });
 }
 
+// Explicit private review writes. The UI validates each response independently.
+export function scientificAdjudicationContext(propertyIds: string[], signal?: AbortSignal): Promise<unknown> {
+  return request("/ml/scientific-review/adjudication/context", {
+    method: "POST", body: JSON.stringify({ property_ids: propertyIds }), cache: "no-store", signal,
+  });
+}
+export function scientificAdjudicationPreview(body: import("./scientific-review-decision").AdjudicationRequest, signal?: AbortSignal): Promise<unknown> {
+  return request("/ml/scientific-review/adjudication/preview", {
+    method: "POST", body: JSON.stringify(body), cache: "no-store", signal,
+  });
+}
+export function scientificAdjudicationCommit(body: import("./scientific-review-decision").AdjudicationRequest, expectedPreviewSha256: string, signal?: AbortSignal): Promise<unknown> {
+  return request("/ml/scientific-review/adjudication/commit", {
+    method: "POST", body: JSON.stringify({ request: body, expected_preview_sha256: expectedPreviewSha256 }), cache: "no-store", signal,
+  });
+}
+export function scientificAdjudicationOutcome(requestKey: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/ml/scientific-review/adjudication/requests/${encodeURIComponent(requestKey)}`, { cache: "no-store", signal });
+}
+
 /**
  * Map any caught error into a user-facing string. The fetch API throws a
  * generic `TypeError: Failed to fetch` for every network-level failure

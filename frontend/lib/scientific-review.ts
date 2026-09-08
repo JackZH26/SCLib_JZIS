@@ -161,6 +161,10 @@ function impact(value: unknown) {
     && counts.total_nodes <= 2000
     && Object.entries(counts).every(([table, count]) => ["total_nodes", "total_relations"].includes(table) || count === (nodes.get(table)?.size ?? 0));
 }
+/** Reuse the unchanged bounded relationship validator for adjudication context. */
+export function knownReviewImpact(value: unknown): ReviewDossier["impact"] | null {
+  return impact(value) ? value as ReviewDossier["impact"] : null;
+}
 export function knownReviewDossier(value: unknown, expected: ReviewQueueItem): ReviewDossier | null {
   if (!queueItem(expected) || !keys(value, ["version", "descriptor_sha256", "target", "material", "result", "event", "state", "structure", "run",
     "sources", "inventory", "warnings", "impact", "authority"])

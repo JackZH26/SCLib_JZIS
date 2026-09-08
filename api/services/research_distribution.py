@@ -38,6 +38,10 @@ from services.research_distribution_inputs import (
     require,
 )
 from services.research_freeze import ResearchFreezeError, _bundle_hash, _stored, _verify_pins
+from services.scientific_result_effects import (
+    ScientificResultReviewHeld,
+    gate_exact_property_reviews,
+)
 from services.source_lifecycle import SourceLifecycleError
 
 RIGHTS_VERSION = "rps-distribution-rights/1.0.0"
@@ -336,6 +340,10 @@ async def _current_sources(db, inventory):
         require(stored["bundle_sha256"] == _bundle_hash(stored["manifest"]))
         require(not (await db.execute(sa.select(notices.c.id).where(notices.c.release_id == ids[0]).limit(1))).first(),
                 "distribution_capsule_notice_hold")
+    try:
+        return await gate_exact_property_reviews(db, sorted(grouped.get("event_properties", set())))
+    except ScientificResultReviewHeld:
+        raise ResearchDistributionError("distribution_exact_scientific_review_hold") from None
 
 
 async def _permissions(db, package, inventory, *, budget=None):
@@ -442,12 +450,13 @@ async def admitted_distribution(db, package_id, *, budget=None):
     await check_grant_inventory(db, [(package["actor_user_id"], package["actor_grant_id"], "curator"),
         (review["actor_user_id"], review["actor_grant_id"], "reviewer"),
         (action["actor_user_id"], action["actor_grant_id"], "publisher")])
-    await _current_sources(db, inventory)
+    scientific_review_sha256 = await _current_sources(db, inventory)
     await _review_permissions(db, package, inventory, review, budget=budget)
     return {"package_id": str(package["id"]), "release_id": package["release_id"],
             "release_sha256": package["release_manifest_sha256"], "bundle_sha256": package["public_bundle_sha256"],
             "inventory_sha256": package["inventory_sha256"], "package_sha256": package["record_sha256"],
-            "review_sha256": review["record_sha256"], "publication_sha256": action["record_sha256"]}
+            "review_sha256": review["record_sha256"], "publication_sha256": action["record_sha256"],
+            "scientific_review_sha256": scientific_review_sha256}
 
 
 @dataclass(frozen=True)

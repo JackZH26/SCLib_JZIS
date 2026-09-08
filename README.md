@@ -25,7 +25,10 @@ with retained source bytes, actual coordinate parsing, durable attempts and
 rollback-only preview. Parsed observations are not approved scientific results.
 A [private scientific evidence workbench](docs/SCIENTIFIC_EVIDENCE_WORKBENCH.md)
 now pairs exact properties with state/run/source metadata and bounded downstream
-references. It is read-only; scientific adjudication remains a separate pending workflow.
+references. Its read-only dossier now accompanies a separate
+[exact-result adjudication workflow](docs/SCIENTIFIC_RESULT_ADJUDICATION.md) with
+immutable scoped decisions, explicit previews and same-request recovery.
+Scientific acceptance still does not confer training or publication authority.
 Numerical/evidence queries and Search UI scientific filters return qualified,
 exact-parent extraction rows separately from ordinary paper hits; without an
 active generation they explicitly report unavailable. These are not reviewed

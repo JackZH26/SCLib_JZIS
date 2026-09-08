@@ -212,7 +212,7 @@ async def result_dossier(db, *, actor_user_id, property_id):
     descriptor = {"version": VERSION, "target": target, "rows": inventory, "impact": impact,
                   "review_write_available": False}
     warnings = {"source_text_not_disclosed", "descriptor_is_not_scientific_review",
-                "parent_event_review_does_not_adjudicate_selected_property", "review_decision_workflow_unavailable"}
+                "parent_event_review_does_not_adjudicate_selected_property", "dossier_read_only_no_adjudication_performed"}
     if state["pressure_status"] == "not_reported": warnings.add("pressure_not_reported")
     if state["temperature_k"] is None: warnings.add("temperature_not_reported")
     if not structure or structure["structure_kind"] != "coordinates": warnings.add("coordinate_structure_unavailable")

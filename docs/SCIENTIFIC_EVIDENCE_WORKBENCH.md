@@ -4,11 +4,14 @@ Contract versions: `scientific-review-capabilities/1.0.0`,
 `scientific-review-queue/1.0.0`, `scientific-result-dossier/1.0.0`,
 `scientific-result-impact/1.0.0`.
 
-The dashboard route `/dashboard/research/review` provides a real, private,
-**read-only** inspection of canonical non-Tc, non-RPS properties. It is the
-evidence-preparation part of UX02 / #73, not the complete curator workflow.
-There are no accept, reject, clarification, export or scientific approval APIs
-or buttons. The full decision-workflow acceptance criteria remain open.
+The dashboard route `/dashboard/research/review` provides private inspection of
+canonical non-Tc, non-RPS properties. The v1 dossier and queue documented here
+remain **read-only**. A separate, versioned
+[exact-result adjudication workflow](SCIENTIFIC_RESULT_ADJUDICATION.md) now adds
+explicit accept, reject and clarification actions for supported sampled-phonon
+profiles. These actions do not change the authority flags of the read dossier.
+Full UX02 / #73 acceptance still requires the outstanding versioned ML and
+consumer integrations, evidence and delivery checks; this is not issue closure.
 
 ## Scientific interpretation
 
@@ -51,7 +54,8 @@ request starts. No raw source rights are granted by any of these roles.
 Responses are `private, no-store` with `nosniff`. Query validation is sanitized
 422, malformed/unsupported snapshots are sanitized 400, unavailable SQL or
 deadline failures are sanitized 503, and authorization is 401/403. Disabled
-feature returns 404. There is no POST route. No raw SQL, source or arbitrary
+feature returns 404. These three v1 routes have no POST operation; the separate
+adjudication namespace has its own write contract. No raw SQL, source or arbitrary
 exception details are returned. No counters, guard epochs or audit rows are
 written by successful reads; native tests compare the entire database state.
 
@@ -146,10 +150,14 @@ Deploy the schema revision, API contracts and frontend coherently through the
 existing explicit rollout process. No production migration, review, release,
 backfill, vector operation or remote issue closure is implied by local tests.
 
-## Remaining full UX02 decision workflow
+## Full UX02 integration status
 
-The next implementation must retain the full issue, not redefine it as this
-read-only view. Required work is:
+The read dossier alone does not satisfy the issue. Migration 0067 and the
+separate adjudication contract implement the property-level immutable ledger,
+actor/source/head checks, explicit bounded batches and historical recovery.
+Current public publication/distribution gates consume exact negative or stale
+review effects. See the adjudication guide for the implemented scope and limits.
+The following design and acceptance obligations remain relevant:
 
 - A separately versioned, immutable **property-level** accept/reject/clarification
   decision ledger with exact target revision and whole-source descriptor pins;
@@ -175,7 +183,9 @@ read-only view. Required work is:
   vector index. Frozen integrity, scientific review, rights and dataset admission
   remain separate gates.
 
-Until those paths are implemented and independently exercised, every dossier
+Regardless of separately recorded decisions, every v1 inspection dossier
 returns `scientific_accepted=false`, `ml_training_approved=false`,
 `public_release=false`, `review_write_available=false` to describe authority
-conferred by this inspection—not to overwrite historical statuses.
+conferred by this inspection—not to overwrite historical statuses. Its warning
+is now `dossier_read_only_no_adjudication_performed`; the historical batch32 wire
+fixture retains its original unavailable-workflow warning as a recorded capture.

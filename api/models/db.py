@@ -1693,6 +1693,10 @@ from models.scientific_result_impact_indexes_v1 import (
 
 SCIENTIFIC_RESULT_IMPACT_INDEXES = _register_scientific_result_impact_indexes(Base.metadata)
 
+from models.scientific_adjudication_v1 import register as _register_scientific_adjudication  # noqa: E402
+
+SCIENTIFIC_ADJUDICATION_TABLES = _register_scientific_adjudication(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 
