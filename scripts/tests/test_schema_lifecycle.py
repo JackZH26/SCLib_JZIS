@@ -238,5 +238,41 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
         self.assertIn("assert snapshot(connection) == before", guard)
 
 
+    def test_feature_companion_never_masks_earlier_guards_and_empty_roundtrip_preserves_rows(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        main = source.split("def main()", 1)[1]
+        positions = [main.index(marker) for marker in (
+            "_distribution_downgrade_guard(capability", "_ml_feature_bindings_empty_roundtrip(capability",
+            "_ml_feature_bindings_on_migrated_schema(capability", "_ml_feature_binding_downgrade_guard(capability")]
+        self.assertEqual(positions, sorted(positions))
+        chain = source.split("def _assert_empty_distributions", 1)[1].split("def _assert_empty_index_generations", 1)[0]
+        self.assertIn("_assert_empty_ml_feature_bindings(connection)", chain)
+        for name, end in (("_source_impact_indexes_on_migrated_schema", "async def _freeze_on_migrated_schema"),
+                          ("_background_jobs_empty_roundtrip", "async def _background_jobs_on_migrated_schema"),
+                          ("_rag_evidence_empty_roundtrip", "async def _rag_evidence_on_migrated_schema"),
+                          ("_embedding_receipts_empty_roundtrip", "async def _embedding_receipts_on_migrated_schema"),
+                          ("_index_generations_empty_roundtrip", "async def _index_generations_on_migrated_schema"),
+                          ("_distributions_empty_roundtrip", "async def _distributions_on_migrated_schema")):
+            self.assertIn("_ML_FEATURE_BINDING_TABLE", source.split("def " + name, 1)[1].split(end, 1)[0])
+        empty = source.split("def _ml_feature_bindings_empty_roundtrip", 1)[1].split("async def _ml_feature_bindings_on_migrated_schema", 1)[0]
+        self.assertIn('command.downgrade(config, "0063_research_distribution")', empty)
+        self.assertEqual(empty.count("_assert_empty_ml_feature_bindings(connection)"), 2)
+        self.assertEqual(empty.count("assert snapshot(connection) == before"), 2)
+
+    def test_migrated_feature_companion_proves_actual_bytes_timing_and_complete_state_replay(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        body = source.split("async def _ml_feature_bindings_on_migrated_schema", 1)[1].split("def _ml_feature_binding_downgrade_guard", 1)[0]
+        for marker in ("run_sync(check_connection_schema)", "feature_fixture(session)",
+                       "service.register_feature_source_binding(session", "companion(session, fixture)",
+                       "verify(retained, fixture)", "assert await state(session) == before",
+                       "await session.rollback()", '"replayed": True', "assert await state(session) == written",
+                       '"2020-01-01T00:00:00Z"', '"2026-01-01T00:00:00Z"',
+                       "service.decode_companion_artifacts(retained)"):
+            self.assertIn(marker, body)
+        guard = source.split("def _ml_feature_binding_downgrade_guard", 1)[1].split("def main()", 1)[0]
+        self.assertIn('"retained source binding history" in str(exc)', guard)
+        self.assertIn("assert snapshot(connection) == before", guard)
+
+
 if __name__ == "__main__":
     unittest.main()

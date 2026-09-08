@@ -1679,6 +1679,10 @@ from models.research_distribution_v1 import (
 
 RESEARCH_DISTRIBUTION_TABLES = _register_research_distribution(Base.metadata)
 
+from models.ml_feature_companion_v1 import register as _register_ml_feature_companion  # noqa: E402
+
+ML_FEATURE_SOURCE_BINDINGS = _register_ml_feature_companion(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

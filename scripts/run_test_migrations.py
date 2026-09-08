@@ -13,6 +13,13 @@ _INDEX_GENERATION_TABLES = ("index_generation_epoch", "index_generations", "inde
 _DISTRIBUTION_TABLES = ("research_distribution_epoch", "research_distribution_packages",
                         "research_distribution_dependencies", "research_distribution_permissions",
                         "research_distribution_reviews", "research_distribution_actions")
+_ML_FEATURE_BINDING_TABLE = "ml_feature_source_bindings"
+
+
+def _assert_empty_ml_feature_bindings(connection):
+    from sqlalchemy import text
+
+    assert connection.execute(text("SELECT count(*) FROM public.ml_feature_source_bindings")).scalar_one() == 0
 
 
 def _assert_empty_distributions(connection):
@@ -21,6 +28,7 @@ def _assert_empty_distributions(connection):
     for name in _DISTRIBUTION_TABLES[1:]:
         assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
     assert connection.execute(text("SELECT epoch FROM public.research_distribution_epoch WHERE id=1")).scalar_one() == 0
+    _assert_empty_ml_feature_bindings(connection)
 
 
 def _assert_empty_index_generations(connection):
@@ -87,7 +95,7 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts",
                                 "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -497,7 +505,7 @@ def _background_jobs_empty_roundtrip(capability, engine, config):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES,
-                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES}}
+                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -642,7 +650,7 @@ def _rag_evidence_empty_roundtrip(capability, engine, config):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -787,7 +795,7 @@ def _embedding_receipts_empty_roundtrip(capability, engine, config):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES,
-                                *_DISTRIBUTION_TABLES}}
+                                *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -906,7 +914,7 @@ def _index_generations_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES}}
+                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1048,7 +1056,7 @@ def _distributions_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_DISTRIBUTION_TABLES}}
+                if name not in {"alembic_version", *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1176,6 +1184,7 @@ def _distribution_downgrade_guard(capability, engine, config, package_id):
         verify_postgres_identity(connection, capability)
         before = snapshot(connection)
         assert any(row["id"] == package_id for row in before["research_distribution_packages"])
+        _assert_empty_ml_feature_bindings(connection)
     try:
         validate_test_environment()
         command.downgrade(config, "0062_index_generations")
@@ -1183,6 +1192,117 @@ def _distribution_downgrade_guard(capability, engine, config, package_id):
         assert "research-distribution" in str(exc) and "retained governance history" in str(exc)
     else:
         raise AssertionError("Nonempty distribution history downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+
+
+def _ml_feature_bindings_empty_roundtrip(capability, engine, config):
+    """An empty0064 can round-trip after all older histories are populated."""
+    from alembic import command
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")
+                if name not in {"alembic_version", _ML_FEATURE_BINDING_TABLE}}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        _assert_empty_ml_feature_bindings(connection)
+        before = snapshot(connection)
+        assert before["research_distribution_actions"]
+    validate_test_environment()
+    command.downgrade(config, "0063_research_distribution")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError:
+            pass
+        else:
+            raise AssertionError("Feature companion application must refuse the previous schema")
+        verify_postgres_identity(connection, capability)
+        assert _ML_FEATURE_BINDING_TABLE not in inspect(connection).get_table_names(schema="public")
+        assert snapshot(connection) == before
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_ml_feature_bindings(connection)
+        assert snapshot(connection) == before
+
+
+async def _ml_feature_bindings_on_migrated_schema(capability, api_root):
+    """Actual source bytes and original0054 pins, never a fabricated Tc occurrence."""
+    validate_test_environment()
+    sys.path.insert(0, str(api_root / "tests"))
+    from models.db import _to_async_dsn
+    from services import ml_feature_companion as service
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from tests.test_ml_feature_companion import companion, feature_fixture, verify
+    from tests.test_research_freeze import state
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), poolclass=NullPool,
+                                 isolation_level="SERIALIZABLE")
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            fixture = await feature_fixture(session)
+            await session.commit()
+            before = await state(session)
+            preview = await service.register_feature_source_binding(session, **fixture["args"])
+            assert preview["dry_run"] is True and preview["committed"] is False
+            assert await state(session) == before
+            await service.register_feature_source_binding(session, **fixture["args"], dry_run=False)
+            await session.rollback()
+            assert await state(session) == before
+            first = await service.register_feature_source_binding(session, **fixture["args"], dry_run=False)
+            await session.commit()
+            written = await state(session)
+            replay = await service.register_feature_source_binding(session, **fixture["args"], dry_run=False)
+            assert replay == {**first, "replayed": True}
+            await session.commit()
+            assert await state(session) == written
+            retained = await companion(session, fixture)
+            verified = verify(retained, fixture)[str(fixture["input"]["id"])]
+            assert verified["target_ref"] == ["event_properties", str(fixture["property"]["id"])]
+            assert verified["temporal"]["result_available_at"] == "2020-01-01T00:00:00Z"
+            assert verified["temporal"]["captured_at"] == "2026-01-01T00:00:00Z"
+            assert verified["ml_training_approved"] is verified["reviewer_authority_authenticated"] is False
+            assert service.decode_companion_artifacts(retained) == fixture["artifact_bytes"]
+            assert await state(session) == written
+            return first["binding_id"]
+    finally:
+        await engine.dispose()
+
+
+def _ml_feature_binding_downgrade_guard(capability, engine, config, binding_id):
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert any(row["id"] == binding_id for row in before[_ML_FEATURE_BINDING_TABLE])
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0063_research_distribution")
+    except RuntimeError as exc:
+        assert "ML feature companion" in str(exc) and "retained source binding history" in str(exc)
+    else:
+        raise AssertionError("Nonempty feature source binding history downgrade must fail closed")
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
@@ -1258,6 +1378,13 @@ def main() -> None:
             assert {"source_task_epoch", "source_task_requests", "source_task_attempts"} <= set(schema.get_table_names())
             assert "background_job_cycles" in schema.get_table_names()
             assert set(_RAG_EVIDENCE_TABLES) <= set(schema.get_table_names())
+            assert _ML_FEATURE_BINDING_TABLE in schema.get_table_names()
+            assert connection.execute(text("""SELECT count(*) FROM pg_trigger WHERE NOT tgisinternal
+                AND tgrelid='public.ml_feature_source_bindings'::regclass""")).scalar_one() == 3
+            from models.ml_feature_companion_v1 import FUNCTION_SIGNATURES
+            for name, arguments in FUNCTION_SIGNATURES:
+                assert connection.execute(text("SELECT to_regprocedure(:signature)"),
+                    {"signature": f"public.{name}({arguments})"}).scalar_one() is not None
             _assert_empty_rag_evidence(connection)
             assert connection.execute(text("SELECT count(*) FROM background_job_cycles")).scalar_one() == 0
             _assert_source_impact_indexes(connection)
@@ -1440,7 +1567,10 @@ def main() -> None:
         _distributions_empty_roundtrip(capability, engine, config)
         package_id = asyncio.run(_distributions_on_migrated_schema(capability, api_root))
         _distribution_downgrade_guard(capability, engine, config, package_id)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay and independent nonempty history rollback guards verified.")
+        _ml_feature_bindings_empty_roundtrip(capability, engine, config)
+        binding_id = asyncio.run(_ml_feature_bindings_on_migrated_schema(capability, api_root))
+        _ml_feature_binding_downgrade_guard(capability, engine, config, binding_id)
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay, exact property feature source companions/byte verification/replay and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 
