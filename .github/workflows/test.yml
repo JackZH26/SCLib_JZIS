@@ -29,6 +29,8 @@ jobs:
         run: uv sync --locked --extra dev --python 3.11
       - name: Verify connection-before-import safety guards (no services)
         run: .venv/bin/python -m unittest discover -s ../scripts/tests -p test_test_safety.py -v
+      - name: Verify scientific evaluation offline CLI (no services)
+        run: .venv/bin/python -m pytest -q ../scripts/tests/test_scientific_evaluation_cli.py
       - name: Capture test runtime dependency inventory
         run: |
           mkdir -p ../runtime-parity-api

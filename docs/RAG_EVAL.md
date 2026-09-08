@@ -70,6 +70,26 @@ role expansion, multi-paper Work limits, immutable identity, withdrawal after
 currentness changes, real SDK offline serialization and cancellation/circuit
 behavior. They are synthetic development tests, not reviewed scientific gold.
 
+## Frozen scientific evaluation objects
+
+The [scientific evaluation protocol](SCIENTIFIC_EVALUATION_PROTOCOL.md) defines
+the executable RG04c offline package, exact generation/source/Result/request
+bindings, whole-corpus connected split checks, two declared reviews plus an
+explicit disagreement resolver, and paired captured-run comparison. The target
+is 120 real reviewed questions, not an already collected benchmark. New
+`test_scientific_evaluation*` suites use synthetic development fixtures, with
+separate capture tests against disposable SQL. The independently hash-pinned
+read-only CLI remains entirely offline.
+
+Metrics retain missing, disputed, undetermined and not-applicable cases, with
+explicit denominator units and candidate held-out threshold checks. Portable
+consistency does not authenticate reviewers, original roots, permissions,
+preregistration or execution. Scientific acceptance and release authorization
+remain false even when declared scores pass; no actual ANN replay is provided.
+Real expert acquisition, true mixed synthesis and external release gates remain
+unfinished. Do not run the older aggregator/SSH stratification scripts as this
+evaluation pipeline.
+
 ## Failure and safety metrics
 
 Operational logs distinguish semantic-provider fallback, Gemini extractive
