@@ -180,6 +180,28 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
         self.assertIn('"receipt history contains records" in str(exc)', guard)
         self.assertIn("assert snapshot(connection) == before", guard)
 
+    def test_generation_history_is_independently_empty_until_all_older_guards_pass(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        main = source.split("def main()", 1)[1]
+        positions = [main.index(marker) for marker in ("_embedding_receipt_downgrade_guard(capability",
+            "_index_generations_empty_roundtrip(capability", "_index_generations_on_migrated_schema(capability",
+            "_index_generation_downgrade_guard(capability")]
+        self.assertEqual(positions, sorted(positions))
+        empty = source.split("def _index_generations_empty_roundtrip", 1)[1].split("async def _index_generations_on_migrated_schema", 1)[0]
+        self.assertIn('command.downgrade(config, "0061_embedding_receipts")', empty)
+        self.assertEqual(empty.count("_assert_empty_index_generations(connection)"), 2)
+        self.assertEqual(empty.count("assert snapshot(connection) == before"), 2)
+
+    def test_migrated_generation_rehearsal_uses_actual_bytes_and_monotonic_rollback(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        body = source.split("async def _index_generations_on_migrated_schema", 1)[1].split("def _index_generation_downgrade_guard", 1)[0]
+        for marker in ("run_sync(check_connection_schema)", "stage_generation(session", "record_validation(session",
+                       "activate_generation(session", "assert replay == first", "assert await state(session) == before",
+                       "assert await state(session) == written", "assert await state(session) == active_state",
+                       'retained[0]["snapshot_json"]["text"] == chunk["text"]', 'len(retained[0]["vector_bytes"]) == 3072',
+                       'action="rollback"'):
+            self.assertIn(marker, body)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -241,7 +241,7 @@ async def test_provider_retries_one_immediate_failure() -> None:
 
 
 @pytest.mark.asyncio
-async def test_ask_uses_lexical_fallback_and_one_source_per_paper(
+async def test_ask_uses_legacy_lexical_only_and_one_source_per_paper(
     client, monkeypatch
 ) -> None:
     provider_resilience.reset()
@@ -309,7 +309,7 @@ async def test_ask_uses_lexical_fallback_and_one_source_per_paper(
             citation_warnings=[],
         )
 
-    monkeypatch.setattr("routers.ask.vector_search.embed_query", vector_down)
+    monkeypatch.setattr("routers.ask.index_vector_adapter.query", vector_down)
     monkeypatch.setattr("routers.ask.retrieval.lexical_search", lexical)
     monkeypatch.setattr("routers.ask.rag.generate_answer", generate)
 
@@ -328,7 +328,7 @@ async def test_ask_uses_lexical_fallback_and_one_source_per_paper(
 
 
 @pytest.mark.asyncio
-async def test_search_enforces_material_family_from_postgres_when_vertex_lacks_it(
+async def test_legacy_lexical_search_enforces_material_family_from_postgres(
     client, monkeypatch
 ) -> None:
     provider_resilience.reset()
@@ -358,7 +358,7 @@ async def test_search_enforces_material_family_from_postgres_when_vertex_lacks_i
     async def lexical(*_args, **_kwargs):
         return [retrieval.LexicalHit(chunk.id, 2.0)]
 
-    monkeypatch.setattr("routers.search.vector_search.embed_query", vector_down)
+    monkeypatch.setattr("routers.search.index_vector_adapter.query", vector_down)
     monkeypatch.setattr("routers.search.retrieval.lexical_search", lexical)
 
     rejected = await client.post(

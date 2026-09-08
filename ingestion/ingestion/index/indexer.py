@@ -518,8 +518,16 @@ async def upsert_paper_with_chunks(
     parsed: ParsedPaper,
     chunks: list[Chunk],
     materials_extracted: list[dict[str, Any]],
+    *,
+    generation_stager=None,
 ) -> None:
-    """Upsert a paper row + replace its chunks atomically."""
+    """Upsert a paper row + replace its chunks atomically.
+
+    An explicit SQL-only generation_stager(session, chunks) may retain a sealed
+    generation in this same transaction. It must perform no cloud operations
+    and must not commit the caller-owned transaction. Default ingestion creates
+    no generation and cannot activate an index implicitly.
+    """
     meta = parsed.meta
     paper_values: dict[str, Any] = {
         "id": meta.paper_id,
@@ -603,6 +611,8 @@ async def upsert_paper_with_chunks(
                 )
             await _persist_chunk_evidence(session, meta.paper_id, chunks)
             await _persist_embedding_completions(session, meta.paper_id, chunks)
+            if generation_stager is not None:
+                await generation_stager(session, chunks)
 
 
 async def upsert_aps_paper_with_chunks(
@@ -611,6 +621,7 @@ async def upsert_aps_paper_with_chunks(
     materials_extracted: list[dict[str, Any]],
     *,
     related_paper_id: str | None = None,
+    generation_stager=None,
 ) -> None:
     """Upsert an APS paper row + replace its chunks atomically.
 
@@ -703,6 +714,8 @@ async def upsert_aps_paper_with_chunks(
                 )
             await _persist_chunk_evidence(session, meta.paper_id, chunks)
             await _persist_embedding_completions(session, meta.paper_id, chunks)
+            if generation_stager is not None:
+                await generation_stager(session, chunks)
 
 
 async def find_related_arxiv_paper(doi: str) -> str | None:

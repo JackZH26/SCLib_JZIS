@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
-from sqlalchemy import func, literal_column, select
+from sqlalchemy import func, literal_column, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.db import Chunk, Paper
@@ -41,8 +41,25 @@ async def lexical_search(
     year_min: int | None = None,
     year_max: int | None = None,
     exclude_retracted: bool = True,
+    generation_id: str | None = None,
 ) -> list[LexicalHit]:
     """Run bounded PostgreSQL web-style full-text search over title + chunk."""
+    if generation_id is not None:
+        statement = text("""SELECT m.vector_id AS id,
+            ts_rank_cd(to_tsvector('english'::regconfig,coalesce(m.snapshot_json->>'title','')||' '||
+                       (m.snapshot_json->>'text')),websearch_to_tsquery('english'::regconfig,:query)) AS rank
+            FROM index_generation_members m JOIN papers p ON p.id=m.paper_id
+            WHERE m.generation_id=:generation
+              AND to_tsvector('english'::regconfig,coalesce(m.snapshot_json->>'title','')||' '||
+                  (m.snapshot_json->>'text')) @@ websearch_to_tsquery('english'::regconfig,:query)
+              AND (NOT :exclude_retracted OR p.status<>'retracted')
+              AND (CAST(:year_min AS integer) IS NULL OR (m.snapshot_json->>'year')::integer>=:year_min)
+              AND (CAST(:year_max AS integer) IS NULL OR (m.snapshot_json->>'year')::integer<=:year_max)
+            ORDER BY rank DESC,m.vector_id LIMIT :limit""")
+        rows = (await db.execute(statement, {"generation": generation_id, "query": query_text,
+            "exclude_retracted": exclude_retracted, "year_min": year_min, "year_max": year_max,
+            "limit": max(1, min(limit, 300))})).all()
+        return [LexicalHit(chunk_id=row.id, score=float(row.rank or 0.0)) for row in rows]
     config = literal_column("'english'::regconfig")
     document = func.to_tsvector(
         config,

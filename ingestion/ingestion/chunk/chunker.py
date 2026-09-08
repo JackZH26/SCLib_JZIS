@@ -237,6 +237,8 @@ def chunk_paper(parsed: ParsedPaper) -> list[Chunk]:
                 paper_id=parsed.meta.paper_id, chunk_index=index, section=section.name,
                 text=text, token_count=require_token_budget(text, max_tokens=size),
                 has_equation=section.has_equation, has_table=section.has_table,
+                parser_version=("sclib-metadata-abstract/1.0.0" if section_path == "metadata/abstract"
+                                else parsed.parser_version),
                 evidence_candidate=_original_evidence_candidate(
                     kind, section.name, section_path, window.char_start, window.char_end,
                 ),

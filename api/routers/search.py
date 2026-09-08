@@ -1,12 +1,9 @@
 """POST /search — hybrid search over chunks.
 
-Pipeline:
-  1. Run the Vertex ANN retriever behind timeout/circuit-breaker isolation.
-  2. Run PostgreSQL full-text retrieval so search survives a provider outage.
-  3. Fuse vector and lexical ranks, then apply a deterministic query-coverage
-     reranker.
-  4. Hydrate Paper/Chunk rows and enforce authoritative metadata filters in
-     PostgreSQL, including material families not present in the vector index.
+Pin one active immutable generation before ANN, compare all returned bindings
+to its SQL members, and fuse with full-text retrieval in that same generation.
+With no active generation only legacy lexical retrieval is admitted. Frozen
+snapshot attribution is separate from current source/material governance.
 
 Blocking cloud SDK calls run in a worker thread; PostgreSQL work stays on the
 main event loop.
@@ -19,17 +16,15 @@ import time
 from datetime import date as _date
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from config import get_settings
 from models import get_db
-from models.db import Chunk
+from models.index_read import generation_read_metadata
 from models.search import SearchMatch, SearchRequest, SearchResponse
 from routers.deps import Identity, require_identity
-from services import provider_resilience, retrieval, vector_search
+from services import index_retrieval, index_vector_adapter, provider_resilience, retrieval
 from services.anomaly_review import eligible_for_property
 from services.scientific_filters import ResultFilters, matching_result_references
 from services.source_lifecycle import resolve_paper_lifecycle
@@ -53,35 +48,30 @@ async def search(
 ) -> SearchResponse:
     t0 = time.perf_counter()
 
-    # 1. Embed + ANN — both blocking SDK calls, push to a worker thread.
-    def _vs_lookup() -> list[vector_search.Neighbor]:
-        vec = vector_search.embed_query(body.query)
-        # Ask for a few extra so Postgres-side filters don't starve us.
-        overfetch = min(body.top_k * 3, 100)
-        return vector_search.find_neighbors(
-            vec,
-            top_k=overfetch,
-            year_min=body.filters.year_min,
-            year_max=body.filters.year_max,
-            # Existing Vertex datapoints do not yet carry this namespace.
-            # Enforce family against hydrated PostgreSQL metadata below so
-            # requesting a family can never silently produce a fake filter.
-            material_family=None,
-        )
-
-    settings = get_settings()
     try:
-        neighbors = await provider_resilience.run_blocking(
-            "vector_search",
-            _vs_lookup,
-            timeout_seconds=settings.vector_search_timeout_seconds,
-            max_attempts=settings.provider_max_attempts,
-            failure_threshold=settings.provider_circuit_failure_threshold,
-            cooldown_seconds=settings.provider_circuit_cooldown_seconds,
-        )
-    except provider_resilience.ProviderUnavailable as exc:
-        log.warning("semantic search unavailable; using PostgreSQL lexical fallback: %s", exc)
-        neighbors = []
+        async with asyncio.timeout(10):
+            pin = await index_retrieval.load_pin(db)
+    except Exception:
+        raise HTTPException(503, "Retrieval generation is unavailable") from None
+    # No active generation means lexical-only. Positional legacy ANN IDs must
+    # never be interpreted as pointers to the latest mutable Chunk rows.
+    settings = get_settings()
+    vector_hits = []
+    if pin is not None:
+        try:
+            neighbors = await provider_resilience.run_blocking(
+                "vector_search", lambda: index_vector_adapter.query(pin, body.query,
+                    top_k=min(body.top_k * 3, 100), year_min=body.filters.year_min, year_max=body.filters.year_max),
+                timeout_seconds=settings.vector_search_timeout_seconds,
+                max_attempts=settings.provider_max_attempts,
+                failure_threshold=settings.provider_circuit_failure_threshold,
+                cooldown_seconds=settings.provider_circuit_cooldown_seconds,
+            )
+            async with asyncio.timeout(10):
+                vector_hits = await index_retrieval.verified_vector_hits(db, pin, neighbors)
+        except Exception:
+            log.warning("Semantic generation search unavailable; using generation-scoped lexical fallback")
+            await db.rollback()
 
     candidate_limit = min(body.top_k * 5, 300)
     lexical_hits = await retrieval.lexical_search(
@@ -91,47 +81,51 @@ async def search(
         year_min=body.filters.year_min,
         year_max=body.filters.year_max,
         exclude_retracted=body.filters.exclude_retracted,
+        generation_id=pin["generation_id"] if pin is not None else None,
     )
     candidates = retrieval.fuse_rankings(
-        [(item.chunk_id, 1.0 - item.distance) for item in neighbors],
+        vector_hits,
         lexical_hits,
         limit=candidate_limit,
     )
     if not candidates:
+        if pin is not None:
+            try:
+                async with asyncio.timeout(10):
+                    await index_retrieval.require_current_pin(db, pin)
+            except Exception:
+                raise HTTPException(503, "Retrieval generation changed; please search again") from None
         return SearchResponse(
             total=0,
             results=[],
             query_time_ms=int((time.perf_counter() - t0) * 1000),
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
+            retrieval_generation=generation_read_metadata(pin),
         )
 
-    # 2. Fetch chunks + parent papers in one round-trip. Defensive cap:
-    # even though overfetch is 3x top_k (max 100), a buggy vector_search
-    # implementation could return more — cap the IN clause so a runaway
-    # list cannot blow out the Postgres parser.
+    # Hydrate exact generation members (or explicit legacy lexical rows),
+    # retaining a defensive cap on the SQL identity inventory.
     MAX_IN_CLAUSE = 300
     candidates = candidates[:MAX_IN_CLAUSE]
     chunk_ids = [candidate.chunk_id for candidate in candidates]
 
-    q = (
-        select(Chunk)
-        .options(selectinload(Chunk.paper))
-        .where(Chunk.id.in_(chunk_ids))
-    )
-    rows = (await db.execute(q)).scalars().all()
-    chunk_by_id = {c.id: c for c in rows}
+    try:
+        async with asyncio.timeout(10):
+            chunk_by_id = await index_retrieval.hydrate(db, pin, chunk_ids)
+    except Exception:
+        raise HTTPException(503, "Retrieval generation is unavailable") from None
+    rows = list(chunk_by_id.values())
     candidates = retrieval.rerank_candidates(body.query, candidates, chunk_by_id)
     linked_materials = await resolve_explicit_materials(
-        db, [chunk.paper.materials_extracted for chunk in rows if chunk.paper is not None],
+        db, [index_retrieval.attribution(chunk).materials_extracted for chunk in rows if chunk.paper is not None],
     )
     source_statuses = await resolve_paper_lifecycle(db, {chunk.paper_id for chunk in rows})
-    from services.rag_evidence import resolve_chunk_evidence
     from services.rag_evidence_contract import validate_evidence_descriptor
 
     try:
         async with asyncio.timeout(10):
-            evidence_by_chunk = await resolve_chunk_evidence(db, rows)
+            evidence_by_chunk = await index_retrieval.resolve_evidence(db, rows)
             if set(evidence_by_chunk) != set(chunk_by_id):
                 raise ValueError("Evidence inventory mismatch")
             evidence_by_chunk = {key: validate_evidence_descriptor(value) for key, value in evidence_by_chunk.items()}
@@ -140,8 +134,8 @@ async def search(
         # cannot be checked; omit SQL/provider details from the public error.
         raise HTTPException(503, "Evidence provenance is unavailable") from None
 
-    # 3. Preserve ANN ordering, apply row-level filters that don't
-    #    fit in the index namespaces.
+    # Preserve fused ordering and reapply authoritative filters to retained
+    # metadata with independently resolved live governance.
     f = body.filters
     scientific_filters = ResultFilters(
         families=tuple(f.material_family or []), tc_min=f.tc_min,
@@ -156,11 +150,22 @@ async def search(
         chunk = chunk_by_id.get(candidate.chunk_id)
         if chunk is None:
             continue  # neighbor not in Postgres (e.g. deleted)
-        paper = chunk.paper
+        paper = index_retrieval.attribution(chunk)
         if paper is None:
             continue
         if paper.id in seen_papers:
             continue  # already have a higher-ranked chunk from this paper
+        selected_year = (chunk.member["snapshot_json"].get("year")
+                         if isinstance(chunk, index_retrieval.GenerationChunk) else chunk.year)
+        if ((f.year_min is not None or f.year_max is not None)
+                and (type(selected_year) is not int
+                     or f.year_min is not None and selected_year < f.year_min
+                     or f.year_max is not None and selected_year > f.year_max)):
+            continue
+        text_available = (evidence_by_chunk[chunk.id]["permission_status"] != "restricted"
+                          and evidence_by_chunk[chunk.id]["currentness"] != "stale")
+        if scientific_filters.active and not text_available:
+            continue
         paper_status = source_statuses.get(paper.id)
         if f.exclude_retracted and source_visibility(paper_status)["source_status"] == "retracted":
             continue
@@ -198,10 +203,9 @@ async def search(
                 year=(paper.date_submitted.year if paper.date_submitted else None),
                 date_submitted=paper.date_submitted,
                 relevance_score=round(candidate.rerank_score, 6),
-                matched_chunk=chunk.text if evidence_by_chunk[chunk.id]["permission_status"] != "restricted"
-                and evidence_by_chunk[chunk.id]["currentness"] != "stale" else "",
+                matched_chunk=chunk.text if text_available else "",
                 matched_section=chunk.section,
-                materials=materials,
+                materials=materials if text_available else [],
                 citation_count=paper.citation_count or 0,
                 material_family=paper.material_family,
                 has_equation=bool(chunk.has_equation),
@@ -225,12 +229,19 @@ async def search(
     elif body.sort == "tc":
         matches.sort(key=_best_tc, reverse=True)
 
+    if pin is not None:
+        try:
+            async with asyncio.timeout(10):
+                await index_retrieval.require_current_pin(db, pin)
+        except Exception:
+            raise HTTPException(503, "Retrieval generation changed; please search again") from None
     return SearchResponse(
         total=len(matches),
         results=matches,
         query_time_ms=int((time.perf_counter() - t0) * 1000),
         guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
+        retrieval_generation=generation_read_metadata(pin),
     )
 
 

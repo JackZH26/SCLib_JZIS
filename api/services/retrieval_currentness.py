@@ -1,9 +1,9 @@
 """Fresh, bounded catalogue checks after generation; no scientific approval.
 
-Private digests bind the exact selected inputs, not an immutable source version
-or a permission grant. A successful check describes one new database snapshot;
-it cannot promise that a source will never change after that snapshot. Typed
-evidence resolvers can add their independently validated revision/root pins.
+Private digests bind the exact selected inputs, not a permission grant. Pinned
+generation reads rehydrate retained members and compare the active event (ABA),
+while legacy lexical inputs reread mutable catalogue rows. A successful check
+describes one new database snapshot, not future stability or scientific approval.
 """
 from __future__ import annotations
 
@@ -20,6 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from models.db import Chunk, Material, Paper, get_engine
+from services import index_retrieval
 from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import (
     project_source_occurrences,
@@ -49,6 +50,7 @@ class SelectionPin:
     paper_id: str
     input_sha256: str
     has_evidence_pin: bool = False
+    generation_pin_sha256: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -107,16 +109,20 @@ def selection_pin(chunk, *, material_evidence, source_review, evidence=None) -> 
             or chunk.paper is None or chunk.paper.id != chunk.paper_id):
         raise CurrentnessUnavailable("selected source identity")
     try:
+        generation = isinstance(chunk, index_retrieval.GenerationChunk)
         digest = _digest({
             "chunk": {name: getattr(chunk, name) for name in _CHUNK_FIELDS},
-            "paper": {name: getattr(chunk.paper, name) for name in _PAPER_FIELDS},
+            "paper": (chunk.member["paper_snapshot_json"] if generation
+                      else {name: getattr(chunk.paper, name) for name in _PAPER_FIELDS}),
             "material_evidence": material_evidence,
             "source_visibility": source_review,
             "evidence": evidence,
+            "generation": chunk.generation_pin if generation else None,
         })
     except (ValueError, TypeError, OverflowError, RecursionError) as exc:
         raise CurrentnessUnavailable("selected source representation") from exc
-    return SelectionPin(chunk.id, chunk.paper_id, digest, evidence is not None)
+    return SelectionPin(chunk.id, chunk.paper_id, digest, evidence is not None,
+                        index_retrieval.pin_sha256(chunk.generation_pin) if generation else None)
 
 
 def _row_size(table):
@@ -154,26 +160,37 @@ async def _bounded_materials(db, groups):
 async def _check_snapshot(db, pins, evidence_resolver):
     snapshot_at = (await db.execute(select(func.transaction_timestamp()))).scalar_one().isoformat()
     identifiers = [pin.chunk_id for pin in pins]
-    chunk_sizes = (await db.execute(select(Chunk.id, Chunk.paper_id, _row_size(Chunk.__table__))
-                                   .where(Chunk.id.in_(identifiers)))).all()
-    if ({(identifier, paper_id) for identifier, paper_id, _ in chunk_sizes}
-            != {(pin.chunk_id, pin.paper_id) for pin in pins}):
-        return CurrentnessCheck("changed", "retrieval_source_changed", snapshot_at)
-    papers = {pin.paper_id for pin in pins}
-    paper_sizes = (await db.execute(select(Paper.id, _row_size(Paper.__table__))
-                                   .where(Paper.id.in_(papers)))).all()
-    if {identifier for identifier, _ in paper_sizes} != papers:
-        return CurrentnessCheck("changed", "retrieval_source_changed", snapshot_at)
-    if (sum(length for _, _, length in chunk_sizes) + sum(length for _, length in paper_sizes)
-            > MAX_CATALOGUE_BYTES):
-        raise CurrentnessUnavailable("selected catalogue byte budget")
-    chunks = (await db.execute(select(Chunk).options(selectinload(Chunk.paper))
-                              .where(Chunk.id.in_(identifiers)))).scalars().all()
+    generation_hashes = {pin.generation_pin_sha256 for pin in pins}
+    if generation_hashes != {None}:
+        if None in generation_hashes or len(generation_hashes) != 1:
+            raise CurrentnessUnavailable("mixed generation inventory")
+        active = await index_retrieval.load_pin(db)
+        if active is None or index_retrieval.pin_sha256(active) not in generation_hashes:
+            return CurrentnessCheck("changed", "retrieval_generation_changed", snapshot_at)
+        chunks = list((await index_retrieval.hydrate(db, active, identifiers)).values())
+        if {(chunk.id, chunk.paper_id) for chunk in chunks} != {(pin.chunk_id, pin.paper_id) for pin in pins}:
+            return CurrentnessCheck("changed", "retrieval_source_changed", snapshot_at)
+    else:
+        chunk_sizes = (await db.execute(select(Chunk.id, Chunk.paper_id, _row_size(Chunk.__table__))
+                                       .where(Chunk.id.in_(identifiers)))).all()
+        if ({(identifier, paper_id) for identifier, paper_id, _ in chunk_sizes}
+                != {(pin.chunk_id, pin.paper_id) for pin in pins}):
+            return CurrentnessCheck("changed", "retrieval_source_changed", snapshot_at)
+        papers = {pin.paper_id for pin in pins}
+        paper_sizes = (await db.execute(select(Paper.id, _row_size(Paper.__table__))
+                                       .where(Paper.id.in_(papers)))).all()
+        if {identifier for identifier, _ in paper_sizes} != papers:
+            return CurrentnessCheck("changed", "retrieval_source_changed", snapshot_at)
+        if (sum(length for _, _, length in chunk_sizes) + sum(length for _, length in paper_sizes)
+                > MAX_CATALOGUE_BYTES):
+            raise CurrentnessUnavailable("selected catalogue byte budget")
+        chunks = (await db.execute(select(Chunk).options(selectinload(Chunk.paper))
+                                  .where(Chunk.id.in_(identifiers)))).scalars().all()
     groups = [chunk.materials_mentioned for chunk in chunks]
     if any(not isinstance(group, list) for group in groups) or sum(map(len, groups)) > MAX_MATERIAL_RECORDS:
         raise CurrentnessUnavailable("selected occurrence inventory")
     linked = await _bounded_materials(db, groups)
-    statuses = await resolve_paper_lifecycle(db, papers)
+    statuses = await resolve_paper_lifecycle(db, {chunk.paper_id for chunk in chunks})
     evidence = await evidence_resolver(db, chunks) if evidence_resolver is not None else {}
     if any(pin.has_evidence_pin for pin in pins) and evidence_resolver is None:
         raise CurrentnessUnavailable("typed evidence resolver unavailable")

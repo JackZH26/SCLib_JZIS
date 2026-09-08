@@ -255,8 +255,6 @@ async def test_ask_response_and_history_never_store_rejected_synthesis(client, d
                   section="Results", text="H3S has an observed Tc of 100 K at 2 GPa.")
     db_session.add_all([paper, chunk])
     await db_session.commit()
-    monkeypatch.setattr("routers.ask.vector_search.embed_query", lambda _: [])
-    monkeypatch.setattr("routers.ask.vector_search.find_neighbors", lambda *_args, **_kwargs: [])
     async def lexical(*_args, **_kwargs):
         return [retrieval.LexicalHit(chunk.id, 1.0)]
     monkeypatch.setattr("routers.ask.retrieval.lexical_search", lexical)
@@ -295,8 +293,6 @@ async def test_ask_response_and_history_never_store_rejected_synthesis(client, d
 
 @pytest.mark.asyncio
 async def test_no_retrieval_candidates_has_explicit_unchecked_contract(client, monkeypatch):
-    monkeypatch.setattr("routers.ask.vector_search.embed_query", lambda _: [])
-    monkeypatch.setattr("routers.ask.vector_search.find_neighbors", lambda *_args, **_kwargs: [])
     async def lexical(*_args, **_kwargs):
         return []
     monkeypatch.setattr("routers.ask.retrieval.lexical_search", lexical)

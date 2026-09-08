@@ -107,9 +107,24 @@ both available and returned point counts.
 ```
 Combines Google `text-embedding-005` / Vertex ANN candidates with PostgreSQL
 full-text candidates, applies Reciprocal Rank Fusion and a deterministic
-query-coverage reranker, then joins authoritative paper/chunk rows. A Vertex
-timeout, exhausted retry, or open circuit degrades to PostgreSQL lexical
-retrieval. Each hit carries a `relevance_score` float in `[0, 1]`.
+query-coverage reranker, then hydrates exact retained members of one pinned
+active index generation. A Vertex timeout, exhausted retry, or open circuit
+degrades to PostgreSQL lexical retrieval within that same generation. Without
+an active generation, Search and Ask are explicitly legacy lexical-only; they
+never hydrate positional legacy ANN IDs as current text. Similar requires an
+active generation and otherwise returns sanitized 503. Each Search hit carries
+a `relevance_score` float in `[0, 1]`, not scientific confidence.
+
+Search, Ask and Similar responses include `retrieval_generation` with exactly
+`version` (`index-read/1.0.0`), `mode` (`generation_snapshot` or
+`legacy_lexical_only`), `generation_id`, `activation_event_id` and
+`manifest_sha256`. All three identity fields are non-null in generation mode
+and null in legacy mode. No cloud resource or source payload is exposed there.
+Frozen text and attribution survive mutable chunk replacement; fresh source,
+material and permission holds still apply. An activation event change is
+detected even when the same generation is later restored. Existing Ask history
+does not yet retain this response-level generation/event metadata. See
+[index generations and rollout limits](INDEX_GENERATIONS.md).
 
 Each result now carries `evidence_provenance` under `rag-evidence/1.0.0`:
 `chunk_kind` (`original_passage`, `abstract`, `derived_fact`, `legacy_unknown`),

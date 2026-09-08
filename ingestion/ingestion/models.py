@@ -271,6 +271,8 @@ class ParsedPaper:
     has_latex_source: bool = True
     # arXiv-only derived diagnostics. APS keeps its transient-only path.
     ingestion_capture: dict[str, Any] = field(default_factory=dict)
+    #: Prospective producer version, not a source revision or review grant.
+    parser_version: str | None = None
 
 
 @dataclass
@@ -303,3 +305,5 @@ class Chunk:
     #: Closed response-completeness metadata. This is a writer attestation,
     #: not proof of index publication, source permission, or scientific truth.
     embedding_provenance: dict[str, Any] | None = None
+    #: Kept outside the frozen SQL Chunk schema; generation staging retains it.
+    parser_version: str | None = None

@@ -87,15 +87,20 @@ async def test_dry_run_caller_rollback_and_exact_replay_preserve_every_row(db_se
     assert await db_session.scalar(sa.select(Chunk.id).where(Chunk.id == chunk)) is None
 
 
-@pytest.mark.parametrize("operation", ["update", "delete", "truncate"])
+@pytest.mark.parametrize("operation", ["update", "delete", "truncate", "truncate_cascade"])
 async def test_immutable_receipt_rejects_all_mutations(db_session, operation):
     chunk, vector, receipt, _ = await prepared(db_session)
     await append_embedding_receipt(db_session, chunk_id=chunk, vector=vector, receipt=receipt, dry_run=False)
     sql = {"update": f"UPDATE {TABLE_NAME} SET record_sha256=record_sha256", "delete": f"DELETE FROM {TABLE_NAME}",
-           "truncate": f"TRUNCATE {TABLE_NAME}"}[operation]
-    with pytest.raises(DBAPIError, match="append-only"):
+           "truncate": f"TRUNCATE {TABLE_NAME}", "truncate_cascade": f"TRUNCATE {TABLE_NAME} CASCADE"}[operation]
+    before = await state(db_session)
+    # 0062 adds a real receipt FK: plain TRUNCATE is rejected before the
+    # append-only trigger. CASCADE (disposable DB only) must hit that trigger.
+    expected = "foreign key constraint" if operation == "truncate" else "append-only"
+    with pytest.raises(DBAPIError, match=expected):
         async with db_session.begin_nested():
             await db_session.execute(sa.text(sql))
+    assert await state(db_session) == before
 
 
 @pytest.mark.parametrize("change", [{"provider_truncated": True}, {"provider_truncated": None},

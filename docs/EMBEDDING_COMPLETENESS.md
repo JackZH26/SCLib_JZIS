@@ -1,6 +1,10 @@
 # Complete-input chunking and embedding response receipts
 
 Status: local RG03 implementation increment, not active-index migration.
+Follow-up: [immutable generations and controlled activation](INDEX_GENERATIONS.md)
+implements the bounded local 0062 protocol and live readers. The limitations
+below describe what 0061 alone guarantees; they are not claims that 0062 has
+already been deployed or that the production corpus has been migrated.
 Related: [RG03 / #69](https://github.com/JackZH26/SCLib_JZIS/issues/69),
 [typed evidence](RAG_EVIDENCE_LINEAGE.md). Additive schema:
 `0061_embedding_receipts`; contract: `sclib-embedding-completeness/1.0.0`.
@@ -162,7 +166,10 @@ transaction. A five-to-three shrink can leave old vector IDs, and replacement
 can pair old vectors with newer SQL text. Neither 0060 provenance nor a 0061
 embedding response receipt alone fixes that cross-system generation problem.
 
-Remaining RG03 work is explicit:
+RG03 gates identified at the 0061 checkpoint are listed below. Items 1–4 now
+have a bounded local implementation in the linked 0062 specification, with
+explicit limits on full remote inventory, tombstones and corpus scope. Items
+5–6 remain release/measurement gates; no production completion is implied.
 
 1. Immutable generation and chunk-revision identities binding source, parser,
    chunker, full content, embedding profile and response receipt.

@@ -8,12 +8,23 @@ from test_safety import validate_test_environment, verify_postgres_identity
 
 _RAG_EVIDENCE_TABLES = ("rag_extraction_revisions", "rag_evidence_revisions", "chunk_evidence_current")
 _EMBEDDING_RECEIPT_TABLE = "embedding_completion_receipts"
+_INDEX_GENERATION_TABLES = ("index_generation_epoch", "index_generations", "index_generation_members",
+                           "index_generation_validations", "index_activation_events", "index_active_pointer")
+
+
+def _assert_empty_index_generations(connection):
+    from sqlalchemy import text
+
+    for name in _INDEX_GENERATION_TABLES[1:]:
+        assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
+    assert connection.execute(text("SELECT epoch FROM public.index_generation_epoch WHERE id=1")).scalar_one() == 0
 
 
 def _assert_empty_embedding_receipts(connection):
     from sqlalchemy import text
 
     assert connection.execute(text("SELECT count(*) FROM public.embedding_completion_receipts")).scalar_one() == 0
+    _assert_empty_index_generations(connection)
 
 
 def _assert_empty_rag_evidence(connection):
@@ -63,7 +74,7 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts",
-                                "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE}}
+                                "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -472,7 +483,7 @@ def _background_jobs_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE}}
+                if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -616,7 +627,7 @@ def _rag_evidence_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE}}
+                if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -760,7 +771,7 @@ def _embedding_receipts_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", _EMBEDDING_RECEIPT_TABLE}}
+                if name not in {"alembic_version", _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -856,6 +867,7 @@ def _embedding_receipt_downgrade_guard(capability, engine, config, receipt_id):
         verify_postgres_identity(connection, capability)
         before = snapshot(connection)
         assert any(row["id"] == receipt_id for row in before[_EMBEDDING_RECEIPT_TABLE])
+        _assert_empty_index_generations(connection)
     try:
         validate_test_environment()
         command.downgrade(config, "0060_rag_evidence")
@@ -863,6 +875,147 @@ def _embedding_receipt_downgrade_guard(capability, engine, config, receipt_id):
         assert "embedding-receipt" in str(exc) and "receipt history contains records" in str(exc)
     else:
         raise AssertionError("Nonempty embedding receipt downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+
+
+def _index_generations_empty_roundtrip(capability, engine, config):
+    """Older populated audit ledgers survive an independently empty0062 cycle."""
+    from alembic import command
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")
+                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES}}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        _assert_empty_index_generations(connection)
+        before = snapshot(connection)
+        assert before[_EMBEDDING_RECEIPT_TABLE]
+    validate_test_environment()
+    command.downgrade(config, "0061_embedding_receipts")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError:
+            pass
+        else:
+            raise AssertionError("Generation application must refuse older schema")
+        verify_postgres_identity(connection, capability)
+        assert not set(_INDEX_GENERATION_TABLES) & set(inspect(connection).get_table_names(schema="public"))
+        assert snapshot(connection) == before
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_index_generations(connection)
+        assert snapshot(connection) == before
+
+
+async def _index_generations_on_migrated_schema(capability, api_root, receipt_id):
+    """Actual bounded stage/validate/CAS/rollback, with no cloud calls."""
+    validate_test_environment()
+    sys.path.insert(0, str(api_root / "tests"))
+    from uuid import uuid4
+
+    from models.db import _to_async_dsn
+    from services.index_generations import (
+        activate_generation,
+        load_active_generation,
+        load_generation_members,
+        record_validation,
+        stage_generation,
+    )
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import text
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from test_embedding_receipts import completion
+    from test_index_generations import observation, resource
+    from test_research_freeze import state
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), poolclass=NullPool)
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            connection = await session.connection()
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+            chunk = (await session.execute(text("SELECT c.id,c.text FROM chunks c JOIN embedding_completion_receipts r ON r.chunk_key=c.id WHERE r.id=CAST(:id AS uuid)"),
+                                           {"id": receipt_id})).mappings().one()
+            vector, _ = completion(chunk["text"])
+            items = [{"chunk_id": chunk["id"], "receipt_id": receipt_id, "vector": vector, "parser_version": "synthetic-migration/1"}]
+            before = await state(session)
+            generation_id = uuid4()
+            await stage_generation(session, generation_id=generation_id, items=items, resource=resource())
+            assert await state(session) == before
+            await stage_generation(session, generation_id=generation_id, items=items, resource=resource(), dry_run=False)
+            await session.rollback()
+            assert await state(session) == before
+            first = await stage_generation(session, generation_id=generation_id, items=items, resource=resource(), dry_run=False)
+            await session.commit()
+            written = await state(session)
+            replay = await stage_generation(session, generation_id=generation_id, items=items, resource=resource(), dry_run=False)
+            assert replay == first
+            await session.commit()
+            assert await state(session) == written
+            report = await observation(session, first)
+            validation = await record_validation(session, generation_id=generation_id, observation=report, dry_run=False)
+            await session.commit()
+            validated_state = await state(session)
+            activate_args = dict(generation_id=generation_id, validation_id=validation["validation_id"], expected_event_id=None, idempotency_key="migration-initial")
+            await activate_generation(session, **activate_args)
+            assert await state(session) == validated_state
+            first_active = await activate_generation(session, **activate_args, dry_run=False)
+            await session.commit()
+            active_state = await state(session)
+            assert await activate_generation(session, **activate_args, dry_run=False) == first_active
+            await session.commit()
+            assert await state(session) == active_state
+            second = await stage_generation(session, generation_id=uuid4(), items=[{**items[0], "parser_version": "synthetic-migration/2"}], resource=resource(), dry_run=False)
+            second_validation = await record_validation(session, generation_id=second["generation_id"], observation=await observation(session, second), dry_run=False)
+            second_active = await activate_generation(session, generation_id=second["generation_id"], validation_id=second_validation["validation_id"],
+                                                      expected_event_id=first_active["activation_event_id"], idempotency_key="migration-second", dry_run=False)
+            await session.execute(text("UPDATE chunks SET text='Synthetic newer mutable text' WHERE id=:id"), {"id": chunk["id"]})
+            retained = await load_generation_members(session, generation_id=generation_id)
+            assert retained[0]["snapshot_json"]["text"] == chunk["text"]
+            assert len(retained[0]["vector_bytes"]) == 3072
+            restored = await activate_generation(session, generation_id=generation_id, validation_id=validation["validation_id"],
+                                                 expected_event_id=second_active["activation_event_id"], idempotency_key="migration-rollback", action="rollback", dry_run=False)
+            await session.commit()
+            assert (await load_active_generation(session))["activation_event_id"] == restored["activation_event_id"]
+            return str(generation_id)
+    finally:
+        await engine.dispose()
+
+
+def _index_generation_downgrade_guard(capability, engine, config, generation_id):
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert any(row["id"] == generation_id for row in before["index_generations"])
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0061_embedding_receipts")
+    except RuntimeError as exc:
+        assert "index-generation" in str(exc) and "retained history contains records" in str(exc)
+    else:
+        raise AssertionError("Nonempty generation history downgrade must fail closed")
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
@@ -1114,7 +1267,10 @@ def main() -> None:
         _embedding_receipts_empty_roundtrip(capability, engine, config)
         receipt_id = asyncio.run(_embedding_receipts_on_migrated_schema(capability, api_root, evidence_id))
         _embedding_receipt_downgrade_guard(capability, engine, config, receipt_id)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts/rollback/replay and independent nonempty history rollback guards verified.")
+        _index_generations_empty_roundtrip(capability, engine, config)
+        generation_id = asyncio.run(_index_generations_on_migrated_schema(capability, api_root, receipt_id))
+        _index_generation_downgrade_guard(capability, engine, config, generation_id)
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 

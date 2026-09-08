@@ -187,8 +187,6 @@ async def test_inventory_bounds_refuse_before_connecting(monkeypatch):
 
 
 def _offline_retrieval(monkeypatch, chunk_id):
-    monkeypatch.setattr("routers.ask.vector_search.embed_query", lambda _: [])
-    monkeypatch.setattr("routers.ask.vector_search.find_neighbors", lambda *_args, **_kwargs: [])
     async def lexical(*_args, **_kwargs):
         return [retrieval.LexicalHit(chunk_id, 1.0)]
     monkeypatch.setattr("routers.ask.retrieval.lexical_search", lexical)

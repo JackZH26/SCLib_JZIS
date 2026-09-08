@@ -327,6 +327,7 @@ def build_fact_chunks(
             text=text,
             token_count=token_count,
             materials_mentioned=[record],
+            parser_version="sclib-structured-fact-projection/1.0.0",
             evidence_candidate={
                 "version": "rag-evidence/1.0.0", "chunk_kind": "derived_fact",
                 "parent_record": record,

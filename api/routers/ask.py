@@ -1,7 +1,8 @@
 """POST /ask — grounded retrieval-augmented Q&A.
 
-The hybrid retrieval path fuses Vertex ANN and PostgreSQL full-text results,
-reranks them, and admits no more than one source per paper. Source excerpts are
+The pinned hybrid path fuses exact-generation ANN and PostgreSQL full-text
+results; no active generation means legacy lexical-only. It reranks admitted
+snapshots and selects no more than one source per paper. Source excerpts are
 passed to Gemini as explicitly untrusted data with a strict citation contract.
 Provider failures degrade to lexical retrieval and an extractive answer.
 
@@ -15,17 +16,23 @@ import logging
 import time
 from uuid import UUID
 
-from fastapi import APIRouter, Depends
-from sqlalchemy import select
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from config import get_settings
 from models import get_db
-from models.db import AskHistory, Chunk
+from models.db import AskHistory
+from models.index_read import generation_read_metadata
 from models.search import AskRequest, AskResponse, AskSource
 from routers.deps import Identity, require_identity
-from services import provider_resilience, rag, retrieval, retrieval_currentness, vector_search
+from services import (
+    index_retrieval,
+    index_vector_adapter,
+    provider_resilience,
+    rag,
+    retrieval,
+    retrieval_currentness,
+)
 from services.authors import short as _authors_short
 from services.metrics import observe_rag
 from services.source_lifecycle import resolve_paper_lifecycle
@@ -53,40 +60,48 @@ async def ask(
     # Retain primitives, not an ORM User that rollback would expire.
     history_user_id = identity.user.id if identity.user is not None else None
 
-    # 1. Retrieve candidate chunks via ANN.
-    def _vs_lookup() -> list[vector_search.Neighbor]:
-        vec = vector_search.embed_query(body.question)
-        return vector_search.find_neighbors(
-            vec,
-            top_k=min(body.max_sources * 4, 80),
-        )
-
-    settings = get_settings()
     try:
-        neighbors = await provider_resilience.run_blocking(
-            "vector_search",
-            _vs_lookup,
-            timeout_seconds=settings.vector_search_timeout_seconds,
-            max_attempts=settings.provider_max_attempts,
-            failure_threshold=settings.provider_circuit_failure_threshold,
-            cooldown_seconds=settings.provider_circuit_cooldown_seconds,
-        )
-    except provider_resilience.ProviderUnavailable as exc:
-        log.warning("Ask semantic retrieval unavailable; using lexical fallback: %s", exc)
-        neighbors = []
+        async with asyncio.timeout(10):
+            pin = await index_retrieval.load_pin(db)
+    except Exception:
+        raise HTTPException(503, "Retrieval generation is unavailable") from None
+    settings = get_settings()
+    vector_hits = []
+    if pin is not None:
+        try:
+            neighbors = await provider_resilience.run_blocking(
+                "vector_search", lambda: index_vector_adapter.query(pin, body.question,
+                    top_k=min(body.max_sources * 4, 80)),
+                timeout_seconds=settings.vector_search_timeout_seconds,
+                max_attempts=settings.provider_max_attempts,
+                failure_threshold=settings.provider_circuit_failure_threshold,
+                cooldown_seconds=settings.provider_circuit_cooldown_seconds,
+            )
+            async with asyncio.timeout(10):
+                vector_hits = await index_retrieval.verified_vector_hits(db, pin, neighbors)
+        except Exception:
+            log.warning("Ask semantic retrieval unavailable; using generation-scoped lexical fallback")
+            await db.rollback()
 
     candidate_limit = min(body.max_sources * 5, 100)
     lexical_hits = await retrieval.lexical_search(
         db,
         body.question,
         limit=candidate_limit,
+        generation_id=pin["generation_id"] if pin is not None else None,
     )
     candidates = retrieval.fuse_rankings(
-        [(item.chunk_id, 1.0 - item.distance) for item in neighbors],
+        vector_hits,
         lexical_hits,
         limit=candidate_limit,
     )
     if not candidates:
+        if pin is not None:
+            try:
+                async with asyncio.timeout(10):
+                    await index_retrieval.require_current_pin(db, pin)
+            except Exception:
+                raise HTTPException(503, "Retrieval generation changed; please ask again") from None
         latency_ms = int((time.perf_counter() - t0) * 1000)
         result = rag.no_source_result()
         observe_rag(
@@ -107,21 +122,20 @@ async def ask(
             **result.quality_fields(),
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
+            retrieval_generation=generation_read_metadata(pin),
         )
 
-    # 2. Hydrate chunks + papers from Postgres, keeping ANN order.
-    # Defensive cap on the IN clause — schema already bounds max_sources,
-    # but a buggy vector_search could still return a runaway list.
+    # Hydrate exact immutable members, never resolve opaque ANN IDs through
+    # mutable Chunk positions. Legacy lexical rows use their separate path.
     MAX_IN_CLAUSE = 100
     candidates = candidates[:MAX_IN_CLAUSE]
     chunk_ids = [candidate.chunk_id for candidate in candidates]
-    q = (
-        select(Chunk)
-        .options(selectinload(Chunk.paper))
-        .where(Chunk.id.in_(chunk_ids))
-    )
-    rows = (await db.execute(q)).scalars().all()
-    chunk_by_id = {c.id: c for c in rows}
+    try:
+        async with asyncio.timeout(10):
+            chunk_by_id = await index_retrieval.hydrate(db, pin, chunk_ids)
+    except Exception:
+        raise HTTPException(503, "Retrieval generation is unavailable") from None
+    rows = list(chunk_by_id.values())
     candidates = retrieval.rerank_candidates(body.question, candidates, chunk_by_id)
     linked_materials = await resolve_explicit_materials(db, [chunk.materials_mentioned for chunk in rows])
     source_statuses = await resolve_paper_lifecycle(db, {chunk.paper_id for chunk in rows})
@@ -161,7 +175,7 @@ async def ask(
             continue
         seen_papers.add(chunk.paper.id)
         idx += 1
-        paper = chunk.paper
+        paper = index_retrieval.attribution(chunk)
         authors_short = _authors_short(paper.authors or [])
         year = paper.date_submitted.year if paper.date_submitted else None
         occurrences, occurrence_summary = project_source_occurrences(
@@ -294,16 +308,16 @@ async def ask(
         **result.quality_fields(),
         guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
+        retrieval_generation=generation_read_metadata(pin),
     )
 
 
 async def _resolve_evidence(db, chunks):
     """One strict resolver path for initial hydration and the fresh snapshot."""
-    from services.rag_evidence import resolve_chunk_evidence
     from services.rag_evidence_contract import validate_evidence_descriptor
 
     async with asyncio.timeout(EVIDENCE_RESOLUTION_TIMEOUT_SECONDS):
-        resolved = await resolve_chunk_evidence(db, chunks)
+        resolved = await index_retrieval.resolve_evidence(db, chunks)
         if not isinstance(resolved, dict) or set(resolved) != {chunk.id for chunk in chunks}:
             raise retrieval_currentness.CurrentnessUnavailable("incomplete typed evidence inventory")
         return {identifier: validate_evidence_descriptor(value) for identifier, value in resolved.items()}

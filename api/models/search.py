@@ -11,6 +11,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from models.index_read import IndexReadMetadata
 from services.claim_support import SUPPORT_POLICY_VERSION
 from services.material_property_projection import project_material_properties
 from services.material_semantics import MATERIAL_SEMANTICS_VERSION
@@ -94,6 +95,7 @@ class SearchMatch(BaseModel):
 
 
 class SearchResponse(BaseModel):
+    retrieval_generation: IndexReadMetadata = Field(default_factory=IndexReadMetadata)
     total: int
     results: list[SearchMatch]
     query_time_ms: int
@@ -152,6 +154,7 @@ class ClaimSupportAssessment(BaseModel):
 
 
 class AskResponse(BaseModel):
+    retrieval_generation: IndexReadMetadata = Field(default_factory=IndexReadMetadata)
     answer: str  # markdown with [1][2] citations
     sources: list[AskSource]
     tokens_used: int | None
@@ -449,6 +452,7 @@ class SimilarPaper(BaseModel):
 
 
 class SimilarResponse(BaseModel):
+    retrieval_generation: IndexReadMetadata = Field(default_factory=IndexReadMetadata)
     source_paper_id: str
     results: list[SimilarPaper]
 

@@ -134,7 +134,7 @@ async def test_http_material_paper_and_search_raw_records_do_not_disclose_stored
         assert response.status_code == 200, response.text
         assert PRIVATE not in response.text
         provider_resilience.reset()
-        monkeypatch.setattr("routers.search.vector_search.embed_query", lambda _: (_ for _ in ()).throw(RuntimeError("offline fixture")))
+        monkeypatch.setattr("routers.search.index_vector_adapter.query", lambda *_args, **_kwargs: (_ for _ in ()).throw(AssertionError("Legacy lexical mode must not call ANN")))
         async def lexical(*_args, **_kwargs):
             return [retrieval.LexicalHit(cid, 1.0)]
         monkeypatch.setattr("routers.search.retrieval.lexical_search", lexical)

@@ -161,7 +161,7 @@ async def test_paper_retains_bibliography_but_hides_explicit_parent_quarantine(c
 async def test_search_keeps_unlinked_report_without_republishing_linked_quarantine(client, db_session, monkeypatch):
     paper_id, chunk_id = await _seed(db_session)
     provider_resilience.reset()
-    monkeypatch.setattr("routers.search.vector_search.embed_query", lambda _: (_ for _ in ()).throw(RuntimeError("offline")))
+    monkeypatch.setattr("routers.search.index_vector_adapter.query", lambda *_args, **_kwargs: (_ for _ in ()).throw(AssertionError("Legacy lexical mode must not call ANN")))
     async def lexical(*_args, **_kwargs):
         return [retrieval.LexicalHit(chunk_id, 1.0)]
     monkeypatch.setattr("routers.search.retrieval.lexical_search", lexical)
@@ -180,7 +180,7 @@ async def test_search_keeps_unlinked_report_without_republishing_linked_quaranti
 async def test_corrected_paper_cannot_satisfy_scientific_filter_even_archive_optin(client, db_session, monkeypatch):
     _, chunk_id = await _seed(db_session, status="corrected")
     provider_resilience.reset()
-    monkeypatch.setattr("routers.search.vector_search.embed_query", lambda _: (_ for _ in ()).throw(RuntimeError("offline")))
+    monkeypatch.setattr("routers.search.index_vector_adapter.query", lambda *_args, **_kwargs: (_ for _ in ()).throw(AssertionError("Legacy lexical mode must not call ANN")))
     async def lexical(*_args, **_kwargs):
         return [retrieval.LexicalHit(chunk_id, 1.0)]
     monkeypatch.setattr("routers.search.retrieval.lexical_search", lexical)
@@ -195,7 +195,7 @@ async def test_corrected_paper_cannot_satisfy_scientific_filter_even_archive_opt
 async def test_ask_does_not_restore_omitted_occurrences_and_passes_visibility_to_prompt(client, db_session, monkeypatch):
     _, chunk_id = await _seed(db_session)
     provider_resilience.reset()
-    monkeypatch.setattr("routers.ask.vector_search.embed_query", lambda _: (_ for _ in ()).throw(RuntimeError("offline")))
+    monkeypatch.setattr("routers.ask.index_vector_adapter.query", lambda *_args, **_kwargs: (_ for _ in ()).throw(AssertionError("Legacy lexical mode must not call ANN")))
     async def lexical(*_args, **_kwargs):
         return [retrieval.LexicalHit(chunk_id, 1.0)]
     monkeypatch.setattr("routers.ask.retrieval.lexical_search", lexical)
@@ -230,8 +230,8 @@ async def test_published_reset_keeps_unlinked_sources_out_of_scientific_search_a
         return [retrieval.LexicalHit(chunk_id, 1.0)]
     def forbidden_generation(*_args, **_kwargs):
         raise AssertionError("A lifecycle-held source reached generation")
-    monkeypatch.setattr("routers.search.vector_search.embed_query", offline)
-    monkeypatch.setattr("routers.ask.vector_search.embed_query", offline)
+    monkeypatch.setattr("routers.search.index_vector_adapter.query", offline)
+    monkeypatch.setattr("routers.ask.index_vector_adapter.query", offline)
     monkeypatch.setattr("routers.search.retrieval.lexical_search", lexical)
     monkeypatch.setattr("routers.ask.retrieval.lexical_search", lexical)
     monkeypatch.setattr("routers.ask.rag.generate_answer", forbidden_generation)

@@ -1669,6 +1669,10 @@ from models.embedding_receipts_v1 import register as _register_embedding_receipt
 
 EMBEDDING_COMPLETION_RECEIPTS = _register_embedding_receipts(Base.metadata)
 
+from models.index_generations_v1 import register as _register_index_generations  # noqa: E402
+
+INDEX_GENERATIONS = _register_index_generations(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

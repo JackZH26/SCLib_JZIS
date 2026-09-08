@@ -1,117 +1,93 @@
-"""Similarity failures must be bounded503, never successful empty results."""
+"""Pinned similarity failures are bounded503, not successful-empty laundering."""
 from __future__ import annotations
 
 import asyncio
 import threading
 from types import SimpleNamespace
-from uuid import uuid4
 
 import pytest
-import pytest_asyncio
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.db import Chunk, Paper, get_engine
-from services import provider_resilience, vector_search
+from models.db import get_session_factory
+from services import index_vector_adapter
 from services.embedding_contract import EmbeddingCompletenessError
+from tests import test_index_retrieval_http as generation_fixtures
+from tests.index_generation_fixtures import publish_and_activate, write_generation
 
-
-@pytest_asyncio.fixture(loop_scope="function")
-async def db_session():
-    async with AsyncSession(get_engine(), expire_on_commit=False) as session:
-        yield session
-
-
-@pytest.fixture(autouse=True)
-def isolated_provider_state():
-    provider_resilience.reset()
-    yield
-    provider_resilience.reset()
-
-
-async def seed(db, *, texts=("Synthetic first", "Synthetic second")):
-    paper = Paper(id="synthetic:similar-" + uuid4().hex, source="arxiv", title="Synthetic similarity fixture",
-                  authors=[], abstract="Synthetic", status="published", materials_extracted=[])
-    db.add(paper)
-    db.add_all([Chunk(id=paper.id + f"_chunk_{index:03}", paper=paper, title=paper.title,
-                      text=value, section="Results", materials_mentioned=[]) for index, value in enumerate(texts)])
-    await db.commit()
-    return paper
+generation = generation_fixtures.generation
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("failure", ["completeness", "provider"])
-async def test_similarity_incomplete_embedding_or_ann_failure_returns_sanitized503(client, db_session, monkeypatch, failure):
-    paper = await seed(db_session)
-    embeddings, searches = [], []
-    def embed(_text):
-        embeddings.append(True)
+async def test_similarity_incomplete_embedding_or_ann_failure_returns_sanitized503(client, generation, monkeypatch, failure):
+    calls = []
+    def failed(_pin, texts, **_kwargs):
+        calls.append(texts)
         if failure == "completeness":
             raise EmbeddingCompletenessError("PRIVATE_SOURCE_SENTINEL")
-        return [0.1] * 768
-    def find(*_args, **_kwargs):
-        searches.append(True)
         raise RuntimeError("PRIVATE_PROVIDER_SENTINEL")
-    monkeypatch.setattr(vector_search, "embed_query", embed)
-    monkeypatch.setattr(vector_search, "find_neighbors_many", find)
-    response = await client.get("/v1/similar/" + paper.id)
+    monkeypatch.setattr(index_vector_adapter, "query_many", failed)
+    response = await client.get("/v1/similar/" + generation["meta"].paper_id)
     assert response.status_code == 503, response.text
     assert set(response.json()) == {"detail", "error_code", "request_id"}
     assert response.json()["detail"] == "Similarity search is temporarily unavailable. Please try again later."
     assert "PRIVATE_" not in response.text
-    assert len(embeddings) == (1 if failure == "completeness" else 2)
-    assert searches == ([] if failure == "completeness" else [True])
+    assert len(calls) == 1 and len(calls[0]) == 5
 
 
 @pytest.mark.asyncio
-async def test_similarity_actual_local_input_rejection_never_constructs_provider(client, db_session, monkeypatch):
-    paper = await seed(db_session, texts=("x" * 8193,))
-    monkeypatch.setattr(vector_search, "get_settings", lambda: SimpleNamespace(
-        embedding_model="text-embedding-005", embedding_output_dimensionality=768))
+async def test_similarity_actual_full_query_input_rejection_never_constructs_provider(client, generation, monkeypatch):
+    # Many spaces are cheap under the document tokenizer but exceed the
+    # explicitly different UTF-8 byte admission limit of a query embedding.
+    meta, _, staged = await write_generation(monkeypatch, logical_index=generation["logical"],
+        count=1, label=" " * 8200)
+    async with get_session_factory()() as db:
+        await publish_and_activate(db, staged, expected_event_id=generation["pin"]["activation_event_id"])
     calls = []
-    def forbidden():
+    def forbidden(*_args, **_kwargs):
         calls.append(True)
-        raise AssertionError("Oversized source must not reach provider")
-    monkeypatch.setattr(vector_search, "genai_client", forbidden)
-    response = await client.get("/v1/similar/" + paper.id)
+        raise AssertionError("Oversized full query must not reach transport")
+    monkeypatch.setattr(index_vector_adapter, "_transport", forbidden)
+    response = await client.get("/v1/similar/" + meta.paper_id)
     assert response.status_code == 503 and "results" not in response.json()
     assert calls == []
 
 
 @pytest.mark.asyncio
-async def test_similarity_timeout_does_not_start_more_embeddings_or_late_ann(client, db_session, monkeypatch):
-    paper = await seed(db_session)
+async def test_similarity_timeout_sets_worker_stop_and_never_delivers_late_results(client, generation, monkeypatch):
     release, entered, finished = threading.Event(), threading.Event(), threading.Event()
-    calls, searches = [], []
-    def embed(value):
-        calls.append(value)
+    stops, late_work = [], []
+    def query_many(_pin, _texts, *, stop_event, **_kwargs):
+        stops.append(stop_event)
         entered.set()
         try:
-            if not release.wait(3):
-                raise AssertionError("Synthetic worker barrier not released")
-            return [0.1] * 768
+            assert release.wait(3), "Synthetic worker barrier not released"
+            if not stop_event.is_set():
+                late_work.append(True)
+            return [[] for _ in _texts]
         finally:
             finished.set()
-    monkeypatch.setattr(vector_search, "embed_query", embed)
-    monkeypatch.setattr(vector_search, "find_neighbors_many", lambda *_args, **_kwargs: searches.append(True))
+    monkeypatch.setattr(index_vector_adapter, "query_many", query_many)
     monkeypatch.setattr("routers.similar.get_settings", lambda: SimpleNamespace(
         vector_search_timeout_seconds=0.02, provider_circuit_failure_threshold=5,
         provider_circuit_cooldown_seconds=1))
     try:
-        response = await asyncio.wait_for(client.get("/v1/similar/" + paper.id), 2)
+        response = await asyncio.wait_for(client.get("/v1/similar/" + generation["meta"].paper_id), 2)
         assert entered.is_set() and not release.is_set()
         assert response.status_code == 503 and "results" not in response.json()
+        assert stops[0].is_set()
     finally:
         release.set()
         assert await asyncio.to_thread(finished.wait, 2)
-    # Give the resumed worker an event-loop turn to encounter the stop flag.
-    await asyncio.sleep(0.01)
-    assert len(calls) == 1 and searches == []
+    assert late_work == []
 
 
 @pytest.mark.asyncio
-async def test_successful_empty_neighbor_result_is_still_a_real200(client, db_session, monkeypatch):
-    paper = await seed(db_session)
-    monkeypatch.setattr(vector_search, "embed_query", lambda _: [0.1] * 768)
-    monkeypatch.setattr(vector_search, "find_neighbors_many", lambda *_args, **_kwargs: [[], []])
-    response = await client.get("/v1/similar/" + paper.id)
-    assert response.status_code == 200 and response.json()["results"] == []
+async def test_successful_empty_neighbor_result_is_still_a_real200(client, generation, monkeypatch):
+    calls = []
+    def query(_pin, texts, **_kwargs):
+        calls.append(True)
+        return [[] for _ in texts]
+    monkeypatch.setattr(index_vector_adapter, "query_many", query)
+    response = await client.get("/v1/similar/" + generation["meta"].paper_id)
+    assert response.status_code == 200 and response.json()["results"] == [] and calls == [True]
+    assert response.json()["retrieval_generation"]["generation_id"] == generation["pin"]["generation_id"]
