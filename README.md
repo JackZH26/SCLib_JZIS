@@ -20,6 +20,9 @@ and [explicit schema migration with read-only API admission](docs/SCHEMA_ROLLOUT
 The next boundary adds [explicit research-role access and reviewed metadata-only publications](docs/RESEARCH_PUBLICATION_ACCESS.md).
 Retrieval now also has [immutable index generations and controlled rollback](docs/INDEX_GENERATIONS.md)
 and [formula-safe scientific query routing](docs/SCIENTIFIC_QUERY_ROUTING.md).
+Scientific-program ingestion now also has a [private, pending-only native-file importer](docs/SCIENTIFIC_PENDING_IMPORTS.md)
+with retained source bytes, actual coordinate parsing, durable attempts and
+rollback-only preview. Parsed observations are not approved scientific results.
 Numerical/evidence queries and Search UI scientific filters return qualified,
 exact-parent extraction rows separately from ordinary paper hits; without an
 active generation they explicitly report unavailable. These are not reviewed

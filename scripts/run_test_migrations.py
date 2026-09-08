@@ -14,12 +14,22 @@ _DISTRIBUTION_TABLES = ("research_distribution_epoch", "research_distribution_pa
                         "research_distribution_dependencies", "research_distribution_permissions",
                         "research_distribution_reviews", "research_distribution_actions")
 _ML_FEATURE_BINDING_TABLE = "ml_feature_source_bindings"
+_SCIENTIFIC_IMPORT_TABLES = ("scientific_import_packages", "scientific_import_attempts", "scientific_import_blobs",
+                             "scientific_import_files", "scientific_import_outcomes")
+
+
+def _assert_empty_scientific_imports(connection):
+    from sqlalchemy import text
+
+    for name in _SCIENTIFIC_IMPORT_TABLES:
+        assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
 
 
 def _assert_empty_ml_feature_bindings(connection):
     from sqlalchemy import text
 
     assert connection.execute(text("SELECT count(*) FROM public.ml_feature_source_bindings")).scalar_one() == 0
+    _assert_empty_scientific_imports(connection)
 
 
 def _assert_empty_distributions(connection):
@@ -95,7 +105,7 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts",
                                 "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -505,7 +515,7 @@ def _background_jobs_empty_roundtrip(capability, engine, config):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES,
-                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
+                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -650,7 +660,7 @@ def _rag_evidence_empty_roundtrip(capability, engine, config):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -795,7 +805,7 @@ def _embedding_receipts_empty_roundtrip(capability, engine, config):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES,
-                                *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
+                                *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -914,7 +924,7 @@ def _index_generations_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
+                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1056,7 +1066,7 @@ def _distributions_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE}}
+                if name not in {"alembic_version", *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1207,7 +1217,7 @@ def _ml_feature_bindings_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", _ML_FEATURE_BINDING_TABLE}}
+                if name not in {"alembic_version", _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1309,6 +1319,130 @@ def _ml_feature_binding_downgrade_guard(capability, engine, config, binding_id):
         assert snapshot(connection) == before
 
 
+def _scientific_imports_empty_roundtrip(capability, engine, config):
+    """Only the empty0065 ledger is removed; all older populated histories remain."""
+    from alembic import command
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")
+                if name not in {"alembic_version", *_SCIENTIFIC_IMPORT_TABLES}}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        _assert_empty_scientific_imports(connection)
+        before = snapshot(connection)
+        assert before[_ML_FEATURE_BINDING_TABLE]
+    validate_test_environment()
+    command.downgrade(config, "0064_ml_feature_companion")
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError:
+            pass
+        else:
+            raise AssertionError("Scientific import application must refuse the previous schema")
+        assert not set(_SCIENTIFIC_IMPORT_TABLES) & set(inspect(connection).get_table_names(schema="public"))
+        assert snapshot(connection) == before
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_scientific_imports(connection)
+        assert snapshot(connection) == before
+
+
+async def _scientific_imports_on_migrated_schema(capability, api_root):
+    """Actual retained bytes and separate durable start, never an attested DFT run."""
+    validate_test_environment()
+    sys.path.insert(0, str(api_root / "tests"))
+    from models.db import _to_async_dsn
+    from services import scientific_pending_import as service
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from tests.test_research_freeze import state
+    from tests.test_scientific_pending_import import _finish, _rows, _start, seed_import
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), poolclass=NullPool,
+                                 isolation_level="SERIALIZABLE")
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            fixture = await seed_import(session)
+            await session.commit()
+            prepared = service.compile_input(fixture["package"])
+            before = await state(session)
+            preview = await service.preview_import(session, actor_user_id=fixture["actors"]["curator"],
+                request_key="migrated-scientific-preview", prepared=prepared)
+            assert preview["status"] == "success_pending"
+            assert await state(session) == before
+            started = await _start(session, fixture, request_key="migrated-scientific-start")
+            await session.commit()
+            durable_start = await state(session)
+            assert started["status"] == "outcome_unknown"
+            replay = await _start(session, fixture, request_key="migrated-scientific-start")
+            assert replay["replayed"] and replay["attempt_id"] == started["attempt_id"]
+            assert await state(session) == durable_start
+            # A fully executed finish is still caller-owned: outer rollback must
+            # retain the committed start and remove every generated/result row.
+            pending = await _finish(session, fixture, started, prepared=prepared)
+            assert pending["status"] == "success_pending"
+            await session.rollback()
+            assert await state(session) == durable_start
+            inspected = await service.inspect_import(session, actor_user_id=fixture["actors"]["curator"],
+                attempt_id=started["attempt_id"])
+            assert inspected["status"] == "outcome_unknown" and inspected["report"] is None
+            finished = await _finish(session, fixture, started, prepared=prepared)
+            await session.commit()
+            written = await state(session)
+            assert finished["status"] == "success_pending"
+            assert set(finished["row_ids"]) == {"run", "state", "structure", "event", "property"}
+            assert all(finished["authority"][key] is False for key in finished["authority"])
+            blobs = await _rows(session, "scientific_import_blobs", package_id=started["package_id"])
+            retained = {bytes(row["payload"]) for row in blobs}
+            assert {fixture["input_bytes"], fixture["frequency_bytes"], fixture["fc_bytes"]} <= retained
+            replay = await _finish(session, fixture, started, prepared=prepared)
+            assert replay["replayed"] and replay["outcome_id"] == finished["outcome_id"]
+            await session.commit()
+            assert await state(session) == written
+            return started["attempt_id"]
+    finally:
+        await engine.dispose()
+
+
+def _scientific_import_downgrade_guard(capability, engine, config, attempt_id):
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert any(row["id"] == attempt_id for row in before["scientific_import_attempts"])
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0064_ml_feature_companion")
+    except RuntimeError as exc:
+        assert "scientific-import" in str(exc) and "retained source or attempt history" in str(exc)
+    else:
+        raise AssertionError("Nonempty scientific import source/attempt history downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+
+
 def main() -> None:
     # This must run before importing config, Alembic or any database client.
     capability = validate_test_environment()
@@ -1379,6 +1513,15 @@ def main() -> None:
             assert "background_job_cycles" in schema.get_table_names()
             assert set(_RAG_EVIDENCE_TABLES) <= set(schema.get_table_names())
             assert _ML_FEATURE_BINDING_TABLE in schema.get_table_names()
+            assert set(_SCIENTIFIC_IMPORT_TABLES) <= set(schema.get_table_names())
+            assert connection.execute(text("""SELECT count(*) FROM pg_trigger WHERE NOT tgisinternal
+                AND tgname IN ('si65_insert','si65_immutable','si65_truncate','si65_complete')""")).scalar_one() == 17
+            from models.scientific_import_v1 import (
+                FUNCTION_SIGNATURES as IMPORT_FUNCTION_SIGNATURES,
+            )
+            for name, arguments in IMPORT_FUNCTION_SIGNATURES:
+                assert connection.execute(text("SELECT to_regprocedure(:signature)"),
+                    {"signature": f"public.{name}({arguments})"}).scalar_one() is not None
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger WHERE NOT tgisinternal
                 AND tgrelid='public.ml_feature_source_bindings'::regclass""")).scalar_one() == 3
             from models.ml_feature_companion_v1 import FUNCTION_SIGNATURES
@@ -1570,7 +1713,10 @@ def main() -> None:
         _ml_feature_bindings_empty_roundtrip(capability, engine, config)
         binding_id = asyncio.run(_ml_feature_bindings_on_migrated_schema(capability, api_root))
         _ml_feature_binding_downgrade_guard(capability, engine, config, binding_id)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay, exact property feature source companions/byte verification/replay and independent nonempty history rollback guards verified.")
+        _scientific_imports_empty_roundtrip(capability, engine, config)
+        attempt_id = asyncio.run(_scientific_imports_on_migrated_schema(capability, api_root))
+        _scientific_import_downgrade_guard(capability, engine, config, attempt_id)
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay, exact property feature source companions/byte verification/replay, byte-retained pending scientific imports with durable unknown starts/atomic completion/rollback/replay and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 

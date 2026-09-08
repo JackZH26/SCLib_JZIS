@@ -274,5 +274,49 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
         self.assertIn("assert snapshot(connection) == before", guard)
 
 
+    def test_scientific_imports_follow_every_prior_independent_guard(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        main = source.split("def main()", 1)[1]
+        positions = [main.index(marker) for marker in (
+            "_source_task_downgrade_guard(capability", "_background_job_downgrade_guard(capability",
+            "_rag_evidence_downgrade_guard(capability", "_embedding_receipt_downgrade_guard(capability",
+            "_index_generation_downgrade_guard(capability", "_distribution_downgrade_guard(capability",
+            "_ml_feature_binding_downgrade_guard(capability", "_scientific_imports_empty_roundtrip(capability",
+            "_scientific_imports_on_migrated_schema(capability", "_scientific_import_downgrade_guard(capability")]
+        self.assertEqual(positions, sorted(positions))
+        chain = source.split("def _assert_empty_ml_feature_bindings", 1)[1].split("def _assert_empty_distributions", 1)[0]
+        self.assertIn("_assert_empty_scientific_imports(connection)", chain)
+        empty_helper = source.split("def _assert_empty_scientific_imports", 1)[1].split("def _assert_empty_ml_feature_bindings", 1)[0]
+        self.assertIn("for name in _SCIENTIFIC_IMPORT_TABLES", empty_helper)
+        self.assertIn(".scalar_one() == 0", empty_helper)
+        for name, end in (("_source_impact_indexes_on_migrated_schema", "async def _freeze_on_migrated_schema"),
+                          ("_background_jobs_empty_roundtrip", "async def _background_jobs_on_migrated_schema"),
+                          ("_rag_evidence_empty_roundtrip", "async def _rag_evidence_on_migrated_schema"),
+                          ("_embedding_receipts_empty_roundtrip", "async def _embedding_receipts_on_migrated_schema"),
+                          ("_index_generations_empty_roundtrip", "async def _index_generations_on_migrated_schema"),
+                          ("_distributions_empty_roundtrip", "async def _distributions_on_migrated_schema"),
+                          ("_ml_feature_bindings_empty_roundtrip", "async def _ml_feature_bindings_on_migrated_schema")):
+            self.assertIn("*_SCIENTIFIC_IMPORT_TABLES", source.split("def " + name, 1)[1].split(end, 1)[0])
+        empty = source.split("def _scientific_imports_empty_roundtrip", 1)[1].split("async def _scientific_imports_on_migrated_schema", 1)[0]
+        self.assertIn('command.downgrade(config, "0064_ml_feature_companion")', empty)
+        self.assertEqual(empty.count("_assert_empty_scientific_imports(connection)"), 2)
+        self.assertEqual(empty.count("assert snapshot(connection) == before"), 2)
+
+    def test_migrated_scientific_import_preserves_durable_unknown_start_and_full_state(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        body = source.split("async def _scientific_imports_on_migrated_schema", 1)[1].split("def _scientific_import_downgrade_guard", 1)[0]
+        for marker in ("run_sync(check_connection_schema)", "seed_import(session)",
+                       "service.compile_input(fixture", "service.preview_import(session", "_start(session",
+                       "_finish(session", "service.inspect_import(session", "await session.rollback()",
+                       '"outcome_unknown"', '"success_pending"', '"scientific_import_blobs"',
+                       "assert await state(session) == before", "assert await state(session) == durable_start",
+                       "assert await state(session) == written", 'replay["replayed"]'):
+            self.assertIn(marker, body)
+        self.assertGreaterEqual(body.count("await session.commit()"), 4)
+        guard = source.split("def _scientific_import_downgrade_guard", 1)[1].split("def main()", 1)[0]
+        self.assertIn('"retained source or attempt history" in str(exc)', guard)
+        self.assertIn("assert snapshot(connection) == before", guard)
+
+
 if __name__ == "__main__":
     unittest.main()
