@@ -1,4 +1,4 @@
-import { API_BASE } from "./api";
+import { API_BASE, PUBLIC_API_BASE } from "./api";
 
 export const PHYSICAL_DIMENSIONS = [
   ["stability", "Stability"], ["electronic", "Electronic"],
@@ -34,6 +34,19 @@ export interface RpsRelease {
   published_at: string;
   evidence_cutoff: string;
   total: number;
+  public_bundle: {
+    status: "available" | "not_published" | "unavailable";
+    sha256: string | null;
+    verifier_version: "rps-public-verifier/1.0.0" | null;
+  };
+}
+export interface RpsCatalog {
+  schema_version: "rps-catalog/1.3";
+  items: RpsRelease[];
+  unavailable: { id: string; status: "unavailable"; reason_code: "verification_failed" }[];
+  status: "published" | "not_published" | "degraded" | "unavailable";
+  approval_sha256: string;
+  catalog_revision: string;
 }
 export interface RpsResult {
   eligibility: "eligible" | "pending" | "ineligible" | "reference_only";
@@ -100,26 +113,103 @@ export interface RpsDetail {
   } }[];
 }
 
-async function read<T>(path: string): Promise<T> {
-  const response = await fetch(`${API_BASE}/discovery/rps${path}`, {
-    credentials: "omit", cache: "no-store", signal: AbortSignal.timeout(15_000),
-  });
-  if (!response.ok) throw new Error(`RPS request failed (${response.status})`);
-  return response.json() as Promise<T>;
+type RecordValue = Record<string, unknown>;
+const record = (value: unknown): value is RecordValue => value !== null && typeof value === "object" && !Array.isArray(value);
+const closed = (value: unknown, keys: string[]): value is RecordValue => record(value)
+  && Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key));
+const sha256 = (value: unknown): value is string => typeof value === "string" && /^[a-f0-9]{64}$/.test(value);
+const identifier = (value: unknown): value is string => typeof value === "string" && /^[A-Za-z0-9_.:-]{1,120}$/.test(value)
+  && value !== "." && value !== "..";
+const integer = (value: unknown, max: number): value is number => typeof value === "number" && Number.isSafeInteger(value) && value >= 0 && value <= max;
+const text = (value: unknown, max: number): value is string => typeof value === "string" && !!value.trim()
+  && Array.from(value).length <= max && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(value);
+function timestamp(value: unknown): value is string {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/.test(value)
+    || !Number.isFinite(Date.parse(value))) return false;
+  const [year, month, day] = value.slice(0, 10).split("-").map(Number);
+  const zone = value.endsWith("Z") ? "00:00" : value.slice(-5);
+  return year > 0 && month >= 1 && month <= 12 && day >= 1 && day <= new Date(Date.UTC(year, month, 0)).getUTCDate()
+    && Number(value.slice(11, 13)) < 24 && Number(value.slice(14, 16)) < 60 && Number(value.slice(17, 19)) < 60
+    && Number(zone.slice(0, 2)) < 24 && Number(zone.slice(3, 5)) < 60;
 }
-export async function getRpsReleases() {
-  return read<{ schema_version: "rps-catalog/1.2"; status: string; items: RpsRelease[] }>("/releases");
+function timestampMicros(value: string): bigint {
+  const fraction = /\.(\d{1,6})/.exec(value)?.[1] ?? "";
+  return BigInt(Date.parse(value)) * 1000n + BigInt(fraction.padEnd(6, "0").slice(3));
 }
-export async function getRpsPage(id: string, offset = 0, group = "discovery") {
-  return read<RpsPage>(`/releases/${encodeURIComponent(id)}/assessments?offset=${offset}&limit=24&group=${encodeURIComponent(group)}`);
+function publicBundle(value: unknown): value is RpsRelease["public_bundle"] {
+  return closed(value, ["status", "sha256", "verifier_version"]) && (value.status === "available"
+    ? sha256(value.sha256) && value.verifier_version === "rps-public-verifier/1.0.0"
+    : (value.status === "not_published" || value.status === "unavailable") && value.sha256 === null && value.verifier_version === null);
 }
-export async function getRpsDetail(releaseId: string, assessmentId: string) {
-  return read<RpsDetail>(`/releases/${encodeURIComponent(releaseId)}/assessments/${encodeURIComponent(assessmentId)}`);
+function validRelease(value: unknown): value is RpsRelease {
+  return closed(value, ["id", "manifest_sha256", "campaign_id", "campaign_version", "objective", "published_at", "evidence_cutoff", "total", "public_bundle"])
+    && identifier(value.id) && sha256(value.manifest_sha256) && identifier(value.campaign_id) && identifier(value.campaign_version)
+    && text(value.objective, 4000) && timestamp(value.published_at) && timestamp(value.evidence_cutoff)
+    && timestampMicros(value.evidence_cutoff) <= timestampMicros(value.published_at) && integer(value.total, 10000) && publicBundle(value.public_bundle);
+}
+
+/** Validate closed server snapshot declarations; this does not authenticate approval or recompute release science. */
+export function verifyRpsCatalog(value: unknown): RpsCatalog {
+  if (!closed(value, ["schema_version", "items", "unavailable", "status", "approval_sha256", "catalog_revision"])
+    || value.schema_version !== "rps-catalog/1.3" || !sha256(value.approval_sha256) || !sha256(value.catalog_revision)
+    || !Array.isArray(value.items) || !Array.isArray(value.unavailable) || value.items.length + value.unavailable.length > 128
+    || !value.items.every(validRelease) || !value.unavailable.every(item => closed(item, ["id", "status", "reason_code"])
+      && identifier(item.id) && item.status === "unavailable" && item.reason_code === "verification_failed")) {
+    throw new Error("Unsupported or inconsistent RPS publication catalog. Scores and downloads are hidden.");
+  }
+  const ids = [...value.items, ...value.unavailable].map(item => item.id);
+  const expected = value.items.length === 0 ? value.unavailable.length ? "unavailable" : "not_published"
+    : value.unavailable.length > 0 || value.items.some(item => item.public_bundle.status === "unavailable") ? "degraded" : "published";
+  if (new Set(ids).size !== ids.length || value.status !== expected) {
+    throw new Error("Inconsistent RPS catalog inventory. Scores and downloads are hidden.");
+  }
+  // Isolate an accepted read point from mutable caller/test response aliases.
+  return structuredClone(value) as unknown as RpsCatalog;
+}
+
+/** Only application-configured public API paths and selected catalog pins may create download links. */
+export function rpsBundleDownloadUrl(release: RpsRelease): string | null {
+  if (!validRelease(release) || release.public_bundle.status !== "available") return null;
+  try {
+    const base = new URL(PUBLIC_API_BASE);
+    if (!["https:", "http:"].includes(base.protocol) || base.username || base.password || base.search || base.hash) return null;
+    base.pathname = `${base.pathname.replace(/\/$/, "")}/discovery/rps/releases/${encodeURIComponent(release.id)}/bundle`;
+    base.search = new URLSearchParams({ manifest_sha256: release.manifest_sha256, bundle_sha256: release.public_bundle.sha256! }).toString();
+    return base.toString();
+  } catch { return null; }
+}
+
+async function read<T>(path: string, signal?: AbortSignal): Promise<T> {
+  const controller = new AbortController(), cancel = () => controller.abort();
+  const timeout = setTimeout(cancel, 15_000);
+  if (signal?.aborted) cancel();
+  else signal?.addEventListener("abort", cancel, { once: true });
+  try {
+    const response = await fetch(`${API_BASE}/discovery/rps${path}`, {
+      credentials: "omit", cache: "no-store", signal: controller.signal,
+    });
+    if (!response.ok) throw new Error(`RPS request failed (${response.status})`);
+    return await response.json() as T;
+  } finally {
+    clearTimeout(timeout);
+    signal?.removeEventListener("abort", cancel);
+  }
+}
+export async function getRpsReleases(signal?: AbortSignal) {
+  return verifyRpsCatalog(await read<unknown>("/releases", signal));
+}
+export async function getRpsPage(id: string, offset = 0, group = "discovery", signal?: AbortSignal) {
+  return read<RpsPage>(`/releases/${encodeURIComponent(id)}/assessments?offset=${offset}&limit=24&group=${encodeURIComponent(group)}`, signal);
+}
+export async function getRpsDetail(releaseId: string, assessmentId: string, signal?: AbortSignal) {
+  return read<RpsDetail>(`/releases/${encodeURIComponent(releaseId)}/assessments/${encodeURIComponent(assessmentId)}`, signal);
 }
 
 export function verifyRpsPage(page: RpsPage, release: RpsRelease, offset: number, existing: RpsRow[] = [], group = "discovery") {
   if (page.schema_version !== "rps-page/1.2" || page.release_id !== release.id ||
       page.manifest_sha256 !== release.manifest_sha256 || page.offset !== offset ||
+      page.campaign.id !== release.campaign_id || page.campaign.version !== release.campaign_version || page.campaign.objective !== release.objective ||
+      page.evidence_cutoff !== release.evidence_cutoff || !sha256(page.policy_hash) ||
       page.release_total !== release.total || page.group !== group || page.total > release.total || page.items.length > page.limit ||
       page.has_more !== (page.offset + page.items.length < page.total)) {
     throw new Error("Release changed or failed verification. Reload the release list.");

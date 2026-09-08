@@ -394,7 +394,12 @@ def test_actual_compare_refuses_missing_paired_runs_with_static_exit_two(artifac
 def test_linux_ci_explicitly_runs_the_offline_cli_suite_with_the_locked_api_runtime():
     workflow = (ROOT / ".github/workflows/test.yml").read_text(encoding="utf-8")
     assert "uv sync --locked --extra dev --python 3.11" in workflow
-    assert "- name: Verify scientific evaluation offline CLI (no services)\n        run: .venv/bin/python -m pytest -q ../scripts/tests/test_scientific_evaluation_cli.py" in workflow
-    assert workflow.index("Verify scientific evaluation offline CLI") < workflow.index("Prepare ephemeral service images")
+    # Collect every script suite, including this module and the public RPS
+    # subprocess verifier, in the locked runtime. unittest-only discovery does
+    # not execute these pytest functions and may not even have pytest installed.
+    assert "- name: Verify all offline script contracts in the locked API runtime (no services)\n        run: .venv/bin/python -m pytest -q ../scripts/tests" in workflow
+    assert workflow.index("Verify all offline script contracts") < workflow.index("Prepare ephemeral service images")
+    assert "python -m unittest discover -s scripts/tests -v" not in workflow
+    assert "python -m unittest discover -s scripts/tests -p test_check_error_budget.py -v" in workflow
     # This new pure/offline gate does not replace or bypass API DB guards.
     assert ".venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q" in workflow

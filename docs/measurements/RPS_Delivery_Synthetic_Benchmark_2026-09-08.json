@@ -1,0 +1,227 @@
+{
+  "assessment_count": 8,
+  "benchmark_sha256": "4faf3e8a57494791de15d5ce6492a5d004091f84d172821a29dcb573d7f86cb2",
+  "budget_decision": "requires_operator_review_of_representative_workload",
+  "cache_limits": {
+    "cached_bytes": 134217728,
+    "entries": 32,
+    "file_bytes": 50000000,
+    "inflight": 2,
+    "negative_seconds": 1,
+    "wait_seconds": 30,
+    "waiters": 32
+  },
+  "fixture_inventory": [
+    {
+      "assessments": 1,
+      "bundle_bytes": 18892,
+      "bundle_sha256": "ceceef33c9f34ea1049a79dcb5db8d6ad355009ae297e3fdd65e364283f9361e",
+      "id": "synthetic-benchmark-00",
+      "release_bytes": 13458,
+      "release_manifest_sha256": "3e4d6f776d9cfe6fcafba14b466d73a95fbce5d75248fdb449788ba3db24c925"
+    },
+    {
+      "assessments": 1,
+      "bundle_bytes": 18892,
+      "bundle_sha256": "b7e219e47ee30783adb58c8524a2b76148b34841e4d3c1a13cc8ef2c3bf339fc",
+      "id": "synthetic-benchmark-01",
+      "release_bytes": 13458,
+      "release_manifest_sha256": "b46a83ece41362fdd9b3432f6743c8a14af435c3594816ca7ecea2fe67c76c82"
+    },
+    {
+      "assessments": 1,
+      "bundle_bytes": 18892,
+      "bundle_sha256": "9c59583dd532216690741ec11a17016410fa501562c7ef329da785bd6754fad6",
+      "id": "synthetic-benchmark-02",
+      "release_bytes": 13458,
+      "release_manifest_sha256": "7ed41992a279af7b0bdeefea201e6be860c119859367756f2d8349af09cf4191"
+    },
+    {
+      "assessments": 1,
+      "bundle_bytes": 18892,
+      "bundle_sha256": "2b248c3b7ebf225e989d44b7b602fe0a4116dc2242785d5e6065965a85299c9d",
+      "id": "synthetic-benchmark-03",
+      "release_bytes": 13458,
+      "release_manifest_sha256": "8736d09e47ee6f26e5de4c911dddc553c1e7858314c4ae29cd7f2ef6a0a8a6ec"
+    },
+    {
+      "assessments": 1,
+      "bundle_bytes": 18892,
+      "bundle_sha256": "d3b13f0d02e83bc89d54266c1ddebcfa14cf39edc4d0cff9d47bb128ae566b78",
+      "id": "synthetic-benchmark-04",
+      "release_bytes": 13458,
+      "release_manifest_sha256": "050acef25ef46a68fac4795c6bfcdfc8de2118724a50956a45eb76b242dc94a9"
+    },
+    {
+      "assessments": 1,
+      "bundle_bytes": 18892,
+      "bundle_sha256": "1f66e9cc60b3a3c7531917d39cbbe192906c72b36371f3d7856a239e27adc936",
+      "id": "synthetic-benchmark-05",
+      "release_bytes": 13458,
+      "release_manifest_sha256": "db81302d4b0b27a8d3e30bdefc50bb8de883757ff7c3c2af8e5e455613b442c8"
+    },
+    {
+      "assessments": 1,
+      "bundle_bytes": 18892,
+      "bundle_sha256": "1ca1a12bddde2b913a959e2b953bf2cc33e321c730defbb467f1c4770426315e",
+      "id": "synthetic-benchmark-06",
+      "release_bytes": 13458,
+      "release_manifest_sha256": "ead6b06f4c39d88527bb5a3a08c841dc2c6cdd757c2181d62877d14a7f53113b"
+    },
+    {
+      "assessments": 1,
+      "bundle_bytes": 18892,
+      "bundle_sha256": "56be36a9a556ed65ba94762068f35e6f0729581d479986432363afea37cb7443",
+      "id": "synthetic-benchmark-07",
+      "release_bytes": 13458,
+      "release_manifest_sha256": "2dc10379453004fa529cb973f7e008a8185101b64a0f0fff43f30c25bbbe2340"
+    }
+  ],
+  "fixture_inventory_sha256": "cc65bc3e5d33986600797c473fa898c693684262f635b0ddc6cd15474d8acd2e",
+  "fixture_provider_sha256": "d82aa1d70c263a89ddd4d50f54d939ea5a83a32ca11fe671cd2d8800992f4d66",
+  "fixture_total_bytes": 258800,
+  "iterations": 20,
+  "limitations": [
+    "Synthetic release size and concurrency are not representative production demand.",
+    "Warm measurements include fresh file metadata checks and pinned identity checks.",
+    "Memory is approximate Python retention plus separately labeled process high-water RSS.",
+    "Small deterministic samples do not establish a tail-latency or scientific-utility guarantee."
+  ],
+  "measurement_scope": "local_verified_service_threadpool_not_http_or_production",
+  "memory_methods": {
+    "process_peak_rss_after_bytes": 51838976,
+    "process_peak_rss_before_bytes": 46383104,
+    "python_allocator": "tracemalloc",
+    "rss": "process_lifetime_high_water_not_cache_attribution"
+  },
+  "offline": true,
+  "phases": {
+    "bundle_cold": {
+      "cache_hits": 0,
+      "cache_misses": 16,
+      "cached_bytes_approximate": 953640,
+      "cached_entries": 16,
+      "objects_per_round": 8,
+      "p50_round_ms": 313.07479133829474,
+      "p95_round_ms": 313.07479133829474,
+      "quantile_method": "nearest_rank",
+      "response_identity_count": 1,
+      "round_latency_ms": [
+        313.07479133829474
+      ],
+      "rounds": 1,
+      "traced_current_bytes_after": 1947399,
+      "traced_current_bytes_before": 1060886,
+      "traced_peak_bytes": 2250434,
+      "traced_peak_increase_bytes": 1189548,
+      "verification_count": 16
+    },
+    "bundle_warm": {
+      "cache_hits": 320,
+      "cache_misses": 0,
+      "cached_bytes_approximate": 953640,
+      "cached_entries": 16,
+      "objects_per_round": 8,
+      "p50_round_ms": 9.812208823859692,
+      "p95_round_ms": 11.495915707200766,
+      "quantile_method": "nearest_rank",
+      "response_identity_count": 1,
+      "round_latency_ms": [
+        10.096749756485224,
+        10.006540920585394,
+        10.117541998624802,
+        12.57445802912116,
+        9.402459021657705,
+        9.130542166531086,
+        9.361417032778263,
+        9.270792361348867,
+        9.495583828538656,
+        9.856040589511395,
+        9.40858293324709,
+        9.579832665622234,
+        8.653749711811543,
+        9.812208823859692,
+        10.4994997382164,
+        11.321083176881075,
+        11.495915707200766,
+        10.103709064424038,
+        9.891833178699017,
+        9.070958942174911
+      ],
+      "rounds": 20,
+      "traced_current_bytes_after": 1969016,
+      "traced_current_bytes_before": 1947983,
+      "traced_peak_bytes": 2127023,
+      "traced_peak_increase_bytes": 179040,
+      "verification_count": 0
+    },
+    "catalog_cold": {
+      "cache_hits": 0,
+      "cache_misses": 16,
+      "cached_bytes_approximate": 953640,
+      "cached_entries": 16,
+      "objects_per_round": 8,
+      "p50_round_ms": 295.1602917164564,
+      "p95_round_ms": 295.1602917164564,
+      "quantile_method": "nearest_rank",
+      "response_identity_count": 1,
+      "round_latency_ms": [
+        295.1602917164564
+      ],
+      "rounds": 1,
+      "traced_current_bytes_after": 947848,
+      "traced_current_bytes_before": 3512,
+      "traced_peak_bytes": 1232023,
+      "traced_peak_increase_bytes": 1228511,
+      "verification_count": 16
+    },
+    "catalog_warm": {
+      "cache_hits": 320,
+      "cache_misses": 0,
+      "cached_bytes_approximate": 953640,
+      "cached_entries": 16,
+      "objects_per_round": 8,
+      "p50_round_ms": 9.898916818201542,
+      "p95_round_ms": 11.357082985341549,
+      "quantile_method": "nearest_rank",
+      "response_identity_count": 1,
+      "round_latency_ms": [
+        11.357082985341549,
+        9.898916818201542,
+        10.107040870934725,
+        9.134209249168634,
+        9.623459074646235,
+        9.29504120722413,
+        9.951791260391474,
+        9.730917401611805,
+        9.306416846811771,
+        10.077459271997213,
+        10.63808286562562,
+        10.09666733443737,
+        9.61616588756442,
+        10.14354219660163,
+        9.896416682749987,
+        11.170583311468363,
+        9.498166851699352,
+        11.684750206768513,
+        9.682917036116123,
+        10.882374830543995
+      ],
+      "rounds": 20,
+      "traced_current_bytes_after": 1934958,
+      "traced_current_bytes_before": 948880,
+      "traced_peak_bytes": 2120124,
+      "traced_peak_increase_bytes": 1171244,
+      "verification_count": 0
+    }
+  },
+  "platform": "darwin",
+  "production_sla_established": false,
+  "python_version": "3.12.14",
+  "release_count": 8,
+  "scientific_acceptance": false,
+  "status": "measured",
+  "synthetic_only": true,
+  "version": "rps-delivery-benchmark/1.0.0",
+  "workers": 4
+}

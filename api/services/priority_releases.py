@@ -7,12 +7,22 @@ requires an administrator-pinned digest (separate from the untrusted bundle).
 from __future__ import annotations
 
 import json
-from functools import cached_property, lru_cache
+from copy import deepcopy
+from functools import cached_property
 from pathlib import Path
 from typing import Annotated, Literal
 
 from pydantic import AwareDatetime, Field, HttpUrl, model_validator
 
+from services.priority_release_cache import (
+    clear_release_cache as clear_release_cache,
+)
+from services.priority_release_cache import (
+    read_verified_file,
+)
+from services.priority_release_cache import (
+    release_cache_stats as release_cache_stats,
+)
 from services.research_priority import (
     DIMENSIONS,
     POLICY_HASH,
@@ -362,26 +372,41 @@ class PriorityRelease(Contract):
 
 def read_release(directory: Path, release_id: str, expected_hash: str) -> PriorityRelease:
     """Never accept arbitrary file paths or bundle-provided publication approval."""
+    # Pydantic frozen models do not recursively freeze dict/list fields. Never
+    # let a route or CLI mutate the cache's verified inputs or cached row values.
+    return deepcopy(_cached_release(directory, release_id, expected_hash))
+
+
+def read_release_projection(directory: Path, release_id: str, expected_hash: str) -> dict:
+    """Lightweight detached catalogue metadata, not a full model copy per item."""
+    release = _cached_release(directory, release_id, expected_hash)
+    return {
+        "id": release.id,
+        "manifest_sha256": release.manifest_sha256,
+        "campaign_id": release.campaign.id,
+        "campaign_version": release.campaign.version,
+        "objective": release.campaign.objective,
+        "published_at": release.published_at.isoformat(),
+        "evidence_cutoff": release.evidence_cutoff.isoformat(),
+        "total": len(release.assessments),
+    }
+
+
+def _cached_release(directory: Path, release_id: str, expected_hash: str) -> PriorityRelease:
     from pydantic import TypeAdapter
 
     TypeAdapter(Identifier).validate_python(release_id)
     TypeAdapter(Hash).validate_python(expected_hash)
     path = directory / f"{release_id}.json"
-    stat = path.stat()
-    if stat.st_size > 50_000_000:
-        raise ValueError("release exceeds 50 MB limit")
-    return _read_verified(
-        path, release_id, expected_hash, (stat.st_mtime_ns, stat.st_size, stat.st_ino)
+    release = read_verified_file(
+        path,
+        identity=("rps-release-reader/2", release_id, expected_hash),
+        validator=lambda raw: _read_verified(raw, release_id, expected_hash),
     )
+    return release
 
 
-@lru_cache(maxsize=2)
-def _read_verified(
-    path: Path, release_id: str, expected_hash: str, signature: tuple[int, int, int]
-) -> PriorityRelease:
-    # Signature causes changed files to revalidate; the pinned digest is the identity.
-    # Old releases are small in number and references always stay in the same bundle.
-
+def _read_verified(raw: bytes, release_id: str, expected_hash: str) -> PriorityRelease:
     def unique_keys(pairs: list[tuple[str, object]]) -> dict:
         obj: dict = {}
         for key, value in pairs:
@@ -390,7 +415,14 @@ def _read_verified(
             obj[key] = value
         return obj
 
-    payload = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_keys)
+    def invalid_constant(value: str):
+        raise ValueError("nonfinite JSON value")
+
+    try:
+        payload = json.loads(raw.decode("utf-8"), object_pairs_hook=unique_keys,
+                             parse_constant=invalid_constant)
+    except (UnicodeError, RecursionError) as exc:
+        raise ValueError("invalid RPS JSON input") from exc
     release = PriorityRelease.model_validate(payload)
     if release.id != release_id or release.manifest_sha256 != expected_hash:
         raise ValueError("release identity does not match administrator-pinned digest")

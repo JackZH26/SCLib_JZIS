@@ -109,7 +109,8 @@ async def test_paper_does_not_expand_same_work_siblings(db_session):
 async def test_direct_chunk_hydride_and_inactive_timeline_references(db_session):
     source, args = await observation(db_session)
     target = await material(db_session, source=source)
-    chunk_id = "impact-chunk:" + uuid4().hex
+    # Scientific-value digits may legitimately occur in opaque IDs or hashes.
+    chunk_id = "impact-chunk:9999:" + uuid4().hex
     await add(db_session, "chunks", id=chunk_id, paper_id=source, text="UNEXPOSED_CHUNK")
     hydride = await add(db_session, "hydride_tc_parameters", record_key=uuid4().hex,
         material_id=target, formula="UNEXPOSED_HYDRIDE", formula_normalized="H3S", paper_id=source,
@@ -124,8 +125,32 @@ async def test_direct_chunk_hydride_and_inactive_timeline_references(db_session)
     assert {item["kind"] for item in relations(report, "timeline_projection_points", point_id)} == {
         "existing_timeline_material", "existing_timeline_source"}
     payload = canonical(report)
-    for hidden in (b"UNEXPOSED", b"1234.567", b"123.456", b"9999", b"SAME_FORMULA"):
+    assert chunk_id.encode() in payload
+    for hidden in (b"UNEXPOSED", b"SAME_FORMULA"):
         assert hidden not in payload
+
+    forbidden_fields = {
+        "tc_kelvin", "formula", "formula_normalized", "text", "title", "abstract",
+        "authors", "records", "private_note",
+    }
+    forbidden_values = {1234.567, 123.456, 9999, "1234.567", "123.456", "9999"}
+
+    def assert_no_source_values(value):
+        if isinstance(value, dict):
+            assert forbidden_fields.isdisjoint(value)
+            for child in value.values():
+                assert_no_source_values(child)
+        elif isinstance(value, list):
+            for child in value:
+                assert_no_source_values(child)
+        else:
+            assert value not in forbidden_values
+
+    assert_no_source_values(report)
+    for node in report["nodes"]:
+        assert set(node) == {"table", "row_id", "relations"}
+        for relation in node["relations"]:
+            assert set(relation) == {"kind", "via_table", "via_id"}
 
 
 async def test_ml_label_claim_material_and_dataset_membership(db_session):

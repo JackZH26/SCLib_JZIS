@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
-  getRpsDetail, getRpsPage, getRpsReleases, PHYSICAL_DIMENSIONS, verifyRpsDetail, verifyRpsPage,
-  type RpsDetail, type RpsPage, type RpsRelease, type RpsRow,
+  getRpsDetail, getRpsPage, getRpsReleases, PHYSICAL_DIMENSIONS, rpsBundleDownloadUrl, verifyRpsCatalog, verifyRpsDetail, verifyRpsPage,
+  type RpsCatalog, type RpsDetail, type RpsPage, type RpsRelease, type RpsRow,
 } from "@/lib/research-priority";
 
 const number = (value: number | null) => value === null ? "—" : value.toLocaleString("en-US", { maximumFractionDigits: 2 });
@@ -17,7 +17,7 @@ const explanationLabels: Record<string, string> = {
 };
 
 export function ResearchPriorityBoard() {
-  const [releases, setReleases] = useState<RpsRelease[]>([]);
+  const [catalog, setCatalog] = useState<RpsCatalog | null>(null);
   const [selected, setSelected] = useState("");
   const [page, setPage] = useState<RpsPage | null>(null);
   const [rows, setRows] = useState<RpsRow[]>([]);
@@ -27,32 +27,63 @@ export function ResearchPriorityBoard() {
   const [moreBusy, setMoreBusy] = useState(false);
   const [retry, setRetry] = useState(0);
   const generation = useRef(0);
+  const catalogGeneration = useRef(0);
+  const catalogController = useRef<AbortController | null>(null);
+  const pageController = useRef<AbortController | null>(null);
+  const releases = catalog?.items ?? [];
+
+  function refreshCatalog() {
+    catalogGeneration.current++; generation.current++;
+    catalogController.current?.abort(); pageController.current?.abort();
+    setCatalog(null); setSelected(""); setRows([]); setPage(null); setMoreBusy(false);
+    setStatus("loading"); setError(""); setRetry(value => value + 1);
+  }
+
+  function selectRelease(value: string) {
+    if (value === selected) return;
+    generation.current++; pageController.current?.abort();
+    setRows([]); setPage(null); setMoreBusy(false); setStatus("loading"); setError(""); setSelected(value);
+  }
+
+  function selectGroup(value: string) {
+    if (value === group) return;
+    generation.current++; pageController.current?.abort();
+    setRows([]); setPage(null); setMoreBusy(false); setStatus("loading"); setError(""); setGroup(value);
+  }
 
   useEffect(() => {
-    let alive = true;
-    setStatus("loading"); setError(""); setRows([]); setPage(null);
-    getRpsReleases().then(catalog => {
-      if (!alive) return;
-      if (catalog.schema_version !== "rps-catalog/1.2") throw new Error("Unsupported release contract");
-      setReleases(catalog.items);
-      setSelected(catalog.items[0]?.id ?? "");
-      if (!catalog.items.length) setStatus("empty");
-    }).catch(() => { if (alive) { setStatus("error"); setError("The RPS publication service is unavailable. No legacy score has been substituted."); } });
-    return () => { alive = false; };
+    const current = ++catalogGeneration.current, controller = new AbortController();
+    catalogController.current = controller;
+    setStatus("loading"); setError(""); setCatalog(null); setSelected(""); setRows([]); setPage(null);
+    getRpsReleases(controller.signal).then(value => {
+      if (current !== catalogGeneration.current) return;
+      const checked = verifyRpsCatalog(value);
+      setCatalog(checked); setSelected(checked.items[0]?.id ?? "");
+      if (checked.status === "unavailable") {
+        setStatus("error"); setError("No configured RPS release could be verified. This is not an empty publication catalog; scores and downloads are unavailable.");
+      } else if (checked.status === "not_published") setStatus("empty");
+    }).catch(() => {
+      if (current === catalogGeneration.current) {
+        setCatalog(null); setSelected(""); setStatus("error");
+        setError("The RPS publication service is unavailable or its catalog is inconsistent. No legacy score has been substituted.");
+      }
+    });
+    return () => { catalogGeneration.current++; controller.abort(); };
   }, [retry]);
 
   useEffect(() => {
-    const release = releases.find(item => item.id === selected);
+    const release = catalog?.items.find(item => item.id === selected);
     if (!release) return;
-    const current = ++generation.current;
+    const current = ++generation.current, controller = new AbortController();
+    pageController.current = controller;
     setStatus("loading"); setRows([]); setPage(null); setError(""); setMoreBusy(false);
-    getRpsPage(release.id, 0, group).then(result => {
+    getRpsPage(release.id, 0, group, controller.signal).then(result => {
       if (current !== generation.current) return;
       verifyRpsPage(result, release, 0, [], group);
       setPage(result); setRows(result.items); setStatus("ready");
     }).catch(() => { if (current === generation.current) { setStatus("error"); setError("This release failed to load or verify. Scores are hidden until verification succeeds."); } });
-    return () => { generation.current++; };
-  }, [selected, releases, group]);
+    return () => { generation.current++; controller.abort(); };
+  }, [selected, catalog, group]);
 
   async function loadMore() {
     const release = releases.find(item => item.id === selected);
@@ -60,7 +91,7 @@ export function ResearchPriorityBoard() {
     const current = generation.current;
     setMoreBusy(true); setError("");
     try {
-      const result = await getRpsPage(release.id, rows.length, group);
+      const result = await getRpsPage(release.id, rows.length, group, pageController.current?.signal);
       if (current !== generation.current) return;
       verifyRpsPage(result, release, rows.length, rows, group);
       setRows([...rows, ...result.items]); setPage(result);
@@ -68,6 +99,7 @@ export function ResearchPriorityBoard() {
     finally { if (current === generation.current) setMoreBusy(false); }
   }
   const release = releases.find(item => item.id === selected);
+  const bundleUrl = release ? rpsBundleDownloadUrl(release) : null;
   const visible = rows;
 
   return (
@@ -93,25 +125,50 @@ export function ResearchPriorityBoard() {
         </div>
       </details>
 
-      {status === "loading" && <p role="status" className="py-8 text-sm text-sage-muted">Loading a verified research release…</p>}
+      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-sage-muted">
+        <p>Publication checks describe a server read point, not permanent approval or scientific validation.</p>
+        <button className="rounded-lg border border-sage-border px-3 py-2 text-sage-ink" onClick={refreshCatalog}>Refresh releases</button>
+      </div>
+      {status === "loading" && <p role="status" className="py-8 text-sm text-sage-muted">Loading a checked research release…</p>}
       {status === "empty" && <div className="rounded-xl border border-dashed border-sage-border p-6">
         <h3 className="font-semibold">No reviewed RPS release published yet</h3>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-sage-muted">The scoring framework is ready for curated assessments. Historical candidates below remain research leads; their old heuristic scores have not been converted into RPS. A release requires defined states, actionable questions, evidence review, frozen scoring rules and verified costs.</p>
       </div>}
-      {error && <div role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">{error} {status === "error" && <button className="ml-2 underline" onClick={() => setRetry(n => n + 1)}>Retry</button>}</div>}
+      {error && <div role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">{error} {status === "error" && <button className="ml-2 underline" onClick={refreshCatalog}>Retry</button>}</div>}
+      {catalog?.status === "degraded" && <p role="status" className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+        Publication catalog partially available. Failed releases or public bundles are withheld; the remaining checked releases may still be inspected. This is not a complete successful inventory.
+      </p>}
+      {!!catalog?.unavailable.length && <div className="space-y-1 text-sm text-amber-950">
+        <p>Configured releases unavailable after verification:</p>
+        <ul className="list-inside list-disc">{catalog.unavailable.map(item => <li key={item.id}><code>{item.id}</code> · verification failed; no score or download substituted.</li>)}</ul>
+      </div>}
+      {catalog && <details className="text-xs text-sage-muted"><summary className="cursor-pointer">Publication catalog snapshot</summary>
+        <p className="mt-2 break-all">Server catalog revision: <code>{catalog.catalog_revision}</code></p>
+        <p className="break-all">Server approval snapshot: <code>{catalog.approval_sha256}</code></p>
+        <p>These are opaque server-snapshot identifiers, not browser cryptographic verification or disclosure authorization.</p>
+      </details>}
 
       {releases.length > 0 && <div className="space-y-3">
         <label className="flex flex-wrap items-center gap-3 text-sm font-medium">Fixed release
-          <select className="max-w-full rounded-lg border border-sage-border bg-white p-2" value={selected} onChange={e => setSelected(e.target.value)}>
+          <select className="max-w-full rounded-lg border border-sage-border bg-white p-2" value={selected} onChange={e => selectRelease(e.target.value)}>
             {releases.map(item => <option key={item.id} value={item.id}>{item.id} · {item.campaign_id}</option>)}
           </select>
         </label>
         {release && <div className="space-y-1 text-xs text-sage-muted"><p>{release.objective}</p><p>Evidence cutoff: {release.evidence_cutoff} · Campaign {release.campaign_version}</p><p className="break-all font-mono">Manifest SHA-256: {release.manifest_sha256}</p></div>}
+        {release && <div className="space-y-2 rounded-lg border border-sage-border bg-white p-4 text-sm">
+          <h3 className="font-semibold">Public verification bundle</h3>
+          {bundleUrl ? <>
+            <a className="text-accent underline" href={bundleUrl}>Download pinned public verification bundle</a>
+            <p className="break-all text-xs text-sage-muted">Bundle SHA-256: <code>{release.public_bundle.sha256}</code> · verifier <code>{release.public_bundle.verifier_version}</code></p>
+            <p className="text-xs text-sage-muted">The request binds this release manifest and bundle hash; the server rechecks current publication configuration. The browser has not downloaded or independently verified the file.</p>
+          </> : <p className="text-amber-950">{release.public_bundle.status === "not_published" ? "No public verification bundle is published for this release." : "The public verification bundle is unavailable. No cached download or unpinned link is substituted."}</p>}
+          <p className="text-xs text-sage-muted">Hash integrity and deterministic recomputation do not establish evidence truth, scientific validation, reviewer identity or disclosure authorization. Public attestation labels remain declarations.</p>
+        </div>}
       </div>}
 
       {status === "ready" && <>
         <div className="flex flex-wrap gap-2" role="group" aria-label="Assessment group">
-          {[["discovery", "Discovery actions"], ["mechanism", "Mechanism actions"], ["unranked", "Unranked / references"]].map(([key, label]) => <button key={key} aria-pressed={group === key} onClick={() => setGroup(key)} className={`rounded-lg border px-3 py-2 text-sm ${group === key ? "border-accent bg-accent text-white" : "border-sage-border bg-white"}`}>{label}</button>)}
+          {[["discovery", "Discovery actions"], ["mechanism", "Mechanism actions"], ["unranked", "Unranked / references"]].map(([key, label]) => <button key={key} aria-pressed={group === key} onClick={() => selectGroup(key)} className={`rounded-lg border px-3 py-2 text-sm ${group === key ? "border-accent bg-accent text-white" : "border-sage-border bg-white"}`}>{label}</button>)}
         </div>
         <div className="max-w-full overflow-x-auto rounded-xl border border-sage-border" tabIndex={0} aria-label="Research priority comparison table">
           <table className="w-full min-w-[1060px] border-collapse text-left text-sm">
@@ -121,7 +178,7 @@ export function ResearchPriorityBoard() {
               {PHYSICAL_DIMENSIONS.map(([key, label]) => <th key={key} scope="col" className="p-3">{label}</th>)}
               <th scope="col" className="p-3">Assessed weight</th>
             </tr></thead>
-            <tbody>{visible.map(row => <PriorityRow key={`${selected}:${row.id}`} row={row} release={release!} />)}</tbody>
+            <tbody>{visible.map(row => <PriorityRow key={`${catalog!.catalog_revision}:${release!.manifest_sha256}:${group}:${row.id}`} row={row} release={release!} />)}</tbody>
           </table>
         </div>
         {visible.length === 0 && <p className="text-sm text-sage-muted">No assessments in this group in this release.</p>}
@@ -138,15 +195,24 @@ function PriorityRow({ row, release }: { row: RpsRow; release: RpsRelease }) {
   const [detail, setDetail] = useState<RpsDetail | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const detailGeneration = useRef(0), detailController = useRef<AbortController | null>(null);
+  useEffect(() => () => { detailGeneration.current++; detailController.current?.abort(); }, []);
   async function expand() {
-    setOpen(!open);
-    if (open || detail || loading) return;
+    if (open) {
+      setOpen(false); detailGeneration.current++; detailController.current?.abort(); setLoading(false);
+      return;
+    }
+    setOpen(true);
+    if (detail || loading) return;
+    const current = ++detailGeneration.current, controller = new AbortController();
+    detailController.current = controller;
     setLoading(true); setError("");
     try {
-      const value = await getRpsDetail(release.id, row.id);
+      const value = await getRpsDetail(release.id, row.id, controller.signal);
+      if (current !== detailGeneration.current) return;
       setDetail(verifyRpsDetail(value, release, row));
-    } catch { setError("Evidence detail could not be verified. Close and reopen to retry."); }
-    finally { setLoading(false); }
+    } catch { if (current === detailGeneration.current) setError("Evidence detail could not be verified. Close and reopen to retry."); }
+    finally { if (current === detailGeneration.current) setLoading(false); }
   }
   return <>
     <tr className="border-t border-sage-border align-top bg-white">

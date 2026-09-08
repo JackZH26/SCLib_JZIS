@@ -519,6 +519,45 @@ Content-Type: application/json
           <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`GET /v1/discovery/candidates?schema_version=1&offset=0&limit=24`}</pre>
         </Endpoint>
 
+        <Endpoint method="GET" path="/discovery/rps/releases" badge="free">
+          <p>
+            The separate <Code>rps-catalog/1.3</Code> publication catalog lists
+            checked release <Code>items[]</Code>, failed release <Code>unavailable[]</Code>,{" "}
+            <Code>status</Code>, <Code>approval_sha256</Code> and <Code>catalog_revision</Code>.
+            Status is <Code>published</Code>, <Code>not_published</Code>,{" "}
+            <Code>degraded</Code> or <Code>unavailable</Code>; failed verification
+            must not be treated as a successfully empty catalog. Snapshot hashes
+            describe the server read point, not permanent approval or scientific validation.
+            The current board requires catalog 1.3; release pages and details retain 1.2.
+          </p>
+          <p className="mt-2">
+            Each item has <Code>public_bundle</Code> with <Code>status</Code>,{" "}
+            <Code>sha256</Code> and <Code>verifier_version</Code>. Only <Code>available</Code>{" "}
+            supplies a bundle hash and <Code>rps-public-verifier/1.0.0</Code>.
+            <Code>not_published</Code> and <Code>unavailable</Code> retain null
+            hash/version fields and no download. A bundle failure can degrade
+            the catalog without discarding a separately checked score release.
+          </p>
+          <p className="mt-2">
+            Download from <Code>GET /discovery/rps/releases/{"{id}"}/bundle</Code>{" "}
+            with both <Code>manifest_sha256</Code> and <Code>bundle_sha256</Code>{" "}
+            copied from the selected item. The fixed API route rechecks current
+            publication configuration and returns a canonical attachment;
+            unapproved, mismatched or unavailable requests receive an error,
+            not an unpinned substitute. The browser has not independently
+            verified a file merely because it displays this link. Refreshing
+            the catalog clears old scores and download pins while new checks run.
+          </p>
+          <p className="mt-2">
+            Public bundle publication needs its own administrator pin as well
+            as the release pin. Hash integrity and deterministic RPS recomputation
+            do not establish reviewer identity, source truth, disclosure rights,
+            scientific acceptance or a probability of superconductivity.
+            Public review-attestation labels remain declarations, not authenticated
+            reviewers or redistribution permission.
+          </p>
+        </Endpoint>
+
         {/* Stats */}
         <Endpoint method="GET" path="/stats" badge="free">
           <p>

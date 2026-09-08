@@ -163,9 +163,11 @@ and complete resource categories before showing verified detail.
 Hashes prove content integrity, **not reviewer identity or scientific truth**.
 Reviewer IDs are recorded attestations, not cryptographic signatures. Approval
 authority remains the trusted curator/administrator release workflow; this change
-adds no public write/approval path. Independent public whole-bundle download and
-recomputation, catalog failure isolation and richer authorization are DR02, not
-claimed as completed here.
+adds no public write/approval path. The subsequent
+[DR02 public delivery implementation](RPS_PUBLIC_DELIVERY.md) adds separately
+admitted whole-bundle download/recomputation and catalogue failure isolation.
+Its local integrity checks do not replace real review, disclosure consent or
+the remaining scientific/publication acceptance gates.
 
 ## Honest contribution explanations
 

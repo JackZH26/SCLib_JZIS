@@ -121,6 +121,9 @@ class Settings(BaseSettings):
     discovery_rps_public_enabled: bool = False
     discovery_rps_release_dir: str = "/data/sclib/discovery/rps"
     discovery_rps_approved_releases: dict[str, str] = Field(default_factory=dict)
+    # Independent disclosure approval: a release manifest alone never enables
+    # downloading unrestricted internal artifacts or reviewer information.
+    discovery_rps_approved_public_bundles: dict[str, str] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def require_https_for_production_auth(self) -> Settings:
