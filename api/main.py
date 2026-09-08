@@ -42,6 +42,7 @@ from routers import (
     research_publications,
     scientific_corrections,
     scientific_program_imports,
+    scientific_review,
     search,
     seo,
     similar,
@@ -618,6 +619,7 @@ app.include_router(ask.router, prefix="/v1")
 app.include_router(research_publications.router, prefix="/v1")
 app.include_router(research_distributions.router, prefix="/v1")
 app.include_router(scientific_program_imports.router, prefix="/v1")
+app.include_router(scientific_review.router, prefix="/v1")
 app.include_router(source_impacts.router, prefix="/v1")
 app.include_router(ml_foundation.router, prefix="/v1")
 app.include_router(materials.router, prefix="/v1")

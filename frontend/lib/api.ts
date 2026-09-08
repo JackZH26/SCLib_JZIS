@@ -39,6 +39,21 @@ export class ApiError extends Error {
   }
 }
 
+// Private read-only research workbench. Callers validate the closed wire before display.
+export function scientificReviewCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request("/ml/scientific-review/capabilities", { signal, cache: "no-store" });
+}
+
+export function scientificReviewQueue(after: string | null = null, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ limit: "25" });
+  if (after !== null) query.set("after", after);
+  return request(`/ml/scientific-review/results?${query}`, { signal, cache: "no-store" });
+}
+
+export function scientificReviewDossier(propertyId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/ml/scientific-review/results/${encodeURIComponent(propertyId)}`, { signal, cache: "no-store" });
+}
+
 /**
  * Map any caught error into a user-facing string. The fetch API throws a
  * generic `TypeError: Failed to fetch` for every network-level failure

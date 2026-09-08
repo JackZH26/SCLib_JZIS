@@ -160,7 +160,9 @@ terminal. If an authorized negative receipt cannot commit, the durable start
 remains `outcome_unknown`. Late parsing cannot perform SQL. Recovery has its own
 capacity bound; exhausting it does not fabricate a negative outcome. Reauthentication
 and the original package permit recovery after the original grant is revoked,
-provided the new operator has current curator authority.
+provided the new operator has current curator authority. A new operator's HTTP
+retry can append a successor attempt; it does not rewrite an older operator's
+unresolved attempt history.
 
 Exact typed key/package/material-start conflicts return 409. Missing authority
 returns 401/403; schema/feature unavailability, SQL errors and unknown failures
@@ -242,7 +244,9 @@ identity. No production migration or rollout is implied by native test success.
 Before scientific/ML use, finish reviewed state/run/geometry/source-time/rights
 binding and the existing independent dataset/release gates. Expand other core
 property adapters only with explicit units, dimensionality, reference/method
-context and negative fixtures. A curvature minimum is neither a superconducting
-label nor a universal cross-family ranking feature. The curator review UI,
-broader genuinely permitted canary cohort and remote implementation delivery
-remain separate unfinished work.
+context and negative fixtures. A sampled phonon-frequency minimum is neither a
+superconducting label nor a universal cross-family ranking feature. The
+[private read-only evidence workbench](SCIENTIFIC_EVIDENCE_WORKBENCH.md) now
+exposes exact pending results and their dependency metadata. Actual scientific
+adjudication, a broader genuinely permitted canary cohort and remote
+implementation delivery remain separate unfinished work.

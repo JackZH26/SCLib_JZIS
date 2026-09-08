@@ -24,6 +24,7 @@ const NAV_BASE = [
   { href: "/dashboard/history",  label: "Ask History" },
   { href: "/dashboard/saved",    label: "Bookmarks" },
   { href: "/dashboard/feedback", label: "Feedback" },
+  { href: "/dashboard/research/review", label: "Scientific evidence" },
 ];
 
 // Admin-only: user management + audit queue.
@@ -87,7 +88,7 @@ export default function DashboardLayout({
 
   return (
     <DashboardUserProvider value={{ user, setUser }}>
-      <main className="mx-auto flex max-w-7xl gap-8 px-6 py-10">
+      <main className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-6 md:flex-row md:px-6 md:py-10">
         <Sidebar items={
           user.is_admin
             ? [...NAV_BASE, ...NAV_ADMIN]

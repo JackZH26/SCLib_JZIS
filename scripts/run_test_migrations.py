@@ -1443,6 +1443,96 @@ def _scientific_import_downgrade_guard(capability, engine, config, attempt_id):
         assert snapshot(connection) == before
 
 
+def _assert_result_impact_indexes(connection, *, present=True):
+    from models.scientific_result_impact_indexes_v1 import INDEX_SPECS
+    from sqlalchemy import text
+
+    for name, table, columns, predicate in INDEX_SPECS:
+        row = connection.execute(text("""SELECT target.relname AS table_name,am.amname AS method,
+            ix.indisvalid,ix.indisready,ix.indisunique,pg_get_expr(ix.indpred,ix.indrelid) AS predicate,
+            ARRAY(SELECT a.attname FROM unnest(ix.indkey) WITH ORDINALITY k(attnum,ordinal)
+                  JOIN pg_attribute a ON a.attrelid=ix.indrelid AND a.attnum=k.attnum
+                  WHERE k.ordinal<=ix.indnkeyatts ORDER BY k.ordinal) AS columns
+            FROM pg_index ix JOIN pg_class idx ON idx.oid=ix.indexrelid
+            JOIN pg_class target ON target.oid=ix.indrelid JOIN pg_am am ON am.oid=idx.relam
+            JOIN pg_namespace n ON n.oid=idx.relnamespace WHERE n.nspname='public' AND idx.relname=:name"""),
+            {"name": name}).mappings().one_or_none()
+        if not present:
+            assert row is None
+            continue
+        assert row is not None and row["table_name"] == table and row["method"] == "btree"
+        assert tuple(row["columns"]) == columns and row["indisvalid"] and row["indisready"] and not row["indisunique"]
+        assert (row["predicate"] is None) is (predicate is None)
+        if predicate is not None:
+            assert "derives_from" in row["predicate"] if "derives_from" in predicate else (
+                columns[0] in row["predicate"] and "IS NOT NULL" in row["predicate"])
+
+
+def _result_impact_indexes_roundtrip(capability, engine, config, *, populated):
+    """0066 removes only indexes, both before and after every retained ledger."""
+    from alembic import command
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public") if name != "alembic_version"}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        _assert_result_impact_indexes(connection)
+        before = snapshot(connection)
+        if populated:
+            assert before["scientific_import_outcomes"] and before["ml_feature_source_bindings"]
+            assert before["research_distribution_dependencies"]
+        else:
+            assert all(not before[name] for name in _SCIENTIFIC_IMPORT_TABLES)
+    validate_test_environment()
+    command.downgrade(config, "0065_scientific_import")
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        _assert_result_impact_indexes(connection, present=False)
+        assert snapshot(connection) == before
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError:
+            pass
+        else:
+            raise AssertionError("Result impact application must refuse the previous schema")
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_result_impact_indexes(connection)
+        assert snapshot(connection) == before
+        if populated:
+            from uuid import UUID
+
+            from sqlalchemy.dialects import postgresql
+            from tests.test_scientific_result_impact_indexes import (
+                plan_nodes,
+                query_statements,
+            )
+
+            example_input = next(row for row in before["ml_example_inputs"] if row["input_property_id"] is not None)
+            pin = next(row for row in before["research_release_pins"] if row["table_name"] == "event_properties"
+                       and row["row_id"] == example_input["input_property_id"])
+            statements = query_statements(event_id=UUID(example_input["input_event_id"]),
+                property_id=UUID(example_input["input_property_id"]), release_id=UUID(pin["release_id"]))
+            connection.execute(text("SET LOCAL enable_seqscan=off"))
+            connection.execute(text("SET LOCAL statement_timeout='5s'"))
+            expected = {"ml_inputs": {"idx_sri66_ml_input_event"}, "derivations": {"idx_sri66_derivation_input_event"},
+                        "objects": {"idx_sri66_distribution_object"},
+                        "capsules": {f"idx_sri66_distribution_capsule_{index}" for index in range(8)}}
+            for name, statement in statements.items():
+                sql = str(statement.compile(dialect=postgresql.dialect(), compile_kwargs={"literal_binds": True}))
+                plan = connection.execute(text("EXPLAIN (FORMAT JSON) " + sql)).scalar_one()[0]["Plan"]
+                assert expected[name] <= {node.get("Index Name") for node in plan_nodes(plan)}
+            assert snapshot(connection) == before
+
+
 def main() -> None:
     # This must run before importing config, Alembic or any database client.
     capability = validate_test_environment()
@@ -1514,6 +1604,7 @@ def main() -> None:
             assert set(_RAG_EVIDENCE_TABLES) <= set(schema.get_table_names())
             assert _ML_FEATURE_BINDING_TABLE in schema.get_table_names()
             assert set(_SCIENTIFIC_IMPORT_TABLES) <= set(schema.get_table_names())
+            _assert_result_impact_indexes(connection)
             assert connection.execute(text("""SELECT count(*) FROM pg_trigger WHERE NOT tgisinternal
                 AND tgname IN ('si65_insert','si65_immutable','si65_truncate','si65_complete')""")).scalar_one() == 17
             from models.scientific_import_v1 import (
@@ -1538,6 +1629,7 @@ def main() -> None:
                     'source_revisions_immutable_row', 'source_revisions_immutable_truncate',
                     'source_captures_immutable_row', 'source_captures_immutable_truncate',
                     'claim_source_occurrences_immutable_row', 'claim_source_occurrences_immutable_truncate')""")).scalar_one() == 6
+        _result_impact_indexes_roundtrip(capability, engine, config, populated=False)
         with engine.begin() as connection:
             verify_postgres_identity(connection, capability)
             legacy = connection.execute(text("""SELECT records, has_competing_order, pairing_symmetry,
@@ -1716,7 +1808,8 @@ def main() -> None:
         _scientific_imports_empty_roundtrip(capability, engine, config)
         attempt_id = asyncio.run(_scientific_imports_on_migrated_schema(capability, api_root))
         _scientific_import_downgrade_guard(capability, engine, config, attempt_id)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay, exact property feature source companions/byte verification/replay, byte-retained pending scientific imports with durable unknown starts/atomic completion/rollback/replay and independent nonempty history rollback guards verified.")
+        _result_impact_indexes_roundtrip(capability, engine, config, populated=True)
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay, exact property feature source companions/byte verification/replay, byte-retained pending scientific imports with durable unknown starts/atomic completion/rollback/replay, result-impact index-only empty/populated roundtrips and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 

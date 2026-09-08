@@ -1687,6 +1687,12 @@ from models.scientific_import_v1 import register as _register_scientific_import 
 
 SCIENTIFIC_IMPORT_TABLES = _register_scientific_import(Base.metadata)
 
+from models.scientific_result_impact_indexes_v1 import (
+    register as _register_scientific_result_impact_indexes,  # noqa: E402
+)
+
+SCIENTIFIC_RESULT_IMPACT_INDEXES = _register_scientific_result_impact_indexes(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

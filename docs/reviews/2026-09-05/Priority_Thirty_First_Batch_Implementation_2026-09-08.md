@@ -170,9 +170,21 @@ in this batch. Focused tests below are subsets, not added again to that total:
 API-only runtime verification copies the exact shipped source modules into an
 isolated installation layout and compiles actual-format bytes in a new Python
 process with no repository/scripts. This is not a Docker image build or a
-deployed wheel validation. Offline wheel-build verification was not completed;
-local `uv`/`hatchling` were not available on the checked command path/runtime.
-No dependencies were installed to bypass that limitation.
+deployed wheel validation.
+
+Post-commit evidence correction, recorded with batch32: independent verification
+found an already cached Hatchling runtime and completed an **offline** wheel
+build without installing dependencies. The actual 745,936-byte
+`sclib_api-0.1.0-py3-none-any.whl` has SHA-256
+`f521fb5b68f92a5e382bf7ccfbbaa716a27df336e80befcf0890db25c0f30028`.
+All eight new module/migration paths were present. An extracted API-only layout
+ran under Python `-I -S -B` with repository reads, network, database imports and
+writes blocked: all twelve installed source hashes matched; complete synthetic
+144-entry force constants produced `pending_context_and_review`, and missing
+force constants remained quarantined. The earlier statement that offline wheel
+verification was incomplete is superseded by this actual artifact evidence.
+This validates packaging and isolated parsing, not a deployed service or newly
+executed scientific computation.
 
 ## Issue acceptance and next priorities
 

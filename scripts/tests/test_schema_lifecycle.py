@@ -318,5 +318,25 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
         self.assertIn("assert snapshot(connection) == before", guard)
 
 
+    def test_result_impact_index_only_roundtrip_preserves_all_histories(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        main = source.split("def main()", 1)[1]
+        empty = "_result_impact_indexes_roundtrip(capability, engine, config, populated=False)"
+        populated = "_result_impact_indexes_roundtrip(capability, engine, config, populated=True)"
+        self.assertLess(main.index(empty), main.index("_scientific_imports_on_migrated_schema(capability"))
+        self.assertGreater(main.index(populated), main.index("_scientific_import_downgrade_guard(capability"))
+        body = source.split("def _result_impact_indexes_roundtrip", 1)[1].split("def main()", 1)[0]
+        self.assertIn('command.downgrade(config, "0065_scientific_import")', body)
+        self.assertIn("_assert_result_impact_indexes(connection, present=False)", body)
+        self.assertEqual(body.count("assert snapshot(connection) == before"), 3)
+        self.assertIn('before["scientific_import_outcomes"]', body)
+        self.assertIn('EXPLAIN (FORMAT JSON)', body)
+        migration = (ROOT / "api/alembic/versions/0066_result_impact_indexes.py").read_text()
+        self.assertIn("index.create(op.get_bind())", migration)
+        self.assertIn("index.drop(op.get_bind())", migration)
+        for forbidden in ("UPDATE ", "DELETE ", "TRUNCATE ", "ALTER TABLE", "CONCURRENTLY"):
+            self.assertNotIn(forbidden, migration)
+
+
 if __name__ == "__main__":
     unittest.main()

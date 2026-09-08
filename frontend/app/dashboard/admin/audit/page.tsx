@@ -109,6 +109,7 @@ export default function AdminAuditPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-lg font-semibold text-sage-ink">Data audit</h2>
+        <p className="my-2 text-sm"><Link href="/dashboard/research/review" className="text-accent-deep underline">Scientific evidence workbench</Link> · Read-only; explicit research access required.</p>
         {user.is_admin && <Link href="/dashboard/admin/jobs" className="text-sm text-accent-deep underline">Background job status</Link>}
         <p className="mt-1 text-sm text-sage-muted">
           Nightly data audit ran most recently at{" "}
