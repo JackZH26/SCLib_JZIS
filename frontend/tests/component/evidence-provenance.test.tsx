@@ -80,6 +80,11 @@ describe("typed evidence provenance", () => {
     expect(screen.getByLabelText("Saved evidence provenance")).toHaveTextContent("current lineage has not been rechecked here");
     expect(screen.queryByText("Current catalogue binding; not scientific acceptance.")).not.toBeInTheDocument();
   });
+  it("does not mislabel generation-bound evidence as current catalogue evidence", () => {
+    render(<EvidenceProvenanceNotice evidence={evidenceProvenance({ warning_codes: ["generation_snapshot_catalogue_freshness_unverified"] })} />);
+    expect(screen.getByLabelText("Evidence provenance")).toHaveTextContent("Selected generation binding; catalogue freshness unverified");
+    expect(screen.queryByText("Current catalogue binding; not scientific acceptance.")).not.toBeInTheDocument();
+  });
   it("withholds excerpts that cannot be attributed to a unique current source", () => {
     const input = response();
     input.claim_assessments![0].evidence[0].paper_id = "synthetic:wrong-source";

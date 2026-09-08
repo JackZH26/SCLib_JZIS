@@ -1,7 +1,14 @@
 # RAG reliability and evaluation
 
-SCLib uses hybrid retrieval rather than treating a vector-nearest-neighbour
-result as sufficient evidence:
+SCLib first interprets a bounded scientific query. Numerical/evidence predicates
+and Search UI scientific filters use provider-free, exact-parent extraction
+lookup; unsupported scientific clauses require clarification. These records are
+not scientific-support judgments. Pure mechanisms/comparisons select only typed
+original passages; full mixed synthesis remains unfinished. See
+[scientific routing and consumer migration](SCIENTIFIC_QUERY_ROUTING.md).
+
+For ordinary topic retrieval, SCLib uses hybrid retrieval rather than treating
+a vector-nearest-neighbour result as sufficient evidence:
 
 1. An active immutable generation is pinned; Vertex semantic and PostgreSQL
    full-text candidates are fetched within that generation. Without an active
@@ -42,6 +49,14 @@ api/.venv/bin/python scripts/run_disposable_tests.py --backend docker --suite ap
 This seed set is a smoke benchmark, not a scientific-quality claim. It should
 grow with adjudicated production misses. Additions must include the query,
 candidate texts, independent lexical/vector orders, and expected top document.
+
+The `test_scientific_query*`, `test_scientific_lookup_contract.py` and
+`test_scientific_search_routing.py` suites add deterministic parser, original
+quantity, real SQL parent/generation, UI-filter and public-wire regressions.
+They do not turn the seed file into an independently adjudicated gold set.
+Keep the planned reviewed 100–200-question set, held-out protocol, source-root
+adjudication, mixed-evidence packing and actual cost/latency measurements as
+separate RG04 acceptance requirements.
 
 ## Failure and safety metrics
 

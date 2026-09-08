@@ -12,6 +12,12 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from models.index_read import IndexReadMetadata
+from models.scientific_lookup import (
+    LinkedScientificResult,
+    ScientificLookupStatus,
+    validate_scientific_response,
+)
+from models.scientific_query import ScientificQueryInterpretation
 from services.claim_support import SUPPORT_POLICY_VERSION
 from services.material_property_projection import project_material_properties
 from services.material_semantics import MATERIAL_SEMANTICS_VERSION
@@ -57,6 +63,13 @@ class SearchRequest(BaseModel):
     filters: SearchFilters = Field(default_factory=SearchFilters)
     sort: Literal["relevance", "date", "tc"] = "relevance"
 
+    @field_validator("query")
+    @classmethod
+    def nonblank_query(cls, value):
+        if not value.strip():
+            raise ValueError("Query must contain non-whitespace text")
+        return value  # preserve original notation and whitespace spans
+
 
 class SearchMatch(BaseModel):
     """One hit in a search response."""
@@ -96,11 +109,18 @@ class SearchMatch(BaseModel):
 
 class SearchResponse(BaseModel):
     retrieval_generation: IndexReadMetadata = Field(default_factory=IndexReadMetadata)
+    scientific_query: ScientificQueryInterpretation | None = None
+    scientific_lookup: ScientificLookupStatus = Field(default_factory=ScientificLookupStatus)
+    scientific_results: list[LinkedScientificResult] = Field(default_factory=list, max_length=20)
     total: int
     results: list[SearchMatch]
     query_time_ms: int
     guest_remaining: int | None = None
     remaining: int | None = None
+
+    @model_validator(mode="after")
+    def scientific_response_coherent(self):
+        return validate_scientific_response(self)
 
 
 # ---------------------------------------------------------------------------
@@ -111,6 +131,13 @@ class AskRequest(BaseModel):
     question: str = Field(..., min_length=3, max_length=2000)
     max_sources: int = Field(10, ge=1, le=20)
     language: Literal["auto", "en", "zh"] = "auto"
+
+    @field_validator("question")
+    @classmethod
+    def nonblank_question(cls, value):
+        if not value.strip():
+            raise ValueError("Question must contain non-whitespace text")
+        return value
 
 
 class AskSource(BaseModel):
@@ -155,6 +182,9 @@ class ClaimSupportAssessment(BaseModel):
 
 class AskResponse(BaseModel):
     retrieval_generation: IndexReadMetadata = Field(default_factory=IndexReadMetadata)
+    scientific_query: ScientificQueryInterpretation | None = None
+    scientific_lookup: ScientificLookupStatus = Field(default_factory=ScientificLookupStatus)
+    scientific_results: list[LinkedScientificResult] = Field(default_factory=list, max_length=20)
     answer: str  # markdown with [1][2] citations
     sources: list[AskSource]
     tokens_used: int | None
@@ -172,6 +202,10 @@ class AskResponse(BaseModel):
     assessment_scope: Literal["generated_draft", "none"] = "none"
     guest_remaining: int | None = None
     remaining: int | None = None
+
+    @model_validator(mode="after")
+    def scientific_response_coherent(self):
+        return validate_scientific_response(self)
 
 
 # ---------------------------------------------------------------------------

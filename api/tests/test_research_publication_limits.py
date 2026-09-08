@@ -271,19 +271,27 @@ async def test_public_http_session_connection_error_is_sanitized(client, monkeyp
 async def test_request_deadline_covers_work_after_dependency_yield(client, monkeypatch):
     original_timeout = asyncio.timeout
     started = False
+    deadlines = []
 
     def short_deadline(seconds):
         assert seconds == 10
-        return original_timeout(0.05)
+        # Arm the test deadline at the target body, not during a variable-cost
+        # native connection/schema read. This specifically proves cancellation
+        # remains covered after dependency yield, even on a busy test host.
+        deadline = original_timeout(None)
+        deadlines.append(deadline)
+        return deadline
 
     async def never_finishes(_db):
         nonlocal started
         started = True
+        assert len(deadlines) == 1
+        deadlines[0].reschedule(asyncio.get_running_loop().time() + 0.05)
         await asyncio.Event().wait()
 
     monkeypatch.setattr(router.asyncio, "timeout", short_deadline)
     monkeypatch.setattr(router, "public_inventory", never_finishes)
-    response = await client.get("/v1/ml/releases")
+    response = await asyncio.wait_for(client.get("/v1/ml/releases"), timeout=5)
     assert started and response.status_code == 503
     assert response.json()["detail"] == "Publication registry unavailable"
     assert response.json()["error_code"] == "service_unavailable"

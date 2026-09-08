@@ -23,6 +23,7 @@ from config import get_settings
 from models import get_db
 from models.db import AskHistory
 from models.index_read import generation_read_metadata
+from models.scientific_lookup import ScientificLookupStatus
 from models.search import AskRequest, AskResponse, AskSource
 from routers.deps import Identity, require_identity
 from services import (
@@ -35,6 +36,13 @@ from services import (
 )
 from services.authors import short as _authors_short
 from services.metrics import observe_rag
+from services.scientific_query import interpret_scientific_query
+from services.scientific_query_lookup import (
+    lookup_answer,
+    lookup_scientific_results,
+    result_query,
+    unavailable,
+)
 from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import (
     citation_evidence,
@@ -59,12 +67,41 @@ async def ask(
     # The catalogue read transaction is closed before provider generation.
     # Retain primitives, not an ORM User that rollback would expire.
     history_user_id = identity.user.id if identity.user is not None else None
+    interpretation = interpret_scientific_query(body.question)
+    if interpretation.status == "clarification_required":
+        answer = ("Please clarify the unresolved scientific conditions before a numerical lookup or synthesis. "
+                  + " ".join(interpretation.clarification_questions))
+        latency_ms = int((time.perf_counter() - t0) * 1000)
+        await _record_lookup_interaction(db, history_user_id, body, answer, latency_ms, structured=False)
+        return AskResponse(answer=answer, sources=[], tokens_used=0,
+            query_time_ms=latency_ms,
+            citation_indices_valid=True, scientific_query=interpretation,
+            scientific_lookup=ScientificLookupStatus(status="clarification_required", reason_codes=["unresolved_query_constraints"]),
+            guest_remaining=identity.guest_remaining,
+            remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining)
 
     try:
         async with asyncio.timeout(10):
             pin = await index_retrieval.load_pin(db)
     except Exception:
         raise HTTPException(503, "Retrieval generation is unavailable") from None
+    if result_query(interpretation):
+        try:
+            async with asyncio.timeout(15):
+                outcome = await lookup_scientific_results(db, pin, interpretation, limit=body.max_sources)
+        except Exception:
+            await db.rollback()
+            outcome = unavailable("scientific_lookup_unavailable")
+        answer = lookup_answer(outcome)
+        latency_ms = int((time.perf_counter() - t0) * 1000)
+        await _record_lookup_interaction(db, history_user_id, body, answer, latency_ms, structured=True)
+        return AskResponse(answer=answer, sources=[], tokens_used=0,
+            query_time_ms=latency_ms, citation_indices_valid=True,
+            support_warnings=["structured_extractions_not_scientific_validation"],
+            guest_remaining=identity.guest_remaining,
+            remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
+            retrieval_generation=generation_read_metadata(pin), scientific_query=interpretation,
+            scientific_lookup=outcome.status, scientific_results=outcome.results)
     settings = get_settings()
     vector_hits = []
     if pin is not None:
@@ -86,10 +123,16 @@ async def ask(
     candidate_limit = min(body.max_sources * 5, 100)
     lexical_hits = await retrieval.lexical_search(
         db,
-        body.question,
+        interpretation.normalized_query,
         limit=candidate_limit,
         generation_id=pin["generation_id"] if pin is not None else None,
     )
+    try:
+        async with asyncio.timeout(15):
+            formula_hits = await retrieval.formula_lexical_search(db, interpretation, pin, limit=candidate_limit)
+        lexical_hits = retrieval.combine_lexical_hits(formula_hits, lexical_hits, limit=candidate_limit)
+    except Exception:
+        raise HTTPException(503, "Formula-aware retrieval is unavailable") from None
     candidates = retrieval.fuse_rankings(
         vector_hits,
         lexical_hits,
@@ -123,6 +166,7 @@ async def ask(
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
             retrieval_generation=generation_read_metadata(pin),
+            scientific_query=interpretation,
         )
 
     # Hydrate exact immutable members, never resolve opaque ANN IDs through
@@ -164,6 +208,8 @@ async def ask(
         if chunk is None or chunk.paper is None:
             continue
         evidence = evidence_by_chunk[chunk.id]
+        if interpretation.intent in {"mechanism", "comparison"} and evidence["chunk_kind"] != "original_passage":
+            continue  # derived numerical Facts are not original explanatory passages
         # Never send or quote a known-restricted/stale evidence projection.
         # Other unresolved lineage is navigation data, not original support.
         if evidence["permission_status"] == "restricted" or evidence["currentness"] == "stale":
@@ -309,6 +355,7 @@ async def ask(
         guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
         retrieval_generation=generation_read_metadata(pin),
+        scientific_query=interpretation,
     )
 
 
@@ -363,6 +410,24 @@ async def _persist_history(
     except Exception:  # noqa: BLE001
         log.exception("ask_history write failed (non-fatal)")
         await db.rollback()
+
+
+async def _record_lookup_interaction(db, user_id, body, answer, latency_ms, *, structured):
+    """Retain the static interaction, not unsupported result/citation history.
+
+    The existing history schema cannot replay response-level generation pins or
+    these structured results. Never encode them as original citation sources or
+    persist a static answer claiming that omitted rows are available in history.
+    """
+    observe_rag(sources=0, tokens=0, citation_valid=False, fallback=False,
+        citation_indices_valid=True, scientific_support_status="not_checked", answer_mode="abstention")
+    if user_id is not None:
+        history_answer = answer
+        if structured:
+            history_answer = ("A structured extraction lookup was requested. Numerical rows and their generation bindings "
+                              "are not retained in this history schema; rerun the query to inspect current results. "
+                              "This history entry is not scientific evidence.")
+        await _persist_history(db, user_id, body.question, history_answer, [], 0, latency_ms, body.language)
 
 
 # ---------------------------------------------------------------------------

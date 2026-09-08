@@ -595,6 +595,10 @@ export interface SearchMatch {
 }
 
 export interface SearchResponse {
+  retrieval_generation?: RetrievalGeneration | null;
+  scientific_query?: ScientificQueryInterpretation | null;
+  scientific_results?: BoundScientificQueryResult[];
+  scientific_lookup?: ScientificLookup;
   total: number;
   results: SearchMatch[];
   query_time_ms: number;
@@ -602,11 +606,12 @@ export interface SearchResponse {
   remaining: number | null;
 }
 
-export function search(req: SearchRequest, opts: { apiKey?: string } = {}) {
+export function search(req: SearchRequest, opts: { apiKey?: string; signal?: AbortSignal } = {}) {
   return request<SearchResponse>("/search", {
     method: "POST",
     body: JSON.stringify(req),
     apiKey: opts.apiKey,
+    signal: opts.signal,
   });
 }
 
@@ -653,6 +658,10 @@ export interface EvidenceProvenance {
 }
 
 export interface AskResponse {
+  retrieval_generation?: RetrievalGeneration | null;
+  scientific_query?: ScientificQueryInterpretation | null;
+  scientific_results?: BoundScientificQueryResult[];
+  scientific_lookup?: ScientificLookup;
   answer: string;
   sources: AskSource[];
   tokens_used: number | null;
@@ -694,12 +703,117 @@ export interface AskClaimAssessment {
   evidence: { source_index: number; paper_id: string | null; excerpt: string }[];
 }
 
-export function ask(req: AskRequest, opts: { apiKey?: string } = {}) {
+export function ask(req: AskRequest, opts: { apiKey?: string; signal?: AbortSignal } = {}) {
   return request<AskResponse>("/ask", {
     method: "POST",
     body: JSON.stringify(req),
     apiKey: opts.apiKey,
+    signal: opts.signal,
   });
+}
+
+/** Query interpretation and machine extractions are not scientific acceptance. */
+export interface RetrievalGeneration {
+  version: "index-read/1.0.0";
+  mode: "generation_snapshot" | "legacy_lexical_only";
+  generation_id: string | null;
+  activation_event_id: string | null;
+  manifest_sha256: string | null;
+}
+
+export interface ScientificQuerySpan { raw_text: string; start: number; end: number }
+export interface FormulaQueryNormalization {
+  version: "formula-query/1.0.0";
+  raw_formula: string;
+  normalized_formula: string | null;
+  status: "normalized" | "unresolved";
+  reason_codes: string[];
+}
+export interface ScientificQuantityConstraint extends ScientificQuerySpan {
+  field: "tc_kelvin" | "pressure_gpa";
+  relation: "exact" | "lt" | "le" | "gt" | "ge" | "interval";
+  value: number | null;
+  lower: number | null;
+  upper: number | null;
+  unit: "K" | "GPa";
+  unit_basis: "explicit" | "explicit_ambient_reference";
+}
+export interface ScientificEvidenceConstraint extends ScientificQuerySpan {
+  field: "knowledge_origin" | "source_role" | "experimental_outcome";
+  value: "Observed" | "Computed" | "Inferred" | "AI-Proposed" | "Unknown" | "primary" | "cited" | "positive_reported" | "not_detected";
+}
+export interface ScientificQueryInterpretation {
+  version: "scientific-query/1.0.0";
+  raw_query: string;
+  normalized_query: string;
+  language: "en" | "zh" | "mixed";
+  intent: "numerical" | "mechanism" | "mixed" | "comparison" | "general";
+  status: "resolved" | "clarification_required";
+  requested_fields: ("tc_kelvin" | "pressure_gpa")[];
+  formulas: (ScientificQuerySpan & { normalization: FormulaQueryNormalization })[];
+  constraints: ScientificQuantityConstraint[];
+  evidence_constraints: ScientificEvidenceConstraint[];
+  unresolved_clauses: (ScientificQuerySpan & { reason_code: string })[];
+  clarification_questions: string[];
+  scientific_acceptance: false;
+}
+
+export interface ScientificReportQuantity {
+  status: "parsed" | "unreported" | "invalid";
+  relation: "exact" | "lt" | "le" | "gt" | "ge" | "interval" | "unreported";
+  value: number | null;
+  lower: number | null;
+  upper: number | null;
+  uncertainty: number | null;
+  approximate: boolean;
+  unit: "K" | "GPa";
+  unit_basis: "explicit" | "field_schema_assumption" | "endpoint_units" | "unreported" | "explicit_ambient_reference";
+  uncertainty_interpretation: "unspecified" | null;
+}
+export interface ScientificQueryResult {
+  version: "scientific-query-result/1.0.0";
+  result_id: string;
+  record_index: number;
+  formula: string;
+  family: string | null;
+  tc: ScientificReportQuantity;
+  minimum_temperature: ScientificReportQuantity;
+  pressure: ScientificReportQuantity & { pressure_state: "explicit_ambient" | "reported" | "not_reported" | "ambiguous" };
+  result_classification: {
+    knowledge_origin: "Observed" | "Computed" | "Inferred" | "AI-Proposed" | "Unknown";
+    classification_status: "resolved" | "unknown" | "conflicted";
+    source_role: "primary" | "cited" | "unknown" | "conflicted";
+  };
+  outcome_state: "positive_reported" | "not_detected" | "unspecified" | "unresolved" | "conflicted";
+  reported_context: { tc_criterion: string | null; sample_label: string | null; sample_form: string | null; structure_phase: string | null; measurement_method: string | null };
+  warning_codes: string[];
+  scientific_acceptance: false;
+  ml_training_eligible: false;
+  detection_adequacy_verified: false;
+}
+export interface BoundScientificQueryResult {
+  result: ScientificQueryResult;
+  binding: {
+    paper_id: string;
+    vector_id: string;
+    generation_id: string;
+    activation_event_id: string;
+    manifest_sha256: string;
+    content_sha256: string;
+    evidence_revision_id: string;
+    evidence_record_sha256: string;
+    parent_result_revision_id: string;
+    parent_result_sha256: string;
+    association_scope: "derived_extraction_not_original_support";
+  };
+}
+export interface ScientificLookup {
+  status: "not_requested" | "completed" | "unavailable" | "clarification_required";
+  reason_codes: string[];
+  returned_count: number;
+  has_more: boolean;
+  scope: "declared_generation_derived_extractions";
+  scientific_acceptance: false;
 }
 
 // --- Materials ------------------------------------------------------------

@@ -18,6 +18,12 @@ The local research branch has separate [implementation records](docs/reviews/202
 Its latest infrastructure adds [bounded internal research integrity capsules](docs/RESEARCH_RELEASE_FREEZE.md)
 and [explicit schema migration with read-only API admission](docs/SCHEMA_ROLLOUT.md).
 The next boundary adds [explicit research-role access and reviewed metadata-only publications](docs/RESEARCH_PUBLICATION_ACCESS.md).
+Retrieval now also has [immutable index generations and controlled rollback](docs/INDEX_GENERATIONS.md)
+and [formula-safe scientific query routing](docs/SCIENTIFIC_QUERY_ROUTING.md).
+Numerical/evidence queries and Search UI scientific filters return qualified,
+exact-parent extraction rows separately from ordinary paper hits; without an
+active generation they explicitly report unavailable. These are not reviewed
+scientific Results. See the routing document for client compatibility changes.
 These are not a production rollout, scientifically approved training datasets,
 or permission to redistribute source text and artifacts. The production snapshot
 below is historical and must not be read as validation of these local upgrades.

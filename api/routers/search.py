@@ -22,11 +22,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from config import get_settings
 from models import get_db
 from models.index_read import generation_read_metadata
+from models.scientific_lookup import ScientificLookupStatus
 from models.search import SearchMatch, SearchRequest, SearchResponse
 from routers.deps import Identity, require_identity
 from services import index_retrieval, index_vector_adapter, provider_resilience, retrieval
 from services.anomaly_review import eligible_for_property
 from services.scientific_filters import ResultFilters, matching_result_references
+from services.scientific_query import interpret_scientific_query
+from services.scientific_query_lookup import lookup_scientific_results, result_query, unavailable
 from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import (
     occurrence_visibility,
@@ -47,12 +50,43 @@ async def search(
     db: AsyncSession = Depends(get_db),  # noqa: B008
 ) -> SearchResponse:
     t0 = time.perf_counter()
+    interpretation = interpret_scientific_query(body.query)
+    f = body.filters
+    scientific_filters = ResultFilters(
+        families=tuple(f.material_family or []), tc_min=f.tc_min,
+        pressure_min=f.pressure_min, pressure_max=f.pressure_max,
+        ambient_only=f.ambient_only, include_unknown_pressure=f.include_unknown_pressure,
+        origins=tuple(f.knowledge_origin or []), source_role=f.source_role,
+        experimental_only=f.experimental_only,
+    )
+    if interpretation.status == "clarification_required":
+        return SearchResponse(total=0, results=[], query_time_ms=int((time.perf_counter() - t0) * 1000),
+            guest_remaining=identity.guest_remaining,
+            remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
+            scientific_query=interpretation, scientific_lookup=ScientificLookupStatus(
+                status="clarification_required", reason_codes=["unresolved_query_constraints"]))
 
     try:
         async with asyncio.timeout(10):
             pin = await index_retrieval.load_pin(db)
     except Exception:
         raise HTTPException(503, "Retrieval generation is unavailable") from None
+    # UI scientific predicates have exactly the same source-bound admission
+    # as conditions written in the query. They never fall back to legacy
+    # paper-wide numeric projections. Consumers read scientific_results here.
+    if result_query(interpretation) or scientific_filters.active:
+        try:
+            async with asyncio.timeout(15):
+                outcome = await lookup_scientific_results(db, pin, interpretation, limit=min(body.top_k, 20), filters=scientific_filters,
+                    year_min=f.year_min, year_max=f.year_max, sort=body.sort)
+        except Exception:
+            await db.rollback()
+            outcome = unavailable("scientific_lookup_unavailable")
+        return SearchResponse(total=0, results=[], query_time_ms=int((time.perf_counter() - t0) * 1000),
+            guest_remaining=identity.guest_remaining,
+            remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
+            retrieval_generation=generation_read_metadata(pin), scientific_query=interpretation,
+            scientific_lookup=outcome.status, scientific_results=outcome.results)
     # No active generation means lexical-only. Positional legacy ANN IDs must
     # never be interpreted as pointers to the latest mutable Chunk rows.
     settings = get_settings()
@@ -76,13 +110,20 @@ async def search(
     candidate_limit = min(body.top_k * 5, 300)
     lexical_hits = await retrieval.lexical_search(
         db,
-        body.query,
+        interpretation.normalized_query,
         limit=candidate_limit,
         year_min=body.filters.year_min,
         year_max=body.filters.year_max,
         exclude_retracted=body.filters.exclude_retracted,
         generation_id=pin["generation_id"] if pin is not None else None,
     )
+    try:
+        async with asyncio.timeout(15):
+            formula_hits = await retrieval.formula_lexical_search(db, interpretation, pin, limit=candidate_limit,
+                year_min=body.filters.year_min, year_max=body.filters.year_max)
+        lexical_hits = retrieval.combine_lexical_hits(formula_hits, lexical_hits, limit=candidate_limit)
+    except Exception:
+        raise HTTPException(503, "Formula-aware retrieval is unavailable") from None
     candidates = retrieval.fuse_rankings(
         vector_hits,
         lexical_hits,
@@ -102,6 +143,7 @@ async def search(
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
             retrieval_generation=generation_read_metadata(pin),
+            scientific_query=interpretation,
         )
 
     # Hydrate exact generation members (or explicit legacy lexical rows),
@@ -136,14 +178,6 @@ async def search(
 
     # Preserve fused ordering and reapply authoritative filters to retained
     # metadata with independently resolved live governance.
-    f = body.filters
-    scientific_filters = ResultFilters(
-        families=tuple(f.material_family or []), tc_min=f.tc_min,
-        pressure_min=f.pressure_min, pressure_max=f.pressure_max,
-        ambient_only=f.ambient_only, include_unknown_pressure=f.include_unknown_pressure,
-        origins=tuple(f.knowledge_origin or []), source_role=f.source_role,
-        experimental_only=f.experimental_only,
-    )
     matches: list[SearchMatch] = []
     seen_papers: set[str] = set()  # deduplicate: one result per paper
     for candidate in candidates:
@@ -242,6 +276,7 @@ async def search(
         guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
         retrieval_generation=generation_read_metadata(pin),
+        scientific_query=interpretation,
     )
 
 

@@ -1,7 +1,7 @@
 "use client";
 import { EvidenceProvenanceNotice } from "@/components/EvidenceProvenanceNotice";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -17,12 +17,14 @@ import { SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
 import { GuestBanner } from "@/components/GuestBanner";
 import { MarkdownAnswer } from "@/components/MarkdownAnswer";
 import { AskSupportNotice } from "@/components/AskSupportNotice";
+import { ScientificQueryNotice } from "@/components/ScientificQueryNotice";
 import { resolveAskSource } from "@/lib/ask-support";
+import { knownScientificLookup, knownScientificQuery, knownScientificResults } from "@/lib/scientific-query";
 
 export default function SearchPage() {
   return (
     <Suspense fallback={<p className="text-sm text-slate-500">Loading…</p>}>
-      <SearchInner />
+      <SearchForQuery />
     </Suspense>
   );
 }
@@ -40,10 +42,15 @@ function isQuestion(q: string): boolean {
   return false;
 }
 
-function SearchInner() {
+function SearchForQuery() {
   const params = useSearchParams();
   const q = params.get("q") ?? "";
+  // Remount before rendering a different query: old results/interpretations
+  // must not flash under the new URL while an effect is still pending.
+  return <SearchInner key={q} q={q} />;
+}
 
+function SearchInner({ q }: { q: string }) {
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
   const [askData, setAskData] = useState<AskResponse | null>(null);
   const [searchErr, setSearchErr] = useState<string | null>(null);
@@ -51,50 +58,57 @@ function SearchInner() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [askLoading, setAskLoading] = useState(false);
   const [manualAsk, setManualAsk] = useState(false);
+  const mounted = useRef(false);
+  const askVersion = useRef(0);
+  const askController = useRef<AbortController | null>(null);
 
-  useEffect(() => {
-    if (q.length < 2) {
-      setSearchData(null);
-      setAskData(null);
-      setManualAsk(false);
-      return;
-    }
-
-    setSearchLoading(true);
-    setSearchErr(null);
-    setSearchData(null);
+  const triggerAsk = useCallback((manual = true) => {
+    if (!mounted.current || q.length < 2) return;
+    const version = ++askVersion.current;
+    askController.current?.abort();
+    const controller = new AbortController();
+    askController.current = controller;
+    const current = () => mounted.current && version === askVersion.current;
+    setManualAsk(manual);
+    setAskLoading(true);
     setAskData(null);
     setAskErr(null);
-    setManualAsk(false);
-
-    search({ query: q, top_k: 20, filters: { exclude_retracted: true } })
-      .then(setSearchData)
-      .catch((e: unknown) => setSearchErr(friendlyErrorMessage(e)))
-      .finally(() => setSearchLoading(false));
-
-    if (isQuestion(q)) {
-      setAskLoading(true);
-      ask({ question: q, max_sources: 8 })
-        .then(setAskData)
-        .catch((e: unknown) => setAskErr(friendlyErrorMessage(e)))
-        .finally(() => setAskLoading(false));
-    }
+    ask({ question: q, max_sources: 8 }, { signal: controller.signal })
+      .then(data => { if (current()) setAskData(data); })
+      .catch((error: unknown) => { if (current()) setAskErr(friendlyErrorMessage(error)); })
+      .finally(() => { if (current()) setAskLoading(false); });
   }, [q]);
 
-  function triggerAsk() {
-    setManualAsk(true);
-    setAskLoading(true);
-    setAskErr(null);
-    ask({ question: q, max_sources: 8 })
-      .then(setAskData)
-      .catch((e: unknown) => setAskErr(friendlyErrorMessage(e)))
-      .finally(() => setAskLoading(false));
-  }
+  useEffect(() => {
+    mounted.current = true;
+    let current = true;
+    const controller = new AbortController();
+    if (q.length >= 2) {
+      setSearchLoading(true);
+      setSearchErr(null);
+      search({ query: q, top_k: 20, filters: { exclude_retracted: true } }, { signal: controller.signal })
+        .then(data => { if (current) setSearchData(data); })
+        .catch((error: unknown) => { if (current) setSearchErr(friendlyErrorMessage(error)); })
+        .finally(() => { if (current) setSearchLoading(false); });
+      if (isQuestion(q)) triggerAsk(false);
+    }
+    return () => {
+      current = false;
+      mounted.current = false;
+      askVersion.current += 1;
+      controller.abort();
+      askController.current?.abort();
+    };
+  }, [q, triggerAsk]);
 
   const guestRemaining =
     searchData?.guest_remaining ?? askData?.guest_remaining;
   const showAskButton =
     q.length >= 2 && !isQuestion(q) && !askData && !askLoading && !manualAsk;
+  const askQuery = knownScientificQuery(askData?.scientific_query, q);
+  const askLookup = knownScientificLookup(askData?.scientific_lookup);
+  const isStructuredAsk = askQuery !== null && askLookup !== null && askLookup.status !== "not_requested"
+    && knownScientificResults(askData?.scientific_results, askLookup, askData?.retrieval_generation, askQuery) !== null;
 
   return (
     <main className="space-y-6">
@@ -110,7 +124,7 @@ function SearchInner() {
         <div className="rounded-lg border border-sage-border bg-white p-6 shadow-sm">
           <div className="flex items-center gap-2 text-sm text-sage-muted">
             <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-accent border-t-transparent" />
-            Generating AI answer…
+            Preparing answer…
           </div>
         </div>
       )}
@@ -124,9 +138,11 @@ function SearchInner() {
       {askData && (
         <div className="rounded-lg border border-sage-border bg-white p-6 shadow-sm">
           <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-sage-tertiary">
-            AI Answer
+            {isStructuredAsk ? "Source-linked extraction lookup" : "Answer"}
           </h2>
           <AskSupportNotice response={askData} />
+          <ScientificQueryNotice context="Ask" rawQuery={q} query={askData.scientific_query}
+            lookup={askData.scientific_lookup} results={askData.scientific_results} generation={askData.retrieval_generation} />
           <MarkdownAnswer markdown={askData.answer} sources={askData.sources} />
           <div className="mt-4 flex flex-wrap gap-2 border-t border-sage-border pt-4">
             {askData.sources.map((s, sourcePosition) => (
@@ -156,7 +172,7 @@ function SearchInner() {
 
       {showAskButton && (
         <button
-          onClick={triggerAsk}
+          onClick={() => triggerAsk()}
           className="rounded-md border border-sage-border bg-white px-4 py-2 text-sm text-sage-muted shadow-sm transition-colors hover:bg-sage-bg hover:text-sage-ink"
         >
           Summarize with AI
@@ -172,6 +188,9 @@ function SearchInner() {
           {searchErr}
         </div>
       )}
+
+      {searchData && <ScientificQueryNotice rawQuery={q} query={searchData.scientific_query}
+        lookup={searchData.scientific_lookup} results={searchData.scientific_results} generation={searchData.retrieval_generation} />}
 
       {searchData && searchData.results.length > 0 && (
         <>
@@ -207,7 +226,7 @@ function SearchInner() {
         </>
       )}
 
-      {searchData && searchData.results.length === 0 && (
+      {searchData && searchData.results.length === 0 && (!searchData.scientific_query || searchData.scientific_lookup?.status === "not_requested") && (
         <p className="text-sm text-sage-muted">No results.</p>
       )}
 

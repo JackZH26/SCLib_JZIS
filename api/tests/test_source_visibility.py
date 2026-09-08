@@ -165,14 +165,18 @@ async def test_search_keeps_unlinked_report_without_republishing_linked_quaranti
     async def lexical(*_args, **_kwargs):
         return [retrieval.LexicalHit(chunk_id, 1.0)]
     monkeypatch.setattr("routers.search.retrieval.lexical_search", lexical)
-    response = await client.post("/v1/search", json={"query": "MgB2 report", "filters": {"tc_min": 37}})
+    response = await client.post("/v1/search", json={"query": "MgB2 report"})
     assert response.status_code == 200, response.text
     body = response.json()["results"][0]
     assert body["paper_id"] == paper_id
     assert len(body["materials"]) == 1
-    assert len(body["matching_results"]) == 1
-    assert body["matching_results"][0]["record_index"] == 1
-    assert not body["matching_results"][0]["visibility"]["public_catalogue_eligible"]
+    assert body["matching_results"] == []
+    assert body["materials"][0]["visibility"]["material_link_status"] == "unlinked"
+    assert not body["materials"][0]["visibility"]["public_catalogue_eligible"]
+    filtered = await client.post("/v1/search", json={"query": "MgB2 report", "filters": {"tc_min": 37}})
+    assert filtered.json()["results"] == [] and filtered.json()["scientific_results"] == []
+    assert filtered.json()["scientific_lookup"]["status"] == "unavailable"
+    assert filtered.json()["scientific_lookup"]["reason_codes"] == ["active_generation_required"]
     provider_resilience.reset()
 
 
@@ -186,8 +190,11 @@ async def test_corrected_paper_cannot_satisfy_scientific_filter_even_archive_opt
     monkeypatch.setattr("routers.search.retrieval.lexical_search", lexical)
     response = await client.post("/v1/search", json={"query": "MgB2 report", "filters": {"tc_min": 37, "exclude_retracted": False}})
     assert response.status_code == 200 and response.json()["results"] == []
+    assert response.json()["scientific_lookup"]["status"] == "unavailable"
+    assert response.json()["scientific_lookup"]["reason_codes"] == ["active_generation_required"]
     bibliographic = await client.post("/v1/search", json={"query": "MgB2 report"})
     assert len(bibliographic.json()["results"]) == 1
+    assert bibliographic.json()["results"][0]["source_visibility"]["source_status"] == "corrected"
     provider_resilience.reset()
 
 
@@ -242,8 +249,11 @@ async def test_published_reset_keeps_unlinked_sources_out_of_scientific_search_a
     assert detail.json()["source_visibility"]["lifecycle_review_required"] is True
     bibliography = await client.post("/v1/search", json={"query": "MgB2 report"})
     assert bibliography.status_code == 200 and len(bibliography.json()["results"]) == 1
+    assert bibliography.json()["results"][0]["source_visibility"]["lifecycle_review_required"] is True
     filtered = await client.post("/v1/search", json={"query": "MgB2 report", "filters": {"tc_min": 37}})
     assert filtered.status_code == 200 and filtered.json()["results"] == []
+    assert filtered.json()["scientific_lookup"]["status"] == "unavailable"
+    assert filtered.json()["scientific_lookup"]["reason_codes"] == ["active_generation_required"]
     answer = await client.post("/v1/ask", json={"question": "MgB2 report"})
     assert answer.status_code == 200 and answer.json()["sources"] == []
     provider_resilience.reset()

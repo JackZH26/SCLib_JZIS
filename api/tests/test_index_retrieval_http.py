@@ -237,7 +237,11 @@ async def test_actual_post_llm_barrier_rechecks_live_source_and_activation_event
     assert captured and response.status_code == 200, response.text
     payload = response.json()
     assert payload["answer_mode"] == "abstention" and payload["sources"] == []
-    assert "old snapshot" not in response.text
+    # The new interpretation faithfully echoes the user's query, not source
+    # content. Neither answer nor any other returned evidence may leak it.
+    assert payload["scientific_query"]["raw_query"] == "old snapshot"
+    assert "old snapshot" not in str({key: value for key, value in payload.items() if key != "scientific_query"})
+    assert payload["scientific_results"] == []
     assert ("retrieval_generation_changed" if change == "aba" else "retrieval_source_no_longer_eligible") in payload["citation_warnings"]
 
 

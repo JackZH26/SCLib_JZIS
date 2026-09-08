@@ -33,6 +33,45 @@ class RankedCandidate:
     rerank_score: float = 0.0
 
 
+async def formula_lexical_search(db, interpretation, pin, *, limit, year_min=None, year_max=None):
+    """Surface-notation equivalents in the bounded retained generation only.
+
+    This is candidate matching, not sample/phase identity or scientific support.
+    No punctuation-stripping, empirical reduction or D/H equivalence is used.
+    """
+    if pin is None or not interpretation.formulas:
+        return []
+    from services.index_generations import load_generation_members, manifest_sha256
+    from services.scientific_query import match_source_formulas
+    wanted = {item.normalization.normalized_formula for item in interpretation.formulas}
+    if interpretation.status != "resolved" or None in wanted:
+        return []
+    members = await load_generation_members(db, generation_id=pin["generation_id"])
+    if manifest_sha256(members) != pin["manifest_sha256"]:
+        raise ValueError("Formula lookup requires a complete declared generation")
+    matches = []
+    for member in members:
+        snapshot = member["snapshot_json"]
+        year = snapshot.get("year")
+        if ((year_min is not None or year_max is not None) and (type(year) is not int
+                or year_min is not None and year < year_min or year_max is not None and year > year_max)):
+            continue
+        overlap = match_source_formulas(snapshot["text"], wanted)
+        if overlap:
+            matches.append(LexicalHit(member["vector_id"], len(overlap) / len(wanted)))
+    return sorted(matches, key=lambda item: (-item.score, item.chunk_id))[:max(1, min(limit, 300))]
+
+
+def combine_lexical_hits(formula_hits, text_hits, *, limit):
+    """Exact supported notation candidates first, retaining generic fallback."""
+    seen, result = set(), []
+    for item in [*formula_hits, *text_hits]:
+        if item.chunk_id not in seen:
+            seen.add(item.chunk_id)
+            result.append(item)
+    return result[:limit]
+
+
 async def lexical_search(
     db: AsyncSession,
     query_text: str,

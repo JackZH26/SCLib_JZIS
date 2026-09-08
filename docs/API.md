@@ -96,16 +96,15 @@ both available and returned point counts.
 ### `POST /search`
 ```json
 {
-  "query": "room temperature superconductors 2023",
+  "query": "superconductivity",
   "top_k": 10,
   "filters": {
     "year_min": 2020,
-    "year_max": 2024,
-    "material_family": ["cuprate"]
+    "year_max": 2024
   }
 }
 ```
-Combines Google `text-embedding-005` / Vertex ANN candidates with PostgreSQL
+Ordinary topic/year-only search combines Google `text-embedding-005` / Vertex ANN candidates with PostgreSQL
 full-text candidates, applies Reciprocal Rank Fusion and a deterministic
 query-coverage reranker, then hydrates exact retained members of one pinned
 active index generation. A Vertex timeout, exhausted retry, or open circuit
@@ -125,6 +124,16 @@ material and permission holds still apply. An activation event change is
 detected even when the same generation is later restored. Existing Ask history
 does not yet retain this response-level generation/event metadata. See
 [index generations and rollout limits](INDEX_GENERATIONS.md).
+
+Scientific numerical/evidence queries and Search UI scientific filters now
+return separate `scientific_query`, `scientific_lookup`, and
+`scientific_results` envelopes. These are exact-parent machine extractions,
+not original-source support or ML-approved Results. In this mode `results=[]`
+and `total=0` refer only to paper hits; consumers must read the structured row
+count/status. No active generation means `unavailable`, not legacy numerical
+fallback. Mixed explanations explicitly remain unperformed. Numeric Ask is
+provider-free with zero provider tokens and no scientific-support claim.
+See [routing, wire migration and scientific limits](SCIENTIFIC_QUERY_ROUTING.md).
 
 Each result now carries `evidence_provenance` under `rag-evidence/1.0.0`:
 `chunk_kind` (`original_passage`, `abstract`, `derived_fact`, `legacy_unknown`),

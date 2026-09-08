@@ -10,7 +10,9 @@ export function EvidenceProvenanceNotice({ evidence: input, historical = false }
     <span className="block">{LABELS[evidence.chunk_kind]} · Original evidence root unresolved.</span>
     <span className="block">{historical ? "Saved provenance only; current lineage has not been rechecked here." :
       evidence.currentness === "stale" ? "Stale retrieval projection; text withheld." :
-      evidence.currentness === "current" ? "Current catalogue binding; not scientific acceptance." : "Current catalogue binding unresolved."}</span>
+      evidence.currentness === "current" ? evidence.warning_codes.includes("generation_snapshot_catalogue_freshness_unverified")
+        ? "Selected generation binding; catalogue freshness unverified. Not scientific acceptance."
+        : "Current catalogue binding; not scientific acceptance." : "Current catalogue binding unresolved."}</span>
     <span className="block">{evidence.permission_status === "restricted" ? "Text restricted; consult the source record." : "Text permissions remain unreviewed; this record grants no new use rights."}</span>
     {evidence.chunk_kind === "derived_fact" && <span className="block">Generated from an extraction; not an independent confirmation or original quotation.</span>}
     {evidence.evidence_revision_id && <span className="block break-all">{historical ? "Saved evidence revision" : "Evidence revision"}: {evidence.evidence_revision_id}</span>}

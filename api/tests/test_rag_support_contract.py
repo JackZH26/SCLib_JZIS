@@ -271,7 +271,10 @@ async def test_ask_response_and_history_never_store_rejected_synthesis(client, d
     user = User(id=uuid4(), email="synthetic-rg01@example.invalid", name="Synthetic")
     app.dependency_overrides[require_identity] = lambda: Identity(user, None, None, 12)
     try:
-        response = await client.post("/v1/ask", json={"question": "What is the synthetic Tc?"})
+        # Exercise provider draft adjudication, not the new provider-free
+        # numerical lookup/clarification route. The numeric draft remains the
+        # same rejected claim, so this still tests response/history safety.
+        response = await client.post("/v1/ask", json={"question": "Summarize the synthetic evidence"})
         assert response.status_code == 200, response.text
         body = response.json()
         assert body["support_policy_version"] == claim_support.SUPPORT_POLICY_VERSION

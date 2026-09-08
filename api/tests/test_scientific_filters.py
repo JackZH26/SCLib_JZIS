@@ -157,7 +157,11 @@ async def test_pressure_policy_version_change_invalidates_projection_before_read
 
 
 @pytest.mark.asyncio
-async def test_search_route_returns_one_result_witness_not_a_cross_material_match(client, monkeypatch):
+@pytest.mark.parametrize("filters", [
+    {"tc_min": 200, "pressure_max": 1}, {"tc_min": 200, "material_family": ["cuprate"]},
+    {"tc_min": 200, "pressure_max": 201},
+])
+async def test_search_requires_generation_for_scientific_filters_not_legacy_witnesses(client, monkeypatch, filters):
     provider_resilience.reset()
     suffix = uuid4().hex[:8]
     paper = Paper(id=f"arxiv:same-result-{suffix}", source="arxiv", title="Synthetic same result fixture",
@@ -179,14 +183,18 @@ async def test_search_route_returns_one_result_witness_not_a_cross_material_matc
 
     monkeypatch.setattr("routers.search.provider_resilience.run_blocking", no_vectors)
     monkeypatch.setattr("routers.search.retrieval.lexical_search", lexical)
-    for filters in ({"tc_min": 200, "pressure_max": 1}, {"tc_min": 200, "material_family": ["cuprate"]}):
-        response = await client.post("/v1/search", json={"query": "Synthetic superconductivity", "filters": filters})
-        assert response.status_code == 200
-        assert response.json()["results"] == []
-    response = await client.post("/v1/search", json={"query": "Synthetic superconductivity", "filters": {"tc_min": 200, "pressure_max": 201}})
+    response = await client.post("/v1/search", json={"query": "Synthetic superconductivity", "filters": filters})
+    assert response.status_code == 200
+    assert response.json()["results"] == []
+    assert response.json()["scientific_results"] == []
+    assert response.json()["scientific_lookup"]["status"] == "unavailable"
+    assert response.json()["scientific_lookup"]["reason_codes"] == ["active_generation_required"]
+    # Unfiltered bibliography still exercises legacy material disclosure;
+    # these rows are not a version-pinned quantitative filter witness.
+    response = await client.post("/v1/search", json={"query": "Synthetic superconductivity"})
+    assert response.status_code == 200, response.text
     result = response.json()["results"][0]
-    assert result["matching_results"][0]["formula"] == "A"
-    assert result["matching_results"][0]["record_index"] == 0
+    assert result["matching_results"] == []
     assert result["materials"][1]["pressure_semantics"]["pressure_state"] == "explicit_ambient"
     provider_resilience.reset()
 
