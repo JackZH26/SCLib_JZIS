@@ -2,8 +2,10 @@
 
 Status: EN02 local implementation. This document and the code do not authorize a
 production migration, backfill, credential/role change, traffic switch or issue
-closure. Real staging rehearsal, role provisioning and an approved cutover report
-remain release gates.
+closure. EN02's isolated engineering rehearsal is distinct from production
+readiness. Real target staging, role provisioning and an approved production
+cutover report remain release gates; production execution is not required to
+demonstrate the issue's isolated software acceptance criteria.
 
 ## Execution boundary
 
@@ -157,7 +159,93 @@ these files against the exact deployed/released Git commit and signed image;
 changed historical bytes block rollout. This is a documented replacement/review
 procedure, not an automated historical digest enforcement tool.
 
-## Required cutover report
+## Retained isolated rehearsal report (EN02)
+
+The guarded migration runner can optionally retain a measured, synthetic
+engineering receipt. Use a **new** filename in an existing, nonsymlink directory:
+
+```sh
+api/.venv/bin/python scripts/run_disposable_tests.py \
+  --backend native \
+  --postgres-bin /opt/homebrew/opt/postgresql@16/bin \
+  --redis-bin /opt/homebrew/opt/redis/bin/redis-server \
+  --suite migrations --report /absolute/existing-directory/new-rehearsal.json
+```
+
+Docker mode supports the same migrations-only `--report` option with the
+preinstalled-image safeguards in [TESTING_SAFELY.md](TESTING_SAFELY.md). This
+option does not accept a service target, reuse credentials, run a backfill or
+change test capabilities. It is rejected with API/pytest mode. Inherited report
+environment variables are ignored.
+
+The versioned `schema-rehearsal/1.0.0` JSON contains:
+
+- Actual source `0050_timeline_identity` and target Alembic head; four measured
+  row-count phases (seeded legacy, first upgraded head, before read cutover,
+  final), plus raw material-record counts. Absent old-schema tables are `null`,
+  not a fabricated zero. Each phase describes the entire current synthetic
+  database, not a single production import's accepted-record numerator.
+- Hash/count comparisons for the exact seeded legacy material fields, the
+  exact seeded source revision, and a real frozen release plus its pins. Later
+  fixture additions are not misclassified as modifications to those retained
+  rows. Source text, row bodies and release artifact bytes are not exported.
+- Named, actually observed downgrade refusals and empty/populated index
+  roundtrip outcomes. These are expected negative fixtures, not operational
+  failure rates or data-exclusion counts.
+- Separate actual final scientific-import ledger accounting: package, attempt,
+  terminal and outcome-unknown counts, grouped terminal statuses, and the known
+  `force_constants_unavailable` and `validated_coordinates_unavailable`
+  quarantine reasons. Both can describe the same quarantined package: reason
+  counts are overlapping and must not be summed as excluded-package counts.
+  The opt-in rehearsal exercises
+  both a pending successful import and a missing-force-constants quarantine;
+  it verifies the latter creates no run/state/structure/event/property rows.
+  This is a bounded synthetic import exclusion, not whole-corpus parity.
+  Shadow receipt row counts are measured, but shadow-loader data exclusions
+  remain `null` because a complete shadow import is not exercised here.
+  Production exclusion counts, scientific review, corpus parity, backup/restore
+  and production-role provisioning also remain explicitly `null`.
+- Two actual generation IDs, both validation IDs, initial/second activation
+  events, and the distinct rollback activation event. After mutable chunk
+  replacement, the rehearsal verifies exact retained text and float32 vector
+  bytes, then validates the restored active generation/event. The safe procedure
+  is to revalidate the retained generation and CAS from the current activation
+  event with `action=rollback`, never to erase history.
+- UTC rehearsal timestamps, monotonic elapsed milliseconds and actual native
+  or Docker backend / Python platform / PostgreSQL version. Timing covers the
+  migration rehearsal, not service startup, cleanup, output publication or a
+  corpus-scale performance estimate.
+- HEAD identity **and** a conservative bounded worktree source inventory: API
+  and script Python files (including test fixtures), plus API lock/config inputs.
+  Some inventoried files are not executed by this rehearsal; the inventory is
+  not dynamic coverage or an installed-dependency attestation. Dirty state is explicit;
+  HEAD alone does not identify uncommitted code. The runner rechecks those bytes
+  after the rehearsal and after cleanup; changed inputs refuse publication.
+
+The output path is admitted before services start. Its ancestors are traversed
+without following symlinks and rechecked against held directory identities.
+The child receives only a fixed filename inside this run's private temporary
+directory. A user-visible receipt is published only after the complete rehearsal
+passes, private JSON validation passes, all owned services close successfully,
+and the temporary directory is removed. A complete owner-only `0600` sibling is
+flushed before a no-clobber hard link publishes the new filename. Existing files,
+symlinks and concurrent target creation are not overwritten. A rerun must choose
+another name. An unexpected cleanup failure, interruption, incomplete report or
+source change produces no successful receipt; no stdout, DSNs, capabilities,
+random accounts or exception text are retained in it.
+
+The report's `report_sha256` hashes its canonical body excluding that field;
+the archive README additionally records the SHA-256 of the **complete exact
+file bytes**. Neither digest is an authenticated operator signature or proof of
+scientific truth. `synthetic=true`, `production=false`, and all approval flags
+are fixed false. The local safety boundary detects path/input drift; it is not
+a sandbox against a malicious same-account user who can rewrite the runner.
+
+An actual retained isolated report can support EN02's engineering acceptance
+and code review. Link its exact inputs, regression evidence and implementation
+PR when considering closure; do not substitute it for a real production report.
+
+## Required production cutover report
 
 Before enabling a new read model, retain an internal report containing:
 
@@ -173,7 +261,8 @@ Before enabling a new read model, retain an internal report containing:
 - Backup identity and tested restore reference; exact read-model rollback steps,
   accountable operator and post-rollback verification results.
 
-The local disposable migration/API tests are synthetic safety evidence, not that
-report. Real old-schema staging upgrade, legacy preservation, released-snapshot
-preservation, runtime-role grants, migration contention and read-model rollback
-must still be rehearsed together before EN02 is closed.
+The retained isolated receipt above is synthetic safety evidence, not this
+production report. Before an authorized real cutover, rehearse old-schema staging
+upgrade, legacy and released-snapshot preservation, actual runtime-role grants,
+migration contention and read-model rollback for that target together. Keep this
+deployment gate separate from EN02's explicitly isolated engineering criterion.

@@ -143,9 +143,20 @@ EN04 auditing found development-tool inventory drift and an unbound final image
 rebuild in the release workflow. Those limitations are retained as engineering
 work, not hidden by a passing functional test total.
 
-A full API integration run was started before the final event-local traversal
-fix; its completed result will be recorded separately. It cannot replace the
+A full API integration run, started before the final event-local traversal and
+native-UUID fixes, subsequently completed with **5,033 passed, 1 failed,
+3 opt-in skips and 20 existing warnings** in 2,059.24 seconds. The failure was
+`test_queue_formula_has_native_database_bound_before_hydration`: its assertion
+mistook the first row of a global queue (`MgB2`, retained by earlier tests) for
+the newly seeded `AlAs` result. It was not a formula truncation or database
+constraint failure. This run is not full-suite success and cannot replace the
 123-test post-fix execution or be described as a full run of those final edits.
+
+[Batch 33](Priority_Thirty_Third_Batch_Implementation_2026-09-08.md) fixes the
+test's identity assumption and adds an explicit mixed-material, adjacent-UUID
+keyset case while retaining the actual database overlength-refusal assertion.
+It records the subsequent current-source verification separately; neither the
+old failed run nor a targeted rerun is relabelled as a passing full suite.
 
 ## Remaining implementation priorities
 

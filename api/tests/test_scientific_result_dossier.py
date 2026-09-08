@@ -211,15 +211,28 @@ async def test_source_metadata_is_pinned_without_exposing_private_fields(db_sess
 
 
 async def test_queue_formula_has_native_database_bound_before_hydration(db_session):
-    fixture, _ = await prepared(db_session)
+    fixture, ids = await prepared(db_session)
+    # Other modules intentionally retain committed scientific history. Verify
+    # exact result identities, never assume the global queue starts with this
+    # fixture. Adjacent UUIDs make this a bounded, deterministic mixed-material
+    # regression even when the disposable database already has many results.
+    target_id = UUID(ids["property"])
+    earlier_id = UUID(int=target_id.int - 1)
+    unrelated = await seed_closure(db_session)
+    await add(db_session, "event_properties", id=earlier_id, event_id=unrelated["event"],
+        property_key="band_gap", component_key="queue-formula-regression", relation="exact",
+        value=1, unit="eV", record_sha256="1" * 64)
     materials = Base.metadata.tables["materials"]
     assert materials.c.formula.type.length == 200
     with pytest.raises(sa.exc.DBAPIError):
         async with db_session.begin_nested():
             await db_session.execute(materials.update().where(materials.c.id == fixture["material"])
                                      .values(formula="H" * 201))
-    result = await service.list_results(db_session, actor_user_id=fixture["actors"]["reviewer"])
-    assert result["items"][0]["formula"] == "AlAs"
+    result = await service.list_results(db_session, actor_user_id=fixture["actors"]["reviewer"],
+        after=str(UUID(int=target_id.int - 2)), limit=2)
+    assert [(item["property_id"], item["formula"]) for item in result["items"]] == [
+        (str(earlier_id), "MgB2"), (str(target_id), "AlAs"),
+    ]
 
 
 def test_rps_prefix_escapes_sql_underscore():

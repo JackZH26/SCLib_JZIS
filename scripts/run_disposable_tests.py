@@ -18,6 +18,18 @@ import tempfile
 import time
 from pathlib import Path
 
+from schema_rehearsal_report import (
+    ReportDestination,
+    ReportError,
+    SafeParser,
+    capture_provenance,
+    read_private_report,
+    seal,
+    source_unchanged,
+)
+from schema_rehearsal_report import (
+    loads as load_report,
+)
 from test_safety import (
     LABEL,
     SCHEMA,
@@ -261,20 +273,45 @@ class DisposableServices:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    destination_holder = []
+    try:
+        return _main(destination_holder)
+    except ReportError as exc:
+        print(f"Disposable report refused: {exc}", file=sys.stderr)
+        return 2
+    except (RuntimeError, OSError):
+        print("Disposable run or cleanup failed; no success report published.", file=sys.stderr)
+        return 2
+    finally:
+        if destination_holder:
+            destination_holder[0].close()
+
+
+def _main(destination_holder) -> int:
+    parser = SafeParser(description=__doc__, allow_abbrev=False)
     parser.add_argument("--backend", choices=("docker", "native"), default="docker")
     parser.add_argument("--suite", choices=("api", "migrations"), required=True)
     parser.add_argument("--postgres-bin", type=Path)
     parser.add_argument("--redis-bin", type=Path)
+    parser.add_argument("--report", type=Path, help="New JSON receipt destination; migrations only.")
     parser.add_argument("pytest_args", nargs=argparse.REMAINDER)
     args = parser.parse_args()
     pytest_args = args.pytest_args[1:] if args.pytest_args[:1] == ["--"] else args.pytest_args
     if args.suite == "migrations" and pytest_args:
         parser.error("Migration verification does not accept arbitrary commands.")
+    if args.report is not None and args.suite != "migrations":
+        parser.error("Reports are supported only for migration rehearsals.")
+    destination = None
+    if args.report is not None:
+        # Admit and hold the path before creating any service or client. The
+        # caller's output path is never forwarded to the migration subprocess.
+        destination = ReportDestination(args.report)
+        destination_holder.append(destination)
     with tempfile.TemporaryDirectory(prefix="sclib-tests-") as temporary:
         root = Path(temporary).resolve()
         os.chmod(root, 0o700)
         services = DisposableServices(root, args.backend, args.postgres_bin, args.redis_bin)
+        report_document = None
         try:
             env = services.start()
             print(f"Disposable {args.backend} services verified; running {args.suite}.", flush=True)
@@ -282,15 +319,26 @@ def main() -> int:
                 command = [sys.executable, "-m", "pytest", *(pytest_args or ["-q"])]
             else:
                 command = [sys.executable, str(REPO / "scripts/run_test_migrations.py")]
-            return subprocess.run(command, cwd=REPO / "api", env=env, check=False).returncode
-        except (RuntimeError, OSError) as exc:
+                if destination is not None:
+                    command.extend(["--report", str(root / "schema-rehearsal.json")])
+            returncode = subprocess.run(command, cwd=REPO / "api", env=env, check=False).returncode
+            if returncode == 0 and destination is not None:
+                report_document = load_report(read_private_report(root / "schema-rehearsal.json"), internal=True)
+        except (RuntimeError, OSError):
             # Controlled setup errors only. Avoid traceback/command/DSN disclosure.
-            message = str(exc) if isinstance(exc, RuntimeError) else "Local setup failed."
-            print(message, file=sys.stderr)
+            print("Disposable service or test setup failed; details withheld.", file=sys.stderr)
             return 2
         finally:
             services.close()
-            print("Removed only this run's disposable services and temporary test data.", flush=True)
+    print("Removed only this run's disposable services and temporary test data.", flush=True)
+    # Publication follows test completion, service cleanup AND temporary-dir
+    # cleanup. No inherited report setting is consulted.
+    if report_document is not None:
+        source_unchanged(report_document["provenance"], capture_provenance(REPO))
+        document = seal({**report_document, "cleanup_verified": True})
+        destination.publish(document)
+        print("Retained synthetic schema rehearsal report; no deployment approval.", flush=True)
+    return returncode
 
 
 if __name__ == "__main__":

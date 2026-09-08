@@ -4,6 +4,13 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+from schema_rehearsal_report import (
+    Recorder,
+    ReportDestination,
+    ReportError,
+    SafeParser,
+    sha,
+)
 from test_safety import validate_test_environment, verify_postgres_identity
 
 _RAG_EVIDENCE_TABLES = ("rag_extraction_revisions", "rag_evidence_revisions", "chunk_evidence_current")
@@ -16,6 +23,29 @@ _DISTRIBUTION_TABLES = ("research_distribution_epoch", "research_distribution_pa
 _ML_FEATURE_BINDING_TABLE = "ml_feature_source_bindings"
 _SCIENTIFIC_IMPORT_TABLES = ("scientific_import_packages", "scientific_import_attempts", "scientific_import_blobs",
                              "scientific_import_files", "scientific_import_outcomes")
+
+
+def _report_signature(connection, check, *, release_id=None):
+    """Only hashes/counts leave this guarded synthetic SQL measurement."""
+    from sqlalchemy import text
+
+    queries = {
+        "seeded_legacy_materials": """SELECT id,records,has_competing_order,pairing_symmetry,is_unconventional,disputed
+            FROM public.materials WHERE id IN ('mat:semantics-legacy','mat:semantics-missing')""",
+        "seeded_source_revision": """SELECT * FROM public.source_revisions
+            WHERE id='2a6a3c2e-bf22-4862-8a77-dc80b89d2779'""",
+        "frozen_release_and_pins": """SELECT 'research_releases' AS table_name,to_jsonb(r) AS row FROM public.research_releases r WHERE id=CAST(:release_id AS uuid)
+            UNION ALL SELECT 'research_release_pins',to_jsonb(p) FROM public.research_release_pins p WHERE release_id=CAST(:release_id AS uuid)""",
+    }
+    if check not in queries:
+        raise ReportError("unknown_retention_measurement")
+    return tuple(connection.execute(text("SELECT count(*),encode(digest(coalesce(jsonb_agg(to_jsonb(item) ORDER BY to_jsonb(item)::text)::text,'[]'),'sha256'),'hex') FROM (" + queries[check] + ") item"),
+                                    {"release_id": release_id}).one())
+
+
+def _observed(recorder, code):
+    if recorder is not None:
+        recorder.outcome(code)
 
 
 def _assert_empty_scientific_imports(connection):
@@ -952,9 +982,10 @@ def _index_generations_empty_roundtrip(capability, engine, config):
         assert snapshot(connection) == before
 
 
-async def _index_generations_on_migrated_schema(capability, api_root, receipt_id):
+async def _index_generations_on_migrated_schema(capability, api_root, receipt_id, *, recorder=None):
     """Actual bounded stage/validate/CAS/rollback, with no cloud calls."""
     validate_test_environment()
+    import struct
     sys.path.insert(0, str(api_root / "tests"))
     from uuid import uuid4
 
@@ -1021,10 +1052,25 @@ async def _index_generations_on_migrated_schema(capability, api_root, receipt_id
             retained = await load_generation_members(session, generation_id=generation_id)
             assert retained[0]["snapshot_json"]["text"] == chunk["text"]
             assert len(retained[0]["vector_bytes"]) == 3072
+            assert bytes(retained[0]["vector_bytes"]) == struct.pack(">768f", *vector)
             restored = await activate_generation(session, generation_id=generation_id, validation_id=validation["validation_id"],
                                                  expected_event_id=second_active["activation_event_id"], idempotency_key="migration-rollback", action="rollback", dry_run=False)
             await session.commit()
-            assert (await load_active_generation(session))["activation_event_id"] == restored["activation_event_id"]
+            actual = await load_active_generation(session)
+            assert actual["activation_event_id"] == restored["activation_event_id"]
+            assert actual["generation_id"] == str(generation_id)
+            if recorder is not None:
+                recorder.rollback = {
+                    "generation_ids": [str(generation_id), second["generation_id"]],
+                    "validation_ids": [validation["validation_id"], second_validation["validation_id"]],
+                    "activation_event_ids": [first_active["activation_event_id"], second_active["activation_event_id"]],
+                    "rollback_activation_event_id": restored["activation_event_id"],
+                    "restored_generation_id": actual["generation_id"], "restored_activation_event_id": actual["activation_event_id"],
+                    "retained_member_count": len(retained), "retained_text_sha256": sha(retained[0]["snapshot_json"]["text"].encode()),
+                    "retained_vector_sha256": sha(bytes(retained[0]["vector_bytes"])),
+                    "retained_vector_bytes": len(retained[0]["vector_bytes"]), "verified": True,
+                    "procedure": "validate_retained_generation_then_CAS_from_current_event_with_action_rollback",
+                }
             return str(generation_id)
     finally:
         await engine.dispose()
@@ -1356,7 +1402,7 @@ def _scientific_imports_empty_roundtrip(capability, engine, config):
         assert snapshot(connection) == before
 
 
-async def _scientific_imports_on_migrated_schema(capability, api_root):
+async def _scientific_imports_on_migrated_schema(capability, api_root, *, recorder=None):
     """Actual retained bytes and separate durable start, never an attested DFT run."""
     validate_test_environment()
     sys.path.insert(0, str(api_root / "tests"))
@@ -1412,6 +1458,22 @@ async def _scientific_imports_on_migrated_schema(capability, api_root):
             assert replay["replayed"] and replay["outcome_id"] == finished["outcome_id"]
             await session.commit()
             assert await state(session) == written
+            if recorder is not None:
+                negative = await seed_import(session, missing_fc=True)
+                await session.commit()
+                before_quarantine = await state(session)
+                negative_start = await _start(session, negative, request_key="migrated-scientific-missing-fc")
+                await session.commit()
+                negative_finish = await _finish(session, negative, negative_start)
+                await session.commit()
+                assert negative_finish["status"] == "quarantined"
+                after_quarantine = await state(session)
+                for name in ("research_runs", "material_states", "structure_records", "research_events", "event_properties"):
+                    assert after_quarantine[name] == before_quarantine[name]
+                negative_rows = await _rows(session, "scientific_import_outcomes", attempt_id=negative_start["attempt_id"])
+                assert len(negative_rows) == 1 and negative_rows[0]["reason_codes"] == ["force_constants_unavailable", "validated_coordinates_unavailable"]
+                assert all(negative_rows[0][name + "_id"] is None for name in ("run", "state", "structure", "event", "property"))
+                _observed(recorder, "missing_force_constants_quarantined_without_scientific_rows")
             return started["attempt_id"]
     finally:
         await engine.dispose()
@@ -1536,6 +1598,18 @@ def _result_impact_indexes_roundtrip(capability, engine, config, *, populated):
 def main() -> None:
     # This must run before importing config, Alembic or any database client.
     capability = validate_test_environment()
+    parser = SafeParser(description=__doc__, allow_abbrev=False)
+    parser.add_argument("--report", type=Path)
+    args = parser.parse_args()
+    report_destination = None
+    if args.report is not None:
+        # Only the creating parent may nominate its known private report file.
+        if args.report != Path(capability.manifest["root"]) / "schema-rehearsal.json":
+            raise ReportError("report_must_use_owned_private_directory")
+        report_destination = ReportDestination(args.report)
+    recorder = Recorder(Path(__file__).resolve().parents[1], capability.manifest["backend"]) if report_destination is not None else None
+    retained_before = {}
+    report_document = None
     api_root = Path(__file__).resolve().parents[1] / "api"
     sys.path.insert(0, str(api_root))
     from config import Settings
@@ -1569,11 +1643,16 @@ def main() -> None:
                     ('mat:semantics-missing', 'Y', 'semantics-missing',
                     '[{"tc_kelvin": 20}]'::jsonb, NULL, NULL, false, NULL)"""))
             assert connection.execute(text("SELECT has_competing_order FROM materials WHERE id = 'mat:semantics-missing'")).scalar_one() is None
+            if recorder is not None:
+                recorder.phase(connection, "legacy_seeded")
+                retained_before["seeded_legacy_materials"] = _report_signature(connection, "seeded_legacy_materials")
         command.upgrade(config, "head")
         with engine.connect() as connection:
             admission = check_connection_schema(connection)
             assert admission["status"] == "compatible" and admission["database_mutated"] is False
             verify_postgres_identity(connection, capability)
+            if recorder is not None:
+                recorder.phase(connection, "first_head")
         with engine.connect() as connection:
             verify_postgres_identity(connection, capability)
             heads = set(MigrationContext.configure(connection).get_current_heads())
@@ -1630,6 +1709,7 @@ def main() -> None:
                     'source_captures_immutable_row', 'source_captures_immutable_truncate',
                     'claim_source_occurrences_immutable_row', 'claim_source_occurrences_immutable_truncate')""")).scalar_one() == 6
         _result_impact_indexes_roundtrip(capability, engine, config, populated=False)
+        _observed(recorder, "empty_index_roundtrip_preserved")
         with engine.begin() as connection:
             verify_postgres_identity(connection, capability)
             legacy = connection.execute(text("""SELECT records, has_competing_order, pairing_symmetry,
@@ -1703,6 +1783,7 @@ def main() -> None:
             command.downgrade(config, "0048_pressure_projection")
         except RuntimeError as exc:
             assert "preserve scientific correction proposals" in str(exc)
+            _observed(recorder, "correction_history_downgrade_refused")
         else:
             raise AssertionError("Nonempty correction ledger downgrade must fail closed")
         with engine.connect() as connection:
@@ -1728,12 +1809,15 @@ def main() -> None:
             command.downgrade(config, "0051_material_semantics")
         except RuntimeError as exc:
             assert "registry contains records" in str(exc)
+            _observed(recorder, "source_history_downgrade_refused")
         else:
             raise AssertionError("Nonempty source registry downgrade must fail closed")
         with engine.connect() as connection:
             verify_postgres_identity(connection, capability)
             assert connection.execute(text("SELECT count(*) FROM source_revisions")).scalar_one() == 1
             assert connection.execute(text("SELECT source_version_public_at FROM source_revisions")).scalar_one() is None
+            if recorder is not None:
+                retained_before["seeded_source_revision"] = _report_signature(connection, "seeded_source_revision")
             assert set(MigrationContext.configure(connection).get_current_heads()) == set(ScriptDirectory.from_config(config).get_heads())
         with engine.begin() as connection:
             verify_postgres_identity(connection, capability)
@@ -1749,6 +1833,7 @@ def main() -> None:
             command.downgrade(config, "0052_source_provenance")
         except RuntimeError as exc:
             assert "shadow history contains records" in str(exc)
+            _observed(recorder, "shadow_history_downgrade_refused")
         else:
             raise AssertionError("Nonempty shadow import downgrade must fail closed")
         with engine.connect() as connection:
@@ -1758,11 +1843,16 @@ def main() -> None:
             assert set(MigrationContext.configure(connection).get_current_heads()) == set(ScriptDirectory.from_config(config).get_heads())
         import asyncio
         release_id = asyncio.run(_freeze_on_migrated_schema(capability, api_root))
+        if recorder is not None:
+            with engine.connect() as connection:
+                verify_postgres_identity(connection, capability)
+                retained_before["frozen_release_and_pins"] = _report_signature(connection, "frozen_release_and_pins", release_id=release_id)
         try:
             validate_test_environment()
             command.downgrade(config, "0053_research_import")
         except RuntimeError as exc:
             assert "release history contains records" in str(exc)
+            _observed(recorder, "release_history_downgrade_refused")
         else:
             raise AssertionError("Nonempty research release downgrade must fail closed")
         with engine.connect() as connection:
@@ -1776,6 +1866,7 @@ def main() -> None:
             command.downgrade(config, "0054_research_release")
         except RuntimeError as exc:
             assert "governance history contains records" in str(exc)
+            _observed(recorder, "publication_history_downgrade_refused")
         else:
             raise AssertionError("Nonempty research governance downgrade must fail closed")
         with engine.connect() as connection:
@@ -1787,32 +1878,61 @@ def main() -> None:
         _source_impact_indexes_on_migrated_schema(capability, engine, config)
         request_id = asyncio.run(_source_tasks_on_migrated_schema(capability, api_root))
         _source_task_downgrade_guard(capability, engine, config, request_id)
+        _observed(recorder, "source_task_history_downgrade_refused")
         _background_jobs_empty_roundtrip(capability, engine, config)
         cycle_id = asyncio.run(_background_jobs_on_migrated_schema(capability, api_root))
         _background_job_downgrade_guard(capability, engine, config, cycle_id)
+        _observed(recorder, "background_history_downgrade_refused")
         _rag_evidence_empty_roundtrip(capability, engine, config)
         evidence_id = asyncio.run(_rag_evidence_on_migrated_schema(capability, api_root))
         _rag_evidence_downgrade_guard(capability, engine, config, evidence_id)
+        _observed(recorder, "rag_history_downgrade_refused")
         _embedding_receipts_empty_roundtrip(capability, engine, config)
         receipt_id = asyncio.run(_embedding_receipts_on_migrated_schema(capability, api_root, evidence_id))
         _embedding_receipt_downgrade_guard(capability, engine, config, receipt_id)
+        _observed(recorder, "embedding_history_downgrade_refused")
         _index_generations_empty_roundtrip(capability, engine, config)
-        generation_id = asyncio.run(_index_generations_on_migrated_schema(capability, api_root, receipt_id))
+        if recorder is not None:
+            with engine.connect() as connection:
+                verify_postgres_identity(connection, capability)
+                recorder.phase(connection, "before_read_cutover")
+        generation_id = asyncio.run(_index_generations_on_migrated_schema(capability, api_root, receipt_id, recorder=recorder))
         _index_generation_downgrade_guard(capability, engine, config, generation_id)
+        _observed(recorder, "generation_history_downgrade_refused")
         _distributions_empty_roundtrip(capability, engine, config)
         package_id = asyncio.run(_distributions_on_migrated_schema(capability, api_root))
         _distribution_downgrade_guard(capability, engine, config, package_id)
+        _observed(recorder, "distribution_history_downgrade_refused")
         _ml_feature_bindings_empty_roundtrip(capability, engine, config)
         binding_id = asyncio.run(_ml_feature_bindings_on_migrated_schema(capability, api_root))
         _ml_feature_binding_downgrade_guard(capability, engine, config, binding_id)
+        _observed(recorder, "feature_history_downgrade_refused")
         _scientific_imports_empty_roundtrip(capability, engine, config)
-        attempt_id = asyncio.run(_scientific_imports_on_migrated_schema(capability, api_root))
+        attempt_id = asyncio.run(_scientific_imports_on_migrated_schema(capability, api_root, recorder=recorder))
         _scientific_import_downgrade_guard(capability, engine, config, attempt_id)
+        _observed(recorder, "scientific_import_history_downgrade_refused")
         _result_impact_indexes_roundtrip(capability, engine, config, populated=True)
+        _observed(recorder, "populated_index_roundtrip_preserved")
+        if recorder is not None:
+            with engine.connect() as connection:
+                verify_postgres_identity(connection, capability)
+                recorder.phase(connection, "final")
+                for check, before in retained_before.items():
+                    recorder.retention(check, before, _report_signature(connection, check, release_id=release_id))
+                report_document = recorder.finish(connection)
         print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay, exact property feature source companions/byte verification/replay, byte-retained pending scientific imports with durable unknown starts/atomic completion/rollback/replay, result-impact index-only empty/populated roundtrips and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
+    if report_destination is not None:
+        try:
+            report_destination.publish(report_document, internal=True)
+        finally:
+            report_destination.close()
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except ReportError as exc:
+        print(f"Schema rehearsal report refused: {exc}", file=sys.stderr)
+        raise SystemExit(2) from None
