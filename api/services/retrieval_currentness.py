@@ -21,6 +21,7 @@ from sqlalchemy.orm import selectinload
 
 from models.db import Chunk, Material, Paper, get_engine
 from services import index_retrieval
+from services.retrieval_groups import GroupBinding, resolve_grouping_bindings
 from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import (
     project_source_occurrences,
@@ -51,6 +52,7 @@ class SelectionPin:
     input_sha256: str
     has_evidence_pin: bool = False
     generation_pin_sha256: str | None = None
+    grouping_sha256: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -102,12 +104,14 @@ def _digest(payload: Any) -> str:
     return digest.hexdigest()
 
 
-def selection_pin(chunk, *, material_evidence, source_review, evidence=None) -> SelectionPin:
+def selection_pin(chunk, *, material_evidence, source_review, evidence=None, grouping_binding: GroupBinding | None = None) -> SelectionPin:
     """Capture only inputs already admitted for this selected source, without I/O."""
     if (not isinstance(chunk.id, str) or not 1 <= len(chunk.id) <= 200
             or not isinstance(chunk.paper_id, str) or not 1 <= len(chunk.paper_id) <= 100
             or chunk.paper is None or chunk.paper.id != chunk.paper_id):
         raise CurrentnessUnavailable("selected source identity")
+    if grouping_binding is not None and (not isinstance(grouping_binding, GroupBinding) or grouping_binding.paper_id != chunk.paper_id):
+        raise CurrentnessUnavailable("selected diversity binding identity")
     try:
         generation = isinstance(chunk, index_retrieval.GenerationChunk)
         digest = _digest({
@@ -118,11 +122,14 @@ def selection_pin(chunk, *, material_evidence, source_review, evidence=None) -> 
             "source_visibility": source_review,
             "evidence": evidence,
             "generation": chunk.generation_pin if generation else None,
+            **({"grouping": {"paper_id": grouping_binding.paper_id, "accepted_work_id": grouping_binding.accepted_work_id,
+                             "mapping_sha256": grouping_binding.mapping_sha256}} if grouping_binding is not None else {}),
         })
     except (ValueError, TypeError, OverflowError, RecursionError) as exc:
         raise CurrentnessUnavailable("selected source representation") from exc
     return SelectionPin(chunk.id, chunk.paper_id, digest, evidence is not None,
-                        index_retrieval.pin_sha256(chunk.generation_pin) if generation else None)
+                        index_retrieval.pin_sha256(chunk.generation_pin) if generation else None,
+                        grouping_binding.mapping_sha256 if grouping_binding is not None else None)
 
 
 def _row_size(table):
@@ -195,6 +202,8 @@ async def _check_snapshot(db, pins, evidence_resolver):
     if any(pin.has_evidence_pin for pin in pins) and evidence_resolver is None:
         raise CurrentnessUnavailable("typed evidence resolver unavailable")
     expected = {pin.chunk_id: pin for pin in pins}
+    grouping_papers = {pin.paper_id for pin in pins if pin.grouping_sha256 is not None}
+    grouping = await resolve_grouping_bindings(db, grouping_papers) if grouping_papers else {}
     for chunk in chunks:
         status = statuses.get(chunk.paper_id)
         visibility = source_visibility(status)
@@ -204,8 +213,12 @@ async def _check_snapshot(db, pins, evidence_resolver):
             chunk.materials_mentioned, paper_status=status, linked_materials=linked,
         )
         visibility["warning_codes"] = sorted(set(visibility["warning_codes"] + summary["warning_codes"]))
+        binding = grouping.get(chunk.paper_id) if expected[chunk.id].grouping_sha256 is not None else None
+        if expected[chunk.id].grouping_sha256 is not None and (
+                binding is None or binding.mapping_sha256 != expected[chunk.id].grouping_sha256):
+            return CurrentnessCheck("changed", "retrieval_grouping_changed", snapshot_at)
         fresh = selection_pin(chunk, material_evidence=occurrences, source_review=visibility,
-                              evidence=evidence.get(chunk.id))
+                              evidence=evidence.get(chunk.id), grouping_binding=binding)
         if fresh != expected[chunk.id]:
             return CurrentnessCheck("changed", "retrieval_source_changed", snapshot_at)
     return CurrentnessCheck("unchanged", None, snapshot_at)

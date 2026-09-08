@@ -397,6 +397,7 @@ export interface AskHistoryEntry {
   question: string;
   answer: string;
   sources: Array<{
+    packing_info?: EvidencePackingSelection | null;
     evidence_provenance?: EvidenceProvenance;
     index?: number;
     paper_id?: string;
@@ -624,6 +625,7 @@ export interface AskRequest {
 }
 
 export interface AskSource {
+  packing_info?: EvidencePackingSelection | null;
   evidence_provenance?: EvidenceProvenance;
   source_visibility?: SourceVisibility;
   index: number;
@@ -658,6 +660,8 @@ export interface EvidenceProvenance {
 }
 
 export interface AskResponse {
+  evidence_packing?: EvidencePackingSummary;
+  input_budget?: RagInputBudgetReport;
   retrieval_generation?: RetrievalGeneration | null;
   scientific_query?: ScientificQueryInterpretation | null;
   scientific_results?: BoundScientificQueryResult[];
@@ -690,6 +694,57 @@ export interface AskSupportCoverage {
   undetermined_claims?: number;
   truncated?: boolean;
   limits?: Record<string, unknown>;
+}
+
+/** Operational context selection, never independent evidence or source rights. */
+export interface EvidencePackingSelection {
+  version: "evidence-pack-item/1.0.0";
+  position: number;
+  chunk_id: string;
+  source_group_id: string;
+  source_snapshot_sha256: string | null;
+  diversity_group_id: string;
+  source_group_basis: "source_snapshot" | "legacy_paper";
+  group_basis: "accepted_work_mapping" | "source_snapshot" | "legacy_paper";
+  role_hint: "methods" | "results" | "table" | "other";
+  selection_reason: "source_diversity" | "source_coverage" | "complementary_role";
+  scientific_acceptance: false;
+}
+
+export interface RagInputBudgetReport {
+  status: "not_requested" | "counted" | "rejected" | "unavailable";
+  model: string | null;
+  profile: "sclib-gemini-text-rag/1.0.0";
+  request_sha256: string | null;
+  payload_bytes: number | null;
+  byte_limit: number;
+  input_tokens: number | null;
+  max_input_tokens: number | null;
+  count_method: "provider_count_tokens";
+  generation_started: boolean | null;
+  scientific_acceptance: false;
+}
+
+export type PackingExclusionReason = "payload_budget" | "base_payload_budget" | "chunk_limit" | "source_limit" | "work_limit" | "duplicate_content" | "role_already_represented" | "not_complementary_original";
+export type PackingSummaryReason = "packing_not_requested" | "no_admitted_candidates" | "base_payload_budget_exceeded" | "payload_budget_excluded" | "selection_limits_applied" | "duplicate_content_removed" | "complementarity_not_established" | "packing_unavailable" | "selected_context_withheld";
+export interface EvidencePackingSummary {
+  version: "evidence-packing/1.0.0";
+  status: "not_requested" | "packed" | "empty" | "base_budget_exceeded" | "withheld" | "unavailable";
+  candidate_count: number;
+  selected_count: number;
+  source_group_count: number;
+  diversity_group_count: number;
+  payload_bytes: number | null;
+  byte_budget: number | null;
+  byte_count_method: "utf8-full-payload/1";
+  max_chunks: number;
+  max_per_source: number;
+  max_per_work: number;
+  reason_counts: Partial<Record<PackingExclusionReason, number>>;
+  reason_codes: PackingSummaryReason[];
+  independent_support_count: null;
+  independence_status: "independence_not_established";
+  scientific_acceptance: false;
 }
 
 export type AskScientificSupportStatus = "supported" | "contradicted" | "undetermined" | "not_checked";

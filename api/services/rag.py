@@ -11,13 +11,18 @@ import json
 import logging
 import re
 from collections import Counter
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from html import escape
-
-from google.genai import types as genai_types
+from typing import Literal
 
 from config import get_settings
-from services import claim_support
+from models.evidence_packing import (
+    EvidencePackingSelection,
+    EvidencePackingSummary,
+    PackingCandidate,
+)
+from models.rag_input_budget import RagInputBudgetReport
+from services import claim_support, rag_input_budget
 from services.genai_client import client as genai_client
 from services.material_visibility import MATERIAL_VISIBILITY_VERSION
 from services.source_visibility import citation_evidence
@@ -56,6 +61,10 @@ Tc, a computed value by an observation, or a negative observation by a positive
 transition. Do not combine separate excerpts into an invented result tuple.
 Derived Facts are retrieval aids, not independently confirming original evidence.
 Evidence provenance is separate from source visibility and text permissions.
+Packing metadata groups retained paper/catalogue snapshots and optionally
+accepted Work mappings for retrieval diversity. A source_snapshot_sha256 is not
+a raw PDF hash, authenticated original document or verified experiment. Retrieval
+role hints and complementary excerpts never establish independent replications.
 Unresolved roots, unknown permissions and immutable machine-extraction revisions
 are not reviewed original evidence. Do not count multiple derived texts as
 independent replications. Preserve evidence-type and currentness warnings.
@@ -79,6 +88,8 @@ class RagSourceInput:
     source_visibility: dict = field(default_factory=dict)
     visibility_resolved: bool = False
     evidence_provenance: dict = field(default_factory=dict)
+    packing_info: EvidencePackingSelection | None = None
+    source_snapshot_sha256: str | None = None  # retained catalogue hash, supplied by the trusted resolver
 
 
 @dataclass(slots=True)
@@ -96,17 +107,40 @@ class RagResult:
     support_coverage: dict = field(default_factory=dict)
     answer_mode: str = "synthesis"
     assessment_scope: str = "none"
+    evidence_packing: EvidencePackingSummary = field(default_factory=EvidencePackingSummary)
+    input_budget: RagInputBudgetReport = field(default_factory=RagInputBudgetReport)
     _validation_applied: bool = False
     _validation_fingerprint: str | None = None
 
     def quality_fields(self) -> dict:
         """Only server-computed quality fields, never a provider JSON payload."""
-        return {name: getattr(self, name) for name in (
+        values = {name: getattr(self, name) for name in (
             "citation_valid", "citation_warnings", "support_policy_version",
             "citation_indices_valid", "lexical_support_checked",
             "scientific_support_status", "claim_assessments", "support_warnings",
             "support_coverage", "answer_mode", "assessment_scope",
         )}
+        context = _contexts(self)
+        values.update(evidence_packing=context["evidence_packing"].model_dump(), input_budget=context["input_budget"].model_dump())
+        return values
+
+
+class RagProviderFailure(RuntimeError):
+    """Preserve a safe sealed response while recording genuine provider failure.
+
+    The outer breaker must see this exception. Its caller may recover ``result``
+    after failure accounting; returning it normally here would reset the circuit.
+    """
+
+    def __init__(self, result: RagResult):
+        super().__init__("RAG provider request failed")
+        self.result = result
+
+
+def provider_status(result) -> Literal["success", "not_requested"]:
+    """Local admission/cancellation never claims the provider has recovered."""
+    report = _contexts(result)["input_budget"]
+    return "success" if report.input_tokens is not None else "not_requested"
 
 
 @dataclass(slots=True)
@@ -129,11 +163,12 @@ def _format_sources(sources: list[RagSourceInput]) -> str:
             "authors": source.authors_short,
             "year": source.year,
             "section": source.section,
-            "excerpt": source.text.strip() if _evidence_text_available(source) else "",
+            "excerpt": source.text if _evidence_text_available(source) else "",
             "material_evidence": citation_evidence(source.material_evidence, visibility_resolved=source.visibility_resolved)
             if _evidence_text_available(source) else [],
             "source_visibility": source.source_visibility,
             "evidence_provenance": _checked_evidence(source),
+            "packing_info": _checked_packing_info(source),
         }
         for source in sources
     ]
@@ -142,6 +177,32 @@ def _format_sources(sources: list[RagSourceInput]) -> str:
         .replace("<", "\\u003c")
         .replace(">", "\\u003e")
     )
+
+
+def _checked_packing_info(source):
+    if source.packing_info is None:
+        return None
+    value = source.packing_info
+    item = EvidencePackingSelection.model_validate(value.model_dump() if isinstance(value, EvidencePackingSelection) else value,
+                                                   strict=True)
+    if item.position != source.index:
+        raise ValueError("Packing position must match the actual citation")
+    if item.source_snapshot_sha256 != source.source_snapshot_sha256:
+        raise ValueError("Packing must retain the independently supplied catalogue snapshot")
+    descriptor = _checked_evidence(source)
+    content_hash = hashlib.sha256(source.text.encode("utf-8")).hexdigest()
+    if descriptor and (descriptor.get("version") != "rag-evidence/1.0.0"
+                       or descriptor.get("content_sha256") != content_hash):
+        raise ValueError("Packing content must match its actual retained evidence text")
+    from services.evidence_packing import packing_group_ids
+    groups = packing_group_ids(PackingCandidate(chunk_id=item.chunk_id, paper_id=source.paper_id,
+        source_snapshot_sha256=source.source_snapshot_sha256, content_sha256=content_hash,
+        chunk_kind=descriptor.get("chunk_kind", "legacy_unknown"), role_hint=item.role_hint))
+    if item.source_group_id != groups["source_group_id"] or item.source_group_basis != groups["source_group_basis"]:
+        raise ValueError("Packing source group must bind the actual paper and catalogue snapshot")
+    if item.group_basis != "accepted_work_mapping" and item.diversity_group_id != groups["diversity_group_id"]:
+        raise ValueError("Unmapped diversity must retain its exact source grouping")
+    return item.model_dump()
 
 
 def _checked_evidence(source: RagSourceInput) -> dict:
@@ -171,10 +232,48 @@ def build_user_prompt(question: str, sources: list[RagSourceInput]) -> str:
         f"{_format_sources(sources)}\n"
         "</untrusted_sources_json>\n\n"
         "<user_question>\n"
-        f"{question.strip()}\n"
+        f"{question}\n"
         "</user_question>\n\n"
         "Answer in markdown with inline [n] citations."
     )
+
+
+def prepare_request(question: str, sources: list[RagSourceInput], *, language: str = "auto"):
+    """Prepare the identical full-payload text counted and sent to Gemini."""
+    settings = get_settings()
+    return rag_input_budget.build_request(model=settings.gemini_model,
+        contents=build_user_prompt(question, sources), system_instruction=SYSTEM_PROMPT.format(language=language),
+        byte_limit=settings.gemini_input_byte_limit)
+
+
+def measure_input_bytes(question: str, sources: list[RagSourceInput], *, language: str = "auto") -> int:
+    """Exact packing trial bytes, not a model token estimate or truncation."""
+    return rag_input_budget.measure_request(model=get_settings().gemini_model,
+        contents=build_user_prompt(question, sources), system_instruction=SYSTEM_PROMPT.format(language=language))
+
+
+def _context(value, model, fallback):
+    try:
+        return model.model_validate(value.model_dump() if isinstance(value, model) else value, strict=True) if value is not None else model()
+    except (ValueError, TypeError, AttributeError):
+        return fallback()
+
+
+def _contexts(result=None, *, evidence_packing=None, input_budget=None):
+    def supplied(explicit, key):
+        if explicit is not None:
+            return explicit
+        try:
+            return getattr(result, key, None) if isinstance(result, RagResult) else None
+        except Exception:
+            return {"invalid_context": True}
+    packing = supplied(evidence_packing, "evidence_packing")
+    budget = supplied(input_budget, "input_budget")
+    return {
+        "evidence_packing": _context(packing, EvidencePackingSummary,
+            lambda: EvidencePackingSummary(status="unavailable", reason_codes=["packing_unavailable"])),
+        "input_budget": _context(budget, RagInputBudgetReport, lambda: RagInputBudgetReport(status="unavailable")),
+    }
 
 
 def generate_answer(
@@ -182,25 +281,50 @@ def generate_answer(
     sources: list[RagSourceInput],
     *,
     language: str = "auto",
+    evidence_packing: EvidencePackingSummary | None = None,
+    stop_event=None,
 ) -> RagResult:
     """Blocking Gemini call. Callers should push this to a worker thread."""
+    context = _contexts(evidence_packing=evidence_packing)
     if not sources:
-        return no_source_result()
-
-    sys = SYSTEM_PROMPT.format(language=language)
-    prompt = build_user_prompt(question, sources)
-
+        return no_source_result(**context)
+    if context["evidence_packing"].status in {"unavailable", "withheld", "empty", "base_budget_exceeded"}:
+        return extractive_fallback(sources, reason="packing_context_unavailable", **context)
     settings = get_settings()
-    resp = genai_client().models.generate_content(
-        model=settings.gemini_model,
-        contents=prompt,
-        config=genai_types.GenerateContentConfig(
-            system_instruction=sys,
-            temperature=0.2,
-            max_output_tokens=1024,
-            thinking_config=genai_types.ThinkingConfig(thinking_budget=0),
-        ),
-    )
+    prepared = None
+    constructing_client = False
+    try:
+        prepared = prepare_request(question, sources, language=language)
+        if context["evidence_packing"].status == "packed" and (
+                context["evidence_packing"].selected_count != len(sources)
+                or context["evidence_packing"].payload_bytes != prepared.payload_bytes):
+            return extractive_fallback(sources, reason="packing_payload_mismatch", **context)
+        constructing_client = True
+        client = genai_client()
+        constructing_client = False
+        resp, context["input_budget"] = rag_input_budget.generate_with_budget(client, prepared,
+            max_input_tokens=settings.gemini_max_input_tokens, timeout_seconds=settings.gemini_timeout_seconds,
+            count_timeout_seconds=settings.gemini_count_timeout_seconds, stop_event=stop_event)
+    except rag_input_budget.RagInputBudgetError as exc:
+        context["input_budget"] = exc.report
+        fallback = extractive_fallback(sources, reason=exc.reason_code,
+            tokens_used=0 if prepared is None else None, **context)
+        if (exc.reason_code in {"rag_input_count_unavailable", "rag_input_count_invalid", "rag_input_generation_unavailable"}
+                or exc.provider_attempted and exc.report.status == "unavailable"):
+            raise RagProviderFailure(fallback) from None
+        return fallback
+    except Exception:
+        # Invalid metadata or unavailable client construction is not a source
+        # grant or a successful zero-token model call. Never expose raw errors.
+        context["input_budget"] = RagInputBudgetReport(status="unavailable", generation_started=False,
+            **({"model": prepared.model, "profile": prepared.profile, "request_sha256": prepared.request_sha256,
+                "payload_bytes": prepared.payload_bytes, "byte_limit": prepared.byte_limit}
+               if prepared is not None else {}))
+        fallback = extractive_fallback(sources, reason="rag_input_client_unavailable" if constructing_client else
+            "rag_input_preparation_unavailable", tokens_used=None if constructing_client else 0, **context)
+        if constructing_client:
+            raise RagProviderFailure(fallback) from None
+        return fallback
 
     # Vertex's GenerativeModel raises ValueError on blocked / empty
     # candidates when you touch `.text`. Catch that specifically —
@@ -208,22 +332,26 @@ def generate_answer(
     # refresh failures, transport errors) and hand users a generic
     # "couldn't answer" string with no log trace.
     try:
-        answer = resp.text or ""
-    except ValueError as exc:
-        log.warning("Gemini response had no text (blocked/empty): %s", exc)
+        answer = resp.text
+    except (ValueError, TypeError, AttributeError):
+        log.warning("Gemini response had no usable text (blocked/empty)")
         answer = ""
-
-    usage = getattr(resp, "usage_metadata", None)
-    tokens_used = int(getattr(usage, "total_token_count", 0)) if usage else None
+    if type(answer) is not str:
+        answer = ""
+    try:
+        usage = getattr(resp, "usage_metadata", None)
+        actual_tokens = getattr(usage, "total_token_count", None) if usage else None
+    except Exception:
+        actual_tokens = None
+    tokens_used = actual_tokens if type(actual_tokens) is int and actual_tokens >= 0 else None
     if not answer.strip():
-        fallback = extractive_fallback(sources, reason="generation_empty_or_blocked")
-        fallback.tokens_used = tokens_used
-        return fallback
+        return extractive_fallback(sources, reason="generation_empty_or_blocked", tokens_used=tokens_used, **context)
     return finalize_result(RagResult(
         answer=answer.strip(),
         tokens_used=tokens_used,
         citation_valid=False,
         citation_warnings=[],
+        **context,
     ), sources)
 
 
@@ -314,17 +442,20 @@ def extractive_fallback(
     sources: list[RagSourceInput],
     *,
     reason: str = "generation_provider_unavailable",
+    evidence_packing: EvidencePackingSummary | None = None,
+    input_budget: RagInputBudgetReport | None = None,
+    tokens_used: int | None = 0,
 ) -> RagResult:
     """Quoted data only; no scientific-support assessment is implied.
 
     Literal source brackets/Markdown cannot become new citation links or HTML.
     Held, unresolved and omitted-occurrence sources are not reproduced here.
     """
+    context = _contexts(evidence_packing=evidence_packing, input_budget=input_budget)
     if not sources:
-        result = no_source_result()
-        result.citation_warnings.append(reason)
-        result.support_warnings.append(reason)
-        return result
+        result = no_source_result(tokens_used=tokens_used, **context)
+        return _seal_result(replace(result, citation_warnings=[*result.citation_warnings, reason],
+                                   support_warnings=[*result.support_warnings, reason]), [])
     excerpts: list[str] = []
     index_counts = Counter(source.index for source in sources if type(source.index) is int)
     for source in sources[:20]:
@@ -373,7 +504,7 @@ def extractive_fallback(
     answer += "\n".join(excerpts)
     return _seal_result(RagResult(
         answer=answer,
-        tokens_used=0,
+        tokens_used=tokens_used,
         citation_valid=False,
         citation_warnings=[reason],
         citation_indices_valid=len(index_counts) == len(sources)
@@ -382,6 +513,7 @@ def extractive_fallback(
         support_coverage=_empty_coverage(),
         answer_mode="extractive_fallback" if excerpts else "abstention",
         _validation_applied=True,
+        **context,
     ), sources)
 
 
@@ -391,13 +523,15 @@ def _empty_coverage() -> dict:
             "limits": {}}
 
 
-def no_source_result() -> RagResult:
+def no_source_result(*, evidence_packing: EvidencePackingSummary | None = None,
+                     input_budget: RagInputBudgetReport | None = None, tokens_used: int | None = 0) -> RagResult:
     return _seal_result(RagResult(
         answer="No eligible indexed sources match this question. No scientific claim was checked.",
-        tokens_used=0, citation_valid=True, citation_warnings=[],
+        tokens_used=tokens_used, citation_valid=True, citation_warnings=[],
         citation_indices_valid=True, support_warnings=["no_eligible_sources"],
         support_coverage=_empty_coverage(), answer_mode="abstention",
         _validation_applied=True,
+        **_contexts(evidence_packing=evidence_packing, input_budget=input_budget),
     ), [])
 
 
@@ -407,18 +541,20 @@ def _result_fingerprint(result: RagResult, sources: list[RagSourceInput]) -> str
     Never expose the digest as approval or a source-version identifier. It only
     detects mutation by an in-process postprocessor before response delivery.
     """
-    payload = {"answer": result.answer, "quality": result.quality_fields(), "sources": [
-        {name: getattr(source, name) for name in (
-            "index", "paper_id", "title", "authors_short", "year", "section", "text",
-            "material_evidence", "source_visibility", "visibility_resolved", "evidence_provenance",
-        )} for source in sources
-    ]}
     try:
+        payload = {"answer": result.answer, "quality": result.quality_fields(), "sources": [
+            {name: getattr(source, name) for name in (
+                "index", "paper_id", "title", "authors_short", "year", "section", "text",
+                "material_evidence", "source_visibility", "visibility_resolved", "evidence_provenance",
+                "packing_info",
+                "source_snapshot_sha256",
+            )} for source in sources
+        ]}
         digest = hashlib.sha256()
         for part in json.JSONEncoder(sort_keys=True, ensure_ascii=False, default=repr).iterencode(payload):
             digest.update(part.encode())
         return digest.hexdigest()
-    except (TypeError, ValueError, RecursionError):
+    except (TypeError, ValueError, RecursionError, AttributeError):
         return None
 
 
@@ -428,20 +564,29 @@ def _seal_result(result: RagResult, sources: list[RagSourceInput]) -> RagResult:
     return result
 
 
-def finalize_result(result: RagResult, sources: list[RagSourceInput]) -> RagResult:
+def finalize_result(result: RagResult, sources: list[RagSourceInput], *,
+                    evidence_packing: EvidencePackingSummary | None = None,
+                    input_budget: RagInputBudgetReport | None = None) -> RagResult:
     """Assess the generated draft once and withhold unestablished assertions.
 
     Assessments refer to the attempted draft, not to replacement excerpts.
     This boundary also handles test/alternate generators returning legacy DTOs.
     No raw rejected draft is persisted as a synthesized answer.
     """
+    context = _contexts(result, evidence_packing=evidence_packing, input_budget=input_budget)
     if not sources:
-        return no_source_result()
+        return no_source_result(tokens_used=getattr(result, "tokens_used", 0), **context)
     if not isinstance(result, RagResult) or not isinstance(result.answer, str):
-        return extractive_fallback(sources, reason="invalid_generated_answer")
+        return extractive_fallback(sources, reason="invalid_generated_answer", tokens_used=None, **context)
     if (result._validation_applied and result._validation_fingerprint is not None
             and result._validation_fingerprint == _result_fingerprint(result, sources)):
-        return result
+        if result.evidence_packing == context["evidence_packing"] and result.input_budget == context["input_budget"]:
+            return result
+        # Caller-supplied operational context may accompany a valid legacy
+        # fallback. Clone and reseal; never assess its fallback prose as a new
+        # generated scientific draft or mutate the previous sealed object.
+        return _seal_result(replace(result, **context), sources)
+    result = replace(result, **context)
     citations = CitationValidation(False, ["citation_check_unavailable"], [])
     try:
         repaired, citations = validate_citations(result.answer, sources)
@@ -510,7 +655,7 @@ def finalize_result(result: RagResult, sources: list[RagSourceInput]) -> RagResu
         mode = "abstention"
         warnings.append("contradicted_draft_withheld")
     else:
-        fallback = extractive_fallback(sources, reason="draft_support_not_established")
+        fallback = extractive_fallback(sources, reason="draft_support_not_established", tokens_used=result.tokens_used, **context)
         answer, mode = fallback.answer, fallback.answer_mode
         warnings.extend(fallback.support_warnings)
     return _seal_result(RagResult(
@@ -521,6 +666,7 @@ def finalize_result(result: RagResult, sources: list[RagSourceInput]) -> RagResu
         scientific_support_status=status, claim_assessments=assessment["claims"],
         support_warnings=sorted(set(warnings)), support_coverage=assessment["coverage"],
         answer_mode=mode, assessment_scope="generated_draft", _validation_applied=True,
+        **context,
     ), sources)
 
 

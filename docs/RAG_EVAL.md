@@ -17,10 +17,15 @@ a vector-nearest-neighbour result as sufficient evidence:
 2. Reciprocal Rank Fusion combines both lists.
 3. A deterministic query-term coverage reranker reorders the bounded candidate
    set.
-4. `/search` and `/ask` hydrate exact retained generation members, apply fresh
-   source/material/permission holds, and keep at most one result/source per
-   paper. Generation mode preserves original attribution after replacement.
-5. `/ask` treats excerpts as untrusted JSON data in a system-separated prompt.
+4. `/search` and `/ask` hydrate exact retained generation members and apply
+   fresh source/material/permission holds. Search retains its paper-result
+   deduplication. Ask can expand and pack complementary original passages under
+   exact catalogue-snapshot and accepted Work diversity limits, with one citation
+   per unchanged chunk. Grouping never establishes independent scientific roots.
+   Generation mode preserves original attribution after replacement.
+5. `/ask` treats excerpts as untrusted JSON data in a system-separated prompt;
+   complete ordered inputs must fit both the canonical UTF-8 resource budget and
+   actual provider CountTokens limit before generation.
 6. Citation-index checks are separate from scientific-support status/coverage
    and answer mode. Deprecated `citation_valid` remains a mechanical/lexical
    compatibility field, not scientific acceptance. Derived Facts and unresolved
@@ -28,7 +33,8 @@ a vector-nearest-neighbour result as sufficient evidence:
    withhold a draft after source/permission/activation changes.
 
 See [typed evidence](RAG_EVIDENCE_LINEAGE.md) and
-[generation identity and rollout](INDEX_GENERATIONS.md). These gates do not
+[generation identity and rollout](INDEX_GENERATIONS.md), and
+[complementary evidence packing](COMPLEMENTARY_EVIDENCE_PACKING.md). These gates do not
 establish scientifically calibrated retrieval or source-use permission.
 
 ## Public regression set
@@ -55,15 +61,25 @@ The `test_scientific_query*`, `test_scientific_lookup_contract.py` and
 quantity, real SQL parent/generation, UI-filter and public-wire regressions.
 They do not turn the seed file into an independently adjudicated gold set.
 Keep the planned reviewed 100–200-question set, held-out protocol, source-root
-adjudication, mixed-evidence packing and actual cost/latency measurements as
+adjudication, true mixed numerical/explanatory synthesis and actual cost/latency measurements as
 separate RG04 acceptance requirements.
+
+The `test_complementary_*`, `test_evidence_packing.py`, `test_retrieval_groups.py`
+and `test_rag_*budget*` regressions cover complete input accounting, same-source
+role expansion, multi-paper Work limits, immutable identity, withdrawal after
+currentness changes, real SDK offline serialization and cancellation/circuit
+behavior. They are synthetic development tests, not reviewed scientific gold.
 
 ## Failure and safety metrics
 
 Operational logs distinguish semantic-provider fallback, Gemini extractive
 fallback, invalid citation indices, uncited claims, and weak lexical support.
-Provider calls have separate timeouts, bounded retries for immediate failures,
-and circuit breakers. A Vertex failure
+Provider calls have separate timeouts and circuit breakers. ANN retains bounded
+retries for immediate failures; Ask's count+generation pipeline uses one attempt
+and a shared deadline. Provider faults remain failures even when a sealed safe
+fallback is returned to the user; local no-call refusals are neutral, while a
+successful token count rejected by the application token limit is not a provider
+fault. Unknown usage/start state remains null. A Vertex failure
 degrades to generation-scoped PostgreSQL full-text search; a Gemini failure can
 return cited source excerpts only under the same evidence/currentness gates.
 Unavailable or changed evidence may instead require an explicit abstention.

@@ -18,6 +18,7 @@ import { GuestBanner } from "@/components/GuestBanner";
 import { MarkdownAnswer } from "@/components/MarkdownAnswer";
 import { AskSupportNotice } from "@/components/AskSupportNotice";
 import { ScientificQueryNotice } from "@/components/ScientificQueryNotice";
+import { EvidencePackingNotice, PackingSourceNotice } from "@/components/EvidencePackingNotice";
 import { resolveAskSource } from "@/lib/ask-support";
 import { knownScientificLookup, knownScientificQuery, knownScientificResults } from "@/lib/scientific-query";
 
@@ -141,6 +142,7 @@ function SearchInner({ q }: { q: string }) {
             {isStructuredAsk ? "Source-linked extraction lookup" : "Answer"}
           </h2>
           <AskSupportNotice response={askData} />
+          <EvidencePackingNotice packing={askData.evidence_packing} inputBudget={askData.input_budget} sources={askData.sources} />
           <ScientificQueryNotice context="Ask" rawQuery={q} query={askData.scientific_query}
             lookup={askData.scientific_lookup} results={askData.scientific_results} generation={askData.retrieval_generation} />
           <MarkdownAnswer markdown={askData.answer} sources={askData.sources} />
@@ -161,6 +163,7 @@ function SearchInner({ q }: { q: string }) {
                 )}
                 <SourceVisibilityNotice visibility={s.source_visibility} compact />
                 <EvidenceProvenanceNotice evidence={s.evidence_provenance} />
+                <PackingSourceNotice source={s} sources={askData.sources} />
               </Link>
             ))}
           </div>

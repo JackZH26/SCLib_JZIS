@@ -11,7 +11,9 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from models.evidence_packing import EvidencePackingSelection, EvidencePackingSummary
 from models.index_read import IndexReadMetadata
+from models.rag_input_budget import RagInputBudgetReport
 from models.scientific_lookup import (
     LinkedScientificResult,
     ScientificLookupStatus,
@@ -154,6 +156,7 @@ class AskSource(BaseModel):
     material_evidence: list[dict[str, Any]] = Field(default_factory=list)
     source_visibility: dict[str, Any] = Field(default_factory=dict)
     evidence_provenance: dict[str, Any] = Field(default_factory=dict)
+    packing_info: EvidencePackingSelection | None = None
 
     @field_validator("evidence_provenance")
     @classmethod
@@ -181,6 +184,8 @@ class ClaimSupportAssessment(BaseModel):
 
 
 class AskResponse(BaseModel):
+    evidence_packing: EvidencePackingSummary = Field(default_factory=EvidencePackingSummary)
+    input_budget: RagInputBudgetReport = Field(default_factory=RagInputBudgetReport)
     retrieval_generation: IndexReadMetadata = Field(default_factory=IndexReadMetadata)
     scientific_query: ScientificQueryInterpretation | None = None
     scientific_lookup: ScientificLookupStatus = Field(default_factory=ScientificLookupStatus)
@@ -205,7 +210,47 @@ class AskResponse(BaseModel):
 
     @model_validator(mode="after")
     def scientific_response_coherent(self):
-        return validate_scientific_response(self)
+        validate_scientific_response(self)
+        packing = self.evidence_packing
+        if packing.status != "packed":
+            if any(source.packing_info is not None for source in self.sources):
+                raise ValueError("Only a completed packing plan can publish citation grouping")
+            if packing.status in {"empty", "base_budget_exceeded", "withheld", "unavailable"} and self.sources:
+                raise ValueError("An empty or withheld plan cannot retain sources")
+            return self
+        from models.evidence_packing import EvidencePackingPlan
+        # Reuse the exact private-plan cross-validation (including ordered
+        # roles, source/work limits) without disclosing excluded identifiers.
+        selected = [source.packing_info for source in self.sources]
+        if any(item is None for item in selected) or len(self.sources) != packing.selected_count:
+            raise ValueError("Every selected citation needs its exact packing metadata")
+        if any(source.index != item.position for source, item in zip(self.sources, selected, strict=True)):
+            raise ValueError("Citation indices must preserve packing positions")
+        EvidencePackingPlan(status="packed", selected=selected, excluded=[],
+            candidate_count=packing.selected_count, selected_count=packing.selected_count,
+            source_group_count=packing.source_group_count, diversity_group_count=packing.diversity_group_count,
+            payload_bytes=packing.payload_bytes, byte_budget=packing.byte_budget, max_chunks=packing.max_chunks,
+            max_per_source=packing.max_per_source, max_per_work=packing.max_per_work)
+        identities = {}
+        from services.evidence_packing import packing_group_ids
+        for source, item in zip(self.sources, selected, strict=True):
+            identity = (source.paper_id, item.source_snapshot_sha256)
+            if item.source_group_id in identities and identities[item.source_group_id] != identity:
+                raise ValueError("One source group cannot mix papers or snapshots")
+            identities[item.source_group_id] = identity
+            expected_groups = packing_group_ids({"chunk_id": item.chunk_id, "paper_id": source.paper_id,
+                "source_snapshot_sha256": item.source_snapshot_sha256, "content_sha256": "0" * 64,
+                "chunk_kind": "legacy_unknown", "role_hint": item.role_hint})
+            if item.source_group_id != expected_groups["source_group_id"]:
+                raise ValueError("Source grouping must bind its actual paper and retained catalogue snapshot")
+            if item.group_basis != "accepted_work_mapping" and item.diversity_group_id != expected_groups["diversity_group_id"]:
+                raise ValueError("Unmapped diversity must retain its exact source group")
+            if item.selection_reason == "complementary_role" and source.evidence_provenance.get("chunk_kind") != "original_passage":
+                raise ValueError("A derived or unknown chunk is not a complementary original passage")
+        if (self.input_budget.payload_bytes is not None and self.input_budget.payload_bytes != packing.payload_bytes
+                or self.input_budget.status == "counted" and self.input_budget.byte_limit != packing.byte_budget):
+            raise ValueError("Input preflight and selected complete payload disagree")
+        return self
 
 
 # ---------------------------------------------------------------------------

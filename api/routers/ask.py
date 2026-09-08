@@ -1,8 +1,8 @@
 """POST /ask — grounded retrieval-augmented Q&A.
 
 The pinned hybrid path fuses exact-generation ANN and PostgreSQL full-text
-results; no active generation means legacy lexical-only. It reranks admitted
-snapshots and selects no more than one source per paper. Source excerpts are
+results; no active generation means legacy lexical-only. It packs admitted
+snapshots with bounded source diversity and complementary original roles. Source excerpts are
 passed to Gemini as explicitly untrusted data with a strict citation contract.
 Provider failures degrade to lexical retrieval and an extractive answer.
 
@@ -12,8 +12,11 @@ Gemini emits — frontend just hyperlinks each bracket to the paper.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import logging
+import threading
 import time
+from dataclasses import replace
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -22,17 +25,22 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from config import get_settings
 from models import get_db
 from models.db import AskHistory
+from models.evidence_packing import EvidencePackingSummary, PackingCandidate
 from models.index_read import generation_read_metadata
+from models.rag_input_budget import RagInputBudgetReport
 from models.scientific_lookup import ScientificLookupStatus
 from models.search import AskRequest, AskResponse, AskSource
 from routers.deps import Identity, require_identity
 from services import (
+    complementary_retrieval,
+    evidence_packing,
     index_retrieval,
     index_vector_adapter,
     provider_resilience,
     rag,
     retrieval,
     retrieval_currentness,
+    retrieval_groups,
 )
 from services.authors import short as _authors_short
 from services.metrics import observe_rag
@@ -47,7 +55,6 @@ from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import (
     citation_evidence,
     project_source_occurrences,
-    resolve_explicit_materials,
     source_visibility,
 )
 
@@ -121,18 +128,18 @@ async def ask(
             await db.rollback()
 
     candidate_limit = min(body.max_sources * 5, 100)
-    lexical_hits = await retrieval.lexical_search(
-        db,
-        interpretation.normalized_query,
-        limit=candidate_limit,
-        generation_id=pin["generation_id"] if pin is not None else None,
-    )
     try:
         async with asyncio.timeout(15):
+            lexical_hits = await retrieval.lexical_search(
+                db,
+                interpretation.normalized_query,
+                limit=candidate_limit,
+                generation_id=pin["generation_id"] if pin is not None else None,
+            )
             formula_hits = await retrieval.formula_lexical_search(db, interpretation, pin, limit=candidate_limit)
         lexical_hits = retrieval.combine_lexical_hits(formula_hits, lexical_hits, limit=candidate_limit)
     except Exception:
-        raise HTTPException(503, "Formula-aware retrieval is unavailable") from None
+        raise HTTPException(503, "Lexical/formula-aware retrieval is unavailable") from None
     candidates = retrieval.fuse_rankings(
         vector_hits,
         lexical_hits,
@@ -179,12 +186,21 @@ async def ask(
             chunk_by_id = await index_retrieval.hydrate(db, pin, chunk_ids)
     except Exception:
         raise HTTPException(503, "Retrieval generation is unavailable") from None
-    rows = list(chunk_by_id.values())
     candidates = retrieval.rerank_candidates(body.question, candidates, chunk_by_id)
-    linked_materials = await resolve_explicit_materials(db, [chunk.materials_mentioned for chunk in rows])
-    source_statuses = await resolve_paper_lifecycle(db, {chunk.paper_id for chunk in rows})
     evidence_failure_reason = None
     try:
+        async with asyncio.timeout(15):
+            candidates = await complementary_retrieval.expand_candidates(db, pin, candidates, chunk_by_id)
+            # Rehydrate the whole bounded inventory, not one unchecked extra
+            # set whose combined byte count could exceed the hydration budget.
+            chunk_by_id = await index_retrieval.hydrate(db, pin, [item.chunk_id for item in candidates])
+            rows = list(chunk_by_id.values())
+            groups = [chunk.materials_mentioned for chunk in rows]
+            if any(type(group) is not list for group in groups) or sum(map(len, groups)) > 5000:
+                raise retrieval_currentness.CurrentnessUnavailable("candidate occurrence inventory")
+            linked_materials = await retrieval_currentness._bounded_materials(db, groups)
+            source_statuses = await resolve_paper_lifecycle(db, {chunk.paper_id for chunk in rows})
+            grouping_bindings = await retrieval_groups.resolve_grouping_bindings(db, [chunk.paper_id for chunk in rows])
         evidence_by_chunk = await _resolve_evidence(db, rows)
     except TimeoutError:
         log.warning("Ask typed evidence resolution timed out; selected text withheld")
@@ -199,8 +215,8 @@ async def ask(
     sources_out: list[AskSource] = []
     selected_pins: list[retrieval_currentness.SelectionPin] = []
     pin_unavailable = evidence_by_chunk is None
-    seen_papers: set[str] = set()
-    idx = 0
+    admitted, input_by_id, output_by_id, pins_by_id = [], {}, {}, {}
+    packing_summary = EvidencePackingSummary(status="unavailable", reason_codes=["packing_unavailable"])
     for candidate in candidates:
         if pin_unavailable:
             break
@@ -217,10 +233,6 @@ async def ask(
         paper_status = source_statuses.get(chunk.paper.id)
         if not source_visibility(paper_status)["reported_claim_filter_eligible"]:
             continue
-        if chunk.paper.id in seen_papers:
-            continue
-        seen_papers.add(chunk.paper.id)
-        idx += 1
         paper = index_retrieval.attribution(chunk)
         authors_short = _authors_short(paper.authors or [])
         year = paper.date_submitted.year if paper.date_submitted else None
@@ -230,15 +242,22 @@ async def ask(
         source_review = source_visibility(paper_status)
         source_review["warning_codes"] = sorted(set(source_review["warning_codes"] + occurrence_summary["warning_codes"]))
         try:
-            selected_pins.append(retrieval_currentness.selection_pin(
+            pins_by_id[chunk.id] = retrieval_currentness.selection_pin(
                 chunk, material_evidence=occurrences, source_review=source_review, evidence=evidence,
-            ))
+                grouping_binding=grouping_bindings[chunk.paper_id],
+            )
+            admitted.append(PackingCandidate(chunk_id=chunk.id, paper_id=chunk.paper_id,
+                source_snapshot_sha256=(chunk.member["source_snapshot_sha256"]
+                    if isinstance(chunk, index_retrieval.GenerationChunk) else None),
+                accepted_work_id=grouping_bindings[chunk.paper_id].accepted_work_id,
+                content_sha256=hashlib.sha256(chunk.text.encode("utf-8")).hexdigest(),
+                chunk_kind=evidence["chunk_kind"],
+                role_hint=complementary_retrieval.role_hint(chunk.section, chunk.has_table)))
         except retrieval_currentness.CurrentnessUnavailable:
             pin_unavailable = True
             break
-        rag_inputs.append(
-            rag.RagSourceInput(
-                index=idx,
+        input_by_id[chunk.id] = rag.RagSourceInput(
+                index=1,  # assigned only by the final ordered packing plan
                 paper_id=paper.id,
                 title=paper.title,
                 authors_short=authors_short,
@@ -249,11 +268,11 @@ async def ask(
                 source_visibility=source_review,
                 visibility_resolved=True,
                 evidence_provenance=evidence,
-            )
+                source_snapshot_sha256=(chunk.member["source_snapshot_sha256"]
+                    if isinstance(chunk, index_retrieval.GenerationChunk) else None),
         )
-        sources_out.append(
-            AskSource(
-                index=idx,
+        output_by_id[chunk.id] = AskSource(
+                index=1,
                 paper_id=paper.id,
                 arxiv_id=paper.arxiv_id,
                 title=paper.title,
@@ -264,10 +283,36 @@ async def ask(
                 material_evidence=citation_evidence(occurrences, visibility_resolved=True),
                 source_visibility=source_review,
                 evidence_provenance=evidence,
-            )
         )
-        if len(rag_inputs) >= body.max_sources:
-            break
+
+    if not pin_unavailable:
+        try:
+            def trial_inputs(ordered_ids):
+                return [replace(input_by_id[item.chunk_id], index=item.position, packing_info=item)
+                    for item in evidence_packing.describe_selection(admitted, ordered_ids)]
+
+            plan = evidence_packing.pack_evidence(admitted,
+                cost=lambda ids: rag.measure_input_bytes(body.question, trial_inputs(ids), language=body.language),
+                byte_budget=settings.gemini_input_byte_limit, max_chunks=body.max_sources)
+            packing_summary = evidence_packing.public_summary(plan)
+            rag_inputs = trial_inputs(tuple(item.chunk_id for item in plan.selected))
+            sources_out = [AskSource.model_validate({**output_by_id[item.chunk_id].model_dump(),
+                "index": item.position, "packing_info": item.model_dump()}) for item in plan.selected]
+            selected_pins = [pins_by_id[item.chunk_id] for item in plan.selected]
+        except Exception:
+            log.warning("Ask complete evidence packing unavailable; selected context withheld")
+            pin_unavailable = True
+            evidence_failure_reason = "evidence_packing_unavailable"
+
+    # Empty/byte-rejected plans have no selected-source recheck below, but
+    # must not publish stale generation accounting after an activation change.
+    if not rag_inputs and not pin_unavailable and pin is not None:
+        try:
+            async with asyncio.timeout(10):
+                await index_retrieval.require_current_pin(db, pin)
+        except Exception:
+            pin_unavailable = True
+            evidence_failure_reason = "retrieval_generation_changed"
 
     # No transaction, snapshot or table locks span a potentially slow provider
     # call. API-key accounting has already committed in require_identity.
@@ -275,11 +320,14 @@ async def ask(
     if pin_unavailable:
         rag_inputs, sources_out, selected_pins = [], [], []
 
-    # 3. Gemini call behind a timeout + circuit breaker. A provider outage
+    # 3. One count+generation attempt behind the outer deadline. A late count
+    # must not start generation after the await has timed out or been cancelled.
+    stop_event = threading.Event()
+    # A provider outage
     # degrades to cited excerpts instead of turning the whole endpoint into 5xx.
     try:
         if not rag_inputs:
-            result = rag.no_source_result()
+            result = rag.no_source_result(evidence_packing=packing_summary)
         else:
             result = await provider_resilience.run_blocking(
                 "gemini_generation",
@@ -287,15 +335,30 @@ async def ask(
                     body.question,
                     rag_inputs,
                     language=body.language,
+                    evidence_packing=packing_summary,
+                    stop_event=stop_event,
                 ),
                 timeout_seconds=settings.gemini_timeout_seconds,
-                max_attempts=settings.provider_max_attempts,
+                max_attempts=1,
+                result_status=rag.provider_status,
                 failure_threshold=settings.provider_circuit_failure_threshold,
                 cooldown_seconds=settings.provider_circuit_cooldown_seconds,
             )
     except provider_resilience.ProviderUnavailable as exc:
+        stop_event.set()
         log.warning("Gemini generation unavailable; returning extractive fallback: %s", exc)
-        result = rag.extractive_fallback(rag_inputs)
+        if isinstance(exc.__cause__, rag.RagProviderFailure):
+            # Recover the already sealed fallback only after the outer
+            # provider boundary records failure. Do not discard its count or
+            # relabel the old fallback as a new generated scientific draft.
+            result = exc.__cause__.result
+        else:
+            result = rag.extractive_fallback(rag_inputs, evidence_packing=packing_summary,
+                input_budget=RagInputBudgetReport(status="unavailable", generation_started=None,
+                    byte_limit=settings.gemini_input_byte_limit), tokens_used=None)
+    except asyncio.CancelledError:
+        stop_event.set()
+        raise
 
     # A seal only checks in-memory consistency. Re-read selected catalogue
     # inputs in a new bounded snapshot before accepting that provisional seal.
@@ -307,12 +370,13 @@ async def ask(
         tokens_used = result.tokens_used if isinstance(result, rag.RagResult) else None
         # Never pass an already replaced fallback through the draft checker
         # again. No old excerpt, source label, or draft assessment is retained.
-        result = _currentness_abstention(reason, tokens_used)
+        result = _currentness_abstention(reason, tokens_used,
+            input_budget=result.input_budget if isinstance(result, rag.RagResult) else None)
         rag_inputs, sources_out = [], []
     else:
         # Alternate/legacy generators still cannot bypass server checks. Stable
         # sources preserve the existing seal and original draft assessment.
-        result = rag.finalize_result(result, rag_inputs)
+        result = rag.finalize_result(result, rag_inputs, evidence_packing=packing_summary)
 
     retrieval_modes = sorted(
         {mode for candidate in candidates for mode in candidate.retrieval_modes}
@@ -320,7 +384,7 @@ async def ask(
     log.info(
         "rag_quality sources=%d papers=%d retrieval=%s citation_valid=%s warnings=%s indices_valid=%s support=%s mode=%s",
         len(rag_inputs),
-        len(seen_papers),
+        len({source.paper_id for source in rag_inputs}),
         "+".join(retrieval_modes) or "none",
         result.citation_valid,
         ",".join(result.citation_warnings) or "none",
@@ -332,7 +396,7 @@ async def ask(
         sources=len(rag_inputs),
         tokens=result.tokens_used,
         citation_valid=result.citation_valid,
-        fallback="generation_provider_unavailable" in result.citation_warnings,
+        fallback=result.answer_mode == "extractive_fallback",
         citation_indices_valid=result.citation_indices_valid,
         scientific_support_status=result.scientific_support_status,
         answer_mode=result.answer_mode,
@@ -370,13 +434,15 @@ async def _resolve_evidence(db, chunks):
         return {identifier: validate_evidence_descriptor(value) for identifier, value in resolved.items()}
 
 
-def _currentness_abstention(reason: str, tokens_used: int | None) -> rag.RagResult:
+def _currentness_abstention(reason: str, tokens_used: int | None, *, input_budget=None) -> rag.RagResult:
     return rag.RagResult(
         answer="The selected evidence changed or could not be checked. "
                "No synthesized answer or old excerpt is provided. Please ask again to retrieve current sources.",
         tokens_used=tokens_used, citation_valid=False, citation_warnings=[reason],
         citation_indices_valid=True, support_warnings=[reason],
         answer_mode="abstention", assessment_scope="none",
+        evidence_packing=EvidencePackingSummary(status="withheld", reason_codes=["selected_context_withheld"]),
+        input_budget=input_budget or RagInputBudgetReport(),
     )
 
 

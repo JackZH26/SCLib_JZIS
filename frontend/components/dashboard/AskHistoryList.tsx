@@ -1,5 +1,6 @@
 "use client";
 import { EvidenceProvenanceNotice } from "@/components/EvidenceProvenanceNotice";
+import { PackingSourceNotice } from "@/components/EvidencePackingNotice";
 
 /**
  * Collapsible list of past /ask questions.
@@ -94,7 +95,7 @@ export function AskHistoryList({
                   </p>
                   <p className="mt-1 text-xs text-sage-tertiary">
                     {formatDate(e.created_at)} · {e.latency_ms} ms ·{" "}
-                    {e.sources.length} source{e.sources.length === 1 ? "" : "s"}
+                    {e.sources.length.toLocaleString("en-US")} saved citation entr{e.sources.length === 1 ? "y" : "ies"}
                     {e.tokens_used != null ? ` · ${e.tokens_used} tokens` : ""}
                   </p>
                 </button>
@@ -136,6 +137,7 @@ export function AskHistoryList({
                         Sources
                       </h4>
                       <p className="mt-1 text-xs text-amber-900">Saved citations are historical. Current source and material warnings below describe a request-time metadata snapshot, not a revalidation of the saved excerpt or answer.</p>
+                      <p className="mt-1 text-xs text-amber-900">Citation entries may be complementary passages from the same source, not independent papers or experiments. Saved per-passage selection labels cannot reconstruct the original input-budget report.</p>
                       {e.current_evidence?.metadata_snapshot_at && <p className="mt-1 text-xs text-sage-muted">Metadata snapshot: {formatDate(e.current_evidence.metadata_snapshot_at)}. Later source changes require a new read.</p>}
                       {e.current_evidence?.warning_codes.includes("saved_source_inventory_truncated") && <p className="mt-1 text-xs text-amber-900">Some saved sources exceed the current-check limit. Their present evidence status is unknown.</p>}
                       {e.current_evidence?.warning_codes.includes("current_evidence_output_budget_exhausted") && <p className="mt-1 text-xs text-amber-900">Some current source summaries exceed the response limit and were omitted. Missing summaries do not establish current support.</p>}
@@ -162,6 +164,7 @@ export function AskHistoryList({
                               {s.authors_short ? ` — ${s.authors_short}` : ""}
                               {s.year ? ` (${s.year})` : ""}
                               <EvidenceProvenanceNotice evidence={s.evidence_provenance} historical />
+                              <PackingSourceNotice source={s} sources={e.sources} historical />
                               <span className="mt-1 block text-amber-900">
                                 {current && current.metadata_status !== "unavailable" ? `Current source status: ${current.source_visibility.source_status}.` : "Current source status is unavailable; do not treat saved citations as current support."}
                                 {current?.source_visibility.reported_claim_filter_eligible === false && current.metadata_status !== "unavailable" && " Current claim-support eligibility is withheld; review is required."}

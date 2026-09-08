@@ -102,6 +102,10 @@ class Settings(BaseSettings):
     embedding_output_dimensionality: int = 768
     vector_search_timeout_seconds: float = Field(12.0, gt=0, le=120)
     gemini_timeout_seconds: float = Field(30.0, gt=0, le=120)
+    # Application input budgets, not model context-window or billing claims.
+    gemini_input_byte_limit: int = Field(262144, ge=1, le=1048576)
+    gemini_max_input_tokens: int = Field(16384, ge=1, le=131072)
+    gemini_count_timeout_seconds: float = Field(5.0, gt=0, le=120)
     provider_max_attempts: int = Field(2, ge=1, le=3)
     provider_circuit_failure_threshold: int = Field(3, ge=1, le=100)
     provider_circuit_cooldown_seconds: float = Field(60.0, ge=0, le=3600)

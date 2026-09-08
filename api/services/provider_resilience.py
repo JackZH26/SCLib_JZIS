@@ -5,7 +5,7 @@ import asyncio
 import time
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import TypeVar
+from typing import Literal, TypeVar
 
 from services.metrics import observe_provider
 
@@ -33,6 +33,7 @@ async def run_blocking(
     failure_threshold: int,
     cooldown_seconds: float,
     max_attempts: int = 2,
+    result_status: Callable[[T], Literal["success", "not_requested"]] | None = None,
 ) -> T:
     """Run a blocking provider call with timeout, retry, and circuit isolation.
 
@@ -54,6 +55,14 @@ async def run_blocking(
                 asyncio.to_thread(operation),
                 timeout=timeout_seconds,
             )
+            status = result_status(result) if result_status is not None else "success"
+            if status == "not_requested":
+                # Local preparation/packing refusal is neutral: no provider
+                # health observation exists to clear previous failures.
+                observe_provider(provider, "not_requested", time.monotonic() - started, 0)
+                return result
+            if status != "success":
+                raise ValueError("Invalid internal provider outcome classification")
             break
         except TimeoutError:
             _record_failure(circuit, failure_threshold, cooldown_seconds)

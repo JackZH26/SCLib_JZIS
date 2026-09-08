@@ -216,7 +216,7 @@ def test_duplicate_citation_map_cannot_choose_first_fallback_excerpt():
 
 @pytest.mark.parametrize("text", [None, "", "   "])
 def test_empty_generation_is_not_a_supported_answer(monkeypatch, text):
-    fake = SimpleNamespace(models=SimpleNamespace(generate_content=lambda **_: SimpleNamespace(
+    fake = SimpleNamespace(models=SimpleNamespace(count_tokens=lambda **_: SimpleNamespace(total_tokens=100), generate_content=lambda **_: SimpleNamespace(
         text=text, usage_metadata=SimpleNamespace(total_token_count=3))))
     monkeypatch.setattr(rag, "genai_client", lambda: fake)
     result = rag.generate_answer("Synthetic query?", [source()])
