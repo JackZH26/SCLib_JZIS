@@ -4,7 +4,9 @@ SCLib first interprets a bounded scientific query. Numerical/evidence predicates
 and Search UI scientific filters use provider-free, exact-parent extraction
 lookup; unsupported scientific clauses require clarification. These records are
 not scientific-support judgments. Pure mechanisms/comparisons select only typed
-original passages; full mixed synthesis remains unfinished. See
+original passages. Mixed/typed-comparison Ask now presents numerical rows and
+original candidates separately with unresolved association dispositions and a
+joint fresh check; full supported mixed synthesis remains unfinished. See
 [scientific routing and consumer migration](SCIENTIFIC_QUERY_ROUTING.md).
 
 For ordinary topic retrieval, SCLib uses hybrid retrieval rather than treating
@@ -88,7 +90,9 @@ preregistration or execution. Scientific acceptance and release authorization
 remain false even when declared scores pass; no actual ANN replay is provided.
 Real expert acquisition, true mixed synthesis and external release gates remain
 unfinished. Do not run the older aggregator/SSH stratification scripts as this
-evaluation pipeline.
+evaluation pipeline. The [mixed retrieval coordinator](MIXED_SCIENTIFIC_RETRIEVAL.md)
+is now a real Ask consumer of exact-parent lookup and original packing; its
+unresolved result/passage pairs are not scientific support labels for evaluation.
 
 ## Failure and safety metrics
 

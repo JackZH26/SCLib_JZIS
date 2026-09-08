@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import SearchPage from "@/app/search/page";
 import { ApiError, ask, search, type AskResponse, type SearchResponse } from "@/lib/api";
 import { generation, scientificLookup, scientificQuery, scientificResult } from "../fixtures/scientific-query";
+import { mixedResponse } from "../fixtures/scientific-mixed";
 
 const navigation = vi.hoisted(() => ({ query: "old material" }));
 vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams({ q: navigation.query }) }));
@@ -161,5 +162,50 @@ describe("query-bound asynchronous Search and Ask responses", () => {
     expect(screen.getByText("CURRENT_RESULT")).toBeVisible();
     expect(screen.queryByText("39 K")).not.toBeInTheDocument();
     expect(screen.queryByLabelText("Search scientific query")).not.toBeInTheDocument();
+  });
+
+  it("renders separate mixed panels without passing an unchecked answer to Markdown", async () => {
+    navigation.query = "Why is Tc of MgB₂ 39 K?";
+    vi.mocked(search).mockResolvedValue({ ...searchResponse("unused"), total: 0, results: [] });
+    vi.mocked(ask).mockResolvedValue(mixedResponse(navigation.query));
+    render(<SearchPage />);
+    expect(await screen.findByRole("heading", { name: "Separate numerical and original-source lookup" })).toBeVisible();
+    expect(screen.getByRole("region", { name: "Structured extraction records" })).toHaveTextContent("39 K");
+    expect(screen.getByRole("region", { name: "Original explanation candidates" })).toHaveTextContent("Synthetic passage 1");
+    expect(screen.getByText(/No generation requested/)).toBeVisible();
+    expect(screen.queryByText(/UNREVIEWED_MIXED_PROSE/)).not.toBeInTheDocument();
+  });
+
+  it("withholds both mixed inventories and untrusted answer on a malformed present envelope", async () => {
+    navigation.query = "Why is Tc of MgB₂ 39 K?";
+    vi.mocked(search).mockResolvedValue({ ...searchResponse("unused"), total: 0, results: [] });
+    const response = mixedResponse(navigation.query);
+    Object.assign(response, { scientific_mixed: { status: "completed" } });
+    vi.mocked(ask).mockResolvedValue(response);
+    render(<SearchPage />);
+    expect(await screen.findByText(/Numerical records, explanation candidates and association links are withheld/)).toBeVisible();
+    expect(screen.getByText(/Mixed metadata withheld/)).toBeVisible();
+    expect(screen.queryByText("39 K")).not.toBeInTheDocument();
+    expect(screen.queryByText("Synthetic passage 1")).not.toBeInTheDocument();
+    expect(screen.queryByText(/UNREVIEWED_MIXED_PROSE/)).not.toBeInTheDocument();
+  });
+
+  it("ignores a late mixed matrix under a new query and never keeps old extraction/citation targets", async () => {
+    navigation.query = "Why is Tc of MgB₂ 39 K?";
+    const oldQuery = navigation.query, old = deferred<AskResponse>(), current = deferred<AskResponse>();
+    vi.mocked(search).mockResolvedValue({ ...searchResponse("unused"), total: 0, results: [] });
+    vi.mocked(ask).mockReturnValueOnce(old.promise).mockReturnValueOnce(current.promise);
+    const view = render(<SearchPage />);
+    const oldSignal = vi.mocked(ask).mock.calls[0][1]?.signal;
+    navigation.query = "What is the current mechanism?";
+    view.rerender(<SearchPage />);
+    expect(oldSignal?.aborted).toBe(true);
+    await act(async () => { current.resolve(answer("CURRENT_ANSWER")); });
+    await act(async () => { old.resolve(mixedResponse(oldQuery)); });
+    expect(screen.getByText("CURRENT_ANSWER")).toBeVisible();
+    expect(screen.queryByRole("region", { name: "Mixed scientific retrieval" })).not.toBeInTheDocument();
+    expect(screen.queryByText("39 K")).not.toBeInTheDocument();
+    expect(screen.queryByText("Synthetic passage 1")).not.toBeInTheDocument();
+    expect(document.getElementById("src-1")).toBeNull();
   });
 });

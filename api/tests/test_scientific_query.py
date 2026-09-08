@@ -209,6 +209,20 @@ def test_mixed_comparison_and_formula_only_intents():
         assert result.raw_query == raw and result.normalized_query == normalized
 
 
+@pytest.mark.parametrize("query", ["Compare MgB2 and Nb Tc and explain why", "比较 MgB2 和 Nb 的临界温度，为什么？"])
+def test_explanation_does_not_erase_numerical_fields_from_a_comparison(query):
+    result = interpret_scientific_query(query)
+    assert result.status == "resolved" and result.intent == "comparison"
+    assert result.requested_fields == ["tc_kelvin"]
+    assert len(result.formulas) == 2 and result.raw_query == query
+
+
+def test_pure_mechanism_comparison_does_not_invent_numerical_fields():
+    result = interpret_scientific_query("Compare the pairing mechanisms of MgB2 and Nb")
+    assert result.status == "resolved" and result.intent == "comparison"
+    assert result.requested_fields == [] and result.constraints == []
+
+
 @pytest.mark.parametrize("query", ["Synthetic superconductivity", "old snapshot", "unmatchedqueryneedle", "strong coupling", "custom_search_keyword", "Synthetic MgB₂ superconductivity.", "Tell me about superconductivity", "synthetic structure disclosure", "hydride pressure result"])
 def test_ordinary_fulltext_keywords_are_preserved_not_rejected_as_bad_filters(query):
     result = interpret_scientific_query(query)

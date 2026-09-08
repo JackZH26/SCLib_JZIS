@@ -29,6 +29,7 @@ from models.evidence_packing import EvidencePackingSummary, PackingCandidate
 from models.index_read import generation_read_metadata
 from models.rag_input_budget import RagInputBudgetReport
 from models.scientific_lookup import ScientificLookupStatus
+from models.scientific_mixed import ScientificMixedEvidence
 from models.search import AskRequest, AskResponse, AskSource
 from routers.deps import Identity, require_identity
 from services import (
@@ -41,6 +42,7 @@ from services import (
     retrieval,
     retrieval_currentness,
     retrieval_groups,
+    scientific_mixed,
 )
 from services.authors import short as _authors_short
 from services.metrics import observe_rag
@@ -48,6 +50,7 @@ from services.scientific_query import interpret_scientific_query
 from services.scientific_query_lookup import (
     lookup_answer,
     lookup_scientific_results,
+    prepare_scientific_lookup,
     result_query,
     unavailable,
 )
@@ -75,6 +78,8 @@ async def ask(
     # Retain primitives, not an ORM User that rollback would expire.
     history_user_id = identity.user.id if identity.user is not None else None
     interpretation = interpret_scientific_query(body.question)
+    mixed_inputs = None
+    original_limit = body.max_sources
     if interpretation.status == "clarification_required":
         answer = ("Please clarify the unresolved scientific conditions before a numerical lookup or synthesis. "
                   + " ".join(interpretation.clarification_questions))
@@ -92,7 +97,26 @@ async def ask(
             pin = await index_retrieval.load_pin(db)
     except Exception:
         raise HTTPException(503, "Retrieval generation is unavailable") from None
-    if result_query(interpretation):
+    if scientific_mixed.is_mixed_request(interpretation):
+        try:
+            async with asyncio.timeout(15):
+                prepared = await prepare_scientific_lookup(db, pin, interpretation,
+                    limit=max(1, body.max_sources // 2))
+                mixed_inputs = prepared.consume()
+            if mixed_inputs.outcome.status.status != "completed":
+                raise ValueError("Mixed numerical lookup is unavailable")
+            original_limit = body.max_sources - len(mixed_inputs.outcome.results)
+            # Detached private snapshots/pins survive rollback; no numeric read
+            # transaction spans a semantic provider call or later context work.
+            await db.rollback()
+        except Exception:
+            await db.rollback()
+            return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
+                reason="mixed_lookup_unavailable")
+        if original_limit == 0:
+            return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
+                inputs=mixed_inputs)
+    elif result_query(interpretation):
         try:
             async with asyncio.timeout(15):
                 outcome = await lookup_scientific_results(db, pin, interpretation, limit=body.max_sources)
@@ -139,6 +163,10 @@ async def ask(
             formula_hits = await retrieval.formula_lexical_search(db, interpretation, pin, limit=candidate_limit)
         lexical_hits = retrieval.combine_lexical_hits(formula_hits, lexical_hits, limit=candidate_limit)
     except Exception:
+        if mixed_inputs is not None:
+            await db.rollback()
+            return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
+                reason="mixed_context_unavailable")
         raise HTTPException(503, "Lexical/formula-aware retrieval is unavailable") from None
     candidates = retrieval.fuse_rankings(
         vector_hits,
@@ -146,6 +174,9 @@ async def ask(
         limit=candidate_limit,
     )
     if not candidates:
+        if mixed_inputs is not None:
+            return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
+                inputs=mixed_inputs)
         if pin is not None:
             try:
                 async with asyncio.timeout(10):
@@ -185,6 +216,10 @@ async def ask(
         async with asyncio.timeout(10):
             chunk_by_id = await index_retrieval.hydrate(db, pin, chunk_ids)
     except Exception:
+        if mixed_inputs is not None:
+            await db.rollback()
+            return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
+                reason="mixed_context_unavailable")
         raise HTTPException(503, "Retrieval generation is unavailable") from None
     candidates = retrieval.rerank_candidates(body.question, candidates, chunk_by_id)
     evidence_failure_reason = None
@@ -214,6 +249,7 @@ async def ask(
     rag_inputs: list[rag.RagSourceInput] = []
     sources_out: list[AskSource] = []
     selected_pins: list[retrieval_currentness.SelectionPin] = []
+    frozen_originals = ()
     pin_unavailable = evidence_by_chunk is None
     admitted, input_by_id, output_by_id, pins_by_id = [], {}, {}, {}
     packing_summary = EvidencePackingSummary(status="unavailable", reason_codes=["packing_unavailable"])
@@ -224,7 +260,7 @@ async def ask(
         if chunk is None or chunk.paper is None:
             continue
         evidence = evidence_by_chunk[chunk.id]
-        if interpretation.intent in {"mechanism", "comparison"} and evidence["chunk_kind"] != "original_passage":
+        if interpretation.intent in {"mechanism", "comparison", "mixed"} and evidence["chunk_kind"] != "original_passage":
             continue  # derived numerical Facts are not original explanatory passages
         # Never send or quote a known-restricted/stale evidence projection.
         # Other unresolved lineage is navigation data, not original support.
@@ -293,12 +329,15 @@ async def ask(
 
             plan = evidence_packing.pack_evidence(admitted,
                 cost=lambda ids: rag.measure_input_bytes(body.question, trial_inputs(ids), language=body.language),
-                byte_budget=settings.gemini_input_byte_limit, max_chunks=body.max_sources)
+                byte_budget=settings.gemini_input_byte_limit, max_chunks=original_limit)
             packing_summary = evidence_packing.public_summary(plan)
             rag_inputs = trial_inputs(tuple(item.chunk_id for item in plan.selected))
             sources_out = [AskSource.model_validate({**output_by_id[item.chunk_id].model_dump(),
                 "index": item.position, "packing_info": item.model_dump()}) for item in plan.selected]
             selected_pins = [pins_by_id[item.chunk_id] for item in plan.selected]
+            if mixed_inputs is not None:
+                frozen_originals = tuple(scientific_mixed.freeze_original(source, selected_pin)
+                    for source, selected_pin in zip(sources_out, selected_pins, strict=True))
         except Exception:
             log.warning("Ask complete evidence packing unavailable; selected context withheld")
             pin_unavailable = True
@@ -319,6 +358,16 @@ async def ask(
     await db.rollback()
     if pin_unavailable:
         rag_inputs, sources_out, selected_pins = [], [], []
+        frozen_originals = ()
+
+    if mixed_inputs is not None:
+        # A mixed query reaches BOTH real retrieval paths, but no current
+        # catalogue relation establishes a scientific numerical explanation.
+        # Do not ask Gemini to invent that missing association. One final fresh
+        # snapshot checks numeric parents and original context as a single unit.
+        return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
+            inputs=mixed_inputs, originals=frozen_originals, packing=packing_summary,
+            reason=(evidence_failure_reason or "mixed_context_unavailable") if pin_unavailable else None)
 
     # 3. One count+generation attempt behind the outer deadline. A late count
     # must not start generation after the await has timed out or been cancelled.
@@ -432,6 +481,67 @@ async def _resolve_evidence(db, chunks):
         if not isinstance(resolved, dict) or set(resolved) != {chunk.id for chunk in chunks}:
             raise retrieval_currentness.CurrentnessUnavailable("incomplete typed evidence inventory")
         return {identifier: validate_evidence_descriptor(value) for identifier, value in resolved.items()}
+
+
+async def _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0, *,
+                          inputs=None, originals=(), packing=None, reason=None):
+    """Publish both current inventories together, or withdraw both without a draft."""
+    await db.rollback()
+    report = None
+    sources = []
+    if reason is None:
+        try:
+            if type(originals) is not tuple or any(type(item) is not scientific_mixed.FrozenMixedOriginal for item in originals):
+                raise ValueError("Frozen mixed original inputs are required")
+            sources = [item.source for item in originals]
+            original_pins = tuple(item.selection_pin for item in originals)
+            pins = scientific_mixed.combined_pins(inputs, original_pins, max_selected_inputs=body.max_sources)
+            if len(original_pins) != len(sources) or any(source.packing_info is None
+                    or source.packing_info.chunk_id != original_pin.chunk_id or source.paper_id != original_pin.paper_id
+                    for source, original_pin in zip(sources, original_pins, strict=True)):
+                raise ValueError("Incomplete original citation pin inventory")
+            report = scientific_mixed.resolve_mixed_associations(inputs, sources,
+                max_selected_inputs=body.max_sources)
+            if pins:
+                check = await retrieval_currentness.check_selected_sources(pins, evidence_resolver=_resolve_evidence)
+                if check.status != "unchanged":
+                    reason = check.reason_code or "mixed_currentness_unavailable"
+            else:
+                async with asyncio.timeout(10):
+                    await index_retrieval.require_current_pin(db, pin)
+        except Exception:
+            reason = "mixed_currentness_unavailable"
+    if reason is not None:
+        # Reason values from lower-level boundaries stay inside the public
+        # closed inventory; neither raw errors nor prior inputs are returned.
+        try:
+            report = ScientificMixedEvidence(status="unavailable", max_selected_inputs=body.max_sources,
+                reason_codes=[reason])
+        except ValueError:
+            report = ScientificMixedEvidence(status="unavailable", max_selected_inputs=body.max_sources,
+                reason_codes=["mixed_currentness_unavailable"])
+        sources = []
+        outcome = unavailable("mixed_retrieval_withheld")
+        packing = EvidencePackingSummary(status="withheld", reason_codes=["selected_context_withheld"])
+    else:
+        outcome = inputs.outcome
+    answer = scientific_mixed.mixed_answer(report)
+    latency_ms = int((time.perf_counter() - t0) * 1000)
+    observe_rag(sources=len(sources), tokens=0, citation_valid=False, fallback=False,
+        citation_indices_valid=True, scientific_support_status="not_checked", answer_mode="abstention")
+    if history_user_id is not None:
+        history_answer = ("A mixed scientific retrieval was requested. Structured extraction rows, original explanation candidates "
+                          "and their version-bound association dispositions are not retained in this history schema. "
+                          "Rerun the query to inspect current inputs. This history entry is not scientific evidence.")
+        await _persist_history(db, history_user_id, body.question, history_answer, [], 0, latency_ms, body.language)
+    return AskResponse(answer=answer, sources=list(sources), tokens_used=0, query_time_ms=latency_ms,
+        citation_indices_valid=True, scientific_query=interpretation, scientific_lookup=outcome.status,
+        scientific_results=outcome.results, scientific_mixed=report,
+        support_warnings=["numerical_explanation_not_established", "structured_extractions_not_scientific_validation"]
+            if report.status == "completed" else list(report.reason_codes),
+        evidence_packing=packing or EvidencePackingSummary(),
+        retrieval_generation=generation_read_metadata(pin), guest_remaining=identity.guest_remaining,
+        remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining)
 
 
 def _currentness_abstention(reason: str, tokens_used: int | None, *, input_budget=None) -> rag.RagResult:

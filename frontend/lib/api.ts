@@ -660,6 +660,7 @@ export interface EvidenceProvenance {
 }
 
 export interface AskResponse {
+  scientific_mixed?: ScientificMixedEvidence;
   evidence_packing?: EvidencePackingSummary;
   input_budget?: RagInputBudgetReport;
   retrieval_generation?: RetrievalGeneration | null;
@@ -684,6 +685,38 @@ export interface AskResponse {
   support_coverage?: AskSupportCoverage;
   answer_mode?: "synthesis" | "limited_synthesis" | "extractive_fallback" | "abstention";
   assessment_scope?: "generated_draft" | "none";
+}
+
+export type ScientificMixedReason = "numerical_explanation_not_established" | "reviewed_result_passage_bridge_missing"
+  | "no_matching_extraction" | "no_original_context" | "combined_source_limit" | "mixed_lookup_unavailable"
+  | "mixed_context_unavailable" | "mixed_currentness_unavailable" | "retrieval_generation_changed"
+  | "retrieval_source_changed" | "retrieval_source_no_longer_eligible" | "retrieval_grouping_changed"
+  | "retrieval_currentness_unavailable" | "retrieval_currentness_timeout" | "evidence_packing_unavailable";
+
+export interface MixedEvidenceAssociation {
+  parent_result_revision_id: string;
+  result_source_snapshot_sha256: string;
+  source_index: number;
+  source_vector_id: string;
+  source_evidence_revision_id: string;
+  source_evidence_record_sha256: string;
+  source_content_sha256: string;
+  catalogue_relation: "same_snapshot" | "not_same_snapshot";
+  status: "not_established";
+  reason_code: "reviewed_result_passage_bridge_missing";
+}
+
+/** Separate retrieval inventories, never a numerical explanation or experiment link. */
+export interface ScientificMixedEvidence {
+  version: "scientific-mixed-evidence/1.0.0";
+  status: "not_requested" | "completed" | "unavailable";
+  result_count: number;
+  source_count: number;
+  max_selected_inputs: number;
+  associations: MixedEvidenceAssociation[];
+  reason_codes: ScientificMixedReason[];
+  scientific_acceptance: false;
+  independent_support_count: null;
 }
 
 export interface AskSupportCoverage {

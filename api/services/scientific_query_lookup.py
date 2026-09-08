@@ -7,7 +7,8 @@ derived-Fact parent, with an explicit non-approval association scope.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+import json
+from dataclasses import dataclass, field
 from uuid import UUID
 
 import sqlalchemy as sa
@@ -19,6 +20,7 @@ from models.scientific_lookup import (
 )
 from services import index_generations, index_retrieval, retrieval_currentness
 from services.rag_evidence_contract import input_record_sha256
+from services.retrieval_groups import resolve_grouping_bindings
 from services.scientific_query_results import select_record_results
 from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import (
@@ -29,12 +31,164 @@ from services.source_visibility import (
 
 MAX_RESULTS = 20
 MAX_RECORDS = 5000
+MAX_PREPARED_BYTES = 16 * 1024 * 1024
 
 
 @dataclass(frozen=True)
 class LookupResult:
     results: list[LinkedScientificResult]
     status: ScientificLookupStatus
+
+
+def _json(value):
+    """Detach private JSON, retaining every raw field without ORM aliases."""
+    encoded = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+    if len(encoded.encode("utf-8")) > MAX_PREPARED_BYTES:
+        raise ValueError("Scientific lookup preparation exceeds its byte bound")
+    return encoded
+
+
+@dataclass(frozen=True, slots=True)
+class PreparedScientificParent:
+    """One exact retained extraction, not an original-passage association.
+
+    JSON properties return fresh copies. No mutable ORM object or vector bytes
+    escape preparation; the complete retained text/attribution and raw record
+    remain available to the private mixed coordinator.
+    """
+    result_id: str
+    record_index: int
+    parent_result_revision_id: str
+    paper_id: str
+    vector_id: str
+    source_snapshot_sha256: str
+    input_record_sha256: str
+    selection_pin: retrieval_currentness.SelectionPin
+    _raw_record_json: str = field(repr=False)
+    _member_json: str = field(repr=False)
+
+    @property
+    def raw_record(self):
+        return json.loads(self._raw_record_json)
+
+    @property
+    def member(self):
+        return json.loads(self._member_json)
+
+
+@dataclass(frozen=True, slots=True)
+class ScientificLookupInputs:
+    """Immutable private inputs; consumption is not a fresh-read approval.
+
+    The coordinator must check the entire final numeric/original selection in
+    one fresh snapshot and discard *all* outputs on failure. Reusing these
+    historical bytes is never evidence that they remain currently admissible.
+    """
+    parents: tuple[PreparedScientificParent, ...]
+    _outcome_json: str = field(repr=False)
+    _generation_pin_json: str = field(repr=False)
+
+    def __post_init__(self):
+        outcome, generation = self.outcome, self.generation_pin
+        if (type(self.parents) is not tuple or len(self.parents) > MAX_RESULTS
+                or len(outcome.results) != len(self.parents)
+                or outcome.status.returned_count != len(self.parents)
+                or (outcome.status.status != "completed" and self.parents)
+                or len({parent.parent_result_revision_id for parent in self.parents}) != len(self.parents)
+                or len({parent.vector_id for parent in self.parents}) != len(self.parents)):
+            raise ValueError("Scientific preparation requires an exact one-to-one parent inventory")
+        size = len(self._outcome_json.encode("utf-8")) + len(self._generation_pin_json.encode("utf-8"))
+        for row, parent in zip(outcome.results, self.parents, strict=True):
+            if type(parent) is not PreparedScientificParent:
+                raise ValueError("Scientific preparation requires immutable parents")
+            member, raw, binding = parent.member, parent.raw_record, row.binding
+            if (generation is None or parent.result_id != row.result.result_id
+                    or parent.record_index != row.result.record_index
+                    or parent.parent_result_revision_id != binding.parent_result_revision_id
+                    or parent.paper_id != binding.paper_id or parent.vector_id != binding.vector_id
+                    or parent.selection_pin.chunk_id != parent.vector_id
+                    or parent.selection_pin.paper_id != parent.paper_id
+                    or parent.selection_pin.generation_pin_sha256 != index_retrieval.pin_sha256(generation)
+                    or not parent.selection_pin.has_evidence_pin or parent.selection_pin.grouping_sha256 is None
+                    or any(getattr(binding, key) != generation[key] for key in
+                           ("generation_id", "activation_event_id", "manifest_sha256"))
+                    or any(member[key] != getattr(binding, key) for key in
+                           ("paper_id", "vector_id", "generation_id", "content_sha256", "evidence_revision_id", "evidence_record_sha256"))
+                    or member["source_snapshot_sha256"] != parent.source_snapshot_sha256
+                    or input_record_sha256(raw) != parent.input_record_sha256
+                    or input_record_sha256(member["snapshot_json"]["materials_mentioned"][parent.record_index])
+                       != parent.input_record_sha256):
+                raise ValueError("Scientific preparation parent/result/pin binding mismatch")
+            size += len(parent._raw_record_json.encode("utf-8")) + len(parent._member_json.encode("utf-8"))
+        if size > MAX_PREPARED_BYTES:
+            raise ValueError("Scientific lookup preparation exceeds its byte bound")
+
+    @property
+    def outcome(self):
+        value = json.loads(self._outcome_json)
+        return LookupResult([LinkedScientificResult.model_validate(row) for row in value["results"]],
+                            ScientificLookupStatus.model_validate(value["status"]))
+
+    @property
+    def selection_pins(self):
+        return tuple(parent.selection_pin for parent in self.parents)
+
+    @property
+    def generation_pin(self):
+        return json.loads(self._generation_pin_json)
+
+
+class PreparedScientificLookup:
+    """Single-consumption coordinator handle, not an authorization capability.
+
+    Copying/serializing this handle is refused. Once consumed, including when
+    the ensuing fresh check fails, this handle cannot supply another outcome.
+    Its input value contains detached snapshots, never live mutable aliases.
+    """
+    __slots__ = ("_inputs",)
+
+    def __init__(self, inputs: ScientificLookupInputs):
+        if type(inputs) is not ScientificLookupInputs:
+            raise ValueError("Validated scientific preparation inputs are required")
+        self._inputs = inputs
+
+    def _available(self):
+        if self._inputs is None:
+            raise ValueError("Scientific lookup preparation has already been consumed")
+        return self._inputs
+
+    @property
+    def outcome(self):
+        return self._available().outcome
+
+    @property
+    def selection_pins(self):
+        return self._available().selection_pins
+
+    @property
+    def parents(self):
+        return self._available().parents
+
+    def consume(self) -> ScientificLookupInputs:
+        inputs = self._available()
+        self._inputs = None
+        return inputs
+
+    def __copy__(self):
+        raise TypeError("Scientific lookup preparation is a single-consumption handle")
+
+    def __deepcopy__(self, memo):
+        return self.__copy__()
+
+    def __reduce_ex__(self, protocol):
+        return self.__copy__()
+
+
+def _prepared(outcome, pin, parents=()):
+    return PreparedScientificLookup(ScientificLookupInputs(tuple(parents), _json({
+        "results": [row.model_dump(mode="json") for row in outcome.results],
+        "status": outcome.status.model_dump(mode="json"),
+    }), _json(pin)))
 
 
 def result_query(interpretation):
@@ -47,22 +201,27 @@ def unavailable(reason):
     return LookupResult([], ScientificLookupStatus(status="unavailable", reason_codes=[reason]))
 
 
-async def lookup_scientific_results(db, pin, interpretation, *, limit=20, filters=None,
-                                    year_min=None, year_max=None, sort="relevance"):
-    """Only exact complete-parent matches; no provider work or outer commit.
+async def prepare_scientific_lookup(db, pin, interpretation, *, limit=20, filters=None,
+                                    year_min=None, year_max=None, sort="relevance") -> PreparedScientificLookup:
+    """Prepare exact complete-parent matches in the caller's read transaction.
 
-    The request database read transaction is rolled back before the final fresh
-    selected-input check, matching existing Ask currentness semantics. Caller
-    must not pass unrelated pending writes into this read-only operation.
+    No commit, rollback, provider call or independent fresh check occurs here,
+    on success *or failure*. Exceptions propagate; the caller owns transaction
+    cleanup. Before publishing, consume once, end this read transaction and
+    check the complete final selected inventory in a NEW read snapshot. A
+    clean ORM session is required but cannot detect caller-owned Core writes.
     """
     if (db.new or db.dirty or db.deleted or type(limit) is not int or not 1 <= limit <= MAX_RESULTS
             or sort not in {"relevance", "date", "tc"}):
         raise ValueError("A clean session and bounded result count are required")
     if interpretation.status != "resolved":
-        return LookupResult([], ScientificLookupStatus(status="clarification_required",
-            reason_codes=["unresolved_query_constraints"]))
+        return _prepared(LookupResult([], ScientificLookupStatus(status="clarification_required",
+            reason_codes=["unresolved_query_constraints"])), None)
     if pin is None:
-        return unavailable("active_generation_required")
+        return _prepared(unavailable("active_generation_required"), None)
+    # The caller may retain its mutable pin object across awaits. Bind this
+    # operation to a private exact copy, including the activation event (ABA).
+    pin = json.loads(_json(pin))
     members = await index_generations.load_generation_members(db, generation_id=pin["generation_id"])
     if index_generations.manifest_sha256(members) != pin["manifest_sha256"]:
         raise ValueError("Scientific lookup generation inventory is incomplete")
@@ -135,7 +294,7 @@ async def lookup_scientific_results(db, pin, interpretation, *, limit=20, filter
     # linked catalogue payload, not just an IN-clause limit on its IDs.
     linked = await retrieval_currentness._bounded_materials(db, [chunk.materials_mentioned for chunk in rows])
     statuses = await resolve_paper_lifecycle(db, {chunk.paper_id for chunk in rows})
-    results, selected_pins = [], []
+    results, selected = [], []
     eligible_count = 0
     seen_parents = set()
     for member, parent, result in candidates:
@@ -153,6 +312,8 @@ async def lookup_scientific_results(db, pin, interpretation, *, limit=20, filter
         occurrences, summary = project_source_occurrences(chunk.materials_mentioned,
             paper_status=status, linked_materials=linked)
         record = chunk.materials_mentioned[result.record_index]
+        if input_record_sha256(record) != parent["input_record_sha256"]:
+            raise ValueError("Scientific extraction raw parent changed during preparation")
         result_visibility = occurrence_visibility(record, paper_status=status,
             linked_visibility=linked.get(record.get("material_id")) if type(record.get("material_id")) is str else None)
         if not result_visibility["reported_claim_filter_eligible"]:
@@ -168,8 +329,7 @@ async def lookup_scientific_results(db, pin, interpretation, *, limit=20, filter
             continue
         visibility = source_visibility(status)
         visibility["warning_codes"] = sorted(set(visibility["warning_codes"] + summary["warning_codes"]))
-        selected_pins.append(retrieval_currentness.selection_pin(chunk, material_evidence=occurrences,
-            source_review=visibility, evidence=descriptor))
+        selected.append((member, parent, result, chunk, descriptor, occurrences, visibility, record))
         results.append(LinkedScientificResult(result=result, binding=ScientificResultBinding(
             paper_id=chunk.paper_id, vector_id=chunk.id, generation_id=pin["generation_id"],
             activation_event_id=pin["activation_event_id"], manifest_sha256=pin["manifest_sha256"],
@@ -177,13 +337,18 @@ async def lookup_scientific_results(db, pin, interpretation, *, limit=20, filter
             evidence_record_sha256=descriptor["evidence_record_sha256"],
             parent_result_revision_id=descriptor["parent_result_revision_id"],
             parent_result_sha256=descriptor["parent_result_sha256"])))
-    await db.rollback()
-    if selected_pins:
-        currentness = await retrieval_currentness.check_selected_sources(selected_pins,
-            evidence_resolver=index_retrieval.resolve_evidence)
-        if currentness.status != "unchanged":
-            return unavailable(currentness.reason_code or "scientific_lookup_currentness_unavailable")
-    await index_retrieval.require_current_pin(db, pin)
+    grouping = await resolve_grouping_bindings(db, {chunk.paper_id for _, _, _, chunk, *_ in selected})
+    prepared_parents = []
+    for member, parent, result, chunk, descriptor, occurrences, visibility, record in selected:
+        selected_pin = retrieval_currentness.selection_pin(chunk, material_evidence=occurrences,
+            source_review=visibility, evidence=descriptor, grouping_binding=grouping[chunk.paper_id])
+        prepared_parents.append(PreparedScientificParent(
+            result_id=result.result_id, record_index=result.record_index,
+            parent_result_revision_id=str(parent["parent_extraction_revision_id"]), paper_id=chunk.paper_id,
+            vector_id=chunk.id, source_snapshot_sha256=member["source_snapshot_sha256"],
+            input_record_sha256=parent["input_record_sha256"], selection_pin=selected_pin,
+            _raw_record_json=_json(record), _member_json=_json({key: value for key, value in member.items()
+                                                           if key != "vector_bytes"})))
     reasons = ["derived_extractions_not_independent_scientific_support"]
     if keyword_ids is not None:
         reasons.append("remaining_keywords_are_generation_fulltext_conditions")
@@ -192,8 +357,32 @@ async def lookup_scientific_results(db, pin, interpretation, *, limit=20, filter
     if filters is not None and filters.include_unknown_pressure and (filters.ambient_only
             or filters.pressure_min is not None or filters.pressure_max is not None):
         reasons.append("unknown_pressure_cannot_prove_requested_pressure")
-    return LookupResult(results, ScientificLookupStatus(status="completed", returned_count=len(results),
-        has_more=eligible_count > len(results), reason_codes=reasons))
+    return _prepared(LookupResult(results, ScientificLookupStatus(status="completed", returned_count=len(results),
+        has_more=eligible_count > len(results), reason_codes=reasons)), pin, prepared_parents)
+
+
+async def lookup_scientific_results(db, pin, interpretation, *, limit=20, filters=None,
+                                    year_min=None, year_max=None, sort="relevance"):
+    """Compatibility wrapper: prepare, end read, then fresh-check all results.
+
+    No commit occurs. As before, clarification/missing-generation early returns
+    leave the caller's transaction untouched. Preparation exceptions propagate;
+    callers must clean up their own session, not retry with a consumed handle.
+    """
+    prepared = await prepare_scientific_lookup(db, pin, interpretation, limit=limit, filters=filters,
+        year_min=year_min, year_max=year_max, sort=sort)
+    inputs = prepared.consume()
+    outcome = inputs.outcome
+    if outcome.status.status != "completed":
+        return outcome
+    await db.rollback()
+    if inputs.selection_pins:
+        currentness = await retrieval_currentness.check_selected_sources(inputs.selection_pins,
+            evidence_resolver=index_retrieval.resolve_evidence)
+        if currentness.status != "unchanged":
+            return unavailable(currentness.reason_code or "scientific_lookup_currentness_unavailable")
+    await index_retrieval.require_current_pin(db, inputs.generation_pin)
+    return outcome
 
 
 def lookup_answer(outcome):

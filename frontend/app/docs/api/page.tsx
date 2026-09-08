@@ -193,9 +193,10 @@ export default function ApiDocsPage() {
         {/* Search */}
         <Endpoint method="POST" path="/search" badge="quota">
           <p className="mb-2">
-            Hybrid search across the arXiv cond-mat.supr-con corpus, combining
+            Ordinary topic queries use hybrid search over retained corpus inputs, combining
             Vertex semantic retrieval with PostgreSQL full-text search and
-            deterministic reranking.
+            deterministic reranking. Scientific property or evidence conditions
+            use the separate structured lookup described below.
           </p>
           <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`POST /v1/search
 Content-Type: application/json
@@ -210,17 +211,50 @@ Content-Type: application/json
   }
 }`}</pre>
           <p className="mt-2">
-            <strong>Response:</strong> <Code>total</Code>, <Code>results[]</Code>{" "}
+            <strong>Topic-route response:</strong> <Code>total</Code>, <Code>results[]</Code>{" "}
             (paper_id, title, authors, year, matched_chunk, relevance_score,
             material_family), <Code>query_time_ms</Code>.
+          </p>
+          <p className="mt-2">
+            Search and Ask also return <Code>scientific_query</Code>,{" "}
+            <Code>scientific_lookup</Code>, and <Code>scientific_results[]</Code>.
+            The bounded interpretation preserves the original query, formula
+            notation and condition spans; unresolved scientific clauses require
+            clarification rather than silently dropping a condition. Lookup status is{" "}
+            <Code>not_requested</Code>, <Code>completed</Code>,{" "}
+            <Code>unavailable</Code>, or <Code>clarification_required</Code>.
+          </p>
+          <p className="mt-2">
+            Scientific filters, including <Code>material_family</Code> in the
+            example above, select the structured route: paper <Code>results=[]</Code>{" "}
+            and <Code>total=0</Code> are intentional. Read{" "}
+            <Code>scientific_lookup.returned_count</Code> and{" "}
+            <Code>scientific_results[]</Code> instead. Up to 20 extraction rows
+            retain exact parent, evidence, content and generation bindings, with{" "}
+            <Code>has_more</Code> for additional eligible rows. All requested
+            conditions must match the same extracted record. Missing pressure is
+            not ambient; a non-detection is not Tc equal to zero. These machine
+            extractions are not original quotations, scientific acceptance or ML labels.
+          </p>
+          <p className="mt-2">
+            <Code>retrieval_generation</Code> declares <Code>generation_snapshot</Code>{" "}
+            with a generation ID, activation-event ID and manifest hash, or{" "}
+            <Code>legacy_lexical_only</Code>. Ordinary topic retrieval can use
+            legacy lexical search without an active generation. Structured
+            lookup requires bound derived parents in an active generation;
+            unavailable or changed selected inputs withhold the entire structured
+            result set, without legacy numerical fallback. An empty set is not
+            evidence of absent superconductivity, full-corpus coverage or currentness beyond the checked snapshot.
           </p>
         </Endpoint>
 
         {/* Ask */}
         <Endpoint method="POST" path="/ask" badge="quota">
           <p className="mb-2">
-            RAG question answering — the AI reads relevant papers and generates
-            a cited answer.
+            Route-specific scientific retrieval and RAG question answering:
+            structured-only lookup, separate numerical and original-source
+            candidates, or a bounded cited answer when generation is requested.
+            Not every question triggers model generation.
           </p>
           <pre className="mt-2 overflow-x-auto rounded border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed">{`POST /v1/ask
 Content-Type: application/json
@@ -231,10 +265,85 @@ Content-Type: application/json
   "language": "auto"
 }`}</pre>
           <p className="mt-2">
-            <strong>Response:</strong> <Code>answer</Code> (Markdown with [1][2]
-            citations), <Code>sources[]</Code> (paper_id, title, year),{" "}
+            <strong>Response:</strong> <Code>answer</Code> (route-specific static
+            notice or Markdown with [1][2] citations), <Code>sources[]</Code>{" "}
+            (paper_id, title, year),{" "}
             <Code>citation_valid</Code>, <Code>citation_warnings</Code>,{" "}
             <Code>tokens_used</Code>, and <Code>query_time_ms</Code>.
+          </p>
+          <p className="mt-2">
+            The numerical example above is not a promise of an AI-generated
+            maximum or a scientifically accepted record. Non-comparison
+            structured-only Ask uses the same qualified extraction fields as
+            Search, without embedding or generation calls. Unsupported conditions
+            can require clarification. Read the interpretation and lookup status
+            before consuming any numerical rows.
+          </p>
+          <p className="mt-2">
+            Mixed questions and comparisons with typed property or evidence
+            requests return the closed <Code>scientific_mixed</Code> envelope
+            under <Code>scientific-mixed-evidence/1.0.0</Code>. It separates{" "}
+            <Code>scientific_results[]</Code> from original-passage <Code>sources[]</Code>.
+            Every exact numerical-parent/original-citation pair appears once in
+            the complete association matrix, retaining the parent revision,
+            declared catalogue-snapshot hash, original source index, vector ID,
+            evidence revision, evidence-record hash and full-content hash.
+            Original citation indices are not extraction-row indices.
+          </p>
+          <p className="mt-2">
+            <Code>scientific_mixed.status=completed</Code> means bounded candidate
+            retrieval and its joint check completed, not that a numerical
+            explanation was established. Every association is <Code>not_established</Code>{" "}
+            with <Code>reviewed_result_passage_bridge_missing</Code>.
+            <Code>same_snapshot</Code> and <Code>not_same_snapshot</Code> describe
+            declared Paper/catalogue metadata, not an authenticated document,
+            the same experiment, causal support or scientific independence.
+            <Code>scientific_acceptance=false</Code> and{" "}
+            <Code>independent_support_count=null</Code> never provide a confidence
+            score or an ML approval label.
+          </p>
+          <p className="mt-2">
+            Mixed <Code>max_sources</Code> is a combined limit of at most 20
+            numerical parents and original passages, not 20 of each. The numerical
+            allocation is <Code>max(1, floor(max_sources / 2))</Code>; unused
+            capacity is available to originals. With a single slot, a matching
+            numerical row takes priority and absence of original context is
+            explicit. The UI states “Numerical explanation not established” and
+            displays the two inventories separately; numerical comparisons do
+            not imply comparable experiments or that the user requested an explanation.
+          </p>
+          <p className="mt-2">
+            <Code>scientific_mixed.status=unavailable</Code> withdraws numerical
+            rows, original citations and associations together after a failed or
+            changed combined check. No previous eligible subset is retained.
+            Existing routes default to <Code>not_requested</Code>; missing metadata
+            in older responses retains legacy behavior. A malformed present
+            envelope withholds the mixed inventories and answer prose rather than
+            falling back to an unchecked explanation.
+          </p>
+          <p className="mt-2">
+            <Code>evidence_packing</Code> and per-source <Code>packing_info</Code>{" "}
+            describe selected context, catalogue-source/Work diversity, heuristic
+            roles, bounded exclusions and canonical full-payload UTF-8 bytes.
+            Selection counts are not independent papers or experiments. The
+            packer budgets complete retained chunks; original source cards show
+            whitespace-normalized previews of at most 280 characters. A snippet
+            is not the full chunk or paper; the content hash binds the retained
+            full chunk, not only the preview.
+          </p>
+          <p className="mt-2">
+            <Code>input_budget</Code> separately reports provider token-preflight
+            status, model, request hash, byte and input-token limits, and{" "}
+            <Code>generation_started</Code> (null when unknown or not requested). Actual provider
+            <Code>count_tokens</Code> observations are not billed-usage receipts
+            or model-version attestations; UTF-8 bytes are a resource bound, not
+            model tokens. Mixed retrieval calls neither Gemini CountTokens nor
+            generation: <Code>input_budget.status=not_requested</Code>,{" "}
+            <Code>tokens_used=0</Code>, <Code>assessment_scope=none</Code> and{" "}
+            <Code>answer_mode=abstention</Code>. Its measured packing representation
+            is not a submitted generation request. Semantic retrieval may still
+            call embedding/vector providers, so zero generation tokens does not
+            mean zero retrieval cost, zero API quota use or a billing guarantee.
           </p>
           <p className="mt-2">
             Scientific support metadata is additive: <Code>support_policy_version</Code>,{" "}
@@ -266,7 +375,9 @@ Content-Type: application/json
           <p className="mt-1">
             <Code>language</Code> accepts <Code>&quot;auto&quot;</Code>,{" "}
             <Code>&quot;en&quot;</Code>, or <Code>&quot;zh&quot;</Code>. Auto
-            detects the question language and replies in kind.
+            selects the question language for generated answers. Static
+            operational notices and website-owned labels remain English;
+            original queries and source wording retain their language.
           </p>
           <p className="mt-2">
             Search results and Ask sources carry <Code>evidence_provenance</Code>
@@ -279,11 +390,20 @@ Content-Type: application/json
             or stale excerpts are withheld.
           </p>
           <p className="mt-2">
-            Ask rechecks its selected database inputs after generation. A changed
-            or unavailable check withdraws the draft and returns an abstention.
+            The generation route rechecks its selected database inputs after
+            generation. A changed or unavailable check withdraws the draft and
+            returns an abstention. Mixed retrieval instead checks both selected
+            inventories together before returning them, without generating a draft.
             A matching snapshot is not scientific acceptance or a permanent
             currentness guarantee. Saved provenance is historical and does not
             revalidate a saved answer.
+          </p>
+          <p className="mt-2">
+            Structured-only and mixed history entries cannot replay the new
+            response-level bindings or numerical rows; they store a static
+            interaction notice. Mixed history also omits original candidates
+            and associations. Rerun the query for a new qualified read instead
+            of reconstructing unsupported historical evidence.
           </p>
         </Endpoint>
 
@@ -482,6 +602,12 @@ Content-Type: application/json
         <h2 className="text-xl font-semibold text-sage-ink">
           Full example: Python
         </h2>
+        <p className="text-sm text-sage-muted">
+          These general request examples keep their route-specific response
+          handling. Scientific filters or mixed questions require the structured
+          fields and consistency checks above; empty paper hits or citation lists
+          alone do not describe the numerical lookup outcome.
+        </p>
         <pre className="overflow-x-auto rounded-lg border border-sage-border bg-slate-50 p-5 text-xs leading-relaxed">
 {`import requests
 

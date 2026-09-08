@@ -357,7 +357,11 @@ def interpret_scientific_query(raw_query: str) -> ScientificQueryInterpretation:
         # an instruction to select a pressure value. Explicit value requests,
         # material/property shorthand and constraints keep their numeric scope.
         requested.clear()
-    explanatory = mechanism and not constraints and not evidence and not _VALUE_REQUEST.search(raw_query)
+    # Comparison is itself a request to inspect the named properties. A later
+    # "explain why" must not erase Tc/pressure from "Compare A and B Tc ...".
+    # Pure mechanism comparisons without named quantities remain explanatory.
+    explanatory = (mechanism and not constraints and not evidence and not _VALUE_REQUEST.search(raw_query)
+                   and not (comparison and requested))
     general_keywords = not mechanism and not comparison and not requested and not constraints and not evidence
     if general_keywords and not formulas:
         unresolved = [item for item in unresolved if not (item.reason_code == "state_constraint_unresolved"

@@ -1,6 +1,6 @@
 # Scientific query interpretation and qualified extraction lookup
 
-Status: local RG04a implementation, **not** an adjudicated scientific assistant
+Status: local RG04a plus qualified mixed-retrieval implementation, **not** an adjudicated scientific assistant
 or completion of [RG04 / #75](https://github.com/JackZH26/SCLib_JZIS/issues/75).
 Depends on [typed evidence](RAG_EVIDENCE_LINEAGE.md),
 [complete inputs](EMBEDDING_COMPLETENESS.md) and
@@ -16,13 +16,18 @@ Depends on [typed evidence](RAG_EVIDENCE_LINEAGE.md),
 | Explicit origin/source-role/outcome conditions, including `experimental MgB2` | Same-record lookup; conditions cannot fall through to unfiltered generic retrieval |
 | Search UI family/Tc/pressure/origin/source-role/experimental filters | The same structured lookup; remaining general-query keywords retain generation-scoped PostgreSQL English fulltext semantics |
 | Pure mechanism or non-numerical comparison in Ask | Only typed `original_passage` candidates can enter generation; derived Facts are not explanatory source passages |
-| Mixed numerical/evidence lookup and explanation | Qualified extraction rows only; `explanatory_synthesis_not_performed` explicitly records the missing synthesis |
+| Mixed numerical/evidence lookup and explanation, or a comparison with typed property/evidence requests | Qualified extraction rows and original candidates displayed separately, with a complete unresolved association matrix and one joint currentness check; no Gemini numerical synthesis |
 | Unsupported material-state, isotope, doping, criterion, time or logical conditions | Explicit clarification preserving the unresolved original span; no silent condition removal |
 
 Year filters alone remain ordinary bibliographic search. They are not historical
 knowledge cutoffs. Search `sort=tc` in structured mode sorts only exact,
 non-approximate, uncertainty-free points; censored/interval/missing quantities
 remain at the end. No midpoint or paper-wide maximum is manufactured.
+
+See [mixed scientific retrieval](MIXED_SCIENTIFIC_RETRIEVAL.md) for the actual
+Ask coordinator, shared input budget, private presentation seals and closed
+`scientific_mixed` response. Purely numerical comparisons intentionally also
+receive original candidates; this does not imply experimental comparability.
 
 The deterministic English/Chinese grammar is intentionally bounded and is not
 a general language model. Ordinary unknown topic words remain opaque fulltext
@@ -130,11 +135,13 @@ an absence of matching records. An active generation with bound derived parents
 is required; no-active scientific/UI-filter lookup returns `unavailable` with
 no legacy numerical fallback. Ordinary topic/year-only Search remains usable.
 
-Numerical Ask uses no embedding or generation provider. Its static text explains
+Non-comparison structured-only numerical Ask uses no embedding or generation provider. Its static text explains
 the qualified rows; `tokens_used=0`, `scientific_support_status=not_checked`,
 `assessment_scope=none` and `answer_mode=abstention` mean no scientific synthesis
 was performed. The frontend calls it **Source-linked extraction lookup**, not
-an AI-validated answer. Non-numerical answers keep their existing support policy.
+an AI-validated answer. Mixed/typed-comparison Ask may use semantic retrieval
+but does not call Gemini CountTokens or generation; zero generation tokens is
+not zero total provider cost. Non-numerical answers retain their support policy.
 
 Existing Ask history cannot persist/replay these response-level bindings or
 structured rows. It stores a static request summary, no fake citation sources
@@ -158,10 +165,12 @@ Native SQL tests run only through `scripts/run_disposable_tests.py`; no provider
 costs or production writes are required by those fixtures.
 
 These tests are synthetic development regressions, **not** an adjudicated gold
-set or evidence of clinical/scientific accuracy. Remaining RG04 work includes
-complementary original-passage selection per Work/root, bounded token packing,
-true mixed/comparative synthesis, authenticated Result/root bindings, a reviewed
-100–200-question gold set and held-out protocol, per-family/condition coverage,
+set or evidence of scientific accuracy. Complementary catalogue-source/Work
+packing, actual input budgets for generation, portable evaluation objects and
+qualified dual mixed retrieval are now implemented locally; original-root
+independence remains unestablished. Remaining RG04 work includes true supported
+mixed/comparative synthesis, authenticated Result/root bindings, a reviewed
+100–200-question gold set and actual held-out evaluation, per-family/condition coverage,
 actual recall/support/cost/latency measurement and current-revision release CI.
 Corpus-scale indexing, source permission, authorized canary deployment and
 scientific approval are separate gates. Do not close #75 on this increment.

@@ -128,6 +128,7 @@ export function AskHistoryList({
                     Answer
                   </h4>
                   <p className="mt-1 text-xs text-amber-900">Scientific support status is unknown for this saved answer snapshot. Historical citations are not evidence of scientific verification; the current claim-check audit is not stored here.</p>
+                  <p className="mt-1 text-xs text-amber-900">Structured extraction rows and Result-to-passage association metadata are not reconstructed in this history view. Rerun the original query to inspect a new, separately qualified lookup.</p>
                   <pre className="mt-1 whitespace-pre-wrap break-words rounded-md bg-white p-3 text-sm leading-relaxed text-sage-ink">
                     {e.answer}
                   </pre>

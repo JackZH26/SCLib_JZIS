@@ -18,9 +18,11 @@ import { GuestBanner } from "@/components/GuestBanner";
 import { MarkdownAnswer } from "@/components/MarkdownAnswer";
 import { AskSupportNotice } from "@/components/AskSupportNotice";
 import { ScientificQueryNotice } from "@/components/ScientificQueryNotice";
+import { ScientificMixedNotice } from "@/components/ScientificMixedNotice";
 import { EvidencePackingNotice, PackingSourceNotice } from "@/components/EvidencePackingNotice";
 import { resolveAskSource } from "@/lib/ask-support";
 import { knownScientificLookup, knownScientificQuery, knownScientificResults } from "@/lib/scientific-query";
+import { knownScientificMixedResponse } from "@/lib/scientific-mixed";
 
 export default function SearchPage() {
   return (
@@ -110,6 +112,8 @@ function SearchInner({ q }: { q: string }) {
   const askLookup = knownScientificLookup(askData?.scientific_lookup);
   const isStructuredAsk = askQuery !== null && askLookup !== null && askLookup.status !== "not_requested"
     && knownScientificResults(askData?.scientific_results, askLookup, askData?.retrieval_generation, askQuery) !== null;
+  const mixed = askData ? knownScientificMixedResponse(askData, q) : null;
+  const showMixed = askData?.scientific_mixed !== undefined && mixed?.status !== "not_requested";
 
   return (
     <main className="space-y-6">
@@ -139,8 +143,9 @@ function SearchInner({ q }: { q: string }) {
       {askData && (
         <div className="rounded-lg border border-sage-border bg-white p-6 shadow-sm">
           <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-sage-tertiary">
-            {isStructuredAsk ? "Source-linked extraction lookup" : "Answer"}
+            {showMixed ? "Separate numerical and original-source lookup" : isStructuredAsk ? "Source-linked extraction lookup" : "Answer"}
           </h2>
+          {showMixed ? <ScientificMixedNotice response={askData} rawQuery={q} /> : <>
           <AskSupportNotice response={askData} />
           <EvidencePackingNotice packing={askData.evidence_packing} inputBudget={askData.input_budget} sources={askData.sources} />
           <ScientificQueryNotice context="Ask" rawQuery={q} query={askData.scientific_query}
@@ -167,8 +172,9 @@ function SearchInner({ q }: { q: string }) {
               </Link>
             ))}
           </div>
+          </>}
           <div className="mt-2 text-xs text-sage-tertiary">
-            {askData.query_time_ms} ms · {askData.tokens_used ?? "—"} tokens
+            {askData.query_time_ms} ms{showMixed ? mixed ? " · No generation requested" : " · Mixed metadata withheld" : ` · ${askData.tokens_used ?? "—"} tokens`}
           </div>
         </div>
       )}

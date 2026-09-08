@@ -66,7 +66,7 @@ export function ScientificQueryNotice({ query: input, lookup: lookupInput, resul
             : lookup.status === "completed" && <div className="space-y-3 border-t border-sage-border pt-3">
               <h4 className="font-semibold">Source-linked machine extractions</h4>
               <p className="text-xs text-amber-900">Reported fields from a derived extraction, not an original quotation, independent confirmation, scientific acceptance or ML-training approval. A non-detection does not prove a material cannot superconduct; detection adequacy has not been verified.</p>
-              {results.map(({ result, binding }, index) => <article key={`${binding.vector_id}:${result.result_id}:${index}`} className="space-y-2 rounded border border-sage-border bg-white p-3">
+              {results.map(({ result, binding }, index) => <article id={`${context.toLowerCase()}-result-${binding.parent_result_revision_id}`} key={`${binding.vector_id}:${result.result_id}:${index}`} className="space-y-2 rounded border border-sage-border bg-white p-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h5 className="font-semibold"><code>{result.formula}</code>{result.family ? ` · ${result.family}` : ""}</h5>
                   <Link className="text-accent-deep underline" href={`/paper/${encodeURIComponent(binding.paper_id)}`}>Source paper · extraction {index + 1}</Link>

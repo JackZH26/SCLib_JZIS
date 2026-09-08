@@ -19,6 +19,7 @@ from models.scientific_lookup import (
     ScientificLookupStatus,
     validate_scientific_response,
 )
+from models.scientific_mixed import ScientificMixedEvidence, validate_mixed_response
 from models.scientific_query import ScientificQueryInterpretation
 from services.claim_support import SUPPORT_POLICY_VERSION
 from services.material_property_projection import project_material_properties
@@ -184,6 +185,7 @@ class ClaimSupportAssessment(BaseModel):
 
 
 class AskResponse(BaseModel):
+    scientific_mixed: ScientificMixedEvidence = Field(default_factory=ScientificMixedEvidence)
     evidence_packing: EvidencePackingSummary = Field(default_factory=EvidencePackingSummary)
     input_budget: RagInputBudgetReport = Field(default_factory=RagInputBudgetReport)
     retrieval_generation: IndexReadMetadata = Field(default_factory=IndexReadMetadata)
@@ -211,6 +213,7 @@ class AskResponse(BaseModel):
     @model_validator(mode="after")
     def scientific_response_coherent(self):
         validate_scientific_response(self)
+        validate_mixed_response(self)
         packing = self.evidence_packing
         if packing.status != "packed":
             if any(source.packing_info is not None for source in self.sources):
