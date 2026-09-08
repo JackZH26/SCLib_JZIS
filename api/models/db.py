@@ -1673,6 +1673,12 @@ from models.index_generations_v1 import register as _register_index_generations 
 
 INDEX_GENERATIONS = _register_index_generations(Base.metadata)
 
+from models.research_distribution_v1 import (
+    register as _register_research_distribution,  # noqa: E402
+)
+
+RESEARCH_DISTRIBUTION_TABLES = _register_research_distribution(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

@@ -202,6 +202,41 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
                        'action="rollback"'):
             self.assertIn(marker, body)
 
+    def test_distribution_history_cannot_mask_any_earlier_guard(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        main = source.split("def main()", 1)[1]
+        positions = [main.index(marker) for marker in (
+            "_index_generation_downgrade_guard(capability", "_distributions_empty_roundtrip(capability",
+            "_distributions_on_migrated_schema(capability", "_distribution_downgrade_guard(capability")]
+        self.assertEqual(positions, sorted(positions))
+        chain = source.split("def _assert_empty_index_generations", 1)[1].split("def _assert_empty_embedding_receipts", 1)[0]
+        self.assertIn("_assert_empty_distributions(connection)", chain)
+        for name, end in (("_source_impact_indexes_on_migrated_schema", "async def _freeze_on_migrated_schema"),
+                          ("_background_jobs_empty_roundtrip", "async def _background_jobs_on_migrated_schema"),
+                          ("_rag_evidence_empty_roundtrip", "async def _rag_evidence_on_migrated_schema"),
+                          ("_embedding_receipts_empty_roundtrip", "async def _embedding_receipts_on_migrated_schema"),
+                          ("_index_generations_empty_roundtrip", "async def _index_generations_on_migrated_schema")):
+            body = source.split("def " + name, 1)[1].split(end, 1)[0]
+            self.assertIn("*_DISTRIBUTION_TABLES", body)
+        empty = source.split("def _distributions_empty_roundtrip", 1)[1].split("async def _distributions_on_migrated_schema", 1)[0]
+        self.assertIn('command.downgrade(config, "0062_index_generations")', empty)
+        self.assertEqual(empty.count("_assert_empty_distributions(connection)"), 2)
+        self.assertEqual(empty.count("assert snapshot(connection) == before"), 2)
+
+    def test_migrated_distribution_proves_actual_roots_permissions_rollback_and_noop(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        body = source.split("async def _distributions_on_migrated_schema", 1)[1].split("def _distribution_downgrade_guard", 1)[0]
+        for marker in ("run_sync(check_connection_schema)", "distribution_inputs(session", "publish_distribution(session",
+                       "service.register_distribution(session", "service.decide_distribution_permission(session",
+                       "service.review_distribution(session", "service.distribution_action(session",
+                       "service.admitted_distribution(session", "assert await state(session) == before",
+                       "assert await state(session) == published", "assert await state(session) == withdrawn",
+                       "await session.rollback()", '"replayed": True'):
+            self.assertIn(marker, body)
+        guard = source.split("def _distribution_downgrade_guard", 1)[1].split("def main()", 1)[0]
+        self.assertIn('"retained governance history" in str(exc)', guard)
+        self.assertIn("assert snapshot(connection) == before", guard)
+
 
 if __name__ == "__main__":
     unittest.main()

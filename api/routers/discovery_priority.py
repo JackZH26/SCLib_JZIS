@@ -134,9 +134,48 @@ def _unchanged(witnesses: list[tuple[Path, tuple | None]]) -> bool:
     return all(_stamp(path) == signature for path, signature in witnesses)
 
 
-async def _release(release_id: str) -> PriorityRelease:
+async def _prepare_admission(pins: list[dict], purpose: str):
+    from services.research_distribution import (
+        DistributionRegistryUnavailable,
+        prepare_rps_distribution_access,
+    )
+
+    try:
+        return await prepare_rps_distribution_access(pins=pins, purpose=purpose)
+    except DistributionRegistryUnavailable:
+        log.warning("RPS distribution registry unavailable")
+        raise HTTPException(503, "RPS publication registry unavailable") from None
+
+
+async def _recheck_admission(receipt) -> bool:
+    from services.research_distribution import (
+        DistributionAdmissionChanged,
+        DistributionRegistryUnavailable,
+        recheck_rps_distribution_access,
+    )
+
+    try:
+        await recheck_rps_distribution_access(receipt)
+        return True
+    except DistributionAdmissionChanged:
+        return False
+    except DistributionRegistryUnavailable:
+        log.warning("RPS distribution registry unavailable")
+        raise HTTPException(503, "RPS publication registry unavailable") from None
+
+
+def _distribution_pin(release_id: str, approval: _Approval) -> dict:
+    return {"release_id": release_id, "release_sha256": _approved(release_id, approval),
+            "bundle_sha256": _approved(release_id, approval, bundle=True)}
+
+
+async def _release(release_id: str, *, purpose: Literal["page", "detail"]) -> PriorityRelease:
     approval = _approval()
-    expected = _approved(release_id, approval)
+    pin = _distribution_pin(release_id, approval)
+    expected = pin["release_sha256"]
+    admission = await _prepare_admission([pin], purpose)
+    if release_id not in admission.admitted_release_ids:
+        raise HTTPException(404, "RPS release not published")
     try:
         def load():
             path = Path(approval.directory) / f"{release_id}.json"
@@ -153,8 +192,12 @@ async def _release(release_id: str) -> PriorityRelease:
         log.warning("Approved RPS release verification unavailable")
         raise HTTPException(503, "RPS release unavailable: verification failed") from None
     current = _approval()
-    if _approved(release_id, current) != expected or current.directory != approval.directory:
+    if _distribution_pin(release_id, current) != pin or current.directory != approval.directory:
         raise HTTPException(503, "RPS publication changed; retry the request")
+    if not await _recheck_admission(admission):
+        raise HTTPException(409, "RPS publication changed; refresh the catalogue")
+    if _approval() != current or not _unchanged([witness]):
+        raise HTTPException(409, "RPS publication changed; refresh the catalogue")
     return release
 
 
@@ -204,7 +247,15 @@ async def policy(request: Request):
 async def releases(request: Request):
     for _attempt in range(2):
         approval = _approval()
-        pending = iter(approval.releases if approval.enabled else ())
+        bundle_pins = dict(approval.bundles)
+        pins = [_distribution_pin(release_id, approval) for release_id, _ in approval.releases
+                if approval.enabled and release_id in bundle_pins]
+        admission = await _prepare_admission(pins, "catalog")
+        admitted = [(release_id, expected) for release_id, expected in approval.releases
+                    if release_id in admission.admitted_release_ids]
+        if approval != _approval():
+            continue
+        pending = iter(admitted)
         items, unavailable, witnesses = [], [], []
 
         async def worker():
@@ -217,7 +268,7 @@ async def releases(request: Request):
                     items.append(item)
 
         # Four worker tasks, not one thread/task for every catalogue member.
-        workers = [asyncio.create_task(worker()) for _ in range(min(4, len(approval.releases)))]
+        workers = [asyncio.create_task(worker()) for _ in range(min(4, len(admitted)))]
         try:
             await asyncio.gather(*workers)
         except BaseException:
@@ -231,13 +282,18 @@ async def releases(request: Request):
         stable = await _offload(_unchanged, witnesses)
         if approval != _approval() or not stable:
             continue
+        if not await _recheck_admission(admission):
+            continue
+        if approval != _approval() or not _unchanged(witnesses):
+            continue
         items.sort(key=lambda item: (datetime.fromisoformat(item["published_at"]), item["id"]), reverse=True)
         unavailable.sort(key=lambda item: item["id"])
         degraded = bool(unavailable) or any(item["public_bundle"]["status"] == "unavailable" for item in items)
         value = {
             "schema_version": "rps-catalog/1.3", "items": items, "unavailable": unavailable,
             "status": ("degraded" if degraded else "published") if items else "unavailable" if unavailable else "not_published",
-            "approval_sha256": approval.sha256,
+            "approval_sha256": _Approval(approval.enabled, approval.directory, tuple(admitted),
+                tuple((identifier, bundle_pins[identifier]) for identifier, _ in admitted)).sha256,
         }
         value["catalog_revision"] = digest(value)
         return _response(request, value)
@@ -257,6 +313,9 @@ async def public_bundle(
     public_hash = _approved(release_id, approval, bundle=True)
     if expected != manifest_sha256 or public_hash != bundle_sha256:
         raise HTTPException(409, "RPS publication changed; refresh the catalogue")
+    admission = await _prepare_admission([_distribution_pin(release_id, approval)], "download")
+    if release_id not in admission.admitted_release_ids:
+        raise HTTPException(404, "RPS release not published")
     try:
         def load():
             directory = Path(approval.directory)
@@ -264,18 +323,9 @@ async def public_bundle(
             witnesses = [(path, file_signature(path)) for path in paths]
             read_release_projection(directory, release_id, expected)
             receipt = read_public_bundle(directory, release_id, public_hash, expected_release_sha256=expected)
-            response = conditional_json_response(
-                request, receipt.canonical_bytes.decode("utf-8"),
-                cache_control="public, max-age=0, must-revalidate",
-                data_version_value=expected, last_modified=None,
-                cache_header="X-RPS-Validation", cache_status="INTEGRITY_AND_CONTRACT_VERIFIED",
-            )
-            response.headers["Content-Disposition"] = f'attachment; filename="{release_id}.public.json"'
-            response.headers["X-RPS-Bundle-SHA256"] = public_hash
-            response.headers["X-Content-Type-Options"] = "nosniff"
-            return response, witnesses
+            return receipt.canonical_bytes.decode("utf-8"), witnesses
 
-        response, witnesses = await _offload(load)
+        payload, witnesses = await _offload(load)
         if not await _offload(_unchanged, witnesses):
             raise ValueError("RPS input changed")
     except (OSError, ValueError, KeyError):
@@ -286,6 +336,19 @@ async def public_bundle(
             or _approved(release_id, current, bundle=True) != public_hash
             or current.directory != approval.directory):
         raise HTTPException(409, "RPS publication changed; refresh the catalogue")
+    if not await _recheck_admission(admission):
+        raise HTTPException(409, "RPS publication changed; refresh the catalogue")
+    if _approval() != current or not _unchanged(witnesses):
+        raise HTTPException(409, "RPS publication changed; refresh the catalogue")
+    response = conditional_json_response(
+        request, payload,
+        cache_control="public, max-age=0, must-revalidate",
+        data_version_value=expected, last_modified=None,
+        cache_header="X-RPS-Validation", cache_status="INTEGRITY_AND_CONTRACT_VERIFIED",
+    )
+    response.headers["Content-Disposition"] = f'attachment; filename="{release_id}.public.json"'
+    response.headers["X-RPS-Bundle-SHA256"] = public_hash
+    response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
 
@@ -297,7 +360,7 @@ async def assessments(
     limit: int = Query(24, ge=1, le=100),
     group: Literal["all", "discovery", "mechanism", "unranked"] = "all",
 ):
-    release = await _release(release_id)
+    release = await _release(release_id, purpose="page")
     rows = release.rows()
     if group != "all":
         rows = [
@@ -336,7 +399,7 @@ async def assessments(
 
 @router.get("/releases/{release_id}/assessments/{assessment_id}")
 async def assessment_detail(request: Request, release_id: str, assessment_id: str):
-    release = await _release(release_id)
+    release = await _release(release_id, purpose="detail")
     entry = next((e for e in release.assessments if e.assessment.id == assessment_id), None)
     if entry is None:
         raise HTTPException(404, "Assessment not found in this release")

@@ -28,8 +28,12 @@ AUDIT_USER_REFERENCES = (
     ("source_lifecycle_reviews", "reviewer_id"),
     ("source_task_requests", "requester_id"),
     ("source_task_attempts", "executor_id"),
+    ("research_distribution_packages", "actor_user_id"),
+    ("research_distribution_permissions", "actor_user_id"),
+    ("research_distribution_reviews", "actor_user_id"),
+    ("research_distribution_actions", "actor_user_id"),
 )
-# PostgreSQL's exact names for the deliberately unnamed 0055/0056/0058 FKs.
+# PostgreSQL's exact names for the deliberately unnamed 0055/0056/0058/0063 FKs.
 # Restrict this classifier to these explicitly listed constraints and SQLSTATE 23503;
 # unrelated integrity failures must retain their original error behavior.
 AUDIT_USER_FK_CONSTRAINTS = frozenset(f"{table}_{column}_fkey" for table, column in AUDIT_USER_REFERENCES)

@@ -10,6 +10,17 @@ _RAG_EVIDENCE_TABLES = ("rag_extraction_revisions", "rag_evidence_revisions", "c
 _EMBEDDING_RECEIPT_TABLE = "embedding_completion_receipts"
 _INDEX_GENERATION_TABLES = ("index_generation_epoch", "index_generations", "index_generation_members",
                            "index_generation_validations", "index_activation_events", "index_active_pointer")
+_DISTRIBUTION_TABLES = ("research_distribution_epoch", "research_distribution_packages",
+                        "research_distribution_dependencies", "research_distribution_permissions",
+                        "research_distribution_reviews", "research_distribution_actions")
+
+
+def _assert_empty_distributions(connection):
+    from sqlalchemy import text
+
+    for name in _DISTRIBUTION_TABLES[1:]:
+        assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
+    assert connection.execute(text("SELECT epoch FROM public.research_distribution_epoch WHERE id=1")).scalar_one() == 0
 
 
 def _assert_empty_index_generations(connection):
@@ -18,6 +29,7 @@ def _assert_empty_index_generations(connection):
     for name in _INDEX_GENERATION_TABLES[1:]:
         assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
     assert connection.execute(text("SELECT epoch FROM public.index_generation_epoch WHERE id=1")).scalar_one() == 0
+    _assert_empty_distributions(connection)
 
 
 def _assert_empty_embedding_receipts(connection):
@@ -74,7 +86,8 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts",
-                                "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES}}
+                                "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -483,7 +496,8 @@ def _background_jobs_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES}}
+                if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES,
+                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -627,7 +641,8 @@ def _rag_evidence_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES}}
+                if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -771,7 +786,8 @@ def _embedding_receipts_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES}}
+                if name not in {"alembic_version", _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES,
+                                *_DISTRIBUTION_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -890,7 +906,7 @@ def _index_generations_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES}}
+                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1009,6 +1025,7 @@ def _index_generation_downgrade_guard(capability, engine, config, generation_id)
         verify_postgres_identity(connection, capability)
         before = snapshot(connection)
         assert any(row["id"] == generation_id for row in before["index_generations"])
+        _assert_empty_distributions(connection)
     try:
         validate_test_environment()
         command.downgrade(config, "0061_embedding_receipts")
@@ -1016,6 +1033,156 @@ def _index_generation_downgrade_guard(capability, engine, config, generation_id)
         assert "index-generation" in str(exc) and "retained history contains records" in str(exc)
     else:
         raise AssertionError("Nonempty generation history downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+
+
+def _distributions_empty_roundtrip(capability, engine, config):
+    """Independently empty0063 roundtrip preserves every already populated ledger."""
+    from alembic import command
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")
+                if name not in {"alembic_version", *_DISTRIBUTION_TABLES}}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        _assert_empty_distributions(connection)
+        before = snapshot(connection)
+        assert before["index_activation_events"]
+    validate_test_environment()
+    command.downgrade(config, "0062_index_generations")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError:
+            pass
+        else:
+            raise AssertionError("Distribution application must refuse the previous schema")
+        verify_postgres_identity(connection, capability)
+        assert not set(_DISTRIBUTION_TABLES) & set(inspect(connection).get_table_names(schema="public"))
+        assert snapshot(connection) == before
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_distributions(connection)
+        assert snapshot(connection) == before
+
+
+async def _distributions_on_migrated_schema(capability, api_root):
+    """Real full RPS recomputation, capsule roots, per-dependency grants and withdrawal."""
+    validate_test_environment()
+    sys.path.insert(0, str(api_root / "tests"))
+    from models.db import _to_async_dsn
+    from services import research_distribution as service
+    from services.research_distribution_contract import ResearchDistributionError
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from tests.rps_distribution_fixtures import (
+        distribution_inputs,
+        publish_distribution,
+        release_document,
+    )
+    from tests.test_research_freeze import state
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), poolclass=NullPool,
+                                 isolation_level="SERIALIZABLE")
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda sync: verify_postgres_identity(sync, capability))
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            inputs = await distribution_inputs(session, release_document("synthetic-migrated-distribution"))
+            people = inputs["shared"]["actors"]
+            await session.commit()
+            before = await state(session)
+            arguments = dict(actor_user_id=people["curator"], request_key="migration:distribution:preview",
+                             **inputs["arguments"])
+            preview = await service.register_distribution(session, **arguments)
+            assert preview["dry_run"] is True and preview["scientific_acceptance"] is False
+            assert await state(session) == before
+            await service.register_distribution(session, **arguments, dry_run=False)
+            await session.rollback()
+            assert await state(session) == before
+            context = await publish_distribution(session, inputs["release"], shared=inputs["shared"])
+            await session.commit()
+            published = await state(session)
+            package_id = context["registration"]["package_id"]
+            admitted = await service.admitted_distribution(session, package_id)
+            assert admitted["bundle_sha256"] == context["bundle"]["bundle_sha256"]
+            replay = await service.register_distribution(session, actor_user_id=people["curator"],
+                request_key=context["request_prefix"] + ":register", **context["arguments"], dry_run=False)
+            assert replay == {**context["registration"], "replayed": True}
+            await session.commit()
+            assert await state(session) == published
+            for index, permission in enumerate(context["permissions"]):
+                assert await service.decide_distribution_permission(session,
+                    request_key=context["request_prefix"] + ":permission:" + str(index),
+                    **permission["arguments"], dry_run=False) == {**permission["receipt"], "replayed": True}
+            assert await service.review_distribution(session, actor_user_id=people["reviewer"],
+                request_key=context["request_prefix"] + ":review", package_id=package_id,
+                expected_inventory_sha256=context["registration"]["inventory_sha256"],
+                disclosure_approved=True, reason_code="synthetic_independent_disclosure", dry_run=False) == {**context["review"], "replayed": True}
+            assert await service.distribution_action(session, actor_user_id=people["publisher"],
+                request_key=context["request_prefix"] + ":publish", package_id=package_id,
+                review_id=context["review"]["id"], expected_inventory_sha256=context["registration"]["inventory_sha256"],
+                kind="publish", reason_code="synthetic_publication", dry_run=False) == {**context["action"], "replayed": True}
+            await session.commit()
+            assert await state(session) == published
+            withdraw = dict(actor_user_id=people["publisher"], request_key="migration:distribution:withdraw",
+                package_id=package_id, review_id=context["review"]["id"],
+                expected_inventory_sha256=context["registration"]["inventory_sha256"], kind="withdraw",
+                reason_code="synthetic_migration_withdrawal")
+            await service.distribution_action(session, **withdraw)
+            assert await state(session) == published
+            await service.distribution_action(session, **withdraw, dry_run=False)
+            await session.rollback()
+            assert await state(session) == published
+            await service.distribution_action(session, **withdraw, dry_run=False)
+            await session.commit()
+            withdrawn = await state(session)
+            try:
+                await service.admitted_distribution(session, package_id)
+            except ResearchDistributionError:
+                pass
+            else:
+                raise AssertionError("Withdrawn distribution must not be publicly admitted")
+            await service.distribution_action(session, **withdraw, dry_run=False)
+            await session.commit()
+            assert await state(session) == withdrawn
+            return package_id
+    finally:
+        await engine.dispose()
+
+
+def _distribution_downgrade_guard(capability, engine, config, package_id):
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert any(row["id"] == package_id for row in before["research_distribution_packages"])
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0062_index_generations")
+    except RuntimeError as exc:
+        assert "research-distribution" in str(exc) and "retained governance history" in str(exc)
+    else:
+        raise AssertionError("Nonempty distribution history downgrade must fail closed")
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
@@ -1270,7 +1437,10 @@ def main() -> None:
         _index_generations_empty_roundtrip(capability, engine, config)
         generation_id = asyncio.run(_index_generations_on_migrated_schema(capability, api_root, receipt_id))
         _index_generation_downgrade_guard(capability, engine, config, generation_id)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback and independent nonempty history rollback guards verified.")
+        _distributions_empty_roundtrip(capability, engine, config)
+        package_id = asyncio.run(_distributions_on_migrated_schema(capability, api_root))
+        _distribution_downgrade_guard(capability, engine, config, package_id)
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
 

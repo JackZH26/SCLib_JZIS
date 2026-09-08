@@ -515,8 +515,12 @@ def test_release_rejects_broken_lineage(mutation):
 
 
 async def test_rps_publication_is_opt_in(client, monkeypatch, tmp_path):
+    from sqlalchemy.ext.asyncio import AsyncSession
+
     from config import get_settings
+    from models.db import get_engine
     from services.research_priority import canonical_json
+    from tests.rps_distribution_fixtures import publish_distribution, release_document
 
     settings = get_settings()
     monkeypatch.setattr(settings, "discovery_rps_public_enabled", False)
@@ -524,28 +528,43 @@ async def test_rps_publication_is_opt_in(client, monkeypatch, tmp_path):
     assert response.json()["status"] == "not_published"
     assert response.json()["items"] == []
     assert (await client.get("/v1/discovery/rps/policy")).json()["policy_hash"] == POLICY_HASH
-    payload = release_payload()
+    payload = release_document()
+    identifier = payload["id"]
     # pytest temporary file, never the configured production directory.
-    path = tmp_path / "synthetic-release.json"
+    path = tmp_path.resolve() / (identifier + ".json")
     path.write_text(canonical_json(payload), encoding="utf-8")
     monkeypatch.setattr(settings, "discovery_rps_public_enabled", True)
-    monkeypatch.setattr(settings, "discovery_rps_release_dir", str(tmp_path))
+    monkeypatch.setattr(settings, "discovery_rps_release_dir", str(tmp_path.resolve()))
     monkeypatch.setattr(
         settings,
         "discovery_rps_approved_releases",
-        {"synthetic-release": payload["manifest_sha256"]},
+        {identifier: payload["manifest_sha256"]},
     )
-    response = await client.get("/v1/discovery/rps/releases/synthetic-release/assessments")
+    monkeypatch.setattr(settings, "discovery_rps_approved_public_bundles", {})
+    base = "/v1/discovery/rps/releases/" + identifier
+    # Configuration alone no longer grants distribution of release content.
+    assert (await client.get(base + "/assessments")).status_code == 404
+    engine = get_engine().execution_options(isolation_level="SERIALIZABLE")
+    try:
+        async with AsyncSession(engine, expire_on_commit=False) as db:
+            context = await publish_distribution(db, payload)
+            await db.commit()
+    finally:
+        await engine.dispose()
+    bundle = context["bundle"]
+    (path.parent / (identifier + ".public.json")).write_text(canonical_json(bundle), encoding="utf-8")
+    settings.discovery_rps_approved_public_bundles[identifier] = bundle["bundle_sha256"]
+    response = await client.get(base + "/assessments")
     assert response.status_code == 200, response.text
     assert response.json()["items"][0]["result"]["score_display"] == 7100
     etag = response.headers["etag"]
     assert (
         await client.get(
-            "/v1/discovery/rps/releases/synthetic-release/assessments",
+            base + "/assessments",
             headers={"If-None-Match": etag},
         )
     ).status_code == 304
-    detail = await client.get("/v1/discovery/rps/releases/synthetic-release/assessments/test-1")
+    detail = await client.get(base + "/assessments/test-1")
     assert detail.json()["evidence"][0]["source"]["locator"] == "test case 1"
     assert {item["id"] for item in detail.json()["evidence"]} == {"source", "execution-source"}
     assert len(detail.json()["assessment"]["action_requirements"]["resources"]) == 5
@@ -554,12 +573,12 @@ async def test_rps_publication_is_opt_in(client, monkeypatch, tmp_path):
         == detail.json()["result"]["action_requirements_hash"]
     )
     group = await client.get(
-        "/v1/discovery/rps/releases/synthetic-release/assessments?group=mechanism&limit=1"
+        base + "/assessments?group=mechanism&limit=1"
     )
     assert group.json()["total"] == 0 and group.json()["release_total"] == 1
     assert group.json()["items"] == [] and group.json()["group"] == "mechanism"
     assert (await client.get("/v1/discovery/rps/releases/missing/assessments")).status_code == 404
     path.write_text("{}", encoding="utf-8")
     assert (
-        await client.get("/v1/discovery/rps/releases/synthetic-release/assessments")
+        await client.get(base + "/assessments")
     ).status_code == 503

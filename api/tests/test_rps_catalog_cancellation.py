@@ -9,22 +9,24 @@ import pytest
 
 from config import get_settings
 from routers import discovery_priority as routes
-from services.research_priority import canonical_json, digest
+from services.research_priority import digest
+from tests.test_research_freeze import db_session as db_session
 from tests.test_rps_catalog_delivery import CATALOG
 from tests.test_rps_catalog_delivery import local_releases as local_releases
 
 
-def _eight_releases(local_releases):
+async def _eight_releases(local_releases):
     directory, payloads = local_releases
     original = next(iter(payloads.values()))
     for index in range(4):
         value = deepcopy(original)
-        value["id"] = f"synthetic-cancellation-extra-{index}"
+        value["id"] = original["id"] + f"-extra-{index}"
         value["manifest_sha256"] = digest({key: item for key, item in value.items() if key != "manifest_sha256"})
-        payloads[value["id"]] = value
-        (directory / (value["id"] + ".json")).write_text(canonical_json(value), encoding="utf-8")
+        await local_releases.publish(value)
     get_settings().discovery_rps_approved_releases.update(
         {identifier: value["manifest_sha256"] for identifier, value in payloads.items()})
+    get_settings().discovery_rps_approved_public_bundles.update(
+        {identifier: value["bundle_sha256"] for identifier, value in local_releases.bundles.items()})
     return directory, payloads
 
 
@@ -44,7 +46,7 @@ def _track_workers(monkeypatch):
 
 
 async def test_catalog_capacity_503_cancels_siblings_before_traversing_later_releases(client, local_releases, monkeypatch):
-    _, payloads = _eight_releases(local_releases)
+    _, payloads = await _eight_releases(local_releases)
     pages_entered, pages_release = threading.Event(), threading.Event()
     catalog_entered, catalog_release, catalog_finished = threading.Event(), threading.Event(), threading.Event()
     lock = threading.Lock()
@@ -110,7 +112,7 @@ async def test_catalog_capacity_503_cancels_siblings_before_traversing_later_rel
 
 
 async def test_cancelled_catalog_http_request_ends_all_worker_traversal_but_finishes_submitted_jobs(client, local_releases, monkeypatch):
-    _eight_releases(local_releases)
+    await _eight_releases(local_releases)
     entered, release, completed = threading.Event(), threading.Event(), threading.Event()
     lock = threading.Lock()
     started, finished = [], []

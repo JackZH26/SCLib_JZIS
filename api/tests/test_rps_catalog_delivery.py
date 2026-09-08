@@ -3,37 +3,40 @@ from __future__ import annotations
 
 import asyncio
 import threading
+from copy import deepcopy
+from uuid import uuid4
 
 import pytest
+import pytest_asyncio
 
 from config import get_settings
 from routers import discovery_priority as routes
 from services import priority_public_bundle, priority_release_cache, priority_releases
-from services.research_priority import canonical_json, digest
-from tests.test_research_priority import release_payload
+from services.research_priority import canonical_json
+from tests.rps_distribution_fixtures import LocalDistributions, release_document, source_context
+from tests.test_research_freeze import db_session as db_session
 
 CATALOG = "/v1/discovery/rps/releases"
 CANARY = "PRIVATE-CANARY-private-reviewer-path-or-source-text"
 
 
-@pytest.fixture
-def local_releases(tmp_path, monkeypatch):
+@pytest_asyncio.fixture(loop_scope="function")
+async def local_releases(tmp_path, monkeypatch, db_session):
     directory = tmp_path.resolve()
-    payloads = {}
+    fixture = LocalDistributions(directory, db_session, await source_context(db_session))
+    token = uuid4().hex
     for index in range(4):
-        payload = release_payload()
-        payload["id"] = f"synthetic-catalog-{index}"
-        payload["manifest_sha256"] = digest({key: value for key, value in payload.items() if key != "manifest_sha256"})
-        (directory / (payload["id"] + ".json")).write_text(canonical_json(payload), encoding="utf-8")
-        payloads[payload["id"]] = payload
+        await fixture.publish(release_document(f"synthetic-catalog-{token}-{index}"))
+    payloads = fixture.payloads
     settings = get_settings()
     monkeypatch.setattr(settings, "discovery_rps_public_enabled", True)
     monkeypatch.setattr(settings, "discovery_rps_release_dir", str(directory))
     monkeypatch.setattr(settings, "discovery_rps_approved_releases",
         {key: value["manifest_sha256"] for key, value in payloads.items()})
-    monkeypatch.setattr(settings, "discovery_rps_approved_public_bundles", {})
+    monkeypatch.setattr(settings, "discovery_rps_approved_public_bundles",
+        {key: value["bundle_sha256"] for key, value in fixture.bundles.items()})
     priority_releases.clear_release_cache()
-    yield directory, payloads
+    yield fixture
     priority_releases.clear_release_cache()
 
 
@@ -71,7 +74,7 @@ async def test_four_real_assessed_releases_warm_catalog_without_full_reverificat
     assert catalog["unavailable"] == []
     assert catalog["catalog_revision"] == first.headers["x-data-version"]
     cold = priority_releases.release_cache_stats()
-    assert cold["verifications"] == 4 and computations
+    assert cold["verifications"] == 8 and computations
     assert threading.get_ident() not in computations, "Full scientific recomputation ran on the async request loop"
     counts = len(computations)
     for _ in range(3):
@@ -82,9 +85,9 @@ async def test_four_real_assessed_releases_warm_catalog_without_full_reverificat
     cached = await client.get(CATALOG, headers={"If-None-Match": first.headers["etag"]})
     assert cached.status_code == 304
     assert cached.headers["x-data-version"] == catalog["catalog_revision"]
-    assert priority_releases.release_cache_stats()["verifications"] == 4
+    assert priority_releases.release_cache_stats()["verifications"] == 8
     assert len(computations) == counts
-    assert priority_releases.release_cache_stats()["entries"] == 4
+    assert priority_releases.release_cache_stats()["entries"] == 8
 
 
 @pytest.mark.parametrize("bad_kind", ["missing", "corrupt", "wrong_pin"])
@@ -103,12 +106,14 @@ async def test_catalog_isolates_one_bad_release_and_direct_read_stays_closed(cli
     response = await client.get(CATALOG)
     assert response.status_code == 200, response.text
     catalog = response.json()
-    assert catalog["status"] == "degraded" and len(catalog["items"]) == 2
-    assert catalog["unavailable"] == [{"id": bad, "status": "unavailable", "reason_code": "verification_failed"}]
+    assert catalog["status"] == ("published" if bad_kind == "wrong_pin" else "degraded")
+    assert len(catalog["items"]) == 2
+    assert catalog["unavailable"] == ([] if bad_kind == "wrong_pin" else
+        [{"id": bad, "status": "unavailable", "reason_code": "verification_failed"}])
     assert bad not in {row["id"] for row in catalog["items"]}
     _sanitized(response, directory)
     direct = await client.get(_page(bad), headers={"If-None-Match": "*"})
-    assert direct.status_code == 503
+    assert direct.status_code == (404 if bad_kind == "wrong_pin" else 503)
     _sanitized(direct, directory)
 
 
@@ -164,7 +169,7 @@ async def test_direct_warm_etag_cannot_bypass_current_publication(client, local_
     else:
         settings.discovery_rps_public_enabled = False
     response = await client.get(_page(identifier), headers={"If-None-Match": initial.headers["etag"]})
-    assert response.status_code == (404 if change in {"revocation", "disabled"} else 503)
+    assert response.status_code == (404 if change in {"revocation", "disabled", "changed_pin"} else 503)
     _sanitized(response, directory)
 
 
@@ -352,7 +357,9 @@ async def test_catalog_approval_change_restarts_complete_snapshot_instead_of_pub
     assert catalog["status"] == "published" and len(catalog["items"]) == 3
     assert identifier not in {row["id"] for row in catalog["items"]}
     assert len(set(rounds)) == 2
-    assert catalog["approval_sha256"] == routes._approval().sha256
+    approval = routes._approval()
+    assert catalog["approval_sha256"] == routes._Approval(approval.enabled, approval.directory,
+        approval.releases, tuple((key, value) for key, value in approval.bundles if key != identifier)).sha256
 
 
 async def test_repeated_catalog_approval_drift_has_one_retry_then_sanitized_503_not_stale_304(client, local_releases, monkeypatch):
@@ -360,7 +367,6 @@ async def test_repeated_catalog_approval_drift_has_one_retry_then_sanitized_503_
     baseline = await client.get(CATALOG)
     assert baseline.status_code == 200
     identifier = sorted(payloads)[0]
-    good = payloads[identifier]["manifest_sha256"]
     original = routes._catalog_entry
     changed = []
 
@@ -368,7 +374,9 @@ async def test_repeated_catalog_approval_drift_has_one_retry_then_sanitized_503_
         result = original(approval, key, expected)
         if key == identifier:
             settings = get_settings()
-            settings.discovery_rps_approved_releases[key] = "0" * 64 if expected == good else good
+            # A pending configuration entry changes each complete settings
+            # snapshot without becoming an admitted file/read target.
+            settings.discovery_rps_approved_releases["unpublished-drift"] = str(len(changed)) * 64
             changed.append(approval.sha256)
         return result
 
@@ -401,24 +409,10 @@ async def test_catalog_file_replacement_after_entry_read_cannot_publish_stale_va
 
 
 def _public_files(local_releases):
-    from tests.test_priority_public_bundle import disclosure_for, public_release_payload
-
-    directory, payloads = local_releases
-    bundles = {}
-    for identifier in payloads:
-        release = public_release_payload()
-        release["id"] = identifier
-        release["manifest_sha256"] = digest({key: value for key, value in release.items() if key != "manifest_sha256"})
-        bundle = priority_public_bundle.build_public_bundle(release, disclosure=disclosure_for(release))
-        (directory / (identifier + ".json")).write_text(canonical_json(release), encoding="utf-8")
-        (directory / (identifier + ".public.json")).write_text(canonical_json(bundle), encoding="utf-8")
-        payloads[identifier] = release
-        bundles[identifier] = bundle
-    settings = get_settings()
-    settings.discovery_rps_approved_releases = {key: value["manifest_sha256"] for key, value in payloads.items()}
-    settings.discovery_rps_approved_public_bundles = {key: value["bundle_sha256"] for key, value in bundles.items()}
+    # The fixture already registered these exact files. This helper must never
+    # silently approve a newly edited package on an HTTP reader's behalf.
     priority_releases.clear_release_cache()
-    return bundles
+    return deepcopy(local_releases.bundles)
 
 
 def _download(identifier, release, bundle):
@@ -461,13 +455,12 @@ async def test_nested_restricted_canary_cannot_appear_in_public_bundle_or_catalo
     get_settings().discovery_rps_approved_public_bundles[identifier] = bundle["bundle_sha256"]
     (directory / (identifier + ".public.json")).write_text(canonical_json(bundle), encoding="utf-8")
     response = await client.get(CATALOG)
-    assert response.status_code == 200 and response.json()["status"] == "degraded"
-    row = next(item for item in response.json()["items"] if item["id"] == identifier)
-    assert row["public_bundle"] == {"status": "unavailable", "sha256": None, "verifier_version": None}
-    assert response.json()["unavailable"] == []  # original release remains verified
+    assert response.status_code == 200 and response.json()["status"] == "published"
+    assert identifier not in {item["id"] for item in response.json()["items"]}
+    assert response.json()["unavailable"] == []  # modified digest has no database admission
     _sanitized(response, directory)
     direct = await client.get(_download(identifier, payloads[identifier], bundle))
-    assert direct.status_code == 503
+    assert direct.status_code == 404
     _sanitized(direct, directory)
 
 
@@ -553,7 +546,7 @@ async def test_bundle_pin_change_alone_changes_catalog_revision(client, local_re
     assert response.status_code == 200
     assert response.headers["x-data-version"] != initial.headers["x-data-version"]
     assert response.json()["approval_sha256"] != initial.json()["approval_sha256"]
-    assert next(row for row in response.json()["items"] if row["id"] == identifier)["public_bundle"]["status"] == "not_published"
+    assert identifier not in {row["id"] for row in response.json()["items"]}
     _sanitized(response, directory)
 
 
