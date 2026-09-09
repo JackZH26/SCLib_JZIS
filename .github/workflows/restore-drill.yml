@@ -1,4 +1,4 @@
-name: PostgreSQL restore drill
+name: PostgreSQL and scientific release restore drills
 
 on:
   schedule:
@@ -13,6 +13,43 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  research-release:
+    name: Synthetic scientific release recovery (isolated source and target)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    # No inherited database service, cloud credentials, dump or bucket. The
+    # creating runner owns both random instances and publishes only after cleanup.
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Install the locked test runtime
+        run: |
+          python -m pip install --disable-pip-version-check uv==0.11.16
+          uv sync --project api --locked --extra dev --no-editable --python 3.11
+      - name: Prepare disposable service images
+        run: |
+          docker pull postgres:16-alpine
+          docker pull redis:7-alpine
+      - name: Exercise restore contracts without service connections
+        run: api/.venv/bin/python -m pytest scripts/tests/test_research_restore_contract.py scripts/tests/test_research_restore_rehearsal.py scripts/tests/test_research_restore_index.py scripts/tests/test_research_restore_worker.py -q
+      - name: Restore and verify a complete synthetic research package
+        run: |
+          mkdir -p research-restore-evidence
+          api/.venv/bin/python scripts/run_research_restore_rehearsal.py \
+            --backend docker \
+            --report research-restore-evidence/research-restore-drill-report.json
+      - name: Upload successful synthetic recovery evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: research-release-restore-${{ github.run_id }}-${{ github.run_attempt }}
+          path: research-restore-evidence/research-restore-drill-report.json
+          if-no-files-found: error
+          retention-days: 90
+
   restore:
     runs-on: ubuntu-latest
     timeout-minutes: 25

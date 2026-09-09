@@ -17,7 +17,11 @@ import sqlalchemy as sa
 
 from models.db import Base
 from models.index_generations_v1 import PROFILE
-from services.embedding_contract import validate_embedding_provenance, validate_vector
+from services.embedding_contract import (
+    LOCAL_DOCUMENT_COUNT_METHOD,
+    validate_embedding_provenance,
+    validate_vector,
+)
 from services.embedding_receipts import _document_encoder, _document_token_count
 from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import source_visibility
@@ -191,7 +195,16 @@ async def stage_generation(db, *, generation_id, items, resource, logical_index=
             raise IndexGenerationError("An actual explicit parser version label is required")
         inputs[key] = {"receipt_id": UUID(str(item["receipt_id"])), "parser_version": _string(item["parser_version"], 160),
                        "vector": vector, "vector_bytes": struct.pack(">768f", *vector)}
-    encoder = _document_encoder()  # possible tokenizer cache I/O must precede the SQL fence
+    # Receipt rows are append-only (0061). This bounded scalar preflight can
+    # select the actual count method before taking the private SQL fence, without
+    # hydrating provider metadata. UTF-8-only stages must not download/load an
+    # unrelated tokenizer; cl100k recounts still use a prepared real encoder.
+    receipts = _table("embedding_completion_receipts")
+    needs_encoder = await db.scalar(sa.select(sa.exists().where(
+        receipts.c.id.in_([item["receipt_id"] for item in inputs.values()]),
+        receipts.c.metadata_json["local_count_method"].astext == LOCAL_DOCUMENT_COUNT_METHOD,
+    )))
+    encoder = _document_encoder() if needs_encoder else None
     transaction = await db.begin_nested()
     try:
         await db.execute(sa.text("SELECT public.sclib_index_lock_v1()"))

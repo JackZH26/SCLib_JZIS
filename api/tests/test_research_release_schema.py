@@ -487,23 +487,45 @@ async def test_forged_manifest_and_matching_pin_still_require_actual_canonical_r
                       row_id=row["row_id"], row_data=data, row_sha256=row["row_sha256"])
 
 
-async def test_concurrent_catalogue_change_is_allowed_and_historical_pin_unchanged(db_session):
+async def test_concurrent_catalogue_change_retries_after_fence_and_historical_pin_unchanged(db_session):
     fixture = await seed(db_session)
     await db_session.commit()
     await db_session.execute(sa.text("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE"))
     await db_session.execute(sa.text(f"SELECT public.{LOCK_FUNCTION}()"))
     capsule, rows = await release(db_session, fixture, [("materials", fixture["material"]["id"])])
+    historical_material = next(row["data"] for row in rows
+                               if row["table"] == "materials" and row["row_id"] == fixture["material"]["id"])
+    capsule_before = await capture(db_session, "research_releases", capsule["id"])
+    pin_query = sa.text("SELECT to_jsonb(p) FROM research_release_pins p WHERE release_id=:id ORDER BY id")
+    pins_before = (await db_session.execute(pin_query, {"id": capsule["id"]})).scalars().all()
+    async with get_session_factory()() as other:
+        # 0067 added a catalogue-writer fence so an old review/capsule snapshot
+        # cannot race a catalogue edit. This is a transient whole-transaction
+        # retry, not a permanent freeze of mutable catalogue rows.
+        with pytest.raises(DBAPIError, match="research_integrity_busy_retry_transaction") as error:
+            await asyncio.wait_for(other.execute(sa.text("UPDATE materials SET formula='Nb' WHERE id=:id"),
+                                                 {"id": fixture["material"]["id"]}), timeout=2)
+        assert error.value.orig.sqlstate == "55P03"
+        await other.rollback()
+        assert (await capture(other, "materials", fixture["material"]["id"]))["formula"] == "MgB2"
+        await other.rollback()
+    assert (await capture(db_session, "materials", fixture["material"]["id"]))["formula"] == "MgB2"
+    await db_session.commit()
+    # The successful edit runs in a genuinely fresh transaction after the
+    # capsule's outer commit releases the integrity fence.
     async with get_session_factory()() as other:
         await asyncio.wait_for(other.execute(sa.text("UPDATE materials SET formula='Nb' WHERE id=:id"),
                                             {"id": fixture["material"]["id"]}), timeout=2)
         await other.commit()
-    await db_session.commit()
+    await db_session.execute(sa.text("SET LOCAL TimeZone='UTC'"))
     current = await capture(db_session, "materials", fixture["material"]["id"])
     pinned = (await db_session.execute(sa.text("SELECT row_data FROM research_release_pins WHERE release_id=:id AND table_name='materials'"),
                                        {"id": capsule["id"]})).scalar_one()
     assert current["formula"] == "Nb"
-    assert pinned == rows[0]["data"]
+    assert pinned == historical_material
     assert pinned["formula"] == "MgB2"
+    assert await capture(db_session, "research_releases", capsule["id"]) == capsule_before
+    assert (await db_session.execute(pin_query, {"id": capsule["id"]})).scalars().all() == pins_before
 
 
 async def test_preflight_rejects_existing_cycle_without_rewriting_rows(db_session):
