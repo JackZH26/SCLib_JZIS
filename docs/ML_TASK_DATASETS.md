@@ -3,6 +3,10 @@
 Version: `ml-task/1.0.0` and `ml-task-dataset/1.0.0`.
 Issue: [ML06 / #70](https://github.com/JackZH26/SCLib_JZIS/issues/70).
 
+For the separate current v4 workflow with mandatory typed identity/partition
+auditing, see [ML identity audits](ML_IDENTITY_AUDITS.md). This document retains
+the original v1 contract; the new wrapper does not rewrite historical artifacts.
+
 ## What this delivers
 
 The existing 0054 research capsule is now an executable input boundary, not an

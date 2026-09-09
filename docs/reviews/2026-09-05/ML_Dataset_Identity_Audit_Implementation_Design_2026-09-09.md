@@ -4,6 +4,12 @@ Date: 2026-09-09. Issue: [ML06 / #70](https://github.com/JackZH26/SCLib_JZIS/iss
 Status: implementation handoff, **not implemented or scientifically approved**.
 Preceding checkpoint: [complete captured label-currentness](Priority_Forty_First_Batch_Implementation_2026-09-09.md).
 
+Historical status above describes this proposal at handoff. The subsequent
+implementation contract is [ML identity audits](../../ML_IDENTITY_AUDITS.md);
+consult the [forty-second implementation report](Priority_Forty_Second_Batch_Implementation_2026-09-09.md)
+for tested scope and delivery status. This
+proposal is not a live API specification or scientific approval.
+
 ## Concrete gap
 
 The existing v4 compiler constructs complete frozen leakage groups before

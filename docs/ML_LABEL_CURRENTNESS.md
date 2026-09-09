@@ -6,6 +6,11 @@ ML06 / #70 and the prospective-dataset part of SC08 / #66. It does not overwrite
 a frozen capsule, feature companion, review observation, earlier compiled
 dataset, or scientific result. No model training or public release is authorized.
 
+The separate [mandatory identity-audited entry point](ML_IDENTITY_AUDITS.md)
+embeds this v4 output unchanged and adds complete typed membership/count and
+partition checks. It requires both technical gates to pass; the historical v4
+CLI and source-checksum contract remain unchanged.
+
 ## Why a separate label boundary is needed
 
 The v3 review companion starts from optional `ml_example_inputs`. Its holds
