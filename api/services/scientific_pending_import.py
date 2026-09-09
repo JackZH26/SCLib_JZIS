@@ -26,6 +26,7 @@ from services.scientific_import_input import (  # re-exported public worker API
     PreparedImport,
     ScientificImportError,
     compile_input,
+    compiler_inventory,
     prepare_input,
     require,
     sha,
@@ -34,7 +35,8 @@ from services.scientific_import_input import (  # re-exported public worker API
 )
 
 __all__ = ["InputPackage", "PreparedImport", "ScientificImportError", "compile_input", "prepare_input",
-           "start_import", "finish_import", "fail_import", "preview_import", "inspect_import", "material_binding"]
+           "start_import", "finish_import", "fail_import", "preview_import", "inspect_import", "material_binding",
+           "scientific_import_capabilities", "lookup_import_outcome"]
 _NAMESPACE = UUID("ba0b4b73-15bf-46fa-aafb-c02de4c28d78")
 _PREFIX = "scientific_import_"
 _KEY = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/+@-]{0,159}$")
@@ -159,6 +161,40 @@ async def inspect_import(db, *, actor_user_id, attempt_id):
     attempt = await _row(db, _PREFIX + "attempts", attempt_id)
     require(attempt is not None, "import_attempt_unavailable")
     return await _dto(db, attempt)
+
+
+async def scientific_import_capabilities(db, *, actor_user_id):
+    """Current operator admission only; not approval of any package or result."""
+    await _session(db, write=False)
+    grant = await active_grant(db, actor_user_id, role="curator")
+    return {"version": "scientific-import-capabilities/1.0.0",
+        "actor_user_id": str(_id(actor_user_id)), "actor_grant_id": str(grant["id"]),
+        "can_read": True, "can_import": True,
+        "compiler_sha256": digest(compiler_inventory()), "authority": dict(AUTHORITY)}
+
+
+async def lookup_import_outcome(db, *, actor_user_id, request_key, expected_request_sha256):
+    """Observe one original actor/key without starting, resuming or failing it.
+
+    The independent pin is the augmented package key returned by preview, not
+    a hash of the HTTP body. A replacement current curator grant admits the
+    original actor to their historical receipt; its stored grant is unchanged.
+    Absence is not evidence that an earlier submission rolled back.
+    """
+    await _session(db, write=False)
+    await active_grant(db, actor_user_id, role="curator")
+    require(type(request_key) is str and _KEY.fullmatch(request_key), "invalid_import_request_key")
+    require(type(expected_request_sha256) is str
+            and re.fullmatch(r"[0-9a-f]{64}", expected_request_sha256), "invalid_import_request_pin")
+    attempts = _table(_PREFIX + "attempts")
+    attempt = (await db.execute(sa.select(attempts).where(
+        attempts.c.actor_user_id == _id(actor_user_id), attempts.c.request_key == request_key,
+    ))).mappings().one_or_none()
+    require(attempt is not None, "import_outcome_unavailable")
+    package = await _row(db, _PREFIX + "packages", attempt["package_id"])
+    require(package is not None, "import_package_unavailable")
+    require(package["package_key"] == expected_request_sha256, "import_request_pin_conflict")
+    return await _dto(db, attempt, replayed=True)
 
 
 async def _artifact(db, *, package_id, package_key, actor_user_id, actor_grant_id, payload,

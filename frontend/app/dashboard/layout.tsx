@@ -25,6 +25,7 @@ const NAV_BASE = [
   { href: "/dashboard/saved",    label: "Bookmarks" },
   { href: "/dashboard/feedback", label: "Feedback" },
   { href: "/dashboard/research/review", label: "Scientific evidence" },
+  { href: "/dashboard/research/imports", label: "Scientific imports" },
   { href: "/dashboard/research/source-tasks", label: "Source tasks" },
   { href: "/dashboard/research/distributions", label: "Distribution rights" },
 ];

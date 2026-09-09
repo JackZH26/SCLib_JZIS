@@ -81,11 +81,17 @@ role alone is not curator authorization. Responses are `private, no-store`.
 
 | Method and route | Purpose |
 |---|---|
+| `GET /v1/ml/scientific-program-imports/capabilities` | Read current curator/account/grant capability and the installed compiler pin |
+| `GET /v1/ml/scientific-program-imports/outcome?request_key=...&expected_request_sha256=...` | Read only the current account's original actor/key/package receipt, including a durable unresolved start |
 | `GET /v1/ml/scientific-program-imports/material-bindings/{material_id}` | Read the current full-material-row SHA-256 and formula without exposing the full row |
 | `POST /v1/ml/scientific-program-imports` | Default rollback-only preview, or explicit durable pending import |
 | `GET /v1/ml/scientific-program-imports/{attempt_id}` | Inspect a private durable attempt and its recorded outcome |
 
-The JSON request has exactly these top-level fields:
+The JSON request has the following closed top-level fields. The additive
+`expected_request_sha256` field is optional for old clients and is always used
+by the [English import workbench](SCIENTIFIC_IMPORT_WORKBENCH.md). It binds the
+preview's augmented package, including the installed compiler, and is checked
+before any durable start. Omission retains the old API behavior.
 
 ```json
 {
@@ -93,6 +99,7 @@ The JSON request has exactly these top-level fields:
   "dry_run": true,
   "manifest": "REPLACE WITH ORIGINAL CLOSED PACKAGE OBJECT",
   "expected_manifest_sha256": "REPLACE WITH INDEPENDENT 64-HEX MANIFEST PIN",
+  "expected_request_sha256": "REPLACE WITH EXACT AUGMENTED PACKAGE PIN FROM PREVIEW",
   "artifact_bytes_base64": {"ACTUAL_FILE_SHA256": "CANONICAL_BASE64_OF_COMPLETE_FILE"},
   "context": {
     "version": "scientific-import-context/1.0.0",

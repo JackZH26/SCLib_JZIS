@@ -6,6 +6,12 @@ Status: implementation handoff only; **the workbench and original-key lookup
 described here are not implemented**.
 Existing contract: [pending scientific imports](../../SCIENTIFIC_PENDING_IMPORTS.md).
 
+Subsequent implementation: the forty-fifth batch implements this workbench and
+original-key recovery, including a new pre-start package-pin check. The original
+status above records this document's proposal state, not current availability.
+See the [operator contract](../../SCIENTIFIC_IMPORT_WORKBENCH.md) for actual
+limits, compatibility and deliberate recovery restrictions.
+
 ## Evidenced gap
 
 `api/routers/scientific_program_imports.py` already provides actual bounded

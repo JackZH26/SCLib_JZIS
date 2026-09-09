@@ -39,6 +39,21 @@ export class ApiError extends Error {
   }
 }
 
+// Private bounded imports. File selection never calls these write helpers itself.
+export function scientificImportAccess(signal?: AbortSignal): Promise<unknown> {
+  return request("/ml/scientific-program-imports/capabilities", { signal, cache: "no-store", responseByteLimit: 4096 });
+}
+export function scientificImportBinding(materialId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/ml/scientific-program-imports/material-bindings/${encodeURIComponent(materialId)}`, { signal, cache: "no-store", responseByteLimit: 4096 });
+}
+export function scientificImportSubmit(body: import("./scientific-imports").ImportRequest, signal?: AbortSignal): Promise<unknown> {
+  return request("/ml/scientific-program-imports", { method: "POST", body: JSON.stringify(body), signal, cache: "no-store", responseByteLimit: 8 * 1024 * 1024 });
+}
+export function scientificImportOutcome(ref: import("./scientific-imports").ImportRecovery, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ request_key: ref.requestKey, expected_request_sha256: ref.requestSha256 });
+  return request(`/ml/scientific-program-imports/outcome?${query}`, { signal, cache: "no-store", responseByteLimit: 8 * 1024 * 1024 });
+}
+
 // Private read-only research workbench. Callers validate the closed wire before display.
 export function scientificReviewCapabilities(signal?: AbortSignal): Promise<unknown> {
   return request("/ml/scientific-review/capabilities", { signal, cache: "no-store" });

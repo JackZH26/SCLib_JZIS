@@ -36,6 +36,7 @@ MAX_PACKAGE_BYTES = 8 * 1024 * 1024
 MAX_ARTIFACT_BYTES = 4 * 1024 * 1024
 MAX_FORCE_CONSTANT_BYTES = 8 * 1024 * 1024
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
+MAX_OUTCOME_QUERY_BYTES = 1024
 REQUEST_TIMEOUT = 45
 BODY_TIMEOUT = 10
 WORKER_TIMEOUT = 15
@@ -45,7 +46,7 @@ _worker_slots = threading.BoundedSemaphore(2)
 _recovery_slots = threading.BoundedSemaphore(2)
 _recovery_tasks: set[asyncio.Task] = set()
 _CONFLICT_CODES = frozenset({"import_request_key_conflict", "successful_import_package_already_exists",
-                           "stale_material_binding"})
+                           "stale_material_binding", "import_request_pin_conflict"})
 
 Sha = Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
 Key = Annotated[str, Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._:/+@-]{0,159}$")]
@@ -78,6 +79,7 @@ class ImportRequest(BaseModel):
     dry_run: bool = True
     manifest: dict
     expected_manifest_sha256: Sha
+    expected_request_sha256: Sha | None = None
     artifact_bytes_base64: dict[Sha, str] = Field(max_length=16)
     context: ImportContext
     force_constants_bytes_base64: str | None = None
@@ -110,6 +112,11 @@ class PrivateRoute(APIRoute):
                     headers={**HEADERS, "Retry-After": "1"})
             try:
                 async with asyncio.timeout(REQUEST_TIMEOUT):
+                    # FastAPI materializes query_params during dependency
+                    # resolution, even with no declared query arguments.
+                    if (self.path.endswith("/ml/scientific-program-imports/outcome")
+                            and len(request.scope.get("query_string", b"")) > MAX_OUTCOME_QUERY_BYTES):
+                        raise _bad(413, "Scientific import request exceeds limits")
                     return await handler(request)
             except ResearchAccessDenied:
                 raise _bad(403, "Research curator access required") from None
@@ -125,6 +132,8 @@ class PrivateRoute(APIRoute):
             except (SQLAlchemyError, TimeoutError):
                 raise _bad(503, "Scientific import unavailable") from None
             except ScientificImportError as exc:
+                if str(exc) == "import_outcome_unavailable":
+                    raise _bad(404, "Scientific import unavailable") from None
                 if str(exc) in _CONFLICT_CODES:
                     raise _bad(409, "Scientific import changed; retry") from None
                 raise _bad(400, "Scientific import request rejected") from None
@@ -335,7 +344,10 @@ async def submit(request: Request, actor: AuthenticatedActor):
     from services import scientific_pending_import as service
     body = _decode_inputs(await _body(request))
     request_key, dry_run = body.pop("request_key"), body.pop("dry_run")
+    expected_request_sha256 = body.pop("expected_request_sha256")
     package = await _worker(service.prepare_input, **body)
+    if expected_request_sha256 is not None and package.package_key != expected_request_sha256:
+        raise ScientificImportError("import_request_pin_conflict")
     if dry_run:
         prepared = await _worker(service.compile_input, package)
         result = await _write(actor, service.preview_import,
@@ -366,6 +378,25 @@ async def submit(request: Request, actor: AuthenticatedActor):
                 raise _bad(503, "Scientific import unavailable") from None
             raise
     return Response(_bounded(_operation(result, dry_run=dry_run)), media_type="application/json", headers=HEADERS)
+
+
+@router.get("/capabilities")
+async def capabilities(actor: AuthenticatedActor):
+    from services.scientific_pending_import import scientific_import_capabilities
+    return Response(_bounded(await _read(actor, scientific_import_capabilities)),
+                    media_type="application/json", headers=HEADERS)
+
+
+@router.get("/outcome")
+async def outcome(request: Request, actor: AuthenticatedActor):
+    from services.scientific_pending_import import lookup_import_outcome
+    # Parse after authentication, and reject duplicate/extra keys rather than
+    # interpreting an ambiguous recovery intent or reflecting validation input.
+    pairs = list(request.query_params.multi_items())
+    if len(pairs) != 2 or {key for key, _ in pairs} != {"request_key", "expected_request_sha256"}:
+        raise ValueError("invalid_import_outcome_query")
+    return Response(_bounded(await _read(actor, lookup_import_outcome, **dict(pairs))),
+                    media_type="application/json", headers=HEADERS)
 
 
 @router.get("/material-bindings/{material_id}")
