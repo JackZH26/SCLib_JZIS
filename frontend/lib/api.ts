@@ -74,6 +74,35 @@ export function scientificAdjudicationOutcome(requestKey: string, signal?: Abort
   return request(`/ml/scientific-review/adjudication/requests/${encodeURIComponent(requestKey)}`, { cache: "no-store", signal });
 }
 
+// Private curator task operations. No write is retried automatically.
+export function sourceTaskCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request("/ml/source-lifecycle/task-operations/capabilities", { cache: "no-store", signal });
+}
+export function sourceLifecycleHistory(kind: "paper" | "work", id: string, before: number | null = null, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ [kind + "_id"]: id, limit: "25" });
+  if (before !== null) query.set("before_revision", String(before));
+  return request(`/ml/source-lifecycle?${query}`, { cache: "no-store", signal });
+}
+export function sourceLifecycleImpact(eventId: string, expectedEventSha256: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ expected_event_sha256: expectedEventSha256 });
+  return request(`/ml/source-lifecycle/${encodeURIComponent(eventId)}/impact?${query}`, { cache: "no-store", signal });
+}
+export function sourceTaskHistory(requestId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/ml/source-lifecycle/tasks/${encodeURIComponent(requestId)}`, { cache: "no-store", signal });
+}
+export function sourceTaskPreview(body: import("./source-tasks").TaskOperation, signal?: AbortSignal): Promise<unknown> {
+  return request("/ml/source-lifecycle/task-operations/preview", { method: "POST", body: JSON.stringify(body), cache: "no-store", signal });
+}
+export function sourceTaskCommit(body: import("./source-tasks").TaskOperation, expectedPreviewSha256: string, signal?: AbortSignal): Promise<unknown> {
+  return request("/ml/source-lifecycle/task-operations/commit", { method: "POST", body: JSON.stringify({ request: body, expected_preview_sha256: expectedPreviewSha256 }), cache: "no-store", signal });
+}
+export function sourceTaskRequestOutcome(requestKey: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/ml/source-lifecycle/task-operations/requests/${encodeURIComponent(requestKey)}`, { cache: "no-store", signal });
+}
+export function sourceTaskExecutionOutcome(requestId: string, executionKey: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/ml/source-lifecycle/task-operations/requests/${encodeURIComponent(requestId)}/executions/${encodeURIComponent(executionKey)}`, { cache: "no-store", signal });
+}
+
 /**
  * Map any caught error into a user-facing string. The fetch API throws a
  * generic `TypeError: Failed to fetch` for every network-level failure

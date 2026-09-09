@@ -1,6 +1,7 @@
 # Exact-source tasks — bounded Timeline cache invalidation
 
-Date: 2026-09-07. Schema head: `0058_source_tasks`.
+Updated: 2026-09-09. Task schema: `0058_source_tasks`; application schema head:
+`0067_scientific_adjudication` (this operator workflow adds no migration).
 Issue: [SC08 / #66](https://github.com/JackZH26/SCLib_JZIS/issues/66).
 Preconditions: [source lifecycle](SOURCE_LIFECYCLE_LEDGER.md) and
 [declared-scope impact inspection](SOURCE_IMPACT_INSPECTION.md).
@@ -10,8 +11,9 @@ Preconditions: [source lifecycle](SOURCE_LIFECYCLE_LEDGER.md) and
 An explicitly authorized curator can now persist an exact-source impact request,
 execute one bounded database action, inspect its immutable receipt, and record
 allowlisted transient failures for a subsequent controlled retry. Internal
-mutation services default to `dry_run=True`, never own the outer commit and do
-not expose HTTP writers. There is no new scheduler or automatically enqueued
+mutation services default to `dry_run=True` and never own the outer commit.
+The private [operator workflow](#private-preview-commit-and-recovery-workflow)
+now exposes explicit preview-first HTTP writers. There is no new scheduler or automatically enqueued
 work. Existing periodic Timeline refresh remains a separate operation.
 
 The only action is `timeline-cache-invalidation/1.0.0`:
@@ -165,7 +167,8 @@ inventory text or raw scientific source values. The existing
 `ML_FOUNDATION_PUBLIC_ENABLED` kill switch defaults off; JWT and a current explicit
 research role are checked in the same read-only REPEATABLE READ snapshot. All
 responses, including errors, are `private, no-store`; no ETag/304 bypass exists.
-There is no POST execution route or curator UI in this batch.
+The newer curator-only writers and recovery reads below use a dedicated
+authentication/session check, not the broader research-role read admission.
 
 Receipt semantics explicitly report:
 
@@ -181,6 +184,84 @@ or expiry; vector indexes, saved answers, ML membership and published historical
 notices are not acknowledged or changed. This action alone is not a complete
 source-correction delivery guarantee or freshness SLA.
 
+## Private preview, commit and recovery workflow
+
+The dashboard page `/dashboard/research/source-tasks` supports source inspection,
+explicit request creation, exact-head execution and original-key outcome lookup.
+All default UI copy is English. A legacy administrator or reviewer flag does not
+authorize these actions. The feature kill switch still defaults off.
+
+Under `/v1/ml/source-lifecycle/task-operations`:
+
+| Endpoint | Contract and effect |
+| --- | --- |
+| `GET /capabilities` | Current verified account plus explicit curator grant; returns the authenticated actor/grant and fixed negative semantics. Unauthorized actors receive 403, not reviewer-derived write access. |
+| `POST /preview` | Closed `source-task-operation/1.0.0` request, real rollback rehearsal, deterministic preview hash. No committed rows, cache change or guard-epoch change. |
+| `POST /commit` | Exactly `{request, expected_preview_sha256}`; rechecks operation, actor/grant, source/inventory and exact attempt head inside the write fence. |
+| `GET /requests/{request_key}` | Original actor-scoped enqueue receipt. Does not substitute current task status or a later attempt for the original operation. |
+| `GET /requests/{request_id}/executions/{execution_key}` | Exact historical execution receipt for that executor. Does not return whichever attempt happened most recently. |
+
+An enqueue request contains only `version`, `operation="enqueue"`, `request_key`,
+`event_id`, `expected_event_sha256` and `expected_inventory_sha256`. Bind these
+to the inspected lifecycle event and actual impact response; do not invent a
+browser-authored impact inventory.
+
+An execute request contains only `version`, `operation="execute"`, `request_id`,
+`expected_request_sha256`, `execution_key`, `expected_predecessor_id` and
+`expected_predecessor_sha256`. The predecessor fields are both null for a root,
+or the exact current retryable attempt's ID/hash. A terminal request cannot acquire
+a new successor. The browser cannot record arbitrary database-failure claims;
+the trusted failure-report service remains internal.
+
+Preview hashes bind the normalized operation, actor and exact grant, predicted
+record status/outcome and fixed semantics. They exclude rolled-back generated
+IDs, timestamps and record hashes. An unchanged preview is reproducible across
+transactions. The hash is a consistency token, **not authentication, a signed
+approval or proof that a preview HTTP call occurred**. Authorization is checked
+independently on every request, including before consuming an upload body.
+The early read-only admission transaction is closed before streaming the body;
+the writer then reauthenticates the JWT/session and curator in a **fresh**
+transaction. Repeating a role query in the original snapshot would not detect a
+session-version change during upload, especially for a historical replay with no
+INSERT trigger. Both new writes and replays use the fresh admission protocol.
+
+The writer uses a dedicated UTC SERIALIZABLE transaction and the existing
+`540 → 550 → 560 → 580` lock/epoch fence. The real rehearsal rolls back a nested
+savepoint while the outer fence stays held through the actual write. A changed
+head or preview fails closed; no unlocked preflight-to-insert gap is introduced.
+An obsolete or blocked attempt can be successfully committed as an audit record;
+`committed=true` must not be read as successful invalidation.
+
+The router rolls back the entire dedicated transaction for both preview and
+durable replay, including any provisional epoch increments. A replay therefore
+does not re-invalidate a Timeline rebuilt since the original receipt. Only after
+a new outer transaction actually commits can the HTTP response acknowledge
+`committed=true` and `requires_outer_commit=false`. Internal service returns
+remain provisional and require the documented caller protocol.
+
+Request JSON is bounded to 8 KiB (the commit envelope to 8 KiB + 256 bytes), with
+closed fields, canonical UUIDs, lower-case SHA-256, bounded idempotency keys,
+strict UTF-8, duplicate-key rejection and bounded nesting. Responses are bounded
+to 32 KiB. Two in-process nonblocking slots, a 20-second route deadline,
+10-second operation deadline and 5-second SQL statements bound local resource use;
+these are not fleet-wide capacity limits or an operational propagation SLA.
+Errors are static and private/no-store; raw SQL, connection details and supplied
+exception text are never browser error messages.
+
+For a timeout, cancellation, connection loss or malformed success response after
+submission, the outcome is **unknown**. Retain the original operation key and
+inspect its exact outcome. A 404 means only “not found in the current snapshot”;
+it does not prove that an in-flight transaction failed. Do not auto-generate a
+new key, auto-submit another mutation, or fabricate a failure attempt. Recovery
+may return a historical grant ID: current curator admission permits inspection,
+but does not revive the original requester's revoked authority or source support.
+The UI keeps recovery state only in the mounted page's memory and warns on
+browser unload while submission/recovery is unresolved. It stores no source
+payload or recovery key in browser storage. This is not durable client recovery:
+reload, closing the tab or client-side navigation may discard the key, and
+browser unload warnings are not a universal navigation guard. Retain the shown
+original key securely before leaving; the manual lookup fields accept it later.
+
 ## Migration, rollout and next gates
 
 Migration 0058 adds three tables, guards and functions; it creates no tasks,
@@ -195,8 +276,7 @@ locks; do not delete the audit ledger to force rollback. Requester/executor
 identity is retained after grant revocation; audit-bound account deletion returns
 a controlled conflict without erasing private account data.
 
-Next priority: a reviewed operator workflow with explicit enqueue/execute controls,
-bounded worker delivery and commit-uncertainty recovery; separately versioned
+Next priority: bounded worker delivery; separately versioned
 Redis/vector/ML/historical-notice targets; broader dependency coverage; monitored
 rebuild results and propagation lag. Real reviewed source cases, rights review,
 scientific supersession/reinstatement and production rollout remain unfinished.

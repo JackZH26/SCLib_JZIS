@@ -214,8 +214,12 @@ async def test_source_contention_is_nonblocking_and_retry_does_not_fork(review_d
     try:
         async with AsyncSession(engine, expire_on_commit=False) as contender:
             await review_db.execute(sa.text("UPDATE papers SET abstract='Held first writer' WHERE id=:id"), {"id": first})
-            with pytest.raises(DBAPIError, match="source_lifecycle_busy_retry_transaction"):
+            # Schema 0067 guards catalogue writes with the shared integrity
+            # fence before the source-lifecycle fence. The higher-order guard
+            # must reject promptly; do not bypass it merely to reach 0056.
+            with pytest.raises(DBAPIError, match="research_integrity_busy_retry_transaction") as rejected:
                 await contender.execute(sa.text("UPDATE papers SET abstract='Second writer' WHERE id=:id"), {"id": second})
+            assert rejected.value.orig.sqlstate == "55P03"
             await contender.rollback()
             await review_db.commit()
             await contender.execute(sa.text("UPDATE papers SET abstract='Second writer' WHERE id=:id"), {"id": second})

@@ -144,12 +144,14 @@ async def _write(db, dry_run):
 
 
 async def enqueue_source_task(db, *, actor_user_id, event_id, expected_event_sha256,
-                              expected_inventory_sha256, request_key, dry_run=True):
+                              expected_inventory_sha256, request_key, dry_run=True,
+                              expected_actor_grant_id=None):
     """Recompute the declared inventory; persist exact bytes, default rehearsal."""
     actor, identifier = _uuid(actor_user_id), _uuid(event_id)
     event_hash, inventory_hash, key = _sha(expected_event_sha256), _sha(expected_inventory_sha256), _key(request_key)
     async with _write(db, dry_run):
-        grant = await active_grant(db, actor, role="curator")
+        grant = await active_grant(db, actor, role="curator",
+                                  grant_id=_uuid(expected_actor_grant_id) if expected_actor_grant_id is not None else None)
         table = _table("requests")
         old = (await db.execute(sa.select(table).where(table.c.requester_id == actor,
                     table.c.request_key == key))).mappings().one_or_none()
@@ -204,18 +206,36 @@ async def _append(db, request, prior, actor, grant, key, status, code):
 
 
 async def execute_source_task(db, *, actor_user_id, request_id, expected_request_sha256,
-                              execution_key, dry_run=True):
+                              execution_key, dry_run=True, expected_actor_grant_id=None,
+                              check_predecessor=False, expected_predecessor_id=None,
+                              expected_predecessor_sha256=None):
     """One atomic attempt. DB failures escape; never fabricate an aborted receipt."""
     actor, identifier = _uuid(actor_user_id), _uuid(request_id)
     expected_hash, key = _sha(expected_request_sha256), _key(execution_key)
+    if type(check_predecessor) is not bool:
+        raise SourceTaskError("Boolean predecessor check required")
+    if (expected_predecessor_id is None) != (expected_predecessor_sha256 is None):
+        raise SourceTaskError("Exact predecessor identity and hash must be supplied together")
+    if not check_predecessor and expected_predecessor_id is not None:
+        raise SourceTaskError("Explicit predecessor check required")
+    predecessor = _uuid(expected_predecessor_id) if expected_predecessor_id is not None else None
+    predecessor_hash = _sha(expected_predecessor_sha256) if expected_predecessor_sha256 is not None else None
     async with _write(db, dry_run):
-        grant = await active_grant(db, actor, role="curator")
+        grant = await active_grant(db, actor, role="curator",
+                                  grant_id=_uuid(expected_actor_grant_id) if expected_actor_grant_id is not None else None)
         request = await _request(db, identifier, expected_hash)
         rows = await _attempts(db, identifier)
         old = _replay(rows, key, actor)
         if old is not None:
+            previous = next((row for row in rows if row["id"] == old["predecessor_id"]), None)
+            if check_predecessor and (predecessor != old["predecessor_id"]
+                    or predecessor_hash != (previous["record_sha256"] if previous else None)):
+                raise SourceTaskError("Exact historical attempt predecessor required")
             return _receipt(request, old, dry_run=dry_run, replayed=True)
         prior = _head(rows)
+        if check_predecessor and (predecessor != (prior["id"] if prior else None)
+                or predecessor_hash != (prior["record_sha256"] if prior else None)):
+            raise SourceTaskError("Exact current attempt predecessor required")
         status, code = "succeeded", "timeline_cache_invalidated"
         try:
             await active_grant(db, request["requester_id"], role="curator", grant_id=request["requester_grant_id"])
