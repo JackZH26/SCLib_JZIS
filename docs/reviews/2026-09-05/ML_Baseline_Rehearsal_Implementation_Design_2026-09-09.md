@@ -4,6 +4,11 @@ Date: 2026-09-09. Issue: [ML09 / #76](https://github.com/JackZH26/SCLib_JZIS/iss
 Status: implementation handoff only; **not implemented, trained or approved**.
 Prerequisite engineering contract: [mandatory identity audits](../../ML_IDENTITY_AUDITS.md).
 
+Subsequent implementation: [forty-third batch](Priority_Forty_Third_Batch_Implementation_2026-09-09.md)
+and [operator contract](../../ML_BASELINE_REHEARSAL.md). The original design
+status above records the handoff point; the fixed synthetic numerical rehearsal
+is now implemented. Real training and scientific approval remain unavailable.
+
 ## Why this is the next bounded step
 
 The current repository has exact task-specific dataset construction, train-only

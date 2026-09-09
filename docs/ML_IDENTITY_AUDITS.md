@@ -185,3 +185,11 @@ The batch report records actual local tests. Synthetic SQL/canonical fixtures
 establish implementation behavior, not real reviewed support, calibration,
 scientific validity or independently replicated superconductivity. ML06, ML09,
 ML07 and the evidence pilot retain their separate acceptance/release gates.
+
+## Baseline preparation and engineering rehearsal
+
+The [baseline rehearsal](ML_BASELINE_REHEARSAL.md) now consumes this package
+through complete five-input verification for read-only feature preparation.
+Its numerical integration is tested on owned synthetic SQL fixtures, and its
+public CLI executes only a fixed implementation-owned toy. This audited package
+does not grant ML-use authority or activate general real-data model fitting.
