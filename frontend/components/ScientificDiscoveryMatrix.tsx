@@ -58,7 +58,7 @@ function Observation({ value: o }: { value: ScientificObservation }) {
       <Term name="Scientific review">{o.scientific_scope_accepted ? "Accepted · sampled phonon minimum only" : "Unreviewed scientific result"}{science.profile_version ? ` · ${science.profile_version}` : ""}</Term>
       <Term name="Normalization">Not asserted; the registry unit does not establish normalization.</Term>
     </dl>
-    <p className="text-xs leading-5 text-sage-muted">An exact value does not mean zero uncertainty; an interval is not automatically a confidence interval. Recorded run labels do not establish upstream execution or convergence. A sampled phonon review does not establish full-zone dynamical stability or superconductivity. ML training is not approved by this publication.</p>
+    <p className="text-xs leading-5 text-sage-muted">An exact value does not mean zero uncertainty; an interval is not automatically a confidence interval. Recorded run labels do not establish upstream execution or convergence. A sampled phonon review does not establish full-zone dynamical stability or superconductivity. ML training is not approved by this record.</p>
     <Pins title="Exact property, event and state / sample / structure / run pins" value={{ property: o.property, event: o.event, material: o.material,
       state: o.state, sample: o.sample, structure: o.structure, run: o.run }} />
     <Pins title="Scientific subject and scope-specific review pins" value={o.review} />
@@ -74,7 +74,7 @@ function Observation({ value: o }: { value: ScientificObservation }) {
     </section>
   </article>;
 }
-function PolicyDetails({ assessment: a }: { assessment: ScientificAssessment }) {
+export function PolicyDetails({ assessment: a }: { assessment: ScientificAssessment }) {
   const s = a.result;
   return <details className="space-y-3 rounded-lg border border-sage-border p-4">
     <summary className="cursor-pointer font-medium">Frozen policy assessment · {a.id} · RPS {score(s.score_display)}</summary>
@@ -104,13 +104,13 @@ function PolicyDetails({ assessment: a }: { assessment: ScientificAssessment }) 
     <Pins title="Complete frozen assessment and contribution record" value={a} />
   </details>;
 }
-function MaterialDetails({ row: r, close }: { row: ScientificMaterial; close: () => void }) {
+export function MaterialDetails({ row: r, close, prepared = false }: { row: ScientificMaterial; close: () => void; prepared?: boolean }) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     heading.current?.focus({ preventScroll: true });
     heading.current?.scrollIntoView?.({ block: "start", behavior: "auto" });
   }, [r.material.row_id, r.representative.id]);
-  return <section id="scientific-material-details" aria-label={`${r.assessment.formula} scientific details`} className="space-y-4 rounded-xl border border-sage-border bg-sage-surface p-4 sm:p-5">
+  return <section id={prepared ? "prepared-material-details" : "scientific-material-details"} aria-label={`${r.assessment.formula} scientific details`} className="space-y-4 rounded-xl border border-sage-border bg-sage-surface p-4 sm:p-5">
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div><h3 ref={heading} tabIndex={-1} className="scroll-mt-24 text-lg font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">{r.assessment.formula} · scientific record</h3><p className="text-sm text-sage-muted">Selected state and action only; alternatives do not change these scientific cells.</p></div>
       <button type="button" onClick={close} className={inputStyle}>Close details</button>
@@ -120,7 +120,7 @@ function MaterialDetails({ row: r, close }: { row: ScientificMaterial; close: ()
       <Term name="RPS material descriptor">{r.assessment.material_id}</Term>
       <Term name="Selected state ID">{r.state.row_id}</Term>
       <Term name="Selected structure ID">{r.structure?.row_id ?? "Not selected"}</Term>
-      <Term name="Frozen representative">{r.representative.id} · revision {r.representative.revision.toLocaleString("en-US")}</Term>
+      <Term name={prepared ? "Prepared representative" : "Frozen representative"}>{r.representative.id} · revision {r.representative.revision.toLocaleString("en-US")}</Term>
       <Term name="Selection rationale">{r.selection_rationale}</Term>
       <Term name="Main barrier">Main barrier not separately declared</Term>
       <Term name="Assessment reasons">{r.assessment.result.reason_codes.join(" · ") || "No assessment reasons declared"}</Term>
@@ -131,7 +131,7 @@ function MaterialDetails({ row: r, close }: { row: ScientificMaterial; close: ()
     <PolicyDetails assessment={r.assessment} />
     <section className="space-y-3" aria-label="Alternative research actions">
       <h4 className="font-semibold">Alternative research actions ({r.alternatives.length.toLocaleString("en-US")})</h4>
-      <p className="text-sm text-sage-muted">The published representative is explicit, not the highest-scoring action. Alternative states and actions retain their original roles and scores; they are not additional materials.</p>
+      <p className="text-sm text-sage-muted">The {prepared ? "prepared" : "published"} representative is explicit, not the highest-scoring action. Alternative states and actions retain their original roles and scores; they are not additional materials.</p>
       {r.alternatives.length === 0 && <p className="text-sm">No alternative assessments in this frozen release.</p>}
       {r.alternatives.map(a => <div key={a.reference.id} className="space-y-2"><PolicyDetails assessment={a.assessment} /><Pins title={`Alternative reference · ${a.reference.id}`} value={a.reference} /></div>)}
     </section>

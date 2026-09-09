@@ -175,6 +175,103 @@ All preparation authority flags are false: `scientific_acceptance`,
 separate from selection/disclosure review, three-account publication and the
 explicit public allowlist. The RPS calibration-pending disclaimer is unchanged.
 
+## English curator workbench
+
+The private route `/dashboard/research/discovery` (under `/sclib` in the
+production base path) is linked as **Discovery selection** in the existing
+dashboard. It uses the same HttpOnly browser session and live curator grant;
+it does not add a login system, change hosting or give sidebar visibility the
+authority to perform operations.
+
+The operator sequence is:
+
+1. Refresh curator access. Enter an existing distribution package UUID and
+   select the original canonical public-bundle JSON file. File selection does
+   not upload. **Inspect frozen distribution** checks bounded UTF-8 bytes and
+   hashes, then explicitly sends that exact source text to the private API.
+2. For every material, explicitly choose a frozen state/action assessment and
+   structure binding. Both controls start unchosen. **No structure selected**
+   means only events actually unbound to a structure; it is not a wildcard.
+   Native IDs and RPS descriptor IDs remain separate. A rationale is required.
+3. Inspect all matching results for the selected context, including each
+   component and quantity relation. There is no per-result hide checkbox or
+   numeric editor. Registered inventory determines reported/unknown status.
+   Optional not-computed, not-applicable or conflicted declarations need an
+   explicit reason code and context-matched evidence. Changing state/action or
+   structure clears the old rationale and all declarations/evidence.
+4. **Compile scientific preview** shows the complete private scientific payload:
+   eight native fields, quantities, exact selected context, actual scope reviews,
+   provenance, all alternative actions, original frozen policy contributions
+   and request/payload/selection pins. Unreviewed results are allowed here, not
+   promoted to public scientific acceptance. Geometry/competing-order fields
+   still show planned native capability, not invented measurements.
+5. **Run registration rehearsal** submits the server-prepared preview command
+   unchanged. Only its verified native receipt enables **Register exact
+   preview**. All edits invalidate both prepared payload and rehearsal. Fresh
+   access must still match the original actor/grant immediately before a write.
+6. On an ambiguous submitted write, private source/context/rationale/commands
+   are cleared. New writes remain locked. **Check original outcome** performs
+   only the existing GET for the original actor/key/request hash; 404 never
+   means rollback or permission to retry. A replacement curator grant for the
+   same actor can recover. A different account cannot see the retained locator.
+
+Only opaque recovery pins survive an uncertain write in the mounted page.
+They are never saved to browser storage. Session changes/page hiding clear
+private drafts; refresh is explicit. Navigation/reload loses the in-memory
+locator, so retain it in an approved private operation record and keep the
+original package separately. No durable cross-navigation queue is promised.
+Native provisional rehearsal UUID/record hashes need not match the eventual
+committed record. Stable request/payload/selection pins must match instead.
+
+The client independently validates closed schemas and bounded raw JSON, rejects
+duplicate keys/non-finite values/unpaired surrogates, and checks SHA-256 over
+original UTF-8 text. It never reserializes floating quantities to reconstruct
+commands. Known scalar command fields and the integer/string-only selection
+must have canonical spelling, preventing equivalent JSON escapes from poisoning
+the backend-canonical recovery request hash. Context-to-preview checks also bind
+the native structure kind, not only the structure ID and row hash.
+
+Transport uses existing fixed API paths, credentialed no-store requests, no
+redirects, bounded strict-UTF-8 reads, owned cancellation and no automatic retry.
+An already-cancelled write is never dispatched. File reads and asynchronous
+digest verification race the workbench deadline; late results cannot restore
+a cleared or expired generation. UI-owned copy and numbers default to English.
+Policy score comparison is limited to the same frozen campaign, budget, policy,
+release and eligible role/rank group; empirical calibration remains pending.
+
+## Synthetic evidence and reproduction
+
+The directory `frontend/tests/fixtures/discovery-selection` retains 14 actual
+guarded SQL-to-HTTP request/response texts and original provenance. Each wire
+asset is stored as a JSON **string** so tooling cannot silently normalize Python
+floating-point spelling. Decode that wrapper once to recover the exact original
+text. The frontend test verifies every decoded byte hash and all 36 backend
+source pins. This is a synthetic fixture with eight native properties and zero
+scientific acceptance, not a reviewed pilot or a public release.
+
+The portable capture writer is deliberately outside automatic test discovery.
+Run it explicitly and alone from the repository root:
+
+```bash
+api/.venv/bin/python scripts/run_disposable_tests.py --backend native \
+  --postgres-bin /opt/homebrew/opt/postgresql@16/bin \
+  --redis-bin /opt/homebrew/bin/redis-server --suite api -- \
+  -p tests.conftest -c pyproject.toml \
+  "$PWD/frontend/tests/fixtures/capture-discovery-selection.py" \
+  -q -s -p no:cacheprovider
+```
+
+The unchanged runner validates its owned disposable PostgreSQL/Redis capability
+before imports. The writer additionally rejects all sockets except those owned
+loopback services, and exclusively creates fixed files in an empty owner-only
+pytest temporary directory held by a no-follow descriptor. It prints that
+directory and never overwrites repository fixtures. New random IDs produce new
+hashes; compare semantics and provenance rather than expecting repeated byte
+identity. The original external capture writer pin remains in provenance; the
+portable copy differs only by its final blank line and records its own byte pin.
+Frontend tests use additional explicitly synthetic/adversarial mutations and
+a request-key adapter; those are not additional captured scientific approvals.
+
 ## Bounds and remaining work
 
 The pilot interface admits at most 25 materials and 200 assessments. Candidate
@@ -192,10 +289,9 @@ Shared authentication, browser-origin protection, no-store/nosniff headers,
 bounded concurrent admission, upload chunk limits and timeouts remain active.
 These are rejection ceilings, not measured production latency guarantees.
 
-Next is the English curator editor consuming these exact contracts, with no
-default representative/structure, explicit declarations, genuine native
-rehearsal and original-request recovery. Independent reviewer/publisher history
-and protective actions after source holds also need an operator interface.
+The English curator editor now consumes these exact contracts. Independent
+reviewer/publisher history and protective actions after source holds still need
+an operator interface that does not weaken current scientific-payload admission.
 An independently declared main-barrier field, real reviewed pilot and rights,
 empirical calibration and authorized remote delivery remain separate gates.
 Synthetic API tests do not close either issue or authorize deployment.

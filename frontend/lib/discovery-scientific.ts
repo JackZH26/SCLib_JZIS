@@ -162,6 +162,15 @@ export type ScientificCatalog = Value<typeof catalogSchema>;
 const receipt = object({ version: literal("discovery-projection-governance/1.0.0"), ...publicationFields, payload,
   scientific_acceptance: falseFlag, ml_training_approved: falseFlag, current_authorization_checked: falseFlag });
 export type ScientificReceipt = Value<typeof receipt>;
+export type ScientificPayload = Value<typeof payload>;
+
+// Reuse the same closed scientific shapes in the private curator reader.
+// This is not a public-admission entry point.
+export const preparationScientificShapes = { assessment, campaign, quantity, materialRef, assessmentRef,
+  stateContext: object({ material_id: identifier, ...conditions, phase: str(4000), sample_context: str(4000) }) };
+export function validatePreparationAssessment(a: ScientificAssessment, c: ScientificPayload["campaign"]) {
+  checkAssessment(a, { campaign: c, policy_sha256: a.result.policy_hash });
+}
 
 function requireValue(value: unknown): asserts value { if (!value) throw new Error(SCIENTIFIC_FAILURE); }
 const equal = (a: unknown, b: unknown): boolean => {
@@ -218,7 +227,7 @@ function checkObservation(o: ScientificObservation, c: ScientificCell, r: Scient
   }
   for (const s of [...o.sources, ...o.source_occurrences]) if ("line" in s.locator) requireValue(s.locator.end_byte >= s.locator.start_byte);
 }
-function checkAssessment(a: ScientificAssessment, p: ScientificReceipt["payload"]) {
+function checkAssessment(a: ScientificAssessment, p: Pick<ScientificPayload, "campaign" | "policy_sha256">) {
   const s = a.result;
   requireValue(s.policy_hash === p.policy_sha256 && p.campaign.action_templates[a.action_template.id] === a.action_template.sha256);
   requireValue(s.rank_group === (a.role === "mechanism_anchor" ? "mechanism" : "discovery")
@@ -271,8 +280,7 @@ function checkPayload(p: ScientificReceipt["payload"]) {
       }
     }
   }
-  requireValue(properties.size <= 100 && assessments.size <= 200
-    && p.rows.some(r => r.cells.some(c => c.observations.some(o => o.scientific_scope_accepted))));
+  requireValue(properties.size <= 100 && assessments.size <= 200);
   for (const c of p.capabilities.scientific_properties) {
     const spec = SCIENTIFIC_FIELDS[c.property_key], supported = c.property_key === "phonon_min_frequency";
     requireValue(c.unit === spec.unit && c.group === spec.group && c.populated_observations === counts[c.property_key]
@@ -285,7 +293,7 @@ function checkPayload(p: ScientificReceipt["payload"]) {
  * Duplicate keys, non-finite numbers, unpaired surrogates and excess nesting are
  * rejected before JSON.parse. Hashes bind bytes, not scientific truth or rights.
  */
-function scan(raw: string, limit: number) {
+function scan(raw: string, limit: number, paths = ["payload", "payload/selection", "payload/campaign"], maxDepth = 40, maxNodes = 200000) {
   requireValue(raw.length <= limit && new TextEncoder().encode(raw).length <= limit);
   let at = 0, nodes = 0;
   const spans = new Map<string, string>();
@@ -309,7 +317,7 @@ function scan(raw: string, limit: number) {
     throw new Error(SCIENTIFIC_FAILURE);
   }
   function value(path: string[], depth: number) {
-    requireValue(depth <= 40 && ++nodes <= 200000); white(); const start = at;
+    requireValue(depth <= maxDepth && ++nodes <= maxNodes); white(); const start = at;
     if (raw[at] === "{") {
       at++; white(); const keys = new Set<string>();
       if (raw[at] !== "}") while (true) {
@@ -332,7 +340,7 @@ function scan(raw: string, limit: number) {
       }
     }
     const key = path.join("/");
-    if (["payload", "payload/selection", "payload/campaign"].includes(key)) spans.set(key, raw.slice(start, at));
+    if (paths.includes(key)) spans.set(key, raw.slice(start, at));
   }
   try { value([], 0); white(); requireValue(at === raw.length); return { value: JSON.parse(raw) as unknown, spans }; }
   catch { throw new Error(SCIENTIFIC_FAILURE); }
@@ -355,9 +363,26 @@ export async function parseScientificReceipt(raw: string, selected: ScientificPu
   for (const k of Object.keys(publicationFields) as (keyof ScientificPublication)[]) requireValue(value[k] === expected[k]);
   requireValue(value.payload.selection_sha256 === expected.selection_sha256);
   checkPayload(value.payload);
+  // Public-only admission remains unconditional at the public entry point.
+  requireValue(value.payload.rows.some(r => r.cells.some(c => c.observations.some(o => o.scientific_scope_accepted))));
   const actual = await Promise.all(["payload", "payload/selection", "payload/campaign"].map(k => { requireValue(spans.has(k)); return hash(spans.get(k)!); }));
   requireValue(actual[0] === expected.payload_sha256 && actual[1] === expected.selection_sha256 && actual[2] === value.payload.campaign_sha256);
   return value;
+}
+
+/** Private text parsing retains every other closed/scientific invariant, but
+ * legitimately permits empty or wholly unreviewed scientific observations. */
+export function parsePrivateDiscoveryJSON(raw: string, limit: number, paths: string[] = []) {
+  return scan(raw, limit, paths, 48, 500000);
+}
+export async function parsePreparedScientificPayload(raw: string, expectedPayload: string, expectedSelection: string) {
+  const { value, spans } = scan(raw, 4 * 1024 * 1024, ["selection", "campaign"], 48, 500000);
+  requireValue(payload(value) && sha(expectedPayload) && sha(expectedSelection));
+  checkPayload(value);
+  requireValue(value.selection_sha256 === expectedSelection);
+  const actual = await Promise.all([hash(raw), hash(spans.get("selection")!), hash(spans.get("campaign")!)]);
+  requireValue(actual[0] === expectedPayload && actual[1] === expectedSelection && actual[2] === value.campaign_sha256);
+  return { payload: value, selectionJSON: spans.get("selection")!, campaignJSON: spans.get("campaign")! };
 }
 
 async function publicText(path: string, max: number, signal?: AbortSignal) {
