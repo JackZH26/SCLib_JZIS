@@ -2,11 +2,20 @@
 
 Date: 2026-09-08.
 
-Status: **Proposal — not implemented**.
+Status: **Original proposal, retained for design history**. The bounded
+negative-only implementation was added in the
+[thirty-fifth batch](Priority_Thirty_Fifth_Batch_Implementation_2026-09-09.md).
+Use [ML_REVIEW_COMPANIONS.md](../../ML_REVIEW_COMPANIONS.md) for the actual
+interfaces, private full-audit admission and operational boundaries. Proposed
+signatures and future-authority discussion below are not a live API contract.
 
 Scope: a bounded next implementation slice following the 0067 exact-property adjudication work.
 
-This document records a read-only code review and a proposed integration. It is not a claim that the proposed companion, compiler, CLI, or training authorization exists. No training, paid evaluation, production database operation, source backfill, or external publication was performed for this design.
+This document originally recorded a read-only code review and proposed integration.
+Implementation and actual execution evidence are recorded separately in the
+batch report above. No training authorization is supplied by either document.
+No training, paid evaluation, production database operation, source backfill, or
+external publication was performed for this design.
 
 ## 1. Recommended outcome
 
