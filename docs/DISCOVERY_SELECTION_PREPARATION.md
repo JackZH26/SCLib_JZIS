@@ -6,8 +6,8 @@ Preparation version: `discovery-selection-preparation/1.0.0`.
 
 ## Implemented scope
 
-This is the **read-only backend preparation layer**, not a completed curator
-page. It provides explicit choices over an actual registered distribution and
+This section describes the **read-only backend preparation layer**; the curator
+page is documented below. It provides explicit choices over a registered distribution and
 compiles the complete proposed scientific projection. It returns exact commands
 for the existing registration API; it does not execute them.
 
@@ -267,8 +267,9 @@ loopback services, and exclusively creates fixed files in an empty owner-only
 pytest temporary directory held by a no-follow descriptor. It prints that
 directory and never overwrites repository fixtures. New random IDs produce new
 hashes; compare semantics and provenance rather than expecting repeated byte
-identity. The original external capture writer pin remains in provenance; the
-portable copy differs only by its final blank line and records its own byte pin.
+identity. Batch 51 recaptured the checked-in assets through the exact portable
+writer after adding the independent history routes. Its actual writer/source
+pins are retained; batch 50's original external capture remains in git history.
 Frontend tests use additional explicitly synthetic/adversarial mutations and
 a request-key adapter; those are not additional captured scientific approvals.
 
@@ -290,8 +291,9 @@ bounded concurrent admission, upload chunk limits and timeouts remain active.
 These are rejection ceilings, not measured production latency guarantees.
 
 The English curator editor now consumes these exact contracts. Independent
-reviewer/publisher history and protective actions after source holds still need
-an operator interface that does not weaken current scientific-payload admission.
+reviewer/publisher history and protective actions after source holds are now
+available in the separate [Discovery governance workbench](DISCOVERY_OPERATOR_GOVERNANCE.md),
+without weakening current scientific-payload admission.
 An independently declared main-barrier field, real reviewed pilot and rights,
 empirical calibration and authorized remote delivery remain separate gates.
 Synthetic API tests do not close either issue or authorize deployment.

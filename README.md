@@ -40,8 +40,12 @@ create scientific evidence, approve rights or publish the package.
 An [exact scientific Discovery companion](docs/DISCOVERY_SCIENTIFIC_PROJECTIONS.md)
 now binds explicit material representatives and alternatives to native scientific
 observations, with separate three-account disclosure and opt-in current public
-admission. The browser matrix integration and a real reviewed pilot remain
-separate; recorded quantities and research-priority scores are not ground truth.
+admission. Its [public browser matrix](docs/DISCOVERY_SCIENTIFIC_MATRIX.md),
+[curator preparation](docs/DISCOVERY_SELECTION_PREPARATION.md), and independent
+[Discovery governance workbench](docs/DISCOVERY_OPERATOR_GOVERNANCE.md) now expose
+separate scientific inspection, append-only history and exact protected actions.
+A real reviewed pilot remains separate; recorded quantities and research-priority
+scores are not ground truth.
 Numerical/evidence queries and Search UI scientific filters return qualified,
 exact-parent extraction rows separately from ordinary paper hits; without an
 active generation they explicitly report unavailable. These are not reviewed

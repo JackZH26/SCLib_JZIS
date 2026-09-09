@@ -34,6 +34,7 @@ from routers.research_distributions import (
     _uuid,
     enabled,
 )
+from services import discovery_operator_history as history
 from services import discovery_projection_governance as service
 from services import discovery_selection_preparation as preparation
 from services.discovery_scientific_projection import AUTHORITY, registry_capabilities
@@ -212,6 +213,34 @@ async def outcome(request: Request, user: AuthenticatedUser):
 async def selection_access(request: Request, user: AuthenticatedUser):
     _no_query(request)
     return _response(await _read(user, preparation.access))
+
+
+@router.get("/operator/access")
+async def operator_access(request: Request, user: AuthenticatedUser):
+    _no_query(request)
+    return _response(await _read(user, history.operator_access))
+
+
+@router.get("/{package_id}/governance")
+async def governance_header(package_id: str, request: Request, user: AuthenticatedUser):
+    _no_query(request)
+    try:
+        return _response(await _read(user, history.inspect_governance, package_id=_uuid(package_id)), maximum=16384)
+    except service.DiscoveryGovernanceNotFound:
+        raise _bad(404, "Distribution unavailable") from None
+
+
+@router.get("/{package_id}/reviews")
+async def review_history(package_id: str, request: Request, user: AuthenticatedUser):
+    pairs = list(request.query_params.multi_items())
+    if len({key for key, _ in pairs}) != len(pairs) or {key for key, _ in pairs} - {"after", "expected_history_sha256"}:
+        raise ValueError("discovery_history_query_fields")
+    try:
+        return _response(await _read(user, history.review_history, package_id=_uuid(package_id), **dict(pairs)), maximum=131072)
+    except service.DiscoveryGovernanceNotFound:
+        raise _bad(404, "Distribution unavailable") from None
+    except service.DiscoveryGovernanceConflict:
+        raise _bad(409, "Distribution request rejected") from None
 
 
 @router.post("/selection/context", openapi_extra=_request_schema(SelectionContext))

@@ -281,6 +281,8 @@ async function privateText(path: string, max: number, signal?: AbortSignal, body
   }
 }
 export const getSelectionAccess = (signal?: AbortSignal) => privateText("/selection/access", 4096, signal);
+// Shared only by private Discovery operator readers, never public loaders.
+export { privateText as privateDiscoveryText };
 export function getSelectionContext(source: SelectionSource, signal?: AbortSignal) {
   const body = JSON.stringify({ source }); requireValue(new TextEncoder().encode(body).length <= 40 * 1024 * 1024);
   return privateText("/selection/context", 2 * CONTEXT_LIMIT + 1024, signal, body);

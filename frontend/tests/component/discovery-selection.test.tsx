@@ -22,8 +22,8 @@ describe("actual Discovery selection wire contract", () => {
       const raw = JSON.parse(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-selection", file.file), "utf8")) as string;
       expect(hash(raw), file.file).toBe(file.sha256); expect(Buffer.byteLength(raw)).toBe(file.size_bytes);
     }
-    // Portable copy differs from the original external writer only by the
-    // final blank line. Keep both actual byte pins, never rewrite provenance.
+    // Batch 51 recaptured these assets through this exact portable writer.
+    // Batch 50's external-writer provenance remains in its historical commit.
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/capture-discovery-selection.py"), "utf8"))).toBe("77330867abefb9cb44534174b463c1ffc4ca0e4661b5c7bd0c4f9617c92e76c8");
     for (const [file, sha] of Object.entries(provenance.source_pins)) expect(hash(readFileSync(resolve(process.cwd(), "..", file), "utf8")), file).toBe(sha);
   });
@@ -63,7 +63,7 @@ describe("actual Discovery selection wire contract", () => {
     ["native material mismatch", (v: any) => { v.materials[0].material.table = "material_states"; }],
     ["missing null structure", (v: any) => { v.materials[0].structures.shift(); }],
     ["unknown native state", (v: any) => { v.materials[0].results[0].state_id = "00000000-0000-0000-0000-000000000000"; }],
-    ["wrong unit", (v: any) => { v.materials[0].results[0].quantity.unit = "K"; }],
+    ["wrong unit", (v: any) => { v.materials[0].results.find((r: any) => r.property_key === "band_gap").quantity.unit = "K"; }],
     ["invented current review", (v: any) => { v.materials[0].results[0].scientific_scope_accepted = true; }],
     ["inapplicable evidence context", (v: any) => { v.materials[0].declaration_evidence[0].structure_id = "00000000-0000-0000-0000-000000000000"; }],
     ["duplicate material", (v: any) => { v.materials.push(v.materials[0]); }],
