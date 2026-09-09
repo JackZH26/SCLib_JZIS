@@ -5,6 +5,13 @@ frozen scientific dataset workflow. It does not modify a research release,
 source companion, producer manifest, scientific result or adjudication record.
 It does not train a model or authorize training, source disclosure or publication.
 
+This v3 protocol observes optional feature inputs; it is not a complete current
+label audit for the composition-only cohort. The opt-in
+[v4 label-currentness workflow](ML_LABEL_CURRENTNESS.md) adds an independently
+pinned observation rooted in every frozen dataset example and applies label
+holds before rebuilding all cohorts, splits and train-fitted transformations.
+The v3 protocol and historical replay remain unchanged.
+
 ## Versioned artifacts
 
 | Artifact | Version | Purpose |
