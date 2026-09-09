@@ -32,10 +32,12 @@ evidence and score explanation remain attached. A negative-control role is not
 an experimentally measured negative result. Policy evaluation remains separate
 under [AL01 / #78](https://github.com/JackZH26/SCLib_JZIS/issues/78).
 
-This increment supplies backend compilation, governance and HTTP interfaces.
-The browser scientific matrix and representative-selection editor still need to
-consume these interfaces. The existing synthetic matrix is accessible only via
-an explicit development-only layout preview. A real reviewed pilot, real rights decisions, remote
+Backend compilation, governance and HTTP interfaces are implemented. Batch 48
+adds the read-only [public scientific material matrix](DISCOVERY_SCIENTIFIC_MATRIX.md)
+with explicit package selection, native observations and frozen alternatives.
+The representative-selection operator editor remains unfinished. The existing
+synthetic matrix is accessible only via an explicit development-only layout
+preview. A real reviewed pilot, real rights decisions, remote
 delivery and issue closure are not established by synthetic integration tests.
 
 ## Actual supported fields, not a universal completed dictionary

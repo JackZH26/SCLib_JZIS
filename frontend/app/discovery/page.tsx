@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { DiscoveryFeed } from "@/components/DiscoveryFeed";
 import { ResearchPriorityBoard } from "@/components/ResearchPriorityBoard";
+import { ScientificDiscoveryMatrix } from "@/components/ScientificDiscoveryMatrix";
 import { DiscoveryFieldGuide } from "@/components/DiscoveryFieldGuide";
 import {
   getDiscoveryCandidates,
@@ -52,7 +53,12 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
           <p className="text-sm text-sage-muted">Material priorities · not superconductivity probabilities</p>
       </header>
 
-      <ResearchPriorityBoard />
+      <ScientificDiscoveryMatrix />
+      <details className="rounded-xl border border-sage-border p-4">
+        <summary className="cursor-pointer text-sm font-semibold">Original RPS assessment releases · action-level view</summary>
+        <p className="my-3 text-sm text-sage-muted">This separate view retains the original assessment catalog. An assessment release is not a published scientific companion or a one-material matrix.</p>
+        <ResearchPriorityBoard />
+      </details>
       <DiscoveryFieldGuide />
 
       <Suspense fallback={<p className="text-sm text-sage-muted">Loading historical candidate leads…</p>}>
