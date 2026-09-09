@@ -19,7 +19,8 @@ from models.db import (
 from models.search import TimelinePoint
 from services.anomaly_review import ANOMALY_POLICY_VERSION
 from services.material_anomalies import review_context
-from services.material_visibility import sanitize_review_metadata, visibility_allows_view
+from services.material_source_scope import current_visibility_allows_view as visibility_allows_view
+from services.material_visibility import sanitize_review_metadata
 from services.material_visibility_adapter import prepare_material_views
 from services.pressure_semantics import PRESSURE_POLICY_VERSION
 from services.result_semantics import CLASSIFIER_VERSION
@@ -491,6 +492,12 @@ async def fetch_projected_timeline_points(
             continue
         if material is None or not visibility_allows_view(material.visibility, include_archive=include_pending):
             continue
+        if material.source_scope is not None:
+            # This rebuildable projection predates the source-scope contract.
+            # The raw fallback applies the exact current record partition and
+            # rechecks duplicate/result-revision conflicts without renumbering
+            # records or trusting an old source-wide cached point.
+            return None
         if material.updated_at and row[14] and material.updated_at > row[14]:
             # A stale rebuildable point is not allowed to outrun its source.
             # Return to the current-raw fallback until refresh catches up.

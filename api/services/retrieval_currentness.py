@@ -210,7 +210,7 @@ async def _check_snapshot(db, pins, evidence_resolver):
         if status is None or not visibility["reported_claim_filter_eligible"]:
             return CurrentnessCheck("changed", "retrieval_source_no_longer_eligible", snapshot_at)
         occurrences, summary = project_source_occurrences(
-            chunk.materials_mentioned, paper_status=status, linked_materials=linked,
+            chunk.materials_mentioned, paper_status=status, linked_materials=linked, container_paper_id=chunk.paper_id,
         )
         visibility["warning_codes"] = sorted(set(visibility["warning_codes"] + summary["warning_codes"]))
         binding = grouping.get(chunk.paper_id) if expected[chunk.id].grouping_sha256 is not None else None

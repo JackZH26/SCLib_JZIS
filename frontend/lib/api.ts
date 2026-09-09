@@ -1092,6 +1092,7 @@ export interface MaterialPropertyEvidence {
   not_joint_observation: true;
   properties: Record<string, PropertyEvidenceSelection>;
   evidence_scope?: "selected_only" | "bounded_alternatives";
+  selection_policy?: "source-scoped-atomic-selection/1.0.0";
   joint_epc: {
     status: "eligible" | "pending" | "not_reported" | "not_evaluated";
     pairs: Record<string, unknown>[];
@@ -1104,7 +1105,7 @@ export interface MaterialPropertyEvidence {
   };
 }
 
-export interface MaterialVisibility {
+export interface MaterialVisibilityV1 {
   version: "material-visibility/1.0.0";
   state: "catalogue" | "pending" | "disputed" | "corrected" | "retracted" | "quarantined" | "unknown";
   public_catalogue_eligible: boolean;
@@ -1119,6 +1120,32 @@ export interface MaterialVisibility {
   scope?: string;
 }
 
+/** Source grouping describes eligible records, never independent scientific support. */
+export interface MaterialSourceScope {
+  version: "material-source-scope/1.0.0";
+  status: "eligible_records_only";
+  total_records: number;
+  eligible_records: number;
+  excluded_records: number;
+  eligible_source_count: number;
+  fingerprint: string;
+  independent_support_count: null;
+}
+
+export interface MaterialVisibilityV2 extends Omit<MaterialVisibilityV1,
+  "version" | "state" | "public_catalogue_eligible" | "archive_available" | "reason_codes" | "reason_messages" | "warning_messages" | "scope"> {
+  version: "material-visibility/2.0.0";
+  state: "catalogue";
+  public_catalogue_eligible: true;
+  archive_available: true;
+  reason_codes: [];
+  reason_messages: [];
+  warning_messages: string[];
+  source_scope: MaterialSourceScope;
+}
+
+export type MaterialVisibility = MaterialVisibilityV1 | MaterialVisibilityV2;
+
 export interface SourceVisibility {
   version: "material-visibility/1.0.0";
   source_status: "active" | "retracted" | "corrected" | "disputed" | "unknown";
@@ -1128,7 +1155,7 @@ export interface SourceVisibility {
   warning_codes: string[];
 }
 
-export interface SourceOccurrenceVisibility extends Omit<MaterialVisibility, "review_revision" | "source_status"> {
+export interface SourceOccurrenceVisibility extends Omit<MaterialVisibilityV1, "review_revision" | "source_status"> {
   review_revision: string | null;
   source_status: SourceVisibility["source_status"] | "mixed";
   material_link_status: "resolved" | "unresolved" | "unlinked";
@@ -1354,7 +1381,7 @@ export interface MaterialListResponse {
   results: MaterialSummary[];
   limit: number;
   offset: number;
-  sort_basis?: "legacy_catalogue";
+  sort_basis?: "current_projected_catalogue" | "legacy_catalogue";
   scientific_display_policy?: "atomic_property_evidence";
   classification_filter_policy_version?: string;
   classification_filter_scope?: "material_reported_summary_not_joint_state";

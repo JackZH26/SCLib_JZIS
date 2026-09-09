@@ -270,19 +270,25 @@ async def test_status_correction_with_old_timestamp_rebuilds_without_approving_c
         status="retracted", updated_at=papers[0].updated_at,
     ))
     assert await _projected_sources_changed(db_session) is True
-    # SC07 deliberately keeps a conservative material-wide hold until explicit
-    # occurrence-scoped dependencies and independent result reviews are ready.
-    held = await _read(db_session, material)
-    assert held is not None and held.points == []
+    # SC08 current reads retain the other exact active source without claiming
+    # independent replication. The old scope-unaware projection must fall back.
+    assert await _read(db_session, material) is None
+    scoped = await _fallback(db_session, material)
+    assert len(scoped.points) == 1 and scoped.points[0].paper_id == papers[1].id
+    assert scoped.points[0].point_id == next(point.point_id for point in initial.points if point.paper_id == papers[1].id)
+    assert scoped.points[0].visibility["version"] == "material-visibility/2.0.0"
+    assert scoped.points[0].visibility["scientific_acceptance"] is False
     assert (await refresh_timeline_projection(db_session)).full_rebuild
     archive = await fetch_projected_timeline_points(
         db_session, family=material.family, include_pending=True,
         experimental_only=False, only_aps=False,
     )
-    assert archive is not None and len(archive.points) == 2
-    assert [point.point_id for point in archive.points] == [point.point_id for point in initial.points]
-    assert all(not point.visibility["public_catalogue_eligible"] for point in archive.points)
-    assert all("source_retracted" in point.visibility["reason_codes"] for point in archive.points)
+    assert archive is None  # Archive opt-in does not authorize a cached scope.
+    retained_ids = (await db_session.execute(select(TimelineProjectionPoint.id).where(
+        TimelineProjectionPoint.material_id == material.id,
+    ))).scalars().all()
+    assert set(retained_ids) == {point.point_id for point in initial.points}
+    assert material.records[0]["paper_id"] == papers[0].id
     await _assert_content_converged(db_session)
     await db_session.rollback()
 

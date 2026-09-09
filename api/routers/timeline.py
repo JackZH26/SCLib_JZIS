@@ -28,10 +28,10 @@ from models.search import TimelineCoverage, TimelinePoint, TimelineResponse
 from services.anomaly_review import ANOMALY_POLICY_VERSION
 from services.http_cache import conditional_json_response, weak_etag
 from services.material_anomalies import review_context
+from services.material_source_scope import current_visibility_allows_view as visibility_allows_view
 from services.material_visibility import (
     MATERIAL_VISIBILITY_VERSION,
     sanitize_review_metadata,
-    visibility_allows_view,
 )
 from services.material_visibility_adapter import material_prefilter, prepare_material_views
 from services.pressure_semantics import PRESSURE_POLICY_VERSION
@@ -49,7 +49,7 @@ from services.timeline_sampling import (
 router = APIRouter(tags=["timeline"])
 log = logging.getLogger(__name__)
 
-_CACHE_SCHEMA_VERSION = "v9-reported-results"
+_CACHE_SCHEMA_VERSION = "v10-source-scoped-results"
 _CACHE_CONTROL = "private, no-store"
 
 
@@ -310,7 +310,9 @@ def _timeline_response(
         timeline_policy_version=TIMELINE_POLICY_VERSION,
         sampling=sampling, record_summary=summary,
         anomaly_policy_version=ANOMALY_POLICY_VERSION,
-        visibility_policy_version=MATERIAL_VISIBILITY_VERSION,
+        visibility_policy_version=("material-visibility/2.0.0" if any(
+            point.visibility.get("version") == "material-visibility/2.0.0" for point in points
+        ) else MATERIAL_VISIBILITY_VERSION),
         data_version=f"{_timeline_data_version(data_updated_at)}-{current_digest}",
         data_updated_at=data_updated_at,
         family=family,
@@ -358,7 +360,7 @@ async def _build_timeline_fallback(
     for material in mats:
         for projected in extract_timeline_points(
             material.id,
-            material.records,
+            material.current_records(),
             paper_years,
             family=material.family,
             compound_thresholds=review_context(material)["compound_thresholds"],

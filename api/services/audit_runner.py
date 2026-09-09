@@ -28,6 +28,8 @@ from models.background_jobs_v1 import JOB_LOCK_KEYS
 from models.db import Material
 from services.audit_rules import ANOMALY_RULE_NAME, RULES, AuditRule
 from services.material_anomalies import material_review, review_context
+from services.material_source_scope import SourceScopeError
+from services.material_visibility_adapter import prepare_material_views
 
 log = logging.getLogger(__name__)
 AUDIT_METRIC_VERSION = "audit-rule-matches/2.0.0"
@@ -36,6 +38,49 @@ AUDIT_METRIC_VERSION = "audit-rule-matches/2.0.0"
 def _metric_marker(rule: AuditRule) -> list[dict]:
     return [{"kind": "audit_count_basis", "version": AUDIT_METRIC_VERSION,
              "basis": "current_materials" if rule.severity == "critical" else "current_unheld_materials"}]
+
+
+def _source_scoped(view) -> bool:
+    """Only a verified complete partition can avoid a *new* material hold."""
+    if view.source_scope is None:
+        return False
+    try:
+        return bool(view.current_records())
+    except SourceScopeError:
+        return False
+
+
+async def _run_source_eligibility_policy(session: AsyncSession, rule: AuditRule) -> dict:
+    """Count every source-rule match; retain separable records without flagging all.
+
+    The current source rule has no CTE setup. Its predicate remains the audit's
+    denominator, including already held rows. This never clears a persisted
+    hold or modifies retained scientific records.
+    """
+    if rule.setup:
+        raise ValueError("source_audit_rule_setup_unsupported")
+    last_id, affected, sample_ids, findings = None, 0, [], []
+    while True:
+        stmt = select(Material).where(text(rule.predicate)).order_by(Material.id).limit(200).with_for_update()
+        if last_id is not None:
+            stmt = stmt.where(Material.id > last_id)
+        rows = (await session.execute(stmt)).scalars().all()
+        if not rows:
+            break
+        views = await prepare_material_views(session, rows)
+        for material, view in zip(rows, views, strict=True):
+            scoped = _source_scoped(view)
+            affected += 1
+            if len(sample_ids) < 10:
+                sample_ids.append(material.id)
+                findings.append({"material_id": material.id,
+                                 "action": "retain_raw_source_scoped" if scoped else "retain_raw_and_review"})
+            if not scoped and material.needs_review is False:
+                material.needs_review = True
+                material.review_reason = material.review_reason or rule.name
+        last_id = rows[-1].id
+        await session.flush()
+    return {"flagged": affected, "sample_ids": sample_ids, "suggested_fixes": findings}
 
 
 async def _run_anomaly_policy(session: AsyncSession) -> dict:
@@ -56,7 +101,9 @@ async def _run_anomaly_policy(session: AsyncSession) -> dict:
         rows = (await session.execute(stmt)).scalars().all()
         if not rows:
             break
-        for material in rows:
+        views = await prepare_material_views(session, rows)
+        for material, view in zip(rows, views, strict=True):
+            scoped = _source_scoped(view)
             review = material_review(material.records, scope_id=material.id, context=review_context(material))
             if material.anomaly_review != review:
                 material.anomaly_review = review
@@ -65,8 +112,9 @@ async def _run_anomaly_policy(session: AsyncSession) -> dict:
                 if len(sample_ids) < 10:
                     sample_ids.append(material.id)
                     findings.append({"material_id": material.id, "policy_version": review["version"],
-                                     "rule_counts": review["rule_counts"], "action": "retain_raw_and_review"})
-                if not material.needs_review:
+                                     "rule_counts": review["rule_counts"],
+                                     "action": "retain_raw_source_scoped" if scoped else "retain_raw_and_review"})
+                if not scoped and not material.needs_review:
                     material.needs_review = True
                     material.review_reason = material.review_reason or ANOMALY_RULE_NAME
         last_id = rows[-1].id
@@ -79,6 +127,8 @@ async def _run_rule(session: AsyncSession, rule: AuditRule) -> dict:
     sample ids; the runner aggregates these into the report rows."""
     if rule.name == ANOMALY_RULE_NAME:
         return await _run_anomaly_policy(session)
+    if rule.name == "source_eligibility_review_required":
+        return await _run_source_eligibility_policy(session, rule)
     # Critical rules flip needs_review; warn/info rules just count
     # (we still want them in audit_reports for trends, but they
     # don't hide the row from default views).

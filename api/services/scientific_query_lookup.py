@@ -310,11 +310,11 @@ async def prepare_scientific_lookup(db, pin, interpretation, *, limit=20, filter
                 or descriptor["parent_result_sha256"] != parent["parent_hash"]):
             raise ValueError("Scientific extraction parent binding changed")
         occurrences, summary = project_source_occurrences(chunk.materials_mentioned,
-            paper_status=status, linked_materials=linked)
+            paper_status=status, linked_materials=linked, container_paper_id=chunk.paper_id)
         record = chunk.materials_mentioned[result.record_index]
         if input_record_sha256(record) != parent["input_record_sha256"]:
             raise ValueError("Scientific extraction raw parent changed during preparation")
-        result_visibility = occurrence_visibility(record, paper_status=status,
+        result_visibility = occurrence_visibility(record, paper_status=status, container_paper_id=chunk.paper_id,
             linked_visibility=linked.get(record.get("material_id")) if type(record.get("material_id")) is str else None)
         if not result_visibility["reported_claim_filter_eligible"]:
             continue

@@ -204,7 +204,7 @@ async def search(
         if f.exclude_retracted and source_visibility(paper_status)["source_status"] == "retracted":
             continue
         materials, occurrence_summary = project_source_occurrences(
-            paper.materials_extracted, paper_status=paper_status, linked_materials=linked_materials,
+            paper.materials_extracted, paper_status=paper_status, linked_materials=linked_materials, container_paper_id=paper.id,
         )
         # Compute identities/indices from the original source records, then
         # apply visibility by index. Derived envelopes must not change IDs.
@@ -213,7 +213,7 @@ async def search(
             if isinstance(record, dict):
                 material_id = record.get("material_id")
                 visibility_by_index[index] = occurrence_visibility(
-                    record, paper_status=paper_status,
+                    record, paper_status=paper_status, container_paper_id=paper.id,
                     linked_visibility=linked_materials.get(material_id) if isinstance(material_id, str) else None,
                 )
         matched_results = matching_result_references(

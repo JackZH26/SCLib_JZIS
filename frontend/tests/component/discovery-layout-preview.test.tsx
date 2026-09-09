@@ -65,20 +65,36 @@ describe("Discovery material-list layout preview", () => {
     expect(DISCOVERY_DEMO_ROWS.some(row => row.score === null)).toBe(true);
   });
 
-  it("exposes every registered field through grouped columns without changing rows or scores", () => {
+  it.each(FIELD_GROUPS.map((group, index) => ({ group, previous: FIELD_GROUPS[index - 1] })))
+  ("exposes all $group.id fields after the preceding group without changing rows or scores", ({ group, previous }) => {
     const { container } = render(<DiscoveryLayoutPreview />);
     const scores = () => [...container.querySelectorAll("tbody tr")].map(row => row.lastElementChild?.textContent);
     const original = scores();
     fireEvent.click(screen.getByRole("button", { name: /Columns/ }));
-    for (const group of FIELD_GROUPS) {
-      fireEvent.change(screen.getByRole("combobox", { name: "Scientific fields" }), { target: { value: group.id } });
-      fireEvent.click(screen.getByRole("button", { name: "Show all in group" }));
-      const fields = SCIENTIFIC_FIELDS.filter(field => field.group === group.id);
-      for (const field of fields) expect(within(container.querySelector("thead")!).getByRole("button", { name: field.label, exact: true })).toBeInTheDocument();
-      expect(container.querySelectorAll("tbody tr")).toHaveLength(16);
-      expect(container.querySelectorAll("tbody tr")[0].children).toHaveLength(fields.length + 7);
-      expect(scores()).toEqual(original);
+    // These controls stay mounted while the table changes. Query them once;
+    // repeatedly scanning every scientific cell adds quadratic accessibility
+    // work to this full-registry interaction test without testing more UI.
+    const groupControl = screen.getByRole("combobox", { name: "Scientific fields" });
+    const showAll = screen.getByRole("button", { name: "Show all in group" });
+    // Preserve every consecutive transition from the original registry walk,
+    // but give each independent group contract its own normal test deadline.
+    // No field/score/row assertion or production/test timeout is relaxed.
+    if (previous) {
+      fireEvent.change(groupControl, { target: { value: previous.id } });
+      fireEvent.click(showAll);
     }
+    expect(groupControl).toBeInTheDocument();
+    expect(showAll).toBeInTheDocument();
+    fireEvent.change(groupControl, { target: { value: group.id } });
+    fireEvent.click(showAll);
+    const fields = SCIENTIFIC_FIELDS.filter(field => field.group === group.id);
+    const headers = within(container.querySelector("thead")!).getAllByRole("button")
+      .filter(button => button.getAttribute("aria-controls") === "scientific-detail");
+    expect(headers).toHaveLength(fields.length);
+    fields.forEach((field, index) => expect(headers[index]).toHaveAccessibleName(field.label));
+    expect(container.querySelectorAll("tbody tr")).toHaveLength(16);
+    expect(container.querySelectorAll("tbody tr")[0].children).toHaveLength(fields.length + 7);
+    expect(scores()).toEqual(original);
   });
 
   it("shows state-bound cell provenance and explicit inapplicability reasons outside the table", () => {

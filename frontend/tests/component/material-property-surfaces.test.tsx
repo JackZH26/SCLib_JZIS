@@ -5,7 +5,7 @@ import { BookmarksPanel } from "@/components/dashboard/BookmarksPanel";
 import { ApiError, getMaterial, getMaterialHydrideParameters, listMaterialBookmarks, listPaperBookmarks, type MaterialDetail } from "@/lib/api";
 import { atomicItem, propertyEnvelope } from "../fixtures/property-evidence";
 import { anomalyAssessment, materialAnomalyReview, rawArchive } from "../fixtures/scientific-anomalies";
-import { materialVisibility } from "../fixtures/material-visibility";
+import { materialVisibility, sourceScopedMaterialVisibility } from "../fixtures/material-visibility";
 import { materialSemantics, semanticProperty, semanticReport } from "../fixtures/material-semantics";
 
 vi.mock("@/lib/api", async importOriginal => {
@@ -67,6 +67,27 @@ describe("atomic evidence across material surfaces", () => {
     const jsonld = JSON.parse(container.querySelector("#sclib-material-structured-data")!.textContent!);
     expect(jsonld.variableMeasured).toHaveLength(1);
     expect(jsonld.variableMeasured[0].value).toBe("≈ 0.001 ± 0.0001");
+  });
+
+  it("shows source-scoped atomic selections while withholding mixed-source scientific SEO", async () => {
+    const mat = material();
+    mat.visibility = sourceScopedMaterialVisibility();
+    mat.disputed = false;
+    mat.retracted = false;
+    mat.arxiv_year = null;
+    mat.total_papers = mat.visibility.source_scope.eligible_source_count;
+    mat.property_evidence = propertyEnvelope(atomicItem("tc_max", 39));
+    mat.property_evidence.selection_policy = "source-scoped-atomic-selection/1.0.0";
+    mat.property_evidence.properties.tc_max.selection = "deterministic_result";
+    vi.mocked(getMaterial).mockResolvedValue(mat);
+    const metadata = await generateMetadata({ params: Promise.resolve({ id: mat.id }) });
+    expect(metadata.description).not.toContain("39 K");
+    const { container } = render(await MaterialDetailPage({ params: Promise.resolve({ id: mat.id }) }));
+    expect(screen.getByText("39 K")).toBeInTheDocument();
+    expect(screen.getAllByText(/Only eligible reported source records/)).toHaveLength(2);
+    expect(container.textContent).not.toContain("9999");
+    const jsonld = JSON.parse(container.querySelector("#sclib-material-structured-data")!.textContent!);
+    expect(jsonld.variableMeasured).toEqual([]);
   });
 
   it("bookmarks share the source guard instead of displaying stale Tc scalars", async () => {

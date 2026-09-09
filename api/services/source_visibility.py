@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from collections import Counter
 from collections.abc import Mapping, Sequence
+from copy import deepcopy
 from typing import Any
 
 from services.material_visibility import (
@@ -24,6 +25,103 @@ from services.source_lifecycle_status import (
 from services.structure_disclosure import redact_structure_payloads
 
 _HELD_SOURCE_STATES = {"retracted", "corrected", "disputed"}
+
+
+class _ResolvedMaterialVisibility(dict):
+    """Internal lookup value. JSON serialization intentionally excludes scope.
+
+    A public visibility dictionary, including its public ``source_scope``
+    summary, cannot provide this private captured membership context.
+    """
+    __slots__ = ("source_scope", "material_id", "review_context")
+
+    def __init__(self, value, *, material_id, source_scope, review_context):
+        super().__init__(deepcopy(value))
+        self.material_id = material_id
+        self.source_scope = source_scope
+        self.review_context = deepcopy(review_context)
+
+
+def linked_material_visibility(context) -> dict[str, Any]:
+    """Bind an actual read context, never a caller's public summary.
+
+    Material.records hashes are checked here against their own original array.
+    They are not matched to Paper/Chunk extraction arrays, whose metadata may
+    legitimately differ after aggregation.
+    """
+    from services.material_anomalies import review_context
+    from services.material_source_scope import VISIBILITY_VERSION, SourceScope, SourceScopeError
+    from services.material_visibility_adapter import MaterialReadContext
+
+    visibility = deepcopy(context.visibility)
+    scope = None
+    assessment_context = None
+    if visibility.get("version") == VISIBILITY_VERSION and type(context) is MaterialReadContext:
+        candidate = getattr(context, "source_scope", None)
+        if type(candidate) is SourceScope and candidate.material_id == context.id:
+            try:
+                candidate.validate(context.records)
+                scope = candidate
+                assessment_context = review_context(context.material)
+            except (SourceScopeError, ValueError, TypeError, IndexError, AttributeError):
+                pass  # No v1 downgrade; the v2 occurrence will fail closed.
+    return _ResolvedMaterialVisibility(visibility, material_id=context.id, source_scope=scope,
+        review_context=assessment_context)
+
+
+def _scope_reason(linked_visibility, material_id, record, container_paper_id, paper_status):
+    from services.material_anomalies import record_assessment
+    from services.material_source_scope import (
+        VISIBILITY_VERSION,
+        SourceScope,
+        SourceScopeError,
+        validate_scoped_visibility,
+    )
+
+    if linked_visibility.get("version") == MATERIAL_VISIBILITY_VERSION:
+        return None  # Preserve the frozen v1 policy.
+    if (linked_visibility.get("version") != VISIBILITY_VERSION
+            or type(linked_visibility) is not _ResolvedMaterialVisibility
+            or type(linked_visibility.source_scope) is not SourceScope
+            or type(linked_visibility.review_context) is not dict):
+        return "occurrence_source_scope_unavailable"
+    scope = linked_visibility.source_scope
+    try:
+        summary = validate_scoped_visibility(dict(linked_visibility))["source_scope"]
+        eligible_papers = scope.eligible_paper_ids
+    except (SourceScopeError, ValueError, TypeError, IndexError, AttributeError):
+        return "occurrence_source_scope_unavailable"
+    if (scope.material_id != linked_visibility.material_id
+            or material_id is not None and material_id != scope.material_id
+            or record.get("material_id") is not None and material_id is None
+            or scope.fingerprint != summary["fingerprint"]
+            or len(scope.indices) != summary["total_records"]
+            or len(scope.eligible_indices) != summary["eligible_records"]
+            or len(eligible_papers) != summary["eligible_source_count"]):
+        return "occurrence_source_scope_unavailable"
+    # A source record cannot nominate another container, even if that other
+    # paper independently has an eligible record for the same material.
+    if (type(container_paper_id) is not str or not 0 < len(container_paper_id) <= 100
+            or container_paper_id != container_paper_id.strip()
+            or any(ord(char) < 32 for char in container_paper_id)):
+        return "occurrence_container_source_unresolved"
+    if record.get("paper_id") is not None and record["paper_id"] != container_paper_id:
+        return "occurrence_container_source_conflict"
+    source = source_visibility(paper_status)
+    if source["source_status"] != "active" or not source["reported_claim_filter_eligible"]:
+        return "occurrence_source_not_currently_eligible"
+    if container_paper_id not in eligible_papers:
+        return "occurrence_source_outside_eligible_scope"
+    # Membership admits only the source identity. A good record in that paper
+    # cannot confer a current-use badge on an anomalous sibling occurrence.
+    # Use the trusted material's context, never a public/raw record override.
+    try:
+        assessment = record_assessment(record, scope_id=scope.material_id, context=linked_visibility.review_context)
+    except (ValueError, TypeError, OverflowError, RecursionError):
+        return "occurrence_record_assessment_unavailable"
+    if assessment["status"] != "no_findings":
+        return "occurrence_anomaly_review_required"
+    return None
 
 
 def source_visibility(status: Any) -> dict[str, Any]:
@@ -55,6 +153,7 @@ def _explicit_material_id(record: Mapping[str, Any]) -> str | None:
 def occurrence_visibility(
     record: Mapping[str, Any], *, paper_status: Any,
     linked_visibility: Mapping[str, Any] | None = None,
+    container_paper_id: str | None = None,
 ) -> dict[str, Any]:
     """Recompute a bounded envelope; never trust a source-provided envelope."""
     source = source_visibility(paper_status)
@@ -80,6 +179,15 @@ def occurrence_visibility(
         reasons.extend(linked_visibility.get("reason_codes", []))
         warnings.extend(linked_visibility.get("warning_codes", []))
         review_revision = linked_visibility.get("review_revision")
+        scope_reason = _scope_reason(linked_visibility, material_id, record, container_paper_id, paper_status)
+        if scope_reason is not None:
+            catalogue_eligible = reported_eligible = False
+            if state == "catalogue":
+                # This is the occurrence's current-use policy, not a mutation
+                # or assertion that the whole material needs scientific review.
+                state = "pending"
+            reasons.append(scope_reason)
+            warnings.append("source_scoped_occurrence_withheld")
 
     holds = {state} if state in {"quarantined", "pending", "disputed", "retracted", "corrected"} else set()
     malformed = any(record.get(key) is not None and not isinstance(record[key], bool)
@@ -162,16 +270,18 @@ async def resolve_explicit_materials(db: Any, record_groups: Sequence[Any]) -> d
     for offset in range(0, len(identifiers), 300):
         rows = (await db.execute(select(Material).where(Material.id.in_(identifiers[offset:offset + 300])))).scalars().all()
         views = await prepare_material_views(db, rows)
-        result.update({view.id: view.visibility for view in views})
+        result.update({view.id: linked_material_visibility(view) for view in views})
     return result
 
 
 def project_source_occurrences(
     records: Any, *, paper_status: Any, linked_materials: Mapping[str, Mapping[str, Any]],
+    container_paper_id: str | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     retained = []
     counts: Counter[str] = Counter()
     omitted = 0
+    scoped_withheld = False
     for record in records if isinstance(records, list) else []:
         if not isinstance(record, Mapping):
             counts["malformed"] += 1
@@ -180,8 +290,10 @@ def project_source_occurrences(
         visibility = occurrence_visibility(
             record, paper_status=paper_status,
             linked_visibility=linked_materials.get(_explicit_material_id(record)),
+            container_paper_id=container_paper_id,
         )
         counts[visibility["state"]] += 1
+        scoped_withheld |= "source_scoped_occurrence_withheld" in visibility["warning_codes"]
         if not visibility["archive_available"]:
             omitted += 1
             continue
@@ -193,7 +305,8 @@ def project_source_occurrences(
         "omitted_occurrences": omitted,
         "state_counts": dict(sorted(counts.items())),
         "scientific_acceptance": False,
-        "warning_codes": ["restricted_or_malformed_occurrences_omitted"] if omitted else [],
+        "warning_codes": (["restricted_or_malformed_occurrences_omitted"] if omitted else [])
+        + (["source_scoped_occurrence_withheld"] if scoped_withheld else []),
     }
 
 

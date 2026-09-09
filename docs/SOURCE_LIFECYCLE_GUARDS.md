@@ -15,6 +15,15 @@ The subsequent [task ledger](SOURCE_TASK_EXECUTION.md) adds controlled durable
 requests and atomic Timeline readiness invalidation, not a complete refresh or
 cross-system propagation guarantee.
 
+**Current-read update (2026-09-09):** the conditional
+[source-scoped material policy](MATERIAL_SOURCE_SCOPES.md) now admits exact
+eligible reported records for separable mixed-source materials. It also keeps
+nightly source/anomaly audits from creating a new blanket material hold solely
+for the separated excluded records. Existing global holds are not cleared.
+The v1 whole-material description below documents the earlier baseline; it is
+not the current behavior for qualifying v2 reads. Scientific reinstatement and
+distributed propagation remain separate gates.
+
 ## Scientific contract
 
 Source `retracted`, `withdrawn`, `corrected` and `disputed` statuses remove

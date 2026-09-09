@@ -49,7 +49,11 @@ from services.research_access import ResearchAccessDenied, require_research_oper
 from services.source_lifecycle import resolve_paper_lifecycle, resolve_work_lifecycle
 from services.source_lifecycle_status import lifecycle_fingerprint, lifecycle_review_required
 from services.source_registry import resolve_claim_source_witnesses
-from services.source_visibility import occurrence_visibility, source_visibility
+from services.source_visibility import (
+    linked_material_visibility,
+    occurrence_visibility,
+    source_visibility,
+)
 from services.temporal_provenance import result_temporal_provenance, utc_datetime
 from services.temporal_snapshots import utc_instant
 
@@ -124,7 +128,7 @@ def _claim_response(claim, material_context, paper_status, work_status, witnesse
     """Keep claim validity distinct from current material and source visibility."""
     occurrence = occurrence_visibility(
         claim.raw_record if isinstance(claim.raw_record, dict) else {}, paper_status=paper_status,
-        linked_visibility=material_context.visibility,
+        linked_visibility=linked_material_visibility(material_context), container_paper_id=claim.paper_id,
     )
     source = source_visibility(paper_status)
     work = source_visibility(work_status)

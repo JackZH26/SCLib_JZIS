@@ -293,7 +293,7 @@ async def ask(
         authors_short = _authors_short(paper.authors or [])
         year = paper.date_submitted.year if paper.date_submitted else None
         occurrences, occurrence_summary = project_source_occurrences(
-            chunk.materials_mentioned, paper_status=paper_status, linked_materials=linked_materials,
+            chunk.materials_mentioned, paper_status=paper_status, linked_materials=linked_materials, container_paper_id=chunk.paper_id,
         )
         source_review = source_visibility(paper_status)
         source_review["warning_codes"] = sorted(set(source_review["warning_codes"] + occurrence_summary["warning_codes"]))

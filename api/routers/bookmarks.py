@@ -40,7 +40,7 @@ from models.user import MessageResponse
 from routers.auth import current_user_from_jwt
 from services.authors import names as _author_names
 from services.material_property_projection import project_material_properties
-from services.material_visibility import visibility_allows_view
+from services.material_source_scope import current_visibility_allows_view as visibility_allows_view
 from services.material_visibility_adapter import (
     material_prefilter,
     material_view,
@@ -190,7 +190,7 @@ async def list_material_bookmarks(
             family=mat.family,
             tc_max=properties["tc_max"],
             tc_ambient=properties["tc_ambient"],
-            arxiv_year=mat.arxiv_year,
+            arxiv_year=properties.get("arxiv_year"),
             property_evidence=properties["property_evidence"],
             material_semantics=properties["material_semantics"],
             structure_evidence=properties["structure_evidence"],

@@ -140,7 +140,7 @@ async def current_history_evidence(db, rows):
         }
         if checked:
             _, summary = project_source_occurrences(
-                records[identifier], paper_status=status, linked_materials=linked,
+                records[identifier], paper_status=status, linked_materials=linked, container_paper_id=identifier,
             )
             # The history UI needs lifecycle counts, not repeated scientific
             # records. Never export per-occurrence eligibility under an

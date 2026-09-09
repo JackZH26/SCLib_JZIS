@@ -15,6 +15,7 @@ from services.material_anomalies import (
     retained_record_archive,
     review_context,
 )
+from services.material_scoped_properties import scoped_property_evidence
 from services.material_semantics import MATERIAL_SEMANTICS_FIELDS, build_material_semantics
 from services.material_visibility import sanitize_review_metadata, visibility_for_material
 from services.material_visibility_adapter import MaterialReadContext
@@ -29,7 +30,8 @@ def project_material_semantics(value: Any, *, scope_id: str | None = None) -> di
         return value.get(name, default) if isinstance(value, dict) else getattr(value, name, default)
     legacy = {name: read(name) for name in (*MATERIAL_SEMANTICS_FIELDS, "disputed", "total_papers")}
     return build_material_semantics(
-        read("records"), scope_id=scope_id or str(read("id") or "unknown-material"),
+        value.current_records() if isinstance(value, MaterialReadContext) else read("records"),
+        scope_id=scope_id or str(read("id") or "unknown-material"),
         family=read("family"), legacy_summary=legacy,
         source_statuses=value.source_statuses if isinstance(value, MaterialReadContext) else None,
     )
@@ -59,12 +61,14 @@ def project_material_properties(
         if hint not in payload:
             payload[hint] = value.get(hint) if isinstance(value, dict) else getattr(value, hint, None)
     raw_records = value.get("records") if isinstance(value, dict) else getattr(value, "records", None)
-    records = raw_records if isinstance(raw_records, list) else []
+    retained = raw_records if isinstance(raw_records, list) else []
+    scoped = isinstance(value, MaterialReadContext) and value.source_scope is not None
+    records = value.current_records() if scoped else retained
     identity = scope_id or str(payload.get("id") or "unknown-material")
     context = review_context(value)
     semantics = project_material_semantics(value, scope_id=identity)
     structures = build_structure_evidence(
-        raw_records, scope_id=identity,
+        records, scope_id=identity,
         source_statuses=value.source_statuses if isinstance(value, MaterialReadContext) else None,
     )
     # SC11 currently supplies pending text relations, not reviewed structure
@@ -79,12 +83,22 @@ def project_material_properties(
         if field in names:
             item = semantics["properties"][field]
             payload[field] = item["value"] if item["status"] == "reported" else None
-    envelope = build_property_evidence(
-        records, scope_id=identity, legacy_summary=payload,
+    evidence_options = dict(
+        scope_id=identity,
         property_fields=[field for field in PROPERTY_FIELDS if field in names],
         include_joint_epc=not compact,
         anomaly_context=context,
     )
+    envelope = (scoped_property_evidence(records, **evidence_options) if scoped else
+                build_property_evidence(records, legacy_summary=payload, **evidence_options))
+    if scoped:
+        # Legacy aggregate metadata may be supported only by an excluded source.
+        # A known source count is bibliographic membership, never replication.
+        if "total_papers" in names:
+            payload["total_papers"] = value.visibility["source_scope"]["eligible_source_count"]
+        for field in ("arxiv_year", "best_credibility_tier"):
+            if field in names:
+                payload[field] = None
     properties = envelope["properties"]
     for field, binding in properties.items():
         if field in names:
@@ -143,11 +157,16 @@ def project_material_properties(
         payload.pop(private, None)
     if not compact and "records" in names:
         payload["records"] = [
-            {**redact_structure_payloads(sanitize_review_metadata(record)), "anomaly_review": record_assessment(record, scope_id=identity, context=context), "visibility": visibility}
-            for record in records if isinstance(record, dict)
+            {**redact_structure_payloads(sanitize_review_metadata(record)),
+             "anomaly_review": record_assessment(record, scope_id=identity, context=context),
+             "visibility": value.record_visibility(index) if scoped else visibility}
+            for index, record in enumerate(retained) if isinstance(record, dict)
         ]
-        payload["raw_archive"] = retained_record_archive(records, scope_id=identity, context=context)
+        payload["raw_archive"] = retained_record_archive(retained, scope_id=identity, context=context)
         payload["raw_archive"]["visibility"] = visibility
+        if scoped:
+            for item in payload["raw_archive"]["records"]:
+                item["visibility"] = value.record_visibility(item["record_index"])
     # Derived evidence includes source locators as well as retained records.
     # Strip private structured review metadata only after computing identities
     # and all scientific decisions from the untouched originals.

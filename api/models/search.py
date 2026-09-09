@@ -25,6 +25,7 @@ from models.scientific_query import ScientificQueryInterpretation
 from services.claim_support import SUPPORT_POLICY_VERSION
 from services.material_property_projection import project_material_properties
 from services.material_semantics import MATERIAL_SEMANTICS_VERSION
+from services.material_visibility_adapter import MaterialReadContext
 from services.pressure_semantics import annotate_pressure_records, classify_pressure
 from services.result_semantics import (
     CLASSIFIER_VERSION,
@@ -272,6 +273,8 @@ class MaterialSummary(BaseModel):
     @classmethod
     def add_result_origin_summary(cls, value: Any) -> Any:
         records = value.get("records") if isinstance(value, dict) else getattr(value, "records", None)
+        if isinstance(value, MaterialReadContext):
+            records = value.current_records()
         records = [record for record in records if isinstance(record, dict)] if isinstance(records, list) else []
         payload = project_material_properties(value, cls.model_fields, compact="records" not in cls.model_fields)
         summary = classification_summary(records)
@@ -470,7 +473,7 @@ class MaterialListResponse(BaseModel):
     results: list[MaterialSummary]
     limit: int
     offset: int
-    sort_basis: Literal["legacy_catalogue"] = "legacy_catalogue"
+    sort_basis: Literal["current_projected_catalogue", "legacy_catalogue"] = "current_projected_catalogue"
     scientific_display_policy: Literal["atomic_property_evidence"] = "atomic_property_evidence"
 
 

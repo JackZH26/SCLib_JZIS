@@ -7,7 +7,9 @@ offset/limit pagination.
 """
 from __future__ import annotations
 
+import heapq
 import json
+from dataclasses import dataclass
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -29,9 +31,10 @@ from routers.deps import Identity, peek_identity
 from services.anomaly_review import eligible_for_property
 from services.material_anomalies import material_review, record_assessment, review_context
 from services.material_property_projection import project_material_semantics
+from services.material_source_scope import current_visibility_allows_view as visibility_allows_view
+from services.material_source_scope import legacy_parent_visibility
 from services.material_visibility import (
     sanitize_review_metadata,
-    visibility_allows_view,
     visibility_for_material,
 )
 from services.material_visibility_adapter import (
@@ -44,6 +47,23 @@ from services.scientific_filters import ResultFilters, matching_result_reference
 from services.scientific_values import record_quantity
 
 router = APIRouter(tags=["materials"])
+
+
+@dataclass(slots=True, eq=False)
+class _MaterialPageCandidate:
+    """Worst-first heap entry; only the requested leading page window is kept."""
+
+    summary: MaterialSummary
+    sort_value: float | int | None
+
+    def __lt__(self, other: _MaterialPageCandidate) -> bool:
+        left = (self.sort_value is not None, self.sort_value if self.sort_value is not None else 0)
+        right = (other.sort_value is not None, other.sort_value if other.sort_value is not None else 0)
+        if left != right:
+            return left < right
+        # Higher IDs are worse when public values tie, including two nulls.
+        return self.summary.id > other.summary.id
+
 
 @router.get("/materials", response_model=MaterialListResponse)
 async def list_materials(
@@ -89,7 +109,7 @@ async def list_materials(
     min_papers: int | None = Query(
         None,
         ge=1,
-        description="Legacy catalogue source-link threshold; may include parent rollups and does not count independent replications.",
+        description="Current displayed source-link threshold; source-scoped materials use eligible source counts. Legacy counts may include parent rollups; neither counts independent replications.",
     ),
     sort: str = Query("tc_max", pattern="^(tc_max|arxiv_year|total_papers|tc_ambient)$"),
     limit: int = Query(50, ge=1, le=200),
@@ -141,12 +161,14 @@ async def list_materials(
     for clause in material_prefilter(include_archive=include_pending):
         _apply(clause)
 
-    # Skeleton entries are rows that came from the NIMS CSV as a bare
-    # DOI reference — no Tc, no pressure, total_papers = 0. Hiding
-    # them by default keeps the default list feeling informative; the
-    # opt-in flag lets admins / power users browse the full catalog.
+    # A raw source identity can establish a current scoped count even when the
+    # old aggregate is zero. This is only a necessary prefilter: v1 skeleton
+    # behavior is preserved by the post-policy check below.
     if not include_skeletons:
-        _apply(Material.total_papers > 0)
+        _apply(or_(Material.total_papers > 0, func.jsonb_path_exists(
+            Material.records,
+            cast('$[*] ? (@.paper_id.type() == "string" && @.paper_id != "")', JSONPATH),
+        )))
 
     # P2: only return parent materials (those with no parent_material_id)
     if parents_only:
@@ -176,31 +198,31 @@ async def list_materials(
             "pairing_symmetry": pairing_symmetry,
         }.items() if value is not None and value != ""
     }
-    if min_papers is not None:
-        _apply(Material.total_papers >= min_papers)
+    # A legacy count may understate or overstate the current scoped source
+    # inventory. Apply this threshold after resolving the exact live policy.
 
-    sort_col = {
-        "tc_max": Material.tc_max,
-        "tc_ambient": Material.tc_ambient,
-        "arxiv_year": Material.arxiv_year,
-        "total_papers": Material.total_papers,
-    }[sort]
-    # Postgres treats NULLS LAST as an extension — spell it out so
-    # "sort by tc_max" doesn't put unmeasured materials on top.
-    # A deterministic tie-breaker is required for reproducible exports and
-    # pagination.  Many materials share the same sort value (especially NULL),
-    # so ordering by the headline field alone can move rows between pages as
-    # PostgreSQL changes query plans.
-    stmt = stmt.order_by(sort_col.desc().nulls_last(), Material.id.asc())
+    # Cached aggregates can belong to excluded sources. Scan deterministically,
+    # then rank the actual public projection, not those old SQL values. This
+    # evaluates each eligible candidate; the heap bounds retained heavy DTOs to
+    # offset+limit, not query CPU or the number of source records scanned.
+    stmt = stmt.order_by(Material.id.asc())
 
     # Count after the SAME live visibility/record policy used for returned rows.
     # SQL is only a necessary prefilter; stale aggregate holds cannot approve a row.
     stream = await db.stream_scalars(stmt.execution_options(yield_per=128))
-    selected, total = [], 0
+    page_size = offset + limit
+    candidates: list[_MaterialPageCandidate] = []
+    total = 0
     try:
         async for batch in stream.partitions(128):
             for material in await prepare_material_views(db, batch):
                 if not visibility_allows_view(material.visibility, include_archive=include_pending):
+                    continue
+                source_count = (material.visibility["source_scope"]["eligible_source_count"]
+                                if material.source_scope is not None else material.total_papers)
+                if not include_skeletons and source_count <= 0:
+                    continue
+                if min_papers is not None and source_count < min_papers:
                     continue
                 if classification_filters:
                     semantics = project_material_semantics(material)
@@ -216,15 +238,22 @@ async def list_materials(
                     material_family=material.family,
                     compound_thresholds=review_context(material)["compound_thresholds"],
                 ) if scientific_filters.active else []
+                if material.source_scope is not None:
+                    matching = [item for item in matching if item["record_index"] in material.source_scope.eligible_indices]
                 if scientific_filters.active and not matching:
                     continue
-                if offset <= total < offset + limit:
-                    summary = MaterialSummary.model_validate(material)
+                summary = MaterialSummary.model_validate(material)
+                candidate = _MaterialPageCandidate(summary, getattr(summary, sort))
+                if len(candidates) < page_size or candidates[0] < candidate:
                     summary.matching_results = [{**record, "visibility": material.visibility} for record in matching]
-                    selected.append(summary)
+                    if len(candidates) < page_size:
+                        heapq.heappush(candidates, candidate)
+                    else:
+                        heapq.heapreplace(candidates, candidate)
                 total += 1
     finally:
         await stream.close()
+    selected = [item.summary for item in sorted(candidates, reverse=True)[offset:offset + limit]]
     return MaterialListResponse(total=total, results=selected, limit=limit, offset=offset)
 
 
@@ -264,7 +293,7 @@ async def material_phase_diagram(
             continue
         if not isinstance(mat.records, list):
             continue
-        for r in mat.records:
+        for r in mat.current_records():
             if not isinstance(r, dict):
                 continue
             assessment = record_assessment(r, scope_id=mat.id, context=review_context(mat))
@@ -335,6 +364,10 @@ async def material_hydride_parameters(
     statuses = await resolve_paper_lifecycle(db, paper_ids)
     result = []
     for row in rows:
+        # Enrichment rows have their own exact source. A mixed material cannot
+        # grant them eligibility from an unrelated eligible paper.
+        if m.source_scope is not None and row.paper_id not in m.source_scope.eligible_paper_ids:
+            continue
         raw = {column.name: getattr(row, column.name) for column in HydrideTcParameter.__table__.columns}
         raw["status"] = "active_research"
         flags = raw.get("validation_flags")
@@ -349,7 +382,8 @@ async def material_hydride_parameters(
         # inherited from a material catalogue entry.
         anomaly = material_review([raw], scope_id=f"hydride:{row.id}", context=review_context(m), compact=True)
         visibility = visibility_for_material(raw, anomaly_review=anomaly,
-                        source_statuses={row.paper_id: statuses.get(row.paper_id)}, parent_visibility=m.visibility)
+                        source_statuses={row.paper_id: statuses.get(row.paper_id)},
+                        parent_visibility=legacy_parent_visibility(m.visibility))
         if not visibility_allows_view(visibility, include_archive=include_pending):
             continue
         public = sanitize_review_metadata(raw)
