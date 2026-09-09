@@ -35,7 +35,10 @@ under [AL01 / #78](https://github.com/JackZH26/SCLib_JZIS/issues/78).
 Backend compilation, governance and HTTP interfaces are implemented. Batch 48
 adds the read-only [public scientific material matrix](DISCOVERY_SCIENTIFIC_MATRIX.md)
 with explicit package selection, native observations and frozen alternatives.
-The representative-selection operator editor remains unfinished. The existing
+Batch 49 adds [read-only curator selection preparation](DISCOVERY_SELECTION_PREPARATION.md):
+verified original-bundle upload, complete explicit choices, real compiled payload
+and exact commands for the unchanged registration API. The representative-selection
+operator editor remains unfinished. The existing
 synthetic matrix is accessible only via an explicit development-only layout
 preview. A real reviewed pilot, real rights decisions, remote
 delivery and issue closure are not established by synthetic integration tests.

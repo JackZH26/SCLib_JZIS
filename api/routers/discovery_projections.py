@@ -22,6 +22,7 @@ from routers.research_distributions import (
     AuthenticatedUser,
     Code,
     Identifier,
+    Key,
     Operation,
     PrivateRoute,
     Sha,
@@ -34,6 +35,7 @@ from routers.research_distributions import (
     enabled,
 )
 from services import discovery_projection_governance as service
+from services import discovery_selection_preparation as preparation
 from services.discovery_scientific_projection import AUTHORITY, registry_capabilities
 from services.research_access import ResearchAccessDenied, require_research_operator
 from services.research_distribution_contract import _bounded
@@ -102,6 +104,24 @@ class Action(Operation):
     reason_code: Code
 
 
+class SelectionSource(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    distribution_package_id: Identifier
+    public_bundle_json: str = Field(max_length=preparation.MAX_BUNDLE_BYTES)
+    expected_public_bundle_text_sha256: Sha
+
+
+class SelectionContext(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    source: SelectionSource
+
+
+class SelectionPreparation(SelectionContext):
+    expected_context_sha256: Sha
+    request_key: Key
+    choices: list[dict] = Field(min_length=1, max_length=25)
+
+
 def _response(value, *, maximum=MAX_REPORT_BYTES):
     payload = _bounded(value)
     if len(payload) > maximum:
@@ -114,20 +134,21 @@ def _no_query(request):
         raise ValueError("discovery_query_fields")
 
 
-async def _body(request, model):
+async def _body(request, model, *, maximum=None):
+    maximum = MAX_BODY_BYTES if maximum is None else maximum
     _no_query(request)
     if request.headers.get("content-type", "").split(";", 1)[0].strip().lower() != "application/json":
         raise _bad(415, "JSON content required")
     if request.headers.get("content-encoding", "identity").lower() != "identity":
         raise _bad(415, "JSON content required")
     length = request.headers.get("content-length")
-    if length is not None and (re.fullmatch(r"[0-9]{1,9}", length) is None or int(length) > MAX_BODY_BYTES):
+    if length is not None and (re.fullmatch(r"[0-9]{1,9}", length) is None or int(length) > maximum):
         raise _bad(413, "Distribution request exceeds limits")
     data, chunks = bytearray(), 0
     async with asyncio.timeout(10):
         async for part in request.stream():
             chunks += 1
-            if chunks > MAX_BODY_CHUNKS or len(data) + len(part) > MAX_BODY_BYTES:
+            if chunks > MAX_BODY_CHUNKS or len(data) + len(part) > maximum:
                 raise _bad(413, "Distribution request exceeds limits")
             data.extend(part)
     return model.model_validate(_strict_json(data), strict=True).model_dump()
@@ -183,6 +204,31 @@ async def outcome(request: Request, user: AuthenticatedUser):
             "committed": True, "result": result})
     except service.DiscoveryGovernanceNotFound:
         raise _bad(404, "Distribution unavailable") from None
+    except service.DiscoveryGovernanceConflict:
+        raise _bad(409, "Distribution request rejected") from None
+
+
+@router.get("/selection/access")
+async def selection_access(request: Request, user: AuthenticatedUser):
+    _no_query(request)
+    return _response(await _read(user, preparation.access))
+
+
+@router.post("/selection/context", openapi_extra=_request_schema(SelectionContext))
+async def selection_context(request: Request, user: AuthenticatedUser):
+    await _precheck(user, "curator")
+    arguments = await _body(request, SelectionContext, maximum=40 * 1024 * 1024)
+    return _response(await _read(user, preparation.selection_context, **arguments),
+        maximum=2 * preparation.MAX_CONTEXT_BYTES + 1024)
+
+
+@router.post("/selection/prepare", openapi_extra=_request_schema(SelectionPreparation))
+async def selection_prepare(request: Request, user: AuthenticatedUser):
+    await _precheck(user, "curator")
+    arguments = await _body(request, SelectionPreparation, maximum=40 * 1024 * 1024)
+    try:
+        return _response(await _read(user, preparation.prepare_selection, **arguments),
+            maximum=preparation.MAX_PREPARED_BYTES)
     except service.DiscoveryGovernanceConflict:
         raise _bad(409, "Distribution request rejected") from None
 
