@@ -236,6 +236,8 @@ class AskHistory(Base):
     tokens_used: Mapped[int | None] = mapped_column(Integer, nullable=True)
     latency_ms: Mapped[int] = mapped_column(Integer, nullable=False)
     language: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    # NULL is deliberately retained for pre-0068 snapshots; never backfilled.
+    evidence_receipt_version: Mapped[str | None] = mapped_column(String(50), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         _TZDT, server_default=func.now(), nullable=False
     )
@@ -1696,6 +1698,10 @@ SCIENTIFIC_RESULT_IMPACT_INDEXES = _register_scientific_result_impact_indexes(Ba
 from models.scientific_adjudication_v1 import register as _register_scientific_adjudication  # noqa: E402
 
 SCIENTIFIC_ADJUDICATION_TABLES = _register_scientific_adjudication(Base.metadata)
+
+from models.answer_evidence_v1 import register as _register_answer_evidence  # noqa: E402
+
+ANSWER_EVIDENCE_TABLES = _register_answer_evidence(Base.metadata)
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.

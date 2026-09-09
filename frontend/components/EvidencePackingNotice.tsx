@@ -5,8 +5,8 @@ const roleLabels = { methods: "Methods", results: "Results", table: "Table conte
 const selectionLabels = { source_diversity: "Selection diversity", source_coverage: "Additional source coverage", complementary_role: "Complementary context role" };
 
 /** A context budget is operational accounting, not an assessment of evidence. */
-export function EvidencePackingNotice({ packing, inputBudget, sources }: {
-  packing?: unknown; inputBudget?: unknown; sources: PackingSource[];
+export function EvidencePackingNotice({ packing, inputBudget, sources, historical = false }: {
+  packing?: unknown; inputBudget?: unknown; sources: PackingSource[]; historical?: boolean;
 }) {
   if (packing === undefined && inputBudget === undefined) return null;
   const summary = knownPackingSummary(packing, sources);
@@ -15,6 +15,7 @@ export function EvidencePackingNotice({ packing, inputBudget, sources }: {
     && summary.payload_bytes !== budget.payload_bytes;
   return <section aria-label="Context selection and input budget" className="mb-4 space-y-2 rounded border border-sage-border bg-sage-bg p-3 text-sm">
     <h3 className="font-semibold">Context selection and input budget</h3>
+    {historical && <p className="text-xs text-amber-900">Saved answer-time accounting. No new provider count, generation request or present-day source check was performed for this history view.</p>}
     <p className="text-xs text-amber-900">Citation entries are passages, not independent papers, experiments or confirmations. Catalogue-source snapshots group retained metadata, not authenticated original documents or shared samples. Scientific independence remains unestablished.</p>
     {disagreement ? <p role="status" className="text-amber-900">Input-budget and selected-context accounting disagree. Counts and completeness claims are withheld.</p>
       : <>

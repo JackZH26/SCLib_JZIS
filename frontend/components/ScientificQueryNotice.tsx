@@ -18,8 +18,8 @@ function constraintText(value: ScientificQuantityConstraint) {
 
 /** Server interpretation is explained, not upgraded to scientific approval. */
 export function ScientificQueryNotice({ query: input, lookup: lookupInput, results: resultsInput, generation,
-  rawQuery, context = "Search" }: {
-  query?: unknown; lookup?: unknown; results?: unknown; generation?: unknown; rawQuery: string; context?: "Search" | "Ask";
+  rawQuery, context = "Search", historical = false }: {
+  query?: unknown; lookup?: unknown; results?: unknown; generation?: unknown; rawQuery: string; context?: "Search" | "Ask"; historical?: boolean;
 }) {
   if (input === undefined || input === null) return null;
   const query = knownScientificQuery(input, rawQuery);
@@ -30,6 +30,7 @@ export function ScientificQueryNotice({ query: input, lookup: lookupInput, resul
   const results = lookup ? knownScientificResults(resultsInput, lookup, generation, query) : null;
   return <section aria-label={`${context} scientific query`} className="space-y-3 rounded-lg border border-sage-border bg-sage-bg p-4 text-sm">
     <h3 className="font-semibold text-sage-ink">{context} query interpretation</h3>
+    {historical && <p className="text-xs text-amber-900">Saved interpretation and extraction records from answer time. This view has not rerun the lookup or reviewed their current scientific status.</p>}
     <p className="break-words"><span className="font-medium">Original query: </span>{query.raw_query}</p>
     <p className="text-xs text-sage-muted">Bounded interpretation only; not scientific acceptance, an identity adjudication or permission to reuse source content.</p>
     <p><span className="font-medium">Requested task: </span>{query.intent === "numerical" ? "Numerical lookup" : query.intent === "mechanism" ? "Mechanism explanation"

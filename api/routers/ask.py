@@ -17,15 +17,17 @@ import logging
 import threading
 import time
 from dataclasses import replace
-from uuid import UUID
+from uuid import UUID, uuid4
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
+from sqlalchemy import insert, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from config import get_settings
 from models import get_db
-from models.db import AskHistory
+from models.db import ApiKey, AskHistory, Base, User, get_engine
 from models.evidence_packing import EvidencePackingSummary, PackingCandidate
+from models.history_receipts import HistorySaveDisposition
 from models.index_read import generation_read_metadata
 from models.rag_input_budget import RagInputBudgetReport
 from models.scientific_lookup import ScientificLookupStatus
@@ -33,6 +35,8 @@ from models.scientific_mixed import ScientificMixedEvidence
 from models.search import AskRequest, AskResponse, AskSource
 from routers.deps import Identity, require_identity
 from services import (
+    answer_evidence,
+    auth_service,
     complementary_retrieval,
     evidence_packing,
     index_retrieval,
@@ -49,7 +53,6 @@ from services.metrics import observe_rag
 from services.scientific_query import interpret_scientific_query
 from services.scientific_query_lookup import (
     lookup_answer,
-    lookup_scientific_results,
     prepare_scientific_lookup,
     result_query,
     unavailable,
@@ -70,6 +73,7 @@ EVIDENCE_RESOLUTION_TIMEOUT_SECONDS = 10.0
 @router.post("/ask", response_model=AskResponse)
 async def ask(
     body: AskRequest,
+    request: Request,
     identity: Identity = Depends(require_identity),  # noqa: B008
     db: AsyncSession = Depends(get_db),  # noqa: B008
 ) -> AskResponse:
@@ -77,6 +81,10 @@ async def ask(
     # The catalogue read transaction is closed before provider generation.
     # Retain primitives, not an ORM User that rollback would expire.
     history_user_id = identity.user.id if identity.user is not None else None
+
+    async def finish(response, captured=None):
+        return await _persist_history(db, request, history_user_id, body, response, captured)
+
     interpretation = interpret_scientific_query(body.question)
     mixed_inputs = None
     original_limit = body.max_sources
@@ -84,13 +92,14 @@ async def ask(
         answer = ("Please clarify the unresolved scientific conditions before a numerical lookup or synthesis. "
                   + " ".join(interpretation.clarification_questions))
         latency_ms = int((time.perf_counter() - t0) * 1000)
-        await _record_lookup_interaction(db, history_user_id, body, answer, latency_ms, structured=False)
-        return AskResponse(answer=answer, sources=[], tokens_used=0,
+        _observe_lookup_interaction()
+        response = AskResponse(answer=answer, sources=[], tokens_used=0,
             query_time_ms=latency_ms,
             citation_indices_valid=True, scientific_query=interpretation,
             scientific_lookup=ScientificLookupStatus(status="clarification_required", reason_codes=["unresolved_query_constraints"]),
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining)
+        return await finish(response, _capture_inputs(body, None))
 
     try:
         async with asyncio.timeout(10):
@@ -112,27 +121,41 @@ async def ask(
         except Exception:
             await db.rollback()
             return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
-                reason="mixed_lookup_unavailable")
+                reason="mixed_lookup_unavailable", finish=finish)
         if original_limit == 0:
             return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
-                inputs=mixed_inputs)
+                inputs=mixed_inputs, finish=finish)
     elif result_query(interpretation):
+        captured = None
         try:
             async with asyncio.timeout(15):
-                outcome = await lookup_scientific_results(db, pin, interpretation, limit=body.max_sources)
+                prepared = await prepare_scientific_lookup(db, pin, interpretation, limit=body.max_sources)
+                numeric_inputs = prepared.consume()
+                outcome = numeric_inputs.outcome
+                captured = _capture_inputs(body, pin, scientific_inputs=numeric_inputs)
+                if outcome.status.status == "completed":
+                    await db.rollback()
+                    if numeric_inputs.selection_pins:
+                        currentness = await retrieval_currentness.check_selected_sources(
+                            numeric_inputs.selection_pins, evidence_resolver=index_retrieval.resolve_evidence)
+                        if currentness.status != "unchanged":
+                            outcome = unavailable(currentness.reason_code or "scientific_lookup_currentness_unavailable")
+                    if outcome.status.status == "completed":
+                        await index_retrieval.require_current_pin(db, numeric_inputs.generation_pin)
         except Exception:
             await db.rollback()
             outcome = unavailable("scientific_lookup_unavailable")
         answer = lookup_answer(outcome)
         latency_ms = int((time.perf_counter() - t0) * 1000)
-        await _record_lookup_interaction(db, history_user_id, body, answer, latency_ms, structured=True)
-        return AskResponse(answer=answer, sources=[], tokens_used=0,
+        _observe_lookup_interaction()
+        response = AskResponse(answer=answer, sources=[], tokens_used=0,
             query_time_ms=latency_ms, citation_indices_valid=True,
             support_warnings=["structured_extractions_not_scientific_validation"],
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
             retrieval_generation=generation_read_metadata(pin), scientific_query=interpretation,
             scientific_lookup=outcome.status, scientific_results=outcome.results)
+        return await finish(response, captured or _capture_inputs(body, pin))
     settings = get_settings()
     vector_hits = []
     if pin is not None:
@@ -166,7 +189,7 @@ async def ask(
         if mixed_inputs is not None:
             await db.rollback()
             return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
-                reason="mixed_context_unavailable")
+                reason="mixed_context_unavailable", finish=finish)
         raise HTTPException(503, "Lexical/formula-aware retrieval is unavailable") from None
     candidates = retrieval.fuse_rankings(
         vector_hits,
@@ -176,7 +199,7 @@ async def ask(
     if not candidates:
         if mixed_inputs is not None:
             return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
-                inputs=mixed_inputs)
+                inputs=mixed_inputs, finish=finish)
         if pin is not None:
             try:
                 async with asyncio.timeout(10):
@@ -190,12 +213,7 @@ async def ask(
             citation_indices_valid=result.citation_indices_valid,
             scientific_support_status=result.scientific_support_status, answer_mode=result.answer_mode,
         )
-        if history_user_id is not None:
-            await _persist_history(
-                db, history_user_id, body.question, result.answer,
-                [], 0, latency_ms, body.language,
-            )
-        return AskResponse(
+        response = AskResponse(
             answer=result.answer,
             sources=[],
             tokens_used=0,
@@ -206,6 +224,7 @@ async def ask(
             retrieval_generation=generation_read_metadata(pin),
             scientific_query=interpretation,
         )
+        return await finish(response, _capture_inputs(body, pin))
 
     # Hydrate exact immutable members, never resolve opaque ANN IDs through
     # mutable Chunk positions. Legacy lexical rows use their separate path.
@@ -219,7 +238,7 @@ async def ask(
         if mixed_inputs is not None:
             await db.rollback()
             return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
-                reason="mixed_context_unavailable")
+                reason="mixed_context_unavailable", finish=finish)
         raise HTTPException(503, "Retrieval generation is unavailable") from None
     candidates = retrieval.rerank_candidates(body.question, candidates, chunk_by_id)
     evidence_failure_reason = None
@@ -250,6 +269,7 @@ async def ask(
     sources_out: list[AskSource] = []
     selected_pins: list[retrieval_currentness.SelectionPin] = []
     frozen_originals = ()
+    captured = None
     pin_unavailable = evidence_by_chunk is None
     admitted, input_by_id, output_by_id, pins_by_id = [], {}, {}, {}
     packing_summary = EvidencePackingSummary(status="unavailable", reason_codes=["packing_unavailable"])
@@ -338,6 +358,9 @@ async def ask(
             if mixed_inputs is not None:
                 frozen_originals = tuple(scientific_mixed.freeze_original(source, selected_pin)
                     for source, selected_pin in zip(sources_out, selected_pins, strict=True))
+            captured = _capture_inputs(body, pin, sources=tuple(sources_out),
+                chunks=tuple(chunk_by_id[item.chunk_id] for item in plan.selected),
+                selection_pins=tuple(selected_pins), scientific_inputs=mixed_inputs)
         except Exception:
             log.warning("Ask complete evidence packing unavailable; selected context withheld")
             pin_unavailable = True
@@ -367,7 +390,8 @@ async def ask(
         # snapshot checks numeric parents and original context as a single unit.
         return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
             inputs=mixed_inputs, originals=frozen_originals, packing=packing_summary,
-            reason=(evidence_failure_reason or "mixed_context_unavailable") if pin_unavailable else None)
+            reason=(evidence_failure_reason or "mixed_context_unavailable") if pin_unavailable else None,
+            finish=finish, captured=captured)
 
     # 3. One count+generation attempt behind the outer deadline. A late count
     # must not start generation after the await has timed out or been cancelled.
@@ -452,14 +476,7 @@ async def ask(
     )
 
     latency_ms = int((time.perf_counter() - t0) * 1000)
-    if history_user_id is not None:
-        await _persist_history(
-            db, history_user_id, body.question, result.answer,
-            [s.model_dump(mode="json") for s in sources_out],
-            result.tokens_used, latency_ms, body.language,
-        )
-
-    return AskResponse(
+    response = AskResponse(
         answer=result.answer,
         sources=sources_out,
         tokens_used=result.tokens_used,
@@ -470,6 +487,7 @@ async def ask(
         retrieval_generation=generation_read_metadata(pin),
         scientific_query=interpretation,
     )
+    return await finish(response, captured or _capture_inputs(body, pin))
 
 
 async def _resolve_evidence(db, chunks):
@@ -484,7 +502,7 @@ async def _resolve_evidence(db, chunks):
 
 
 async def _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0, *,
-                          inputs=None, originals=(), packing=None, reason=None):
+                          inputs=None, originals=(), packing=None, reason=None, finish=None, captured=None):
     """Publish both current inventories together, or withdraw both without a draft."""
     await db.rollback()
     report = None
@@ -529,12 +547,7 @@ async def _mixed_response(db, body, identity, history_user_id, interpretation, p
     latency_ms = int((time.perf_counter() - t0) * 1000)
     observe_rag(sources=len(sources), tokens=0, citation_valid=False, fallback=False,
         citation_indices_valid=True, scientific_support_status="not_checked", answer_mode="abstention")
-    if history_user_id is not None:
-        history_answer = ("A mixed scientific retrieval was requested. Structured extraction rows, original explanation candidates "
-                          "and their version-bound association dispositions are not retained in this history schema. "
-                          "Rerun the query to inspect current inputs. This history entry is not scientific evidence.")
-        await _persist_history(db, history_user_id, body.question, history_answer, [], 0, latency_ms, body.language)
-    return AskResponse(answer=answer, sources=list(sources), tokens_used=0, query_time_ms=latency_ms,
+    response = AskResponse(answer=answer, sources=list(sources), tokens_used=0, query_time_ms=latency_ms,
         citation_indices_valid=True, scientific_query=interpretation, scientific_lookup=outcome.status,
         scientific_results=outcome.results, scientific_mixed=report,
         support_warnings=["numerical_explanation_not_established", "structured_extractions_not_scientific_validation"]
@@ -542,6 +555,12 @@ async def _mixed_response(db, body, identity, history_user_id, interpretation, p
         evidence_packing=packing or EvidencePackingSummary(),
         retrieval_generation=generation_read_metadata(pin), guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining)
+    if captured is None:
+        captured = _capture_inputs(body, pin, scientific_inputs=inputs if reason is None and not sources else None)
+    if finish is None:
+        # Internal direct calls have no authenticated request authority to save.
+        return response
+    return await finish(response, captured)
 
 
 def _currentness_abstention(reason: str, tokens_used: int | None, *, input_budget=None) -> rag.RagResult:
@@ -556,54 +575,98 @@ def _currentness_abstention(reason: str, tokens_used: int | None, *, input_budge
     )
 
 
-async def _persist_history(
-    db: AsyncSession,
-    user_id: UUID,
-    question: str,
-    answer: str,
-    sources: list[dict],
-    tokens_used: int | None,
-    latency_ms: int,
-    language: str | None,
-) -> None:
-    """Record a single Ask interaction for the dashboard history tab.
-
-    Failures here never fail the outer /ask response — the user already
-    has their answer, and history writes are eventually-consistent with
-    the 90-day prune job. We log and swallow.
-    """
+def _capture_inputs(body, pin, *, sources=(), chunks=(), selection_pins=(), scientific_inputs=None):
+    """Detach admitted input references before ORM rollback or provider work."""
     try:
-        db.add(AskHistory(
-            user_id=user_id,
-            question=question,
-            answer=answer,
-            sources=sources,
-            tokens_used=tokens_used,
-            latency_ms=latency_ms,
-            language=language,
-        ))
-        await db.commit()
-    except Exception:  # noqa: BLE001
-        log.exception("ask_history write failed (non-fatal)")
-        await db.rollback()
+        return answer_evidence.capture_inputs(request=body, generation_pin=pin,
+            sources=sources, chunks=chunks, selection_pins=selection_pins,
+            scientific_inputs=scientific_inputs)
+    except Exception:
+        log.warning("Answer history input capture unavailable; no unbound saved receipt will be created")
+        return None
 
 
-async def _record_lookup_interaction(db, user_id, body, answer, latency_ms, *, structured):
-    """Retain the static interaction, not unsupported result/citation history.
+_HISTORY_SLOTS = threading.BoundedSemaphore(2)
 
-    The existing history schema cannot replay response-level generation pins or
-    these structured results. Never encode them as original citation sources or
-    persist a static answer claiming that omitted rows are available in history.
+
+async def _history_actor(request, session, expected_user_id):
+    """Recheck the original auth path without consuming another quota slot."""
+    key = request.headers.get("x-api-key")
+    if key:
+        user_id = await session.scalar(select(ApiKey.user_id).where(
+            ApiKey.key_hash == auth_service.hash_api_key(key), ApiKey.revoked.is_(False)))
+        if user_id != expected_user_id:
+            return False
+        user = await session.get(User, user_id)
+        return user is not None and user.is_active
+    from routers.deps import _resolve_jwt_user
+    user = await _resolve_jwt_user(request, session)
+    return user is not None and user.id == expected_user_id
+
+
+async def _persist_history(db, request, user_id, body, response, captured):
+    """Save only the final response, atomically with its immutable evidence.
+
+    The answer remains usable if saving fails. A commit whose acknowledgement
+    is lost yields its original recovery ID, never an asserted successful save
+    or an automatic second write. No ORM identity survives the provider await.
     """
+    if type(response) is not AskResponse:
+        raise TypeError("History can retain only a validated final Ask response")
+    try:
+        await db.rollback()
+    except Exception:
+        disposition = HistorySaveDisposition(status="not_saved", reason_code="storage_unavailable")
+        return response.model_copy(update={"history": disposition})
+    if user_id is None:
+        return response.model_copy(update={"history": HistorySaveDisposition(reason_code="guest_request")})
+    try:
+        prepared = answer_evidence.finish_capture(captured, response)
+    except Exception:
+        return response.model_copy(update={"history": HistorySaveDisposition(
+            status="not_saved", reason_code="capture_unavailable")})
+    if not _HISTORY_SLOTS.acquire(blocking=False):
+        return response.model_copy(update={"history": HistorySaveDisposition(
+            status="not_saved", reason_code="storage_unavailable")})
+    history_id, commit_started = uuid4(), False
+    try:
+        async with asyncio.timeout(10):
+            async with AsyncSession(get_engine().execution_options(isolation_level="SERIALIZABLE")) as session:
+                await session.execute(text("SET LOCAL TIME ZONE 'UTC'"))
+                await session.execute(text("SET LOCAL statement_timeout='5000ms'"))
+                if not await _history_actor(request, session, user_id):
+                    return response.model_copy(update={"history": HistorySaveDisposition(
+                        status="not_saved", reason_code="session_no_longer_authorized")})
+                fields = await answer_evidence.receipt_fields(session, prepared)
+                fields = {**fields,
+                    "generation_id": UUID(fields["generation_id"]) if fields["generation_id"] else None,
+                    "activation_event_id": UUID(fields["activation_event_id"]) if fields["activation_event_id"] else None}
+                session.add(AskHistory(id=history_id, user_id=user_id,
+                    question=body.question, answer=response.answer,
+                    sources=[source.model_dump(mode="json") for source in response.sources],
+                    tokens_used=response.tokens_used, latency_ms=response.query_time_ms, language=body.language,
+                    evidence_receipt_version="ask-answer-evidence/1.0.0"))
+                await session.flush()
+                stored = (await session.execute(insert(Base.metadata.tables["answer_evidence_receipts"])
+                    .values(history_id=history_id, **fields).returning(
+                        Base.metadata.tables["answer_evidence_receipts"].c.record_sha256))).scalar_one()
+                # Deferred parent/receipt completeness is checked by this real
+                # outer commit. A flush or savepoint is not successful saving.
+                commit_started = True
+                await session.commit()
+        disposition = HistorySaveDisposition(status="saved", history_id=str(history_id), receipt_sha256=stored)
+    except Exception:
+        log.warning("Answer history persistence unavailable; private database details withheld")
+        disposition = (HistorySaveDisposition(status="unknown", history_id=str(history_id), reason_code="commit_unconfirmed")
+            if commit_started else HistorySaveDisposition(status="not_saved", reason_code="storage_unavailable"))
+    finally:
+        _HISTORY_SLOTS.release()
+    return response.model_copy(update={"history": disposition})
+
+
+def _observe_lookup_interaction():
     observe_rag(sources=0, tokens=0, citation_valid=False, fallback=False,
         citation_indices_valid=True, scientific_support_status="not_checked", answer_mode="abstention")
-    if user_id is not None:
-        history_answer = answer
-        if structured:
-            history_answer = ("A structured extraction lookup was requested. Numerical rows and their generation bindings "
-                              "are not retained in this history schema; rerun the query to inspect current results. "
-                              "This history entry is not scientific evidence.")
-        await _persist_history(db, user_id, body.question, history_answer, [], 0, latency_ms, body.language)
 
 
 # ---------------------------------------------------------------------------

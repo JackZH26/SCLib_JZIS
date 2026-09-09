@@ -327,6 +327,14 @@ async def test_withdrawn_mixed_history_does_not_retain_old_originals(client, mix
         history = (await db.execute(sa.select(AskHistory).where(AskHistory.user_id == user.id).order_by(AskHistory.created_at.desc()))).scalars().first()
         assert history is not None and history.sources == []
         assert "Synthetic retained original" not in history.answer
+        identifier = history.id
+    assert response.json()["history"]["status"] == "saved", response.text
+    detail = await client.get(f"/v1/history/{identifier}", headers={"Authorization": f"Bearer {token}"})
+    assert detail.status_code == 200, detail.text
+    evidence = detail.json()["evidence"]
+    assert evidence["status"] == "verified" and evidence["binding_scope"] == "no_selected_evidence"
+    assert evidence["receipt"]["bindings"]["items"] == []
+    assert mixed_generation["meta"].paper_id not in json.dumps(evidence["receipt"])
 
 
 @pytest.mark.parametrize("field", ["content_sha256", "snippet", "packing_snapshot", "title", "authors_short"])

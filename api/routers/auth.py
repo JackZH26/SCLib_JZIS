@@ -686,6 +686,8 @@ async def export_me(
                 "latency_ms": item.latency_ms,
                 "language": item.language,
                 "created_at": item.created_at,
+                "evidence_receipt_version": item.evidence_receipt_version,
+                "evidence_detail_path": f"/v1/history/{item.id}",
             }
             for item in history
         ],

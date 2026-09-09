@@ -108,6 +108,13 @@ recovery action; it is not silently treated as successful cutover.
 
 ## Expand → shadow → parity → read cutover → contract
 
+Schema 0068 adds [private answer-history evidence receipts](ANSWER_HISTORY_RECEIPTS.md)
+and a nullable history marker without backfilling old rows. New marked history
+and its receipt are an atomic pair. Downgrade refuses retained receipts or
+marked rows; ordinary owner/account deletion and existing retention still
+cascade. This is an additive local migration, not permission to execute it on
+the deployed database or erase history to accommodate an old image.
+
 1. **Expand:** Record source image/schema/data versions and backup/restore
    evidence. Apply additive, reviewed migration modules only. Preserve original
    source rows and immutable evidence/release bytes. Verify the existing reader

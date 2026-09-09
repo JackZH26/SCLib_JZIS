@@ -1,9 +1,9 @@
 """Live metadata warnings alongside, never in place of, saved Ask evidence.
 
-Saved citations do not pin a source revision or retain resolvable occurrence
-identities. Current paper extractions must therefore never be presented as a
-revalidation of the historical excerpt or answer. This projection has no write
-path and deliberately grants no scientific or training approval.
+Legacy saved citations have no evidence receipt. New answers may separately pin
+immutable historical members, but this current-catalogue projection is not
+that receipt and must never revalidate the historical excerpt or answer. It
+has no write path and deliberately grants no scientific or training approval.
 """
 from __future__ import annotations
 

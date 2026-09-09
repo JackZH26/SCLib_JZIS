@@ -149,11 +149,13 @@ answer prose; missing/default `not_requested` retains legacy route behavior.
 Existing query equality, request-generation and cancellation protections remain.
 Actual source wording and user queries retain their original language.
 
-Ask history does not have columns for a replayable mixed result or its response-
-level provenance. This workflow stores only a static interaction notice with
-empty sources, explicitly asking the reader to rerun the query. It does not
-persist unsupported numerical rows, original candidates or a synthetic historical
-association assessment. Reproducible historical-answer replay remains unfinished.
+New authenticated mixed replies now retain their actual final extraction rows,
+original candidates, association dispositions and exact generation references in
+[private saved-answer receipts](ANSWER_HISTORY_RECEIPTS.md). Old placeholder-only
+histories stay unchanged and explicitly unpinned. A withdrawn mixed reply saves
+only its final abstention, never the removed identifiers or drafts. Historical
+integrity is not a positive association review, currentness check, complete
+provider-input archive or deterministically regenerated scientific answer.
 
 ## Verification and remaining acceptance
 

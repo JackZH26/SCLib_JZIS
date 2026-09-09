@@ -143,9 +143,10 @@ remain untouched historical snapshots, explicitly not revalidated.
 3. Positive support admission and independent-root deduplication only after
    those reviews. The current solution prevents amplification by admitting no
    positive independent support; it does not claim a complete root graph.
-4. Current historical-answer lineage overlays and durable generation input
-   receipts, without rewriting historical answers or claiming retrospective
-   verification. Existing Paper/Work history notices remain separate.
+4. [Final-output history receipts](ANSWER_HISTORY_RECEIPTS.md) now preserve
+   new answers' selected generation references, with separate current Paper/Work
+   warnings. Old histories are not backfilled. Complete provider-input archives,
+   scientific revalidation and permission-approved research replay remain distinct.
 5. ML04 v2 dependency closure, RG03 index generation/reconciliation and explicit
    corpus migration/rebuild plans. Large-corpus latency/contention measurement,
    current-SHA Linux/release-image CI and staging rollout are still required.

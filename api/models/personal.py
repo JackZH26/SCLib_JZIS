@@ -11,6 +11,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from models.history_receipts import HistoryEvidenceDetail, HistoryReceiptSummary
+
 # ---------------------------------------------------------------------------
 # Ask history
 # ---------------------------------------------------------------------------
@@ -32,6 +34,7 @@ class AskHistoryEntry(BaseModel):
     answer: str
     sources: list[dict[str, Any]] = Field(default_factory=list)
     current_evidence: dict[str, Any] = Field(default_factory=dict)
+    receipt: HistoryReceiptSummary = Field(default_factory=HistoryReceiptSummary)
     tokens_used: int | None = None
     latency_ms: int
     language: str | None = None
@@ -43,6 +46,15 @@ class AskHistoryListResponse(BaseModel):
     results: list[AskHistoryEntry]
     limit: int
     offset: int
+
+
+class AskHistoryDetailResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    version: Literal["ask-history-detail/1.0.0"] = "ask-history-detail/1.0.0"
+    entry: AskHistoryEntry
+    evidence: HistoryEvidenceDetail
+    result_current_evidence: dict[str, Any] = Field(default_factory=dict)
 
 
 # ---------------------------------------------------------------------------

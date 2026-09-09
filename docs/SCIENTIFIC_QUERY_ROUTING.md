@@ -143,11 +143,12 @@ an AI-validated answer. Mixed/typed-comparison Ask may use semantic retrieval
 but does not call Gemini CountTokens or generation; zero generation tokens is
 not zero total provider cost. Non-numerical answers retain their support policy.
 
-Existing Ask history cannot persist/replay these response-level bindings or
-structured rows. It stores a static request summary, no fake citation sources
-and no unbound numerical rows, and explicitly says to rerun the query. This is
-not reproducible historical-answer support. Clarification history retains the
-clarification text. Replayable version-bound answer history is still unfinished.
+New authenticated Ask replies save the final structured rows, exact response-level
+bindings and clarification output in [private evidence receipts](ANSWER_HISTORY_RECEIPTS.md).
+Old placeholder-only histories remain unchanged and explicitly unpinned; current
+data cannot reconstruct their missing rows. Historical reads check the retained
+output and references without rerunning the query or parser, validating current
+scientific status, or claiming deterministic answer regeneration.
 
 The frontend validates query equality, codepoint spans, closed wire shapes,
 quantity relations and generation bindings before displaying numbers. Query-keyed

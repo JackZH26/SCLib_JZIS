@@ -186,8 +186,10 @@ All three response models add a closed `retrieval_generation` envelope:
 `manifest_sha256`. Generation mode requires all three identity fields; explicit
 `legacy_lexical_only` requires all three null. No cloud resource or text is in
 this public envelope. It is not a completeness, rights or scientific-quality score.
-Ask history retains existing evidence hashes/bibliography but **does not yet
-retain this response-level generation/event pin** or revalidate old answers.
+New authenticated Ask responses now retain these exact generation/event pins
+and final output in [private answer-history receipts](ANSWER_HISTORY_RECEIPTS.md).
+Old history stays explicitly unpinned. Historical integrity checking is not
+currentness revalidation, scientific acceptance or deterministic regeneration.
 
 With no active generation, Search/Ask use legacy lexical-only retrieval and
 never positional ANN. Similar returns a sanitized 503. Consequently, deploying

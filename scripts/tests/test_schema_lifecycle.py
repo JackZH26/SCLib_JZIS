@@ -11,6 +11,68 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class SchemaLifecycleBoundaryTests(unittest.TestCase):
+    def test_answer_receipt_history_is_last_and_old_roundtrip_exclusion_is_narrow(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        tree = ast.parse(source)
+        functions = {node.name: node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))}
+        main = ast.get_source_segment(source, functions["main"])
+        markers = ("_adjudication_downgrade_guard(capability", "_answer_evidence_empty_roundtrip(capability",
+                   "_answer_evidence_on_migrated_schema(capability", "_answer_evidence_downgrade_guard(capability")
+        self.assertEqual([main.index(item) for item in markers], sorted(main.index(item) for item in markers))
+        helper = ast.get_source_segment(source, functions["_pre_answer_evidence_rows"])
+        self.assertIn('name == "ask_history"', helper)
+        self.assertIn("to_jsonb(item)-'evidence_receipt_version'", helper)
+        self.assertIn('else "to_jsonb(item)"', helper)
+        old_roundtrips = ("_source_impact_indexes_on_migrated_schema", "_background_jobs_empty_roundtrip",
+            "_rag_evidence_empty_roundtrip", "_embedding_receipts_empty_roundtrip", "_index_generations_empty_roundtrip",
+            "_distributions_empty_roundtrip", "_ml_feature_bindings_empty_roundtrip", "_scientific_imports_empty_roundtrip",
+            "_result_impact_indexes_roundtrip", "_adjudications_empty_roundtrip")
+        for name in old_roundtrips:
+            body = ast.get_source_segment(source, functions[name])
+            self.assertIn("_pre_answer_evidence_rows(connection, name)", body)
+            self.assertIn("_ANSWER_EVIDENCE_TABLE", body)
+            self.assertIn("assert snapshot(connection) == before", body)
+        for name, node in functions.items():
+            if name.endswith("downgrade_guard"):
+                self.assertNotIn("_pre_answer_evidence_rows", ast.get_source_segment(source, node))
+        empty = ast.get_source_segment(source, functions["_assert_empty_answer_evidence"])
+        self.assertIn("FROM public.answer_evidence_receipts", empty)
+        self.assertIn("evidence_receipt_version IS NOT NULL", empty)
+        chain = ast.get_source_segment(source, functions["_assert_empty_adjudications"])
+        self.assertIn("_assert_empty_answer_evidence(connection)", chain)
+
+    def test_answer_receipt_migrated_fixture_proves_atomicity_history_and_durable_cascade(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        empty = source.split("def _answer_evidence_empty_roundtrip", 1)[1].split("async def _answer_evidence_on_migrated_schema", 1)[0]
+        self.assertLess(empty.index('command.downgrade(config, "0067_scientific_adjudication")'), empty.index("INSERT INTO ask_history"))
+        self.assertLess(empty.index("INSERT INTO ask_history"), empty.index('command.upgrade(config, "head")'))
+        self.assertNotIn("with engine.begin()", empty)
+        self.assertIn('assert "exact revision" in str(exc)', empty)
+        upgraded = empty.split('command.upgrade(config, "head")', 1)[1]
+        self.assertLess(upgraded.index("check_connection_schema(connection)"), upgraded.index("verify_postgres_identity(connection, capability)"))
+        self.assertIn("scalar_one() is None", empty)
+        self.assertEqual(empty.count("assert snapshot(connection) == before"), 2)
+        body = source.split("async def _answer_evidence_on_migrated_schema", 1)[1].split("def _answer_evidence_downgrade_guard", 1)[0]
+        for marker in ("service.capture_inputs(", "service.finish_capture(", "service.receipt_fields(",
+                       "append(receipt=False)", "complete_receipt_required", "await session.rollback()",
+                       "assert await state(session) == before", "assert await state(session) == written",
+                       "await service.verify_historical(session, stored) == verified", "== legacy_before",
+                       "await append(identifier=deleted_id)", "DELETE FROM ask_history WHERE id=:id AND user_id=:owner"):
+            self.assertIn(marker, body)
+        guard = source.split("def _answer_evidence_downgrade_guard", 1)[1].split("def main()", 1)[0]
+        self.assertIn("retained immutable saved answers", guard)
+        self.assertIn("assert snapshot(connection) == before", guard)
+        after = guard.split('raise AssertionError("Nonempty saved-answer downgrade must fail closed")', 1)[1]
+        self.assertLess(after.index("check_connection_schema(connection)"), after.index("verify_postgres_identity(connection, capability)"))
+
+    def test_answer_receipt_migration_removes_only_own_empty_objects(self):
+        source = (ROOT / "api/alembic/versions/0068_answer_evidence.py").read_text()
+        self.assertIn('down_revision = "0067_scientific_adjudication"', source)
+        self.assertLess(source.index("retained immutable saved answers"), source.index("DROP TRIGGER ae68_complete"))
+        self.assertNotIn("CASCADE", source)
+        self.assertIn('op.drop_column("ask_history", "evidence_receipt_version")', source)
+        self.assertIn("reversed(FUNCTION_SIGNATURES)", source)
+
     def test_adjudication_history_is_populated_after_every_old_guard(self):
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         main = source.split("def main()", 1)[1]

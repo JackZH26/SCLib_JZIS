@@ -266,7 +266,8 @@ async def test_ask_response_and_history_never_store_rejected_synthesis(client, d
     monkeypatch.setattr(rag, "generate_answer", generate)
     persisted = []
     async def persist(*args):
-        persisted.append(args[3])
+        persisted.append(args[4].answer)
+        return args[4]
     monkeypatch.setattr("routers.ask._persist_history", persist)
     user = User(id=uuid4(), email="synthetic-rg01@example.invalid", name="Synthetic")
     app.dependency_overrides[require_identity] = lambda: Identity(user, None, None, 12)

@@ -9,7 +9,7 @@ import { EvidenceProvenanceNotice } from "@/components/EvidenceProvenanceNotice"
 import { PackingSourceNotice } from "@/components/EvidencePackingNotice";
 
 /** Separate candidate displays, never a generated explanation of a numerical result. */
-export function ScientificMixedNotice({ response, rawQuery }: { response: AskResponse; rawQuery: string }) {
+export function ScientificMixedNotice({ response, rawQuery, historical = false }: { response: AskResponse; rawQuery: string; historical?: boolean }) {
   const mixed = knownScientificMixedResponse(response, rawQuery);
   if (mixed?.status === "not_requested") return null;
   if (!mixed) return <section aria-label="Mixed scientific retrieval" className="space-y-2 rounded border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
@@ -18,7 +18,7 @@ export function ScientificMixedNotice({ response, rawQuery }: { response: AskRes
   </section>;
   if (mixed.status === "unavailable") return <section aria-label="Mixed scientific retrieval" className="space-y-2 rounded border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
     <h3 className="font-semibold">Numerical explanation not established</h3>
-    <p role="status">Mixed retrieval is unavailable. Both numerical records and original passage candidates have been withdrawn; no previous association is retained. Please retry the query.</p>
+    <p role="status">{historical ? "The saved mixed retrieval was unavailable. It retained no numerical records, original passage candidates or associations. This history view does not retry the query." : "Mixed retrieval is unavailable. Both numerical records and original passage candidates have been withdrawn; no previous association is retained. Please retry the query."}</p>
     <p>No provider token count or answer generation was requested for this mixed lookup.</p>
   </section>;
 
@@ -27,6 +27,7 @@ export function ScientificMixedNotice({ response, rawQuery }: { response: AskRes
   return <section aria-label="Mixed scientific retrieval" className="space-y-5">
     <div className="space-y-2 rounded border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
       <h3 className="font-semibold">Numerical explanation not established</h3>
+      {historical && <p>Saved retrieval observations only. These rows and associations have not been refreshed or scientifically revalidated in this history view.</p>}
       <p>Structured extraction records and original passage candidates are shown separately. A reviewed Result-to-passage bridge is missing.</p>
       <p>Sharing a paper, Work group or catalogue snapshot does not establish the same experiment, sample, conditions or a causal explanation. Catalogue snapshots describe retained metadata, not authenticated original documents.</p>
       <p>No provider token count or answer generation was requested for this mixed lookup. No numerical synthesis or scientific acceptance is asserted.</p>
@@ -37,7 +38,7 @@ export function ScientificMixedNotice({ response, rawQuery }: { response: AskRes
     <section aria-label="Structured extraction records" className="space-y-3">
       <h3 className="font-semibold text-sage-ink">Structured extraction records</h3>
       <ScientificQueryNotice context="Ask" rawQuery={rawQuery} query={response.scientific_query}
-        lookup={response.scientific_lookup} results={results} generation={response.retrieval_generation} />
+        lookup={response.scientific_lookup} results={results} generation={response.retrieval_generation} historical={historical} />
     </section>
 
     <section aria-label="Original explanation candidates" className="space-y-3">
@@ -48,10 +49,11 @@ export function ScientificMixedNotice({ response, rawQuery }: { response: AskRes
           className="space-y-2 rounded border border-sage-border bg-white p-4 text-sm">
           <Link href={`/paper/${encodeURIComponent(source.paper_id)}`} className="font-medium text-accent-deep underline">[{source.index}] {source.title}</Link>
           <p className="text-xs text-sage-muted">{source.authors_short}{source.year !== null ? ` · ${source.year}` : ""}{source.section ? ` · ${source.section}` : ""}</p>
+          {historical && <p className="text-xs text-sage-muted">Saved source status:</p>}
           <SourceVisibilityNotice visibility={source.source_visibility} compact />
-          <EvidenceProvenanceNotice evidence={source.evidence_provenance} />
+          <EvidenceProvenanceNotice evidence={source.evidence_provenance} historical={historical} />
           <blockquote className="border-l-2 border-sage-border pl-3 text-sm leading-relaxed">{source.snippet || "No excerpt supplied."}</blockquote>
-          <PackingSourceNotice source={source} sources={response.sources} />
+          <PackingSourceNotice source={source} sources={response.sources} historical={historical} />
         </article>)}</div>}
       {packing.payload_bytes !== null && packing.byte_budget !== null && <p className="text-xs text-sage-muted">
         Original-candidate context: {number(packing.payload_bytes)} / {number(packing.byte_budget)} canonical UTF-8 bytes.

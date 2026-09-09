@@ -183,6 +183,7 @@ async function request<T>(
   path: string,
   init: RequestInit & {
     apiKey?: string;
+    responseByteLimit?: number;
     next?: { revalidate?: number };
   } = {},
 ): Promise<T> {
@@ -206,7 +207,8 @@ async function request<T>(
     const raw = e instanceof Error ? e.message : String(e);
     throw new ApiError(0, null, sanitizeErrorMessage(raw));
   }
-  const body = await res.json().catch(() => ({}));
+  const body = init.responseByteLimit === undefined ? await res.json().catch(() => ({}))
+    : await boundedJson(res, init.responseByteLimit);
   if (!res.ok) {
     const detail = (body as { detail?: unknown }).detail;
     const rawMsg =
@@ -229,6 +231,32 @@ async function request<T>(
     );
   }
   return body as T;
+}
+
+/** Private detail reads enforce their wire bound before JSON hydration. */
+async function boundedJson(response: Response, limit: number): Promise<unknown> {
+  const reader = response.body?.getReader();
+  if (!reader) throw new ApiError(0, null, "History detail unavailable.");
+  const parts: Uint8Array[] = [];
+  let size = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > limit || parts.length >= 4096) throw new Error("response limit");
+      parts.push(value);
+    }
+    const bytes = new Uint8Array(size);
+    let offset = 0;
+    for (const part of parts) { bytes.set(part, offset); offset += part.byteLength; }
+    return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+  } catch {
+    await reader.cancel().catch(() => {});
+    throw new ApiError(0, null, "History detail unavailable.");
+  } finally {
+    reader.releaseLock();
+  }
 }
 
 // --- shared types ----------------------------------------------------------
@@ -473,6 +501,7 @@ export interface AskHistoryEntry {
     snippet?: string;
   }>;
   current_evidence?: AskHistoryCurrentEvidence;
+  receipt?: import("./answer-history").HistoryReceiptSummary;
   tokens_used: number | null;
   latency_ms: number;
   language: string | null;
@@ -494,6 +523,12 @@ export function listHistory(limit = 50, offset = 0) {
 export function deleteHistoryEntry(id: string) {
   return request<{ message: string }>(`/history/${id}`, {
     method: "DELETE",
+  });
+}
+
+export function historyDetail(id: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/history/${encodeURIComponent(id)}`, {
+    signal, cache: "no-store", responseByteLimit: 3 * 1024 * 1024,
   });
 }
 
@@ -724,6 +759,7 @@ export interface EvidenceProvenance {
 }
 
 export interface AskResponse {
+  history?: import("./answer-history").HistorySaveDisposition;
   scientific_mixed?: ScientificMixedEvidence;
   evidence_packing?: EvidencePackingSummary;
   input_budget?: RagInputBudgetReport;

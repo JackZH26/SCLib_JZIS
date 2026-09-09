@@ -12,6 +12,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from models.evidence_packing import EvidencePackingSelection, EvidencePackingSummary
+from models.history_receipts import HistorySaveDisposition
 from models.index_read import IndexReadMetadata
 from models.rag_input_budget import RagInputBudgetReport
 from models.scientific_lookup import (
@@ -185,6 +186,7 @@ class ClaimSupportAssessment(BaseModel):
 
 
 class AskResponse(BaseModel):
+    history: HistorySaveDisposition = Field(default_factory=HistorySaveDisposition)
     scientific_mixed: ScientificMixedEvidence = Field(default_factory=ScientificMixedEvidence)
     evidence_packing: EvidencePackingSummary = Field(default_factory=EvidencePackingSummary)
     input_budget: RagInputBudgetReport = Field(default_factory=RagInputBudgetReport)

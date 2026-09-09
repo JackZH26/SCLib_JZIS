@@ -24,6 +24,22 @@ _ML_FEATURE_BINDING_TABLE = "ml_feature_source_bindings"
 _SCIENTIFIC_IMPORT_TABLES = ("scientific_import_packages", "scientific_import_attempts", "scientific_import_blobs",
                              "scientific_import_files", "scientific_import_outcomes")
 _ADJUDICATION_TABLES = ("scientific_result_subjects", "scientific_adjudication_requests", "scientific_result_decisions")
+_ANSWER_EVIDENCE_TABLE = "answer_evidence_receipts"
+
+
+def _pre_answer_evidence_rows(connection, name):
+    """Only the new nullable marker is absent at pre0068 heads; no old field is ignored."""
+    from sqlalchemy import text
+
+    projection = "to_jsonb(item)-'evidence_receipt_version'" if name == "ask_history" else "to_jsonb(item)"
+    return connection.execute(text(f"SELECT {projection} FROM public.{name} item ORDER BY ({projection})::text")).scalars().all()
+
+
+def _assert_empty_answer_evidence(connection):
+    from sqlalchemy import text
+
+    assert connection.execute(text("SELECT count(*) FROM public.answer_evidence_receipts")).scalar_one() == 0
+    assert connection.execute(text("SELECT count(*) FROM public.ask_history WHERE evidence_receipt_version IS NOT NULL")).scalar_one() == 0
 
 
 def _report_signature(connection, check, *, release_id=None):
@@ -62,6 +78,7 @@ def _assert_empty_adjudications(connection):
 
     for name in _ADJUDICATION_TABLES:
         assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
+    _assert_empty_answer_evidence(connection)
 
 
 def _assert_empty_ml_feature_bindings(connection):
@@ -140,11 +157,11 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
     def snapshot(connection):
         # Local synthetic database only: compare every application table row,
         # including historical capsule bytes and lifecycle/source identities.
-        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+        return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts",
                                 "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -551,10 +568,10 @@ def _background_jobs_empty_roundtrip(capability, engine, config):
     from sqlalchemy import inspect, text
 
     def snapshot(connection):
-        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+        return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES,
-                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES}}
+                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -693,13 +710,13 @@ def _rag_evidence_empty_roundtrip(capability, engine, config):
     """0060 alone round-trips while every independently tested older ledger survives."""
     from alembic import command
     from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
-    from sqlalchemy import inspect, text
+    from sqlalchemy import inspect
 
     def snapshot(connection):
-        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+        return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -838,13 +855,13 @@ def _embedding_receipts_empty_roundtrip(capability, engine, config):
     """0061 alone round-trips after all older independent nonempty guards."""
     from alembic import command
     from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
-    from sqlalchemy import inspect, text
+    from sqlalchemy import inspect
 
     def snapshot(connection):
-        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+        return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES,
-                                *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES}}
+                                *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -958,12 +975,12 @@ def _index_generations_empty_roundtrip(capability, engine, config):
     """Older populated audit ledgers survive an independently empty0062 cycle."""
     from alembic import command
     from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
-    from sqlalchemy import inspect, text
+    from sqlalchemy import inspect
 
     def snapshot(connection):
-        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+        return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES}}
+                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1116,12 +1133,12 @@ def _distributions_empty_roundtrip(capability, engine, config):
     """Independently empty0063 roundtrip preserves every already populated ledger."""
     from alembic import command
     from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
-    from sqlalchemy import inspect, text
+    from sqlalchemy import inspect
 
     def snapshot(connection):
-        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+        return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES}}
+                if name not in {"alembic_version", *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1267,12 +1284,12 @@ def _ml_feature_bindings_empty_roundtrip(capability, engine, config):
     """An empty0064 can round-trip after all older histories are populated."""
     from alembic import command
     from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
-    from sqlalchemy import inspect, text
+    from sqlalchemy import inspect
 
     def snapshot(connection):
-        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+        return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES}}
+                if name not in {"alembic_version", _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1378,12 +1395,12 @@ def _scientific_imports_empty_roundtrip(capability, engine, config):
     """Only the empty0065 ledger is removed; all older populated histories remain."""
     from alembic import command
     from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
-    from sqlalchemy import inspect, text
+    from sqlalchemy import inspect
 
     def snapshot(connection):
-        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+        return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES}}
+                if name not in {"alembic_version", *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1546,8 +1563,8 @@ def _result_impact_indexes_roundtrip(capability, engine, config, *, populated):
     from sqlalchemy import inspect, text
 
     def snapshot(connection):
-        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
-                for name in inspect(connection).get_table_names(schema="public") if name not in {"alembic_version", *_ADJUDICATION_TABLES}}
+        return {name: _pre_answer_evidence_rows(connection, name)
+                for name in inspect(connection).get_table_names(schema="public") if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1618,9 +1635,9 @@ def _adjudications_empty_roundtrip(capability, engine, config):
     from sqlalchemy import inspect, text
 
     def snapshot(connection):
-        return {name: connection.execute(text(f"SELECT to_jsonb(t) FROM public.{name} t ORDER BY to_jsonb(t)::text")).scalars().all()
+        return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_ADJUDICATION_TABLES}}
+                if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1731,6 +1748,220 @@ def _adjudication_downgrade_guard(capability, engine, config, request_id):
         assert "retained exact review history" in str(exc)
     else:
         raise AssertionError("Nonempty exact-result adjudication downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+
+
+def _answer_evidence_empty_roundtrip(capability, engine, config):
+    """0068 alone removes no earlier history and never backfills a legacy answer."""
+    from uuid import uuid4
+
+    from alembic import command
+    from models.answer_evidence_v1 import FUNCTION_SIGNATURES
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: _pre_answer_evidence_rows(connection, name)
+                for name in inspect(connection).get_table_names(schema="public")
+                if name not in {"alembic_version", _ANSWER_EVIDENCE_TABLE}}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        _assert_empty_answer_evidence(connection)
+        before = snapshot(connection)
+        assert before["scientific_result_decisions"]
+    validate_test_environment()
+    command.downgrade(config, "0067_scientific_adjudication")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError as exc:
+            assert "exact revision" in str(exc)
+        else:
+            raise AssertionError("Saved-answer application must reject the previous schema")
+        verify_postgres_identity(connection, capability)
+        assert _ANSWER_EVIDENCE_TABLE not in inspect(connection).get_table_names(schema="public")
+        assert "evidence_receipt_version" not in {column["name"] for column in inspect(connection).get_columns("ask_history")}
+        assert snapshot(connection) == before
+        for name, arguments in FUNCTION_SIGNATURES:
+            assert connection.execute(text("SELECT to_regprocedure(:signature)"),
+                {"signature": f"public.{name}({arguments})"}).scalar_one() is None
+        # This row genuinely predates the new column, not a post-upgrade retrofit.
+        owner_id, legacy_id = uuid4(), uuid4()
+        connection.execute(text("""INSERT INTO users(id,email,name,email_verified,is_active,is_admin,is_reviewer)
+            VALUES(:id,:email,'Synthetic legacy history owner',true,true,false,false)"""),
+            {"id": owner_id, "email": f"migration-legacy-{owner_id}@example.test"})
+        connection.execute(text("""INSERT INTO ask_history(id,user_id,question,answer,sources,tokens_used,latency_ms,language,created_at)
+            VALUES(:id,:owner,'Synthetic legacy question','Unpinned historical snapshot','[]'::jsonb,NULL,7,NULL,
+                   '2020-01-01T00:00:00Z'::timestamptz)"""), {"id": legacy_id, "owner": owner_id})
+        before = snapshot(connection)
+        connection.commit()
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_answer_evidence(connection)
+        assert snapshot(connection) == before
+        assert connection.execute(text("SELECT evidence_receipt_version FROM ask_history WHERE id=:id"), {"id": legacy_id}).scalar_one() is None
+        for name, arguments in FUNCTION_SIGNATURES:
+            assert connection.execute(text("SELECT to_regprocedure(:signature)"),
+                {"signature": f"public.{name}({arguments})"}).scalar_one() is not None
+        assert connection.execute(text("SELECT count(*) FROM pg_trigger WHERE tgname IN ('ae68_parent','ae68_complete',"
+            "'ae68_insert','ae68_immutable','ae68_truncate') AND NOT tgisinternal")).scalar_one() == 5
+    return str(legacy_id)
+
+
+async def _answer_evidence_on_migrated_schema(capability, api_root, generation_id, legacy_id):
+    """Real retained generation, complete response, rollback/read replay and owner cascade."""
+    validate_test_environment()
+    from uuid import UUID, uuid4
+
+    import sqlalchemy as sa
+    from models.answer_evidence_v1 import VERSION
+    from models.db import Base, _to_async_dsn
+    from models.index_read import generation_read_metadata
+    from models.search import AskRequest, AskResponse, AskSource
+    from services import answer_evidence as service
+    from services import evidence_packing, index_retrieval, retrieval_currentness
+    from services.authors import short as authors_short
+    from services.index_generations import (
+        load_active_generation,
+        load_generation_members,
+    )
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy.dialects.postgresql import insert
+    from sqlalchemy.exc import DBAPIError
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from tests.test_research_freeze import state
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), isolation_level="SERIALIZABLE", poolclass=NullPool)
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda raw: verify_postgres_identity(raw, capability))
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            connection = await session.connection()
+            await connection.run_sync(lambda raw: verify_postgres_identity(raw, capability))
+            await session.execute(sa.text("SET LOCAL TIME ZONE 'UTC'"))
+            await session.execute(sa.text("SET LOCAL statement_timeout='5000ms'"))
+            legacy_before = await session.scalar(sa.text("SELECT to_jsonb(h) FROM ask_history h WHERE id=:id"), {"id": UUID(legacy_id)})
+            pin = await load_active_generation(session)
+            assert pin["generation_id"] == generation_id
+            member = (await load_generation_members(session, generation_id=generation_id))[0]
+            chunk = (await index_retrieval.hydrate(session, pin, [member["vector_id"]]))[member["vector_id"]]
+            evidence = (await index_retrieval.resolve_evidence(session, [chunk]))[chunk.id]
+            paper = index_retrieval.attribution(chunk)
+            plan = evidence_packing.pack_evidence([{"chunk_id": chunk.id, "paper_id": chunk.paper_id,
+                "content_sha256": member["content_sha256"], "source_snapshot_sha256": member["source_snapshot_sha256"],
+                "chunk_kind": evidence["chunk_kind"]}], cost=lambda ids: 100 + 100 * len(ids), byte_budget=4096, max_chunks=1)
+            source = AskSource(index=1, paper_id=paper.id, arxiv_id=paper.arxiv_id, title=paper.title,
+                authors_short=authors_short(paper.authors or []), year=paper.date_submitted.year if paper.date_submitted else None,
+                section=chunk.section, snippet=service._snippet(chunk.text), evidence_provenance=evidence, packing_info=plan.selected[0])
+            request = AskRequest(question="What does the retained synthetic source say?", max_sources=1, language="auto")
+            response = AskResponse(answer="Retained synthetic source [1]; no scientific approval.", sources=[source],
+                tokens_used=None, query_time_ms=7, retrieval_generation=generation_read_metadata(pin),
+                evidence_packing=evidence_packing.public_summary(plan))
+            selection = retrieval_currentness.selection_pin(chunk, material_evidence=[], source_review={}, evidence=evidence)
+            capture = service.capture_inputs(request=request, generation_pin=pin, sources=(source,), chunks=(chunk,), selection_pins=(selection,))
+            prepared = service.finish_capture(capture, response)
+            fields = await service.receipt_fields(session, prepared)
+            fields = {**fields, **{key: UUID(fields[key]) if fields[key] else None for key in ("generation_id", "activation_event_id")}}
+            owner_id, history_id = uuid4(), uuid4()
+            await session.execute(Base.metadata.tables["users"].insert().values(id=owner_id,
+                email=f"migration-receipt-{owner_id}@example.test", name="Synthetic receipt owner", is_active=True, email_verified=True))
+            await session.commit()
+            history = {"id": history_id, "user_id": owner_id, "question": request.question,
+                "answer": response.answer, "sources": [source.model_dump(mode="json")], "tokens_used": None,
+                "latency_ms": 7, "language": "auto", "evidence_receipt_version": VERSION}
+
+            async def append(*, receipt=True, identifier=history_id):
+                await session.execute(insert(Base.metadata.tables["ask_history"]).values(**{**history, "id": identifier}).on_conflict_do_nothing(index_elements=["id"]))
+                if receipt:
+                    await session.execute(insert(Base.metadata.tables[_ANSWER_EVIDENCE_TABLE]).values(history_id=identifier, **fields)
+                        .on_conflict_do_nothing(index_elements=["history_id"]))
+                await session.execute(sa.text("SET CONSTRAINTS ae68_complete IMMEDIATE"))
+                await session.execute(sa.text("SET CONSTRAINTS ae68_complete DEFERRED"))
+
+            before = await state(session)
+            try:
+                async with session.begin_nested():
+                    await append(receipt=False)
+            except DBAPIError as exc:
+                assert "complete_receipt_required" in str(exc)
+            else:
+                raise AssertionError("Marked history cannot commit without its exact receipt")
+            assert await state(session) == before
+            await append()
+            await session.rollback()
+            assert await state(session) == before
+            await append()
+            await session.commit()
+            written = await state(session)
+            assert len(written[_ANSWER_EVIDENCE_TABLE]) == 1
+            assert next(row for row in written["ask_history"] if row["id"] == legacy_id) == legacy_before
+            for name in before:
+                if name not in {"ask_history", _ANSWER_EVIDENCE_TABLE}:
+                    assert written[name] == before[name], name
+            await append()
+            await session.commit()
+            assert await state(session) == written
+            await session.rollback()
+            await session.execute(sa.text("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY"))
+            await session.execute(sa.text("SET LOCAL TIME ZONE 'UTC'"))
+            await session.execute(sa.text("SET LOCAL statement_timeout='5000ms'"))
+            stored = dict((await session.execute(sa.select(Base.metadata.tables[_ANSWER_EVIDENCE_TABLE]).where(
+                Base.metadata.tables[_ANSWER_EVIDENCE_TABLE].c.history_id == history_id))).mappings().one())
+            verified = await service.verify_historical(session, stored)
+            assert verified["bindings"]["mode"] == "generation_bound"
+            assert verified["bindings"]["items"][0]["chunk_id"] == member["vector_id"]
+            assert verified["response"]["tokens_used"] is None
+            assert await service.verify_historical(session, stored) == verified
+            assert await state(session) == written
+            await session.rollback()
+            # Owner deletion is intentionally allowed, but rollback restores both rows.
+            await session.execute(sa.text("DELETE FROM ask_history WHERE id=:id AND user_id=:owner"), {"id": history_id, "owner": owner_id})
+            assert await session.scalar(sa.text("SELECT count(*) FROM answer_evidence_receipts WHERE history_id=:id"), {"id": history_id}) == 0
+            await session.rollback()
+            assert await state(session) == written
+            # Also prove a durable owner-scoped deletion, without deleting the
+            # retained primary receipt needed by the independent downgrade guard.
+            deleted_id = uuid4()
+            await append(identifier=deleted_id)
+            await session.commit()
+            await session.execute(sa.text("DELETE FROM ask_history WHERE id=:id AND user_id=:owner"), {"id": deleted_id, "owner": owner_id})
+            await session.commit()
+            assert await state(session) == written
+            await session.rollback()
+            return str(history_id)
+    finally:
+        await engine.dispose()
+
+
+def _answer_evidence_downgrade_guard(capability, engine, config, history_id):
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(t) FROM public.{name} t ORDER BY to_jsonb(t)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert any(row["history_id"] == history_id for row in before[_ANSWER_EVIDENCE_TABLE])
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0067_scientific_adjudication")
+    except RuntimeError as exc:
+        assert "retained immutable saved answers" in str(exc)
+    else:
+        raise AssertionError("Nonempty saved-answer downgrade must fail closed")
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
@@ -2060,6 +2291,9 @@ def main() -> None:
         _adjudications_empty_roundtrip(capability, engine, config)
         adjudication_id = asyncio.run(_adjudications_on_migrated_schema(capability, api_root, attempt_id))
         _adjudication_downgrade_guard(capability, engine, config, adjudication_id)
+        legacy_history_id = _answer_evidence_empty_roundtrip(capability, engine, config)
+        history_id = asyncio.run(_answer_evidence_on_migrated_schema(capability, api_root, generation_id, legacy_history_id))
+        _answer_evidence_downgrade_guard(capability, engine, config, history_id)
         if recorder is not None:
             with engine.connect() as connection:
                 verify_postgres_identity(connection, capability)
@@ -2067,7 +2301,7 @@ def main() -> None:
                 for check, before in retained_before.items():
                     recorder.retention(check, before, _report_signature(connection, check, release_id=release_id))
                 report_document = recorder.finish(connection)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay, exact property feature source companions/byte verification/replay, byte-retained pending scientific imports with durable unknown starts/atomic completion/rollback/replay, result-impact index-only empty/populated roundtrips, exact-result adjudication preview/commit/replay/source preservation and independent nonempty history rollback guards verified.")
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay, exact property feature source companions/byte verification/replay, byte-retained pending scientific imports with durable unknown starts/atomic completion/rollback/replay, result-impact index-only empty/populated roundtrips, exact-result adjudication preview/commit/replay/source preservation, immutable saved-answer atomic receipts/legacy NULL preservation/historical verification/no-op replay/owner cascade and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
     if report_destination is not None:

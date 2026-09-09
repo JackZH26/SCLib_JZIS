@@ -19,6 +19,7 @@ import { MarkdownAnswer } from "@/components/MarkdownAnswer";
 import { AskSupportNotice } from "@/components/AskSupportNotice";
 import { ScientificQueryNotice } from "@/components/ScientificQueryNotice";
 import { ScientificMixedNotice } from "@/components/ScientificMixedNotice";
+import { HistorySaveNotice } from "@/components/HistorySaveNotice";
 import { EvidencePackingNotice, PackingSourceNotice } from "@/components/EvidencePackingNotice";
 import { resolveAskSource } from "@/lib/ask-support";
 import { knownScientificLookup, knownScientificQuery, knownScientificResults } from "@/lib/scientific-query";
@@ -176,6 +177,7 @@ function SearchInner({ q }: { q: string }) {
           <div className="mt-2 text-xs text-sage-tertiary">
             {askData.query_time_ms} ms{showMixed ? mixed ? " · No generation requested" : " · Mixed metadata withheld" : ` · ${askData.tokens_used ?? "—"} tokens`}
           </div>
+          <HistorySaveNotice value={askData.history} />
         </div>
       )}
 

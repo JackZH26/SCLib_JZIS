@@ -11,7 +11,7 @@ const ANSWER_MODE_LABELS = {
   abstention: "Abstention — no supported synthesis provided",
 };
 
-export function AskSupportNotice({ response }: { response: AskResponse }) {
+export function AskSupportNotice({ response, historical = false }: { response: AskResponse; historical?: boolean }) {
   const status = displayedAskSupportStatus(response);
   const knownPolicy = response.support_policy_version === SCIENTIFIC_SUPPORT_POLICY_VERSION;
   const claims = response.claim_assessments ?? [];
@@ -20,6 +20,7 @@ export function AskSupportNotice({ response }: { response: AskResponse }) {
     ? ANSWER_MODE_LABELS[response.answer_mode] : "Answer mode unavailable (legacy response)";
 
   return <section className={`mb-4 rounded-md border p-3 text-sm ${status === "contradicted" ? "border-red-200 bg-red-50 text-red-950" : status === "supported" ? "border-slate-200 bg-slate-50 text-sage-ink" : "border-amber-200 bg-amber-50 text-amber-950"}`} aria-label="Answer evidence checks">
+    {historical && <p className="mb-2 font-medium">Saved answer-time checks only. The answer and source permissions have not been revalidated today.</p>}
     <p className="font-semibold" role="status">{response.assessment_scope === "generated_draft" ? "Draft claim checks: " : ""}{supportStatusLabel(status)}</p>
     <p className="mt-1 text-xs">{mode}. These bounded checks compare answer claims with retrieved excerpts; they do not establish scientific truth, experimental confirmation, or permission to use a claim as an ML label.</p>
     <p className="mt-2 text-xs">Citation indices: {response.citation_indices_valid === true ? "mechanically valid" : response.citation_indices_valid === false ? "invalid indices were detected" : "not reported by this API version"}. Lexical excerpt checks: {knownPolicy && response.lexical_support_checked === true ? "performed" : "not established"}. Valid source references alone do not demonstrate support.</p>
@@ -31,7 +32,7 @@ export function AskSupportNotice({ response }: { response: AskResponse }) {
     {response.sources.length === 0 && <p className="mt-2 text-xs">No retrieved sources are available for inspection.</p>}
     {(response.support_warnings?.length || response.citation_warnings?.length) ? <details className="mt-2 text-xs"><summary className="cursor-pointer font-medium">Check limitations and warnings</summary><ul className="mt-1 list-disc space-y-1 pl-4">{[...(response.support_warnings ?? []), ...(response.citation_warnings ?? [])].map((warning, index) => <li key={index}>{warning}</li>)}</ul></details> : null}
     <SupportCoverage coverage={response.support_coverage} />
-    {claims.length > 0 ? <details className="mt-3"><summary className="cursor-pointer text-xs font-medium">Inspect draft claim checks ({claims.length}) and cited excerpts</summary><ol className="mt-3 space-y-3">{claims.map((claim, index) => <ClaimAssessment key={`${claim.claim_id}:${index}`} claim={claim} sources={response.sources} knownPolicy={knownPolicy && response.assessment_scope === "generated_draft" && !supportedMetadataMismatch} />)}</ol></details> : <p className="mt-2 text-xs">No claim-level assessments were supplied. An unchecked answer is not the same as an answer shown to be unsupported.</p>}
+    {claims.length > 0 ? <details className="mt-3"><summary className="cursor-pointer text-xs font-medium">Inspect draft claim checks ({claims.length}) and cited excerpts</summary><ol className="mt-3 space-y-3">{claims.map((claim, index) => <ClaimAssessment key={`${claim.claim_id}:${index}`} claim={claim} sources={response.sources} historical={historical} knownPolicy={knownPolicy && response.assessment_scope === "generated_draft" && !supportedMetadataMismatch} />)}</ol></details> : <p className="mt-2 text-xs">No claim-level assessments were supplied. An unchecked answer is not the same as an answer shown to be unsupported.</p>}
   </section>;
 }
 
@@ -52,7 +53,7 @@ function SupportCoverage({ coverage }: { coverage?: AskSupportCoverage }) {
   </details>;
 }
 
-function ClaimAssessment({ claim, sources, knownPolicy }: { claim: AskClaimAssessment; sources: AskResponse["sources"]; knownPolicy: boolean }) {
+function ClaimAssessment({ claim, sources, knownPolicy, historical }: { claim: AskClaimAssessment; sources: AskResponse["sources"]; knownPolicy: boolean; historical: boolean }) {
   const supportedEvidence = claim.evidence.some(evidence => {
     const source = supportEvidenceSource(evidence.source_index, evidence.paper_id, sources);
     return claim.cited_indices.includes(evidence.source_index) && evidence.excerpt.trim() && source && !excerptSourceIsHeld(source) && !source.evidence_provenance;
@@ -67,8 +68,8 @@ function ClaimAssessment({ claim, sources, knownPolicy }: { claim: AskClaimAsses
     {claim.evidence.length > 0 ? <ul className="mt-2 space-y-2">{claim.evidence.map((evidence, index) => {
       const source = claim.cited_indices.includes(evidence.source_index) ? supportEvidenceSource(evidence.source_index, evidence.paper_id, sources) : null;
       return <li className="border-l-2 border-slate-200 pl-3" key={index}>
-        {source ? <div className="text-xs"><Link href={`/paper/${encodeURIComponent(source.paper_id)}`} className="text-sky-800 underline">[{source.index}] {source.title || source.paper_id}</Link><SourceVisibilityNotice visibility={source.source_visibility} compact />{source.evidence_provenance !== undefined && <EvidenceProvenanceNotice evidence={source.evidence_provenance} />}</div> : <p className="text-xs text-amber-900">Evidence source could not be matched to a unique cited source. No source link is asserted.</p>}
-        <blockquote className="mt-1 whitespace-pre-wrap break-words text-xs leading-relaxed">{!source || excerptSourceIsHeld(source) ? "Excerpt withheld: current evidence is restricted, stale, or unavailable." : evidence.excerpt || "No excerpt supplied."}</blockquote>
+        {source ? <div className="text-xs"><Link href={`/paper/${encodeURIComponent(source.paper_id)}`} className="text-sky-800 underline">[{source.index}] {source.title || source.paper_id}</Link>{historical && <p>Saved source status:</p>}<SourceVisibilityNotice visibility={source.source_visibility} compact />{source.evidence_provenance !== undefined && <EvidenceProvenanceNotice evidence={source.evidence_provenance} historical={historical} />}</div> : <p className="text-xs text-amber-900">Evidence source could not be matched to a unique cited source. No source link is asserted.</p>}
+        <blockquote className="mt-1 whitespace-pre-wrap break-words text-xs leading-relaxed">{!source || excerptSourceIsHeld(source) ? historical ? "Excerpt withheld: saved evidence was restricted, stale, or unavailable." : "Excerpt withheld: current evidence is restricted, stale, or unavailable." : evidence.excerpt || "No excerpt supplied."}</blockquote>
       </li>;
     })}</ul> : <p className="mt-2 text-xs text-slate-600">No supporting or conflicting excerpts were supplied for this claim.</p>}
   </li>;

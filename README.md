@@ -20,6 +20,9 @@ and [explicit schema migration with read-only API admission](docs/SCHEMA_ROLLOUT
 The next boundary adds [explicit research-role access and reviewed metadata-only publications](docs/RESEARCH_PUBLICATION_ACCESS.md).
 Retrieval now also has [immutable index generations and controlled rollback](docs/INDEX_GENERATIONS.md)
 and [formula-safe scientific query routing](docs/SCIENTIFIC_QUERY_ROUTING.md).
+New authenticated answers also retain [private final-output evidence receipts](docs/ANSWER_HISTORY_RECEIPTS.md),
+with exact historical references, honest save outcomes and separate current
+metadata warnings. Legacy history is not retroactively rebound.
 Scientific-program ingestion now also has a [private, pending-only native-file importer](docs/SCIENTIFIC_PENDING_IMPORTS.md)
 with retained source bytes, actual coordinate parsing, durable attempts and
 rollback-only preview. Parsed observations are not approved scientific results.

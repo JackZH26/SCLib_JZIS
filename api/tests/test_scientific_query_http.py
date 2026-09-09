@@ -287,11 +287,14 @@ async def test_lookup_history_keeps_no_fake_citations_or_unbound_numerical_rows(
     await db_session.rollback()
     history = (await db_session.execute(sa.select(AskHistory).where(AskHistory.user_id == user.id))).scalars().one()
     assert history.question == question and history.sources == [] and history.tokens_used == 0
-    if structured:
-        assert "not retained in this history schema" in history.answer
-        assert "listed below" not in history.answer and "39" not in history.answer
-    else:
-        assert history.answer == response.json()["answer"]
+    assert history.answer == response.json()["answer"]
+    assert response.json()["history"]["status"] == "saved"
+    detail = await client.get(f"/v1/history/{history.id}", headers={"Authorization": f"Bearer {token}"})
+    assert detail.status_code == 200, detail.text
+    receipt = detail.json()["evidence"]["receipt"]
+    assert detail.json()["evidence"]["status"] == "verified"
+    assert receipt["response"]["scientific_results"] == response.json()["scientific_results"]
+    assert bool(receipt["response"]["scientific_results"]) is structured
 
 
 @pytest.mark.parametrize("text", ["MgB2 " + " " * 21000, "MgB2 " * 300], ids=["long-whitespace", "many-mentions"])
