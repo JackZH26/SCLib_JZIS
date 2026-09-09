@@ -197,6 +197,20 @@ the API without a reviewed active generation changes availability and recall;
 do not treat this batch as an unattended production rollout. A 1,000-member
 canary is an intentionally limited corpus, not a replacement for the full site.
 
+## Retained local migration measurements
+
+The [fixed synthetic measurement runner](INDEX_MIGRATION_MEASUREMENTS.md) now
+compares exact historical/current chunker inputs and independently exercises
+actual two-paper G1 (7 members) → G2 (5 members) → G1 migration. It measures
+partial publication, read-only repair diagnostics, explicit recovery, outer
+transaction rollback, idempotent activation replay and unchanged answer/release
+dependencies. The first source-pinned [actual native report](reviews/2026-09-05/measurements/RG03_Index_Migration_2026-09-09-01.json)
+completed with verified owned cleanup. It is not a production migration or real
+ANN/provider-quality evaluation. Unknown billing and production metrics remain
+null; the historical chunker has no comparable locator coverage. See the
+[batch record](reviews/2026-09-05/Priority_Thirty_Ninth_Batch_Implementation_2026-09-09.md)
+for denominators, measured costs/unknowns, timings and limitations.
+
 Before production: separately authorize a source-use-reviewed, costed canary;
 apply migrations through the migration job; verify Linux/release-image CI;
 stage and verify the complete intended corpus; rehearse activation and rollback;

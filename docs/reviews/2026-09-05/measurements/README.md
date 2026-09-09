@@ -1,7 +1,7 @@
 # Isolated engineering rehearsal measurements
 
-This directory retains actual, opt-in EN02 migration/read-model rehearsal
-receipts. They concern newly created disposable synthetic databases, not
+This directory retains actual, opt-in schema/read-model, research-restore and
+index-migration rehearsal receipts. They concern newly created disposable synthetic databases, not
 production, scientific review, source redistribution or an approved deployment.
 
 Use a fresh filename for every run. The runner refuses existing files and does
@@ -20,6 +20,45 @@ rollback instructions and the separate production-readiness gate.
 No secrets, DSNs, capability files, raw source bodies or research-release bytes
 belong in these archives. Hash equality is an integrity check, not human
 authentication or scientific approval.
+
+## 2026-09-09: historical/current chunking and actual index migration
+
+[RG03_Index_Migration_2026-09-09-01.json](RG03_Index_Migration_2026-09-09-01.json)
+is the first actual `index-migration-rehearsal/1.0.0` receipt. The standalone
+runner creates owned services, migrates an empty database to 0068 in one child
+and performs measurements in another. Exact owned cleanup precedes publication.
+It does not change the meaning or bytes of earlier schema/restore receipts.
+
+| Measurement identity | Actual value |
+| --- | --- |
+| Full-file SHA-256 | `d44dfd8e7c8d7ed8d5dbc07de45461f0fe161a407dca01a31e9565dd96b4151a` |
+| Body SHA-256 | `cd7cad55c5305077d555012d2ead7199334cb2d0fc99ec266dbc0eb6bb94e375` |
+| File size / initial permissions | 124,785 bytes / `0600` |
+| UTC interval | `2026-09-09T04:02:50.277232Z` to `2026-09-09T04:03:08.900644Z` |
+| Parent duration | 18,623 ms, including setup/cleanup and source verification |
+| Runtime | Native PostgreSQL 16.13, CPython 3.12.14, Darwin arm64; tiktoken 0.13.0 / `cl100k_base` |
+| HEAD / worktree | `3eba8b2eb0e977b18007059bdc47644e4ef5f450`; actual dirty flags retained |
+| Source inventory | 676 inputs, including ingestion and fixed historical source; `6bd9f69f555bedd91e42b30c32cace0d58001b819f7837725f042ca80557a856` |
+
+Ten common original/abstract fixtures produce 37/38 oversized historical chunks
+versus 0/47 current chunks. Current locators cover 56,294 characters and 64,574
+UTF-8 bytes without double-counting overlap; legacy locator coverage is unknown.
+Two current-only Facts cases explicitly distinguish cap exclusions. Thirteen
+rejection cases account for 22 input items. These adversarial denominators are
+not an estimate of production prevalence or scientific recall.
+
+Actual combined generations go 7→5→7 with partial-write refusal, four-point
+resume, transaction rollback/idempotency and exact retained hydration. The
+original answer and the same-two-paper frozen release with 23 pins remain exact.
+Three raw query timings per phase use synthetic vector-ID ordering, not ANN
+quality. Provider attempts/calls are zero; real provider tokens/cost and all
+production/scientific metrics remain null. Every authority flag stays false.
+
+The archive is byte-identical to the successful runner output. An actual repeated
+CLI invocation for the same destination refused before service creation (exit 2)
+and preserved the file. See the [batch analysis](../Priority_Thirty_Ninth_Batch_Implementation_2026-09-09.md)
+and [operator contract](../../../INDEX_MIGRATION_MEASUREMENTS.md) for exact
+denominators, timings, source inventory scope and limitations.
 
 ## 2026-09-08: retained native rehearsal
 
