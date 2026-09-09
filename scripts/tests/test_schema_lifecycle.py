@@ -11,6 +11,44 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class SchemaLifecycleBoundaryTests(unittest.TestCase):
+    def test_discovery_projection_history_is_last_and_older_empty_exclusions_are_narrow(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        tree = ast.parse(source)
+        functions = {node.name: node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))}
+        main = ast.get_source_segment(source, functions["main"])
+        markers = ("_answer_evidence_downgrade_guard(capability", "_discovery_projection_empty_roundtrip(capability",
+            "_discovery_projection_on_migrated_schema(capability", "_discovery_projection_downgrade_guard(capability")
+        self.assertEqual([main.index(item) for item in markers], sorted(main.index(item) for item in markers))
+        empty = ast.get_source_segment(source, functions["_discovery_projection_empty_roundtrip"])
+        self.assertEqual(empty.count("assert snapshot(connection) == before"), 2)
+        self.assertIn('before["answer_evidence_receipts"] and before["scientific_result_decisions"]', empty)
+        self.assertIn('command.downgrade(config, "0068_answer_evidence")', empty)
+        self.assertIn('assert "exact revision" in str(exc)', empty)
+        self.assertIn("scalar_one() is None", empty)
+        self.assertIn("scalar_one() is not None", empty)
+        for name, node in functions.items():
+            body = ast.get_source_segment(source, node)
+            if name.endswith("downgrade_guard"):
+                self.assertNotIn('if name not in', body)
+            elif name != "_pre_answer_evidence_rows" and "_pre_answer_evidence_rows(connection, name)" in body:
+                self.assertIn("*_DISCOVERY_PROJECTION_TABLES", body)
+        self.assertIn("_assert_empty_discovery_projections(connection)",
+            ast.get_source_segment(source, functions["_assert_empty_answer_evidence"]))
+
+    def test_discovery_migrated_guard_preserves_real_committed_governance(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        body = source.split("async def _discovery_projection_on_migrated_schema", 1)[1].split("def _discovery_projection_downgrade_guard", 1)[0]
+        for marker in ("await register(session)", "service.review_projection(session", "service.projection_action(session",
+            'kind="withdraw"', "await session.commit()", "await state(session) == before", 'replay["replayed"] is True'):
+            self.assertIn(marker, body)
+        guard = source.split("def _discovery_projection_downgrade_guard", 1)[1].split("def main", 1)[0]
+        self.assertIn("retained immutable governance", guard)
+        self.assertIn("assert snapshot(connection) == before", guard)
+        migration = (ROOT / "api/alembic/versions/0069_discovery_projection.py").read_text()
+        self.assertNotIn("CASCADE", migration)
+        self.assertLess(migration.index("retained immutable governance"), migration.index("tables[name].drop"))
+        self.assertIn("reversed(FUNCTION_SIGNATURES)", migration)
+
     def test_answer_receipt_history_is_last_and_old_roundtrip_exclusion_is_narrow(self):
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         tree = ast.parse(source)

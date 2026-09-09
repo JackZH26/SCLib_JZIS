@@ -31,6 +31,8 @@ from routers import (
     bookmarks,
     discovery,
     discovery_priority,
+    discovery_projections,
+    discovery_scientific,
     feedback,
     health,
     history,
@@ -645,3 +647,5 @@ app.include_router(background_jobs.router, prefix="/v1")
 app.include_router(scientific_corrections.router, prefix="/v1")
 app.include_router(discovery.router, prefix="/v1")
 app.include_router(discovery_priority.router, prefix="/v1")
+app.include_router(discovery_projections.router, prefix="/v1")
+app.include_router(discovery_scientific.router, prefix="/v1")

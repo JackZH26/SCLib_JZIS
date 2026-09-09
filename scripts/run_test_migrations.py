@@ -25,6 +25,14 @@ _SCIENTIFIC_IMPORT_TABLES = ("scientific_import_packages", "scientific_import_at
                              "scientific_import_files", "scientific_import_outcomes")
 _ADJUDICATION_TABLES = ("scientific_result_subjects", "scientific_adjudication_requests", "scientific_result_decisions")
 _ANSWER_EVIDENCE_TABLE = "answer_evidence_receipts"
+_DISCOVERY_PROJECTION_TABLES = ("discovery_projection_packages", "discovery_projection_reviews", "discovery_projection_actions")
+
+
+def _assert_empty_discovery_projections(connection):
+    from sqlalchemy import text
+
+    for name in _DISCOVERY_PROJECTION_TABLES:
+        assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
 
 
 def _pre_answer_evidence_rows(connection, name):
@@ -38,6 +46,7 @@ def _pre_answer_evidence_rows(connection, name):
 def _assert_empty_answer_evidence(connection):
     from sqlalchemy import text
 
+    _assert_empty_discovery_projections(connection)
     assert connection.execute(text("SELECT count(*) FROM public.answer_evidence_receipts")).scalar_one() == 0
     assert connection.execute(text("SELECT count(*) FROM public.ask_history WHERE evidence_receipt_version IS NOT NULL")).scalar_one() == 0
 
@@ -161,7 +170,7 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts",
                                 "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -571,7 +580,7 @@ def _background_jobs_empty_roundtrip(capability, engine, config):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES,
-                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
+                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -716,7 +725,7 @@ def _rag_evidence_empty_roundtrip(capability, engine, config):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -861,7 +870,7 @@ def _embedding_receipts_empty_roundtrip(capability, engine, config):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES,
-                                *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
+                                *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -980,7 +989,7 @@ def _index_generations_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
+                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1138,7 +1147,7 @@ def _distributions_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
+                if name not in {"alembic_version", *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1289,7 +1298,7 @@ def _ml_feature_bindings_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
+                if name not in {"alembic_version", _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1400,7 +1409,7 @@ def _scientific_imports_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
+                if name not in {"alembic_version", *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1564,7 +1573,7 @@ def _result_impact_indexes_roundtrip(capability, engine, config, *, populated):
 
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
-                for name in inspect(connection).get_table_names(schema="public") if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
+                for name in inspect(connection).get_table_names(schema="public") if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1637,7 +1646,7 @@ def _adjudications_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE}}
+                if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1766,7 +1775,7 @@ def _answer_evidence_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", _ANSWER_EVIDENCE_TABLE}}
+                if name not in {"alembic_version", _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1962,6 +1971,123 @@ def _answer_evidence_downgrade_guard(capability, engine, config, history_id):
         assert "retained immutable saved answers" in str(exc)
     else:
         raise AssertionError("Nonempty saved-answer downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+
+
+def _discovery_projection_empty_roundtrip(capability, engine, config):
+    """0069 removes only its own empty tables; preserve all earlier history."""
+    from alembic import command
+    from models.discovery_projection_v1 import FUNCTION_SIGNATURES
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+            for name in inspect(connection).get_table_names(schema="public")
+            if name not in {"alembic_version", *_DISCOVERY_PROJECTION_TABLES}}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        _assert_empty_discovery_projections(connection)
+        before = snapshot(connection)
+        assert before["answer_evidence_receipts"] and before["scientific_result_decisions"]
+    validate_test_environment()
+    command.downgrade(config, "0068_answer_evidence")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError as exc:
+            assert "exact revision" in str(exc)
+        else:
+            raise AssertionError("Discovery projection application must reject the previous schema")
+        verify_postgres_identity(connection, capability)
+        assert not set(_DISCOVERY_PROJECTION_TABLES) & set(inspect(connection).get_table_names(schema="public"))
+        assert snapshot(connection) == before
+        for name, arguments in FUNCTION_SIGNATURES:
+            assert connection.execute(text("SELECT to_regprocedure(:signature)"),
+                {"signature": f"public.{name}({arguments})"}).scalar_one() is None
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_discovery_projections(connection)
+        assert snapshot(connection) == before
+        for name, arguments in FUNCTION_SIGNATURES:
+            assert connection.execute(text("SELECT to_regprocedure(:signature)"),
+                {"signature": f"public.{name}({arguments})"}).scalar_one() is not None
+
+
+async def _discovery_projection_on_migrated_schema(capability, api_root):
+    """Actual three-table governance history; no synthetic science approval."""
+    validate_test_environment()
+    import sqlalchemy as sa
+    from models.db import _to_async_dsn
+    from services import discovery_projection_governance as service
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from tests.test_discovery_projection_governance import (
+        action_args,
+        register,
+        review_args,
+    )
+    from tests.test_research_freeze import state
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), isolation_level="SERIALIZABLE", poolclass=NullPool)
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda raw: verify_postgres_identity(raw, capability))
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            context, arguments, registered = await register(session)
+            review = await service.review_projection(session, **review_args(context, registered), dry_run=False)
+            # A protective withdrawal does not need a positive scientific cell;
+            # it remains possible even when publication is scientifically held.
+            withdrawal = await service.projection_action(session,
+                **action_args(context, registered, review, kind="withdraw"), dry_run=False)
+            assert all(row["committed"] is False for row in (registered, review, withdrawal))
+            await session.commit()
+            await session.execute(sa.text("SET LOCAL TIME ZONE 'UTC'"))
+            await session.execute(sa.text("SET LOCAL statement_timeout='5000ms'"))
+            before = await state(session)
+            replay = await service.register_projection(session, **arguments, dry_run=False)
+            assert replay["replayed"] is True and replay["id"] == registered["id"]
+            outcome = await service.inspect_operation(session, actor_user_id=arguments["actor_user_id"],
+                operation="register", request_key=arguments["request_key"],
+                expected_request_sha256=registered["request_sha256"])
+            assert outcome["id"] == registered["id"]
+            assert await state(session) == before
+            await session.rollback()
+            return registered["package_id"]
+    finally:
+        await engine.dispose()
+
+
+def _discovery_projection_downgrade_guard(capability, engine, config, package_id):
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+            for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert any(row["id"] == package_id for row in before["discovery_projection_packages"])
+        assert all(before[name] for name in _DISCOVERY_PROJECTION_TABLES)
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0068_answer_evidence")
+    except RuntimeError as exc:
+        assert "retained immutable governance" in str(exc)
+    else:
+        raise AssertionError("Nonempty Discovery projection downgrade must fail closed")
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
@@ -2294,6 +2420,9 @@ def main() -> None:
         legacy_history_id = _answer_evidence_empty_roundtrip(capability, engine, config)
         history_id = asyncio.run(_answer_evidence_on_migrated_schema(capability, api_root, generation_id, legacy_history_id))
         _answer_evidence_downgrade_guard(capability, engine, config, history_id)
+        _discovery_projection_empty_roundtrip(capability, engine, config)
+        discovery_package_id = asyncio.run(_discovery_projection_on_migrated_schema(capability, api_root))
+        _discovery_projection_downgrade_guard(capability, engine, config, discovery_package_id)
         if recorder is not None:
             with engine.connect() as connection:
                 verify_postgres_identity(connection, capability)

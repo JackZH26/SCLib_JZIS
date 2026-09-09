@@ -37,6 +37,11 @@ for curator preview/atomic registration before the existing
 [dependency rights workbench](docs/RPS_RIGHTS_PREPARATION.md).
 The API prepares private descriptors from existing pinned sources; it does not
 create scientific evidence, approve rights or publish the package.
+An [exact scientific Discovery companion](docs/DISCOVERY_SCIENTIFIC_PROJECTIONS.md)
+now binds explicit material representatives and alternatives to native scientific
+observations, with separate three-account disclosure and opt-in current public
+admission. The browser matrix integration and a real reviewed pilot remain
+separate; recorded quantities and research-priority scores are not ground truth.
 Numerical/evidence queries and Search UI scientific filters return qualified,
 exact-parent extraction rows separately from ordinary paper hits; without an
 active generation they explicitly report unavailable. These are not reviewed

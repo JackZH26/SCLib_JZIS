@@ -38,6 +38,9 @@ AUDIT_USER_REFERENCES = (
     ("scientific_import_outcomes", "actor_user_id"),
     ("scientific_adjudication_requests", "actor_user_id"),
     ("scientific_result_decisions", "actor_user_id"),
+    ("discovery_projection_packages", "actor_user_id"),
+    ("discovery_projection_reviews", "actor_user_id"),
+    ("discovery_projection_actions", "actor_user_id"),
 )
 # PostgreSQL's exact names for the deliberately unnamed audit identity FKs.
 # Restrict this classifier to these explicitly listed constraints and SQLSTATE 23503;

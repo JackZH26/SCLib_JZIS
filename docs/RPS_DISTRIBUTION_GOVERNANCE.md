@@ -3,6 +3,12 @@
 Version: `research-distribution/1.0.0`; additive schema revision
 `0063_research_distribution`. Scope: `rps_structured_bundle` only.
 
+The [scientific Discovery companion](DISCOVERY_SCIENTIFIC_PROJECTIONS.md) adds
+its own exact representative selection and native observation projection under
+schema `0069_discovery_projection`. It requires a separate reviewed disclosure
+scope; this original package's approval is necessary but not sufficient. No
+original release/scorer/public-bundle contract is rewritten by that companion.
+
 ## Outcome and limits
 
 Discovery's released RPS data now requires an actual database-backed disclosure
