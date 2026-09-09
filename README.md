@@ -32,6 +32,11 @@ references. Its read-only dossier now accompanies a separate
 [exact-result adjudication workflow](docs/SCIENTIFIC_RESULT_ADJUDICATION.md) with
 immutable scoped decisions, explicit previews and same-request recovery.
 Scientific acceptance still does not confer training or publication authority.
+RPS distribution now also has [exact source-binding and descriptor preparation](docs/RPS_DISTRIBUTION_PREPARATION.md)
+for curator preview/atomic registration before the existing
+[dependency rights workbench](docs/RPS_RIGHTS_PREPARATION.md).
+The API prepares private descriptors from existing pinned sources; it does not
+create scientific evidence, approve rights or publish the package.
 Numerical/evidence queries and Search UI scientific filters return qualified,
 exact-parent extraction rows separately from ordinary paper hits; without an
 active generation they explicitly report unavailable. These are not reviewed

@@ -150,6 +150,8 @@ fresh role check. It is a per-process bound, not a fleet-wide memory guarantee.
 | Method and route, under `/v1/ml/distributions` | Required role | Action |
 | --- | --- | --- |
 | `POST /register` | curator | Verify exact release/bundle, actual sources/bytes and register sealed private inventory |
+| `GET /preparation/capabilities`, `POST /preparation` | curator | Inspect access; preview or atomically create controlled descriptors and register existing exact sources |
+| `GET /preparation/outcome` | curator, original account | Recover the exact historical preparation intent/registration without writing |
 | `GET /{package_id}` | any explicit research role | Inspect the private bindings/inventory, without asserting current publication approval |
 | `POST /{package_id}/permissions` | reviewer | Record an exact dependency allow/revoke decision with an already stored artifact |
 | `GET /operator/capabilities`, `GET /{package_id}/rights` | reviewer | Inspect current access and compact paginated dependency headers |
@@ -173,13 +175,18 @@ inherited without retrieving obsolete source bytes. Allow still requires the
 complete actual rights inputs.
 
 The API does not fetch caller URLs, read caller filesystem paths, grant itself
-roles, invent human decisions, or create missing upstream source/descriptor
-evidence. Those inputs must first exist in the governed ingestion/curation
-store. The [exact rights preparation workbench](RPS_RIGHTS_PREPARATION.md) now
+roles, invent human decisions, or create missing upstream scientific sources.
+Those inputs must first exist in the governed ingestion/curation store. The
+[exact descriptor preparation API](RPS_DISTRIBUTION_PREPARATION.md) now creates
+only the controlled canonical non-evidence descriptors and registers the exact
+existing sources in one preview-pinned transaction; it is not a browser source
+selector or general artifact uploader. The
+[exact rights preparation workbench](RPS_RIGHTS_PREPARATION.md) now
 creates only the fixed-schema restricted rights artifact together with its
 permission, following an explicit reviewer preview/commit. It is not a general
-artifact uploader or an ML-use authorization service. Upstream source and
-descriptor preparation remain separate workflows.
+artifact uploader or an ML-use authorization service. Upstream source ingestion,
+scientific adjudication, package registration and rights review remain separate
+workflows and do not substitute for one another.
 
 The internal service owns a savepoint and reports `committed: false`; callers
 own the outer transaction. The HTTP operation envelope reports durable success
@@ -231,6 +238,8 @@ base64 overhead and 64 MiB decoded-byte budget. Over-limit inputs fail closed;
 the limits are ceilings, not a claim that all maxima can be combined or meet a
 production latency budget. Requests use database statement limits and bounded
 snapshot work; deployment-sized benchmarks remain required.
+The additive descriptor-preparation route has smaller 48 MiB wire / 32 MiB
+shared decoded-input / 8 KiB response limits, documented in its own contract.
 
 Migration 0063 creates no real proposals, grants, rights decisions, published
 packages, enabled flags or configuration pins. Old pin-only releases become
@@ -245,6 +254,9 @@ and regression evidence does not replace Linux CI, a backed-up staging rehearsal
 real rights/consent review, authorized production rollout or scientific testing.
 
 The release gate remains [ML07 / #68](https://github.com/JackZH26/SCLib_JZIS/issues/68).
-The remaining work includes real operator-reviewed source/rights inventories,
-purpose-specific non-RPS ML exports, a usable artifact-preparation workflow,
-staging and corpus-sized performance evidence, and approved production release.
+The remaining release work includes real operator-reviewed source/rights
+inventories, staging and corpus-sized performance evidence, and authorized
+delivery. Browser source-selection preparation and purpose-specific non-RPS
+ML exports are separate follow-on capabilities. Assess ML07 closure against
+its stated dependency contracts and acceptance criteria, independently of
+scientific pilot or general ML-training approval.
