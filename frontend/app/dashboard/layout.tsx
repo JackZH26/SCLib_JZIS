@@ -26,6 +26,7 @@ const NAV_BASE = [
   { href: "/dashboard/feedback", label: "Feedback" },
   { href: "/dashboard/research/review", label: "Scientific evidence" },
   { href: "/dashboard/research/source-tasks", label: "Source tasks" },
+  { href: "/dashboard/research/distributions", label: "Distribution rights" },
 ];
 
 // Admin-only: user management + audit queue.

@@ -151,7 +151,10 @@ fresh role check. It is a per-process bound, not a fleet-wide memory guarantee.
 | --- | --- | --- |
 | `POST /register` | curator | Verify exact release/bundle, actual sources/bytes and register sealed private inventory |
 | `GET /{package_id}` | any explicit research role | Inspect the private bindings/inventory, without asserting current publication approval |
-| `POST /{package_id}/permissions` | reviewer | Record an exact dependency allow/revoke decision |
+| `POST /{package_id}/permissions` | reviewer | Record an exact dependency allow/revoke decision with an already stored artifact |
+| `GET /operator/capabilities`, `GET /{package_id}/rights` | reviewer | Inspect current access and compact paginated dependency headers |
+| `GET/POST /{package_id}/rights/{dependency_id}` | reviewer | Inspect, preview and atomically prepare fixed rights bytes plus one permission |
+| `GET /{package_id}/rights/{dependency_id}/outcome` | reviewer, original account | Recover the exact historical intent/receipt without writing |
 | `POST /{package_id}/reviews` | reviewer, account distinct from curator | Review the complete current permission manifest |
 | `POST /{package_id}/actions` | publisher, account distinct from curator and reviewer | Publish or withdraw the exact reviewed package |
 
@@ -170,10 +173,13 @@ inherited without retrieving obsolete source bytes. Allow still requires the
 complete actual rights inputs.
 
 The API does not fetch caller URLs, read caller filesystem paths, grant itself
-roles, invent rights reviews, or create missing upstream evidence. Source
-captures, internal descriptor artifacts and rights documents must first exist
-in the governed ingestion/curation store. A dedicated curator interface for
-their preparation is a subsequent usability task, not fabricated by a test.
+roles, invent human decisions, or create missing upstream source/descriptor
+evidence. Those inputs must first exist in the governed ingestion/curation
+store. The [exact rights preparation workbench](RPS_RIGHTS_PREPARATION.md) now
+creates only the fixed-schema restricted rights artifact together with its
+permission, following an explicit reviewer preview/commit. It is not a general
+artifact uploader or an ML-use authorization service. Upstream source and
+descriptor preparation remain separate workflows.
 
 The internal service owns a savepoint and reports `committed: false`; callers
 own the outer transaction. The HTTP operation envelope reports durable success

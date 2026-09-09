@@ -4,6 +4,11 @@ Date: 2026-09-09. Issue: [ML07 / #68](https://github.com/JackZH26/SCLib_JZIS/iss
 Status: implementation handoff only; **not implemented or exercised**.
 Current contract: [RPS distribution governance](../../RPS_DISTRIBUTION_GOVERNANCE.md).
 
+Subsequent implementation: [rights preparation operator contract](../../RPS_RIGHTS_PREPARATION.md).
+The status above records the original handoff; batch 44 implements the bounded
+workflow. Actual verification and remaining acceptance are recorded separately
+in its implementation report, not inferred from this design.
+
 ## Evidenced gap and priority
 
 The existing governed RPS distribution workflow requires a stored exact rights

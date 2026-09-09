@@ -103,6 +103,30 @@ export function sourceTaskExecutionOutcome(requestId: string, executionKey: stri
   return request(`/ml/source-lifecycle/task-operations/requests/${encodeURIComponent(requestId)}/executions/${encodeURIComponent(executionKey)}`, { cache: "no-store", signal });
 }
 
+// Private RPS rights workflow. Recovery is GET-only; no automatic write retry.
+export function distributionRightsAccess(signal?: AbortSignal): Promise<unknown> {
+  return request("/ml/distributions/operator/capabilities", { cache: "no-store", signal, responseByteLimit: 4096 });
+}
+export function distributionRightsPage(packageId: string, after: string | null = null, inventory?: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams();
+  if (after !== null) query.set("after", after);
+  if (inventory !== undefined) query.set("expected_inventory_sha256", inventory);
+  return request(`/ml/distributions/${encodeURIComponent(packageId)}/rights?${query}`, { cache: "no-store", signal, responseByteLimit: 32768 });
+}
+export function distributionRightsContext(packageId: string, dependencyId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/ml/distributions/${encodeURIComponent(packageId)}/rights/${encodeURIComponent(dependencyId)}`, { cache: "no-store", signal, responseByteLimit: 16384 });
+}
+export function distributionRightsPrepare(packageId: string, dependencyId: string, body: import("./distribution-rights").RightsInput, signal?: AbortSignal): Promise<unknown> {
+  return request(`/ml/distributions/${encodeURIComponent(packageId)}/rights/${encodeURIComponent(dependencyId)}`, {
+    method: "POST", body: JSON.stringify(body), cache: "no-store", signal, responseByteLimit: 32768,
+  });
+}
+export function distributionRightsOutcome(ref: import("./distribution-rights").RightsRecovery, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ request_key: ref.requestKey, expected_intent_sha256: ref.intentSha256 });
+  return request(`/ml/distributions/${encodeURIComponent(ref.packageId)}/rights/${encodeURIComponent(ref.dependencyId)}/outcome?${query}`,
+    { cache: "no-store", signal, responseByteLimit: 32768 });
+}
+
 /**
  * Map any caught error into a user-facing string. The fetch API throws a
  * generic `TypeError: Failed to fetch` for every network-level failure

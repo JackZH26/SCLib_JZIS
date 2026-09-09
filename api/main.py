@@ -38,6 +38,7 @@ from routers import (
     ml_foundation,
     observability,
     papers,
+    research_distribution_rights,
     research_distributions,
     research_publications,
     scientific_adjudication,
@@ -620,6 +621,7 @@ app.include_router(ask.router, prefix="/v1")
 # ``/materials/{material_id:path}`` catch-all.
 app.include_router(research_publications.router, prefix="/v1")
 app.include_router(research_distributions.router, prefix="/v1")
+app.include_router(research_distribution_rights.router, prefix="/v1")
 app.include_router(scientific_program_imports.router, prefix="/v1")
 app.include_router(scientific_review.router, prefix="/v1")
 app.include_router(scientific_adjudication.router, prefix="/v1")
