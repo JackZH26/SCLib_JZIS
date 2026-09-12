@@ -154,6 +154,61 @@ The older declaration/currentness endpoints still do not consume this registry.
 Their blocker is now `purpose_specific_permissions_not_checked`; they must not
 claim a registry is unavailable or grant rights from reconstruction alone.
 
+## Private browser review workbench (batch60)
+
+The English-only dashboard entry **ML source rights** opens
+`/dashboard/research/ml-rights` (under the configured site base path). It uses
+the same default-off API and does not provision users, grant memberships or
+change production flags. Site admin status alone does not enable the controls.
+
+1. Refresh reviewer access. Obtain the exact submission UUID, submission record
+   SHA-256 and inventory SHA-256 from the approved private handoff, then inspect
+   the inventory. No global request directory is introduced.
+2. Review one resource at a time. Pages contain 25 resources and pin the same
+   inventory, count and input expiry. Every row representation, encoding,
+   temporal scope, container hash and origin remains visible in expandable
+   metadata. Artifact digests remain separate resources. No raw source bodies,
+   clickable untrusted source URLs or automatic downloads are rendered.
+3. Explicitly choose allow, deny or revoke. Allow requires a documented basis,
+   evidence-document hash, reviewer declaration and a future UTC Unix-second
+   expiry within original retention. No expiry, evidence or permission is
+   guessed. Denial/revocation do not require an unexpired input; revocation
+   targets an exact previous allow. The server rechecks the current head.
+4. Preview performs the actual rollback-only SQL operation. The browser checks
+   the exact original intent hash, account, grants, resource, purpose, evidence,
+   expiry and predecessor before enabling a separate commit action. Changing
+   any decision field invalidates the preview and reviewer declaration.
+5. A lost or unverifiable commit reply locks new decisions. Recovery uses the
+   original account/key/hash in a private POST read, not a URL query string.
+   A missing outcome is not rollback. An explicit retry can reuse the identical
+   original write; no automatic write retry, background polling or bulk allow
+   is implemented. Committed/recovered receipts are labeled **historical**.
+
+After reload, manually enter the original rights decision key and intent hash
+under the original reviewer account to recover the record. Retain these in the
+approved private operation log before leaving. Drafts and evidence references
+are not saved to browser storage. Session notifications erase displayed private
+data and pending write bodies, and ignore stale asynchronous responses; only an
+opaque in-memory original-account recovery locator is retained until resolved.
+An unrelated account cannot view or act on it. Server session/role checks remain
+authoritative even when a browser does not receive a session notification.
+
+The client verifies the backend's exact integer-only canonical HTTP encoding,
+closed response fields, negative authority flags, resource digests and both
+decision/intent hashes. It rejects duplicate keys, unsupported encodings, extra
+fields, fractional numeric aliases, unsafe integers, mismatched pages and stale
+previews rather than rounding or repairing them. Inspection is bounded to
+1,100 KiB, all requests to 8 KiB, and transport to 30 seconds/4,096 stream parts.
+Requests use the configured fixed API origin, cookies, no-store and redirect
+refusal. Error bodies are not displayed. These checks are integrity defenses,
+not legal verification or a substitute for server authentication.
+
+This reviewer page deliberately does not call the owner's `/check` as the
+reviewer, authorize execution, fit a model or promote a historical allow into
+current source validity. The owner-side live-check UI, durable evidence-document
+resolution and independent run-approval/consumption integration remain separate
+work. See the [batch60 verification report](reviews/2026-09-05/Priority_Sixtieth_Batch_Implementation_2026-09-13.md).
+
 ## Storage, limits and rollout
 
 `ml_use_rights_decisions` is append-only. One root per submission/resource, one
@@ -180,7 +235,8 @@ decisions stop at 32,000 history rows per submission or 100,000 globally;
 revocations are still permitted at these caps. These are initial admission
 ceilings, not a production capacity measurement or a distributed rate limit.
 
-The private review UI, rights-document storage/resolution, independent run
-approval and a genuinely human-reviewed ML08 pilot remain required integrations.
+The core private review UI is delivered in batch60 above. Rights-document
+storage/resolution, owner-side live-check UI, independent run approval and a
+genuinely human-reviewed ML08 pilot remain required integrations.
 This batch does not enable the flag, change real memberships, sign any actual
 rights decision, train a model, publish predictions or deploy the service.

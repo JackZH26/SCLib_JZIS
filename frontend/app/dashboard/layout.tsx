@@ -28,6 +28,7 @@ const NAV_BASE = [
   { href: "/dashboard/research/imports", label: "Scientific imports" },
   { href: "/dashboard/research/source-tasks", label: "Source tasks" },
   { href: "/dashboard/research/distributions", label: "Distribution rights" },
+  { href: "/dashboard/research/ml-rights", label: "ML source rights" },
   { href: "/dashboard/research/discovery", label: "Discovery selection" },
   { href: "/dashboard/research/discovery-governance", label: "Discovery governance" },
 ];

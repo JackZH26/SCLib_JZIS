@@ -1727,6 +1727,10 @@ from models.ml_use_rights_v1 import register as _register_ml_use_rights  # noqa:
 
 ML_USE_RIGHTS_TABLE = _register_ml_use_rights(Base.metadata)
 
+from models.ml_use_runs_v1 import register as _register_ml_use_runs  # noqa: E402
+
+ML_USE_RUN_TABLES = _register_ml_use_runs(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

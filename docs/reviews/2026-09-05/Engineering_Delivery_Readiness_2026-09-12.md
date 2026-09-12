@@ -33,6 +33,10 @@ Batch59 adds schema 0073 for independent purpose-specific ML rights decisions.
 Its verification is tracked in the
 [batch59 report](Priority_Fifty_Ninth_Batch_Implementation_2026-09-13.md);
 the 0072 receipt is retained as historical evidence, not relabeled as 0073.
+Batch60 adds the private ML rights workbench and a native HTTP compatibility
+test, without changing production API code or schema. Its own verification is
+in the [batch60 report](Priority_Sixtieth_Batch_Implementation_2026-09-13.md);
+the 0073 whole-source rehearsal remains the historical batch59 checkpoint.
 
 ## Findings and next delivery decisions
 
