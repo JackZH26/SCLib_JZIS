@@ -51,6 +51,11 @@ without production API/schema or frontend changes. Its new repository-wide
 source inventory and documentary/byte-integrity evidence are tracked in the
 [batch63 report](Priority_Sixty_Third_Batch_Implementation_2026-09-13.md);
 neither old fixtures nor canary hashes establish real independent pilot approval.
+Batch64 adds the private canary-derived human-review report and its offline/
+browser tests, without changing application or database schema sources. Its
+own source and verification scope is in the
+[batch64 report](Priority_Sixty_Fourth_Batch_Implementation_2026-09-13.md);
+rendered private declarations are not authenticated scientific acceptance.
 
 ## Findings and next delivery decisions
 

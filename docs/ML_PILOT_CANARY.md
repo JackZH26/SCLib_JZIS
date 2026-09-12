@@ -145,3 +145,8 @@ Never promote its hash to `scientific_pilot_accepted` merely because offline
 replay passed. [Run-plan governance](ML_USE_RUNS.md), audited dataset lineage,
 current rights, runtime admission and execution retain their own gates. Model
 execution remains disabled.
+
+The [private human-review report](ML_PILOT_REPORT.md) can now present this exact
+canary and its conclusion as an inert, replayable English HTML document. It
+retains all event failures and review revisions without embedding context files
+or promoting documentary validity into scientific acceptance.

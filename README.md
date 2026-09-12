@@ -48,6 +48,9 @@ The [v2 main-barrier contract](docs/DISCOVERY_MAIN_BARRIERS.md) adds explicit,
 context-bound curator interpretations without changing frozen RPS or v1 records.
 A real reviewed pilot remains separate; recorded quantities and research-priority
 scores are not ground truth.
+The [private ML08 review report](docs/ML_PILOT_REPORT.md) provides an offline
+English view of a replayed canary, with complete event/history accounting,
+missingness and recorded effort; it does not authorize scientific acceptance.
 The [private ML08 canary command](docs/ML_PILOT_CANARY.md) binds the frozen
 selection, complete review ledger, explicit context bytes and final documentary
 conclusion through exact replay; it does not authenticate human review or grant
