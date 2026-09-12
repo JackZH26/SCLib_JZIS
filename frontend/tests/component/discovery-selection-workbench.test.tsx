@@ -6,16 +6,19 @@ import { ApiError } from "@/lib/api";
 import { notifyAuthChange } from "@/lib/auth-session";
 import { SCIENTIFIC_DISCLAIMER } from "@/lib/discovery-scientific";
 import * as selection from "@/lib/discovery-selection";
-import { requestFixture, verifiedFixture, wires, withRequestKey } from "./helpers/discovery-selection-fixtures";
+import { verifiedFixture, wires as historicalWires } from "./helpers/discovery-selection-fixtures";
+import { barrierRequest, syntheticV2Prepared, syntheticV2Registration } from "./helpers/discovery-main-barrier-fixtures";
 
 vi.mock("@/lib/discovery-selection", async importOriginal => {
   const original = await importOriginal<typeof import("@/lib/discovery-selection")>();
-  return { ...original, getSelectionAccess: vi.fn(), getSelectionContext: vi.fn(), prepareSelection: vi.fn(),
+  return { ...original, getSelectionAccess: vi.fn(), getSelectionContext: vi.fn(), prepareSelectionV2: vi.fn(),
     registerSelection: vi.fn(), getSelectionOutcome: vi.fn(),
     parseSelectionContext: vi.fn(original.parseSelectionContext), parsePreparedSelection: vi.fn(original.parsePreparedSelection),
     selectionSourceFromFile: vi.fn(original.selectionSourceFromFile) };
 });
-const request = requestFixture(), chosen = request.choices[0];
+const request = barrierRequest(), chosen = request.choices[0];
+const wires = { ...historicalWires, previewWire: syntheticV2Registration(historicalWires.previewWire),
+  commitWire: syntheticV2Registration(historicalWires.commitWire), outcomeWire: syntheticV2Registration(historicalWires.outcomeWire) };
 function deferred<T>() { let resolve!: (v: T) => void; const promise = new Promise<T>(r => { resolve = r; }); return { promise, resolve }; }
 function sourceFile() {
   const file = new File([wires.sourceWire], "canonical.json", { type: "application/json" });
@@ -30,9 +33,9 @@ beforeEach(async () => {
   vi.mocked(selection.selectionSourceFromFile).mockImplementation(original.selectionSourceFromFile);
   vi.mocked(selection.getSelectionAccess).mockResolvedValue(wires.accessWire);
   vi.mocked(selection.getSelectionContext).mockResolvedValue(wires.contextWire);
-  vi.mocked(selection.prepareSelection).mockImplementation(async req => {
+  vi.mocked(selection.prepareSelectionV2).mockImplementation(async req => {
     expect(req.source).toEqual(request.source); expect(req.choices).toEqual(request.choices);
-    return withRequestKey(req.request_key);
+    return syntheticV2Prepared(req.request_key);
   });
   vi.mocked(selection.registerSelection).mockImplementation(async raw => JSON.parse(raw).dry_run ? wires.previewWire : wires.commitWire);
   vi.mocked(selection.getSelectionOutcome).mockResolvedValue(wires.outcomeWire);
@@ -55,6 +58,7 @@ function chooseRepresentative() {
   fireEvent.change(screen.getByLabelText("State and action assessment"), { target: { value: chosen.assessment_id } });
   fireEvent.change(screen.getByLabelText("Structure binding"), { target: { value: chosen.structure_id } });
   fireEvent.change(screen.getByLabelText("Selection rationale"), { target: { value: chosen.rationale } });
+  fireEvent.change(screen.getByLabelText("Main-barrier declaration"), { target: { value: "not_declared" } });
 }
 async function compile() {
   await inspect(); chooseRepresentative(); fireEvent.click(screen.getByRole("button", { name: "Compile scientific preview" }));
@@ -72,8 +76,70 @@ async function unknownCommit() {
 }
 
 describe("curator Discovery selection workbench", () => {
+  it("requires an explicit barrier choice and never preselects a category or basis", async () => {
+    await inspect(); chooseRepresentative();
+    fireEvent.change(screen.getByLabelText("Main-barrier declaration"), { target: { value: "" } });
+    expect(screen.getByRole("button", { name: "Compile scientific preview" })).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Main-barrier declaration"), { target: { value: "declared" } });
+    expect(screen.getByLabelText("Main-barrier category")).toHaveValue("");
+    expect(screen.getByLabelText("Main-barrier statement")).toHaveValue("");
+    expect(screen.getByRole("button", { name: "Compile scientific preview" })).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Main-barrier category"), { target: { value: "scientific_hypothesis" } });
+    fireEvent.change(screen.getByLabelText("Main-barrier statement"), { target: { value: "A testable research hypothesis." } });
+    fireEvent.change(screen.getByLabelText("Main-barrier rationale"), { target: { value: "Exact retained values require further interpretation." } });
+    const basis = screen.getByRole("group", { name: "Exact main-barrier basis (choose 1–8)" });
+    for (const checkbox of within(basis).getAllByRole("checkbox")) expect(checkbox).not.toBeChecked();
+    expect(screen.getByRole("button", { name: "Compile scientific preview" })).toBeDisabled();
+    fireEvent.click(within(basis).getByRole("checkbox", { name: /Band gap \(band_gap\)/ }));
+    expect(screen.getByRole("button", { name: "Compile scientific preview" })).toBeEnabled();
+    expect(selection.prepareSelectionV2).not.toHaveBeenCalled(); expect(selection.registerSelection).not.toHaveBeenCalled();
+    fireEvent.change(screen.getByLabelText("Main-barrier category"), { target: { value: "execution_constraint" } });
+    expect(screen.getByLabelText("Main-barrier statement")).toHaveValue(""); expect(screen.getByLabelText("Main-barrier rationale")).toHaveValue("");
+    for (const checkbox of within(screen.getByRole("group", { name: "Exact main-barrier basis (choose 1–8)" })).queryAllByRole("checkbox")) expect(checkbox).not.toBeChecked();
+    expect(screen.getByRole("button", { name: "Compile scientific preview" })).toBeDisabled();
+  });
+  it("invalidates declared statement, rationale and basis edits, and resets the barrier on context or cell changes", async () => {
+    await inspect(); chooseRepresentative(); let preparedRaw = "";
+    vi.mocked(selection.prepareSelectionV2).mockImplementation(async req => {
+      preparedRaw = syntheticV2Prepared(req.request_key, req.choices[0].main_barrier); return preparedRaw;
+    });
+    vi.mocked(selection.registerSelection).mockImplementation(async raw => syntheticV2Registration(JSON.parse(raw).dry_run ? historicalWires.previewWire : historicalWires.commitWire, preparedRaw));
+    fireEvent.change(screen.getByLabelText("Main-barrier declaration"), { target: { value: "declared" } });
+    fireEvent.change(screen.getByLabelText("Main-barrier category"), { target: { value: "scientific_hypothesis" } });
+    fireEvent.change(screen.getByLabelText("Main-barrier statement"), { target: { value: "A testable research hypothesis." } });
+    fireEvent.change(screen.getByLabelText("Main-barrier rationale"), { target: { value: "Exact retained values require further interpretation." } });
+    fireEvent.click(screen.getByRole("checkbox", { name: /Band gap \(band_gap\)/ }));
+    async function previewAndRehearse() {
+      fireEvent.click(screen.getByRole("button", { name: "Compile scientific preview" }));
+      await screen.findByRole("region", { name: "Compiled scientific preview" });
+      await waitFor(() => expect(screen.getByRole("button", { name: "Run registration rehearsal" })).toBeEnabled());
+      fireEvent.click(screen.getByRole("button", { name: "Run registration rehearsal" }));
+      await waitFor(() => expect(screen.getByRole("button", { name: "Register exact preview" })).toBeEnabled());
+    }
+    await previewAndRehearse();
+    expect(within(screen.getByRole("region", { name: "Compiled scientific preview" })).getByText("A testable research hypothesis.")).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Main-barrier statement"), { target: { value: "An edited statement." } });
+    expect(screen.queryByRole("region", { name: "Compiled scientific preview" })).not.toBeInTheDocument();
+    await previewAndRehearse();
+    fireEvent.change(screen.getByLabelText("Main-barrier rationale"), { target: { value: "An edited rationale." } });
+    expect(screen.queryByRole("button", { name: "Register exact preview" })).not.toBeInTheDocument();
+    await previewAndRehearse();
+    fireEvent.click(screen.getByRole("checkbox", { name: /DOS at Fermi level \(dos_at_fermi\)/ }));
+    expect(screen.queryByRole("region", { name: "Compiled scientific preview" })).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Superfluid stiffness availability declaration"), { target: { value: "not_computed" } });
+    expect(screen.getByLabelText("Main-barrier declaration")).toHaveValue("");
+    expect(screen.queryByLabelText("Main-barrier statement")).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Main-barrier declaration"), { target: { value: "not_declared" } });
+    fireEvent.change(screen.getByLabelText("State and action assessment"), { target: { value: "" } });
+    expect(screen.queryByLabelText("Main-barrier declaration")).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("State and action assessment"), { target: { value: chosen.assessment_id } });
+    expect(screen.getByLabelText("Main-barrier declaration")).toHaveValue("");
+    fireEvent.change(screen.getByLabelText("Main-barrier declaration"), { target: { value: "not_declared" } });
+    fireEvent.change(screen.getByLabelText("Structure binding"), { target: { value: "none" } });
+    expect(screen.getByLabelText("Main-barrier declaration")).toHaveValue("");
+  });
   it("does not upload on file choice, select a default assessment or conflate unset with explicit null", async () => {
-    await start(); chooseFile(); expect(selection.getSelectionContext).not.toHaveBeenCalled(); expect(selection.prepareSelection).not.toHaveBeenCalled();
+    await start(); chooseFile(); expect(selection.getSelectionContext).not.toHaveBeenCalled(); expect(selection.prepareSelectionV2).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole("button", { name: "Inspect frozen distribution" }));
     await screen.findByLabelText("State and action assessment");
     expect(screen.getByLabelText("State and action assessment")).toHaveValue(""); expect(screen.getByLabelText("Structure binding")).toHaveValue("");
@@ -102,8 +168,8 @@ describe("curator Discovery selection workbench", () => {
     expect(selection.registerSelection).not.toHaveBeenCalled();
   });
   it("posts the byte-exact prepared commands only after a separate native rehearsal, and double clicks commit once", async () => {
-    await rehearse(); const key = vi.mocked(selection.prepareSelection).mock.calls[0][0].request_key;
-    const expected = JSON.parse(withRequestKey(key));
+    await rehearse(); const key = vi.mocked(selection.prepareSelectionV2).mock.calls[0][0].request_key;
+    const expected = JSON.parse(syntheticV2Prepared(key));
     expect(selection.registerSelection).toHaveBeenNthCalledWith(1, expected.preview_json, expect.any(AbortSignal));
     const submit = screen.getByRole("button", { name: "Register exact preview" });
     act(() => { fireEvent.click(submit); fireEvent.click(submit); });
@@ -123,6 +189,8 @@ describe("curator Discovery selection workbench", () => {
     fireEvent.change(screen.getByLabelText("Superfluid stiffness reason code"), { target: { value: "explicit_no_computation" } });
     expect(screen.getByRole("button", { name: "Compile scientific preview" })).toBeDisabled();
     const checks = screen.getAllByRole("checkbox", { hidden: true }); fireEvent.click(checks[0]);
+    expect(screen.getByLabelText("Main-barrier declaration")).toHaveValue("");
+    fireEvent.change(screen.getByLabelText("Main-barrier declaration"), { target: { value: "not_declared" } });
     expect(screen.getByRole("button", { name: "Compile scientific preview" })).toBeEnabled();
     fireEvent.change(screen.getByLabelText("Structure binding"), { target: { value: "none" } });
     expect(screen.getByLabelText("Selection rationale")).toHaveValue("");
@@ -153,7 +221,7 @@ describe("curator Discovery selection workbench", () => {
     expect(vi.mocked(selection.getSelectionOutcome).mock.calls[0][0]).toEqual(vi.mocked(selection.getSelectionOutcome).mock.calls[1][0]);
   });
   it("hides the locator on auth change, refuses another actor, and recovers under a new grant for the original actor", async () => {
-    await unknownCommit(); const originalKey = vi.mocked(selection.prepareSelection).mock.calls[0][0].request_key;
+    await unknownCommit(); const originalKey = vi.mocked(selection.prepareSelectionV2).mock.calls[0][0].request_key;
     act(() => notifyAuthChange()); expect(screen.queryByText(new RegExp(originalKey))).not.toBeInTheDocument();
     const access = JSON.parse(wires.accessWire), foreign = { ...access, actor_user_id: "00000000-0000-0000-0000-000000000000" };
     vi.mocked(selection.getSelectionAccess).mockResolvedValue(JSON.stringify(foreign));
@@ -189,7 +257,7 @@ describe("curator Discovery selection workbench", () => {
     await rehearse(); act(() => window.dispatchEvent(new Event("pagehide")));
     expect(screen.queryByRole("region", { name: "Compiled scientific preview" })).not.toBeInTheDocument();
     expect(screen.getByLabelText("Distribution package ID")).toHaveValue("");
-    expect(selection.getSelectionOutcome).not.toHaveBeenCalled(); expect(selection.prepareSelection).toHaveBeenCalledTimes(1);
+    expect(selection.getSelectionOutcome).not.toHaveBeenCalled(); expect(selection.prepareSelectionV2).toHaveBeenCalledTimes(1);
   });
   it.each(["context", "prepared"] as const)("times out stalled %s verification, releases busy state and discards late resolution", async mode => {
     const f = await verifiedFixture(); await (mode === "context" ? start() : inspect());

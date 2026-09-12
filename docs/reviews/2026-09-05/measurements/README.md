@@ -21,6 +21,46 @@ No secrets, DSNs, capability files, raw source bodies or research-release bytes
 belong in these archives. Hash equality is an integrity check, not human
 authentication or scientific approval.
 
+## 0071 independent ML membership checkpoint
+
+[ML_Use_Role_Schema_2026-09-12-01.json](ML_Use_Role_Schema_2026-09-12-01.json)
+is a fresh complete native batch54 rehearsal. No older receipt was changed.
+
+| Measurement | Actual checkpoint |
+| --- | --- |
+| Full-file SHA-256 | `9c64a640ba67edee696ebe93baa723de3428a6cb769e49b5a33e6c726ec51e48` |
+| Body SHA-256 | `8c58f793412f42d0bb1bac2756e53a91806f254bee883af78039cab26034c214` |
+| File size / original private permissions | 100,975 bytes / `0600` |
+| UTC interval | `2026-09-12T13:44:28.820824Z` to `2026-09-12T13:45:51.607830Z` |
+| Measured rehearsal time | 82,785 ms; excludes setup, cleanup and report publication |
+| Captured source inventory | 645 files; digest `b3d2c43275af59149a40de6f65ebbdf2ede6df96fe2fc29426f86d2b5aae3048` |
+| HEAD / worktree | `00718749b6eb15926ae8cbfc58e02a9432488815`; actual batch54 dirty-worktree bytes pinned |
+| Runtime | Native PostgreSQL 16.13, CPython 3.12.14, Darwin arm64 |
+| Schema | Actual `0050_timeline_identity` to `0071_ml_use_roles` |
+| Result | Exit 0; complete rehearsal and owned cleanup verified |
+
+The archive is byte-identical to the successful runner output. Closed schema,
+body hash and all 645 source inputs were independently checked after publication.
+The new harness proves empty 0071/0070 roundtrip preservation, old-head refusal,
+no automatic memberships, synthetic grant/revoke/regrant, original-key no-op
+replay, read-only historical recovery and nonempty downgrade refusal. Those
+checks execute before report completion and after the earlier independent
+nonempty-history checks, which cannot be masked by a later ML ledger row.
+
+The established `schema-rehearsal/1.0.0` vocabulary is unchanged: its named table
+counts/outcomes do **not** include ML role counters. The three synthetic role
+events are asserted by the source-pinned native harness, not new receipt fields
+or real account provisioning. The first attempt stopped at a new harness
+connection-order assertion and published no receipt; the original exact-head
+guard was preserved and the harness corrected before this complete rerun.
+
+This is not a production migration, permission review, real-data training grant,
+Linux-image parity test or release approval. See the
+[batch54 report](../Priority_Fifty_Fourth_Batch_Implementation_2026-09-12.md).
+Its 645-file source inventory is the historical batch54 checkpoint. Batch55
+keeps schema 0071 but adds new intake/preflight source files; it does not claim
+that the earlier receipt measures those later files or refresh its hashes.
+
 ## 2026-09-09: historical/current chunking and actual index migration
 
 [RG03_Index_Migration_2026-09-09-01.json](RG03_Index_Migration_2026-09-09-01.json)
@@ -247,3 +287,29 @@ after existing resource/source preflights and before admission. Its targeted
 69-test publication/public-gate rerun passed without changing old limit assertions.
 The v1 report vocabulary and non-production authority limitations remain as
 described above.
+
+## 0070 explicit main-barrier checkpoint
+
+[DR04_Main_Barrier_Schema_2026-09-12-01.json](DR04_Main_Barrier_Schema_2026-09-12-01.json)
+is a fresh complete native rehearsal at batch52, not an edited older receipt.
+
+| Measurement | Actual checkpoint |
+| --- | --- |
+| Full file SHA-256 | `1360aaf2fd0c2dcc4adefab5369b32a2bc4f3ac18b7b7bb67eba9fbb58bbf18a` |
+| Body SHA-256 | `5825f600b2e544b5e0b076bcfd7118d955405d66d8deaedbc0bbb6398fb4fa7a` |
+| Measured rehearsal time | 92,291 ms; not a production latency benchmark |
+| Captured source inventory | 637 files; digest `34536b1118f26ec6bfbaf7e1de2149f94605d7e2399dcd74f6fce783d0460e22` |
+| HEAD / worktree | `00718749b6eb15926ae8cbfc58e02a9432488815`; batch52 dirty-worktree bytes explicitly pinned |
+| Schema | Actual `0050_timeline_identity` to `0070_discovery_main_barrier` |
+| Result | Exit0; full rehearsal and owned cleanup verified |
+
+The unchanged closed report vocabulary does not add named Discovery governance
+table counts or0070 outcomes. The pinned extended harness executed the new
+empty and v1-populated0070/0069 roundtrips, exact v1 function/byte/hash retention,
+original-key no-op replay, actual v2 nondeclaration/evidence-gap registration,
+and retained-v2 downgrade refusal before report completion. Original0069
+nonempty-history refusal was checked independently before v2 history existed.
+The file/body hash and all637 current source inputs were independently validated
+after publication. Older reports remain unchanged. Scientific review, production
+backup/restore, capacity, Linux image parity and deployment approval are not
+established by this synthetic native rehearsal.

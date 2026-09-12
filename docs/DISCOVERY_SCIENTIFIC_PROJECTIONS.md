@@ -251,11 +251,13 @@ accepted observations, declared missingness, comparison scope and calibration
 limits. No browser-calculated superconductivity probability or silent numeric
 aggregation should be added.
 
-The current sealed RPS rows retain constraint/reason codes, but do not separately
-declare a primary `main_barrier` field. The browser must not choose a lowest
-dimension or first reason and call it the main physical barrier. Display the
-exact constraints and that a main barrier was not separately declared until an
-explicit versioned, reviewed field is available.
+The original v1 sealed RPS rows retain constraint/reason codes, but do not
+separately declare a primary `main_barrier` field. Their browser display remains
+“Main barrier not separately declared”. The [v2 main-barrier contract](DISCOVERY_MAIN_BARRIERS.md)
+and migration0070 add an explicit curator declaration in a new paired
+selection/payload version. The browser must never choose a lowest dimension or
+first reason and call it the main physical barrier. Old documents and RPS values
+are not rewritten; a new declaration requires a new package and independent review.
 
 No setting is enabled by this migration or by these tests. Do not run a live
 backfill, publish a real projection, change production settings or close DR04

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AVAILABILITY_LABELS, SCIENTIFIC_DISCLAIMER, SCIENTIFIC_FAILURE, SCIENTIFIC_FIELDS, SCIENTIFIC_GROUPS,
   SCIENTIFIC_KEYS, getScientificCatalog, getScientificProjection, scientificNumber, scientificQuantity,
+  MAIN_BARRIER_CATEGORIES, mainBarrierBasisKey,
   type ScientificAssessment, type ScientificCatalog, type ScientificCell, type ScientificMaterial,
   type ScientificObservation, type ScientificReceipt,
 } from "@/lib/discovery-scientific";
@@ -104,6 +105,25 @@ export function PolicyDetails({ assessment: a }: { assessment: ScientificAssessm
     <Pins title="Complete frozen assessment and contribution record" value={a} />
   </details>;
 }
+export function MainBarrierSummary({ row, full = false }: { row: ScientificMaterial; full?: boolean }) {
+  const barrier = "main_barrier" in row ? row.main_barrier : undefined;
+  if (!barrier) return <span>Main barrier not separately declared</span>;
+  if (barrier.status === "not_declared") return <span>Not declared · explicit curator choice</span>;
+  return <div className="min-w-0 space-y-2 break-words [overflow-wrap:anywhere]">
+    <p className="text-xs text-sage-muted">{MAIN_BARRIER_CATEGORIES[barrier.category]}</p>
+    <p className="whitespace-pre-wrap">{barrier.statement}</p>
+    {full && <>
+      <p className="whitespace-pre-wrap text-sm"><span className="font-medium">Rationale: </span>{barrier.rationale}</p>
+      <ul className="list-inside list-disc text-xs">{barrier.basis_refs.map(ref => <li key={mainBarrierBasisKey(ref)}>{ref.kind === "scientific_cell"
+        ? `Scientific cell · ${SCIENTIFIC_FIELDS[ref.property_key].label} (${ref.property_key}) · ${AVAILABILITY_LABELS[row.cells.find(c => c.property_key === ref.property_key)!.availability]}`
+        : `${ref.kind === "assessment_reason" ? "Selected assessment reason" : "Selected execution constraint"} · ${ref.code}`}</li>)}</ul>
+      <Pins title="Exact main-barrier basis and selected context" value={{ main_barrier: barrier, material: row.material, state: row.state,
+        structure: row.structure, assessment: row.representative, action_id: row.assessment.action_id,
+        scientific_cells: row.cells.filter(c => barrier.basis_refs.some(ref => ref.kind === "scientific_cell" && ref.property_key === c.property_key))
+          .map(c => ({ property_key: c.property_key, availability: c.availability, result_refs: c.result_refs, evidence_refs: c.evidence_refs })) }} />
+    </>}
+  </div>;
+}
 export function MaterialDetails({ row: r, close, prepared = false }: { row: ScientificMaterial; close: () => void; prepared?: boolean }) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -122,9 +142,12 @@ export function MaterialDetails({ row: r, close, prepared = false }: { row: Scie
       <Term name="Selected structure ID">{r.structure?.row_id ?? "Not selected"}</Term>
       <Term name={prepared ? "Prepared representative" : "Frozen representative"}>{r.representative.id} · revision {r.representative.revision.toLocaleString("en-US")}</Term>
       <Term name="Selection rationale">{r.selection_rationale}</Term>
-      <Term name="Main barrier">Main barrier not separately declared</Term>
       <Term name="Assessment reasons">{r.assessment.result.reason_codes.join(" · ") || "No assessment reasons declared"}</Term>
     </dl>
+    <section aria-label="Curator-declared main barrier" className="space-y-3 rounded-lg border border-sage-border p-4">
+      <h4 className="font-semibold">Curator-declared main barrier</h4><MainBarrierSummary row={r} full />
+      <p className="text-xs text-sage-muted">A declared barrier is a curator interpretation for the selected state, structure and research action, not proof of a primary causal obstacle or an ML training label. An evidence gap is not negative evidence; an execution constraint is not a measured material property. A recorded policy reason is not physical proof. Scores and scientific acceptance are unchanged.</p>
+    </section>
     <Pins title="Representative, original RPS review and selected context pins" value={{ representative: r.representative, assessment_review: r.assessment_review,
       material: r.material, state: r.state, structure: r.structure, state_context: r.state_context, profile_assignment: r.profile_assignment }} />
     <p className="text-xs text-sage-muted">The original RPS review concerns the policy assessment. It is not scientific acceptance of each property.</p>
@@ -254,7 +277,7 @@ export function ScientificDiscoveryMatrix() {
             <th scope="col" className="p-3">RPS</th><th scope="col" className="min-w-28 p-3">P / G / A</th>
             <th scope="col" className="min-w-44 p-3">Selected state / pressure</th><th scope="col" className="min-w-44 p-3">Next action / role</th>
             {fields.map(k => <th scope="col" key={k} className="min-w-40 p-3">{SCIENTIFIC_FIELDS[k].label}{" "}<span className="block font-normal text-sage-muted">{SCIENTIFIC_FIELDS[k].unit === "1" ? "dimensionless" : SCIENTIFIC_FIELDS[k].unit}</span></th>)}
-            <th scope="col" className="min-w-40 p-3">Evidence / review</th><th scope="col" className="min-w-52 p-3">Main barrier / constraints</th>
+            <th scope="col" className="min-w-40 p-3">Evidence / review</th><th scope="col" className="min-w-52 p-3">Curator-declared main barrier / constraints</th>
           </tr></thead>
           <tbody>{visible.map(r => {
             const a = r.assessment, s = a.result, observations = r.cells.flatMap(c => c.observations);
@@ -269,7 +292,7 @@ export function ScientificDiscoveryMatrix() {
               <td className="p-3">{a.action_summary}<span className="mt-1 block text-sage-muted">{label(a.role)}</span></td>
               {fields.map(k => <td key={k} className="p-3"><CellValue cell={r.cells.find(c => c.property_key === k)!} /></td>)}
               <td className="p-3">{observations.length.toLocaleString("en-US")} recorded results<span className="mt-1 block text-sage-muted">{observations.filter(o => o.scientific_scope_accepted).length.toLocaleString("en-US")} accepted sampled-phonon reviews</span></td>
-              <td className="p-3">Main barrier not separately declared<span className="mt-1 block text-sage-muted">{s.execution_constraint_reasons.join(" · ") || "No execution constraints declared"}</span></td>
+              <td className="min-w-52 max-w-sm p-3"><MainBarrierSummary row={r} /><span className="mt-1 block text-sage-muted">{s.execution_constraint_reasons.join(" · ") || "No execution constraints declared"}</span></td>
             </tr>;
           })}</tbody>
         </table>

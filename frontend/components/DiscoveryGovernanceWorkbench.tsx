@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ApiError } from "@/lib/api";
 import { onAuthChange } from "@/lib/auth-session";
-import { MaterialDetails } from "@/components/ScientificDiscoveryMatrix";
+import { MainBarrierSummary, MaterialDetails } from "@/components/ScientificDiscoveryMatrix";
 import { SCIENTIFIC_DISCLAIMER } from "@/lib/discovery-scientific";
 import { selectionCode, selectionUUID } from "@/lib/discovery-selection";
 import { GOVERNANCE_FAILURE, getCurrentInspection, getGovernanceHeader, getGovernanceOutcome, getOperatorAccess, getReviewPage,
@@ -250,6 +250,9 @@ export function DiscoveryGovernanceWorkbench() {
     {current && <section className={panel} aria-label="Current scientific inspection"><h3 className="font-semibold">Current reconstruction at the last read</h3>
       <p className="text-sm">Inspect every selected state, scientific cell and alternative action before a positive decision. This read is not ongoing authorization, scientific approval or ML admission. Compare policy scores only within the same frozen campaign, budget, policy, release and eligible role / rank group.</p>
       <div className="flex flex-wrap gap-2">{current.payload.rows.map(r => <button key={r.material.row_id} className={button} aria-expanded={expanded === r.material.row_id} onClick={e => { detailTrigger.current = e.currentTarget; setExpanded(r.material.row_id); }}>Inspect {r.assessment.formula}</button>)}</div>
+      <div className="space-y-3">{current.payload.rows.map(r => <section key={r.material.row_id} className="rounded-lg border border-sage-border p-3" aria-label={`Main barrier for ${r.assessment.formula}`}>
+        <h4 className="text-sm font-semibold">{r.assessment.formula} · Curator-declared main barrier</h4><MainBarrierSummary row={r} full />
+      </section>)}</div>
       {detail && <MaterialDetails row={detail} prepared close={() => { setExpanded(null); detailTrigger.current?.focus(); }} />}
       <Pins title={`Complete new-scope rights targets (${current.rights_targets.length.toLocaleString("en-US")})`} value={current.rights_targets} />
     </section>}

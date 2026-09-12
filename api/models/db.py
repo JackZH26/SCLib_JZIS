@@ -1709,6 +1709,16 @@ from models.discovery_projection_v1 import register as _register_discovery_proje
 
 DISCOVERY_PROJECTION_TABLES = _register_discovery_projection(Base.metadata)
 
+from models.discovery_projection_v2 import (  # noqa: E402
+    register as _register_discovery_projection_v2,
+)
+
+_register_discovery_projection_v2(Base.metadata)
+
+from models.ml_use_roles_v1 import register as _register_ml_use_roles  # noqa: E402
+
+ML_USE_ROLE_DECISIONS = _register_ml_use_roles(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

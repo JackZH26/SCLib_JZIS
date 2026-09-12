@@ -44,8 +44,21 @@ admission. Its [public browser matrix](docs/DISCOVERY_SCIENTIFIC_MATRIX.md),
 [curator preparation](docs/DISCOVERY_SELECTION_PREPARATION.md), and independent
 [Discovery governance workbench](docs/DISCOVERY_OPERATOR_GOVERNANCE.md) now expose
 separate scientific inspection, append-only history and exact protected actions.
+The [v2 main-barrier contract](docs/DISCOVERY_MAIN_BARRIERS.md) adds explicit,
+context-bound curator interpretations without changing frozen RPS or v1 records.
 A real reviewed pilot remains separate; recorded quantities and research-priority
 scores are not ground truth.
+The [private baseline preparation CLI](docs/ML_BASELINE_PREPARATION.md) connects
+audited datasets to reproducible configuration drafts, feature/split coverage
+inspection and exact preparation replay. It does not authorize or run real-data
+model training.
+The [independent ML membership registry](docs/ML_USE_GOVERNANCE.md) adds opt-in
+administrator preview/grant/revoke and current authenticated role inspection.
+It grants neither source access nor model execution; existing roles are not
+automatically converted to ML memberships.
+An [exact ML-use intake and online preflight](docs/ML_USE_PREFLIGHT.md) now links
+locally rebuilt baseline inputs to server-derived registered source requirements.
+The inspection is read-only and grants neither source permission nor execution.
 Numerical/evidence queries and Search UI scientific filters return qualified,
 exact-parent extraction rows separately from ordinary paper hits; without an
 active generation they explicitly report unavailable. These are not reviewed

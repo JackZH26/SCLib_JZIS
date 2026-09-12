@@ -18,6 +18,7 @@ export const SCIENTIFIC_DISCLAIMER = "Policy-based research priority; empirical 
 export const SCIENTIFIC_FAILURE = "Scientific publication could not be verified at this read point. Materials and scores are hidden. Refresh the catalog to try again.";
 export const SCIENTIFIC_MAX_BYTES = 4 * 1024 * 1024 + 64 * 1024;
 const VERSION = "discovery-scientific-projection/1.0.0";
+const VERSION_V2 = "discovery-scientific-projection/2.0.0";
 const PROFILE = "sampled-phonon-minimum-review/1.0.0";
 const PROFILES = ["common", "epc_hydride", "layered_correlated", "multiband", "flatband"];
 const RESOURCES = ["cpu_core_hours", "gpu_hours", "memory_gib", "storage_gib", "human_hours"];
@@ -127,32 +128,63 @@ const selectionCellFields = { property_key: one(SCIENTIFIC_KEYS), availability: 
 const cell = object({ ...selectionCellFields, unit: str(60), group: one(SCIENTIFIC_GROUPS), observations: list(observation, 8),
   availability_basis: one(["explicit_review_required_declaration", "registered_result_inventory"]) });
 export type ScientificCell = Value<typeof cell>;
-const materialRow = object({
+export const MAIN_BARRIER_CATEGORIES = {
+  evidence_gap: "Evidence gap", execution_constraint: "Execution constraint",
+  scientific_hypothesis: "Scientific hypothesis", recorded_policy_reason: "Recorded policy reason",
+} as const;
+export type MainBarrierCategory = keyof typeof MAIN_BARRIER_CATEGORIES;
+// Python's retained barrier contract uses Unicode White_Space, not JS trim
+// (which treats FEFF as blank but misses U+0085). Do not change v1 text rules.
+const barrierText = (max: number): Check<string> => (v): v is string => typeof v === "string" && /\P{White_Space}/u.test(v)
+  && Array.from(v).length <= max && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(v)
+  && Array.from(v).every(c => { const cp = c.codePointAt(0)!; return cp < 0xd800 || cp > 0xdfff; });
+const mainBarrierBasis = union(union(object({ kind: literal("assessment_reason"), code: barrierText(200) }),
+  object({ kind: literal("execution_constraint"), code: barrierText(200) })), object({ kind: literal("scientific_cell"), property_key: one(SCIENTIFIC_KEYS) }));
+export type MainBarrierBasis = Value<typeof mainBarrierBasis>;
+export const mainBarrierShape = union(object({ status: literal("not_declared") }), object({ status: literal("declared"),
+  category: one(Object.keys(MAIN_BARRIER_CATEGORIES) as MainBarrierCategory[]), statement: barrierText(500), rationale: barrierText(2000),
+  basis_refs: list(mainBarrierBasis, 8, 1) }));
+export type MainBarrier = Value<typeof mainBarrierShape>;
+export const mainBarrierBasisKey = (basis: MainBarrierBasis) => `${basis.kind}:${basis.kind === "scientific_cell" ? basis.property_key : basis.code}`;
+export function compareMainBarrierBasis(a: MainBarrierBasis, b: MainBarrierBasis) {
+  const left = Array.from(mainBarrierBasisKey(a), c => c.codePointAt(0)!), right = Array.from(mainBarrierBasisKey(b), c => c.codePointAt(0)!);
+  for (let i = 0; i < Math.min(left.length, right.length); i++) if (left[i] !== right[i]) return left[i] - right[i];
+  return left.length - right.length;
+}
+const materialRowFields = {
   material: materialRef, state: rowRef(["material_states"]), structure: nullable(rowRef(["structure_records"])),
   representative: assessmentRef, selection_rationale: str(2000), assessment, assessment_review: object(refFields),
   state_context: object({ material_id: identifier, ...conditions, phase: str(4000), sample_context: str(4000) }),
   profile_assignment: object({ campaign_hash: sha, mix }),
   alternatives: list(object({ reference: assessmentRef, assessment }), 199), cells: list(cell, 8, 8),
-});
-export type ScientificMaterial = Value<typeof materialRow>;
+};
+const materialRow = object(materialRowFields);
+const materialRowV2 = object({ ...materialRowFields, main_barrier: mainBarrierShape });
+export type ScientificMaterial = Value<typeof materialRow> | Value<typeof materialRowV2>;
 const campaign = object({ id: identifier, version: identifier, objective: str(4000), target_pressure_max_gpa: nonnegative,
   budget: dictionary(nonnegative, one(RESOURCES), 0, 5), profile_mixes: dictionary(mix, identifier, 1),
   dimension_rules: dimensions(identifier), action_templates: dictionary(sha, identifier, 1) });
-const selection = object({ version: literal("discovery-scientific-selection/1.0.0"), release_manifest_sha256: sha, public_bundle_sha256: sha,
-  representatives: list(object({ material: object(refFields), assessment: assessmentRef, structure: nullable(rowRef(["structure_records"])),
-    rationale: str(2000), alternatives: list(assessmentRef, 199), cells: list(object(selectionCellFields), 8, 8) }), 25, 1) });
-const payload = object({ version: literal(VERSION), disclaimer: literal(SCIENTIFIC_DISCLAIMER),
+const representativeFields = { material: object(refFields), assessment: assessmentRef, structure: nullable(rowRef(["structure_records"])),
+  rationale: str(2000), alternatives: list(assessmentRef, 199), cells: list(object(selectionCellFields), 8, 8) };
+const selectionFields = { release_manifest_sha256: sha, public_bundle_sha256: sha };
+const selection = object({ ...selectionFields, version: literal("discovery-scientific-selection/1.0.0"),
+  representatives: list(object(representativeFields), 25, 1) });
+const selectionV2 = object({ ...selectionFields, version: literal("discovery-scientific-selection/2.0.0"),
+  representatives: list(object({ ...representativeFields, main_barrier: mainBarrierShape }), 25, 1) });
+const payloadFields = { disclaimer: literal(SCIENTIFIC_DISCLAIMER),
   comparison_scope: literal("same_frozen_campaign_budget_policy_release"), evaluation_protocol: literal("https://github.com/JackZH26/SCLib_JZIS/issues/78"),
   base: object({ distribution_package_id: uuid, distribution_record_sha256: sha, inventory_sha256: sha, release_id: identifier,
-    release_manifest_sha256: sha, public_bundle_sha256: sha }), campaign, campaign_sha256: sha, policy_sha256: sha, selection, selection_sha256: sha,
-  rows: list(materialRow, 25, 1), capabilities: object({ version: literal(VERSION), registry_version: literal("rv2/1"), groups: list(one(SCIENTIFIC_GROUPS), 6, 6),
+    release_manifest_sha256: sha, public_bundle_sha256: sha }), campaign, campaign_sha256: sha, policy_sha256: sha, selection_sha256: sha,
+  capabilities: object({ version: literal(VERSION), registry_version: literal("rv2/1"), groups: list(one(SCIENTIFIC_GROUPS), 6, 6),
     scientific_properties: list(object({ property_key: one(SCIENTIFIC_KEYS), unit: str(60), group: one(SCIENTIFIC_GROUPS),
       storage_supported: literal(true), quantity_projection_supported: literal(true), exact_scientific_review_supported: oneBoolean(),
       scientific_review_profile: nullable(literal(PROFILE)), scientific_review_relations: list(literal("exact"), 1), populated_observations: integer(0, 100) }), 8, 8),
     planned_groups: list(one(["geometry", "competing_order"]), 2, 2), unregistered_dictionary_fields: literal("planned_not_database_properties"),
     rps_fields: object({ kind: literal("policy_assessment_not_scientific_ground_truth"), keys: list(one(["rps_score", "rps_physical", "rps_gain", "rps_action"]), 4, 4) }) }),
   scientific_acceptance: falseFlag, ml_training_approved: falseFlag, public_release_authorized: falseFlag,
-});
+};
+const payload = union(object({ ...payloadFields, version: literal(VERSION), selection, rows: list(materialRow, 25, 1) }),
+  object({ ...payloadFields, version: literal(VERSION_V2), selection: selectionV2, rows: list(materialRowV2, 25, 1) }));
 const publicationFields = { package_id: uuid, payload_sha256: sha, selection_sha256: sha, publication_sha256: sha, review_sha256: sha };
 const publication = object(publicationFields);
 export type ScientificPublication = Value<typeof publication>;
@@ -180,6 +212,23 @@ const equal = (a: unknown, b: unknown): boolean => {
     && Object.keys(a).every(k => Object.hasOwn(b, k) && equal(a[k], b[k]));
 };
 const sortedUnique = (items: string[]) => items.every((item, i) => i === 0 || items[i - 1] < item);
+export type MainBarrierCell = Pick<ScientificCell, "property_key" | "availability"> & { quantified: boolean };
+/** Basis membership records the curator's selection, not scientific truth. */
+export function mainBarrierOptions(category: MainBarrierCategory, a: ScientificAssessment, cells: MainBarrierCell[]): MainBarrierBasis[] {
+  const refs: MainBarrierBasis[] = category === "recorded_policy_reason"
+    ? [...new Set(a.result.reason_codes)].map(code => ({ kind: "assessment_reason", code }))
+    : category === "execution_constraint" ? [...new Set(a.result.execution_constraint_reasons)].map(code => ({ kind: "execution_constraint", code }))
+      : cells.filter(c => category === "evidence_gap" ? ["unknown", "not_computed", "conflicted"].includes(c.availability)
+        : ["reported", "conflicted"].includes(c.availability) && c.quantified).map(c => ({ kind: "scientific_cell", property_key: c.property_key }));
+  return refs.sort(compareMainBarrierBasis);
+}
+export function validMainBarrier(value: unknown, a: ScientificAssessment, cells: MainBarrierCell[]): value is MainBarrier {
+  if (!mainBarrierShape(value)) return false;
+  if (value.status === "not_declared") return true;
+  const options = mainBarrierOptions(value.category, a, cells);
+  return value.basis_refs.every((ref, i) => i === 0 || compareMainBarrierBasis(value.basis_refs[i - 1], ref) < 0)
+    && value.basis_refs.every(ref => options.some(option => equal(ref, option)));
+}
 function validConditions(v: Value<typeof observation>["state"] | ScientificMaterial["state_context"]) {
   requireValue(v.pressure_status === "explicit_ambient" ? v.pressure_gpa === 0 : v.pressure_status === "reported"
     ? v.pressure_gpa !== null : v.pressure_gpa === null);
@@ -251,6 +300,10 @@ function checkPayload(p: ScientificReceipt["payload"]) {
   const counts = Object.fromEntries(SCIENTIFIC_KEYS.map(k => [k, 0]));
   for (const [i, r] of p.rows.entries()) {
     const selected = p.selection.representatives[i];
+    if (p.version === VERSION_V2) {
+      requireValue("main_barrier" in r && "main_barrier" in selected && equal(r.main_barrier, selected.main_barrier)
+        && validMainBarrier(r.main_barrier, r.assessment, r.cells.map(c => ({ ...c, quantified: c.observations.some(o => o.quantity.relation !== "unreported") }))));
+    }
     requireValue(selected.material.id === r.assessment.material_id && r.state_context.material_id === r.assessment.material_id
       && equal(selected.assessment, r.representative) && equal(selected.structure, r.structure) && selected.rationale === r.selection_rationale
       && equal(selected.alternatives, r.alternatives.map(a => a.reference)));

@@ -298,6 +298,30 @@ describe("private source-task workbench", () => {
     fireEvent.click(screen.getByRole("button", { name: "Check original outcome" })); await screen.findByRole("heading", { name: "Committed historical receipt" });
     const after = new Event("beforeunload", { cancelable: true }); window.dispatchEvent(after); expect(after.defaultPrevented).toBe(false);
   });
+  it("makes a captured uncertain-state unload listener harmless after verified recovery without waiting for cleanup", async () => {
+    const add = vi.spyOn(window, "addEventListener"), remove = vi.spyOn(window, "removeEventListener");
+    try {
+      vi.mocked(sourceTaskCommit).mockRejectedValue(new ApiError(503, null, "unknown"));
+      const view = render(<SourceTasksPage />); await screen.findByText(/Current curator access verified/);
+      const callbacks = () => add.mock.calls.filter(([type]) => type === "beforeunload");
+      const before = new Event("beforeunload", { cancelable: true }); window.dispatchEvent(before); expect(before.defaultPrevented).toBe(false);
+      await prepare(); fireEvent.click(screen.getByRole("button", { name: "Commit exact preview" }));
+      // The locator is set before the operation's first await, so the original
+      // mounted callback already protects the in-flight write.
+      const committing = new Event("beforeunload", { cancelable: true }); window.dispatchEvent(committing); expect(committing.defaultPrevented).toBe(true);
+      await screen.findByRole("heading", { name: "Recover unknown commit" });
+      const warn = callbacks().at(-1)![1] as EventListener;
+      const unknown = new Event("beforeunload", { cancelable: true }); warn(unknown); expect(unknown.defaultPrevented).toBe(true);
+      const op = vi.mocked(sourceTaskCommit).mock.calls[0][0]; vi.mocked(sourceTaskRequestOutcome).mockResolvedValue(await receipt(op, true));
+      fireEvent.click(screen.getByRole("button", { name: "Check original outcome" })); await screen.findByRole("heading", { name: "Committed historical receipt" });
+      // Invoke the captured callback directly: this is independent of whether
+      // React has removed/reinstalled any passive-effect listeners yet.
+      const settled = new Event("beforeunload", { cancelable: true }); warn(settled); expect(settled.defaultPrevented).toBe(false);
+      expect(callbacks()).toHaveLength(1);
+      view.unmount(); expect(remove).toHaveBeenCalledWith("beforeunload", warn);
+      const unmounted = new Event("beforeunload", { cancelable: true }); window.dispatchEvent(unmounted); expect(unmounted.defaultPrevented).toBe(false);
+    } finally { add.mockRestore(); remove.mockRestore(); }
+  });
   it("turns transport timeout into unknown and ignores a late successful response", async () => {
     const delayed = deferred<unknown>(); vi.mocked(sourceTaskCommit).mockReturnValue(delayed.promise);
     await mount(); await prepare();

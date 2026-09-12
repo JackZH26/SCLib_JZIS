@@ -26,11 +26,19 @@ _SCIENTIFIC_IMPORT_TABLES = ("scientific_import_packages", "scientific_import_at
 _ADJUDICATION_TABLES = ("scientific_result_subjects", "scientific_adjudication_requests", "scientific_result_decisions")
 _ANSWER_EVIDENCE_TABLE = "answer_evidence_receipts"
 _DISCOVERY_PROJECTION_TABLES = ("discovery_projection_packages", "discovery_projection_reviews", "discovery_projection_actions")
+_ML_USE_ROLE_TABLE = "ml_use_role_decisions"
+
+
+def _assert_empty_ml_use_roles(connection):
+    from sqlalchemy import text
+
+    assert connection.execute(text(f"SELECT count(*) FROM public.{_ML_USE_ROLE_TABLE}")).scalar_one() == 0
 
 
 def _assert_empty_discovery_projections(connection):
     from sqlalchemy import text
 
+    _assert_empty_ml_use_roles(connection)
     for name in _DISCOVERY_PROJECTION_TABLES:
         assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
 
@@ -170,7 +178,7 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts",
                                 "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -580,7 +588,7 @@ def _background_jobs_empty_roundtrip(capability, engine, config):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES,
-                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
+                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -725,7 +733,7 @@ def _rag_evidence_empty_roundtrip(capability, engine, config):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -870,7 +878,7 @@ def _embedding_receipts_empty_roundtrip(capability, engine, config):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES,
-                                *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
+                                *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -989,7 +997,7 @@ def _index_generations_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
+                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1147,7 +1155,7 @@ def _distributions_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
+                if name not in {"alembic_version", *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1298,7 +1306,7 @@ def _ml_feature_bindings_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
+                if name not in {"alembic_version", _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1409,7 +1417,7 @@ def _scientific_imports_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
+                if name not in {"alembic_version", *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1573,7 +1581,7 @@ def _result_impact_indexes_roundtrip(capability, engine, config, *, populated):
 
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
-                for name in inspect(connection).get_table_names(schema="public") if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
+                for name in inspect(connection).get_table_names(schema="public") if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1646,7 +1654,7 @@ def _adjudications_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
+                if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1775,7 +1783,7 @@ def _answer_evidence_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES}}
+                if name not in {"alembic_version", _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1987,7 +1995,7 @@ def _discovery_projection_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
             for name in inspect(connection).get_table_names(schema="public")
-            if name not in {"alembic_version", *_DISCOVERY_PROJECTION_TABLES}}
+            if name not in {"alembic_version", *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -2088,6 +2096,342 @@ def _discovery_projection_downgrade_guard(capability, engine, config, package_id
         assert "retained immutable governance" in str(exc)
     else:
         raise AssertionError("Nonempty Discovery projection downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+
+
+def _discovery_main_barrier_roundtrip(capability, engine, config, *, package_id=None):
+    """0070 changes functions only; empty and v1-populated data stay exact."""
+    from alembic import command
+    from models.discovery_projection_v2 import (
+        FUNCTION_SIGNATURES,
+        frozen_insert_statement,
+    )
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        # Keep every retained JSON TEXT field and record hash, including v1
+        # governance. Exclude the changed Alembic marker and the independently
+        # asserted-empty later ML-role table, absent at the previous head.
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+            for name in inspect(connection).get_table_names(schema="public") if name not in {"alembic_version", _ML_USE_ROLE_TABLE}}
+
+    def functions(connection):
+        signatures = (*FUNCTION_SIGNATURES, ("sclib_discovery_projection_insert_v1", ""))
+        return {name: connection.execute(text("SELECT pg_get_functiondef(to_regprocedure(:signature))"),
+            {"signature": f"public.{name}({arguments})"}).scalar_one() for name, arguments in signatures}
+
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        before_functions = functions(connection)
+        assert all(before_functions.values())
+        _assert_empty_ml_use_roles(connection)
+        if package_id is None:
+            _assert_empty_discovery_projections(connection)
+        else:
+            assert any(row["id"] == package_id for row in before["discovery_projection_packages"])
+            assert all(before[name] for name in _DISCOVERY_PROJECTION_TABLES)
+        assert connection.execute(text("""SELECT count(*) FROM public.discovery_projection_packages
+            WHERE payload_json::jsonb->>'version' IS DISTINCT FROM 'discovery-scientific-projection/1.0.0'
+              OR selection_json::jsonb->>'version' IS DISTINCT FROM 'discovery-scientific-selection/1.0.0'""")).scalar_one() == 0
+    validate_test_environment()
+    command.downgrade(config, "0069_discovery_projection")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError as exc:
+            assert "exact revision" in str(exc)
+        else:
+            raise AssertionError("Main-barrier application must reject the previous schema")
+        verify_postgres_identity(connection, capability)
+        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0069_discovery_projection"
+        assert snapshot(connection) == before
+        for name, arguments in FUNCTION_SIGNATURES:
+            assert connection.execute(text("SELECT to_regprocedure(:signature)"),
+                {"signature": f"public.{name}({arguments})"}).scalar_one() is None
+        # Compare the function body stored by PostgreSQL with the exact frozen
+        # 0069 definition, not a hand-written approximation of its predicates.
+        expected_body = frozen_insert_statement().split("AS $$", 1)[1].rsplit("$$", 1)[0]
+        assert connection.execute(text("""SELECT prosrc FROM pg_proc
+            WHERE oid=to_regprocedure('public.sclib_discovery_projection_insert_v1()')""")).scalar_one() == expected_body
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0071_ml_use_roles"
+        _assert_empty_ml_use_roles(connection)
+        assert snapshot(connection) == before
+        assert functions(connection) == before_functions
+
+
+async def _discovery_projection_replays_on_migrated_schema(capability, package_ids):
+    """Original retained request keys replay after migration without any SQL effect."""
+    validate_test_environment()
+    import sqlalchemy as sa
+    from models.db import _to_async_dsn
+    from services import discovery_projection_governance as service
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from tests.test_research_freeze import state
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), isolation_level="SERIALIZABLE", poolclass=NullPool)
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda raw: verify_postgres_identity(raw, capability))
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            await session.execute(sa.text("SET LOCAL TIME ZONE 'UTC'"))
+            await session.execute(sa.text("SET LOCAL statement_timeout='5000ms'"))
+            before = await state(session)
+            for package_id in package_ids:
+                row = await service._package(session, package_id)
+                arguments = {**service._build_arguments(row), "actor_user_id": row["actor_user_id"],
+                    "request_key": row["request_key"], "expected_payload_sha256": row["payload_sha256"]}
+                replay = await service.register_projection(session, **arguments, dry_run=False)
+                outcome = await service.inspect_operation(session, actor_user_id=row["actor_user_id"],
+                    operation="register", request_key=row["request_key"], expected_request_sha256=row["request_sha256"])
+                assert replay == outcome and replay["replayed"] is True
+                assert replay["id"] == str(row["id"]) and replay["record_sha256"] == row["record_sha256"]
+                assert replay["payload_sha256"] == row["payload_sha256"]
+                assert replay["selection_sha256"] == row["selection_sha256"]
+                assert replay["request_sha256"] == row["request_sha256"]
+            assert await state(session) == before
+            await session.rollback()
+    finally:
+        await engine.dispose()
+
+
+async def _discovery_main_barrier_on_migrated_schema(capability, package_id):
+    """Real v2 packages over the retained synthetic v1 context, not science approval."""
+    validate_test_environment()
+    import json
+    from copy import deepcopy
+    from uuid import uuid4
+
+    import sqlalchemy as sa
+    from models.db import _to_async_dsn
+    from services import discovery_projection_governance as service
+    from services import discovery_scientific_projection as projection
+    from services.research_priority import digest
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from tests.test_research_freeze import state
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), isolation_level="SERIALIZABLE", poolclass=NullPool)
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda raw: verify_postgres_identity(raw, capability))
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            await session.execute(sa.text("SET LOCAL TIME ZONE 'UTC'"))
+            await session.execute(sa.text("SET LOCAL statement_timeout='5000ms'"))
+            original = await service._package(session, package_id)
+            original_payload = json.loads(original["payload_json"])
+            assert original_payload["version"] == projection.VERSION
+            assert json.loads(original["scientific_pins_json"]) == {}
+            assert all("main_barrier" not in row for row in original_payload["rows"])
+            declarations = (
+                {"status": "not_declared"},
+                {"status": "declared", "category": "evidence_gap",
+                    "statement": "Synthetic evidence gap in this selected context, not a physical obstacle.",
+                    "rationale": "The retained selected band-gap cell is unknown; no scientific conclusion is inferred.",
+                    "basis_refs": [{"kind": "scientific_cell", "property_key": "band_gap"}]},
+            )
+            packages = []
+            for declaration in declarations:
+                arguments = service._build_arguments(original)
+                selected = arguments["selection"]
+                selected["version"] = projection.SELECTION_VERSION_V2
+                for choice in selected["representatives"]:
+                    assert next(cell for cell in choice["cells"] if cell["property_key"] == "band_gap")["availability"] == "unknown"
+                    choice["main_barrier"] = deepcopy(declaration)
+                arguments.update(actor_user_id=original["actor_user_id"], request_key="synthetic-main-barrier:" + uuid4().hex,
+                    expected_selection_sha256=digest(selected))
+                before = await state(session)
+                preview = await service.register_projection(session, **arguments)
+                assert preview["dry_run"] is True and preview["committed"] is False
+                assert await state(session) == before
+                registered = await service.register_projection(session, **arguments,
+                    expected_payload_sha256=preview["payload_sha256"], dry_run=False)
+                assert registered["committed"] is False and registered["replayed"] is False
+                await session.commit()
+                await session.execute(sa.text("SET LOCAL TIME ZONE 'UTC'"))
+                await session.execute(sa.text("SET LOCAL statement_timeout='5000ms'"))
+                stored = await service._package(session, registered["package_id"])
+                payload = json.loads(stored["payload_json"])
+                assert payload["version"] == projection.VERSION_V2
+                assert payload["selection"]["version"] == projection.SELECTION_VERSION_V2
+                assert all(row["main_barrier"] == declaration for row in payload["rows"])
+                assert all(choice["main_barrier"] == declaration for choice in payload["selection"]["representatives"])
+                assert [{key: value for key, value in row.items() if key != "main_barrier"}
+                    for row in payload["rows"]] == original_payload["rows"]
+                assert all(payload[key] is False for key in projection.AUTHORITY)
+                assert stored["scientific_pins_json"] == original["scientific_pins_json"]
+                assert stored["public_bundle_json"] == original["public_bundle_json"]
+                assert await service._package(session, package_id) == original
+                packages.append(registered["package_id"])
+            assert len(set(packages)) == 2
+            await session.rollback()
+            return tuple(packages)
+    finally:
+        await engine.dispose()
+
+
+def _discovery_main_barrier_downgrade_guard(capability, engine, config, package_ids):
+    """A v2 package forbids downgrade before any function or history is changed."""
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+            for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert len(package_ids) == 2
+        assert connection.execute(text("""SELECT count(*) FROM public.discovery_projection_packages
+            WHERE id::text=ANY(:ids) AND payload_json::jsonb->>'version'='discovery-scientific-projection/2.0.0'
+              AND selection_json::jsonb->>'version'='discovery-scientific-selection/2.0.0'"""),
+            {"ids": list(package_ids)}).scalar_one() == 2
+        before_function = connection.execute(text("SELECT pg_get_functiondef('public.sclib_discovery_projection_insert_v1()'::regprocedure)")).scalar_one()
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0069_discovery_projection")
+    except RuntimeError as exc:
+        assert "retained immutable v2 governance" in str(exc)
+    else:
+        raise AssertionError("Nonempty main-barrier v2 downgrade must fail closed")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+        assert connection.execute(text("SELECT pg_get_functiondef('public.sclib_discovery_projection_insert_v1()'::regprocedure)")).scalar_one() == before_function
+
+
+def _ml_use_roles_empty_roundtrip(capability, engine, config):
+    """0071 starts empty and removes no pre-existing data or Discovery v2 state."""
+    from alembic import command
+    from models.ml_use_roles_v1 import FUNCTION_SIGNATURES
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+            for name in inspect(connection).get_table_names(schema="public")
+            if name not in {"alembic_version", _ML_USE_ROLE_TABLE}}
+
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_ml_use_roles(connection)
+        before = snapshot(connection)
+    validate_test_environment()
+    command.downgrade(config, "0070_discovery_main_barrier")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError as exc:
+            assert "exact revision" in str(exc)
+        else:
+            raise AssertionError("ML-use application must reject the previous schema")
+        verify_postgres_identity(connection, capability)
+        assert _ML_USE_ROLE_TABLE not in inspect(connection).get_table_names(schema="public")
+        for name, arguments in FUNCTION_SIGNATURES:
+            assert connection.execute(text("SELECT to_regprocedure(:signature)"),
+                {"signature": f"public.{name}({arguments})"}).scalar_one() is None
+        assert snapshot(connection) == before
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        _assert_empty_ml_use_roles(connection)
+        assert snapshot(connection) == before
+        for name, arguments in FUNCTION_SIGNATURES:
+            assert connection.execute(text("SELECT to_regprocedure(:signature)"),
+                {"signature": f"public.{name}({arguments})"}).scalar_one() is not None
+
+
+async def _ml_use_roles_on_migrated_schema(capability):
+    validate_test_environment()
+    from models.db import _to_async_dsn
+    from services import ml_use_access as service
+    from services.research_access import ResearchAccessDenied
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import text
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from tests.test_ml_use_governance import arguments, decide, no_authority
+    from tests.test_research_freeze import state
+    from tests.test_research_publication import actors
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), isolation_level="SERIALIZABLE", poolclass=NullPool)
+    try:
+        async with engine.connect() as connection:
+            assert (await connection.run_sync(check_connection_schema))["status"] == "compatible"
+            await connection.run_sync(lambda raw: verify_postgres_identity(raw, capability))
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            people = await actors(session)
+            args = arguments(people)
+            first = await decide(session, args)
+            revoked = await decide(session, arguments(people, action="revoke", previous=first["decision"]))
+            try:
+                await service.active_ml_role(session, people["member"], role="requester")
+            except ResearchAccessDenied:
+                pass
+            else:
+                raise AssertionError("Revoked ML membership must not remain active")
+            last = await decide(session, arguments(people, previous=revoked["decision"]))
+            await session.commit()
+            before = await state(session)
+            replay = await service.decide_ml_role(session, **args, dry_run=False,
+                                                  expected_intent_sha256=first["intent_sha256"])
+            assert replay["replayed"] and replay["decision"] == first["decision"]
+            assert await state(session) == before
+            await session.rollback()
+            await session.execute(text("SET TRANSACTION READ ONLY"))
+            recovered = await service.ml_role_outcome(session, actor_user_id=people["admin"],
+                request_key=args["request_key"], expected_intent_sha256=first["intent_sha256"])
+            assert recovered["decision"] == first["decision"]
+            info = await service.inspect_ml_access(session, actor_user_id=people["member"])
+            assert info["active_roles"] == ["requester"] and info["heads"][0]["id"] == last["decision"]["id"]
+            no_authority(info)
+            return [item["decision"]["id"] for item in (first, revoked, last)]
+    finally:
+        await engine.dispose()
+
+
+def _ml_use_roles_downgrade_guard(capability, engine, config, decision_ids):
+    from alembic import command
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
+            for name in inspect(connection).get_table_names(schema="public")}
+
+    with engine.connect() as connection:
+        verify_postgres_identity(connection, capability)
+        before = snapshot(connection)
+        assert {row["id"] for row in before[_ML_USE_ROLE_TABLE]} == set(decision_ids)
+        assert len(before[_ML_USE_ROLE_TABLE]) == len(decision_ids) == 3
+    try:
+        validate_test_environment()
+        command.downgrade(config, "0070_discovery_main_barrier")
+    except RuntimeError as exc:
+        assert "immutable authorization history" in str(exc)
+    else:
+        raise AssertionError("Nonempty ML-use membership downgrade must fail closed")
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
@@ -2421,8 +2765,17 @@ def main() -> None:
         history_id = asyncio.run(_answer_evidence_on_migrated_schema(capability, api_root, generation_id, legacy_history_id))
         _answer_evidence_downgrade_guard(capability, engine, config, history_id)
         _discovery_projection_empty_roundtrip(capability, engine, config)
+        _discovery_main_barrier_roundtrip(capability, engine, config)
         discovery_package_id = asyncio.run(_discovery_projection_on_migrated_schema(capability, api_root))
         _discovery_projection_downgrade_guard(capability, engine, config, discovery_package_id)
+        _discovery_main_barrier_roundtrip(capability, engine, config, package_id=discovery_package_id)
+        asyncio.run(_discovery_projection_replays_on_migrated_schema(capability, (discovery_package_id,)))
+        barrier_package_ids = asyncio.run(_discovery_main_barrier_on_migrated_schema(capability, discovery_package_id))
+        _discovery_main_barrier_downgrade_guard(capability, engine, config, barrier_package_ids)
+        asyncio.run(_discovery_projection_replays_on_migrated_schema(capability, (discovery_package_id, *barrier_package_ids)))
+        _ml_use_roles_empty_roundtrip(capability, engine, config)
+        role_decision_ids = asyncio.run(_ml_use_roles_on_migrated_schema(capability))
+        _ml_use_roles_downgrade_guard(capability, engine, config, role_decision_ids)
         if recorder is not None:
             with engine.connect() as connection:
                 verify_postgres_identity(connection, capability)
@@ -2430,7 +2783,7 @@ def main() -> None:
                 for check, before in retained_before.items():
                     recorder.retention(check, before, _report_signature(connection, check, release_id=release_id))
                 report_document = recorder.finish(connection)
-        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay, exact property feature source companions/byte verification/replay, byte-retained pending scientific imports with durable unknown starts/atomic completion/rollback/replay, result-impact index-only empty/populated roundtrips, exact-result adjudication preview/commit/replay/source preservation, immutable saved-answer atomic receipts/legacy NULL preservation/historical verification/no-op replay/owner cascade and independent nonempty history rollback guards verified.")
+        print("Disposable migration head/admission, empty round trips, legacy preservation, migrated-schema freeze/publication/withdrawal, source-lifecycle bootstrap/transitions, populated-history index-only round trip, atomic source-task cache invalidation/retry/rollback, session-locked background-cycle work/rollback/replay, text-free RAG lineage/invalidation/replay, complete embedding-response receipts, retained index-generation staging/validation/CAS/rollback, exact RPS distribution/full dependency permissions/publication/withdrawal/replay, exact property feature source companions/byte verification/replay, byte-retained pending scientific imports with durable unknown starts/atomic completion/rollback/replay, result-impact index-only empty/populated roundtrips, exact-result adjudication preview/commit/replay/source preservation, immutable saved-answer atomic receipts/legacy NULL preservation/historical verification/no-op replay/owner cascade, Discovery v1 byte-exact history and replay across main-barrier empty/populated function roundtrips, explicit synthetic v2 nondeclaration/evidence-gap registration, ML membership-only grant/revoke/regrant and exact historical no-op recovery, and independent nonempty history rollback guards verified.")
     finally:
         engine.dispose()
     if report_destination is not None:

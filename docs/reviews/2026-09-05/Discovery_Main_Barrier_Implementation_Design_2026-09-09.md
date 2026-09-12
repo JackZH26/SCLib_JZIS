@@ -1,7 +1,10 @@
 # Next increment: explicitly declared main barriers in Discovery
 
-Status: proposed local implementation handoff, **not implemented or scientifically
-approved**. Follows batch 51. Tracking: [DR04 #77](https://github.com/JackZH26/SCLib_JZIS/issues/77).
+Original status (2026-09-09): proposed local implementation handoff. Implemented
+locally in batch52 (2026-09-12); see the final
+[v2 contract](../../DISCOVERY_MAIN_BARRIERS.md). This historical design remains a
+design record, not scientific approval. Follows batch51. Tracking:
+[DR04 #77](https://github.com/JackZH26/SCLib_JZIS/issues/77).
 
 ## Evidence for the remaining gap
 

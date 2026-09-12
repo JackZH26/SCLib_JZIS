@@ -27,6 +27,16 @@ argument. There is no arbitrary file input enabled by `--synthetic` or
 `--approved`, no authenticated ML-use grant, and no general real-data runner.
 An internal Python numerical function is not an authentication boundary; its
 existence must not be represented as authorizing supplied data.
+The separate [ML workflow membership registry](ML_USE_GOVERNANCE.md) now allows
+explicit role administration and current status checks. These memberships are
+not source licenses or execution approvals; the runner's denial is unchanged.
+The [exact intake/preflight](ML_USE_PREFLIGHT.md) adds private request drafting
+and live registered-dependency inspection, still without an execution grant.
+
+The separate [private preparation CLI](ML_BASELINE_PREPARATION.md) now exposes
+configuration drafting, verified view preparation and exact offline replay for
+the audited five-input dataset workflow. It does not call model fitting or
+change this fixed-fixture runner's authority boundary.
 
 All six scientific/training/release/reviewer/live-rights/external-completeness
 authority flags remain false. ML08 still needs its real reviewed pilot, and

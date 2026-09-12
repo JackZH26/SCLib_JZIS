@@ -37,7 +37,11 @@ from routers.research_distributions import (
 from services import discovery_operator_history as history
 from services import discovery_projection_governance as service
 from services import discovery_selection_preparation as preparation
-from services.discovery_scientific_projection import AUTHORITY, registry_capabilities
+from services.discovery_scientific_projection import (
+    AUTHORITY,
+    SELECTION_VERSION_V2,
+    registry_capabilities,
+)
 from services.research_access import ResearchAccessDenied, require_research_operator
 from services.research_distribution_contract import _bounded
 
@@ -258,6 +262,17 @@ async def selection_prepare(request: Request, user: AuthenticatedUser):
     try:
         return _response(await _read(user, preparation.prepare_selection, **arguments),
             maximum=preparation.MAX_PREPARED_BYTES)
+    except service.DiscoveryGovernanceConflict:
+        raise _bad(409, "Distribution request rejected") from None
+
+
+@router.post("/selection/prepare-v2", openapi_extra=_request_schema(SelectionPreparation))
+async def selection_prepare_v2(request: Request, user: AuthenticatedUser):
+    await _precheck(user, "curator")
+    arguments = await _body(request, SelectionPreparation, maximum=40 * 1024 * 1024)
+    try:
+        return _response(await _read(user, preparation.prepare_selection,
+            selection_version=SELECTION_VERSION_V2, **arguments), maximum=preparation.MAX_PREPARED_BYTES)
     except service.DiscoveryGovernanceConflict:
         raise _bad(409, "Distribution request rejected") from None
 

@@ -12,6 +12,7 @@ import hashlib
 import json
 from collections import defaultdict
 
+from services import discovery_main_barrier as barrier
 from services import discovery_projection_governance as governance
 from services import discovery_scientific_projection as projection
 from services import priority_public_bundle as public
@@ -313,7 +314,9 @@ async def selection_context(db, *, actor_user_id, source):
         return result
 
 
-def capture_choices(choices):
+def capture_choices(choices, *, selection_version=projection.SELECTION_VERSION):
+    require(type(selection_version) is str and selection_version in projection.VERSION_PAIRS)
+    is_v2 = selection_version == projection.SELECTION_VERSION_V2
     raw = _bounded(choices, projection.MAX_SELECTION_BYTES)
     result = json.loads(raw)
     require(type(result) is list and 0 < len(result) <= projection.MAX_MATERIALS)
@@ -323,7 +326,10 @@ def capture_choices(choices):
             type(choice) is dict
             and set(choice)
             == {"material_id", "assessment_id", "structure_id", "rationale", "cells"}
+            | ({"main_barrier"} if is_v2 else set())
         )
+        if is_v2:
+            barrier.validate_shape(choice["main_barrier"], property_keys=projection.REGISTRY)
         require(
             all(
                 type(choice[k]) is str and contract._ID.fullmatch(choice[k])
@@ -361,7 +367,8 @@ def capture_choices(choices):
     return result
 
 
-def compile_selection(context, choices):
+def compile_selection(context, choices, *, selection_version=projection.SELECTION_VERSION):
+    choices = capture_choices(choices, selection_version=selection_version)
     require(
         [c["material_id"] for c in choices] == [m["descriptor"]["id"] for m in context["materials"]]
     )
@@ -395,6 +402,13 @@ def compile_selection(context, choices):
                     ],
                 }
             )
+        if selection_version == projection.SELECTION_VERSION_V2:
+            barrier.validate_context(
+                choice["main_barrier"], result=chosen["assessment"]["result"],
+                cells=[{**cell, "observations": [r for r in m["results"]
+                    if applicable(r) and r["property_key"] == cell["property_key"]]}
+                    for cell in cells],
+            )
         selected.append(
             {
                 "material": m["descriptor"],
@@ -403,10 +417,12 @@ def compile_selection(context, choices):
                 "rationale": choice["rationale"],
                 "alternatives": [a["reference"] for a in m["assessments"] if a is not chosen],
                 "cells": cells,
+                **({"main_barrier": choice["main_barrier"]}
+                   if selection_version == projection.SELECTION_VERSION_V2 else {}),
             }
         )
     selection = {
-        "version": projection.SELECTION_VERSION,
+        "version": selection_version,
         "release_manifest_sha256": context["release_manifest_sha256"],
         "public_bundle_sha256": context["public_bundle_sha256"],
         "representatives": selected,
@@ -415,16 +431,17 @@ def compile_selection(context, choices):
 
 
 async def prepare_selection(
-    db, *, actor_user_id, source, expected_context_sha256, request_key, choices
+    db, *, actor_user_id, source, expected_context_sha256, request_key, choices,
+    selection_version=projection.SELECTION_VERSION,
 ):
     source, _ = capture_source(source)
-    choices = capture_choices(choices)
+    choices = capture_choices(choices, selection_version=selection_version)
     expected = contract._hash(expected_context_sha256)
     key = distribution._key(request_key)
     async with asyncio.timeout(25):
         captured, context, bundle = await _context(db, actor_user_id=actor_user_id, source=source)
         governance._match(captured["context_sha256"] == expected)
-        selection = compile_selection(context, choices)
+        selection = compile_selection(context, choices, selection_version=selection_version)
         arguments = {
             "distribution_package_id": context["distribution_package_id"],
             "expected_distribution_record_sha256": context["distribution_record_sha256"],

@@ -117,6 +117,8 @@ class Settings(BaseSettings):
     # === ML Foundation shadow read path ===
     # Keep typed claims private until backfill QC and shadow parity gates pass.
     ml_foundation_public_enabled: bool = False
+    # Separate ML workflow membership administration; never enables training.
+    ml_use_governance_enabled: bool = False
     # RPS bundles are inert until a curator pins a reviewed manifest digest.
     discovery_rps_public_enabled: bool = False
     discovery_rps_release_dir: str = "/data/sclib/discovery/rps"

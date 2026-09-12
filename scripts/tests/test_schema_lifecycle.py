@@ -11,6 +11,136 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class SchemaLifecycleBoundaryTests(unittest.TestCase):
+    def test_ml_roles_are_checked_empty_before_older_history_guards_and_seeded_last(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        empty = source.split("def _assert_empty_discovery_projections", 1)[1].split("def _pre_answer_evidence_rows", 1)[0]
+        self.assertIn("_assert_empty_ml_use_roles(connection)", empty)
+        main = source.split("def main()", 1)[1]
+        markers = (
+            "_discovery_main_barrier_downgrade_guard(capability, engine, config, barrier_package_ids)",
+            "_ml_use_roles_empty_roundtrip(capability, engine, config)",
+            "_ml_use_roles_on_migrated_schema(capability)",
+            "_ml_use_roles_downgrade_guard(capability, engine, config, role_decision_ids)",
+            'recorder.phase(connection, "final")',
+        )
+        self.assertEqual([main.index(marker) for marker in markers], sorted(main.index(marker) for marker in markers))
+
+    def test_ml_role_roundtrip_preserves_all_prior_rows_and_refuses_old_head(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        block = source.split("def _ml_use_roles_empty_roundtrip", 1)[1].split("async def _ml_use_roles_on_migrated_schema", 1)[0]
+        for marker in ('command.downgrade(config, "0070_discovery_main_barrier")',
+                       'command.upgrade(config, "head")', "check_connection_schema(connection)",
+                       "_assert_empty_ml_use_roles(connection)", "FUNCTION_SIGNATURES", "to_regprocedure"):
+            self.assertIn(marker, block)
+        self.assertEqual(block.count("assert snapshot(connection) == before"), 2)
+        self.assertIn('if name not in {"alembic_version", _ML_USE_ROLE_TABLE}', block)
+        self.assertIn('assert "exact revision" in str(exc)', block)
+        for connection in block.split("with engine.connect() as connection:")[1:]:
+            self.assertLess(connection.index("check_connection_schema(connection)"),
+                            connection.index("verify_postgres_identity(connection, capability)"))
+
+    def test_ml_role_native_replay_and_nonempty_downgrade_preserve_history(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        seeded = source.split("async def _ml_use_roles_on_migrated_schema", 1)[1].split("def _ml_use_roles_downgrade_guard", 1)[0]
+        for marker in ("decide(session, args)", 'action="revoke"', "service.active_ml_role",
+                       "await session.commit()", "assert await state(session) == before",
+                       'SET TRANSACTION READ ONLY', "service.ml_role_outcome", "no_authority(info)"):
+            self.assertIn(marker, seeded)
+        guard = source.split("def _ml_use_roles_downgrade_guard", 1)[1].split("def main()", 1)[0]
+        self.assertIn("immutable authorization history", guard)
+        self.assertIn("assert snapshot(connection) == before", guard)
+        self.assertIn("== set(decision_ids)", guard)
+        final = guard.rsplit("with engine.connect() as connection:", 1)[1]
+        self.assertLess(final.index("check_connection_schema(connection)"),
+                        final.index("verify_postgres_identity(connection, capability)"))
+
+    def test_ml_role_migration_adds_no_membership_and_guards_destructive_downgrade(self):
+        source = (ROOT / "api/alembic/versions/0071_ml_use_roles.py").read_text()
+        upgrade = source.split("def upgrade()", 1)[1].split("def downgrade()", 1)[0]
+        self.assertIn("_table().create(op.get_bind())", upgrade)
+        self.assertNotIn("INSERT", upgrade)
+        downgrade = source.split("def downgrade()", 1)[1]
+        self.assertLess(downgrade.index("IN ACCESS EXCLUSIVE MODE"), downgrade.index("SELECT EXISTS"))
+        self.assertLess(downgrade.index("raise RuntimeError"), downgrade.index("_table().drop"))
+        self.assertIn("reversed(FUNCTION_SIGNATURES)", downgrade)
+
+    def test_main_barrier_history_cannot_mask_the_original_0069_downgrade_guard(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        tree = ast.parse(source)
+        functions = {node.name: node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))}
+        main = ast.get_source_segment(source, functions["main"])
+        markers = (
+            "_discovery_projection_empty_roundtrip(capability, engine, config)",
+            "_discovery_main_barrier_roundtrip(capability, engine, config)",
+            "_discovery_projection_on_migrated_schema(capability, api_root)",
+            "_discovery_projection_downgrade_guard(capability, engine, config, discovery_package_id)",
+            "_discovery_main_barrier_roundtrip(capability, engine, config, package_id=discovery_package_id)",
+            "_discovery_projection_replays_on_migrated_schema(capability, (discovery_package_id,))",
+            "_discovery_main_barrier_on_migrated_schema(capability, discovery_package_id)",
+            "_discovery_main_barrier_downgrade_guard(capability, engine, config, barrier_package_ids)",
+            "_discovery_projection_replays_on_migrated_schema(capability, (discovery_package_id, *barrier_package_ids))",
+        )
+        self.assertEqual([main.index(marker) for marker in markers], sorted(main.index(marker) for marker in markers))
+        original = ast.get_source_segment(source, functions["_discovery_projection_downgrade_guard"])
+        self.assertIn('command.downgrade(config, "0068_answer_evidence")', original)
+        self.assertIn('assert "retained immutable governance" in str(exc)', original)
+        self.assertNotIn("retained immutable v2 governance", original)
+
+    def test_main_barrier_roundtrip_retains_every_v1_byte_and_the_exact_frozen_function(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        body = source.split("def _discovery_main_barrier_roundtrip", 1)[1].split("async def _discovery_projection_replays_on_migrated_schema", 1)[0]
+        for marker in ('if name not in {"alembic_version", _ML_USE_ROLE_TABLE}', "_assert_empty_discovery_projections(connection)",
+            'all(before[name] for name in _DISCOVERY_PROJECTION_TABLES)',
+            'command.downgrade(config, "0069_discovery_projection")', 'assert "exact revision" in str(exc)',
+            'frozen_insert_statement().split("AS $$", 1)', 'SELECT prosrc FROM pg_proc',
+            'command.upgrade(config, "head")', '"0071_ml_use_roles"', "_assert_empty_ml_use_roles(connection)",
+            "assert functions(connection) == before_functions"):
+            self.assertIn(marker, body)
+        self.assertEqual(body.count("assert snapshot(connection) == before"), 2)
+        self.assertNotIn("_pre_answer_evidence_rows", body)
+        self.assertIn("scalar_one() is None", body)
+
+    def test_main_barrier_replays_are_real_original_key_noops_and_preserve_v1_and_v2(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        body = source.split("async def _discovery_projection_replays_on_migrated_schema", 1)[1].split("async def _discovery_main_barrier_on_migrated_schema", 1)[0]
+        for marker in ("await service._package(session, package_id)", '"request_key": row["request_key"]',
+            "await service.register_projection(session, **arguments, dry_run=False)",
+            'expected_request_sha256=row["request_sha256"]', 'assert replay == outcome and replay["replayed"] is True',
+            'replay["record_sha256"] == row["record_sha256"]', "assert await state(session) == before", "await session.rollback()"):
+            self.assertIn(marker, body)
+        self.assertNotIn("await session.commit()", body)
+
+    def test_main_barrier_rehearsal_uses_native_preview_commit_and_independent_v2_refusal(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        body = source.split("async def _discovery_main_barrier_on_migrated_schema", 1)[1].split("def _discovery_main_barrier_downgrade_guard", 1)[0]
+        for marker in ('{"status": "not_declared"}', '"status": "declared", "category": "evidence_gap"',
+            'selected["version"] = projection.SELECTION_VERSION_V2', "expected_selection_sha256=digest(selected)",
+            "assert await state(session) == before", 'expected_payload_sha256=preview["payload_sha256"], dry_run=False',
+            "await session.commit()", 'payload["version"] == projection.VERSION_V2',
+            'stored["public_bundle_json"] == original["public_bundle_json"]',
+            'stored["scientific_pins_json"] == original["scientific_pins_json"]',
+            "assert all(payload[key] is False for key in projection.AUTHORITY)",
+            "assert await service._package(session, package_id) == original"):
+            self.assertIn(marker, body)
+        guard = source.split("def _discovery_main_barrier_downgrade_guard", 1)[1].split("def _ml_use_roles_empty_roundtrip", 1)[0]
+        self.assertIn('command.downgrade(config, "0069_discovery_projection")', guard)
+        self.assertIn('assert "retained immutable v2 governance" in str(exc)', guard)
+        self.assertIn("assert snapshot(connection) == before", guard)
+        self.assertIn("scalar_one() == before_function", guard)
+        self.assertNotIn("if name not in", guard)
+
+    def test_main_barrier_migration_is_additive_and_refuses_v2_before_restoring_v1(self):
+        source = (ROOT / "api/alembic/versions/0070_discovery_main_barrier.py").read_text()
+        self.assertIn('down_revision = "0069_discovery_projection"', source)
+        self.assertNotIn("CASCADE", source)
+        self.assertNotIn("DELETE", source)
+        self.assertNotIn("UPDATE", source)
+        refusal = source.index("retained immutable v2 governance")
+        self.assertLess(refusal, source.index("op.execute(frozen_insert_statement())"))
+        self.assertLess(refusal, source.index("reversed(FUNCTION_SIGNATURES)"))
+        self.assertIn("payload_json::jsonb->>'version' IS DISTINCT FROM 'discovery-scientific-projection/1.0.0'", source)
+        self.assertIn("selection_json::jsonb->>'version' IS DISTINCT FROM 'discovery-scientific-selection/1.0.0'", source)
+
     def test_discovery_projection_history_is_last_and_older_empty_exclusions_are_narrow(self):
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         tree = ast.parse(source)

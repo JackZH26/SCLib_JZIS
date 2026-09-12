@@ -25,7 +25,12 @@ describe("actual Discovery selection wire contract", () => {
     // Batch 51 recaptured these assets through this exact portable writer.
     // Batch 50's external-writer provenance remains in its historical commit.
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/capture-discovery-selection.py"), "utf8"))).toBe("77330867abefb9cb44534174b463c1ffc4ca0e4661b5c7bd0c4f9617c92e76c8");
-    for (const [file, sha] of Object.entries(provenance.source_pins)) expect(hash(readFileSync(resolve(process.cwd(), "..", file), "utf8")), file).toBe(sha);
+    // Immutable batch-51 capture (0071874), not evidence that today's backend
+    // executed. Current-version compatibility is exercised separately.
+    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-selection/provenance.json"), "utf8"))).toBe("235390910753454f84a1725af52becaf935c19061bacaeac41490e2d3a438159");
+    for (const [file, sha] of Object.entries(provenance.source_pins)) {
+      expect(file).toMatch(/^(?:api|scripts)\/[A-Za-z0-9_./-]+$/); expect(file.split("/")).not.toContain(".."); expect(sha).toMatch(/^[a-f0-9]{64}$/);
+    }
   });
   it("accepts all eight actual private fields with zero scientific acceptance and unedited commands", async () => {
     const { prepared, context } = await verifiedFixture();

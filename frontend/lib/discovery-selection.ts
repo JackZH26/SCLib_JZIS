@@ -1,7 +1,7 @@
 import { API_BASE, ApiError } from "./api";
 import { SCIENTIFIC_FIELDS, SCIENTIFIC_KEYS, parsePreparedScientificPayload, parsePrivateDiscoveryJSON,
-  preparationScientificShapes as shapes, validatePreparationAssessment,
-  type ScientificAssessment, type ScientificKey, type ScientificMaterial, type ScientificPayload, type ScientificQuantity } from "./discovery-scientific";
+  preparationScientificShapes as shapes, validatePreparationAssessment, validMainBarrier,
+  type MainBarrier, type ScientificAssessment, type ScientificKey, type ScientificMaterial, type ScientificPayload, type ScientificQuantity } from "./discovery-scientific";
 
 export const SELECTION_VERSION = "discovery-selection-preparation/1.0.0";
 export const SELECTION_FAILURE = "The private selection response could not be verified. Reload the exact context before continuing.";
@@ -31,7 +31,9 @@ export type SelectionContext = Authority & { version: typeof SELECTION_VERSION; 
 export type ContextReceipt = { context: SelectionContext; context_sha256: string };
 export type CellChoice = { property_key: ScientificKey; availability: "reported" | "unknown" | "not_computed" | "not_applicable" | "conflicted"; reason_code: string; evidence_refs: NativeReference[] };
 export type MaterialChoice = { material_id: string; assessment_id: string; structure_id: string | null; rationale: string; cells: CellChoice[] };
-export type SelectionRequest = { source: SelectionSource; expected_context_sha256: string; request_key: string; choices: MaterialChoice[] };
+export type MaterialChoiceV2 = MaterialChoice & { main_barrier: MainBarrier };
+export type SelectionRequest = { source: SelectionSource; expected_context_sha256: string; request_key: string; choices: (MaterialChoice | MaterialChoiceV2)[] };
+export type SelectionRequestV2 = Omit<SelectionRequest, "choices"> & { choices: MaterialChoiceV2[] };
 export type PreparedSelection = { actor_user_id: string; actor_grant_id: string; context_sha256: string; request_key: string; request_sha256: string;
   payload_sha256: string; selection_sha256: string; payload: ScientificPayload; preview_json: string; commit_json: string };
 export type SelectionRecovery = { actorId: string; requestKey: string; requestSha256: string; payloadSha256: string; selectionSha256: string };
@@ -162,11 +164,12 @@ export function inventoryCell(key: ScientificKey, results: SelectionCandidate["r
   return { property_key: key, availability: quantified ? "reported" : "unknown", reason_code: quantified ? "retained_registered_result"
     : matching.length ? "source_does_not_report_value" : "no_matching_registered_result", evidence_refs: [] };
 }
-function expectedSelection(context: SelectionContext, choices: MaterialChoice[]) {
+function expectedSelection(context: SelectionContext, choices: SelectionRequest["choices"]) {
   requireValue(choices.length === context.materials.length && same(choices.map(c => c.material_id), context.materials.map(m => m.descriptor.id)));
-  return { version: "discovery-scientific-selection/1.0.0", release_manifest_sha256: context.release_manifest_sha256,
+  const v2 = choices.some(c => Object.hasOwn(c, "main_barrier"));
+  return { version: v2 ? "discovery-scientific-selection/2.0.0" : "discovery-scientific-selection/1.0.0", release_manifest_sha256: context.release_manifest_sha256,
     public_bundle_sha256: context.public_bundle_sha256, representatives: context.materials.map((m, i) => {
-      const c = choices[i]; requireValue(closed(c, ["material_id", "assessment_id", "structure_id", "rationale", "cells"]) && text(c.rationale, 2000)
+      const c = choices[i]; requireValue(closed(c, ["material_id", "assessment_id", "structure_id", "rationale", "cells", ...(v2 ? ["main_barrier"] : [])]) && text(c.rationale, 2000)
         && (c.structure_id === null || selectionUUID(c.structure_id)) && list(c.cells, 8, 8) && same(c.cells.map(c => c.property_key), SCIENTIFIC_KEYS));
       const { assessment: a, results, evidence } = selectedInventory(m, c.assessment_id, c.structure_id);
       const cells = c.cells.map(cell => {
@@ -175,8 +178,12 @@ function expectedSelection(context: SelectionContext, choices: MaterialChoice[])
           && cell.evidence_refs.every(r => evidence.some(e => same(e.reference, r))));
         return { ...cell, result_refs: results.filter(r => r.property_key === cell.property_key).map(r => r.reference) };
       });
+      const barrier = "main_barrier" in c ? c.main_barrier : undefined;
+      if (v2) requireValue(validMainBarrier(barrier, a.assessment,
+        cells.map(cell => ({ ...cell, quantified: results.some(r => r.property_key === cell.property_key && r.quantity.relation !== "unreported") }))));
       return { material: m.descriptor, assessment: a.reference, structure: m.structures.find(s => (s.reference?.row_id ?? null) === c.structure_id)!.reference,
-        rationale: c.rationale, alternatives: m.assessments.filter(x => x.reference.id !== a.reference.id).map(x => x.reference), cells };
+        rationale: c.rationale, alternatives: m.assessments.filter(x => x.reference.id !== a.reference.id).map(x => x.reference), cells,
+        ...(v2 ? { main_barrier: barrier } : {}) };
     }) };
 }
 const commandFields = ["distribution_package_id", "expected_distribution_record_sha256", "expected_inventory_sha256", "public_bundle", "selection",
@@ -288,8 +295,14 @@ export function getSelectionContext(source: SelectionSource, signal?: AbortSigna
   return privateText("/selection/context", 2 * CONTEXT_LIMIT + 1024, signal, body);
 }
 export function prepareSelection(request: SelectionRequest, signal?: AbortSignal) {
+  requireValue(request.choices.every(c => !Object.hasOwn(c, "main_barrier")));
   const body = JSON.stringify(request); requireValue(new TextEncoder().encode(body).length <= 40 * 1024 * 1024);
   return privateText("/selection/prepare", PREPARED_LIMIT, signal, body);
+}
+export function prepareSelectionV2(request: SelectionRequestV2, signal?: AbortSignal) {
+  requireValue(request.choices.length > 0 && request.choices.every(c => Object.hasOwn(c, "main_barrier")));
+  const body = JSON.stringify(request); requireValue(new TextEncoder().encode(body).length <= 40 * 1024 * 1024);
+  return privateText("/selection/prepare-v2", PREPARED_LIMIT, signal, body);
 }
 export function registerSelection(raw: string, signal?: AbortSignal) {
   requireValue(new TextEncoder().encode(raw).length <= COMMAND_LIMIT);

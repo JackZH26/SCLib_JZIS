@@ -18,6 +18,8 @@ RETENTION_MESSAGE = (
     "Deletion requires a reviewed retention or de-identification workflow."
 )
 AUDIT_USER_REFERENCES = (
+    ("ml_use_role_decisions", "user_id"),
+    ("ml_use_role_decisions", "actor_user_id"),
     ("research_role_grants", "user_id"),
     ("research_role_grants", "granted_by"),
     ("research_role_revocations", "revoked_by"),

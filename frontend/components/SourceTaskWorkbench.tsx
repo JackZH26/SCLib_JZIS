@@ -94,16 +94,17 @@ export function SourceTaskWorkbench() {
   useEffect(() => {
     mounted.current = true; void refresh();
     const unsubscribe = onAuthChange(() => { clearPrivate(); setMessage("Session changed. Private data has been cleared. Refresh access before any inspection or recovery."); });
-    return () => { mounted.current = false; seq.current += 1; controller.current?.abort(); unsubscribe(); };
+    // One mounted listener observes the synchronous locator, not a rendered
+    // phase. A verified receipt clears it before passive effect cleanup could
+    // run; a commit sets it before its first await. Auth changes keep it opaque.
+    const warn = (event: BeforeUnloadEvent) => {
+      if (retainedRecovery.current !== null) { event.preventDefault(); event.returnValue = ""; }
+    };
+    window.addEventListener("beforeunload", warn);
+    return () => { mounted.current = false; seq.current += 1; controller.current?.abort(); unsubscribe(); window.removeEventListener("beforeunload", warn); };
     // Initial access check; subsequent checks are explicit and actor-bound.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    if (phase !== "committing" && retainedRecovery.current === null) return;
-    const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ""; };
-    window.addEventListener("beforeunload", warn);
-    return () => window.removeEventListener("beforeunload", warn);
-  }, [phase, recovery]);
   function edit() { clearEvidence(); setPhase("idle"); setMessage(null); }
   async function inspectSource(before: number | null = null) {
     if (!(kind === "paper" ? sourceId(source) : taskUuid(source))) return;

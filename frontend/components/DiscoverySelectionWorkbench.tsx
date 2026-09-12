@@ -4,19 +4,23 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ApiError } from "@/lib/api";
 import { onAuthChange } from "@/lib/auth-session";
-import { MaterialDetails, PolicyDetails } from "@/components/ScientificDiscoveryMatrix";
-import { AVAILABILITY_LABELS, SCIENTIFIC_DISCLAIMER, SCIENTIFIC_FIELDS, SCIENTIFIC_KEYS, scientificQuantity, type ScientificKey } from "@/lib/discovery-scientific";
+import { MainBarrierSummary, MaterialDetails, PolicyDetails } from "@/components/ScientificDiscoveryMatrix";
+import { AVAILABILITY_LABELS, MAIN_BARRIER_CATEGORIES, SCIENTIFIC_DISCLAIMER, SCIENTIFIC_FIELDS, SCIENTIFIC_KEYS,
+  compareMainBarrierBasis, mainBarrierBasisKey, mainBarrierOptions, scientificQuantity, validMainBarrier,
+  type MainBarrierBasis, type MainBarrierCategory, type ScientificKey } from "@/lib/discovery-scientific";
 import { BUNDLE_LIMIT, SELECTION_FAILURE, getSelectionAccess, getSelectionContext, getSelectionOutcome, inventoryCell,
-  parsePreparedSelection, parseRegistrationReceipt, parseSelectionAccess, parseSelectionContext, prepareSelection,
+  parsePreparedSelection, parseRegistrationReceipt, parseSelectionAccess, parseSelectionContext, prepareSelectionV2,
   recoveryFor, registerSelection, selectedInventory, selectionCode, selectionSourceFromFile, selectionUUID,
-  type CellChoice, type ContextReceipt, type MaterialChoice, type PreparedSelection, type RegistrationReceipt,
+  type CellChoice, type ContextReceipt, type MaterialChoiceV2, type PreparedSelection, type RegistrationReceipt,
   type SelectionAccess, type SelectionCandidate, type SelectionRecovery, type SelectionSource } from "@/lib/discovery-selection";
 
 const button = "min-h-11 rounded-lg border border-sage-border bg-white px-3 py-2 text-sm hover:bg-sage-surface disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent";
 const input = "min-h-11 min-w-0 w-full rounded-lg border border-sage-border bg-white p-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent";
 const panel = "min-w-0 space-y-4 rounded-xl border border-sage-border bg-white p-4 sm:p-5";
-type Draft = { assessmentId: string; structureChoice: string; rationale: string; overrides: Partial<Record<ScientificKey, CellChoice>> };
-const emptyDraft = (): Draft => ({ assessmentId: "", structureChoice: "", rationale: "", overrides: {} });
+type BarrierDraft = { status: "" | "not_declared" | "declared"; category: "" | MainBarrierCategory; statement: string; rationale: string; basis: MainBarrierBasis[] };
+const emptyBarrier = (): BarrierDraft => ({ status: "", category: "", statement: "", rationale: "", basis: [] });
+type Draft = { assessmentId: string; structureChoice: string; rationale: string; overrides: Partial<Record<ScientificKey, CellChoice>>; barrier: BarrierDraft };
+const emptyDraft = (): Draft => ({ assessmentId: "", structureChoice: "", rationale: "", overrides: {}, barrier: emptyBarrier() });
 const structureId = (d: Draft) => d.structureChoice === "none" ? null : d.structureChoice;
 const evidenceKey = (r: CellChoice["evidence_refs"][number]) => `${r.table}:${r.row_id}`;
 async function abandonOnAbort<T>(work: () => Promise<T>, signal: AbortSignal): Promise<T> {
@@ -30,9 +34,13 @@ async function abandonOnAbort<T>(work: () => Promise<T>, signal: AbortSignal): P
 function inventory(m: SelectionCandidate, d: Draft) {
   return d.assessmentId && d.structureChoice ? selectedInventory(m, d.assessmentId, structureId(d)) : null;
 }
-function choicesFor(context: ContextReceipt | null, drafts: Record<string, Draft>): MaterialChoice[] | null {
+function barrierCells(inv: NonNullable<ReturnType<typeof inventory>>, d: Draft) {
+  return SCIENTIFIC_KEYS.map(key => ({ ...(d.overrides[key] ?? inventoryCell(key, inv.results)),
+    quantified: inv.results.some(r => r.property_key === key && r.quantity.relation !== "unreported") }));
+}
+function choicesFor(context: ContextReceipt | null, drafts: Record<string, Draft>): MaterialChoiceV2[] | null {
   if (!context) return null;
-  const choices: MaterialChoice[] = []; let count = 0;
+  const choices: MaterialChoiceV2[] = []; let count = 0;
   for (const m of context.context.materials) {
     const d = drafts[m.descriptor.id] ?? emptyDraft(), inv = inventory(m, d);
     if (!inv || !d.rationale.trim() || Array.from(d.rationale).length > 2000 || d.rationale.includes("\0")) return null;
@@ -45,7 +53,10 @@ function choicesFor(context: ContextReceipt | null, drafts: Record<string, Draft
       if (["not_computed", "not_applicable"].includes(c.availability) && quantified.length) return null;
       if (c.availability === "conflicted" && (quantified.length < 2 || new Set(quantified.map(r => r.component_key)).size !== 1)) return null;
     }
-    choices.push({ material_id: m.descriptor.id, assessment_id: d.assessmentId, structure_id: structureId(d), rationale: d.rationale, cells });
+    const main_barrier: unknown = d.barrier.status === "not_declared" ? { status: "not_declared" }
+      : { status: d.barrier.status, category: d.barrier.category, statement: d.barrier.statement, rationale: d.barrier.rationale, basis_refs: d.barrier.basis };
+    if (!validMainBarrier(main_barrier, inv.assessment.assessment, barrierCells(inv, d))) return null;
+    choices.push({ material_id: m.descriptor.id, assessment_id: d.assessmentId, structure_id: structureId(d), rationale: d.rationale, cells, main_barrier });
   }
   return count <= 100 ? choices : null;
 }
@@ -116,7 +127,8 @@ export function DiscoverySelectionWorkbench() {
   function edit(id: string, patch: Partial<Draft>, changedContext = false) {
     if (locked || inFlight.current) return;
     clearPreview(); setMessage(""); setDrafts(previous => ({ ...previous, [id]: {
-      ...(previous[id] ?? emptyDraft()), ...(changedContext ? { rationale: "", overrides: {} } : {}), ...patch,
+      ...(previous[id] ?? emptyDraft()), ...(changedContext ? { rationale: "", overrides: {} } : {}),
+      ...(changedContext || Object.hasOwn(patch, "overrides") ? { barrier: emptyBarrier() } : {}), ...patch,
     } }));
   }
   async function inspect() {
@@ -142,7 +154,7 @@ export function DiscoverySelectionWorkbench() {
     try {
       const current = await fresh(call.signal, access!); if (!call.live()) return;
       const request = { source, expected_context_sha256: context.context_sha256, request_key: `browser-discovery:${crypto.randomUUID()}`, choices };
-      const raw = await prepareSelection(request, call.signal); if (!call.live()) return;
+      const raw = await prepareSelectionV2(request, call.signal); if (!call.live()) return;
       const value = await abandonOnAbort(() => parsePreparedSelection(raw, current, context, request), call.signal); if (!call.live()) return;
       setPrepared(value); setAccess(current);
     } catch (error) { if (call.active()) failed(error); } finally { call.finish(); }
@@ -224,7 +236,7 @@ export function DiscoverySelectionWorkbench() {
     </section>
     {context && <section className="space-y-4" aria-label="Explicit representative choices">
       <h3 className="text-lg font-semibold">2. Choose representatives</h3>
-      <p className="text-sm">Choose both a state / action assessment and a structure for every material. No highest-score default is applied. Changing either clears the previous rationale and availability declarations.</p>
+      <p className="text-sm">Choose both a state / action assessment and a structure for every material. No highest-score default is applied. Changing either clears the previous rationale, availability declarations and main barrier. Editing a scientific cell clears the main barrier.</p>
       <details className={panel}><summary className="cursor-pointer text-sm">Frozen campaign and context pins</summary><pre className="overflow-auto whitespace-pre-wrap break-all text-xs">{JSON.stringify({ ...context.context, materials: undefined, context_sha256: context.context_sha256 }, null, 2)}</pre></details>
       {context.context.materials.map(m => {
         const d = drafts[m.descriptor.id] ?? emptyDraft(), inv = inventory(m, d);
@@ -277,6 +289,37 @@ export function DiscoverySelectionWorkbench() {
                 </div>
               </details>;
             })}
+            <fieldset disabled={locked} className="space-y-3 rounded-lg border border-sage-border p-4">
+              <legend className="px-1 font-semibold">Curator-declared main barrier</legend>
+              <p className="text-sm text-sage-muted">Choose explicitly, including when no barrier is declared. This records a research interpretation for this state, structure and action, not a proven causal obstacle, a change to RPS or an ML training label. Missing data is not negative evidence.</p>
+              <label className="block text-sm">Main-barrier declaration<select className={input} value={d.barrier.status} onChange={e => edit(m.descriptor.id, {
+                barrier: { ...emptyBarrier(), status: e.target.value as BarrierDraft["status"] },
+              })}><option value="">Choose a declaration explicitly</option><option value="not_declared">Do not declare a main barrier</option><option value="declared">Declare a main barrier with an exact basis</option></select></label>
+              {d.barrier.status === "declared" && <>
+                <label className="block text-sm">Main-barrier category<select className={input} value={d.barrier.category} onChange={e => edit(m.descriptor.id, {
+                  barrier: { ...d.barrier, category: e.target.value as BarrierDraft["category"], statement: "", rationale: "", basis: [] },
+                })}><option value="">Choose a category explicitly</option>{Object.entries(MAIN_BARRIER_CATEGORIES).map(([key, value]) => <option key={key} value={key}>{value}</option>)}</select></label>
+                <label className="block text-sm">Main-barrier statement<textarea className={input} rows={2} maxLength={1000} value={d.barrier.statement} onChange={e => edit(m.descriptor.id, { barrier: { ...d.barrier, statement: e.target.value } })} /></label>
+                <label className="block text-sm">Main-barrier rationale<textarea className={input} rows={3} maxLength={4000} value={d.barrier.rationale} onChange={e => edit(m.descriptor.id, { barrier: { ...d.barrier, rationale: e.target.value } })} /></label>
+                <p className="text-xs text-sage-muted">Statement: up to 500 Unicode characters. Rationale: up to 2,000. Do not paste private source text. Control characters other than tab and line breaks are not allowed.</p>
+                {d.barrier.category && <fieldset className="space-y-2"><legend className="text-sm font-medium">Exact main-barrier basis (choose 1–8)</legend>
+                  <p className="text-xs text-sage-muted">Only references belonging to this selected representative are offered. Scientific-cell references bind the complete retained result and evidence inventory. No new evidence, external URL or scientific approval is created.</p>
+                  {d.barrier.category === "evidence_gap" && <p className="text-xs">Only unknown, not-computed or conflicted cells qualify. A gap does not establish a physical disadvantage.</p>}
+                  {d.barrier.category === "scientific_hypothesis" && <p className="text-xs">Only reported or conflicted cells with a quantified result qualify. A hypothesis remains an interpretation, even when a result has been reviewed.</p>}
+                  {d.barrier.category === "execution_constraint" && <p className="text-xs">Only the selected action&apos;s recorded execution constraints qualify; these are not measured material properties.</p>}
+                  {d.barrier.category === "recorded_policy_reason" && <p className="text-xs">Only the selected assessment&apos;s recorded reason codes qualify; their presence is not physical proof.</p>}
+                  {mainBarrierOptions(d.barrier.category, inv.assessment.assessment, barrierCells(inv, d)).length === 0 && <p className="text-sm">No matching basis for this category in the selected context. Choose another category or explicitly leave the barrier undeclared.</p>}
+                  {mainBarrierOptions(d.barrier.category, inv.assessment.assessment, barrierCells(inv, d)).map(ref => {
+                    const key = mainBarrierBasisKey(ref), checked = d.barrier.basis.some(r => mainBarrierBasisKey(r) === key);
+                    return <label key={key} className="flex min-h-11 items-start gap-2 break-all text-sm"><input type="checkbox" className="mt-1" checked={checked} disabled={!checked && d.barrier.basis.length >= 8} onChange={e => {
+                      const basis = d.barrier.basis.filter(r => mainBarrierBasisKey(r) !== key); if (e.target.checked) basis.push(ref);
+                      basis.sort(compareMainBarrierBasis);
+                      edit(m.descriptor.id, { barrier: { ...d.barrier, basis } });
+                    }} />{ref.kind === "scientific_cell" ? `${SCIENTIFIC_FIELDS[ref.property_key].label} (${ref.property_key}) · ${AVAILABILITY_LABELS[barrierCells(inv, d).find(c => c.property_key === ref.property_key)!.availability]}` : `${ref.kind === "assessment_reason" ? "Assessment reason" : "Execution constraint"} · ${ref.code}`}</label>;
+                  })}
+                </fieldset>}
+              </>}
+            </fieldset>
           </div>}
         </section>;
       })}
@@ -289,8 +332,8 @@ export function DiscoverySelectionWorkbench() {
       <pre className="overflow-auto whitespace-pre-wrap break-all text-xs">{JSON.stringify({ request_key: prepared.request_key, request_sha256: prepared.request_sha256, payload_sha256: prepared.payload_sha256, selection_sha256: prepared.selection_sha256 }, null, 2)}</pre>
       <div role="region" aria-label="Prepared materials" tabIndex={0} className="overflow-x-auto"><table className="w-full min-w-[750px] text-left text-sm">
         <caption className="sr-only">Explicit prepared representatives, frozen scores and scientific result coverage</caption>
-        <thead><tr>{["Material", "State / action", "RPS", "Scientific results", "Alternatives", "Inspect"].map(h => <th key={h} scope="col" className="p-2">{h}</th>)}</tr></thead>
-        <tbody>{prepared.payload.rows.map(r => <tr key={r.material.row_id} className="border-t border-sage-border"><th scope="row" className="p-2">{r.assessment.formula}</th><td className="p-2">{r.assessment.state_summary} / {r.assessment.action_summary}</td><td className="p-2">{r.assessment.result.score_display?.toLocaleString("en-US") ?? "Unranked"}</td><td className="p-2">{r.cells.reduce((n, c) => n + c.observations.length, 0).toLocaleString("en-US")} recorded; {r.cells.reduce((n, c) => n + c.observations.filter(o => o.scientific_scope_accepted).length, 0).toLocaleString("en-US")} scope accepted</td><td className="p-2">{r.alternatives.length.toLocaleString("en-US")}</td><td className="p-2"><button className={button} aria-expanded={expanded === r.material.row_id} aria-controls={expanded === r.material.row_id ? "prepared-material-details" : undefined} onClick={e => { detailTrigger.current = e.currentTarget; setExpanded(r.material.row_id); }}>Inspect {r.assessment.formula}</button></td></tr>)}</tbody>
+        <thead><tr>{["Material", "State / action", "RPS", "Scientific results", "Alternatives", "Curator-declared main barrier", "Inspect"].map(h => <th key={h} scope="col" className="p-2">{h}</th>)}</tr></thead>
+        <tbody>{prepared.payload.rows.map(r => <tr key={r.material.row_id} className="border-t border-sage-border"><th scope="row" className="p-2">{r.assessment.formula}</th><td className="p-2">{r.assessment.state_summary} / {r.assessment.action_summary}</td><td className="p-2">{r.assessment.result.score_display?.toLocaleString("en-US") ?? "Unranked"}</td><td className="p-2">{r.cells.reduce((n, c) => n + c.observations.length, 0).toLocaleString("en-US")} recorded; {r.cells.reduce((n, c) => n + c.observations.filter(o => o.scientific_scope_accepted).length, 0).toLocaleString("en-US")} scope accepted</td><td className="p-2">{r.alternatives.length.toLocaleString("en-US")}</td><td className="min-w-52 max-w-sm p-2"><MainBarrierSummary row={r} /></td><td className="p-2"><button className={button} aria-expanded={expanded === r.material.row_id} aria-controls={expanded === r.material.row_id ? "prepared-material-details" : undefined} onClick={e => { detailTrigger.current = e.currentTarget; setExpanded(r.material.row_id); }}>Inspect {r.assessment.formula}</button></td></tr>)}</tbody>
       </table></div>
       {detail && <MaterialDetails row={detail} prepared close={() => { setExpanded(null); detailTrigger.current?.focus(); }} />}
       <div className="space-y-3 border-t border-sage-border pt-4"><h4 className="font-semibold">4. Rehearse, then register this exact preview</h4>

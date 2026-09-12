@@ -38,6 +38,8 @@ from routers import (
     history,
     materials,
     ml_foundation,
+    ml_use_governance,
+    ml_use_preflight,
     observability,
     papers,
     research_distribution_preparation,
@@ -623,6 +625,8 @@ app.include_router(ask.router, prefix="/v1")
 # Keep the phase-1 material-claim route ahead of the legacy
 # ``/materials/{material_id:path}`` catch-all.
 app.include_router(research_publications.router, prefix="/v1")
+app.include_router(ml_use_governance.router, prefix="/v1")
+app.include_router(ml_use_preflight.router, prefix="/v1")
 app.include_router(research_distributions.router, prefix="/v1")
 app.include_router(research_distribution_rights.router, prefix="/v1")
 app.include_router(research_distribution_preparation.router, prefix="/v1")

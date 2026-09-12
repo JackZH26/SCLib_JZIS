@@ -25,6 +25,7 @@ from config import get_settings
 from models.db import get_engine
 from routers import discovery_priority
 from services import discovery_projection_governance as service
+from services import discovery_scientific_projection as projection
 from services import research_distribution_contract as contract
 
 CATALOG_VERSION = "discovery-scientific-catalog/1.0.0"
@@ -156,10 +157,14 @@ def _receipt(value, identifier, expected, approval):
         raise ValueError("payload_hash")
     if value["payload_sha256"] != expected:
         _error(404, "scientific_projection_not_published")
-    if (type(payload) is not dict or payload.get("version") != "discovery-scientific-projection/1.0.0"
+    if (type(payload) is not dict or type(payload.get("version")) is not str
+        or payload["version"] not in projection.VERSION_PAIRS.values()
         or payload.get("selection_sha256") != value["selection_sha256"]
         or any(payload.get(key) is not False for key in ("scientific_acceptance", "ml_training_approved", "public_release_authorized"))):
         raise ValueError("payload_contract")
+    selection = projection.capture_selection(payload["selection"], value["selection_sha256"])
+    if payload["version"] != projection.VERSION_PAIRS[selection["version"]]:
+        raise ValueError("payload_version_pair")
     base = payload["base"]
     release_id = base["release_id"]
     if type(release_id) is not str or not release_id or any(

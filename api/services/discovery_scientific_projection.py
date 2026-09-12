@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 from collections import defaultdict
 
+from services import discovery_main_barrier as barrier
 from services import priority_public_bundle as public
 from services import research_distribution as distribution
 from services import research_distribution_contract as contract
@@ -16,6 +17,9 @@ from services.research_priority import digest
 
 VERSION = "discovery-scientific-projection/1.0.0"
 SELECTION_VERSION = "discovery-scientific-selection/1.0.0"
+VERSION_V2 = "discovery-scientific-projection/2.0.0"
+SELECTION_VERSION_V2 = "discovery-scientific-selection/2.0.0"
+VERSION_PAIRS = {SELECTION_VERSION: VERSION, SELECTION_VERSION_V2: VERSION_V2}
 MAX_MATERIALS = 25
 MAX_ASSESSMENTS = 200
 MAX_PROPERTIES = 100
@@ -73,14 +77,18 @@ def capture_selection(selection, expected_selection_sha256):
     result = json.loads(raw)
     require(digest(result) == contract._hash(expected_selection_sha256))
     _object(result, {"version", "release_manifest_sha256", "public_bundle_sha256", "representatives"})
-    require(result["version"] == SELECTION_VERSION)
+    require(type(result["version"]) is str and result["version"] in VERSION_PAIRS)
+    is_v2 = result["version"] == SELECTION_VERSION_V2
     for key in ("release_manifest_sha256", "public_bundle_sha256"):
         contract._hash(result[key])
     choices = result["representatives"]
     require(type(choices) is list and 0 < len(choices) <= MAX_MATERIALS)
     property_ids, seen = set(), []
     for choice in choices:
-        _object(choice, {"material", "assessment", "structure", "rationale", "alternatives", "cells"})
+        _object(choice, {"material", "assessment", "structure", "rationale", "alternatives", "cells"}
+                | ({"main_barrier"} if is_v2 else set()))
+        if is_v2:
+            barrier.validate_shape(choice["main_barrier"], property_keys=REGISTRY)
         _object(choice["material"], {"id", "sha256"})
         require(type(choice["material"]["id"]) is str and contract._ID.fullmatch(choice["material"]["id"]))
         contract._hash(choice["material"]["sha256"])
@@ -266,15 +274,18 @@ async def build_projection(db, *, distribution_package_id, expected_distribution
             cells.append({**cell, "unit": REGISTRY[key][0], "group": REGISTRY[key][1],
                 "observations": values, "availability_basis": "explicit_review_required_declaration"
                     if status in {"not_computed", "not_applicable", "conflicted"} else "registered_result_inventory"})
+        if selection["version"] == SELECTION_VERSION_V2:
+            barrier.validate_context(choice["main_barrier"], result=item["assessment_row"]["result"], cells=cells)
         rows.append({"material": identities["material"], "state": identities["state"], "structure": choice["structure"],
             "representative": choice["assessment"], "selection_rationale": choice["rationale"],
             "assessment": item["assessment_row"], "assessment_review": item["assessment_review"],
             "state_context": artifacts[assessment["state"]["id"]]["content"],
             "profile_assignment": artifacts[assessment["profile_assignment"]["id"]]["content"],
             "alternatives": [{"reference": ref, "assessment": row} for ref, row in zip(choice["alternatives"], item["alternate_rows"], strict=True)],
-            "cells": cells})
+            "cells": cells,
+            **({"main_barrier": choice["main_barrier"]} if selection["version"] == SELECTION_VERSION_V2 else {})})
     require(len(scientific_pins) <= MAX_PROPERTIES)
-    payload = {"version": VERSION, "disclaimer": DISCLAIMER, "comparison_scope": "same_frozen_campaign_budget_policy_release",
+    payload = {"version": VERSION_PAIRS[selection["version"]], "disclaimer": DISCLAIMER, "comparison_scope": "same_frozen_campaign_budget_policy_release",
         "evaluation_protocol": "https://github.com/JackZH26/SCLib_JZIS/issues/78",
         "base": {"distribution_package_id": str(package["id"]), "distribution_record_sha256": package["record_sha256"],
             "inventory_sha256": package["inventory_sha256"], "release_id": package["release_id"],

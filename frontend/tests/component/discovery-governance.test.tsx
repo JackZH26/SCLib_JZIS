@@ -54,15 +54,18 @@ beforeEach(() => { vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 
 describe("actual captured Discovery governance", () => {
-  it("verifies all actual HTTP wire hashes and unchanged captured backend inputs", () => {
+  it("verifies all historical HTTP wire hashes and immutable captured backend provenance", () => {
     expect(provenance.files).toHaveLength(55);
     for (const file of provenance.files) {
       const text = raw(file.file);
       expect(digest(text), file.file).toBe(file.sha256);
       expect(Buffer.byteLength(text), file.file).toBe(file.size_bytes);
     }
+    // Immutable batch-51 capture (0071874); never relabel this as current
+    // backend execution or require Git history in shallow CI checkouts.
+    expect(digest(readFileSync(resolve(ASSETS, "provenance.json")))).toBe("5fe98891de6b39f0197ca63ff8d2fc07d70e0e1d63165ca69cdaf198f81db8c6");
     for (const [file, hash] of Object.entries(provenance.source_pins)) {
-      expect(digest(readFileSync(resolve(ROOT, "..", file))), file).toBe(hash);
+      expect(file).toMatch(/^(?:api|scripts|frontend)\/[A-Za-z0-9_./-]+$/); expect(file.split("/")).not.toContain(".."); expect(hash).toMatch(/^[a-f0-9]{64}$/);
     }
     expect(provenance.real_scientific_pilot).toBe(false);
     expect(provenance.production_publication_performed).toBe(false);
