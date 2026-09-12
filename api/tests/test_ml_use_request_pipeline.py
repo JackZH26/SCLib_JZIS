@@ -99,6 +99,8 @@ async def test_registered_feature_sources_cannot_be_omitted_from_real_verified_r
         assert ("evidence_artifacts", binding["review_artifact_id"]) in requirements
     assert report["source_permission_granted"] is report["ml_training_approved"] is False
     assert report["online_private_input_reconstruction_verified"] is False
+    assert "independent_run_approval_not_checked" in report["blockers"]
+    assert "independent_run_approval_unavailable" not in report["blockers"]
     assert await state(db_session) == before
     await db_session.rollback()
     assert originals == {name: path.read_bytes() for name, path in paths.items()}
@@ -216,6 +218,40 @@ async def test_registered_feature_sources_cannot_be_omitted_from_real_verified_r
     rights_partial = await client.post("/v1/ml/use/rights/check", json=lookup(submission), headers=auth(people["curator"]))
     assert rights_partial.status_code == 200 and rights_partial.json()["status_counts"]["allow_recorded"] == 1, rights_partial.text
     assert not rights_partial.json()["source_permission_granted"] and not rights_partial.json()["ml_training_approved"]
+    # Exact run plan and independent conditional review of genuinely rebuilt
+    # inputs. Permissions remain incomplete: even an approval cannot start ML.
+    from models.ml_use_runs_v1 import PLAN_FIELDS
+    from tests.test_ml_use_runs import approver, plan_ref, review_args
+    run_actor = await approver(db_session, people)
+    await db_session.commit()
+    run_base = "/v1/ml/use/runs"
+    run_context = await client.post(run_base + "/context", json={"submission_id": receipt["submission_id"],
+        "submission_sha256": receipt["record_sha256"], "inventory_sha256": proposal["inventory_sha256"]},
+        headers=auth(people["curator"]))
+    assert run_context.status_code == 200, run_context.text
+    assert run_context.json()["prepared_sha256"] == json.loads(originals["preparation"])["prepared_sha256"]
+    run_input = {key: run_context.json()[key] for key in PLAN_FIELDS
+                 if key not in {"actor_user_id", "request_key", "cpu_seconds", "wall_seconds", "memory_mib"}}
+    run_input.update(request_key="actual-pipeline-run-plan", cpu_seconds=60, wall_seconds=120, memory_mib=512)
+    run_preview = await client.post(run_base + "/plans", json=run_input, headers=auth(people["curator"]))
+    assert run_preview.status_code == 200, run_preview.text
+    run_saved = await client.post(run_base + "/plans", json={**run_input, "dry_run": False,
+        "expected_intent_sha256": run_preview.json()["result"]["intent_sha256"]}, headers=auth(people["curator"]))
+    assert run_saved.status_code == 200, run_saved.text
+    plan = run_saved.json()["result"]["plan"]
+    run_review = review_args(run_actor, plan, receipt)
+    run_review.pop("actor_user_id")
+    run_review_preview = await client.post(run_base + "/decisions", json=run_review, headers=auth(run_actor["actor_user_id"]))
+    assert run_review_preview.status_code == 200, run_review_preview.text
+    approved = await client.post(run_base + "/decisions", json={**run_review, "dry_run": False,
+        "expected_intent_sha256": run_review_preview.json()["result"]["intent_sha256"]}, headers=auth(run_actor["actor_user_id"]))
+    assert approved.status_code == 200, approved.text
+    run_checked = await client.post(run_base + "/check", json=plan_ref(plan), headers=auth(people["curator"]))
+    assert run_checked.status_code == 200, run_checked.text
+    assert run_checked.json()["conditional_run_approval_current"] and all(run_checked.json()["fingerprints_match"].values())
+    assert run_checked.json()["source_coverage"]["status_counts"]["allow_recorded"] == 1
+    assert not run_checked.json()["ready_for_execution"] and not run_checked.json()["run_authorization_granted"]
+    assert not run_checked.json()["source_permission_granted"] and not run_checked.json()["ml_training_approved"]
     written = await state(db_session)
     await db_session.rollback()
     rights = await client.post("/v1/ml/use/rights/check", json=lookup(submission), headers=auth(people["curator"]))
@@ -239,6 +275,8 @@ async def test_registered_feature_sources_cannot_be_omitted_from_real_verified_r
     assert blocked.status_code == 409, blocked.text
     rights_stale = await client.post("/v1/ml/use/rights/check", json=lookup(submission), headers=auth(people["curator"]))
     assert rights_stale.status_code == 409, rights_stale.text
+    run_stale = await client.post(run_base + "/check", json=plan_ref(plan), headers=auth(people["curator"]))
+    assert run_stale.status_code == 409, run_stale.text
     history = await client.post(endpoint + "/outcome", json=lookup(submission), headers=auth(people["curator"]))
     assert history.status_code == 200 and history.json()["record_sha256"] == receipt["record_sha256"]
     assert not history.json()["currentness_checked_now"] and not history.json()["ml_training_approved"]
@@ -248,6 +286,8 @@ async def test_registered_feature_sources_cannot_be_omitted_from_real_verified_r
     assert unavailable.status_code == 404
     rights_purged = await client.post("/v1/ml/use/rights/check", json=lookup(submission), headers=auth(people["curator"]))
     assert rights_purged.status_code == 404
+    run_purged = await client.post(run_base + "/check", json=plan_ref(plan), headers=auth(people["curator"]))
+    assert run_purged.status_code == 404, run_purged.text
     replay_after_purge = await client.post(endpoint, content=upload.read_bytes(), headers=headers(submission))
     assert replay_after_purge.status_code == 200 and replay_after_purge.json()["input_state"] == "purged"
     assert all(row["submission_id"] != receipt["submission_id"] for row in (await state(db_session))[TABLES[1]])

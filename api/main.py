@@ -41,6 +41,7 @@ from routers import (
     ml_use_governance,
     ml_use_preflight,
     ml_use_rights,
+    ml_use_runs,
     ml_use_submissions,
     observability,
     papers,
@@ -630,6 +631,7 @@ app.include_router(research_publications.router, prefix="/v1")
 app.include_router(ml_use_governance.router, prefix="/v1")
 app.include_router(ml_use_preflight.router, prefix="/v1")
 app.include_router(ml_use_rights.router, prefix="/v1")
+app.include_router(ml_use_runs.router, prefix="/v1")
 app.include_router(ml_use_submissions.router, prefix="/v1")
 app.include_router(research_distributions.router, prefix="/v1")
 app.include_router(research_distribution_rights.router, prefix="/v1")

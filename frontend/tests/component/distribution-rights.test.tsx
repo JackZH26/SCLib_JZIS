@@ -237,7 +237,10 @@ describe("private rights preparation workbench", () => {
   });
   it("moves keyboard focus to the loaded exact decision without granting or sending a write", async () => {
     await mount(); const heading = await inspect();
-    expect(heading).toHaveFocus(); expect(distributionRightsPrepare).not.toHaveBeenCalled();
+    // The heading's DOM insertion can precede the passive focus effect. Wait
+    // for the actual accessibility outcome, not only for the heading to exist.
+    await waitFor(() => expect(heading).toHaveFocus());
+    expect(distributionRightsPrepare).not.toHaveBeenCalled();
   });
   it.each(["Decision", "License or permission basis", "Basis code", "Reason code", "Package UUID"])("invalidates the exact preview on %s edit", async label => {
     await mount(); await prepare();

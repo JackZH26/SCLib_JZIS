@@ -29,6 +29,14 @@ _DISCOVERY_PROJECTION_TABLES = ("discovery_projection_packages", "discovery_proj
 _ML_USE_ROLE_TABLE = "ml_use_role_decisions"
 _ML_SUBMISSION_TABLES = ("ml_use_submissions", "ml_use_private_inputs", "ml_use_input_purges")
 _ML_RIGHTS_TABLE = "ml_use_rights_decisions"
+_ML_RUN_TABLES = ("ml_use_run_plans", "ml_use_run_decisions")
+
+
+def _assert_empty_ml_runs(connection):
+    from sqlalchemy import text
+
+    for name in _ML_RUN_TABLES:
+        assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
 
 
 def _assert_empty_ml_use_roles(connection):
@@ -41,6 +49,7 @@ def _assert_empty_ml_use_roles(connection):
 def _assert_empty_ml_submissions(connection):
     from sqlalchemy import text
 
+    _assert_empty_ml_runs(connection)
     assert connection.execute(text(f"SELECT count(*) FROM public.{_ML_RIGHTS_TABLE}")).scalar_one() == 0
     for name in _ML_SUBMISSION_TABLES:
         assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
@@ -189,7 +198,7 @@ def _source_impact_indexes_on_migrated_schema(capability, engine, config):
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "source_task_epoch", "source_task_requests", "source_task_attempts",
                                 "background_job_cycles", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -599,7 +608,7 @@ def _background_jobs_empty_roundtrip(capability, engine, config):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", "background_job_cycles", *_RAG_EVIDENCE_TABLES,
-                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                                _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -744,7 +753,7 @@ def _rag_evidence_empty_roundtrip(capability, engine, config):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", *_RAG_EVIDENCE_TABLES, _EMBEDDING_RECEIPT_TABLE,
-                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                                *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -889,7 +898,7 @@ def _embedding_receipts_empty_roundtrip(capability, engine, config):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
                 if name not in {"alembic_version", _EMBEDDING_RECEIPT_TABLE, *_INDEX_GENERATION_TABLES,
-                                *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                                *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -1008,7 +1017,7 @@ def _index_generations_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                if name not in {"alembic_version", *_INDEX_GENERATION_TABLES, *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1166,7 +1175,7 @@ def _distributions_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                if name not in {"alembic_version", *_DISTRIBUTION_TABLES, _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1317,7 +1326,7 @@ def _ml_feature_bindings_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                if name not in {"alembic_version", _ML_FEATURE_BINDING_TABLE, *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1428,7 +1437,7 @@ def _scientific_imports_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                if name not in {"alembic_version", *_SCIENTIFIC_IMPORT_TABLES, *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1592,7 +1601,7 @@ def _result_impact_indexes_roundtrip(capability, engine, config, *, populated):
 
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
-                for name in inspect(connection).get_table_names(schema="public") if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                for name in inspect(connection).get_table_names(schema="public") if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1665,7 +1674,7 @@ def _adjudications_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                if name not in {"alembic_version", *_ADJUDICATION_TABLES, _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -1794,7 +1803,7 @@ def _answer_evidence_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: _pre_answer_evidence_rows(connection, name)
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                if name not in {"alembic_version", _ANSWER_EVIDENCE_TABLE, *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -2006,7 +2015,7 @@ def _discovery_projection_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
             for name in inspect(connection).get_table_names(schema="public")
-            if name not in {"alembic_version", *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+            if name not in {"alembic_version", *_DISCOVERY_PROJECTION_TABLES, _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -2128,7 +2137,7 @@ def _discovery_main_barrier_roundtrip(capability, engine, config, *, package_id=
         # governance. Exclude the changed Alembic marker and the independently
         # asserted-empty later ML-role table, absent at the previous head.
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
-            for name in inspect(connection).get_table_names(schema="public") if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+            for name in inspect(connection).get_table_names(schema="public") if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     def functions(connection):
         signatures = (*FUNCTION_SIGNATURES, ("sclib_discovery_projection_insert_v1", ""))
@@ -2175,7 +2184,7 @@ def _discovery_main_barrier_roundtrip(capability, engine, config, *, package_id=
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
-        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0073_ml_use_rights"
+        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0074_ml_use_runs"
         _assert_empty_ml_use_roles(connection)
         assert snapshot(connection) == before
         assert functions(connection) == before_functions
@@ -2339,7 +2348,7 @@ def _ml_use_roles_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(item) FROM public.{name} item ORDER BY to_jsonb(item)::text")).scalars().all()
             for name in inspect(connection).get_table_names(schema="public")
-            if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+            if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
@@ -2458,7 +2467,7 @@ def _ml_submissions_empty_roundtrip(capability, engine, config):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(t) FROM public.{name} t ORDER BY to_jsonb(t)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name not in {"alembic_version", *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}}
+                if name not in {"alembic_version", *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}}
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -2557,12 +2566,13 @@ def _ml_rights_roundtrip(capability, engine, config, *, populated=False):
     def snapshot(connection):
         return {name: connection.execute(text(f"SELECT to_jsonb(t) FROM public.{name} t ORDER BY to_jsonb(t)::text")).scalars().all()
                 for name in inspect(connection).get_table_names(schema="public")
-                if name != "alembic_version" and (populated or name != _ML_RIGHTS_TABLE)}
+                if name not in {"alembic_version", *_ML_RUN_TABLES} and (populated or name != _ML_RIGHTS_TABLE)}
 
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
         count = connection.execute(text(f"SELECT count(*) FROM public.{_ML_RIGHTS_TABLE}")).scalar_one()
+        _assert_empty_ml_runs(connection)
         assert (count > 0) if populated else count == 0
         before = snapshot(connection)
     validate_test_environment()
@@ -2614,6 +2624,81 @@ async def _ml_rights_on_migrated_schema(capability):
             assert replay["replayed"] and replay["decision"] == first["decision"]
             assert await state(session) == after
             await recorded(session, successor(args, first["decision"], decision="revoke", basis_code="withdrawn", expires_epoch=None))
+            await session.commit()
+    finally:
+        await engine.dispose()
+
+
+def _ml_runs_roundtrip(capability, engine, config, *, populated=False):
+    from alembic import command
+    from models.ml_use_runs_v1 import FUNCTIONS
+    from services.schema_lifecycle import check_connection_schema
+    from sqlalchemy import inspect, text
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(t) FROM public.{name} t ORDER BY to_jsonb(t)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")
+                if name != "alembic_version" and (populated or name not in _ML_RUN_TABLES)}
+
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        if populated:
+            assert all(connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() > 0 for name in _ML_RUN_TABLES)
+        else:
+            _assert_empty_ml_runs(connection)
+        before = snapshot(connection)
+    validate_test_environment()
+    if populated:
+        try:
+            command.downgrade(config, "0073_ml_use_rights")
+        except RuntimeError as exc:
+            assert "retained requested plan or independent review history" in str(exc)
+        else:
+            raise AssertionError("ML run contract history downgrade must refuse")
+    else:
+        command.downgrade(config, "0073_ml_use_rights")
+        with engine.connect() as connection:
+            verify_postgres_identity(connection, capability)
+            assert not set(_ML_RUN_TABLES) & set(inspect(connection).get_table_names(schema="public"))
+            assert snapshot(connection) == before
+            for name in FUNCTIONS:
+                assert connection.execute(text("SELECT to_regprocedure(:name)"), {"name": "public." + name + "()"}).scalar_one() is None
+        validate_test_environment()
+        command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+
+
+async def _ml_runs_on_migrated_schema(capability):
+    validate_test_environment()
+    from models.db import _to_async_dsn
+    from services import ml_use_runs as service
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from tests.test_ml_use_runs import fixture, recorded, review_args, successor
+    from tests.test_research_freeze import state
+
+    engine = create_async_engine(_to_async_dsn(capability.database_url), isolation_level="SERIALIZABLE", poolclass=NullPool)
+    try:
+        async with AsyncSession(engine, expire_on_commit=False) as session:
+            connection = await session.connection()
+            await connection.run_sync(lambda raw: verify_postgres_identity(raw, capability))
+            _, _, _, receipt, actor, args = await fixture(session)
+            before = await state(session)
+            await service.propose(session, **args)
+            assert await state(session) == before
+            first = await recorded(session, args)
+            review = review_args(actor, first["plan"], receipt)
+            approved = await recorded(session, review, "decision")
+            await session.commit()
+            after = await state(session)
+            replay = await service.decide(session, **review, dry_run=False, expected_intent_sha256=approved["intent_sha256"])
+            assert replay["replayed"] and replay["decision"] == approved["decision"]
+            assert await state(session) == after
+            await recorded(session, successor(review, approved["decision"], decision="revoke", expires_epoch=None), "decision")
             await session.commit()
     finally:
         await engine.dispose()
@@ -2963,6 +3048,9 @@ def main() -> None:
         _ml_rights_roundtrip(capability, engine, config)
         asyncio.run(_ml_rights_on_migrated_schema(capability))
         _ml_rights_roundtrip(capability, engine, config, populated=True)
+        _ml_runs_roundtrip(capability, engine, config)
+        asyncio.run(_ml_runs_on_migrated_schema(capability))
+        _ml_runs_roundtrip(capability, engine, config, populated=True)
         if recorder is not None:
             with engine.connect() as connection:
                 verify_postgres_identity(connection, capability)

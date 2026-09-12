@@ -74,6 +74,8 @@ expiring per-resource decisions and checks full current permission coverage;
 neither a historical rights receipt nor coverage alone authorizes training.
 Its private **ML source rights** dashboard provides exact-resource inspection,
 explicit preview/commit and original-key recovery without automatic approvals.
+The [private run-plan registry](docs/ML_USE_RUNS.md) binds independent conditional
+review to exact inputs and budgets; live readiness remains separate from execution.
 Numerical/evidence queries and Search UI scientific filters return qualified,
 exact-parent extraction rows separately from ordinary paper hits; without an
 active generation they explicitly report unavailable. These are not reviewed

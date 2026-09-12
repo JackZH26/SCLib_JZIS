@@ -3,6 +3,9 @@
 Historical batch60 evidence only. The later combined
 [development checkpoint](Development_Checkpoint_2026-09-13.md) also contains
 unfinished batch61 schema changes and does not inherit this passing status.
+The original rights fixture is now preserved byte-for-byte as
+`frontend/tests/fixtures/ml-use-rights-native.batch60.wire.json`; the active
+fixture was subsequently recaptured against batch61 backend sources.
 
 Base commit `cc769d8df206ba64f4633b3a4802199623dfd82b` on
 `codex/sclib-research-v2`. The previous increment made concrete progress by

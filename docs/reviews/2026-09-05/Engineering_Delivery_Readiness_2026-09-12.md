@@ -37,6 +37,10 @@ Batch60 adds the private ML rights workbench and a native HTTP compatibility
 test, without changing production API code or schema. Its own verification is
 in the [batch60 report](Priority_Sixtieth_Batch_Implementation_2026-09-13.md);
 the 0073 whole-source rehearsal remains the historical batch59 checkpoint.
+Batch61 extends schema 0074 with exact run contracts and independent conditional
+review. Its current verification and remaining execution gates are tracked in
+the [batch61 report](Priority_Sixty_First_Batch_Implementation_2026-09-13.md);
+no earlier receipt is relabeled as attesting the new source.
 
 ## Findings and next delivery decisions
 

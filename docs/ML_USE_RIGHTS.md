@@ -235,8 +235,10 @@ decisions stop at 32,000 history rows per submission or 100,000 globally;
 revocations are still permitted at these caps. These are initial admission
 ceilings, not a production capacity measurement or a distributed rate limit.
 
-The core private review UI is delivered in batch60 above. Rights-document
-storage/resolution, owner-side live-check UI, independent run approval and a
+The core private review UI is delivered in batch60 above. Batch61 adds the
+[exact run-plan/conditional-approval API](ML_USE_RUNS.md) and an owner-only
+actual-worker readiness check that joins this rights registry. Rights-document
+storage/resolution, owner/approver browser controls, guarded execution and a
 genuinely human-reviewed ML08 pilot remain required integrations.
 This batch does not enable the flag, change real memberships, sign any actual
 rights decision, train a model, publish predictions or deploy the service.

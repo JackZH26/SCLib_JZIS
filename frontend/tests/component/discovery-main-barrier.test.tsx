@@ -44,6 +44,8 @@ function unknownBandGap(p: any) {
 describe("actual guarded native v2 wire compatibility", () => {
   it("pins the retained capture and the backend inputs used by this batch", () => {
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.wire.json"), "utf8")))
+      .toBe("6ecd0b0b05e52971013cada385f195cc1c2f967a8013eaa2f613e2163272bfc9");
+    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.batch59.wire.json"), "utf8")))
       .toBe("837e79928da739ffcd44d7ac95927fa56e7191881f2d31e14ecf05d11d6c83e9");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.batch58.wire.json"), "utf8")))
       .toBe("488b2967d4abbbbbf1a6dcbc2c9232cef5f106b4091fc1321d512b0255ee6167");
@@ -61,7 +63,7 @@ describe("actual guarded native v2 wire compatibility", () => {
     expect(nativeWire.fixture_notice).toBe("Actual guarded SQL-to-HTTP synthetic v2 capture; no real scientific or rights approval.");
     expect(nativeWire.capture_test_path).toBe("api/tests/test_discovery_main_barrier.py");
     expect(nativeWire.capture_test_name).toBe("test_barrier_edit_needs_new_preview_package_and_independent_review_then_source_hold");
-    expect(nativeWire.source_pins).toHaveLength(271);
+    expect(nativeWire.source_pins).toHaveLength(274);
     expect(new Set(nativeWire.source_pins.map(p => p.path)).size).toBe(nativeWire.source_pins.length);
     for (const pin of nativeWire.source_pins) {
       expect(Object.keys(pin).sort()).toEqual(["path", "sha256"]); expect(pin.path).toMatch(/^api\/[A-Za-z0-9_./-]+$/);

@@ -1,5 +1,9 @@
 # Development checkpoint — batch60 and unfinished batch61
 
+Historical checkpoint only. Subsequent implementation and verification,
+including resolution of the draft expiry guard and source-pin failures, are
+tracked in the [batch61 report](Priority_Sixty_First_Batch_Implementation_2026-09-13.md).
+
 This local checkpoint was requested before further development. It preserves
 the completed batch60 workbench and the initial, unfinished batch61 schema
 together. **It is not a release candidate. Do not deploy this checkpoint or

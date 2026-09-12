@@ -141,7 +141,7 @@ async def preflight_ml_use(db, *, actor_user_id, request, expected_request_sha25
             "frozen_row_changed": previous is not None and previous["row_sha256"] != row["row_sha256"],
             "purpose_permission_status": "not_available", "permission_granted": False})
     blockers = ["purpose_specific_permissions_not_checked", "private_input_bytes_not_rebuilt_online",
-                "independent_run_approval_unavailable", "real_reviewed_pilot_not_checked"]
+                "independent_run_approval_not_checked", "real_reviewed_pilot_not_checked"]
     if catalogue_held:
         blockers.append("current_catalogue_or_scientific_hold")
     if any(row["frozen_row_changed"] for row in requirements):

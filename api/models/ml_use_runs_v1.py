@@ -84,7 +84,7 @@ def guards():
               OR (NEW.decision='revoke' AND prior.decision<>'approve') THEN
               RAISE EXCEPTION 'ml_run_exact_predecessor' USING ERRCODE='23514'; END IF;
           END IF;
-          IF NEW.decision='approve' AND (NEW.expires_epoch<=extract(epoch FROM clock_timestamp())
+          IF NEW.decision='approve' AND (NEW.expires_epoch IS NULL OR NEW.expires_epoch<=extract(epoch FROM clock_timestamp())
             OR NEW.expires_epoch>extract(epoch FROM submission.expires_at)
             OR NOT EXISTS(SELECT 1 FROM public.ml_use_private_inputs WHERE submission_id=submission.id)
             OR NOT public.sclib_research_publication_actor_v1(plan.actor_user_id,true)
@@ -144,7 +144,7 @@ def register(metadata):
         sa.Index("idx_mu74_plan_review", "plan_id"),
         sa.CheckConstraint("decision IN ('approve','deny','revoke')", name="ck_mu74_decision"),
         sa.CheckConstraint("reason_code ~ '^[a-z][a-z0-9_]{0,159}$'", name="ck_mu74_reason"),
-        sa.CheckConstraint("(decision='approve' AND evidence_sha256 IS NOT NULL AND expires_epoch>0) OR "
+        sa.CheckConstraint("(decision='approve' AND evidence_sha256 IS NOT NULL AND expires_epoch IS NOT NULL AND expires_epoch>0) OR "
                            "(decision IN ('deny','revoke') AND expires_epoch IS NULL)", name="ck_mu74_review_terms"),
         sa.CheckConstraint("(supersedes_id IS NULL)=(supersedes_sha256 IS NULL) AND (supersedes_id IS NULL OR supersedes_id<>id)", name="ck_mu74_predecessor"))
     for parent in PARENTS:
