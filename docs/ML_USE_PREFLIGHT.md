@@ -6,6 +6,10 @@ Batch55, 2026-09-12. Contracts: `ml-use-request/1.0.0` and
 Batch56 adds a separate [full-input reconstruction endpoint](ML_USE_RECONSTRUCTION.md)
 and private upload-package CLI. The descriptor-only endpoint documented below
 retains its limited scope and original response semantics.
+The subsequent [purpose-specific rights registry](ML_USE_RIGHTS.md) uses a
+separate full-currentness coverage endpoint. This declaration-only preflight
+continues to grant no rights; its blocker now reads
+`purpose_specific_permissions_not_checked`, rather than saying no registry exists.
 
 ## Delivered scope
 

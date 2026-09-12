@@ -6,6 +6,10 @@ Related work: ML07 #68, ML06 #70 and ML09 #76. This foundation does not close
 those issues or enable an actual research run.
 Batch55 adds a separate [exact intake/preflight workflow](ML_USE_PREFLIGHT.md)
 using these memberships. It does not add persisted requests or source/run grants.
+Subsequent [private submissions](ML_USE_SUBMISSIONS.md) and the
+[purpose-specific rights registry](ML_USE_RIGHTS.md) use these memberships with
+their own exact admission and independence requirements. The membership-only
+responses described here still never grant source access or execution.
 
 ## What a role means
 

@@ -1,7 +1,7 @@
 /** Local byte validation over actual synthetic SQL-to-HTTP wire; no program runs. */
 import { webcrypto } from "node:crypto";
 
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import ScientificImportsPage from "@/app/dashboard/research/imports/page";
@@ -54,6 +54,10 @@ beforeEach(() => {
   vi.mocked(scientificImportOutcome).mockResolvedValue(copy(http.outcome));
 });
 afterEach(() => {
+  // Unmount/flush effects while the test's browser methods still exist. Vitest
+  // can run this hook before RTL's automatic cleanup; restoring them first
+  // races the receipt-focus effect and removes jsdom's scrollIntoView shim.
+  cleanup();
   vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers();
   if (originalScroll) Object.defineProperty(HTMLElement.prototype, "scrollIntoView", originalScroll);
   else Reflect.deleteProperty(HTMLElement.prototype, "scrollIntoView");

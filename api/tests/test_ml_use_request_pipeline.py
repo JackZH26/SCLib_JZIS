@@ -195,6 +195,35 @@ async def test_registered_feature_sources_cannot_be_omitted_from_real_verified_r
     assert fresh.json()["dependency_inventory_sha256"] == proposal["inventory_sha256"]
     assert await state(db_session) == written
     await db_session.rollback()
+    # Independently authenticated rights decision against this genuine worker
+    # request, then actual-worker coverage. One allow never covers other inputs.
+    from services import ml_use_rights
+    from tests.test_ml_use_rights import reviewer
+    rights_actor = await reviewer(db_session, people)
+    parent = await ml_use_rights.submission(db_session, receipt["submission_id"], receipt["record_sha256"])
+    right = {"submission_id": receipt["submission_id"], "submission_sha256": receipt["record_sha256"],
+        "inventory_sha256": proposal["inventory_sha256"], "resource_id": next(iter(ml_use_rights.resources(parent))),
+        "purpose": "private_baseline_evaluation", "reviewer_grant_id": rights_actor["reviewer_grant_id"],
+        "curator_grant_id": rights_actor["curator_grant_id"], "request_key": "actual-pipeline-synthetic-rights",
+        "decision": "allow", "basis_code": "documented_permission", "evidence_sha256": digest({"synthetic_rights": True}),
+        "expires_epoch": int(parent["expires_at"].timestamp()) - 1, "supersedes_id": None, "supersedes_sha256": None}
+    await db_session.commit()
+    right_preview = await client.post("/v1/ml/use/rights/decisions", json=right, headers=auth(rights_actor["actor_user_id"]))
+    assert right_preview.status_code == 200, right_preview.text
+    right_saved = await client.post("/v1/ml/use/rights/decisions", json={**right, "dry_run": False,
+        "expected_intent_sha256": right_preview.json()["result"]["intent_sha256"]}, headers=auth(rights_actor["actor_user_id"]))
+    assert right_saved.status_code == 200 and right_saved.json()["committed"], right_saved.text
+    rights_partial = await client.post("/v1/ml/use/rights/check", json=lookup(submission), headers=auth(people["curator"]))
+    assert rights_partial.status_code == 200 and rights_partial.json()["status_counts"]["allow_recorded"] == 1, rights_partial.text
+    assert not rights_partial.json()["source_permission_granted"] and not rights_partial.json()["ml_training_approved"]
+    written = await state(db_session)
+    await db_session.rollback()
+    rights = await client.post("/v1/ml/use/rights/check", json=lookup(submission), headers=auth(people["curator"]))
+    assert rights.status_code == 200 and rights.json()["current_source_validity_checked"], rights.text
+    assert rights.json()["status_counts"]["unreviewed"] == rights.json()["resource_count"] - 1 > 0
+    assert not rights.json()["source_permission_granted"] and not rights.json()["ml_training_approved"]
+    assert await state(db_session) == written
+    await db_session.rollback()
     candidate = fixture["seeded"]["fixture"]["candidates"]["one"]
     await db_session.execute(sa.text("UPDATE papers SET status='retracted' WHERE id=:id"), {"id": candidate["paper"]["id"]})
     await db_session.commit()
@@ -208,6 +237,8 @@ async def test_registered_feature_sources_cannot_be_omitted_from_real_verified_r
     await db_session.rollback()
     blocked = await client.post(endpoint + "/recheck", json=lookup(submission), headers=auth(people["curator"]))
     assert blocked.status_code == 409, blocked.text
+    rights_stale = await client.post("/v1/ml/use/rights/check", json=lookup(submission), headers=auth(people["curator"]))
+    assert rights_stale.status_code == 409, rights_stale.text
     history = await client.post(endpoint + "/outcome", json=lookup(submission), headers=auth(people["curator"]))
     assert history.status_code == 200 and history.json()["record_sha256"] == receipt["record_sha256"]
     assert not history.json()["currentness_checked_now"] and not history.json()["ml_training_approved"]
@@ -215,6 +246,8 @@ async def test_registered_feature_sources_cannot_be_omitted_from_real_verified_r
     assert purged.status_code == 200 and purged.json()["input_state"] == "purged", purged.text
     unavailable = await client.post(endpoint + "/recheck", json=lookup(submission), headers=auth(people["curator"]))
     assert unavailable.status_code == 404
+    rights_purged = await client.post("/v1/ml/use/rights/check", json=lookup(submission), headers=auth(people["curator"]))
+    assert rights_purged.status_code == 404
     replay_after_purge = await client.post(endpoint, content=upload.read_bytes(), headers=headers(submission))
     assert replay_after_purge.status_code == 200 and replay_after_purge.json()["input_state"] == "purged"
     assert all(row["submission_id"] != receipt["submission_id"] for row in (await state(db_session))[TABLES[1]])

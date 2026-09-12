@@ -11,6 +11,37 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class SchemaLifecycleBoundaryTests(unittest.TestCase):
+    def test_ml_rights_are_checked_empty_and_rehearsed_after_existing_history_guards(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        functions = {node.name: ast.get_source_segment(source, node) for node in ast.parse(source).body
+                     if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))}
+        self.assertIn("public.{_ML_RIGHTS_TABLE}", functions["_assert_empty_ml_submissions"])
+        markers = ("_ml_submissions_downgrade_guard(capability, engine, config, submission_id)",
+                   "_ml_rights_roundtrip(capability, engine, config)",
+                   "_ml_rights_on_migrated_schema(capability)",
+                   "_ml_rights_roundtrip(capability, engine, config, populated=True)",
+                   'recorder.phase(connection, "final")')
+        positions = [functions["main"].index(marker) for marker in markers]
+        self.assertEqual(positions, sorted(positions))
+        roundtrip = functions["_ml_rights_roundtrip"]
+        for marker in ('command.downgrade(config, "0072_ml_use_submissions")',
+                       '"retained independent review history"', 'command.upgrade(config, "head")',
+                       "assert snapshot(connection) == before", "to_regprocedure"):
+            self.assertIn(marker, roundtrip)
+        rehearsal = functions["_ml_rights_on_migrated_schema"]
+        for marker in ('service.decide(session, **args)', 'recorded(session, args)', 'decision="revoke"',
+                       "assert await state(session) == before", "assert await state(session) == after"):
+            self.assertIn(marker, rehearsal)
+
+    def test_ml_rights_migration_never_creates_permissions_and_refuses_audit_erasure(self):
+        source = (ROOT / "api/alembic/versions/0073_ml_use_rights.py").read_text()
+        upgrade = source.split("def upgrade()", 1)[1].split("def downgrade()", 1)[0]
+        self.assertIn("_table().create(op.get_bind())", upgrade)
+        self.assertNotIn("INSERT", upgrade)
+        downgrade = source.split("def downgrade()", 1)[1]
+        self.assertLess(downgrade.index("IN ACCESS EXCLUSIVE MODE"), downgrade.index("SELECT EXISTS"))
+        self.assertLess(downgrade.index("raise RuntimeError"), downgrade.index("_table().drop"))
+
     def test_private_submissions_are_empty_before_older_roundtrips_and_exercised_last(self):
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         empty = source.split("def _assert_empty_ml_use_roles", 1)[1].split("def _assert_empty_discovery_projections", 1)[0]
@@ -56,7 +87,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
                        "_assert_empty_ml_use_roles(connection)", "FUNCTION_SIGNATURES", "to_regprocedure"):
             self.assertIn(marker, block)
         self.assertEqual(block.count("assert snapshot(connection) == before"), 2)
-        self.assertIn('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES}', block)
+        self.assertIn('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}', block)
         self.assertIn('assert "exact revision" in str(exc)', block)
         for connection in block.split("with engine.connect() as connection:")[1:]:
             self.assertLess(connection.index("check_connection_schema(connection)"),
@@ -114,11 +145,11 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
     def test_main_barrier_roundtrip_retains_every_v1_byte_and_the_exact_frozen_function(self):
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         body = source.split("def _discovery_main_barrier_roundtrip", 1)[1].split("async def _discovery_projection_replays_on_migrated_schema", 1)[0]
-        for marker in ('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES}', "_assert_empty_discovery_projections(connection)",
+        for marker in ('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE}', "_assert_empty_discovery_projections(connection)",
             'all(before[name] for name in _DISCOVERY_PROJECTION_TABLES)',
             'command.downgrade(config, "0069_discovery_projection")', 'assert "exact revision" in str(exc)',
             'frozen_insert_statement().split("AS $$", 1)', 'SELECT prosrc FROM pg_proc',
-            'command.upgrade(config, "head")', '"0072_ml_use_submissions"', "_assert_empty_ml_use_roles(connection)",
+            'command.upgrade(config, "head")', '"0073_ml_use_rights"', "_assert_empty_ml_use_roles(connection)",
             "assert functions(connection) == before_functions"):
             self.assertIn(marker, body)
         self.assertEqual(body.count("assert snapshot(connection) == before"), 2)

@@ -21,6 +21,36 @@ No secrets, DSNs, capability files, raw source bodies or research-release bytes
 belong in these archives. Hash equality is an integrity check, not human
 authentication or scientific approval.
 
+## 0073 independent, purpose-bound ML rights checkpoint
+
+[schema-rehearsal-0073-native-2026-09-13.json](schema-rehearsal-0073-native-2026-09-13.json)
+is the complete batch59 frozen-source native rehearsal, preserved byte-for-byte
+after verified cleanup. Earlier receipts remain unchanged.
+
+| Measurement | Actual checkpoint |
+| --- | --- |
+| Full-file SHA-256 | `0f8484c848b87b10c396e685c1338f0535a66e8785d3acbc8c1fafbd8e37fad4` |
+| Body SHA-256 | `e3f028091f2cb812e4d3a03c1bbb3b49fb7d874d91490908f0691a8ba6a16b1c` |
+| File size | 104,678 bytes |
+| Measured rehearsal time | 128,746 ms; excludes setup, cleanup and report publication |
+| Captured source inventory | 671 files; digest `2260c1054a4538203cb2e0de257f5a522544398826c607e080ffefa492dceb52` |
+| Base HEAD | `add2b2ae76b28588a9eb9aa82dca1d8eae8d30ad`; actual dirty-worktree source bytes pinned |
+| Runtime | PostgreSQL 16.13, CPython 3.12.14, Darwin arm64 |
+| Schema / result | `0050_timeline_identity` to `0073_ml_use_rights`; successful receipt with owned cleanup verified |
+
+The source-pinned runner adds the empty 0073 roundtrip, preservation of older
+history, synthetic independent rights preview/commit/replay/revocation and
+nonempty downgrade refusal. Older 0072/0071 refusal tests run independently
+before populating the new ledger. All 671 captured source pins were checked
+against the final API/scripts worktree. Established receipt-v1 accounting
+metrics remain unchanged; they are not new rights-table counters. Intake
+compiler doubles in migrated SQL fixtures are labeled and are distinct from
+the actual-worker API pipeline. This is not legal review, a real permission
+grant, production migration, Linux image parity or deployment approval.
+
+See the [batch59 report](../Priority_Fifty_Ninth_Batch_Implementation_2026-09-13.md)
+for API/frontend verification and the earlier, superseded rehearsal attempts.
+
 ## 0072 private ML submission checkpoint
 
 [schema-rehearsal-0072-native-2026-09-13.json](schema-rehearsal-0072-native-2026-09-13.json)

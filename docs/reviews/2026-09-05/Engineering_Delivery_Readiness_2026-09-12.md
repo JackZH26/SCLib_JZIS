@@ -29,6 +29,10 @@ Batch58 adds schema 0072 for private ML requests and input retention. Its
 source-specific migration and compatibility status is tracked separately in the
 [batch58 report](Priority_Fifty_Eighth_Batch_Implementation_2026-09-13.md); earlier
 0070/0071 receipts do not attest this new schema or later source files.
+Batch59 adds schema 0073 for independent purpose-specific ML rights decisions.
+Its verification is tracked in the
+[batch59 report](Priority_Fifty_Ninth_Batch_Implementation_2026-09-13.md);
+the 0072 receipt is retained as historical evidence, not relabeled as 0073.
 
 ## Findings and next delivery decisions
 

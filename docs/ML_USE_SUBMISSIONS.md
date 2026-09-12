@@ -151,7 +151,9 @@ run the Python compiler or prove a legal licence. HTTP accepts no client-supplie
 inspection; the trusted service receives the actual server-produced observation.
 All scientific/public/source/run authority remains false.
 
-Next: independent purpose-specific source decisions, expiry/revocation and
-exact run approval/consumption, followed by a genuinely reviewed ML08 pilot.
+The subsequent [independent rights registry](ML_USE_RIGHTS.md) adds per-resource,
+purpose-specific decisions and fresh owner coverage under schema 0073. This
+0072 submission contract itself is unchanged. Exact run approval/consumption
+and a genuinely reviewed ML08 pilot remain separate required steps.
 No real data submission, production migration, cleanup scheduling, model fitting,
 source redistribution, remote issue closure or deployment is performed here.

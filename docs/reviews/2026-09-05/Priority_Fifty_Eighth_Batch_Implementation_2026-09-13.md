@@ -152,6 +152,9 @@ outer archive is pretty-printed. The active file has **268 backend source pins**
 `488b2967d4abbbbbf1a6dcbc2c9232cef5f106b4091fc1321d512b0255ee6167`.
 All seven response strings and all 268 source pins were independently checked.
 These scoped pins supplement, rather than replace, the wider migration inventory.
+Batch59 preserves this exact capture as
+`frontend/tests/fixtures/discovery-main-barrier-native.batch58.wire.json`;
+it remains batch58 evidence and does not attest later backend revisions.
 
 ## Reproduce the final selections
 
