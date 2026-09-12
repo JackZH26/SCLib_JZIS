@@ -56,6 +56,12 @@ browser tests, without changing application or database schema sources. Its
 own source and verification scope is in the
 [batch64 report](Priority_Sixty_Fourth_Batch_Implementation_2026-09-13.md);
 rendered private declarations are not authenticated scientific acceptance.
+Batch65 extends the private run API/client and advances schema to 0075. Its
+new native migration receipt, raw HTTP captures, historical compatibility and
+private evidence boundaries are tracked in the
+[batch65 report](Priority_Sixty_Fifth_Batch_Implementation_2026-09-13.md).
+Earlier 0074/API receipts retain their historical source scope, not current-head
+acceptance. No remote delivery or execution authority is inferred.
 
 ## Findings and next delivery decisions
 

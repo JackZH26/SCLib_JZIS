@@ -1,17 +1,48 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { webcrypto } from "node:crypto";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@/lib/api";
 import * as runs from "@/lib/ml-use-runs";
-import { http, recoveryFor } from "../helpers/ml-run-wire";
+import { http, recoveryFor, reviewText, sha } from "../helpers/ml-run-wire";
 
+beforeEach(() => { vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(); });
 const json = { "Content-Type": "application/json" };
 describe("private run transport", () => {
+  it("uses exact private evidence routes and never sends source text during read or purge", async () => {
+    const fetcher = vi.fn().mockImplementation(async () => new Response("{}", { headers: json })); vi.stubGlobal("fetch", fetcher);
+    const decision = JSON.parse(http.approve_committed).result.decision;
+    const ref = { decision_id: decision.id, decision_sha256: decision.record_sha256 };
+    await runs.readRunEvidence(ref); await runs.purgeRunEvidence(ref);
+    expect(fetcher.mock.calls.map(([url]) => url.slice(url.indexOf("/ml/use/runs")))).toEqual(["/ml/use/runs/evidence/read", "/ml/use/runs/evidence/purge"]);
+    for (const [, options] of fetcher.mock.calls) {
+      expect(options).toMatchObject({ method: "POST", credentials: "include", cache: "no-store", redirect: "error" });
+      expect(JSON.parse(options.body)).toEqual(ref);
+    }
+  });
+  it("requires exact text/hash for approval, enforces UTF-8 and endpoint-specific JSON limits", async () => {
+    const fetcher = vi.fn().mockImplementation(async () => new Response("{}", { headers: json })); vi.stubGlobal("fetch", fetcher);
+    const base = http.approve_input as runs.RunDecisionInput;
+    for (const value of [null, "", "\u0085\u2003", "é".repeat(4097), "\ud800", "x\u0000y"]) {
+      await expect(runs.previewRun("decision", { ...base, evidence_text: value })).rejects.toThrow();
+    }
+    await expect(runs.previewRun("decision", { ...base, evidence_text: reviewText, evidence_sha256: "f".repeat(64) })).rejects.toThrow();
+    expect(fetcher).not.toHaveBeenCalled();
+    const value = "é".repeat(4096), input = { ...base, evidence_text: value, evidence_sha256: sha(value) };
+    await runs.previewRun("decision", input);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(new TextEncoder().encode(fetcher.mock.calls[0][1].body).length).toBeGreaterThan(8192);
+    expect(JSON.parse(fetcher.mock.calls[0][1].body).evidence_text).toBe(value);
+    const escaped = "\n".repeat(8191) + "x";
+    await expect(runs.previewRun("decision", { ...base, evidence_text: escaped, evidence_sha256: sha(escaped) })).rejects.toThrow();
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
   it("uses only fixed routes, session cookies, no-store and redirect refusal; recovery omits inputs", async () => {
     const fetcher = vi.fn().mockImplementation(async () => new Response("{}", { headers: json })); vi.stubGlobal("fetch", fetcher);
     const plan = recoveryFor("plan"), decision = recoveryFor("approve");
     await runs.getRunAccess("plan"); await runs.getRunAccess("decision"); await runs.inspectRunContext(http.submission_query);
     await runs.inspectRunPlan(http.plan_query); await runs.previewRun("plan", http.plan_input);
-    await runs.commitRun("decision", http.approve_input as runs.RunDecisionInput, decision.intentSha256);
+    const reviewInput = { ...http.approve_input, evidence_text: reviewText, evidence_sha256: sha(reviewText) } as runs.RunDecisionInput;
+    await runs.commitRun("decision", reviewInput, decision.intentSha256);
     await runs.recoverRun(plan); await runs.recoverRun(decision); await runs.checkRun(http.plan_query);
     expect(fetcher.mock.calls.map(([url]) => url.slice(url.indexOf("/ml/use/runs")))).toEqual([
       "/ml/use/runs/requester-access", "/ml/use/runs/approver-access", "/ml/use/runs/context", "/ml/use/runs/inspect",
@@ -23,7 +54,7 @@ describe("private run transport", () => {
     expect(JSON.parse(fetcher.mock.calls[6][1].body)).toEqual({ request_key: plan.requestKey, expected_intent_sha256: plan.intentSha256 });
     expect(JSON.parse(fetcher.mock.calls[7][1].body)).toEqual({ request_key: decision.requestKey, expected_intent_sha256: decision.intentSha256 });
     expect(JSON.parse(fetcher.mock.calls[4][1].body).dry_run).toBe(true);
-    expect(JSON.parse(fetcher.mock.calls[5][1].body)).toEqual({ ...http.approve_input, dry_run: false, expected_intent_sha256: decision.intentSha256 });
+    expect(JSON.parse(fetcher.mock.calls[5][1].body)).toEqual({ ...reviewInput, dry_run: false, expected_intent_sha256: decision.intentSha256 });
   });
   it.each(["type", "missing_type", "length", "negative_length", "length_alias", "utf8", "truncated_utf8", "actual_bytes", "parts", "empty_body", "401", "403", "404", "409", "503"])("rejects %s without source/error-body disclosure or retry", async name => {
     let response: Response, canceled = vi.fn();

@@ -12,16 +12,28 @@ beforeEach(() => { vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(); });
 
 describe("native run protocol — original SQL/HTTP bytes", () => {
-  it("pins all 556 source inputs, fixture bytes and 23 original response strings", () => {
+  it("pins all 561 source inputs, current and historical fixture bytes, and 28 original response strings", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch65.wire.json")))).toBe("66ae36119f0023616a3de987bc287fecf6e10058dbad53920e0f50b62d130002");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.wire.json")))).toBe("1cabdf1fc608c169a82b3b9942a6e672595c860a00b264b339f54e867dd9419f");
     expect(http.fixture_notice).toBe("Actual guarded native SQL and HTTP; synthetic identities and explicit intake compiler double; no real approval or execution.");
     expect(http.capture_test_path).toBe("api/tests/test_ml_use_runs_wire.py");
-    expect(http.source_pins).toHaveLength(556); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(556);
+    expect(http.source_pins).toHaveLength(561); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(561);
     for (const pin of http.source_pins) {
       expect(pin.path).toMatch(/^(api|scripts)\/[A-Za-z0-9_./-]+\.py$/); expect(pin.path.split("/")).not.toContain("..");
       expect(sha(readFileSync(resolve(process.cwd(), "..", pin.path))), pin.path).toBe(pin.sha256);
     }
-    expect(Object.values(http).filter(v => typeof v === "string" && v.startsWith("{"))).toHaveLength(23);
+    expect(Object.values(http).filter(v => typeof v === "string" && v.startsWith("{"))).toHaveLength(28);
+  });
+  it("verifies original native evidence bytes, purge/no-op and missing-evidence inspection/readiness", async () => {
+    const document = await runs.parseRunEvidence(http.evidence_read, http.evidence_query);
+    expect(document.text).toBe(http.approve_input.evidence_text);
+    expect(document.decision).toEqual(JSON.parse(http.approve_committed).result.decision);
+    expect(runs.parseRunEvidencePurge(http.evidence_purge, http.evidence_query).replayed).toBe(false);
+    expect(runs.parseRunEvidencePurge(http.evidence_purge_replay, http.evidence_query).replayed).toBe(true);
+    const observed = await runs.parseRunInspection(http.evidence_missing_inspection, reviewer, http.plan_query);
+    expect(observed.recorded_approval_status).toBe("evidence_unavailable"); expect(observed.head).toEqual(document.decision);
+    const readiness = await runs.parseRunReadiness(http.readiness_evidence_missing, owner, http.plan_query, plan);
+    expect(readiness.conditional_run_approval_current).toBe(false); expect(readiness.blockers).toContain("exact_plan_approval_evidence_unavailable");
   });
   it("verifies both admissions, original context, all plans/decisions/outcomes, inspections and readiness", async () => {
     expect(owner.actor_user_id).not.toBe(reviewer.actor_user_id);

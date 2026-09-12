@@ -1,6 +1,7 @@
 # Private ML run plans and independent conditional review
 
-Batch61 API / batch62 browser workflow; schema `0074_ml_use_runs`, protocol
+Batch61 API / batch62 browser workflow, extended by batch65 private review
+evidence; schema `0075_ml_run_evidence`, immutable run-record protocol
 `ml-use-run-governance/1.0.0`.
 This extends the [private submissions](ML_USE_SUBMISSIONS.md) and
 [source-rights registry](ML_USE_RIGHTS.md). The API remains default-off under
@@ -75,10 +76,12 @@ An admin or source-rights reviewer is not automatically a run approver.
 - `POST /v1/ml/use/runs/decisions` follows preview/commit, with an original
   request key, exact plan hash and exact predecessor ID/hash (both null only
   for a first decision). Decisions are `approve`, `deny` or `revoke`.
-- Approval requires a reason code, evidence-document SHA-256 and explicit
+- New approval requires a reason code, bounded private `evidence_text`, its
+  exact UTF-8 SHA-256 and explicit
   future expiry no later than original input expiry, retained input bytes and
-  the owner's still-active exact grants. The evidence hash records the human
-  review's external evidence reference; it does not authenticate that evidence.
+  the owner's still-active exact grants. The text is retained atomically with
+  approval; the hash binds the bytes but does not authenticate their scientific
+  claims. See [private evidence and purge](ML_RUN_EVIDENCE.md).
 - Denial/revocation must have null expiry. Revocation must follow an exact
   approval. Neither operation requires the owner's continued membership or
   retained inputs, so disabling an owner or purging inputs cannot prevent
@@ -112,7 +115,8 @@ After the worker completes, a fresh read-only snapshot rechecks:
 2. Full source/review/label currentness and the exact dependency inventory.
 3. Purpose-specific permission coverage for every row representation/artifact.
 4. Exact plan/prepared-input binding, latest independent review, expiry and
-   the original approver's still-current grants.
+   the original approver's still-current grants and matching retained review
+   text. Missing, expired or purged text cannot establish current approval.
 5. Equality with the plan's selected on-disk implementation and observed host
    fingerprints. Missing currentness/rights or mismatched fingerprints block
    readiness; new grants cannot revive an old approval.
@@ -168,7 +172,8 @@ plan UUID/hash and choose **Inspect exact run plan**. This returns metadata,
 not the requester's retained source bytes or permission to reconstruct them.
 
 No decision is selected by default. Choose conditional approval, denial or
-revocation, enter the reason code and review evidence reference, and confirm
+revocation, enter the reason code and, for approval, the private review text
+(hashed automatically), and confirm
 the exact review. Approval requires an explicit future UTC Unix expiry within
 original input retention. Revocation is available only for an approval head;
 the exact predecessor ID/hash is carried into the preview. Preview and commit
@@ -210,7 +215,8 @@ legal or runtime attestation.
 
 Transport uses fixed endpoints, session cookies, no-store, redirect refusal,
 bounded JSON/UTF-8 streams and cancellation. Admission replies are limited to
-4 KiB, other replies to 128 KiB and request bodies to 8 KiB. The browser deadline
+4 KiB, other replies to 128 KiB and request bodies to 8 KiB, except the 16 KiB
+decision-body limit for up to 8,192 UTF-8 bytes of private review text. The browser deadline
 is 30 seconds for ordinary requests and 95 seconds for readiness, including
 hung fetches and stalled streams. Raw server error bodies are not displayed.
 
@@ -224,10 +230,12 @@ real roles or claim the browser double is a SQL or actual-worker evaluation.
 
 `ml_use_run_plans` and `ml_use_run_decisions` are append-only, reject updates,
 deletes and truncation, and retain user references for audit preservation.
-The migration creates no roles, plans or approvals. Downgrade locks both tables
+The original 0074 migration creates no roles, plans or approvals. Its downgrade locks both tables
 and refuses if either contains history. Empty downgrade/re-upgrade must preserve
 all older rows; rehearsal must populate 0074 only after independently testing
 the older history-preservation guards.
+The 0075 extension adds private review payloads and purge receipts, with its own
+history-preserving downgrade guard. See [private evidence](ML_RUN_EVIDENCE.md).
 
 Initial ceilings are 10,000 total plans / 20 per submission and 100,000 decisions
 / 100 per plan for new non-revocation decisions. Protective revocations are
@@ -235,13 +243,15 @@ exempt from decision-count admission caps. These are bounded admission defaults,
 not throughput measurements. Both stored host documents are limited to 16 KiB.
 
 The API uses authenticated server-side sessions, private/no-store responses,
-strict closed JSON requests up to 8 KiB, a five-second body deadline and bounded
+strict closed JSON requests up to 8 KiB (16 KiB for decisions), a five-second body deadline and bounded
 stream parts. It shares the private ML request concurrency gate and a 100-second
 route deadline; SQL statements have a five-second timeout. Writes use the shared
 publication fence, SERIALIZABLE transactions and commit-time session checks;
 reads use fresh REPEATABLE READ, READ ONLY snapshots.
 
-Production rollout, real role provisioning, actual reviewer decisions,
-evidence-document storage and guarded execution remain separately gated work.
+Production rollout, real role provisioning, actual reviewer decisions and
+guarded execution remain separately gated work. Private run-review text storage,
+read and purge are described in [the evidence guide](ML_RUN_EVIDENCE.md); they
+do not fulfill independent scientific pilot acceptance.
 The private browser controls do not waive those requirements. Test fixtures are
 synthetic and confer no real rights or scientific approval.

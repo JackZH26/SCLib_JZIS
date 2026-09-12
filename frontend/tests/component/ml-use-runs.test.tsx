@@ -6,7 +6,7 @@ import { MlRunsWorkbench } from "@/components/MlRunsWorkbench";
 import { ApiError } from "@/lib/api";
 import { notifyAuthChange } from "@/lib/auth-session";
 import * as runs from "@/lib/ml-use-runs";
-import { changed, http, recoveryFor, syntheticReply } from "../helpers/ml-run-wire";
+import { changed, http, recoveryFor, reviewText, syntheticReply } from "../helpers/ml-run-wire";
 
 vi.mock("@/lib/ml-use-runs", async original => ({ ...await original<typeof runs>(), getRunAccess: vi.fn(), inspectRunContext: vi.fn(),
   inspectRunPlan: vi.fn(), previewRun: vi.fn(), commitRun: vi.fn(), recoverRun: vi.fn(), checkRun: vi.fn() }));
@@ -53,7 +53,7 @@ function budgets() { fill(/CPU budget \(seconds\)/, String(http.plan_input.cpu_s
 function decision(name: "approve" | "deny" | "revoke" = "approve") {
   fireEvent.change(screen.getByRole("combobox", { name: "Review decision", exact: true }), { target: { value: name } });
   fill(/Review reason code/, http.approve_input.reason_code);
-  if (name === "approve") { fill(/Review evidence SHA-256/, http.approve_input.evidence_sha256); fill(/Approval expiry/, String(http.approve_input.expires_epoch)); }
+  if (name === "approve") { fill(/Private run-review text/, reviewText); fill(/Approval expiry/, String(http.approve_input.expires_epoch)); }
 }
 async function preview(kind: runs.RunKind = "plan") {
   if (kind === "plan") { await loadOwner(); budgets(); } else { await loadReview(); decision(); }
@@ -102,7 +102,7 @@ describe("owner and independent approver workbench", () => {
     fill(/Approval expiry/, String(Math.floor(Date.now() / 1000))); expect(screen.getByRole("checkbox")).toBeDisabled();
     fill(/Approval expiry/, String(http.approve_input.expires_epoch + 100000)); expect(screen.getByRole("checkbox")).toBeDisabled();
   });
-  it.each(["Review reason code", "Review evidence SHA-256", "Approval expiry"])("invalidates approval preview on %s edit", async label => {
+  it.each(["Review reason code", "Private run-review text", "Approval expiry"])("invalidates approval preview on %s edit", async label => {
     await mount("decision"); await preview("decision"); fill(new RegExp(label), "changed");
     expect(screen.queryByRole("button", { name: "Commit exact run preview" })).not.toBeInTheDocument(); expect(screen.getByRole("checkbox")).not.toBeChecked();
   });

@@ -22,7 +22,10 @@ def boundary():
 
 def text_bytes(value, expected_sha256):
     require(type(value) is str and bool(value.strip()) and "\x00" not in value)
-    raw = value.encode("utf-8")
+    try:
+        raw = value.encode("utf-8")
+    except UnicodeEncodeError:
+        require(False)
     require(0 < len(raw) <= MAX_BYTES)
     match(hashlib.sha256(raw).hexdigest() == sha(expected_sha256))
     return raw
@@ -76,6 +79,7 @@ async def read(db, *, actor_user_id, decision_id, decision_sha256):
     text = raw.decode("utf-8")
     text_bytes(text, decision["evidence_sha256"])
     return {"version": VERSION, "decision_id": str(decision["id"]), "decision_sha256": decision["record_sha256"],
+        "decision": runs.dto(decision, "decision"),
         "plan_id": str(decision["plan_id"]), "plan_sha256": decision["plan_sha256"],
         "content_sha256": decision["evidence_sha256"], "content_type": "text/plain; charset=utf-8",
         "text": text, "size_bytes": len(raw), "access_expires_at": (await expiry(db, decision)).isoformat(), **boundary()}

@@ -29,7 +29,8 @@ _DISCOVERY_PROJECTION_TABLES = ("discovery_projection_packages", "discovery_proj
 _ML_USE_ROLE_TABLE = "ml_use_role_decisions"
 _ML_SUBMISSION_TABLES = ("ml_use_submissions", "ml_use_private_inputs", "ml_use_input_purges")
 _ML_RIGHTS_TABLE = "ml_use_rights_decisions"
-_ML_RUN_TABLES = ("ml_use_run_plans", "ml_use_run_decisions")
+_ML_RUN_EVIDENCE_TABLES = ("ml_run_review_evidence", "ml_run_review_evidence_purges")
+_ML_RUN_TABLES = ("ml_use_run_plans", "ml_use_run_decisions", *_ML_RUN_EVIDENCE_TABLES)
 
 
 def _assert_empty_ml_runs(connection):
@@ -2184,7 +2185,7 @@ def _discovery_main_barrier_roundtrip(capability, engine, config, *, package_id=
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
-        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0074_ml_use_runs"
+        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0075_ml_run_evidence"
         _assert_empty_ml_use_roles(connection)
         assert snapshot(connection) == before
         assert functions(connection) == before_functions
@@ -2644,7 +2645,7 @@ def _ml_runs_roundtrip(capability, engine, config, *, populated=False):
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
         if populated:
-            assert all(connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() > 0 for name in _ML_RUN_TABLES)
+            assert all(connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() > 0 for name in _ML_RUN_TABLES[:2])
         else:
             _assert_empty_ml_runs(connection)
         before = snapshot(connection)
@@ -2653,7 +2654,9 @@ def _ml_runs_roundtrip(capability, engine, config, *, populated=False):
         try:
             command.downgrade(config, "0073_ml_use_rights")
         except RuntimeError as exc:
-            assert "retained requested plan or independent review history" in str(exc)
+            # 0075 is now the first destructive step and must preserve its bytes/audit
+            # before the older 0074 guard can inspect plan/review history.
+            assert "retained private bytes or purge history" in str(exc)
         else:
             raise AssertionError("ML run contract history downgrade must refuse")
     else:
@@ -2700,8 +2703,102 @@ async def _ml_runs_on_migrated_schema(capability):
             assert await state(session) == after
             await recorded(session, successor(review, approved["decision"], decision="revoke", expires_epoch=None), "decision")
             await session.commit()
+            from services import ml_run_evidence
+            from tests.test_ml_label_capture import read_snapshot, write_snapshot
+            target = {"decision_id": approved["decision"]["id"], "decision_sha256": approved["decision"]["record_sha256"]}
+            await read_snapshot(session)
+            document = await ml_run_evidence.read(session, actor_user_id=actor["actor_user_id"], **target)
+            assert document["text"] == review["evidence_text"] and document["decision"] == approved["decision"]
+            await write_snapshot(session)
+            purged = await ml_run_evidence.purge(session, actor_user_id=actor["actor_user_id"], **target)
+            assert not purged["replayed"]
+            await session.commit()
+            after_purge = await state(session)
+            assert (await ml_run_evidence.purge(session, actor_user_id=actor["actor_user_id"], **target))["replayed"]
+            assert await state(session) == after_purge
     finally:
         await engine.dispose()
+
+
+def _ml_evidence_legacy_roundtrip(capability, engine, config):
+    """Create a synthetic approval on real 0074, then prove byte-exact 0075 retention."""
+    import asyncio
+
+    from alembic import command
+    from models.db import _to_async_dsn
+    from services import ml_run_evidence, ml_use_runs
+    from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
+    from sqlalchemy import inspect, text
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.pool import NullPool
+    from tests.test_ml_label_capture import read_snapshot
+    from tests.test_ml_use_runs import fixture, plan_ref, recorded, review_args
+
+    async def operation(mode, values=None):
+        validate_test_environment()
+        owned = create_async_engine(_to_async_dsn(capability.database_url), isolation_level="SERIALIZABLE", poolclass=NullPool)
+        try:
+            async with AsyncSession(owned, expire_on_commit=False) as session:
+                await (await session.connection()).run_sync(lambda raw: verify_postgres_identity(raw, capability))
+                if mode == "plan":
+                    _, _, _, receipt, actor, args = await fixture(session)
+                    plan = (await recorded(session, args))["plan"]
+                    review = review_args(actor, plan, receipt)
+                    await session.commit()
+                    return review
+                if mode == "legacy":
+                    # The actual 0074 schema has no text table or 0075 constraint.
+                    fields = {k: str(v) if k == "actor_user_id" else v for k, v in values.items() if k != "evidence_text"}
+                    row = await ml_use_runs.insert(session, fields, "decision")
+                    result = ml_use_runs.dto(row, "decision")
+                    await session.commit()
+                    return result
+                await read_snapshot(session)
+                observed = await ml_use_runs.inspect(session, actor_user_id=values["actor_user_id"],
+                    **plan_ref({"id": values["plan_id"], "record_sha256": values["plan_sha256"]}))
+                assert observed["head"] == values and observed["recorded_approval_status"] == "evidence_unavailable"
+                recovered = await ml_use_runs.outcome(session, actor_user_id=values["actor_user_id"], kind="decision",
+                    request_key=values["request_key"], expected_intent_sha256=values["intent_sha256"])
+                assert recovered["decision"] == values and recovered["replayed"]
+                try:
+                    await ml_run_evidence.read(session, actor_user_id=values["actor_user_id"],
+                        decision_id=values["id"], decision_sha256=values["record_sha256"])
+                except ml_use_runs.RunNotObserved:
+                    pass
+                else:
+                    raise AssertionError("Legacy approval must not manufacture retained text")
+        finally:
+            await owned.dispose()
+
+    def snapshot(connection):
+        return {name: connection.execute(text(f"SELECT to_jsonb(t) FROM public.{name} t ORDER BY to_jsonb(t)::text")).scalars().all()
+                for name in inspect(connection).get_table_names(schema="public")
+                if name not in {"alembic_version", *_ML_RUN_EVIDENCE_TABLES}}
+
+    review = asyncio.run(operation("plan"))
+    validate_test_environment()
+    command.downgrade(config, "0074_ml_use_runs")
+    with engine.connect() as connection:
+        try:
+            check_connection_schema(connection)
+        except SchemaLifecycleError as exc:
+            assert "exact revision" in str(exc)
+        else:
+            raise AssertionError("0075 application must reject the old schema")
+        verify_postgres_identity(connection, capability)
+        assert not set(_ML_RUN_EVIDENCE_TABLES) & set(inspect(connection).get_table_names(schema="public"))
+    legacy = asyncio.run(operation("legacy", review))
+    with engine.connect() as connection:
+        before = snapshot(connection)
+    validate_test_environment()
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        assert check_connection_schema(connection)["status"] == "compatible"
+        verify_postgres_identity(connection, capability)
+        assert snapshot(connection) == before
+        for name in _ML_RUN_EVIDENCE_TABLES:
+            assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
+    asyncio.run(operation("verify", legacy))
 
 
 def main() -> None:
@@ -3049,6 +3146,7 @@ def main() -> None:
         asyncio.run(_ml_rights_on_migrated_schema(capability))
         _ml_rights_roundtrip(capability, engine, config, populated=True)
         _ml_runs_roundtrip(capability, engine, config)
+        _ml_evidence_legacy_roundtrip(capability, engine, config)
         asyncio.run(_ml_runs_on_migrated_schema(capability))
         _ml_runs_roundtrip(capability, engine, config, populated=True)
         if recorder is not None:

@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { ApiError } from "@/lib/api";
 import { onAuthChange } from "@/lib/auth-session";
+import { MlRunEvidencePanel } from "./MlRunEvidencePanel";
 import { importDigest } from "@/lib/scientific-imports";
 import { checkRun, commitRun, getRunAccess, inspectRunContext, inspectRunPlan, parseRunAccess, parseRunContext,
   parseRunInspection, parseRunReadiness, parseRunResult, previewRun, recoverRun, runHash, runIntent, runKey,
-  validPlanRef, validRunBudget, validSubmissionRef,
+  validPlanRef, validRunBudget, validSubmissionRef, validRunEvidenceText, runEvidenceDigest,
   type PlanRef, type RunActor, type RunContext, type RunDecisionInput, type RunInput, type RunInspection, type RunKind,
   type RunPlan, type RunPlanInput, type RunReadiness, type RunRecovery, type RunResult, type SubmissionRef } from "@/lib/ml-use-runs";
 
@@ -17,7 +18,7 @@ const emptySubmission: SubmissionRef = { submission_id: "", submission_sha256: "
 const emptyPlan: PlanRef = { plan_id: "", plan_sha256: "" };
 type Draft = { input: RunInput; result: RunResult; recovery: RunRecovery };
 const labels = { unreviewed: "Not reviewed", conditional_approval_recorded: "Conditional approval recorded", denied: "Denied",
-  revoked: "Revoked", expired: "Expired", approver_unavailable: "Original approver unavailable" };
+  revoked: "Revoked", expired: "Expired", approver_unavailable: "Original approver unavailable", evidence_unavailable: "Review evidence unavailable" };
 const numeric = (v: string) => /^[1-9]\d{0,15}$/.test(v) && Number.isSafeInteger(Number(v));
 
 function Metadata({ value }: { value: RunContext | RunPlan }) {
@@ -112,9 +113,9 @@ export function MlRunsWorkbench() {
   }
   const budget = { cpu_seconds: Number(cpu), wall_seconds: Number(wall), memory_mib: Number(memory) };
   const validBudget = numeric(cpu) && numeric(wall) && numeric(memory) && validRunBudget(budget);
-  const validDecision = !!choice && /^[a-z][a-z0-9_]{0,159}$/.test(reason) && (evidence === "" || runHash(evidence))
+  const validDecision = !!choice && /^[a-z][a-z0-9_]{0,159}$/.test(reason)
     && (choice !== "revoke" || inspection?.head?.decision === "approve")
-    && (choice !== "approve" || runHash(evidence) && numeric(expiry) && Number(expiry) > Date.now() / 1000
+    && (choice !== "approve" || validRunEvidenceText(evidence) && numeric(expiry) && Number(expiry) > Date.now() / 1000
       && !!inspection && Number(expiry) <= Date.parse(inspection.input_access_expires_at) / 1000);
   const valid = kind === "plan" ? !!context && validBudget : !!inspection && validDecision;
   async function preview() {
@@ -132,7 +133,8 @@ export function MlRunsWorkbench() {
           curator_grant_id: actor.curator_grant_id, request_key: requestKey, ...budget } as RunPlanInput;
       } else if (inspection && choice) input = { plan_id: inspection.plan.id, plan_sha256: inspection.plan.record_sha256,
         approver_grant_id: actor.role_grant_id, curator_grant_id: actor.curator_grant_id, request_key: requestKey, decision: choice,
-        reason_code: reason, evidence_sha256: evidence || null, expires_epoch: choice === "approve" ? Number(expiry) : null,
+        reason_code: reason, evidence_sha256: choice === "approve" ? await runEvidenceDigest(evidence) : null,
+        evidence_text: choice === "approve" ? evidence : null, expires_epoch: choice === "approve" ? Number(expiry) : null,
         supersedes_id: inspection.head?.id ?? null, supersedes_sha256: inspection.head?.record_sha256 ?? null } as RunDecisionInput;
       else throw new Error("Context unavailable");
       const ref: RunRecovery = { kind, actorId: actor.actor_user_id, requestKey, intentSha256: await importDigest(runIntent(kind, input, actor.actor_user_id)) };
@@ -142,7 +144,7 @@ export function MlRunsWorkbench() {
     } catch (e) { if (call.active()) fail(e); } finally { call.finish(); }
   }
   function accept(result: RunResult) {
-    clearViews(); setReceipt(result); pending.current = null; retained.current = null; setRecovery(null); setUnresolved(false); setManualKey(""); setManualHash("");
+    clearViews(); setEvidence(""); setReceipt(result); pending.current = null; retained.current = null; setRecovery(null); setUnresolved(false); setManualKey(""); setManualHash("");
     if (result.kind === "plan" && result.record) {
       const plan = result.record as RunPlan; setKnownPlan(plan); setPlanRef({ plan_id: plan.id, plan_sha256: plan.record_sha256 });
     }
@@ -231,17 +233,18 @@ export function MlRunsWorkbench() {
       </> : <><p className="text-sm">Requested budget: {inspection!.plan.cpu_seconds.toLocaleString("en-US")} CPU seconds / {inspection!.plan.wall_seconds.toLocaleString("en-US")} wall seconds / {inspection!.plan.memory_mib.toLocaleString("en-US")} MiB.</p>
         <p className="text-sm">Review head at inspection: {labels[inspection!.recorded_approval_status]}. This is not a live readiness check.</p>
         {inspection!.head && <details><summary>Exact historical predecessor</summary><pre className="max-h-72 overflow-auto whitespace-pre-wrap break-all text-xs">{JSON.stringify(inspection!.head, null, 2)}</pre></details>}
-        <label className="block text-sm">Review decision<select className={field} value={choice} disabled={locked} onChange={e => { setChoice(e.target.value as typeof choice); setExpiry(""); edit(); }}>
+        <label className="block text-sm">Review decision<select className={field} value={choice} disabled={locked} onChange={e => { setChoice(e.target.value as typeof choice); setEvidence(""); setExpiry(""); edit(); }}>
           <option value="">Choose a decision</option><option value="approve">Record conditional approval</option><option value="deny">Record denial</option>
           <option value="revoke" disabled={inspection!.head?.decision !== "approve"}>Revoke exact approval</option></select></label>
         <label className="block text-sm">Review reason code<input className={field} value={reason} maxLength={160} autoComplete="off" spellCheck={false} disabled={locked} onChange={e => { setReason(e.target.value); edit(); }} />
           <span className="text-xs">Use an approved opaque lowercase code. Do not paste source text or credentials.</span></label>
-        <label className="block text-sm">Review evidence SHA-256{choice !== "approve" && " (optional)"}<input className={field} value={evidence} maxLength={64} autoComplete="off" spellCheck={false} disabled={locked} onChange={e => { setEvidence(e.target.value); edit(); }} /></label>
+        {choice === "approve" && <label className="block text-sm">Private run-review text<textarea className={field} value={evidence} rows={5} maxLength={8192} autoComplete="off" spellCheck={false} disabled={locked} onChange={e => { setEvidence(e.target.value); edit(); }} />
+          <span className="text-xs">{new TextEncoder().encode(evidence).length.toLocaleString("en-US")} / 8,192 UTF-8 bytes. The exact text is hashed automatically and retained privately on commit. Do not paste credentials, paper contents or unnecessary personal data. Access ends at the original input expiry; stored bytes require explicit purge. Approval alone is not scientific acceptance.</span></label>}
         {choice === "approve" && <label className="block text-sm">Approval expiry (UTC Unix seconds)<input className={field} value={expiry} inputMode="numeric" maxLength={16} disabled={locked} onChange={e => { setExpiry(e.target.value); edit(); }} />
           <span className="text-xs">Choose an explicit future expiry within original input retention. The database clock is authoritative.</span></label>}
       </>}
       <label className="flex items-start gap-2 text-sm"><input type="checkbox" checked={confirmed} disabled={locked || !valid} onChange={e => { setConfirmed(e.target.checked); setDraft(null); }} />
-        <span>{context ? "I reviewed these exact inputs, requested budget and execution limits." : "I independently reviewed this exact plan, budget and decision, and retained the resolvable review evidence. This does not establish source rights or scientific acceptance."}</span></label>
+        <span>{context ? "I reviewed these exact inputs, requested budget and execution limits." : "I independently reviewed this exact plan, budget and decision. For approval, I consent to storing this private review text until explicitly purged. This does not establish source rights or scientific acceptance."}</span></label>
       <button className={button} disabled={locked || !valid || !confirmed} onClick={() => void preview()}>{context ? "Preview run plan" : "Preview run decision"}</button>
     </section>}
     {draft && <section className={panel} aria-label="Exact run preview"><h3 className="font-semibold">Review before committing</h3>
@@ -265,6 +268,7 @@ export function MlRunsWorkbench() {
       <h4 className="font-semibold">Remaining execution blockers</h4><ul className="list-disc space-y-1 pl-5 text-sm">{readiness.blockers.map(value => <li key={value}>{value.replaceAll("_", " ")}</li>)}</ul>
       <details><summary>Source coverage and first blocked resources</summary><pre className="max-h-96 overflow-auto whitespace-pre-wrap break-all text-xs">{JSON.stringify(readiness.source_coverage, null, 2)}</pre></details>
     </section>}
+    {kind === "decision" && <MlRunEvidencePanel disabled={locked} />}
     <section className={panel} aria-label="Manual run recovery"><h3 className="font-semibold">Recover an earlier operation</h3>
       <p className="text-sm">Use the original {kind === "plan" ? "plan" : "run decision"} key and intent hash under its original account. This private read does not grant or execute anything. Drafts are not saved in browser storage.</p>
       <label className="block text-sm">Recovery request key<input className={field} value={manualKey} maxLength={120} autoComplete="off" spellCheck={false} disabled={locked || !access} onChange={e => setManualKey(e.target.value)} /></label>

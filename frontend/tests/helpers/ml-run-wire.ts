@@ -1,7 +1,8 @@
 /** Test-only adapters. Resealed responses below are synthetic, not new SQL evidence. */
 import { createHash } from "node:crypto";
-import native from "../fixtures/ml-use-runs-native.wire.json";
+import native from "../fixtures/ml-use-runs-native.batch65.wire.json";
 export const http = native;
+export const reviewText = "SYNTHETIC independent run-budget review record. Not a real human review, scientific pilot or source licence.";
 export const canonical = (v: any): string => {
   if (typeof v === "number" && !Number.isSafeInteger(v)) throw new Error("Noninteger test envelope");
   if (Array.isArray(v)) return "[" + v.map(canonical).join(",") + "]";
@@ -25,7 +26,8 @@ export function sealRecord(record: any) {
 export function syntheticReply(kind: "plan" | "decision", input: object, committed: boolean, replayed = false): string {
   const name = kind === "plan" ? "plan" : (input as { decision: string }).decision;
   const v = JSON.parse(wire(name + (committed ? "_committed" : "_preview"))), r = v.result;
-  Object.assign(r.intent, input); r.intent_sha256 = digest(r.intent); r.replayed = replayed;
-  if (committed) { Object.assign(r[kind], input, { intent_sha256: r.intent_sha256 }); sealRecord(r[kind]); }
+  const { evidence_text: _privateText, ...metadata } = input as Record<string, unknown>;
+  Object.assign(r.intent, metadata); r.intent_sha256 = digest(r.intent); r.replayed = replayed;
+  if (committed) { Object.assign(r[kind], metadata, { intent_sha256: r.intent_sha256 }); sealRecord(r[kind]); }
   return canonical(v);
 }

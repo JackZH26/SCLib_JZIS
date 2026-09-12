@@ -43,6 +43,8 @@ jobs:
           docker pull redis:7-alpine
       - name: Run tests against owned disposable services
         run: .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q
+      - name: Verify actual capacity boundaries in separate owned services
+        run: .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q tests_capacity
       - name: Upload test runtime inventory
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

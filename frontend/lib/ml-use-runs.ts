@@ -20,17 +20,17 @@ type HostDocuments = { implementation_json: string; runtime_json: string };
 export type RunPlanInput = SubmissionRef & InputPins & RunBudget & { requester_grant_id: string; curator_grant_id: string; request_key: string };
 export type RunDecisionInput = PlanRef & { approver_grant_id: string; curator_grant_id: string; request_key: string;
   decision: "approve" | "deny" | "revoke"; reason_code: string; evidence_sha256: string | null; expires_epoch: number | null;
-  supersedes_id: string | null; supersedes_sha256: string | null };
+  supersedes_id: string | null; supersedes_sha256: string | null; evidence_text?: string | null };
 export type RunInput = RunPlanInput | RunDecisionInput;
 type RecordFields = { id: string; actor_user_id: string; version: string; intent_sha256: string; record_sha256: string; created_at: string };
 export type RunPlan = RunPlanInput & RecordFields & HostDocuments & { runner_profile: typeof RUN_PROFILE; purpose: typeof RUN_PURPOSE };
-export type RunDecision = RunDecisionInput & RecordFields;
+export type RunDecision = Omit<RunDecisionInput, "evidence_text"> & RecordFields;
 export type RunContext = SubmissionRef & InputPins & HostDocuments & { actor_user_id: string; requester_grant_id: string;
   curator_grant_id: string; input_access_expires_at: string; runner_profile: typeof RUN_PROFILE; purpose: typeof RUN_PURPOSE };
 export type RunInspection = { plan: RunPlan; head: RunDecision | null; recorded_approval_status: ApprovalStatus; input_access_expires_at: string };
 export type RunRecovery = { kind: RunKind; actorId: string; requestKey: string; intentSha256: string };
 export type RunResult = { kind: RunKind; intent: Obj; intent_sha256: string; record: RunPlan | RunDecision | null; replayed: boolean; dry_run: boolean };
-export const APPROVAL_STATUSES = ["unreviewed", "conditional_approval_recorded", "denied", "revoked", "expired", "approver_unavailable"] as const;
+export const APPROVAL_STATUSES = ["unreviewed", "conditional_approval_recorded", "denied", "revoked", "expired", "approver_unavailable", "evidence_unavailable"] as const;
 export type ApprovalStatus = typeof APPROVAL_STATUSES[number];
 export const COVERAGE_STATUSES = ["allow_recorded", "unreviewed", "denied", "revoked", "expired", "reviewer_unavailable"] as const;
 type CoverageStatus = typeof COVERAGE_STATUSES[number];
@@ -118,7 +118,9 @@ function validIntent(v: unknown, kind: RunKind): v is Obj {
     && (v.decision === "approve" ? hash(v.evidence_sha256) && integer(v.expires_epoch, 1) : v.expires_epoch === null);
 }
 export function runIntent(kind: RunKind, input: RunInput, actorId: string): Obj {
-  const v = { version: intentVersion(kind), ...input, actor_user_id: actorId }; requireValue(validIntent(v, kind)); return v;
+  const body = { ...input };
+  if (kind === "decision") delete (body as RunDecisionInput).evidence_text;
+  const v = { version: intentVersion(kind), ...body, actor_user_id: actorId }; requireValue(validIntent(v, kind)); return v;
 }
 async function record(v: unknown, kind: RunKind): Promise<RunPlan | RunDecision> {
   requireValue(closed(v, ["version", ...fields(kind), "id", "intent_sha256", "record_sha256", "created_at",
@@ -146,7 +148,7 @@ export async function parseRunContext(raw: string, actor: RunActor, ref: Submiss
 function statusMatches(status: unknown, head: RunDecision | null) {
   return APPROVAL_STATUSES.includes(status as ApprovalStatus) && (head === null ? status === "unreviewed"
     : head.decision === "deny" ? status === "denied" : head.decision === "revoke" ? status === "revoked"
-      : ["conditional_approval_recorded", "expired", "approver_unavailable"].includes(status as string));
+      : ["conditional_approval_recorded", "expired", "approver_unavailable", "evidence_unavailable"].includes(status as string));
 }
 export async function parseRunInspection(raw: string, actor: RunActor, ref: PlanRef): Promise<RunInspection> {
   const v = parse(raw);
@@ -171,7 +173,10 @@ export async function parseRunResult(raw: string, ref: RunRecovery, committed: b
     && r.scope === "historical_exact_run_contract_not_live_permission_or_execution_authority" && validIntent(r.intent, ref.kind)
     && r.intent.actor_user_id === ref.actorId && r.intent.request_key === ref.requestKey && r.intent_sha256 === ref.intentSha256
     && await importDigest(r.intent) === ref.intentSha256);
-  if (input) requireValue(await importDigest(runIntent(ref.kind, input, ref.actorId)) === ref.intentSha256);
+  if (input) {
+    requireValue(await importDigest(runIntent(ref.kind, input, ref.actorId)) === ref.intentSha256);
+    if (ref.kind === "decision" && (input as RunDecisionInput).evidence_text !== undefined) await validateEvidenceInput(ref.kind, input);
+  }
   const item = committed ? await record(r[ref.kind], ref.kind) : null;
   requireValue(committed ? item!.intent_sha256 === ref.intentSha256 : r[ref.kind] === null);
   return { kind: ref.kind, intent: r.intent, intent_sha256: r.intent_sha256 as string, record: item, replayed: r.replayed, dry_run: r.dry_run as boolean };
@@ -224,13 +229,59 @@ export async function parseRunReadiness(raw: string, actor: RunActor, ref: PlanR
   return v as unknown as RunReadiness;
 }
 
-const endpoints = ["/requester-access", "/approver-access", "/context", "/plans", "/inspect", "/decisions", "/plans/outcome", "/decisions/outcome", "/check"] as const;
+export const RUN_EVIDENCE_VERSION = "ml-run-review-evidence/1.0.0";
+export const RUN_EVIDENCE_BYTES = 8192;
+export type RunEvidenceRef = { decision_id: string; decision_sha256: string };
+export type RunEvidence = RunEvidenceRef & PlanRef & { decision: RunDecision; content_sha256: string;
+  text: string; size_bytes: number; access_expires_at: string };
+const evidenceFlags = ["scientific_acceptance", "source_permission_granted", "run_authorization_granted", "ml_training_approved"];
+const evidenceBoundaryKeys = ["scope", ...evidenceFlags, "training_execution"];
+const evidenceBoundary = (v: Obj) => v.scope === "private_run_review_text_not_scientific_acceptance_or_execution_authority"
+  && evidenceFlags.every(k => v[k] === false) && v.training_execution === "disabled";
+export const validRunEvidenceRef = (v: RunEvidenceRef) => uuid(v.decision_id) && hash(v.decision_sha256);
+export const validRunEvidenceText = (v: unknown): v is string => typeof v === "string" && /[^\s\u001c-\u001f\u0085]|\ufeff/u.test(v)
+  && !/[\u0000\uD800-\uDFFF]/u.test(v) && new TextEncoder().encode(v).length <= RUN_EVIDENCE_BYTES;
+export async function runEvidenceDigest(value: string): Promise<string> {
+  requireValue(validRunEvidenceText(value));
+  return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value)))).map(v => v.toString(16).padStart(2, "0")).join("");
+}
+async function validateEvidenceInput(kind: RunKind, input: RunInput) {
+  if (kind !== "decision") return;
+  const value = input as RunDecisionInput;
+  if (value.decision === "approve") requireValue(validRunEvidenceText(value.evidence_text) && await runEvidenceDigest(value.evidence_text) === value.evidence_sha256);
+  else requireValue(value.evidence_text === null || value.evidence_text === undefined);
+}
+export async function parseRunEvidence(raw: string, ref: RunEvidenceRef): Promise<RunEvidence> {
+  const v = parse(raw);
+  requireValue(validRunEvidenceRef(ref) && closed(v, ["version", "decision_id", "decision_sha256", "decision", "plan_id", "plan_sha256",
+    "content_sha256", "content_type", "text", "size_bytes", "access_expires_at", ...evidenceBoundaryKeys])
+    && v.version === RUN_EVIDENCE_VERSION && evidenceBoundary(v) && same(v, ref, ["decision_id", "decision_sha256"])
+    && v.content_type === "text/plain; charset=utf-8" && validRunEvidenceText(v.text)
+    && v.size_bytes === new TextEncoder().encode(v.text).length && timestamp(v.access_expires_at));
+  const decision = await record(v.decision, "decision") as RunDecision;
+  requireValue(decision.id === ref.decision_id && decision.record_sha256 === ref.decision_sha256 && decision.decision === "approve"
+    && decision.plan_id === v.plan_id && decision.plan_sha256 === v.plan_sha256 && decision.evidence_sha256 === v.content_sha256
+    && await runEvidenceDigest(v.text as string) === v.content_sha256 && decision.expires_epoch! <= Date.parse(v.access_expires_at as string) / 1000);
+  return v as unknown as RunEvidence;
+}
+export function parseRunEvidencePurge(raw: string, ref: RunEvidenceRef): { replayed: boolean; created_at: string } {
+  const v = parse(raw);
+  requireValue(validRunEvidenceRef(ref) && closed(v, ["version", "committed", "result"]) && v.version === RUN_EVIDENCE_VERSION && v.committed === true);
+  const r = v.result;
+  requireValue(closed(r, ["version", "decision_id", "decision_sha256", "evidence_state", "replayed", "purge", ...evidenceBoundaryKeys])
+    && r.version === RUN_EVIDENCE_VERSION && evidenceBoundary(r) && same(r, ref, ["decision_id", "decision_sha256"])
+    && r.evidence_state === "purged" && typeof r.replayed === "boolean" && closed(r.purge, ["reason", "created_at"])
+    && ["reviewer_request", "retention_expired"].includes(r.purge.reason as string) && timestamp(r.purge.created_at));
+  return { replayed: r.replayed, created_at: r.purge.created_at };
+}
+
+const endpoints = ["/requester-access", "/approver-access", "/context", "/plans", "/inspect", "/decisions", "/plans/outcome", "/decisions/outcome", "/check", "/evidence/read", "/evidence/purge"] as const;
 type Endpoint = typeof endpoints[number];
 async function wire(path: Endpoint, body?: object, signal?: AbortSignal) {
   requireValue(endpoints.includes(path));
   if (signal?.aborted) throw new ApiError(0, null, "Private ML run request interrupted");
   const payload = body === undefined ? undefined : JSON.stringify(body);
-  requireValue(payload === undefined || new TextEncoder().encode(payload).length <= 8192);
+  requireValue(payload === undefined || new TextEncoder().encode(payload).length <= (path === "/decisions" ? 16384 : 8192));
   const controller = new AbortController(), abort = () => controller.abort();
   let reject!: (error: Error) => void;
   const interrupted = new Promise<never>((_, no) => { reject = no; });
@@ -258,9 +309,14 @@ async function wire(path: Endpoint, body?: object, signal?: AbortSignal) {
 export const getRunAccess = (kind: RunKind, signal?: AbortSignal) => wire(kind === "plan" ? "/requester-access" : "/approver-access", undefined, signal);
 export const inspectRunContext = (ref: SubmissionRef, signal?: AbortSignal) => { requireValue(validSubmissionRef(ref)); return wire("/context", ref, signal); };
 export const inspectRunPlan = (ref: PlanRef, signal?: AbortSignal) => { requireValue(validPlanRef(ref)); return wire("/inspect", ref, signal); };
-export const previewRun = (kind: RunKind, input: RunInput, signal?: AbortSignal) => wire(kind === "plan" ? "/plans" : "/decisions", { ...input, dry_run: true }, signal);
+export const previewRun = async (kind: RunKind, input: RunInput, signal?: AbortSignal) => {
+  const original = { ...input };
+  await validateEvidenceInput(kind, original); return wire(kind === "plan" ? "/plans" : "/decisions", { ...original, dry_run: true }, signal); };
 export const commitRun = (kind: RunKind, input: RunInput, pin: string, signal?: AbortSignal) => {
-  requireValue(hash(pin)); return wire(kind === "plan" ? "/plans" : "/decisions", { ...input, dry_run: false, expected_intent_sha256: pin }, signal); };
+  requireValue(hash(pin)); const original = { ...input };
+  return validateEvidenceInput(kind, original).then(() => wire(kind === "plan" ? "/plans" : "/decisions", { ...original, dry_run: false, expected_intent_sha256: pin }, signal)); };
 export const recoverRun = (ref: RunRecovery, signal?: AbortSignal) => {
   requireValue(key(ref.requestKey) && hash(ref.intentSha256)); return wire(ref.kind === "plan" ? "/plans/outcome" : "/decisions/outcome", { request_key: ref.requestKey, expected_intent_sha256: ref.intentSha256 }, signal); };
 export const checkRun = (ref: PlanRef, signal?: AbortSignal) => { requireValue(validPlanRef(ref)); return wire("/check", ref, signal); };
+export const readRunEvidence = (ref: RunEvidenceRef, signal?: AbortSignal) => { requireValue(validRunEvidenceRef(ref)); return wire("/evidence/read", ref, signal); };
+export const purgeRunEvidence = (ref: RunEvidenceRef, signal?: AbortSignal) => { requireValue(validRunEvidenceRef(ref)); return wire("/evidence/purge", ref, signal); };

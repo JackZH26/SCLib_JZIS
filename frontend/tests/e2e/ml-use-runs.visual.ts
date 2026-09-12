@@ -1,14 +1,16 @@
 import { expect, test, type Page } from "@playwright/test";
-import { canonical, http, syntheticReply, wire } from "../helpers/ml-run-wire";
+import { canonical, http, reviewText, syntheticReply, wire } from "../helpers/ml-run-wire";
 
 type Json = Record<string, any>;
 const actor = { owner: JSON.parse(http.requester_access), reviewer: JSON.parse(http.approver_access) };
+const browserReviewText = reviewText + '\nΔTc / 数据 / 🧪 <script>window.__unsafeEvidence = true</script>';
 // In-memory browser double, not a DB, permission grant, actual-worker check or
 // new native capture. Original host-document strings remain byte-for-byte.
 function backend() {
   return { plan: JSON.parse(http.plan_committed).result.plan as Json, head: null as Json | null,
     previews: [] as Json[], commits: [] as Json[], receipts: new Map<string, Json>(), outcomes: 0, checks: 0,
-    loseReply: false, denyOwner: false, denyReviewer: false, blocked: [] as string[], unexpected: [] as string[] };
+    evidence: new Map<string, { decision: Json; text: string }>(), purged: new Set<string>(), purgeCalls: 0,
+    losePurgeReply: false, loseReply: false, denyOwner: false, denyReviewer: false, blocked: [] as string[], unexpected: [] as string[] };
 }
 async function syntheticOnly(page: Page, baseURL: string, who: "owner" | "reviewer", state: ReturnType<typeof backend>) {
   const origin = new URL(baseURL).origin, prefix = "/__synthetic_api/v1/ml/use/runs";
@@ -30,11 +32,24 @@ async function syntheticOnly(page: Page, baseURL: string, who: "owner" | "review
     }
     expect(req.method()).toBe("POST"); expect(url.search).toBe(""); const body = req.postDataJSON();
     const ref = { plan_id: state.plan.id, plan_sha256: state.plan.record_sha256 };
+    if (endpoint === "/evidence/read" || endpoint === "/evidence/purge") {
+      expect(who).toBe("reviewer"); const stored = state.evidence.get(body.decision_id); expect(stored).toBeDefined();
+      expect(body).toEqual({ decision_id: stored!.decision.id, decision_sha256: stored!.decision.record_sha256 });
+      if (endpoint === "/evidence/read") {
+        if (state.purged.has(body.decision_id)) return fulfill('{"detail":"NOT_OBSERVED"}', 404);
+        const v = JSON.parse(wire("evidence_read")); Object.assign(v, body, { decision: stored!.decision, text: stored!.text,
+          content_sha256: stored!.decision.evidence_sha256, size_bytes: new TextEncoder().encode(stored!.text).length, ...ref });
+        return fulfill(canonical(v));
+      }
+      const replayed = state.purged.has(body.decision_id); state.purged.add(body.decision_id); state.purgeCalls++;
+      if (state.losePurgeReply) { state.losePurgeReply = false; return fulfill('{"detail":"SYNTHETIC_LOST_PURGE_REPLY"}', 503); }
+      const v = JSON.parse(wire("evidence_purge")); Object.assign(v.result, body, { replayed }); return fulfill(canonical(v));
+    }
     if (endpoint === "/context") { expect(who).toBe("owner"); expect(body).toEqual(http.submission_query); return fulfill(http.context); }
     if (endpoint === "/inspect") {
       expect(who).toBe("reviewer"); expect(body).toEqual(ref);
       const v = JSON.parse(http.unreviewed); v.plan = state.plan; v.head = state.head;
-      v.recorded_approval_status = state.head === null ? "unreviewed" : state.head.decision === "approve" ? "conditional_approval_recorded" : state.head.decision === "revoke" ? "revoked" : "denied";
+      v.recorded_approval_status = state.head === null ? "unreviewed" : state.head.decision === "approve" ? (state.purged.has(state.head.id) ? "evidence_unavailable" : "conditional_approval_recorded") : state.head.decision === "revoke" ? "revoked" : "denied";
       return fulfill(canonical(v));
     }
     if (endpoint === "/plans" || endpoint === "/decisions") {
@@ -52,6 +67,7 @@ async function syntheticOnly(page: Page, baseURL: string, who: "owner" | "review
       expect(expected_intent_sha256).toBe(saved.result.intent_sha256); state.commits.push({ kind, input });
       state.receipts.set(input.request_key, saved);
       if (kind === "plan") { state.plan = saved.result.plan; state.head = null; } else state.head = saved.result.decision;
+      if (kind === "decision" && input.decision === "approve") state.evidence.set(saved.result.decision.id, { decision: saved.result.decision, text: input.evidence_text });
       if (state.loseReply) { state.loseReply = false; return fulfill('{"detail":"SYNTHETIC_LOST_REPLY"}', 503); }
       return fulfill(canonical(saved));
     }
@@ -65,9 +81,10 @@ async function syntheticOnly(page: Page, baseURL: string, who: "owner" | "review
       expect(who).toBe("owner"); expect(body).toEqual(ref); state.checks++;
       // Use the native snapshot from this decision stage, not the earlier
       // unreviewed timestamp, which would predate the recorded decision.
-      const v = JSON.parse(state.head ? wire("readiness_" + state.head.decision) : http.readiness_unreviewed); Object.assign(v, ref); v.approval = state.head;
-      v.approval_status = state.head === null ? "unreviewed" : state.head.decision === "approve" ? "conditional_approval_recorded" : state.head.decision === "revoke" ? "revoked" : "denied";
-      v.conditional_run_approval_current = state.head?.decision === "approve";
+      const missing = state.head?.decision === "approve" && state.purged.has(state.head.id);
+      const v = JSON.parse(missing ? wire("readiness_evidence_missing") : state.head ? wire("readiness_" + state.head.decision) : http.readiness_unreviewed); Object.assign(v, ref); v.approval = state.head;
+      v.approval_status = state.head === null ? "unreviewed" : state.head.decision === "approve" ? (missing ? "evidence_unavailable" : "conditional_approval_recorded") : state.head.decision === "revoke" ? "revoked" : "denied";
+      v.conditional_run_approval_current = state.head?.decision === "approve" && !missing;
       v.blockers = v.blockers.filter((s: string) => !s.startsWith("exact_plan_approval_"));
       if (!v.conditional_run_approval_current) v.blockers.push("exact_plan_approval_" + v.approval_status);
       return fulfill(canonical(v));
@@ -106,7 +123,7 @@ async function reviewPreview(page: Page, state: ReturnType<typeof backend>, deci
   await expect(page.getByRole("combobox", { name: "Review decision", exact: true })).toHaveValue("");
   await page.getByRole("combobox", { name: "Review decision", exact: true }).selectOption(decision);
   await page.getByLabel(/^Review reason code/).fill(http.approve_input.reason_code);
-  if (decision === "approve") { await page.getByLabel(/^Review evidence SHA-256/).fill(http.approve_input.evidence_sha256); await page.getByLabel(/^Approval expiry/).fill(String(http.approve_input.expires_epoch)); }
+  if (decision === "approve") { await page.getByLabel(/^Private run-review text/).fill(browserReviewText); await page.getByLabel(/^Approval expiry/).fill(String(http.approve_input.expires_epoch)); }
   await page.getByRole("checkbox").check(); await page.getByRole("button", { name: "Preview run decision", exact: true }).click();
   await expect(page.getByRole("button", { name: "Commit exact run preview" })).toBeVisible();
 }
@@ -115,7 +132,14 @@ async function noOverflow(page: Page, width: number) {
     outside: Array.from(document.querySelectorAll<HTMLElement>("main input, main select, main section"))
       .filter(n => { const r = n.getBoundingClientRect(); return r.width > 0 && (r.left < -1 || r.right > innerWidth + 1); }).map(n => n.tagName) }));
   expect(measured.width).toBe(width); expect(measured.doc).toBeLessThanOrEqual(width); expect(measured.outside).toEqual([]);
-  await expect(page.locator("html")).toHaveAttribute("lang", "en"); expect(await page.locator("main").innerText()).not.toMatch(/[\u4e00-\u9fff]/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  // The English-default rule permits verbatim user-authored review text.
+  // Exempt only this exact synthetic source, not arbitrary preformatted/UI text.
+  let ownedText = await page.locator("main").innerText();
+  for (const source of await page.getByRole("region", { name: "Private review evidence", exact: true }).locator("pre").allTextContents()) {
+    expect(source).toBe(browserReviewText); ownedText = ownedText.replace(source, "");
+  }
+  expect(ownedText).not.toMatch(/[\u4e00-\u9fff]/);
 }
 for (const view of [{ name: "desktop", width: 1440, height: 1000 }, { name: "mobile", width: 390, height: 844 }]) {
   test(`${view.name}: independent-account handoff, conditional approval, revocation and denial`, async ({ page, browser, baseURL }, info) => {
@@ -139,9 +163,27 @@ for (const view of [{ name: "desktop", width: 1440, height: 1000 }, { name: "mob
         await expect(region.getByText(decision === "approve" ? "Conditional approval recorded" : decision === "revoke" ? "Revoked" : "Denied", { exact: true })).toBeVisible();
         await expect(region.getByText("Not satisfied", { exact: true })).toBeVisible(); await expect(region.getByText("guarded execution consumer unavailable")).toBeVisible();
         await noOverflow(page, view.width); await region.scrollIntoViewIfNeeded(); await page.screenshot({ path: info.outputPath(view.name + "-" + decision + "-readiness.png") });
+        if (decision === "approve") {
+          await reviewer.getByRole("button", { name: "Manage private review evidence" }).click();
+          const evidence = reviewer.getByRole("region", { name: "Private review evidence", exact: true });
+          await evidence.getByLabel("Evidence decision UUID", { exact: true }).fill(state.head!.id);
+          await evidence.getByLabel("Evidence decision record SHA-256", { exact: true }).fill(state.head!.record_sha256);
+          await evidence.getByRole("button", { name: "Read exact private review" }).click();
+          await expect(evidence.locator("pre")).toHaveText(browserReviewText); await noOverflow(reviewer, view.width);
+          expect(await reviewer.evaluate(() => "__unsafeEvidence" in window)).toBe(false);
+          await evidence.scrollIntoViewIfNeeded(); await reviewer.screenshot({ path: info.outputPath(view.name + "-private-evidence.png") });
+          state.losePurgeReply = true; await evidence.getByRole("checkbox").check();
+          await evidence.getByRole("button", { name: "Purge exact private review" }).click(); await expect(evidence.getByText(/Purge outcome is unknown/)).toBeVisible();
+          await expect(evidence.getByLabel("Evidence decision UUID", { exact: true })).toBeDisabled(); expect(state.purgeCalls).toBe(1);
+          await evidence.getByRole("button", { name: "Retry identical evidence purge" }).click();
+          await expect(evidence.getByText(/Private text purge verified \(existing receipt\)/)).toBeVisible(); expect(state.purgeCalls).toBe(2);
+          await page.getByRole("button", { name: "Check current run readiness" }).click();
+          await expect(region.getByText("Review evidence unavailable", { exact: true })).toBeVisible();
+          await evidence.getByRole("button", { name: "Close and clear evidence panel" }).click();
+        }
       }
     } finally { await reviewerContext.close(); }
-    expect(state.commits).toHaveLength(4); expect(state.checks).toBe(3); expect(state.blocked).toEqual([]); expect(state.unexpected).toEqual([]); expect(errors).toEqual([]);
+    expect(state.commits).toHaveLength(4); expect(state.checks).toBe(4); expect(state.blocked).toEqual([]); expect(state.unexpected).toEqual([]); expect(errors).toEqual([]);
     console.log(`${view.name} ML run handoff screenshots: ${info.outputDir}`);
   });
   test(`${view.name}: lost commit reply, ambiguous read, exact recovery and admission clearing`, async ({ page, baseURL }, info) => {

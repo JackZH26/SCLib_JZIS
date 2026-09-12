@@ -70,5 +70,15 @@ async def test_run_workbench_native_wire(client, db_session, monkeypatch, tmp_pa
         readiness = await read("readiness_" + decision, "/check", capture["plan_query"])
         assert not readiness["ready_for_execution"] and not readiness["source_permission_granted"]
         assert readiness["conditional_run_approval_current"] is (decision == "approve")
+        if decision == "approve":
+            capture["evidence_query"] = {"decision_id": head["id"], "decision_sha256": head["record_sha256"]}
+            document = await read("evidence_read", "/evidence/read", capture["evidence_query"], reviewer=True)
+            assert document["text"] == request["evidence_text"] and document["decision"] == head
+            await read("evidence_purge", "/evidence/purge", capture["evidence_query"], reviewer=True)
+            replay = await read("evidence_purge_replay", "/evidence/purge", capture["evidence_query"], reviewer=True)
+            assert replay["result"]["replayed"]
+            missing = await read("evidence_missing_inspection", "/inspect", capture["plan_query"], reviewer=True)
+            assert missing["recorded_approval_status"] == "evidence_unavailable"
+            await read("readiness_evidence_missing", "/check", capture["plan_query"])
     assert pins() == source
     (tmp_path / "ml-runs-wire.json").write_text(json.dumps(capture, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")

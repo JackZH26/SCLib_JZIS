@@ -15,6 +15,9 @@ TABLES = ("ml_run_review_evidence", "ml_run_review_evidence_purges")
 PARENTS = ("users", "ml_use_run_decisions", "ml_use_run_plans", "ml_use_submissions",
            "ml_use_role_decisions", "research_role_grants", "research_publication_actions")
 FUNCTIONS = ("sclib_ml_run_evidence_insert_v1", "sclib_ml_run_evidence_complete_v1", "sclib_ml_run_evidence_delete_v1")
+# Explicit Python str.strip whitespace set; no dependence on the DB locale.
+WHITESPACE_SQL = "||".join(f"chr({code})" for code in (
+    9, 10, 11, 12, 13, 28, 29, 30, 31, 32, 133, 160, 5760, *range(8192, 8203), 8232, 8233, 8239, 8287, 12288))
 
 
 def guards():
@@ -38,7 +41,7 @@ def guards():
               AND g.record_sha256=public.sclib_ml_use_role_hash_v1(to_jsonb(g))
               AND NOT EXISTS(SELECT 1 FROM public.ml_use_role_decisions r WHERE r.supersedes_id=g.id)) THEN
             RAISE EXCEPTION 'ml_run_evidence_exact_current_review_required' USING ERRCODE='23514'; END IF;
-          IF btrim(convert_from(NEW.payload,'UTF8'))='' THEN
+          IF btrim(convert_from(NEW.payload,'UTF8'),{WHITESPACE_SQL})='' THEN
             RAISE EXCEPTION 'ml_run_evidence_nonempty_text_required' USING ERRCODE='23514'; END IF;
           IF (SELECT COALESCE(sum(octet_length(payload)),0) FROM public.{TABLES[0]})+octet_length(NEW.payload)>{MAX_STORAGE_BYTES} THEN
             RAISE EXCEPTION 'ml_run_evidence_storage_limit' USING ERRCODE='54000'; END IF;

@@ -11,6 +11,25 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class SchemaLifecycleBoundaryTests(unittest.TestCase):
+    def test_evidence_upgrade_preserves_real_0074_approval_and_replays_without_text(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        functions = {node.name: ast.get_source_segment(source, node) for node in ast.parse(source).body
+                     if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))}
+        legacy = functions["_ml_evidence_legacy_roundtrip"]
+        markers = ('command.downgrade(config, "0074_ml_use_runs")', 'operation("legacy", review)',
+                   'command.upgrade(config, "head")', 'operation("verify", legacy)')
+        self.assertEqual([legacy.index(m) for m in markers], sorted(legacy.index(m) for m in markers))
+        for marker in ("assert snapshot(connection) == before", '"evidence_unavailable"',
+                       'recovered["decision"] == values', "Legacy approval must not manufacture retained text"):
+            self.assertIn(marker, legacy)
+        for marker in ("ml_run_evidence.read", "ml_run_evidence.purge", "assert await state(session) == after_purge"):
+            self.assertIn(marker, functions["_ml_runs_on_migrated_schema"])
+        migration = (ROOT / "api/alembic/versions/0075_ml_run_evidence.py").read_text()
+        upgrade, downgrade = migration.split("def upgrade()", 1)[1].split("def downgrade()", 1)
+        self.assertNotIn("INSERT", upgrade)
+        self.assertLess(downgrade.index("ACCESS EXCLUSIVE"), downgrade.index("SELECT EXISTS"))
+        self.assertLess(downgrade.index("raise RuntimeError"), downgrade.index("DROP TRIGGER mu75_complete"))
+
     def test_run_contracts_are_checked_empty_and_populated_after_older_guards(self):
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         functions = {node.name: ast.get_source_segment(source, node) for node in ast.parse(source).body
@@ -26,7 +45,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
         positions = [functions["main"].index(marker) for marker in markers]
         self.assertEqual(positions, sorted(positions))
         for marker in ('command.downgrade(config, "0073_ml_use_rights")',
-                       "retained requested plan or independent review history", 'command.upgrade(config, "head")',
+                       "retained private bytes or purge history", 'command.upgrade(config, "head")',
                        "assert snapshot(connection) == before", "to_regprocedure"):
             self.assertIn(marker, functions["_ml_runs_roundtrip"])
         for marker in ("service.propose(session, **args)", "assert await state(session) == before",
@@ -179,7 +198,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
             'all(before[name] for name in _DISCOVERY_PROJECTION_TABLES)',
             'command.downgrade(config, "0069_discovery_projection")', 'assert "exact revision" in str(exc)',
             'frozen_insert_statement().split("AS $$", 1)', 'SELECT prosrc FROM pg_proc',
-            'command.upgrade(config, "head")', '"0074_ml_use_runs"', "_assert_empty_ml_use_roles(connection)",
+            'command.upgrade(config, "head")', '"0075_ml_run_evidence"', "_assert_empty_ml_use_roles(connection)",
             "assert functions(connection) == before_functions"):
             self.assertIn(marker, body)
         self.assertEqual(body.count("assert snapshot(connection) == before"), 2)
