@@ -1,6 +1,7 @@
 # Private ML run plans and independent conditional review
 
-Batch61; schema `0074_ml_use_runs`, protocol `ml-use-run-governance/1.0.0`.
+Batch61 API / batch62 browser workflow; schema `0074_ml_use_runs`, protocol
+`ml-use-run-governance/1.0.0`.
 This extends the [private submissions](ML_USE_SUBMISSIONS.md) and
 [source-rights registry](ML_USE_RIGHTS.md). The API remains default-off under
 `ML_USE_GOVERNANCE_ENABLED`. Membership, a request, a source permission and a
@@ -28,6 +29,11 @@ continues to refuse execution. All responses retain `run_authorization_granted`,
 these gates. The later execution consumer must establish an independent
 scientific pilot decision, actual isolated runtime admission and one-shot
 consumption under fresh authorization/concurrency checks.
+
+The [private ML08 canary builder/verifier](ML_PILOT_CANARY.md) supplies a
+replayable documentary artifact for later independent scientific review. Its
+successful replay is not an authenticated pilot acceptance and cannot turn the
+run endpoint's `scientific_pilot_accepted` flag true.
 
 ## Owner: exact plan, not a mutable configuration
 
@@ -129,6 +135,91 @@ lockfile hash. **Neither proves installed dependency versions, loaded-code
 identity, a complete release image or the future execution environment.** The
 fixed requested budgets are not advertised as enforced resource limits here.
 
+## Private browser workbench
+
+Open **Dashboard → ML run plans** (`/dashboard/research/ml-runs`) in the
+configured SCLib site. All application-owned labels and errors default to
+English. The page checks existing admission; choosing a workflow role does not
+grant that role or switch the signed-in account.
+
+### Requester workflow
+
+1. Under **Request a run plan**, enter the original submission UUID, record
+   SHA-256 and inventory SHA-256 from the approved private handoff. Choose
+   **Load run context**; no global submission list or private source download
+   is provided.
+2. Review the exact task, configuration, dataset package, prepared-input and
+   source/host hashes, their raw observation documents and original expiry.
+   Keyboard focus moves to the loaded contract heading.
+3. Fill all three requested CPU/wall/memory budgets explicitly; none is
+   preselected. Confirm the contract, then choose **Preview run plan**.
+4. Inspect the exact intent/account/grants/budget and its SHA-256. A separate
+   **Commit exact run preview** records it. Editing any relevant field clears
+   the preview and confirmation. Changed inputs or grants need a new preview.
+5. Retain the immutable plan UUID/hash from the historical receipt in an
+   approved private log and hand them to the independent reviewer. The page
+   also fills those two references for an explicit owner-only readiness check.
+
+### Independent review workflow
+
+Use a separately authenticated reviewer account with explicit `run_approver`
+and curator grants. Select **Independent run approval**, enter the handed-off
+plan UUID/hash and choose **Inspect exact run plan**. This returns metadata,
+not the requester's retained source bytes or permission to reconstruct them.
+
+No decision is selected by default. Choose conditional approval, denial or
+revocation, enter the reason code and review evidence reference, and confirm
+the exact review. Approval requires an explicit future UTC Unix expiry within
+original input retention. Revocation is available only for an approval head;
+the exact predecessor ID/hash is carried into the preview. Preview and commit
+are separate actions. The server remains authoritative for independence,
+current membership, time and concurrent changes to the head.
+
+### Current conditions, failures and recovery
+
+Only **Check current run readiness** starts the owner's bounded reconstruction
+and fresh permission/currentness check. Merely opening the page, recording a
+plan, reviewing it or recovering a receipt does not start that work. The
+results display independent plan review, full-inventory source permission
+counts, current source validity, the combined source gate, source/host matches
+and execution blockers separately. Even a fully satisfied source gate or
+current conditional approval is not an execution permit.
+
+An unknown commit locks further edits/new writes. **Check original run
+outcome** uses only the original account, operation kind, request key and
+intent hash. A 404 stays unresolved: the transaction may still be in flight.
+**Retry identical original run write** is an explicit action and is available
+only while the original in-memory request remains. No automatic retry, polling,
+approval, model execution or browser-storage persistence is performed.
+
+Authentication changes abort/ignore pending replies and clear private displays
+and the pending request body. Only the opaque unresolved recovery reference
+remains in page memory, hidden from a different account. Returning to the
+original account allows a historical lookup but does not restore a discarded
+write body. Reloading loses page memory; use **Recover an earlier operation**
+with the independently retained private key/hash and the original workflow
+role/account. Browser unload warnings are best-effort, not durable storage.
+
+The client verifies closed response shapes, canonical integer envelopes,
+record/intent hashes, original actor/grant/parent references, source-coverage
+counts, expiry consistency and non-authorizing status/blocker semantics.
+Embedded host documents contain Python floating-point tokens: their original
+UTF-8 strings are hashed before structural parsing, not reserialized through
+the integer-only intent codec. Response checks are not independent scientific,
+legal or runtime attestation.
+
+Transport uses fixed endpoints, session cookies, no-store, redirect refusal,
+bounded JSON/UTF-8 streams and cancellation. Admission replies are limited to
+4 KiB, other replies to 128 KiB and request bodies to 8 KiB. The browser deadline
+is 30 seconds for ordinary requests and 95 seconds for readiness, including
+hung fetches and stalled streams. Raw server error bodies are not displayed.
+
+Native protocol compatibility, adversarial and component tests live in
+`frontend/tests/component/ml-use-runs*.test.tsx`. Isolated desktop/mobile
+browser tests use `frontend/tests/e2e/ml-use-runs.config.ts`. Their synthetic
+requester and reviewer have separate browser contexts; those tests do not grant
+real roles or claim the browser double is a SQL or actual-worker evaluation.
+
 ## Storage and operational limits
 
 `ml_use_run_plans` and `ml_use_run_decisions` are append-only, reject updates,
@@ -151,6 +242,6 @@ publication fence, SERIALIZABLE transactions and commit-time session checks;
 reads use fresh REPEATABLE READ, READ ONLY snapshots.
 
 Production rollout, real role provisioning, actual reviewer decisions,
-evidence-document storage, owner/approver browser controls and guarded execution
-remain separately gated work. Test fixtures are synthetic and confer no real
-rights or scientific approval.
+evidence-document storage and guarded execution remain separately gated work.
+The private browser controls do not waive those requirements. Test fixtures are
+synthetic and confer no real rights or scientific approval.

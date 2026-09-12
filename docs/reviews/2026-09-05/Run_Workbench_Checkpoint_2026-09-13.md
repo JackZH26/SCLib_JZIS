@@ -1,5 +1,9 @@
 # Local checkpoint — batch61 and unfinished batch62
 
+Historical checkpoint. The subsequent targeted verification and client fixes
+are recorded in the [batch62 report](Priority_Sixty_Second_Batch_Implementation_2026-09-13.md);
+the commit-time results below retain their original scope.
+
 Saved at the user's request on `codex/sclib-research-v2`, based on
 `85dff80ba2ec2f9bfbfc5f3f291f7a64e1c51f4f`. This preserves current development;
 it is not release acceptance or authorization to deploy, migrate production,

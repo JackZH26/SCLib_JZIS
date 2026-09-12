@@ -48,6 +48,10 @@ The [v2 main-barrier contract](docs/DISCOVERY_MAIN_BARRIERS.md) adds explicit,
 context-bound curator interpretations without changing frozen RPS or v1 records.
 A real reviewed pilot remains separate; recorded quantities and research-priority
 scores are not ground truth.
+The [private ML08 canary command](docs/ML_PILOT_CANARY.md) binds the frozen
+selection, complete review ledger, explicit context bytes and final documentary
+conclusion through exact replay; it does not authenticate human review or grant
+scientific acceptance or training permission.
 The [private baseline preparation CLI](docs/ML_BASELINE_PREPARATION.md) connects
 audited datasets to reproducible configuration drafts, feature/split coverage
 inspection and exact preparation replay. It does not authorize or run real-data
@@ -76,6 +80,9 @@ Its private **ML source rights** dashboard provides exact-resource inspection,
 explicit preview/commit and original-key recovery without automatic approvals.
 The [private run-plan registry](docs/ML_USE_RUNS.md) binds independent conditional
 review to exact inputs and budgets; live readiness remains separate from execution.
+Its private **ML run plans** dashboard supports explicit owner budgets,
+independent preview/commit, historical recovery and separate current-condition
+checks; neither the page nor an approval can start a model.
 Numerical/evidence queries and Search UI scientific filters return qualified,
 exact-parent extraction rows separately from ordinary paper hits; without an
 active generation they explicitly report unavailable. These are not reviewed

@@ -296,3 +296,18 @@ review completion, scientific precision or sufficient sample size. A full corpus
 re-extraction, production loading, model training and paid providers are out of scope.
 Even aggregate reports can identify small groups or disclose restricted outcomes;
 the data steward must review sharing permissions and disclosure risk before release.
+
+## 10. Executable private canary construction
+
+The separate [private canary command](../ML_PILOT_CANARY.md) now constructs
+and replays the artifact referenced in a conclusion. It reuses this unchanged
+schema/accounting validator, binds raw/logical input hashes and separately
+hashes explicitly supplied local context files without following references.
+It does not change this validator's documentary gate, approve this proposed
+protocol or authenticate reviewers.
+
+Build after the frozen cohort's required reviews/disagreement dispositions are
+complete, then prepare the human conclusion against the canary hash and verify
+both together. The canary excludes the conclusion to avoid circular hashing
+and retains all outcomes and review revisions. No invented events are added
+to the empty templates, and the ML08 pilot is not marked complete.

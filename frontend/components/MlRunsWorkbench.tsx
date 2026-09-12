@@ -210,7 +210,7 @@ export function MlRunsWorkbench() {
           onChange={e => { setSubmission({ ...submission, [key]: e.target.value }); clearViews(); }} /></label>)}
       <button className={button} disabled={locked || !access || !validSubmissionRef(submission)} onClick={() => void load()}>Load run context</button>
     </section>}
-    {(kind === "decision" || kind === "plan") && <section className={panel} aria-label="Exact run plan reference"><h3 className="font-semibold">Exact run plan</h3>
+    <section className={panel} aria-label="Exact run plan reference"><h3 className="font-semibold">Exact run plan</h3>
       <p className="text-sm">{kind === "plan" ? "Check a newly recorded plan or enter your exact earlier plan reference." : "Obtain the immutable plan ID and hash through the approved independent handoff."}</p>
       {([["plan_id", "Run plan UUID"], ["plan_sha256", "Run plan record SHA-256"]] as const).map(([key, label]) =>
         <label key={key} className="block text-sm">{label}<input className={field} value={planRef[key]} maxLength={64} spellCheck={false} autoComplete="off" disabled={locked || !access}
@@ -218,7 +218,7 @@ export function MlRunsWorkbench() {
       <button className={button} disabled={locked || !access || !validPlanRef(planRef)} onClick={() => void (kind === "plan" ? check() : load())}>
         {kind === "plan" ? "Check current run readiness" : "Inspect exact run plan"}</button>
       {kind === "plan" && <p className="text-xs">This explicit check reconstructs retained inputs and rereads current permissions. It can take up to 95 seconds. It does not fit a model or create an execution permit.</p>}
-    </section>}
+    </section>
     {(context || inspection) && <section className={panel} aria-label="Run contract details">
       <h3 ref={heading} tabIndex={-1} className="scroll-mt-24 font-semibold focus-visible:outline focus-visible:outline-2">{context ? "Review exact run inputs" : "Review independent run contract"}</h3>
       <Metadata value={context ?? inspection!.plan} />

@@ -41,6 +41,16 @@ Batch61 extends schema 0074 with exact run contracts and independent conditional
 review. Its current verification and remaining execution gates are tracked in
 the [batch61 report](Priority_Sixty_First_Batch_Implementation_2026-09-13.md);
 no earlier receipt is relabeled as attesting the new source.
+Batch62 completes targeted owner/independent-approver browser verification and
+hardens seven inconsistent-response cases without production API/schema changes.
+Its own tests and remaining gates are in the
+[batch62 report](Priority_Sixty_Second_Batch_Implementation_2026-09-13.md);
+the 0074 migration receipt remains historical batch61 evidence.
+Batch63 adds a private offline ML08 canary constructor/replayer and its tests,
+without production API/schema or frontend changes. Its new repository-wide
+source inventory and documentary/byte-integrity evidence are tracked in the
+[batch63 report](Priority_Sixty_Third_Batch_Implementation_2026-09-13.md);
+neither old fixtures nor canary hashes establish real independent pilot approval.
 
 ## Findings and next delivery decisions
 

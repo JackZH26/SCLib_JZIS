@@ -59,7 +59,8 @@ const object = (v: unknown): v is Obj => v !== null && typeof v === "object" && 
 const closed = (v: unknown, names: string[]): v is Obj => object(v) && Object.keys(v).length === names.length && names.every(k => Object.hasOwn(v, k));
 const integer = (v: unknown, min = 0, max = Number.MAX_SAFE_INTEGER): v is number => typeof v === "number" && Number.isSafeInteger(v) && v >= min && v <= max;
 const text = (v: unknown, max: number): v is string => typeof v === "string" && v.length > 0 && v.length <= max && !/[\u0000-\u001f\u007f-\u009f]/.test(v);
-const timestamp = (v: unknown): v is string => typeof v === "string" && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,6})?(?:Z|\+00:00)$/.test(v) && Number.isFinite(Date.parse(v));
+const timestamp = (v: unknown): v is string => typeof v === "string" && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,6})?(?:Z|\+00:00)$/.test(v)
+  && !v.startsWith("0000") && Number.isFinite(Date.parse(v)) && new Date(v).toISOString().slice(0, 19) === v.slice(0, 19);
 const epoch = (v: unknown): v is string => typeof v === "string" && /^[1-9]\d{0,12}(?:\.\d{1,6})?$/.test(v);
 function requireValue(v: unknown): asserts v { if (!v) throw new Error("The private ML run response could not be verified."); }
 const same = (v: Obj, expected: object, keys: string[]) => keys.every(k => v[k] === (expected as Obj)[k]);
@@ -128,6 +129,7 @@ async function record(v: unknown, kind: RunKind): Promise<RunPlan | RunDecision>
   const { created_at: _date, record_sha256: pin, ...body } = v;
   requireValue(await importDigest(body) === pin);
   if (kind === "plan") { requireValue(v.runner_profile === RUN_PROFILE && v.purpose === RUN_PURPOSE); await hostDocuments(v); }
+  else requireValue(v.supersedes_id !== v.id && (v.decision !== "approve" || (v.expires_epoch as number) > Date.parse(v.created_at as string) / 1000));
   return v as unknown as RunPlan | RunDecision;
 }
 export async function parseRunContext(raw: string, actor: RunActor, ref: SubmissionRef): Promise<RunContext> {
@@ -156,6 +158,7 @@ export async function parseRunInspection(raw: string, actor: RunActor, ref: Plan
   requireValue(plan.id === ref.plan_id && plan.record_sha256 === ref.plan_sha256 && plan.actor_user_id !== actor.actor_user_id);
   const head = v.head === null ? null : await record(v.head, "decision") as RunDecision;
   requireValue(statusMatches(v.recorded_approval_status, head) && (head === null || head.plan_id === plan.id && head.plan_sha256 === plan.record_sha256 && head.actor_user_id !== plan.actor_user_id));
+  if (head?.decision === "approve") requireValue(head.expires_epoch! <= Date.parse(v.input_access_expires_at) / 1000);
   return { plan, head, recorded_approval_status: v.recorded_approval_status as ApprovalStatus, input_access_expires_at: v.input_access_expires_at };
 }
 export async function parseRunResult(raw: string, ref: RunRecovery, committed: boolean, input?: RunInput): Promise<RunResult> {
@@ -185,12 +188,14 @@ function coverage(v: unknown): RunCoverage {
     && v.recorded_permissions_complete === (v.status_counts.allow_recorded === v.resource_count)
     && v.source_permission_granted === (v.recorded_permissions_complete && v.current_source_validity_passed)
     && Array.isArray(v.first_blocked_resources) && v.first_blocked_resources.length === Math.min(25, v.resource_count - (v.status_counts.allow_recorded as number)));
-  let last = "";
+  let last = ""; const visibleCounts: Record<string, number> = {};
   for (const row of v.first_blocked_resources) {
     requireValue(closed(row, ["resource_id", "status", "decision_id", "record_sha256"]) && hash(row.resource_id) && row.resource_id > last
       && COVERAGE_STATUSES.slice(1).includes(row.status as never) && (v.status_counts[row.status as string] as number) > 0
       && (row.status === "unreviewed" ? row.decision_id === null && row.record_sha256 === null : uuid(row.decision_id) && hash(row.record_sha256)));
     last = row.resource_id;
+    const status = row.status as string; visibleCounts[status] = (visibleCounts[status] ?? 0) + 1;
+    requireValue(visibleCounts[status] <= (v.status_counts[status] as number));
   }
   return v as unknown as RunCoverage;
 }
@@ -205,7 +210,9 @@ export async function parseRunReadiness(raw: string, actor: RunActor, ref: PlanR
   const approved = v.approval === null ? null : await record(v.approval, "decision") as RunDecision;
   requireValue(statusMatches(v.approval_status, approved) && (approved === null || approved.plan_id === ref.plan_id && approved.plan_sha256 === ref.plan_sha256 && approved.actor_user_id !== actor.actor_user_id)
     && v.conditional_run_approval_current === (v.approval_status === "conditional_approval_recorded"));
+  if (approved) requireValue(Date.parse(approved.created_at) / 1000 <= Number(v.observed_epoch));
   if (v.approval_status === "conditional_approval_recorded") requireValue(approved!.expires_epoch! > Number(v.observed_epoch));
+  if (v.approval_status === "expired") requireValue(approved!.expires_epoch! <= Number(v.observed_epoch));
   const source = coverage(v.source_coverage);
   requireValue(source.source_permission_granted === v.source_permission_granted && Number(source.observed_epoch) <= Number(v.observed_epoch));
   if (plan) requireValue(plan.id === ref.plan_id && plan.record_sha256 === ref.plan_sha256 && plan.actor_user_id === actor.actor_user_id && same(source as unknown as Obj, plan, submissionFields));
