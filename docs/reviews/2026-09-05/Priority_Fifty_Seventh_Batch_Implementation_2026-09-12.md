@@ -3,6 +3,9 @@
 Date: 2026-09-12. Base HEAD `d42d0dd4ed0ae263fd7b4720982e1ed670bc4598`, branch
 `codex/sclib-research-v2`; development retained the complete batch56 changes.
 Local commit preflight finalized on 2026-09-13 at the user's request.
+Historical note: batch58 preserves the exact capture below as
+`discovery-main-barrier-native.batch57.wire.json`; the active fixture filename
+follows the latest separately verified run, not a relabeling of this evidence.
 Related dependencies: ML06 #70, ML07 #68, ML09 #76. Fresh read-only GitHub status
 still lists 38 open issues including the umbrella; no issue was closed or
 acceptance requirement replaced with a local implementation count.

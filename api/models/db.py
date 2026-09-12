@@ -1719,6 +1719,10 @@ from models.ml_use_roles_v1 import register as _register_ml_use_roles  # noqa: E
 
 ML_USE_ROLE_DECISIONS = _register_ml_use_roles(Base.metadata)
 
+from models.ml_use_submissions_v1 import register as _register_ml_use_submissions  # noqa: E402
+
+ML_USE_SUBMISSION_TABLES = _register_ml_use_submissions(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

@@ -181,6 +181,11 @@ async def _reconstruction_body(request):
 
 
 async def _rebuild_request(request, user):
+    await _read(user)  # No private bytes before current admission.
+    return await _rebuild_bytes(user, await _reconstruction_body(request))
+
+
+async def _rebuild_bytes(user, raw):
     import hashlib
 
     from services.ml_audited_dataset import loads
@@ -189,7 +194,6 @@ async def _rebuild_request(request, user):
     from services.ml_use_reconstruction_worker import reconstruct_in_worker
 
     await _read(user)  # No private bytes or worker before current admission.
-    raw = await _reconstruction_body(request)
     envelope = loads(raw)
     require(type(envelope) is dict and set(envelope) == FIELDS and envelope["version"] == RECONSTRUCTION_VERSION)
     args = PreflightRequest.model_validate({key: envelope[key] for key in PreflightRequest.model_fields}).model_dump()

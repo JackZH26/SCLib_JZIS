@@ -3,6 +3,10 @@
 Batch57. Response `ml-use-current-reconstruction/1.0.0`; dependency inventory
 `ml-use-captured-dependency-inventory/1.0.0`. Schema remains 0071.
 
+Historical scope: this document describes the read-only inspection contract.
+Batch58's separate [submission workflow](ML_USE_SUBMISSIONS.md) adds schema 0072
+and private retention without changing this endpoint's response or authority.
+
 ## Operator entry point
 
 Submit the unchanged canonical upload produced by

@@ -25,6 +25,10 @@ the retained 0070/0071 migration receipts remain historical.
 Batch57 adds complete ML companion currentness and audit-dependency inspection
 without a schema change. Its separate verification is recorded in the
 [batch57 report](Priority_Fifty_Seventh_Batch_Implementation_2026-09-12.md).
+Batch58 adds schema 0072 for private ML requests and input retention. Its
+source-specific migration and compatibility status is tracked separately in the
+[batch58 report](Priority_Fifty_Eighth_Batch_Implementation_2026-09-13.md); earlier
+0070/0071 receipts do not attest this new schema or later source files.
 
 ## Findings and next delivery decisions
 

@@ -165,6 +165,36 @@ async def test_registered_feature_sources_cannot_be_omitted_from_real_verified_r
     assert await state(db_session) == before
     assert originals == {name: path.read_bytes() for name, path in paths.items()}
     await db_session.rollback()
+    # Real upload -> preview -> durable private submission -> retained recheck.
+    # This uses the actual compiler and worker, not the storage unit-test doubles.
+    from models.ml_use_submissions_v1 import RETENTION_POLICY, TABLES
+    from services.ml_use_submissions import intent
+    from tests.test_ml_use_submissions import headers, lookup
+    proposal = intent(request_key="actual-pipeline-intake", envelope_sha256=digest(envelope),
+        inventory_sha256=report["dependency_inventory_sha256"], retention_policy=RETENTION_POLICY)
+    submission = {"actor_user_id": people["curator"], "submission_intent": proposal,
+                  "expected_intent_sha256": digest(proposal)}
+    endpoint = "/v1/ml/use/requests"
+    preview = await client.post(endpoint + "/preview", content=upload.read_bytes(), headers=headers(submission))
+    assert preview.status_code == 200 and preview.json()["intent_sha256"] == digest(proposal), preview.text
+    assert not preview.json()["committed"] and await state(db_session) == before
+    await db_session.rollback()
+    saved = await client.post(endpoint, content=upload.read_bytes(), headers=headers(submission))
+    assert saved.status_code == 200 and saved.json()["committed"], saved.text
+    receipt = saved.json()
+    assert receipt["request_persisted"] and receipt["input_state"] == "retained"
+    assert receipt["currentness_checked_now"] is False and receipt["decision"] == "not_authorized"
+    written = await state(db_session)
+    assert {name for name in before if before[name] != written[name]} == {TABLES[0], TABLES[1], "research_publication_epoch"}
+    await db_session.rollback()
+    repeated = await client.post(endpoint, content=upload.read_bytes(), headers=headers(submission))
+    assert repeated.status_code == 200 and repeated.json()["replayed"], repeated.text
+    assert repeated.json()["record_sha256"] == receipt["record_sha256"]
+    fresh = await client.post(endpoint + "/recheck", json=lookup(submission), headers=auth(people["curator"]))
+    assert fresh.status_code == 200 and fresh.json()["companion_observations_rechecked_online"], fresh.text
+    assert fresh.json()["dependency_inventory_sha256"] == proposal["inventory_sha256"]
+    assert await state(db_session) == written
+    await db_session.rollback()
     candidate = fixture["seeded"]["fixture"]["candidates"]["one"]
     await db_session.execute(sa.text("UPDATE papers SET status='retracted' WHERE id=:id"), {"id": candidate["paper"]["id"]})
     await db_session.commit()
@@ -175,3 +205,16 @@ async def test_registered_feature_sources_cannot_be_omitted_from_real_verified_r
     assert stale.status_code == 409, stale.text
     assert await state(db_session) == after_hold
     assert originals == {name: path.read_bytes() for name, path in paths.items()}
+    await db_session.rollback()
+    blocked = await client.post(endpoint + "/recheck", json=lookup(submission), headers=auth(people["curator"]))
+    assert blocked.status_code == 409, blocked.text
+    history = await client.post(endpoint + "/outcome", json=lookup(submission), headers=auth(people["curator"]))
+    assert history.status_code == 200 and history.json()["record_sha256"] == receipt["record_sha256"]
+    assert not history.json()["currentness_checked_now"] and not history.json()["ml_training_approved"]
+    purged = await client.post(endpoint + "/purge", json=lookup(submission), headers=auth(people["curator"]))
+    assert purged.status_code == 200 and purged.json()["input_state"] == "purged", purged.text
+    unavailable = await client.post(endpoint + "/recheck", json=lookup(submission), headers=auth(people["curator"]))
+    assert unavailable.status_code == 404
+    replay_after_purge = await client.post(endpoint, content=upload.read_bytes(), headers=headers(submission))
+    assert replay_after_purge.status_code == 200 and replay_after_purge.json()["input_state"] == "purged"
+    assert all(row["submission_id"] != receipt["submission_id"] for row in (await state(db_session))[TABLES[1]])

@@ -21,6 +21,35 @@ No secrets, DSNs, capability files, raw source bodies or research-release bytes
 belong in these archives. Hash equality is an integrity check, not human
 authentication or scientific approval.
 
+## 0072 private ML submission checkpoint
+
+[schema-rehearsal-0072-native-2026-09-13.json](schema-rehearsal-0072-native-2026-09-13.json)
+is the complete batch58 native rehearsal, preserved byte-for-byte from the
+successful runner after verified cleanup. Earlier receipts remain unchanged.
+
+| Measurement | Actual checkpoint |
+| --- | --- |
+| Full-file SHA-256 | `381da0c5c822d9c226bdc0248fcdf2c8df42aedc2fc99ba97aa871bd9e68d51c` |
+| Body SHA-256 | `64f07a32d3c40fef1e66dcc2064a7aa66105d67d64e6aa3daecea2ab75703a5f` |
+| File size | 104,002 bytes |
+| Measured rehearsal time | 98,643 ms; excludes setup, cleanup and report publication |
+| Captured source inventory | 666 files; digest `9de7daec93f4be2c2830c54dfd75d6007c0aa94c79fa8ec6d0c1d00fa35ecf70` |
+| Base HEAD | `2cff9326c29b8f441f6436ad98ce47466455697f`; actual dirty-worktree source bytes pinned |
+| Runtime | PostgreSQL 16.13, CPython 3.12.14, Darwin arm64 |
+| Schema / result | `0050_timeline_identity` to `0072_ml_use_submissions`; exit 0 and owned cleanup verified |
+
+The source-pinned runner adds empty 0072/0071 roundtrip preservation, exact
+private input storage/rollback/replay, atomic purge with retained metadata, and
+refusal to downgrade retained request/purge history. The migrated SQL fixtures
+use a labeled worker proof double; the actual compiler/worker path is exercised
+separately in the API pipeline. Existing named receipt-v1 accounting metrics
+are unchanged and are not presented as new submission-table counters. All
+666 captured source pins were checked after the run. This is not Linux image
+parity, real source review, production storage validation or deployment approval.
+
+See the [batch58 report](../Priority_Fifty_Eighth_Batch_Implementation_2026-09-13.md)
+for complete API/frontend verification and outstanding acceptance.
+
 ## 0071 independent ML membership checkpoint
 
 [ML_Use_Role_Schema_2026-09-12-01.json](ML_Use_Role_Schema_2026-09-12-01.json)

@@ -76,5 +76,3 @@ def receipt(prepared, config, pins, source):
             "diagnostics": diagnostics(prepared), "implementation": source,
             "training_execution": "disabled", "training_blockers": list(TRAINING_BLOCKERS),
             "authority": dict(AUTHORITY)}
-
-

@@ -66,6 +66,9 @@ an approval request or grant source-use/training permission.
 A separate [current ML audit inspection](docs/ML_USE_CURRENTNESS.md) recaptures
 the full review/label observations and reports their versioned dependency
 inventory in one fresh SQL snapshot. It is not a lasting permission or run grant.
+The [private submission workflow](docs/ML_USE_SUBMISSIONS.md) retains exact
+requests and separately purgeable inputs for recovery and fresh reinspection;
+retained historical evidence is not source-use or training authorization.
 Numerical/evidence queries and Search UI scientific filters return qualified,
 exact-parent extraction rows separately from ordinary paper hits; without an
 active generation they explicitly report unavailable. These are not reviewed
