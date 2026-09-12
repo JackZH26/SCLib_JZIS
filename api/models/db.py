@@ -1731,6 +1731,10 @@ from models.ml_use_runs_v1 import register as _register_ml_use_runs  # noqa: E40
 
 ML_USE_RUN_TABLES = _register_ml_use_runs(Base.metadata)
 
+from models.ml_run_evidence_v1 import register as _register_ml_run_evidence  # noqa: E402
+
+ML_RUN_EVIDENCE_TABLES = _register_ml_run_evidence(Base.metadata)
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

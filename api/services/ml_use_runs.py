@@ -23,6 +23,7 @@ from models.ml_use_runs_v1 import (
     TABLES,
     VERSION,
 )
+from services import ml_run_evidence as evidence
 from services import ml_use_rights as rights
 from services import ml_use_submissions as submissions
 from services.ml_audited_dataset import canonical, digest, loads
@@ -62,7 +63,8 @@ def fingerprints():
     modules = dict(observed.pop("source_sha256"))
     observed.pop("verification")  # The rehearsal's replay policy is not a performed attestation.
     for name in ("models.ml_use_runs_v1", "services.ml_use_runs", "services.ml_use_reconstruction",
-                 "services.ml_use_currentness", "services.ml_use_rights", "routers.ml_use_runs"):
+                 "services.ml_use_currentness", "services.ml_use_rights", "routers.ml_use_runs",
+                 "models.ml_run_evidence_v1", "services.ml_run_evidence"):
         package, module = name.rsplit(".", 1)
         raw = files(package).joinpath(module + ".py").read_bytes()
         require(0 < len(raw) <= 1024 * 1024)
@@ -229,7 +231,9 @@ async def decision_status(db, record, now):
                                  curator_grant_id=record["curator_grant_id"])
     except ResearchAccessDenied:
         return "approver_unavailable"
-    return "expired" if record["expires_epoch"] <= now else "conditional_approval_recorded"
+    if record["expires_epoch"] <= now:
+        return "expired"
+    return "conditional_approval_recorded" if await evidence.available(db, record, now) else "evidence_unavailable"
 
 
 async def inspect(db, *, actor_user_id, plan_id, plan_sha256):
@@ -248,7 +252,7 @@ async def inspect(db, *, actor_user_id, plan_id, plan_sha256):
         "scope": "conditional_plan_review_metadata_not_live_readiness", **boundary()}
 
 
-async def decide(db, *, actor_user_id, dry_run=True, expected_intent_sha256=None, **values):
+async def decide(db, *, actor_user_id, dry_run=True, expected_intent_sha256=None, evidence_text=None, **values):
     require(set(values) == set(DECISION_FIELDS) - {"actor_user_id"})
     values = {"actor_user_id": identifier(str(actor_user_id)), **values}
     for key, value in values.items():
@@ -261,6 +265,8 @@ async def decide(db, *, actor_user_id, dry_run=True, expected_intent_sha256=None
     require(values["decision"] in {"approve", "deny", "revoke"}
             and (values["supersedes_id"] is None) == (values["supersedes_sha256"] is None))
     expiry = values["expires_epoch"]
+    payload = None if evidence_text is None else evidence.text_bytes(evidence_text, values["evidence_sha256"])
+    require(values["decision"] == "approve" or evidence_text is None)
     require((type(expiry) is int and 0 < expiry < 2**63 and values["evidence_sha256"] is not None)
             if values["decision"] == "approve" else expiry is None)
     require(type(dry_run) is bool and (dry_run or expected_intent_sha256 is not None))
@@ -283,11 +289,16 @@ async def decide(db, *, actor_user_id, dry_run=True, expected_intent_sha256=None
               and (None if current is None else current["record_sha256"]) == values["supersedes_sha256"])
         require(values["decision"] != "revoke" or (current is not None and current["decision"] == "approve"))
         if values["decision"] == "approve":
+            require(payload is not None)
             parent = await rights.submission(db, str(plan["submission_id"]), plan["submission_sha256"])
             await owner(db, plan["actor_user_id"], parent)
             now = await retained(db, parent)
             match(now < expiry <= parent["expires_at"].timestamp())
         row = await insert(db, values, "decision")
+        if payload is not None:
+            await evidence.store(db, row, payload)
+        await db.execute(sa.text("SET CONSTRAINTS mu75_complete IMMEDIATE"))
+        await db.execute(sa.text("SET CONSTRAINTS mu75_complete DEFERRED"))
         operation["changed"] = True
         return result(row, "decision", dry_run=dry_run, replayed=False)
 

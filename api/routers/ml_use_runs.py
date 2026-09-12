@@ -9,12 +9,15 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.db import get_engine
+from models.ml_run_evidence_v1 import MAX_BYTES as EVIDENCE_BYTES
+from models.ml_run_evidence_v1 import VERSION as EVIDENCE_VERSION
 from models.ml_use_runs_v1 import VERSION
 from routers import ml_use_preflight as preflight
-from routers.ml_use_governance import Identifier, Sha, _session_actor
+from routers.ml_use_governance import Identifier, Sha, _precheck, _session_actor
 from routers.ml_use_rights import body
 from routers.ml_use_submissions import Lookup, SubmissionRoute, response
 from routers.research_distributions import _request_schema
+from services import ml_run_evidence as evidence
 from services import ml_use_runs as service
 from services.ml_use_currentness import inspect_current_inputs
 from services.ml_use_preflight import match
@@ -34,6 +37,12 @@ class PlanRef(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     plan_id: Identifier
     plan_sha256: Sha
+
+
+class EvidenceRef(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    decision_id: Identifier
+    decision_sha256: Sha
 
 
 class Plan(SubmissionRef):
@@ -60,6 +69,7 @@ class Decision(PlanRef):
     decision: Literal["approve", "deny", "revoke"]
     reason_code: str = Field(pattern=r"^[a-z][a-z0-9_]{0,159}$")
     evidence_sha256: Sha | None
+    evidence_text: str | None = Field(default=None, max_length=EVIDENCE_BYTES)
     expires_epoch: int | None = Field(ge=1, lt=2**63)
     supersedes_id: Identifier | None
     supersedes_sha256: Sha | None
@@ -84,7 +94,7 @@ async def read(user, function=None, args=None, *, approver=False):
                 raise preflight.rejected(404) from None
 
 
-async def write(request, user, function, args):
+async def write(request, user, function, args, *, version=VERSION):
     async with AsyncSession(get_engine().execution_options(isolation_level="SERIALIZABLE")) as db:
         async with db.begin():
             await db.execute(sa.text("SET LOCAL statement_timeout='5000ms'"))
@@ -95,7 +105,7 @@ async def write(request, user, function, args):
                 result = await function(db, actor_user_id=user.id, **args)
             except NOT_OBSERVED:
                 raise preflight.rejected(404) from None
-            prepared = response({"version": VERSION, "committed": not args["dry_run"], "result": result})
+            prepared = response({"version": version, "committed": not args["dry_run"], "result": result})
             if args["dry_run"] or result["replayed"]:
                 await db.rollback()
             else:
@@ -134,7 +144,31 @@ async def inspect(request: Request, user: preflight.AuthenticatedUser):
 @router.post("/decisions", openapi_extra=_request_schema(Decision))
 async def decision(request: Request, user: preflight.AuthenticatedUser):
     await read(user, approver=True)
-    return await write(request, user, service.decide, await body(request, Decision))
+    return await write(request, user, service.decide, await body(request, Decision, max_bytes=16384))
+
+
+@router.post("/evidence/read", openapi_extra=_request_schema(EvidenceRef))
+async def read_evidence(request: Request, user: preflight.AuthenticatedUser):
+    await read(user, approver=True)
+    return response(await read(user, evidence.read, await body(request, EvidenceRef), approver=True))
+
+
+@router.post("/evidence/purge", openapi_extra=_request_schema(EvidenceRef))
+async def purge_evidence(request: Request, user: preflight.AuthenticatedUser):
+    # Withdrawal must remain possible after the original review roles are revoked.
+    await _precheck(user)
+    return await write(request, user, evidence.purge, {**await body(request, EvidenceRef), "dry_run": False},
+                       version=EVIDENCE_VERSION)
+
+
+@router.post("/evidence/purge-expired")
+async def purge_expired_evidence(request: Request, user: preflight.AuthenticatedUser):
+    await _precheck(user)
+    # Reuse the bounded parser but permit only an explicit empty object.
+    class Empty(BaseModel):
+        model_config = ConfigDict(extra="forbid", strict=True)
+    await body(request, Empty)
+    return await write(request, user, evidence.purge_expired, {"dry_run": False}, version=EVIDENCE_VERSION)
 
 
 @router.post("/plans/outcome", openapi_extra=_request_schema(Lookup))

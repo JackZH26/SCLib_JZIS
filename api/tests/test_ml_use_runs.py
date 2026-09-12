@@ -6,6 +6,7 @@ are manufactured; the separate request pipeline covers genuine reconstruction.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 from uuid import UUID, uuid4
 
 import pytest
@@ -32,6 +33,7 @@ from tests.test_research_distribution_operators import auth
 from tests.test_research_freeze import add, state
 
 BASE = "/v1/ml/use/runs"
+SYNTHETIC_REVIEW_TEXT = "SYNTHETIC independent run-budget review record. Not a real human review, scientific pilot or source licence."
 
 
 async def approver(db, people):
@@ -74,7 +76,7 @@ def review_args(actor, plan, receipt):
     from datetime import datetime
     return {**actor, **plan_ref(plan), "request_key": "synthetic-run-review-" + uuid4().hex,
         "decision": "approve", "reason_code": "synthetic_conditional_budget_review",
-        "evidence_sha256": digest({"synthetic_not_real_approval": True}),
+        "evidence_sha256": hashlib.sha256(SYNTHETIC_REVIEW_TEXT.encode()).hexdigest(), "evidence_text": SYNTHETIC_REVIEW_TEXT,
         "expires_epoch": int(datetime.fromisoformat(receipt["input_access_expires_at"]).timestamp()) - 1,
         "supersedes_id": None, "supersedes_sha256": None}
 
@@ -85,7 +87,8 @@ def plan_ref(plan):
 
 def successor(args, record, **changes):
     return {**args, "request_key": "synthetic-run-review-" + uuid4().hex,
-            "supersedes_id": record["id"], "supersedes_sha256": record["record_sha256"], **changes}
+            "supersedes_id": record["id"], "supersedes_sha256": record["record_sha256"],
+            **({"evidence_text": None} if changes.get("decision") in {"deny", "revoke"} else {}), **changes}
 
 
 async def test_native_exact_plan_preview_replay_independent_approval_and_held_readiness(db_session):

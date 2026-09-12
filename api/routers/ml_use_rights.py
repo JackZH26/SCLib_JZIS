@@ -53,17 +53,17 @@ class Decision(BaseModel):
     dry_run: bool = True
 
 
-async def body(request, schema):
+async def body(request, schema, *, max_bytes=8192):
     if request.headers.get("content-type", "").split(";", 1)[0].strip().lower() != "application/json" or request.headers.get("content-encoding", "identity") != "identity":
         raise preflight.rejected(415)
     length = request.headers.get("content-length")
-    if length is not None and (not re.fullmatch(r"[0-9]{1,8}", length) or int(length) > 8192):
+    if length is not None and (not re.fullmatch(r"[0-9]{1,8}", length) or int(length) > max_bytes):
         raise preflight.rejected(413)
     raw, count = bytearray(), 0
     async with asyncio.timeout(5):
         async for part in request.stream():
             count += 1
-            if count > 4096 or len(raw) + len(part) > 8192:
+            if count > 4096 or len(raw) + len(part) > max_bytes:
                 raise preflight.rejected(413)
             raw.extend(part)
     return schema.model_validate(_strict_json(bytes(raw))).model_dump()
