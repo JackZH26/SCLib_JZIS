@@ -5,6 +5,7 @@ processes refuse networking and predictive fitting. No scientific/rights grant.
 """
 from __future__ import annotations
 
+import base64
 import json
 import os
 import subprocess
@@ -28,7 +29,7 @@ from tests.test_research_publication import actors
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def invoke_request(args):
+def invoke_request(args, script_name="ml_use_request.py"):
     wrapper = """import runpy,sys
 from pathlib import Path
 script=sys.argv.pop(1)
@@ -44,7 +45,7 @@ numerics.fit_select=numerics.predict=denied
 rehearsal._evaluate_prepared=rehearsal.run_synthetic_rehearsal=denied
 runpy.run_path(script,run_name='__main__')
 """
-    return subprocess.run([sys.executable, "-c", wrapper, str(ROOT / "scripts/ml_use_request.py"), *args],
+    return subprocess.run([sys.executable, "-c", wrapper, str(ROOT / "scripts" / script_name), *args],
         cwd=ROOT, capture_output=True, text=True, timeout=90, check=False,
         env={"PATH": os.environ.get("PATH", ""), "PYTHONHASHSEED": "0",
              "DATABASE_URL": "postgresql://unused:unused@127.0.0.1:1/unused", "REDIS_URL": "redis://127.0.0.1:1/0"})
@@ -107,3 +108,70 @@ async def test_registered_feature_sources_cannot_be_omitted_from_real_verified_r
     refused = await client.post("/v1/ml/use/preflight", json=omitted, headers=auth(people["curator"]))
     assert refused.status_code == 409, refused.text
     assert await state(db_session) == before
+    await db_session.rollback()
+
+    # Actual private bytes, not the declaration-only preflight above. The server
+    # launches its real resource-bounded offline worker, then rereads current SQL.
+    from services.ml_audited_dataset import canonical as upload_canonical
+    from services.ml_use_reconstruction import VERSION
+    envelope = {**payload, "version": VERSION,
+        "inputs_base64": {name: base64.b64encode(raw).decode("ascii") for name, raw in originals.items()},
+        "artifacts_base64": {pin: base64.b64encode(raw).decode("ascii")
+                             for pin, raw in fixture["arguments"]["artifact_bytes"].items()}}
+    upload = tmp_path.resolve() / "private-upload.json"
+    packaged = invoke_request([*request_flags, "--request", str(output), "--request-sha256", digest(request),
+        "--requester-grant-id", payload["expected_requester_grant_id"],
+        "--curator-grant-id", payload["expected_curator_grant_id"], "--output", str(upload)],
+        script_name="ml_use_reconstruction.py")
+    assert packaged.returncode == 0 and not packaged.stderr, packaged.stderr
+    assert upload.read_bytes() == upload_canonical(envelope)
+    assert json.loads(packaged.stdout)["request_submitted"] is False
+    rebuilt = await client.post("/v1/ml/use/preflight/reconstruct", content=upload.read_bytes(),
+        headers={**auth(people["curator"]), "Content-Type": "application/json"})
+    assert rebuilt.status_code == 200, rebuilt.text
+    report = rebuilt.json()
+    assert report["online_private_input_reconstruction_verified"] is True
+    assert report["reconstruction"]["dataset_and_preparation_rebuilt"] is True
+    assert report["reconstruction"]["prepared_sha256"] == json.loads(originals["preparation"])["prepared_sha256"]
+    assert report["reconstruction"]["client_runtime_provenance_authenticated"] is False
+    assert report["decision"] == "not_authorized" and not report["request_persisted"]
+    assert not report["source_permission_granted"] and not report["ml_training_approved"]
+    assert not report["companion_observations_rechecked_online"]
+    assert "private_input_bytes_not_rebuilt_online" not in report["blockers"]
+    assert "companion_observations_not_rechecked_online" in report["blockers"]
+    assert rebuilt.headers["cache-control"] == "private, no-store"
+    assert originals == {name: path.read_bytes() for name, path in paths.items()}
+    assert await state(db_session) == before
+    await db_session.rollback()
+    missing = json.loads(upload_canonical(envelope))
+    assert missing["artifacts_base64"]
+    missing["artifacts_base64"].pop(next(iter(missing["artifacts_base64"])))
+    rejected = await client.post("/v1/ml/use/preflight/reconstruct", content=upload_canonical(missing),
+        headers={**auth(people["curator"]), "Content-Type": "application/json"})
+    assert rejected.status_code == 400, rejected.text
+    assert await state(db_session) == before
+    await db_session.rollback()
+    current = await client.post("/v1/ml/use/preflight/reconstruct/current", content=upload.read_bytes(),
+        headers={**auth(people["curator"]), "Content-Type": "application/json"})
+    assert current.status_code == 200, current.text
+    report = current.json()
+    assert report["online_private_input_reconstruction_verified"] and report["companion_observations_rechecked_online"]
+    assert report["review_observation_sha256"] == fixture["arguments"]["review_companion"]["observation_sha256"]
+    assert report["label_observation_sha256"] == fixture["arguments"]["label_companion"]["observation_sha256"]
+    assert report["dependency_inventory_sha256"] == digest(report["dependency_inventory"])
+    assert not report["historical_capture_session_authenticated"] and not report["request_persisted"]
+    assert report["decision"] == "not_authorized" and report["ml_training_approved"] is False
+    assert report["admission"]["actor_user_id"] != report["companion_capture_identity_claim"]["actor_user_id"]
+    assert await state(db_session) == before
+    assert originals == {name: path.read_bytes() for name, path in paths.items()}
+    await db_session.rollback()
+    candidate = fixture["seeded"]["fixture"]["candidates"]["one"]
+    await db_session.execute(sa.text("UPDATE papers SET status='retracted' WHERE id=:id"), {"id": candidate["paper"]["id"]})
+    await db_session.commit()
+    after_hold = await state(db_session)
+    await db_session.rollback()
+    stale = await client.post("/v1/ml/use/preflight/reconstruct/current", content=upload.read_bytes(),
+        headers={**auth(people["curator"]), "Content-Type": "application/json"})
+    assert stale.status_code == 409, stale.text
+    assert await state(db_session) == after_hold
+    assert originals == {name: path.read_bytes() for name, path in paths.items()}

@@ -23,6 +23,9 @@ permissions or enable the real-data runner.
 The [ML-use request CLI and online preflight](ML_USE_PREFLIGHT.md) can now
 replay this preparation and derive registered source-review requirements for
 one explicit private-baseline purpose. A successful preflight is not approval.
+The separate [private reconstruction workflow](ML_USE_RECONSTRUCTION.md) now
+checks those actual input bytes and data-derived preparation fields on the
+server. It does not authenticate the client runtime or authorize training.
 
 The workflow preserves all existing v1–v4 dataset, audited-package and baseline
 configuration contracts. It does not alter stored material fields, scientific

@@ -59,6 +59,13 @@ automatically converted to ML memberships.
 An [exact ML-use intake and online preflight](docs/ML_USE_PREFLIGHT.md) now links
 locally rebuilt baseline inputs to server-derived registered source requirements.
 The inspection is read-only and grants neither source permission nor execution.
+The [private input reconstruction endpoint](docs/ML_USE_RECONSTRUCTION.md) can
+also receive all eight exact files and rebuild the dataset/preparation in a
+bounded offline worker. It does not authenticate client runtime claims, persist
+an approval request or grant source-use/training permission.
+A separate [current ML audit inspection](docs/ML_USE_CURRENTNESS.md) recaptures
+the full review/label observations and reports their versioned dependency
+inventory in one fresh SQL snapshot. It is not a lasting permission or run grant.
 Numerical/evidence queries and Search UI scientific filters return qualified,
 exact-parent extraction rows separately from ordinary paper hits; without an
 active generation they explicitly report unavailable. These are not reviewed

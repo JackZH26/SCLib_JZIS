@@ -3,6 +3,10 @@
 Batch55, 2026-09-12. Contracts: `ml-use-request/1.0.0` and
 `ml-use-preflight/1.0.0`. No new database migration; schema remains 0071.
 
+Batch56 adds a separate [full-input reconstruction endpoint](ML_USE_RECONSTRUCTION.md)
+and private upload-package CLI. The descriptor-only endpoint documented below
+retains its limited scope and original response semantics.
+
 ## Delivered scope
 
 The private [baseline preparation](ML_BASELINE_PREPARATION.md) can now be

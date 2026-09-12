@@ -18,6 +18,13 @@ Batch55 adds intake/preflight API and offline CLI sources without changing
 schema 0071. It does not rerun or relabel batch54's whole-source migration receipt;
 its own targeted API/source/frontend results are in the
 [batch55 report](Priority_Fifty_Fifth_Batch_Implementation_2026-09-12.md).
+Batch56 adds the private input-reconstruction worker/endpoint and shared receipt
+content helper, still without a schema change. Its new source state and checks
+are recorded separately in the [batch56 report](Priority_Fifty_Sixth_Batch_Implementation_2026-09-12.md);
+the retained 0070/0071 migration receipts remain historical.
+Batch57 adds complete ML companion currentness and audit-dependency inspection
+without a schema change. Its separate verification is recorded in the
+[batch57 report](Priority_Fifty_Seventh_Batch_Implementation_2026-09-12.md).
 
 ## Findings and next delivery decisions
 

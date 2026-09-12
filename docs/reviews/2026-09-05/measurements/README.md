@@ -60,6 +60,14 @@ Linux-image parity test or release approval. See the
 Its 645-file source inventory is the historical batch54 checkpoint. Batch55
 keeps schema 0071 but adds new intake/preflight source files; it does not claim
 that the earlier receipt measures those later files or refresh its hashes.
+Batch56 also keeps 0071 while adding input-reconstruction code. Its separate
+native API/source checks and compatibility capture are documented in the
+[batch56 report](../Priority_Fifty_Sixth_Batch_Implementation_2026-09-12.md),
+not substituted for this historical whole-source migration receipt.
+Batch57's currentness service also retains schema 0071; its new scoped API and
+compatibility evidence is in the
+[batch57 report](../Priority_Fifty_Seventh_Batch_Implementation_2026-09-12.md),
+not an alteration or rerun of the batch54 receipt.
 
 ## 2026-09-09: historical/current chunking and actual index migration
 

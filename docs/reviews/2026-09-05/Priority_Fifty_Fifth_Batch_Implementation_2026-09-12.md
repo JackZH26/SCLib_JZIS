@@ -4,6 +4,13 @@ Date: 2026-09-12. Base HEAD: `00718749b6eb15926ae8cbfc58e02a9432488815`.
 Branch: `codex/sclib-research-v2`. Existing uncommitted batch52–54 work is preserved.
 Related tracking: ML07 #68, ML06 #70 and ML09 #76. None is closed by this batch.
 
+Historical note: batch56 subsequently adds full-input reconstruction. The
+batch55 source pins/results below describe this earlier execution. Its exact
+Discovery capture is now retained in
+`frontend/tests/fixtures/discovery-main-barrier-native.batch55.wire.json`; the
+active capture filename follows the latest separately recorded run. No old hash or
+migration receipt was relabeled as fresh evidence.
+
 ## Outcome and bounded scope
 
 The verified baseline preparation can now produce an eight-input, purpose-bound
