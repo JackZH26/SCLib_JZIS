@@ -36,6 +36,7 @@ def main():
 
     sys.meta_path.insert(0, NoServerImports())
     from services import ml_pilot_accounting as accounting
+    from services import ml_pilot_attestation_contract as contract
     from services import ml_pilot_review_documents as documents
     from services import ml_pilot_review_worker as worker
 
@@ -56,6 +57,10 @@ def main():
         + ");from services.ml_pilot_review_worker import main;main()"
     )
     expected = [sys.executable, "-I", "-B", "-c", bootstrap]
+    expected_attestation = [
+        *expected[:-1],
+        bootstrap.replace("main()", "main(attestation=True)"),
+    ]
     spawned = []
 
     def guard(event, args):
@@ -63,7 +68,8 @@ def main():
             executable, argv, cwd, env = args
             if (
                 executable != sys.executable
-                or list(argv) != expected
+                or list(argv) != (expected if not spawned else expected_attestation)
+                or len(spawned) >= 2
                 or cwd is not None
                 or env != {"LANG": "C.UTF-8", "PYTHONHASHSEED": "0"}
             ):
@@ -196,11 +202,28 @@ def main():
         result = loop.run_until_complete(
             worker.check_in_worker(accounting.canonical(upload))
         )
+        upload["version"] = worker.ATTESTATION_VERSION
+        upload["parameters"].update(
+            request_key="synthetic-installed-attestation",
+            reason_code="synthetic",
+            supersedes_id=None,
+            supersedes_sha256=None,
+            declaration_version="ml08-own-review-declaration/1.0.0",
+            declaration_sha256=contract.SHA256,
+            declaration_acknowledged=True,
+            expected_intent_sha256=None,
+            dry_run=True,
+        )
+        attestation = loop.run_until_complete(
+            worker.check_in_worker(accounting.canonical(upload), attestation=True)
+        )
     finally:
         loop.close()
     checked = result["document_check"]
     if (
-        len(spawned) != 1
+        len(spawned) != 2
+        or attestation["document_check"] != result["document_check"]
+        or attestation["implementation"] != implementation
         or result["implementation"] != implementation
         or checked["selected_candidates"] != 60
         or checked["review_record_count"] != 61
@@ -210,13 +233,14 @@ def main():
     print(
         json.dumps(
             {
-                "probe": "ml08-installed-review-worker/1.0.0",
+                "probe": "ml08-installed-review-worker/1.1.0",
                 "synthetic": True,
                 "package_version": importlib.metadata.version("sclib-api"),
                 "python": sys.version.split()[0],
                 "implementation": implementation,
                 "input_sha256": result["input_sha256"],
-                "exact_owned_child_count": 1,
+                "attestation_upload_sha256": attestation["input_sha256"],
+                "exact_owned_child_count": 2,
                 "selected_candidates": 60,
                 "review_record_count": 61,
                 "database_clock_checked": False,

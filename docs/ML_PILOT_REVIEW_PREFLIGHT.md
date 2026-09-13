@@ -102,8 +102,11 @@ The supplied canary hash is a declaration only. A successful preflight is not
 a reusable admission token: future signed writes must recheck exact documents,
 current accounts, predecessor state, rights and implementation policy.
 
-Still required: an authenticated, independently reviewed scientific-signoff
-ledger and interaction; binding and replay of actual evidence/canary bytes;
+The subsequent [own-account declaration API](ML_PILOT_ATTESTATIONS.md) now
+records exact original-document declarations and withdrawals in schema 0077.
+It does not turn this preflight result into a reusable token. Still required:
+the human signoff interface and current collective acceptance; binding and
+replay of actual evidence/canary bytes;
 current source-access decisions; and the real 60-event pilot with retained
 failures, missingness, curation effort and a reviewed go/narrow/stop conclusion.
 ML09 execution and AL01 validation remain separate gates. Synthetic tests do

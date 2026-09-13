@@ -1741,6 +1741,12 @@ from models.ml_pilot_registration_v1 import (  # noqa: E402
 
 ML_PILOT_REGISTRATION_TABLES = _register_ml_pilot_registration(Base.metadata)
 
+from models.ml_pilot_attestations_v1 import (  # noqa: E402
+    register as _register_ml_pilot_attestations,
+)
+
+ML_PILOT_ATTESTATIONS = _register_ml_pilot_attestations(Base.metadata)
+
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.

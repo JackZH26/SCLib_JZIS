@@ -203,3 +203,8 @@ recorded participation history. It is separately default-off and read-only;
 participation and documentary consistency still do not constitute an
 authenticated scientific signoff. Its verification is recorded in the
 [batch71 report](reviews/2026-09-05/Priority_Seventy_First_Batch_Implementation_2026-09-13.md).
+
+The [subsequent own-review declaration API](ML_PILOT_ATTESTATIONS.md) adds
+schema 0077 without changing these 0076 registration rows. Individual exact
+declarations and withdrawals are durable; collective scientific acceptance,
+human independence, source permissions and ML execution remain separate gates.

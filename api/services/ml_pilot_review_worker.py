@@ -3,23 +3,27 @@
 from __future__ import annotations
 
 import asyncio
+import re
 import subprocess
 import sys
 from pathlib import Path
 
+from services import ml_pilot_attestation_contract as contract
 from services import ml_pilot_review_documents as documents
 from services.ml_pilot_documents import canonical, json_value
 from services.ml_pilot_registration_documents import decode, identifier
 from services.ml_use_reconstruction_worker import _io_guard, _stop
 
 VERSION = "ml08-review-upload/1.0.0"
+ATTESTATION_VERSION = "ml08-review-attestation-upload/1.0.0"
 WALL_SECONDS = 35
 CPU_SECONDS = 25
 MAX_OUTPUT_BYTES = documents.MAX_PROJECTION_BYTES + 16384
 require = documents.require
 
 
-def prepare(raw):
+def prepare(raw, *, attestation=False):
+    require(type(attestation) is bool)
     require(type(raw) is bytes and 0 < len(raw) <= documents.MAX_ENVELOPE_BYTES)
     from services import ml_pilot_accounting as accounting
     from services import ml_pilot_documents as codec
@@ -38,13 +42,43 @@ def prepare(raw):
             *(name + "_base64" for name in names),
             *(name + "_file_sha256" for name in names),
         }
-        and value["version"] == VERSION
+        and value["version"] == (ATTESTATION_VERSION if attestation else VERSION)
     )
     params = value["parameters"]
-    require(
-        type(params) is dict
-        and set(params) == {"participant_id", "participant_sha256", "registration_sha256"}
-    )
+    fields = {"participant_id", "participant_sha256", "registration_sha256"}
+    if attestation:
+        fields |= {
+            "request_key",
+            "reason_code",
+            "supersedes_id",
+            "supersedes_sha256",
+            "declaration_version",
+            "declaration_sha256",
+            "declaration_acknowledged",
+            "expected_intent_sha256",
+            "dry_run",
+        }
+    require(type(params) is dict and set(params) == fields and len(canonical(params)) <= 4096)
+    if attestation:
+        require(
+            params["declaration_version"] == contract.VERSION
+            and params["declaration_sha256"] == contract.SHA256
+            and params["declaration_acknowledged"] is True
+            and type(params["dry_run"]) is bool
+            and (params["dry_run"] or params["expected_intent_sha256"] is not None)
+            and type(params["request_key"]) is str
+            and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,119}", params["request_key"])
+            and type(params["reason_code"]) is str
+            and re.fullmatch(r"[a-z][a-z0-9_]{0,159}", params["reason_code"])
+            and (params["supersedes_id"] is None) == (params["supersedes_sha256"] is None)
+        )
+        if params["supersedes_id"] is not None:
+            identifier(params["supersedes_id"])
+        for key in ("supersedes_sha256", "expected_intent_sha256"):
+            require(
+                params[key] is None
+                or (type(params[key]) is str and codec.HASH.fullmatch(params[key]))
+            )
     identifier(params["participant_id"])
     require(
         all(
@@ -62,7 +96,7 @@ def prepare(raw):
     result = documents.checked(documents.project(**args))
     require(documents.implementation() == before)
     return {
-        "version": VERSION,
+        "version": ATTESTATION_VERSION if attestation else VERSION,
         "input_sha256": documents.sha(raw),
         "parameters": params,
         "document_check": result,
@@ -70,13 +104,15 @@ def prepare(raw):
     }
 
 
-async def check_in_worker(raw):
+async def check_in_worker(raw, *, attestation=False):
+    require(type(attestation) is bool)
     require(type(raw) is bytes and 0 < len(raw) <= documents.MAX_ENVELOPE_BYTES)
     root = str(Path(__file__).resolve().parents[1])
     bootstrap = (
         "import sys;sys.path.insert(0,"
         + repr(root)
-        + ");from services.ml_pilot_review_worker import main;main()"
+        + ");from services.ml_pilot_review_worker import main;"
+        + ("main(attestation=True)" if attestation else "main()")
     )
     creation = asyncio.create_task(
         asyncio.create_subprocess_exec(
@@ -124,7 +160,7 @@ async def check_in_worker(raw):
             type(result) is dict
             and set(result)
             == {"version", "input_sha256", "parameters", "document_check", "implementation"}
-            and result["version"] == VERSION
+            and result["version"] == (ATTESTATION_VERSION if attestation else VERSION)
             and result["input_sha256"] == documents.sha(raw)
             and result["implementation"] == documents.implementation()
         )
@@ -134,7 +170,7 @@ async def check_in_worker(raw):
         await asyncio.shield(_stop(process))
 
 
-def main():
+def main(*, attestation=False):
     import resource
 
     resource.setrlimit(resource.RLIMIT_CPU, (CPU_SECONDS, CPU_SECONDS + 1))
@@ -144,7 +180,11 @@ def main():
         resource.setrlimit(resource.RLIMIT_AS, (512 * 1024 * 1024, 512 * 1024 * 1024))
     sys.addaudithook(_io_guard)
     try:
-        raw = canonical(prepare(sys.stdin.buffer.read(documents.MAX_ENVELOPE_BYTES + 1)))
+        raw = canonical(
+            prepare(
+                sys.stdin.buffer.read(documents.MAX_ENVELOPE_BYTES + 1), attestation=attestation
+            )
+        )
         require(len(raw) <= MAX_OUTPUT_BYTES)
         sys.stdout.buffer.write(raw)
     except Exception:

@@ -29,11 +29,11 @@ def fixture():
         "synthetic": True, "production": False, "cleanup_verified": True,
         "authority": {key: False for key in ("deployment_approved", "scientific_acceptance", "ml_training_approved", "source_distribution_approved")},
         "started_at": "2026-09-08T01:00:00.000000Z", "completed_at": "2026-09-08T01:00:01.000000Z", "duration_ms": 1000,
-        "source_schema": "0050_timeline_identity", "target_schema": "0076_ml_pilot_registration",
+        "source_schema": "0050_timeline_identity", "target_schema": "0077_ml_pilot_attestations",
         "runtime": {"backend": "native", "python": "3.12.14", "implementation": "CPython", "system": "Darwin", "machine": "arm64", "postgres_version_num": 160013},
         "provenance": {"head_revision": "a" * 40, "dirty_worktree": True, "source_dirty": True,
                        "tracked_diff_sha256": "b" * 64, "inputs": inputs, "inputs_sha256": report.sha(report.canonical(inputs)), "unchanged_during_rehearsal": True},
-        "phases": [{"phase": phase, "schema": "0050_timeline_identity" if index == 0 else "0076_ml_pilot_registration",
+        "phases": [{"phase": phase, "schema": "0050_timeline_identity" if index == 0 else "0077_ml_pilot_attestations",
                     "counts": {key: (None if index == 0 else (1 if phase == "final" else 0)) if key in report.PILOT_TABLES
                                else 2 if key == "materials" or (phase == "final" and key in {"scientific_import_packages", "scientific_import_attempts", "scientific_import_outcomes"}) else 0 for key in report.TABLES}, "material_raw_records": 2} for index, phase in enumerate(report.PHASES)],
         "retention_checks": [{"check": name, "row_count": 2, "before_sha256": "a" * 64, "after_sha256": "a" * 64, "passed": True} for name in report.RETENTIONS],
@@ -73,7 +73,7 @@ def test_original_v1_native_receipt_remains_byte_identical_and_readable():
 
 @pytest.mark.parametrize("mutate", [
     lambda d: d.update(version=report.LEGACY_VERSION),
-    lambda d: d.update(version="schema-rehearsal/1.2.0"),
+    lambda d: d.update(version="schema-rehearsal/1.3.0"),
     lambda d: d["phases"][0]["counts"].update(ml_pilot_registrations=0),
     lambda d: d["phases"][1]["counts"].update(ml_pilot_participants=1),
     lambda d: d["phases"][2]["counts"].update(ml_pilot_participation_decisions=1),

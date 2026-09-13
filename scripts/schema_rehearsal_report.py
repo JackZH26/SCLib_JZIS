@@ -20,7 +20,8 @@ from pathlib import Path
 from uuid import UUID
 
 LEGACY_VERSION = "schema-rehearsal/1.0.0"
-VERSION = "schema-rehearsal/1.1.0"
+REGISTRATION_VERSION = "schema-rehearsal/1.1.0"
+VERSION = "schema-rehearsal/1.2.0"
 MAX_BYTES = 1024 * 1024
 MAX_FILES = 2048
 LEGACY_TABLES = (
@@ -36,7 +37,8 @@ LEGACY_TABLES = (
     "ml_feature_source_bindings", "scientific_import_packages", "scientific_import_attempts",
     "scientific_import_outcomes",
 )
-PILOT_TABLES = ("ml_pilot_registrations", "ml_pilot_participants", "ml_pilot_participation_decisions")
+REGISTRATION_TABLES = ("ml_pilot_registrations", "ml_pilot_participants", "ml_pilot_participation_decisions")
+PILOT_TABLES = (*REGISTRATION_TABLES, "ml_pilot_review_attestations")
 TABLES = (*LEGACY_TABLES, *PILOT_TABLES)
 PHASES = ("legacy_seeded", "first_head", "before_read_cutover", "final")
 RETENTIONS = ("seeded_legacy_materials", "seeded_source_revision", "frozen_release_and_pins")
@@ -50,8 +52,10 @@ LEGACY_OUTCOMES = (
     "scientific_import_history_downgrade_refused", "empty_index_roundtrip_preserved",
     "populated_index_roundtrip_preserved", "missing_force_constants_quarantined_without_scientific_rows",
 )
-PILOT_OUTCOMES = ("pilot_empty_roundtrip_preserved", "pilot_incomplete_roster_refused",
+REGISTRATION_OUTCOMES = ("pilot_empty_roundtrip_preserved", "pilot_incomplete_roster_refused",
                   "pilot_account_participation_verified", "pilot_history_downgrade_refused")
+PILOT_OUTCOMES = (*REGISTRATION_OUTCOMES, "attestation_empty_roundtrip_preserved",
+                  "attestation_account_declaration_verified", "attestation_history_downgrade_refused")
 OUTCOMES = (*LEGACY_OUTCOMES, *PILOT_OUTCOMES)
 UNMEASURED = ("production_source_exclusions", "scientific_review", "deployment_approval",
               "production_backup_restore", "production_role_provisioning", "corpus_scale_parity")
@@ -116,10 +120,12 @@ def validate(document, *, internal=False):
                          "started_at", "completed_at", "duration_ms", "source_schema", "target_schema",
                          "runtime", "provenance", "phases", "retention_checks", "fixture_outcomes",
                          "unmeasured", "read_model_rollback", "data_accounting", "report_sha256"))
-        if document["version"] not in {VERSION, LEGACY_VERSION} or document["scope"] != "owned_disposable_migration_and_read_model_rehearsal":
+        if document["version"] not in {VERSION, REGISTRATION_VERSION, LEGACY_VERSION} or document["scope"] != "owned_disposable_migration_and_read_model_rehearsal":
             raise ReportError("invalid_report_version")
-        tables = TABLES if document["version"] == VERSION else LEGACY_TABLES
-        expected_outcomes = OUTCOMES if document["version"] == VERSION else LEGACY_OUTCOMES
+        pilot_tables = PILOT_TABLES if document["version"] == VERSION else REGISTRATION_TABLES if document["version"] == REGISTRATION_VERSION else ()
+        pilot_outcomes = PILOT_OUTCOMES if document["version"] == VERSION else REGISTRATION_OUTCOMES if document["version"] == REGISTRATION_VERSION else ()
+        tables = (*LEGACY_TABLES, *pilot_tables)
+        expected_outcomes = (*LEGACY_OUTCOMES, *pilot_outcomes)
         if document["synthetic"] is not True or document["production"] is not False:
             raise ReportError("invalid_report_authority")
         _keys(document["authority"], ("deployment_approved", "scientific_acceptance", "ml_training_approved", "source_distribution_approved"))
@@ -176,8 +182,8 @@ def validate(document, *, internal=False):
             _int(row["material_raw_records"])
         if phases[0]["schema"] != document["source_schema"] or any(row["schema"] != document["target_schema"] for row in phases[1:]):
             raise ReportError("invalid_report_phase_schema")
-        if document["version"] == VERSION:
-            for name in PILOT_TABLES:
+        if document["version"] != LEGACY_VERSION:
+            for name in pilot_tables:
                 if phases[0]["counts"][name] is not None or any(row["counts"][name] != 0 for row in phases[1:3]):
                     raise ReportError("invalid_report_pilot_phases")
                 _int(phases[-1]["counts"][name], positive=True)

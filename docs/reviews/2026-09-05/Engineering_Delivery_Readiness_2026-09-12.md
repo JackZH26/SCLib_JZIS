@@ -111,6 +111,16 @@ does not introduce a schema migration, scientific signature or execution
 authority. Batch70 whole-source captures remain unchanged historical evidence;
 five newly captured batch71 archives bind the changed backend and harness sources.
 
+Batch72 advances schema to 0077 with default-off own-account review declarations,
+fixed English consent and exact original-document/participation binding. Its
+[source-specific verification](Priority_Seventy_Second_Batch_Implementation_2026-09-13.md)
+includes a new 1.2 schema receipt, native HTTP captures and isolated installed
+worker checks. Earlier 0076 receipts retain their historical source scope. This
+is not collective scientific acceptance; the declaration UI, current collective
+review, actual permitted 60-event pilot and Linux CI/remote delivery remain
+unfinished. The table below is the historical batch52 delivery snapshot, not a
+claim that its 0070 receipt covers current 0077 sources.
+
 | Issue | Local implementation | Remaining delivery work |
 | --- | --- | --- |
 | EN01 #42 | Pre-client disposable capability guard; owned PostgreSQL/Redis; least-privilege runtime; rechecked cleanup identity; fresh safety/API results passed | Link the authorized implementation PR and its CI evidence |

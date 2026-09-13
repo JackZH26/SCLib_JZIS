@@ -28,6 +28,7 @@ def implementation():
         "ml_pilot_registration_documents.py",
         "ml_pilot_review_documents.py",
         "ml_pilot_review_worker.py",
+        "ml_pilot_attestation_contract.py",
         "ml_use_reconstruction_worker.py",
     )
     return {

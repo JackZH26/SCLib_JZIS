@@ -1,6 +1,6 @@
 /** Test-only transport adapters; resealed replies are not fresh SQL evidence. */
 import { createHash } from "node:crypto";
-import captured from "../fixtures/ml-pilot-participant-native.batch71.wire.json";
+import captured from "../fixtures/ml-pilot-participant-native.batch72.wire.json";
 import type { PilotChoice, PilotInput } from "@/lib/ml-pilot-participation";
 export const http = captured;
 export const sha = (value: string | Buffer) => createHash("sha256").update(value).digest("hex");

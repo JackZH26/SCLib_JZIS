@@ -39,6 +39,32 @@ async def inspect(
     implementation,
 ):
     await _read_session(db)
+    return await bind(
+        db,
+        actor_user_id=actor_user_id,
+        participant_id=participant_id,
+        participant_sha256=participant_sha256,
+        registration_sha256=registration_sha256,
+        document_check=document_check,
+        implementation=implementation,
+    )
+
+
+async def bind(
+    db,
+    *,
+    actor_user_id,
+    participant_id,
+    participant_sha256,
+    registration_sha256,
+    document_check,
+    implementation,
+):
+    """Trusted read/write binding; callers must not supply a cached HTTP result."""
+    require(
+        (await db.execute(sa.text("SHOW transaction_isolation"))).scalar_one()
+        in {"repeatable read", "serializable"}
+    )
     own, reg = await registration.own_participant(
         db, actor_user_id, participant_id, participant_sha256
     )

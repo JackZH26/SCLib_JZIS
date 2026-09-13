@@ -18,6 +18,8 @@ from routers.ml_use_governance import Identifier, Sha, _session_actor
 from routers.ml_use_rights import body
 from routers.ml_use_submissions import Lookup
 from routers.research_distributions import _request_schema
+from services import ml_pilot_attestation_contract as declaration_contract
+from services import ml_pilot_attestations as attestations
 from services import ml_pilot_registration as service
 from services import ml_pilot_registration_documents as documents
 from services import ml_pilot_registration_worker as worker
@@ -147,6 +149,24 @@ class ReviewUpload(BaseModel):
     conclusion_base64: str = Field(min_length=1, max_length=11184812)
 
 
+class AttestationControl(AcceptControl):
+    expected_intent_sha256: Sha | None = Field(...)
+    dry_run: bool = Field(..., strict=True)
+    declaration_version: Literal["ml08-own-review-declaration/1.0.0"]
+    declaration_sha256: Sha
+    declaration_acknowledged: bool = Field(..., strict=True)
+
+
+class AttestationUpload(ReviewUpload):
+    version: Literal["ml08-review-attestation-upload/1.0.0"]
+    parameters: AttestationControl
+
+
+def attestations_enabled():
+    if not get_settings().ml_pilot_attestations_enabled:
+        raise private.rejected(404)
+
+
 def review_enabled():
     if not get_settings().ml_pilot_review_intake_enabled:
         raise private.rejected(404)
@@ -180,7 +200,7 @@ async def read(user, function=None, args=None, *, registrar=False):
                 raise private.rejected(404) from None
 
 
-async def write(request, user, function, args):
+async def write(request, user, function, args, *, version=service.VERSION):
     async with AsyncSession(get_engine().execution_options(isolation_level="SERIALIZABLE")) as db:
         async with db.begin():
             await db.execute(sa.text("SET LOCAL statement_timeout='5000ms'"))
@@ -192,7 +212,7 @@ async def write(request, user, function, args):
             except service.PilotNotObserved:
                 raise private.rejected(404) from None
             prepared = response(
-                {"version": service.VERSION, "committed": not args["dry_run"], "result": result}
+                {"version": version, "committed": not args["dry_run"], "result": result}
             )
             if args["dry_run"] or result["replayed"]:
                 await db.rollback()
@@ -334,6 +354,99 @@ async def review_preflight(request: Request, user: private.AuthenticatedUser):
                 "implementation": checked["implementation"],
             },
         )
+    )
+
+
+@router.get("/review-attestations/declaration", dependencies=[Depends(attestations_enabled)])
+async def declaration_wording(user: private.AuthenticatedUser):
+    actor = await read(user)
+    return response(
+        {
+            "version": attestations.VERSION,
+            **actor,
+            "declaration_version": declaration_contract.VERSION,
+            "declaration_text": declaration_contract.TEXT,
+            "declaration_sha256": declaration_contract.SHA256,
+            **attestations.boundary(),
+        }
+    )
+
+
+@router.post(
+    "/review-attestations",
+    dependencies=[Depends(review_enabled), Depends(attestations_enabled)],
+    openapi_extra=_request_schema(AttestationUpload),
+)
+async def attest_review(request: Request, user: private.AuthenticatedUser):
+    reference = {}
+    for header, key in (
+        ("X-SCLib-Participant-Id", "participant_id"),
+        ("X-SCLib-Participant-Sha256", "participant_sha256"),
+    ):
+        values = request.headers.getlist(header)
+        if len(values) != 1:
+            raise private.rejected(400)
+        reference[key] = values[0]
+    await read(user, acceptance_admission, reference)
+    raw = await upload(request, limit=review_documents.MAX_ENVELOPE_BYTES)
+    await read(user, acceptance_admission, reference)
+    checked = await review_worker.check_in_worker(raw, attestation=True)
+    args = AttestationControl.model_validate(checked["parameters"]).model_dump()
+    match(all(args[key] == value for key, value in reference.items()))
+    return await write(
+        request,
+        user,
+        attestations.decide,
+        {
+            **args,
+            "action": "attest",
+            "document_check": checked["document_check"],
+            "implementation": checked["implementation"],
+        },
+        version=attestations.VERSION,
+    )
+
+
+@router.post(
+    "/review-attestations/withdraw",
+    dependencies=[Depends(attestations_enabled)],
+    openapi_extra=_request_schema(AttestationControl),
+)
+async def withdraw_attestation(request: Request, user: private.AuthenticatedUser):
+    # No source upload or current reviewer grant is required for a protective act.
+    await read(user)
+    return await write(
+        request,
+        user,
+        attestations.decide,
+        {**await body(request, AttestationControl), "action": "withdraw"},
+        version=attestations.VERSION,
+    )
+
+
+@router.post(
+    "/review-attestations/inspect",
+    dependencies=[Depends(attestations_enabled)],
+    openapi_extra=_request_schema(ReviewReference),
+)
+async def inspect_attestation(request: Request, user: private.AuthenticatedUser):
+    await read(user)
+    return response(await read(user, attestations.inspect, await body(request, ReviewReference)))
+
+
+@router.post(
+    "/review-attestations/outcome",
+    dependencies=[Depends(attestations_enabled)],
+    openapi_extra=_request_schema(Lookup),
+)
+async def attestation_outcome(request: Request, user: private.AuthenticatedUser):
+    await read(user)
+    return response(
+        {
+            "version": attestations.VERSION,
+            "committed": True,
+            "result": await read(user, attestations.outcome, await body(request, Lookup)),
+        }
     )
 
 

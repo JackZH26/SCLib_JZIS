@@ -31,7 +31,7 @@ _ML_SUBMISSION_TABLES = ("ml_use_submissions", "ml_use_private_inputs", "ml_use_
 _ML_RIGHTS_TABLE = "ml_use_rights_decisions"
 _ML_RUN_EVIDENCE_TABLES = ("ml_run_review_evidence", "ml_run_review_evidence_purges")
 _ML_RUN_TABLES = ("ml_use_run_plans", "ml_use_run_decisions", *_ML_RUN_EVIDENCE_TABLES)
-_ML_PILOT_TABLES = ("ml_pilot_registrations", "ml_pilot_participants", "ml_pilot_participation_decisions")
+_ML_PILOT_TABLES = ("ml_pilot_registrations", "ml_pilot_participants", "ml_pilot_participation_decisions", "ml_pilot_review_attestations")
 
 
 def _assert_empty_ml_runs(connection):
@@ -2186,7 +2186,7 @@ def _discovery_main_barrier_roundtrip(capability, engine, config, *, package_id=
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
-        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0076_ml_pilot_registration"
+        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0077_ml_pilot_attestations"
         _assert_empty_ml_use_roles(connection)
         assert snapshot(connection) == before
         assert functions(connection) == before_functions
@@ -3164,6 +3164,15 @@ def main() -> None:
         _observed(recorder, "pilot_account_participation_verified")
         populated_roundtrip(capability, engine, config)
         _observed(recorder, "pilot_history_downgrade_refused")
+        from migration_pilot_attestations import empty_roundtrip as attestation_empty
+        from migration_pilot_attestations import populated as attestation_populated
+        attestation_empty(capability, engine, config)
+        _observed(recorder, "attestation_empty_roundtrip_preserved")
+        asyncio.run(attestation_populated(capability))
+        _observed(recorder, "attestation_account_declaration_verified")
+        from migration_pilot_attestations import retained_history
+        retained_history(capability, engine, config)
+        _observed(recorder, "attestation_history_downgrade_refused")
         if recorder is not None:
             with engine.connect() as connection:
                 verify_postgres_identity(connection, capability)
