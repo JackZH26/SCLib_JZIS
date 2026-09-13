@@ -9,7 +9,7 @@ import { ApiError } from "@/lib/api";
 import { notifyAuthChange } from "@/lib/auth-session";
 import { importCanonical, importDigest } from "@/lib/scientific-imports";
 import * as rights from "@/lib/ml-use-rights";
-import http from "../fixtures/ml-use-rights-native.batch67-final.wire.json";
+import http from "../fixtures/ml-use-rights-native.batch71.wire.json";
 
 vi.mock("@/lib/ml-use-rights", async original => ({ ...await original<typeof import("@/lib/ml-use-rights")>(),
   getMlRightsAccess: vi.fn(), inspectMlRights: vi.fn(), previewMlRights: vi.fn(), commitMlRights: vi.fn(), recoverMlRights: vi.fn() }));
@@ -46,16 +46,24 @@ afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.use
   if (originalScroll) Object.defineProperty(HTMLElement.prototype, "scrollIntoView", originalScroll); else Reflect.deleteProperty(HTMLElement.prototype, "scrollIntoView"); });
 
 describe("actual native ML rights protocol", () => {
-  it("pins the exact native archive and all 565 backend/harness/schema source files", () => {
+  it("pins the exact native archive and all 581 backend/harness/schema source files", () => {
     const hash = (b: Buffer) => createHash("sha256").update(b).digest("hex");
+    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch71.wire.json")))).toBe("d1f0d859d01baafaf32ccfe888d23331002da5e708c072aa21cc4b7123a4e0fc");
+    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch70.wire.json")))).toBe("d9774a7e9e11c2f3e568f3361dccbe14d1a91393b4e1c5bd385276e4889aa40b");
+    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch69.wire.json")))).toBe("efefe4aef7b5112d21359128f17e662198a5e8531ca90a20a0bad007014d3222");
+    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch68.wire.json")))).toBe("14885ab44024bc09ee55d2cf53c37c5a76e4cf8dfbf22d6d1acf6faf22bd5809");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch67-final.wire.json")))).toBe("d4d6c5d119b35eab2a1d05a474b00dc1fb77403d041ad4fe0fb34b473c45c4de");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch67.wire.json")))).toBe("4372be2a47ff30fab7990a58ac3d2db193d722602d6c18886b0d56b38d0f3059");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch66.wire.json")))).toBe("9ae1256d36e916f065b6cbb2737bdd829e1eb2d43183b912b3262ba66bb81193");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch65.wire.json")))).toBe("c6431f457ed7de687a48fe9bef413452e57d243310ffdf75dfeef06daae697aa");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.wire.json")))).toBe("35ac35963bf7108560492d3a9b91af69cb62e0ce70748e8be1151be4eac668fb");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch60.wire.json")))).toBe("79ad4248be9d5b75d9655a62064b5a4a8a9ab599e3887225cf6e745924e19f21");
-    expect(http.source_pins).toHaveLength(565); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(565);
+    expect(http.source_pins).toHaveLength(581); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(581);
+    expect(http.source_pins.some(p => p.path === "api/tests/test_ml_pilot_participant_wire.py")).toBe(true);
     expect(http.source_pins.some(p => p.path === "api/services/ml08_pilot.schema.json")).toBe(true);
+    expect(http.source_pins.some(p => p.path === "scripts/migration_pilot_registration.py")).toBe(true);
+    expect(http.source_pins.some(p => p.path === "scripts/probe_ml_pilot_registration_install.py")).toBe(true);
+    expect(http.source_pins.some(p => p.path === "api/tests/test_ml_pilot_registration_reliability.py")).toBe(true);
     for (const p of http.source_pins) { expect(p.path).toMatch(/^(?:(api|scripts)\/[A-Za-z0-9_./-]+\.py|api\/services\/[A-Za-z0-9_-]+\.schema\.json)$/); expect(p.path.split("/")).not.toContain("..");
       expect(hash(readFileSync(resolve(process.cwd(), "..", p.path))), p.path).toBe(p.sha256); }
   });

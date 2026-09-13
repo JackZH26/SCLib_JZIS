@@ -39,6 +39,8 @@ jobs:
           .venv/bin/python -m venv "$RUNNER_TEMP/sclib-ml08-installed"
           "$RUNNER_TEMP/sclib-ml08-installed/bin/python" -m pip install --no-index --no-deps "$RUNNER_TEMP/sclib-ml08-wheel/sclib_api-0.1.0-py3-none-any.whl"
           "$RUNNER_TEMP/sclib-ml08-installed/bin/python" -I ../scripts/probe_ml_pilot_install.py
+          "$RUNNER_TEMP/sclib-ml08-installed/bin/python" -I ../scripts/probe_ml_pilot_registration_install.py
+          "$RUNNER_TEMP/sclib-ml08-installed/bin/python" -I ../scripts/probe_ml_pilot_review_install.py
       - name: Verify all offline script contracts in the locked API runtime (no services)
         run: .venv/bin/python -m pytest -q ../scripts/tests
       - name: Capture test runtime dependency inventory

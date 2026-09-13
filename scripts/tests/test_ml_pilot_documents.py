@@ -142,6 +142,7 @@ def test_ci_installs_real_wheel_into_separate_dependency_free_environment():
                 '.venv/bin/python -m venv "$RUNNER_TEMP/sclib-ml08-installed"',
                 '"$RUNNER_TEMP/sclib-ml08-installed/bin/python" -m pip install --no-index --no-deps',
                 '"$RUNNER_TEMP/sclib-ml08-installed/bin/python" -I ../scripts/probe_ml_pilot_install.py',
+                '"$RUNNER_TEMP/sclib-ml08-installed/bin/python" -I ../scripts/probe_ml_pilot_registration_install.py',
                 "Verify all offline script contracts")
     assert [api.index(step) for step in required] == sorted(api.index(step) for step in required)
 

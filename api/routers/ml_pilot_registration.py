@@ -21,6 +21,9 @@ from routers.research_distributions import _request_schema
 from services import ml_pilot_registration as service
 from services import ml_pilot_registration_documents as documents
 from services import ml_pilot_registration_worker as worker
+from services import ml_pilot_review_admission as review_admission
+from services import ml_pilot_review_documents as review_documents
+from services import ml_pilot_review_worker as review_worker
 from services.ml_pilot_documents import canonical
 from services.ml_use_access import HEADERS
 from services.ml_use_preflight import match
@@ -121,6 +124,34 @@ class RegistrationRef(BaseModel):
     registration_sha256: Sha
 
 
+class ReviewReference(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    participant_id: Identifier
+    participant_sha256: Sha
+    registration_sha256: Sha
+
+
+class ReviewUpload(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    version: Literal["ml08-review-upload/1.0.0"]
+    parameters: ReviewReference
+    selection_file_sha256: Sha
+    protocol_file_sha256: Sha
+    reviews_file_sha256: Sha
+    conclusion_file_sha256: Sha
+    selection_sha256: Sha
+    review_log_sha256: Sha
+    selection_base64: str = Field(min_length=1, max_length=11184812)
+    protocol_base64: str = Field(min_length=1, max_length=11184812)
+    reviews_base64: str = Field(min_length=1, max_length=11184812)
+    conclusion_base64: str = Field(min_length=1, max_length=11184812)
+
+
+def review_enabled():
+    if not get_settings().ml_pilot_review_intake_enabled:
+        raise private.rejected(404)
+
+
 def response(value):
     raw = canonical(value)
     if len(raw) > 128 * 1024:
@@ -170,7 +201,7 @@ async def write(request, user, function, args):
     return prepared
 
 
-async def upload(request):
+async def upload(request, *, limit=documents.MAX_ENVELOPE_BYTES):
     if (
         request.headers.get("content-type", "").split(";", 1)[0].strip().lower()
         != "application/json"
@@ -178,15 +209,13 @@ async def upload(request):
     ):
         raise private.rejected(415)
     length = request.headers.get("content-length")
-    if length is not None and (
-        not re.fullmatch(r"[0-9]{1,8}", length) or int(length) > documents.MAX_ENVELOPE_BYTES
-    ):
+    if length is not None and (not re.fullmatch(r"[0-9]{1,8}", length) or int(length) > limit):
         raise private.rejected(413)
     raw, chunks = bytearray(), 0
     async with asyncio.timeout(10):
         async for part in request.stream():
             chunks += 1
-            if chunks > 4096 or len(raw) + len(part) > documents.MAX_ENVELOPE_BYTES:
+            if chunks > 4096 or len(raw) + len(part) > limit:
                 raise private.rejected(413)
             raw.extend(part)
     return bytes(raw)
@@ -203,6 +232,13 @@ async def acceptance_admission(db, *, actor_user_id, participant_id, participant
         "participant_sha256": member["record_sha256"],
         "registration_sha256": reg["record_sha256"],
     }
+
+
+@router.get("/participant-access")
+async def participant_access(user: private.AuthenticatedUser):
+    # Active session only: exact invitation admission remains separate, and
+    # protective decisions must remain accessible after reviewer-role revocation.
+    return response({"version": service.VERSION, **await read(user), **service.boundary()})
 
 
 @router.get("/registrar-access")
@@ -263,6 +299,42 @@ async def accept(request: Request, user: private.AuthenticatedUser):
 async def protect(request: Request, user: private.AuthenticatedUser):
     await read(user)
     return await write(request, user, service.decide, await body(request, ProtectiveDecision))
+
+
+@router.post(
+    "/review-preflight",
+    dependencies=[Depends(review_enabled)],
+    openapi_extra=_request_schema(ReviewUpload),
+)
+async def review_preflight(request: Request, user: private.AuthenticatedUser):
+    # Authenticate this exact participant before receiving any source-bearing
+    # files. This read-only endpoint cannot record a scientific endorsement.
+    reference = {}
+    for header, key in (
+        ("X-SCLib-Participant-Id", "participant_id"),
+        ("X-SCLib-Participant-Sha256", "participant_sha256"),
+    ):
+        values = request.headers.getlist(header)
+        if len(values) != 1:
+            raise private.rejected(400)
+        reference[key] = values[0]
+    await read(user, acceptance_admission, reference)
+    raw = await upload(request, limit=review_documents.MAX_ENVELOPE_BYTES)
+    await read(user, acceptance_admission, reference)
+    checked = await review_worker.check_in_worker(raw)
+    args = ReviewReference.model_validate(checked["parameters"]).model_dump()
+    match(all(args[k] == value for k, value in reference.items()))
+    return response(
+        await read(
+            user,
+            review_admission.inspect,
+            {
+                **args,
+                "document_check": checked["document_check"],
+                "implementation": checked["implementation"],
+            },
+        )
+    )
 
 
 @router.post("/inspect", openapi_extra=_request_schema(RegistrationRef))

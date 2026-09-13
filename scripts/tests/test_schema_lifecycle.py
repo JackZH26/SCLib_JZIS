@@ -11,6 +11,46 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class SchemaLifecycleBoundaryTests(unittest.TestCase):
+    def test_pilot_is_populated_after_all_older_guards_and_measured_before_final(self):
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        main = source.split("def main()", 1)[1]
+        markers = (
+            "_ml_runs_roundtrip(capability, engine, config, populated=True)",
+            "\n        empty_roundtrip(capability, engine, config)",
+            '"pilot_empty_roundtrip_preserved"',
+            "asyncio.run(populated_history(capability))",
+            '"pilot_incomplete_roster_refused"',
+            '"pilot_account_participation_verified"',
+            "\n        populated_roundtrip(capability, engine, config)",
+            '"pilot_history_downgrade_refused"',
+            'recorder.phase(connection, "final")',
+        )
+        positions = [main.index(marker) for marker in markers]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("for name in (*_ML_RUN_TABLES, *_ML_PILOT_TABLES)", source)
+        helper = (ROOT / "scripts/migration_pilot_registration.py").read_text()
+        for marker in ('command.downgrade(config, "0075_ml_run_evidence")',
+                       'command.upgrade(config, "head")', "objects(connection) == definitions",
+                       "assert snapshot(connection, old_only=True) == before", "exact revision",
+                       "SET CONSTRAINTS mp76_complete IMMEDIATE", "ml_pilot_complete_distinct_roster_required",
+                       "assert await state(session) == before", 'decision="withdraw"',
+                       'recovered["decision"] == accepts[0]', "[1, 3, 4]", "poolclass=NullPool"):
+            self.assertIn(marker, helper)
+        for forbidden in ("create_all", "drop_all", "monkeypatch", "DISABLE TRIGGER", "session_replication_role"):
+            self.assertNotIn(forbidden, helper)
+        # Admission itself requires a fresh connection; the ownership SELECT
+        # must follow it, including the old-schema refusal branch.
+        for block in helper.split("with engine.connect() as connection:")[1:]:
+            block = block.split("\n    validate_test_environment()", 1)[0]
+            if "check_connection_schema(connection)" in block:
+                self.assertLess(block.index("check_connection_schema(connection)"),
+                                block.index("verify_postgres_identity(connection, capability)"))
+        migration = (ROOT / "api/alembic/versions/0076_ml_pilot_registration.py").read_text()
+        upgrade, downgrade = migration.split("def upgrade()", 1)[1].split("def downgrade()", 1)
+        self.assertNotIn("INSERT", upgrade)
+        self.assertLess(downgrade.index("ACCESS EXCLUSIVE"), downgrade.index("SELECT EXISTS"))
+        self.assertLess(downgrade.index("raise RuntimeError"), downgrade.index("relation.drop"))
+
     def test_evidence_upgrade_preserves_real_0074_approval_and_replays_without_text(self):
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         functions = {node.name: ast.get_source_segment(source, node) for node in ast.parse(source).body
@@ -36,7 +76,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
                      if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))}
         self.assertIn("_assert_empty_ml_runs(connection)", functions["_assert_empty_ml_submissions"])
         self.assertIn("_assert_empty_ml_runs(connection)", functions["_ml_rights_roundtrip"])
-        self.assertIn("for name in _ML_RUN_TABLES", functions["_assert_empty_ml_runs"])
+        self.assertIn("for name in (*_ML_RUN_TABLES, *_ML_PILOT_TABLES)", functions["_assert_empty_ml_runs"])
         markers = ("_ml_rights_roundtrip(capability, engine, config, populated=True)",
                    "_ml_runs_roundtrip(capability, engine, config)",
                    "_ml_runs_on_migrated_schema(capability)",
@@ -136,7 +176,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
                        "_assert_empty_ml_use_roles(connection)", "FUNCTION_SIGNATURES", "to_regprocedure"):
             self.assertIn(marker, block)
         self.assertEqual(block.count("assert snapshot(connection) == before"), 2)
-        self.assertIn('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}', block)
+        self.assertIn('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES}', block)
         self.assertIn('assert "exact revision" in str(exc)', block)
         for connection in block.split("with engine.connect() as connection:")[1:]:
             self.assertLess(connection.index("check_connection_schema(connection)"),
@@ -194,11 +234,11 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
     def test_main_barrier_roundtrip_retains_every_v1_byte_and_the_exact_frozen_function(self):
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         body = source.split("def _discovery_main_barrier_roundtrip", 1)[1].split("async def _discovery_projection_replays_on_migrated_schema", 1)[0]
-        for marker in ('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES}', "_assert_empty_discovery_projections(connection)",
+        for marker in ('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES}', "_assert_empty_discovery_projections(connection)",
             'all(before[name] for name in _DISCOVERY_PROJECTION_TABLES)',
             'command.downgrade(config, "0069_discovery_projection")', 'assert "exact revision" in str(exc)',
             'frozen_insert_statement().split("AS $$", 1)', 'SELECT prosrc FROM pg_proc',
-            'command.upgrade(config, "head")', '"0075_ml_run_evidence"', "_assert_empty_ml_use_roles(connection)",
+            'command.upgrade(config, "head")', '"0076_ml_pilot_registration"', "_assert_empty_ml_use_roles(connection)",
             "assert functions(connection) == before_functions"):
             self.assertIn(marker, body)
         self.assertEqual(body.count("assert snapshot(connection) == before"), 2)

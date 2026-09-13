@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { expect, test, type Page } from "@playwright/test";
-import http from "../fixtures/ml-use-rights-native.batch67-final.wire.json";
+import http from "../fixtures/ml-use-rights-native.batch71.wire.json";
 
 type Json = Record<string, any>;
 function canonical(v: any): string { if (Array.isArray(v)) return `[${v.map(canonical).join(",")}]`;

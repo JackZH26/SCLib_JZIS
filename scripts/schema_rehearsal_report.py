@@ -19,10 +19,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from uuid import UUID
 
-VERSION = "schema-rehearsal/1.0.0"
+LEGACY_VERSION = "schema-rehearsal/1.0.0"
+VERSION = "schema-rehearsal/1.1.0"
 MAX_BYTES = 1024 * 1024
 MAX_FILES = 2048
-TABLES = (
+LEGACY_TABLES = (
     "materials", "papers", "chunks", "material_states", "structure_records",
     "structure_variants", "research_runs", "research_events", "material_claims",
     "source_snapshots", "snapshot_event_memberships", "ml_dataset_snapshots", "ml_examples",
@@ -35,9 +36,11 @@ TABLES = (
     "ml_feature_source_bindings", "scientific_import_packages", "scientific_import_attempts",
     "scientific_import_outcomes",
 )
+PILOT_TABLES = ("ml_pilot_registrations", "ml_pilot_participants", "ml_pilot_participation_decisions")
+TABLES = (*LEGACY_TABLES, *PILOT_TABLES)
 PHASES = ("legacy_seeded", "first_head", "before_read_cutover", "final")
 RETENTIONS = ("seeded_legacy_materials", "seeded_source_revision", "frozen_release_and_pins")
-OUTCOMES = (
+LEGACY_OUTCOMES = (
     "correction_history_downgrade_refused", "source_history_downgrade_refused",
     "shadow_history_downgrade_refused", "release_history_downgrade_refused",
     "publication_history_downgrade_refused", "source_task_history_downgrade_refused",
@@ -47,6 +50,9 @@ OUTCOMES = (
     "scientific_import_history_downgrade_refused", "empty_index_roundtrip_preserved",
     "populated_index_roundtrip_preserved", "missing_force_constants_quarantined_without_scientific_rows",
 )
+PILOT_OUTCOMES = ("pilot_empty_roundtrip_preserved", "pilot_incomplete_roster_refused",
+                  "pilot_account_participation_verified", "pilot_history_downgrade_refused")
+OUTCOMES = (*LEGACY_OUTCOMES, *PILOT_OUTCOMES)
 UNMEASURED = ("production_source_exclusions", "scientific_review", "deployment_approval",
               "production_backup_restore", "production_role_provisioning", "corpus_scale_parity")
 
@@ -110,8 +116,10 @@ def validate(document, *, internal=False):
                          "started_at", "completed_at", "duration_ms", "source_schema", "target_schema",
                          "runtime", "provenance", "phases", "retention_checks", "fixture_outcomes",
                          "unmeasured", "read_model_rollback", "data_accounting", "report_sha256"))
-        if document["version"] != VERSION or document["scope"] != "owned_disposable_migration_and_read_model_rehearsal":
+        if document["version"] not in {VERSION, LEGACY_VERSION} or document["scope"] != "owned_disposable_migration_and_read_model_rehearsal":
             raise ReportError("invalid_report_version")
+        tables = TABLES if document["version"] == VERSION else LEGACY_TABLES
+        expected_outcomes = OUTCOMES if document["version"] == VERSION else LEGACY_OUTCOMES
         if document["synthetic"] is not True or document["production"] is not False:
             raise ReportError("invalid_report_authority")
         _keys(document["authority"], ("deployment_approved", "scientific_acceptance", "ml_training_approved", "source_distribution_approved"))
@@ -161,13 +169,18 @@ def validate(document, *, internal=False):
         for row in phases:
             _keys(row, ("phase", "schema", "counts", "material_raw_records"))
             _label(row["schema"])
-            _keys(row["counts"], TABLES)
+            _keys(row["counts"], tables)
             for value in row["counts"].values():
                 if value is not None:
                     _int(value)
             _int(row["material_raw_records"])
         if phases[0]["schema"] != document["source_schema"] or any(row["schema"] != document["target_schema"] for row in phases[1:]):
             raise ReportError("invalid_report_phase_schema")
+        if document["version"] == VERSION:
+            for name in PILOT_TABLES:
+                if phases[0]["counts"][name] is not None or any(row["counts"][name] != 0 for row in phases[1:3]):
+                    raise ReportError("invalid_report_pilot_phases")
+                _int(phases[-1]["counts"][name], positive=True)
         retentions = document["retention_checks"]
         if not isinstance(retentions, list) or [row.get("check") for row in retentions] != list(RETENTIONS):
             raise ReportError("invalid_report_retention")
@@ -178,7 +191,7 @@ def validate(document, *, internal=False):
             if row["passed"] is not True or row["after_sha256"] != row["before_sha256"]:
                 raise ReportError("invalid_report_retention")
         outcomes = document["fixture_outcomes"]
-        if not isinstance(outcomes, list) or [row.get("code") for row in outcomes] != list(OUTCOMES):
+        if not isinstance(outcomes, list) or [row.get("code") for row in outcomes] != list(expected_outcomes):
             raise ReportError("invalid_report_outcomes")
         for row in outcomes:
             _keys(row, ("code", "observed_count"))

@@ -60,11 +60,15 @@ Docker image, Linux CI execution, real human work or scientific feasibility.
 
 Before this service can support authenticated scientific pilot acceptance:
 
-1. Register the immutable selection/protocol against authenticated accounts and
-   server-recorded chronology. A supplied timestamp or hash cannot prove prior
-   registration. Map declared reviewer aliases to authorized, distinct accounts.
+1. The [registration service](ML_PILOT_REGISTRATION.md) now binds immutable
+   selection/protocol hashes to authenticated accounts and server-recorded
+   chronology. A supplied timestamp or hash alone cannot prove registration
+   or establish independent human identity.
 2. Retain and bind all review revisions, actual evidence/canary bytes and current
    source-access checks. Do not treat self-consistent uploads as permission.
+   The [read-only review preflight](ML_PILOT_REVIEW_PREFLIGHT.md) now checks all
+   uploaded revisions against that registration and recorded participation
+   intervals; it does not retain source bytes or verify the declared canary.
 3. Record independent, authenticated signoffs against exact reviewed bytes and
    the complete failure denominator. Keep `go`/`narrow`/`stop` within the reviewed
    feasibility scope; 60 cases do not by themselves establish model sufficiency.

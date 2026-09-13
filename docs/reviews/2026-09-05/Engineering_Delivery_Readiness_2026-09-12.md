@@ -75,13 +75,41 @@ compatibility. Its new selected source inventories and verification are in the
 [batch67 report](Priority_Sixty_Seventh_Batch_Implementation_2026-09-13.md).
 Earlier receipts remain historical. Installation and documentary consistency
 do not authenticate pilot registration, human review or scientific acceptance.
-The subsequent unfinished batch68 adds draft schema 0076 and private pilot
+The subsequent batch68 checkpoint adds schema 0076 and private pilot
 registration/participant APIs. Its [local checkpoint](Pilot_Registration_Checkpoint_2026-09-13.md)
 records targeted verification and remaining gates. Neither batch67's native
 captures nor its 0075 rehearsal attests this changed source state. This combined
-checkpoint is not deployable; the 0076 migration rehearsal remains unfinished.
+checkpoint had not yet completed the 0076 migration rehearsal and was not
+deployable. The subsequent actual 0076 native rehearsal passed, including empty
+roundtrip, incomplete-roster refusal, account participation and retained-history
+rollback protection. Its new source-pinned receipt and refreshed interface
+captures are tracked in the
+[batch68 report](Priority_Sixty_Eighth_Batch_Implementation_2026-09-13.md), not
+inferred from the preceding commit-time checkpoint or older receipts. This
+resolves that local migration-verification gap, not the remaining worker,
+participant UI, real pilot, Linux CI or production delivery gates.
+Batch69 adds database-clock chronology, explicit verifier-policy compatibility,
+actual worker/installed-wheel checks and deterministic PostgreSQL collisions.
+Its changed sources and independent terminal evidence are recorded in the
+[batch69 report](Priority_Sixty_Ninth_Batch_Implementation_2026-09-13.md); the
+batch68 receipt is retained unchanged and does not attest those later inputs.
+Batch70 completes the English participant-only workbench and adds a private
+read-only account-admission endpoint so revoked reviewer roles do not prevent
+protective participation decisions. Its fresh native/interface and browser
+evidence is recorded in the
+[batch70 report](Priority_Seventieth_Batch_Implementation_2026-09-13.md).
+No migration or worker source changes are introduced in that batch. The batch69
+schema/installed-worker artifacts retain their original scope and bytes; they
+must not be relabeled as batch70 whole-source or Linux-delivery evidence.
 
 ## Findings and next delivery decisions
+
+Batch71 adds the separately default-off, read-only four-document review
+preflight, with registered-account and participation-interval checks. Its
+[own verification](Priority_Seventy_First_Batch_Implementation_2026-09-13.md)
+does not introduce a schema migration, scientific signature or execution
+authority. Batch70 whole-source captures remain unchanged historical evidence;
+five newly captured batch71 archives bind the changed backend and harness sources.
 
 | Issue | Local implementation | Remaining delivery work |
 | --- | --- | --- |

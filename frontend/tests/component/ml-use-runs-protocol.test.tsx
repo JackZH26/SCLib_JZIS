@@ -12,7 +12,11 @@ beforeEach(() => { vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(); });
 
 describe("native run protocol — original SQL/HTTP bytes", () => {
-  it("pins all 565 source inputs including the installed pilot schema, historical bytes, and 28 original response strings", () => {
+  it("pins all 581 source inputs including pilot review preflight, historical bytes, and 28 original response strings", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch71.wire.json")))).toBe("d8759f5e1c15e484d53826c2df9baa8a33231d73e880ebe65443b7b3cc0f4be5");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch70.wire.json")))).toBe("ff58865a322a1e9a536298cb595177413673860452fe0cd23f6ce0c28cec61d9");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch69.wire.json")))).toBe("4d12cc266b5420f7630613501dcee172ba222c01f3ec22d858dd5a5de43b8923");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch68.wire.json")))).toBe("a25dfbf0052951446d9874c853c4d7dcf7dd090090219ff757a953f788a7d75b");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch67-final.wire.json")))).toBe("7f936957dfd468cb7d23ad93c04d759c798b89b6bb27218856107489327c478b");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch67.wire.json")))).toBe("c8cc16d02e1117ab6fb6c106fc2181b4b8f1009d9ff0a5b06a42e4adfc3e0b00");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch66.wire.json")))).toBe("b14098dab7f75674848656ced055b9ebbbaa214544ff2235776ec10fbc549d48");
@@ -20,8 +24,14 @@ describe("native run protocol — original SQL/HTTP bytes", () => {
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.wire.json")))).toBe("1cabdf1fc608c169a82b3b9942a6e672595c860a00b264b339f54e867dd9419f");
     expect(http.fixture_notice).toBe("Actual guarded native SQL and HTTP; synthetic identities and explicit intake compiler double; no real approval or execution.");
     expect(http.capture_test_path).toBe("api/tests/test_ml_use_runs_wire.py");
-    expect(http.source_pins).toHaveLength(565); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(565);
+    expect(http.source_pins).toHaveLength(581); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(581);
+    expect(http.source_pins.some(p => p.path === "api/services/ml_pilot_review_admission.py")).toBe(true);
+    expect(http.source_pins.some(p => p.path === "scripts/probe_ml_pilot_review_install.py")).toBe(true);
+    expect(http.source_pins.some(p => p.path === "api/tests/test_ml_pilot_participant_wire.py")).toBe(true);
     expect(http.source_pins.some(p => p.path === "api/services/ml08_pilot.schema.json")).toBe(true);
+    expect(http.source_pins.some(p => p.path === "scripts/migration_pilot_registration.py")).toBe(true);
+    expect(http.source_pins.some(p => p.path === "scripts/probe_ml_pilot_registration_install.py")).toBe(true);
+    expect(http.source_pins.some(p => p.path === "api/tests/test_ml_pilot_registration_reliability.py")).toBe(true);
     for (const pin of http.source_pins) {
       expect(pin.path).toMatch(/^(?:(api|scripts)\/[A-Za-z0-9_./-]+\.py|api\/services\/[A-Za-z0-9_-]+\.schema\.json)$/); expect(pin.path.split("/")).not.toContain("..");
       expect(sha(readFileSync(resolve(process.cwd(), "..", pin.path))), pin.path).toBe(pin.sha256);

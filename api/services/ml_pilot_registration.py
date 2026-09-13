@@ -128,6 +128,7 @@ def checked_commitment(value):
             "selection_sha256",
             "participant_bindings",
             "selected_candidates",
+            "selection_chronology",
         }
         and value["version"] == documents.VERSION
         and type(value["selected_candidates"]) is int
@@ -135,6 +136,7 @@ def checked_commitment(value):
     )
     for key in ("selection_file_sha256", "protocol_file_sha256", "selection_sha256"):
         _hash(value[key])
+    documents.check_chronology(value["selection_chronology"])
     rows = value["participant_bindings"]
     require(type(rows) is list and 2 <= len(rows) <= 30)
     for row in rows:
@@ -298,6 +300,12 @@ async def register(
                 )
             )
         )
+        # Compare with the database clock in the actual write transaction, not
+        # an upload clock, transaction-start timestamp, or a browser declaration.
+        documents.check_chronology(
+            commitment["selection_chronology"],
+            observed_at=await db.scalar(sa.select(sa.func.clock_timestamp())),
+        )
         reg = await insert(
             db,
             TABLES[0],
@@ -450,6 +458,7 @@ async def decide(
                 and document_check.get("version") == documents.VERSION
                 and document_check.get("selected_candidates") == 60
             )
+            match(json_value(reg["implementation_json"].encode())["version"] == documents.VERSION)
             for key in ("selection_file_sha256", "protocol_file_sha256", "selection_sha256"):
                 match(document_check.get(key) == reg[key])
             match(
@@ -458,6 +467,13 @@ async def decide(
                     "roles": json_value(member["roles_json"].encode()),
                 }
                 in document_check.get("reviewer_roles", [])
+            )
+            documents.check_chronology(
+                document_check.get("selection_chronology"), observed_at=reg["created_at"]
+            )
+            documents.check_chronology(
+                document_check["selection_chronology"],
+                observed_at=await db.scalar(sa.select(sa.func.clock_timestamp())),
             )
         else:
             require(document_check is None)
@@ -528,6 +544,8 @@ async def inspect(db, *, actor_user_id, registration_id, registration_sha256):
     except ResearchAccessDenied:
         current = False
     accepted = sum(h is not None and h["decision"] == "accept" for h in heads)
+    document_version = json_value(reg["implementation_json"].encode())["version"]
+    current_document_policy = document_version == documents.VERSION
     visible = [(r, h) for r, h in zip(rows, heads, strict=True) if owner or r["user_id"] == actor]
     return {
         "version": VERSION,
@@ -552,7 +570,11 @@ async def inspect(db, *, actor_user_id, registration_id, registration_sha256):
         "accepted_account_count": accepted,
         "current_bound_roles_checked": True,
         "current_bound_roles_available": current,
-        "ready_for_prospective_review": current and accepted == len(rows),
+        "registration_document_check_version": document_version,
+        "current_registration_document_policy": current_document_policy,
+        "ready_for_prospective_review": current
+        and current_document_policy
+        and accepted == len(rows),
         "readiness_scope": "current_account_protocol_participation_not_scientific_acceptance",
         **boundary(),
     }

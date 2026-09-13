@@ -1,5 +1,9 @@
 # Pilot registration checkpoint — batch66/67 and unfinished batch68
 
+Historical commit-time status. Subsequent migration work and verification are
+tracked in the [batch68 report](Priority_Sixty_Eighth_Batch_Implementation_2026-09-13.md);
+this checkpoint's original results and unfinished-work record are retained.
+
 Local checkpoint requested before further development, recovered after the
 connection interruption. Base: `d85b106` on `codex/sclib-research-v2`.
 **This is work in progress, not a release candidate. Do not deploy this

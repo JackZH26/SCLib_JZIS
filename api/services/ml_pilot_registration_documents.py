@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import base64
 import hashlib
+from datetime import UTC, datetime
 from pathlib import Path
 from uuid import UUID
 
 from services import ml_pilot_accounting as accounting
 from services import ml_pilot_documents as documents
 
-VERSION = "ml08-registration-documents/1.0.0"
+VERSION = "ml08-registration-documents/1.1.0"
 ROLES = ("primary", "secondary", "arbitration")
 MAX_ENVELOPE_BYTES = 2 * ((documents.MAX_BYTES + 2) // 3 * 4) + 65536
 
@@ -35,6 +36,7 @@ def implementation():
         "ml_pilot_documents.py",
         "ml_pilot_registration_documents.py",
         "ml_pilot_registration_worker.py",
+        "ml_use_reconstruction_worker.py",
         "ml08_pilot.schema.json",
     )
     return {
@@ -52,6 +54,25 @@ def decode(value):
         raise ValueError("invalid_pilot_registration_documents") from None
     require(0 < len(raw) <= documents.MAX_BYTES and base64.b64encode(raw).decode("ascii") == value)
     return raw
+
+
+def chronology(selection):
+    """Normalize declared instants, without asserting their external truth."""
+    return {
+        key: accounting._date(selection[key]).astimezone(UTC).isoformat(timespec="microseconds")
+        for key in ("selected_at", "frozen_at")
+    }
+
+
+def check_chronology(value, *, observed_at=None):
+    require(type(value) is dict and set(value) == {"selected_at", "frozen_at"})
+    require(all(type(v) is str for v in value.values()))
+    require(chronology(value) == value)
+    selected, frozen = (accounting._date(value[k]) for k in ("selected_at", "frozen_at"))
+    require(selected <= frozen)
+    if observed_at is not None:
+        require(isinstance(observed_at, datetime) and observed_at.utcoffset() is not None)
+        require(frozen <= observed_at)
 
 
 def _selection(
@@ -86,6 +107,7 @@ def verify_files(**args):
             for key in ("selection_file_sha256", "protocol_file_sha256", "selection_sha256")
         },
         "selected_candidates": 60,
+        "selection_chronology": chronology(selection),
         "reviewer_roles": sorted(
             [
                 {
@@ -157,4 +179,5 @@ def check(
         "selection_sha256": selection_sha256,
         "participant_bindings": rows,
         "selected_candidates": 60,
+        "selection_chronology": chronology(selection),
     }

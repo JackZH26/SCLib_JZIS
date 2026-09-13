@@ -121,6 +121,7 @@ class Settings(BaseSettings):
     ml_use_governance_enabled: bool = False
     # Prospective pilot commitments and own-account confirmations, not ML runs.
     ml_pilot_registration_enabled: bool = False
+    ml_pilot_review_intake_enabled: bool = False
     # RPS bundles are inert until a curator pins a reviewed manifest digest.
     discovery_rps_public_enabled: bool = False
     discovery_rps_release_dir: str = "/data/sclib/discovery/rps"
