@@ -212,12 +212,14 @@ class TestSafetyTests(unittest.TestCase):
                 raise AssertionError("client imported before safety refusal")
             return original_import(name, *args, **kwargs)
 
-        for path in (ROOT / "api/tests/conftest.py", ROOT / "scripts/run_test_migrations.py"):
+        for path in (ROOT / "api/tests/conftest.py", ROOT / "api/tests_capacity/conftest.py",
+                     ROOT / "scripts/run_test_migrations.py"):
             for changed in ({"DATABASE_URL": "postgresql://private:never-print@db.example/sclib_test"},
                             {"REDIS_URL": "redis://private:never-print@cache.example/0"},
                             {"SCLIB_TEST_CAPABILITY": "/missing/capability.json"}):
-                with self.subTest(entrypoint=path.name, field=next(iter(changed))):
+                with self.subTest(entrypoint=str(path.relative_to(ROOT)), field=next(iter(changed))):
                     with (patch.dict(os.environ, {**self.env, **changed}, clear=True),
+                          patch.object(sys, "path", [str(ROOT / "api"), *sys.path]),
                           patch("builtins.__import__", side_effect=instrumented_import),
                           self.assertRaises(safety.UnsafeTestEnvironment) as caught):
                         runpy.run_path(str(path), run_name="__main__")

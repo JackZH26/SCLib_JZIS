@@ -1,6 +1,6 @@
 # Private ML08 canary construction and replay
 
-Protocol: `ml08-canary/1.0.0`. This implements the artifact step after the
+Protocol: `ml08-canary/1.1.0`. This implements the artifact step after the
 [ML08 review/accounting protocol](pilot/ML08_Pilot_Protocol.md), not approval of
 that proposed protocol or evidence that real human reviews have occurred.
 
@@ -10,6 +10,22 @@ artifact gap: construct a private canary from the frozen selection and complete
 review ledger, then rebuild it independently and bind the final conclusion to
 its exact bytes. No source permission, scientific acceptance, human identity,
 reviewer independence or model execution is authenticated by this command.
+
+Version 1.1.0 uses the API-packaged `services.ml_pilot_accounting` kernel and
+`services.ml_pilot_documents` byte parser. Its source inventory also pins those
+two modules and the installed `ml08_pilot.schema.json` resource. The selection,
+review and conclusion input schemas remain 1.0.0; their scientific accounting
+rules are unchanged. JSONL is delimited by physical LF bytes, preserving literal
+U+2028/U+2029 inside quoted source text. Input JSON now receives the shared
+8 MiB / 400,000-node / depth-64 boundary, including the cumulative review log.
+
+Old canaries and HTML reports remain immutable historical artifacts. Replay
+them with their originally pinned implementation; current-code replay deliberately
+rejects a changed code inventory. A new 1.1.0 canary needs fresh construction,
+independently retained pins and a conclusion bound to its new bytes. Do not edit
+an old artifact's version or reseal its outer hash to make it appear current.
+The [installed ML08 intake contract](ML_PILOT_DOCUMENT_INTAKE.md) describes the
+packaging boundary and the separate, still-unimplemented authentication gates.
 
 ## Inputs and independent anchors
 

@@ -12,14 +12,18 @@ beforeEach(() => { vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(); });
 
 describe("native run protocol — original SQL/HTTP bytes", () => {
-  it("pins all 561 source inputs, current and historical fixture bytes, and 28 original response strings", () => {
+  it("pins all 565 source inputs including the installed pilot schema, historical bytes, and 28 original response strings", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch67-final.wire.json")))).toBe("7f936957dfd468cb7d23ad93c04d759c798b89b6bb27218856107489327c478b");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch67.wire.json")))).toBe("c8cc16d02e1117ab6fb6c106fc2181b4b8f1009d9ff0a5b06a42e4adfc3e0b00");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch66.wire.json")))).toBe("b14098dab7f75674848656ced055b9ebbbaa214544ff2235776ec10fbc549d48");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch65.wire.json")))).toBe("66ae36119f0023616a3de987bc287fecf6e10058dbad53920e0f50b62d130002");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.wire.json")))).toBe("1cabdf1fc608c169a82b3b9942a6e672595c860a00b264b339f54e867dd9419f");
     expect(http.fixture_notice).toBe("Actual guarded native SQL and HTTP; synthetic identities and explicit intake compiler double; no real approval or execution.");
     expect(http.capture_test_path).toBe("api/tests/test_ml_use_runs_wire.py");
-    expect(http.source_pins).toHaveLength(561); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(561);
+    expect(http.source_pins).toHaveLength(565); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(565);
+    expect(http.source_pins.some(p => p.path === "api/services/ml08_pilot.schema.json")).toBe(true);
     for (const pin of http.source_pins) {
-      expect(pin.path).toMatch(/^(api|scripts)\/[A-Za-z0-9_./-]+\.py$/); expect(pin.path.split("/")).not.toContain("..");
+      expect(pin.path).toMatch(/^(?:(api|scripts)\/[A-Za-z0-9_./-]+\.py|api\/services\/[A-Za-z0-9_-]+\.schema\.json)$/); expect(pin.path.split("/")).not.toContain("..");
       expect(sha(readFileSync(resolve(process.cwd(), "..", pin.path))), pin.path).toBe(pin.sha256);
     }
     expect(Object.values(http).filter(v => typeof v === "string" && v.startsWith("{"))).toHaveLength(28);

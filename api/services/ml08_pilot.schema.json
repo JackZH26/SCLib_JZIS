@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sclib:ml08-pilot:1.0.0",
+  "title": "Proposed offline ML08 pilot preparation contract; not scientific approval",
+  "$ref": "#/$defs/selection",
+  "$defs": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "text": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "nullableText": {"type": ["string", "null"], "maxLength": 2000},
+    "nullableId": {"type": ["string", "null"], "maxLength": 200},
+    "nullableHash": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "nullableDate": {"type": ["string", "null"], "format": "date-time"},
+    "availability": {"enum": ["reported", "not_reported", "not_accessible", "not_extracted", "ambiguous", "conflicted", "not_applicable"]},
+    "fieldName": {"enum": ["source_revision", "source_locator", "raw_context", "work_identity", "sample_state", "structure_identity", "tc_value", "tc_criterion", "pressure", "origin", "method"]},
+    "selection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "pilot_id", "protocol_status", "protocol_revision", "protocol_sha256", "approval_reference", "selection_status", "target_candidate_count", "selection_method", "strata", "candidates", "reviewers", "second_review_candidate_ids", "independence_plan", "selected_at", "frozen_at", "selection_sha256"],
+      "properties": {
+        "schema_version": {"const": "ml08-selection/1.0.0"}, "pilot_id": {"$ref": "#/$defs/id"},
+        "protocol_status": {"enum": ["proposed", "approved"]}, "protocol_revision": {"$ref": "#/$defs/id"},
+        "protocol_sha256": {"$ref": "#/$defs/nullableHash"}, "approval_reference": {"$ref": "#/$defs/nullableText"},
+        "selection_status": {"enum": ["draft", "frozen"]}, "target_candidate_count": {"const": 60},
+        "selection_method": {"$ref": "#/$defs/text"},
+        "strata": {"type": "array", "maxItems": 60, "items": {"type": "object", "additionalProperties": false, "required": ["id", "definition"], "properties": {"id": {"$ref": "#/$defs/id"}, "definition": {"$ref": "#/$defs/text"}}}},
+        "candidates": {"type": "array", "maxItems": 60, "items": {"$ref": "#/$defs/candidate"}},
+        "reviewers": {"type": "array", "maxItems": 30, "items": {"type": "object", "additionalProperties": false, "required": ["id", "kind", "roles"], "properties": {"id": {"$ref": "#/$defs/id"}, "kind": {"const": "human"}, "roles": {"type": "array", "minItems": 1, "maxItems": 3, "uniqueItems": true, "items": {"enum": ["primary", "secondary", "arbitration"]}}}}},
+        "second_review_candidate_ids": {"type": "array", "maxItems": 60, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "independence_plan": {"$ref": "#/$defs/nullableText"},
+        "selected_at": {"$ref": "#/$defs/nullableDate"}, "frozen_at": {"$ref": "#/$defs/nullableDate"}, "selection_sha256": {"$ref": "#/$defs/nullableHash"}
+      }
+    },
+    "candidate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["candidate_id", "selection_kind", "stratum_id", "family", "source_class", "source_reference", "event_locator", "selection_rationale"],
+      "properties": {
+        "candidate_id": {"$ref": "#/$defs/id"}, "selection_kind": {"const": "actual_source_event"}, "stratum_id": {"$ref": "#/$defs/id"},
+        "family": {"$ref": "#/$defs/id"}, "source_class": {"$ref": "#/$defs/id"}, "source_reference": {"$ref": "#/$defs/text"},
+        "event_locator": {"$ref": "#/$defs/text"}, "selection_rationale": {"$ref": "#/$defs/text"}
+      }
+    },
+    "quantity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["relation", "value", "lower", "upper", "uncertainty", "approximate", "unit"],
+      "properties": {
+        "relation": {"enum": ["exact", "lt", "le", "gt", "ge", "interval"]},
+        "value": {"type": ["number", "null"]}, "lower": {"type": ["number", "null"]}, "upper": {"type": ["number", "null"]},
+        "uncertainty": {"type": ["number", "null"], "minimum": 0}, "approximate": {"type": "boolean"}, "unit": {"enum": ["K", "GPa"]}
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["paper_id", "revision", "locator", "context_reference", "context_sha256", "access_status", "permission_reference"],
+      "properties": {
+        "paper_id": {"$ref": "#/$defs/nullableId"}, "revision": {"$ref": "#/$defs/nullableId"},
+        "locator": {"type": "object", "additionalProperties": false, "properties": {"page": {"$ref": "#/$defs/id"}, "table": {"$ref": "#/$defs/id"}, "figure": {"$ref": "#/$defs/id"}, "row": {"$ref": "#/$defs/id"}, "section": {"$ref": "#/$defs/id"}, "chunk_id": {"$ref": "#/$defs/id"}, "span_id": {"$ref": "#/$defs/id"}}},
+        "context_reference": {"$ref": "#/$defs/nullableText"}, "context_sha256": {"$ref": "#/$defs/nullableHash"},
+        "access_status": {"enum": ["permitted", "restricted", "not_accessible", "unknown"]}, "permission_reference": {"$ref": "#/$defs/nullableText"}
+      }
+    },
+    "fields": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_revision", "source_locator", "raw_context", "work_identity", "sample_state", "structure_identity", "tc_value", "tc_criterion", "pressure", "origin", "method"],
+      "properties": {
+        "source_revision": {"$ref": "#/$defs/availability"}, "source_locator": {"$ref": "#/$defs/availability"}, "raw_context": {"$ref": "#/$defs/availability"},
+        "work_identity": {"$ref": "#/$defs/availability"}, "sample_state": {"$ref": "#/$defs/availability"}, "structure_identity": {"$ref": "#/$defs/availability"},
+        "tc_value": {"$ref": "#/$defs/availability"}, "tc_criterion": {"$ref": "#/$defs/availability"}, "pressure": {"$ref": "#/$defs/availability"}, "origin": {"$ref": "#/$defs/availability"}, "method": {"$ref": "#/$defs/availability"}
+      }
+    },
+    "result": {
+      "type": "object", "additionalProperties": false,
+      "required": ["result_id", "decision", "decision_reason", "source", "work_id", "sample_id", "state_id", "state_interpretation", "structure_id", "observation", "tc", "tested_temperature_min_k", "tc_criterion", "pressure_state", "pressure", "origin", "method", "fields", "missingness_reasons", "errors"],
+      "properties": {
+        "result_id": {"$ref": "#/$defs/id"}, "decision": {"enum": ["accepted", "rejected", "pending"]}, "decision_reason": {"$ref": "#/$defs/text"},
+        "source": {"$ref": "#/$defs/source"}, "work_id": {"$ref": "#/$defs/nullableId"}, "sample_id": {"$ref": "#/$defs/nullableId"}, "state_id": {"$ref": "#/$defs/nullableId"}, "state_interpretation": {"$ref": "#/$defs/nullableText"}, "structure_id": {"$ref": "#/$defs/nullableId"},
+        "observation": {"enum": ["positive_tc", "not_detected", "other"]}, "tc": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/quantity"}]}, "tested_temperature_min_k": {"type": ["number", "null"], "minimum": 0},
+        "tc_criterion": {"$ref": "#/$defs/nullableText"}, "pressure_state": {"enum": ["reported", "explicit_ambient", "unknown", "not_reported", "ambiguous", "conflicted"]}, "pressure": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/quantity"}]},
+        "origin": {"enum": ["Observed", "Computed", "Inferred", "Unknown"]}, "method": {"$ref": "#/$defs/nullableText"}, "fields": {"$ref": "#/$defs/fields"},
+        "missingness_reasons": {"type": "object", "additionalProperties": {"$ref": "#/$defs/text"}},
+        "errors": {"type": "array", "maxItems": 50, "items": {"type": "object", "additionalProperties": false, "required": ["kind", "field", "code"], "properties": {"kind": {"enum": ["source", "normalization", "state_association", "extraction"]}, "field": {"$ref": "#/$defs/fieldName"}, "code": {"$ref": "#/$defs/id"}}}}
+      }
+    },
+    "review": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "review_id", "candidate_id", "selection_sha256", "reviewer_id", "reviewer_kind", "role", "revision", "supersedes_review_id", "completed_at", "active_minutes", "active_minutes_by_field", "outcome", "outcome_reason", "independent_assessment", "requires_second_review", "compares_review_ids", "comparison", "disagreement_codes", "results"],
+      "properties": {
+        "schema_version": {"const": "ml08-review/1.0.0"}, "review_id": {"$ref": "#/$defs/id"}, "candidate_id": {"$ref": "#/$defs/id"}, "selection_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "reviewer_id": {"$ref": "#/$defs/id"}, "reviewer_kind": {"const": "human"}, "role": {"enum": ["primary", "secondary", "arbitration"]}, "revision": {"type": "integer", "minimum": 1}, "supersedes_review_id": {"$ref": "#/$defs/nullableId"},
+        "completed_at": {"type": "string", "format": "date-time"}, "active_minutes": {"type": ["number", "null"], "minimum": 0},
+        "active_minutes_by_field": {"type": "object", "additionalProperties": {"type": ["number", "null"], "minimum": 0}},
+        "outcome": {"enum": ["recovered", "inaccessible", "irrecoverable", "no_relevant_result", "unresolved"]}, "outcome_reason": {"$ref": "#/$defs/text"},
+        "independent_assessment": {"type": "boolean"}, "requires_second_review": {"type": "boolean"}, "compares_review_ids": {"type": "array", "maxItems": 2, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "comparison": {"enum": ["not_compared", "agreement", "disagreement", "resolved", "unresolved"]}, "disagreement_codes": {"type": "array", "maxItems": 50, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "results": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/result"}}
+      }
+    },
+    "conclusion": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "status", "selection_sha256", "review_log_sha256", "reviewer_id", "completed_at", "recommendation", "rationale", "field_actions", "canary_bundle_reference", "canary_bundle_sha256", "limitations"],
+      "properties": {
+        "schema_version": {"const": "ml08-conclusion/1.0.0"}, "status": {"enum": ["draft", "submitted_for_signoff"]}, "selection_sha256": {"$ref": "#/$defs/nullableHash"}, "review_log_sha256": {"$ref": "#/$defs/nullableHash"}, "reviewer_id": {"$ref": "#/$defs/nullableId"}, "completed_at": {"$ref": "#/$defs/nullableDate"},
+        "recommendation": {"enum": [null, "go", "narrow", "stop"]}, "rationale": {"$ref": "#/$defs/nullableText"},
+        "field_actions": {"type": "array", "maxItems": 11, "items": {"type": "object", "additionalProperties": false, "required": ["field", "action", "reason"], "properties": {"field": {"$ref": "#/$defs/fieldName"}, "action": {"enum": ["keep", "narrow", "defer"]}, "reason": {"$ref": "#/$defs/text"}}}},
+        "canary_bundle_reference": {"$ref": "#/$defs/nullableText"}, "canary_bundle_sha256": {"$ref": "#/$defs/nullableHash"}, "limitations": {"type": "array", "maxItems": 50, "items": {"$ref": "#/$defs/text"}}
+      }
+    }
+  }
+}

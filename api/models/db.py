@@ -1735,6 +1735,13 @@ from models.ml_run_evidence_v1 import register as _register_ml_run_evidence  # n
 
 ML_RUN_EVIDENCE_TABLES = _register_ml_run_evidence(Base.metadata)
 
+from models.ml_pilot_registration_v1 import (  # noqa: E402
+    register as _register_ml_pilot_registration,
+)
+
+ML_PILOT_REGISTRATION_TABLES = _register_ml_pilot_registration(Base.metadata)
+
+
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
 

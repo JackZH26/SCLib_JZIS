@@ -83,7 +83,7 @@ def test_native_compile_and_exact_replay_bind_full_ledger_and_bytes_without_auth
     assert bundle["accounting"]["counts"]["selected_candidates"] == 60
     assert bundle["accounting"]["counts"]["independent_work_count"] is None
     assert report["context_file_count"] == 1 and bundle["context_bytes_embedded"] is False
-    assert bundle["accounting_component"] == "scripts/validate_pilot_review.py_documentary_only"
+    assert bundle["accounting_component"] == "services.ml_pilot_accounting_documentary_only"
     assert bundle["context_integrity_scope"] == "enclosing_canary_hashes_explicit_local_bytes_not_content_support_or_permission"
     assert b"SYNTHETIC TEST CONTEXT" not in raw
     assert all(value is False for value in bundle["authority"].values())

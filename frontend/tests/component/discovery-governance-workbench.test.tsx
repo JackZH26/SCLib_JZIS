@@ -14,6 +14,7 @@ vi.mock("@/lib/discovery-governance", async importOriginal => {
     prepareGovernanceDraft: vi.fn(original.prepareGovernanceDraft), readProjectionRights: vi.fn(original.readProjectionRights) };
 });
 function deferred<T>() { let resolve!: (v: T) => void; const promise = new Promise<T>(r => { resolve = r; }); return { promise, resolve }; }
+const originalScroll = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "scrollIntoView");
 function setup(phase: Phase = "initial", actor: "reviewer" | "publisher" = "reviewer") {
   vi.mocked(governance.getOperatorAccess).mockResolvedValue(governanceWire(`${actor}-access.response.wire.json`));
   vi.mocked(governance.getGovernanceHeader).mockResolvedValue(historyWire(phase, "governance", actor));
@@ -32,7 +33,9 @@ beforeEach(async () => {
   });
   vi.mocked(governance.getGovernanceOutcome).mockResolvedValue(governanceWire("review-reject-outcome.response.wire.json"));
 });
-afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(); });
+afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers();
+  if (originalScroll) Object.defineProperty(HTMLElement.prototype, "scrollIntoView", originalScroll);
+  else Reflect.deleteProperty(HTMLElement.prototype, "scrollIntoView"); });
 async function start() {
   render(<DiscoveryGovernanceWorkbench />); await screen.findByText(/Current explicit roles:/);
   await waitFor(() => expect(screen.getByLabelText("Projection package ID")).toBeEnabled());
@@ -151,16 +154,16 @@ describe("independent Discovery governance workbench", () => {
   it("double-clicks commit once, verifies outer durability, and clears all input decisions", async () => {
     const scroll = vi.fn(); Object.defineProperty(HTMLElement.prototype, "scrollIntoView", { value: scroll, configurable: true });
     await rejection(); const button = screen.getByRole("button", { name: "Commit exact decision" });
-    expect(scroll).toHaveBeenCalledWith({ block: "start" });
+    await waitFor(() => expect(scroll).toHaveBeenCalledWith({ block: "start" }));
     act(() => { fireEvent.click(button); fireEvent.click(button); });
     await screen.findByRole("region", { name: "Verified governance receipt" });
     expect(governance.postGovernance).toHaveBeenCalledTimes(2);
     expect(vi.mocked(governance.postGovernance).mock.calls[1][1]).toBe(true);
     expect(vi.mocked(governance.postGovernance).mock.calls[1][0]).toEqual(vi.mocked(governance.postGovernance).mock.calls[0][0]);
     expect(screen.queryByRole("region", { name: "Explicit governance decision" })).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Exact operation receipt" })).toHaveFocus(); expect(governance.getGovernanceOutcome).not.toHaveBeenCalled();
-    expect(scroll).toHaveBeenCalledTimes(2);
-    delete (HTMLElement.prototype as any).scrollIntoView;
+    await waitFor(() => expect(screen.getByRole("heading", { name: "Exact operation receipt" })).toHaveFocus());
+    expect(governance.getGovernanceOutcome).not.toHaveBeenCalled();
+    await waitFor(() => expect(scroll).toHaveBeenCalledTimes(2));
   });
   it("invalidates a rehearsal on edits and clears decision choices on package changes", async () => {
     await rejection(); fireEvent.change(screen.getByLabelText("Decision reason code"), { target: { value: "revised_reason" } });

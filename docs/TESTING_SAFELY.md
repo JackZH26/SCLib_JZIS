@@ -48,6 +48,32 @@ does not call `brew services`, reuse a data directory, stop an existing server,
 or connect to a default port. Service version differences between native local
 testing and Linux CI must be recorded; the fallback is not image parity proof.
 
+## Capacity tests use their own service lifetime
+
+`api/tests_capacity` is a separate suite, deliberately outside the ordinary
+`tests` discovery path. It imports the same pre-client capability guard and
+owned-schema fixture. Run it with a **new** invocation, never appended to the
+ordinary API session:
+
+```bash
+api/.venv/bin/python scripts/run_disposable_tests.py \
+  --backend docker --suite api -- -q tests_capacity
+```
+
+The explicit native fallback above also supports `--suite api -- -q tests_capacity`.
+The API CI job invokes this suite separately after the ordinary API suite. Each
+invocation creates and cleans up its own services. No quota override, shared
+database, recycled capability or table reset between cases is needed.
+
+The private review test fills the actual 32 MiB logical live-payload cap, then
+checks concurrent last-slot admission, atomic rejection at capacity, reclamation
+after purge and original-key replay without resurrection. Its synthetic text is
+compressible: retained `octet_length` is the measured quantity, not physical disk
+use. This is a correctness test, not a throughput, production load, licence or
+scientific-acceptance measurement. Immutable audit rows intentionally survive
+throughout that invocation, so mixing it with other API tests would consume
+their shared quota and invalidate the experiment.
+
 ## Guard layers
 
 1. Before importing application/database/client modules, the API conftest and
@@ -84,6 +110,41 @@ capabilities. It is not a security sandbox against a local user who can edit
 tests or a hostile Docker daemon. Provider calls must still be mocked by tests;
 the runner supplies no usable cloud credentials but does not implement an OS
 network sandbox for all Python code.
+
+## Prepare tokenizer data before offline tests
+
+The `tiktoken` wheel does not include the `cl100k_base` ranks. A cold cache would
+make its first import attempt an HTTPS download, which the corpus tests rightly
+reject. After the locked dependency install, prepare this public dependency in
+an explicit network-enabled installation step, using the same Python runtime
+and cache settings as the tests:
+
+```bash
+api/.venv/bin/python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
+api/.venv/bin/python -m pytest -q scripts/tests
+```
+
+The installed constructor verifies the ranks against its SHA-256; the asset test
+also pins `223921b76ee99bde995b7ff738513eef100fb51d18c93597a113bcffe865b2a7`.
+It launches a fresh subprocess with socket creation blocked and checks actual
+multilingual tokenization/round-trip. Missing/corrupt caches fail; tests do not
+download data, skip corpus checks or substitute a fake tokenizer. A tokenizer
+asset change requires deliberate compatibility review, not updating a digest
+just to pass tests. This is a tokenization dependency, not an embedding-model
+download, paid provider call or upload of research content.
+
+All three Python CI jobs now prepare the dependency explicitly with a two-minute
+step limit. CI uses the library's default cache, shared by these steps and the
+sanitized owned-service runner via its existing temporary-directory policy.
+Do not set an empty `TIKTOKEN_CACHE_DIR` (which disables caching); custom cache
+settings used outside the runner are not automatically forwarded into it.
+
+API and ingestion image builds prepare the same hash-verified ranks in
+`/opt/tiktoken-cache`. Each Dockerfile then runs a real tokenizer smoke check as
+UID 1001 with BuildKit `--network=none`. This adds an executable image-build
+gate; source checks and native subprocess tests alone do not prove a Linux
+image was built or that a deployed image contains the ranks. No existing image
+or deployment is changed by editing these Dockerfiles.
 
 ## Safe tests before any service is started
 

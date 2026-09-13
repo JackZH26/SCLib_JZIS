@@ -235,6 +235,13 @@ async def test_expired_text_cannot_be_read_and_cleanup_is_bounded_with_audit_hol
             await db_session.execute(sa.delete(User).where(User.id == janitor))
     assert is_research_audit_reference_violation(caught.value)
     await db_session.rollback()
+    # The admin endpoint deliberately refuses deleting another administrator
+    # before inspecting audit holds. Model ordinary account demotion in this
+    # disposable fixture so the HTTP request actually reaches the audit guard.
+    await db_session.execute(sa.update(User).where(User.id == janitor).values(is_admin=False))
+    await db_session.commit()
+    assert await has_research_audit_references(db_session, janitor)
+    await db_session.rollback()
     await private_rows(janitor)
     before = await snapshot(janitor)
     deleted = await client.delete(f"/v1/admin/users/{janitor}", headers=auth(seeded["people"]["admin"]))

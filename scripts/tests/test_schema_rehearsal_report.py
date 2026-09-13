@@ -57,6 +57,29 @@ def test_closed_receipt_roundtrip_and_no_authority():
     assert value["unmeasured"]["production_source_exclusions"] is None
 
 
+@pytest.mark.parametrize("path,allowed", [
+    ("api/services/ml08_pilot.schema.json", True),
+    ("api/services/synthetic-v2.schema.json", True),
+    ("api/services/private.json", False),
+    ("api/models/ml08_pilot.schema.json", False),
+    ("scripts/ml08_pilot.schema.json", False),
+    ("api/services/nested/ml08_pilot.schema.json", False),
+    ("api/services/../ml08_pilot.schema.json", False),
+    ("api/services/.private.schema.json", False),
+])
+def test_schema_resource_path_allowance_is_narrow_and_roundtrippable(path, allowed):
+    value = fixture()
+    inputs = value["provenance"]["inputs"]
+    inputs[0]["path"] = path
+    value["provenance"]["inputs_sha256"] = report.sha(report.canonical(inputs))
+    value = report.seal(value)
+    if allowed:
+        assert report.loads(report.canonical(value)) == value
+    else:
+        with pytest.raises(report.ReportError, match="invalid_report_input_path"):
+            report.validate(value)
+
+
 @pytest.mark.parametrize("mutate", [
     lambda d: d.update(extra="CANARY"),
     lambda d: d["authority"].update(scientific_acceptance=True),
@@ -390,10 +413,16 @@ def test_real_source_inventory_binds_worktree_not_only_head():
     # Read-only repository hashes; no process other than read-only git commands.
     captured = report.capture_provenance(ROOT)
     by_path = {row["path"]: row for row in captured["inputs"]}
-    for path in ("scripts/run_test_migrations.py", "scripts/schema_rehearsal_report.py", "api/uv.lock"):
+    for path in ("scripts/run_test_migrations.py", "scripts/schema_rehearsal_report.py", "api/uv.lock",
+                 "api/services/ml08_pilot.schema.json"):
         assert by_path[path]["sha256"] == report.sha((ROOT / path).read_bytes())
     assert captured["inputs_sha256"] == report.sha(report.canonical(captured["inputs"]))
     assert len(captured["inputs"]) <= report.MAX_FILES
+    # Exercise the consumer contract too: collection alone misses rejected paths.
+    synthetic = fixture()
+    synthetic["provenance"] = captured
+    sealed = report.seal(synthetic)
+    assert report.loads(report.canonical(sealed)) == sealed
 
 
 def test_current_report_schema_never_accepts_process_credentials():
@@ -404,5 +433,5 @@ def test_current_report_schema_never_accepts_process_credentials():
 
 
 def test_entrypoint_help_and_wrong_arguments_are_source_only():
-    result = subprocess.run([sys.executable, str(ROOT / "scripts/run_disposable_tests.py"), "--help"], capture_output=True, text=True)
+    result = subprocess.run([sys.executable, str(ROOT / "scripts/run_disposable_tests.py"), "--help"], capture_output=True, text=True, check=False)
     assert result.returncode == 0 and "--report" in result.stdout

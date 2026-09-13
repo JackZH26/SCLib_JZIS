@@ -18,6 +18,9 @@ RETENTION_MESSAGE = (
     "Deletion requires a reviewed retention or de-identification workflow."
 )
 AUDIT_USER_REFERENCES = (
+    ("ml_pilot_registrations", "actor_user_id"),
+    ("ml_pilot_participants", "user_id"),
+    ("ml_pilot_participation_decisions", "actor_user_id"),
     ("ml_run_review_evidence_purges", "actor_user_id"),
     ("ml_use_run_plans", "actor_user_id"),
     ("ml_use_run_decisions", "actor_user_id"),

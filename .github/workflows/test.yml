@@ -29,6 +29,16 @@ jobs:
         run: uv sync --locked --extra dev --python 3.11
       - name: Verify connection-before-import safety guards (no services)
         run: .venv/bin/python -m unittest discover -s ../scripts/tests -p test_test_safety.py -v
+      - name: Prepare hash-verified tokenizer data (dependency download)
+        timeout-minutes: 2
+        run: .venv/bin/python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
+      - name: Verify ML08 from the installed API wheel without repository imports
+        timeout-minutes: 3
+        run: |
+          uv build --wheel --out-dir "$RUNNER_TEMP/sclib-ml08-wheel" .
+          .venv/bin/python -m venv "$RUNNER_TEMP/sclib-ml08-installed"
+          "$RUNNER_TEMP/sclib-ml08-installed/bin/python" -m pip install --no-index --no-deps "$RUNNER_TEMP/sclib-ml08-wheel/sclib_api-0.1.0-py3-none-any.whl"
+          "$RUNNER_TEMP/sclib-ml08-installed/bin/python" -I ../scripts/probe_ml_pilot_install.py
       - name: Verify all offline script contracts in the locked API runtime (no services)
         run: .venv/bin/python -m pytest -q ../scripts/tests
       - name: Capture test runtime dependency inventory
@@ -70,6 +80,9 @@ jobs:
         run: python -m pip install --disable-pip-version-check uv==0.11.16
       - name: Install API dependencies
         run: uv sync --locked --extra dev --python 3.11
+      - name: Prepare hash-verified tokenizer data (dependency download)
+        timeout-minutes: 2
+        run: .venv/bin/python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
       - name: Capture migration runtime dependency inventory
         run: |
           mkdir -p ../runtime-parity-migration
@@ -110,6 +123,9 @@ jobs:
         run: python -m pip install --disable-pip-version-check uv==0.11.16
       - name: Install dependencies
         run: uv sync --locked --extra dev --python 3.11
+      - name: Prepare hash-verified tokenizer data (dependency download)
+        timeout-minutes: 2
+        run: .venv/bin/python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
       - name: Capture ingestion runtime dependency inventory
         run: |
           mkdir -p ../runtime-parity-ingestion

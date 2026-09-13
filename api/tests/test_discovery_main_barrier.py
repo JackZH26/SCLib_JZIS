@@ -399,6 +399,7 @@ async def test_barrier_edit_needs_new_preview_package_and_independent_review_the
         {
             *repo.glob("api/models/*.py"),
             *repo.glob("api/services/*.py"),
+            *repo.glob("api/services/*.schema.json"),
             *repo.glob("api/routers/*.py"),
             *repo.glob("api/tests/test_discovery*.py"),
             *repo.glob("api/tests/test_research*.py"),

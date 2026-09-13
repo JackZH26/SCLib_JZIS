@@ -147,7 +147,8 @@ def validate(document, *, internal=False):
             path = item["path"]
             if not isinstance(path, str) or not re.fullmatch(r"(?:api|scripts)/[A-Za-z0-9_./-]{1,240}", path) or any(part in {"", ".", ".."} for part in path.split("/")):
                 raise ReportError("invalid_report_input_path")
-            if not (path.endswith(".py") or path in {"api/uv.lock", "api/pyproject.toml", "api/alembic.ini"}):
+            if not (path.endswith(".py") or path in {"api/uv.lock", "api/pyproject.toml", "api/alembic.ini"}
+                    or re.fullmatch(r"api/services/[A-Za-z0-9_-]+\.schema\.json", path)):
                 raise ReportError("invalid_report_input_path")
             _hash(item["sha256"])
             _int(item["size_bytes"])
@@ -397,7 +398,8 @@ def capture_provenance(repo):
             if any((Path(parent) / name).is_symlink() for name in directories):
                 raise ReportError("source_input_symlink")
             for name in sorted(files):
-                if not (name.endswith(".py") or (Path(parent) == repo / "api" and name in {"uv.lock", "pyproject.toml", "alembic.ini"})):
+                if not (name.endswith(".py") or (Path(parent) == repo / "api" and name in {"uv.lock", "pyproject.toml", "alembic.ini"})
+                        or (Path(parent) == repo / "api/services" and name.endswith(".schema.json"))):
                     continue
                 path = Path(parent) / name
                 try:

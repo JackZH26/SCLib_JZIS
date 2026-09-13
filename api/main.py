@@ -38,6 +38,7 @@ from routers import (
     history,
     materials,
     ml_foundation,
+    ml_pilot_registration,
     ml_use_governance,
     ml_use_preflight,
     ml_use_rights,
@@ -629,6 +630,7 @@ app.include_router(ask.router, prefix="/v1")
 # ``/materials/{material_id:path}`` catch-all.
 app.include_router(research_publications.router, prefix="/v1")
 app.include_router(ml_use_governance.router, prefix="/v1")
+app.include_router(ml_pilot_registration.router, prefix="/v1")
 app.include_router(ml_use_preflight.router, prefix="/v1")
 app.include_router(ml_use_rights.router, prefix="/v1")
 app.include_router(ml_use_runs.router, prefix="/v1")

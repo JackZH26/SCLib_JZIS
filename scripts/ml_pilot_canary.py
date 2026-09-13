@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import io
 import os
 import platform
 import re
@@ -22,6 +21,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "api"))
 
 from services.ml_audited_dataset import _preparse, canonical, digest
+from services.ml_pilot_documents import json_value, review_records
 
 from scripts import validate_pilot_review as pilot
 from scripts.ml_audited_dataset import (
@@ -31,7 +31,7 @@ from scripts.ml_audited_dataset import (
 )
 from scripts.verify_research_release import _directory_fd, _signature
 
-VERSION = "ml08-canary/1.0.0"
+VERSION = "ml08-canary/1.1.0"
 SCOPE = "private_replayable_human_asserted_pilot_not_scientific_acceptance"
 HASH = re.compile(r"[0-9a-f]{64}\Z")
 MAX_CONTEXTS = 6000
@@ -47,6 +47,8 @@ SOURCE_FILES = (
     "docs/pilot/ML08_Pilot.schema.json", "scripts/ml_audited_dataset.py",
     "scripts/verify_research_release.py", "api/services/ml_audited_dataset.py",
     "api/services/research_release_manifest.py", "api/services/research_release_spec.py",
+    "api/services/ml_pilot_accounting.py", "api/services/ml_pilot_documents.py",
+    "api/services/ml08_pilot.schema.json",
 )
 
 
@@ -96,13 +98,6 @@ def read_raw(path, expected, limit=pilot.MAX_BYTES):
         return _read_leaf(directory, path.name, expected, limit)
     finally:
         os.close(directory)
-
-
-def json_value(raw):
-    _preparse(raw)  # Bound depth/token allocation before parsing, including JSONL records.
-    value = pilot._loads(raw.decode("utf-8"))
-    canonical(value)  # Reject 1e999, lone surrogates and excessive post-parse trees.
-    return value
 
 
 def evidence_hashes(reviews):
@@ -179,7 +174,7 @@ def compile_canary(selection, reviews, *, selection_sha256, review_log_sha256, i
         "selection_sha256": selection_sha256, "review_log_sha256": review_log_sha256,
         "implementation": source, "selection": selection, "reviews_including_superseded": reviews,
         "event_accounting": event_index(selection, reviews), "accounting": report,
-        "accounting_component": "scripts/validate_pilot_review.py_documentary_only",
+        "accounting_component": "services.ml_pilot_accounting_documentary_only",
         "context_integrity_scope": "enclosing_canary_hashes_explicit_local_bytes_not_content_support_or_permission",
         "context_inventory": evidence, "context_bytes_embedded": False,
         "authority": dict(AUTHORITY), "training_execution": "disabled"}
@@ -209,11 +204,7 @@ def run(*, mode, selection_path, expected_selection_file_sha256, expected_select
     selection = json_value(captured["selection"][0])
     # Keep the canonical ordered log hash distinct from the exact JSONL file hash.
     _preparse(captured["reviews"][0])
-    reviews = []
-    for line in io.BytesIO(captured["reviews"][0]):
-        if line.strip():
-            require(len(reviews) < pilot.MAX_REVIEWS, "pilot_review_count_limit")
-            reviews.append(json_value(line))
+    reviews = review_records(captured["reviews"][0])
     initial = canonical({"selection": selection, "reviews": reviews})
     # Schema/cross-record checks precede access to any declared context hash.
     report = pilot.validate(selection, reviews, expected_selection_sha256=expected_selection_sha256)

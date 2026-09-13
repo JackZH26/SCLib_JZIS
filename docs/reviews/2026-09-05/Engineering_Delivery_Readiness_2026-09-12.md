@@ -62,6 +62,24 @@ private evidence boundaries are tracked in the
 [batch65 report](Priority_Sixty_Fifth_Batch_Implementation_2026-09-13.md).
 Earlier 0074/API receipts retain their historical source scope, not current-head
 acceptance. No remote delivery or execution authority is inferred.
+Batch66 verifies actual 32 MiB capacity/concurrent admission and sole-purge audit
+retention, and fixes the cold tokenizer-cache installation dependency in CI and
+both Python image builds. Its final native 0075 receipt and separate current
+regression results are in the
+[batch66 report](Priority_Sixty_Sixth_Batch_Implementation_2026-09-13.md).
+The non-root offline Dockerfile check is implemented but actual Linux builds,
+image/test parity and remote delivery are not inferred from native/source tests.
+Batch67 packages the shared ML08 accounting kernel/schema and private bounded
+byte intake, with actual isolated wheel installation proof and canary 1.1.0
+compatibility. Its new selected source inventories and verification are in the
+[batch67 report](Priority_Sixty_Seventh_Batch_Implementation_2026-09-13.md).
+Earlier receipts remain historical. Installation and documentary consistency
+do not authenticate pilot registration, human review or scientific acceptance.
+The subsequent unfinished batch68 adds draft schema 0076 and private pilot
+registration/participant APIs. Its [local checkpoint](Pilot_Registration_Checkpoint_2026-09-13.md)
+records targeted verification and remaining gates. Neither batch67's native
+captures nor its 0075 rehearsal attests this changed source state. This combined
+checkpoint is not deployable; the 0076 migration rehearsal remains unfinished.
 
 ## Findings and next delivery decisions
 

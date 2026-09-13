@@ -15,6 +15,7 @@ from tests.test_research_distribution_operators import auth
 async def test_run_workbench_native_wire(client, db_session, monkeypatch, tmp_path):
     repo = Path(__file__).resolve().parents[2]
     paths = sorted({*(repo / "api/models").glob("*.py"), *(repo / "api/services").glob("*.py"),
+                    *(repo / "api/services").glob("*.schema.json"),
                     *(repo / "api/routers").glob("*.py"), *(repo / "api/tests").glob("*.py"),
                     *(repo / "scripts").glob("*.py"), repo / "api/main.py", repo / "api/config.py"})
     def pins():
