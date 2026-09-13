@@ -11,8 +11,11 @@ new signature ledger is introduced.
 `POST /v1/ml/pilots/review-preflight` requires **both**
 `ML_PILOT_REGISTRATION_ENABLED` and `ML_PILOT_REVIEW_INTAKE_ENABLED`.
 Both default to false. This contract does not authorize enabling either flag.
-The endpoint is API-only; the existing English participant workbench handles
-participation, not scientific review or this four-document upload.
+The English [own-review workbench](ML_PILOT_ATTESTATIONS.md) at
+`/dashboard/research/ml-pilot-reviews` uses this endpoint to display exact
+account/document scope before declaration consent. The separate participation
+workbench handles protocol participation. Preflight remains read-only and is
+never accepted by the declaration write endpoint as a reusable approval token.
 
 Use the intended participant's authenticated session and exactly one of each
 `X-SCLib-Participant-Id` and `X-SCLib-Participant-Sha256` header. The server

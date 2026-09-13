@@ -14,6 +14,7 @@ afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(
 describe("native run protocol — original SQL/HTTP bytes", () => {
   it("pins all 586 source inputs including pilot declarations, historical bytes, and 28 original response strings", () => {
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch72.wire.json")))).toBe("4be1870e4e072254f65c1f304351b25bf164c4a6d3f9f3b9661fb9ab2972b221");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch73.wire.json")))).toBe("f0aff113f905cf23b81a2b42b436352391f0e71e7d3b449aec9e053f6e287f4f");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch71.wire.json")))).toBe("d8759f5e1c15e484d53826c2df9baa8a33231d73e880ebe65443b7b3cc0f4be5");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch70.wire.json")))).toBe("ff58865a322a1e9a536298cb595177413673860452fe0cd23f6ce0c28cec61d9");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch69.wire.json")))).toBe("4d12cc266b5420f7630613501dcee172ba222c01f3ec22d858dd5a5de43b8923");

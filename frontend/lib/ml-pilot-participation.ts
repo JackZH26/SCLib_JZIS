@@ -158,7 +158,7 @@ export async function parsePilotResult(raw: string, ref: PilotRecovery, committe
 }
 
 /** Bound even a stalled fetch/read/hash without logging or persisting its data. */
-async function bounded<T>(action: (signal: AbortSignal, interrupted: Promise<never>) => Promise<T>, caller?: AbortSignal, timeout = 65000): Promise<T> {
+export async function boundedPilotOperation<T>(action: (signal: AbortSignal, interrupted: Promise<never>) => Promise<T>, caller?: AbortSignal, timeout = 65000): Promise<T> {
   if (caller?.aborted) throw new ApiError(0, null, "Private pilot operation interrupted");
   const controller = new AbortController(), abort = () => controller.abort();
   let reject!: (error: Error) => void;
@@ -173,7 +173,7 @@ type Endpoint = "/participant-access" | "/inspect" | "/participation/accept" | "
 async function wire(path: Endpoint, body?: object, caller?: AbortSignal, invitation?: PilotInput) {
   const payload = body === undefined ? undefined : JSON.stringify(body);
   requireValue(payload === undefined || new TextEncoder().encode(payload).length <= (path === "/participation/accept" ? PILOT_UPLOAD_LIMIT : 8192));
-  return bounded(async (signal, interrupted) => {
+  return boundedPilotOperation(async (signal, interrupted) => {
     let reader: ReadableStreamDefaultReader<Uint8Array> | undefined, stream: ReadableStream<Uint8Array> | null = null;
     try {
       const response = await Promise.race([fetch(`${API_BASE}/ml/pilots${path}`, { method: payload === undefined ? "GET" : "POST", body: payload,
@@ -198,17 +198,17 @@ async function wire(path: Endpoint, body?: object, caller?: AbortSignal, invitat
 export const getPilotAccess = (signal?: AbortSignal) => wire("/participant-access", undefined, signal);
 export function inspectPilot(ref: PilotRef, signal?: AbortSignal) { requireValue(validPilotRef(ref)); return wire("/inspect", ref, signal); }
 export const pilotBytesHash = async (bytes: Uint8Array) => Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new Uint8Array(bytes)))).map(b => b.toString(16).padStart(2, "0")).join("");
-function base64(bytes: Uint8Array) {
+export function pilotBase64(bytes: Uint8Array) {
   const chunks = []; for (let i = 0; i < bytes.length; i += 16384) chunks.push(String.fromCharCode(...bytes.subarray(i, i + 16384))); return btoa(chunks.join(""));
 }
 export async function preparePilotFiles(reg: PilotRegistration, selection: File, protocol: File, signal?: AbortSignal): Promise<PilotFiles> {
   requireValue([reg.selection_file_sha256, reg.protocol_file_sha256, reg.selection_sha256].every(hash));
   for (const file of [selection, protocol]) requireValue(file && integer(file.size, 1, PILOT_FILE_LIMIT));
-  return bounded(async (active, interrupted) => {
+  return boundedPilotOperation(async (active, interrupted) => {
     const read = async (file: File, pin: string) => {
       const bytes = new Uint8Array(await Promise.race([file.arrayBuffer(), interrupted]));
       requireValue(!active.aborted && bytes.length === file.size && bytes.length <= PILOT_FILE_LIMIT && await pilotBytesHash(bytes) === pin);
-      requireValue(!active.aborted); return base64(bytes);
+      requireValue(!active.aborted); return pilotBase64(bytes);
     };
     const [selection_base64, protocol_base64] = await Promise.all([read(selection, reg.selection_file_sha256), read(protocol, reg.protocol_file_sha256)]);
     requireValue(!active.aborted);

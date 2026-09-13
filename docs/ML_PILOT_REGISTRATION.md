@@ -93,7 +93,7 @@ the feature in production.
 | `POST /registrations` | Validate exact uploaded files, preview and explicitly commit the complete account roster |
 | `POST /participation/accept` | The bound account validates the same files and records its own protocol/role acceptance |
 | `POST /participation/decisions` | The bound account previews/records a decline or withdraws its current acceptance |
-| `POST /review-preflight` | API-only full review-document/account check; also requires default-off `ML_PILOT_REVIEW_INTAKE_ENABLED`; no signature or write |
+| `POST /review-preflight` | Full review-document/account check used by the own-review workbench; also requires default-off `ML_PILOT_REVIEW_INTAKE_ENABLED`; no signature or write |
 | `POST /inspect` | Owner or participant inspects the committed registration and current account-participation readiness |
 | `POST /registrations/outcome` | Registrar recovers an exact historical registration by original key and intent hash |
 | `POST /participation/outcome` | Participant recovers its own exact historical decision, without re-uploading source files |

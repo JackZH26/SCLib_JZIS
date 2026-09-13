@@ -116,6 +116,20 @@ async def test_actual_three_account_preview_commit_and_exact_recovery(client, db
         assert wording.json()["declaration_text"] == contract.TEXT
         assert wording.json()["declaration_sha256"] == contract.SHA256
         value = payload(f, member, at)
+        reference = {
+            key: value["parameters"][key]
+            for key in ("participant_id", "participant_sha256", "registration_sha256")
+        }
+        initial = await client.post(
+            URL + "/inspect", json=reference, headers=auth(member["user_id"])
+        )
+        assert initial.status_code == 200 and initial.json()["head"] is None
+        preflight = await client.post(
+            BASE + "/review-preflight",
+            json=packet(f, member, at),
+            headers=acceptance_headers(member),
+        )
+        assert preflight.status_code == 200, preflight.text
         before = await state(db_session)
         await db_session.rollback()
         preview = await client.post(URL, json=value, headers=acceptance_headers(member))
@@ -147,6 +161,8 @@ async def test_actual_three_account_preview_commit_and_exact_recovery(client, db
             {
                 "actor_user_id": member["user_id"],
                 "upload": original_upload,
+                "initial": initial.text,
+                "preflight": preflight.text,
                 "declaration_wording": wording.text,
                 "preview": preview.text,
                 "committed": saved.text,
@@ -166,6 +182,59 @@ async def test_actual_three_account_preview_commit_and_exact_recovery(client, db
     assert sum(r["basis"]["conclusion_author_is_current_account"] for r in records) == 1
     assert len({r["basis"]["document_projection_sha256"] for r in records}) == 1
     assert sum([await count(db_session, member) for member in first["participants"]]) == 3
+    await db_session.rollback()
+    for member, record, captured in zip(
+        first["participants"], records, capture["participants"], strict=True
+    ):
+        reference = {
+            key: captured["upload"]["parameters"][key]
+            for key in ("participant_id", "participant_sha256", "registration_sha256")
+        }
+        current = await client.post(
+            URL + "/inspect", json=reference, headers=auth(member["user_id"])
+        )
+        assert current.status_code == 200 and current.json()["head"] == record
+        controls = {
+            **captured["upload"]["parameters"],
+            "request_key": "synthetic-withdraw-" + uuid4().hex,
+            "supersedes_id": record["id"],
+            "supersedes_sha256": record["record_sha256"],
+            "reason_code": "review_withdrawn",
+        }
+        preview = await client.post(
+            URL + "/withdraw", json=controls, headers=auth(member["user_id"])
+        )
+        assert preview.status_code == 200, preview.text
+        original_controls = deepcopy(controls)
+        controls.update(
+            dry_run=False, expected_intent_sha256=preview.json()["result"]["intent_sha256"]
+        )
+        withdrawn = await client.post(
+            URL + "/withdraw", json=controls, headers=auth(member["user_id"])
+        )
+        assert withdrawn.status_code == 200, withdrawn.text
+        inspected = await client.post(
+            URL + "/inspect", json=reference, headers=auth(member["user_id"])
+        )
+        assert (
+            inspected.status_code == 200
+            and inspected.json()["head"] == withdrawn.json()["result"]["declaration"]
+        )
+        recovered = await client.post(
+            URL + "/outcome",
+            json={key: controls[key] for key in ("request_key", "expected_intent_sha256")},
+            headers=auth(member["user_id"]),
+        )
+        assert recovered.status_code == 200
+        assert recovered.json()["result"]["declaration"] == inspected.json()["head"]
+        captured.update(
+            attested_inspection=current.text,
+            withdrawal_controls=original_controls,
+            withdrawal_preview=preview.text,
+            withdrawal_committed=withdrawn.text,
+            withdrawal_inspection=inspected.text,
+            withdrawal_recovered=recovered.text,
+        )
     assert capture["source_pins"] == pins()
     (tmp_path / "ml-pilot-attestations-wire.json").write_text(
         json.dumps(capture, sort_keys=True) + "\n"

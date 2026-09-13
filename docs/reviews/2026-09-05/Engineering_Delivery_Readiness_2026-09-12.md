@@ -121,6 +121,14 @@ review, actual permitted 60-event pilot and Linux CI/remote delivery remain
 unfinished. The table below is the historical batch52 delivery snapshot, not a
 claim that its 0070 receipt covers current 0077 sources.
 
+Batch73 implements that English own-review declaration UI, including complete
+original-file scope checking, two-step consent, withdrawal and unknown outcome
+recovery. Its [native/UI verification](Priority_Seventy_Third_Batch_Implementation_2026-09-13.md)
+does not change application API, schema or worker code. The expanded native
+capture test changes whole-source provenance; batch72 receipts remain unchanged
+at their original scope. Collective currentness, actual source/canary admission,
+real pilot and remote delivery remain unfinished.
+
 | Issue | Local implementation | Remaining delivery work |
 | --- | --- | --- |
 | EN01 #42 | Pre-client disposable capability guard; owned PostgreSQL/Redis; least-privilege runtime; rechecked cleanup identity; fresh safety/API results passed | Link the authorized implementation PR and its CI evidence |

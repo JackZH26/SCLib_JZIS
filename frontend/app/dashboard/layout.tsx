@@ -31,6 +31,7 @@ const NAV_BASE = [
   { href: "/dashboard/research/ml-rights", label: "ML source rights" },
   { href: "/dashboard/research/ml-runs", label: "ML run plans" },
   { href: "/dashboard/research/ml-pilots", label: "ML pilot participation" },
+  { href: "/dashboard/research/ml-pilot-reviews", label: "ML review declarations" },
   { href: "/dashboard/research/discovery", label: "Discovery selection" },
   { href: "/dashboard/research/discovery-governance", label: "Discovery governance" },
 ];

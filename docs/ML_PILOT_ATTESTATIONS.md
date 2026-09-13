@@ -17,8 +17,9 @@ recommendation. Synthetic declarations do not satisfy those requirements.
 New declarations require all three default-off flags:
 `ML_PILOT_REGISTRATION_ENABLED`, `ML_PILOT_REVIEW_INTAKE_ENABLED` and
 `ML_PILOT_ATTESTATIONS_ENABLED`. This document does not authorize enabling them
-or migrating a shared database. The current implementation is API-only; the
-English participation workbench does not yet provide a scientific-signoff form.
+or migrating a shared database. The English own-review workbench is available
+at `/dashboard/research/ml-pilot-reviews`, separate from protocol participation
+at `/dashboard/research/ml-pilots`. Neither page grants scientific acceptance.
 
 An active authenticated account can read
 `GET /v1/ml/pilots/review-attestations/declaration`. It returns the exact English
@@ -131,3 +132,53 @@ public release and run authorization remain false; training stays disabled.
 separate gates passed. Current scientific acceptance must eventually reconcile
 every required reviewer and exact latest document version with independent
 evidence/canary replay and current permissions; no automatic consumer is added.
+
+## English workbench workflow
+
+1. Open **ML review declarations** in the private dashboard. Refreshing access
+   reads the active account and exact versioned English wording, but grants no
+   reviewer role. An unavailable feature/account is not an empty history.
+2. Enter your participant UUID, participant record hash and registration record
+   hash from approved private handoff or your participation binding. Inspect
+   your own declaration history; its head is historical, not scientific approval
+   or proof that a new declaration will be allowed.
+3. For a new declaration, select **Declare my complete reviews**, enter a
+   nonsensitive reason code and supply four complete originals (8 MiB each).
+   Read them in your approved private review workflow; this page does not render
+   or substitute a truncated source-text preview. **Check original review
+   documents** uploads them for read-only preflight, not a recorded declaration.
+4. Inspect the fixed candidate denominator, full-log record count, own count,
+   conclusion-author status and exact file/contribution hashes. Counts include
+   revisions and failures; they are not independent materials or scientific
+   quality metrics. A zero-review conclusion author endorses the conclusion,
+   without invented review contributions.
+5. Read the entire pinned declaration text and explicitly check the initially
+   unselected acknowledgement. Previewing rechecks the own predecessor and
+   invokes the rollback-only declaration path. The displayed preflight basis
+   must hash to the returned intent's basis. Changes invalidate the operation
+   rather than silently rebasing it.
+6. Review the complete intent and recovery references. A second, initially
+   unselected confirmation unlocks **Commit exact review declaration**. Only
+   explicit commit writes; the server re-verifies files, grants, participation
+   and predecessor. Editing a file, reference, action, reason or consent
+   invalidates the old preview.
+7. For withdrawal, select **Withdraw my prior declaration** after inspecting its
+   exact head. The stored basis is shown with action-specific consent. No source
+   file or current reviewer grant is required for this protective operation.
+8. For uncertain delivery, privately retain the original account/key/intent hash
+   and use **Check original review outcome**. A missing receipt does not unlock
+   a replacement write. After reloading, use manual recovery under the original
+   account. A recovered record remains historical after later withdrawal.
+
+Requests use the credentialed session, no-store and redirect refusal. Network
+operations and original-file preparation are bounded and cancelable. There is
+no automatic retry, source download, browser storage, background polling or
+model call. Session changes discard visible private details and stale in-flight
+results. An unresolved operation retains only opaque recovery references in
+memory, hidden from a different account; navigating away warns while unresolved.
+
+The browser hashes original bytes and reads existing logical-hash fields from
+selection/conclusion files without reserializing the uploads. It does not claim
+to reproduce the scientific accounting kernel. The server checks the complete
+original log and documents independently for preflight, preview and commit.
+Preflight explains scope; it is not an admission token or fresh-write substitute.
