@@ -61,6 +61,29 @@ async def bind(
     implementation,
 ):
     """Trusted read/write binding; callers must not supply a cached HTTP result."""
+    context = await binding_context(
+        db,
+        actor_user_id=actor_user_id,
+        participant_id=participant_id,
+        participant_sha256=participant_sha256,
+        registration_sha256=registration_sha256,
+        document_check=document_check,
+        implementation=implementation,
+    )
+    return project_member(context, context["own"])
+
+
+async def binding_context(
+    db,
+    *,
+    actor_user_id,
+    participant_id,
+    participant_sha256,
+    registration_sha256,
+    document_check,
+    implementation,
+):
+    """Internal same-snapshot context; never return the private roster over HTTP."""
     require(
         (await db.execute(sa.text("SHOW transaction_isolation"))).scalar_one()
         in {"repeatable read", "serializable"}
@@ -129,7 +152,26 @@ async def bind(
             match(reg["created_at"] <= instant <= now and accepted_at(history, instant))
         if member["alias_sha256"] == value["conclusion_author_alias_sha256"]:
             match(accepted_at(history, conclusion_at))
-    contribution = contributions[own["alias_sha256"]]
+    return {
+        "own": own,
+        "registration": reg,
+        "members": members,
+        "document_check": value,
+        "implementation": implementation,
+        "participation_heads": {key: history[-1] for key, history in histories.items()},
+    }
+
+
+def project_member(context, own):
+    """Project one verified member without changing the original admission wire."""
+    reg, value, implementation = (
+        context["registration"],
+        context["document_check"],
+        context["implementation"],
+    )
+    contribution = next(
+        row for row in value["reviewer_contributions"] if row["alias_sha256"] == own["alias_sha256"]
+    )
     # Only the caller's attribution is returned; do not disclose other roster
     # accounts, individual review dates, reviewer aliases or source-bearing text.
     result = {

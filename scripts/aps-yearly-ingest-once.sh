@@ -7,6 +7,11 @@
 
 set -Eeuo pipefail
 
+if [[ -e /opt/SCLib_JZIS/scripts/.sclib-ingestion-paused ]]; then
+    printf '%s\n' 'SCLib ingestion/NER is paused for maintenance; APS job skipped.'
+    exit 0
+fi
+
 SCLIB_ROOT="${SCLIB_ROOT:-/opt/SCLib_JZIS}"
 MANIFEST_ROOT="${APS_MANIFEST_ROOT:-/opt/sclib_aps_manifests}"
 START_YEAR="${APS_START_YEAR:-2026}"

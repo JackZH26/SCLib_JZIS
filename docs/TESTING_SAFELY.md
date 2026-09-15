@@ -1,5 +1,15 @@
 # Disposable API and migration tests
 
+For Nginx transport testing without an API/database, use the separate
+[owned private-ingress rehearsal](PRIVATE_INGRESS.md). It requires explicitly
+prepared binaries, binds only fresh loopback listeners and sends synthetic bytes.
+It is not a replacement for the database safety runner documented below.
+
+For the nine private research workbenches, use the
+[unified isolated browser suite](RESEARCH_BROWSER_TESTING.md). It uses synthetic
+HTTP adapters and keeps the existing production-mode public-page CI tests.
+Browser interaction evidence is separate from actual API/database execution.
+
 Implemented for EN01 (#42), with the locked-install/provenance portion of EN04
 (#52). API tests intentionally create/drop the application schema and flush
 Redis between tests. **Never point these tests at a development, staging,
@@ -21,6 +31,93 @@ uv sync --locked --extra dev --python 3.11
 .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q
 .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite migrations
 ```
+
+After recreating a locked local environment, prepare the tokenizer data with
+`python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"` using that
+interpreter and the **same sanitized environment** as the following offline
+suite. In particular, changing `TMPDIR` changes the default cache location.
+Preparation verifies the upstream content hash and may download the dependency;
+the offline network-denial checks must then find it cached. A missing cache is
+an environment setup failure, not grounds for bypassing those checks. CI already
+performs this preparation explicitly before its offline tests.
+
+For the complete ordinary API regression, CI now uses the test-only coordinator
+below. It invokes that same owned-service entry point for every batch; it does
+not introduce an alternative database attachment path.
+
+```bash
+cd /path/to/SCLib_JZIS
+api/.venv/bin/python -m scripts.tests.run_api_regression \
+  --backend docker --batches 8 --output /absolute/new/api-regression
+```
+
+The output directory must not already exist and must have a real absolute
+parent directory. The coordinator creates an owner-only directory and preserves
+all earlier artifacts. It selects every ordinary test module using the current
+pytest filename conventions, assigns each module exactly once, and runs whole
+modules sequentially against newly created services. Tests keep their assertions,
+transactions, full-database comparisons and within-module history. Global data
+from unrelated earlier batches is not retained; this is not one monolithic
+database-lifetime execution. The capacity suite remains separate below.
+
+The coordinator accepts no pytest filters, inherited `PYTEST_ADDOPTS`, DSNs or
+shared services. Changed discovery settings, new nested Python-test layouts or
+symlinked modules require review instead of silently changing coverage. The
+current data-only `tests/fixtures` directory is admitted only without Python
+files or symlinks. The low-level runner remains available for focused diagnostics.
+
+Each batch writes an actual JUnit XML result. The coordinator checks that every
+assigned module has reported cases and rejects unexpected/duplicate cases,
+missing output and errors hidden behind a zero exit status. It stops after the
+first nonzero owned-runner result; it never launches another batch to mask failed
+tests or cleanup. API/script source provenance is checked before each batch and
+at final completion. The plan and final result are new mode-0600 JSON files,
+with individual XML reports retained in the private output directory. The result
+reports skipped tests separately from passes; an explicit missing-reference skip
+is not converted into a passing scientific reference check. This is engineering
+test evidence, not source permission, training or scientific acceptance.
+From coordinator version `owned-api-module-batches/1.1.0`, aggregate counts
+include every complete, validated batch JUnit, including a batch that exits
+nonzero. Actual reported test failures are therefore retained in the totals.
+`counted_batches`, `unreported_batches`, `counts_scope` and per-batch
+`junit_status` make the denominator explicit. An interrupted/missing/incomplete
+XML is not counted as a passing batch. A nonzero runner exit still stops the
+run even if its XML reports only passes, since service cleanup or execution may
+have failed outside pytest. Always inspect `status`, `full_module_coverage` and
+runner exits; partial totals cannot establish complete acceptance. Historical
+version 1.0 reports counted only zero-exit batches and remain unchanged.
+
+The native form uses the same explicit preinstalled binary options as the
+low-level runner:
+
+```bash
+api/.venv/bin/python -m scripts.tests.run_api_regression \
+  --backend native --postgres-bin /opt/homebrew/opt/postgresql@16/bin \
+  --redis-bin /opt/homebrew/opt/redis/bin/redis-server \
+  --batches 8 --output /absolute/new/api-regression
+```
+
+For a long local run, redirect stdout and stderr to a new owner-only regular
+file outside the output directory, and inspect that file while the process runs.
+A disappearing terminal/output reader can otherwise raise `BrokenPipeError`
+inside pytest before it completes its JUnit report. For example, after creating
+a private parent directory, append `> /absolute/private/runner.log 2>&1` to the
+command above and use `umask 077`. Keep the supervising process alive and retain
+the actual exit code; a log file is not a replacement for a completed result and
+all verified JUnit batches. Never convert an interrupted report into success.
+
+CI uploads the required `api-regression-attempt-N` directory, including incomplete
+results after a failed batch. A plan or partial set of XML reports alone is not
+complete regression evidence. The coordinator never extends a capability or
+database expiry. The API CI job now has a 180-minute upper bound and its ordinary
+regression step a 150-minute upper bound, leaving a separate allowance for locked
+installs, image parity, offline tests, uploads and the capacity check. The first
+four native batches alone took 2,697.675 seconds before a test failure stopped
+the run, exceeding the old 30-minute whole-job allocation. These new bounds are
+conservative execution allowances, not measured Linux runtime or performance
+claims. Each owned service's one-hour capability/SQL identity expiry remains
+unchanged; no quota or scientific assertion is relaxed. Exact-revision Linux
+execution and complete local regression are still required.
 
 Docker mode requires a running local default Docker context and already
 available `postgres:16-alpine` and `redis:7-alpine` images. The runner uses
@@ -148,6 +245,14 @@ or deployment is changed by editing these Dockerfiles.
 
 ## Safe tests before any service is started
 
+The API CI job also verifies ML08 evidence from a separately installed wheel,
+including zero-context, superseded-context and full 8 MiB context cases plus
+actual corrupted-context rejection. See the explicit
+[clean-wheel evidence procedure](ML_PILOT_EVIDENCE.md#clean-wheel-ci-verification).
+This runs the real owned streaming child with no API/database, using synthetic
+fixtures only. The new required report is separate from Linux image/test parity;
+a successful native run cannot stand in for the actual Linux release gate.
+
 These standard-library tests do not load the API conftest or open sockets:
 
 ```bash
@@ -162,6 +267,17 @@ checks actual least-privilege PostgreSQL and Redis cleanup behavior only after
 the guard has accepted newly created services.
 
 ## Interrupted runs and cleanup
+
+Pre-client capability refusals use static, value-free reason codes. Identity
+mismatches report `sentinel-identity-invalid`; a wall-clock value before the
+recorded start reports `sentinel-not-yet-valid`, and one after expiry reports
+`sentinel-expired`. Invalid or excessive lifetimes have separate reasons. These
+diagnostics preserve the original inclusive interval and lifetime limits; they
+add no clock-skew grace or automatic retry. A reason identifies the failed
+predicate, not its external root cause. Preserve the failed run's actual output,
+confirm owned cleanup, then diagnose using a new explicitly owned invocation.
+Never edit/reuse its capability, extend its expiry, change the host clock or
+attach an existing service just to make a refusal disappear.
 
 Normal completion/failure removes this run's created processes/containers and
 private temporary files. No broad `docker prune`, service restart, database
@@ -228,6 +344,14 @@ imports nor service probes are executed. Exact-ID/run-label checks scope
 interrupted-container cleanup; no image prune or shared-service cleanup occurs.
 Local build layers remain only in the disposable CI runner cache until that
 runner is destroyed.
+
+The migration job separately requests the runner's source-pinned schema report
+and retains `schema-rehearsal-attempt-N` as a required artifact. It is produced
+only after migration verification, owned-service cleanup and a final source
+recheck; it contains synthetic counts/hashes, not a production database dump.
+This report complements the runtime inventory and does not turn local native
+results or a configured workflow into a completed Linux run. A failed rehearsal
+must not produce a passing replacement receipt.
 
 Test/image inventories and the parity report are uploaded per job outside the
 Docker build context, including on comparison failure. Missing artifacts fail

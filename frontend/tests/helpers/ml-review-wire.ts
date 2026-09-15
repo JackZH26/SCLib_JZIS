@@ -1,10 +1,13 @@
 /** Original native evidence plus explicitly synthetic interaction adapters. */
-import captured from "../fixtures/ml-pilot-attestations-native.batch73.wire.json";
+import captured from "../fixtures/ml-pilot-attestations-native.delivery20260915.wire.json";
 import type { ReviewAction, ReviewControl, ReviewDocuments } from "@/lib/ml-pilot-reviews";
 import { canonical, digest, sealRecord } from "./ml-pilot-wire";
 export { canonical, digest, sha, changed } from "./ml-pilot-wire";
 export const native = captured;
 export const own = captured.participants.find(p => JSON.parse(p.preflight).own_review_record_count === 60)!;
+export const coverageReply = (phase: "initial" | "complete" | "withdrawn" = "complete", p = own) =>
+  (captured as unknown as { coverage: { phase: string; actor_user_id: string; raw: string }[] }).coverage
+    .find(row => row.phase === phase && row.actor_user_id === p.actor_user_id)!.raw;
 export const reference = (p = own) => ({ participant_id: p.upload.parameters.participant_id, participant_sha256: p.upload.parameters.participant_sha256, registration_sha256: p.upload.parameters.registration_sha256 });
 export function controls(p = own, action: ReviewAction = "attest"): ReviewControl {
   const { dry_run: _dry, expected_intent_sha256: _expected, ...value } = action === "attest" ? p.upload.parameters : p.withdrawal_controls;

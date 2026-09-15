@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./public-site-fixture";
 
 const internalHost = /(?:^|\/\/)(?:api(?::\d+)?|localhost|127\.0\.0\.1)(?:[/:]|$)/i;
 

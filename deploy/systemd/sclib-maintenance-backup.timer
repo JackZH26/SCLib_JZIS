@@ -1,0 +1,10 @@
+[Unit]
+Description=Preserve SCLib backups while automatic ingestion is paused
+
+[Timer]
+OnCalendar=*-*-* 06,14:00:00 UTC
+Persistent=true
+Unit=sclib-maintenance-backup.service
+
+[Install]
+WantedBy=timers.target

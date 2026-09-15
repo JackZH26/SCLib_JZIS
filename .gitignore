@@ -30,6 +30,7 @@ out/
 pnpm-debug.log*
 npm-debug.log*
 playwright-report/
+/frontend/playwright-results.json
 test-results/
 
 # OS / editors
@@ -66,3 +67,6 @@ data/
 # Local agent/workbench files
 /AGENTS.md
 /ASP_SC_ScopeReview/
+
+# Host-local ingestion maintenance state; preserve across code releases.
+/scripts/.sclib-ingestion-paused

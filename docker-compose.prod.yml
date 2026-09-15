@@ -49,6 +49,8 @@ services:
       SCLIB_EXPECTED_GCP_SERVICE_ACCOUNT: sclib-ingestion@jzis-sclib.iam.gserviceaccount.com
       SCLIB_IDENTITY_TOKEN_PREFIX: /var/run/sclib-identity
     entrypoint:
+      - /bin/sh
+      - /app/scripts/ingestion_pause_guard.sh
       - python
       - /app/scripts/validate_gcp_credentials.py
       - exec

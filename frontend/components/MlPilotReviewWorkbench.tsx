@@ -4,10 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { ApiError } from "@/lib/api";
 import { onAuthChange } from "@/lib/auth-session";
 import { pilotHash, pilotKey, pilotReason } from "@/lib/ml-pilot-participation";
-import { checkReviewDocuments, commitReview, DECLARATION_HASH, DECLARATION_VERSION, getReviewWording, inspectReview,
-  parseReviewInspection, parseReviewPreflight, parseReviewResult, parseReviewWording, prepareReviewDocuments, previewReview, recoverReview,
-  REVIEW_FILES, validReviewRef, type ReviewAction, type ReviewBasis, type ReviewControl, type ReviewDocuments, type ReviewDocumentSet,
-  type ReviewRecord, type ReviewRecovery, type ReviewRef, type ReviewResult, type ReviewWording } from "@/lib/ml-pilot-reviews";
+import { parseEvidenceSnapshot, prepareEvidence, type EvidenceSnapshot } from "@/lib/ml-pilot-evidence";
+import { preparePilotQualityReport, type PilotQualityReport } from "@/lib/ml-pilot-quality";
+import { MlPilotQualityReport } from "@/components/MlPilotQualityReport";
+import { checkReviewCoverage, checkReviewDocuments, commitReview, DECLARATION_HASH, DECLARATION_VERSION, getReviewWording, inspectReview,
+  parseReviewCoverage, parseReviewInspection, parseReviewPreflight, parseReviewResult, parseReviewWording, prepareReviewDocuments, previewReview, recoverReview,
+  REVIEW_FILES, sendReviewEvidence, validReviewRef, type ReviewAction, type ReviewBasis, type ReviewControl, type ReviewDocuments, type ReviewDocumentSet,
+  type ReviewCoverage, type ReviewRecord, type ReviewRecovery, type ReviewRef, type ReviewResult, type ReviewWording } from "@/lib/ml-pilot-reviews";
 
 const button = "rounded border border-sage-border bg-white px-3 py-2 text-sm text-accent-deep hover:bg-sage-surface disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
 const field = "min-w-0 w-full rounded border border-sage-border bg-white p-2 text-sm";
@@ -36,6 +39,11 @@ export function MlPilotReviewWorkbench() {
   const [head, setHead] = useState<ReviewRecord | null | undefined>(undefined), [action, setAction] = useState<"" | ReviewAction>(""), [reason, setReason] = useState("");
   const [files, setFiles] = useState<Partial<ReviewDocumentSet>>({}), [fileEpoch, setFileEpoch] = useState(0);
   const [documents, setDocuments] = useState<ReviewDocuments | null>(null), [scope, setScope] = useState<ReviewBasis | null>(null);
+  const [coverage, setCoverage] = useState<ReviewCoverage | null>(null);
+  const [canaryFile, setCanaryFile] = useState<File | null>(null), [contextFiles, setContextFiles] = useState<File[]>([]);
+  const [evidenceEpoch, setEvidenceEpoch] = useState(0);
+  const [evidence, setEvidence] = useState<EvidenceSnapshot | null>(null);
+  const [quality, setQuality] = useState<PilotQualityReport | null>(null);
   const [consent, setConsent] = useState(false), [confirmed, setConfirmed] = useState(false), [draft, setDraft] = useState<Draft | null>(null);
   const [receipt, setReceipt] = useState<ReviewResult | null>(null), [message, setMessage] = useState<string | null>(null), [busy, setBusy] = useState(false);
   const [unresolved, setUnresolved] = useState(false), [recovery, setRecovery] = useState<ReviewRecovery | null>(null), [manualKey, setManualKey] = useState(""), [manualHash, setManualHash] = useState("");
@@ -43,8 +51,9 @@ export function MlPilotReviewWorkbench() {
   const retained = useRef<ReviewRecovery | null>(null), heading = useRef<HTMLHeadingElement | null>(null), previewHeading = useRef<HTMLHeadingElement | null>(null), receiptHeading = useRef<HTMLHeadingElement | null>(null);
   const locked = busy || unresolved, completeFiles = REVIEW_FILES.every(k => !!files[k]);
   const canPreview = !!wording && head !== undefined && !!action && pilotReason(reason) && !!scope && (action === "withdraw" ? head?.action === "attest" : documents !== null);
-  function invalidate() { setConsent(false); setConfirmed(false); setDraft(null); setReceipt(null); setMessage(null); }
-  function clearDocuments() { setFiles({}); setFileEpoch(n => n + 1); setDocuments(null); setScope(null); }
+  function invalidate() { setConsent(false); setConfirmed(false); setDraft(null); setReceipt(null); setCoverage(null); setEvidence(null); setQuality(null); setMessage(null); }
+  function clearEvidenceFiles() { setCanaryFile(null); setContextFiles([]); setEvidenceEpoch(n => n + 1); }
+  function clearDocuments() { setFiles({}); setFileEpoch(n => n + 1); setDocuments(null); setScope(null); setCoverage(null); setEvidence(null); setQuality(null); clearEvidenceFiles(); }
   function clearChoice() { setAction(""); setReason(""); clearDocuments(); invalidate(); }
   function clearPrivate() {
     serial.current++; controller.current?.abort(); working.current = false; setBusy(false); identity.current = null; setWording(null);
@@ -93,7 +102,7 @@ export function MlPilotReviewWorkbench() {
   }
   async function check() {
     if (working.current || unresolved || !wording || head === undefined || action !== "attest" || !completeFiles) return;
-    const call = begin(), ref = { ...query }; invalidate(); setScope(null); setDocuments(null);
+    const call = begin(), ref = { ...query }; invalidate(); setScope(null); setDocuments(null); clearEvidenceFiles();
     try { const actor = await current(call.signal); if (!call.active()) return;
       const originals = await prepareReviewDocuments(files as ReviewDocumentSet, call.signal); if (!call.active()) return;
       const value = parseReviewPreflight(await checkReviewDocuments(ref, originals, call.signal), actor.actor_user_id, ref, originals);
@@ -113,6 +122,34 @@ export function MlPilotReviewWorkbench() {
       const result = await parseReviewResult(await previewReview(action, controls, documents, call.signal), { actorId: actor.actor_user_id, requestKey: controls.request_key }, false,
         { controls, action, basis: scope, predecessor: head }); if (!call.active()) return;
       setDraft({ controls, action, documents, basis: scope, predecessor: head, result, recovery: { actorId: actor.actor_user_id, requestKey: controls.request_key, intentSha256: result.intent_sha256 } });
+    } catch (error) { if (call.active()) fail(error); } finally { call.finish(); }
+  }
+  async function checkCoverage() {
+    if (working.current || unresolved || !wording || !documents || !scope || action !== "attest") return;
+    const call = begin(), ref = { ...query }; invalidate();
+    try {
+      const actor = await current(call.signal); if (!call.active()) return;
+      const value = parseReviewCoverage(await checkReviewCoverage(ref, documents, call.signal), actor.actor_user_id, ref, scope);
+      if (call.active()) setCoverage(value);
+    } catch (error) { if (call.active()) fail(error); } finally { call.finish(); }
+  }
+  async function checkEvidence() {
+    if (working.current || unresolved || !wording || !scope || !documents || !completeFiles || !canaryFile || action !== "attest") return;
+    const call = begin(), ref = { ...query }; invalidate();
+    try {
+      const actor = await current(call.signal); if (!call.active()) return;
+      const upload = await prepareEvidence(ref, scope, files as ReviewDocumentSet, canaryFile, contextFiles, call.signal); if (!call.active()) return;
+      const value = parseEvidenceSnapshot(await sendReviewEvidence(ref, upload.body, call.signal), actor.actor_user_id, ref, scope, upload);
+      if (call.active()) { setEvidence(value); setCoverage(value.account); }
+    } catch (error) { if (call.active()) fail(error); } finally { call.finish(); }
+  }
+  async function showQuality() {
+    if (working.current || unresolved || !wording || !scope || !evidence || !canaryFile || !files.conclusion || action !== "attest") return;
+    const call = begin(); setQuality(null); setConsent(false); setConfirmed(false); setDraft(null); setReceipt(null);
+    try {
+      await current(call.signal); if (!call.active()) return;
+      const value = await preparePilotQualityReport(canaryFile, files.conclusion, scope, evidence, call.signal);
+      if (call.active()) setQuality(value);
     } catch (error) { if (call.active()) fail(error); } finally { call.finish(); }
   }
   function acceptReceipt(value: ReviewResult) {
@@ -179,19 +216,58 @@ export function MlPilotReviewWorkbench() {
         onChange={e => { setReason(e.target.value); invalidate(); }} /><span className="text-xs">Lowercase letters, digits and underscores; start with a letter. No names, source text or sensitive details.</span></label>}
       {action === "attest" && <div key={fileEpoch} className="space-y-3"><p className="text-sm">Read the complete originals through your approved private workflow, then supply all four files below (at most 8 MiB each). Checking uploads their exact bytes; it does not record a declaration. The server checks all candidates and review revisions, including failures.</p>
         {REVIEW_FILES.map(k => <label className="block text-sm" key={k}>{fileLabels[k]}<input className={field} type="file" disabled={locked}
-          onChange={e => { setFiles({ ...files, [k]: e.target.files?.[0] }); setDocuments(null); setScope(null); invalidate(); }} /></label>)}
+          onChange={e => { setFiles({ ...files, [k]: e.target.files?.[0] }); setDocuments(null); setScope(null); clearEvidenceFiles(); invalidate(); }} /></label>)}
         <button className={button} disabled={locked || !completeFiles} onClick={() => void check()}>Check original review documents</button>
       </div>}
       {action === "withdraw" && <p className="text-sm">Withdrawal uses the exact prior record above and does not erase history. No files or current reviewer grant are needed while your account remains active.</p>}
     </section>}
     {scope && wording && <section className={panel} aria-label="Review declaration consent"><h3 className="font-semibold">Review your exact declaration scope</h3>
-      <Basis value={scope} /><h4 className="font-semibold">Exact declaration wording</h4><p className="whitespace-pre-wrap text-sm">{wording.declaration_text}</p>
+      <Basis value={scope} />
+      {action === "attest" && documents && <div className="space-y-2"><h4 className="font-semibold">Joint declaration coverage</h4>
+        <p className="text-sm">Upload the same four originals again to recheck the latest declarations for every contributing reviewer and the conclusion author. Unused preregistered arbitrators do not need to declare reviews they did not perform. This check does not record a declaration.</p>
+        <button className={button} disabled={locked} onClick={() => void checkCoverage()}>Check joint declaration coverage</button>
+      </div>}
+      {action === "attest" && documents && <div key={`evidence-${fileEpoch}-${evidenceEpoch}`} className="space-y-3" aria-label="Canary and context byte verification">
+        <h4 className="font-semibold">Canary and context byte verification</h4>
+        <p className="text-sm">Optional, default-off private intake. Supply the exact canary v1.2 bundle declared in your conclusion and every permitted context file referenced anywhere in the complete review log, including superseded reviews. This uploads the four originals again and verifies byte integrity, not scientific support or permission.</p>
+        <label className="block text-sm">Exact canary bundle<input className={field} type="file" disabled={locked}
+          onChange={e => { setCanaryFile(e.target.files?.[0] ?? null); invalidate(); }} /><span className="text-xs">At most 32 MiB. Its hash must already match the conclusion; this page does not rewrite documents.</span></label>
+        <label className="block text-sm">Exact context files<input className={field} type="file" multiple disabled={locked}
+          onChange={e => { setContextFiles(Array.from(e.target.files ?? [])); invalidate(); }} /><span className="text-xs">Use lowercase SHA-256 filenames ending in .bin. At most 8 MiB each, 64 MiB total, and 6,000 distinct files. The server rejects missing or unrelated files.</span></label>
+        <p className="text-xs">Context bytes are hashed in memory by the application, not stored as database records. Upload only through approved infrastructure and source-access arrangements. Original context bytes are not displayed or saved in browser storage. The optional field report can contain supplied conclusion text.</p>
+        <button className={button} disabled={locked || !canaryFile} onClick={() => void checkEvidence()}>Verify canary and context bytes</button>
+      </div>}
+      {evidence && <div className="space-y-2 rounded border border-sage-border p-3 text-sm" role="status" aria-label="Byte integrity snapshot">
+        <h4 className="font-semibold">Exact canary replay verified</h4>
+        <p>Context files hashed: {evidence.contextCount.toLocaleString("en-US")}. Context bytes hashed: {evidence.contextBytes.toLocaleString("en-US")}.</p>
+        {evidence.contextCount === 0 && <p>No context files were required by this review log. This is not evidence that any source was accessed or any scientific result was verified.</p>}
+        <p>This historical integrity check does not verify source permissions, independent human review, scientific correctness, collective scientific signoff or ML authorization. It records no declaration.</p>
+        <button className={button} disabled={locked} onClick={() => void showQuality()}>Show verified field report</button>
+        <p className="text-xs">Reads the same local canary and conclusion against these exact hashes; no additional source upload or declaration is sent. Includes recorded human proposals and potentially sensitive small-group summaries. It is not a replacement for the complete offline review report.</p>
+        <details><summary>Byte integrity references</summary><dl className="break-all text-xs"><dt>Canary SHA-256</dt><dd>{evidence.canarySha256}</dd>
+          <dt>Selected checker implementation SHA-256, not runtime attestation</dt><dd>{evidence.implementationSha256}</dd>
+          <dt>Server-observed upload SHA-256</dt><dd>{evidence.inputSha256}</dd></dl></details>
+      </div>}
+      {coverage && <div className="space-y-2" role="status" aria-label="Joint declaration snapshot">
+        <p className="font-semibold">{coverage.account_declarations_complete ? "Account declarations complete for this snapshot" : "Account declarations incomplete for this snapshot"}</p>
+        <dl className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+          {([["Required declarations", coverage.required_declaration_count], ["Matching declarations", coverage.matching_declaration_count],
+            ["Missing declarations", coverage.missing_declaration_count], ["Withdrawn declarations", coverage.withdrawn_declaration_count],
+            ["Stale declarations", coverage.stale_declaration_count]] as const).map(([label, count]) => <div key={label}><dt>{label}</dt><dd>{count.toLocaleString("en-US")}</dd></div>)}
+          <div><dt>Your declaration status</dt><dd>{coverage.own_declaration_status}</dd></div>
+          <div><dt>Conclusion author matches this snapshot</dt><dd>{coverage.conclusion_author_declaration_current ? "Yes" : "No"}</dd></div>
+        </dl>
+        <p className="break-all text-xs">Snapshot started (UTC): {coverage.snapshot_started_at}</p>
+        <p className="text-sm">This historical snapshot can become stale after a withdrawal, participation change or document revision. It is not collective scientific signoff, independent human review verification, source permission or ML authorization. Recheck before relying on these counts.</p>
+      </div>}
+      <h4 className="font-semibold">Exact declaration wording</h4><p className="whitespace-pre-wrap text-sm">{wording.declaration_text}</p>
       <p className="break-all text-xs">{wording.declaration_version} · SHA-256: {wording.declaration_sha256}</p>
       <label className="flex items-start gap-2 text-sm"><input type="checkbox" checked={consent} disabled={locked || !canPreview} onChange={e => { setConsent(e.target.checked); setDraft(null); setConfirmed(false); }} />
         <span>{action === "withdraw" ? "I have reviewed the exact prior declaration, its scope and the withdrawal wording. I intend to withdraw that declaration without erasing its history."
           : "I have read the complete original documents, my declaration scope and the exact wording. I take responsibility for my recorded assessments and limitations."}</span></label>
       <button className={button} disabled={locked || !canPreview || !consent} onClick={() => void preview()}>Preview review declaration</button>
     </section>}
+    {quality && <MlPilotQualityReport key={quality.canarySha256 + quality.conclusionSha256} value={quality} />}
     {draft && <section className={panel} aria-label="Review declaration preview"><h3 ref={previewHeading} tabIndex={-1} className="scroll-mt-24 font-semibold">Exact preview — not yet committed</h3>
       <p className="text-sm">Review the account, action, basis and predecessor. Preserve this original key and hash privately for recovery. Committing repeats server-side checks; the earlier document check is not an approval token.</p>
       <pre className="max-h-96 overflow-auto whitespace-pre-wrap break-all text-xs">{JSON.stringify(draft.result.intent, null, 2)}</pre><p className="break-all text-xs">Intent SHA-256: {draft.recovery.intentSha256}</p>

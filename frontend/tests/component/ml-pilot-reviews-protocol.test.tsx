@@ -3,17 +3,56 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as review from "@/lib/ml-pilot-reviews";
-import { canonical, changed, controls, digest, documents, native, own, recoveryFor, reference, sha } from "../helpers/ml-review-wire";
+import { canonical, changed, controls, coverageReply, digest, documents, native, own, recoveryFor, reference, sha } from "../helpers/ml-review-wire";
 
 beforeEach(() => vi.stubGlobal("crypto", webcrypto));
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 describe("native own-review declaration protocol", () => {
+  it.each([0, 1, 2])("verifies participant %i original joint snapshots without implying scientific acceptance", index => {
+    const p = native.participants[index], basis = review.parseReviewPreflight(p.preflight, p.actor_user_id, reference(p), documents(p));
+    for (const phase of ["initial", "complete", "withdrawn"] as const) {
+      const value = review.parseReviewCoverage(coverageReply(phase, p), p.actor_user_id, reference(p), basis);
+      expect(value.account_declarations_complete).toBe(phase === "complete");
+      expect(value.own_declaration_status).toBe(phase === "initial" ? "missing" : phase === "complete" ? "current" : "withdrawn");
+    }
+  });
+  it.each(["scope", "version", "actor", "reference", "source", "implementation", "record_count", "sum", "negative", "fraction", "required", "complete", "author", "own", "not_required", "date", "scientific", "signoff", "write", "freshness", "extra"])("rejects misleading joint coverage: %s", name => {
+    let raw = changed(coverageReply(), v => {
+      if (name === "scope") v.scope = "approved";
+      if (name === "version") v.version = "old";
+      if (name === "actor") v.actor_user_id = native.participants.find(p => p.actor_user_id !== own.actor_user_id)!.actor_user_id;
+      if (name === "reference") v.participant_sha256 = "f".repeat(64);
+      if (name === "source") v.input_pins.reviews_file_sha256 = "f".repeat(64);
+      if (name === "implementation") v.implementation_sha256 = "f".repeat(64);
+      if (name === "record_count") v.review_record_count = 60;
+      if (name === "sum") v.missing_declaration_count = 1;
+      if (name === "negative") v.stale_declaration_count = -1;
+      if (name === "required") v.required_declaration_count = 31;
+      if (name === "complete") v.account_declarations_complete = false;
+      if (name === "author") v.conclusion_author_declaration_current = false;
+      if (name === "own") v.own_declaration_status = "missing";
+      if (name === "not_required") v.own_declaration_status = "not_required";
+      if (name === "date") v.snapshot_started_at = "2026-02-30T00:00:00Z";
+      if (name === "scientific") v.scientific_pilot_accepted = true;
+      if (name === "signoff") v.current_collective_signoff_verified = true;
+      if (name === "write") v.attestation_recorded = true;
+      if (name === "freshness") v.historical_snapshot_only = false;
+      if (name === "extra") v.other_reviewer_ids = ["PRIVATE_CANARY"];
+    });
+    if (name === "fraction") raw = raw.replace('"matching_declaration_count":3', '"matching_declaration_count":2.5');
+    const basis = review.parseReviewPreflight(own.preflight, own.actor_user_id, reference(), documents());
+    expect(() => review.parseReviewCoverage(raw, own.actor_user_id, reference(), basis)).toThrow();
+  });
   it("pins current original replies without resealing historical evidence", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.delivery20260915.wire.json")))).toBe("d030bbd433020f245221b3fb3aec21a15231d5b7fec6b49537d2576841ef680c");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.batch75.wire.json")))).toBe("4c55cf055b23be8554cf3eceb9edcda20bb4f3657b0d1c8eeacdc6f261d517b8");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.batch73.wire.json")))).toBe("9efd63d963bd8a4c0a2ecb8c2294ea4cd615833a35a9f8d49acd49e560c90bb0");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.batch74.wire.json")))).toBe("f5f3f68dbf52e65eaf713e243b2015420c544415c00e498fce7b6982eb135cb6");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.batch72.wire.json")))).toBe("cd45d0b65b86fc9ea2d33e90ff3b150ebd4c392512e956e2810156cea1e30c3b");
     expect(native.capture_test_path).toBe("api/tests/test_ml_pilot_attestations.py"); expect(native.fixture_notice).toContain("synthetic, not a real independent review");
-    expect(native.source_pins).toHaveLength(586);
-    expect(new Set(native.source_pins.map(p => p.path)).size).toBe(586);
+    expect(native.source_pins).toHaveLength(593);
+    expect(new Set(native.source_pins.map(p => p.path)).size).toBe(593);
+    expect(native.coverage).toHaveLength(9);
     for (const p of native.source_pins) { expect(p.path).toMatch(/^(api|scripts)\/[A-Za-z0-9_./-]+\.(py|schema\.json)$/); expect(p.path.split("/")).not.toContain("..");
       expect(sha(readFileSync(resolve(process.cwd(), "..", p.path))), p.path).toBe(p.sha256); }
     expect(native.participants).toHaveLength(3);

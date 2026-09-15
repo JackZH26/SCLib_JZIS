@@ -48,7 +48,11 @@ bash scripts/setup_vps2.sh
 
 The script is idempotent: it installs Docker if missing, clones/pulls
 the repo, templates `.env`, runs `certbot --nginx -d api.jzis.org`,
-and installs `nginx/sclib.conf` into `/etc/nginx/conf.d/`.
+and installs the absent private-intake policy into `/etc/nginx/snippets/`
+before `nginx/sclib.conf` into `/etc/nginx/conf.d/`. Existing operator-managed
+copies are not overwritten; review both files together for an upgrade.
+Follow [Private research ingress](PRIVATE_INGRESS.md) before enabling private
+source intake. A local rehearsal is not permission to reload this live host.
 
 ## Manual steps after bootstrap
 
@@ -63,18 +67,31 @@ and installs `nginx/sclib.conf` into `/etc/nginx/conf.d/`.
    to its content: `Sitemap: https://jzis.org/sclib/sitemap.xml`. Do not
    replace or proxy the root file: it may contain rules for other JZIS sites.
 4. `nginx -t && systemctl reload nginx`
-5. Start the stack:
+5. Prepare the approved release and start only its database/cache dependencies.
+   These are operator deployment instructions, not local test commands. Complete
+   the release, backup and identity preflights described below first. Provision
+   `/etc/sclib/credentials/migration-database-url` separately with the approved
+   migration-only PostgreSQL role; never reuse the API credential or grant it
+   schema privileges to make a deployment succeed.
    ```bash
    # Use the three signed digests from one successful Release images run.
    export SCLIB_FRONTEND_IMAGE='ghcr.io/jackzh26/sclib-frontend@sha256:<digest>'
    export SCLIB_API_IMAGE='ghcr.io/jackzh26/sclib-api@sha256:<digest>'
    export SCLIB_INGESTION_IMAGE='ghcr.io/jackzh26/sclib-ingestion@sha256:<digest>'
-   docker compose --profile observability \
-     -f docker-compose.yml -f docker-compose.prod.yml up -d --no-build
+   compose=(docker compose --profile observability \
+     -f docker-compose.yml -f docker-compose.prod.yml)
+   test -s /etc/sclib/credentials/migration-database-url &&
+   "${compose[@]}" up -d --no-build --wait --wait-timeout 60 postgres redis
    ```
-6. Run Alembic migrations:
+6. Run the migration-only service, then check schema compatibility using the
+   new API image's runtime identity **before replacing the application**. Stop
+   if any command fails; do not continue to the next line manually. This is the
+   same ordering used by `.github/workflows/deploy.yml`.
    ```bash
-   docker compose exec api alembic upgrade head
+   "${compose[@]}" run --rm --no-deps migration &&
+   "${compose[@]}" run --rm --no-deps api python -m services.schema_lifecycle check &&
+   "${compose[@]}" up -d --no-build --wait --wait-timeout 180 \
+     postgres redis api frontend prometheus alertmanager grafana
    ```
 7. Smoke-test:
    ```bash

@@ -189,10 +189,19 @@ def validate_test_environment(
         now = time.time()
         if (manifest["schema"] != SCHEMA or manifest["run_id"] != run_id
                 or manifest["root"] != str(Path(env["SCLIB_TEST_CAPABILITY"]).parent)
-                or not manifest["created_at"] <= now <= manifest["expires_at"]
-                or manifest["expires_at"] - manifest["created_at"] > 7200
                 or not isinstance(manifest["runner_pid"], int) or manifest["runner_pid"] <= 1):
-            refuse("sentinel-identity-or-lifetime-invalid")
+            refuse("sentinel-identity-invalid")
+        # Keep the original inclusive wall-clock interval and maximum lifetime.
+        # Static, value-free reasons distinguish a clock/expiry refusal from an
+        # identity mismatch without disclosing a capability, DSN or credential.
+        if not manifest["created_at"] <= now <= manifest["expires_at"]:
+            if now < manifest["created_at"]:
+                refuse("sentinel-not-yet-valid")
+            if now > manifest["expires_at"]:
+                refuse("sentinel-expired")
+            refuse("sentinel-lifetime-invalid")
+        if manifest["expires_at"] - manifest["created_at"] > 7200:
+            refuse("sentinel-lifetime-too-long")
         os.kill(manifest["runner_pid"], 0)
         db_url = env.get("DATABASE_URL", "")
         redis = env.get("REDIS_URL", "")

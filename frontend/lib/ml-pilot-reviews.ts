@@ -6,10 +6,13 @@ import { boundedPilotOperation, pilotBase64, pilotBytesHash, pilotHash as hash, 
 
 export const REVIEW_VERSION = "ml08-review-attestation/1.0.0";
 export const REVIEW_INTENT = "ml08-review-attestation-intent/1.0.0";
+export const REVIEW_COVERAGE_VERSION = "ml08-review-coverage/1.0.0";
 export const DECLARATION_VERSION = "ml08-own-review-declaration/1.0.0";
 export const DECLARATION_HASH = "a4c700bf0217f6af942a7370a6993e997477c9e4f69c0afb98c305aab6b48fc4";
 export const REVIEW_FILES = ["selection", "protocol", "reviews", "conclusion"] as const;
 export const REVIEW_UPLOAD_LIMIT = 4 * Math.ceil(PILOT_FILE_LIMIT / 3) * 4 + 65536;
+export const REVIEW_EVIDENCE_TYPE = "application/vnd.sclib.ml08-evidence-v1";
+export const REVIEW_EVIDENCE_LIMIT = new TextEncoder().encode("SCLIB-ML08-EVIDENCE-1\n").length + 9 + 129 * 1024 * 1024;
 type Obj = Record<string, unknown>;
 export type ReviewRef = { participant_id: string; participant_sha256: string; registration_sha256: string };
 export type ReviewAction = "attest" | "withdraw";
@@ -32,6 +35,12 @@ const controlFields = [...referenceFields, "request_key", "reason_code", "supers
 const intentFields = ["version", "actor_user_id", "action", "participation_id", "participation_sha256", "basis_sha256", ...controlFields];
 const basisFields = ["input_pins", "selection_sha256", "review_log_sha256", "document_projection_sha256", "implementation_sha256", "selected_candidates",
   "review_record_count", "own_review_record_count", "own_review_records_sha256", "conclusion_author_is_current_account", "recorded_recommendation", "declared_canary_sha256"];
+const commonBasisFields = basisFields.filter(k => !["own_review_record_count", "own_review_records_sha256", "conclusion_author_is_current_account"].includes(k));
+const coverageCounts = ["matching_declaration_count", "missing_declaration_count", "withdrawn_declaration_count", "stale_declaration_count"] as const;
+export type ReviewCoverage = Record<typeof coverageCounts[number], number> & {
+  required_declaration_count: number; account_declarations_complete: boolean; conclusion_author_declaration_current: boolean;
+  own_declaration_status: "current" | "missing" | "withdrawn" | "stale" | "not_required"; snapshot_started_at: string;
+};
 const baseFlags = ["scientific_acceptance", "scientific_pilot_accepted", "human_identity_verified", "scientific_reviewer_independence_verified",
   "source_permissions_verified", "actual_event_existence_verified", "external_review_chronology_verified", "public_release", "ml_training_approved",
   "run_authorization_granted", "source_document_bytes_retained"];
@@ -104,6 +113,29 @@ export function parseReviewPreflight(raw: string, actorId: string, ref: ReviewRe
     && b.selection_sha256 === docs.selection_sha256 && b.review_log_sha256 === docs.review_log_sha256);
   return b;
 }
+export function parseReviewCoverage(raw: string, actorId: string, ref: ReviewRef, expected: ReviewBasis): ReviewCoverage {
+  requireValue(uuid(actorId) && validReviewRef(ref)); const v = parse(raw);
+  const checked = ["historical_snapshot_only", "current_accounts_and_roles_checked", "declared_review_times_fit_recorded_participation", "documentary_binding_checked", "latest_declaration_heads_checked"];
+  requireValue(closed(v, ["version", "actor_user_id", ...referenceFields, ...commonBasisFields, ...boundaryFields, ...checked,
+    "snapshot_started_at", "attestation_recorded", "required_declaration_count", ...coverageCounts, "account_declarations_complete", "conclusion_author_declaration_current", "own_declaration_status"])
+    && v.version === REVIEW_COVERAGE_VERSION && v.scope === "private_same_snapshot_account_declaration_coverage_only"
+    && noAuthority({ ...v, scope: "authenticated_own_review_declaration_not_collective_pilot_acceptance" }) && checked.every(k => v[k] === true)
+    && v.attestation_recorded === false && v.actor_user_id === actorId && matchesRef(v, ref)
+    && commonBasisFields.every(k => importCanonical(v[k]) === importCanonical(expected[k as keyof ReviewBasis]))
+    && integer(v.required_declaration_count, 2, 30) && coverageCounts.every(k => integer(v[k], 0, v.required_declaration_count as number))
+    && coverageCounts.reduce((sum, k) => sum + (v[k] as number), 0) === v.required_declaration_count
+    && typeof v.account_declarations_complete === "boolean" && v.account_declarations_complete === (v.matching_declaration_count === v.required_declaration_count)
+    && typeof v.conclusion_author_declaration_current === "boolean" && (!v.account_declarations_complete || v.conclusion_author_declaration_current)
+    && ["current", "missing", "withdrawn", "stale", "not_required"].includes(v.own_declaration_status as string));
+  const status = v.own_declaration_status;
+  requireValue((status === "not_required") === (expected.own_review_record_count === 0 && !expected.conclusion_author_is_current_account)
+    && (status === "not_required" || (v[status === "current" ? "matching_declaration_count" : `${status}_declaration_count`] as number) > 0)
+    && (!expected.conclusion_author_is_current_account || v.conclusion_author_declaration_current === (status === "current")));
+  const when = v.snapshot_started_at;
+  requireValue(typeof when === "string" && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,6})?(?:Z|\+00:00)$/.test(when) && !when.startsWith("0000")
+    && Number.isFinite(Date.parse(when)) && new Date(when).toISOString().slice(0, 19) === when.slice(0, 19));
+  return v as unknown as ReviewCoverage;
+}
 export async function parseReviewResult(raw: string, recovery: { actorId: string; requestKey: string; intentSha256?: string }, committed: boolean,
   expected?: { controls: ReviewControl; action: ReviewAction; basis: ReviewBasis; predecessor: ReviewRecord | null }): Promise<ReviewResult> {
   requireValue(uuid(recovery.actorId) && key(recovery.requestKey) && (recovery.intentSha256 === undefined || hash(recovery.intentSha256)));
@@ -127,15 +159,18 @@ export async function parseReviewResult(raw: string, recovery: { actorId: string
   return r as unknown as ReviewResult;
 }
 
-type Endpoint = "/review-attestations/declaration" | "/review-attestations/inspect" | "/review-attestations/outcome" | "/review-attestations/withdraw" | "/review-attestations" | "/review-preflight";
+type Endpoint = "/review-attestations/evidence" | "/review-attestations/declaration" | "/review-attestations/inspect" | "/review-attestations/outcome" | "/review-attestations/withdraw" | "/review-attestations/coverage" | "/review-attestations" | "/review-preflight";
 async function wire(path: Endpoint, value?: object, caller?: AbortSignal, ref?: ReviewRef) {
-  const payload = value === undefined ? undefined : JSON.stringify(value);
-  requireValue(payload === undefined || new TextEncoder().encode(payload).length <= (path === "/review-attestations" || path === "/review-preflight" ? REVIEW_UPLOAD_LIMIT : 8192));
+  const evidence = path === "/review-attestations/evidence";
+  requireValue(!evidence || value instanceof Blob && ref && validReviewRef(ref) && value.size > 0 && value.size <= REVIEW_EVIDENCE_LIMIT
+    && value.type === REVIEW_EVIDENCE_TYPE);
+  const payload = evidence ? value as Blob : value === undefined ? undefined : JSON.stringify(value);
+  requireValue(payload === undefined || payload instanceof Blob || new TextEncoder().encode(payload).length <= (["/review-attestations", "/review-preflight", "/review-attestations/coverage"].includes(path) ? REVIEW_UPLOAD_LIMIT : 8192));
   return boundedPilotOperation(async (signal, interrupted) => {
     let reader: ReadableStreamDefaultReader<Uint8Array> | undefined, stream: ReadableStream<Uint8Array> | null = null;
     try {
       const response = await Promise.race([fetch(`${API_BASE}/ml/pilots${path}`, { method: payload === undefined ? "GET" : "POST", body: payload,
-        credentials: "include", cache: "no-store", redirect: "error", signal, headers: { Accept: "application/json", ...(payload === undefined ? {} : { "Content-Type": "application/json" }),
+        credentials: "include", cache: "no-store", redirect: "error", signal, headers: { Accept: "application/json", ...(payload === undefined ? {} : { "Content-Type": evidence ? REVIEW_EVIDENCE_TYPE : "application/json" }),
           ...(ref ? { "X-SCLib-Participant-Id": ref.participant_id, "X-SCLib-Participant-Sha256": ref.participant_sha256 } : {}) } }), interrupted]);
       stream = response.body;
       if (!response.ok) throw new ApiError(response.status, null, "Private review request unavailable");
@@ -152,6 +187,7 @@ async function wire(path: Endpoint, value?: object, caller?: AbortSignal, ref?: 
     finally { if (reader) void reader.cancel().catch(() => {}); else void stream?.cancel().catch(() => {}); }
   }, caller);
 }
+export const sendReviewEvidence = (ref: ReviewRef, payload: Blob, signal?: AbortSignal) => wire("/review-attestations/evidence", payload, signal, ref);
 export const getReviewWording = (signal?: AbortSignal) => wire("/review-attestations/declaration", undefined, signal);
 export const inspectReview = (ref: ReviewRef, signal?: AbortSignal) => { requireValue(validReviewRef(ref)); return wire("/review-attestations/inspect", ref, signal); };
 export const recoverReview = (ref: ReviewRecovery, signal?: AbortSignal) => {
@@ -185,6 +221,10 @@ function checkDocuments(docs: ReviewDocuments) {
 export function checkReviewDocuments(ref: ReviewRef, docs: ReviewDocuments, signal?: AbortSignal) {
   requireValue(validReviewRef(ref)); checkDocuments(docs);
   return wire("/review-preflight", { version: "ml08-review-upload/1.0.0", ...docs, parameters: ref }, signal, ref);
+}
+export function checkReviewCoverage(ref: ReviewRef, docs: ReviewDocuments, signal?: AbortSignal) {
+  requireValue(validReviewRef(ref)); checkDocuments(docs);
+  return wire("/review-attestations/coverage", { version: "ml08-review-upload/1.0.0", ...docs, parameters: ref }, signal, ref);
 }
 async function send(action: ReviewAction, controls: ReviewControl, docs: ReviewDocuments | null, pin: string | null, signal?: AbortSignal) {
   requireValue(validControl(controls) && ["attest", "withdraw"].includes(action) && (pin === null || hash(pin)));

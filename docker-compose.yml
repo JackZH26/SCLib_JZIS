@@ -87,6 +87,8 @@ services:
   ingestion:
     build: ./ingestion
     container_name: sclib-ingestion
+    entrypoint: ["/bin/sh", "/app/scripts/ingestion_pause_guard.sh"]
+    command: ["sclib-ingest", "--mode", "smoke", "--limit", "30"]
     # One-shot job: invoked via `docker compose run --rm ingestion ...`,
     # never as a daemon. `profiles` keeps it out of `docker compose up`.
     profiles: ["tools"]

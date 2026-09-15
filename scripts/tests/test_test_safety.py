@@ -166,6 +166,40 @@ class TestSafetyTests(unittest.TestCase):
         with self.assertRaises(safety.UnsafeTestEnvironment):
             safety.validate_test_environment(self.env, redis_url="redis://other")
 
+    def test_identity_and_lifetime_reasons_are_static_and_precede_runtime_checks(self):
+        baseline = {**self.manifest, "created_at": 900.0, "expires_at": 1500.0}
+        cases = (
+            ({"run_id": "d" * 32}, "sentinel-identity-invalid"),
+            ({"root": "/not-this-owned-root"}, "sentinel-identity-invalid"),
+            ({"runner_pid": 0}, "sentinel-identity-invalid"),
+            ({"created_at": 1000.001}, "sentinel-not-yet-valid"),
+            ({"expires_at": 999.999}, "sentinel-expired"),
+            ({"created_at": 999.0, "expires_at": 8200.0}, "sentinel-lifetime-too-long"),
+            ({"created_at": float("nan")}, "sentinel-lifetime-invalid"),
+        )
+        for changes, reason in cases:
+            with self.subTest(reason=reason):
+                self.manifest = {**baseline, **changes}
+                self.write_manifest()
+                with (patch.object(safety.time, "time", return_value=1000.0),
+                      patch.object(safety, "assert_service_runtime") as runtime,
+                      self.assertRaises(safety.UnsafeTestEnvironment) as caught):
+                    safety.validate_test_environment(self.env)
+                runtime.assert_not_called()
+                self.assertEqual(
+                    str(caught.exception),
+                    f"Unsafe test environment [{reason}]. Use scripts/run_disposable_tests.py; "
+                    "no database or Redis connection is permitted.",
+                )
+                self.assertNotIn(self.password, str(caught.exception))
+
+    def test_lifetime_boundaries_remain_inclusive_without_any_grace_period(self):
+        self.manifest.update(created_at=900.0, expires_at=1500.0)
+        self.write_manifest()
+        for now in (900.0, 1500.0):
+            with self.subTest(now=now), patch.object(safety.time, "time", return_value=now):
+                self.assertEqual(safety.validate_test_environment(self.env).run_id, self.run_id)
+
     def test_unowned_process_wrong_data_directory_and_wrong_port_fail(self):
         for identity in ((1, self.process(100)[1]),
                          (os.getpid(), "/fixture/postgres -D /existing/data -p 25432"),

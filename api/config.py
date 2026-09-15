@@ -123,6 +123,8 @@ class Settings(BaseSettings):
     ml_pilot_registration_enabled: bool = False
     ml_pilot_review_intake_enabled: bool = False
     ml_pilot_attestations_enabled: bool = False
+    # Separate authority to receive ephemeral source/context bytes, not a licence.
+    ml_pilot_evidence_intake_enabled: bool = False
     # RPS bundles are inert until a curator pins a reviewed manifest digest.
     discovery_rps_public_enabled: bool = False
     discovery_rps_release_dir: str = "/data/sclib/discovery/rps"

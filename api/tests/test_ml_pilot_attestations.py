@@ -107,8 +107,56 @@ async def test_actual_three_account_preview_commit_and_exact_recovery(client, db
         "capture_test_path": "api/tests/test_ml_pilot_attestations.py",
         "source_pins": pins(),
         "participants": [],
+        "coverage": [],
     }
     f, first, _, at = await prepared(db_session)
+
+    async def capture_coverage(phase, member):
+        before = await state(db_session)
+        await db_session.rollback()
+        response = await client.post(
+            URL + "/coverage", json=packet(f, member, at), headers=acceptance_headers(member)
+        )
+        assert response.status_code == 200, response.text
+        value = response.json()
+        assert value["required_declaration_count"] == 3
+        assert (
+            sum(
+                value[name]
+                for name in (
+                    "matching_declaration_count",
+                    "missing_declaration_count",
+                    "withdrawn_declaration_count",
+                    "stale_declaration_count",
+                )
+            )
+            == 3
+        )
+        if phase == "initial":
+            assert value["missing_declaration_count"] == 3
+        if phase == "complete":
+            assert value["account_declarations_complete"]
+            assert value["conclusion_author_declaration_current"]
+        if phase == "withdrawn":
+            assert value["own_declaration_status"] == "withdrawn"
+            assert not value["account_declarations_complete"]
+        for key, expected in service.boundary().items():
+            if key != "scope":
+                assert value[key] == expected
+        assert response.headers["cache-control"] == "private, no-store"
+        for other in first["participants"]:
+            if other["id"] != member["id"]:
+                assert other["user_id"] not in response.text
+                assert other["id"] not in response.text
+        assert "PRIVATE_SYNTHETIC" not in response.text
+        assert await state(db_session) == before
+        await db_session.rollback()
+        capture["coverage"].append(
+            {"phase": phase, "actor_user_id": member["user_id"], "raw": response.text}
+        )
+
+    for member in first["participants"]:
+        await capture_coverage("initial", member)
     records = []
     for member in first["participants"]:
         wording = await client.get(URL + "/declaration", headers=auth(member["user_id"]))
@@ -183,6 +231,8 @@ async def test_actual_three_account_preview_commit_and_exact_recovery(client, db
     assert len({r["basis"]["document_projection_sha256"] for r in records}) == 1
     assert sum([await count(db_session, member) for member in first["participants"]]) == 3
     await db_session.rollback()
+    for member in first["participants"]:
+        await capture_coverage("complete", member)
     for member, record, captured in zip(
         first["participants"], records, capture["participants"], strict=True
     ):
@@ -235,6 +285,7 @@ async def test_actual_three_account_preview_commit_and_exact_recovery(client, db
             withdrawal_inspection=inspected.text,
             withdrawal_recovered=recovered.text,
         )
+        await capture_coverage("withdrawn", member)
     assert capture["source_pins"] == pins()
     (tmp_path / "ml-pilot-attestations-wire.json").write_text(
         json.dumps(capture, sort_keys=True) + "\n"

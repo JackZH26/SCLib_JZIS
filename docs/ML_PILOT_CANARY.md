@@ -1,6 +1,6 @@
 # Private ML08 canary construction and replay
 
-Protocol: `ml08-canary/1.1.0`. This implements the artifact step after the
+Protocol: `ml08-canary/1.2.0`. This implements the artifact step after the
 [ML08 review/accounting protocol](pilot/ML08_Pilot_Protocol.md), not approval of
 that proposed protocol or evidence that real human reviews have occurred.
 
@@ -11,9 +11,10 @@ review ledger, then rebuild it independently and bind the final conclusion to
 its exact bytes. No source permission, scientific acceptance, human identity,
 reviewer independence or model execution is authenticated by this command.
 
-Version 1.1.0 uses the API-packaged `services.ml_pilot_accounting` kernel and
-`services.ml_pilot_documents` byte parser. Its source inventory also pins those
-two modules and the installed `ml08_pilot.schema.json` resource. The selection,
+Version 1.2.0 shares the API-packaged `services.ml_pilot_canary` compiler between
+the offline CLI and the isolated website checker. Its inventory pins that pure
+compiler, `ml_pilot_accounting.py`, `ml_pilot_documents.py` and the installed
+`ml08_pilot.schema.json` resource by basename and exact bytes. The selection,
 review and conclusion input schemas remain 1.0.0; their scientific accounting
 rules are unchanged. JSONL is delimited by physical LF bytes, preserving literal
 U+2028/U+2029 inside quoted source text. Input JSON now receives the shared
@@ -21,11 +22,19 @@ U+2028/U+2029 inside quoted source text. Input JSON now receives the shared
 
 Old canaries and HTML reports remain immutable historical artifacts. Replay
 them with their originally pinned implementation; current-code replay deliberately
-rejects a changed code inventory. A new 1.1.0 canary needs fresh construction,
+rejects a changed code inventory. A new canary version needs fresh construction,
 independently retained pins and a conclusion bound to its new bytes. Do not edit
 an old artifact's version or reseal its outer hash to make it appear current.
+For 1.2.0, build a fresh canary and bind a fresh conclusion/report and new account
+declarations to it. The portable canary no longer includes repository paths or
+Python runtime identity in its hashed implementation inventory: matching selected
+package bytes permit CLI/installed-worker replay without pretending to attest
+the runtime, dependencies, operating system or the complete executable image.
+The enclosing context scope says `explicit_supplied_bytes` rather than
+`local_bytes`, covering both offline files and explicitly uploaded byte streams.
 The [installed ML08 intake contract](ML_PILOT_DOCUMENT_INTAKE.md) describes the
-packaging boundary and the separate, still-unimplemented authentication gates.
+packaging boundary. [Authenticated evidence intake](ML_PILOT_EVIDENCE.md) adds a
+separate, default-off account and byte-integrity check, not scientific acceptance.
 
 ## Inputs and independent anchors
 
@@ -150,7 +159,7 @@ traversal are refused. An empty evidence directory is valid only when the
 complete review ledger requires no context files, for example an all-failed
 cohort. The
 existing no-clobber writer preserves owned-inode cleanup and unknown-outcome
-reporting. Code/Python observations pin selected sources, not loaded-code
+reporting. Code observations pin selected sources, not loaded-code
 identity, installed dependency parity or a complete execution-image attestation.
 
 Actual selection/protocol approval, current source-access authority, real

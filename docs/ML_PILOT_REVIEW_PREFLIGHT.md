@@ -16,6 +16,9 @@ The English [own-review workbench](ML_PILOT_ATTESTATIONS.md) at
 account/document scope before declaration consent. The separate participation
 workbench handles protocol participation. Preflight remains read-only and is
 never accepted by the declaration write endpoint as a reusable approval token.
+The separate `/review-attestations/coverage` endpoint reruns the original-file
+worker and checks the latest required account declarations in one read-only
+snapshot; it does not accept this preflight response as a substitute for originals.
 
 Use the intended participant's authenticated session and exactly one of each
 `X-SCLib-Participant-Id` and `X-SCLib-Participant-Sha256` header. The server

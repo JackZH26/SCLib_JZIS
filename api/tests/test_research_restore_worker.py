@@ -7,7 +7,7 @@ tests migration, actual dump/restore and a fresh index in independent processes.
 from __future__ import annotations
 
 from copy import deepcopy
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import pytest
 import research_restore_worker as worker
@@ -15,18 +15,36 @@ import sqlalchemy as sa
 from research_restore_index import verify_index
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.db import get_engine
+from models.db import Base, get_engine
 from services.ml_coordinate_features import coordinate_features
 from services.research_freeze import inspect_research_release
 
 
-async def test_actual_typed_source_capsule_access_and_readonly_index_rebuild():
+@pytest.mark.parametrize("with_unrelated_completed_run", [False, True])
+async def test_actual_typed_source_capsule_access_and_readonly_index_rebuild(with_unrelated_completed_run):
     engine = get_engine().execution_options(isolation_level="SERIALIZABLE")
     try:
         async with AsyncSession(engine) as db:
             async with db.begin():
                 await db.execute(sa.text("SET LOCAL TIME ZONE 'UTC'"))
                 await db.execute(sa.text("SET LOCAL statement_timeout='10000ms'"))
+                run_table = Base.metadata.tables["research_runs"]
+                unrelated_id = None
+                unrelated_before = None
+                if with_unrelated_completed_run:
+                    # The version label is intentionally shared by independent
+                    # synthetic fixtures; it is not this capsule's run identity.
+                    unrelated_id = uuid4()
+                    await db.execute(run_table.insert().values(
+                        id=unrelated_id, run_kind="dfpt", status="completed",
+                        code_version="synthetic-not-executed/1",
+                        settings_schema_version="restore-synthetic/1",
+                        settings={"synthetic": True, "actual_calculation_executed": False},
+                        record_sha256=worker._sha(str(unrelated_id).encode()),
+                    ))
+                    unrelated_before = (await db.execute(sa.select(
+                        sa.func.to_jsonb(run_table.table_valued())
+                    ).where(run_table.c.id == unrelated_id))).scalar_one()
                 seeded = await worker.seed_rows(db, uuid4().hex)
                 release = seeded["release"]
                 inspected = await inspect_research_release(db, release_id=release["release_id"],
@@ -36,8 +54,17 @@ async def test_actual_typed_source_capsule_access_and_readonly_index_rebuild():
                     "material_claims", "material_states", "research_runs", "structure_records",
                     "event_properties", "research_samples", "works", "ml_examples", "ml_example_inputs",
                 }
-                runs = (await db.execute(sa.text("SELECT status,settings FROM research_runs WHERE code_version='synthetic-not-executed/1'"))).all()
-                assert runs and all(status == "planned" and settings["actual_calculation_executed"] is False for status, settings in runs)
+                # Run identity comes from this verified dependency closure,
+                # not a non-unique code/version label shared by other fixtures.
+                run_ids = {UUID(row["row_id"]) for row in release["manifest"]["rows"]
+                           if row["table"] == "research_runs"}
+                assert len(run_ids) == 1 and unrelated_id not in run_ids
+                runs = (await db.execute(sa.select(
+                    run_table.c.id, run_table.c.status, run_table.c.settings, run_table.c.code_version
+                ).where(run_table.c.id.in_(run_ids)))).all()
+                assert {row.id for row in runs} == run_ids
+                assert all(row.status == "planned" and row.settings["actual_calculation_executed"] is False
+                           and row.code_version == "synthetic-not-executed/1" for row in runs)
                 coordinates = next(payload for payload in seeded["artifact_bytes"].values()
                                    if b'"version":"sclib-coordinate/1.0.0"' in payload)
                 result = coordinate_features(coordinates, expected_sha256=worker._sha(coordinates), source_formula="MgB2",
@@ -64,6 +91,10 @@ async def test_actual_typed_source_capsule_access_and_readonly_index_rebuild():
                 with pytest.raises(ValueError):
                     await verify_index(db, broken)
                 assert await worker.sql_snapshot(db) == before
+                if unrelated_id is not None:
+                    assert (await db.execute(sa.select(
+                        sa.func.to_jsonb(run_table.table_valued())
+                    ).where(run_table.c.id == unrelated_id))).scalar_one() == unrelated_before
     finally:
         await engine.dispose()
 

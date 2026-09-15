@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./public-site-fixture";
 
 test("registration minimizes required personal data", async ({ page }) => {
   await page.goto("register");

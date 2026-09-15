@@ -29,6 +29,7 @@ from tests.test_research_freeze import state
 def enabled(monkeypatch):
     monkeypatch.setenv("ML_PILOT_REGISTRATION_ENABLED", "true")
     monkeypatch.setenv("ML_PILOT_REVIEW_INTAKE_ENABLED", "true")
+    monkeypatch.setenv("ML_PILOT_ATTESTATIONS_ENABLED", "true")
     get_settings.cache_clear()
     yield
     get_settings.cache_clear()
@@ -236,7 +237,10 @@ async def test_real_four_file_preflight_binds_each_account_without_any_database_
         "duplicate_header",
     ],
 )
-async def test_unadmitted_body_and_worker_are_never_entered(client, db_session, monkeypatch, case):
+@pytest.mark.parametrize("endpoint", ["/review-preflight", "/review-attestations/coverage"])
+async def test_unadmitted_body_and_worker_are_never_entered(
+    client, db_session, monkeypatch, case, endpoint
+):
     f, first, _, at = await prepared(db_session)
     member = first["participants"][0]
     headers = acceptance_headers(member)
@@ -270,7 +274,7 @@ async def test_unadmitted_body_and_worker_are_never_entered(client, db_session, 
     if case == "duplicate_header":
         headers = [*headers.items(), ("X-SCLib-Participant-Id", member["id"])]
     response = await client.post(
-        BASE + "/review-preflight", content=b"PRIVATE_SYNTHETIC_BYTES", headers=headers
+        BASE + endpoint, content=b"PRIVATE_SYNTHETIC_BYTES", headers=headers
     )
     assert response.status_code == expected, response.text
     assert "PRIVATE_SYNTHETIC_BYTES" not in response.text
@@ -288,8 +292,9 @@ async def test_unadmitted_body_and_worker_are_never_entered(client, db_session, 
         "unregistered_alias",
     ],
 )
+@pytest.mark.parametrize("endpoint", ["/review-preflight", "/review-attestations/coverage"])
 async def test_exact_registration_and_full_denominator_are_not_replaced_by_self_consistent_files(
-    client, db_session, case
+    client, db_session, case, endpoint
 ):
     f, first, heads, at = await prepared(db_session)
     member = first["participants"][0]
@@ -328,16 +333,15 @@ async def test_exact_registration_and_full_denominator_are_not_replaced_by_self_
             lambda c: c.update(review_log_sha256=payload["review_log_sha256"]),
         )
         expected = 400
-    response = await client.post(
-        BASE + "/review-preflight", json=payload, headers=acceptance_headers(member)
-    )
+    response = await client.post(BASE + endpoint, json=payload, headers=acceptance_headers(member))
     assert response.status_code == expected, response.text
     assert "PRIVATE_SYNTHETIC" not in response.text
 
 
 @pytest.mark.parametrize("case", ["session", "own_role", "other_role", "participation"])
+@pytest.mark.parametrize("endpoint", ["/review-preflight", "/review-attestations/coverage"])
 async def test_fresh_snapshot_after_actual_worker_rechecks_session_roles_and_participation(
-    client, db_session, monkeypatch, case
+    client, db_session, monkeypatch, case, endpoint
 ):
     f, first, heads, at = await prepared(db_session)
     member = first["participants"][0]
@@ -371,15 +375,16 @@ async def test_fresh_snapshot_after_actual_worker_rechecks_session_roles_and_par
 
     monkeypatch.setattr(router.review_worker, "check_in_worker", changed)
     response = await client.post(
-        BASE + "/review-preflight", json=packet(f, member, at), headers=acceptance_headers(member)
+        BASE + endpoint, json=packet(f, member, at), headers=acceptance_headers(member)
     )
     assert response.status_code == (409 if case == "participation" else 403), response.text
     assert "x-operation-state" not in response.headers  # This endpoint never starts a commit.
 
 
 @pytest.mark.parametrize("in_gap", [False, True])
+@pytest.mark.parametrize("endpoint", ["/review-preflight", "/review-attestations/coverage"])
 async def test_review_times_use_actual_participation_intervals_not_just_the_latest_acceptance(
-    client, db_session, in_gap
+    client, db_session, in_gap, endpoint
 ):
     f, first, heads, old_at = await prepared(db_session)
     member = next(m for m in first["participants"] if m["roles"] == ["primary"])
@@ -397,7 +402,5 @@ async def test_review_times_use_actual_participation_intervals_not_just_the_late
     end = await db_session.scalar(sa.select(sa.func.clock_timestamp()))
     await db_session.rollback()
     payload = packet(f, member, gap_at if in_gap else old_at, conclusion_at=end)
-    response = await client.post(
-        BASE + "/review-preflight", json=payload, headers=acceptance_headers(member)
-    )
+    response = await client.post(BASE + endpoint, json=payload, headers=acceptance_headers(member))
     assert response.status_code == (409 if in_gap else 200), response.text

@@ -8,6 +8,11 @@ conclusion, before producing one self-contained English HTML report. This is
 an executable presentation of the recorded pilot, not another approval policy,
 an authenticated signature, a reviewed dataset or a model-training credential.
 
+The website's [verified field summary](ML_PILOT_QUALITY_REPORT.md) is a separate,
+limited view of the same canary/conclusion after authenticated byte replay. It
+does not replace this complete offline report, its typed results, full review
+history, group-by-field timing or independent HTML verification.
+
 ## What the reviewer receives
 
 - Every original selected candidate, in selection order, including inaccessible,

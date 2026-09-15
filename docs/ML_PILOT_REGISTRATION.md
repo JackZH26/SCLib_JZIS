@@ -94,6 +94,8 @@ the feature in production.
 | `POST /participation/accept` | The bound account validates the same files and records its own protocol/role acceptance |
 | `POST /participation/decisions` | The bound account previews/records a decline or withdraws its current acceptance |
 | `POST /review-preflight` | Full review-document/account check used by the own-review workbench; also requires default-off `ML_PILOT_REVIEW_INTAKE_ENABLED`; no signature or write |
+| `POST /review-attestations/coverage` | Same-original, same-snapshot required-account declaration coverage; also requires intake/attestation flags; no collective scientific signoff or write |
+| `POST /review-attestations/evidence` | Exact canary/context streaming byte replay plus a fresh joint account snapshot; additionally requires evidence intake; see [binary contract](ML_PILOT_EVIDENCE.md); no write or scientific acceptance |
 | `POST /inspect` | Owner or participant inspects the committed registration and current account-participation readiness |
 | `POST /registrations/outcome` | Registrar recovers an exact historical registration by original key and intent hash |
 | `POST /participation/outcome` | Participant recovers its own exact historical decision, without re-uploading source files |

@@ -1,10 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
 import type { ReviewAction, ReviewControl } from "@/lib/ml-pilot-reviews";
-import { canonical, documents, own, reference, syntheticReply } from "../helpers/ml-review-wire";
+import { canonical, coverageReply, documents, own, reference, syntheticReply } from "../helpers/ml-review-wire";
+import { evidenceNative, evidenceParts } from "../helpers/ml-evidence-wire";
 
 async function syntheticOnly(page: Page, baseURL: string) {
   const state = { inspection: own.initial, denied: false, sourceIntake: true, checks: 0, previews: 0, commits: 0, outcomes: 0,
-    loseReply: true, blocked: [] as string[], unexpected: [] as string[] };
+    loseReply: true, coverage: 0, coverageDenied: false, blocked: [] as string[], unexpected: [] as string[] };
   const origin = new URL(baseURL).origin, prefix = "/__synthetic_api/v1/ml/pilots";
   let controls: ReviewControl | null = null, action: ReviewAction = "attest", original: any;
   await page.context().route("**/*", async route => {
@@ -23,6 +24,13 @@ async function syntheticOnly(page: Page, baseURL: string) {
       expect(req.postDataJSON()).toEqual({ version: "ml08-review-upload/1.0.0", ...documents(), parameters: reference() });
       expect(req.headers()["x-sclib-participant-id"]).toBe(reference().participant_id);
       expect(req.headers()["x-sclib-participant-sha256"]).toBe(reference().participant_sha256); return fulfill(own.preflight);
+    }
+    if (url.pathname === prefix + "/review-attestations/coverage") {
+      state.coverage++; expect(state.sourceIntake).toBe(true);
+      expect(req.postDataJSON()).toEqual({ version: "ml08-review-upload/1.0.0", ...documents(), parameters: reference() });
+      expect(req.headers()["x-sclib-participant-id"]).toBe(reference().participant_id);
+      expect(req.headers()["x-sclib-participant-sha256"]).toBe(reference().participant_sha256);
+      return state.coverageDenied ? fulfill('{"detail":"PRIVATE_CANARY"}', 409) : fulfill(coverageReply());
     }
     if ([prefix + "/review-attestations", prefix + "/review-attestations/withdraw"].includes(url.pathname)) {
       const body = req.postDataJSON(), withdrawal = url.pathname.endsWith("/withdraw"), params = withdrawal ? body : body.parameters;
@@ -80,6 +88,91 @@ async function noOverflow(page: Page, width: number) {
   expect(v.width).toBe(width); expect(v.document).toBeLessThanOrEqual(width); expect(v.outside).toEqual([]);
 }
 for (const view of [{ name: "desktop", width: 1440, height: 1000 }, { name: "mobile", width: 390, height: 844 }]) {
+  test(`${view.name}: actual native byte replay snapshot never implies scientific approval`, async ({ page, baseURL }, info) => {
+    await page.setViewportSize(view); const origin = new URL(baseURL!).origin, blocked: string[] = [];
+    let checks = 0, denied = false;
+    await page.context().route("**/*", async route => {
+      const req = route.request(), url = new URL(req.url());
+      if (url.origin !== origin) { blocked.push(url.origin); return route.abort("blockedbyclient"); }
+      if (!url.pathname.startsWith("/__synthetic_api/")) return route.continue();
+      const reply = (body: string, status = 200) => route.fulfill({ status, contentType: "application/json", body, headers: { "cache-control": "private, no-store" } });
+      if (url.pathname.endsWith("/auth/me")) return reply(JSON.stringify({ id: evidenceNative.actor_user_id, email: "synthetic@example.invalid", name: "Synthetic", email_verified: true, is_active: true, is_admin: false,
+        is_reviewer: false, auth_provider: "local", avatar_url: null, scopes: [], institution: null, created_at: "2026-09-01T00:00:00Z" }));
+      if (url.pathname.endsWith("/review-attestations/declaration")) return reply(evidenceNative.wording);
+      if (url.pathname.endsWith("/review-attestations/inspect")) { expect(req.postDataJSON()).toEqual(evidenceNative.reference); return reply(evidenceNative.history); }
+      if (url.pathname.endsWith("/review-preflight")) { expect(req.postDataJSON()).toEqual(evidenceNative.upload); return reply(evidenceNative.preflight); }
+      if (url.pathname.endsWith("/review-attestations/evidence")) {
+        checks++; expect(req.headers()["content-type"]).toBe("application/vnd.sclib.ml08-evidence-v1");
+        expect(req.headers()["x-sclib-participant-id"]).toBe(evidenceNative.reference.participant_id);
+        expect(req.postDataBuffer()).toEqual(evidenceParts().raw);
+        return denied ? reply('{"detail":"PRIVATE_CANARY"}', 409) : reply(evidenceNative.complete);
+      }
+      blocked.push(url.pathname); return reply('{"detail":"UNEXPECTED"}', 503);
+    });
+    await page.goto("/dashboard/research/ml-pilot-reviews");
+    const reject = page.getByRole("button", { name: /Reject optional|Reject all|Reject/i }); if (await reject.count()) await reject.first().click();
+    const ref = evidenceNative.reference;
+    await page.getByLabel("Participant UUID", { exact: true }).fill(ref.participant_id);
+    await page.getByLabel("Participant record SHA-256", { exact: true }).fill(ref.participant_sha256);
+    await page.getByLabel("Registration record SHA-256", { exact: true }).fill(ref.registration_sha256);
+    await page.getByRole("button", { name: "Inspect own declaration history", exact: true }).click();
+    await page.getByRole("combobox", { name: "Review action" }).selectOption("attest");
+    for (const [k, label] of [["selection", "Original selection file"], ["protocol", "Original protocol file"], ["reviews", "Original review log"], ["conclusion", "Original conclusion file"]] as const)
+      await page.getByLabel(label, { exact: true }).setInputFiles({ name: k, mimeType: "text/plain", buffer: evidenceParts().files[k] });
+    await page.getByRole("button", { name: "Check original review documents", exact: true }).click();
+    await expect(page.getByText(/Original documents checked for your account/)).toBeVisible();
+    expect(checks).toBe(0); await page.getByLabel("Exact canary bundle").setInputFiles({ name: "canary.json", mimeType: "application/json", buffer: evidenceParts().files.canary });
+    await page.getByRole("button", { name: "Verify canary and context bytes", exact: true }).click();
+    const snapshot = page.getByRole("status", { name: "Byte integrity snapshot" });
+    await expect(snapshot).toBeVisible(); await expect(snapshot.getByText(/No context files were required/)).toBeVisible();
+    await expect(page.getByRole("checkbox", { name: /^I have/ })).not.toBeChecked(); await noOverflow(page, view.width);
+    await snapshot.scrollIntoViewIfNeeded(); await page.screenshot({ path: info.outputPath(view.name + "-byte-integrity.png") });
+    await page.getByRole("button", { name: "Show verified field report", exact: true }).click();
+    const report = page.getByRole("region", { name: "Verified private field report" });
+    const title = report.getByRole("heading", { name: "Pilot field recovery and curation effort", exact: true });
+    await expect(title).toBeFocused(); await expect(title).toBeInViewport({ ratio: 1 });
+    const titleBox = await title.boundingBox(), bannerBox = await page.getByRole("banner").boundingBox();
+    expect(titleBox!.y).toBeGreaterThanOrEqual(bannerBox!.y + bannerBox!.height);
+    await expect(report.getByText(/No atomic results were recovered/)).toBeVisible();
+    expect(checks).toBe(1); await expect(page.getByRole("checkbox", { name: /^I have/ })).not.toBeChecked();
+    await noOverflow(page, view.width); await title.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: info.outputPath(view.name + "-field-report.png") });
+    const availability = report.getByRole("region", { name: "Atomic field availability" });
+    await availability.scrollIntoViewIfNeeded(); await availability.focus();
+    if (view.name === "mobile") {
+      await availability.press("ArrowRight");
+      await expect.poll(() => availability.evaluate(n => n.scrollLeft)).toBeGreaterThan(0);
+    }
+    await page.screenshot({ path: info.outputPath(view.name + "-field-availability.png") });
+    await report.getByText("Frozen-group recovery and effort", { exact: true }).click();
+    await report.getByRole("combobox", { name: "Group dimension", exact: true }).selectOption("source_class");
+    await expect(report.getByRole("combobox", { name: "Frozen selection group", exact: true })).toHaveValue("0");
+    await noOverflow(page, view.width);
+    await page.getByRole("button", { name: "Check original review documents", exact: true }).click();
+    await expect(page.getByText(/Original documents checked for your account/)).toBeVisible();
+    await expect(snapshot).toHaveCount(0);
+    await expect(report).toHaveCount(0);
+    await expect(page.getByLabel("Exact canary bundle")).toHaveValue("");
+    await expect(page.getByRole("button", { name: "Verify canary and context bytes", exact: true })).toBeDisabled();
+    await page.getByLabel("Exact canary bundle").setInputFiles({ name: "canary.json", mimeType: "application/json", buffer: evidenceParts().files.canary });
+    denied = true; await page.getByRole("button", { name: "Verify canary and context bytes", exact: true }).click();
+    await expect(page.getByText(/exact documents, response or current state could not be verified/)).toBeVisible();
+    await expect(snapshot).toHaveCount(0); await expect(page.getByRole("status", { name: "Joint declaration snapshot" })).toHaveCount(0);
+    expect(checks).toBe(2); expect(blocked).toEqual([]); console.log(`${view.name} field report screenshots: ${info.outputDir}`);
+  });
+  test(`${view.name}: joint coverage is a read-only snapshot removed after an invalidated recheck`, async ({ page, baseURL }, info) => {
+    await page.setViewportSize(view); const state = await syntheticOnly(page, baseURL!); await open(page); await prepare(page);
+    expect(state.coverage).toBe(0); await page.getByRole("button", { name: "Check joint declaration coverage", exact: true }).click();
+    const snapshot = page.getByRole("status", { name: "Joint declaration snapshot" });
+    await expect(snapshot).toBeVisible(); await expect(snapshot.getByText("Account declarations complete for this snapshot")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Commit exact review declaration" })).toHaveCount(0);
+    await expect(page.getByRole("checkbox", { name: /^I have/ })).not.toBeChecked(); await noOverflow(page, view.width);
+    await snapshot.scrollIntoViewIfNeeded(); await page.screenshot({ path: info.outputPath(view.name + "-joint-coverage.png") });
+    state.coverageDenied = true; await page.getByRole("button", { name: "Check joint declaration coverage", exact: true }).click();
+    await expect(page.getByText(/exact documents, response or current state could not be verified/)).toBeVisible();
+    await expect(snapshot).toHaveCount(0); await expect(page.getByText("PRIVATE_CANARY")).toHaveCount(0);
+    expect(state.coverage).toBe(2); expect(state.commits).toBe(0); expect(state.blocked).toEqual([]); expect(state.unexpected).toEqual([]);
+  });
   test(`${view.name}: four-file scope, explicit declaration and read-only lost-reply recovery`, async ({ page, baseURL }, info) => {
     await page.setViewportSize(view); const state = await syntheticOnly(page, baseURL!), errors: string[] = []; page.on("pageerror", e => errors.push(e.message));
     await open(page); await prepare(page); await noOverflow(page, view.width); expect(state.checks).toBe(1); expect(state.previews).toBe(1); expect(state.commits).toBe(0);

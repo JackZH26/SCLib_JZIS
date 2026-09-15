@@ -129,9 +129,10 @@ All responses remain private/no-store. `scientific_acceptance`,
 `source_permissions_verified`, `context_bytes_checked`, `canary_replay_verified`,
 public release and run authorization remain false; training stays disabled.
 `declaration_recorded` means the account's act is recorded, not that all of those
-separate gates passed. Current scientific acceptance must eventually reconcile
-every required reviewer and exact latest document version with independent
-evidence/canary replay and current permissions; no automatic consumer is added.
+separate gates passed. The read-only joint coverage endpoint below reconciles
+account declarations against one complete document basis. Scientific acceptance
+still requires independent evidence/canary replay, human review and current
+source permissions; no automatic approval consumer is added.
 
 ## English workbench workflow
 
@@ -182,3 +183,77 @@ selection/conclusion files without reserializing the uploads. It does not claim
 to reproduce the scientific accounting kernel. The server checks the complete
 original log and documents independently for preflight, preview and commit.
 Preflight explains scope; it is not an admission token or fresh-write substitute.
+
+## Joint declaration coverage: one historical database snapshot
+
+`POST /v1/ml/pilots/review-attestations/coverage` uses the same strict
+`ml08-review-upload/1.0.0` four-original-file envelope and own-participant headers
+as review preflight. All three default-off flags are required. It accepts no
+declaration controls, acknowledgement, request key, cached preflight or recovered
+receipt. The fixed route invokes the original-file worker; it does not let the
+caller choose a write operation. It performs no database write or source storage.
+
+The endpoint authenticates the exact own binding before reading private bytes
+and after intake. After the worker finishes it checks a fresh read-only,
+repeatable-read database snapshot, including session, registrar/reviewer grants,
+the complete registered cohort, role bindings, declared review chronology and
+participation intervals. All cohort participants must still have accepted
+participation. If those checks fail, coverage is unavailable, not zero or complete.
+
+Required declarations are precisely the union of accounts with review records
+(including revisions/failures) and the actual conclusion author. A zero-review
+conclusion author is required; a registered backup arbitrator with no reviews
+and no conclusion authorship is not required to attest nonexistent work.
+
+For each required account, the latest append-only declaration head is classified
+into exactly one category:
+
+- **Matching:** an attest action binds the exact current member and participation
+  head, fixed declaration contract, all four raw file hashes, full-log/selection
+  hashes, documentary projection, selected implementation, own contribution and
+  conclusion-author basis.
+- **Missing:** no declaration head exists.
+- **Withdrawn:** the latest head withdraws the declaration. Recovering an older
+  historical receipt cannot restore it.
+- **Stale:** a valid recorded attest action no longer matches this exact basis,
+  declaration contract/version or accepted participation head. A withdrawal and
+  reacceptance of participation does not silently revive earlier declarations.
+
+No other accounts, aliases, individual declaration IDs or private source prose
+are returned. The response gives aggregate counts, the caller's own status,
+whether the conclusion author's declaration matches, exact common document
+hashes and the server transaction start time. Counts are disjoint and sum to the
+required count. A coherent snapshot can immediately become outdated; it is not
+a live subscription, write-admission token or lock on other reviewers.
+
+In the English workbench, after checking the originals, use **Check joint
+declaration coverage**. It reuploads the same originals for server verification,
+clears old consent/preview and displays the snapshot separately from the signed
+wording. It never checks either confirmation box. Editing inputs, changing
+accounts, writing a declaration or a failed recheck removes the previous snapshot.
+After committing or recovering a declaration, inspect and check the originals
+again before requesting new coverage. No browser polling or persistence is used.
+
+Even when `account_declarations_complete` is true,
+`current_collective_signoff_verified`, `scientific_pilot_accepted`, source rights,
+human independence, canary verification and ML/run authorization remain false.
+The check does not prove that the pilot occurred or that scientific findings are
+correct. The actual 60-event study and downstream acceptance gates remain open.
+
+## Separate canary and context byte replay
+
+The optional [evidence intake](ML_PILOT_EVIDENCE.md) uploads the four originals,
+the exact canary v1.2 and the complete permitted-context inventory. It performs
+actual bounded byte hashing and full reconstruction before requesting a fresh
+joint account snapshot. Its separate default-off feature switch, binary wire
+format and scoped proxy configuration are documented in that contract.
+
+Only the outer byte-integrity scope reports canary/context checks as true. The
+nested account-only coverage retains its original false byte-verification flags.
+Neither scope verifies source rights, independent human review, scientific
+findings or run authorization. It never creates a declaration or final approval.
+
+A successful byte proof can also open the optional
+[private field report](ML_PILOT_QUALITY_REPORT.md) from the same local canary and
+conclusion. It preserves the original snapshot time, does not refresh collective
+coverage, and does not select consent or apply recorded field recommendations.

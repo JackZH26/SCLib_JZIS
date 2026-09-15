@@ -1,0 +1,23 @@
+[
+ {
+  "RuleID": "generic-api-key",
+  "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+  "StartLine": 183,
+  "EndLine": 183,
+  "StartColumn": 94,
+  "EndColumn": 115,
+  "Match": "keys, REDACTED ",
+  "Secret": "REDACTED",
+  "File": "docs/reviews/2026-09-05/issues-discovery-rag.json",
+  "SymlinkFile": "",
+  "Commit": "c6f05f1ca757f692d3f5169768b2fd75c6f685eb",
+  "Link": "https://github.com/JackZH26/SCLib_JZIS/blob/c6f05f1ca757f692d3f5169768b2fd75c6f685eb/docs/reviews/2026-09-05/issues-discovery-rag.json#L183",
+  "Entropy": 3.5068905,
+  "Author": "JackZH26",
+  "Email": "jack@xd.com",
+  "Date": "2026-09-06T06:25:18Z",
+  "Message": "feat: upgrade SCLib scientific integrity and research foundation\n\nAdd versioned scientific values, result origins, pressure semantics, atomic property evidence, and raw-preserving anomaly review. Introduce proposed-only correction history, research schema safeguards, reproducible test isolation, and discovery priority contracts. Update English UI surfaces, regression coverage, review backlog, and implementation reports for the first four optimization batches.",
+  "Tags": [],
+  "Fingerprint": "c6f05f1ca757f692d3f5169768b2fd75c6f685eb:docs/reviews/2026-09-05/issues-discovery-rag.json:generic-api-key:183"
+ }
+]

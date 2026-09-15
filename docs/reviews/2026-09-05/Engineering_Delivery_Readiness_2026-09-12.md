@@ -129,6 +129,88 @@ capture test changes whole-source provenance; batch72 receipts remain unchanged
 at their original scope. Collective currentness, actual source/canary admission,
 real pilot and remote delivery remain unfinished.
 
+Batch74 adds [joint account-declaration coverage](Priority_Seventy_Fourth_Batch_Implementation_2026-09-13.md)
+against newly verified original files in a single read-only database snapshot.
+Required contributors and the conclusion author are counted separately from
+unused backup roles; withdrawn and stale declarations cannot count as matching.
+The English workbench displays these privacy-safe aggregates as historical
+snapshots, never collective scientific signoff. Actual source/canary evidence,
+independent human pilot, downstream empirical evaluations and remote delivery
+remain unfinished; schema stays 0077.
+
+Batch75 adds [default-off authenticated byte replay](Priority_Seventy_Fifth_Batch_Implementation_2026-09-13.md)
+through a shared portable canary v1.2 kernel and bounded ephemeral context
+streaming. A fresh joint account snapshot follows reconstruction; the English
+workbench displays both scopes without scientific approval. Source-only proxy
+configuration and clean installed-wheel replay are not deployed ingress or Linux
+image parity. All real-source rights, independent-human pilot, scientific
+acceptance and remote delivery gates remain open; schema stays 0077. Earlier
+canaries, reports and source-pinned receipts remain immutable historical evidence.
+
+Batch76 adds the [private field-quality view](Priority_Seventy_Sixth_Batch_Implementation_2026-09-13.md)
+over that same verified canary and conclusion. It distinguishes all eleven
+fields/seven states, event/result denominators, recorded effort and original
+human proposals; private text and frozen groups are not public summaries or
+scientific acceptance. No API/compiler/schema or native source inventory changes
+are introduced. The full offline report, genuine pilot, deployed ingress/privacy
+verification and Linux delivery evidence remain separate requirements.
+
+Batch77 adds [scoped private ingress and actual native transport verification](Priority_Seventy_Seventh_Batch_Implementation_2026-09-13.md):
+eleven exact body ceilings, shared private location policy, chunked/full-boundary
+transmission, temporary-file descriptor observation with a positive detection
+control, private response checks and owned-process cleanup. The final report
+pins its three current Nginx sources. Bootstrap/CI and migration-only deployment
+instructions are aligned, but neither Linux CI nor production configuration was
+executed. Earlier API/schema receipts remain historical; real pilot, source
+permission, scientific acceptance and remote delivery gates are still open.
+
+Batch78 closes the missing [installed-evidence CI coverage](Priority_Seventy_Eighth_Batch_Implementation_2026-09-13.md):
+an explicit clean-wheel driver checks exact installation identity, actual
+streaming replay for zero/revised/full-8-MiB contexts and corrupted-byte rejection.
+A new native wheel execution and production-mode frontend build passed. This
+adds no application/schema change and does not attest Linux images or deployed
+privacy. The remote implementation PR/exact-revision CI handoff and independent
+scientific gates remain open; earlier receipts are not relabeled.
+
+The [batch79 integration checkpoint](Priority_Seventy_Ninth_Batch_Implementation_2026-09-13.md)
+adds actual 42-case unified research-browser verification and CI collection,
+required migration CI evidence, a fresh 0077 native receipt binding 732 source
+inputs, independent capacity verification and full ingestion/frontend results.
+It also isolates the public production-mode server/browser transport; all 13
+public cases passed with the real prefix/CSP and synthetic anonymous session
+state, without live API calls. Source checks reached 45 passing cases.
+Its monolithic API run ended deliberately after 3,290 passes and owned cleanup,
+not a complete passing suite. The new receipt is
+synthetic native evidence; the older table below retains its batch52 scope.
+Remote CI/PR delivery and independent scientific acceptance remain unfinished.
+
+The [batch80 continuation](Priority_Eightieth_Batch_Implementation_2026-09-13.md)
+assigns all 223 ordinary API test modules to eight independent owned-service
+lifetimes, retaining complete module assertions and checked JUnit outcomes.
+The fresh 734-input migration report and complete offline-script regression
+passed at that source snapshot. The API run subsequently ended after batch 4
+with 3,917 actual passes, one failure and three skips; batches 5–8 did not run.
+Earlier receipts retain their original source scope; no single passing batch
+establishes complete API coverage, Linux runtime fit or remote delivery.
+
+The [batch81 real-byte verification](Reference_Canary_Verification_Batch81_2026-09-13.md)
+separately executed all three opt-in QE reference cases using existing pinned
+local files. Import/replay checks passed with one pending observation and two
+explicit quarantines. This is not scientific acceptance, source redistribution
+permission, a completed ordinary API run or Linux delivery evidence.
+
+The [batch82 correction](Priority_Eighty_Second_Batch_Implementation_2026-09-13.md)
+reproduces the recovery-test failure with an unrelated same-version run and
+corrects the query to exact capsule run IDs, without changing business states or
+snapshot limits. Its 14-case focused check, 2,288 offline tests, 45 frontend
+source checks and fresh 734-input migration rehearsal passed. Coordinator 1.1
+preserves failed-batch JUnit counts and CI uses explicit larger time bounds.
+Seven renewed native interface captures, 1,887 current component tests and 42
+private browser cases subsequently passed. The original 28-module replay then
+passed all 969 cases with owned cleanup. A fresh complete 223-module/eight-batch
+run is active; full corrected API acceptance remains pending. Earlier receipts
+retain their original source pins.
+
 | Issue | Local implementation | Remaining delivery work |
 | --- | --- | --- |
 | EN01 #42 | Pre-client disposable capability guard; owned PostgreSQL/Redis; least-privilege runtime; rechecked cleanup identity; fresh safety/API results passed | Link the authorized implementation PR and its CI evidence |
@@ -205,3 +287,34 @@ isolated production build. The final52 main-barrier checks are an overlapping
 separate module rerun, not52 additional unique combined-run checks. No native
 test services remain running. These local results do not manufacture EN04's
 missing Linux/final-image evidence or close issues without delivery.
+
+## Additional delivery gate — actual secret scan, 2026-09-13
+
+The [batch82 local scan and triage](Secret_Scan_Triage_Batch82_2026-09-13.md)
+reports 63 findings over the 61 local branch commits and 38 findings in eight
+of 128 modified/untracked files. They were inspected as synthetic request IDs,
+same-commit source hashes and ordinary prose, but the scanner still exits
+nonzero. Exact immutable fingerprint exceptions and their security contract
+tests remain pending until the active API/script source freeze ends. Newly
+uncommitted fixture fingerprints require the eventual authorized commit.
+Neither this classification nor the earlier functional test results establish
+a clean remote Security run. No broad ignore or history rewrite was applied.
+
+### Batch83 terminal-state and policy update
+
+The [batch83 follow-up](Priority_Eighty_Third_Batch_Implementation_2026-09-13.md)
+records the batch82 run's actual incomplete termination: four complete batches
+passed 3,919 cases with three skips, then the fifth lifetime was refused before
+test collection. Original artifacts are preserved; zero failed cases in the
+four complete XML files is not a complete passing run. Minimal startup probes
+did not reproduce the refusal. Value-free safety reason codes were refined
+without changing the accepted identity/time interval or granting an expiry grace.
+
+The 36 reviewed historical scan fingerprints and matching tests are now
+implemented, and an actual scan of the same 61 commits passed under repository
+policy. Uncommitted fixture fingerprints still require an authorized real commit.
+Full offline verification passed 2,290 tests and 91 subtests; the exact
+fifth-batch replay passed all 1,032 tests with cleanup and unchanged sources.
+A new independent full 223-module regression is live as of 2026-09-14 UTC;
+complete API, source-matched evidence refresh and remote Test/Security
+acceptance remain pending. No root cause is inferred from a successful retry.

@@ -70,6 +70,14 @@ else
 fi
 
 # 5. Install nginx snippet for api.jzis.org
+# Required by the current private-intake locations. Never overwrite an existing
+# operator-managed policy; review both files together before enabling intake.
+if [ ! -e /etc/nginx/snippets/sclib-private-intake.conf ] && [ ! -L /etc/nginx/snippets/sclib-private-intake.conf ]; then
+    mkdir -p /etc/nginx/snippets
+    install -m 0644 nginx/private-intake.conf /etc/nginx/snippets/sclib-private-intake.conf
+else
+    log "Private intake policy already exists (leaving untouched — diff manually if changed)"
+fi
 if [ ! -f /etc/nginx/conf.d/sclib.conf ]; then
     log "Installing /etc/nginx/conf.d/sclib.conf"
     cp nginx/sclib.conf /etc/nginx/conf.d/sclib.conf

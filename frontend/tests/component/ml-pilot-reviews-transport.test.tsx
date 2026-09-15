@@ -8,6 +8,22 @@ const files = (): review.ReviewDocumentSet => Object.fromEntries(review.REVIEW_F
 beforeEach(() => vi.stubGlobal("crypto", webcrypto));
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(); });
 describe("bounded review declaration transport", () => {
+  it("sends joint coverage only as four original read-only files with the exact own binding", async () => {
+    const fetcher = vi.fn(async () => new Response("{}", { headers: json })); vi.stubGlobal("fetch", fetcher);
+    await review.checkReviewCoverage(reference(), documents());
+    const [url, options] = fetcher.mock.calls[0] as unknown as [string, RequestInit];
+    expect(url).toMatch(/\/ml\/pilots\/review-attestations\/coverage$/);
+    expect(options).toMatchObject({ method: "POST", credentials: "include", cache: "no-store", redirect: "error",
+      headers: { "X-SCLib-Participant-Id": reference().participant_id, "X-SCLib-Participant-Sha256": reference().participant_sha256 } });
+    expect(JSON.parse(options.body as string)).toEqual({ version: "ml08-review-upload/1.0.0", ...documents(), parameters: reference() });
+    expect(options.body).not.toContain("dry_run"); expect(options.body).not.toContain("request_key");
+  });
+  it("rejects an invalid coverage binding or extra document/control input before fetch", () => {
+    const fetcher = vi.fn(); vi.stubGlobal("fetch", fetcher);
+    expect(() => review.checkReviewCoverage({ ...reference(), participant_sha256: "bad" }, documents())).toThrow();
+    expect(() => review.checkReviewCoverage(reference(), { ...documents(), committed: true } as review.ReviewDocuments)).toThrow();
+    expect(fetcher).not.toHaveBeenCalled();
+  });
   it("preserves four original files and never uploads sources on withdrawal, inspection or recovery", async () => {
     const fetcher = vi.fn(async () => new Response("{}", { headers: json })); vi.stubGlobal("fetch", fetcher);
     const d = await review.prepareReviewDocuments(files()); expect(d).toEqual(documents()); expect(fetcher).not.toHaveBeenCalled();

@@ -20,10 +20,13 @@ from routers.ml_use_submissions import Lookup
 from routers.research_distributions import _request_schema
 from services import ml_pilot_attestation_contract as declaration_contract
 from services import ml_pilot_attestations as attestations
+from services import ml_pilot_evidence as evidence_service
+from services import ml_pilot_evidence_worker as evidence_worker
 from services import ml_pilot_registration as service
 from services import ml_pilot_registration_documents as documents
 from services import ml_pilot_registration_worker as worker
 from services import ml_pilot_review_admission as review_admission
+from services import ml_pilot_review_coverage as review_coverage
 from services import ml_pilot_review_documents as review_documents
 from services import ml_pilot_review_worker as review_worker
 from services.ml_pilot_documents import canonical
@@ -49,6 +52,23 @@ class PilotRoute(private.PrivateRoute):
                         503,
                         "ML pilot outcome unknown; recover the exact request",
                         headers={**HEADERS, "X-Operation-State": "unknown"},
+                    ) from None
+                raise
+
+        return guarded
+
+
+class EvidenceRoute(PilotRoute):
+    def get_route_handler(self):
+        parent = super().get_route_handler()
+
+        async def guarded(request):
+            try:
+                return await parent(request)
+            except HTTPException as exc:
+                if exc.status_code == 415:
+                    raise HTTPException(
+                        415, "ML08 evidence content type required", headers=HEADERS
                     ) from None
                 raise
 
@@ -169,6 +189,11 @@ def attestations_enabled():
 
 def review_enabled():
     if not get_settings().ml_pilot_review_intake_enabled:
+        raise private.rejected(404)
+
+
+def evidence_enabled():
+    if not get_settings().ml_pilot_evidence_intake_enabled:
         raise private.rejected(404)
 
 
@@ -327,6 +352,10 @@ async def protect(request: Request, user: private.AuthenticatedUser):
     openapi_extra=_request_schema(ReviewUpload),
 )
 async def review_preflight(request: Request, user: private.AuthenticatedUser):
+    return response(await read(user, review_admission.inspect, await review_packet(request, user)))
+
+
+async def review_packet(request, user):
     # Authenticate this exact participant before receiving any source-bearing
     # files. This read-only endpoint cannot record a scientific endorsement.
     reference = {}
@@ -344,17 +373,21 @@ async def review_preflight(request: Request, user: private.AuthenticatedUser):
     checked = await review_worker.check_in_worker(raw)
     args = ReviewReference.model_validate(checked["parameters"]).model_dump()
     match(all(args[k] == value for k, value in reference.items()))
-    return response(
-        await read(
-            user,
-            review_admission.inspect,
-            {
-                **args,
-                "document_check": checked["document_check"],
-                "implementation": checked["implementation"],
-            },
-        )
-    )
+    return {
+        **args,
+        "document_check": checked["document_check"],
+        "implementation": checked["implementation"],
+    }
+
+
+@router.post(
+    "/review-attestations/coverage",
+    dependencies=[Depends(review_enabled), Depends(attestations_enabled)],
+    openapi_extra=_request_schema(ReviewUpload),
+)
+async def declaration_coverage(request: Request, user: private.AuthenticatedUser):
+    # Re-read all four originals, not prior preflight/declaration receipts.
+    return response(await read(user, review_coverage.inspect, await review_packet(request, user)))
 
 
 @router.get("/review-attestations/declaration", dependencies=[Depends(attestations_enabled)])
@@ -482,3 +515,66 @@ async def participation_outcome(request: Request, user: private.AuthenticatedUse
             ),
         }
     )
+
+
+evidence_router = APIRouter(route_class=EvidenceRoute)
+
+
+@evidence_router.post(
+    "/review-attestations/evidence",
+    dependencies=[
+        Depends(review_enabled),
+        Depends(attestations_enabled),
+        Depends(evidence_enabled),
+    ],
+    openapi_extra={
+        "requestBody": {
+            "required": True,
+            "content": {
+                evidence_worker.MEDIA_TYPE: {
+                    "schema": {
+                        "type": "string",
+                        "format": "binary",
+                        "maxLength": evidence_worker.MAX_ENVELOPE_BYTES,
+                    },
+                    "description": "ML08 framed original files and exact context bytes; see ML_PILOT_EVIDENCE.md.",
+                }
+            },
+        }
+    },
+)
+async def inspect_evidence(request: Request, user: private.AuthenticatedUser):
+    reference = {}
+    for header, key in (
+        ("X-SCLib-Participant-Id", "participant_id"),
+        ("X-SCLib-Participant-Sha256", "participant_sha256"),
+    ):
+        values = request.headers.getlist(header)
+        if len(values) != 1:
+            raise private.rejected(400)
+        reference[key] = values[0]
+    # Authenticate the original participant and registrar before reading any body.
+    await read(user, acceptance_admission, reference)
+    if request.headers.getlist("content-type") != [evidence_worker.MEDIA_TYPE] or (
+        request.headers.getlist("content-encoding") not in ([], ["identity"])
+    ):
+        raise private.rejected(415)
+    lengths = request.headers.getlist("content-length")
+    if lengths and (
+        len(lengths) != 1
+        or not re.fullmatch(r"[0-9]{1,9}", lengths[0])
+        or not 0 < int(lengths[0]) <= evidence_worker.MAX_ENVELOPE_BYTES
+    ):
+        raise private.rejected(413)
+    try:
+        checked = await evidence_worker.check_in_worker(request.stream())
+    except evidence_worker.EvidenceLimitError:
+        raise private.rejected(413) from None
+    args = ReviewReference.model_validate(checked["parameters"]).model_dump()
+    match(all(args[key] == value for key, value in reference.items()))
+    # A fresh read-only transaction rechecks session, grants and the full cohort.
+    # Neither client-supplied proofs nor cached account snapshots are accepted.
+    return response(await read(user, evidence_service.inspect, {"worker_result": checked}))
+
+
+router.include_router(evidence_router)

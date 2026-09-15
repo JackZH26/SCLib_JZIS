@@ -1,0 +1,1676 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/25.5.0/bin/node",
+      "/Users/jackzhou/Documents/SCLib_JZIS/frontend/node_modules/.pnpm/@playwright+test@1.61.1/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/research-workbenches.config.ts"
+    ],
+    "configFile": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/research-workbenches.config.ts",
+    "rootDir": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/sclib-batch79-browser-dzi7si/second/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "*.visual.ts"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/sclib-batch79-browser-dzi7si/second/results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "/private/tmp/sclib-batch79-browser-dzi7si/second/html",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 1,
+    "webServer": {
+      "command": "\"/opt/homebrew/Cellar/node/25.5.0/bin/node\" \"/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/scientific-review-server.cjs\"",
+      "url": "http://127.0.0.1:32078/dashboard/research/review",
+      "reuseExistingServer": false,
+      "timeout": 90000,
+      "stdout": "pipe",
+      "stderr": "pipe",
+      "env": {
+        "SCLIB_REVIEW_E2E_PORT": "32078"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "answer-history.visual.ts",
+      "file": "answer-history.visual.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "saved mixed receipt and legacy/private boundaries — desktop",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9776,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:04.978Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0336117f81c81a999727-27b6319513750897d234",
+          "file": "answer-history.visual.ts",
+          "line": 35,
+          "column": 7
+        },
+        {
+          "title": "saved mixed receipt and legacy/private boundaries — mobile",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5463,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:15.242Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0336117f81c81a999727-12d8dd2c645f1fc480d4",
+          "file": "answer-history.visual.ts",
+          "line": 35,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "distribution-rights.visual.ts",
+      "file": "distribution-rights.visual.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "desktop: explicit preview and same-key GET-only unknown recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3325,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "desktop rights screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/distribution-rights.visual-fdcd5-y-GET-only-unknown-recovery\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:20.733Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a49db77dba554fb0df15-3bd1da0bbbb7f8c79d25",
+          "file": "distribution-rights.visual.ts",
+          "line": 107,
+          "column": 7
+        },
+        {
+          "title": "desktop: refreshed denial clears private dependency evidence",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2119,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:24.068Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a49db77dba554fb0df15-831503838a1e7c304855",
+          "file": "distribution-rights.visual.ts",
+          "line": 131,
+          "column": 7
+        },
+        {
+          "title": "mobile: explicit preview and same-key GET-only unknown recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2309,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "mobile rights screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/distribution-rights.visual-11f2d-y-GET-only-unknown-recovery\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:26.210Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a49db77dba554fb0df15-a79ff5c622c2564036f9",
+          "file": "distribution-rights.visual.ts",
+          "line": 107,
+          "column": 7
+        },
+        {
+          "title": "mobile: refreshed denial clears private dependency evidence",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2115,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:28.529Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a49db77dba554fb0df15-9b7dfb61dd0232795926",
+          "file": "distribution-rights.visual.ts",
+          "line": 131,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "ml-pilot-participation.visual.ts",
+      "file": "ml-pilot-participation.visual.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "desktop: exact-file acceptance and read-only lost-reply recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3621,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "desktop pilot screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/ml-pilot-participation.vis-9122b-ad-only-lost-reply-recovery\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:30.670Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "af1fae359d19f9048162-5b7c50f3fd37abe3ea13",
+          "file": "ml-pilot-participation.visual.ts",
+          "line": 76,
+          "column": 7
+        },
+        {
+          "title": "desktop: withdrawal remains available after role revocation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2180,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:34.301Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "af1fae359d19f9048162-f4311d7e103e1f41a987",
+          "file": "ml-pilot-participation.visual.ts",
+          "line": 90,
+          "column": 7
+        },
+        {
+          "title": "desktop: session change clears private files and preview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2223,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:36.492Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "af1fae359d19f9048162-626f9cf4d9bad5d5950c",
+          "file": "ml-pilot-participation.visual.ts",
+          "line": 98,
+          "column": 7
+        },
+        {
+          "title": "mobile: exact-file acceptance and read-only lost-reply recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2415,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "mobile pilot screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/ml-pilot-participation.vis-24d6b-ad-only-lost-reply-recovery\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:38.725Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "af1fae359d19f9048162-c2edf3fe4c45391fcca7",
+          "file": "ml-pilot-participation.visual.ts",
+          "line": 76,
+          "column": 7
+        },
+        {
+          "title": "mobile: withdrawal remains available after role revocation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2239,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:41.150Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "af1fae359d19f9048162-75a8407fb6ece54a6c22",
+          "file": "ml-pilot-participation.visual.ts",
+          "line": 90,
+          "column": 7
+        },
+        {
+          "title": "mobile: session change clears private files and preview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2354,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:43.399Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "af1fae359d19f9048162-8c84e39b849b0aec443d",
+          "file": "ml-pilot-participation.visual.ts",
+          "line": 98,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "ml-pilot-reviews.visual.ts",
+      "file": "ml-pilot-reviews.visual.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "desktop: actual native byte replay snapshot never implies scientific approval",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4567,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "desktop field report screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/ml-pilot-reviews.visual.ts-9a25b-implies-scientific-approval\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:45.819Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "88b947937d7be2ac5682-38747b501911cbb6f173",
+          "file": "ml-pilot-reviews.visual.ts",
+          "line": 91,
+          "column": 7
+        },
+        {
+          "title": "desktop: joint coverage is a read-only snapshot removed after an invalidated recheck",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2646,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:50.395Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "88b947937d7be2ac5682-e0b4ec0f98414d15f6dc",
+          "file": "ml-pilot-reviews.visual.ts",
+          "line": 163,
+          "column": 7
+        },
+        {
+          "title": "desktop: four-file scope, explicit declaration and read-only lost-reply recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2986,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "desktop review screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/ml-pilot-reviews.visual.ts-36a8a-ad-only-lost-reply-recovery\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:53.051Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "88b947937d7be2ac5682-7eea6a9f0132c2634544",
+          "file": "ml-pilot-reviews.visual.ts",
+          "line": 176,
+          "column": 7
+        },
+        {
+          "title": "desktop: protective withdrawal works without source intake",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2471,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:56.049Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "88b947937d7be2ac5682-02a0180ba0472cf78de2",
+          "file": "ml-pilot-reviews.visual.ts",
+          "line": 188,
+          "column": 7
+        },
+        {
+          "title": "desktop: session change clears original files, consent and preview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2780,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:15:58.532Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "88b947937d7be2ac5682-e49a22910c9b3e2a707d",
+          "file": "ml-pilot-reviews.visual.ts",
+          "line": 195,
+          "column": 7
+        },
+        {
+          "title": "mobile: actual native byte replay snapshot never implies scientific approval",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3306,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "mobile field report screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/ml-pilot-reviews.visual.ts-69461-implies-scientific-approval\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:01.323Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "88b947937d7be2ac5682-465d12778766401a4393",
+          "file": "ml-pilot-reviews.visual.ts",
+          "line": 91,
+          "column": 7
+        },
+        {
+          "title": "mobile: joint coverage is a read-only snapshot removed after an invalidated recheck",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2505,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:04.643Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "88b947937d7be2ac5682-71434f33903989cabccf",
+          "file": "ml-pilot-reviews.visual.ts",
+          "line": 163,
+          "column": 7
+        },
+        {
+          "title": "mobile: four-file scope, explicit declaration and read-only lost-reply recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2675,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "mobile review screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/ml-pilot-reviews.visual.ts-e4bfb-ad-only-lost-reply-recovery\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:07.160Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "88b947937d7be2ac5682-473d5ec8dc5a4929eb00",
+          "file": "ml-pilot-reviews.visual.ts",
+          "line": 176,
+          "column": 7
+        },
+        {
+          "title": "mobile: protective withdrawal works without source intake",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2292,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:09.845Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "88b947937d7be2ac5682-6e5d60fad884e68daae8",
+          "file": "ml-pilot-reviews.visual.ts",
+          "line": 188,
+          "column": 7
+        },
+        {
+          "title": "mobile: session change clears original files, consent and preview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2587,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:12.148Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "88b947937d7be2ac5682-d4f49bf50ca1417c94a5",
+          "file": "ml-pilot-reviews.visual.ts",
+          "line": 195,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "ml-use-rights.visual.ts",
+      "file": "ml-use-rights.visual.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "desktop: inventory, keyboard preview and read-only lost-reply recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3855,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "desktop ML rights screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/ml-use-rights.visual.ts-de-68120-ad-only-lost-reply-recovery\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:14.759Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb907195f38847ba4f90-9f477500f9eebb03c263",
+          "file": "ml-use-rights.visual.ts",
+          "line": 79,
+          "column": 7
+        },
+        {
+          "title": "desktop: admission refresh clears private data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2436,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:18.623Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb907195f38847ba4f90-6381729bc9bc9a5e6c98",
+          "file": "ml-use-rights.visual.ts",
+          "line": 95,
+          "column": 7
+        },
+        {
+          "title": "mobile: inventory, keyboard preview and read-only lost-reply recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2722,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "mobile ML rights screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/ml-use-rights.visual.ts-mo-d34df-ad-only-lost-reply-recovery\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:21.071Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb907195f38847ba4f90-fa0d5f52e2fe16c9e88a",
+          "file": "ml-use-rights.visual.ts",
+          "line": 79,
+          "column": 7
+        },
+        {
+          "title": "mobile: admission refresh clears private data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2378,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:23.805Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb907195f38847ba4f90-d2e056189b2b69d00ec0",
+          "file": "ml-use-rights.visual.ts",
+          "line": 95,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "ml-use-runs.visual.ts",
+      "file": "ml-use-runs.visual.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "desktop: independent-account handoff, conditional approval, revocation and denial",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8458,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "desktop ML run handoff screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/ml-use-runs.visual.ts-desk-cdb8e-roval-revocation-and-denial\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:26.207Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "db994da6460d64f72887-2075696c62d42f7b026d",
+          "file": "ml-use-runs.visual.ts",
+          "line": 145,
+          "column": 7
+        },
+        {
+          "title": "desktop: lost commit reply, ambiguous read, exact recovery and admission clearing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2680,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:34.675Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "db994da6460d64f72887-9c4ce46098f733d7f407",
+          "file": "ml-use-runs.visual.ts",
+          "line": 189,
+          "column": 7
+        },
+        {
+          "title": "mobile: independent-account handoff, conditional approval, revocation and denial",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6950,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "mobile ML run handoff screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/ml-use-runs.visual.ts-mobi-9cadf-roval-revocation-and-denial\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:37.368Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "db994da6460d64f72887-7679efcbcc0b20122ff5",
+          "file": "ml-use-runs.visual.ts",
+          "line": 145,
+          "column": 7
+        },
+        {
+          "title": "mobile: lost commit reply, ambiguous read, exact recovery and admission clearing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2518,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:44.330Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "db994da6460d64f72887-fba75205eb186f817369",
+          "file": "ml-use-runs.visual.ts",
+          "line": 189,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "scientific-imports.visual.ts",
+      "file": "scientific-imports.visual.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "desktop: local files, exact preview and GET-only unknown recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3964,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "desktop import screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/scientific-imports.visual.-ec1b4-d-GET-only-unknown-recovery\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:46.874Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "84316713cf3f35017d8a-b90c59f3237c3af6fb2d",
+          "file": "scientific-imports.visual.ts",
+          "line": 101,
+          "column": 7
+        },
+        {
+          "title": "desktop: refreshed denial clears selected files and preview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2191,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:50.848Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "84316713cf3f35017d8a-70f8adfef3fde4e79aba",
+          "file": "scientific-imports.visual.ts",
+          "line": 133,
+          "column": 7
+        },
+        {
+          "title": "mobile: local files, exact preview and GET-only unknown recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2330,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "mobile import screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/scientific-imports.visual.-c59d4-d-GET-only-unknown-recovery\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:53.048Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "84316713cf3f35017d8a-1fe2fc4c3f0519cf74d2",
+          "file": "scientific-imports.visual.ts",
+          "line": 101,
+          "column": 7
+        },
+        {
+          "title": "mobile: refreshed denial clears selected files and preview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1963,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:55.387Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "84316713cf3f35017d8a-ae9fd2f61104a0e5ece2",
+          "file": "scientific-imports.visual.ts",
+          "line": 133,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "scientific-review.visual.ts",
+      "file": "scientific-review.visual.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "desktop: explicit scoped preview and unknown-outcome recovery, synthetic transport only",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3032,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "desktop adjudication screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/scientific-review.visual.t-c2dec-ry-synthetic-transport-only\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:16:57.368Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ed2ac60a0b1d1271e9c1-00dccc3002234ada6736",
+          "file": "scientific-review.visual.ts",
+          "line": 92,
+          "column": 7
+        },
+        {
+          "title": "desktop: exact evidence, bounded impact and denial clearing in an isolated real browser",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2699,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "desktop screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/scientific-review.visual.t-40ed6-in-an-isolated-real-browser\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:17:00.408Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ed2ac60a0b1d1271e9c1-f3b20e38bf365cd58540",
+          "file": "scientific-review.visual.ts",
+          "line": 127,
+          "column": 7
+        },
+        {
+          "title": "mobile: explicit scoped preview and unknown-outcome recovery, synthetic transport only",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2550,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "mobile adjudication screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/scientific-review.visual.t-4557e-ry-synthetic-transport-only\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:17:03.117Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ed2ac60a0b1d1271e9c1-d9f53ab6f39614119a8e",
+          "file": "scientific-review.visual.ts",
+          "line": 92,
+          "column": 7
+        },
+        {
+          "title": "mobile: exact evidence, bounded impact and denial clearing in an isolated real browser",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2258,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "mobile screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/scientific-review.visual.t-5d964-in-an-isolated-real-browser\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:17:05.677Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ed2ac60a0b1d1271e9c1-8211554023d9b40eed7f",
+          "file": "scientific-review.visual.ts",
+          "line": 127,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "source-task-operations.visual.ts",
+      "file": "source-task-operations.visual.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "desktop: scoped source operation and original-key recovery, synthetic transport",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3879,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "desktop source-task screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/source-task-operations.vis-5b064-ecovery-synthetic-transport\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:17:07.955Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fa340c9bd74507db13dc-d95e4942295f5f9126c5",
+          "file": "source-task-operations.visual.ts",
+          "line": 101,
+          "column": 7
+        },
+        {
+          "title": "desktop: refreshed denial clears private source evidence",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2105,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:17:11.843Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fa340c9bd74507db13dc-0b0e3db37ea819e8d95a",
+          "file": "source-task-operations.visual.ts",
+          "line": 148,
+          "column": 7
+        },
+        {
+          "title": "mobile: scoped source operation and original-key recovery, synthetic transport",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2674,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "mobile source-task screenshots: /private/tmp/sclib-batch79-browser-dzi7si/second/test-results/source-task-operations.vis-bcefd-ecovery-synthetic-transport\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:17:13.958Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fa340c9bd74507db13dc-e55c62cd7cb916c970fc",
+          "file": "source-task-operations.visual.ts",
+          "line": 101,
+          "column": 7
+        },
+        {
+          "title": "mobile: refreshed denial clears private source evidence",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2060,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:17:16.643Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fa340c9bd74507db13dc-bea01cc6f0b99bf40dbf",
+          "file": "source-task-operations.visual.ts",
+          "line": 148,
+          "column": 7
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T12:14:54.973Z",
+    "duration": 144073.688,
+    "expected": 42,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
