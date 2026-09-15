@@ -44,3 +44,17 @@ dd4fb7746a8e7707951884f521088e0a262f5d33:frontend/tests/fixtures/discovery-main-
 dd4fb7746a8e7707951884f521088e0a262f5d33:frontend/tests/fixtures/discovery-main-barrier-native.batch71.wire.json:generic-api-key:1
 dd4fb7746a8e7707951884f521088e0a262f5d33:frontend/tests/fixtures/ml-pilot-participant-native.batch70.wire.json:generic-api-key:1
 dd4fb7746a8e7707951884f521088e0a262f5d33:frontend/tests/fixtures/ml-pilot-participant-native.batch71.wire.json:generic-api-key:1
+
+# September 15: 51 generated request-key matches in 11 immutable fixture lines.
+# Review: docs/reviews/2026-09-05/Secret_Scan_Triage_Delivery_2026-09-15.md
+a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/discovery-main-barrier-native.batch75.wire.json:generic-api-key:1
+a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/discovery-main-barrier-native.batch82.wire.json:generic-api-key:1
+a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260915.wire.json:generic-api-key:1
+a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-attestations-native.batch74.wire.json:generic-api-key:1
+a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-attestations-native.batch75.wire.json:generic-api-key:1
+a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-attestations-native.batch82.wire.json:generic-api-key:1
+a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260915.wire.json:generic-api-key:1
+a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-participant-native.batch74.wire.json:generic-api-key:1
+a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-participant-native.batch75.wire.json:generic-api-key:1
+a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-participant-native.batch82.wire.json:generic-api-key:1
+a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260915.wire.json:generic-api-key:1
