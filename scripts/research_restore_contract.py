@@ -209,7 +209,8 @@ def _provenance(value):
         path = item["path"]
         require(type(path) is str and re.fullmatch(r"(?:api|scripts)/[A-Za-z0-9_./-]{1,240}", path)
                 and all(part not in {"", ".", ".."} for part in path.split("/")), "invalid_restore_input_path")
-        require(path.endswith(".py") or path in {"api/uv.lock", "api/pyproject.toml", "api/alembic.ini"}, "invalid_restore_input_path")
+        require(path.endswith(".py") or path in {"api/uv.lock", "api/pyproject.toml", "api/alembic.ini"}
+                or re.fullmatch(r"api/services/[A-Za-z0-9_-]+\.schema\.json", path), "invalid_restore_input_path")
         _hash(item["sha256"])
         _int(item["size_bytes"], 4 * 1024 * 1024)
         total += item["size_bytes"]

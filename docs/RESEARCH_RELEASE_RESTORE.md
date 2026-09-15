@@ -65,6 +65,13 @@ checks process/container ownership and database identity before operations.
 Worker network connections are restricted to those owned loopback services.
 The synthetic UTF-8 receipt path does not need a downloaded tokenizer cache.
 
+Source provenance includes the packaged `api/services/*.schema.json` resources
+already captured by the migration reporter. Restore validation accepts the same
+narrow schema-file naming rule, pins their actual bytes, and rejects a changed
+schema during the rehearsal. Arbitrary JSON, hidden names, nested paths and
+traversal remain outside that allowance. A regression captures the actual
+repository inventory so a collector/validator mismatch fails before delivery.
+
 The separate `research-release` job in `.github/workflows/restore-drill.yml`
 configures the Docker version using the locked Python 3.11 runtime. The existing
 core-table job is retained. Configuration and local native results do **not**

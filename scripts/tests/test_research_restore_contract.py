@@ -477,3 +477,33 @@ def test_exact_source_inventory_must_include_new_runner_and_sources():
     value["inputs_sha256"] = contract.sha(contract.canonical(value["inputs"]))
     with pytest.raises(contract.RestoreContractError):
         contract.source_unchanged(value, value)
+
+
+def test_actual_repository_provenance_retains_packaged_schema_bytes():
+    value = contract.capture_provenance(ROOT)
+    schema_path = "api/services/ml08_pilot.schema.json"
+    schema = next(item for item in value["inputs"] if item["path"] == schema_path)
+    assert schema["sha256"] == contract.sha((ROOT / schema_path).read_bytes())
+    contract.source_unchanged(value, copy.deepcopy(value))
+    changed = copy.deepcopy(value)
+    next(item for item in changed["inputs"] if item["path"] == schema_path)["sha256"] = "f" * 64
+    changed["inputs_sha256"] = contract.sha(contract.canonical(changed["inputs"]))
+    with pytest.raises(contract.RestoreContractError, match="restore_source_changed"):
+        contract.source_unchanged(value, changed)
+
+
+@pytest.mark.parametrize("path", [
+    "api/services/private.json",
+    "api/models/ml08_pilot.schema.json",
+    "scripts/ml08_pilot.schema.json",
+    "api/services/nested/ml08_pilot.schema.json",
+    "api/services/../ml08_pilot.schema.json",
+    "api/services/.private.schema.json",
+])
+def test_restore_provenance_rejects_out_of_scope_json_even_after_resealing(path):
+    value = provenance()
+    value["inputs"].append({"path": path, "sha256": "d" * 64, "size_bytes": 1})
+    value["inputs"].sort(key=lambda item: item["path"])
+    value["inputs_sha256"] = contract.sha(contract.canonical(value["inputs"]))
+    with pytest.raises(contract.RestoreContractError, match="invalid_restore_input_path"):
+        contract.source_unchanged(value, value)
