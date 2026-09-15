@@ -1,5 +1,7 @@
 # SCLib review implementation backlog — 2026-09-05
 
+**Current delivery:** [September 15 verification and remaining gates](Delivery_2026-09-15.md). Earlier active-run and pending-authorization statements below are historical.
+
 [GitHub master tracker #41](https://github.com/JackZH26/SCLib_JZIS/issues/41) · [All review issues](https://github.com/JackZH26/SCLib_JZIS/issues?q=is%3Aissue%20label%3Areview%3A2026-09-05) · [Milestones](https://github.com/JackZH26/SCLib_JZIS/milestones)
 
 Published **38 GitHub issues: 1 tracker + 37 independently testable execution items (22 P1, 15 P2)**. All 20 hard acceptance invariants from the comprehensive review have explicit owners in this backlog. No due dates or individual assignees have been imposed.

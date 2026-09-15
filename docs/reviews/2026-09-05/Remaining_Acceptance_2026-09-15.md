@@ -1,0 +1,22 @@
+# Remaining acceptance, ordered for delivery — 2026-09-15
+
+This is a current boundary audit, not issue closure or an invented completion
+percentage. It uses the live 37 execution issues, current source and the
+[September 15 delivery record](Delivery_2026-09-15.md). Engineering defects and
+scientific evidence requirements have different completion criteria.
+
+| Order | Work | Concrete remaining result | Existing evidence / boundary |
+| --- | --- | --- | --- |
+| 1 | Deliver the verified engineering branch; EN01/EN02/EN03/EN04/DR03 | Publish the draft PR and run actual Linux Test/Security jobs; map each bounded engineering criterion to delivered evidence | Full API coverage, the integrated restore and browser fixes, refreshed captures, current dependency audits and owned-service verification are complete locally. GitHub workflow permission is currently blocking push. Human pilot completion is not imposed on bounded engineering issue closure. |
+| 2 | ML08 #54: real reviewed pilot | Approve permitted-source inventory, custody and reviewer independence; freeze 60 actual events and the second-review subset before outcomes; retain all failures, disagreements and new effort; complete human field recommendations | The repository's proposed protocol still records 0 selected real candidates and 0 human reviews. The implemented forms, account declarations, canary reconstruction and synthetic 60-event fixtures do not create those missing reviews. See `docs/pilot/ML08_Pilot_Protocol.md`. |
+| 3 | RG04 #75: positive result/passage association | Implement a versioned reviewed link from the immutable extraction parent to the canonical claim/sample and the exact original passage, including evidence identity, source lifecycle and currentness handling, then update the consumer | `api/services/scientific_mixed.py:resolve_mixed_associations` currently marks every pair not_established. Same-paper/snapshot proximity is not a positive scientific association. The current mixed route abstains from generated numerical explanation. See `docs/MIXED_SCIENTIFIC_RETRIEVAL.md`. |
+| 4 | ML09 #76: execution of a real approved dataset | Establish the independent pilot-decision consumer, isolated runtime admission, fresh authorization and one-shot bounded execution; produce actual fitted-model/prediction/failure receipts on the exact admitted input | The numerical synthetic rehearsal exists, but `api/services/ml_baseline_rehearsal.py:run_baseline_dataset` rejects every supplied dataset with ml_use_authorization_unavailable. Conditional plan review does not reserve a budget or authorize fitting. See `docs/ML_USE_RUNS.md` and `docs/ML_BASELINE_REHEARSAL.md`. |
+| 5 | RG04/ML09/AL01: empirical evaluation | Acquire and adjudicate real questions and task-qualified observations; run fixed input/budget baselines with leakage controls; record missing runs, failed predictions, costs and uncertainty | The RAG protocol proposes 120 questions; they are not already collected gold. AL01 #78 permits an evidenced no-go or reduced scope when support is insufficient, not fabricated performance. Numerical integrity tools cannot authenticate source custody, reviewer authority or run execution. |
+| 6 | DR04 #77: reviewed scientific Discovery rows | Publish an authorized reviewed pilot release and versioned representative actions; show actual backend cells with exact evidence and the calibration-pending statement | Real rows can ship with “Policy-based research priority; empirical calibration pending” before AL01 supports stronger claims. Synthetic matrix/browser fixtures alone do not satisfy the real-row criterion. |
+| 7 | Operational release / EN04 / EN06 | Exact Linux/image inventory evidence, production-specific backup/restore and role/IAM checks, approved migration/read cutover and rollback evidence, monitoring acceptance | Native synthetic recovery proves its bounded SQL/artifact/index scenario. It does not prove production roles, cloud ACLs, full-corpus recovery or production RPO/RTO. Preserve the existing ingestion pause marker and reconcile host-local changes before release. |
+
+Orders 2–5 identify prerequisites and parallelizable preparation, not permission
+to run private sources, train models or perform production changes. No personal
+assignee, source license, review threshold or scientific approval is invented.
+Current issue criteria remain authoritative for each eventual closure; preserve
+all earlier immutable receipts and keep unsupported claims explicit.

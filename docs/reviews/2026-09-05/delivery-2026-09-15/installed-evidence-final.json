@@ -1,0 +1,182 @@
+{
+  "application_or_database_executed": false,
+  "cases": [
+    {
+      "actual_owned_child_count": 1,
+      "case": "zero_context",
+      "frame_bytes": 139845,
+      "implementation": {
+        "canary": {
+          "files": {
+            "ml08_pilot.schema.json": "5c6c2b2c2f4089765d3027382a084bd973a345ec50ec71a6b8e6cbbfa506f615",
+            "ml_pilot_accounting.py": "fc6cbcd5b29861a176f953ec6eee8b1ada5f34fb46d948153728508090143ec6",
+            "ml_pilot_canary.py": "cdf6ec160b4f91879a07f9b934b4306834902deab04bdfef9892d4eb770c9b35",
+            "ml_pilot_documents.py": "1659363170de693a427491e5744966e655333fd69e5390e0a215d3bb2c3f773e"
+          },
+          "scope": "selected_installed_canary_sources_not_runtime_attestation",
+          "version": "ml08-canary/1.2.0"
+        },
+        "review": {
+          "files": {
+            "ml08_pilot.schema.json": "5c6c2b2c2f4089765d3027382a084bd973a345ec50ec71a6b8e6cbbfa506f615",
+            "ml_pilot_accounting.py": "fc6cbcd5b29861a176f953ec6eee8b1ada5f34fb46d948153728508090143ec6",
+            "ml_pilot_attestation_contract.py": "dfd8cb8e9937f482024063fd9adc8dd8bf9a433a4cfe21417dc8e7eebac2f136",
+            "ml_pilot_documents.py": "1659363170de693a427491e5744966e655333fd69e5390e0a215d3bb2c3f773e",
+            "ml_pilot_registration_documents.py": "11f6edddb73f4774e967def07ef7ac3ec0bb4516f57c0b8e679d28046e606c44",
+            "ml_pilot_review_documents.py": "994d5ab387b5fdb3b625a47eb0540570efeb3109831842aa4d8b349bd18a5b94",
+            "ml_pilot_review_worker.py": "361a79ddc80a5071fa6aa9b9f56c395d09185d68183a24c7f9f669a288d03abd",
+            "ml_use_reconstruction_worker.py": "8a2d8e46762578446afc2baace6c2268323c7c68b890f0b48f930419582e7d56"
+          },
+          "scope": "selected_installed_sources_not_runtime_attestation",
+          "version": "ml08-review-documents/1.0.0"
+        },
+        "scope": "selected_installed_sources_not_runtime_attestation",
+        "version": "ml08-evidence-integrity/1.0.0",
+        "worker_sha256": "01c4da5900da4411a59e94193a083b9e6031b668c92c92acf326b167810dc80d"
+      },
+      "input_sha256": "a6eb8cf26c59b2ab1b09b425afbd24db0e6f378347e2e4e18f1399529108bd1d",
+      "proof": {
+        "canary_replay_verified": true,
+        "canary_sha256": "598ed59580caab0f2433cd5d8c328bc3672da9d421a57c31d7f50d2f9ff031ed",
+        "canary_version": "ml08-canary/1.2.0",
+        "conclusion_documentary_gate_verified": true,
+        "context_bytes_checked": true,
+        "context_bytes_embedded": false,
+        "context_bytes_hashed": 0,
+        "context_file_count": 0,
+        "context_inventory_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "implementation_sha256": "36bbe31d8280d7a12fc1d2a9d68adcea21bce902e12532b97794dfe7b6839bd3",
+        "version": "ml08-evidence-integrity/1.0.0"
+      },
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "scope": "synthetic_installed_byte_replay_not_scientific_acceptance"
+    },
+    {
+      "actual_owned_child_count": 1,
+      "case": "all_revisions",
+      "frame_bytes": 312323,
+      "implementation": {
+        "canary": {
+          "files": {
+            "ml08_pilot.schema.json": "5c6c2b2c2f4089765d3027382a084bd973a345ec50ec71a6b8e6cbbfa506f615",
+            "ml_pilot_accounting.py": "fc6cbcd5b29861a176f953ec6eee8b1ada5f34fb46d948153728508090143ec6",
+            "ml_pilot_canary.py": "cdf6ec160b4f91879a07f9b934b4306834902deab04bdfef9892d4eb770c9b35",
+            "ml_pilot_documents.py": "1659363170de693a427491e5744966e655333fd69e5390e0a215d3bb2c3f773e"
+          },
+          "scope": "selected_installed_canary_sources_not_runtime_attestation",
+          "version": "ml08-canary/1.2.0"
+        },
+        "review": {
+          "files": {
+            "ml08_pilot.schema.json": "5c6c2b2c2f4089765d3027382a084bd973a345ec50ec71a6b8e6cbbfa506f615",
+            "ml_pilot_accounting.py": "fc6cbcd5b29861a176f953ec6eee8b1ada5f34fb46d948153728508090143ec6",
+            "ml_pilot_attestation_contract.py": "dfd8cb8e9937f482024063fd9adc8dd8bf9a433a4cfe21417dc8e7eebac2f136",
+            "ml_pilot_documents.py": "1659363170de693a427491e5744966e655333fd69e5390e0a215d3bb2c3f773e",
+            "ml_pilot_registration_documents.py": "11f6edddb73f4774e967def07ef7ac3ec0bb4516f57c0b8e679d28046e606c44",
+            "ml_pilot_review_documents.py": "994d5ab387b5fdb3b625a47eb0540570efeb3109831842aa4d8b349bd18a5b94",
+            "ml_pilot_review_worker.py": "361a79ddc80a5071fa6aa9b9f56c395d09185d68183a24c7f9f669a288d03abd",
+            "ml_use_reconstruction_worker.py": "8a2d8e46762578446afc2baace6c2268323c7c68b890f0b48f930419582e7d56"
+          },
+          "scope": "selected_installed_sources_not_runtime_attestation",
+          "version": "ml08-review-documents/1.0.0"
+        },
+        "scope": "selected_installed_sources_not_runtime_attestation",
+        "version": "ml08-evidence-integrity/1.0.0",
+        "worker_sha256": "01c4da5900da4411a59e94193a083b9e6031b668c92c92acf326b167810dc80d"
+      },
+      "input_sha256": "5ac23eaa7cce4be84c2bc8cd63c69f75b436aec3607c9d1f0daf811d7545fce7",
+      "proof": {
+        "canary_replay_verified": true,
+        "canary_sha256": "b5774e52a2ab4999b256659df751b2391b157db630c762e04e30a3fa56d89643",
+        "canary_version": "ml08-canary/1.2.0",
+        "conclusion_documentary_gate_verified": true,
+        "context_bytes_checked": true,
+        "context_bytes_embedded": false,
+        "context_bytes_hashed": 99,
+        "context_file_count": 2,
+        "context_inventory_sha256": "ee43788503063fb993c6ab6212cdc16529f98847bff771a413867bf8c808adec",
+        "implementation_sha256": "36bbe31d8280d7a12fc1d2a9d68adcea21bce902e12532b97794dfe7b6839bd3",
+        "version": "ml08-evidence-integrity/1.0.0"
+      },
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "scope": "synthetic_installed_byte_replay_not_scientific_acceptance"
+    },
+    {
+      "actual_owned_child_count": 1,
+      "case": "full_eight_mib_context",
+      "frame_bytes": 8696597,
+      "implementation": {
+        "canary": {
+          "files": {
+            "ml08_pilot.schema.json": "5c6c2b2c2f4089765d3027382a084bd973a345ec50ec71a6b8e6cbbfa506f615",
+            "ml_pilot_accounting.py": "fc6cbcd5b29861a176f953ec6eee8b1ada5f34fb46d948153728508090143ec6",
+            "ml_pilot_canary.py": "cdf6ec160b4f91879a07f9b934b4306834902deab04bdfef9892d4eb770c9b35",
+            "ml_pilot_documents.py": "1659363170de693a427491e5744966e655333fd69e5390e0a215d3bb2c3f773e"
+          },
+          "scope": "selected_installed_canary_sources_not_runtime_attestation",
+          "version": "ml08-canary/1.2.0"
+        },
+        "review": {
+          "files": {
+            "ml08_pilot.schema.json": "5c6c2b2c2f4089765d3027382a084bd973a345ec50ec71a6b8e6cbbfa506f615",
+            "ml_pilot_accounting.py": "fc6cbcd5b29861a176f953ec6eee8b1ada5f34fb46d948153728508090143ec6",
+            "ml_pilot_attestation_contract.py": "dfd8cb8e9937f482024063fd9adc8dd8bf9a433a4cfe21417dc8e7eebac2f136",
+            "ml_pilot_documents.py": "1659363170de693a427491e5744966e655333fd69e5390e0a215d3bb2c3f773e",
+            "ml_pilot_registration_documents.py": "11f6edddb73f4774e967def07ef7ac3ec0bb4516f57c0b8e679d28046e606c44",
+            "ml_pilot_review_documents.py": "994d5ab387b5fdb3b625a47eb0540570efeb3109831842aa4d8b349bd18a5b94",
+            "ml_pilot_review_worker.py": "361a79ddc80a5071fa6aa9b9f56c395d09185d68183a24c7f9f669a288d03abd",
+            "ml_use_reconstruction_worker.py": "8a2d8e46762578446afc2baace6c2268323c7c68b890f0b48f930419582e7d56"
+          },
+          "scope": "selected_installed_sources_not_runtime_attestation",
+          "version": "ml08-review-documents/1.0.0"
+        },
+        "scope": "selected_installed_sources_not_runtime_attestation",
+        "version": "ml08-evidence-integrity/1.0.0",
+        "worker_sha256": "01c4da5900da4411a59e94193a083b9e6031b668c92c92acf326b167810dc80d"
+      },
+      "input_sha256": "0dffd589274755fb37a13431e7dbdb394ea51fddc6f7c0cc04a98ae2ff1d6ac8",
+      "proof": {
+        "canary_replay_verified": true,
+        "canary_sha256": "b8c4c0b727b426bc8a721ee090d51018f81f74a523263423bd6536daa642805a",
+        "canary_version": "ml08-canary/1.2.0",
+        "conclusion_documentary_gate_verified": true,
+        "context_bytes_checked": true,
+        "context_bytes_embedded": false,
+        "context_bytes_hashed": 8388608,
+        "context_file_count": 1,
+        "context_inventory_sha256": "e9548c01658d0dafe7fa78d36f14019685bb84aea36531093936430d04cb650d",
+        "implementation_sha256": "36bbe31d8280d7a12fc1d2a9d68adcea21bce902e12532b97794dfe7b6839bd3",
+        "version": "ml08-evidence-integrity/1.0.0"
+      },
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "scope": "synthetic_installed_byte_replay_not_scientific_acceptance"
+    }
+  ],
+  "corrupt_context_rejected": true,
+  "driver_sha256": "14304c2f540ce6e2b6318a7e1588e6f13af676895876b1f7b05933f18bee93f5",
+  "installed_identity": {
+    "direct_url": {
+      "archive_info": {
+        "hash": "sha256=0b2269162371857a54b4574d9f7acf31c6587990e5f10a9037da29cd1dde5735",
+        "hashes": {
+          "sha256": "0b2269162371857a54b4574d9f7acf31c6587990e5f10a9037da29cd1dde5735"
+        }
+      },
+      "url": "file:///private/tmp/sclib-delivery-20260915-cvlj6qk5/wheel/sclib_api-0.1.0-py3-none-any.whl"
+    },
+    "distributions": [
+      "pip",
+      "sclib-api"
+    ],
+    "isolated": 1,
+    "prefix": "/private/tmp/sclib-delivery-20260915-cvlj6qk5/installed-api",
+    "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]"
+  },
+  "linux_image_parity_verified": false,
+  "owned_working_directory_removed": true,
+  "probe_sha256": "a478c000b7f332f94eb3fabeeed6368b10fc020990d5de7baf9d63a7dc0b4ab6",
+  "scientific_acceptance": false,
+  "synthetic_only": true,
+  "version": "sclib-installed-evidence-ci/1.0.0",
+  "wheel_sha256": "0b2269162371857a54b4574d9f7acf31c6587990e5f10a9037da29cd1dde5735"
+}
