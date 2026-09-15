@@ -102,7 +102,11 @@ file outside the output directory, and inspect that file while the process runs.
 A disappearing terminal/output reader can otherwise raise `BrokenPipeError`
 inside pytest before it completes its JUnit report. For example, after creating
 a private parent directory, append `> /absolute/private/runner.log 2>&1` to the
-command above and use `umask 077`. Keep the supervising process alive and retain
+command above. Create the log with mode 0600 inside the private parent, then run
+tests with the normal `umask 022`: permission-contract tests must be able to
+create their explicitly requested modes (for example 0750). A restrictive
+creation mask would change their inputs and can correctly trigger refusal.
+Keep the supervising process alive and retain
 the actual exit code; a log file is not a replacement for a completed result and
 all verified JUnit batches. Never convert an interrupted report into success.
 
