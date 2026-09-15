@@ -77,7 +77,7 @@ describe("actual native canary byte inspection", () => {
     if (["type", "oversized"].includes(name)) expect(fetcher).not.toHaveBeenCalled();
   });
   it("retains unmodified native replies and exact selected source pins", () => {
-    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260915.wire.json")))).toBe("00dcc5fb2e1ffe8ad6b57ecf1bdbea97296fac8780cfc111196ea50659110d58");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260915r2.wire.json")))).toBe("f2f1c6c4ae47720397e1c690d60a78855bf01fdf0ee6e430cb4ab1e3420ee161");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.batch75.wire.json")))).toBe("f8128d35236754dac5164721bb34becc0431751fcc79fac2236fa23f6aa1edd8");
     expect(native.source_pins).toHaveLength(593);
     expect(native.capture_test_path).toBe("api/tests/test_ml_pilot_evidence.py");
