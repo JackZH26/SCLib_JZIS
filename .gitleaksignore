@@ -58,3 +58,9 @@ a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-partic
 a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-participant-native.batch75.wire.json:generic-api-key:1
 a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-participant-native.batch82.wire.json:generic-api-key:1
 a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260915.wire.json:generic-api-key:1
+
+# Restore repair recaptures: exact synthetic request-key lines, reviewed after commit.
+# Review: docs/reviews/2026-09-05/Secret_Scan_Triage_Restore_2026-09-15.md
+2374b5a42608300257316a3a49245e077e53a1ec:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260915r2.wire.json:generic-api-key:1
+2374b5a42608300257316a3a49245e077e53a1ec:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260915r2.wire.json:generic-api-key:1
+2374b5a42608300257316a3a49245e077e53a1ec:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260915r2.wire.json:generic-api-key:1
