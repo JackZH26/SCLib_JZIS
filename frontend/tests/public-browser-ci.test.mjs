@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 
 const require = createRequire(import.meta.url);
+const ts = require("typescript");
 const { childEnvironment, createWorkspace } = require("./e2e/public-site-server.cjs");
 const config = readFileSync(new URL("../playwright.config.ts", import.meta.url), "utf8");
 const server = readFileSync(new URL("./e2e/public-site-server.cjs", import.meta.url), "utf8");
@@ -28,6 +29,13 @@ test("standalone trace destinations contain both copied source and real linked d
     }
     assert.deepEqual(readFileSync(path.join(original, "next.config.js")), originalBytes);
     assert.notEqual(path.join(isolated, ".next"), path.join(original, ".next"));
+    const project = ts.readConfigFile(path.join(original, "tsconfig.json"), ts.sys.readFile);
+    assert.equal(project.error, undefined);
+    const parsed = ts.parseJsonConfigFileContent(project.config, ts.sys, original);
+    assert.equal(parsed.errors.length, 0);
+    assert.ok(parsed.fileNames.includes(path.join(original, "app/layout.tsx")));
+    assert.ok(parsed.fileNames.every(file => !file.startsWith(path.join(original, "tmp") + path.sep)),
+      "Owned browser copies must not enter the developer's TypeScript project");
   } finally {
     rmSync(isolated, { recursive: true });
   }

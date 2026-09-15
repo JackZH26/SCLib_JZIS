@@ -90,6 +90,10 @@ both the copy and the linked dependencies, preventing standalone tracing from
 writing outside its output tree on macOS. Standalone output remains enabled;
 the original configuration and build directory are not modified. Temporary
 copies are retained for diagnosis.
+The frontend TypeScript project excludes this ignored `tmp/` directory so
+retained test copies cannot become application type-check inputs. The launcher
+regression resolves the real TypeScript file set while a copy exists and also
+checks that the actual application layout remains included.
 The server
 refuses reuse, copies no `.env*`, preserves the checkout's `.next`, and passes a
 small allowlist of environment settings rather than service credentials. The
