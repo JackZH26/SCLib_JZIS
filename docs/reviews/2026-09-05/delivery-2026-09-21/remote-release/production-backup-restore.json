@@ -1,0 +1,32 @@
+{
+  "backup": {
+    "artifact": {
+      "bytes": 574029697,
+      "filename": "sclib-20260921T111008Z.dump",
+      "format": "postgres-custom",
+      "sha256": "05e0b47d5d3eeaa1c444095a38eec2fa2897554ed3847a9272656cc33940f399"
+    },
+    "created_at": "2026-09-21T11:11:57.537624+00:00",
+    "schema_version": 1,
+    "source": {
+      "database": "sclib",
+      "git_sha": "d26fc098565492b78b416fb30b6b1ec7087b24c7",
+      "postgres_version": "16.13"
+    }
+  },
+  "completed_at": "2026-09-21T11:24:09.427632+00:00",
+  "duration_seconds": 523,
+  "restored": {
+    "alembic_revision": "0043_chunks_fts",
+    "invalid_indexes": 0,
+    "materials": 18931,
+    "papers": 75202,
+    "pipeline_state_rows": 1,
+    "public_table_count": 20,
+    "unvalidated_constraints": 0,
+    "users": 3
+  },
+  "schema_version": 1,
+  "status": "passed",
+  "owned_restore_container_removed": true
+}

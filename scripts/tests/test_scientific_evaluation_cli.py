@@ -397,7 +397,7 @@ def test_linux_ci_explicitly_runs_the_offline_cli_suite_with_the_locked_api_runt
     # Collect every script suite, including this module and the public RPS
     # subprocess verifier, in the locked runtime. unittest-only discovery does
     # not execute these pytest functions and may not even have pytest installed.
-    assert "- name: Verify all offline script contracts in the locked API runtime (no services)\n        run: .venv/bin/python -m pytest -q ../scripts/tests" in workflow
+    assert "- name: Verify all offline script contracts in the locked API runtime (no services)\n        working-directory: .\n        run: api/.venv/bin/python -m pytest -q scripts/tests" in workflow
     assert workflow.index("Verify all offline script contracts") < workflow.index("Prepare ephemeral service images")
     assert "python -m unittest discover -s scripts/tests -v" not in workflow
     assert "python -m unittest discover -s scripts/tests -p test_check_error_budget.py -v" in workflow

@@ -6,6 +6,7 @@ workflow/DB invariants, not the scientific validity of any proposed value.
 from __future__ import annotations
 
 import asyncio
+import logging
 from copy import deepcopy
 from uuid import UUID, uuid4
 
@@ -272,6 +273,34 @@ async def test_corrections_use_same_legacy_alias_and_nested_quantity_accessor_as
                            field=field, raw_value=proposed, raw_unit="K" if field == "tc_kelvin" else "angstrom")
     assert response.status_code == 201, response.text
     assert response.json()["source_quantity"]["status"] == "parsed"
+
+
+@pytest.mark.asyncio
+async def test_legacy_override_preserves_audit_note_without_forging_application_logs(client, correction_case, caplog):
+    case = correction_case
+    material_id = case["material_id"]
+    note = "Synthetic legacy review\r\nFORGED-REVIEW: admin approved\u2028another line"
+    async with get_session_factory()() as session:
+        material = await session.get(Material, case["material_id"])
+        material.records = [{**case["raw"], "tc_kelvin": "10 K"}]
+        material.tc_max = material.tc_max_experimental = material.tc_ambient = 10
+        material.review_reason = "legacy_non_numeric_flag"
+        await session.commit()
+    with caplog.at_level(logging.INFO, logger="routers.admin"):
+        response = await client.post(
+            f"/v1/admin/audit/queue/{material_id}/override",
+            headers=case["headers"], json={"note": note},
+        )
+    assert response.status_code == 200, response.text
+    snapshot = await _source_snapshot(material_id)
+    assert snapshot["admin_decision"]["note"] == note
+    assert snapshot["admin_decision"]["reviewer_id"] == str(case["user_id"])
+    assert snapshot["needs_review"] is False
+    messages = [record.getMessage() for record in caplog.records if record.name == "routers.admin"]
+    assert len(messages) == 1
+    assert str(case["user_id"]) in messages[0]
+    assert not any(char in messages[0] for char in ("\r", "\n", "\u2028"))
+    assert "FORGED" not in messages[0] and note not in messages[0]
 
 
 @pytest.mark.asyncio

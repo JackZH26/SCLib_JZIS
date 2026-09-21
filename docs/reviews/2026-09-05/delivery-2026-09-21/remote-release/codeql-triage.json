@@ -1,0 +1,112 @@
+[
+  {
+    "number": 12,
+    "url": "https://github.com/JackZH26/SCLib_JZIS/security/code-scanning/12",
+    "rule": "py/weak-sensitive-data-hashing",
+    "path": "api/services/auth_service.py",
+    "state": "dismissed",
+    "reason": "false positive",
+    "comment": "Digest lookup for a high-entropy generated API bearer token: 40 URL-safe chars from secrets.token_urlsafe(32), about 240 bits. Human passwords instead use bcrypt cost 12. No human-password verifier uses this hash.",
+    "dismissed_at": "2026-09-21T11:23:26Z"
+  },
+  {
+    "number": 16,
+    "url": "https://github.com/JackZH26/SCLib_JZIS/security/code-scanning/16",
+    "rule": "py/log-injection",
+    "path": "api/routers/feedback.py",
+    "state": "dismissed",
+    "reason": "false positive",
+    "comment": "Logged user.id is a database UUID. FeedbackCreate.category is Literal[bug, feature_request, data_issue, other]. Free-text message, contact and user-agent are not logged at this sink; newlines cannot pass category validation.",
+    "dismissed_at": "2026-09-21T11:23:27Z"
+  },
+  {
+    "number": 74,
+    "url": "https://github.com/JackZH26/SCLib_JZIS/security/code-scanning/74",
+    "rule": "js/incomplete-sanitization",
+    "path": "frontend/tests/component/ml-pilot-protocol.test.tsx",
+    "state": "dismissed",
+    "reason": "used in tests",
+    "comment": "Negative parser test injects exactly one duplicate top-level JSON key, then asserts rejection. This is fixture corruption, not sanitization; replaceAll would change the tested input.",
+    "dismissed_at": "2026-09-21T11:22:42Z"
+  },
+  {
+    "number": 75,
+    "url": "https://github.com/JackZH26/SCLib_JZIS/security/code-scanning/75",
+    "rule": "js/incomplete-sanitization",
+    "path": "frontend/tests/component/ml-pilot-reviews-protocol.test.tsx",
+    "state": "dismissed",
+    "reason": "used in tests",
+    "comment": "Negative parser test injects exactly one duplicate top-level JSON key, then asserts rejection. This is fixture corruption, not sanitization.",
+    "dismissed_at": "2026-09-21T11:22:44Z"
+  },
+  {
+    "number": 76,
+    "url": "https://github.com/JackZH26/SCLib_JZIS/security/code-scanning/76",
+    "rule": "js/incomplete-sanitization",
+    "path": "frontend/tests/component/ml-use-runs-protocol.test.tsx",
+    "state": "dismissed",
+    "reason": "used in tests",
+    "comment": "Negative native-wire parser test deliberately inserts a duplicate top-level version key and asserts rejection, alongside numeric aliases and malformed byte cases. No sanitization is performed here.",
+    "dismissed_at": "2026-09-21T11:22:45Z"
+  },
+  {
+    "number": 77,
+    "url": "https://github.com/JackZH26/SCLib_JZIS/security/code-scanning/77",
+    "rule": "js/incomplete-sanitization",
+    "path": "frontend/tests/component/ml-use-rights.test.tsx",
+    "state": "dismissed",
+    "reason": "used in tests",
+    "comment": "Negative parser test deliberately inserts a duplicate top-level version key and asserts rejection. This is synthetic fixture corruption, not production sanitization.",
+    "dismissed_at": "2026-09-21T11:22:46Z"
+  },
+  {
+    "number": 78,
+    "url": "https://github.com/JackZH26/SCLib_JZIS/security/code-scanning/78",
+    "rule": "js/incomplete-sanitization",
+    "path": "frontend/tests/component/ml-use-rights.test.tsx",
+    "state": "dismissed",
+    "reason": "used in tests",
+    "comment": "Negative parser test deliberately inserts a nested duplicate key and asserts rejection. Replacing all opening braces would invalidate the intended targeted test.",
+    "dismissed_at": "2026-09-21T11:22:48Z"
+  },
+  {
+    "number": 79,
+    "url": "https://github.com/JackZH26/SCLib_JZIS/security/code-scanning/79",
+    "rule": "js/file-access-to-http",
+    "path": "frontend/lib/discovery-selection.ts",
+    "state": "dismissed",
+    "reason": "false positive",
+    "comment": "Intentional user-selected JSON upload after Inspect frozen distribution. The traced source is a component-test readFileSync fixture. Destination is the configured API plus constant endpoint; file data is only body. credentials/include, no-store and redirect/error are enforced.",
+    "dismissed_at": "2026-09-21T11:23:21Z"
+  },
+  {
+    "number": 80,
+    "url": "https://github.com/JackZH26/SCLib_JZIS/security/code-scanning/80",
+    "rule": "py/clear-text-storage-sensitive-data",
+    "path": "scripts/run_disposable_tests.py",
+    "state": "dismissed",
+    "reason": "used in tests",
+    "comment": "Owned disposable services only: fresh 192-bit credentials, exclusive 0600 files under a 0700 TemporaryDirectory, inherited DSNs/cloud/mail secrets excluded. Services and directory removed on cleanup. Required temporary local config, never production credentials.",
+    "dismissed_at": "2026-09-21T11:23:22Z"
+  },
+  {
+    "number": 81,
+    "url": "https://github.com/JackZH26/SCLib_JZIS/security/code-scanning/81",
+    "rule": "py/weak-sensitive-data-hashing",
+    "path": "scripts/test_safety.py",
+    "state": "dismissed",
+    "reason": "false positive",
+    "comment": "SHA-256 binds an exact disposable-service DSN to a private one-hour capability; this is integrity comparison, not password authentication. DSN password has 192 random bits. Independent process/container ownership checks also apply.",
+    "dismissed_at": "2026-09-21T11:23:23Z"
+  },
+  {
+    "number": 84,
+    "url": "https://github.com/JackZH26/SCLib_JZIS/security/code-scanning/84",
+    "rule": "py/overly-permissive-file",
+    "path": "scripts/tests/test_fetch_qe_matdyn_canaries.py",
+    "state": "dismissed",
+    "reason": "used in tests",
+    "comment": "Mode fault injection deliberately changes a synthetic output to 0644. The enclosing test requires the final output verifier to raise ValueError. This verifies rejection of permissive files; it is not production output creation.",
+    "dismissed_at": "2026-09-21T11:23:25Z"
+  }
+]

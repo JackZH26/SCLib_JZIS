@@ -14,6 +14,7 @@ Groups:
 """
 from __future__ import annotations
 
+import hashlib
 import logging
 from datetime import datetime, timezone
 from uuid import UUID
@@ -334,8 +335,10 @@ async def override_flag(
     m.needs_review = False
     m.review_reason = None
     await db.commit()
-    log.info("reviewer %s overrode flag on material %s: %s",
-             reviewer.email, material_id, body.note)
+    # Preserve the original note in the structured audit record above. Free
+    # text and legacy identifiers must not be able to forge application logs.
+    log.info("legacy override recorded reviewer_id=%s material_sha256=%s",
+             reviewer.id, hashlib.sha256(material_id.encode("utf-8")).hexdigest())
     return MessageResponse(message=f"Legacy override recorded for {material_id}; current evidence remains subject to fresh audits")
 
 
