@@ -164,3 +164,27 @@ def test_sort_basis_defaults_current_while_accepting_explicit_historical_respons
     fields = {"total": 0, "results": [], "limit": 1, "offset": 0}
     assert MaterialListResponse(**fields).sort_basis == "current_projected_catalogue"
     assert MaterialListResponse(**fields, sort_basis="legacy_catalogue").sort_basis == "legacy_catalogue"
+
+
+@pytest.mark.asyncio
+async def test_only_returned_page_rows_build_complete_public_evidence_envelopes(client, db_session, monkeypatch):
+    import routers.materials as material_router
+
+    family, rows = await ordered_fixture(db_session)
+    original = material_router.MaterialSummary.model_validate
+    hydrated = []
+
+    def validate(value, *args, **kwargs):
+        hydrated.append(value.id)
+        return original(value, *args, **kwargs)
+
+    monkeypatch.setattr(material_router.MaterialSummary, "model_validate", staticmethod(validate))
+    response = await client.get("/v1/materials", params={
+        "family": family, "sort": "tc_max", "offset": 1, "limit": 1,
+    })
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["total"] == 5 and body["results"][0]["id"] == rows["c"].id
+    assert body["results"][0]["tc_max"] == 60
+    assert body["results"][0]["property_evidence"]["evidence_scope"] == "selected_only"
+    assert hydrated == [rows["c"].id]

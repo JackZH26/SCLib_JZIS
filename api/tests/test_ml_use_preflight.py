@@ -197,7 +197,8 @@ async def test_independent_feature_flag_defaults_off(client, db_session, monkeyp
 
 @pytest.mark.parametrize("raw,kind,status", [(b'[]', "application/json", 400),
     (b'{"request":{},"request":{}}', "application/json", 400), (b'{"request":NaN}', "application/json", 400),
-    (b'{}', "text/plain", 415), (b' ' * (router.MAX_BYTES + 2049), "application/json", 413)])
+    (b'{}', "text/plain", 415), (b' ' * (router.MAX_BYTES + 2049), "application/json", 413)],
+    ids=["array-body", "duplicate-request", "nan", "unsupported-content-type", "oversized-body"])
 async def test_strict_bounded_request_parsing(client, db_session, raw, kind, status):
     context, _, _ = await setup(db_session)
     await db_session.commit()

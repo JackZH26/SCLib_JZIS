@@ -77,7 +77,9 @@ def test_request_key_is_bounded_safe_for_exact_recovery_path(key):
 
 
 @pytest.mark.parametrize("body", [b"", b"{}" * 65537, b'{"key":1,"key":2}', b'{"key":NaN}',
-                                   b'{"key":Infinity}', b'{"key":-Infinity}', b'{"key":1e999}', b"\xff"])
+                                   b'{"key":Infinity}', b'{"key":-Infinity}', b'{"key":1e999}', b"\xff"],
+    ids=["empty", "oversized-body", "duplicate-key", "nan", "positive-infinity",
+         "negative-infinity", "overflow-number", "invalid-utf8"])
 def test_ambiguous_or_oversize_raw_json_is_not_accepted(body):
     with pytest.raises(contract.ScientificAdjudicationError):
         contract.loads(body)

@@ -62,16 +62,17 @@ container succeeded in 523 seconds: 75,202 papers, 18,931 materials, 20 public
 tables, zero invalid indexes and zero unvalidated constraints. The owned
 restore container was removed. See the
 [actual restore receipt](delivery-2026-09-21/remote-release/production-backup-restore.json).
-This proves backup recovery at 0043; it does not yet prove 0043-to-0078 upgrade
-or a production cutover. A separate internal-network clone is being prepared
-with non-superuser migration/runtime roles for that next check.
+This first receipt proves backup recovery at 0043. The subsequent full-data
+0043-to-0078 rehearsal and distinct-role admission passed as recorded below.
+Neither operation is a production application cutover.
 
 ## Still required before production completion
 
 - Successful Linux Test/Security on the final PR and main revision, followed by
   exact release-image parity, vulnerability checks, SBOMs and signatures.
-- Successful real-data 0043-to-0078 rehearsal and production migration/runtime
-  role provisioning; reconciliation of preserved host-local changes.
+- Switch the application to the verified runtime credential at the eventual
+  cutover; the full-data upgrade rehearsal and production role provisioning
+  have passed. Reconcile preserved host-local changes before deployment.
 - Actual SLO and monitoring admission. Current public API availability passes;
   AI routes have insufficient observations (0 of 20 minimum requests), and the
   ingestion pause leaves pipeline age above 24 hours. Neither data nor metrics
@@ -130,9 +131,69 @@ verification alert await explicit recipient authorization. The production
 Compose override now loads the private host config and separate SMTP secret;
 the deploy preflight requires those files before any production migration.
 
-Runtime HTTP checks on the upgraded full-data clone are in progress. In
-particular, 0062 does not import or activate the legacy million-chunk ANN index:
+Runtime HTTP checks on the upgraded full-data clone found two open cutover
+blockers: the material-list scan is too slow and Similar returns 503. In particular, 0062 does not import or activate the legacy million-chunk ANN index:
 `INDEX_GENERATIONS.md` specifies lexical-only Search/Ask and a 503 for Similar
 until a reviewed immutable generation exists. Its 1,000-member pilot limit is
 not a full-corpus replacement. Migration success alone therefore does not
 justify an unattended public retrieval cutover or a full-upgrade claim.
+
+
+## Full-data HTTP findings and follow-up delivery
+
+The four infrastructure/readiness/statistics probes returned 200 on the actual
+upgraded backup clone. The material-list route exceeded the initial 25-second
+client deadline; a later diagnostic probe with a 120-second client allowance
+returned 200 in 80.023 seconds. This allowance is confined to the benchmark,
+not application or production timeout settings. The first optimization builds
+complete scientific response envelopes only for the returned page; all
+candidates still use the same live visibility, scientific-filter and atomic
+property-selection policies. It never sorts by the old aggregate or trusts a
+stored evidence envelope. Ninety-nine targeted API tests pass, including
+source holds, all sort fields, ties, offsets and the new regression proving
+that complete DTO construction is bounded to the returned rows. An initial
+full-data candidate probe returned 200 in 33.498 seconds, which remains too
+slow for production acceptance. A second candidate probe took 33.468 seconds, 58.2% less than the 80.023-second
+baseline; the complete canonical material response digest matched exactly
+(total 10,507 eligible materials, three returned). These are two isolated
+full-data probes, not a production load test. Similar still requires the reviewed, appropriately
+scoped immutable-index migration; no legacy fallback or pilot-as-full-corpus
+workaround was introduced.
+
+The fourth Linux run, 35596346121, passed ingestion, both frontend jobs,
+migration and operations; its Security counterpart, 35596346027, passed every
+job including both CodeQL languages and full secret history. The API batch
+failed with 980 passes and one setup error because an oversized request body
+was used as a pytest parameter ID. Linux could not spawn Docker with the
+resulting over-128-KiB PYTEST_CURRENT_TEST environment entry. A separate
+network-disabled Linux process reproduced errno 7; a short ID succeeded.
+The request bodies and all ownership guards are unchanged. Thirty focused
+adjudication API cases pass. A whole-suite collection audit also identified
+the other two long-body parameter groups, which now have explicit short IDs.
+Final Linux testing must run against the newly published revision; older
+passes do not establish its acceptance.
+
+Production SCLib-only database ownership and distinct migration/runtime roles
+were first applied in a transaction and rolled back. The inventory matched its
+original state, after which the same operation committed. The runtime role has
+CRUD access to application tables, no public-schema CREATE, no version-table
+write and no membership in the bootstrap superuser. The migration role owns
+only the SCLib database/schema/application objects and has no superuser,
+CREATEDB, CREATEROLE, replication or BYPASSRLS attributes. Extension ownership
+and every other database owner are unchanged. Both credentials authenticated
+through the real API image under UID 1001 with read-only SQL. The migration
+secret is root:1001 mode 0640 outside Git; the runtime credential is staged
+privately for cutover. Application .env has not switched, schema remains 0043,
+row counts are unchanged, and live health/version checks pass. This completes
+credential provisioning, not migration or runtime privilege activation.
+
+No alert email has been sent and the explicit ingestion pause remains in force.
+The pending recipient and pause-resumption questions are still unanswered.
+Human scientific review remains outside this technical delivery authorization.
+
+The other two bounded-request modules pass all 87 tests. All 7,465 API cases
+collect successfully, with the largest remaining ID 16,461 UTF-8 bytes. Seven
+new r7 native archives come from 10 passing real SQL/HTTP cases and match every
+current source pin. The intermediate r6 archives are retained without edits.
+
+With r7 imports, all 1,890 frontend component tests and TypeScript pass.

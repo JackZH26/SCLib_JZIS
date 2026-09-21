@@ -1,0 +1,41 @@
+{
+  "source_revision": "9f529dd+uncommitted-materials-page-candidate",
+  "candidate_sha256": "2552ce48425a9999f7efdb89f9c4b35bff083f49b69ae201c0ba7e4ba65e9b7a",
+  "network_internal": true,
+  "cloud_credentials_mounted": false,
+  "background_writers_disabled": true,
+  "requests": [
+    {
+      "path": "/readyz",
+      "http_status": 200,
+      "seconds": 0.008
+    },
+    {
+      "path": "/v1/health",
+      "http_status": 200,
+      "seconds": 0.001
+    },
+    {
+      "path": "/v1/version",
+      "http_status": 200,
+      "seconds": 0.532,
+      "site_version": "9f529dd"
+    },
+    {
+      "path": "/v1/stats",
+      "http_status": 200,
+      "seconds": 0.008
+    },
+    {
+      "path": "/v1/materials?limit=3",
+      "http_status": 200,
+      "seconds": 33.498
+    },
+    {
+      "path": "/v1/similar/arxiv%3Asupr-con%2F9609004?top_k=3",
+      "http_status": 503,
+      "seconds": 0.014
+    }
+  ],
+  "live_database_modified": false
+}

@@ -1,0 +1,19 @@
+{
+  "environment": "Linux, isolated read-only API rehearsal image, network disabled",
+  "max_request_bytes": 131072,
+  "oversized_test_body_preserved": true,
+  "reproduction": [
+    {
+      "environment_value_bytes": 131172,
+      "subprocess_started": false,
+      "errno": 7,
+      "reason": "Argument list too long"
+    },
+    {
+      "environment_value_bytes": 100,
+      "subprocess_started": true
+    }
+  ],
+  "change": "Explicit short case IDs only; no test removed and no ownership check bypassed",
+  "focused_tests_passed": 30
+}

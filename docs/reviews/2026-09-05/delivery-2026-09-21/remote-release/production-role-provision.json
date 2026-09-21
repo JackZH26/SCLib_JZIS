@@ -1,0 +1,64 @@
+{
+  "status": "provisioned_not_activated",
+  "transactional_rehearsal_rolled_back": true,
+  "permissions": {
+    "roles": [
+      {
+        "role": "sclib_migrator",
+        "superuser": false,
+        "create_db": false,
+        "create_role": false,
+        "bypass_rls": false,
+        "replication": false
+      },
+      {
+        "role": "sclib_runtime",
+        "superuser": false,
+        "create_db": false,
+        "create_role": false,
+        "bypass_rls": false,
+        "replication": false
+      }
+    ],
+    "runtime_schema_create": false,
+    "migration_schema_create": true,
+    "runtime_bootstrap_membership": false,
+    "migration_bootstrap_membership": false,
+    "runtime_version_write": false,
+    "runtime_papers_read": true,
+    "runtime_papers_write": true,
+    "wrong_public_relation_owner": 0
+  },
+  "before": {
+    "database_owners": {
+      "postgres": "sclib",
+      "sclib": "sclib",
+      "template1": "sclib",
+      "template0": "sclib",
+      "sclib_test": "sclib"
+    },
+    "revision": "0043_chunks_fts",
+    "papers": 75202,
+    "materials": 18931,
+    "existing_target_roles": 0
+  },
+  "after": {
+    "database_owners": {
+      "postgres": "sclib",
+      "template1": "sclib",
+      "template0": "sclib",
+      "sclib_test": "sclib",
+      "sclib": "sclib_migrator"
+    },
+    "revision": "0043_chunks_fts",
+    "papers": 75202,
+    "materials": 18931,
+    "existing_target_roles": 2
+  },
+  "application_credential_changed": false,
+  "ingestion_resumed": false,
+  "migration_applied": false,
+  "migration_file_mode": "0640",
+  "migration_file_owner": "root:1001",
+  "script_sha256": "96ba2b187cab52c2ca72f583de7e3b1eab78d69fb1d12096eb87708c862c1fe8"
+}

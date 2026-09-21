@@ -194,6 +194,9 @@ async def test_outer_commit_failure_never_emits_success_and_unknown_is_read_only
     ('{"property_ids":[]}', 400, "application/json"),
     (' ' * (contract.MAX_BYTES + 1), 413, "application/json"),
     ('{}', 415, "text/plain"),
+], ids=[
+    "duplicate-property-ids", "nan", "infinite-number", "forged-actor",
+    "empty-property-ids", "oversized-body", "unsupported-content-type",
 ])
 async def test_closed_bounded_json_has_no_side_effects(client, db_session, raw, status, content_type):
     _, _, headers = await context_for(client, db_session)

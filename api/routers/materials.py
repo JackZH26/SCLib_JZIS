@@ -31,6 +31,7 @@ from routers.deps import Identity, peek_identity
 from services.anomaly_review import eligible_for_property
 from services.material_anomalies import material_review, record_assessment, review_context
 from services.material_property_projection import project_material_semantics
+from services.material_scoped_properties import scoped_property_evidence
 from services.material_source_scope import current_visibility_allows_view as visibility_allows_view
 from services.material_source_scope import legacy_parent_visibility
 from services.material_visibility import (
@@ -38,11 +39,13 @@ from services.material_visibility import (
     visibility_for_material,
 )
 from services.material_visibility_adapter import (
+    MaterialReadContext,
     material_prefilter,
     material_view,
     prepare_material_views,
 )
 from services.pressure_semantics import classify_pressure
+from services.property_evidence import build_property_evidence
 from services.scientific_filters import ResultFilters, matching_result_references
 from services.scientific_values import record_quantity
 
@@ -53,8 +56,9 @@ router = APIRouter(tags=["materials"])
 class _MaterialPageCandidate:
     """Worst-first heap entry; only the requested leading page window is kept."""
 
-    summary: MaterialSummary
+    material: MaterialReadContext
     sort_value: float | int | None
+    matching: list[dict]
 
     def __lt__(self, other: _MaterialPageCandidate) -> bool:
         left = (self.sort_value is not None, self.sort_value if self.sort_value is not None else 0)
@@ -62,7 +66,30 @@ class _MaterialPageCandidate:
         if left != right:
             return left < right
         # Higher IDs are worse when public values tie, including two nulls.
-        return self.summary.id > other.summary.id
+        return self.material.id > other.material.id
+
+
+def _current_sort_value(material: MaterialReadContext, field: str) -> float | int | None:
+    """Use the DTO's atomic selection policy without building unrelated fields."""
+    scoped = material.source_scope is not None
+    if field == "total_papers":
+        return (material.visibility["source_scope"]["eligible_source_count"]
+                if scoped else material.total_papers)
+    if field == "arxiv_year":
+        return None if scoped else material.arxiv_year
+    if field not in {"tc_max", "tc_ambient"}:
+        raise ValueError("Unsupported material sort field")
+    options = dict(scope_id=material.id, property_fields=[field],
+                   include_joint_epc=False, anomaly_context=review_context(material))
+    if scoped:
+        envelope = scoped_property_evidence(material.current_records(), **options)
+    else:
+        hints = {name: getattr(material, name) for name in
+                 (field, "family", "tc_max_experimental", "tc_max_theoretical")}
+        envelope = build_property_evidence(material.records, legacy_summary=hints, **options)
+    binding = envelope["properties"][field]
+    return (binding["selected"]["value"]
+            if binding["status"] == "supported" and binding["selected"] else None)
 
 
 @router.get("/materials", response_model=MaterialListResponse)
@@ -203,8 +230,9 @@ async def list_materials(
 
     # Cached aggregates can belong to excluded sources. Scan deterministically,
     # then rank the actual public projection, not those old SQL values. This
-    # evaluates each eligible candidate; the heap bounds retained heavy DTOs to
-    # offset+limit, not query CPU or the number of source records scanned.
+    # evaluates each eligible candidate. Only the sort property is projected
+    # during ranking; complete public envelopes are built for the returned page.
+    # The heap bounds retained contexts to offset+limit, not source scan CPU.
     stmt = stmt.order_by(Material.id.asc())
 
     # Count after the SAME live visibility/record policy used for returned rows.
@@ -242,10 +270,8 @@ async def list_materials(
                     matching = [item for item in matching if item["record_index"] in material.source_scope.eligible_indices]
                 if scientific_filters.active and not matching:
                     continue
-                summary = MaterialSummary.model_validate(material)
-                candidate = _MaterialPageCandidate(summary, getattr(summary, sort))
+                candidate = _MaterialPageCandidate(material, _current_sort_value(material, sort), matching)
                 if len(candidates) < page_size or candidates[0] < candidate:
-                    summary.matching_results = [{**record, "visibility": material.visibility} for record in matching]
                     if len(candidates) < page_size:
                         heapq.heappush(candidates, candidate)
                     else:
@@ -253,7 +279,11 @@ async def list_materials(
                 total += 1
     finally:
         await stream.close()
-    selected = [item.summary for item in sorted(candidates, reverse=True)[offset:offset + limit]]
+    selected = []
+    for item in sorted(candidates, reverse=True)[offset:offset + limit]:
+        summary = MaterialSummary.model_validate(item.material)
+        summary.matching_results = [{**record, "visibility": item.material.visibility} for record in item.matching]
+        selected.append(summary)
     return MaterialListResponse(total=total, results=selected, limit=limit, offset=offset)
 
 
