@@ -5,7 +5,7 @@ import capturedLegacy from "../fixtures/answer-history-http-legacy.json";
 const historyId = capturedMixed.entry.id;
 
 async function syntheticOnly(page: Page, baseURL: string) {
-  const state = { mode: "mixed", calls: 0, blockedExternal: [] as string[], unexpectedApi: [] as string[] };
+  const state = { mode: "mixed", calls: 0, readModes: [] as string[], blockedExternal: [] as string[], unexpectedApi: [] as string[] };
   const origin = new URL(baseURL).origin;
   await page.context().route("**/*", async route => {
     const url = new URL(route.request().url());
@@ -20,6 +20,7 @@ async function syntheticOnly(page: Page, baseURL: string) {
       auth_provider: "local", avatar_url: null, scopes: [] });
     if ([historyId, capturedLegacy.entry.id].some(id => url.pathname === `/__synthetic_api/v1/history/${id}`)) {
       state.calls++;
+      state.readModes.push(state.mode);
       expect(route.request().method()).toBe("GET");
       expect(route.request().headers()["x-api-key"]).toBeUndefined();
       if (state.mode === "denied") return fulfill({ detail: "PRIVATE_DIAGNOSTIC_NOT_FOR_DISPLAY" }, 403);
@@ -52,11 +53,18 @@ for (const viewport of [{ name: "desktop", width: 1440, height: 1000 }, { name: 
     await expect(page.getByRole("alert", { name: "History detail unavailable" })).toContainText("Please sign in with the account that owns this history entry");
     await expect(page.getByText("PRIVATE_DIAGNOSTIC_NOT_FOR_DISPLAY")).toHaveCount(0);
     const callsBeforeRetry = state.calls;
+    // Strict Mode starts two reads per mount, but an aborted read may never
+    // reach the network interceptor. Each completed page must have one or two.
+    for (const mode of ["mixed", "legacy", "denied"]) {
+      const count = state.readModes.filter(value => value === mode).length;
+      expect(count).toBeGreaterThanOrEqual(1); expect(count).toBeLessThanOrEqual(2);
+    }
+    expect(state.readModes).not.toContain("missing");
     state.mode = "missing"; await page.getByRole("button", { name: "Retry history read" }).click();
     await expect(page.getByRole("alert", { name: "History detail unavailable" })).toContainText("does not resolve an earlier unknown save outcome");
-    // The isolated Next development server double-mounts effects in Strict Mode.
-    // Its first read is aborted; the explicit retry issues exactly one new GET.
-    expect(callsBeforeRetry).toBe(6); expect(state.calls).toBe(callsBeforeRetry + 1);
+    // An explicit retry must issue exactly one new GET, even in Strict Mode.
+    expect(state.calls).toBe(callsBeforeRetry + 1);
+    expect(state.readModes.slice(callsBeforeRetry)).toEqual(["missing"]);
     expect(state.blockedExternal).toEqual([]); expect(state.unexpectedApi).toEqual([]);
   });
 }

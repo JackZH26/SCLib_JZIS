@@ -350,12 +350,14 @@ async def seed_result_passage_links(db, *, paper_id, reviewer):
                 expected_preview_sha256=preview["preview_sha256"], dry_run=False)
 
 
-async def verify_result_passage_links(db):
+async def verify_result_passage_links(db, *, paper_id, reviewer_id):
     import sqlalchemy as sa
     from services import scientific_result_passage as links
 
-    rows = (await db.execute(sa.text("SELECT * FROM scientific_result_passage_links ORDER BY created_at"))).mappings().all()
+    rows = (await db.execute(sa.text("""SELECT * FROM scientific_result_passage_links
+        WHERE paper_id=:paper_id ORDER BY created_at"""), {"paper_id": paper_id})).mappings().all()
     require(len(rows) == 3 and [row["action"] for row in rows] == ["establish", "establish", "withdraw"])
+    require(all(str(row["actor_user_id"]) == reviewer_id for row in rows))
     pairs = list(dict.fromkeys((str(row["parent_result_revision_id"]), str(row["source_evidence_revision_id"])) for row in rows))
     require(len(pairs) == 2)
     resolved = await links.resolve_current_links(db, pairs)
@@ -373,7 +375,8 @@ async def verify_access(db, descriptor):
     from services.research_access import ResearchAccessDenied, require_research_operator
     from services.research_publication import admitted_publication
     actors, targets = descriptor["actors"], descriptor["access_targets"]
-    await verify_result_passage_links(db)
+    await verify_result_passage_links(db, paper_id=descriptor["index"]["paper_id"],
+                                     reviewer_id=actors["reviewer"])
     for role in ("admin", "member", "revoked"):
         try:
             await require_research_operator(db, UUID(actors[role]))

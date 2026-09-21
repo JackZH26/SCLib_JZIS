@@ -31,6 +31,8 @@ async def test_actual_typed_source_capsule_access_and_readonly_index_rebuild(wit
                 run_table = Base.metadata.tables["research_runs"]
                 unrelated_id = None
                 unrelated_before = None
+                unrelated_paper = None
+                unrelated_links = None
                 if with_unrelated_completed_run:
                     # The version label is intentionally shared by independent
                     # synthetic fixtures; it is not this capsule's run identity.
@@ -45,6 +47,14 @@ async def test_actual_typed_source_capsule_access_and_readonly_index_rebuild(wit
                     unrelated_before = (await db.execute(sa.select(
                         sa.func.to_jsonb(run_table.table_valued())
                     ).where(run_table.c.id == unrelated_id))).scalar_one()
+                    # A second capsule's legitimate review history must neither
+                    # fail this fixture's verification nor be removed to pass it.
+                    other = await worker.seed_rows(db, uuid4().hex)
+                    unrelated_paper = other["index"]["paper_id"]
+                    unrelated_links = (await db.execute(sa.text("""SELECT to_jsonb(r)
+                        FROM scientific_result_passage_links r WHERE paper_id=:paper
+                        ORDER BY created_at"""), {"paper": unrelated_paper})).scalars().all()
+                    assert len(unrelated_links) == 3
                 seeded = await worker.seed_rows(db, uuid4().hex)
                 release = seeded["release"]
                 inspected = await inspect_research_release(db, release_id=release["release_id"],
@@ -79,6 +89,12 @@ async def test_actual_typed_source_capsule_access_and_readonly_index_rebuild(wit
                 await db.execute(sa.text("SET LOCAL statement_timeout='10000ms'"))
                 before = await worker.sql_snapshot(db)
                 await worker.verify_access(db, seeded)
+                with pytest.raises(worker.WorkerError):
+                    await worker.verify_result_passage_links(db, paper_id=seeded["index"]["paper_id"],
+                        reviewer_id=seeded["actors"]["member"])
+                with pytest.raises(worker.WorkerError):
+                    await worker.verify_result_passage_links(db, paper_id="missing-synthetic-paper",
+                        reviewer_id=seeded["actors"]["reviewer"])
                 report = await verify_index(db, seeded["index"])
                 assert report["initial_index_count"] == 0
                 assert report["initial_upsert_count"] == 2
@@ -95,6 +111,9 @@ async def test_actual_typed_source_capsule_access_and_readonly_index_rebuild(wit
                     assert (await db.execute(sa.select(
                         sa.func.to_jsonb(run_table.table_valued())
                     ).where(run_table.c.id == unrelated_id))).scalar_one() == unrelated_before
+                    assert (await db.execute(sa.text("""SELECT to_jsonb(r)
+                        FROM scientific_result_passage_links r WHERE paper_id=:paper
+                        ORDER BY created_at"""), {"paper": unrelated_paper})).scalars().all() == unrelated_links
     finally:
         await engine.dispose()
 
