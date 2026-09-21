@@ -11,6 +11,12 @@ WORKFLOW_DIR = ROOT / ".github" / "workflows"
 # Reviewed immutable findings only. See the batch82 triage and original scan;
 # new fixture revisions must be scanned and reviewed, never covered by a glob.
 REVIEWED_FIXTURE_FINGERPRINTS = {
+    # r9 receipts: three synthetic request-key archives and one public source-file digest.
+    'f390087e544cbe3b71c7f7016687b9e8ad8aac23:docs/reviews/2026-09-05/delivery-2026-09-21/remote-release/anomaly-sparse-source-comparison.json:generic-api-key:2',
+    'f390087e544cbe3b71c7f7016687b9e8ad8aac23:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260921r9.wire.json:generic-api-key:1',
+    'f390087e544cbe3b71c7f7016687b9e8ad8aac23:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260921r9.wire.json:generic-api-key:1',
+    'f390087e544cbe3b71c7f7016687b9e8ad8aac23:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260921r9.wire.json:generic-api-key:1',
+
     'f189aea10183ef7ea8ed66ee2d66249c151433de:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260921r8.wire.json:generic-api-key:1',
     'f189aea10183ef7ea8ed66ee2d66249c151433de:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260921r8.wire.json:generic-api-key:1',
 
