@@ -1,0 +1,55 @@
+{
+  "source_revision": "9f529dd+uncommitted-materials-page-cache-r8",
+  "candidate_sha256": "9e6afa8a6c0e75be7be47bf4a6811ac69f4efead45cc9df7c8beb8884e0eb7ac",
+  "network_internal": true,
+  "cloud_credentials_mounted": false,
+  "background_writers_disabled": true,
+  "requests": [
+    {
+      "path": "/readyz",
+      "http_status": 200,
+      "seconds": 0.009
+    },
+    {
+      "path": "/v1/materials?limit=3",
+      "http_status": 200,
+      "seconds": 33.444,
+      "response_sha256": "3dc509d9acc8e10247930101534359a1de66ea9c186863031e54e29aba472931",
+      "total": 10507,
+      "returned": 3
+    },
+    {
+      "path": "/v1/materials?limit=3",
+      "http_status": 200,
+      "seconds": 0.007,
+      "response_sha256": "3dc509d9acc8e10247930101534359a1de66ea9c186863031e54e29aba472931",
+      "total": 10507,
+      "returned": 3
+    },
+    {
+      "path": "/v1/materials?limit=3",
+      "http_status": 200,
+      "seconds": 0.005,
+      "response_sha256": "3dc509d9acc8e10247930101534359a1de66ea9c186863031e54e29aba472931",
+      "total": 10507,
+      "returned": 3
+    },
+    {
+      "path": "/v1/materials?limit=50",
+      "http_status": 200,
+      "seconds": 34.542,
+      "response_sha256": "cfd51b120b83c5337e32350264066adb59b8cb71f7e6569dd992b0e87b3a901f",
+      "total": 10507,
+      "returned": 50
+    },
+    {
+      "path": "/v1/materials?limit=50",
+      "http_status": 200,
+      "seconds": 0.019,
+      "response_sha256": "cfd51b120b83c5337e32350264066adb59b8cb71f7e6569dd992b0e87b3a901f",
+      "total": 10507,
+      "returned": 50
+    }
+  ],
+  "live_database_modified": false
+}

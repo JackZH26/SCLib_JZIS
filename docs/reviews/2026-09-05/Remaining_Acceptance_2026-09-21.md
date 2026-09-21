@@ -26,3 +26,17 @@ production deployment/acceptance, excluding human scientific review. That
 authorization resolves the general operational-permission boundary; it does not
 replace failed release checks or the still-pending ingestion-pause and alert
 recipient decisions. PR #80 remains unmerged while those requirements are open.
+
+
+### Subsequent cutover findings
+
+Run 35598045347 failed its API cancellation test; the corrected regression now
+passes for both six- and eight-worker execution. Latest native material cache
+and source-scope checks pass 248 tests; final Linux all-module validation must
+be rerun on the new revision. Actual full-data material responses are unchanged:
+33.444 s cold versus 0.005–0.007 s warm for three rows, 34.542 s cold versus
+0.019 s warm for 50 rows. Cold/invalidation performance remains open. Existing
+Vertex metadata reports 1,102,125 vectors versus 1,117,982 retained SQL chunks;
+this is count inventory only, not an exact parity check or a completed migration.
+No production version cutover has occurred. See the remote-release report and
+its `clone-http-page-cache-r8.json` and `cloud-index-metadata.json` receipts.

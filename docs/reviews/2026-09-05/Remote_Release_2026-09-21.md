@@ -197,3 +197,60 @@ new r7 native archives come from 10 passing real SQL/HTTP cases and match every
 current source pin. The intermediate r6 archives are retained without edits.
 
 With r7 imports, all 1,890 frontend component tests and TypeScript pass.
+
+
+## Catalogue cache and Linux cancellation follow-up
+
+The complete Linux Test run 35598045347 on 1af6d62 failed in the API job:
+`test_catalog_capacity_503_cancels_siblings_before_traversing_later_releases`
+waited for two admitted catalogue jobs while six page readers occupied the
+default worker pool. A two-core Python runner has six default workers. Its
+thread-based test synchronization also needed that saturated pool. The test now
+uses event-loop synchronization and explicitly exercises six-worker queued
+jobs and eight-worker running jobs. Both cancellation scenarios pass for both
+widths (four tests); production admission and cancellation code is unchanged.
+The initial fixture bound the fixture loop instead of the test loop, and its
+failed result is retained alongside the corrected passing run.
+
+Material pages now have a bounded in-process cache of validated response bytes
+(128 entries and 32 MiB of serialized keys/payloads). Each request reads the
+existing transactional catalogue/source epochs. All validated query parameters,
+database binding, epoch row versions and UTC policy year enter the key. Writes
+to materials, papers, works and accepted source mappings invalidate through the
+existing 0067 statement triggers; parent changes are covered by the same fence.
+Writing transactions and old repeatable-read snapshots cannot publish pages.
+A concurrent source change during a cold read produces a retryable 503 rather
+than publishing a page assembled across revisions. Authentication and quota
+middleware run independently for every hit.
+
+The first test run correctly exposed that deserializing a scientific DTO through
+its raw-material validators changes its semantics. Cached hits now return the
+exact bytes serialized from the validated response instead of reclassifying
+them. The corrected focused suite passed 248 tests, including real SQL/HTTP
+mutations of raw records, display fields without updated_at changes, material
+and parent holds, paper and Work lifecycle holds, accepted Work mappings,
+insertion, deletion, concurrent source edits and policy-year changes.
+
+On the upgraded complete-data clone, a three-row page took 33.444 seconds cold
+and 0.007/0.005 seconds on two subsequent reads. The complete canonical response
+hash remains `3dc509d9acc8e10247930101534359a1de66ea9c186863031e54e29aba472931`.
+A 50-row page took 34.542 seconds cold and 0.019 seconds warm, also with identical
+response hashes. These are diagnostic samples, not p95/SLO proof. **Cold reads
+and reads after invalidation remain a cutover performance blocker.** Probe
+containers were removed; no production data was modified.
+
+Read-only metadata from the actual configured Vertex index reports 1,102,125
+vectors, one shard, 768 dimensions, COSINE_DISTANCE and STREAM_UPDATE; the
+deployment has one configured replica. SQL retains 1,117,982 chunks. These two
+counts do not establish which IDs are missing or orphaned, nor per-item parity.
+No model calls, index writes, replica changes or new cloud resources occurred.
+The large-corpus generation/staging/readback design remains unfinished.
+
+Seven new exact native captures (10 passing tests) retain 598 source pins for
+each ML archive and 297 for Discovery. Historical archives are unchanged. A
+local Docker-backed focused run stopped at service initialization before tests;
+it is not counted as a Linux pass. Final GitHub Linux validation is required.
+
+The complete offline suite passed 2,306 cases plus 91 subtests. Frontend checks
+passed 1,890 component tests, 46 source tests and TypeScript. These local results
+do not replace final Linux/image validation.

@@ -1,0 +1,35 @@
+{
+  "provider_writes": 0,
+  "model_calls": 0,
+  "scope": "existing configured index resource metadata only",
+  "status": "passed",
+  "index_resource": "projects/524541993265/locations/us-central1/indexes/7874607720131723264",
+  "deployed_index_id": "sclib_papers_v1",
+  "index_metadata": {
+    "config": {
+      "distanceMeasureType": "COSINE_DISTANCE",
+      "shardSize": "SHARD_SIZE_MEDIUM",
+      "approximateNeighborsCount": 150.0,
+      "algorithmConfig": {
+        "treeAhConfig": {
+          "leafNodesToSearchPercent": 7.0,
+          "leafNodeEmbeddingCount": "500"
+        }
+      },
+      "dimensions": 768.0
+    }
+  },
+  "index_stats": {
+    "vectors_count": "1102125",
+    "shards_count": 1
+  },
+  "index_update_method": "STREAM_UPDATE",
+  "deployment_resources": {
+    "automatic_resources": {
+      "min_replica_count": 1,
+      "max_replica_count": 1
+    }
+  },
+  "create_time": "2026-04-14T09:03:23.607665Z",
+  "update_time": "2026-09-05T06:44:47.881676Z"
+}

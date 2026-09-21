@@ -188,3 +188,156 @@ async def test_only_returned_page_rows_build_complete_public_evidence_envelopes(
     assert body["results"][0]["tc_max"] == 60
     assert body["results"][0]["property_evidence"]["evidence_scope"] == "selected_only"
     assert hydrated == [rows["c"].id]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("change", (
+    "raw_records", "display_field", "material_hold", "paper_hold", "parent_hold",
+    "work_hold", "accepted_work_map", "insert_material", "delete_material",
+))
+async def test_cached_pages_follow_actual_committed_catalogue_dependencies(client, db_session, monkeypatch, change):
+    import routers.materials as routes
+    from models.db import PaperWorkMap, Work
+    from sqlalchemy import text
+
+    monkeypatch.setattr(routes, "_material_pages", routes._MaterialPageCache())
+    family = f"cache_{uuid4().hex[:12]}"
+    row = await material_row(db_session, family=family, label="subject", tc=30, old_tc=30, source_count=1)
+    parent = await material_row(db_session, family=family + "_parent", label="parent", tc=20, old_tc=20, source_count=1)
+    row.parent_material_id = parent.id
+    paper_id = row.records[0]["paper_id"]
+    work = Work(canonical_title="Synthetic page-cache invalidation fixture", publication_status="active")
+    db_session.add(work)
+    await db_session.flush()
+    link = PaperWorkMap(paper_id=paper_id, work_id=work.id, match_method="manual",
+                        review_status="pending" if change == "accepted_work_map" else "accepted")
+    db_session.add(link)
+    if change == "accepted_work_map":
+        work.publication_status = "retracted"
+    await db_session.commit()
+    calls = []
+    original = routes._current_sort_value
+
+    def counted(*args):
+        calls.append(args[0].id)
+        return original(*args)
+
+    monkeypatch.setattr(routes, "_current_sort_value", counted)
+    params = {"family": family, "limit": 3}
+    first = await client.get("/v1/materials", params=params)
+    assert first.status_code == 200 and first.json()["total"] == 1
+    assert calls == [row.id]
+    calls.clear()
+    warm = await client.get("/v1/materials", params=params)
+    assert warm.status_code == 200 and warm.json() == first.json()
+    assert calls == [], "An unchanged transaction revision should reuse the exact page"
+    if change == "raw_records":
+        row.records = [{**row.records[0], "tc_kelvin": 12}]
+    elif change == "display_field":
+        # A direct SQL update need not change updated_at. The statement trigger
+        # must still invalidate, so timestamps alone are not cache authority.
+        await db_session.execute(text("UPDATE materials SET formula='Nb synthetic revision' WHERE id=:id"), {"id": row.id})
+    elif change == "material_hold":
+        row.needs_review = True
+    elif change == "paper_hold":
+        await db_session.execute(text("UPDATE papers SET status='retracted' WHERE id=:id"), {"id": paper_id})
+    elif change == "parent_hold":
+        parent.needs_review = True
+    elif change == "work_hold":
+        work.publication_status = "retracted"
+    elif change == "accepted_work_map":
+        link.review_status = "accepted"
+    elif change == "insert_material":
+        await material_row(db_session, family=family, label="added", tc=60, old_tc=60, source_count=1)
+    elif change == "delete_material":
+        await db_session.delete(row)
+    await db_session.commit()
+    changed = await client.get("/v1/materials", params=params)
+    assert changed.status_code == 200, changed.text
+    assert changed.json() != first.json()
+    # Compare the complete cached-path result to a fresh unpopulated cache.
+    monkeypatch.setattr(routes, "_material_pages", routes._MaterialPageCache())
+    uncached = await client.get("/v1/materials", params=params)
+    assert uncached.status_code == 200 and uncached.json() == changed.json()
+
+
+@pytest.mark.asyncio
+async def test_page_cache_does_not_publish_a_read_spanning_source_change(client, db_session, monkeypatch):
+    import routers.materials as routes
+    from sqlalchemy import text
+
+    monkeypatch.setattr(routes, "_material_pages", routes._MaterialPageCache())
+    family = f"cache_race_{uuid4().hex[:12]}"
+    row = await material_row(db_session, family=family, label="subject", tc=30, old_tc=30, source_count=1)
+    original = routes.prepare_material_views
+    changed = False
+
+    async def interleaved(*args, **kwargs):
+        nonlocal changed
+        result = await original(*args, **kwargs)
+        if not changed:
+            changed = True
+            await db_session.execute(text("UPDATE papers SET status='retracted' WHERE id=:id"),
+                                     {"id": row.records[0]["paper_id"]})
+            await db_session.commit()
+        return result
+
+    monkeypatch.setattr(routes, "prepare_material_views", interleaved)
+    response = await client.get("/v1/materials", params={"family": family})
+    assert response.status_code == 503 and response.headers["retry-after"] == "1"
+    assert "no-store" in response.headers["cache-control"]
+    assert not routes._material_pages.entries
+    retry = await client.get("/v1/materials", params={"family": family})
+    assert retry.status_code == 200 and retry.json()["total"] == 0
+
+
+@pytest.mark.asyncio
+async def test_page_cache_rejects_private_transactions_and_old_snapshot_isolation(db_session):
+    from routers.materials import _material_page_revision
+    from sqlalchemy import text
+
+    assert await _material_page_revision(db_session) is not None
+    await db_session.execute(text("SELECT pg_current_xact_id()"))
+    assert await _material_page_revision(db_session) is None
+    await db_session.rollback()
+    await db_session.execute(text("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ"))
+    assert await _material_page_revision(db_session) is None
+    await db_session.rollback()
+    assert await _material_page_revision(db_session) is not None
+
+
+@pytest.mark.asyncio
+async def test_cached_page_key_includes_filters_pagination_and_policy_year(client, db_session, monkeypatch):
+    import routers.materials as routes
+    from datetime import datetime as actual_datetime
+
+    monkeypatch.setattr(routes, "_material_pages", routes._MaterialPageCache())
+    family, _ = await ordered_fixture(db_session)
+    variants = ({}, {"offset": 1}, {"limit": 1}, {"sort": "total_papers"},
+                {"tc_min": 40}, {"include_pending": True}, {"min_papers": 3})
+    for extra in variants:
+        params = {"family": family, **extra}
+        cold = await client.get("/v1/materials", params=params)
+        warm = await client.get("/v1/materials", params=params)
+        assert cold.status_code == warm.status_code == 200 and cold.json() == warm.json()
+    assert len(routes._material_pages.entries) == len(variants)
+    year = actual_datetime.now(routes.UTC).year + 1
+    monkeypatch.setattr(routes, "datetime", SimpleNamespace(now=lambda tz: actual_datetime(year, 1, 1, tzinfo=tz)))
+    assert (await client.get("/v1/materials", params={"family": family})).status_code == 200
+    assert len(routes._material_pages.entries) == len(variants) + 1
+
+
+def test_page_cache_limits_serialized_bytes_and_entry_count():
+    from routers.materials import _MaterialPageCache
+
+    cache = _MaterialPageCache(max_bytes=12, max_entries=2)
+    cache.put((1, b"a"), b"1234")
+    cache.put((2, b"b"), b"5678")
+    assert cache.size == 10
+    assert cache.get((1, b"a")) == b"1234"
+    cache.put((3, b"c"), b"abcd")
+    assert cache.get((2, b"b")) is None and cache.size == 10
+    cache.put((1, b"a"), b"xyz")
+    assert cache.size == 9
+    cache.put((4, b"oversize"), b"payload too large")
+    assert len(cache.entries) == 2 and cache.size == 9

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import threading
+from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 
 import pytest
@@ -31,7 +32,26 @@ async def _eight_releases(local_releases):
 
 
 async def _wait(event):
-    assert await asyncio.wait_for(asyncio.to_thread(event.wait, 4), timeout=5)
+    # Synchronization must not queue behind the very workers this test blocks.
+    async def ready():
+        while not event.is_set():
+            await asyncio.sleep(0.01)
+    await asyncio.wait_for(ready(), timeout=5)
+
+
+@pytest.fixture(params=[6, 8])
+def worker_pool(request):
+    """Exercise both a two-core default executor and eight runnable jobs."""
+    with ThreadPoolExecutor(max_workers=request.param) as executor:
+        yield request.param, executor
+
+
+def _use_pool(worker_pool, monkeypatch):
+    # Bind on the test's running loop, not an async fixture's separate loop.
+    loop = asyncio.get_running_loop()
+    original = loop.run_in_executor
+    monkeypatch.setattr(loop, "run_in_executor", lambda selected, function, *args:
+                      original(worker_pool[1] if selected is None else selected, function, *args))
 
 
 def _track_workers(monkeypatch):
@@ -45,7 +65,8 @@ def _track_workers(monkeypatch):
     return workers
 
 
-async def test_catalog_capacity_503_cancels_siblings_before_traversing_later_releases(client, local_releases, monkeypatch):
+async def test_catalog_capacity_503_cancels_siblings_before_traversing_later_releases(client, local_releases, monkeypatch, worker_pool):
+    _use_pool(worker_pool, monkeypatch)
     _, payloads = await _eight_releases(local_releases)
     pages_entered, pages_release = threading.Event(), threading.Event()
     catalog_entered, catalog_release, catalog_finished = threading.Event(), threading.Event(), threading.Event()
@@ -88,13 +109,19 @@ async def test_catalog_capacity_503_cancels_siblings_before_traversing_later_rel
         await _wait(pages_entered)
         request = asyncio.create_task(client.get(CATALOG))
         response = await asyncio.wait_for(request, timeout=4)
-        await _wait(catalog_entered)
         assert response.status_code == 503 and response.headers["retry-after"] == "1"
         assert response.headers["cache-control"] == "no-store"
-        assert len(started) == 2 and not catalog_finished.is_set()
-        # This is an event/task-state assertion, not a timing assumption: before
-        # gather cleanup the two admitted siblings remain live at this point.
         assert len(workers) == 4 and all(worker.done() for worker in workers)
+        if worker_pool[0] == 6:
+            # Six held pages occupy every worker. The two admitted catalogue
+            # jobs are shielded in the queue after their HTTP readers cancel.
+            assert started == []
+        else:
+            await _wait(catalog_entered)
+            assert len(started) == 2
+        pages_release.set()
+        await _wait(catalog_entered)
+        assert len(started) == 2 and not catalog_finished.is_set()
         catalog_release.set()
         await _wait(catalog_finished)
         assert set(started) == set(finished) and len(started) == 2
@@ -111,7 +138,8 @@ async def test_catalog_capacity_503_cancels_siblings_before_traversing_later_rel
     assert (await client.get(CATALOG)).status_code == 200
 
 
-async def test_cancelled_catalog_http_request_ends_all_worker_traversal_but_finishes_submitted_jobs(client, local_releases, monkeypatch):
+async def test_cancelled_catalog_http_request_ends_all_worker_traversal_but_finishes_submitted_jobs(client, local_releases, monkeypatch, worker_pool):
+    _use_pool(worker_pool, monkeypatch)
     await _eight_releases(local_releases)
     entered, release, completed = threading.Event(), threading.Event(), threading.Event()
     lock = threading.Lock()
