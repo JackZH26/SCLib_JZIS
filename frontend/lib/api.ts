@@ -841,13 +841,18 @@ export interface MixedEvidenceAssociation {
   source_evidence_record_sha256: string;
   source_content_sha256: string;
   catalogue_relation: "same_snapshot" | "not_same_snapshot";
-  status: "not_established";
-  reason_code: "reviewed_result_passage_bridge_missing";
+  status: "established" | "not_established";
+  reason_code: "reviewed_result_passage_bridge_current" | "reviewed_result_passage_bridge_missing";
+  bridge_revision_id: string | null;
+  bridge_record_sha256: string | null;
+  claim_identity_sha256: string | null;
+  sample_identity_sha256: string | null;
+  source_locator_sha256: string | null;
 }
 
 /** Separate retrieval inventories, never a numerical explanation or experiment link. */
 export interface ScientificMixedEvidence {
-  version: "scientific-mixed-evidence/1.0.0";
+  version: "scientific-mixed-evidence/1.0.0" | "scientific-mixed-evidence/1.1.0";
   status: "not_requested" | "completed" | "unavailable";
   result_count: number;
   source_count: number;

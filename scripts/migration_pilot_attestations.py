@@ -19,7 +19,7 @@ def snapshot(connection, *, old_only=False):
         .scalars()
         .all()
         for name in inspect(connection).get_table_names(schema="public")
-        if not old_only or name not in {TABLE, "alembic_version"}
+        if not old_only or name not in {TABLE, "scientific_result_passage_links", "alembic_version"}
     }
 
 

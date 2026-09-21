@@ -84,7 +84,7 @@ describe("English own-review declaration workbench", () => {
     const body = vi.mocked(review.sendReviewEvidence).mock.calls[0][1]; expect(Buffer.from(await body.arrayBuffer())).toEqual(evidenceParts().raw);
     click("Show verified field report");
     const report = await screen.findByRole("region", { name: "Verified private field report" });
-    expect(within(report).getByRole("heading", { name: "Pilot field recovery and curation effort" })).toHaveFocus();
+    await waitFor(() => expect(within(report).getByRole("heading", { name: "Pilot field recovery and curation effort" })).toHaveFocus());
     expect(within(report).getByText(/No atomic results were recovered/)).toBeInTheDocument();
     expect(review.sendReviewEvidence).toHaveBeenCalledTimes(1); expect(review.checkReviewDocuments).toHaveBeenCalledTimes(1);
     expect(review.checkReviewCoverage).not.toHaveBeenCalled(); expect(review.previewReview).not.toHaveBeenCalled();

@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import json
+from pathlib import Path
 from uuid import uuid4
 
 import pytest
@@ -35,6 +37,22 @@ def completed_payload():
         "max_selected_inputs": 2, "associations": [association_payload()],
         "reason_codes": ["numerical_explanation_not_established", "reviewed_result_passage_bridge_missing"],
     }
+
+
+def established_payload():
+    association = association_payload()
+    association.update({
+        "status": "established",
+        "reason_code": "reviewed_result_passage_bridge_current",
+        "bridge_revision_id": str(uuid4()),
+        "bridge_record_sha256": "e" * 64,
+        "claim_identity_sha256": "f" * 64,
+        "sample_identity_sha256": "1" * 64,
+        "source_locator_sha256": "2" * 64,
+    })
+    return {"status": "completed", "result_count": 1, "source_count": 1,
+            "max_selected_inputs": 2, "associations": [association],
+            "reason_codes": ["numerical_explanation_not_established"]}
 
 
 @pytest.mark.parametrize("value", [True, 0, 1, "false", None, {}, []])
@@ -95,6 +113,45 @@ def test_completed_zero_by_zero_is_explicitly_no_extraction_and_no_context_not_a
                       "no_matching_extraction", "no_original_context"])
     assert report.result_count == report.source_count == 0
     assert report.associations == [] and report.scientific_acceptance is False
+
+
+def test_complete_reviewed_link_is_positive_relation_metadata_without_scientific_acceptance():
+    report = ScientificMixedEvidence.model_validate(established_payload())
+    link = report.associations[0]
+    assert link.status == "established" and link.reason_code == "reviewed_result_passage_bridge_current"
+    assert link.bridge_revision_id is not None and report.scientific_acceptance is False
+    assert "reviewed_result_passage_bridge_missing" not in report.reason_codes
+
+
+@pytest.mark.parametrize("field", ["bridge_revision_id", "bridge_record_sha256", "claim_identity_sha256",
+                                    "sample_identity_sha256", "source_locator_sha256"])
+def test_established_association_requires_every_exact_bridge_pin(field):
+    payload = established_payload()
+    payload["associations"][0][field] = None
+    with pytest.raises(ValidationError):
+        ScientificMixedEvidence.model_validate(payload)
+
+
+def test_unresolved_pair_cannot_retain_reviewed_bridge_pins():
+    payload = established_payload()
+    payload["associations"][0]["status"] = "not_established"
+    payload["associations"][0]["reason_code"] = "reviewed_result_passage_bridge_missing"
+    payload["reason_codes"].append("reviewed_result_passage_bridge_missing")
+    with pytest.raises(ValidationError):
+        ScientificMixedEvidence.model_validate(payload)
+
+
+def test_actual_legacy_capture_roundtrips_without_new_association_fields():
+    path = Path(__file__).resolve().parents[2] / "frontend/tests/fixtures/scientific-mixed-http.json"
+    original = json.loads(path.read_text())
+    assert original["scientific_mixed"]["version"] == "scientific-mixed-evidence/1.0.0"
+    response = AskResponse.model_validate(original)
+    assert response.model_dump(mode="json")["scientific_mixed"] == original["scientific_mixed"]
+    assert json.loads(response.model_dump_json())["scientific_mixed"] == original["scientific_mixed"]
+    tampered = deepcopy(original)
+    tampered["scientific_mixed"]["associations"][0]["bridge_revision_id"] = None
+    with pytest.raises(ValidationError):
+        AskResponse.model_validate(tampered)
 
 
 @pytest_asyncio.fixture(loop_scope="function")

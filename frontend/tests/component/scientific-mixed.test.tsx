@@ -7,11 +7,19 @@ import { ScientificMixedNotice } from "@/components/ScientificMixedNotice";
 import { AskHistoryList } from "@/components/dashboard/AskHistoryList";
 import { mixedResponse, withdrawnMixedResponse } from "../fixtures/scientific-mixed";
 import actualSyntheticWire from "../fixtures/scientific-mixed-http.json";
+import currentSyntheticWire from "../fixtures/scientific-mixed-http.delivery20260921.json";
 
 const raw = "Why is Tc of MgB₂ 39 K?";
 const validate = (value: unknown, query = raw) => knownScientificMixedResponse(value, query);
 
 describe("closed mixed numerical/original wire contract", () => {
+  it("accepts the current 1.1 SQL/HTTP response alongside retained 1.0 history", () => {
+    const query = currentSyntheticWire.scientific_query.raw_query;
+    const result = validate(currentSyntheticWire, query);
+    expect(result?.version).toBe("scientific-mixed-evidence/1.1.0");
+    expect(result?.status).toBe("completed");
+    expect(result?.associations.every(item => item.bridge_revision_id === null)).toBe(true);
+  });
   it("accepts actual guarded disposable SQL+HTTP output, not just a hand-written DTO", () => {
     // Captured from test_synthetic_mixed_http_wire_round_trip; synthetic records,
     // real generation/lineage/HTTP path, no cloud calls or scientific authority.
@@ -223,6 +231,41 @@ describe("closed mixed numerical/original wire contract", () => {
 });
 
 describe("separate qualified candidate display", () => {
+  it("shows a reviewed exact relation without presenting it as a causal explanation or scientific acceptance", () => {
+    const response = mixedResponse();
+    Object.assign(response.scientific_mixed!.associations[0], {
+      status: "established",
+      reason_code: "reviewed_result_passage_bridge_current",
+      bridge_revision_id: "77777777-7777-4777-8777-777777777777",
+      bridge_record_sha256: "7".repeat(64),
+      claim_identity_sha256: "8".repeat(64),
+      sample_identity_sha256: "9".repeat(64),
+      source_locator_sha256: "a".repeat(64),
+    });
+    expect(validate(response)?.associations[0].status).toBe("established");
+    render(<ScientificMixedNotice response={response} rawQuery={raw} />);
+    expect(screen.getByText(/1 exact record–passage pair has a current reviewed link/)).toBeVisible();
+    expect(screen.getByText(/does not establish a numerical or causal explanation/)).toBeVisible();
+    fireEvent.click(screen.getByText("Inspect reviewed and unresolved record–passage associations (2)"));
+    expect(screen.getByText("Reviewed exact relation — no causal or scientific acceptance")).toBeVisible();
+    expect(screen.getByText("Not established — reviewed bridge missing")).toBeVisible();
+  });
+
+  it("allows a complete reviewed pair inventory to omit the missing-bridge reason", () => {
+    const response = mixedResponse();
+    response.scientific_mixed!.associations.forEach((association, index) => Object.assign(association, {
+      status: "established",
+      reason_code: "reviewed_result_passage_bridge_current",
+      bridge_revision_id: `77777777-7777-4777-8777-77777777777${index}`,
+      bridge_record_sha256: String(index + 3).repeat(64),
+      claim_identity_sha256: String(index + 5).repeat(64),
+      sample_identity_sha256: String(index + 7).repeat(64),
+      source_locator_sha256: index === 0 ? "a".repeat(64) : "b".repeat(64),
+    }));
+    response.scientific_mixed!.reason_codes = ["numerical_explanation_not_established"];
+    expect(validate(response)?.associations.every(item => item.status === "established")).toBe(true);
+  });
+
   it("shows English-owned two-panel UI with original language retained and no synthesized answer", () => {
     const response = mixedResponse();
     render(<ScientificMixedNotice response={response} rawQuery={raw} />);

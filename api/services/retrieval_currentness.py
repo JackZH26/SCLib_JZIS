@@ -43,6 +43,7 @@ _PAPER_FIELDS = (
     "materials_extracted", "quality_flags",
 )
 EvidenceResolver = Callable[[AsyncSession, Sequence[Chunk]], Awaitable[Mapping[str, Any]]]
+SnapshotResolver = Callable[[AsyncSession], Awaitable[Any]]
 
 
 @dataclass(frozen=True, slots=True)
@@ -60,6 +61,11 @@ class CurrentnessCheck:
     status: str
     reason_code: str | None
     snapshot_at: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class ResolvedCurrentnessCheck(CurrentnessCheck):
+    details: Any = None
 
 
 class CurrentnessUnavailable(ValueError):
@@ -224,7 +230,8 @@ async def _check_snapshot(db, pins, evidence_resolver):
     return CurrentnessCheck("unchanged", None, snapshot_at)
 
 
-async def check_selected_sources(pins, *, engine=None, evidence_resolver: EvidenceResolver | None = None):
+async def check_selected_sources(pins, *, engine=None, evidence_resolver: EvidenceResolver | None = None,
+                                 snapshot_resolver: SnapshotResolver | None = None):
     """Read in a NEW short transaction, never the pre-generation ORM session.
 
     Every selected source must still match. Failure yields no eligible subset
@@ -243,7 +250,11 @@ async def check_selected_sources(pins, *, engine=None, evidence_resolver: Eviden
                 async with db.begin():
                     await db.execute(text("SET TRANSACTION READ ONLY"))
                     await db.execute(text(f"SET LOCAL statement_timeout = '{STATEMENT_TIMEOUT_MS}ms'"))
-                    return await _check_snapshot(db, pins, evidence_resolver)
+                    checked = await _check_snapshot(db, pins, evidence_resolver)
+                    if checked.status != "unchanged" or snapshot_resolver is None:
+                        return checked
+                    details = await snapshot_resolver(db)
+                    return ResolvedCurrentnessCheck(checked.status, checked.reason_code, checked.snapshot_at, details)
     except TimeoutError:
         return CurrentnessCheck("unavailable", "retrieval_currentness_timeout")
     except Exception:  # fail closed without returning source data or database errors

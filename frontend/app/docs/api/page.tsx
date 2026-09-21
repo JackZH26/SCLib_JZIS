@@ -282,7 +282,7 @@ Content-Type: application/json
           <p className="mt-2">
             Mixed questions and comparisons with typed property or evidence
             requests return the closed <Code>scientific_mixed</Code> envelope
-            under <Code>scientific-mixed-evidence/1.0.0</Code>. It separates{" "}
+            under <Code>scientific-mixed-evidence/1.1.0</Code>. It separates{" "}
             <Code>scientific_results[]</Code> from original-passage <Code>sources[]</Code>.
             Every exact numerical-parent/original-citation pair appears once in
             the complete association matrix, retaining the parent revision,
@@ -293,8 +293,12 @@ Content-Type: application/json
           <p className="mt-2">
             <Code>scientific_mixed.status=completed</Code> means bounded candidate
             retrieval and its joint check completed, not that a numerical
-            explanation was established. Every association is <Code>not_established</Code>{" "}
-            with <Code>reviewed_result_passage_bridge_missing</Code>.
+            explanation was established. An association is <Code>established</Code>{" "}
+            only when the server resolves a current reviewer-owned exact
+            result/claim/sample/passage link in the same snapshot as the selected
+            evidence check. Otherwise it is <Code>not_established</Code> with{" "}
+            <Code>reviewed_result_passage_bridge_missing</Code>. A reviewed link
+            is relation metadata, not a causal conclusion or scientific acceptance.
             <Code>same_snapshot</Code> and <Code>not_same_snapshot</Code> describe
             declared Paper/catalogue metadata, not an authenticated document,
             the same experiment, causal support or scientific independence.

@@ -320,9 +320,49 @@ async def seed_rows(db, source_run_id):
     await publication.publication_action(db, actor_user_id=actors["publisher"], proposal_id=proposal["id"],
         review_id=disclosure["id"], expected_payload_sha256=proposal["payload_sha256"], kind="publish",
         reason_code="synthetic_metadata_publication", dry_run=False)
+    await seed_result_passage_links(db, paper_id=paper_id, reviewer=actors["reviewer"])
     return {"release": release, "artifact_bytes": artifact_bytes, "actors": actors, "index": index,
             "access_targets": {"claim_id": str(claim), "work_id": str(work), "dataset_id": str(dataset),
                                "publication_proposal_id": str(proposal["id"])}}
+
+
+async def seed_result_passage_links(db, *, paper_id, reviewer):
+    """Retain one current link and one withdrawn link through actual recovery."""
+    import sqlalchemy as sa
+    from services import rag_evidence, scientific_result_passage as links
+    from services.rag_evidence_contract import VERSION
+
+    parent = await db.scalar(sa.text("SELECT id FROM rag_extraction_revisions WHERE paper_id=:paper ORDER BY id LIMIT 1"),
+                             {"paper": paper_id})
+    require(parent is not None)
+    for index in range(2):
+        chunk_id = "restore-passage:" + uuid4().hex
+        await _add(db, "chunks", id=chunk_id, paper_id=paper_id,
+                   text=f"Synthetic recovery passage {index}; no scientific assertion.", materials_mentioned=[])
+        passage = await rag_evidence.register_chunk_evidence(db, chunk_id=chunk_id, candidate={
+            "version": VERSION, "chunk_kind": "original_passage", "source_locator": {"page": index + 1}}, dry_run=False)
+        for action in (("establish",) if index == 0 else ("establish", "withdraw")):
+            context = await links.action_context(db, actor_user_id=reviewer,
+                parent_result_revision_id=str(parent), source_evidence_revision_id=passage["evidence_revision_id"])
+            request = links.request_from_context(context, request_key=f"synthetic-restore-link:{index}:{action}", action=action)
+            preview = await links.review(db, actor_user_id=reviewer, request=request)
+            await links.review(db, actor_user_id=reviewer, request=request,
+                expected_preview_sha256=preview["preview_sha256"], dry_run=False)
+
+
+async def verify_result_passage_links(db):
+    import sqlalchemy as sa
+    from services import scientific_result_passage as links
+
+    rows = (await db.execute(sa.text("SELECT * FROM scientific_result_passage_links ORDER BY created_at"))).mappings().all()
+    require(len(rows) == 3 and [row["action"] for row in rows] == ["establish", "establish", "withdraw"])
+    pairs = list(dict.fromkeys((str(row["parent_result_revision_id"]), str(row["source_evidence_revision_id"])) for row in rows))
+    require(len(pairs) == 2)
+    resolved = await links.resolve_current_links(db, pairs)
+    require(set(resolved) == {pairs[0]} and resolved[pairs[0]]["bridge_record_sha256"] == rows[0]["record_sha256"])
+    for row in rows:
+        receipt = await links.inspect_request(db, actor_user_id=row["actor_user_id"], request_key=row["request_key"])
+        require(receipt["bridge_record_sha256"] == row["record_sha256"] and receipt["committed"])
 
 
 async def verify_access(db, descriptor):
@@ -333,6 +373,7 @@ async def verify_access(db, descriptor):
     from services.research_access import ResearchAccessDenied, require_research_operator
     from services.research_publication import admitted_publication
     actors, targets = descriptor["actors"], descriptor["access_targets"]
+    await verify_result_passage_links(db)
     for role in ("admin", "member", "revoked"):
         try:
             await require_research_operator(db, UUID(actors[role]))

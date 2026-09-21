@@ -26,6 +26,10 @@ explicitly synthetic pending example and its dependency closure:
 - Two synthetic derived-fact chunks, immutable embedding completion receipts and
   retained float32 vector bytes, generation members, validation and activation
   records. No embedding provider is called; derived Facts stay support-ineligible.
+- One current synthetic result–passage link and one established-then-withdrawn
+  link. All three immutable review rows and exact receipts survive recovery;
+  the fresh resolver exposes only the current link. These fixture reviews do
+  not represent actual scientific review or source authorization.
 
 The parent performs an actual custom-format `pg_dump`, copies the exact private
 artifact capsule and independently pinned descriptor, and runs `pg_restore` into

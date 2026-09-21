@@ -1,4 +1,4 @@
-/** Closed wire consistency only; it cannot authenticate a Result–passage bridge. */
+/** Closed wire consistency for server-verified Result–passage bridge metadata. */
 import type { AskResponse, MixedEvidenceAssociation, ScientificMixedEvidence } from "@/lib/api";
 import { knownEvidenceProvenance } from "@/lib/evidence-provenance";
 import { knownInputBudget, knownPackingInventory, knownPackingSummary } from "@/lib/evidence-packing";
@@ -18,18 +18,27 @@ const reasons = ["numerical_explanation_not_established", "reviewed_result_passa
   "retrieval_generation_changed", "retrieval_source_changed", "retrieval_source_no_longer_eligible", "retrieval_grouping_changed",
   "retrieval_currentness_unavailable", "retrieval_currentness_timeout", "evidence_packing_unavailable"];
 
-const notRequested: ScientificMixedEvidence = { version: "scientific-mixed-evidence/1.0.0", status: "not_requested",
+const notRequested: ScientificMixedEvidence = { version: "scientific-mixed-evidence/1.1.0", status: "not_requested",
   result_count: 0, source_count: 0, max_selected_inputs: 0, associations: [], reason_codes: [],
   scientific_acceptance: false, independent_support_count: null };
 
-function association(input: unknown): input is MixedEvidenceAssociation {
-  return keys(input, ["parent_result_revision_id", "result_source_snapshot_sha256", "source_index", "source_vector_id",
-    "source_evidence_revision_id", "source_evidence_record_sha256", "source_content_sha256", "catalogue_relation", "status", "reason_code"])
-    && uuid(input.parent_result_revision_id) && hash(input.result_source_snapshot_sha256) && integer(input.source_index, 1)
-    && typeof input.source_vector_id === "string" && /^ig62_[0-9a-f]{32}_[0-9a-f]{64}$/.test(input.source_vector_id)
-    && uuid(input.source_evidence_revision_id) && hash(input.source_evidence_record_sha256) && hash(input.source_content_sha256)
-    && choice(input.catalogue_relation, ["same_snapshot", "not_same_snapshot"])
-    && input.status === "not_established" && input.reason_code === "reviewed_result_passage_bridge_missing";
+function association(input: unknown, version: string): input is MixedEvidenceAssociation {
+  const shared = ["parent_result_revision_id", "result_source_snapshot_sha256", "source_index", "source_vector_id",
+    "source_evidence_revision_id", "source_evidence_record_sha256", "source_content_sha256", "catalogue_relation", "status", "reason_code"];
+  const bridge = ["bridge_revision_id", "bridge_record_sha256", "claim_identity_sha256", "sample_identity_sha256", "source_locator_sha256"];
+  if (!keys(input, version === "scientific-mixed-evidence/1.0.0" ? shared : [...shared, ...bridge])
+    || !uuid(input.parent_result_revision_id) || !hash(input.result_source_snapshot_sha256) || !integer(input.source_index, 1)
+    || typeof input.source_vector_id !== "string" || !/^ig62_[0-9a-f]{32}_[0-9a-f]{64}$/.test(input.source_vector_id)
+    || !uuid(input.source_evidence_revision_id) || !hash(input.source_evidence_record_sha256) || !hash(input.source_content_sha256)
+    || !choice(input.catalogue_relation, ["same_snapshot", "not_same_snapshot"])) return false;
+  if (version === "scientific-mixed-evidence/1.0.0") {
+    return input.status === "not_established" && input.reason_code === "reviewed_result_passage_bridge_missing";
+  }
+  const pins = bridge.map(field => input[field]);
+  const established = input.status === "established";
+  return (established || input.status === "not_established")
+    && (established ? input.reason_code === "reviewed_result_passage_bridge_current" : input.reason_code === "reviewed_result_passage_bridge_missing")
+    && (established ? uuid(pins[0]) && pins.slice(1).every(hash) : pins.every(value => value === null));
 }
 
 /** Missing metadata is rolling legacy compatibility; malformed present metadata is not. */
@@ -38,10 +47,12 @@ export function knownScientificMixedResponse(response: unknown, rawQuery: string
   const mixed = response.scientific_mixed;
   if (mixed === undefined) return notRequested;
   if (!keys(mixed, ["version", "status", "result_count", "source_count", "max_selected_inputs", "associations", "reason_codes",
-    "scientific_acceptance", "independent_support_count"]) || mixed.version !== "scientific-mixed-evidence/1.0.0"
+    "scientific_acceptance", "independent_support_count"])
+    || !choice(mixed.version, ["scientific-mixed-evidence/1.0.0", "scientific-mixed-evidence/1.1.0"])
     || !choice(mixed.status, ["not_requested", "completed", "unavailable"])
     || !integer(mixed.result_count) || !integer(mixed.source_count) || !integer(mixed.max_selected_inputs)
-    || !Array.isArray(mixed.associations) || mixed.associations.length > 100 || !mixed.associations.every(association)
+    || !Array.isArray(mixed.associations) || mixed.associations.length > 100
+    || !mixed.associations.every(item => association(item, mixed.version as string))
     || !Array.isArray(mixed.reason_codes) || mixed.reason_codes.length > 8
     || mixed.reason_codes.some(reason => typeof reason !== "string" || !reasons.includes(reason))
     || new Set(mixed.reason_codes).size !== mixed.reason_codes.length
@@ -68,7 +79,10 @@ export function knownScientificMixedResponse(response: unknown, rawQuery: string
   if (lookup.status !== "completed" || mixed.max_selected_inputs < 1 || mixed.result_count + mixed.source_count > mixed.max_selected_inputs
     || mixed.result_count !== results.length || mixed.source_count !== sources.length
     || mixed.associations.length !== mixed.result_count * mixed.source_count
-    || !mixed.reason_codes.includes("numerical_explanation_not_established") || !mixed.reason_codes.includes("reviewed_result_passage_bridge_missing")
+    || !mixed.reason_codes.includes("numerical_explanation_not_established")
+    || mixed.reason_codes.includes("reviewed_result_passage_bridge_missing") !== (
+      mixed.version === "scientific-mixed-evidence/1.0.0" || mixed.associations.length === 0
+      || mixed.associations.some(item => item.status === "not_established"))
     || mixed.reason_codes.includes("no_matching_extraction") !== (results.length === 0)
     || mixed.reason_codes.includes("no_original_context") !== (sources.length === 0)) return null;
   const packing = knownPackingInventory(sources);
@@ -106,7 +120,7 @@ export function knownScientificMixedResponse(response: unknown, rawQuery: string
       || item.source_evidence_record_sha256 !== evidence.evidence_record_sha256 || item.source_content_sha256 !== evidence.content_sha256
       || snapshots.has(item.parent_result_revision_id) && snapshots.get(item.parent_result_revision_id) !== item.result_source_snapshot_sha256) return null;
     const same = result.binding.paper_id === source.paper_id && item.result_source_snapshot_sha256 === selected.source_snapshot_sha256;
-    if ((item.catalogue_relation === "same_snapshot") !== same) return null;
+    if ((item.catalogue_relation === "same_snapshot") !== same || item.status === "established" && !same) return null;
     snapshots.set(item.parent_result_revision_id, item.result_source_snapshot_sha256);
     seen.add(key);
   }

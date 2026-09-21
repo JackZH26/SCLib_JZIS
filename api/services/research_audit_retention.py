@@ -50,6 +50,7 @@ AUDIT_USER_REFERENCES = (
     ("scientific_import_outcomes", "actor_user_id"),
     ("scientific_adjudication_requests", "actor_user_id"),
     ("scientific_result_decisions", "actor_user_id"),
+    ("scientific_result_passage_links", "actor_user_id"),
     ("discovery_projection_packages", "actor_user_id"),
     ("discovery_projection_reviews", "actor_user_id"),
     ("discovery_projection_actions", "actor_user_id"),

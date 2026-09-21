@@ -1747,6 +1747,12 @@ from models.ml_pilot_attestations_v1 import (  # noqa: E402
 
 ML_PILOT_ATTESTATIONS = _register_ml_pilot_attestations(Base.metadata)
 
+from models.scientific_result_passage_v1 import (  # noqa: E402
+    register as _register_scientific_result_passage,
+)
+
+SCIENTIFIC_RESULT_PASSAGE_LINKS = _register_scientific_result_passage(Base.metadata)
+
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.

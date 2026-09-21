@@ -9,7 +9,7 @@ import { ApiError } from "@/lib/api";
 import { notifyAuthChange } from "@/lib/auth-session";
 import { importCanonical, importDigest } from "@/lib/scientific-imports";
 import * as rights from "@/lib/ml-use-rights";
-import http from "../fixtures/ml-use-rights-native.delivery20260915r2.wire.json";
+import http from "../fixtures/ml-use-rights-native.delivery20260921.wire.json";
 
 vi.mock("@/lib/ml-use-rights", async original => ({ ...await original<typeof import("@/lib/ml-use-rights")>(),
   getMlRightsAccess: vi.fn(), inspectMlRights: vi.fn(), previewMlRights: vi.fn(), commitMlRights: vi.fn(), recoverMlRights: vi.fn() }));
@@ -46,9 +46,9 @@ afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.use
   if (originalScroll) Object.defineProperty(HTMLElement.prototype, "scrollIntoView", originalScroll); else Reflect.deleteProperty(HTMLElement.prototype, "scrollIntoView"); });
 
 describe("actual native ML rights protocol", () => {
-  it("pins the exact native archive and all 593 backend/harness/schema source files", () => {
+  it("pins the exact native archive and all 598 backend/harness/schema source files", () => {
     const hash = (b: Buffer) => createHash("sha256").update(b).digest("hex");
-    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.delivery20260915r2.wire.json")))).toBe("03cc1d46bdf5e6828d1cb739a24358cba4a43fa92a1102aacb7ea5e5697642a1");
+    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.delivery20260921.wire.json")))).toBe("d15d6c151b60d740a62e1a0ccc695916639938bb701e3ed48314f6516aa38efc");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch75.wire.json")))).toBe("325260f84981f4f663e249da71e542ade0f7c2cd52115e9bcd38138247c67689");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch72.wire.json")))).toBe("776c9bdf006b09f1ab9fd1818b891be26741f21d7b0081357ec347069ab2c86b");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch73.wire.json")))).toBe("f8e7ac8010645f46c926a7e3459954566e419e4dc8fa9446ffca9c7694345a96");
@@ -63,7 +63,7 @@ describe("actual native ML rights protocol", () => {
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch65.wire.json")))).toBe("c6431f457ed7de687a48fe9bef413452e57d243310ffdf75dfeef06daae697aa");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.wire.json")))).toBe("35ac35963bf7108560492d3a9b91af69cb62e0ce70748e8be1151be4eac668fb");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.batch60.wire.json")))).toBe("79ad4248be9d5b75d9655a62064b5a4a8a9ab599e3887225cf6e745924e19f21");
-    expect(http.source_pins).toHaveLength(593); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(593);
+    expect(http.source_pins).toHaveLength(598); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(598);
     expect(http.source_pins.some(p => p.path === "api/tests/test_ml_pilot_participant_wire.py")).toBe(true);
     expect(http.source_pins.some(p => p.path === "api/services/ml08_pilot.schema.json")).toBe(true);
     expect(http.source_pins.some(p => p.path === "scripts/migration_pilot_registration.py")).toBe(true);

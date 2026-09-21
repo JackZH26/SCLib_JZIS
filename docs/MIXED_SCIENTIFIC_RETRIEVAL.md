@@ -1,6 +1,6 @@
 # Mixed scientific retrieval: records and original candidates
 
-Version: `scientific-mixed-evidence/1.0.0`. Date: 2026-09-08.
+Version: `scientific-mixed-evidence/1.1.0`. Updated: 2026-09-21.
 Issue: [RG04 / #75](https://github.com/JackZH26/SCLib_JZIS/issues/75).
 This is a qualified retrieval workflow, not established numerical explanation
 or completion of scientific acceptance.
@@ -42,20 +42,43 @@ Missing pressure is not ambient pressure.
 
 Original chunks may carry an entire paper's extraction list. That attachment,
 equal formulas, matching sample strings, shared Paper/Work or an equal catalogue
-snapshot do not identify a common experiment. The current database has no
-reviewed exact linkage from the 0060 raw extraction parent to a canonical
-scientific claim/sample and the particular original passage. The existing
-source-occurrence witness resolver checks a different part of that relationship;
-it cannot fill this missing bridge by itself.
+snapshot do not identify a common experiment. Schema 0078 adds an append-only,
+reviewer-owned link from one immutable 0060 extraction parent, through closed
+hash-only claim and sample identities, to one exact immutable original-passage
+revision. It binds the parent, evidence record, content, locator and source
+snapshot hashes. The existing source-occurrence witness resolver checks a
+different part of the relationship and cannot create this link by itself.
+The sample identity has scope `exact_retained_result_record`: it pins the
+reported context of this extraction, not a canonical real-world specimen or
+an independently adjudicated cross-paper sample identity.
 
-The route consumes a result-to-passage association resolver for **every actual
-selected pair**. In version 1 every pair is `not_established`, with reason
-`reviewed_result_passage_bridge_missing`. `same_snapshot` reports only exact
+The route consumes the current result-to-passage head for **every actual selected
+pair**. A pair is `established` only when its latest immutable review action is
+`establish`, the exact evidence remains current and eligible, and the reviewer's
+specific grant and account remain active. Missing, withdrawn or stale links are
+`not_established`, with reason `reviewed_result_passage_bridge_missing`.
+`same_snapshot` reports only exact
 Paper/catalogue-snapshot proximity; `not_same_snapshot` does not disprove a
 shared experiment. Neither is a scientific score or a positive/negative ML
 label. No independence count, calibrated probability or scientific acceptance
-is produced. A future positive association requires an explicit reviewed bridge
-and a versioned consumer, not a new boolean or a same-paper heuristic.
+is produced. A positive relation is an explicit review record, not an inferred
+boolean, same-paper heuristic, causal result or scientific acceptance.
+
+## Reviewer workflow
+
+The private authenticated endpoints under
+`/v1/ml/scientific-review/result-passage-links` provide exact context, preview,
+commit and actor-scoped receipt lookup. Curators may inspect context; only a
+current explicit reviewer grant may preview or commit. Context contains hashes
+and closed identities, not passage text.
+
+Preview executes the real SERIALIZABLE insertion and database-trigger path in a
+savepoint, then rolls it back. Commit requires the exact preview digest and
+rechecks the actor, grant, evidence revisions, source lifecycle, current chunk
+pointers and predecessor head. Establish and withdraw actions alternate through
+an exact predecessor chain. Rows cannot be updated, deleted or truncated, and a
+nonempty ledger blocks destructive downgrade. Request keys are actor-scoped and
+replay idempotently only when every exact binding agrees.
 
 ## Preparation, packing and one final check
 
@@ -75,11 +98,13 @@ and a versioned consumer, not a new boolean or a same-paper heuristic.
    Later consumers obtain fresh DTO copies from that sealed snapshot. A changed
    presentation cannot reuse unchanged old pins; the seal is local consistency,
    not externally authenticated provenance.
-5. Validate the complete selected result×original association inventory and
-   check the combined numerical and original pins in **one fresh read-only
-   repeatable-read snapshot**. Source/material/permission/Work or activation
-   changes withdraw both inventories. Empty selections still check the active
-   generation. Successful checking describes one read point, not future stability.
+5. Check the combined numerical and original pins and resolve the complete
+   selected result×original review-head inventory in **one fresh read-only
+   repeatable-read snapshot**. Source/material/permission/Work, activation,
+   evidence pointers or reviewer authority changes cannot leave a positive link
+   attached to an older checked input. Any resolver failure withdraws both
+   inventories. Empty selections still check the active generation. Successful
+   checking describes one read point, not future stability.
 
 The old numerical wrapper now composes preparation, rollback, fresh selected
 checks and the active-pin check. Current Work-mapping changes also invalidate
@@ -126,7 +151,12 @@ Each association binds:
   catalogue-snapshot hash.
 - The separately numbered original `source_index`, generation vector ID,
   evidence revision, evidence record hash and full-content hash.
-- Catalogue proximity and the explicit missing-reviewed-bridge disposition.
+- Catalogue proximity and an explicit reviewed-current or missing disposition.
+- For an established relation, the bridge revision and record hashes, canonical
+  claim/sample identity hashes and exact source-locator hash. All five values are
+  explicitly null for an unresolved 1.1 relation. Historical 1.0 associations
+  retain their original field set when read and serialized; no new null bridge
+  fields are inserted into the old wire contract.
 
 Every returned result/original pair appears exactly once; no unknown or repeated
 parent, source or pair is accepted. Source vector IDs must match packing metadata
@@ -143,6 +173,8 @@ combined answer is silently retained. No static answer discloses exception text.
 
 The English-default interface separates extraction records from **Original
 explanation candidates** and states **Numerical explanation not established**.
+It labels current reviewed relations separately and explains that they confer no
+causal explanation, independent support or scientific acceptance.
 It validates the full mixed envelope before showing rows, snippets or association
 details. A malformed present envelope does not fall back to displaying the old
 answer prose; missing/default `not_requested` retains legacy route behavior.
@@ -169,9 +201,10 @@ calls and joint withdrawal after source/Work/activation changes. Provider
 transport is substituted; no real source acquisition or paid evaluation occurs.
 
 The portable [scientific evaluation protocol](SCIENTIFIC_EVALUATION_PROTOCOL.md)
-remains separate from genuine expert judgment. Remaining gates include reviewed
-Result/claim/sample/original bridges, authenticated original roots and rights,
-actual stratified gold acquisition, blinded adjudication, preregistered held-out
-comparison, operational measurements, remote release CI and authorized canary
-acceptance. This qualified dual retrieval is not a claim that those gates passed
-and does not close #75.
+remains separate from genuine expert judgment. Synthetic tests establish and
+withdraw a bridge only to verify the software path; no real source received a
+review decision. Remaining gates include authorized review of real exact pairs,
+authenticated original roots and rights, actual stratified gold acquisition,
+blinded adjudication, preregistered held-out comparison, operational
+measurements, remote release CI and authorized canary acceptance. This qualified
+dual retrieval is not a claim that those gates passed and does not close #75.

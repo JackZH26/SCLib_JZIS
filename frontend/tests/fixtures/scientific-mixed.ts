@@ -20,6 +20,8 @@ export function mixedResponse(raw = "Why is Tc of MgB₂ 39 K?"): AskResponse {
     source_evidence_record_sha256: source.evidence_provenance!.evidence_record_sha256!,
     source_content_sha256: source.evidence_provenance!.content_sha256, catalogue_relation: "same_snapshot",
     status: "not_established", reason_code: "reviewed_result_passage_bridge_missing",
+    bridge_revision_id: null, bridge_record_sha256: null, claim_identity_sha256: null,
+    sample_identity_sha256: null, source_locator_sha256: null,
   }));
   return { answer: "UNREVIEWED_MIXED_PROSE must never be rendered", sources, tokens_used: 0, query_time_ms: 10,
     citation_valid: true, citation_warnings: [], guest_remaining: null, remaining: null,
@@ -29,7 +31,7 @@ export function mixedResponse(raw = "Why is Tc of MgB₂ 39 K?"): AskResponse {
     input_budget: inputBudget({ status: "not_requested", model: null, request_sha256: null, payload_bytes: null,
       input_tokens: null, max_input_tokens: null, generation_started: null }),
     evidence_packing: packingSummary({ candidate_count: 2, reason_counts: {}, reason_codes: [] }),
-    scientific_mixed: { version: "scientific-mixed-evidence/1.0.0", status: "completed", result_count: 1, source_count: 2,
+    scientific_mixed: { version: "scientific-mixed-evidence/1.1.0", status: "completed", result_count: 1, source_count: 2,
       max_selected_inputs: 4, associations, reason_codes: ["numerical_explanation_not_established", "reviewed_result_passage_bridge_missing"],
       scientific_acceptance: false, independent_support_count: null },
   };

@@ -29,7 +29,7 @@ def snapshot(connection, *, old_only=False):
         .all()
         for name in inspect(connection).get_table_names(schema="public")
         if not old_only
-        or name not in {"alembic_version", *TABLES, "ml_pilot_review_attestations"}
+        or name not in {"alembic_version", *TABLES, "ml_pilot_review_attestations", "scientific_result_passage_links"}
     }
 
 

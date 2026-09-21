@@ -518,15 +518,22 @@ async def _mixed_response(db, body, identity, history_user_id, interpretation, p
                     or source.packing_info.chunk_id != original_pin.chunk_id or source.paper_id != original_pin.paper_id
                     for source, original_pin in zip(sources, original_pins, strict=True)):
                 raise ValueError("Incomplete original citation pin inventory")
-            report = scientific_mixed.resolve_mixed_associations(inputs, sources,
-                max_selected_inputs=body.max_sources)
             if pins:
-                check = await retrieval_currentness.check_selected_sources(pins, evidence_resolver=_resolve_evidence)
+                async def resolve_links(snapshot_db):
+                    return await scientific_mixed.resolve_mixed_associations(snapshot_db, inputs, sources,
+                        max_selected_inputs=body.max_sources)
+
+                check = await retrieval_currentness.check_selected_sources(pins, evidence_resolver=_resolve_evidence,
+                    snapshot_resolver=resolve_links)
                 if check.status != "unchanged":
                     reason = check.reason_code or "mixed_currentness_unavailable"
+                else:
+                    report = check.details
             else:
                 async with asyncio.timeout(10):
                     await index_retrieval.require_current_pin(db, pin)
+                report = await scientific_mixed.resolve_mixed_associations(db, inputs, sources,
+                    max_selected_inputs=body.max_sources)
         except Exception:
             reason = "mixed_currentness_unavailable"
     if reason is not None:

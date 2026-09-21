@@ -29,12 +29,12 @@ def fixture():
         "synthetic": True, "production": False, "cleanup_verified": True,
         "authority": {key: False for key in ("deployment_approved", "scientific_acceptance", "ml_training_approved", "source_distribution_approved")},
         "started_at": "2026-09-08T01:00:00.000000Z", "completed_at": "2026-09-08T01:00:01.000000Z", "duration_ms": 1000,
-        "source_schema": "0050_timeline_identity", "target_schema": "0077_ml_pilot_attestations",
+        "source_schema": "0050_timeline_identity", "target_schema": "0078_scientific_result_passage",
         "runtime": {"backend": "native", "python": "3.12.14", "implementation": "CPython", "system": "Darwin", "machine": "arm64", "postgres_version_num": 160013},
         "provenance": {"head_revision": "a" * 40, "dirty_worktree": True, "source_dirty": True,
                        "tracked_diff_sha256": "b" * 64, "inputs": inputs, "inputs_sha256": report.sha(report.canonical(inputs)), "unchanged_during_rehearsal": True},
-        "phases": [{"phase": phase, "schema": "0050_timeline_identity" if index == 0 else "0077_ml_pilot_attestations",
-                    "counts": {key: (None if index == 0 else (1 if phase == "final" else 0)) if key in report.PILOT_TABLES
+        "phases": [{"phase": phase, "schema": "0050_timeline_identity" if index == 0 else "0078_scientific_result_passage",
+                    "counts": {key: (None if index == 0 else (1 if phase == "final" else 0)) if key in (*report.PILOT_TABLES, *report.RESULT_PASSAGE_TABLES)
                                else 2 if key == "materials" or (phase == "final" and key in {"scientific_import_packages", "scientific_import_attempts", "scientific_import_outcomes"}) else 0 for key in report.TABLES}, "material_raw_records": 2} for index, phase in enumerate(report.PHASES)],
         "retention_checks": [{"check": name, "row_count": 2, "before_sha256": "a" * 64, "after_sha256": "a" * 64, "passed": True} for name in report.RETENTIONS],
         "fixture_outcomes": [{"code": code, "observed_count": 1} for code in report.OUTCOMES],
@@ -73,7 +73,7 @@ def test_original_v1_native_receipt_remains_byte_identical_and_readable():
 
 @pytest.mark.parametrize("mutate", [
     lambda d: d.update(version=report.LEGACY_VERSION),
-    lambda d: d.update(version="schema-rehearsal/1.3.0"),
+    lambda d: d.update(version="schema-rehearsal/future"),
     lambda d: d["phases"][0]["counts"].update(ml_pilot_registrations=0),
     lambda d: d["phases"][1]["counts"].update(ml_pilot_participants=1),
     lambda d: d["phases"][2]["counts"].update(ml_pilot_participation_decisions=1),
@@ -167,6 +167,30 @@ def test_hash_and_cleanup_are_not_optional():
     assert report.validate(draft, internal=True) == draft
     with pytest.raises(report.ReportError, match="cleanup_not_verified"):
         report.validate(draft)
+
+
+def test_0077_archived_receipt_keeps_its_original_version_and_scope():
+    path = ROOT / "docs/reviews/2026-09-05/delivery-2026-09-15/schema-rehearsal-restored.json"
+    value = report.loads(path.read_bytes())
+    assert value["version"] == report.ATTESTATION_VERSION
+    assert value["target_schema"] == "0077_ml_pilot_attestations"
+    assert not set(report.RESULT_PASSAGE_TABLES) & set(value["phases"][-1]["counts"])
+    assert not set(report.RESULT_PASSAGE_OUTCOMES) & {row["code"] for row in value["fixture_outcomes"]}
+    with pytest.raises(report.ReportError):
+        report.validate(report.seal({**value, "version": report.VERSION}))
+
+
+@pytest.mark.parametrize("mutate", [
+    lambda d: d["phases"][0]["counts"].update(scientific_result_passage_links=0),
+    lambda d: d["phases"][1]["counts"].update(scientific_result_passage_links=1),
+    lambda d: d["phases"][-1]["counts"].update(scientific_result_passage_links=0),
+    lambda d: d["fixture_outcomes"].pop(),
+])
+def test_reviewed_link_receipt_requires_actual_phase_counts_and_all_observations(mutate):
+    value = fixture()
+    mutate(value)
+    with pytest.raises(report.ReportError):
+        report.validate(report.seal(value))
 
 
 def test_exclusive_atomic_owner_only_report_and_replay_refusal(tmp_path):

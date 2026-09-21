@@ -4,9 +4,12 @@ from __future__ import annotations
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_serializer, model_validator
 
-VERSION = "scientific-mixed-evidence/1.0.0"
+VERSION = "scientific-mixed-evidence/1.1.0"
+LEGACY_VERSION = "scientific-mixed-evidence/1.0.0"
+BRIDGE_FIELDS = frozenset({"bridge_revision_id", "bridge_record_sha256", "claim_identity_sha256",
+                           "sample_identity_sha256", "source_locator_sha256"})
 MixedReason = Literal[
     "numerical_explanation_not_established", "reviewed_result_passage_bridge_missing",
     "no_matching_extraction", "no_original_context", "combined_source_limit",
@@ -30,19 +33,41 @@ class MixedEvidenceAssociation(_Closed):
     source_evidence_record_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     source_content_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     catalogue_relation: Literal["same_snapshot", "not_same_snapshot"]
-    status: Literal["not_established"] = "not_established"
-    reason_code: Literal["reviewed_result_passage_bridge_missing"] = "reviewed_result_passage_bridge_missing"
+    status: Literal["established", "not_established"] = "not_established"
+    reason_code: Literal[
+        "reviewed_result_passage_bridge_current", "reviewed_result_passage_bridge_missing",
+    ] = "reviewed_result_passage_bridge_missing"
+    bridge_revision_id: str | None = None
+    bridge_record_sha256: str | None = Field(None, pattern=r"^[0-9a-f]{64}$")
+    claim_identity_sha256: str | None = Field(None, pattern=r"^[0-9a-f]{64}$")
+    sample_identity_sha256: str | None = Field(None, pattern=r"^[0-9a-f]{64}$")
+    source_locator_sha256: str | None = Field(None, pattern=r"^[0-9a-f]{64}$")
 
-    @field_validator("parent_result_revision_id", "source_evidence_revision_id")
+    @field_validator("parent_result_revision_id", "source_evidence_revision_id", "bridge_revision_id")
     @classmethod
     def canonical_uuid(cls, value):
+        if value is None:
+            return value
         if str(UUID(value)) != value:
             raise ValueError("A canonical source/result UUID is required")
         return value
 
+    @model_validator(mode="after")
+    def coherent_reviewed_link(self):
+        pins = (self.bridge_revision_id, self.bridge_record_sha256, self.claim_identity_sha256,
+                self.sample_identity_sha256, self.source_locator_sha256)
+        established = self.status == "established"
+        if established != all(value is not None for value in pins) or (not established and any(value is not None for value in pins)):
+            raise ValueError("Reviewed link pins must be complete exactly when the association is established")
+        if established != (self.reason_code == "reviewed_result_passage_bridge_current"):
+            raise ValueError("Reviewed link status and reason must agree")
+        return self
+
 
 class ScientificMixedEvidence(_Closed):
-    version: Literal["scientific-mixed-evidence/1.0.0"] = VERSION
+    version: Literal[
+        "scientific-mixed-evidence/1.0.0", "scientific-mixed-evidence/1.1.0",
+    ] = VERSION
     status: Literal["not_requested", "completed", "unavailable"] = "not_requested"
     result_count: int = Field(default=0, ge=0, le=20)
     source_count: int = Field(default=0, ge=0, le=20)
@@ -51,6 +76,25 @@ class ScientificMixedEvidence(_Closed):
     reason_codes: list[MixedReason] = Field(default_factory=list, max_length=8)
     scientific_acceptance: Literal[False] = False
     independent_support_count: None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def closed_legacy_associations(cls, value):
+        if (isinstance(value, dict) and value.get("version") == LEGACY_VERSION
+                and isinstance(value.get("associations"), list)):
+            for item in value.get("associations", []):
+                if isinstance(item, dict) and BRIDGE_FIELDS.intersection(item):
+                    raise ValueError("Legacy associations cannot include reviewed-link fields")
+        return value
+
+    @model_serializer(mode="wrap")
+    def preserve_wire_version(self, handler):
+        value = handler(self)
+        if self.version == LEGACY_VERSION:
+            for item in value.get("associations", []):
+                for field in BRIDGE_FIELDS:
+                    item.pop(field, None)
+        return value
 
     @field_validator("scientific_acceptance", mode="before")
     @classmethod
@@ -74,9 +118,13 @@ class ScientificMixedEvidence(_Closed):
                 raise ValueError("Mixed result and original inputs share one bounded inventory")
             if len(self.associations) != self.result_count * self.source_count:
                 raise ValueError("Every result/original pair needs its unresolved association disposition")
-            required = {"numerical_explanation_not_established", "reviewed_result_passage_bridge_missing"}
-            if not required <= set(self.reason_codes):
-                raise ValueError("Unestablished explanation and missing bridge must be disclosed")
+            if "numerical_explanation_not_established" not in self.reason_codes:
+                raise ValueError("Unestablished numerical explanation must be disclosed")
+            unresolved = not self.associations or any(item.status == "not_established" for item in self.associations)
+            if ("reviewed_result_passage_bridge_missing" in self.reason_codes) != unresolved:
+                raise ValueError("Missing reviewed bridge disclosure must match the pair inventory")
+            if self.version == LEGACY_VERSION and any(item.status != "not_established" for item in self.associations):
+                raise ValueError("The legacy mixed contract cannot carry reviewed links")
             if ("no_matching_extraction" in self.reason_codes) != (self.result_count == 0):
                 raise ValueError("Missing extraction disclosure must match the inventory")
             if ("no_original_context" in self.reason_codes) != (self.source_count == 0):
@@ -143,6 +191,8 @@ def validate_mixed_response(response):
         same = row.binding.paper_id == source.paper_id and snapshot == source.packing_info.source_snapshot_sha256
         if (association.catalogue_relation == "same_snapshot") != same:
             raise ValueError("Catalogue proximity must match its declared paper and snapshot, not imply an experiment link")
+        if association.status == "established" and not same:
+            raise ValueError("Reviewed links require the exact same source paper and snapshot")
     if seen != {(parent, index) for parent in by_parent for index in by_index}:
         raise ValueError("Mixed association inventory is incomplete")
     return response

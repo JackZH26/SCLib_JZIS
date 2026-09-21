@@ -1,9 +1,8 @@
-"""Result/original coordination without inventing a reviewed experiment bridge.
+"""Result/original coordination with an exact reviewed-link consumer.
 
-The current 0060 extraction lineage and catalogue/Work grouping have no
-reviewed exact Result -> scientific claim/sample -> original passage bridge.
-Consequently every actual selected pair remains not_established. This resolver
-is consumed by Ask, not a source of positive labels or an unused review schema.
+Catalogue proximity never creates a link. Positive pair metadata is consumed
+only from the current append-only reviewer ledger in the same repeatable-read
+snapshot that rechecks every selected source.
 """
 from __future__ import annotations
 
@@ -13,6 +12,7 @@ from dataclasses import asdict, dataclass, field
 
 from models.scientific_mixed import MixedEvidenceAssociation, ScientificMixedEvidence
 from services import index_retrieval, retrieval_currentness
+from services import scientific_result_passage
 from services.scientific_query_lookup import ScientificLookupInputs, result_query
 
 
@@ -77,15 +77,15 @@ def combined_pins(inputs, original_pins, *, max_selected_inputs):
     return result
 
 
-def resolve_mixed_associations(inputs, sources, *, max_selected_inputs):
-    """Explain every selected pair; shared paper/Work/sample strings never accept it."""
+async def resolve_mixed_associations(db, inputs, sources, *, max_selected_inputs):
+    """Explain every pair; only a current exact reviewer record can establish one."""
     if type(inputs) is not ScientificLookupInputs or inputs.outcome.status.status != "completed":
         raise ValueError("Completed prepared result lookup is required")
     outcome = inputs.outcome
     parents = {parent.parent_result_revision_id: parent for parent in inputs.parents}
     if len(parents) != len(outcome.results) or len(outcome.results) + len(sources) > max_selected_inputs:
         raise ValueError("Complete bounded mixed parent and passage inventories are required")
-    associations = []
+    candidates = []
     for row in outcome.results:
         parent = parents[row.binding.parent_result_revision_id]
         for source in sources:
@@ -93,13 +93,26 @@ def resolve_mixed_associations(inputs, sources, *, max_selected_inputs):
             if (packing is None or evidence.get("chunk_kind") != "original_passage"
                     or evidence.get("permission_status") == "restricted" or evidence.get("currentness") == "stale"):
                 raise ValueError("Unheld typed original passages are required for explanation candidates")
-            same = parent.paper_id == source.paper_id and parent.source_snapshot_sha256 == packing.source_snapshot_sha256
-            associations.append(MixedEvidenceAssociation(parent_result_revision_id=parent.parent_result_revision_id,
-                result_source_snapshot_sha256=parent.source_snapshot_sha256, source_index=source.index,
-                source_vector_id=packing.chunk_id, source_evidence_revision_id=evidence["evidence_revision_id"],
-                source_evidence_record_sha256=evidence["evidence_record_sha256"], source_content_sha256=evidence["content_sha256"],
-                catalogue_relation="same_snapshot" if same else "not_same_snapshot"))
-    reasons = ["numerical_explanation_not_established", "reviewed_result_passage_bridge_missing"]
+            candidates.append((parent, source, evidence, packing))
+    links = await scientific_result_passage.resolve_current_links(db, [
+        (parent.parent_result_revision_id, evidence["evidence_revision_id"])
+        for parent, _, evidence, _ in candidates
+    ])
+    associations = []
+    for parent, source, evidence, packing in candidates:
+        same = parent.paper_id == source.paper_id and parent.source_snapshot_sha256 == packing.source_snapshot_sha256
+        link = links.get((parent.parent_result_revision_id, evidence["evidence_revision_id"]))
+        associations.append(MixedEvidenceAssociation(parent_result_revision_id=parent.parent_result_revision_id,
+            result_source_snapshot_sha256=parent.source_snapshot_sha256, source_index=source.index,
+            source_vector_id=packing.chunk_id, source_evidence_revision_id=evidence["evidence_revision_id"],
+            source_evidence_record_sha256=evidence["evidence_record_sha256"], source_content_sha256=evidence["content_sha256"],
+            catalogue_relation="same_snapshot" if same else "not_same_snapshot",
+            status="established" if link else "not_established",
+            reason_code="reviewed_result_passage_bridge_current" if link else "reviewed_result_passage_bridge_missing",
+            **(link or {})))
+    reasons = ["numerical_explanation_not_established"]
+    if not associations or any(item.status == "not_established" for item in associations):
+        reasons.append("reviewed_result_passage_bridge_missing")
     if not outcome.results:
         reasons.append("no_matching_extraction")
     if not sources:
@@ -114,10 +127,16 @@ def mixed_answer(report):
     if report.status != "completed":
         return ("Mixed scientific retrieval is unavailable or its selected evidence changed. "
                 "Both numerical records and original explanation candidates have been withheld. Please ask again.")
+    linked = sum(item.status == "established" for item in report.associations)
     text = ("Source-linked extraction records and original explanation candidates are shown separately. "
-            "Numerical explanation is not established: no reviewed link currently connects these exact extraction records "
-            "to a claim, sample and original passage. Sharing a paper, catalogue snapshot, Work, formula or reported sample name "
-            "does not establish that relationship. No model-generated numerical or causal synthesis was performed.")
+            "Numerical or causal explanation is not established. ")
+    if linked:
+        text += (f"{linked} exact result-passage pair{'s have' if linked != 1 else ' has'} a current reviewed link; "
+                 "that review records the claim/sample-to-passage relation only and is not scientific acceptance or a causal conclusion. ")
+    if linked != len(report.associations):
+        text += "At least one displayed pair has no current reviewed claim/sample-to-passage link. "
+    text += ("Sharing a paper, catalogue snapshot, Work, formula or reported sample name does not establish that relationship. "
+             "No model-generated numerical or causal synthesis was performed.")
     if not report.result_count:
         text += " No eligible extraction matched all interpreted conditions; this is not evidence of absent superconductivity."
     if not report.source_count:
