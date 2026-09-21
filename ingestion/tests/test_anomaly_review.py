@@ -402,3 +402,33 @@ def test_api_and_ingestion_policy_modules_are_byte_identical():
     root = Path(__file__).resolve().parents[2]
     assert (root / "ingestion/ingestion/anomaly_review.py").read_bytes() == (
         root / "api/services/anomaly_review.py").read_bytes()
+
+
+@pytest.mark.parametrize("field", ["lambda_eph", "lattice_a", "xi_gl_nm"])
+@pytest.mark.parametrize("proposal", [None, {"value": 45}, {"raw_value": True}])
+def test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar(field, proposal):
+    record = {"scientific_values": {field: proposal}}
+    result = assess(record)
+    assert result["status"] == "format_invalid"
+    assert any(item["field"] == field and item["rule_id"] == "numeric_format_invalid"
+               for item in result["findings"])
+    assert not eligible_for_property(result, field)
+
+
+@pytest.mark.parametrize("field", ["lambda_eph", "lattice_a", "pressure_gpa"])
+def test_absent_quantity_does_not_erase_invalid_compound_review_context(field):
+    result = assess({}, compound_thresholds=[ref(field, "invalid threshold")])
+    assert "review_context_unresolved" in rules(result)
+    assert not eligible_for_property(result, field)
+    assert "legacy_numeric_override_requires_revision" not in rules(assess({},
+        compound_thresholds=[ref(field, 1, mode="unreviewed_exact_override")]))
+
+
+@pytest.mark.parametrize("record", [
+    {"lambda_eph_unit": float("nan")},
+    {"lattice_a_unit": float("inf")},
+    {"evidence_text": float("nan")},
+])
+def test_sparse_record_does_not_skip_unrepresentable_unit_or_shared_context(record):
+    with pytest.raises(ValueError):
+        assess(record)

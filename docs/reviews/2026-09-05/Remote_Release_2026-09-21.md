@@ -254,3 +254,43 @@ it is not counted as a Linux pass. Final GitHub Linux validation is required.
 The complete offline suite passed 2,306 cases plus 91 subtests. Frontend checks
 passed 1,890 component tests, 46 source tests and TypeScript. These local results
 do not replace final Linux/image validation.
+
+
+## Cold-read refinement and complete catalogue concurrency coverage
+
+A second catalogue delivery test also assumed all eight admitted jobs could
+start simultaneously. Both catalogue test modules now share explicit six/eight
+worker fixtures; event synchronization never occupies the blocked executor.
+The cancellation-capacity test waits for all eight submissions and the actual
+worker width, then confirms that cancelled running/queued work retains capacity
+until completion. The complete two-module run passes all 49 cases. No production
+worker limit, cancellation behavior, test deadline or source gate was loosened.
+
+Anomaly evaluation now avoids parsing quantities with no raw declaration. It
+retains all explicit typed, alias, unit-only and nested-lattice channels, even
+malformed ones; absent quantities cannot erase malformed compound-review
+context. Tc is still parsed to validate shared source context/locators in empty
+records. API and ingestion copies are byte-identical. A read-only comparison of
+all 18,931 restored materials / 75,273 records found zero differing assessments
+or exception types; measured anomaly CPU time fell from 23.350 to 8.252 seconds.
+Another 42,288 deterministic synthetic input/context combinations also had
+zero differences. Neither comparison created scientific approvals or DB writes.
+
+The full-data HTTP experiment preserves both earlier complete response hashes:
+three-row cold read 19.490 s, warm 0.032/0.005 s; 50-row cold read 19.539 s, warm
+0.018 s. The measured private prototype and committed source have the same AST
+and differ only in comments/whitespace; exact file/AST hashes are retained in
+`anomaly-sparse-source-comparison.json`. This is not release-image parity proof.
+**Cold reads remain too slow; these measurements do not close the performance
+gate or justify production cutover.**
+
+Current focused API policy/surface tests pass 257 cases; the full ingestion unit
+suite passes 1,290. Initial ingestion runs exposed a missing unit-test-only
+DATABASE_URL and four incorrect newly written test expectations (an unsupported
+field name and a locator value that the parser deliberately sanitizes). Those
+raw failures are retained; the corrected run uses the same unavailable loopback
+DSN as CI and performs no production ingestion. Seven refreshed r9 native
+captures pass 10 tests with all source pins verified.
+
+The r9 captures also pass all 1,890 frontend component tests, 46 source checks
+and TypeScript. The complete offline suite passes 2,306 cases and 91 subtests.

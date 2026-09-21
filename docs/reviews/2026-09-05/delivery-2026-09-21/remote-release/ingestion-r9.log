@@ -1,0 +1,1784 @@
+........................................................................ [  5%]
+.........F..F..F.....F.................................................. [ 11%]
+........................................................................ [ 16%]
+........................................................................ [ 22%]
+........................................................................ [ 27%]
+........................................................................ [ 33%]
+........................................................................ [ 39%]
+..FF........................FF........FFFFF............................. [ 44%]
+..............................FFFF...................................... [ 50%]
+........................................................................ [ 55%]
+........................................................................ [ 61%]
+........................................................................ [ 66%]
+.....................................................................FFF [ 72%]
+FFFFF.FFF............................................................... [ 78%]
+........................................................................ [ 83%]
+........................................................................ [ 89%]
+........................................................................ [ 94%]
+...................................................................      [100%]
+=================================== FAILURES ===================================
+_ test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[None-coherence_length_nm] _
+
+field = 'coherence_length_nm', proposal = None
+
+    @pytest.mark.parametrize("field", ["lambda_eph", "lattice_a", "coherence_length_nm"])
+    @pytest.mark.parametrize("proposal", [None, {"value": 45}, {"raw_value": True}])
+    def test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar(field, proposal):
+        record = {"scientific_values": {field: proposal}}
+        result = assess(record)
+>       assert result["status"] == "format_invalid"
+E       AssertionError: assert 'no_findings' == 'format_invalid'
+E         
+E         - format_invalid
+E         + no_findings
+
+ingestion/tests/test_anomaly_review.py:412: AssertionError
+_ test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[proposal1-coherence_length_nm] _
+
+field = 'coherence_length_nm', proposal = {'value': 45}
+
+    @pytest.mark.parametrize("field", ["lambda_eph", "lattice_a", "coherence_length_nm"])
+    @pytest.mark.parametrize("proposal", [None, {"value": 45}, {"raw_value": True}])
+    def test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar(field, proposal):
+        record = {"scientific_values": {field: proposal}}
+        result = assess(record)
+>       assert result["status"] == "format_invalid"
+E       AssertionError: assert 'no_findings' == 'format_invalid'
+E         
+E         - format_invalid
+E         + no_findings
+
+ingestion/tests/test_anomaly_review.py:412: AssertionError
+_ test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[proposal2-coherence_length_nm] _
+
+field = 'coherence_length_nm', proposal = {'raw_value': True}
+
+    @pytest.mark.parametrize("field", ["lambda_eph", "lattice_a", "coherence_length_nm"])
+    @pytest.mark.parametrize("proposal", [None, {"value": 45}, {"raw_value": True}])
+    def test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar(field, proposal):
+        record = {"scientific_values": {field: proposal}}
+        result = assess(record)
+>       assert result["status"] == "format_invalid"
+E       AssertionError: assert 'no_findings' == 'format_invalid'
+E         
+E         - format_invalid
+E         + no_findings
+
+ingestion/tests/test_anomaly_review.py:412: AssertionError
+_ test_sparse_record_does_not_skip_unrepresentable_unit_or_shared_context[record2] _
+
+record = {'source_locator': {'page': nan}}
+
+    @pytest.mark.parametrize("record", [
+        {"lambda_eph_unit": float("nan")},
+        {"lattice_a_unit": float("inf")},
+        {"source_locator": {"page": float("nan")}},
+        {"evidence_text": float("nan")},
+    ])
+    def test_sparse_record_does_not_skip_unrepresentable_unit_or_shared_context(record):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+ingestion/tests/test_anomaly_review.py:434: Failed
+________ test_valid_complete_batch_has_every_expected_datapoint[False] _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x118cefb90>
+aps = False
+
+    @pytest.mark.parametrize("aps", [False, True])
+    def test_valid_complete_batch_has_every_expected_datapoint(monkeypatch, aps):
+        meta, chunks = fixture(aps)
+        before = deepcopy(chunks)
+        cloud = SimpleNamespace(upsert_datapoints=Mock())
+        lookup = Mock(return_value=cloud)
+        monkeypatch.setattr(indexer, "_index", lookup)
+>       publish(meta, chunks, aps)
+
+ingestion/tests/test_embedding_publication.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/tests/test_embedding_publication.py:54: in publish
+    indexer.upsert_chunks_to_vector_search(ParsedPaper(meta=meta, sections=[]), chunks)
+ingestion/ingestion/index/indexer.py:828: in upsert_chunks_to_vector_search
+    completed = _publication_inputs(meta.paper_id, chunks)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ingestion/ingestion/index/indexer.py:811: in _publication_inputs
+    vector, _ = _complete_embedding(chunk)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ingestion/ingestion/index/indexer.py:467: in _complete_embedding
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={'embedding_model': 'text...k_overlap_tokens': '64'}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+_________ test_valid_complete_batch_has_every_expected_datapoint[True] _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x118df30e0>
+aps = True
+
+    @pytest.mark.parametrize("aps", [False, True])
+    def test_valid_complete_batch_has_every_expected_datapoint(monkeypatch, aps):
+        meta, chunks = fixture(aps)
+        before = deepcopy(chunks)
+        cloud = SimpleNamespace(upsert_datapoints=Mock())
+        lookup = Mock(return_value=cloud)
+        monkeypatch.setattr(indexer, "_index", lookup)
+>       publish(meta, chunks, aps)
+
+ingestion/tests/test_embedding_publication.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/tests/test_embedding_publication.py:52: in publish
+    indexer.upsert_aps_chunks_to_vector_search(meta, chunks)
+ingestion/ingestion/index/indexer.py:875: in upsert_aps_chunks_to_vector_search
+    completed = _publication_inputs(meta.paper_id, chunks)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ingestion/ingestion/index/indexer.py:811: in _publication_inputs
+    vector, _ = _complete_embedding(chunk)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ingestion/ingestion/index/indexer.py:467: in _complete_embedding
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={'embedding_model': 'text...k_overlap_tokens': '64'}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+_____ test_long_title_does_not_split_or_truncate_negative_fact_conditions ______
+
+    def test_long_title_does_not_split_or_truncate_negative_fact_conditions():
+        paper = meta("A long synthetic title 测试 😀 " * 1000)
+        record = {"formula": "Nb", "result_status": "not_detected", "tc_kelvin": "< 5 K",
+                  "minimum_temperature_k": "1.5 K", "pressure_gpa": "2 GPa", "magnetic_field_t": "3 T",
+                  "knowledge_origin": "Observed", "source_role": "cited", "sample_form": "thin_film"}
+        before = deepcopy(record)
+>       chunk, = build_fact_chunks(paper, [record], start_index=1)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ingestion/tests/test_fact_chunk_limits.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/ingestion/extract/fact_sentences.py:297: in build_fact_chunks
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={'chunk_size_tokens': '51...k_overlap_tokens': '64'}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+_ test_oversized_atomic_fact_aborts_without_partial_output_or_source_text_in_error _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x118d29970>
+
+    def test_oversized_atomic_fact_aborts_without_partial_output_or_source_text_in_error(monkeypatch):
+        monkeypatch.setenv("CHUNK_SIZE_TOKENS", "64")
+        monkeypatch.setenv("CHUNK_OVERLAP_TOKENS", "0")
+        get_settings.cache_clear()
+        record = {"formula": "Nb", "tc_kelvin": "9.2 K", "result_status": "not_detected", "minimum_temperature_k": "1 K",
+                  "knowledge_origin": "Observed", "source_role": "primary", "sample_form": "PRIVATE_RESULT_VALUE " * 6}
+        before = deepcopy(record)
+        with pytest.raises(FactChunkLimitError) as caught:
+>           build_authorized_chunks(meta(), [record])
+
+ingestion/tests/test_fact_chunk_limits.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/ingestion/extract/fact_sentences.py:356: in build_authorized_chunks
+    abstract_chunks = chunk_paper(abstract_only)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ingestion/ingestion/chunk/chunker.py:225: in chunk_paper
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={'chunk_size_tokens': '64...nk_overlap_tokens': '0'}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+_____________ test_fact_start_index_is_explicit_and_bounded[True] ______________
+
+start = True
+
+    @pytest.mark.parametrize("start", [True, -1, 32768, 1.0, "1"])
+    def test_fact_start_index_is_explicit_and_bounded(start):
+>       with pytest.raises(ValueError, match="starting index"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'starting index'
+E         Actual message: "1 validation error for IngestionSettings\ndatabase_url\n  Field required [type=missing, input_value={'chunk_size_tokens': '51...k_overlap_tokens': '64'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+
+ingestion/tests/test_fact_chunk_limits.py:77: AssertionError
+______________ test_fact_start_index_is_explicit_and_bounded[-1] _______________
+
+start = -1
+
+    @pytest.mark.parametrize("start", [True, -1, 32768, 1.0, "1"])
+    def test_fact_start_index_is_explicit_and_bounded(start):
+>       with pytest.raises(ValueError, match="starting index"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'starting index'
+E         Actual message: "1 validation error for IngestionSettings\ndatabase_url\n  Field required [type=missing, input_value={'chunk_size_tokens': '51...k_overlap_tokens': '64'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+
+ingestion/tests/test_fact_chunk_limits.py:77: AssertionError
+_____________ test_fact_start_index_is_explicit_and_bounded[32768] _____________
+
+start = 32768
+
+    @pytest.mark.parametrize("start", [True, -1, 32768, 1.0, "1"])
+    def test_fact_start_index_is_explicit_and_bounded(start):
+>       with pytest.raises(ValueError, match="starting index"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'starting index'
+E         Actual message: "1 validation error for IngestionSettings\ndatabase_url\n  Field required [type=missing, input_value={'chunk_size_tokens': '51...k_overlap_tokens': '64'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+
+ingestion/tests/test_fact_chunk_limits.py:77: AssertionError
+______________ test_fact_start_index_is_explicit_and_bounded[1.0] ______________
+
+start = 1.0
+
+    @pytest.mark.parametrize("start", [True, -1, 32768, 1.0, "1"])
+    def test_fact_start_index_is_explicit_and_bounded(start):
+>       with pytest.raises(ValueError, match="starting index"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'starting index'
+E         Actual message: "1 validation error for IngestionSettings\ndatabase_url\n  Field required [type=missing, input_value={'chunk_size_tokens': '51...k_overlap_tokens': '64'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+
+ingestion/tests/test_fact_chunk_limits.py:77: AssertionError
+_______________ test_fact_start_index_is_explicit_and_bounded[1] _______________
+
+start = '1'
+
+    @pytest.mark.parametrize("start", [True, -1, 32768, 1.0, "1"])
+    def test_fact_start_index_is_explicit_and_bounded(start):
+>       with pytest.raises(ValueError, match="starting index"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'starting index'
+E         Actual message: "1 validation error for IngestionSettings\ndatabase_url\n  Field required [type=missing, input_value={'chunk_size_tokens': '51...k_overlap_tokens': '64'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+
+ingestion/tests/test_fact_chunk_limits.py:77: AssertionError
+___________________ test_build_fact_chunks_ids_and_metadata ____________________
+
+    def test_build_fact_chunks_ids_and_metadata():
+        mats = [
+            {"formula": "MgB2", "tc_kelvin": 39},
+            {"formula": "FeSe", "tc_kelvin": 8},
+        ]
+>       chunks = build_fact_chunks(_meta(), mats, start_index=1)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ingestion/tests/test_fact_sentences.py:209: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/ingestion/extract/fact_sentences.py:297: in build_fact_chunks
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+_________________ test_build_fact_chunks_primary_before_cited __________________
+
+    def test_build_fact_chunks_primary_before_cited():
+        mats = [
+            {"formula": "CITED", "tc_kelvin": 1, "evidence_type": "cited"},
+            {"formula": "PRIMARY", "tc_kelvin": 2, "evidence_type": "primary"},
+        ]
+>       chunks = build_fact_chunks(_meta(), mats, start_index=0)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ingestion/tests/test_fact_sentences.py:222: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/ingestion/extract/fact_sentences.py:297: in build_fact_chunks
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+_____________________ test_build_fact_chunks_respects_cap ______________________
+
+    def test_build_fact_chunks_respects_cap():
+        mats = [{"formula": f"M{i}", "tc_kelvin": i} for i in range(_MAX_FACT_CHUNKS + 10)]
+>       chunks = build_fact_chunks(_meta(), mats, start_index=0)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ingestion/tests/test_fact_sentences.py:229: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/ingestion/extract/fact_sentences.py:297: in build_fact_chunks
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+___________ test_build_authorized_chunks_combines_abstract_and_facts ___________
+
+    def test_build_authorized_chunks_combines_abstract_and_facts():
+        mats = [{"formula": "MgB2", "tc_kelvin": 39}]
+>       chunks = build_authorized_chunks(_meta(), mats)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ingestion/tests/test_fact_sentences.py:235: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/ingestion/extract/fact_sentences.py:356: in build_authorized_chunks
+    abstract_chunks = chunk_paper(abstract_only)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ingestion/ingestion/chunk/chunker.py:225: in chunk_paper
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+_______________ test_real_latex_parser_version_flows_into_chunks _______________
+
+    def test_real_latex_parser_version_flows_into_chunks():
+        parsed = parse_source_tarball(rb"\documentclass{article}\begin{document}\section{Results}Complete text.\end{document}", arxiv_meta())
+        assert parsed.parser_version == PARSER_VERSION
+>       assert all(chunk.parser_version == PARSER_VERSION for chunk in chunk_paper(parsed))
+                                                                       ^^^^^^^^^^^^^^^^^^^
+
+ingestion/tests/test_parser_identity.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/ingestion/chunk/chunker.py:225: in chunk_paper
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+______________ test_jats_and_ocr_have_distinct_explicit_producers ______________
+
+    def test_jats_and_ocr_have_distinct_explicit_producers():
+        jats = parse_jats(b"<article><body><sec><title>Results</title><p>Exact body.</p></sec></body></article>", aps_meta())
+        ocr = parse_ocr(("Synthetic research text about superconductivity and measurements. " * 50).encode(), aps_meta())
+        assert jats.parser_version == "sclib-aps-jats-parser/1.0.0"
+        assert ocr.parser_version == "sclib-aps-ocr-parser/1.0.0"
+>       assert all(chunk.parser_version == jats.parser_version for chunk in chunk_paper(jats))
+                                                                            ^^^^^^^^^^^^^^^^^
+
+ingestion/tests/test_parser_identity.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/ingestion/chunk/chunker.py:225: in chunk_paper
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+____________ test_unknown_parser_is_not_invented_from_a_source_flag ____________
+
+    def test_unknown_parser_is_not_invented_from_a_source_flag():
+        parsed = ParsedPaper(arxiv_meta(), [Section("Results", "Original text.")], has_latex_source=True)
+>       assert all(chunk.parser_version is None for chunk in chunk_paper(parsed))
+                                                             ^^^^^^^^^^^^^^^^^^^
+
+ingestion/tests/test_parser_identity.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/ingestion/chunk/chunker.py:225: in chunk_paper
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+_ test_aps_authorized_outputs_are_metadata_and_structured_projection_not_fulltext_parser _
+
+    def test_aps_authorized_outputs_are_metadata_and_structured_projection_not_fulltext_parser():
+>       chunks = build_authorized_chunks(aps_meta(), [{"formula": "Nb", "tc_kelvin": "9.2 K"}])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ingestion/tests/test_parser_identity.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/ingestion/extract/fact_sentences.py:356: in build_authorized_chunks
+    abstract_chunks = chunk_paper(abstract_only)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ingestion/ingestion/chunk/chunker.py:225: in chunk_paper
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+_______ test_metadata_fallback_does_not_claim_the_abandoned_body_parser ________
+
+    def test_metadata_fallback_does_not_claim_the_abandoned_body_parser():
+        meta = arxiv_meta()
+        meta.abstract = "Metadata abstract."
+        parsed = ParsedPaper(meta, [], parser_version="abandoned-body-parser/1")
+>       assert chunk_paper(parsed)[0].parser_version == "sclib-metadata-abstract/1.0.0"
+               ^^^^^^^^^^^^^^^^^^^
+
+ingestion/tests/test_parser_identity.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ingestion/ingestion/chunk/chunker.py:225: in chunk_paper
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+ingestion/ingestion/config.py:126: in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+__pydantic_self__ = IngestionSettings(), _case_sensitive = None
+_nested_model_default_partial_update = None, _env_prefix = None
+_env_prefix_target = None, _env_file = PosixPath('.'), _env_file_encoding = None
+_env_ignore_empty = None, _env_nested_delimiter = None
+_env_nested_max_split = None, _env_parse_none_str = None
+_env_parse_enums = None, _cli_prog_name = None, _cli_parse_args = None
+_cli_settings_source = None, _cli_parse_none_str = None
+_cli_hide_none_type = None, _cli_avoid_json = None, _cli_enforce_required = None
+_cli_use_class_docs_for_groups = None, _cli_exit_on_error = None
+_cli_prefix = None, _cli_flag_prefix_char = None, _cli_implicit_flags = None
+_cli_ignore_unknown_args = None, _cli_kebab_case = None, _cli_shortcuts = None
+_secrets_dir = None, _build_sources = None, values = {}
+
+    def __init__(
+        __pydantic_self__,
+        _case_sensitive: bool | None = None,
+        _nested_model_default_partial_update: bool | None = None,
+        _env_prefix: str | None = None,
+        _env_prefix_target: EnvPrefixTarget | None = None,
+        _env_file: DotenvType | None = ENV_FILE_SENTINEL,
+        _env_file_encoding: str | None = None,
+        _env_ignore_empty: bool | None = None,
+        _env_nested_delimiter: str | None = None,
+        _env_nested_max_split: int | None = None,
+        _env_parse_none_str: str | None = None,
+        _env_parse_enums: bool | None = None,
+        _cli_prog_name: str | None = None,
+        _cli_parse_args: bool | list[str] | tuple[str, ...] | None = None,
+        _cli_settings_source: CliSettingsSource[Any] | None = None,
+        _cli_parse_none_str: str | None = None,
+        _cli_hide_none_type: bool | None = None,
+        _cli_avoid_json: bool | None = None,
+        _cli_enforce_required: bool | None = None,
+        _cli_use_class_docs_for_groups: bool | None = None,
+        _cli_exit_on_error: bool | None = None,
+        _cli_prefix: str | None = None,
+        _cli_flag_prefix_char: str | None = None,
+        _cli_implicit_flags: bool | Literal['dual', 'toggle'] | None = None,
+        _cli_ignore_unknown_args: bool | None = None,
+        _cli_kebab_case: bool | Literal['all', 'no_enums'] | None = None,
+        _cli_shortcuts: Mapping[str, str | list[str]] | None = None,
+        _secrets_dir: PathType | None = None,
+        _build_sources: tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None = None,
+        **values: Any,
+    ) -> None:
+        sources, init_kwargs = (
+            _build_sources
+            if _build_sources is not None
+            else __pydantic_self__.__class__._settings_init_sources(
+                _case_sensitive=_case_sensitive,
+                _nested_model_default_partial_update=_nested_model_default_partial_update,
+                _env_prefix=_env_prefix,
+                _env_prefix_target=_env_prefix_target,
+                _env_file=_env_file,
+                _env_file_encoding=_env_file_encoding,
+                _env_ignore_empty=_env_ignore_empty,
+                _env_nested_delimiter=_env_nested_delimiter,
+                _env_nested_max_split=_env_nested_max_split,
+                _env_parse_none_str=_env_parse_none_str,
+                _env_parse_enums=_env_parse_enums,
+                _cli_prog_name=_cli_prog_name,
+                _cli_parse_args=_cli_parse_args,
+                _cli_settings_source=_cli_settings_source,
+                _cli_parse_none_str=_cli_parse_none_str,
+                _cli_hide_none_type=_cli_hide_none_type,
+                _cli_avoid_json=_cli_avoid_json,
+                _cli_enforce_required=_cli_enforce_required,
+                _cli_use_class_docs_for_groups=_cli_use_class_docs_for_groups,
+                _cli_exit_on_error=_cli_exit_on_error,
+                _cli_prefix=_cli_prefix,
+                _cli_flag_prefix_char=_cli_flag_prefix_char,
+                _cli_implicit_flags=_cli_implicit_flags,
+                _cli_ignore_unknown_args=_cli_ignore_unknown_args,
+                _cli_kebab_case=_cli_kebab_case,
+                _cli_shortcuts=_cli_shortcuts,
+                _secrets_dir=_secrets_dir,
+                _init_kwargs=values,
+            )
+        )
+    
+>       super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+E       database_url
+E         Field required [type=missing, input_value={}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py:247: ValidationError
+__ test_arxiv_reports_full_counts_complete_receipts_timings_and_unknown_cost ___
+
+arxiv_flow = (PaperMetadata(arxiv_id='2609.00001', title='Synthetic title', authors=[], abstract='Abstract conditions and materials...fied_date=None, metadata_datestamp=None, metadata_captured_at=None, metadata_sha256=None), <AsyncMock id='4713475264'>)
+caplog = <_pytest.logging.LogCaptureFixture object at 0x118ee26c0>
+
+    @pytest.mark.asyncio
+    async def test_arxiv_reports_full_counts_complete_receipts_timings_and_unknown_cost(arxiv_flow, caplog):
+        meta, write = arxiv_flow
+        result = await pipeline.process_paper(object(), meta, strategy="abstract_only",
+                                             skip_vector_search=True, skip_ner=True, skip_geo=True)
+>       assert result["ok"]
+E       assert False
+
+ingestion/tests/test_pipeline_input_observation.py:63: AssertionError
+________ test_arxiv_mock_without_provenance_is_unavailable_not_complete ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x118f1d100>
+arxiv_flow = (PaperMetadata(arxiv_id='2609.00001', title='Synthetic title', authors=[], abstract='Abstract conditions and materials...fied_date=None, metadata_datestamp=None, metadata_captured_at=None, metadata_sha256=None), <AsyncMock id='4713474160'>)
+
+    @pytest.mark.asyncio
+    async def test_arxiv_mock_without_provenance_is_unavailable_not_complete(monkeypatch, arxiv_flow):
+        meta, _ = arxiv_flow
+        monkeypatch.setattr(pipeline, "embed_chunks", lambda _: None)
+        result = await pipeline.process_paper(object(), meta, strategy="abstract_only",
+                                             skip_vector_search=True, skip_ner=True, skip_geo=True)
+>       assert result["ok"]
+E       assert False
+
+ingestion/tests/test_pipeline_input_observation.py:86: AssertionError
+_______ test_failed_arxiv_embedding_cannot_attribute_preexisting_reports _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x118e98500>
+arxiv_flow = (PaperMetadata(arxiv_id='2609.00001', title='Synthetic title', authors=[], abstract='Abstract conditions and materials...fied_date=None, metadata_datestamp=None, metadata_captured_at=None, metadata_sha256=None), <AsyncMock id='4712924224'>)
+
+    @pytest.mark.asyncio
+    async def test_failed_arxiv_embedding_cannot_attribute_preexisting_reports(monkeypatch, arxiv_flow):
+        meta, write = arxiv_flow
+        def fail_with_existing_receipts(chunks):
+            _embed_complete(chunks)
+            raise RuntimeError("synthetic provider failure")
+        monkeypatch.setattr(pipeline, "embed_chunks", fail_with_existing_receipts)
+        result = await pipeline.process_paper(object(), meta, strategy="abstract_only",
+                                             skip_vector_search=True, skip_ner=True, skip_geo=True)
+>       assert not result["ok"] and result["stage"] == "embed"
+E       AssertionError: assert (not False and 'chunk' == 'embed'
+E         
+E         - embed
+E         + chunk)
+
+ingestion/tests/test_pipeline_input_observation.py:103: AssertionError
+_________ test_aps_observes_abstract_and_facts_but_not_transient_body __________
+
+aps_flow = namespace(meta=ApsArticleMeta(doi='10.0000/Synthetic.Observation', title='Synthetic title', authors=[], abstract='Synt...='4714018480'>, audit=<AsyncMock id='4715102576'>, publish=<Mock id='4713224560'>, related=<AsyncMock id='4710928976'>)
+
+    @pytest.mark.asyncio
+    async def test_aps_observes_abstract_and_facts_but_not_transient_body(aps_flow):
+        flow = aps_flow
+        result = await aps_pipeline.process_aps_paper(flow.client, flow.meta.doi)
+>       assert result["ok"]
+E       assert False
+
+ingestion/tests/test_pipeline_input_observation.py:174: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    ingestion.aps_pipeline:aps_pipeline.py:212 10.0000/Synthetic.Observation: APS pipeline failed: 1 validation error for IngestionSettings
+database_url
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.13/v/missing
+Traceback (most recent call last):
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/aps_pipeline.py", line 132, in process_aps_paper
+    chunks = build_authorized_chunks(meta, materials)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/extract/fact_sentences.py", line 356, in build_authorized_chunks
+    abstract_chunks = chunk_paper(abstract_only)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/chunk/chunker.py", line 225, in chunk_paper
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/config.py", line 126, in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py", line 247, in __init__
+    super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/.venv/lib/python3.12/site-packages/pydantic/main.py", line 263, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+database_url
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.13/v/missing
+_ test_aps_skip_and_dry_run_do_not_claim_embedding_completion[dry_run-dry_run] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x118fa0350>
+aps_flow = namespace(meta=ApsArticleMeta(doi='10.0000/Synthetic.Observation', title='Synthetic title', authors=[], abstract='Synt...='4714088784'>, audit=<AsyncMock id='4712700416'>, publish=<Mock id='4711416752'>, related=<AsyncMock id='4712698640'>)
+option = 'dry_run', reason = 'dry_run'
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("option,reason", [("dry_run", "dry_run"), ("skip_vector_search", "vector_search_skipped")])
+    async def test_aps_skip_and_dry_run_do_not_claim_embedding_completion(monkeypatch, aps_flow, option, reason):
+        flow = aps_flow
+        embed = Mock()
+        monkeypatch.setattr(aps_pipeline, "embed_chunks", embed)
+        result = await aps_pipeline.process_aps_paper(flow.client, flow.meta.doi, **{option: True})
+>       assert result["ok"]
+E       assert False
+
+ingestion/tests/test_pipeline_input_observation.py:193: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    ingestion.aps_pipeline:aps_pipeline.py:212 10.0000/Synthetic.Observation: APS pipeline failed: 1 validation error for IngestionSettings
+database_url
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.13/v/missing
+Traceback (most recent call last):
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/aps_pipeline.py", line 132, in process_aps_paper
+    chunks = build_authorized_chunks(meta, materials)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/extract/fact_sentences.py", line 356, in build_authorized_chunks
+    abstract_chunks = chunk_paper(abstract_only)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/chunk/chunker.py", line 225, in chunk_paper
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/config.py", line 126, in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py", line 247, in __init__
+    super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/.venv/lib/python3.12/site-packages/pydantic/main.py", line 263, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+database_url
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.13/v/missing
+_ test_aps_skip_and_dry_run_do_not_claim_embedding_completion[skip_vector_search-vector_search_skipped] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x118fb7e30>
+aps_flow = namespace(meta=ApsArticleMeta(doi='10.0000/Synthetic.Observation', title='Synthetic title', authors=[], abstract='Synt...='4714847776'>, audit=<AsyncMock id='4711421552'>, publish=<Mock id='4714383744'>, related=<AsyncMock id='4711243968'>)
+option = 'skip_vector_search', reason = 'vector_search_skipped'
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("option,reason", [("dry_run", "dry_run"), ("skip_vector_search", "vector_search_skipped")])
+    async def test_aps_skip_and_dry_run_do_not_claim_embedding_completion(monkeypatch, aps_flow, option, reason):
+        flow = aps_flow
+        embed = Mock()
+        monkeypatch.setattr(aps_pipeline, "embed_chunks", embed)
+        result = await aps_pipeline.process_aps_paper(flow.client, flow.meta.doi, **{option: True})
+>       assert result["ok"]
+E       assert False
+
+ingestion/tests/test_pipeline_input_observation.py:193: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    ingestion.aps_pipeline:aps_pipeline.py:212 10.0000/Synthetic.Observation: APS pipeline failed: 1 validation error for IngestionSettings
+database_url
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.13/v/missing
+Traceback (most recent call last):
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/aps_pipeline.py", line 132, in process_aps_paper
+    chunks = build_authorized_chunks(meta, materials)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/extract/fact_sentences.py", line 356, in build_authorized_chunks
+    abstract_chunks = chunk_paper(abstract_only)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/chunk/chunker.py", line 225, in chunk_paper
+    settings = get_settings()
+               ^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/ingestion/config.py", line 126, in get_settings
+    return IngestionSettings()  # type: ignore[call-arg]
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/.venv/lib/python3.12/site-packages/pydantic_settings/main.py", line 247, in __init__
+    super().__init__(**__pydantic_self__.__class__._settings_build_values(sources, init_kwargs))
+  File "/Users/jackzhou/Documents/SCLib_JZIS/ingestion/.venv/lib/python3.12/site-packages/pydantic/main.py", line 263, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for IngestionSettings
+database_url
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.13/v/missing
+=============================== warnings summary ===============================
+tests/test_anomaly_aggregation.py::test_driver_retains_high_and_low_numeric_records_but_keeps_source_quality_filters
+tests/test_anomaly_aggregation.py::test_driver_retains_high_and_low_numeric_records_but_keeps_source_quality_filters
+  /Users/jackzhou/Documents/SCLib_JZIS/ingestion/tests/test_anomaly_aggregation.py:207: SADeprecationWarning: DISTINCT ON is currently supported only by the PostgreSQL dialect.  Use of DISTINCT ON for other backends is currently silently ignored, however this usage is deprecated, and will raise CompileError in a future release for all backends that do not support this syntax.
+    query = str(statement)
+
+tests/test_material_semantics_aggregation.py::test_driver_carries_current_source_status_and_old_dispute_into_derived_metadata
+tests/test_material_semantics_aggregation.py::test_driver_carries_current_source_status_and_old_dispute_into_derived_metadata
+  /Users/jackzhou/Documents/SCLib_JZIS/ingestion/tests/test_material_semantics_aggregation.py:158: SADeprecationWarning: DISTINCT ON is currently supported only by the PostgreSQL dialect.  Use of DISTINCT ON for other backends is currently silently ignored, however this usage is deprecated, and will raise CompileError in a future release for all backends that do not support this syntax.
+    sql = str(statement)
+
+tests/test_source_lifecycle_aggregation.py: 30 warnings
+  /Users/jackzhou/Documents/SCLib_JZIS/ingestion/tests/test_source_lifecycle_aggregation.py:129: SADeprecationWarning: DISTINCT ON is currently supported only by the PostgreSQL dialect.  Use of DISTINCT ON for other backends is currently silently ignored, however this usage is deprecated, and will raise CompileError in a future release for all backends that do not support this syntax.
+    sql = str(statement)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED ingestion/tests/test_anomaly_review.py::test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[None-coherence_length_nm]
+FAILED ingestion/tests/test_anomaly_review.py::test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[proposal1-coherence_length_nm]
+FAILED ingestion/tests/test_anomaly_review.py::test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[proposal2-coherence_length_nm]
+FAILED ingestion/tests/test_anomaly_review.py::test_sparse_record_does_not_skip_unrepresentable_unit_or_shared_context[record2]
+FAILED ingestion/tests/test_embedding_publication.py::test_valid_complete_batch_has_every_expected_datapoint[False]
+FAILED ingestion/tests/test_embedding_publication.py::test_valid_complete_batch_has_every_expected_datapoint[True]
+FAILED ingestion/tests/test_fact_chunk_limits.py::test_long_title_does_not_split_or_truncate_negative_fact_conditions
+FAILED ingestion/tests/test_fact_chunk_limits.py::test_oversized_atomic_fact_aborts_without_partial_output_or_source_text_in_error
+FAILED ingestion/tests/test_fact_chunk_limits.py::test_fact_start_index_is_explicit_and_bounded[True]
+FAILED ingestion/tests/test_fact_chunk_limits.py::test_fact_start_index_is_explicit_and_bounded[-1]
+FAILED ingestion/tests/test_fact_chunk_limits.py::test_fact_start_index_is_explicit_and_bounded[32768]
+FAILED ingestion/tests/test_fact_chunk_limits.py::test_fact_start_index_is_explicit_and_bounded[1.0]
+FAILED ingestion/tests/test_fact_chunk_limits.py::test_fact_start_index_is_explicit_and_bounded[1]
+FAILED ingestion/tests/test_fact_sentences.py::test_build_fact_chunks_ids_and_metadata
+FAILED ingestion/tests/test_fact_sentences.py::test_build_fact_chunks_primary_before_cited
+FAILED ingestion/tests/test_fact_sentences.py::test_build_fact_chunks_respects_cap
+FAILED ingestion/tests/test_fact_sentences.py::test_build_authorized_chunks_combines_abstract_and_facts
+FAILED ingestion/tests/test_parser_identity.py::test_real_latex_parser_version_flows_into_chunks
+FAILED ingestion/tests/test_parser_identity.py::test_jats_and_ocr_have_distinct_explicit_producers
+FAILED ingestion/tests/test_parser_identity.py::test_unknown_parser_is_not_invented_from_a_source_flag
+FAILED ingestion/tests/test_parser_identity.py::test_aps_authorized_outputs_are_metadata_and_structured_projection_not_fulltext_parser
+FAILED ingestion/tests/test_parser_identity.py::test_metadata_fallback_does_not_claim_the_abandoned_body_parser
+FAILED ingestion/tests/test_pipeline_input_observation.py::test_arxiv_reports_full_counts_complete_receipts_timings_and_unknown_cost
+FAILED ingestion/tests/test_pipeline_input_observation.py::test_arxiv_mock_without_provenance_is_unavailable_not_complete
+FAILED ingestion/tests/test_pipeline_input_observation.py::test_failed_arxiv_embedding_cannot_attribute_preexisting_reports
+FAILED ingestion/tests/test_pipeline_input_observation.py::test_aps_observes_abstract_and_facts_but_not_transient_body
+FAILED ingestion/tests/test_pipeline_input_observation.py::test_aps_skip_and_dry_run_do_not_claim_embedding_completion[dry_run-dry_run]
+FAILED ingestion/tests/test_pipeline_input_observation.py::test_aps_skip_and_dry_run_do_not_claim_embedding_completion[skip_vector_search-vector_search_skipped]
+28 failed, 1263 passed, 34 warnings in 11.48s

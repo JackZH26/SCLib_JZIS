@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import threading
+from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 from uuid import uuid4
 
@@ -18,6 +19,30 @@ from tests.test_research_freeze import db_session as db_session
 
 CATALOG = "/v1/discovery/rps/releases"
 CANARY = "PRIVATE-CANARY-private-reviewer-path-or-source-text"
+
+
+async def _wait(event, timeout=5):
+    # Synchronization must not queue behind the very workers this test blocks.
+    async def ready():
+        while not event.is_set():
+            await asyncio.sleep(0.01)
+    await asyncio.wait_for(ready(), timeout=timeout)
+    return True
+
+
+@pytest.fixture(params=[6, 8])
+def worker_pool(request):
+    """Exercise both a two-core default executor and eight runnable jobs."""
+    with ThreadPoolExecutor(max_workers=request.param) as executor:
+        yield request.param, executor
+
+
+def _use_pool(worker_pool, monkeypatch):
+    # Bind on the test's running loop, not an async fixture's separate loop.
+    loop = asyncio.get_running_loop()
+    original = loop.run_in_executor
+    monkeypatch.setattr(loop, "run_in_executor", lambda selected, function, *args:
+                      original(worker_pool[1] if selected is None else selected, function, *args))
 
 
 @pytest_asyncio.fixture(loop_scope="function")
@@ -189,7 +214,7 @@ async def test_concurrent_same_key_http_reads_share_one_actual_verification(clie
     monkeypatch.setattr(priority_releases.PriorityRelease, "model_validate", staticmethod(blocked))
     tasks = [asyncio.create_task(client.get(_page(identifier))) for _ in range(8)]
     try:
-        assert await asyncio.wait_for(asyncio.to_thread(entered.wait, 2), timeout=3)
+        assert await _wait(entered, timeout=3)
         # An independent coroutine runs while real verification is blocked;
         # this is a scheduling invariant, not a production timing benchmark.
         await asyncio.sleep(0)
@@ -228,7 +253,7 @@ async def test_different_http_keys_verify_at_most_two_at_a_time(client, local_re
     monkeypatch.setattr(priority_releases.PriorityRelease, "model_validate", staticmethod(blocked))
     tasks = [asyncio.create_task(client.get(_page(identifier))) for identifier in payloads]
     try:
-        assert await asyncio.wait_for(asyncio.to_thread(two_entered.wait, 2), timeout=3)
+        assert await _wait(two_entered, timeout=3)
         assert priority_releases.release_cache_stats()["inflight"] == 2
     finally:
         proceed.set()
@@ -253,7 +278,7 @@ async def test_direct_approval_changed_during_worker_read_withholds_completed_ob
     monkeypatch.setattr(routes, "read_release", blocked)
     task = asyncio.create_task(client.get(_page(identifier), headers={"If-None-Match": "*"}))
     try:
-        assert await asyncio.wait_for(asyncio.to_thread(entered.wait, 2), timeout=3)
+        assert await _wait(entered, timeout=3)
         settings = get_settings()
         if change == "revocation":
             settings.discovery_rps_approved_releases.pop(identifier)
@@ -507,7 +532,7 @@ async def test_bundle_approval_or_bytes_changed_during_read_withholds_download_a
     task = asyncio.create_task(client.get(_download(identifier, payloads[identifier], bundles[identifier]),
         headers={"If-None-Match": "*"}))
     try:
-        assert await asyncio.wait_for(asyncio.to_thread(entered.wait, 2), timeout=3)
+        assert await _wait(entered, timeout=3)
         if change == "revoke_bundle":
             get_settings().discovery_rps_approved_public_bundles.pop(identifier)
         elif change == "bundle_pin":
@@ -550,7 +575,8 @@ async def test_bundle_pin_change_alone_changes_catalog_revision(client, local_re
     _sanitized(response, directory)
 
 
-async def test_cancelled_http_reader_keeps_worker_capacity_until_its_real_job_finishes(client, local_releases, monkeypatch):
+async def test_cancelled_http_reader_keeps_worker_capacity_until_its_real_job_finishes(client, local_releases, monkeypatch, worker_pool):
+    _use_pool(worker_pool, monkeypatch)
     directory, payloads = local_releases
     identifier = sorted(payloads)[0]
     entered, proceed, finished = threading.Event(), threading.Event(), threading.Event()
@@ -563,7 +589,7 @@ async def test_cancelled_http_reader_keeps_worker_capacity_until_its_real_job_fi
         value = original(*args, **kwargs)
         with lock:
             running += 1
-            if running == 8:
+            if running == min(8, worker_pool[0]):
                 entered.set()
         try:
             assert proceed.wait(5)
@@ -575,9 +601,23 @@ async def test_cancelled_http_reader_keeps_worker_capacity_until_its_real_job_fi
                     finished.set()
 
     monkeypatch.setattr(routes, "read_release", blocked)
+    submitted = asyncio.Event()
+    submissions = 0
+    original_offload = routes._offload
+
+    async def track_submission(function, *args):
+        nonlocal submissions
+        submissions += 1
+        if submissions == 8:
+            submitted.set()
+        return await original_offload(function, *args)
+
+    monkeypatch.setattr(routes, "_offload", track_submission)
     tasks = [asyncio.create_task(client.get(_page(identifier))) for _ in range(8)]
     try:
-        assert await asyncio.wait_for(asyncio.to_thread(entered.wait, 2), timeout=3)
+        await asyncio.wait_for(submitted.wait(), timeout=3)
+        assert await _wait(entered, timeout=3)
+        assert running == min(8, worker_pool[0])
         tasks[0].cancel()
         cancelled = await asyncio.gather(tasks[0], return_exceptions=True)
         assert isinstance(cancelled[0], asyncio.CancelledError)
@@ -588,7 +628,7 @@ async def test_cancelled_http_reader_keeps_worker_capacity_until_its_real_job_fi
     finally:
         proceed.set()
         responses = await asyncio.gather(*tasks[1:], return_exceptions=True)
-        assert await asyncio.wait_for(asyncio.to_thread(finished.wait, 2), timeout=3)
+        assert await _wait(finished, timeout=3)
     assert all(getattr(response, "status_code", None) == 200 for response in responses)
     assert (await client.get(_page(identifier))).status_code == 200
 
@@ -616,7 +656,7 @@ async def test_catalog_submits_at_most_four_parallel_entry_reads(client, local_r
     monkeypatch.setattr(routes, "_catalog_entry", blocked)
     task = asyncio.create_task(client.get(CATALOG))
     try:
-        assert await asyncio.wait_for(asyncio.to_thread(entered.wait, 2), timeout=3)
+        assert await _wait(entered, timeout=3)
         assert not task.done()
     finally:
         proceed.set()

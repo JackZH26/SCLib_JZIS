@@ -1,0 +1,35 @@
+........................................................................ [  5%]
+........................................................................ [ 11%]
+........................................................................ [ 16%]
+........................................................................ [ 22%]
+........................................................................ [ 27%]
+........................................................................ [ 33%]
+........................................................................ [ 39%]
+........................................................................ [ 44%]
+........................................................................ [ 50%]
+........................................................................ [ 55%]
+........................................................................ [ 61%]
+........................................................................ [ 66%]
+........................................................................ [ 72%]
+........................................................................ [ 78%]
+........................................................................ [ 83%]
+........................................................................ [ 89%]
+........................................................................ [ 94%]
+..................................................................       [100%]
+=============================== warnings summary ===============================
+tests/test_anomaly_aggregation.py::test_driver_retains_high_and_low_numeric_records_but_keeps_source_quality_filters
+tests/test_anomaly_aggregation.py::test_driver_retains_high_and_low_numeric_records_but_keeps_source_quality_filters
+  /Users/jackzhou/Documents/SCLib_JZIS/ingestion/tests/test_anomaly_aggregation.py:207: SADeprecationWarning: DISTINCT ON is currently supported only by the PostgreSQL dialect.  Use of DISTINCT ON for other backends is currently silently ignored, however this usage is deprecated, and will raise CompileError in a future release for all backends that do not support this syntax.
+    query = str(statement)
+
+tests/test_material_semantics_aggregation.py::test_driver_carries_current_source_status_and_old_dispute_into_derived_metadata
+tests/test_material_semantics_aggregation.py::test_driver_carries_current_source_status_and_old_dispute_into_derived_metadata
+  /Users/jackzhou/Documents/SCLib_JZIS/ingestion/tests/test_material_semantics_aggregation.py:158: SADeprecationWarning: DISTINCT ON is currently supported only by the PostgreSQL dialect.  Use of DISTINCT ON for other backends is currently silently ignored, however this usage is deprecated, and will raise CompileError in a future release for all backends that do not support this syntax.
+    sql = str(statement)
+
+tests/test_source_lifecycle_aggregation.py: 30 warnings
+  /Users/jackzhou/Documents/SCLib_JZIS/ingestion/tests/test_source_lifecycle_aggregation.py:129: SADeprecationWarning: DISTINCT ON is currently supported only by the PostgreSQL dialect.  Use of DISTINCT ON for other backends is currently silently ignored, however this usage is deprecated, and will raise CompileError in a future release for all backends that do not support this syntax.
+    sql = str(statement)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1290 passed, 34 warnings in 10.22s

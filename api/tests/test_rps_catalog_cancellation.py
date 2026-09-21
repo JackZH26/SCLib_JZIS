@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import asyncio
 import threading
-from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 
 import pytest
@@ -12,7 +11,7 @@ from config import get_settings
 from routers import discovery_priority as routes
 from services.research_priority import digest
 from tests.test_research_freeze import db_session as db_session
-from tests.test_rps_catalog_delivery import CATALOG
+from tests.test_rps_catalog_delivery import CATALOG, _use_pool, _wait, worker_pool
 from tests.test_rps_catalog_delivery import local_releases as local_releases
 
 
@@ -29,29 +28,6 @@ async def _eight_releases(local_releases):
     get_settings().discovery_rps_approved_public_bundles.update(
         {identifier: value["bundle_sha256"] for identifier, value in local_releases.bundles.items()})
     return directory, payloads
-
-
-async def _wait(event):
-    # Synchronization must not queue behind the very workers this test blocks.
-    async def ready():
-        while not event.is_set():
-            await asyncio.sleep(0.01)
-    await asyncio.wait_for(ready(), timeout=5)
-
-
-@pytest.fixture(params=[6, 8])
-def worker_pool(request):
-    """Exercise both a two-core default executor and eight runnable jobs."""
-    with ThreadPoolExecutor(max_workers=request.param) as executor:
-        yield request.param, executor
-
-
-def _use_pool(worker_pool, monkeypatch):
-    # Bind on the test's running loop, not an async fixture's separate loop.
-    loop = asyncio.get_running_loop()
-    original = loop.run_in_executor
-    monkeypatch.setattr(loop, "run_in_executor", lambda selected, function, *args:
-                      original(worker_pool[1] if selected is None else selected, function, *args))
 
 
 def _track_workers(monkeypatch):

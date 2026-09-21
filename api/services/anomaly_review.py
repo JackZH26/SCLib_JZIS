@@ -255,7 +255,23 @@ def assess_record_anomalies(
         return _assessment(result_id, findings, current_year)
     result_id = legacy_result_id(record, scope_id=scope_id)
     pressure, origin = classify_pressure(record), classify_result(record)
-    quantities = {field: record_property_quantity(record, field) for field in _RAW_FIELDS}
+    # Absent quantities cannot create a finding. Do not parse all scalar
+    # fields for every legacy record, but retain every explicit typed, alias,
+    # unit-only and nested-lattice channel, including malformed declarations.
+    # Tc is always parsed so shared context/locator validation still occurs for
+    # records with no numerical proposals. No stored normalized value is used.
+    proposals = record.get("scientific_values")
+    nested = record.get("lattice_params")
+
+    def supplied(field):
+        if field == "tc_kelvin" or isinstance(proposals, Mapping) and field in proposals:
+            return True
+        aliases = {"tc_kelvin": ("tc",), "pressure_gpa": ("pressure",)}.get(field, ())
+        if any(record.get(key) is not None or record.get(key + "_unit") is not None for key in (field, *aliases)):
+            return True
+        return field in _LATTICE and isinstance(nested, Mapping) and field.removeprefix("lattice_") in nested
+
+    quantities = {field: record_property_quantity(record, field) for field in _RAW_FIELDS if supplied(field)}
     findings = []
     for field, proposal in quantities.items():
         channels = _quantity_channels(record, field)
@@ -333,6 +349,8 @@ def assess_record_anomalies(
             applicability={"family": "hydride", "tc_threshold_k": 100,
                            "pressure_upper_reference_gpa": 50, "pressure_scope": "entire_reported_extent_below_50"}))
     for field, (minimum, maximum) in PARAMETER_REVIEW_REFERENCES.items():
+        if field not in quantities:
+            continue
         proposal = quantities[field]
         lower, upper = _extent(proposal)
         if (lower is not None and lower < minimum) or (upper is not None and upper > maximum):
@@ -362,6 +380,8 @@ def assess_record_anomalies(
                                      "compound_reference_shape_unresolved"))
             continue
         if not _view_applies(target, pressure, origin):
+            continue
+        if field not in quantities:
             continue
         proposal = quantities[field]
         if proposal["status"] == "unreported":

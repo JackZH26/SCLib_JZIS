@@ -40,3 +40,11 @@ Vertex metadata reports 1,102,125 vectors versus 1,117,982 retained SQL chunks;
 this is count inventory only, not an exact parity check or a completed migration.
 No production version cutover has occurred. See the remote-release report and
 its `clone-http-page-cache-r8.json` and `cloud-index-metadata.json` receipts.
+
+
+The subsequent sparse-quantity refinement preserves all 75,273 actual record
+assessments and both full response hashes, reducing cold reads to approximately
+19.5 s (still open). All 49 catalogue concurrency tests and 257 API policy/surface
+cases pass; ingestion passes 1,290 unit cases. Final Linux validation is required
+after refreshed r9 captures. No schema, index, live-version or scientific-review
+completion claim is added.
