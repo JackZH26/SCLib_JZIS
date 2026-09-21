@@ -1,0 +1,58 @@
+
+> sclib-frontend@0.1.0 test:source /Users/jackzhou/Documents/SCLib_JZIS/frontend
+> node --test tests/*.test.mjs
+
+✔ API client preserves request correlation and unified quota fields (41.613333ms)
+✔ password reset UI uses generic request copy and a one-time token (41.163ms)
+✔ dashboard exposes server-side session revocation separately from API keys (5.497084ms)
+✔ browser auth uses credentialed HttpOnly-cookie requests (11.872667ms)
+✔ application source contains no browser-stored JWT fallback (98.493708ms)
+✔ discovery server render uses bounded summary pages (4.817834ms)
+✔ discovery cards virtualize offscreen work and lazy-load dossiers (0.497459ms)
+✔ legacy feed rejects mixed-version pages and uses explicit English recovery copy (0.304708ms)
+✔ synthetic material preview requires an explicit query and development mode (2.019791ms)
+✔ demo rows never enter the live RPS board or call the real detail API (1.058875ms)
+✔ scientific matrix is the ordinary primary surface, with separate original and legacy views (3.705167ms)
+✔ the public matrix never imports fixture/demo data, admin mutations, draft units or a browser scorer (1.545125ms)
+✔ the planned dictionary explains that native units are independently authoritative (1.334ms)
+✔ default UI has no embedded Chinese copy; query regexes and comments remain supported (565.485709ms)
+✔ date and number display explicitly uses an English locale (378.118792ms)
+✔ document language and metadata remain English (1.019ms)
+✔ classification filter UI explicitly separates source reports, qualified false and same-state data (7.276084ms)
+✔ public API documents material summary classification scope and nonindependent count basis (2.186625ms)
+✔ desktop navigation collapses into an accessible mobile menu (7.093334ms)
+✔ mobile shells use compact gutters and stack consent actions (0.218ms)
+✔ browser health reporting is sampled and requires analytics consent (2.5325ms)
+✔ browser errors are reduced to aggregate signals without payload text (0.399291ms)
+✔ the reporter is mounted once at the application root (0.623709ms)
+✔ OAuth links use the public API origin during server rendering (1.603834ms)
+✔ OAuth navigation sources contain no internal or loopback host (0.211458ms)
+✔ standalone trace destinations contain both copied source and real linked dependencies (206.055417ms)
+✔ production browser child excludes inherited credentials, env files and font mocks (3.175ms)
+✔ public production E2E never reuses a server or permits service worker bypass (0.311291ms)
+✔ every public browser suite installs the fail-closed network fixture (1.8585ms)
+✔ search separates scientific excerpt checks from mechanical citation validation (85.055833ms)
+✔ public API documentation describes hybrid retrieval and citation fields (2.69975ms)
+✔ private browser CI collects all visual TypeScript suites, without replacing public E2E (4.256583ms)
+✔ private browser CI never reuses a server and keeps each output root exclusive (0.456542ms)
+✔ output preparation runs once in the launcher and cannot replace any earlier artifact (4.825125ms)
+✔ the shared research browser server keeps source intake synthetic and copies no env file (0.43025ms)
+✔ all frontend routes receive the required security headers (3.518666ms)
+✔ production CSP is restrictive and permits required integrations (5.296583ms)
+✔ private and authentication routes instruct crawlers not to index (3.29475ms)
+✔ sitemap inventory is paginated and produces canonical encoded URLs (39.2565ms)
+✔ robots, canonical metadata, and structured research data are present (2.410667ms)
+✔ stats UI distinguishes aggregate refresh, data snapshot, and pipeline run (1.865417ms)
+✔ daily cron reports each data stage without changing ingest cadence (44.100917ms)
+✔ timeline prefers WebGL and falls back to a bounded SVG renderer (4.071ms)
+✔ timeline names reported results and keeps unsampled summaries separate (0.355416ms)
+✔ all material-family navigation uses an English elemental label (0.261833ms)
+✔ timeline page requests a bounded compact payload (1.35025ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 46
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2541.803625

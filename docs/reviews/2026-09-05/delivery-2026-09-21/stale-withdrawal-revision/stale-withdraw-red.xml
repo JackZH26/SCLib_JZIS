@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.923" timestamp="2026-09-21T15:27:14.096706+08:00" hostname="JackZhouss-MacBook-Air.local"><testcase classname="tests.test_scientific_result_passage" name="test_stale_source_can_be_withdrawn_but_cannot_be_reestablished" time="3.203"><failure message="services.scientific_result_passage.ResultPassageConflict: Exact result or passage is not current and eligible">tests/test_scientific_result_passage.py:251: in test_stale_source_can_be_withdrawn_but_cannot_be_reestablished
+    stale = await service.action_context(db, actor_user_id=people["reviewer"],
+services/scientific_result_passage.py:230: in action_context
+    row = await _exact_context(db, parent_id, evidence_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+services/scientific_result_passage.py:195: in _exact_context
+    raise ResultPassageConflict("Exact result or passage is not current and eligible")
+E   services.scientific_result_passage.ResultPassageConflict: Exact result or passage is not current and eligible</failure></testcase></testsuite></testsuites>

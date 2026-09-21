@@ -1,0 +1,16 @@
+Disposable native services verified; running api.
+........................................................................ [ 39%]
+........................................................................ [ 79%]
+......................................                                   [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+tests/test_schema_lifecycle.py: 19 warnings
+  /Users/jackzhou/Documents/SCLib_JZIS/api/.venv/lib/python3.12/site-packages/alembic/config.py:612: DeprecationWarning: No path_separator found in configuration; falling back to legacy splitting on spaces, commas, and colons for prepend_sys_path.  Consider adding path_separator=os to Alembic config.
+    util.warn_deprecated(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+182 passed, 20 warnings in 180.79s (0:03:00)
+Removed only this run's disposable services and temporary test data.

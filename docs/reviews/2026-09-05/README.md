@@ -1,6 +1,6 @@
 # SCLib review implementation backlog — 2026-09-05
 
-**Current delivery:** [September 15 verification and remaining gates](Delivery_2026-09-15.md). Earlier active-run and pending-authorization statements below are historical.
+**Current delivery:** [September 21 verification and remaining gates](Delivery_2026-09-21.md). Earlier active-run and pending-authorization statements below are historical.
 
 [GitHub master tracker #41](https://github.com/JackZH26/SCLib_JZIS/issues/41) · [All review issues](https://github.com/JackZH26/SCLib_JZIS/issues?q=is%3Aissue%20label%3Areview%3A2026-09-05) · [Milestones](https://github.com/JackZH26/SCLib_JZIS/milestones)
 

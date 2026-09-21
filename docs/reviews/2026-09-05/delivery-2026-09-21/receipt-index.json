@@ -1,0 +1,119 @@
+{
+  "receipts": [
+    {
+      "file": "focused-api-r2.xml",
+      "sha256": "9022580af2ee1137f0e2f4e2710c536047239c6dcb8a436a7f584f050a8a5a93",
+      "bytes": 45380
+    },
+    {
+      "file": "focused-api-r2.log",
+      "sha256": "d032945c69af9c38c03bbc8157548e76ac1a3e32c483e092266ac471b00118d4",
+      "bytes": 1172
+    },
+    {
+      "file": "offline-full.xml",
+      "sha256": "d4f61b3b9f331041ab62f95b4654ee96640d0c41c2fa75157c5dc744fb63d48f",
+      "bytes": 2511678
+    },
+    {
+      "file": "schema-rehearsal.json",
+      "sha256": "14b754aea10dfa6d2c02b1b9acf60b016623de517acd3d221fe10ef94843ca03",
+      "bytes": 116260
+    },
+    {
+      "file": "restore.json",
+      "sha256": "932c1dd9afb27aa1a5cbbd85fe5548180236ee179682a7be90c5a996f7e62e85",
+      "bytes": 112134
+    },
+    {
+      "file": "capture-manifest.json",
+      "sha256": "e4caef450dd3988a5430c62a140eb6de860a63714d6d0303e5540e014e74e67b",
+      "bytes": 2912
+    },
+    {
+      "file": "secret-triage.json",
+      "sha256": "d4b157e8bb7c2ece24ebcad50dab3ea9d60a271c379adabfb6eed3f7411626b3",
+      "bytes": 672
+    },
+    {
+      "file": "gitleaks-history.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "file": "gitleaks-history.log",
+      "sha256": "c588906e0ea81ce98e779da0d39738c2f5055197974ea294a3b603258c93f412",
+      "bytes": 178
+    },
+    {
+      "file": "frontend-final.log",
+      "sha256": "057429b664c9d248de23dff49bdcc326248e402808ad40d8bc9e0b2d84f96e07",
+      "bytes": 247
+    },
+    {
+      "file": "public-browser.json",
+      "sha256": "9756a9b7178ebd3994d87e3cfb1eae1156ce9723c6ce3823aec1bf66ce093ea0",
+      "bytes": 16277
+    },
+    {
+      "file": "research-browser.json",
+      "sha256": "4bb182938fbefd334710e4133a4ea2c34437db5e96a8aa316f0c927c431c641e",
+      "bytes": 53953
+    },
+    {
+      "file": "interrupted-api/plan.json",
+      "bytes": 150094,
+      "sha256": "a23fb7f78aeed3de29614b53fe9a0cc984f9e09e014f170e05c7d8e802e7c4d8"
+    },
+    {
+      "file": "interrupted-api/result.json",
+      "bytes": 2761,
+      "sha256": "021a795360a272f3a4cea1993b97054288bce5222b037a1bab4c3c33ae900e03"
+    },
+    {
+      "file": "interrupted-api/batch-01.xml",
+      "bytes": 215885,
+      "sha256": "ec4d206e90cdb7123aa5aea83445def97cb031d2bff9da56dee15ef4ae32f85f"
+    },
+    {
+      "file": "interrupted-api/batch-02.xml",
+      "bytes": 91859,
+      "sha256": "2a8b110e710d274cb7fcaeb207727e2ca789c00e32166731fd16e78adc372368"
+    }
+  ],
+  "subsequent_source_comparison": [
+    {
+      "receipt": "schema-rehearsal.json",
+      "original_revision": "8b98ccab36f3b89922e29d9f22fc8ae13f5c300f",
+      "compared_revision": "11ed68b68dff4ebdd0cb3f0a4337ff7e8413da23",
+      "unchanged_files": 740,
+      "changed_inputs": [
+        {
+          "path": "scripts/tests/test_security_workflows.py",
+          "receipt_sha256": "daef683c021be06b4d73247327512fd33425aa27f0d11c2da35900aa66e18560",
+          "current_sha256": "feaf9418deaf6e5d1bb4142fb4f4164e29cc81bd1bd5873f25a8429601a7b312"
+        }
+      ]
+    },
+    {
+      "receipt": "restore.json",
+      "original_revision": "8b98ccab36f3b89922e29d9f22fc8ae13f5c300f",
+      "compared_revision": "11ed68b68dff4ebdd0cb3f0a4337ff7e8413da23",
+      "unchanged_files": 740,
+      "changed_inputs": [
+        {
+          "path": "scripts/tests/test_security_workflows.py",
+          "receipt_sha256": "daef683c021be06b4d73247327512fd33425aa27f0d11c2da35900aa66e18560",
+          "current_sha256": "feaf9418deaf6e5d1bb4142fb4f4164e29cc81bd1bd5873f25a8429601a7b312"
+        }
+      ]
+    }
+  ],
+  "interrupted_api_run": {
+    "status": "incomplete",
+    "reason": "Operator interruption to implement the stale-source withdrawal repair; not complete-suite evidence.",
+    "completed_batches": 2,
+    "passed": 1134,
+    "failed": 0
+  }
+}

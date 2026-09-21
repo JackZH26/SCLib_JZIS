@@ -1,6 +1,6 @@
 # Local draft — SCLib research-platform upgrade delivery
 
-**Historical draft.** Current status and verification: [September 15 delivery](Delivery_2026-09-15.md).
+**Historical draft.** Current status and verification: [September 21 delivery](Delivery_2026-09-21.md).
 
 2026-09-15: the user requested continuing the outstanding priorities, including
 code delivery and draft PR preparation. The earlier pending authorization below

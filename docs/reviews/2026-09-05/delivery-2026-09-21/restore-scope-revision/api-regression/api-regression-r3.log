@@ -1,0 +1,453 @@
+API batch artifacts: /private/tmp/sclib-rg04-20260921-hs6iuj54/api-regression-r3
+API batch 1/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 13%]
+........................................................................ [ 26%]
+........................................................................ [ 39%]
+........................................................................ [ 53%]
+........................................................................ [ 66%]
+........................................................................ [ 79%]
+........................................................................ [ 93%]
+.....................................                                    [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+79.77s call     tests/test_ml_baseline_preparation_sql.py::test_native_capsule_draft_prepare_replay_no_training_or_sql_writes[True-composition_conditions-10]
+26.33s call     tests/test_ml_baseline_preparation_sql.py::test_native_capsule_draft_prepare_replay_no_training_or_sql_writes[False-composition-1]
+20.17s call     tests/test_ml_use_submission_admission.py::test_account_change_after_inspection_prevents_commit[session_version]
+18.45s call     tests/test_ml_baseline_preparation_sql.py::test_resealed_audit_or_false_feature_scope_cannot_enter_preparation
+13.28s call     tests/test_ml_use_submission_admission.py::test_account_change_after_inspection_prevents_commit[is_admin]
+13.00s call     tests/test_ml_use_submission_admission.py::test_concurrent_identical_submit_has_one_durable_outcome
+12.98s call     tests/test_ml_use_submission_admission.py::test_account_change_after_inspection_prevents_commit[is_active]
+12.80s call     tests/test_ml_use_submission_admission.py::test_account_change_after_inspection_prevents_commit[email_verified]
+8.68s call     tests/test_scientific_adjudication_operators.py::test_maximum_inner_request_previews_and_commits_with_bounded_envelope
+5.85s call     tests/test_discovery_selection_preparation.py::test_actual_selection_context_prepare_preview_commit_and_original_recovery
+541 passed, 1 warning in 526.92s (0:08:46)
+Removed only this run's disposable services and temporary test data.
+API batch 2/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 36%]
+........................................................................ [ 48%]
+........................................................................ [ 60%]
+........................................................................ [ 72%]
+........................................................................ [ 84%]
+........................................................................ [ 97%]
+.................                                                        [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+27.65s call     tests/test_ml_review_companion_integrity_sql.py::test_repinned_outer_envelope_does_not_hide_missing_inputs_heads_or_exact_audit_bytes
+18.83s call     tests/test_ml_use_submissions.py::test_native_complete_input_and_resealed_scope_guards
+15.13s call     tests/test_ml_use_submissions.py::test_database_immutability_and_purge_receipt_guards[TRUNCATE ml_use_private_inputs]
+14.95s call     tests/test_ml_use_submissions.py::test_owner_acl_current_admission_and_lost_commit_recovery
+14.70s call     tests/test_ml_use_submissions.py::test_database_immutability_and_purge_receipt_guards[UPDATE ml_use_private_inputs SET payload=decode('00','hex')]
+13.95s call     tests/test_ml_use_submissions.py::test_database_immutability_and_purge_receipt_guards[DELETE FROM ml_use_private_inputs]
+13.85s call     tests/test_ml_use_submissions.py::test_native_atomic_retention_exact_noop_recovery_purge_and_no_authority
+12.76s call     tests/test_ml_use_submissions.py::test_service_rollback_never_leaves_metadata_without_payload
+12.71s call     tests/test_ml_use_submissions.py::test_database_immutability_and_purge_receipt_guards[DELETE FROM ml_use_submissions]
+12.56s call     tests/test_ml_use_submissions.py::test_expiry_denies_before_loading_bytes_and_sweeper_retains_audit
+593 passed, 1 warning in 511.85s (0:08:31)
+Removed only this run's disposable services and temporary test data.
+API batch 3/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 12%]
+........................................................................ [ 25%]
+........................................................................ [ 38%]
+........................................................................ [ 51%]
+........................................................................ [ 64%]
+........................................................................ [ 77%]
+........................................................................ [ 90%]
+........................................................                 [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+38.68s call     tests/test_ml_baseline_rehearsal_sql.py::test_actual_test_target_perturbation_never_changes_fit_selection_or_prediction
+37.08s call     tests/test_ml_identity_audit_sql.py::test_resealed_package_tampering_requires_full_recomputation
+33.34s call     tests/test_ml_baseline_rehearsal_sql.py::test_native_fixture_retains_five_pins_fixed_partitions_and_old_v4_bytes[True]
+25.28s call     tests/test_ml_identity_audit_sql.py::test_actual_complete_identity_audit_preserves_v4_bytes_and_full_sql[True]
+23.01s call     tests/test_ml_identity_audit_sql.py::test_actual_audited_cli_build_verify_and_resealed_refusal_are_offline
+20.31s call     tests/test_ml_baseline_rehearsal_sql.py::test_target_derived_renamed_input_is_absent_from_prepared_model_columns
+16.57s call     tests/test_ml_identity_audit_sql.py::test_held_optional_source_keeps_all_component_members_but_not_direct_support_counts
+12.41s call     tests/test_ml_baseline_rehearsal_sql.py::test_fixed_cli_real_subprocess_is_offline_immutable_and_replays_before_trusting_hash
+11.53s call     tests/test_research_distribution_operators.py::test_full_actual_operator_http_workflow_and_revoke_without_obsolete_bytes
+10.70s call     tests/test_ml_identity_audit_sql.py::test_target_derived_renamed_physics_keeps_real_run_and_result_graph
+560 passed, 1 warning in 401.40s (0:06:41)
+Removed only this run's disposable services and temporary test data.
+API batch 4/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 13%]
+........................................................................ [ 26%]
+........................................................................ [ 39%]
+........................................................................ [ 53%]
+........................................................................ [ 66%]
+........................................................................ [ 79%]
+........................................................................ [ 92%]
+.......................................                                  [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+15.51s call     tests/test_ml_label_capture.py::test_actual_capture_includes_all_root_labels_and_preserves_full_sql[True]
+8.38s call     tests/test_research_distribution_preparation.py::test_real_preparation_rights_publication_and_live_revoke_pipeline
+7.22s call     tests/test_ml_label_capture.py::test_old_verified_label_is_historical_and_fresh_source_recheck_fails
+7.05s call     tests/test_research_restore_worker.py::test_actual_typed_source_capsule_access_and_readonly_index_rebuild[True]
+4.75s call     tests/test_research_distribution_preparation.py::test_missing_preview_and_changed_intent_never_write
+4.71s call     tests/test_research_restore_worker.py::test_actual_typed_source_capsule_access_and_readonly_index_rebuild[False]
+4.08s call     tests/test_ml_label_capture.py::test_actual_capture_includes_all_root_labels_and_preserves_full_sql[False]
+4.03s setup    tests/test_answer_history_http.py::test_browser_cookie_save_and_detail_require_no_local_storage_token
+4.03s call     tests/test_research_distribution_preparation.py::test_historical_lookup_accepts_replacement_grant_but_post_does_not_rebind
+3.73s call     tests/test_research_distribution_preparation.py::test_source_drift_after_preview_rejects_commit_without_new_descriptors
+543 passed, 1 warning in 313.91s (0:05:13)
+Removed only this run's disposable services and temporary test data.
+API batch 5/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 18%]
+........................................................................ [ 36%]
+........................................................................ [ 54%]
+........................................................................ [ 72%]
+........................................................................ [ 91%]
+...................................                                      [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+11.56s call     tests/test_ml_reviewed_dataset_sql.py::test_real_capture_new_cli_build_verify_and_no_network_or_database_connections
+11.49s call     tests/test_ml_reviewed_dataset_sql.py::test_current_shared_source_hold_rebuilds_features_without_erasing_base_or_old_replay
+9.92s call     tests/test_ml_reviewed_dataset_sql.py::test_actual_native_import_both_scopes_accepted_still_cannot_become_dfpt_feature
+9.82s call     tests/test_ml_reviewed_dataset_sql.py::test_full_v3_recompute_rejects_repinned_output_tampering[fit]
+9.68s call     tests/test_ml_reviewed_dataset_sql.py::test_full_v3_recompute_rejects_repinned_output_tampering[review_audit]
+9.47s call     tests/test_ml_reviewed_dataset_sql.py::test_full_v3_recompute_rejects_repinned_output_tampering[assignment]
+9.33s call     tests/test_ml_reviewed_dataset_sql.py::test_later_train_property_rejection_refits_raw_subset_and_preserves_old_replay
+7.43s call     tests/test_ml_reviewed_dataset_sql.py::test_actual_shared_scientific_context_does_not_reject_unrelated_sibling_feature
+7.10s call     tests/test_ml_reviewed_dataset_sql.py::test_actual_unreviewed_v3_preserves_v2_raw_baseline_and_fair_views
+7.05s call     tests/test_ml_reviewed_dataset_sql.py::test_full_v3_recompute_rejects_repinned_output_tampering[authority]
+395 passed, 1 warning in 220.15s (0:03:40)
+Removed only this run's disposable services and temporary test data.
+API batch 6/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 13%]
+........................................................................ [ 27%]
+........................................................................ [ 40%]
+........................................................................ [ 54%]
+........................................................................ [ 68%]
+........................................................................ [ 81%]
+........................................................................ [ 95%]
+.........................                                                [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+18.69s call     tests/test_ml_physical_feature_sql.py::test_actual_physical_and_coordinate_inputs_freeze_with_real_producer_bytes
+13.24s call     tests/test_ml_run_evidence.py::test_http_exact_author_roles_session_and_bounded_purge_inputs
+12.80s call     tests/test_ml_run_evidence.py::test_expired_text_cannot_be_read_and_cleanup_is_bounded_with_audit_hold
+12.58s call     tests/test_ml_run_evidence.py::test_atomic_preview_read_purge_no_resurrection_or_implicit_authority
+9.57s call     tests/test_ml_run_evidence.py::test_direct_sql_requires_text_and_guards_mutation_purge_history
+7.39s call     tests/test_ml_physical_feature_sql.py::test_actual_sql_v2_cli_build_verify_and_repinned_tampering
+4.51s call     tests/test_ml_physical_feature_sql.py::test_exact_state_and_explicit_reviewed_normal_state_surrogate[normal_state_surrogate-overrides2-feature_pressure_conflict]
+4.40s call     tests/test_ml_physical_feature_sql.py::test_epc_joint_features_require_same_producer_but_single_scalar_remains_usable[True]
+4.23s call     tests/test_ml_physical_feature_sql.py::test_unreported_optional_value_is_missing_not_zero_or_negative_label
+3.79s call     tests/test_ml_physical_feature_sql.py::test_companion_work_bridge_groups_before_optional_feature_exclusion
+529 passed, 1 warning in 231.38s (0:03:51)
+Removed only this run's disposable services and temporary test data.
+API batch 7/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 14%]
+........................................................................ [ 28%]
+........................................................................ [ 42%]
+........................................................................ [ 57%]
+........................................................................ [ 71%]
+........................................................................ [ 85%]
+.......................................................................  [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+14.39s call     tests/test_ml_pilot_attestations.py::test_actual_three_account_preview_commit_and_exact_recovery
+11.63s call     tests/test_research_distribution_rights_http.py::test_complete_http_rights_preparation_feeds_existing_review_publish_and_protective_revoke
+3.72s call     tests/test_scientific_result_effects.py::test_consumer_gate_checks_all_21_actual_reviews_with_one_shared_budget
+3.50s call     tests/test_research_distribution_rights_http.py::test_historical_outcome_survives_two_heads_and_source_drift_without_becoming_current_permission
+2.58s call     tests/test_research_distribution_rights_http.py::test_actual_preview_commit_get_outcome_and_post_replay_are_private_zero_write_reads
+2.41s call     tests/test_ml_task_dataset_sql.py::test_actual_sql_cli_never_overwrites_existing_dataset
+2.35s call     tests/test_ml_task_dataset_sql.py::test_actual_sql_capsule_cli_build_and_independent_full_recomputation
+2.24s setup    tests/test_retrieval_currentness.py::test_db_barrier_during_generation_discards_old_draft_excerpt_and_history[parent_revision]
+2.16s call     tests/test_ml_task_dataset_sql.py::test_actual_sql_cli_tampering_fails_without_sensitive_error_output[bundle]
+2.10s setup    tests/test_source_lifecycle_aggregation_sql.py::test_existing_hold_and_private_reason_survive_fresh_valid_summary[None]
+503 passed, 1 warning in 146.38s (0:02:26)
+Removed only this run's disposable services and temporary test data.
+API batch 8/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 19%]
+........................................................................ [ 39%]
+........................................................................ [ 59%]
+........................................................................ [ 78%]
+........................................................................ [ 98%]
+.....                                                                    [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+20.66s call     tests/test_ml_use_currentness.py::test_currentness_receipt_is_one_snapshot_not_a_durable_lease
+14.51s call     tests/test_ml_use_currentness.py::test_current_sql_changes_refuse_old_companion_even_when_all_old_pins_still_verify[source_occurrence]
+13.57s call     tests/test_ml_use_currentness.py::test_current_sql_changes_refuse_old_companion_even_when_all_old_pins_still_verify[reviewer_revoked]
+13.36s call     tests/test_ml_use_currentness.py::test_current_sql_changes_refuse_old_companion_even_when_all_old_pins_still_verify[paper_retraction]
+13.15s call     tests/test_ml_use_currentness.py::test_current_sql_changes_refuse_old_companion_even_when_all_old_pins_still_verify[reviewer_inactive]
+12.85s call     tests/test_ml_use_currentness.py::test_current_sql_changes_refuse_old_companion_even_when_all_old_pins_still_verify[material_hold]
+12.79s call     tests/test_ml_use_currentness.py::test_worker_output_cannot_be_retargeted_to_another_captured_input[input_pins]
+12.53s call     tests/test_ml_use_currentness.py::test_service_refuses_mutable_transaction_and_inventory_budget_overflow
+12.44s call     tests/test_ml_use_currentness.py::test_worker_output_cannot_be_retargeted_to_another_captured_input[request_sha256]
+12.22s call     tests/test_ml_use_currentness.py::test_current_sql_changes_refuse_old_companion_even_when_all_old_pins_still_verify[new_decision]
+365 passed, 1 warning in 304.48s (0:05:04)
+Removed only this run's disposable services and temporary test data.
+API batch 9/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 16%]
+........................................................................ [ 32%]
+........................................................................ [ 49%]
+........................................................................ [ 65%]
+........................................................................ [ 81%]
+........................................................................ [ 98%]
+........                                                                 [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+6.04s call     tests/test_ml_pilot_participant_wire.py::test_participant_workbench_real_native_wire
+2.83s call     tests/test_background_job_processes.py::test_two_processes_produce_one_effective_audit_set_for_same_cycle
+2.22s call     tests/test_ml_use_governance.py::test_authenticated_http_history_recovery_is_not_current_permission
+2.06s call     tests/test_background_job_processes.py::test_killed_process_rolls_back_effect_and_new_process_recovers_cycle
+0.97s setup    tests/test_background_job_processes.py::test_two_processes_produce_one_effective_audit_set_for_same_cycle
+0.95s call     tests/test_ml_use_governance.py::test_ml_roles_cannot_unlock_raw_research_routes_or_dataset_training
+0.94s call     tests/test_material_source_scope_surfaces.py::test_mixed_source_summary_filters_archive_and_bookmark_share_scope
+0.90s call     tests/test_ml_use_governance.py::test_account_erasure_is_held_by_revoked_ml_membership_history
+0.82s call     tests/test_ml_use_governance.py::test_target_account_hold_does_not_erase_history_and_revocation_remains_possible[change1]
+0.75s call     tests/test_ml_use_governance.py::test_target_account_hold_does_not_erase_history_and_revocation_remains_possible[change0]
+440 passed, 1 warning in 60.17s (0:01:00)
+Removed only this run's disposable services and temporary test data.
+API batch 10/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 19%]
+........................................................................ [ 39%]
+........................................................................ [ 59%]
+........................................................................ [ 78%]
+........................................................................ [ 98%]
+.....                                                                    [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+21.74s call     tests/test_ml_dataset_v4.py::test_complete_rebuild_refuses_repinned_dataset_tampering
+16.97s call     tests/test_ml_dataset_v4.py::test_held_training_label_refits_all_nested_cohorts_from_raw_data
+15.48s call     tests/test_ml_dataset_v4.py::test_actual_v4_cli_build_verify_and_repinned_refusal_are_offline
+13.94s call     tests/test_ml_dataset_v4.py::test_feature_only_source_hold_does_not_erase_independent_base_labels
+13.57s call     tests/test_ml_dataset_v4.py::test_real_no_hold_compilation_preserves_v3_values_and_old_source_pins[True]
+10.52s call     tests/test_research_distribution_workflow.py::test_registration_preview_and_idempotence_have_real_transaction_semantics
+9.13s call     tests/test_ml_dataset_v4.py::test_test_only_raw_extremes_do_not_change_train_fitted_parameters
+8.92s call     tests/test_discovery_main_barrier.py::test_barrier_edit_needs_new_preview_package_and_independent_review_then_source_hold
+6.58s call     tests/test_scientific_import_recovery.py::test_actual_preview_pinned_commit_and_readonly_recovery_fixture
+6.14s call     tests/test_rps_catalog_cancellation.py::test_catalog_capacity_503_cancels_siblings_before_traversing_later_releases
+365 passed, 1 warning in 337.13s (0:05:37)
+Removed only this run's disposable services and temporary test data.
+API batch 11/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 23%]
+........................................................................ [ 47%]
+........................................................................ [ 71%]
+...........................................................sss.......... [ 94%]
+................                                                         [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+3.19s call     tests/test_scientific_result_public_gates.py::test_actual_review_blocks_hot_rps_and_304_without_changing_frozen_files[reject]
+3.12s call     tests/test_scientific_result_public_gates.py::test_actual_review_blocks_hot_rps_and_304_without_changing_frozen_files[request_clarification]
+2.87s setup    tests/test_rps_catalog_chronology.py::test_actual_catalog_orders_aware_publication_times_without_changing_wire_or_manifest
+2.85s call     tests/test_ml_pilot_registration_http.py::test_http_real_worker_registration_own_acceptance_and_private_inspection
+2.38s call     tests/test_scientific_result_public_gates.py::test_unrelated_package_remains_available_after_exact_property_rejection
+2.06s call     tests/test_scientific_result_public_gates.py::test_positive_fidelity_does_not_bypass_live_role_or_source_holds[reviewer_revocation]
+1.84s call     tests/test_scientific_result_public_gates.py::test_metadata_http_status_failure_is_sanitized_503_not_unreviewed_or_hidden
+1.75s call     tests/test_discovery_operator_history.py::test_actual_http_read_after_source_hold_is_noop_and_cannot_leak_body_or_other_request_key
+1.68s call     tests/test_scientific_result_public_gates.py::test_positive_fidelity_does_not_bypass_live_role_or_source_holds[work_retraction]
+1.56s call     tests/test_scientific_result_public_gates.py::test_changed_positive_effect_receipt_is_rechecked_after_async_work
+301 passed, 3 skipped, 1 warning in 97.99s (0:01:37)
+Removed only this run's disposable services and temporary test data.
+API batch 12/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 13%]
+........................................................................ [ 26%]
+........................................................................ [ 39%]
+........................................................................ [ 52%]
+........................................................................ [ 65%]
+........................................................................ [ 79%]
+........................................................................ [ 92%]
+..........................................                               [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+153.31s call     tests/test_ml_use_request_pipeline.py::test_registered_feature_sources_cannot_be_omitted_from_real_verified_request
+6.60s call     tests/test_rps_catalog_delivery.py::test_four_complete_public_bundles_share_warmed_cache_and_pinned_http_identities
+6.51s call     tests/test_discovery_projection_governance.py::test_fresh_public_reads_fail_closed_after_current_governance_changes[negative_disclosure]
+5.27s call     tests/test_scientific_import_schema.py::test_raw_sql_request_requires_exact_hashes_closed_types_and_inventory[context_null_hash]
+5.09s setup    tests/test_rps_catalog_delivery.py::test_nested_restricted_canary_cannot_appear_in_public_bundle_or_catalog
+4.86s call     tests/test_scientific_import_schema.py::test_all_five_histories_are_immutable_even_noop[TRUNCATE-scientific_import_files]
+4.57s call     tests/test_discovery_projection_governance.py::test_actual_scoped_review_new_rights_and_third_publisher_admit_exact_payload
+4.54s call     tests/test_scientific_import_schema.py::test_raw_sql_request_requires_exact_hashes_closed_types_and_inventory[request_extra]
+4.53s call     tests/test_scientific_import_schema.py::test_terminal_report_cannot_launder_science_cost_or_row_snapshots[snapshot_hash]
+4.30s setup    tests/test_rps_catalog_delivery.py::test_nonregular_or_oversized_approved_file_fails_closed_without_hanging[fifo]
+546 passed, 1 warning in 587.20s (0:09:47)
+Removed only this run's disposable services and temporary test data.
+API batch 13/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 11%]
+........................................................................ [ 22%]
+........................................................................ [ 34%]
+........................................................................ [ 45%]
+........................................................................ [ 56%]
+........................................................................ [ 68%]
+........................................................................ [ 79%]
+........................................................................ [ 90%]
+...........................................................              [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+132.88s call     tests/test_ml_use_rights.py::test_full_inventory_coverage_preserves_source_hold_revoke_replay_and_no_training_authority
+21.05s call     tests/test_ml_use_rights.py::test_expiry_and_reviewer_membership_changes_hold_coverage
+17.05s call     tests/test_ml_use_rights.py::test_exact_pins_independence_and_closed_use_scope
+15.93s call     tests/test_ml_use_rights.py::test_direct_sql_guards_reject_resealed_forgery_and_immutable_history
+13.68s call     tests/test_ml_use_rights.py::test_http_preview_history_unknown_commit_closed_body_and_live_owner_check
+10.90s call     tests/test_ml_use_rights.py::test_concurrent_commit_has_one_exact_recoverable_decision
+10.19s call     tests/test_ml_use_rights.py::test_nonadmitted_roles_never_read_body_and_disabled_registry_is_private
+5.78s call     tests/test_discovery_projection_http.py::test_actual_review_and_publisher_roundtrip_preserves_false_authority
+3.29s call     tests/test_rps_distribution_http.py::test_real_capture_or_frozen_computed_producer_publishes_only_with_all_dependency_permissions[calculation]
+2.50s call     tests/test_scientific_review_operators.py::test_live_user_and_session_flags_are_rechecked[email_verified-False-403]
+635 passed, 1 warning in 425.14s (0:07:05)
+Removed only this run's disposable services and temporary test data.
+API batch 14/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 20%]
+........................................................................ [ 40%]
+........................................................................ [ 61%]
+........................................................................ [ 81%]
+..................................................................       [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+tests/test_schema_lifecycle.py: 19 warnings
+  /Users/jackzhou/Documents/SCLib_JZIS/api/.venv/lib/python3.12/site-packages/alembic/config.py:612: DeprecationWarning: No path_separator found in configuration; falling back to legacy splitting on spaces, commas, and colons for prepend_sys_path.  Consider adding path_separator=os to Alembic config.
+    util.warn_deprecated(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+17.92s call     tests/test_ml_use_rights_wire.py::test_independent_rights_workbench_native_wire
+4.79s call     tests/test_ml_pilot_review_coverage.py::test_old_declarations_do_not_cover_changed_originals_or_reaccepted_participation[participation]
+4.76s call     tests/test_ml_pilot_review_coverage.py::test_old_declarations_do_not_cover_changed_originals_or_reaccepted_participation[review]
+3.92s call     tests/test_ml_pilot_review_coverage.py::test_old_declarations_do_not_cover_changed_originals_or_reaccepted_participation[conclusion]
+3.73s call     tests/test_ml_pilot_review_coverage.py::test_old_declarations_do_not_cover_changed_originals_or_reaccepted_participation[raw_bytes]
+3.44s call     tests/test_ml_pilot_review_coverage.py::test_concurrent_withdrawal_does_not_mix_two_database_snapshots
+2.71s call     tests/test_research_priority.py::test_rps_publication_is_opt_in
+2.45s call     tests/test_index_migration_worker.py::test_actual_combined_replacement_partial_publication_saved_answer_release_and_rollback
+2.00s call     tests/test_ml_pilot_review_coverage.py::test_unused_arbitrator_is_not_required_to_declare_nonexistent_reviews
+1.12s call     tests/test_discovery_scientific_cells.py::test_actual_eight_registry_rows_full_quantity_context_and_safe_sources
+354 passed, 20 warnings in 99.37s (0:01:39)
+Removed only this run's disposable services and temporary test data.
+API batch 15/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 18%]
+........................................................................ [ 36%]
+........................................................................ [ 54%]
+........................................................................ [ 72%]
+........................................................................ [ 90%]
+........................................                                 [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+24.56s call     tests/test_ml_use_runs.py::test_exact_budget_host_pins_owner_and_approval_validation
+21.40s call     tests/test_ml_use_runs.py::test_direct_sql_null_expiry_resealed_forgery_and_immutable_history
+20.20s call     tests/test_ml_use_runs.py::test_http_commit_recovery_closed_body_concurrency_and_owner_recheck
+19.62s call     tests/test_ml_use_runs.py::test_approval_expiry_role_withdrawal_owner_purge_and_historical_regrant_recovery
+18.56s call     tests/test_ml_use_runs.py::test_native_exact_plan_preview_replay_independent_approval_and_held_readiness
+12.41s call     tests/test_ml_use_runs.py::test_nonadmitted_and_disabled_do_not_consume_body
+9.58s call     tests/test_source_task_operations_http.py::test_actual_workflow_preview_replay_read_and_existing_singleton_effects
+5.91s setup    tests/test_discovery_scientific_http.py::test_either_switch_blocks_previously_published_payload[discovery_rps_public_enabled]
+5.80s call     tests/test_source_task_operations_http.py::test_second_curator_receipts_are_scoped_to_requester_and_exact_executor
+5.08s setup    tests/test_discovery_scientific_http.py::test_each_independent_config_pin_is_required[bundle]
+400 passed, 1 warning in 446.17s (0:07:26)
+Removed only this run's disposable services and temporary test data.
+API batch 16/16: 14 whole modules; new owned services.
+Disposable native services verified; running api.
+........................................................................ [ 18%]
+........................................................................ [ 36%]
+........................................................................ [ 55%]
+........................................................................ [ 73%]
+........................................................................ [ 92%]
+..............................                                           [100%]
+=============================== warnings summary ===============================
+routers/admin.py:83
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:83: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+42.44s call     tests/test_ml_use_runs_wire.py::test_run_workbench_native_wire
+11.78s call     tests/test_ml_review_capture.py::test_old_verified_artifact_is_historical_and_fresh_recheck_refuses_change[source_held]
+11.60s call     tests/test_ml_review_capture.py::test_old_verified_artifact_is_historical_and_fresh_recheck_refuses_change[reviewer_revoked]
+11.49s call     tests/test_ml_review_capture.py::test_actual_capture_preserves_full_sql_and_all_old_frozen_bytes
+11.26s call     tests/test_ml_review_capture.py::test_old_verified_artifact_is_historical_and_fresh_recheck_refuses_change[subject_changed]
+8.39s call     tests/test_ml_review_capture.py::test_actual_twenty_one_reviewed_properties_are_not_interactive_twenty_truncated
+7.77s call     tests/test_ml_review_capture.py::test_capture_resource_limits_never_return_partial_success[deadline]
+7.48s call     tests/test_ml_review_capture.py::test_capture_stable_snapshot_and_fresh_transaction_observe_concurrent_source_change
+7.05s call     tests/test_ml_review_capture.py::test_capture_resource_limits_never_return_partial_success[bytes]
+6.44s call     tests/test_ml_review_capture.py::test_capture_resource_limits_never_return_partial_success[reviewed]
+390 passed, 1 warning in 262.98s (0:04:22)
+Removed only this run's disposable services and temporary test data.

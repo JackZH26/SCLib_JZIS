@@ -1,0 +1,232 @@
+{
+  "version": "delivery-receipt-index/1.0.0",
+  "revision_under_full_regression": "5d1bca3cc0a216f0a752dee7efd2667029804cd9",
+  "receipts": [
+    {
+      "file": "restore-scope-green.xml",
+      "bytes": 2332,
+      "sha256": "d9e0e736c90b58a43c99640e4c0f1807348c8262073cf4f76e30019b8163c72b"
+    },
+    {
+      "file": "restore-captures-r3.xml",
+      "bytes": 3298,
+      "sha256": "b2a378011b0a4b48b1cef2c6ffec726fd1256e325d30b2150d6afcfe1be174f2"
+    },
+    {
+      "file": "offline-full-r3.xml",
+      "bytes": 2511678,
+      "sha256": "704fc3bd7cb189b26f8b0847b5fbd7df56347c87c6ff19803bbf272eeb022ac7"
+    },
+    {
+      "file": "schema-rehearsal-r3.json",
+      "bytes": 116260,
+      "sha256": "94535d68f07d97e6f9736f91ab07b538a41f6d0a6a60da381d175f003643bf5f"
+    },
+    {
+      "file": "restore-r3.json",
+      "bytes": 112135,
+      "sha256": "f1771198ff569c16a40e858c8473bad54d56d755c7a08bc511c30ad832eddccd"
+    },
+    {
+      "file": "capture-manifest-r3.json",
+      "bytes": 2609,
+      "sha256": "49e8af7a24b44c542f1476c44e9f689c2986b50b75c4c7ae8c87ddac408b1cad"
+    },
+    {
+      "file": "secret-triage-r3.json",
+      "bytes": 625,
+      "sha256": "52c3e510cbfaabe2b7a7ebd86c51ac6b55d5ec17f0b5ebfb14e695f1156cfdf2"
+    },
+    {
+      "file": "security-fingerprints-r3.xml",
+      "bytes": 2462,
+      "sha256": "81da066c9fcc112045657dceec2aa9c248935381546a1f50c95b59511fd7b922"
+    },
+    {
+      "file": "frontend-r5.log",
+      "bytes": 4514,
+      "sha256": "44ed9069318137d4140e15618d11e7d348a4a029db4a356b07ba973842d5f31b"
+    },
+    {
+      "file": "research-browser-r4.json",
+      "bytes": 54021,
+      "sha256": "04a09fabed731947732569f009ee6f208b0f13c8c12b4ba4f9afd905d80d1609"
+    },
+    {
+      "file": "gitleaks-incremental-r3.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "file": "gitleaks-incremental-r3.log",
+      "bytes": 108,
+      "sha256": "bbf1929a74615d6edb0481321b5a06b0426e9b3a92165f731333099b00b9562b"
+    },
+    {
+      "file": "reference-canaries-final.xml",
+      "bytes": 764,
+      "sha256": "f48611fa861f1cafb26a51c397934ca538204972f59604fdeafafcc4a7a70301"
+    },
+    {
+      "file": "reference-canaries-final.log",
+      "bytes": 3177,
+      "sha256": "ee1eee852a740ee2fc44dbf7881409d64967493dae5571c77e224f02a3430b88"
+    },
+    {
+      "file": "api-regression/plan.json",
+      "bytes": 150093,
+      "sha256": "2cb794125c7eb18aa1fb4b6bddd7a36297cbb8721fe24d32fc7b1b0eca288c90"
+    },
+    {
+      "file": "api-regression/result.json",
+      "bytes": 17646,
+      "sha256": "7b042e6b5f611868e0f0c98e0dbd9aaa8f11013fe8823a71f6bcd3ec5c4c1d75"
+    },
+    {
+      "file": "api-regression/batch-01.xml",
+      "bytes": 215885,
+      "sha256": "1532d526e67fc82461d53a4bb063ad6332dc8e76c10f16af55968d0e379af5ea"
+    },
+    {
+      "file": "api-regression/batch-02.xml",
+      "bytes": 91858,
+      "sha256": "3af101b2b0afecf5d360c98fff7d85c747a480d996fc3d17ba5f35dbe2dc7a76"
+    },
+    {
+      "file": "api-regression/batch-03.xml",
+      "bytes": 98549,
+      "sha256": "124cb651af39a0a7df1a63b8323ffe751cf580616aa21db6a69a92281167e3c3"
+    },
+    {
+      "file": "api-regression/batch-04.xml",
+      "bytes": 95301,
+      "sha256": "7333a16df2545c388ce60a4f18d5d1a804b8ceef38529005870aaabd06646c52"
+    },
+    {
+      "file": "api-regression/batch-05.xml",
+      "bytes": 63780,
+      "sha256": "d24ecba839ef9b7422e62f5feeca4616c4593e8021a470d2d98efa834c6c3b37"
+    },
+    {
+      "file": "api-regression/batch-06.xml",
+      "bytes": 87611,
+      "sha256": "b4957c1c09519617a93cacb95646e77c4c5efa969741c181df1c62f1d88d88d4"
+    },
+    {
+      "file": "api-regression/batch-07.xml",
+      "bytes": 83145,
+      "sha256": "5d5a9b946873bbdaf530132800993676ac9b57fc18a1b399618b9c83a12648ca"
+    },
+    {
+      "file": "api-regression/batch-08.xml",
+      "bytes": 57648,
+      "sha256": "7551d7b6893acc7a11a2fd8e0a8cf9d7ec2574c68dbeb762845c67b47fa32565"
+    },
+    {
+      "file": "api-regression/batch-09.xml",
+      "bytes": 76981,
+      "sha256": "43110d4d6ee012188268efc44de284368addc7994d6a1cec9f60c0d4f16235f3"
+    },
+    {
+      "file": "api-regression/batch-10.xml",
+      "bytes": 155450,
+      "sha256": "cf2e8aa4b72cd0f2af62700439f1f346833e60d47cbaa95bbe1a65d069f569fd"
+    },
+    {
+      "file": "api-regression/batch-11.xml",
+      "bytes": 44589,
+      "sha256": "4530841c8fc2243283ca3b25fac248e197f232e6db7e7c9f8d6a786d7f843aa8"
+    },
+    {
+      "file": "api-regression/batch-12.xml",
+      "bytes": 86099,
+      "sha256": "42f55d514784a930cec0c8318565db6e267e84acea7f8dc8520801ff123d5870"
+    },
+    {
+      "file": "api-regression/batch-13.xml",
+      "bytes": 105566,
+      "sha256": "1a18fc05513ec2e324fedfd3bdeefe91b95ba9566e8fd672cb97f2c8bf4b92c3"
+    },
+    {
+      "file": "api-regression/batch-14.xml",
+      "bytes": 76395,
+      "sha256": "f2856b1d7de2e3ba45de052685b84c614e8b59cb7bf663c2e8dbb667b5d96e9e"
+    },
+    {
+      "file": "api-regression/batch-15.xml",
+      "bytes": 67597,
+      "sha256": "059025940294fb9df2c7b791b3f4c1b85f93bde05e57f4f8dc0dac19b4ad7e88"
+    },
+    {
+      "file": "api-regression/batch-16.xml",
+      "bytes": 195936,
+      "sha256": "4471320de91fedeede068ff532f82b168cd5a612e43f74f27c1009cb612cb057"
+    },
+    {
+      "file": "api-regression/api-regression-r3.log",
+      "bytes": 40933,
+      "sha256": "d02abe9418849342ec389bf686d106aa371c63f652d878fcc5c2a65f0e9c35a3"
+    },
+    {
+      "file": "gitleaks-delivery-final.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "file": "gitleaks-delivery-final.log",
+      "bytes": 111,
+      "sha256": "51e1e23027a67e0787e674e7fe5d3148c3e48f8ce2565474484b81b990607b0a"
+    }
+  ],
+  "ordinary_api_status": "completed",
+  "migration_restore_source_comparison": [
+    {
+      "receipt": "schema-rehearsal-r3.json",
+      "compared_revision": "5d1bca3cc0a216f0a752dee7efd2667029804cd9",
+      "total_inputs": 741,
+      "unchanged_inputs": 740,
+      "changed_inputs": [
+        "scripts/tests/test_security_workflows.py"
+      ]
+    },
+    {
+      "receipt": "restore-r3.json",
+      "compared_revision": "5d1bca3cc0a216f0a752dee7efd2667029804cd9",
+      "total_inputs": 741,
+      "unchanged_inputs": 740,
+      "changed_inputs": [
+        "scripts/tests/test_security_workflows.py"
+      ]
+    }
+  ],
+  "scientific_acceptance": false,
+  "production_operations": false,
+  "reference_canaries": {
+    "revision": "5d1bca3cc0a216f0a752dee7efd2667029804cd9",
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "runner_exit_code": 0,
+    "owned_cleanup_observed": true,
+    "scope": "Separate explicit-path run using unchanged previously retained QEF/q-e reference bytes; not extra ordinary-suite cases, native scientific calculation, scientific approval or ML admission."
+  },
+  "ordinary_api_counts": {
+    "errors": 0,
+    "failed": 0,
+    "passed": 7460,
+    "skipped": 3,
+    "test_cases": 7463
+  },
+  "ordinary_api_module_count": 224,
+  "ordinary_api_complete_batches": 16,
+  "ordinary_api_runner_exit_code": 0,
+  "ordinary_api_duration_seconds": 5100.105,
+  "ordinary_api_unchanged_source_inputs": 741,
+  "ordinary_api_owned_cleanup_confirmations": 16,
+  "ordinary_api_skip_reason": "Three opt-in historical reference cases require explicit local paths; separately executed with those paths and all three passed. No cases are double-counted.",
+  "delivery_staged_secret_scan": {
+    "findings": 0,
+    "exit_code": 0,
+    "scope": "Staged delivery reports and retained regression evidence before adding this scanner receipt; subsequent final staged and post-commit scans are also required."
+  }
+}

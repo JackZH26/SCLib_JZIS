@@ -1,6 +1,6 @@
 # Engineering delivery readiness — 2026-09-12
 
-**Current status:** [September 15 delivery](Delivery_2026-09-15.md). Historical run handles and counts below keep their original scope.
+**Current status:** [September 21 delivery](Delivery_2026-09-21.md). Historical run handles and counts below keep their original scope.
 
 Base revision: `00718749b6eb15926ae8cbfc58e02a9432488815`, with the
 batch52 main-barrier worktree changes. This refresh separates local executable
