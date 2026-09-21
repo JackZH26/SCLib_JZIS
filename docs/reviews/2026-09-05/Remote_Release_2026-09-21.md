@@ -85,3 +85,54 @@ Human source-rights review, ML08 independent pilot review, RG04 gold evidence,
 ML09 real-dataset admission/fitting, empirical calibration and reviewed public
 Discovery rows remain explicitly open. Technical receipts confer none of
 those scientific approvals.
+
+
+## Subsequent production and Docker findings
+
+The real backup clone upgraded from 0043 to 0078 in 6.5 seconds using a
+non-superuser migration role. Fingerprints of all retained columns remained
+identical across 18 original tables and two original views (20 relations;
+the receipt field is named `unchanged_original_tables`). Alembic version and
+the intentionally invalidated timeline projection-state table were excluded
+from that byte comparison. Index/constraint checks passed. A distinct runtime
+role had no public-schema CREATE permission and passed the actual image's
+read-only schema admission. This used the locally built Linux rehearsal image
+for 9f529dd, not a signed production release; it did not alter live data.
+
+A live Similar preflight found a pre-existing 500: the host identity agent was
+rotating valid tokens, while the July-started API container retained an old
+bind-mounted directory inode and could not find its subject token. Restarting
+that existing API container restored its mount, health and unchanged d26fc09
+version. Scoped credential exchange succeeded, and the original public Similar
+request then returned 200 with three non-self results in 20.595 seconds. A
+systemd runtime-preservation drop-in was applied; restarting the identity agent
+preserved all three directory inodes and continued container token visibility.
+The repository unit now also declares RuntimeDirectoryPreserve=yes. Five-minute
+token expiry and access restrictions are unchanged.
+
+The third Linux run passed CodeQL findings and all Security jobs, as well as
+frontend/source/browser and ingestion checks, but its migration job encountered
+a disposable-service startup failure. A controlled, owned Docker experiment
+with a two-second initialization delay proved that the old Unix-socket probe
+can return while the temporary initialization server is still running. The
+runner now checks the final TCP server before database bootstrap. Static setup
+phase names aid diagnosis without exposing commands, DSNs or SQL. The regression
+failed before the fix and passed afterwards; all 2,306 offline cases plus 91
+subtests pass. Ten native cases regenerated seven r5 compatibility archives;
+all 1,890 frontend component tests pass with those archives. No historical
+fixture was overwritten. Final Linux validation is still required.
+
+Production alert configuration has been prepared and validated with the running
+Alertmanager image, with networking disabled during configuration validation.
+The existing Resend SMTP identity authenticated successfully without sending a
+message. Activating the proposed info@jzis.org destination and sending its
+verification alert await explicit recipient authorization. The production
+Compose override now loads the private host config and separate SMTP secret;
+the deploy preflight requires those files before any production migration.
+
+Runtime HTTP checks on the upgraded full-data clone are in progress. In
+particular, 0062 does not import or activate the legacy million-chunk ANN index:
+`INDEX_GENERATIONS.md` specifies lexical-only Search/Ask and a 503 for Similar
+until a reviewed immutable generation exists. Its 1,000-member pilot limit is
+not a full-corpus replacement. Migration success alone therefore does not
+justify an unattended public retrieval cutover or a full-upgrade claim.

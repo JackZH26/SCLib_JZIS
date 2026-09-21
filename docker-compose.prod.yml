@@ -3,6 +3,12 @@
 # configurations. Human ADC, refresh tokens, and service-account keys are
 # rejected by scripts/validate_gcp_credentials.py before a process starts.
 services:
+  alertmanager:
+    # Provision the approved receiver outside Git before production admission.
+    volumes:
+      - /etc/sclib/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - /etc/sclib/credentials/alertmanager-smtp-password:/run/secrets/sclib-alertmanager-smtp-password:ro
+
   frontend:
     image: ${SCLIB_FRONTEND_IMAGE:?set signed frontend image digest}
 

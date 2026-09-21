@@ -79,6 +79,14 @@ or other receiver, reload Alertmanager, and send a test alert. Store receiver
 secrets outside Git and mount them read-only. Record the destination and test
 date in the operations log.
 
+The production override loads the approved receiver configuration from
+`/etc/sclib/alertmanager/alertmanager.yml` and the SMTP credential from
+`/etc/sclib/credentials/alertmanager-smtp-password`, mounted read-only as
+`/run/secrets/sclib-alertmanager-smtp-password`. Keep both host files outside
+Git. Validate the config with the deployed Alertmanager version before
+activation; obtain approval for the destination and verification message.
+The default development console configuration remains in the repository.
+
 ## Alert runbooks
 
 ### API error-budget alert

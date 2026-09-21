@@ -1,0 +1,8 @@
+{
+  "service": "sclib-identity-agent",
+  "runtime_directory_preserve": "yes",
+  "all_three_directory_inodes_preserved_on_restart": true,
+  "api_sees_current_directory_and_token": true,
+  "token_ttl_seconds": 300,
+  "completed_at_epoch": 1789990759
+}

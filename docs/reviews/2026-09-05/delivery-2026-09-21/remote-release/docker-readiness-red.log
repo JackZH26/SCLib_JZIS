@@ -1,0 +1,53 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ TestSafetyTests.test_docker_wait_ignores_temporary_socket_only_initialization_server _
+
+self = <test_test_safety.TestSafetyTests testMethod=test_docker_wait_ignores_temporary_socket_only_initialization_server>
+
+    def test_docker_wait_ignores_temporary_socket_only_initialization_server(self):
+        import run_disposable_tests as runner
+    
+        services = runner.DisposableServices(self.root, "docker", None, None)
+        services.manifest["postgres"] = {
+            "port": 25432, "runtime": {"container_id": "a" * 64},
+        }
+        tcp_attempts = 0
+        sql_probes = 0
+    
+        def probe(command, **kwargs):
+            nonlocal tcp_attempts, sql_probes
+            if "pg_isready" in command:
+                tcp_attempts += 1
+                if tcp_attempts == 1:
+                    raise RuntimeError("Temporary initialization server has no TCP listener")
+                return "accepting connections"
+            # The initial socket server could answer SELECT 1, but will shut
+            # down before the final server starts. Never admit that instance.
+            self.assertEqual(tcp_attempts, 2)
+            sql_probes += 1
+            return "1"
+    
+        with patch.object(runner, "run_quiet", side_effect=probe), \
+                patch.object(runner, "assert_service_runtime"), \
+                patch.object(runner.time, "sleep"):
+>           services.wait_postgres()
+
+scripts/tests/test_test_safety.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/run_disposable_tests.py:230: in wait_postgres
+    run_quiet(self.pg_command(), env=self.env, input="SELECT 1;", timeout=3)
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1139: in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1143: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1204: in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+scripts/tests/test_test_safety.py:98: in probe
+    self.assertEqual(tcp_attempts, 2)
+E   AssertionError: 0 != 2
+=========================== short test summary info ============================
+FAILED scripts/tests/test_test_safety.py::TestSafetyTests::test_docker_wait_ignores_temporary_socket_only_initialization_server
+1 failed, 17 deselected in 0.14s

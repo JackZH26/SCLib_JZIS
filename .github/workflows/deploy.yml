@@ -166,6 +166,8 @@ jobs:
             # Provisioned migration-only credential; never reuse API .env or
             # grant schema privileges as a deployment side effect.
             test -s /etc/sclib/credentials/migration-database-url
+            test -s /etc/sclib/alertmanager/alertmanager.yml
+            test -s /etc/sclib/credentials/alertmanager-smtp-password
             cleanup_preflight
             trap - EXIT
 

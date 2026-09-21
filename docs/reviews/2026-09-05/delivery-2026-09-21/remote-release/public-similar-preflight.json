@@ -1,0 +1,6 @@
+{
+  "case": "existing public similar-paper functional preflight",
+  "http_status": 500,
+  "seconds": 0.504,
+  "error": "http_failure"
+}

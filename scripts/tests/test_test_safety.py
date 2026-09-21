@@ -76,6 +76,35 @@ class TestSafetyTests(unittest.TestCase):
         result = safety.validate_test_environment(self.env)
         self.assertEqual(result.run_id, self.run_id)
 
+    def test_docker_wait_ignores_temporary_socket_only_initialization_server(self):
+        import run_disposable_tests as runner
+
+        services = runner.DisposableServices(self.root, "docker", None, None)
+        services.manifest["postgres"] = {
+            "port": 25432, "runtime": {"container_id": "a" * 64},
+        }
+        tcp_attempts = 0
+        sql_probes = 0
+
+        def probe(command, **kwargs):
+            nonlocal tcp_attempts, sql_probes
+            if "pg_isready" in command:
+                tcp_attempts += 1
+                if tcp_attempts == 1:
+                    raise RuntimeError("Temporary initialization server has no TCP listener")
+                return "accepting connections"
+            # The initial socket server could answer SELECT 1, but will shut
+            # down before the final server starts. Never admit that instance.
+            self.assertEqual(tcp_attempts, 2)
+            sql_probes += 1
+            return "1"
+
+        with patch.object(runner, "run_quiet", side_effect=probe), \
+                patch.object(runner, "assert_service_runtime"), \
+                patch.object(runner.time, "sleep"):
+            services.wait_postgres()
+        self.assertEqual(sql_probes, 1)
+
     def test_missing_sentinel_refuses_even_with_test_database_name(self):
         self.path.unlink()
         self.assert_refused()

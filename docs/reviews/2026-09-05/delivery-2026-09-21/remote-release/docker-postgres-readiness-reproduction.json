@@ -1,0 +1,7 @@
+{
+  "controlled_synthetic_init_delay_seconds": 2,
+  "old_socket_gate_returned_before_final_server": true,
+  "tcp_gate_waited_for_final_server": true,
+  "additional_wait_seconds": 2.216,
+  "owned_container_removed": true
+}

@@ -1,0 +1,19 @@
+{
+  "action": "restart existing API to refresh stale token-directory mount",
+  "health": {
+    "status": "ok",
+    "service": "sclib-api",
+    "version": "0.1.0"
+  },
+  "version": {
+    "site_version": "d26fc09",
+    "dataset_version": "v2026.09.03",
+    "api_version": "1"
+  },
+  "identity": {
+    "subject_present": true,
+    "subject_readable": true
+  },
+  "completed_at_epoch": 1789990509,
+  "database_migration_performed": false
+}

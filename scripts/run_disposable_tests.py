@@ -84,6 +84,7 @@ class DisposableServices:
         self.children: list[subprocess.Popen] = []
         self.containers: list[str] = []
         self.logs = []
+        self.setup_stage = "initialization"
         self.manifest = {
             "schema": SCHEMA, "run_id": self.run_id, "backend": backend,
             "root": str(root), "runner_pid": os.getpid(), "created_at": time.time(),
@@ -108,6 +109,7 @@ class DisposableServices:
         }
 
     def _docker_start(self, service: str, arguments: list[str]) -> None:
+        self.setup_stage = service + "-container-start"
         name = f"sclib-tests-{self.run_id}-{service}"
         identifier = self.docker([
             "run", "--detach", "--pull", "never", "--name", name,
@@ -169,8 +171,11 @@ class DisposableServices:
                 "redis:7-alpine", "redis-server", "/run/redis-test.conf",
             ])
 
+        self.setup_stage = "postgres-final-readiness"
         self.wait_postgres()
+        self.setup_stage = "postgres-bootstrap"
         self.bootstrap_postgres()
+        self.setup_stage = "owned-runtime-verification"
         for service in ("postgres", "redis"):
             assert_service_runtime(self.manifest, service)
         pg_port = self.manifest["postgres"]["port"]
@@ -182,6 +187,7 @@ class DisposableServices:
         # Only the just-created, process/container-verified Redis is contacted.
         import redis
 
+        self.setup_stage = "redis-identity"
         redis_client = redis.Redis.from_url(redis_url, socket_connect_timeout=2,
                                            socket_timeout=2, decode_responses=True)
         try:
@@ -201,7 +207,9 @@ class DisposableServices:
             "VERTEX_AI_INDEX_ENDPOINT": "", "GEMINI_API_KEY": "", "GOOGLE_API_KEY": "",
             "RESEND_API_KEY": "", "INTERNAL_API_KEY": "", "GOOGLE_CLIENT_SECRET": "",
         }
+        self.setup_stage = "capability-verification"
         validate_test_environment(env)
+        self.setup_stage = "verified"
         return env
 
     def redis_configuration(self, bind: str, port: int) -> str:
@@ -227,6 +235,15 @@ class DisposableServices:
         while time.monotonic() < deadline:
             try:
                 assert_service_runtime(self.manifest, "postgres")
+                if self.backend == "docker":
+                    # The image's initialization server accepts Unix sockets
+                    # before shutting down. Its final server alone listens on
+                    # TCP; admitting the temporary one races database setup.
+                    run_quiet([
+                        shutil.which("docker"), "--context", "default", "exec",
+                        self.manifest["postgres"]["runtime"]["container_id"],
+                        "pg_isready", "-h", "127.0.0.1", "-p", "5432", "-U", "postgres",
+                    ], env=self.env, timeout=3)
                 run_quiet(self.pg_command(), env=self.env, input="SELECT 1;", timeout=3)
                 return
             except (RuntimeError, UnsafeTestEnvironment):
@@ -326,7 +343,7 @@ def _main(destination_holder) -> int:
                 report_document = load_report(read_private_report(root / "schema-rehearsal.json"), internal=True)
         except (RuntimeError, OSError):
             # Controlled setup errors only. Avoid traceback/command/DSN disclosure.
-            print("Disposable service or test setup failed; details withheld.", file=sys.stderr)
+            print(f"Disposable service or test setup failed at {services.setup_stage}; details withheld.", file=sys.stderr)
             return 2
         finally:
             services.close()

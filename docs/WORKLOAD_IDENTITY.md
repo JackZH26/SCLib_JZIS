@@ -59,6 +59,14 @@ The identity agent writes tokens atomically and keeps each directory readable
 only by root and container UID 1001. External-account JSON files contain no
 private key or refresh token and may be read-only.
 
+The systemd unit preserves its runtime directory across agent stop/start.
+Deleting that directory leaves a running container bound to the old inode,
+even when the host has fresh tokens at the same pathname. The short token
+expiry remains unchanged; stopping the agent cannot create an indefinitely
+valid credential. After upgrading an older unit, restart affected workload
+containers once to refresh any already-stale mounts, then verify container
+token readability and a real credential exchange. Never print token contents.
+
 ```text
 /etc/sclib/credentials/api-external-account.json
 /etc/sclib/credentials/ingestion-external-account.json

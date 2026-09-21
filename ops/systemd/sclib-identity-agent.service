@@ -10,6 +10,9 @@ Group=root
 UMask=0027
 RuntimeDirectory=sclib-identity
 RuntimeDirectoryMode=0755
+# Running containers bind individual workload directories. Preserve their
+# inodes across agent stop/start; tokens still expire after five minutes.
+RuntimeDirectoryPreserve=yes
 ExecStart=/usr/bin/python3 /usr/local/lib/sclib/sclib_identity_agent.py run
 Restart=always
 RestartSec=5s
