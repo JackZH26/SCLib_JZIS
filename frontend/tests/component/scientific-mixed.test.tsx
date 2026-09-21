@@ -7,7 +7,7 @@ import { ScientificMixedNotice } from "@/components/ScientificMixedNotice";
 import { AskHistoryList } from "@/components/dashboard/AskHistoryList";
 import { mixedResponse, withdrawnMixedResponse } from "../fixtures/scientific-mixed";
 import actualSyntheticWire from "../fixtures/scientific-mixed-http.json";
-import currentSyntheticWire from "../fixtures/scientific-mixed-http.delivery20260921.json";
+import currentSyntheticWire from "../fixtures/scientific-mixed-http.delivery20260921r2.json";
 
 const raw = "Why is Tc of MgB₂ 39 K?";
 const validate = (value: unknown, query = raw) => knownScientificMixedResponse(value, query);

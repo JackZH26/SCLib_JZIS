@@ -237,6 +237,60 @@ async def test_http_preview_commit_replay_and_conflicting_request_are_atomic(cli
         headers={**headers, "Content-Type": "application/json"})).status_code == 413
 
 
+async def test_stale_source_can_be_withdrawn_but_cannot_be_reestablished(client, mixed_generation):
+    people, context, _, _, _ = await _establish(client)
+    db = await _serial()
+    try:
+        original_title = await db.scalar(sa.text("SELECT title FROM papers WHERE id=:id"),
+            {"id": context["paper_id"]})
+        await db.execute(sa.text("UPDATE papers SET title='Synthetic changed source' WHERE id=:id"),
+            {"id": context["paper_id"]})
+        await db.commit()
+    finally:
+        await db.close()
+    db = await _serial()
+    try:
+        stale = await service.action_context(db, actor_user_id=people["reviewer"],
+            parent_result_revision_id=context["parent_result_revision_id"],
+            source_evidence_revision_id=context["source_evidence_revision_id"])
+        assert stale["can_withdraw"] and not stale["can_establish"]
+        request = service.request_from_context(stale, request_key="synthetic-stale-withdraw:" + uuid4().hex, action="withdraw")
+        changed = {**request, "expected_source_content_sha256": "0" * 64}
+        with pytest.raises(service.ResultPassageConflict):
+            await service.review(db, actor_user_id=people["reviewer"], request=changed)
+        preview = await service.review(db, actor_user_id=people["reviewer"], request=request)
+        withdrawn = await service.review(db, actor_user_id=people["reviewer"], request=request,
+            expected_preview_sha256=preview["preview_sha256"], dry_run=False)
+        assert withdrawn["action"] == "withdraw"
+        fresh = await service.action_context(db, actor_user_id=people["reviewer"],
+            parent_result_revision_id=context["parent_result_revision_id"],
+            source_evidence_revision_id=context["source_evidence_revision_id"])
+        assert not fresh["can_establish"] and not fresh["can_withdraw"]
+        request = service.request_from_context(fresh, request_key="synthetic-stale-reestablish:" + uuid4().hex, action="establish")
+        with pytest.raises(service.ResultPassageConflict):
+            await service.review(db, actor_user_id=people["reviewer"], request=request)
+        assert (await service.inspect_request(db, actor_user_id=people["reviewer"],
+            request_key=withdrawn["request_key"]))["action"] == "withdraw"
+        links = Base.metadata.tables["scientific_result_passage_links"]
+        row = dict((await db.execute(sa.select(links).where(
+            links.c.id == UUID(withdrawn["bridge_revision_id"])))).mappings().one())
+        row.update(id=uuid4(), action="establish", reason_code="reviewed_exact_claim_sample_passage",
+            request_key="synthetic-stale-direct:" + uuid4().hex,
+            predecessor_id=row["id"], predecessor_sha256=row["record_sha256"])
+        with pytest.raises(DBAPIError) as denied:
+            async with db.begin_nested():
+                await db.execute(links.insert().values(**row))
+        assert getattr(denied.value.orig, "sqlstate", None) == "23514"
+        assert "result_passage_current_inputs_required" in str(denied.value.orig)
+        await db.execute(sa.text("UPDATE papers SET title=:title WHERE id=:id"),
+            {"id": context["paper_id"], "title": original_title})
+        assert await service.resolve_current_links(db, [(context["parent_result_revision_id"],
+            context["source_evidence_revision_id"])]) == {}
+        await db.commit()
+    finally:
+        await db.close()
+
+
 async def test_competing_previews_cannot_fork_a_reviewed_pair(client, mixed_generation):
     parent_id, evidence_id = await _pair(client)
     db = await _serial()

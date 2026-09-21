@@ -74,11 +74,72 @@ and closed identities, not passage text.
 
 Preview executes the real SERIALIZABLE insertion and database-trigger path in a
 savepoint, then rolls it back. Commit requires the exact preview digest and
-rechecks the actor, grant, evidence revisions, source lifecycle, current chunk
-pointers and predecessor head. Establish and withdraw actions alternate through
+rechecks the actor, grant, immutable evidence and predecessor head. Establish
+also requires the current source lifecycle and current chunk pointers. Withdraw
+remains available after a source or passage becomes stale so a reviewer can
+record a durable negative decision against the exact historical pair. It cannot
+revive that pair. Establish and withdraw actions alternate through
 an exact predecessor chain. Rows cannot be updated, deleted or truncated, and a
 nonempty ledger blocks destructive downgrade. Request keys are actor-scoped and
 replay idempotently only when every exact binding agrees.
+
+### Exact operator sequence
+
+The workflow must be enabled by the configured deployment and called through an
+existing authenticated session with a current explicit research grant. A UUID,
+request key or preview checksum is not authentication or source authorization.
+Do not put credentials or private source excerpts into review requests or logs.
+
+1. Inspect the exact extraction and original passage through authorized source
+   access. This context endpoint supplies no passage text and cannot replace
+   that scientific inspection. Select immutable `parent_result_revision_id`
+   and `source_evidence_revision_id` values; same-paper proximity is insufficient.
+2. `POST /context` with exactly those two fields. Confirm the action-specific
+   `can_establish` or `can_withdraw` flag, the source and identity hashes and the
+   current head. `can_review` describes the role only. A curator can inspect context but
+   cannot submit a review without a reviewer grant.
+3. Create one new actor-scoped `request_key` and a closed request with version
+   `scientific-result-passage-review/1.0.0`, action `establish` or `withdraw`, the
+   two revision IDs, and these pins copied from that context:
+
+   | Request pin | Exact context value |
+   | --- | --- |
+   | `expected_parent_result_sha256` | `parent_result_sha256` |
+   | `expected_source_evidence_record_sha256` | `source_evidence_record_sha256` |
+   | `expected_source_content_sha256` | `source_content_sha256` |
+   | `expected_source_locator_sha256` | `source_locator_sha256` |
+   | `expected_claim_identity_sha256` | `claim_identity_sha256` |
+   | `expected_sample_identity_sha256` | `sample_identity_sha256` |
+   | `expected_predecessor_id` | `current_head.bridge_revision_id`, or null |
+   | `expected_predecessor_sha256` | `current_head.bridge_record_sha256`, or null |
+
+   Both predecessor fields are null only for the first establish action. A
+   withdrawal requires the exact established head; re-establishment follows the
+   exact withdrawn head. The internal `request_from_context` helper constructs
+   this shape; it does not approve a review or authenticate the caller.
+4. `POST /preview` with that request. A successful response means the exact SQL
+   path passed and was rolled back. `database_mutated=false` is explicit; the
+   proposed bridge ID alone is not a committed review.
+5. After checking the preview, `POST /commit` with exactly `request` (the unchanged
+   original object) and `expected_preview_sha256` (the returned preview checksum).
+   A successful HTTP response reports `committed=true` only after the outer
+   transaction has committed. Changing evidence, authority or the current head
+   requires a fresh context and preview.
+6. For a lost/503 commit response, use `GET /requests/{request_key}` under the
+   original account to inspect its historical receipt. A 404 means not observed
+   in that read snapshot, not proof of rollback. An identical explicit retry
+   can recover the same durable row; a changed request with the same key is a
+   conflict. No automatic retry, scientific acceptance or fresh positive status
+   is inferred from a historical receipt.
+
+Requests are limited to 32 KiB. Unknown or duplicate JSON keys are rejected.
+401 requires a current login, 403 requires the appropriate current grant, 409
+requires resolving the exact evidence/head/request conflict, and 413 requires a
+bounded request. Errors do not return source bodies or raw database exceptions.
+To withdraw, repeat the context/preview/commit sequence with a new request key
+and `action=withdraw`; do not delete or rewrite the original receipt.
+Stale inputs allow withdrawal only from an intact established head. They still
+refuse establishment at both the service and database-trigger boundaries.
 
 ## Preparation, packing and one final check
 

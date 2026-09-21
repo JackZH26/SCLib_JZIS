@@ -144,7 +144,7 @@ async def _head(db, parent_id, evidence_id):
     return rows[0] if rows else None
 
 
-async def _exact_context(db, parent_id, evidence_id):
+async def _exact_context(db, parent_id, evidence_id, *, require_current=True):
     row = (await db.execute(sa.text("""
       WITH exact AS (
         SELECT x.id AS parent_id,x.paper_id,x.source_snapshot_sha256,
@@ -152,6 +152,7 @@ async def _exact_context(db, parent_id, evidence_id):
           e.id AS evidence_id,e.paper_id AS evidence_paper_id,e.source_snapshot_sha256 AS evidence_snapshot_sha256,
           e.record_sha256 AS evidence_sha256,
           e.content_sha256,e.source_locator,e.chunk_key,e.permission_status,e.chunk_kind,
+          e.parent_extraction_revision_id AS passage_parent_id,
           x.record_sha256=public.sclib_rag_evidence_record_hash_v1(to_jsonb(x)) AS parent_intact,
           e.record_sha256=public.sclib_rag_evidence_record_hash_v1(to_jsonb(e)) AS evidence_intact,
           public.sclib_source_lifecycle_snapshot_hash_v1('paper',to_jsonb(p)) AS current_snapshot,
@@ -187,19 +188,26 @@ async def _exact_context(db, parent_id, evidence_id):
              "claim_version": CLAIM_VERSION, "sample_version": SAMPLE_VERSION})).mappings().one_or_none()
     if row is None:
         raise ResultPassageUnavailable("Exact extraction or passage revision unavailable")
-    if not (row["parent_intact"] and row["evidence_intact"] and row["original_current"] and row["result_current"]
-            and row["current_snapshot"] == row["source_snapshot_sha256"]
+    if not (row["parent_intact"] and row["evidence_intact"]
             and row["evidence_snapshot_sha256"] == row["source_snapshot_sha256"]
             and row["evidence_paper_id"] == row["paper_id"]
-            and row["chunk_kind"] == "original_passage" and row["permission_status"] != "restricted"):
+            and row["chunk_kind"] == "original_passage" and row["passage_parent_id"] is None):
+        raise ResultPassageConflict("Exact result or passage integrity mismatch")
+    inputs_current = bool(row["original_current"] and row["result_current"]
+        and row["current_snapshot"] == row["source_snapshot_sha256"]
+        and row["permission_status"] != "restricted")
+    if require_current and not inputs_current:
         raise ResultPassageConflict("Exact result or passage is not current and eligible")
-    return row
+    return {**row, "inputs_current": inputs_current}
 
 
 def _context_wire(row, head, *, can_review):
     return {
         "version": CONTEXT_VERSION,
         "can_review": can_review,
+        "can_establish": bool(can_review and row["inputs_current"]
+            and (head is None or head["action"] == "withdraw")),
+        "can_withdraw": bool(can_review and head is not None and head["action"] == "establish"),
         "parent_result_revision_id": str(row["parent_id"]),
         "parent_result_sha256": row["parent_sha256"],
         "source_evidence_revision_id": str(row["evidence_id"]),
@@ -227,7 +235,7 @@ async def action_context(db, *, actor_user_id, parent_result_revision_id, source
     grant = await _reader(db, actor_user_id)
     parent_id = _uuid(parent_result_revision_id)
     evidence_id = _uuid(source_evidence_revision_id)
-    row = await _exact_context(db, parent_id, evidence_id)
+    row = await _exact_context(db, parent_id, evidence_id, require_current=False)
     return _context_wire(row, await _head(db, parent_id, evidence_id), can_review=grant is not None)
 
 
@@ -360,7 +368,8 @@ async def review(db, *, actor_user_id, request, expected_preview_sha256=None, dr
         else:
             parent_id = _uuid(request["parent_result_revision_id"])
             evidence_id = _uuid(request["source_evidence_revision_id"])
-            context = await _exact_context(db, parent_id, evidence_id)
+            context = await _exact_context(db, parent_id, evidence_id,
+                require_current=request["action"] == "establish")
             head = await _head(db, parent_id, evidence_id)
             actual_head_id = None if head is None else str(head["id"])
             actual_head_hash = None if head is None else head["record_sha256"]

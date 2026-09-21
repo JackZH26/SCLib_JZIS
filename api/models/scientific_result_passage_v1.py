@@ -69,13 +69,14 @@ def guards():
             OR NEW.source_snapshot_sha256<>parent.source_snapshot_sha256
             OR NEW.source_snapshot_sha256<>passage.source_snapshot_sha256
             OR passage.chunk_kind<>'original_passage'
-            OR passage.parent_extraction_revision_id IS NOT NULL
-            OR passage.permission_status='restricted' THEN
+            OR passage.parent_extraction_revision_id IS NOT NULL THEN
             RAISE EXCEPTION 'result_passage_exact_evidence_required' USING ERRCODE='23514';
           END IF;
           SELECT public.sclib_source_lifecycle_snapshot_hash_v1('paper',to_jsonb(p))
             INTO current_source FROM public.papers p WHERE p.id=NEW.paper_id;
-          IF current_source IS DISTINCT FROM NEW.source_snapshot_sha256
+          IF NEW.action='establish' AND (
+            passage.permission_status='restricted'
+            OR current_source IS DISTINCT FROM NEW.source_snapshot_sha256
             OR NOT EXISTS(SELECT 1 FROM public.chunk_evidence_current c
               WHERE c.chunk_id=passage.chunk_key AND c.evidence_revision_id=passage.id)
             OR NOT EXISTS(SELECT 1 FROM public.chunk_evidence_current c
@@ -84,7 +85,7 @@ def guards():
                 AND e.paper_id=parent.paper_id
                 AND e.source_snapshot_sha256=parent.source_snapshot_sha256
                 AND e.chunk_kind='derived_fact'
-                AND e.record_sha256=public.sclib_rag_evidence_record_hash_v1(to_jsonb(e))) THEN
+                AND e.record_sha256=public.sclib_rag_evidence_record_hash_v1(to_jsonb(e)))) THEN
             RAISE EXCEPTION 'result_passage_current_inputs_required' USING ERRCODE='23514';
           END IF;
           expected_claim:=jsonb_build_object(
