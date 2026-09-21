@@ -1,8 +1,12 @@
-# Prepared draft PR — not submitted
+# Prepared PR description — submitted as #80
 
 Title: **SCLib research upgrade: reviewed evidence links and verified recovery**
 
 Source: `codex/sclib-research-v2`; target: `main`. Related tracker: #41.
+
+Submitted: https://github.com/JackZH26/SCLib_JZIS/pull/80. See
+`Remote_Release_2026-09-21.md` for subsequent CI remediation and actual production
+backup/recovery evidence. The validation below records the earlier native baseline.
 
 This accumulated upgrade adds atomic scientific result/source history, governed
 Discovery projections, purpose-bound ML data and pilot workflows, and English
@@ -68,6 +72,9 @@ decision and guarded real-dataset execution, empirical RPS/ML evaluation, review
 Discovery rows and production recovery/cutover acceptance remain open.
 Passing synthetic tests does not supply these scientific outcomes or permissions.
 
-This draft does not merge, deploy, migrate production, resume ingestion, start
-real model training or close the scientific issues. Preserve current production
-pause state, immutable history, source-rights checks and independent feature gates.
+The user subsequently authorized PR submission, technical production rollout and
+acceptance, excluding human scientific review. This baseline description alone
+does not certify a merge, deployment, migration, ingestion resumption, real
+model training or scientific issue closure. Current operational status is in
+`Remote_Release_2026-09-21.md`; immutable history, source-rights checks and
+independent feature gates remain in force.
