@@ -59,7 +59,8 @@ jobs:
           path: ${{ runner.temp }}/sclib-installed-evidence.json
           if-no-files-found: error
       - name: Verify all offline script contracts in the locked API runtime (no services)
-        run: .venv/bin/python -m pytest -q ../scripts/tests
+        working-directory: .
+        run: api/.venv/bin/python -m pytest -q scripts/tests
       - name: Capture test runtime dependency inventory
         run: |
           mkdir -p ../runtime-parity-api
