@@ -74,3 +74,7 @@ a05fb46d83909107cdb221bbc5ac2c619edb4a49:frontend/tests/fixtures/ml-pilot-partic
 83096af42d7cab7e0e8be6893581b4d122074b75:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260921r2.wire.json:generic-api-key:1
 83096af42d7cab7e0e8be6893581b4d122074b75:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260921r2.wire.json:generic-api-key:1
 83096af42d7cab7e0e8be6893581b4d122074b75:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260921r2.wire.json:generic-api-key:1
+
+# September 21 restore-scope recapture: reviewed exact synthetic request identifiers.
+c16f164fdfe5f1ec56fc1a05cf11d9f974894998:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260921r3.wire.json:generic-api-key:1
+c16f164fdfe5f1ec56fc1a05cf11d9f974894998:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260921r3.wire.json:generic-api-key:1
