@@ -1,0 +1,26 @@
+{
+  "scope": "bounded_legacy_expected_id_readback",
+  "database_writes": 0,
+  "provider_writes": 0,
+  "model_calls": 0,
+  "historical_text_vector_binding_proven": false,
+  "full_corpus_coverage_proven": false,
+  "missing_message_templates": [
+    "[ID_10],[ID_11] entity does not exist in the dataset"
+  ],
+  "adapter_source_sha256": "37b4a83da88944f5727f9b499590824710ac37cabd4fb260604ce4201e595dc1",
+  "status": "passed",
+  "expected_ids": 20,
+  "returned_ids": 18,
+  "missing_ids": 2,
+  "valid_768_vectors": 18,
+  "content_hash_tag_count": 0,
+  "revision_hash_tag_count": 0,
+  "observed_namespace_names": [
+    "source"
+  ],
+  "index_resource": "projects/524541993265/locations/us-central1/indexes/7874607720131723264",
+  "expected_ids_sha256": "30e5f071e51bab61ee6850f8efdccf86a3f9e69221db0ca110f37468d8900734",
+  "readback_inventory_sha256": "30d7798d9e956da987832790deba795a705aba98183ebc8de31cd6663a0256f2",
+  "seconds": 5.409
+}

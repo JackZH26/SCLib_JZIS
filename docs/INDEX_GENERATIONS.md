@@ -119,9 +119,20 @@ tombstones. Corpus-wide inventory, tombstone/retention review and actual cleanup
 are still separate acceptance gates. No million-chunk parity claim is made.
 
 SDK RPCs use a remaining deadline, capped per call, with one SDK attempt.
+Actual Vertex expected-ID readback can reject a whole mixed batch with a
+`NotFound` diagnostic naming one or several missing IDs. The adapter recognizes
+only the measured exact `ID[,ID...] entity does not exist in the dataset`
+form, with distinct IDs all present in that request, and reads the remainder
+within the original shared deadline. Unknown IDs, endpoint/deployment errors,
+changed diagnostics and unexpected returned IDs still fail closed. A missing
+member never bypasses validation of other existing immutable members.
 Provider/client credential construction and an in-flight blocking SDK call are
 not proven forcibly cancellable. Similar stops subsequent work after timeout;
 request-level fallback/retry policy is separate from the SDK attempt count.
+
+For the production legacy corpus, [retained input preparation](LEGACY_INDEX_PREPARATION.md)
+provides resumable on-disk partitions and exact retained-text coverage. It does
+not expand this bounded generation contract or fabricate historical receipts.
 
 ## Private operator commands
 

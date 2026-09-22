@@ -9,6 +9,7 @@ from types import SimpleNamespace
 from uuid import uuid4
 
 import pytest
+from google.api_core.exceptions import NotFound
 from google.cloud import aiplatform_v1 as sdk
 
 from services import index_vector_adapter as adapter
@@ -109,6 +110,90 @@ class PublicDouble:
         return sdk.FindNeighborsResponse(nearest_neighbors=[{"neighbors": [
             {"datapoint": point, "distance": 0.25} for point in list(self.points.values())[:query.neighbor_count]]}
             for query in request.queries])
+
+
+def _actual_missing_behavior(monkeypatch, transport, *, aggregate=False):
+    read = transport.read_index_datapoints
+    def vertex_read(**kwargs):
+        missing = [key for key in kwargs["request"].ids if key not in transport.points]
+        if missing:
+            transport._record("read_missing", **kwargs)
+            reported = ",".join(missing) if aggregate else missing[0]
+            raise NotFound(f"{reported} entity does not exist in the dataset")
+        return read(**kwargs)
+    monkeypatch.setattr(transport, "read_index_datapoints", vertex_read)
+
+
+@pytest.mark.parametrize("aggregate", [False, True])
+def test_public_mixed_missing_ids_can_publish_then_read_back(monkeypatch, aggregate):
+    pin, members = fixture_generation(3, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    points = adapter._member_points(pin, members)
+    transport.points[points[1]["datapoint_id"]] = sdk.IndexDatapoint(**points[1])
+    _actual_missing_behavior(monkeypatch, transport, aggregate=aggregate)
+    result = adapter.publish(pin, members)
+    assert result["already_present_count"] == 1 and result["acknowledged_count"] == 2
+    assert len(adapter.observe(pin, members)["vectors"]) == 3
+    assert len([call for call in transport.calls if call[0] == "read_missing"]) == (1 if aggregate else 2)
+
+
+def test_public_missing_batch_preserves_conflicting_member(monkeypatch):
+    pin, members = fixture_generation(3, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    point = sdk.IndexDatapoint(**adapter._member_points(pin, members)[-1])
+    point.feature_vector[0] = 0.9
+    transport.points[point.datapoint_id] = point
+    _actual_missing_behavior(monkeypatch, transport)
+    with pytest.raises(adapter.IndexVectorError):
+        adapter.publish(pin, members)
+    assert not any(operation == "upsert" for operation, _ in transport.calls)
+
+
+@pytest.mark.parametrize("message", ["endpoint not found", "unknown entity does not exist in the dataset",
+                                    "SECRET source text", "datapoint does not exist"])
+def test_other_not_found_errors_never_authorize_writes(monkeypatch, message):
+    pin, members = fixture_generation(2, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    def fail(**kwargs):
+        raise NotFound(message)
+    monkeypatch.setattr(transport, "read_index_datapoints", fail)
+    with pytest.raises(adapter.IndexVectorError) as caught:
+        adapter.publish(pin, members)
+    assert message not in str(caught.value)
+    assert not any(operation == "upsert" for operation, _ in transport.calls)
+
+
+def test_missing_ids_share_deadline(monkeypatch):
+    pin, members = fixture_generation(3, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    _actual_missing_behavior(monkeypatch, transport)
+    class Budget:
+        remaining_calls = 0
+        def remaining(self):
+            self.remaining_calls += 1
+            if self.remaining_calls > 4:
+                raise adapter.IndexVectorError("budget exhausted")
+            return 1
+    with pytest.raises(adapter.IndexVectorError, match="budget exhausted"):
+        adapter._PublicIndex(pin, Budget()).read([m["vector_id"] for m in members], Budget())
+    assert not any(operation == "upsert" for operation, _ in transport.calls)
+
+
+def test_missing_retry_cannot_return_a_removed_identity(monkeypatch):
+    pin, members = fixture_generation(2, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    point = sdk.IndexDatapoint(**adapter._member_points(pin, members)[0])
+    calls = 0
+    def malformed(**kwargs):
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            raise NotFound(f"{point.datapoint_id} entity does not exist in the dataset")
+        return sdk.ReadIndexDatapointsResponse(datapoints=[point])
+    monkeypatch.setattr(transport, "read_index_datapoints", malformed)
+    with pytest.raises(adapter.IndexVectorError, match="unrequested"):
+        adapter.publish(pin, members)
+    assert not any(operation == "upsert" for operation, _ in transport.calls)
 
 
 def test_disposable_five_to_three_keeps_old_namespace_and_full_inventory():

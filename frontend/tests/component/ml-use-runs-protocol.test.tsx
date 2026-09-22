@@ -12,8 +12,8 @@ beforeEach(() => { vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(); });
 
 describe("native run protocol — original SQL/HTTP bytes", () => {
-  it("pins all 598 source inputs including evidence intake, historical bytes, and 28 original response strings", () => {
-    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.delivery20260922r2.wire.json")))).toBe("f3668653f7946a2c19b3936a7486ec9f5512f6d2325dd3d237ce0f25ed6f0198");
+  it("pins all 600 source inputs including evidence intake, historical bytes, and 28 original response strings", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.delivery20260922r3.wire.json")))).toBe("28c69ab8146f5e8d8a1cfd39a29b3cd04af0e8dbba574c6eab5e0e1d153cd956");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch75.wire.json")))).toBe("139a5042e0aa1e6b71301159c03047a6dcda6d0ccc92e600f93b83b16fffa6c5");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch72.wire.json")))).toBe("4be1870e4e072254f65c1f304351b25bf164c4a6d3f9f3b9661fb9ab2972b221");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.batch73.wire.json")))).toBe("f0aff113f905cf23b81a2b42b436352391f0e71e7d3b449aec9e053f6e287f4f");
@@ -29,7 +29,7 @@ describe("native run protocol — original SQL/HTTP bytes", () => {
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.wire.json")))).toBe("1cabdf1fc608c169a82b3b9942a6e672595c860a00b264b339f54e867dd9419f");
     expect(http.fixture_notice).toBe("Actual guarded native SQL and HTTP; synthetic identities and explicit intake compiler double; no real approval or execution.");
     expect(http.capture_test_path).toBe("api/tests/test_ml_use_runs_wire.py");
-    expect(http.source_pins).toHaveLength(598); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(598);
+    expect(http.source_pins).toHaveLength(600); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(600);
     expect(http.source_pins.some(p => p.path === "api/services/ml_pilot_review_admission.py")).toBe(true);
     expect(http.source_pins.some(p => p.path === "scripts/probe_ml_pilot_review_install.py")).toBe(true);
     expect(http.source_pins.some(p => p.path === "api/tests/test_ml_pilot_participant_wire.py")).toBe(true);

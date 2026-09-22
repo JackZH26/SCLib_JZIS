@@ -41,9 +41,10 @@ The full material response hash remains
 
 The existing Similar route returns 503 because no compatible retrieval
 generation has been activated. Search/Ask admit only the explicit lexical
-fallback. Accepting that temporary functionality change is a separate product
-decision, presented to the operator; it is not inferred from deferring ingestion
-and email. Cold material/timeline work remains slow and is not a latency pass.
+fallback. The operator subsequently selected **complete index compatibility
+before cutover, preserving full retrieval**. A keyword-only public release is
+therefore not authorized by this decision. Ingestion and outbound email remain
+paused. Cold material/timeline work remains slow and is not a latency pass.
 
 The fresh production SLO read observed 241,047 public requests with zero errors,
 only 2/20 required AI observations, and a retained pipeline age of

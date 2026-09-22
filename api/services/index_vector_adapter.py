@@ -317,11 +317,32 @@ class _PublicIndex:
 
     def read(self, ids, deadline):
         from google.cloud import aiplatform_v1
-        response = self.match.read_index_datapoints(request=aiplatform_v1.ReadIndexDatapointsRequest(
-            index_endpoint=self.resource["endpoint_resource"],
-            deployed_index_id=self.resource["deployed_index_id"], ids=ids),
-            timeout=deadline.remaining(), retry=None)
-        return list(response.datapoints)
+        from google.api_core.exceptions import NotFound
+        pending = list(ids)
+        while pending:
+            try:
+                response = self.match.read_index_datapoints(request=aiplatform_v1.ReadIndexDatapointsRequest(
+                    index_endpoint=self.resource["endpoint_resource"],
+                    deployed_index_id=self.resource["deployed_index_id"], ids=pending),
+                    timeout=deadline.remaining(), retry=None)
+                if any(point.datapoint_id not in pending for point in response.datapoints):
+                    raise IndexVectorError("Readback returned an unrequested member")
+                return list(response.datapoints)
+            except NotFound as exc:
+                # Actual Vertex readback rejects an entire mixed batch when one
+                # requested datapoint is absent. Admit only this exact observed
+                # per-ID diagnostic. A missing endpoint/deployment, an unknown
+                # ID or a changed provider diagnostic remains a hard failure.
+                suffix = " entity does not exist in the dataset"
+                message = exc.message
+                missing = message[:-len(suffix)].split(",") if type(message) is str and message.endswith(suffix) else []
+                if (not missing or len(missing) > len(pending) or len(set(missing)) != len(missing)
+                        or any(key not in pending for key in missing)):
+                    raise IndexVectorError("Vector readback absence is unverifiable") from None
+                pending = [key for key in pending if key not in missing]
+                # All attempts share the original deadline; no unbounded retry.
+                deadline.remaining()
+        return []
 
     def upsert(self, points, deadline):
         from google.cloud import aiplatform_v1
