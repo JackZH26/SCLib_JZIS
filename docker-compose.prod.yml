@@ -15,6 +15,10 @@ services:
   api:
     image: ${SCLIB_API_IMAGE:?set signed API image digest}
     environment:
+      # .env also supplies infrastructure interpolation. Keep its admin
+      # passwords out of application processes; DATABASE_URL is separate.
+      DB_PASSWORD: ""
+      GRAFANA_ADMIN_PASSWORD: ""
       GOOGLE_APPLICATION_CREDENTIALS: /credentials/gcp-api.json
       SCLIB_EXPECTED_GCP_SERVICE_ACCOUNT: sclib-api@jzis-sclib.iam.gserviceaccount.com
       SCLIB_IDENTITY_TOKEN_PREFIX: /var/run/sclib-identity
@@ -51,6 +55,8 @@ services:
   ingestion:
     image: ${SCLIB_INGESTION_IMAGE:?set signed ingestion image digest}
     environment:
+      DB_PASSWORD: ""
+      GRAFANA_ADMIN_PASSWORD: ""
       GOOGLE_APPLICATION_CREDENTIALS: /credentials/gcp-ingestion.json
       SCLIB_EXPECTED_GCP_SERVICE_ACCOUNT: sclib-ingestion@jzis-sclib.iam.gserviceaccount.com
       SCLIB_IDENTITY_TOKEN_PREFIX: /var/run/sclib-identity
