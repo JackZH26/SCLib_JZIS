@@ -139,3 +139,8 @@ a3436b508d87ccfa307c266f7dcada10c404bd9a:frontend/tests/fixtures/ml-pilot-partic
 eeecd636b4e6e4e56005a261b09b437e1584917d:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260922r7.wire.json:generic-api-key:1
 eeecd636b4e6e4e56005a261b09b437e1584917d:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260922r7.wire.json:generic-api-key:1
 eeecd636b4e6e4e56005a261b09b437e1584917d:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260922r7.wire.json:generic-api-key:1
+
+# September 22 r8: privately decoded synthetic request keys only.
+83adc706fec25985fab4e12626249cc11f71dd14:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260922r8.wire.json:generic-api-key:1
+83adc706fec25985fab4e12626249cc11f71dd14:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260922r8.wire.json:generic-api-key:1
+83adc706fec25985fab4e12626249cc11f71dd14:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260922r8.wire.json:generic-api-key:1
