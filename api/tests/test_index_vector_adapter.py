@@ -704,6 +704,7 @@ def test_embedding_client_region_is_independent_of_answer_routing(monkeypatch):
         assert genai_client.embedding_client() is first
         assert len(calls) == 2
         assert calls[0]['enterprise'] is True and calls[0]['location'] == 'global'
+        assert calls[0]['credentials'] is credential
         assert calls[1]['vertexai'] is True and calls[1]['location'] == 'us-central1'
         assert calls[1]['credentials'] is credential and calls[1]['http_options'].api_version == 'v1'
     finally:

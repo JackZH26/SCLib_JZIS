@@ -11,7 +11,7 @@ from config import get_settings
 
 @lru_cache(maxsize=1)
 def public_credentials():
-    """Share refreshable ADC across regional embedding and vector transports."""
+    """Share refreshable ADC across embedding, vector and answer transports."""
     import google.auth
 
     credentials, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
@@ -44,12 +44,14 @@ def client() -> genai.Client:
             enterprise=True,
             project=settings.gcp_project,
             location=settings.gemini_location,
+            credentials=public_credentials(),
             http_options=http_options,
         )
     return genai.Client(
         vertexai=True,
         project=settings.gcp_project,
         location=settings.gcp_region,
+        credentials=public_credentials(),
         http_options=http_options,
     )
 
