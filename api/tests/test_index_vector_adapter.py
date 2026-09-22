@@ -710,3 +710,91 @@ def test_embedding_client_region_is_independent_of_answer_routing(monkeypatch):
     finally:
         genai_client.client.cache_clear()
         genai_client.embedding_client.cache_clear()
+
+
+def test_operator_rpc_waves_share_deadline_and_never_exceed_two_inflight():
+    lock = threading.Lock()
+    barrier = threading.Barrier(2)
+    active = 0
+    maximum = 0
+    deadline = adapter._Deadline()
+    seen = []
+
+    def call(batch, supplied_deadline):
+        nonlocal active, maximum
+        assert supplied_deadline is deadline
+        with lock:
+            active += 1
+            maximum = max(maximum, active)
+            seen.extend(batch)
+        barrier.wait(timeout=2)
+        with lock:
+            active -= 1
+        return batch
+
+    result = adapter._rpc_batches(call, list(range(8)), 2, deadline, parallel=True)
+    assert maximum == 2 and active == 0
+    assert sorted(seen) == list(range(8))
+    assert [value for batch, values in result for value in values] == list(range(8))
+
+
+def test_failed_operator_read_wave_drains_and_never_writes_later_batches(monkeypatch):
+    pin, members = fixture_generation(200, backend='vertex-public')
+    public = PublicDouble(monkeypatch, pin)
+    barrier = threading.Barrier(2)
+    finished = []
+    starts = []
+    lock = threading.Lock()
+
+    def fail_read(**kwargs):
+        with lock:
+            starts.append(list(kwargs['request'].ids))
+        barrier.wait(timeout=2)
+        finished.append(True)
+        raise ResourceExhausted('synthetic temporary transport failure')
+
+    monkeypatch.setattr(public, 'read_index_datapoints', fail_read)
+    session = adapter.CorpusTransportSession(pin)
+    session.prepare()
+    with pytest.raises(adapter.IndexVectorError):
+        adapter.publish(pin, members, session=session)
+    assert len(starts) == len(finished) == 2
+    assert all(len(batch) == 50 for batch in starts)
+    assert not public.points and not any(op == 'upsert' for op, _ in public.calls)
+
+
+def test_operator_failed_write_wave_has_no_success_receipt_or_later_writes(monkeypatch):
+    pin, members = fixture_generation(300, backend='vertex-public')
+    public = PublicDouble(monkeypatch, pin)
+    barrier = threading.Barrier(2)
+    started = []
+    finished = []
+
+    def fail_write(**kwargs):
+        started.append(len(kwargs['request'].datapoints))
+        barrier.wait(timeout=2)
+        finished.append(True)
+        raise ResourceExhausted('synthetic write outage')
+
+    monkeypatch.setattr(public, 'upsert_datapoints', fail_write)
+    session = adapter.CorpusTransportSession(pin)
+    session.prepare()
+    with pytest.raises(adapter.IndexVectorError):
+        adapter.publish(pin, members, session=session)
+    assert started == [100, 100] and len(finished) == 2
+
+
+def test_operator_parallel_waves_never_extend_deadline(monkeypatch):
+    clock = [10.0]
+    monkeypatch.setattr(adapter.time, 'monotonic', lambda: clock[0])
+    deadline = adapter._Deadline()
+    started = []
+
+    def slow(batch, supplied_deadline):
+        started.extend(batch)
+        clock[0] = 23.0
+        return batch
+
+    with pytest.raises(adapter.IndexVectorError, match='deadline'):
+        adapter._rpc_batches(slow, list(range(6)), 1, deadline, parallel=True)
+    assert set(started) <= {0, 1}

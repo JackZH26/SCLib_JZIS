@@ -14,6 +14,7 @@ import math
 import re
 import struct
 import time
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from uuid import UUID, uuid4
@@ -385,11 +386,32 @@ def _transport(pin, deadline):
     return _PublicIndex(pin, deadline)
 
 
-def _read(transport, ids, deadline):
+def _rpc_batches(call, values, size, deadline, *, parallel=False):
+    """At most two operator RPCs in flight, with one unchanged deadline.
+
+    Dispatch one wave at a time and drain its running calls before returning
+    an error. No queued later waves, retries, or extended RPC budgets.
+    """
+    batches = [values[offset:offset + size] for offset in range(0, len(values), size)]
+    if not parallel or len(batches) < 2:
+        return [(batch, call(batch, deadline)) for batch in batches]
+    results = []
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        for offset in range(0, len(batches), 2):
+            deadline.remaining()
+            wave = batches[offset:offset + 2]
+            pending = [pool.submit(call, batch, deadline) for batch in wave]
+            try:
+                results.extend((batch, future.result()) for batch, future in zip(wave, pending))
+            finally:
+                for future in pending:
+                    future.cancel()
+    return results
+
+
+def _read(transport, ids, deadline, *, parallel=False):
     out = {}
-    for offset in range(0, len(ids), READ_BATCH_SIZE):
-        batch = ids[offset:offset + READ_BATCH_SIZE]
-        rows = transport.read(batch, deadline)
+    for batch, rows in _rpc_batches(transport.read, ids, READ_BATCH_SIZE, deadline, parallel=parallel):
         if len(rows) > len(batch):
             raise IndexVectorError("Readback inventory is malformed")
         for point in rows:
@@ -437,7 +459,8 @@ def publish(pin, members, *, session=None):
         if session is not None and type(session) is not CorpusTransportSession:
             raise IndexVectorError("Invalid corpus operator transport session")
         transport = session.transport(pin, deadline) if session else _transport(pin, deadline)
-        existing = _read(transport, [point["datapoint_id"] for point in points], deadline)
+        parallel = session is not None and type(transport) is _PublicIndex
+        existing = _read(transport, [point["datapoint_id"] for point in points], deadline, parallel=parallel)
         missing = []
         for point in points:
             identifier = point["datapoint_id"]
@@ -447,8 +470,7 @@ def publish(pin, members, *, session=None):
                     raise IndexVectorError("Immutable vector ID conflicts with existing content")
             else:
                 missing.append(point)
-        for offset in range(0, len(missing), BATCH_SIZE):
-            transport.upsert(missing[offset:offset + BATCH_SIZE], deadline)
+        _rpc_batches(transport.upsert, missing, BATCH_SIZE, deadline, parallel=parallel)
         deadline.remaining()
         return {"adapter_version": ADAPTER_VERSION, "acknowledged_count": len(missing),
                 "already_present_count": len(existing), "publication_verified": False,
@@ -483,7 +505,8 @@ def observe(pin, members, *, session=None):
         transport = session.transport(pin, deadline) if session else _transport(pin, deadline)
         full = type(transport) is DisposableIndex and session is None
         rows = transport.inventory(pin) if full else list(_read(
-            transport, [point["datapoint_id"] for point in points], deadline).values())
+            transport, [point["datapoint_id"] for point in points], deadline,
+            parallel=session is not None and type(transport) is _PublicIndex).values())
         if len(rows) > MAX_MEMBERS:
             raise IndexVectorError("Observed inventory exceeds the bounded limit")
         vectors = [_verified_point(pin, point)[0] for point in rows]

@@ -1,0 +1,51 @@
+[
+  {
+    "capture": "/private/tmp/sclib-native-captures-r12/test_barrier_edit_needs_new_pr0/main-barrier-wire.json",
+    "archive": "frontend/tests/fixtures/discovery-main-barrier-native.delivery20260922r8.wire.json",
+    "sha256": "b8e8eae6d3119fc8694d467a5f61927e0fbd8ca70c949ed45427bd2706d7926d",
+    "bytes": 200820,
+    "source_pin_count": 302
+  },
+  {
+    "capture": "/private/tmp/sclib-native-captures-r12/test_actual_three_account_prev0/ml-pilot-attestations-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260922r8.wire.json",
+    "sha256": "da49038e156b9c2a5e1ee03c49e0ff1996136eebd53d23086b8a79f33e346060",
+    "bytes": 453180,
+    "source_pin_count": 612
+  },
+  {
+    "capture": "/private/tmp/sclib-native-captures-r12/test_byte_replay_is_read_only_0/ml-pilot-evidence-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-evidence-native.delivery20260922r8.wire.json",
+    "sha256": "d4fa36273fa6249a7bbbbc8a940b7e455e56d782ea7b10e99f551e8ba042f046",
+    "bytes": 363113,
+    "source_pin_count": 612
+  },
+  {
+    "capture": "/private/tmp/sclib-native-captures-r12/test_participant_workbench_rea0/ml-pilot-participant-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-participant-native.delivery20260922r8.wire.json",
+    "sha256": "9d392fb2f42ff2b6fa96c913bcdd4786946c009e3283b7f3757edb1d3ea16107",
+    "bytes": 157942,
+    "source_pin_count": 612
+  },
+  {
+    "capture": "/private/tmp/sclib-native-captures-r12/test_real_four_file_preflight_0/ml-pilot-review-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-review-native.delivery20260922r8.wire.json",
+    "sha256": "3163123eaf486d21bad2836ce630cba2151640d0d3a51c9a5caf80b8de30ebf6",
+    "bytes": 86031,
+    "source_pin_count": 612
+  },
+  {
+    "capture": "/private/tmp/sclib-native-captures-r12/test_independent_rights_workbe0/ml-rights-wire.json",
+    "archive": "frontend/tests/fixtures/ml-use-rights-native.delivery20260922r8.wire.json",
+    "sha256": "c154560f67100f2795ba5e07b582745ea80be4b541fc53e7632cc20d71182f53",
+    "bytes": 225688,
+    "source_pin_count": 612
+  },
+  {
+    "capture": "/private/tmp/sclib-native-captures-r12/test_run_workbench_native_wire0/ml-runs-wire.json",
+    "archive": "frontend/tests/fixtures/ml-use-runs-native.delivery20260922r8.wire.json",
+    "sha256": "fa6209488a69ece32705cc7812c5f0b343a3aefaab91515126ca547ce3548a4e",
+    "bytes": 200617,
+    "source_pin_count": 612
+  }
+]
