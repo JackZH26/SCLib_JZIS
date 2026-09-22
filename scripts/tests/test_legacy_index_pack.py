@@ -1,6 +1,8 @@
 """Bounded, offline corpus preservation, restart and tamper tests."""
 import json
+import os
 import socket
+import subprocess
 import sys
 from pathlib import Path
 
@@ -107,6 +109,32 @@ def test_checkpoint_resume_matches_uninterrupted_pack_and_rejects_drift(destinat
         assert reference.seal(2) == resumed
     finally:
         reference.close()
+
+
+def test_abrupt_process_exit_recovers_only_committed_sources(destination):
+    chunk, paper = inputs()
+    second, _ = inputs(2)
+    script = "\n".join([
+        "import os,sys",
+        "sys.path[:0] = " + repr([str(ROOT / "scripts"), str(ROOT / "ingestion")]),
+        "from legacy_index_pack import Pack,specification",
+        "pack=Pack(" + repr(str(destination)) + ",specification({'synthetic':True}))",
+        "pack.append(1," + repr(chunk) + "," + repr(paper) + ")",
+        "pack.db.commit()",
+        "pack.append(2," + repr(second) + "," + repr(paper) + ")",
+        "os._exit(23)",  # No context-manager rollback or normal connection close.
+    ])
+    env = {name: os.environ[name] for name in ("PATH", "HOME", "TMPDIR", "TIKTOKEN_CACHE_DIR") if name in os.environ}
+    process = subprocess.run([sys.executable, "-c", script], capture_output=True, env=env, timeout=20)
+    assert process.returncode == 23
+    recovered = Pack(destination, specification({"synthetic": True}), resume=True)
+    try:
+        assert recovered.source_count == recovered.member_count == 1
+        assert recovered.append(1, chunk, paper) is False
+        recovered.append(2, second, paper)
+        assert recovered.seal(2)["sources"] == 2
+    finally:
+        recovered.close()
 
 
 def test_bounded_partitions_accept_more_than_pilot_limit(destination):
