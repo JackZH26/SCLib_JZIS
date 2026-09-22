@@ -78,9 +78,26 @@ def test_captured_generation_and_source_bytes_are_checked_not_only_declared_coun
         value["corpus"]["index_profile"]["model"] = "invented-model"
         code = "unsupported_index_profile"
     else:
-        value["corpus"]["index_resource"]["feature_norm"] = "UNIT_L2_NORM"
+        value["corpus"]["index_resource"]["feature_norm"] = "UNSUPPORTED_NORM"
         code = "unsupported_index_resource"
     rejected(value, code)
+
+
+@pytest.mark.parametrize("feature_norm", ["NONE", "UNIT_L2_NORM"])
+def test_supported_index_normalization_remains_bound_to_declared_review_context(feature_norm):
+    value = make_package()
+    value["corpus"]["index_resource"]["feature_norm"] = feature_norm
+    sealed = reseal(value)
+    audit = evaluator.validate_package(sealed)
+    assert audit["status"] == "structurally_consistent"
+    assert audit["scientific_acceptance"] is False
+    assert audit["release_authorized"] is False
+    assert audit["declared_case_decisions"] == {"accept": 3}
+
+    sealed["corpus"]["index_resource"]["feature_norm"] = (
+        "UNIT_L2_NORM" if feature_norm == "NONE" else "NONE"
+    )
+    rejected(sealed, "review_context_mismatch")
 
 
 def test_declared_manifest_cannot_omit_one_untampered_source():
