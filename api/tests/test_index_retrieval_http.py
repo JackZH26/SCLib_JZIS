@@ -292,11 +292,11 @@ async def test_similar_reads_retained_source_text_and_no_active_generation_is_no
 ):
     _, _, _ = await write_generation(monkeypatch, logical_index=generation["logical"], meta=generation["meta"], count=3, label="replacement")
     received = []
-    real = index_vector_adapter.query_many
+    real = index_vector_adapter.query_members
     def capture(pin, texts, **kwargs):
-        received.extend(texts)
+        received.extend(member["snapshot_json"]["text"] for member in texts)
         return real(pin, texts, **kwargs)
-    monkeypatch.setattr(index_vector_adapter, "query_many", capture)
+    monkeypatch.setattr(index_vector_adapter, "query_members", capture)
     response = await client.get("/v1/similar/" + generation["meta"].paper_id)
     assert response.status_code == 200, response.text
     assert len(received) == 5 and all("old snapshot" in value for value in received)
@@ -304,7 +304,7 @@ async def test_similar_reads_retained_source_text_and_no_active_generation_is_no
     _assert_generation(response.json(), generation["pin"])
     monkeypatch.setattr(get_settings(), "retrieval_logical_index", "empty-fixture-" + uuid4().hex)
     calls = []
-    monkeypatch.setattr(index_vector_adapter, "query_many", lambda *_args, **_kwargs: calls.append(True))
+    monkeypatch.setattr(index_vector_adapter, "query_members", lambda *_args, **_kwargs: calls.append(True))
     unavailable = await client.get("/v1/similar/" + generation["meta"].paper_id)
     assert unavailable.status_code == 503 and "results" not in unavailable.json() and calls == []
 

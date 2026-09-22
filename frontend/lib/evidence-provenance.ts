@@ -10,7 +10,7 @@ export function knownEvidenceProvenance(value: unknown): EvidenceProvenance | nu
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const data = value as Record<string, unknown>;
   if (Object.keys(data).length !== FIELDS.length || FIELDS.some(key => !Object.hasOwn(data, key))) return null;
-  if (data.version !== "rag-evidence/1.0.0" || typeof data.chunk_kind !== "string" || !["original_passage", "abstract", "derived_fact", "legacy_unknown"].includes(data.chunk_kind)
+  if (data.version !== "rag-evidence/1.0.0" || typeof data.chunk_kind !== "string" || !["original_passage", "abstract", "derived_fact", "retained_legacy_snapshot", "legacy_unknown"].includes(data.chunk_kind)
     || data.root_status !== "unresolved" || typeof data.permission_status !== "string" || !["unresolved", "restricted"].includes(data.permission_status)
     || typeof data.currentness !== "string" || !["current", "stale", "unresolved"].includes(data.currentness)
     || data.support_eligible !== false || data.independent_evidence !== false || data.scientific_acceptance !== false) return null;
@@ -38,6 +38,8 @@ export function knownEvidenceProvenance(value: unknown): EvidenceProvenance | nu
     if (TEXT_LOCATORS.has(key) ? !bounded(item, 300) : !INT_LOCATORS.has(key) || !Number.isSafeInteger(item) || item < 0 || item > 1_000_000_000) return null;
   }
   const coordinates = locator as Record<string, number>;
+  if (data.chunk_kind === "retained_legacy_snapshot" && (data.rendering_version !== "sclib-legacy-input-pack/1.0.0"
+    || data.source_capture_id !== null || Object.keys(coordinates).sort().join(",") !== "char_end,char_start")) return null;
   for (const [lower, upper] of [["page_start", "page_end"], ["char_start", "char_end"], ["span_start", "span_end"]]) {
     if (Object.hasOwn(coordinates, lower) !== Object.hasOwn(coordinates, upper) || Object.hasOwn(coordinates, lower)
       && (coordinates[lower] > coordinates[upper] || lower !== "page_start" && coordinates[lower] === coordinates[upper])) return null;

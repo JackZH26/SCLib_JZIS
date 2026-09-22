@@ -23,6 +23,18 @@ function response(evidence = evidenceProvenance()): AskResponse {
 }
 
 describe("typed evidence provenance", () => {
+  it("labels retained legacy windows without inventing historical lineage", () => {
+    const evidence = evidenceProvenance({ chunk_kind: "retained_legacy_snapshot",
+      parent_result_revision_id: null, parent_result_sha256: null, extraction_version: null,
+      rendering_version: "sclib-legacy-input-pack/1.0.0", source_locator: { char_start: 0, char_end: 1280 } });
+    expect(knownEvidenceProvenance(evidence)).toEqual(evidence);
+    render(<EvidenceProvenanceNotice evidence={evidence} />);
+    expect(screen.getByLabelText("Evidence provenance")).toHaveTextContent("Retained legacy text (historical lineage unresolved)");
+    expect(knownEvidenceProvenance({ ...evidence, rendering_version: "historical-parser/1" })).toBeNull();
+    expect(knownEvidenceProvenance({ ...evidence, source_capture_id: "invented-capture" })).toBeNull();
+    expect(knownEvidenceProvenance({ ...evidence, source_locator: {} })).toBeNull();
+    expect(excerptSourceIsHeld(source({ ...evidence, permission_status: "restricted" }))).toBe(true);
+  });
   it("distinguishes current binding, extraction, and unresolved scientific authority in English", () => {
     const evidence = evidenceProvenance({ source_locator: { page: 1200, table: "Table 2" } });
     expect(knownEvidenceProvenance(evidence)).toEqual(evidence);

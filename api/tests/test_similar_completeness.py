@@ -25,7 +25,7 @@ async def test_similarity_incomplete_embedding_or_ann_failure_returns_sanitized5
         if failure == "completeness":
             raise EmbeddingCompletenessError("PRIVATE_SOURCE_SENTINEL")
         raise RuntimeError("PRIVATE_PROVIDER_SENTINEL")
-    monkeypatch.setattr(index_vector_adapter, "query_many", failed)
+    monkeypatch.setattr(index_vector_adapter, "query_members", failed)
     response = await client.get("/v1/similar/" + generation["meta"].paper_id)
     assert response.status_code == 503, response.text
     assert set(response.json()) == {"detail", "error_code", "request_id"}
@@ -35,9 +35,9 @@ async def test_similarity_incomplete_embedding_or_ann_failure_returns_sanitized5
 
 
 @pytest.mark.asyncio
-async def test_similarity_actual_full_query_input_rejection_never_constructs_provider(client, generation, monkeypatch):
-    # Many spaces are cheap under the document tokenizer but exceed the
-    # explicitly different UTF-8 byte admission limit of a query embedding.
+async def test_similarity_uses_completed_document_vectors_without_reembedding_large_text(client, generation, monkeypatch):
+    # Document-to-document similarity uses the already completed vector.
+    # The separate query text byte limit must not reject retained documents.
     meta, _, staged = await write_generation(monkeypatch, logical_index=generation["logical"],
         count=1, label=" " * 8200)
     async with get_session_factory()() as db:
@@ -46,9 +46,9 @@ async def test_similarity_actual_full_query_input_rejection_never_constructs_pro
     def forbidden(*_args, **_kwargs):
         calls.append(True)
         raise AssertionError("Oversized full query must not reach transport")
-    monkeypatch.setattr(index_vector_adapter, "_transport", forbidden)
+    monkeypatch.setattr(index_vector_adapter, "_embed", forbidden)
     response = await client.get("/v1/similar/" + meta.paper_id)
-    assert response.status_code == 503 and "results" not in response.json()
+    assert response.status_code == 200 and response.json()["results"] == []
     assert calls == []
 
 
@@ -66,7 +66,7 @@ async def test_similarity_timeout_sets_worker_stop_and_never_delivers_late_resul
             return [[] for _ in _texts]
         finally:
             finished.set()
-    monkeypatch.setattr(index_vector_adapter, "query_many", query_many)
+    monkeypatch.setattr(index_vector_adapter, "query_members", query_many)
     monkeypatch.setattr("routers.similar.get_settings", lambda: SimpleNamespace(
         vector_search_timeout_seconds=0.02, provider_circuit_failure_threshold=5,
         provider_circuit_cooldown_seconds=1))
@@ -87,7 +87,7 @@ async def test_successful_empty_neighbor_result_is_still_a_real200(client, gener
     def query(_pin, texts, **_kwargs):
         calls.append(True)
         return [[] for _ in texts]
-    monkeypatch.setattr(index_vector_adapter, "query_many", query)
+    monkeypatch.setattr(index_vector_adapter, "query_members", query)
     response = await client.get("/v1/similar/" + generation["meta"].paper_id)
     assert response.status_code == 200 and response.json()["results"] == [] and calls == [True]
     assert response.json()["retrieval_generation"]["generation_id"] == generation["pin"]["generation_id"]

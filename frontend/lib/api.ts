@@ -778,7 +778,7 @@ export interface AskSource {
 
 export interface EvidenceProvenance {
   version: "rag-evidence/1.0.0";
-  chunk_kind: "original_passage" | "abstract" | "derived_fact" | "legacy_unknown";
+  chunk_kind: "original_passage" | "abstract" | "derived_fact" | "retained_legacy_snapshot" | "legacy_unknown";
   evidence_revision_id: string | null;
   evidence_record_sha256: string | null;
   content_sha256: string;

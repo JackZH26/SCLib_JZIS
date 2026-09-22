@@ -280,8 +280,10 @@ async def ask(
         if chunk is None or chunk.paper is None:
             continue
         evidence = evidence_by_chunk[chunk.id]
-        if interpretation.intent in {"mechanism", "comparison", "mixed"} and evidence["chunk_kind"] != "original_passage":
-            continue  # derived numerical Facts are not original explanatory passages
+        if interpretation.intent in {"mechanism", "comparison", "mixed"} and evidence["chunk_kind"] not in {
+            "original_passage", "retained_legacy_snapshot",
+        }:
+            continue  # Retained text remains explicitly unverified; derived Facts are excluded.
         # Never send or quote a known-restricted/stale evidence projection.
         # Other unresolved lineage is navigation data, not original support.
         if evidence["permission_status"] == "restricted" or evidence["currentness"] == "stale":

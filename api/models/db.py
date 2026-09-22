@@ -1753,6 +1753,14 @@ from models.scientific_result_passage_v1 import (  # noqa: E402
 
 SCIENTIFIC_RESULT_PASSAGE_LINKS = _register_scientific_result_passage(Base.metadata)
 
+from models.retained_legacy_v1 import register as _register_retained_legacy  # noqa: E402
+
+RETAINED_LEGACY = _register_retained_legacy(Base.metadata)
+
+from models.index_corpus_v1 import register as _register_index_corpus  # noqa: E402
+
+INDEX_CORPUS = _register_index_corpus(Base.metadata)
+
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.

@@ -27,7 +27,7 @@ MAX_PROJECTION_BYTES = 16384
 QUANTITY_FIELDS = ("status", "relation", "value_kind", "value", "lower", "upper", "uncertainty",
                    "approximate", "unit", "unit_basis")
 NAMESPACE = UUID("52bd30c8-0b5b-485b-9586-d28b931795e9")
-KINDS = {"original_passage", "abstract", "derived_fact"}
+KINDS = {"original_passage", "abstract", "derived_fact", "retained_legacy_snapshot"}
 REASONS = {"legacy_unresolved", "original_binding_unreviewed", "missing_original_source", "secondary_origin_unresolved"}
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
 _LOCATOR_TEXT = {"section", "table", "figure", "equation", "xml_xpath", "section_path"}
@@ -147,6 +147,11 @@ def validate_candidate(value):
     result["source_locator"] = validate_locator(result["source_locator"])
     if type(result["unresolved_reason"]) is not str or type(result["permission_status"]) is not str or result["unresolved_reason"] not in REASONS or result["permission_status"] not in {"unresolved", "restricted"}:
         raise ValueError("Evidence candidates cannot grant roots or permission")
+    if result["chunk_kind"] == "retained_legacy_snapshot":
+        if (result["rendering_version"] != "sclib-legacy-input-pack/1.0.0"
+                or result["source_capture_id"] is not None or result["unresolved_reason"] != "legacy_unresolved"
+                or set(result["source_locator"]) != {"char_start", "char_end"}):
+            raise ValueError("Retained legacy snapshots require exact new windows and unresolved original lineage")
     return result
 
 
@@ -219,6 +224,10 @@ def validate_evidence_descriptor(value):
                 raise ValueError("Derived evidence requires an exact retained parent")
         elif any(value[key] is not None for key in parent_keys):
             raise ValueError("Original evidence cannot fabricate a derived parent")
+    if value["chunk_kind"] == "retained_legacy_snapshot":
+        if (value["rendering_version"] != "sclib-legacy-input-pack/1.0.0" or value["source_capture_id"] is not None
+                or set(value["source_locator"]) != {"char_start", "char_end"}):
+            raise ValueError("Retained legacy lineage requires exact replay coordinates")
     validate_locator(value["source_locator"])
     if type(value["warning_codes"]) is not list or len(value["warning_codes"]) > 12 or any(
             type(code) is not str or not re.fullmatch(r"[a-z][a-z0-9_]{0,79}", code) for code in value["warning_codes"]):

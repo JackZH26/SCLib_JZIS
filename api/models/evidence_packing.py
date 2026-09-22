@@ -34,7 +34,7 @@ class PackingCandidate(_Closed):
     source_snapshot_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     accepted_work_id: str | None = None
     content_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
-    chunk_kind: Literal["original_passage", "abstract", "derived_fact", "legacy_unknown"]
+    chunk_kind: Literal["original_passage", "abstract", "derived_fact", "retained_legacy_snapshot", "legacy_unknown"]
     role_hint: RoleHint = "other"
 
     @field_validator("chunk_id", "paper_id")

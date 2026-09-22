@@ -1,7 +1,7 @@
 import type { EvidenceProvenance } from "@/lib/api";
 import { knownEvidenceProvenance } from "@/lib/evidence-provenance";
 
-const LABELS = { original_passage: "Original passage", abstract: "Abstract", derived_fact: "Derived fact", legacy_unknown: "Legacy evidence type unresolved" };
+const LABELS = { original_passage: "Original passage", abstract: "Abstract", derived_fact: "Derived fact", retained_legacy_snapshot: "Retained legacy text (historical lineage unresolved)", legacy_unknown: "Legacy evidence type unresolved" };
 
 export function EvidenceProvenanceNotice({ evidence: input, historical = false }: { evidence?: EvidenceProvenance; historical?: boolean }) {
   const evidence = knownEvidenceProvenance(input);

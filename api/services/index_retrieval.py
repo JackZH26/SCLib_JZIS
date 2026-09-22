@@ -187,9 +187,12 @@ async def resolve_evidence(db, chunks):
     statement = sa.text("""SELECT to_jsonb(e) AS evidence, to_jsonb(x) AS parent,
         e.record_sha256=public.sclib_rag_evidence_record_hash_v1(to_jsonb(e)) AS evidence_intact,
         x.record_sha256=public.sclib_rag_evidence_record_hash_v1(to_jsonb(x)) AS parent_intact,
-        EXISTS(SELECT 1 FROM rag_evidence_revisions previous WHERE previous.chunk_key=e.chunk_key
-            AND previous.permission_status='restricted') AS historically_restricted
+        EXISTS(SELECT 1 FROM rag_evidence_revisions previous WHERE previous.chunk_key IN (e.chunk_key,legacy_window.source_key)
+            AND previous.permission_status='restricted') AS historically_restricted,
+        (e.chunk_kind<>'retained_legacy_snapshot' OR legacy_window.chunk_key IS NOT NULL
+          AND legacy_window.record_sha256=public.sclib_index_record_hash_v1(to_jsonb(legacy_window))) AS legacy_intact
         FROM rag_evidence_revisions e LEFT JOIN rag_extraction_revisions x ON x.id=e.parent_extraction_revision_id
+        LEFT JOIN legacy_index_windows legacy_window ON legacy_window.chunk_key=e.chunk_key
         WHERE e.id IN :ids""").bindparams(sa.bindparam("ids", expanding=True, type_=sa.Uuid()))
     from uuid import UUID
     rows = (await db.execute(statement, {"ids": [UUID(str(value)) for value in evidence_ids]})).mappings().all()
@@ -202,7 +205,7 @@ async def resolve_evidence(db, chunks):
         if row is None:
             raise IndexRetrievalError("Immutable generation evidence unavailable")
         evidence, parent = row["evidence"], row["parent"]
-        if (row["evidence_intact"] is not True or parent is not None and row["parent_intact"] is not True
+        if (row["evidence_intact"] is not True or row["legacy_intact"] is not True or parent is not None and row["parent_intact"] is not True
                 or evidence["record_sha256"] != member["evidence_record_sha256"]
                 or evidence["content_sha256"] != member["content_sha256"]
                 or evidence["source_snapshot_sha256"] != member["source_snapshot_sha256"]
@@ -211,6 +214,8 @@ async def resolve_evidence(db, chunks):
         permission = "restricted" if row["historically_restricted"] else evidence["permission_status"]
         warnings = ["original_root_unresolved", "source_permission_" + permission,
                     "generation_snapshot_catalogue_freshness_unverified"]
+        if evidence["chunk_kind"] == "retained_legacy_snapshot":
+            warnings.extend(["historical_parser_unrecorded", "historical_text_lineage_unverified"])
         stale = False
         if evidence["chunk_kind"] == "derived_fact" and evidence["rendering_version"] != CURRENT_FACT_RENDERER_VERSION:
             warnings.append("renderer_version_changed")

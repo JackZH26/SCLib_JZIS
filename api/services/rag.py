@@ -489,7 +489,7 @@ def extractive_fallback(
         label = ("Derived fact (not original source text)" if kind == "derived_fact" else
                  "Unresolved Facts text (not independently confirming evidence)" if not kind and claim_support.is_derived_source_hint(
                      section=source.section, paper_id=source.paper_id, text=source.text) else
-                 "Unverified indexed text" if kind == "legacy_unknown" else "Source excerpt")
+                 "Unverified indexed text" if kind in {"legacy_unknown", "retained_legacy_snapshot"} else "Source excerpt")
         excerpts.append(f"> {compact}\n\n{label} [{source.index}].")
         if len(excerpts) == 3:
             break

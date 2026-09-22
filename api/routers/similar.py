@@ -39,12 +39,12 @@ async def similar_papers(
                 raise index_retrieval.IndexRetrievalError("No active retrieval generation")
             chunks = await index_retrieval.paper_chunks(db, pin, paper_id)
             evidence = await index_retrieval.resolve_evidence(db, chunks)
-            texts = [chunk.text for chunk in chunks if evidence[chunk.id]["permission_status"] != "restricted"
+            members = [chunk.member for chunk in chunks if evidence[chunk.id]["permission_status"] != "restricted"
                      and evidence[chunk.id]["currentness"] != "stale"]
             await index_retrieval.require_current_pin(db, pin)
     except Exception:
         raise HTTPException(503, _UNAVAILABLE) from None
-    if not texts:
+    if not members:
         return SimilarResponse(source_paper_id=paper_id, results=[],
                                retrieval_generation=generation_read_metadata(pin))
 
@@ -52,8 +52,8 @@ async def similar_papers(
     settings = get_settings()
     try:
         per_chunk = await provider_resilience.run_blocking(
-            "similar_search", lambda: index_vector_adapter.query_many(
-                pin, texts, top_k=min(top_k + 5, index_retrieval.MAX_HYDRATE // len(texts)), stop_event=stopped),
+            "similar_search", lambda: index_vector_adapter.query_members(
+                pin, members, top_k=min(top_k + 5, index_retrieval.MAX_HYDRATE // len(members)), stop_event=stopped),
             timeout_seconds=settings.vector_search_timeout_seconds,
             failure_threshold=settings.provider_circuit_failure_threshold,
             cooldown_seconds=settings.provider_circuit_cooldown_seconds,
@@ -66,7 +66,7 @@ async def similar_papers(
 
     try:
         async with asyncio.timeout(10):
-            if type(per_chunk) is not list or len(per_chunk) != len(texts):
+            if type(per_chunk) is not list or len(per_chunk) != len(members):
                 raise index_retrieval.IndexRetrievalError("Similarity result inventory mismatch")
             unique = {}
             for row in per_chunk:

@@ -556,3 +556,21 @@ def test_reconciliation_requires_exact_canonical_observation_time(value):
     observation["observed_at"] = value
     with pytest.raises(adapter.IndexVectorError):
         adapter.repair_plan(pin, members, observation)
+
+
+def test_corpus_session_keeps_partition_deadlines_and_rechecks_resource(monkeypatch):
+    pin,members=fixture_generation(3,backend='vertex-public')
+    public=PublicDouble(monkeypatch,pin)
+    session=adapter.CorpusTransportSession(pin)
+    for member in members:
+        selected={**pin,'manifest_sha256':manifest_sha256([member])}
+        adapter.publish(selected,[member],session=session)
+        observed=adapter.observe(selected,[member],session=session)
+        assert len(observed['vectors'])==1 and observed['full_inventory_observed'] is False
+    assert public.factory_calls==1
+    session.expires=0
+    adapter.observe(pin,members,session=session)
+    assert public.factory_calls==2
+    other,others=fixture_generation(1,backend='vertex-public')
+    with pytest.raises(adapter.IndexVectorError,match='identity changed'):
+        adapter.publish(other,others,session=session)

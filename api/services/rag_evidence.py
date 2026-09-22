@@ -187,7 +187,7 @@ async def resolve_chunk_evidence(db, chunks, *, rendering_version=None):
         public.sclib_source_lifecycle_snapshot_hash_v1('paper',to_jsonb(p)) AS live_source,
         to_jsonb(e) AS evidence, to_jsonb(x) AS parent,
         link.evidence_revision_id IS NOT NULL AS has_current_pointer,
-        EXISTS(SELECT 1 FROM rag_evidence_revisions previous WHERE previous.chunk_key=c.id
+        EXISTS(SELECT 1 FROM rag_evidence_revisions previous WHERE previous.chunk_key IN (c.id,legacy_window.source_key)
           AND previous.permission_status='restricted') AS historically_restricted,
         e.record_sha256=public.sclib_rag_evidence_record_hash_v1(to_jsonb(e)) AS evidence_intact,
         x.record_sha256=public.sclib_rag_evidence_record_hash_v1(to_jsonb(x)) AS parent_intact
@@ -197,6 +197,7 @@ async def resolve_chunk_evidence(db, chunks, *, rendering_version=None):
           ORDER BY history.created_at DESC,history.id DESC LIMIT 1) prior ON link.evidence_revision_id IS NULL
         LEFT JOIN rag_evidence_revisions e ON e.id=COALESCE(link.evidence_revision_id,prior.id)
         LEFT JOIN rag_extraction_revisions x ON x.id=e.parent_extraction_revision_id
+        LEFT JOIN legacy_index_windows legacy_window ON legacy_window.chunk_key=c.id
         WHERE c.id IN :ids AND octet_length(c.text)+octet_length(c.materials_mentioned::text)<=1048576
         """).bindparams(sa.bindparam("ids", expanding=True))
     rows = (await db.execute(statement, {"ids": ids})).mappings().all()

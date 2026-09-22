@@ -51,7 +51,7 @@ def _resource(value):
         raise IndexGenerationError("An exact closed index resource is required")
     for item in value.values():
         _string(item, 500)
-    if value["backend"] not in {"vertex-public", "disposable"} or value["distance_measure"] != "COSINE_DISTANCE" or value["feature_norm"] != "NONE":
+    if value["backend"] not in {"vertex-public", "disposable"} or value["distance_measure"] != "COSINE_DISTANCE" or value["feature_norm"] not in {"NONE", "UNIT_L2_NORM"}:
         raise IndexGenerationError("Unsupported index backend/distance/normalization")
     return dict(value)
 
@@ -347,10 +347,15 @@ async def activate_generation(db, *, generation_id, validation_id, expected_even
             if any(rows[0][field] != value for field, value in values.items()):
                 raise IndexGenerationError("Immutable activation idempotency conflict")
         else:
-            members = await load_generation_members(db, generation_id=generation_id)
-            statuses = await resolve_paper_lifecycle(db, {member["paper_id"] for member in members})
-            if any(not source_visibility(statuses.get(member["paper_id"]))["reported_claim_filter_eligible"] for member in members):
-                raise IndexGenerationError("Current source lifecycle hold prevents activation")
+            from services.index_corpus import is_corpus
+            if not await is_corpus(db, generation_id):
+                members = await load_generation_members(db, generation_id=generation_id)
+                statuses = await resolve_paper_lifecycle(db, {member["paper_id"] for member in members})
+                if any(not source_visibility(statuses.get(member["paper_id"]))["reported_claim_filter_eligible"] for member in members):
+                    raise IndexGenerationError("Current source lifecycle hold prevents activation")
+            # Corpus activation checks the compact complete partition root and
+            # all retained source snapshots in SQL under the same fence. Held
+            # retained sources remain subject to each query's current admission.
             number = await db.scalar(sa.select(sa.func.coalesce(sa.func.max(table.c.event_number), 0)).where(table.c.logical_index == logical_index))
             await db.execute(table.insert().values(**values, event_number=number + 1))
         result = {**_pin(generation, identifier), "dry_run": dry_run, "committed": False}

@@ -91,7 +91,7 @@ def _pin(value):
                 or type(profile["output_dimensionality"]) is not int
                 or type(resource) is not dict or set(resource) != _RESOURCE_FIELDS
                 or resource["backend"] not in {"vertex-public", "disposable"}
-                or resource["distance_measure"] != "COSINE_DISTANCE" or resource["feature_norm"] != "NONE"):
+                or resource["distance_measure"] != "COSINE_DISTANCE" or resource["feature_norm"] not in {"NONE", "UNIT_L2_NORM"}):
             raise ValueError
         if any(type(value) is not str or len(value) > 500 for value in resource.values()):
             raise ValueError
@@ -309,7 +309,7 @@ class _PublicIndex:
                 or not re.fullmatch(r"[a-z0-9]+(?:[.-][a-z0-9]+)*\.vdb\.vertexai\.goog", host or "")
                 or index.index_update_method != 2 or config.get("dimensions") != DIMENSION
                 or config.get("distanceMeasureType") != "COSINE_DISTANCE"
-                or config.get("featureNormType", "NONE") != "NONE"):
+                or config.get("featureNormType", "NONE") != resource["feature_norm"]):
             raise IndexVectorError("Actual public index resource is incompatible")
         # Model is checked in the frozen profile/runtime contract, NEVER inferred
         # from index dimensions, labels or a human-authored description.
@@ -390,13 +390,35 @@ def _read(transport, ids, deadline):
     return out
 
 
-def publish(pin, members):
+class CorpusTransportSession:
+    """Reuse clients for one operator corpus; recheck deployment every minute.
+
+    Each partition retains its own original deadline and complete manifest.
+    Request handlers never use this operator session.
+    """
+    def __init__(self, pin):
+        self.pin = _pin(pin)
+        self.current = None
+        self.expires = 0
+
+    def transport(self, pin, deadline):
+        if any(pin[key] != self.pin[key] for key in ("generation_id", "resource", "profile")):
+            raise IndexVectorError("Corpus transport session identity changed")
+        if self.current is None or time.monotonic() >= self.expires:
+            self.current = _transport(pin, deadline)
+            self.expires = time.monotonic() + 60
+        return self.current
+
+
+def publish(pin, members, *, session=None):
     """Upsert immutable known IDs only. An acknowledgement is NOT activation."""
     try:
         pin = _pin(pin)
         points = _member_points(pin, members)
         deadline = _Deadline()
-        transport = _transport(pin, deadline)
+        if session is not None and type(session) is not CorpusTransportSession:
+            raise IndexVectorError("Invalid corpus operator transport session")
+        transport = session.transport(pin, deadline) if session else _transport(pin, deadline)
         existing = _read(transport, [point["datapoint_id"] for point in points], deadline)
         missing = []
         for point in points:
@@ -432,14 +454,16 @@ def preview(pin, members):
         raise IndexVectorError("Generation publication preview is incompatible") from None
 
 
-def observe(pin, members):
+def observe(pin, members, *, session=None):
     """Return closed readback observations; Vertex can never claim full inventory."""
     try:
         pin = _pin(pin)
         points = _member_points(pin, members)
         deadline = _Deadline()
-        transport = _transport(pin, deadline)
-        full = type(transport) is DisposableIndex
+        if session is not None and type(session) is not CorpusTransportSession:
+            raise IndexVectorError("Invalid corpus operator transport session")
+        transport = session.transport(pin, deadline) if session else _transport(pin, deadline)
+        full = type(transport) is DisposableIndex and session is None
         rows = transport.inventory(pin) if full else list(_read(
             transport, [point["datapoint_id"] for point in points], deadline).values())
         if len(rows) > MAX_MEMBERS:
@@ -536,9 +560,18 @@ def _embed(pin, texts, deadline, stop_event=None):
     return vectors
 
 
-def _query(pin, texts, top_k, year_min, year_max, stop_event=None):
+def _query(pin, texts, top_k, year_min, year_max, stop_event=None, *, members=None):
     try:
         pin = _pin(pin)
+        points = None
+        if members is not None:
+            if type(members) not in {list, tuple} or not 1 <= len(members) <= MAX_QUERY_BATCH:
+                raise IndexVectorError("Document similarity selection exceeds its bound")
+            from services.index_generations import manifest_sha256
+            # This manifest verifies a selected bounded cohort, not a complete
+            # generation. SQL hydration has already verified its membership.
+            points = _member_points({**pin, "manifest_sha256": manifest_sha256(members)}, members)
+            texts = [member["snapshot_json"]["text"] for member in members]
         if (type(texts) not in {list, tuple} or not 1 <= len(texts) <= MAX_QUERY_BATCH
                 or type(top_k) is not int or not 1 <= top_k <= 100):
             raise IndexVectorError("Query inventory exceeds the bounded limit")
@@ -547,7 +580,7 @@ def _query(pin, texts, top_k, year_min, year_max, stop_event=None):
                 raise IndexVectorError("Invalid query year bound")
         if year_min is not None and year_max is not None and year_min > year_max:
             raise IndexVectorError("Invalid query year interval")
-        for text in texts:
+        for text in texts if points is None else []:
             validate_embedding_inputs([text], model=MODEL, dimension=DIMENSION, task_type="RETRIEVAL_QUERY",
                 local_counts=[len(text.encode("utf-8")) if type(text) is str else 0],
                 local_count_method=LOCAL_QUERY_COUNT_METHOD, local_input_limit=LOCAL_QUERY_INPUT_LIMIT,
@@ -555,7 +588,8 @@ def _query(pin, texts, top_k, year_min, year_max, stop_event=None):
         deadline = _Deadline()
         _check_cancel(stop_event)
         transport = _transport(pin, deadline)
-        vectors = [[0.0] for _ in texts] if type(transport) is DisposableIndex else _embed(pin, texts, deadline, stop_event)
+        vectors = ([point["feature_vector"] for point in points] if points is not None else
+                   [[0.0] for _ in texts] if type(transport) is DisposableIndex else _embed(pin, texts, deadline, stop_event))
         _check_cancel(stop_event)
         rows = transport.search(pin, vectors, top_k, year_min, year_max, deadline)
         deadline.remaining()
@@ -593,3 +627,12 @@ def query(pin, query_text, *, top_k, year_min=None, year_max=None):
 
 def query_many(pin, texts, *, top_k, stop_event=None):
     return _query(pin, texts, top_k, None, None, stop_event)
+
+
+def query_members(pin, members, *, top_k, stop_event=None):
+    """Document-to-document similarity from exact retained document vectors.
+
+    No new embedding is needed, and long document inputs are not mislabeled as
+    RETRIEVAL_QUERY. User-entered Search/Ask queries keep their separate task.
+    """
+    return _query(pin, None, top_k, None, None, stop_event, members=members)

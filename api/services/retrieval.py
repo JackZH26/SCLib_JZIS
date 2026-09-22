@@ -46,9 +46,14 @@ async def formula_lexical_search(db, interpretation, pin, *, limit, year_min=Non
     wanted = {item.normalization.normalized_formula for item in interpretation.formulas}
     if interpretation.status != "resolved" or None in wanted:
         return []
-    members = await load_generation_members(db, generation_id=pin["generation_id"])
-    if manifest_sha256(members) != pin["manifest_sha256"]:
-        raise ValueError("Formula lookup requires a complete declared generation")
+    from services.index_corpus import is_corpus, formula_candidates
+    if await is_corpus(db, pin["generation_id"]):
+        identifiers = await formula_candidates(db, pin, wanted, limit=limit, year_min=year_min, year_max=year_max)
+        members = await load_generation_members(db, generation_id=pin["generation_id"], vector_ids=identifiers)
+    else:
+        members = await load_generation_members(db, generation_id=pin["generation_id"])
+        if manifest_sha256(members) != pin["manifest_sha256"]:
+            raise ValueError("Formula lookup requires a complete declared generation")
     matches = []
     for member in members:
         snapshot = member["snapshot_json"]

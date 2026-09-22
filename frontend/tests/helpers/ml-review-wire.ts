@@ -1,5 +1,5 @@
 /** Original native evidence plus explicitly synthetic interaction adapters. */
-import captured from "../fixtures/ml-pilot-attestations-native.delivery20260922r3.wire.json";
+import captured from "../fixtures/ml-pilot-attestations-native.delivery20260922r4.wire.json";
 import type { ReviewAction, ReviewControl, ReviewDocuments } from "@/lib/ml-pilot-reviews";
 import { canonical, digest, sealRecord } from "./ml-pilot-wire";
 export { canonical, digest, sha, changed } from "./ml-pilot-wire";

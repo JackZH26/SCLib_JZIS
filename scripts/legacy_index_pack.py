@@ -158,6 +158,14 @@ class Pack:
                 self.partition_bytes += json.loads(body)["input_utf8_bytes"]
 
     def append(self, seq, chunk, paper):
+        return self.append_windows(seq, chunk, paper, windows(chunk))
+
+    def append_windows(self, seq, chunk, paper, spans):
+        """Retain explicitly planned spans; seal still verifies every source byte.
+
+        A repaired pack records its parent and window policy in provenance.
+        Existing source identities remain exact, while new windows get new IDs.
+        """
         require(not self.readonly and not self.sealed, "sealed_legacy_pack")
         key = identifier(chunk.get("id"))
         paper_id = identifier(paper.get("id"))
@@ -174,7 +182,7 @@ class Pack:
         require(old_paper is None or old_paper[0] == paper_hash, "legacy_paper_changed")
         self.db.execute("INSERT OR IGNORE INTO papers VALUES (?,?,?)", (paper_id, paper_hash, paper_raw.decode()))
         self.db.execute("INSERT INTO sources VALUES (?,?,?,?,?)", (seq, key, paper_id, source_hash, source_raw.decode()))
-        for start, end, prefix, count in windows(chunk):
+        for start, end, prefix, count in spans:
             value = member(source_hash, start, end, prefix, chunk["text"], count)
             require(0 < value["input_utf8_bytes"] <= PARTITION_BYTES)
             if (self.partition_count >= PARTITION_MEMBERS

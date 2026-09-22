@@ -9,7 +9,7 @@ import { compareMainBarrierBasis, getScientificCatalog, getScientificProjection,
 import { parsePreparedSelection, parseSelectionAccess, parseSelectionContext, prepareSelection, prepareSelectionV2, type SelectionRequestV2 } from "@/lib/discovery-selection";
 import { parseCurrentInspection, parseGovernanceHeader, parseOperatorAccess } from "@/lib/discovery-governance";
 import fullWire from "../fixtures/discovery-scientific-full-eight.detail.wire.json";
-import nativeWire from "../fixtures/discovery-main-barrier-native.delivery20260922r3.wire.json";
+import nativeWire from "../fixtures/discovery-main-barrier-native.delivery20260922r4.wire.json";
 import { hash, verifiedFixture, wires } from "./helpers/discovery-selection-fixtures";
 import { barrierRequest, syntheticV2Prepared } from "./helpers/discovery-main-barrier-fixtures";
 
@@ -43,8 +43,8 @@ function unknownBandGap(p: any) {
 
 describe("actual guarded native v2 wire compatibility", () => {
   it("pins the retained capture and the backend inputs used by this batch", () => {
-    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.delivery20260922r3.wire.json"), "utf8")))
-      .toBe("5bd06264630ffb92f045b221f2192b20a1c7719651dd028452ecf4844c70cb00");
+    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.delivery20260922r4.wire.json"), "utf8")))
+      .toBe("f33df8a017ec6bbab1effc2f7bfd48307d39089441b6874040f1dd92949965cc");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.batch75.wire.json"), "utf8")))
       .toBe("8966bbc04eac7e46c98cb0cf764e8b9fd93585f5b5a007e1b4858ad3da0e6f7e");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.batch72.wire.json"), "utf8")))
@@ -85,7 +85,7 @@ describe("actual guarded native v2 wire compatibility", () => {
     expect(nativeWire.fixture_notice).toBe("Actual guarded SQL-to-HTTP synthetic v2 capture; no real scientific or rights approval.");
     expect(nativeWire.capture_test_path).toBe("api/tests/test_discovery_main_barrier.py");
     expect(nativeWire.capture_test_name).toBe("test_barrier_edit_needs_new_preview_package_and_independent_review_then_source_hold");
-    expect(nativeWire.source_pins).toHaveLength(297);
+    expect(nativeWire.source_pins).toHaveLength(302);
     expect(nativeWire.source_pins.some(p => p.path === "api/services/ml08_pilot.schema.json")).toBe(true);
     expect(new Set(nativeWire.source_pins.map(p => p.path)).size).toBe(nativeWire.source_pins.length);
     for (const pin of nativeWire.source_pins) {

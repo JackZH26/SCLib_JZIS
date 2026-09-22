@@ -7,6 +7,7 @@ approval. Importing this helper does not import clients or open connections.
 from __future__ import annotations
 
 from test_safety import validate_test_environment, verify_postgres_identity
+from migration_legacy_corpus import TABLES as LEGACY_CORPUS_TABLES
 
 TABLES = (
     "ml_pilot_registrations",
@@ -29,7 +30,7 @@ def snapshot(connection, *, old_only=False):
         .all()
         for name in inspect(connection).get_table_names(schema="public")
         if not old_only
-        or name not in {"alembic_version", *TABLES, "ml_pilot_review_attestations", "scientific_result_passage_links"}
+        or name not in {"alembic_version", *TABLES, "ml_pilot_review_attestations", "scientific_result_passage_links", *LEGACY_CORPUS_TABLES}
     }
 
 

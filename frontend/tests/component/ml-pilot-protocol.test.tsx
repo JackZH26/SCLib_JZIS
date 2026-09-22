@@ -11,7 +11,7 @@ beforeEach(() => vi.stubGlobal("crypto", webcrypto));
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 describe("original native pilot participation protocol", () => {
   it("pins the capture, original replies and each current source without resealing old evidence", () => {
-    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260922r3.wire.json")))).toBe("c67bb854c0f9eebc6b4451692b08c3ef1c673153372a2e62a3e009190b177c3c");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260922r4.wire.json")))).toBe("9d4f62e7260e23a3ad4266b98dcc7348f8913eb4c78b263b777d949685f165f2");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.batch72.wire.json")))).toBe("51b334293c2e024d7b08648fdeaf0d4a53d0a1595444cd9f6af42239a9e41fb3");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.batch73.wire.json")))).toBe("e246bca6fc8654c852885137e96980706ae84b46ffc19eb4020e84d9dc8b12dd");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.batch74.wire.json")))).toBe("f9b85c230f5571eef3e798e547f6639fcb19ead3ddb87d7a8ced1f3f537ff10d");
@@ -20,7 +20,7 @@ describe("original native pilot participation protocol", () => {
     expect(http.capture_test_path).toBe("api/tests/test_ml_pilot_participant_wire.py");
     expect(http.fixture_notice).toBe("Actual owned SQL, authenticated HTTP and installed upload worker; synthetic accounts and declared events only, no real scientific approval or source permission.");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.batch75.wire.json")))).toBe("ce0cbb73250fc614964f5f028e20479903eb9f33a7dd1ffd1680ea43c409178a");
-    expect(http.source_pins).toHaveLength(600);
+    expect(http.source_pins).toHaveLength(612);
     expect(new Set(http.source_pins.map(p => p.path)).size).toBe(http.source_pins.length);
     for (const p of http.source_pins) {
       expect(p.path).toMatch(/^(api|scripts)\/[A-Za-z0-9_./-]+\.(py|schema\.json)$/); expect(p.path.split("/")).not.toContain("..");

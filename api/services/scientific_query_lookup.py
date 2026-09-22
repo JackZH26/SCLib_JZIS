@@ -222,6 +222,13 @@ async def prepare_scientific_lookup(db, pin, interpretation, *, limit=20, filter
     # The caller may retain its mutable pin object across awaits. Bind this
     # operation to a private exact copy, including the activation event (ABA).
     pin = json.loads(_json(pin))
+    from services.index_corpus import is_corpus
+    if await is_corpus(db, pin["generation_id"]):
+        # This corpus format admits retained legacy windows only. Its SQL
+        # membership guard forbids derived extraction parents; do not fabricate
+        # such parents by interpreting old material metadata as reviewed input.
+        return _prepared(LookupResult([], ScientificLookupStatus(status="completed",
+            reason_codes=["retained_legacy_no_extraction_parents"])), pin)
     members = await index_generations.load_generation_members(db, generation_id=pin["generation_id"])
     if index_generations.manifest_sha256(members) != pin["manifest_sha256"]:
         raise ValueError("Scientific lookup generation inventory is incomplete")
