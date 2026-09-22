@@ -393,7 +393,11 @@ def check(*, project, image_digest, test_run_id, test_run_attempt, revision, out
     event_window = _run_identity(event.get("workflow_run"), **identity)
     actual_run = api_json(f"/actions/runs/{test_run_id}/attempts/{test_run_attempt}", token)
     start, end = _run_identity(actual_run, **identity)
-    require(event_window == (start, end), "trigger_attempt_window_mismatch")
+    # GitHub's event/run and attempt views can update their completion metadata
+    # at different times. Identity and attempt start must still agree exactly;
+    # artifacts must fit inside BOTH authenticated windows, never their union.
+    require(event_window[0] == start, "trigger_attempt_window_mismatch")
+    end = min(event_window[1], end)
     found, total, all_ids = {}, None, set()
     for page in range(1, MAX_PAGES + 1):
         listing = api_json(f"/actions/runs/{test_run_id}/artifacts?per_page=100&page={page}", token)

@@ -214,6 +214,43 @@ def test_wrong_actual_run_or_attempt_fails_before_docker(context, field, value):
     assert not any(cmd[0] == "docker" for cmd, _, _ in context.commands)
 
 
+@pytest.mark.parametrize("event_end,actual_end", [
+    ("2026-01-01T00:10:00Z", "2026-01-01T00:10:01Z"),
+    ("2026-01-01T00:10:01Z", "2026-01-01T00:10:00Z"),
+])
+def test_same_successful_attempt_tolerates_updated_at_drift(context, event_end, actual_end):
+    context.event["workflow_run"]["updated_at"] = event_end
+    context.event_path.write_bytes(encoded(context.event))
+    context.run["updated_at"] = actual_end
+    report = gate.check(**context.arguments())
+    assert report["matches"] is True
+    assert report["test_run_id"] == context.run_id
+    assert report["test_run_attempt"] == context.attempt
+    assert set(report["comparisons"]) == set(gate.artifact_names("api", context.attempt))
+
+
+@pytest.mark.parametrize("event_end,actual_end", [
+    ("2026-01-01T00:10:00Z", "2026-01-01T00:10:01Z"),
+    ("2026-01-01T00:10:01Z", "2026-01-01T00:10:00Z"),
+])
+def test_artifact_outside_either_authenticated_window_is_refused(context, event_end, actual_end):
+    context.event["workflow_run"]["updated_at"] = event_end
+    context.event_path.write_bytes(encoded(context.event))
+    context.run["updated_at"] = actual_end
+    next(iter(context.metadata.values()))["updated_at"] = "2026-01-01T00:10:00.500000Z"
+    with pytest.raises(gate.ReleaseRuntimeError, match="artifact_attempt_or_expiry_mismatch"):
+        gate.check(**context.arguments())
+    assert not any(cmd[0] == "docker" for cmd, _, _ in context.commands)
+
+
+def test_changed_attempt_start_is_still_refused_before_artifact_reads(context):
+    context.run["run_started_at"] = "2026-01-01T00:00:01Z"
+    with pytest.raises(gate.ReleaseRuntimeError, match="trigger_attempt_window_mismatch"):
+        gate.check(**context.arguments())
+    assert not any("artifacts" in path for path in context.api_calls)
+    assert not any(cmd[0] == "docker" for cmd, _, _ in context.commands)
+
+
 @pytest.mark.parametrize("field,value", [("expired", True), ("digest", "sha256:" + "0" * 64),
     ("created_at", "2025-12-31T23:59:00Z"), ("created_at", "2026-01-01T00:00:00Z"),
     ("updated_at", "2026-01-01T00:10:01Z"), ("expires_at", "2025-01-01T00:00:00Z"),
