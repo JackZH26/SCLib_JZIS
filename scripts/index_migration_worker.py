@@ -226,7 +226,7 @@ def _forbid_providers():
     def forbidden(*_args, **_kwargs):
         counter["attempts"] += 1
         raise RuntimeError("index_migration_provider_forbidden")
-    targets = [(genai_client, "client"), (index_vector_adapter, "_embed"),
+    targets = [(genai_client, "client"), (genai_client, "embedding_client"), (index_vector_adapter, "_embed"),
                (index_vector_adapter, "_public_clients"), (index_vector_adapter, "_public_match_client"),
                (indexer, "_index")]
     originals = [(module, name, getattr(module, name)) for module, name in targets]

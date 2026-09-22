@@ -19,6 +19,7 @@ from datetime import datetime, timezone
 from uuid import UUID, uuid4
 
 from config import get_settings
+from services.genai_client import public_credentials as _public_credentials
 from services.embedding_contract import (
     DIMENSION,
     LOCAL_QUERY_COUNT_METHOD,
@@ -39,7 +40,15 @@ PROFILE = {"version": "sclib-index-profile/1.0.0", "provider": "google-vertex-ai
            "document_task": "RETRIEVAL_DOCUMENT", "query_task": "RETRIEVAL_QUERY"}
 MAX_MEMBERS = 1000
 BATCH_SIZE = 100  # SCLib bound; provider readback permits at most 1000 IDs.
+# Vertex lists every absent ID in its gRPC error metadata. A 100-ID miss
+# with our 102-byte immutable IDs exceeds gRPC's default 8 KiB metadata cap
+# before NotFound can be decoded. Keep read misses below that transport bound;
+# write batches and the shared operation deadline remain unchanged.
+READ_BATCH_SIZE = 50
 MAX_QUERY_BATCH = 20
+# Vertex's float32 cosine calculation can put identical vectors a few ULPs
+# below zero. Accept only roundoff at the mathematical [0, 2] boundaries.
+COSINE_ROUNDOFF = 1e-6
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
 _TOKEN = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,99}\Z")
 _RESOURCE_FIELDS = {"backend", "project", "location", "index_resource", "endpoint_resource",
@@ -286,13 +295,14 @@ def clear_disposable():
 def _public_clients(resource):
     from google.cloud import aiplatform_v1
     options = {"api_endpoint": f"{resource['location']}-aiplatform.googleapis.com"}
-    return (aiplatform_v1.IndexServiceClient(client_options=options),
-            aiplatform_v1.IndexEndpointServiceClient(client_options=options))
+    credentials = _public_credentials()
+    return (aiplatform_v1.IndexServiceClient(client_options=options, credentials=credentials),
+            aiplatform_v1.IndexEndpointServiceClient(client_options=options, credentials=credentials))
 
 
 def _public_match_client(host):
     from google.cloud import aiplatform_v1
-    return aiplatform_v1.MatchServiceClient(client_options={"api_endpoint": host})
+    return aiplatform_v1.MatchServiceClient(client_options={"api_endpoint": host}, credentials=_public_credentials())
 
 
 class _PublicIndex:
@@ -377,8 +387,8 @@ def _transport(pin, deadline):
 
 def _read(transport, ids, deadline):
     out = {}
-    for offset in range(0, len(ids), BATCH_SIZE):
-        batch = ids[offset:offset + BATCH_SIZE]
+    for offset in range(0, len(ids), READ_BATCH_SIZE):
+        batch = ids[offset:offset + READ_BATCH_SIZE]
         rows = transport.read(batch, deadline)
         if len(rows) > len(batch):
             raise IndexVectorError("Readback inventory is malformed")
@@ -400,6 +410,14 @@ class CorpusTransportSession:
         self.pin = _pin(pin)
         self.current = None
         self.expires = 0
+
+    def prepare(self):
+        """Bounded operator setup before a separately bounded partition RPC.
+
+        Resolve the actual deployment and refreshable identity without writing
+        vectors. Public request handlers never use this operator-only phase.
+        """
+        self.transport(self.pin, _Deadline())
 
     def transport(self, pin, deadline):
         if any(pin[key] != self.pin[key] for key in ("generation_id", "resource", "profile")):
@@ -542,7 +560,7 @@ def _check_cancel(stop_event):
 def _embed(pin, texts, deadline, stop_event=None):
     from google.genai import types
 
-    from services.genai_client import client
+    from services.genai_client import embedding_client
     vectors = []
     for text in texts:
         _check_cancel(stop_event)
@@ -555,7 +573,7 @@ def _embed(pin, texts, deadline, stop_event=None):
                 retry_options=types.HttpRetryOptions(attempts=1)))
         if getattr(config, "auto_truncate", None) is not False:
             raise IndexVectorError("Embedding SDK cannot disable input truncation")
-        response = client().models.embed_content(model=pin["profile"]["model"], contents=[text], config=config)
+        response = embedding_client().models.embed_content(model=pin["profile"]["model"], contents=[text], config=config)
         vectors.append(validate_embedding_response([text], response, **arguments)[0][0])
     return vectors
 
@@ -609,9 +627,9 @@ def _query(pin, texts, top_k, year_min, year_max, stop_event=None, *, members=No
                          or year_max is not None and years[0] > year_max)):
                     raise IndexVectorError("Query result year metadata is incompatible")
                 if (verified["vector_id"] in seen or type(distance) not in {int, float}
-                        or not math.isfinite(distance) or not 0 <= distance <= 2):
+                        or not math.isfinite(distance) or not -COSINE_ROUNDOFF <= distance <= 2 + COSINE_ROUNDOFF):
                     raise IndexVectorError("Query result distance or identity is malformed")
-                neighbors.append(Neighbor(distance=float(distance), chunk_revision_sha256=revision, **verified))
+                neighbors.append(Neighbor(distance=min(2.0, max(0.0, float(distance))), chunk_revision_sha256=revision, **verified))
                 seen.add(verified["vector_id"])
             result.append(neighbors)
         return result

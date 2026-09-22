@@ -10,6 +10,28 @@ from config import get_settings
 
 
 @lru_cache(maxsize=1)
+def public_credentials():
+    """Share refreshable ADC across regional embedding and vector transports."""
+    import google.auth
+
+    credentials, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
+    return credentials
+
+
+@lru_cache(maxsize=1)
+def embedding_client() -> genai.Client:
+    """Use the document embedding region, independently of Gemini routing."""
+    settings = get_settings()
+    return genai.Client(
+        vertexai=True,
+        project=settings.gcp_project,
+        location=settings.gcp_region,
+        credentials=public_credentials(),
+        http_options=genai_types.HttpOptions(api_version="v1", timeout=120_000),
+    )
+
+
+@lru_cache(maxsize=1)
 def client() -> genai.Client:
     """Create a Gen AI client using the configured runtime surface."""
     settings = get_settings()
@@ -34,3 +56,5 @@ def client() -> genai.Client:
 
 def dispose() -> None:
     client.cache_clear()
+    embedding_client.cache_clear()
+    public_credentials.cache_clear()

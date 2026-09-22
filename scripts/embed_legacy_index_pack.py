@@ -570,10 +570,10 @@ def provider(project, location, batch):
         if (
             status == 400
             and "token" in str(exc).lower()
-            and any(word in str(exc).lower() for word in ("limit", "exceed", "maximum"))
+            and any(word in str(exc).lower() for word in ("limit", "exceed", "maximum", "supports up to"))
         ):
             code = "provider_input_limit"
-        if code in {"provider_input_limit", "provider_throttled"}:
+        if code.startswith("provider_"):
             # Preserve private provider diagnostics for the operator, without
             # putting response bodies or retained text in progress logs.
             diagnostic_dir = os.environ.get("SCLIB_EMBED_DIAGNOSTICS")

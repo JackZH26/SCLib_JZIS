@@ -9,7 +9,7 @@ from types import SimpleNamespace
 from uuid import uuid4
 
 import pytest
-from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import NotFound, ResourceExhausted
 from google.cloud import aiplatform_v1 as sdk
 
 from services import index_vector_adapter as adapter
@@ -41,6 +41,33 @@ def offline_registry():
     adapter.clear_disposable()
     yield
     adapter.clear_disposable()
+
+
+def test_actual_sdk_transports_share_one_refreshable_adc_identity(monkeypatch):
+    import google.auth
+    from google.auth.credentials import AnonymousCredentials
+
+    credential = AnonymousCredentials()
+    resolutions = []
+
+    def resolve(**kwargs):
+        resolutions.append(kwargs)
+        return credential, "fixture-project"
+
+    adapter._public_credentials.cache_clear()
+    monkeypatch.setattr(google.auth, "default", resolve)
+    clients = []
+    try:
+        clients.extend(adapter._public_clients({"location": "us-central1"}))
+        clients.append(adapter._public_match_client("fixture.us-central1-456.vdb.vertexai.goog"))
+        assert resolutions == [{"scopes": ["https://www.googleapis.com/auth/cloud-platform"]}]
+        # Real SDK transports retain the same object; tokens and expiry are
+        # still managed/refreshed by google-auth, not copied into static keys.
+        assert all(client.transport._credentials is credential for client in clients)
+    finally:
+        for client in clients:
+            client.transport.close()
+        adapter._public_credentials.cache_clear()
 
 
 class PublicDouble:
@@ -135,6 +162,43 @@ def test_public_mixed_missing_ids_can_publish_then_read_back(monkeypatch, aggreg
     assert result["already_present_count"] == 1 and result["acknowledged_count"] == 2
     assert len(adapter.observe(pin, members)["vectors"]) == 3
     assert len([call for call in transport.calls if call[0] == "read_missing"]) == (1 if aggregate else 2)
+
+
+def test_full_partition_misses_fit_grpc_error_metadata_before_any_write(monkeypatch):
+    pin, members = fixture_generation(500, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    read = transport.read_index_datapoints
+
+    def bounded_missing_metadata(**kwargs):
+        missing = [key for key in kwargs["request"].ids if key not in transport.points]
+        if missing:
+            message = ",".join(missing) + " entity does not exist in the dataset"
+            # The actual 500-vector cloud probe hit 10,853 vs. 8,192 bytes
+            # on a 100-ID miss; allow conservative metadata framing overhead.
+            if len(message.encode()) + 1024 > 8192:
+                raise ResourceExhausted("received metadata size exceeds hard limit")
+            transport._record("read_missing", **kwargs)
+            raise NotFound(message)
+        return read(**kwargs)
+
+    monkeypatch.setattr(transport, "read_index_datapoints", bounded_missing_metadata)
+    assert adapter.publish(pin, members)["acknowledged_count"] == 500
+    assert len(adapter.observe(pin, members)["vectors"]) == 500
+    assert [len(call[1]["request"].ids) for call in transport.calls if call[0] == "read_missing"] == [50] * 10
+    assert [len(call[1]["request"].datapoints) for call in transport.calls if call[0] == "upsert"] == [100] * 5
+
+
+def test_resource_exhaustion_is_never_treated_as_missing_vectors(monkeypatch):
+    pin, members = fixture_generation(100, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+
+    def unavailable(**kwargs):
+        raise ResourceExhausted("upstream quota exhausted")
+
+    monkeypatch.setattr(transport, "read_index_datapoints", unavailable)
+    with pytest.raises(adapter.IndexVectorError):
+        adapter.publish(pin, members)
+    assert not any(operation == "upsert" for operation, _ in transport.calls)
 
 
 def test_public_missing_batch_preserves_conflicting_member(monkeypatch):
@@ -488,7 +552,7 @@ def test_query_embedding_sdk_contract_and_cancel_between_inputs(monkeypatch):
         stop.set()
         return {"embeddings": [{"values": [0.25] * 768,
                                "statistics": {"truncated": False, "token_count": 2}}]}
-    monkeypatch.setattr(genai_client, "client", lambda: SimpleNamespace(models=SimpleNamespace(embed_content=embed_content)))
+    monkeypatch.setattr(genai_client, "embedding_client", lambda: SimpleNamespace(models=SimpleNamespace(embed_content=embed_content)))
     with pytest.raises(adapter.IndexVectorError, match="cancelled"):
         adapter._embed(pin, ["first", "second"], adapter._Deadline(), stop)
     assert len(calls) == 1
@@ -562,6 +626,8 @@ def test_corpus_session_keeps_partition_deadlines_and_rechecks_resource(monkeypa
     pin,members=fixture_generation(3,backend='vertex-public')
     public=PublicDouble(monkeypatch,pin)
     session=adapter.CorpusTransportSession(pin)
+    session.prepare()
+    assert [operation for operation, _ in public.calls] == ['index', 'endpoint']
     for member in members:
         selected={**pin,'manifest_sha256':manifest_sha256([member])}
         adapter.publish(selected,[member],session=session)
@@ -574,3 +640,72 @@ def test_corpus_session_keeps_partition_deadlines_and_rechecks_resource(monkeypa
     other,others=fixture_generation(1,backend='vertex-public')
     with pytest.raises(adapter.IndexVectorError,match='identity changed'):
         adapter.publish(other,others,session=session)
+
+
+def test_operator_setup_does_not_extend_a_late_partition_deadline(monkeypatch):
+    pin, members = fixture_generation(1, backend="vertex-public")
+    public = PublicDouble(monkeypatch, pin)
+    clock = [10.0]
+    monkeypatch.setattr(adapter.time, "monotonic", lambda: clock[0])
+    factory = adapter._public_clients
+
+    def slow_setup(resource):
+        clock[0] += 8
+        return factory(resource)
+
+    monkeypatch.setattr(adapter, "_public_clients", slow_setup)
+    session = adapter.CorpusTransportSession(pin)
+    session.prepare()
+    assert not public.points
+    assert adapter.publish(pin, members, session=session)["acknowledged_count"] == 1
+
+    def late_read(rows):
+        clock[0] += 13
+        return rows
+
+    public.read_override = late_read
+    with pytest.raises(adapter.IndexVectorError, match="deadline"):
+        adapter.observe(pin, members, session=session)
+
+
+@pytest.mark.parametrize(('distance', 'expected'), [(-2.384185791015625e-7, 0.0), (2.000000238418579, 2.0), (0.4, 0.4)])
+def test_cosine_float32_boundary_roundoff_is_clamped(monkeypatch, distance, expected):
+    pin, members = fixture_generation(backend='vertex-public')
+    transport = PublicDouble(monkeypatch, pin)
+    adapter.publish(pin, members)
+    point = next(iter(transport.points.values()))
+    transport.query_override = lambda request: sdk.FindNeighborsResponse(nearest_neighbors=[{'neighbors': [{'datapoint': point, 'distance': distance}]}])
+    result = adapter.query(pin, 'query', top_k=1)
+    assert len(result) == 1 and result[0].distance == pytest.approx(expected)
+
+
+@pytest.mark.parametrize('distance', [-1e-4, 2.0001, float('inf'), float('-inf')])
+def test_cosine_invalid_distance_still_rejects_entire_response(monkeypatch, distance):
+    pin, members = fixture_generation(backend='vertex-public')
+    transport = PublicDouble(monkeypatch, pin)
+    adapter.publish(pin, members)
+    point = next(iter(transport.points.values()))
+    transport.query_override = lambda request: sdk.FindNeighborsResponse(nearest_neighbors=[{'neighbors': [{'datapoint': point, 'distance': distance}]}])
+    with pytest.raises(adapter.IndexVectorError, match='distance or identity'):
+        adapter.query(pin, 'query', top_k=1)
+
+
+def test_embedding_client_region_is_independent_of_answer_routing(monkeypatch):
+    from services import genai_client
+    calls = []
+    credential = object()
+    genai_client.dispose()
+    monkeypatch.setattr(genai_client, 'get_settings', lambda: SimpleNamespace(gcp_project='fixture', gcp_region='us-central1', gemini_use_enterprise=True, gemini_location='global', gemini_api_version='v1'))
+    monkeypatch.setattr(genai_client, 'public_credentials', lambda: credential)
+    monkeypatch.setattr(genai_client.genai, 'Client', lambda **kw: calls.append(kw) or SimpleNamespace())
+    try:
+        genai_client.client()
+        first = genai_client.embedding_client()
+        assert genai_client.embedding_client() is first
+        assert len(calls) == 2
+        assert calls[0]['enterprise'] is True and calls[0]['location'] == 'global'
+        assert calls[1]['vertexai'] is True and calls[1]['location'] == 'us-central1'
+        assert calls[1]['credentials'] is credential and calls[1]['http_options'].api_version == 'v1'
+    finally:
+        genai_client.client.cache_clear()
+        genai_client.embedding_client.cache_clear()

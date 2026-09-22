@@ -28,6 +28,7 @@ async def test_actual_combined_replacement_partial_publication_saved_answer_rele
         attempts.append(True)
         raise AssertionError("A synthetic migration must not construct provider clients")
     monkeypatch.setattr(genai_client, "client", forbidden)
+    monkeypatch.setattr(genai_client, "embedding_client", forbidden)
     monkeypatch.setattr(index_vector_adapter, "_public_clients", forbidden)
     monkeypatch.setattr(index_vector_adapter, "_public_match_client", forbidden)
     report = await worker._measure_fixture(get_session_factory(), uuid4().hex, _expected_revision())
@@ -109,12 +110,12 @@ async def test_public_worker_rejects_preexisting_database_without_changing_it():
         assert await db.scalar(sa.text("SELECT to_jsonb(p)::text FROM papers p WHERE id=:id"), {"id": identifier}) == row_before
 
 
-@pytest.mark.parametrize("target", ["client", "_embed", "_public_clients", "_public_match_client", "_index"])
+@pytest.mark.parametrize("target", ["client", "embedding_client", "_embed", "_public_clients", "_public_match_client", "_index"])
 def test_provider_attempts_are_counted_rejected_and_original_factory_restored(target):
     from ingestion.index import indexer
 
     from services import genai_client, index_vector_adapter
-    module = genai_client if target == "client" else indexer if target == "_index" else index_vector_adapter
+    module = genai_client if target in {"client", "embedding_client"} else indexer if target == "_index" else index_vector_adapter
     original = getattr(module, target)
     with worker._forbid_providers() as counter:
         with pytest.raises(RuntimeError, match="index_migration_provider_forbidden"):

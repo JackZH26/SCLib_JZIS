@@ -255,3 +255,32 @@ def test_request_split_isolates_bad_input_without_truncation_or_false_completion
         assert list(ledger.pending()) == []
     finally:
         ledger.close()
+
+
+@pytest.mark.parametrize(('message', 'expected'), [
+    ('Request token count is 21378 but model supports up to 20000.', 'provider_input_limit'),
+    ('Input exceeds the maximum token count 2048.', 'provider_input_limit'),
+    ('Invalid token configuration PRIVATE_DIAGNOSTIC', 'provider_http_400'),
+])
+def test_provider_diagnostics_are_private_and_unknown_400_still_stops(monkeypatch, tmp_path, capsys, message, expected):
+    import json
+    import embed_legacy_index_pack as worker
+    from google import genai
+
+    class Rejected(Exception):
+        code = 400
+
+    def reject(**kwargs):
+        assert kwargs['config'].auto_truncate is False
+        raise Rejected(message)
+
+    monkeypatch.setattr(worker, '_CLIENT_LOCAL', SimpleNamespace())
+    monkeypatch.setattr(worker, '_CLIENTS', [])
+    monkeypatch.setattr(genai, 'Client', lambda **kw: SimpleNamespace(models=SimpleNamespace(embed_content=reject)))
+    monkeypatch.setenv('SCLIB_EMBED_DIAGNOSTICS', str(tmp_path))
+    assert worker.provider('synthetic', 'us-central1', [{'seq': 7, 'text': 'synthetic'}]) == (expected, None)
+    files = list(tmp_path.glob('provider-400-*.json'))
+    assert len(files) == 1 and files[0].stat().st_mode & 0o777 == 0o600
+    assert json.loads(files[0].read_text()) == {'code': 400, 'message': message, 'member_seqs': [7]}
+    captured = capsys.readouterr()
+    assert message not in captured.out + captured.err

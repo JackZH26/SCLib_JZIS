@@ -345,6 +345,9 @@ async def run(args):
                         "staged_partition_missing",
                     )
                 selected = {**pin, "manifest_sha256": plan["manifest_sha256"]}
+                # Cold WIF/control-plane setup has its own bounded phase;
+                # retain the existing independent 12-second partition limit.
+                await asyncio.to_thread(session.prepare)
                 if args.command == "publish":
                     result = await asyncio.to_thread(
                         adapter.publish, selected, members, session=session
