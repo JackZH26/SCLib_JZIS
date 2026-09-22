@@ -43,7 +43,7 @@ export function ProfileCard({
 
 function ProfileView({ user, onEdit }: { user: User; onEdit: () => void }) {
   const created = user.created_at
-    ? new Date(user.created_at).toLocaleDateString()
+    ? new Date(user.created_at).toLocaleDateString("en-US")
     : "—";
   return (
     <section className="rounded-lg border border-sage-border bg-white p-5 shadow-sage">

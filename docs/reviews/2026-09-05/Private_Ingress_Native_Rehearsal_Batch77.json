@@ -1,0 +1,395 @@
+{
+  "version": "sclib-private-ingress-rehearsal/1.0.0",
+  "synthetic_only": true,
+  "application_or_database_executed": false,
+  "deployment_verified": false,
+  "source_pins": {
+    "nginx/sclib.conf": "337b66f82d79ea893704714a55d1eab27982a255810cf66e30c364079d5a2c3a",
+    "nginx/private-intake.conf": "0c326806e4cc2c8cc50cc11e15eba9234ec5b097c1785ce94c0e24cf1b98d84b",
+    "nginx/rehearse_private_intake.py": "81e3ea7e53de5a007c69e029d78efe91c40cb16d14660dc8d95e583c8d319eaa"
+  },
+  "nginx_binary_sha256": "43873584f8567508ebb94d865f97872f5fd2f1c77a3181c4f1d0f9d6a0003ce6",
+  "nginx_version": "nginx version: nginx/1.30.4\nbuilt by clang 21.0.0 (clang-2100.1.1.101)\nbuilt with OpenSSL 3.6.1 27 Jan 2026\nTLS SNI support enabled\nconfigure arguments: --prefix=/private/tmp/sclib-batch77-nginx-sWQrAP/runtime --with-http_ssl_module --with-cc-opt='-I/opt/homebrew/opt/openssl@3/include -I/opt/homebrew/opt/pcre2/include' --with-ld-opt='-L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/pcre2/lib'\n",
+  "routes": [
+    {
+      "path": "/sclib/v1/ml/pilots/registrations",
+      "limit_bytes": 22435160,
+      "rendered_config_sha256": "eacd8985f8e60d193368910fbd07cad2a2c3cb756b3f158a06dbbf66ed3f46c9",
+      "samples": [
+        {
+          "status": 200,
+          "bytes": 22435160,
+          "chunked": false
+        },
+        {
+          "status": 200,
+          "bytes": 22435160,
+          "chunked": true
+        },
+        {
+          "status": 413,
+          "bytes": 22435161,
+          "chunked": false
+        },
+        {
+          "status": 403,
+          "bytes": 1048576,
+          "chunked": false
+        }
+      ],
+      "chunked_over_limit": {
+        "status": 413,
+        "bytes": 22435161,
+        "chunked": true
+      },
+      "streamed_before_eof": true
+    },
+    {
+      "path": "/sclib/v1/ml/pilots/participation/accept",
+      "limit_bytes": 22435160,
+      "rendered_config_sha256": "81ffd8c29c96b1e051d8eedf399df3d2f8a22057eb5fcfae91e63350b2fd4e00",
+      "samples": [
+        {
+          "status": 200,
+          "bytes": 22435160,
+          "chunked": false
+        },
+        {
+          "status": 200,
+          "bytes": 22435160,
+          "chunked": true
+        },
+        {
+          "status": 413,
+          "bytes": 22435161,
+          "chunked": false
+        },
+        {
+          "status": 403,
+          "bytes": 1048576,
+          "chunked": false
+        }
+      ],
+      "chunked_over_limit": {
+        "status": 413,
+        "bytes": 22435161,
+        "chunked": true
+      },
+      "streamed_before_eof": true
+    },
+    {
+      "path": "/sclib/v1/ml/pilots/review-preflight",
+      "limit_bytes": 44804784,
+      "rendered_config_sha256": "de8b0863621a7ef3eaef0c40e9a5a5c77b6f33bfdc4766f5765d3d8b4dd1ed71",
+      "samples": [
+        {
+          "status": 200,
+          "bytes": 44804784,
+          "chunked": false
+        },
+        {
+          "status": 200,
+          "bytes": 44804784,
+          "chunked": true
+        },
+        {
+          "status": 413,
+          "bytes": 44804785,
+          "chunked": false
+        },
+        {
+          "status": 403,
+          "bytes": 1048576,
+          "chunked": false
+        }
+      ],
+      "chunked_over_limit": {
+        "status": 413,
+        "bytes": 44804785,
+        "chunked": true
+      },
+      "streamed_before_eof": true
+    },
+    {
+      "path": "/sclib/v1/ml/pilots/review-attestations",
+      "limit_bytes": 44804784,
+      "rendered_config_sha256": "0fd4130cf85f6ae430534b342a4252f4bb4e227a3ccd0d73546eb975d0d69abb",
+      "samples": [
+        {
+          "status": 200,
+          "bytes": 44804784,
+          "chunked": false
+        },
+        {
+          "status": 200,
+          "bytes": 44804784,
+          "chunked": true
+        },
+        {
+          "status": 413,
+          "bytes": 44804785,
+          "chunked": false
+        },
+        {
+          "status": 403,
+          "bytes": 1048576,
+          "chunked": false
+        }
+      ],
+      "chunked_over_limit": {
+        "status": 413,
+        "bytes": 44804785,
+        "chunked": true
+      },
+      "streamed_before_eof": true
+    },
+    {
+      "path": "/sclib/v1/ml/pilots/review-attestations/coverage",
+      "limit_bytes": 44804784,
+      "rendered_config_sha256": "edc18d0cf0ec6a0967c85cafaf3a3e2accd3963ab35f9a577f34d1e4c96ea7ed",
+      "samples": [
+        {
+          "status": 200,
+          "bytes": 44804784,
+          "chunked": false
+        },
+        {
+          "status": 200,
+          "bytes": 44804784,
+          "chunked": true
+        },
+        {
+          "status": 413,
+          "bytes": 44804785,
+          "chunked": false
+        },
+        {
+          "status": 403,
+          "bytes": 1048576,
+          "chunked": false
+        }
+      ],
+      "chunked_over_limit": {
+        "status": 413,
+        "bytes": 44804785,
+        "chunked": true
+      },
+      "streamed_before_eof": true
+    },
+    {
+      "path": "/sclib/v1/ml/pilots/review-attestations/evidence",
+      "limit_bytes": 136314880,
+      "rendered_config_sha256": "d18cd62bf59deede1c51d03cbac78c05cc3cf6fcde0ac5896e348fc5e8d2e8d2",
+      "samples": [
+        {
+          "status": 200,
+          "bytes": 136314880,
+          "chunked": false
+        },
+        {
+          "status": 200,
+          "bytes": 136314880,
+          "chunked": true
+        },
+        {
+          "status": 413,
+          "bytes": 136314881,
+          "chunked": false
+        },
+        {
+          "status": 403,
+          "bytes": 1048576,
+          "chunked": false
+        }
+      ],
+      "chunked_over_limit": {
+        "status": 413,
+        "bytes": 136314881,
+        "chunked": true
+      },
+      "streamed_before_eof": true
+    },
+    {
+      "path": "/sclib/v1/ml/use/preflight/reconstruct",
+      "limit_bytes": 33554432,
+      "rendered_config_sha256": "ac79ddf0d2d9d1004dc4b097c9c99d65649cf5c1435d3d2f2607086085d92f14",
+      "samples": [
+        {
+          "status": 200,
+          "bytes": 33554432,
+          "chunked": false
+        },
+        {
+          "status": 200,
+          "bytes": 33554432,
+          "chunked": true
+        },
+        {
+          "status": 413,
+          "bytes": 33554433,
+          "chunked": false
+        },
+        {
+          "status": 403,
+          "bytes": 1048576,
+          "chunked": false
+        }
+      ],
+      "chunked_over_limit": {
+        "status": 413,
+        "bytes": 33554433,
+        "chunked": true
+      },
+      "streamed_before_eof": true
+    },
+    {
+      "path": "/sclib/v1/ml/use/preflight/reconstruct/current",
+      "limit_bytes": 33554432,
+      "rendered_config_sha256": "037e73153b5b86149dca6738a879b7c58f10c3435ff0122ef3a1d4d324ecdc68",
+      "samples": [
+        {
+          "status": 200,
+          "bytes": 33554432,
+          "chunked": false
+        },
+        {
+          "status": 200,
+          "bytes": 33554432,
+          "chunked": true
+        },
+        {
+          "status": 413,
+          "bytes": 33554433,
+          "chunked": false
+        },
+        {
+          "status": 403,
+          "bytes": 1048576,
+          "chunked": false
+        }
+      ],
+      "chunked_over_limit": {
+        "status": 413,
+        "bytes": 33554433,
+        "chunked": true
+      },
+      "streamed_before_eof": true
+    },
+    {
+      "path": "/sclib/v1/ml/use/requests/preview",
+      "limit_bytes": 33554432,
+      "rendered_config_sha256": "092e48614cf4475a2870fc18c7225c632558eb73ec888054f99dcc8a0f041b8a",
+      "samples": [
+        {
+          "status": 200,
+          "bytes": 33554432,
+          "chunked": false
+        },
+        {
+          "status": 200,
+          "bytes": 33554432,
+          "chunked": true
+        },
+        {
+          "status": 413,
+          "bytes": 33554433,
+          "chunked": false
+        },
+        {
+          "status": 403,
+          "bytes": 1048576,
+          "chunked": false
+        }
+      ],
+      "chunked_over_limit": {
+        "status": 413,
+        "bytes": 33554433,
+        "chunked": true
+      },
+      "streamed_before_eof": true
+    },
+    {
+      "path": "/sclib/v1/ml/use/requests",
+      "limit_bytes": 33554432,
+      "rendered_config_sha256": "445ea31a856757b3cf490cc1b72c090f72a852b779c9f54c1ad9b03d6dc129e3",
+      "samples": [
+        {
+          "status": 200,
+          "bytes": 33554432,
+          "chunked": false
+        },
+        {
+          "status": 200,
+          "bytes": 33554432,
+          "chunked": true
+        },
+        {
+          "status": 413,
+          "bytes": 33554433,
+          "chunked": false
+        },
+        {
+          "status": 403,
+          "bytes": 1048576,
+          "chunked": false
+        }
+      ],
+      "chunked_over_limit": {
+        "status": 413,
+        "bytes": 33554433,
+        "chunked": true
+      },
+      "streamed_before_eof": true
+    },
+    {
+      "path": "/sclib/v1/ml/scientific-program-imports",
+      "limit_bytes": 25165824,
+      "rendered_config_sha256": "1451b0ebc9a9bffdfe96c701519454bcbbc79e2786b2852282c20540e1d02627",
+      "samples": [
+        {
+          "status": 200,
+          "bytes": 25165824,
+          "chunked": false
+        },
+        {
+          "status": 200,
+          "bytes": 25165824,
+          "chunked": true
+        },
+        {
+          "status": 413,
+          "bytes": 25165825,
+          "chunked": false
+        },
+        {
+          "status": 403,
+          "bytes": 1048576,
+          "chunked": false
+        }
+      ],
+      "chunked_over_limit": {
+        "status": 413,
+        "bytes": 25165825,
+        "chunked": true
+      },
+      "streamed_before_eof": true
+    }
+  ],
+  "owned_cleanup_verified": true,
+  "private_response_bytes_verified": 16777216,
+  "rate_limit_statuses": [
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    429,
+    429,
+    429
+  ],
+  "neighbor_limits_and_hidden_routes_verified": true,
+  "buffering_negative_control_detected": true,
+  "private_markers_absent_from_owned_logs": true
+}

@@ -125,6 +125,8 @@ jobs:
           SCLIB_FRONTEND_IMAGE: ${{ steps.images.outputs.frontend }}
           SCLIB_API_IMAGE: ${{ steps.images.outputs.api }}
           SCLIB_INGESTION_IMAGE: ${{ steps.images.outputs.ingestion }}
+          SCLIB_INGESTION_MODE: ${{ vars.SCLIB_INGESTION_MODE || 'active' }}
+          SCLIB_ALERT_DELIVERY: ${{ vars.SCLIB_ALERT_DELIVERY || 'console' }}
         with:
           host: ${{ secrets.VPS2_HOST }}
           username: ${{ secrets.VPS2_USER }}
@@ -132,7 +134,7 @@ jobs:
           fingerprint: ${{ secrets.VPS2_HOST_FINGERPRINT }}
           port: 22
           command_timeout: 25m
-          envs: GHCR_USERNAME,GHCR_TOKEN,TARGET_SHA,DEPLOY_PATH,SCLIB_FRONTEND_IMAGE,SCLIB_API_IMAGE,SCLIB_INGESTION_IMAGE
+          envs: GHCR_USERNAME,GHCR_TOKEN,TARGET_SHA,DEPLOY_PATH,SCLIB_FRONTEND_IMAGE,SCLIB_API_IMAGE,SCLIB_INGESTION_IMAGE,SCLIB_INGESTION_MODE,SCLIB_ALERT_DELIVERY
           script: |
             set -euo pipefail
             cd "$DEPLOY_PATH"
@@ -152,8 +154,16 @@ jobs:
             }
             trap cleanup_preflight EXIT
             git worktree add --detach "$preflight_dir" "$TARGET_SHA" >/dev/null
+            budget_options=()
+            case "$SCLIB_INGESTION_MODE" in
+              active) ;;
+              paused)
+                budget_options+=(--ingestion-paused-marker "$DEPLOY_PATH/scripts/.sclib-ingestion-paused")
+                ;;
+              *) echo "invalid ingestion operating mode" >&2; exit 1 ;;
+            esac
             python3 "$preflight_dir/scripts/check_error_budget.py" \
-              --prometheus-url http://127.0.0.1:9090 --window 30d
+              --prometheus-url http://127.0.0.1:9090 --window 30d "${budget_options[@]}"
             python3 "$preflight_dir/scripts/validate_gcp_credentials.py" validate \
               --credential /etc/sclib/credentials/api-external-account.json \
               --expected-service-account sclib-api@jzis-sclib.iam.gserviceaccount.com
@@ -163,6 +173,22 @@ jobs:
             python3 "$preflight_dir/scripts/validate_gcp_credentials.py" validate \
               --credential /etc/sclib/credentials/backup-external-account.json \
               --expected-service-account sclib-backup@jzis-sclib.iam.gserviceaccount.com
+            # Provisioned migration-only credential; never reuse API .env or
+            # grant schema privileges as a deployment side effect.
+            test -s /etc/sclib/credentials/migration-database-url
+            alert_options=()
+            case "$SCLIB_ALERT_DELIVERY" in
+              console)
+                export SCLIB_ALERTMANAGER_CONFIG="$DEPLOY_PATH/ops/alertmanager/alertmanager.yml"
+                ;;
+              email)
+                test -s /etc/sclib/alertmanager/alertmanager.yml
+                test -s /etc/sclib/credentials/alertmanager-smtp-password
+                export SCLIB_ALERTMANAGER_CONFIG=/etc/sclib/alertmanager/alertmanager.yml
+                alert_options+=(-f docker-compose.alert-email.yml)
+                ;;
+              *) echo "invalid alert delivery mode" >&2; exit 1 ;;
+            esac
             cleanup_preflight
             trap - EXIT
 
@@ -188,10 +214,15 @@ jobs:
             done
 
             compose=(docker compose --profile observability \
-              -f docker-compose.yml -f docker-compose.prod.yml)
+              -f docker-compose.yml -f docker-compose.prod.yml "${alert_options[@]}")
             "${compose[@]}" up -d --no-build --wait --wait-timeout 60 \
               postgres redis
-            "${compose[@]}" run --rm --no-deps api alembic upgrade head
+            # All Alembic entrypoints share a nonblocking database session lock.
+            # Failure (including another upgrader) stops before API replacement.
+            "${compose[@]}" run --rm --no-deps migration
+            # Check using the new API image's own runtime credential as well.
+            "${compose[@]}" run --rm --no-deps api \
+              python -m services.schema_lifecycle check
             "${compose[@]}" up -d --no-build --wait --wait-timeout 180 \
               postgres redis api frontend prometheus alertmanager grafana
             "${compose[@]}" ps

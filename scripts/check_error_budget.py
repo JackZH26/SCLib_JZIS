@@ -8,6 +8,7 @@ import math
 import re
 import sys
 from dataclasses import asdict, dataclass
+from pathlib import Path
 from typing import Any
 from urllib.parse import urlencode, urlparse
 from urllib.request import Request, urlopen
@@ -23,10 +24,11 @@ _WINDOW_PATTERN = re.compile(r"^[1-9][0-9]*[smhdwy]$")
 @dataclass(frozen=True)
 class CheckResult:
     name: str
-    passed: bool
+    passed: bool | None
     observed: float | None
     target: float
     message: str
+    applicable: bool = True
 
 
 def evaluate_availability(
@@ -114,6 +116,11 @@ def _increase_query(routes: str, window: str, *, errors_only: bool) -> str:
 
 def run_checks(args: argparse.Namespace) -> list[CheckResult]:
     checks: list[CheckResult] = []
+    pause_marker = getattr(args, "ingestion_paused_marker", None)
+    if pause_marker is not None:
+        marker = Path(pause_marker)
+        if marker.is_symlink() or not marker.is_file() or marker.stat().st_size == 0:
+            raise ValueError("Intentional ingestion pause requires an existing nonempty regular marker")
     for name, routes, target, minimum in (
         ("public-api", PUBLIC_ROUTES, 0.999, 100),
         ("ai-api", AI_ROUTES, 0.995, 20),
@@ -143,6 +150,13 @@ def run_checks(args: argparse.Namespace) -> list[CheckResult]:
         "max(sclib_pipeline_last_run_age_seconds)",
         args.timeout,
     )
+    if pause_marker is not None:
+        checks.append(CheckResult(
+            "data-freshness", None, age, 86400,
+            "not assessed: ingestion intentionally paused; retained data age is not a freshness pass",
+            applicable=False,
+        ))
+        return checks
     checks.append(
         evaluate_freshness(
             age_seconds=age,
@@ -173,6 +187,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Pass insufficient-data checks (local/bootstrap use only)",
     )
     parser.add_argument("--json", action="store_true", dest="json_output")
+    parser.add_argument(
+        "--ingestion-paused-marker", type=Path,
+        help="Explicit operator-deferred ingestion: verify the pause marker and report freshness as not assessed; availability checks remain mandatory",
+    )
     return parser.parse_args(argv)
 
 
@@ -194,9 +212,9 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps([asdict(check) for check in checks], indent=2))
     else:
         for check in checks:
-            marker = "PASS" if check.passed else "FAIL"
+            marker = "DEFERRED" if not check.applicable else "PASS" if check.passed else "FAIL"
             print(f"[{marker}] {check.name}: {check.message}")
-    return 0 if all(check.passed for check in checks) else 1
+    return 0 if all(check.passed for check in checks if check.applicable) else 1
 
 
 if __name__ == "__main__":

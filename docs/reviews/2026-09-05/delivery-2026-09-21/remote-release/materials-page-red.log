@@ -1,0 +1,52 @@
+Disposable native services verified; running api.
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____ test_only_returned_page_rows_build_complete_public_evidence_envelopes _____
+
+client = <httpx.AsyncClient object at 0x10f04a360>
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x10effa8a0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10f50a8a0>
+
+    @pytest.mark.asyncio
+    async def test_only_returned_page_rows_build_complete_public_evidence_envelopes(client, db_session, monkeypatch):
+        import routers.materials as material_router
+    
+        family, rows = await ordered_fixture(db_session)
+        original = material_router.MaterialSummary.model_validate
+        hydrated = []
+    
+        def validate(value, *args, **kwargs):
+            hydrated.append(value.id)
+            return original(value, *args, **kwargs)
+    
+        monkeypatch.setattr(material_router.MaterialSummary, "model_validate", staticmethod(validate))
+        response = await client.get("/v1/materials", params={
+            "family": family, "sort": "tc_max", "offset": 1, "limit": 1,
+        })
+        assert response.status_code == 200, response.text
+        body = response.json()
+        assert body["total"] == 5 and body["results"][0]["id"] == rows["c"].id
+        assert body["results"][0]["tc_max"] == 60
+        assert body["results"][0]["property_evidence"]["evidence_scope"] == "selected_only"
+>       assert hydrated == [rows["c"].id]
+E       AssertionError: assert ['mat:scope_o...3634770aa5:e'] == ['mat:scope_o...3634770aa5:c']
+E         
+E         At index 0 diff: 'mat:scope_order_513634770aa5:a' != 'mat:scope_order_513634770aa5:c'
+E         Left contains 4 more items, first extra item: 'mat:scope_order_513634770aa5:b'
+E         Use -v to get more diff
+
+tests/test_material_source_scope_ordering.py:190: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-09-21 19:54:31,391 INFO  httpx  HTTP Request: GET http://test/v1/materials?family=scope_order_513634770aa5&sort=tc_max&offset=1&limit=1 "HTTP/1.1 200 OK"
+------------------------------ Captured log call -------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/v1/materials?family=scope_order_513634770aa5&sort=tc_max&offset=1&limit=1 "HTTP/1.1 200 OK"
+=============================== warnings summary ===============================
+routers/admin.py:84
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:84: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_material_source_scope_ordering.py::test_only_returned_page_rows_build_complete_public_evidence_envelopes
+1 failed, 1 warning in 1.75s
+Removed only this run's disposable services and temporary test data.

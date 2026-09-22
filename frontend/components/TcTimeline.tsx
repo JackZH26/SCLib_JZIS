@@ -1,410 +1,192 @@
 "use client";
 
-/**
- * Plotly scatter: Tc (K) vs year, one dot per (material, year, Tc,
- * pressure) measurement. Server-side deduped in routers/timeline.py.
- *
- * Axes + interaction notes:
- *
- * - Y axis defaults to [-30, 300] K. The -30 K bottom is pure
- *   visual padding so dots near Tc=0 don't clip against the axis
- *   line; `minallowed` clamps pan/zoom to that same -30 K floor so
- *   readers can never see deeply negative (and physically nonsense)
- *   Kelvin. The 300 K top keeps the near-room-temperature hydride
- *   claims (~294 K) on screen; upward zoom is still allowed in case
- *   future claims push Tc past 300 K.
- *
- * - X axis auto-ranges to the data, with a small ±1-year pad so the
- *   outermost points aren't glued to the frame edges. Each point's
- *   rendered x position gets a small deterministic jitter (±0.35 yr,
- *   stable per material) so high-volume years (NIMS 1995–2002) don't
- *   stack into solid unreadable columns. The original integer year
- *   is preserved in the hover card.
- *
- * - Markers are small (5 px) and semi-transparent so overlaps remain
- *   legible as density rather than a single opaque blob.
- *
- * - modeBar is ON (pan / box-zoom / reset / download PNG). dragmode
- *   defaults to 'pan' because scrolling a timeline left-right is
- *   more natural than draw-a-box. scrollZoom lets the mouse wheel
- *   zoom both axes in tandem.
- *
- * Loaded dynamically (ssr: false) because plotly.js walks `window`
- * at import time. WebGL is preferred, with an SVG compatibility
- * renderer for browsers where WebGL is disabled or unavailable.
- */
+/** Display clusters are coordinate overlaps, never scientific deduplication. */
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { TimelineCoverage, TimelinePoint } from "@/lib/api";
+import type { TimelineCoverage, TimelinePoint, TimelineRecordSummary, TimelineSampling } from "@/lib/api";
+import { recordClassification } from "@/lib/result-semantics";
+import { pressureLabel } from "@/lib/pressure-semantics";
 import { FAMILY_COLORS, familyLabel } from "@/lib/families";
-import { formulaToHtml } from "@/components/FormulaDisplay";
+import { FormulaDisplay } from "@/components/FormulaDisplay";
+import { knownVisibility, visibilityIsRestricted, visibilityLabel } from "@/lib/material-visibility";
+import { clusterTimelinePoints, escapePlotlyHtml, formatTimelineTc, sortedTimelinePoints, timelineOrigin, timelinePointKey, timelineRenderBudget, timelineYearBasis } from "@/lib/timeline-display";
 
-// `loading: () => null` because we render our own overlay below; the
-// default would briefly flash plotly's empty inner div before our
-// spinner appears.
-const PlotWebGL = dynamic(() => import("@/components/PlotlyGl2d"), {
-  ssr: false,
-  loading: () => null,
-});
-
-const PlotSvg = dynamic(() => import("@/components/PlotlyBasic2d"), {
-  ssr: false,
-  loading: () => null,
-});
-
-const Y_MAX_DEFAULT = 300;
-// Visual cushion below 0 K so dots clustered around Tc=0 aren't
-// pressed flat against the x-axis. Negative Kelvin is unphysical so
-// these K values never carry data — they're whitespace only.
-const Y_MIN_DEFAULT = -30;
+const PlotWebGL = dynamic(() => import("@/components/PlotlyGl2d"), { ssr: false, loading: () => null });
+const PlotSvg = dynamic(() => import("@/components/PlotlyBasic2d"), { ssr: false, loading: () => null });
 const SVG_POINT_LIMIT = 3000;
-
+const TABLE_PAGE_SIZE = 25;
 type TimelineRenderer = "detecting" | "webgl" | "svg";
+type TemperatureView = "linear" | "log" | "low";
 
 export function browserSupportsWebGL(): boolean {
   if (typeof document === "undefined") return false;
   try {
     const canvas = document.createElement("canvas");
-    // Plotly GL2D requests a WebGL 1 context with these attributes. Do not
-    // probe WebGL 2 first: a successful WebGL 2 context locks that canvas and
-    // can hide the fact that Plotly's required WebGL 1 context is unavailable.
-    const attributes: WebGLContextAttributes = {
-      preserveDrawingBuffer: true,
-      premultipliedAlpha: true,
-    };
+    const attributes: WebGLContextAttributes = { preserveDrawingBuffer: true, premultipliedAlpha: true };
     return Boolean(canvas.getContext("webgl", attributes));
-  } catch {
-    return false;
-  }
+  } catch { return false; }
 }
 
-function pressureLabel(p: number | null | undefined): string {
-  if (p == null) return "ambient (unstated)";
-  if (p <= 0) return "ambient";
-  return `${p.toFixed(1)} GPa`;
+function pointOriginRole(point: TimelinePoint): string {
+  const classification = recordClassification({ result_classification: point });
+  return `${timelineOrigin(point)} · ${classification.role} source role`;
 }
 
-function paperIdLabel(paperId: string | null | undefined): string {
-  const id = paperId?.trim();
-  if (!id) return "";
-  if (id.startsWith("aps:")) return `DOI: ${id.slice(4)}`;
-  if (id.startsWith("doi:")) return `DOI: ${id.slice(4)}`;
-  if (id.startsWith("arxiv:")) return `arXiv: ${id.slice(6)}`;
-  if (id.startsWith("nims:")) return `NIMS: ${id.slice(5)}`;
-  return id;
-}
+function numberLabel(value: number): string { return value.toLocaleString("en-US"); }
 
-// Deterministic ±0.35-year horizontal jitter seeded by material +
-// Tc so the same point lands in the same spot on every render.
-// Cheap 32-bit string hash — good enough for visual spreading.
-function jitterYear(material: string, tc: number): number {
-  const s = `${material}:${tc}`;
-  let h = 2166136261 | 0;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  const frac = ((h >>> 0) % 1000) / 1000; // [0, 1)
-  return (frac - 0.5) * 0.7;              // [-0.35, 0.35)
-}
-
-export function TcTimeline({
-  points,
-  coverage,
-}: {
+export function TcTimeline({ points: receivedPoints, coverage, sampling, recordSummary }: {
   points: TimelinePoint[];
   coverage: TimelineCoverage | null;
+  sampling?: TimelineSampling;
+  recordSummary?: TimelineRecordSummary;
 }) {
-  // Hidden once plotly fires onInitialized (= first paint complete).
-  // Covers the gap between "page HTML hydrated" and "chart actually
-  // visible" — that gap is several seconds with tens of thousands
-  // of markers, and used to show as a blank white box.
+  const points = useMemo(() => sortedTimelinePoints(receivedPoints.filter(point => !visibilityIsRestricted(point.visibility))), [receivedPoints]);
+  const hasRestrictedRecords = points.length !== receivedPoints.length || (recordSummary?.record_candidates ?? []).some(point => visibilityIsRestricted(point.visibility));
+  const clusters = useMemo(() => clusterTimelinePoints(points), [points]);
   const [isPlotReady, setIsPlotReady] = useState(false);
   const [renderer, setRenderer] = useState<TimelineRenderer>("detecting");
+  const [temperatureView, setTemperatureView] = useState<TemperatureView>("linear");
+  const [selectedCluster, setSelectedCluster] = useState<string | null>(null);
+  const [page, setPage] = useState(0);
 
+  useEffect(() => { setRenderer(browserSupportsWebGL() ? "webgl" : "svg"); }, []);
   useEffect(() => {
-    setRenderer(browserSupportsWebGL() ? "webgl" : "svg");
-  }, []);
+    const showLinkedResult = () => {
+      const index = points.findIndex(point => point.point_id && window.location.hash === `#timeline-result-${encodeURIComponent(point.point_id)}`);
+      if (index >= 0) { setSelectedCluster(null); setPage(Math.floor(index / TABLE_PAGE_SIZE)); }
+    };
+    showLinkedResult();
+    window.addEventListener("hashchange", showLinkedResult);
+    return () => window.removeEventListener("hashchange", showLinkedResult);
+  }, [points]);
+  const fallBackToSvg = useCallback(() => { setIsPlotReady(false); setRenderer("svg"); }, []);
+  const handleInitialized = useCallback((_figure: unknown, graphDiv: Readonly<HTMLElement>) => {
+    if (renderer === "webgl" && graphDiv.querySelector(".no-webgl")) { fallBackToSvg(); return; }
+    setIsPlotReady(true);
+  }, [fallBackToSvg, renderer]);
 
-  const fallBackToSvg = useCallback(() => {
-    setIsPlotReady(false);
-    setRenderer("svg");
-  }, []);
-
-  const handleInitialized = useCallback(
-    (_figure: unknown, graphDiv: Readonly<HTMLElement>) => {
-      // Plotly treats an unavailable GL2D context as a successful render and
-      // inserts .no-webgl instead of rejecting, so onError alone cannot catch
-      // this common failure mode.
-      if (renderer === "webgl" && graphDiv.querySelector(".no-webgl")) {
-        fallBackToSvg();
-        return;
-      }
-      setIsPlotReady(true);
-    },
-    [fallBackToSvg, renderer],
-  );
-
+  const eligibleClusters = useMemo(() => temperatureView === "log" ? clusters.filter(cluster => cluster.tc_kelvin > 0) : clusters, [clusters, temperatureView]);
+  const renderClusters = useMemo(() => timelineRenderBudget(eligibleClusters, renderer, SVG_POINT_LIMIT), [eligibleClusters, renderer]);
   const traces = useMemo(() => {
-    // SVG is deliberately bounded: it creates one DOM marker per point,
-    // unlike scattergl. Evenly sampling preserves the full time span and
-    // avoids freezing older/locked-down browsers while still providing a
-    // useful chart instead of Plotly's fatal WebGL message.
-    const renderPoints =
-      renderer === "svg" && points.length > SVG_POINT_LIMIT
-        ? points.filter(
-            (_, index) =>
-              index % Math.ceil(points.length / SVG_POINT_LIMIT) === 0,
-          )
-        : points;
-    const grouped = new Map<string, TimelinePoint[]>();
-    for (const point of renderPoints) {
-      const family = point.family ?? "unknown";
-      const familyPoints = grouped.get(family);
-      if (familyPoints) familyPoints.push(point);
-      else grouped.set(family, [point]);
+    const grouped = new Map<string, typeof renderClusters>();
+    for (const cluster of renderClusters) {
+      const group = grouped.get(cluster.family);
+      if (group) group.push(cluster); else grouped.set(cluster.family, [cluster]);
     }
+    return Array.from(grouped, ([family, subset]) => ({
+      type: renderer === "webgl" ? ("scattergl" as const) : ("scatter" as const),
+      mode: "markers" as const,
+      name: escapePlotlyHtml(family === "mixed" ? "Mixed families (overlap)" : family === "unknown" ? "Other / unknown family" : familyLabel(family)),
+      x: subset.map(cluster => cluster.year),
+      y: subset.map(cluster => cluster.tc_kelvin),
+      customdata: subset.map(cluster => [
+        cluster.id,
+        escapePlotlyHtml(formatTimelineTc(cluster.tc_kelvin)),
+        escapePlotlyHtml(cluster.members.length === 1 ? cluster.members[0].material : `${cluster.members.length} overlapping received results`),
+        escapePlotlyHtml(`${cluster.members.length} received results · ${cluster.sourceCount} linked sources`),
+        // All source strings are escaped before Plotly parses its limited HTML.
+        cluster.members.slice(0, 3).map(point => escapePlotlyHtml(`${point.material}: ${pointOriginRole(point)}; ${visibilityLabel(point.visibility)}; ${pressureLabel(point.pressure_semantics, point.pressure_gpa)}; ${timelineYearBasis(point)}; ${point.paper_id ?? "source unavailable"}`)).join("<br>"),
+        cluster.members.length > 3 ? "<br>More received members: click marker and inspect the table." : "",
+      ]),
+      hovertemplate: "<b>%{customdata[2]}</b><br>Tc = %{customdata[1]}<br>Plotted year = %{x}<br>%{customdata[3]}<br>%{customdata[4]}%{customdata[5]}<br>Click to inspect every received member.<extra></extra>",
+      marker: {
+        size: subset.map(cluster => Math.min(15, 6 + Math.log2(cluster.members.length) * 2)),
+        opacity: 0.75,
+        color: FAMILY_COLORS[family] ?? "#64748b",
+        symbol: subset.map(cluster => cluster.origin === "Observed" ? "circle" : cluster.origin === "Computed" ? "circle-open" : cluster.origin === "Unknown / conflict" ? "x" : cluster.origin === "Mixed origins" ? "square-open" : "diamond-open"),
+        line: { width: 1.3 },
+      },
+    }));
+  }, [renderClusters, renderer]);
 
-    return Array.from(grouped, ([fam, subset]) => {
-      const familyColor = FAMILY_COLORS[fam] ?? "#94a3b8";
-      return {
-        type: renderer === "webgl" ? ("scattergl" as const) : ("scatter" as const),
-        mode: "markers" as const,
-        name: fam === "unknown" ? "Other" : familyLabel(fam),
-        x: subset.map((p) => p.year + jitterYear(p.material, p.tc_kelvin)),
-        y: subset.map((p) => p.tc_kelvin),
-        customdata: subset.map((p) => [
-          // Pressure label is three-state:
-          //   explicit >0 → "X GPa"
-          //   explicit 0  → "ambient" (the paper confirms ambient P)
-          //   null        → "ambient (unstated)" — we have no evidence
-          //                 one way or the other; historically the NER
-          //                 defaulted to 0.0 for unstated pressures, so
-          //                 this bucket is the most honest fallback.
-          pressureLabel(p.pressure_gpa),
-          paperIdLabel(p.paper_id),
-          p.year,
-          // Theory tag, prefixed with <br> so it nests cleanly under
-          // the material name in the hover card; empty string for
-          // experimental points so the line is suppressed.
-          p.is_theoretical ? "<br>⚠ theoretical (DFT / computational)" : "",
-        ]),
-        text: subset.map((p) => formulaToHtml(p.material)),
-        hovertemplate:
-          "<b>%{text}</b>%{customdata[3]}<br>" +
-          "Tc = %{y} K<br>" +
-          "P = %{customdata[0]}<br>" +
-          "Year = %{customdata[2]}<br>" +
-          "%{customdata[1]}<extra></extra>",
-        marker: {
-          size: 5,
-          // Theoretical points deliberately faded so a single chatty
-          // DFT paper doesn't visually outweigh experimental data.
-          opacity: subset.map((p) => (p.is_theoretical ? 0.35 : 0.7)),
-          color: familyColor,
-          // Hollow ring for theoretical, filled disk for experimental.
-          // Lets readers tell apart "this Tc was measured" from "this
-          // Tc was calculated" at a glance.
-          symbol: subset.map((p) =>
-            p.is_theoretical ? "circle-open" : "circle",
-          ),
-          line: {
-            // - Hollow circles need a stroke wide enough to see at
-            //   5 px size → 1.4
-            // - Filled experimental high-pressure points get a dark
-            //   outline (existing scan-at-a-glance hint) → 1.2
-            // - Plain ambient experimental → no stroke
-            width: subset.map((p) => {
-              if (p.is_theoretical) return 1.4;
-              if (p.pressure_gpa != null && p.pressure_gpa > 0) return 1.2;
-              return 0;
-            }),
-            // Theoretical strokes inherit the family colour (the ring
-            // IS the visible mark); experimental high-P points get the
-            // dark slate outline as before.
-            color: subset.map((p) =>
-              p.is_theoretical ? familyColor : "#0f172a",
-            ),
-          },
-        },
-      };
-    });
-  }, [points, renderer]);
-
-  if (points.length === 0) {
-    return (
-      <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
-        No measurements match this filter yet. Daily aggregates run at
-        03:10 UTC; come back tomorrow or pick a different family.
-      </div>
-    );
-  }
-
-  // X range: pad one year either side so outermost dots aren't on
-  // the axis line.
-  const xMin = (coverage?.year_min ?? 1990) - 1;
-  const xMax = (coverage?.year_max ?? new Date().getUTCFullYear()) + 1;
+  const activeCluster = clusters.find(cluster => cluster.id === selectedCluster);
+  const tablePoints = activeCluster?.members ?? points;
+  const totalPages = Math.max(1, Math.ceil(tablePoints.length / TABLE_PAGE_SIZE));
+  const safePage = Math.min(page, totalPages - 1);
+  const shownRows = tablePoints.slice(safePage * TABLE_PAGE_SIZE, (safePage + 1) * TABLE_PAGE_SIZE);
   const Plot = renderer === "webgl" ? PlotWebGL : PlotSvg;
+  const minYear = coverage?.year_min ?? points[0]?.year ?? 1990;
+  const maxYear = coverage?.year_max ?? points[points.length - 1]?.year ?? new Date().getUTCFullYear();
+  const positiveTcs = points.filter(point => point.tc_kelvin > 0).map(point => point.tc_kelvin);
+  const minTc = positiveTcs.length ? Math.min(...positiveTcs) : 0.001;
+  const maxTc = Math.max(300, ...points.map(point => point.tc_kelvin));
+  const yRange = temperatureView === "log" ? [Math.log10(minTc) - 0.1, Math.log10(maxTc) + 0.05] : temperatureView === "low" ? [0, 1] : [0, maxTc * 1.05];
 
-  return (
-    <div
-      className="relative w-full overflow-hidden rounded-lg border border-slate-200 bg-white"
-      style={{ minHeight: 560 }}
-    >
-      {!isPlotReady && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white">
-          <div className="flex flex-col items-center gap-3">
-            <div
-              className="h-10 w-10 animate-spin rounded-full border-2 border-slate-200 border-t-slate-900"
-              aria-hidden
-            />
-            <p className="text-sm text-slate-500">Rendering chart…</p>
+  return <section className="space-y-4" aria-label="Reported Tc results explorer">
+    <TimelineSummary summary={hasRestrictedRecords ? undefined : recordSummary} />
+    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700" role="status">
+      {sampling && !hasRestrictedRecords ? <>
+        <p>{sampling.is_sampled ? "Display sample" : "Unsampled response selection"}: {numberLabel(sampling.returned_points)} returned results from {numberLabel(sampling.total_points)} eligible reported results. Method: {sampling.method.replaceAll("_", " ")}. This display selection is not a statistically representative sample or an ML dataset.</p>
+        <p className="mt-1 text-xs">Selected before pagination: {numberLabel(sampling.selected_points)}. Strata represented: {numberLabel(sampling.strata_represented)} / {numberLabel(sampling.strata_total)}; omitted rare groups: {numberLabel(sampling.rare_groups_omitted)}. Policy: {sampling.policy_version}.</p>
+      </> : <p>Server sampling metadata unavailable. {numberLabel(points.length)} received results are inspectable below; no claim of completeness or representativeness is made.</p>}
+      {receivedPoints.length !== points.length && <p className="mt-1">{numberLabel(receivedPoints.length - points.length)} restricted results were withheld by the current visibility guard.</p>}
+    </div>
+    {points.length === 0 ? <p className="rounded-lg border border-dashed border-slate-300 p-8 text-center text-sm">No eligible reported Tc results match this filter.</p> : <>
+      <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600" aria-label="Result origin symbol legend">
+            <span>● Observed</span><span>○ Computed</span><span>◇ Inferred / AI-Proposed</span><span>× Unknown / conflict</span><span>□ Mixed origins</span>
           </div>
+          <label className="text-xs font-medium">Temperature view <select className="ml-2 rounded border bg-white p-1" value={temperatureView} onChange={event => setTemperatureView(event.target.value as TemperatureView)}>
+            <option value="linear">Linear (K)</option><option value="log">Logarithmic (K)</option><option value="low">Low temperature (0–1 K)</option>
+          </select></label>
         </div>
-      )}
-      {/* Symbol legend lives in the DOM above the Plotly chart, NOT
-          as a plotly annotation. The annotation version collided with
-          plotly's modebar (camera/zoom/pan icons in the top-right) so
-          the text was always partly hidden behind those buttons. As
-          plain React it gets its own row + clean typography, and the
-          modebar keeps the chart's top-right to itself. */}
-      <SymbolLegend />
-      {renderer === "svg" && (
-        <p
-          className="border-b border-amber-100 bg-amber-50 px-4 py-2 text-xs text-amber-900"
-          role="status"
-        >
-          WebGL is unavailable, so the timeline is using its SVG compatibility
-          renderer
-          {points.length > SVG_POINT_LIMIT
-            ? ` (showing up to ${SVG_POINT_LIMIT.toLocaleString()} representative points)`
-            : ""}
-          .
-        </p>
-      )}
-      {renderer !== "detecting" && (
-        <Plot
-          key={renderer}
-          onInitialized={handleInitialized}
-          onError={renderer === "webgl" ? fallBackToSvg : undefined}
-          onWebGlContextLost={renderer === "webgl" ? fallBackToSvg : undefined}
-          data={traces}
-        layout={{
-          autosize: true,
-          height: 560,
-          margin: { l: 60, r: 20, t: 24, b: 60 },
-          dragmode: "pan",
-          hovermode: "closest",
-          xaxis: {
-            title: { text: "Year" },
-            gridcolor: "#eef2ee",
-            range: [xMin, xMax],
-            // Allow user to scroll beyond the data range a bit if
-            // they drag, but stay sane.
-            rangeslider: { visible: false },
-            showspikes: true,
-            spikemode: "across",
-            spikecolor: "#cbd5cb",
-            spikethickness: 1,
-          },
-          yaxis: {
-            title: { text: "Tc (K)" },
-            gridcolor: "#eef2ee",
-            range: [Y_MIN_DEFAULT, Y_MAX_DEFAULT],
-            autorange: false,
-            // Floor at Y_MIN_DEFAULT (= -30 K). Pan/zoom can't drift
-            // below it. Auto-ticks handle spacing — at the default
-            // [-30, 250] view plotly picks ≥50 K steps so no negative
-            // tick label shows; zoomed views keep their fine ticks.
-            minallowed: Y_MIN_DEFAULT,
-            zeroline: true,
-            zerolinecolor: "#d4e4d4",
-          },
-          legend: { orientation: "h", y: -0.14 },
-          paper_bgcolor: "#fff",
-          plot_bgcolor: "#fff",
-          // The symbol legend used to live here as a plotly annotation
-          // at (1, 1.04) but it collided with the modebar. It is now a
-          // React element above the chart (see <SymbolLegend />).
-        }}
-        config={{
-          responsive: true,
-          displayModeBar: true,
-          scrollZoom: true,
-          // Keep only the navigation tools we actually want; drop
-          // the noisy plotly logo + select tools.
-          modeBarButtonsToRemove: [
-            "lasso2d",
-            "select2d",
-            "autoScale2d",
-            "toggleSpikelines",
-          ],
-          displaylogo: false,
-          toImageButtonOptions: {
-            filename: "sclib-tc-timeline",
-            format: "png",
-            scale: 2,
-          },
-        }}
-          style={{ width: "100%", height: "560px" }}
-        />
-      )}
-    </div>
-  );
+        <p className="px-4 py-2 text-xs text-slate-600">Markers describe reported result origin, not scientific approval. Catalogue eligibility is governed separately; each hover includes its visibility status. Exact year/Tc overlaps are display clusters only: no results are merged. Click a marker or use the overlap selector below to inspect every received member. Server sampling may omit additional results at the same coordinates; cluster counts refer to this received selection. Years are not jittered.</p>
+        {points.some(point => !knownVisibility(point.visibility)?.public_catalogue_eligible) && <p className="border-y border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-950">Archive or visibility-unverified points are present in this response. Do not treat them as accepted records or training labels.</p>}
+        {renderer === "svg" && <p className="border-y border-amber-100 bg-amber-50 px-4 py-2 text-xs text-amber-900" role="status">WebGL is unavailable; using the SVG compatibility renderer. {renderClusters.length < eligibleClusters.length ? `Renderer budget: showing the first ${numberLabel(renderClusters.length)} of ${numberLabel(eligibleClusters.length)} coordinate clusters in deterministic year/Tc/identity order, not a representative sample. All ${numberLabel(points.length)} received results remain accessible in the table.` : "Every coordinate cluster is rendered."}</p>}
+        {temperatureView === "low" && <p className="px-4 py-2 text-xs">The chart is zoomed to 0–1 K. Higher-Tc results remain in the table; use Linear or Logarithmic to see their markers.</p>}
+        {temperatureView === "log" && positiveTcs.length !== points.length && <p className="px-4 py-2 text-xs">Zero or nonpositive Tc cannot appear on a logarithmic axis; those results remain in the table.</p>}
+        <div className="relative" style={{ minHeight: 560 }}>
+          {!isPlotReady && <div className="pointer-events-none absolute right-4 top-2 z-10 rounded bg-white/90 px-3 py-2 text-xs text-slate-500" role="status">Rendering chart… The table is available below.</div>}
+          {renderer !== "detecting" && <Plot key={renderer} data={traces} useResizeHandler onInitialized={handleInitialized} onError={renderer === "webgl" ? fallBackToSvg : undefined} onWebGlContextLost={renderer === "webgl" ? fallBackToSvg : undefined}
+            onClick={event => { const custom = event.points[0]?.customdata as unknown; if (Array.isArray(custom) && typeof custom[0] === "string") { setSelectedCluster(custom[0]); setPage(0); } }}
+            layout={{ autosize: true, height: 560, margin: { l: 70, r: 20, t: 24, b: 85 }, dragmode: "pan", hovermode: "closest", xaxis: { title: { text: "Reported year (basis shown per result)" }, range: [minYear - 1, maxYear + 1], dtick: maxYear - minYear < 15 ? 1 : undefined, gridcolor: "#eef2ee" }, yaxis: { title: { text: "Reported Tc (K)" }, type: temperatureView === "log" ? "log" : "linear", dtick: temperatureView === "log" ? 1 : undefined, range: yRange, minallowed: temperatureView === "log" ? undefined : 0, gridcolor: "#eef2ee" }, legend: { orientation: "h", y: -0.2 }, paper_bgcolor: "#fff", plot_bgcolor: "#fff" }}
+            config={{ responsive: true, displayModeBar: true, scrollZoom: true, displaylogo: false, modeBarButtonsToRemove: ["lasso2d", "select2d", "autoScale2d", "toggleSpikelines"], toImageButtonOptions: { filename: "sclib-reported-tc-timeline", format: "png", scale: 2 } }} style={{ width: "100%", height: "560px" }} />}
+        </div>
+      </div>
+      <div className="rounded-lg border border-slate-200 bg-white p-4" id="reported-results">
+        <h2 className="text-lg font-semibold">Inspectable reported results</h2>
+        <p className="mt-1 text-xs text-slate-600">All {numberLabel(points.length)} received results are available here, including coordinate overlaps and results omitted by the SVG renderer budget. This table does not include results omitted by server sampling. Linked sources count bibliographic identifiers, not independent works. An occurrence count is not independent replication; legacy records remain unreviewed.</p>
+        <label className="mt-3 block text-sm">Overlap group <select aria-label="Overlap group" className="ml-2 max-w-full rounded border p-1" value={activeCluster?.id ?? ""} onChange={event => { setSelectedCluster(event.target.value || null); setPage(0); }}>
+          <option value="">All received results</option>{clusters.filter(cluster => cluster.members.length > 1).map(cluster => <option key={cluster.id} value={cluster.id}>{cluster.year} · {formatTimelineTc(cluster.tc_kelvin)} · {cluster.members.length} results · {cluster.sourceCount} linked sources</option>)}
+          {activeCluster?.members.length === 1 && <option value={activeCluster.id}>{activeCluster.year} · {formatTimelineTc(activeCluster.tc_kelvin)} · 1 result</option>}
+        </select></label>
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <caption className="pb-2 text-left text-slate-600">{activeCluster ? `${tablePoints.length} members of the selected coordinate cluster` : `${numberLabel(tablePoints.length)} received reported results`} · page {safePage + 1} of {totalPages}</caption>
+            <thead className="border-b bg-slate-50"><tr>{["Material / result", "Reported Tc", "Year / basis", "Pressure", "Origin / role", "Source / provenance", "Governance"].map(heading => <th scope="col" className="px-2 py-2" key={heading}>{heading}</th>)}</tr></thead>
+            <tbody>{shownRows.map((point, index) => <ResultRow key={`${timelinePointKey(point)}:${safePage * TABLE_PAGE_SIZE + index}`} point={point} />)}</tbody>
+          </table>
+        </div>
+        <nav className="mt-3 flex items-center gap-4 text-sm" aria-label="Reported results pagination"><button className="rounded border px-3 py-1 disabled:opacity-40" disabled={safePage === 0} onClick={() => setPage(safePage - 1)}>Previous results</button><span aria-live="polite">Page {safePage + 1} of {totalPages}</span><button className="rounded border px-3 py-1 disabled:opacity-40" disabled={safePage + 1 === totalPages} onClick={() => setPage(safePage + 1)}>Next results</button></nav>
+      </div>
+    </>}
+  </section>;
 }
 
-/**
- * Three-symbol key explaining the marker coding: filled vs hollow
- * (experimental vs theoretical) and the dark-outline cue (high-
- * pressure measurement). Sits in a flex row above the Plotly chart
- * so it can't collide with the modebar like the old plotly-
- * annotation version did.
- */
-function SymbolLegend() {
-  return (
-    <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 border-b border-slate-100 px-4 py-2 text-xs text-slate-500">
-      <LegendItem variant="filled" label="experimental" />
-      <LegendItem variant="hollow" label="theoretical (DFT)" />
-      <LegendItem variant="outlined" label="high-pressure" />
-    </div>
-  );
+function TimelineSummary({ summary }: { summary?: TimelineRecordSummary }) {
+  if (!summary || summary.scope !== "full_filtered_unsampled") return <p className="text-xs text-slate-600">Full filtered, unsampled summary unavailable. Extrema and material/source totals are not inferred from the display sample.</p>;
+  return <aside className="rounded-lg border border-slate-200 bg-white p-4" aria-label="Full filtered unsampled summary">
+    <h2 className="text-sm font-semibold">Full filtered dataset · before display sampling</h2>
+    <p className="mt-1 text-sm">{numberLabel(summary.total_points)} reported results · {numberLabel(summary.total_materials)} materials · {numberLabel(summary.source_count)} linked sources</p>
+    <p className="mt-1 text-xs text-slate-600">Sources count distinct bibliographic identifiers, not independent works or independent replications.</p>
+    <p className="mt-1 text-sm">Reported Tc range: {summary.min_tc_kelvin == null ? "unavailable" : formatTimelineTc(summary.min_tc_kelvin)} – {summary.max_tc_kelvin == null ? "unavailable" : formatTimelineTc(summary.max_tc_kelvin)}. These are extrema in this filtered dataset, not world-record claims or independently confirmed Tc values.</p>
+    <details className="mt-2 text-xs"><summary className="cursor-pointer">Inspect full-data coverage groups</summary><div className="mt-2 grid gap-3 sm:grid-cols-2">{[["Family", summary.by_family], ["Result origin", summary.by_origin], ["Year basis", summary.by_year_basis], ["Pressure state", summary.by_pressure_state]].map(([label, groups]) => <div key={String(label)}><h3 className="font-medium">{String(label)}</h3><dl>{Object.entries(groups as Record<string, number>).sort(([left], [right]) => left.localeCompare(right, "en")).map(([group, count]) => <div className="flex justify-between gap-3" key={group}><dt>{group.replaceAll("_", " ")}</dt><dd>{numberLabel(count)}</dd></div>)}</dl></div>)}</div></details>
+    {summary.record_candidates.length > 0 && <details className="mt-2 text-xs"><summary className="cursor-pointer">Highest reported Tc in this filtered dataset (not a world-record claim)</summary><p className="mt-2">{summary.record_candidates.length} shown of {summary.record_candidate_count ?? summary.record_candidates.length} tied results{summary.record_candidates_truncated ? "; candidate list is truncated" : ""}. These full-data extrema may be absent from the display sample; no scientific acceptance is asserted.</p><ul className="mt-2 space-y-2">{summary.record_candidates.map((point, index) => <li key={`${timelinePointKey(point)}:${index}`}><span className="font-medium">{point.material} · {formatTimelineTc(point.tc_kelvin)}</span> · {point.year} ({timelineYearBasis(point)}) · criterion: {point.result_metadata?.tc_criterion ?? "unknown"} · {pointOriginRole(point)} · {point.paper_id ? <Link className="text-sky-800 underline" href={`/paper/${encodeURIComponent(point.paper_id)}`}>{point.paper_id}</Link> : "source unavailable"}{point.material_id && <> · <Link className="text-sky-800 underline" href={`/materials/${encodeURIComponent(point.material_id)}`}>Material details</Link></>}<div className="break-all text-slate-500">{point.result_metadata?.result_id ?? "result identity unavailable"} · {visibilityLabel(point.visibility)}</div></li>)}</ul></details>}
+  </aside>;
 }
 
-function LegendItem({
-  variant,
-  label,
-}: {
-  variant: "filled" | "hollow" | "outlined";
-  label: string;
-}) {
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-        {variant === "filled" && (
-          <circle cx="6" cy="6" r="4" fill="#64748b" />
-        )}
-        {variant === "hollow" && (
-          <circle
-            cx="6"
-            cy="6"
-            r="4"
-            fill="none"
-            stroke="#64748b"
-            strokeWidth="1.4"
-          />
-        )}
-        {variant === "outlined" && (
-          <circle
-            cx="6"
-            cy="6"
-            r="4"
-            fill="#64748b"
-            stroke="#0f172a"
-            strokeWidth="1.4"
-          />
-        )}
-      </svg>
-      <span>{label}</span>
-    </span>
-  );
+function ResultRow({ point }: { point: TimelinePoint }) {
+  const metadata = point.result_metadata;
+  const anchor = point.point_id ? `timeline-result-${encodeURIComponent(point.point_id)}` : undefined;
+  return <tr className="border-b align-top" id={anchor}>
+    <td className="px-2 py-3"><div>{point.material_id ? <Link className="font-medium text-sky-800 underline" href={`/materials/${encodeURIComponent(point.material_id)}`}><FormulaDisplay formula={point.material} /></Link> : <FormulaDisplay formula={point.material} />}</div><div className="mt-1 break-all text-[10px] text-slate-500">{metadata?.result_id ?? "Result identity unavailable"}{anchor && <a href={`#${anchor}`} className="ml-1 text-sky-800 underline" aria-label={`Link to result ${metadata?.result_id ?? point.point_id}`}>#</a>}</div></td>
+    <td className="whitespace-nowrap px-2 py-3">{formatTimelineTc(point.tc_kelvin)}<div className="mt-1 text-slate-500">Criterion: {metadata?.tc_criterion ?? "unknown"}</div></td>
+    <td className="px-2 py-3">{point.year}<div className="mt-1 text-slate-500">{timelineYearBasis(point)}</div>{metadata?.source_date && <div>Source date: {metadata.source_date} ({metadata.source_date_basis ?? "basis unavailable"})</div>}{(metadata?.chronology_warnings ?? []).map(warning => <p key={warning} className="mt-1 text-amber-900">Chronology warning: {warning.replaceAll("_", " ")}</p>)}</td>
+    <td className="px-2 py-3">{pressureLabel(point.pressure_semantics, point.pressure_gpa)}</td>
+    <td className="px-2 py-3">{pointOriginRole(point)}</td>
+    <td className="max-w-sm px-2 py-3">{point.paper_id ? <Link className="break-all text-sky-800 underline" href={`/paper/${encodeURIComponent(point.paper_id)}`}>{point.paper_id}</Link> : "Source unavailable"}<details className="mt-2"><summary className="cursor-pointer text-sky-800">Result provenance and state</summary><dl className="mt-2 space-y-1"><div><dt className="inline font-medium">Identity basis: </dt><dd className="inline">{metadata?.identity_basis ?? "unavailable"}</dd></div><div><dt className="inline font-medium">Result revision: </dt><dd className="inline">{metadata?.result_revision ?? "unavailable"}</dd></div><div><dt className="inline font-medium">Source version: </dt><dd className="inline">{metadata?.source_version ?? "unavailable"}</dd></div><div><dt className="inline font-medium">Source occurrences: </dt><dd className="inline">{metadata?.occurrence_count ?? "unavailable"} (not replication)</dd></div></dl><pre className="mt-2 max-w-sm overflow-x-auto whitespace-pre-wrap break-all">{JSON.stringify({ state: metadata?.state ?? {}, source_locator: metadata?.source_locator ?? {} }, null, 2)}</pre></details></td>
+    <td className="px-2 py-3">{visibilityLabel(point.visibility)}<div className="mt-1 text-slate-500">{metadata?.review_status === "legacy_unreviewed" ? "Legacy result · unreviewed" : "Result-level review unavailable"}. No scientific acceptance asserted.</div>{metadata?.identity_conflict && <p className="mt-1 text-amber-900">Conflicting occurrences share a supplied result identity.</p>}{(metadata?.identity_warnings ?? []).map(warning => <p key={warning} className="mt-1 text-amber-900">Identity warning: {warning.replaceAll("_", " ")}</p>)}</td>
+  </tr>;
 }

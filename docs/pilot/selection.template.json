@@ -1,0 +1,19 @@
+{
+  "schema_version": "ml08-selection/1.0.0",
+  "pilot_id": "ML08-proposed",
+  "protocol_status": "proposed",
+  "protocol_revision": "ML08-pilot/0.1-proposed",
+  "protocol_sha256": null,
+  "approval_reference": null,
+  "selection_status": "draft",
+  "target_candidate_count": 60,
+  "selection_method": "Proposed: stratify actual source events by material family and evidence conditions; approve the strata and sampling procedure before selecting events.",
+  "strata": [],
+  "candidates": [],
+  "reviewers": [],
+  "second_review_candidate_ids": [],
+  "independence_plan": null,
+  "selected_at": null,
+  "frozen_at": null,
+  "selection_sha256": null
+}

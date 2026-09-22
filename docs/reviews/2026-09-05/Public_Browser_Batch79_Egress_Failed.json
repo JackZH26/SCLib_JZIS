@@ -1,0 +1,1078 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/25.5.0/bin/node",
+      "/Users/jackzhou/Documents/SCLib_JZIS/frontend/node_modules/@playwright/test/cli.js",
+      "test",
+      "--retries=0",
+      "--reporter=list,json,html",
+      "--output=/private/tmp/sclib-batch79-public-mwua8Q/test-results"
+    ],
+    "configFile": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/playwright.config.ts",
+    "rootDir": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/sclib-batch79-public-mwua8Q/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ],
+      [
+        "html"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 1,
+    "webServer": {
+      "command": "\"/opt/homebrew/Cellar/node/25.5.0/bin/node\" \"/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-server.cjs\"",
+      "url": "http://127.0.0.1:3102/sclib/login",
+      "reuseExistingServer": false,
+      "timeout": 180000
+    }
+  },
+  "suites": [
+    {
+      "title": "mobile-visual.spec.ts",
+      "file": "mobile-visual.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "login stays inside the 390px mobile viewport",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 659,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:37:58.571Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-login-stays-inside-the-390px-mobile-viewport/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-login-stays-inside-the-390px-mobile-viewport/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-login-stays-inside-the-390px-mobile-viewport/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "501b1678c88e942334fb-01c17c1f93ed8aaab686",
+          "file": "mobile-visual.spec.ts",
+          "line": 11,
+          "column": 7
+        },
+        {
+          "title": "register stays inside the 390px mobile viewport",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 532,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:00.407Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-register-sta-9577f-e-the-390px-mobile-viewport/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-register-sta-9577f-e-the-390px-mobile-viewport/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-register-sta-9577f-e-the-390px-mobile-viewport/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "501b1678c88e942334fb-6462a3f217a74b4c6ad8",
+          "file": "mobile-visual.spec.ts",
+          "line": 11,
+          "column": 7
+        },
+        {
+          "title": "forgot-password stays inside the 390px mobile viewport",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 512,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:01.956Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-forgot-passw-612b5-e-the-390px-mobile-viewport/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-forgot-passw-612b5-e-the-390px-mobile-viewport/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-forgot-passw-612b5-e-the-390px-mobile-viewport/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "501b1678c88e942334fb-9b1f10f4a32914f3fa36",
+          "file": "mobile-visual.spec.ts",
+          "line": 11,
+          "column": 7
+        },
+        {
+          "title": "reset-password stays inside the 390px mobile viewport",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 485,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:03.502Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-reset-passwo-1cfd3-e-the-390px-mobile-viewport/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-reset-passwo-1cfd3-e-the-390px-mobile-viewport/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-reset-passwo-1cfd3-e-the-390px-mobile-viewport/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "501b1678c88e942334fb-90bc70e0993f7d33b6cc",
+          "file": "mobile-visual.spec.ts",
+          "line": 11,
+          "column": 7
+        },
+        {
+          "title": "mobile header opens an accessible navigation menu",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 786,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:04.987Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-mobile-heade-1c827--accessible-navigation-menu/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-mobile-heade-1c827--accessible-navigation-menu/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/mobile-visual-mobile-heade-1c827--accessible-navigation-menu/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "501b1678c88e942334fb-9a63fa998613bb06cc5f",
+          "file": "mobile-visual.spec.ts",
+          "line": 36,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "privacy.spec.ts",
+      "file": "privacy.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "registration minimizes required personal data",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 702,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:06.904Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-registration-minimizes-required-personal-data/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-registration-minimizes-required-personal-data/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-registration-minimizes-required-personal-data/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "62491902cb946290adea-10ef5155a2a2b6885b88",
+          "file": "privacy.spec.ts",
+          "line": 3,
+          "column": 5
+        },
+        {
+          "title": "privacy policy is readable without mobile overflow",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 469,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:08.618Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-privacy-policy-is-readable-without-mobile-overflow/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-privacy-policy-is-readable-without-mobile-overflow/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-privacy-policy-is-readable-without-mobile-overflow/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "62491902cb946290adea-9dc1768cb264ab49c0c6",
+          "file": "privacy.spec.ts",
+          "line": 29,
+          "column": 7
+        },
+        {
+          "title": "terms policy is readable without mobile overflow",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 484,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:10.121Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-terms-policy-is-readable-without-mobile-overflow/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-terms-policy-is-readable-without-mobile-overflow/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-terms-policy-is-readable-without-mobile-overflow/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "62491902cb946290adea-b9a3b8ab8624e46ad86b",
+          "file": "privacy.spec.ts",
+          "line": 29,
+          "column": 7
+        },
+        {
+          "title": "cookies policy is readable without mobile overflow",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 480,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:11.649Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-cookies-policy-is-readable-without-mobile-overflow/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-cookies-policy-is-readable-without-mobile-overflow/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/privacy-cookies-policy-is-readable-without-mobile-overflow/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "62491902cb946290adea-23bcd10c73bccbd52b3b",
+          "file": "privacy.spec.ts",
+          "line": 29,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "public-auth.spec.ts",
+      "file": "public-auth.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "production auth navigation exposes only public or same-origin links",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 845,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 4\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 4\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 4\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:13.300Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-auth-production-aut-3df1e-public-or-same-origin-links/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-auth-production-aut-3df1e-public-or-same-origin-links/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-auth-production-aut-3df1e-public-or-same-origin-links/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "64cc60d2a1fbe6ed2e47-fb8838ae276984ba496a",
+          "file": "public-auth.spec.ts",
+          "line": 5,
+          "column": 5
+        },
+        {
+          "title": "password reset forms expose the expected accessible controls",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 644,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 4\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 4\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 4\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:15.217Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-auth-password-reset-4a089-xpected-accessible-controls/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-auth-password-reset-4a089-xpected-accessible-controls/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-auth-password-reset-4a089-xpected-accessible-controls/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "64cc60d2a1fbe6ed2e47-83653cd646633e54145b",
+          "file": "public-auth.spec.ts",
+          "line": 37,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "public-isolation.spec.ts",
+      "file": "public-isolation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "production pages retain English, prefixed assets and the real restrictive CSP",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 530,
+                  "error": {
+                    "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                      "column": 89,
+                      "line": 29
+                    },
+                    "snippet": "   at public-site-fixture.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m blocked \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m restrictToLocalOrigin(context\u001b[33m,\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mURL\u001b[39m(baseURL)\u001b[33m.\u001b[39morigin)\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m use()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m     expect(blocked\u001b[33m,\u001b[39m \u001b[32m\"Public-page tests must not depend on external HTTP or WebSockets\"\u001b[39m)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m   }\u001b[33m,\u001b[39m { auto\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }]\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                        "column": 89,
+                        "line": 29
+                      },
+                      "message": "Error: Public-page tests must not depend on external HTTP or WebSockets\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n   at public-site-fixture.ts:29\n\n  27 |     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);\n  28 |     await use();\n> 29 |     expect(blocked, \"Public-page tests must not depend on external HTTP or WebSockets\").toEqual([]);\n     |                                                                                         ^\n  30 |   }, { auto: true }],\n  31 | });\n  32 |\n    at Object.exports.test._test.test.extend.publicNetworkGuard.auto (/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts:29:89)"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:16.984Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-isolation-productio-07170-nd-the-real-restrictive-CSP/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-isolation-productio-07170-nd-the-real-restrictive-CSP/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-isolation-productio-07170-nd-the-real-restrictive-CSP/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-site-fixture.ts",
+                    "column": 89,
+                    "line": 29
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e2bd2eb26f16dea475e3-62d6951887e96acfd2a4",
+          "file": "public-isolation.spec.ts",
+          "line": 3,
+          "column": 5
+        },
+        {
+          "title": "the browser restriction actually blocks an attempted external API request",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 450,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 0\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[2m    \"https://api.jzis.org/sclib/v1/__synthetic_egress_probe__\",\u001b[22m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 0\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[2m    \"https://api.jzis.org/sclib/v1/__synthetic_egress_probe__\",\u001b[22m\n\u001b[2m  ]\u001b[22m\n    at /Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-isolation.spec.ts:32:21",
+                    "location": {
+                      "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-isolation.spec.ts",
+                      "column": 21,
+                      "line": 32
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 30 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 31 |\u001b[39m     expect(denied)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 32 |\u001b[39m     expect(blocked)\u001b[33m.\u001b[39mtoEqual([\u001b[32m\"https://api.jzis.org/sclib/v1/__synthetic_egress_probe__\"\u001b[39m])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 33 |\u001b[39m   } \u001b[36mfinally\u001b[39m {\n \u001b[90m 34 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\n \u001b[90m 35 |\u001b[39m   }\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-isolation.spec.ts",
+                        "column": 21,
+                        "line": 32
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 0\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[31m+   \"https://api.jzis.org/sclib/v1/auth/me\",\u001b[39m\n\u001b[2m    \"https://api.jzis.org/sclib/v1/__synthetic_egress_probe__\",\u001b[22m\n\u001b[2m  ]\u001b[22m\n\n  30 |     });\n  31 |     expect(denied).toBe(true);\n> 32 |     expect(blocked).toEqual([\"https://api.jzis.org/sclib/v1/__synthetic_egress_probe__\"]);\n     |                     ^\n  33 |   } finally {\n  34 |     await context.close();\n  35 |   }\n    at /Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-isolation.spec.ts:32:21"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T12:38:18.606Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-isolation-the-brows-1052b-empted-external-API-request/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-isolation-the-brows-1052b-empted-external-API-request/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/private/tmp/sclib-batch79-public-mwua8Q/test-results/public-isolation-the-brows-1052b-empted-external-API-request/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jackzhou/Documents/SCLib_JZIS/frontend/tests/e2e/public-isolation.spec.ts",
+                    "column": 21,
+                    "line": 32
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e2bd2eb26f16dea475e3-60b7946b05102d02b9bb",
+          "file": "public-isolation.spec.ts",
+          "line": 19,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T12:37:12.957Z",
+    "duration": 66426.765,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 13,
+    "flaky": 0
+  }
+}

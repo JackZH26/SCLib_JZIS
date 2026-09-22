@@ -145,6 +145,7 @@ async def test_additive_endpoints_page_filter_and_lazy_detail(
         candidate_id="lead-1",
         schema_version="1",
         identity=None,  # type: ignore[arg-type]
+        data_version=metadata["data_version"],
     )
     detail = json.loads(detail_response.body)
     assert detail["review_summary"] == "Detailed review for lead-1"
@@ -166,7 +167,8 @@ async def test_additive_endpoints_page_filter_and_lazy_detail(
         schema_version="1",
         identity=None,  # type: ignore[arg-type]
     )
-    assert modified_response.status_code == 304
+    # A source date cannot prove that validation/stale status is unchanged.
+    assert modified_response.status_code == 200
 
     with pytest.raises(HTTPException) as exc_info:
         await discovery_candidate_detail(
@@ -174,6 +176,7 @@ async def test_additive_endpoints_page_filter_and_lazy_detail(
             candidate_id="missing",
             schema_version="1",
             identity=None,  # type: ignore[arg-type]
+            data_version=metadata["data_version"],
         )
     assert exc_info.value.status_code == 404
     _store.clear()

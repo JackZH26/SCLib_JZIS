@@ -24,12 +24,23 @@ const NAV_BASE = [
   { href: "/dashboard/history",  label: "Ask History" },
   { href: "/dashboard/saved",    label: "Bookmarks" },
   { href: "/dashboard/feedback", label: "Feedback" },
+  { href: "/dashboard/research/review", label: "Scientific evidence" },
+  { href: "/dashboard/research/imports", label: "Scientific imports" },
+  { href: "/dashboard/research/source-tasks", label: "Source tasks" },
+  { href: "/dashboard/research/distributions", label: "Distribution rights" },
+  { href: "/dashboard/research/ml-rights", label: "ML source rights" },
+  { href: "/dashboard/research/ml-runs", label: "ML run plans" },
+  { href: "/dashboard/research/ml-pilots", label: "ML pilot participation" },
+  { href: "/dashboard/research/ml-pilot-reviews", label: "ML review declarations" },
+  { href: "/dashboard/research/discovery", label: "Discovery selection" },
+  { href: "/dashboard/research/discovery-governance", label: "Discovery governance" },
 ];
 
 // Admin-only: user management + audit queue.
 const NAV_ADMIN = [
   { href: "/dashboard/admin/users", label: "Admin · Users",  hint: "admin" },
   { href: "/dashboard/admin/audit", label: "Admin · Audit",  hint: "admin" },
+  { href: "/dashboard/admin/jobs", label: "Admin · Jobs", hint: "admin" },
 ];
 
 // Reviewer-only: audit queue (no user management).
@@ -86,7 +97,7 @@ export default function DashboardLayout({
 
   return (
     <DashboardUserProvider value={{ user, setUser }}>
-      <main className="mx-auto flex max-w-7xl gap-8 px-6 py-10">
+      <main className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-6 md:flex-row md:px-6 md:py-10">
         <Sidebar items={
           user.is_admin
             ? [...NAV_BASE, ...NAV_ADMIN]

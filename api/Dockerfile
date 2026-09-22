@@ -11,6 +11,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     UV_PROJECT_ENVIRONMENT=/opt/venv \
     UV_PYTHON_DOWNLOADS=0 \
+    TIKTOKEN_CACHE_DIR=/opt/tiktoken-cache \
     PATH="/opt/venv/bin:$PATH"
 
 # System deps: build tools for psycopg2, curl for healthchecks, tini for PID 1
@@ -27,6 +28,9 @@ WORKDIR /app
 # sync installs SCLib itself non-editably only after its source is present.
 COPY pyproject.toml uv.lock ./
 RUN uv sync --locked --no-dev --no-install-project
+# Tokenizer ranks are a runtime data dependency, not included in the wheel.
+# The locked tiktoken constructor verifies the downloaded asset's SHA-256.
+RUN python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
 
 # GIT_SHA is the short commit hash surfaced on /version so operators
 # (and the frontend Footer) can confirm what code is running. Falls
@@ -57,6 +61,7 @@ RUN groupadd --system --gid 1001 sclib \
  && useradd  --system --uid 1001 --gid sclib --home /app sclib \
  && chown -R sclib:sclib /app
 USER sclib
+RUN --network=none python -c "import tiktoken; assert tiktoken.get_encoding('cl100k_base').encode('SCLib')"
 
 EXPOSE 8000
 ENTRYPOINT ["/usr/bin/tini", "--", "/app/entrypoint.sh"]

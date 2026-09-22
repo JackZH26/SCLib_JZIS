@@ -9,51 +9,44 @@
  * to each material.
  */
 import Link from "next/link";
+import { ScientificMatches } from "@/components/ScientificMatches";
 import type { MaterialSummary } from "@/lib/api";
 import { familyLabel } from "@/lib/families";
 import { FormulaDisplay } from "@/components/FormulaDisplay";
+import { PropertyEvidenceValue } from "@/components/PropertyEvidence";
+import { selectedProperty } from "@/lib/property-evidence";
+import { ScientificAnomalyNotice } from "@/components/ScientificAnomalies";
+import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice";
+import { visibilityIsRestricted } from "@/lib/material-visibility";
+import { MaterialSemanticValue } from "@/components/MaterialSemantics";
+import { materialSemanticProperty, materialSourceCountLabel } from "@/lib/material-semantics";
+import { StructureEvidenceValue } from "@/components/StructureEvidence";
 
 /**
- * How "filled in" is this material's summary? Count non-null values
- * across the MaterialSummary fields we care about. Used to render a
- * compact progress indicator in the list so users can see at a glance
- * which materials are well-sourced vs. skeletal (name only).
- *
- * The list is the same set we surface as dedicated columns + the
- * badge flags, so a "fully green" bar means every column has data,
- * not just "papers agreed".
+ * Count source-linked selections, not arbitrary non-null legacy scalars.
+ * Coverage is not source agreement, experimental confirmation or ML readiness.
  */
-const COMPLETENESS_FIELDS = 10;
+const COVERAGE_FIELDS = ["tc_max", "tc_ambient", "pairing_symmetry", "structure_phase", "is_unconventional", "has_competing_order"];
+const COMPLETENESS_FIELDS = COVERAGE_FIELDS.length;
 
 function completeness(m: MaterialSummary): number {
-  let n = 0;
-  if (m.family) n += 1;
-  if (m.tc_max != null) n += 1;
-  if (m.tc_ambient != null) n += 1;
-  if (m.arxiv_year != null) n += 1;
-  if (m.pairing_symmetry) n += 1;
-  if (m.structure_phase) n += 1;
-  if (m.ambient_sc != null) n += 1;
-  if (m.is_unconventional != null) n += 1;
-  if (m.has_competing_order != null) n += 1;
-  if (m.total_papers > 0) n += 1;
-  return n;
+  return COVERAGE_FIELDS.filter(field => ["pairing_symmetry", "is_unconventional", "has_competing_order"].includes(field)
+    ? materialSemanticProperty(m.material_semantics, field as "pairing_symmetry" | "is_unconventional" | "has_competing_order")?.status === "reported"
+    : field !== "structure_phase" && selectedProperty(m.property_evidence, field)).length;
 }
 
 function CompletenessBar({ filled }: { filled: number }) {
   const pct = (filled / COMPLETENESS_FIELDS) * 100;
-  // 3 tiers: thin = skeletal, mid = partial, full = well-sourced. The
-  // accent green signals "data you can trust", muted slate signals
-  // "only the formula is known".
+  // Coverage only; a complete catalogue row may still mix incompatible states.
   const tone =
-    filled >= 8
+    filled >= 6
       ? "bg-[color:var(--accent)]"
       : filled >= 4
         ? "bg-[color:var(--accent)]/60"
         : "bg-slate-300";
   return (
     <div
-      title={`${filled}/${COMPLETENESS_FIELDS} fields populated`}
+      title={`${filled}/${COMPLETENESS_FIELDS} fields have source-linked selections; not scientific validation`}
       className="flex items-center gap-2"
     >
       <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
@@ -69,33 +62,8 @@ function CompletenessBar({ filled }: { filled: number }) {
   );
 }
 
-function Badge({
-  children,
-  tone = "neutral",
-}: {
-  children: React.ReactNode;
-  tone?: "neutral" | "accent" | "warn" | "muted";
-}) {
-  const palette: Record<string, string> = {
-    neutral:
-      "bg-slate-100 text-slate-700 border border-slate-200",
-    accent:
-      "bg-[rgba(58,125,92,0.08)] text-accent-deep border border-sage-border",
-    warn:
-      "bg-amber-50 text-amber-800 border border-amber-200",
-    muted:
-      "bg-slate-50 text-slate-500 border border-slate-200",
-  };
-  return (
-    <span
-      className={`inline-flex items-center whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-medium ${palette[tone]}`}
-    >
-      {children}
-    </span>
-  );
-}
-
 export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
+  rows = rows.filter(row => !visibilityIsRestricted(row.visibility));
   if (rows.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
@@ -106,19 +74,21 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
   return (
     <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
       <table className="w-full text-sm">
+        <caption className="border-b border-slate-200 px-4 py-3 text-left text-xs text-slate-500">Catalogue selections: expand each numeric property for its own source and conditions. Classification cells use current reported semantics, never family priors. A material row is not a joint observation or an ML feature row. Sorting uses legacy catalogue columns, not validated property values; unsupported selections may remain near the top. Source identifiers and legacy links are not independent replications.</caption>
         <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
           <tr>
             <th className="px-4 py-2 text-left font-medium">Formula</th>
             <th className="px-4 py-2 text-left font-medium">Family</th>
             <th className="px-4 py-2 text-right font-medium">Tc max (K)</th>
-            <th className="px-4 py-2 text-right font-medium">Tc ambient</th>
+            <th className="px-4 py-2 text-right font-medium">Tc ambient (K)</th>
             <th className="px-4 py-2 text-left font-medium">Pairing</th>
             <th className="px-4 py-2 text-left font-medium">Phase</th>
-            <th className="px-4 py-2 text-left font-medium">Flags</th>
+            <th className="px-4 py-2 text-left font-medium">Unconventional</th>
+            <th className="px-4 py-2 text-left font-medium">Competing order</th>
             <th className="px-4 py-2 text-right font-medium">arXiv year</th>
-            <th className="px-4 py-2 text-right font-medium">Papers</th>
-            <th className="px-4 py-2 text-center font-medium">Tier</th>
-            <th className="px-4 py-2 text-left font-medium">Data</th>
+            <th className="px-4 py-2 text-right font-medium">Source links</th>
+            <th className="px-4 py-2 text-center font-medium" title="Source tier is not experimental confirmation">Source tier</th>
+            <th className="px-4 py-2 text-left font-medium">Linked fields</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">
@@ -132,46 +102,34 @@ export function MaterialTable({ rows }: { rows: MaterialSummary[] }) {
                 >
                   <FormulaDisplay formula={m.formula} />
                 </Link>
+                <ScientificMatches results={m.matching_results} scope="material" />
+                <ScientificAnomalyNotice review={m.anomaly_review} compact />
+                <MaterialVisibilityNotice visibility={m.visibility} compact />
               </td>
-              <td className="px-4 py-2 text-slate-600">{familyLabel(m.family)}</td>
+              <td className="px-4 py-2 text-slate-600" title="Catalogue family classification, not a measured property or source">{familyLabel(m.family)}</td>
               <td className="px-4 py-2 text-right tabular-nums text-slate-800">
-                {m.tc_max != null ? m.tc_max.toFixed(1) : "—"}
+                <PropertyEvidenceValue evidence={m.property_evidence} field="tc_max" compact includeUnit={false} />
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-slate-600">
-                {m.tc_ambient != null ? m.tc_ambient.toFixed(1) : "—"}
+                <PropertyEvidenceValue evidence={m.property_evidence} field="tc_ambient" compact includeUnit={false} />
               </td>
               <td className="px-4 py-2">
-                {m.pairing_symmetry ? (
-                  <Badge tone="accent">{m.pairing_symmetry}</Badge>
-                ) : (
-                  <span className="text-slate-400">—</span>
-                )}
+                <MaterialSemanticValue semantics={m.material_semantics} field="pairing_symmetry" />
               </td>
               <td className="px-4 py-2">
-                {m.structure_phase ? (
-                  <Badge tone="neutral">{m.structure_phase}</Badge>
-                ) : (
-                  <span className="text-slate-400">—</span>
-                )}
+                <StructureEvidenceValue evidence={m.structure_evidence} />
               </td>
               <td className="px-4 py-2">
-                <div className="flex flex-wrap gap-1">
-                  {m.ambient_sc === true && (
-                    <Badge tone="accent">ambient</Badge>
-                  )}
-                  {m.is_unconventional === true && (
-                    <Badge tone="warn">unconv</Badge>
-                  )}
-                  {m.has_competing_order === true && (
-                    <Badge tone="muted">CDW/SDW</Badge>
-                  )}
-                </div>
+                <MaterialSemanticValue semantics={m.material_semantics} field="is_unconventional" />
+              </td>
+              <td className="px-4 py-2">
+                <MaterialSemanticValue semantics={m.material_semantics} field="has_competing_order" />
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-slate-600">
                 {m.arxiv_year ?? "—"}
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-slate-600">
-                {m.total_papers}
+                {materialSourceCountLabel(m.material_semantics, m.total_papers)}
                 {m.variant_count > 0 && (
                   <span className="ml-1 text-[10px] text-slate-400" title={`${m.variant_count} doping variant${m.variant_count === 1 ? "" : "s"}`}>
                     +{m.variant_count}v

@@ -1,0 +1,703 @@
+{
+  "version": "native-delivery-verification-summary/1.0",
+  "artifact_root": "/private/tmp/sclib-delivery-20260915-cvlj6qk5",
+  "scope": "Local native checks; ordinary API coordinator tracked separately; no Linux/image, scientific or production acceptance",
+  "offline_count_note": "JUnit includes 91 passing subtests: terminal result is 2299 passed plus 91 subtests, not 2390 independent test functions.",
+  "records": [
+    {
+      "file": "offline-scripts-restored.xml",
+      "sha256": "060c5d0bffc3d169b21af8f75bd97a8c28b4f5893c944c8e3dfe42646515fa11",
+      "bytes": 2510624,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "2390",
+          "time": "228.998",
+          "timestamp": "2026-09-15T11:14:33.723102+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "ingestion-tests.xml",
+      "sha256": "33dcffe357fb321c71043d0933c9da5e17f65464801f0a671738a7135ab7c7d9",
+      "bytes": 187537,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "1275",
+          "time": "41.988",
+          "timestamp": "2026-09-15T10:15:52.306859+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "restore-provenance-verified.xml",
+      "sha256": "cb25e9ef237d9c7a9a9b2050b2d327e3f83439bb8679073b1ce68220d95b4bb6",
+      "bytes": 1118004,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "308",
+          "time": "10.428",
+          "timestamp": "2026-09-15T11:05:20.576025+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "native-captures-r2.xml",
+      "sha256": "e3ea919f9b7eb3f4ac7f431f2c305538a3c79ad9f9bdc174c4ab1779c91997a2",
+      "bytes": 1230,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "7",
+          "time": "153.626",
+          "timestamp": "2026-09-15T11:15:46.249094+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "capacity-final.xml",
+      "sha256": "c5c99eed7cee3e146085b8c1b98edfba3261abd8c9621e84c8b2c0306b39c9cf",
+      "bytes": 427,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "1",
+          "time": "72.357",
+          "timestamp": "2026-09-15T10:30:31.803749+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "reference-final.xml",
+      "sha256": "122e2e142d4f4e9a4b006ab077389e592c5ab241962131dec2ca80e1c92a35de",
+      "bytes": 764,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "3",
+          "time": "6.539",
+          "timestamp": "2026-09-15T10:31:06.740496+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "offline-scripts-restored.log",
+      "sha256": "ac5ca543705397ae30b9304b38032186fa76121acee266a6cf708821d42dd2ef",
+      "bytes": 2674,
+      "terminal_summary_lines": [
+        "........................................................................ [ 88%]",
+        "........................................................................ [ 91%]",
+        "........................................................................ [ 94%]",
+        "........................................................................ [ 97%]",
+        "........................................ [ 99%]",
+        "..............                                                           [100%]",
+        "2299 passed, 91 subtests passed in 229.36s (0:03:49)"
+      ]
+    },
+    {
+      "file": "frontend-unit-r2.log",
+      "sha256": "be949d65faaa6e9b896b2458db4b2dd05feea8691704fabdc64ad4c22ad3507b",
+      "bytes": 269,
+      "terminal_summary_lines": [
+        "",
+        "",
+        " Test Files  53 passed (53)",
+        "      Tests  1887 passed (1887)",
+        "   Start at  11:20:25",
+        "   Duration  103.88s (transform 4.94s, setup 5.50s, import 16.31s, tests 100.98s, environment 62.41s)",
+        ""
+      ]
+    },
+    {
+      "file": "frontend-source-final.log",
+      "sha256": "0616d07f7ab8e622311a1ed78e354fef89089ab232e8699f03d14e29101852a4",
+      "bytes": 4286,
+      "terminal_summary_lines": [
+        "\u2139 suites 0",
+        "\u2139 pass 46",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 2652.383042"
+      ]
+    },
+    {
+      "file": "history-scan-restored.log",
+      "sha256": "16b0562b802eb82fb9575c943378889e411044a1699277d54e86d0b669d33975",
+      "bytes": 118,
+      "terminal_summary_lines": [
+        "11:25AM INF 555 commits scanned.",
+        "11:25AM INF scanned ~42948697 bytes (42.95 MB) in 1m26.1s",
+        "11:25AM INF no leaks found"
+      ]
+    },
+    {
+      "file": "typescript-fix-scan.log",
+      "sha256": "f12e2180d0ab33e8dcc9ff722b3a4eb2a9d86d8b54ebc65ee72fdc94bdf494ac",
+      "bytes": 110,
+      "terminal_summary_lines": [
+        "11:37AM INF 1 commits scanned.",
+        "11:37AM INF scanned ~866 bytes (866 bytes) in 122ms",
+        "11:37AM INF no leaks found"
+      ]
+    },
+    {
+      "file": "api-regression-final/batch-01.xml",
+      "sha256": "75dcec2802c4c27628fcdb3cd1d1e807fb2c5433a2a526708e37861841accc03",
+      "bytes": 294110,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "993",
+          "time": "581.927",
+          "timestamp": "2026-09-15T10:27:02.044411+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "api-regression-final/batch-02.xml",
+      "sha256": "ad641d74969699f3fee0f8a9f87e4feb8013ed428af445d799f11d7f37db70bb",
+      "bytes": 237812,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "897",
+          "time": "991.258",
+          "timestamp": "2026-09-15T10:36:51.620964+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "api-regression-final/batch-03.xml",
+      "sha256": "2d1de1aad907a5a8e8965c8b3bd89a4ca0d8639d6c418da53d97b291bbe6a53f",
+      "bytes": 171318,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "3",
+          "tests": "1063",
+          "time": "522.004",
+          "timestamp": "2026-09-15T10:53:30.083561+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "api-regression-final/batch-04.xml",
+      "sha256": "e5ec54313284820991760df3ae5e220f32fc654c0fa4386fbedb5113872976bf",
+      "bytes": 164912,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "969",
+          "time": "1558.486",
+          "timestamp": "2026-09-15T11:02:19.061368+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "api-regression-final/batch-05.xml",
+      "sha256": "08bcf5e10a96955666ade3a09c952be180ddc3e370b5c4610cf23e7707f35ce0",
+      "bytes": 178227,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "1032",
+          "time": "1040.585",
+          "timestamp": "2026-09-15T11:28:29.617396+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "api-regression-final/batch-06.xml",
+      "sha256": "ee4c4ac8f5e6eb2b3cf4de567108535c1f361fb378abe22afa726cf3fdfc409a",
+      "bytes": 154376,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "882",
+          "time": "646.384",
+          "timestamp": "2026-09-15T11:46:00.368411+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "api-regression-final/batch-07.xml",
+      "sha256": "ed29ff75289858e7d6ed30486a6ecb76278505e60574687d5c1e7a244687f708",
+      "bytes": 144823,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "868",
+          "time": "671.014",
+          "timestamp": "2026-09-15T11:56:55.598115+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "api-regression-final/batch-08.xml",
+      "sha256": "97ebdb94b91cc303be69f3eb775b3fb60713be4ee00a00146ca933c14fb12f16",
+      "bytes": 251625,
+      "junit_suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "739",
+          "time": "799.451",
+          "timestamp": "2026-09-15T12:08:16.603439+08:00",
+          "hostname": "JackZhouss-MacBook-Air.local"
+        }
+      ]
+    },
+    {
+      "file": "frontend-source-integrated.log",
+      "sha256": "2a0fc109897749b446bb7e7da669ccb4a88a7eb9fc304af1984c5d3d350acc07",
+      "bytes": 4269,
+      "terminal_summary_lines": [
+        "\u2139 tests 46",
+        "\u2139 suites 0",
+        "\u2139 pass 46",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 3200.464"
+      ]
+    }
+  ],
+  "ordinary_api": {
+    "batches": [
+      {
+        "batch": 1,
+        "counts": {
+          "errors": 0,
+          "failed": 0,
+          "module_cases": {
+            "tests/test_anomaly_surfaces.py": 9,
+            "tests/test_background_job_processes.py": 2,
+            "tests/test_claim_integrity.py": 197,
+            "tests/test_discovery_feed_validation.py": 35,
+            "tests/test_discovery_selection_preparation.py": 75,
+            "tests/test_health.py": 6,
+            "tests/test_index_retrieval_http.py": 18,
+            "tests/test_material_source_scope_surfaces.py": 25,
+            "tests/test_ml_baseline_preparation_sql.py": 3,
+            "tests/test_ml_dataset_v3.py": 52,
+            "tests/test_ml_frozen_provenance.py": 39,
+            "tests/test_ml_pilot_participant_wire.py": 4,
+            "tests/test_ml_review_companion_contract.py": 24,
+            "tests/test_ml_use_governance.py": 65,
+            "tests/test_ml_use_submission_admission.py": 19,
+            "tests/test_rag_evidence_delivery.py": 38,
+            "tests/test_research_audit_retention.py": 32,
+            "tests/test_research_distribution_schema.py": 49,
+            "tests/test_research_publication_limits.py": 22,
+            "tests/test_rps_action_contract.py": 72,
+            "tests/test_scientific_adjudication_operators.py": 30,
+            "tests/test_scientific_filters.py": 41,
+            "tests/test_scientific_pending_import.py": 35,
+            "tests/test_scientific_result_impact_indexes.py": 14,
+            "tests/test_shadow_import_semantics.py": 15,
+            "tests/test_source_lifecycle_service.py": 29,
+            "tests/test_source_tasks.py": 25,
+            "tests/test_temporal_claim_consumers.py": 18
+          },
+          "passed": 993,
+          "skipped": 0,
+          "test_cases": 993
+        },
+        "junit": "batch-01.xml",
+        "junit_status": "complete_junit_verified",
+        "runner_exit_code": 0
+      },
+      {
+        "batch": 2,
+        "counts": {
+          "errors": 0,
+          "failed": 0,
+          "module_cases": {
+            "tests/test_answer_evidence.py": 38,
+            "tests/test_background_job_recovery.py": 6,
+            "tests/test_claim_support.py": 76,
+            "tests/test_discovery_main_barrier.py": 52,
+            "tests/test_disposable_environment.py": 2,
+            "tests/test_history_evidence.py": 12,
+            "tests/test_index_vector_adapter.py": 66,
+            "tests/test_material_visibility.py": 95,
+            "tests/test_ml_baseline_rehearsal.py": 41,
+            "tests/test_ml_dataset_v4.py": 37,
+            "tests/test_ml_identity_audit.py": 44,
+            "tests/test_ml_pilot_registration.py": 8,
+            "tests/test_ml_review_companion_integrity_sql.py": 2,
+            "tests/test_ml_use_preflight.py": 34,
+            "tests/test_ml_use_submissions.py": 22,
+            "tests/test_rag_ingestion_lineage.py": 8,
+            "tests/test_research_distribution_contract.py": 53,
+            "tests/test_research_distribution_workflow.py": 19,
+            "tests/test_research_publication_schema.py": 75,
+            "tests/test_rps_catalog_cancellation.py": 2,
+            "tests/test_scientific_adjudication_schema.py": 63,
+            "tests/test_scientific_import_recovery.py": 33,
+            "tests/test_scientific_program_import_operators.py": 71,
+            "tests/test_scientific_result_public_gates.py": 8,
+            "tests/test_similar_completeness.py": 5,
+            "tests/test_source_lifecycle_status.py": 10,
+            "tests/test_source_tasks_http.py": 7,
+            "tests/test_timeline_http_cache.py": 8
+          },
+          "passed": 897,
+          "skipped": 0,
+          "test_cases": 897
+        },
+        "junit": "batch-02.xml",
+        "junit_status": "complete_junit_verified",
+        "runner_exit_code": 0
+      },
+      {
+        "batch": 3,
+        "counts": {
+          "errors": 0,
+          "failed": 0,
+          "module_cases": {
+            "tests/test_answer_evidence_schema.py": 39,
+            "tests/test_background_job_schema.py": 39,
+            "tests/test_claim_support_adversarial.py": 63,
+            "tests/test_discovery_operator_history.py": 27,
+            "tests/test_email_security.py": 1,
+            "tests/test_hydride_visibility.py": 6,
+            "tests/test_material_property_projection.py": 10,
+            "tests/test_material_visibility_adapter.py": 12,
+            "tests/test_ml_baseline_rehearsal_sql.py": 9,
+            "tests/test_ml_feature_companion.py": 34,
+            "tests/test_ml_identity_audit_sql.py": 12,
+            "tests/test_ml_pilot_registration_http.py": 7,
+            "tests/test_ml_review_projection.py": 34,
+            "tests/test_ml_use_reconstruction.py": 36,
+            "tests/test_observability.py": 8,
+            "tests/test_rag_input_budget.py": 74,
+            "tests/test_research_distribution_operators.py": 62,
+            "tests/test_research_freeze.py": 39,
+            "tests/test_research_release_schema.py": 89,
+            "tests/test_rps_catalog_chronology.py": 1,
+            "tests/test_scientific_corrections.py": 46,
+            "tests/test_scientific_import_reference_canaries.py": 3,
+            "tests/test_scientific_query.py": 175,
+            "tests/test_scientific_result_subject.py": 25,
+            "tests/test_source_impact.py": 25,
+            "tests/test_source_registry.py": 57,
+            "tests/test_source_visibility.py": 47,
+            "tests/test_timeline_identity.py": 83
+          },
+          "passed": 1060,
+          "skipped": 3,
+          "test_cases": 1063
+        },
+        "junit": "batch-03.xml",
+        "junit_status": "complete_junit_verified",
+        "runner_exit_code": 0
+      },
+      {
+        "batch": 4,
+        "counts": {
+          "errors": 0,
+          "failed": 0,
+          "module_cases": {
+            "tests/test_answer_history_http.py": 27,
+            "tests/test_background_jobs.py": 39,
+            "tests/test_complementary_ask.py": 24,
+            "tests/test_discovery_projection_governance.py": 37,
+            "tests/test_embedding_completeness.py": 50,
+            "tests/test_index_generation_tokenizer_admission.py": 9,
+            "tests/test_material_semantics.py": 80,
+            "tests/test_material_visibility_surfaces.py": 24,
+            "tests/test_ml_baseline_snapshot_boundaries.py": 23,
+            "tests/test_ml_feature_contract_v2.py": 126,
+            "tests/test_ml_label_capture.py": 52,
+            "tests/test_ml_pilot_registration_reliability.py": 9,
+            "tests/test_ml_review_source_observation.py": 7,
+            "tests/test_ml_use_request_pipeline.py": 1,
+            "tests/test_priority_public_bundle.py": 83,
+            "tests/test_rag_packing_budget_integration.py": 31,
+            "tests/test_research_distribution_preparation.py": 31,
+            "tests/test_research_freeze_limits.py": 13,
+            "tests/test_research_restore_worker.py": 14,
+            "tests/test_rps_catalog_delivery.py": 44,
+            "tests/test_scientific_evaluation.py": 48,
+            "tests/test_scientific_import_schema.py": 48,
+            "tests/test_scientific_query_http.py": 32,
+            "tests/test_scientific_review_operators.py": 51,
+            "tests/test_source_impact_http.py": 18,
+            "tests/test_source_scope_occurrences.py": 33,
+            "tests/test_stats_consistency.py": 4,
+            "tests/test_timeline_projection.py": 11
+          },
+          "passed": 969,
+          "skipped": 0,
+          "test_cases": 969
+        },
+        "junit": "batch-04.xml",
+        "junit_status": "complete_junit_verified",
+        "runner_exit_code": 0
+      },
+      {
+        "batch": 5,
+        "counts": {
+          "errors": 0,
+          "failed": 0,
+          "module_cases": {
+            "tests/test_api_contract.py": 7,
+            "tests/test_background_jobs_http.py": 9,
+            "tests/test_complementary_diversity.py": 4,
+            "tests/test_discovery_projection_http.py": 59,
+            "tests/test_embedding_ingestion.py": 9,
+            "tests/test_index_generations.py": 47,
+            "tests/test_material_semantics_surfaces.py": 19,
+            "tests/test_materials_phase1_contract.py": 2,
+            "tests/test_ml_claim_visibility.py": 17,
+            "tests/test_ml_feature_provenance_v2.py": 15,
+            "tests/test_ml_label_companion_contract.py": 87,
+            "tests/test_ml_pilot_review_admission.py": 41,
+            "tests/test_ml_reviewed_dataset_sql.py": 14,
+            "tests/test_ml_use_rights.py": 19,
+            "tests/test_privacy_controls.py": 6,
+            "tests/test_rag_reliability.py": 11,
+            "tests/test_research_distribution_preparation_http.py": 59,
+            "tests/test_research_import_schema.py": 46,
+            "tests/test_research_shadow_schema.py": 18,
+            "tests/test_rps_distribution_http.py": 32,
+            "tests/test_scientific_evaluation_capture.py": 30,
+            "tests/test_scientific_lookup_contract.py": 259,
+            "tests/test_scientific_query_results.py": 103,
+            "tests/test_scientific_search_routing.py": 13,
+            "tests/test_source_impact_indexes.py": 7,
+            "tests/test_source_task_operations.py": 43,
+            "tests/test_structure_disclosure.py": 18,
+            "tests/test_timeline_projection_identity.py": 38
+          },
+          "passed": 1032,
+          "skipped": 0,
+          "test_cases": 1032
+        },
+        "junit": "batch-05.xml",
+        "junit_status": "complete_junit_verified",
+        "runner_exit_code": 0
+      },
+      {
+        "batch": 6,
+        "counts": {
+          "errors": 0,
+          "failed": 0,
+          "module_cases": {
+            "tests/test_auth.py": 6,
+            "tests/test_background_projection_recovery.py": 1,
+            "tests/test_compression_middleware.py": 1,
+            "tests/test_discovery_scientific_cells.py": 35,
+            "tests/test_embedding_receipts.py": 35,
+            "tests/test_index_migration_worker.py": 8,
+            "tests/test_material_source_scope.py": 136,
+            "tests/test_ml_audited_dataset_contract.py": 111,
+            "tests/test_ml_composition.py": 102,
+            "tests/test_ml_foundation.py": 3,
+            "tests/test_ml_physical_feature_sql.py": 35,
+            "tests/test_ml_pilot_review_coverage.py": 7,
+            "tests/test_ml_run_evidence.py": 12,
+            "tests/test_ml_use_rights_wire.py": 1,
+            "tests/test_qe_force_constants_import.py": 49,
+            "tests/test_rag_search_lineage.py": 9,
+            "tests/test_research_distribution_rights.py": 18,
+            "tests/test_research_priority.py": 39,
+            "tests/test_result_semantics_contract.py": 41,
+            "tests/test_schema_lifecycle.py": 22,
+            "tests/test_scientific_evaluation_metrics.py": 34,
+            "tests/test_scientific_lookup_preparation.py": 24,
+            "tests/test_scientific_result_dossier.py": 35,
+            "tests/test_seo_sitemap.py": 2,
+            "tests/test_source_lifecycle_aggregation_sql.py": 9,
+            "tests/test_source_task_operations_http.py": 55,
+            "tests/test_structure_evidence.py": 37,
+            "tests/test_timeline_sampling.py": 15
+          },
+          "passed": 882,
+          "skipped": 0,
+          "test_cases": 882
+        },
+        "junit": "batch-06.xml",
+        "junit_status": "complete_junit_verified",
+        "runner_exit_code": 0
+      },
+      {
+        "batch": 7,
+        "counts": {
+          "errors": 0,
+          "failed": 0,
+          "module_cases": {
+            "tests/test_auth_security_unit.py": 5,
+            "tests/test_bookmarks.py": 5,
+            "tests/test_dashboard.py": 11,
+            "tests/test_discovery_scientific_http.py": 31,
+            "tests/test_evidence_packing.py": 66,
+            "tests/test_index_operations.py": 8,
+            "tests/test_material_source_scope_audit.py": 23,
+            "tests/test_ml_baseline_metrics.py": 106,
+            "tests/test_ml_coordinate_features.py": 55,
+            "tests/test_ml_foundation_exporter.py": 3,
+            "tests/test_ml_pilot_attestations.py": 20,
+            "tests/test_ml_preprocessing.py": 50,
+            "tests/test_ml_task_dataset_sql.py": 36,
+            "tests/test_ml_use_runs.py": 13,
+            "tests/test_qe_matdyn_import.py": 67,
+            "tests/test_rag_support_contract.py": 52,
+            "tests/test_research_distribution_rights_http.py": 24,
+            "tests/test_research_publication.py": 18,
+            "tests/test_retrieval_currentness.py": 29,
+            "tests/test_scientific_adjudication.py": 17,
+            "tests/test_scientific_evaluation_models.py": 104,
+            "tests/test_scientific_mixed_ask.py": 25,
+            "tests/test_scientific_result_effects.py": 17,
+            "tests/test_session_security.py": 11,
+            "tests/test_source_lifecycle_audit.py": 13,
+            "tests/test_source_task_schema.py": 35,
+            "tests/test_structure_evidence_surfaces.py": 12,
+            "tests/test_unified_auth.py": 12
+          },
+          "passed": 868,
+          "skipped": 0,
+          "test_cases": 868
+        },
+        "junit": "batch-07.xml",
+        "junit_status": "complete_junit_verified",
+        "runner_exit_code": 0
+      },
+      {
+        "batch": 8,
+        "counts": {
+          "errors": 0,
+          "failed": 0,
+          "module_cases": {
+            "tests/test_background_job_handlers.py": 16,
+            "tests/test_browser_session_auth.py": 7,
+            "tests/test_discovery_cache.py": 2,
+            "tests/test_discovery_scientific_projection.py": 77,
+            "tests/test_generation_ingestion.py": 10,
+            "tests/test_index_read_metadata.py": 12,
+            "tests/test_material_source_scope_ordering.py": 8,
+            "tests/test_ml_baseline_numerics.py": 49,
+            "tests/test_ml_dataset_adversarial.py": 47,
+            "tests/test_ml_foundation_schema.py": 5,
+            "tests/test_ml_pilot_evidence.py": 14,
+            "tests/test_ml_review_capture.py": 24,
+            "tests/test_ml_use_currentness.py": 20,
+            "tests/test_ml_use_runs_wire.py": 1,
+            "tests/test_rag_evidence.py": 38,
+            "tests/test_research_access.py": 27,
+            "tests/test_research_distribution_rights_wire.py": 91,
+            "tests/test_research_publication_http.py": 21,
+            "tests/test_retrieval_groups.py": 34,
+            "tests/test_scientific_adjudication_contract.py": 53,
+            "tests/test_scientific_evaluation_protocol.py": 37,
+            "tests/test_scientific_mixed_contract.py": 48,
+            "tests/test_scientific_result_impact.py": 23,
+            "tests/test_shadow_import.py": 30,
+            "tests/test_source_lifecycle_schema.py": 17,
+            "tests/test_source_task_timeline.py": 8,
+            "tests/test_structure_identity.py": 20
+          },
+          "passed": 739,
+          "skipped": 0,
+          "test_cases": 739
+        },
+        "junit": "batch-08.xml",
+        "junit_status": "complete_junit_verified",
+        "runner_exit_code": 0
+      }
+    ],
+    "counted_batches": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "counts": {
+      "errors": 0,
+      "failed": 0,
+      "passed": 7440,
+      "skipped": 3,
+      "test_cases": 7443
+    },
+    "counts_scope": "complete_verified_junit_batches_only",
+    "duration_seconds": 6882.277,
+    "full_module_coverage": true,
+    "module_count": 223,
+    "production_or_scientific_acceptance": false,
+    "reason": null,
+    "status": "completed",
+    "unreported_batches": [],
+    "version": "owned-api-module-batches/1.1.0"
+  },
+  "integrated_source_inputs": {
+    "head_revision": "5d4aad086551b23e77abf4328aea3684fb89f842",
+    "inputs_sha256": "1f21c30b8af33928436eb5999bb73cd117591645607de5f80ed4d78a16ed76cb",
+    "input_count": 735,
+    "source_dirty": false,
+    "matches_native_migration_and_restore_reports": true
+  }
+}

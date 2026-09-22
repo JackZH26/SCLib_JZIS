@@ -1,30 +1,24 @@
-"""GET /similar/{paper_id} — "more like this" via vector search.
-
-Approach: pull every chunk id for the source paper, look each one up
-in Vertex VS (batched via find_neighbors_many), then aggregate by
-paper_id using the average distance across all matching chunks.
-Exclude the source paper itself from the results.
-
-We deliberately do NOT re-embed — the chunks are already indexed,
-and the indexer stores the same vector we would compute now.
-Re-embedding would double-charge for no benefit.
-"""
+"""Generation-pinned, bounded 'more like this' retrieval; not scientific support."""
 from __future__ import annotations
 
 import asyncio
+import math
+import threading
 from collections import defaultdict
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from config import get_settings
 from models import get_db
 from models.db import Paper
+from models.index_read import generation_read_metadata
 from models.search import SimilarPaper, SimilarResponse
 from routers.deps import Identity, peek_identity
-from services import vector_search
+from services import index_retrieval, index_vector_adapter, provider_resilience
 
 router = APIRouter(tags=["similar"])
+_UNAVAILABLE = "Similarity search is temporarily unavailable. Please try again later."
 
 
 @router.get("/similar/{paper_id:path}", response_model=SimilarResponse)
@@ -34,66 +28,88 @@ async def similar_papers(
     identity: Identity = Depends(peek_identity),  # noqa: ARG001
     db: AsyncSession = Depends(get_db),
 ) -> SimilarResponse:
-    src = await db.get(Paper, paper_id)
-    if src is None:
+    if await db.get(Paper, paper_id) is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Paper {paper_id!r} not found")
+    try:
+        async with asyncio.timeout(10):
+            pin = await index_retrieval.load_pin(db)
+            if pin is None:
+                # There is no honest cosine-like result without a pinned
+                # semantic generation. Do not invent lexical similarity.
+                raise index_retrieval.IndexRetrievalError("No active retrieval generation")
+            chunks = await index_retrieval.paper_chunks(db, pin, paper_id)
+            evidence = await index_retrieval.resolve_evidence(db, chunks)
+            members = [chunk.member for chunk in chunks if evidence[chunk.id]["permission_status"] != "restricted"
+                     and evidence[chunk.id]["currentness"] != "stale"]
+            await index_retrieval.require_current_pin(db, pin)
+    except Exception:
+        raise HTTPException(503, _UNAVAILABLE) from None
+    if not members:
+        return SimilarResponse(source_paper_id=paper_id, results=[],
+                               retrieval_generation=generation_read_metadata(pin))
 
-    # Neighbor lookup currently re-embeds each chunk since we don't
-    # store vectors in Postgres. Cheaper alternative: ask VS to
-    # self-retrieve by datapoint id (not available in all SDK
-    # versions), or stash the vectors at ingest time. Phase 5 TODO.
-    #
-    # For now: fetch chunk texts, embed them, batch-query.
-    from models.db import Chunk  # local import to keep top of file lean
-
-    chunk_rows = (
-        await db.execute(
-            select(Chunk.text).where(Chunk.paper_id == paper_id).limit(20)
+    stopped = threading.Event()
+    settings = get_settings()
+    try:
+        per_chunk = await provider_resilience.run_blocking(
+            "similar_search", lambda: index_vector_adapter.query_members(
+                pin, members, top_k=min(top_k + 5, index_retrieval.MAX_HYDRATE // len(members)), stop_event=stopped),
+            timeout_seconds=settings.vector_search_timeout_seconds,
+            failure_threshold=settings.provider_circuit_failure_threshold,
+            cooldown_seconds=settings.provider_circuit_cooldown_seconds,
+            max_attempts=1,
         )
-    ).scalars().all()
-    if not chunk_rows:
-        return SimilarResponse(source_paper_id=paper_id, results=[])
+    except provider_resilience.ProviderUnavailable:
+        raise HTTPException(503, _UNAVAILABLE) from None
+    finally:
+        stopped.set()
 
-    def _compute() -> list[tuple[str, float]]:
-        vectors = [vector_search.embed_query(t) for t in chunk_rows]
-        per_chunk = vector_search.find_neighbors_many(vectors, top_k=top_k + 5)
-        # Aggregate: mean distance per paper, ignoring self-hits.
-        acc: dict[str, list[float]] = defaultdict(list)
-        for row in per_chunk:
-            for n in row:
-                pid = vector_search.chunk_id_to_paper_id(n.chunk_id)
-                if pid == paper_id:
-                    continue
-                acc[pid].append(n.distance)
-        scored = [(pid, sum(ds) / len(ds)) for pid, ds in acc.items()]
-        scored.sort(key=lambda x: x[1])  # smaller distance = closer
-        return scored[:top_k]
+    try:
+        async with asyncio.timeout(10):
+            if type(per_chunk) is not list or len(per_chunk) != len(members):
+                raise index_retrieval.IndexRetrievalError("Similarity result inventory mismatch")
+            unique = {}
+            for row in per_chunk:
+                if type(row) is not list or len(row) > 100:
+                    raise index_retrieval.IndexRetrievalError("Similarity row limit exceeded")
+                row_ids = set()
+                for hit in row:
+                    if (type(hit.distance) not in {int, float} or not math.isfinite(hit.distance)
+                            or not 0 <= hit.distance <= 2):
+                        raise index_retrieval.IndexRetrievalError("Invalid similarity distance")
+                    if hit.vector_id in row_ids:
+                        raise index_retrieval.IndexRetrievalError("Duplicate similarity member")
+                    row_ids.add(hit.vector_id)
+                    previous = unique.get(hit.vector_id)
+                    if previous is not None and any(getattr(previous, key) != getattr(hit, key)
+                            for key in ("content_sha256", "vector_sha256", "chunk_revision_sha256")):
+                        raise index_retrieval.IndexRetrievalError("Inconsistent similarity member")
+                    unique[hit.vector_id] = hit
+            verified = await index_retrieval.verified_vector_hits(db, pin, list(unique.values()))
+            hydrated = await index_retrieval.hydrate(db, pin, [identifier for identifier, _ in verified])
+            descriptors = await index_retrieval.resolve_evidence(db, list(hydrated.values()))
+            acc, paper_by_id = defaultdict(list), {}
+            for row in per_chunk:
+                for hit in row:
+                    chunk = hydrated.get(hit.vector_id)
+                    if chunk is None or chunk.paper_id == paper_id:
+                        continue
+                    descriptor = descriptors[chunk.id]
+                    if descriptor["permission_status"] == "restricted" or descriptor["currentness"] == "stale":
+                        continue
+                    acc[chunk.paper_id].append(hit.distance)
+                    paper_by_id.setdefault(chunk.paper_id, index_retrieval.attribution(chunk))
+            scored = sorted(((identifier, sum(values) / len(values)) for identifier, values in acc.items()),
+                            key=lambda item: (item[1], item[0]))[:top_k]
+            await index_retrieval.require_current_pin(db, pin)
+    except Exception:
+        raise HTTPException(503, _UNAVAILABLE) from None
 
-    scored = await asyncio.to_thread(_compute)
-    if not scored:
-        return SimilarResponse(source_paper_id=paper_id, results=[])
-
-    # Hydrate paper rows for the final response.
-    ids = [pid for pid, _ in scored]
-    rows = (
-        await db.execute(select(Paper).where(Paper.id.in_(ids)))
-    ).scalars().all()
-    paper_by_id = {p.id: p for p in rows}
-
-    results: list[SimilarPaper] = []
-    for pid, dist in scored:
-        p = paper_by_id.get(pid)
-        if p is None:
-            continue
-        results.append(
-            SimilarPaper(
-                paper_id=p.id,
-                arxiv_id=p.arxiv_id,
-                title=p.title,
-                authors=list(p.authors or []),
-                year=p.date_submitted.year if p.date_submitted else None,
-                similarity=round(1.0 - dist, 6),
-            )
-        )
-
-    return SimilarResponse(source_paper_id=paper_id, results=results)
+    results = []
+    for identifier, distance in scored:
+        paper = paper_by_id[identifier]
+        results.append(SimilarPaper(paper_id=paper.id, arxiv_id=paper.arxiv_id, title=paper.title,
+            authors=list(paper.authors or []), year=paper.date_submitted.year if paper.date_submitted else None,
+            similarity=round(1.0 - distance, 6)))
+    return SimilarResponse(source_paper_id=paper_id, results=results,
+                           retrieval_generation=generation_read_metadata(pin))

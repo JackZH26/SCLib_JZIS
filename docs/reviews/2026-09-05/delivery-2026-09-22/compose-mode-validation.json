@@ -1,0 +1,16 @@
+[
+  {
+    "mode": "console",
+    "compose_valid": true,
+    "smtp_credential_mounted": false,
+    "config_read_only": true,
+    "services_started": false
+  },
+  {
+    "mode": "email",
+    "compose_valid": true,
+    "smtp_credential_mounted": true,
+    "config_read_only": true,
+    "services_started": false
+  }
+]

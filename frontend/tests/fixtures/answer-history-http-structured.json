@@ -1,0 +1,324 @@
+{
+  "version": "ask-history-detail/1.0.0",
+  "entry": {
+    "id": "b72833f9-efba-40cd-99d7-ac7a87e56fe5",
+    "question": "What is the Tc of MgB2 at ambient pressure?",
+    "answer": "Matching source-linked extraction records are listed below. They are not independently reviewed scientific results or original-passage support; check the cited papers and their reported conditions before reuse.",
+    "sources": [],
+    "current_evidence": {
+      "version": "ask-history-current-evidence/1.0.0",
+      "scope": "current_paper_metadata_not_saved_excerpt",
+      "metadata_snapshot_at": "2026-09-09T03:34:47.558175+00:00",
+      "saved_answer_revalidated": false,
+      "scientific_acceptance": false,
+      "ml_training_eligibility_established": false,
+      "sources": [],
+      "warning_codes": [
+        "historical_answer_requires_new_claim_review"
+      ]
+    },
+    "receipt": {
+      "version": "ask-history-receipt-summary/1.0.0",
+      "status": "recorded",
+      "receipt_sha256": "8bad9f75464d47af7d1c8a8c6045c7482023861d980a17ed8bf0ff4ac9c713ab"
+    },
+    "tokens_used": 0,
+    "latency_ms": 107,
+    "language": "en",
+    "created_at": "2026-09-09T03:34:47.500697Z"
+  },
+  "evidence": {
+    "status": "verified",
+    "binding_scope": "generation_members",
+    "receipt": {
+      "version": "ask-answer-evidence/1.0.0",
+      "history_id": "b72833f9-efba-40cd-99d7-ac7a87e56fe5",
+      "record_sha256": "8bad9f75464d47af7d1c8a8c6045c7482023861d980a17ed8bf0ff4ac9c713ab",
+      "request_sha256": "e0b1db11cb03a889b4eb6f96eb249c9d859a75c8970570684ca52a3102f48a87",
+      "response_sha256": "d7ccc11886f1b6f8584564e85cc4666cf5567d04eeb9997ad72c7fddbd9941f3",
+      "bindings_sha256": "1e3ac0010000d66c7611f59fb0a085a9500c11f8cf1e7aa9766922fafff33305",
+      "request": {
+        "question": "What is the Tc of MgB2 at ambient pressure?",
+        "max_sources": 3,
+        "language": "en"
+      },
+      "response": {
+        "scientific_mixed": {
+          "version": "scientific-mixed-evidence/1.0.0",
+          "status": "not_requested",
+          "result_count": 0,
+          "source_count": 0,
+          "max_selected_inputs": 0,
+          "associations": [],
+          "reason_codes": [],
+          "scientific_acceptance": false,
+          "independent_support_count": null
+        },
+        "evidence_packing": {
+          "version": "evidence-packing/1.0.0",
+          "status": "not_requested",
+          "candidate_count": 0,
+          "selected_count": 0,
+          "source_group_count": 0,
+          "diversity_group_count": 0,
+          "payload_bytes": null,
+          "byte_budget": null,
+          "byte_count_method": "utf8-full-payload/1",
+          "max_chunks": 20,
+          "max_per_source": 3,
+          "max_per_work": 3,
+          "reason_counts": {},
+          "reason_codes": [],
+          "independent_support_count": null,
+          "independence_status": "independence_not_established",
+          "scientific_acceptance": false
+        },
+        "input_budget": {
+          "status": "not_requested",
+          "model": null,
+          "profile": "sclib-gemini-text-rag/1.0.0",
+          "request_sha256": null,
+          "payload_bytes": null,
+          "byte_limit": 262144,
+          "input_tokens": null,
+          "max_input_tokens": null,
+          "count_method": "provider_count_tokens",
+          "generation_started": null,
+          "scientific_acceptance": false
+        },
+        "retrieval_generation": {
+          "version": "index-read/1.0.0",
+          "mode": "generation_snapshot",
+          "generation_id": "ffa7e00f-cab6-4254-8348-4569b4458c53",
+          "activation_event_id": "bf1390b9-cf57-53f3-a138-dd73339bfc4a",
+          "manifest_sha256": "b9b22c5d0275386cec7fe34753f2158b8ed29b17d320ea0ace95afdd0f5a832c"
+        },
+        "scientific_query": {
+          "version": "scientific-query/1.0.0",
+          "raw_query": "What is the Tc of MgB2 at ambient pressure?",
+          "normalized_query": "What is the Tc of MgB2 at ambient pressure?",
+          "language": "en",
+          "intent": "numerical",
+          "status": "resolved",
+          "requested_fields": [
+            "pressure_gpa",
+            "tc_kelvin"
+          ],
+          "formulas": [
+            {
+              "raw_text": "MgB2",
+              "start": 18,
+              "end": 22,
+              "normalization": {
+                "version": "formula-query/1.0.0",
+                "raw_formula": "MgB2",
+                "normalized_formula": "MgB2",
+                "status": "normalized",
+                "reason_codes": []
+              }
+            }
+          ],
+          "constraints": [
+            {
+              "raw_text": "at ambient pressure",
+              "start": 23,
+              "end": 42,
+              "field": "pressure_gpa",
+              "relation": "exact",
+              "value": 0.0,
+              "lower": null,
+              "upper": null,
+              "unit": "GPa",
+              "unit_basis": "explicit_ambient_reference"
+            }
+          ],
+          "evidence_constraints": [],
+          "unresolved_clauses": [],
+          "clarification_questions": [],
+          "scientific_acceptance": false
+        },
+        "scientific_lookup": {
+          "status": "completed",
+          "reason_codes": [
+            "derived_extractions_not_independent_scientific_support"
+          ],
+          "returned_count": 1,
+          "has_more": false,
+          "scope": "declared_generation_derived_extractions",
+          "scientific_acceptance": false
+        },
+        "scientific_results": [
+          {
+            "result": {
+              "version": "scientific-query-result/1.0.0",
+              "result_id": "legacy-result:eb518fd93d118939caa368b60717a63d214cd3f494bcf5717c62ba6c0f5af952",
+              "record_index": 0,
+              "formula": "MgB2",
+              "family": null,
+              "tc": {
+                "status": "parsed",
+                "relation": "exact",
+                "value": 39.0,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "K",
+                "unit_basis": "explicit",
+                "uncertainty_interpretation": null
+              },
+              "pressure": {
+                "status": "parsed",
+                "relation": "exact",
+                "value": 0.0,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "GPa",
+                "unit_basis": "explicit_ambient_reference",
+                "uncertainty_interpretation": null,
+                "pressure_state": "explicit_ambient"
+              },
+              "minimum_temperature": {
+                "status": "unreported",
+                "relation": "unreported",
+                "value": null,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "K",
+                "unit_basis": "unreported",
+                "uncertainty_interpretation": null
+              },
+              "result_classification": {
+                "knowledge_origin": "Observed",
+                "classification_status": "resolved",
+                "source_role": "primary"
+              },
+              "outcome_state": "unspecified",
+              "reported_context": {
+                "tc_criterion": null,
+                "sample_label": "specimen A",
+                "sample_form": null,
+                "structure_phase": "synthetic-phase-A",
+                "measurement_method": "resistance"
+              },
+              "warning_codes": [
+                "machine_extraction_not_scientific_approval",
+                "same_record_not_resolved_sample_identity",
+                "tc_criterion_unreported_or_unresolved"
+              ],
+              "scientific_acceptance": false,
+              "ml_training_eligible": false,
+              "detection_adequacy_verified": false
+            },
+            "binding": {
+              "paper_id": "aps:10.0000/MixedAsk.aed5515add58403a8a37b61190c874e4",
+              "vector_id": "ig62_ffa7e00fcab6425483484569b4458c53_8efda87e0a27beb3dd63a251d11316ac3233089920e2d97d1572a369a28a3dd4",
+              "generation_id": "ffa7e00f-cab6-4254-8348-4569b4458c53",
+              "activation_event_id": "bf1390b9-cf57-53f3-a138-dd73339bfc4a",
+              "manifest_sha256": "b9b22c5d0275386cec7fe34753f2158b8ed29b17d320ea0ace95afdd0f5a832c",
+              "content_sha256": "dd9004bb96b9611f417753543c2d754990ff135274cf6d12f21071dce320c187",
+              "evidence_revision_id": "f2bc34d6-df79-5383-800a-7867433afbb5",
+              "evidence_record_sha256": "fae4b688c027f21ae61b2267c6ecbc06295eaf28fe0caa031a4d4c55b6fd3bd2",
+              "parent_result_revision_id": "08c6ce64-4af1-5225-ae4b-0a216f6b86eb",
+              "parent_result_sha256": "8127a127c5bc4fc44bf76233c4d479ef093b8da4d3ad009091691eadd252a377",
+              "association_scope": "derived_extraction_not_original_support"
+            }
+          }
+        ],
+        "answer": "Matching source-linked extraction records are listed below. They are not independently reviewed scientific results or original-passage support; check the cited papers and their reported conditions before reuse.",
+        "sources": [],
+        "tokens_used": 0,
+        "query_time_ms": 107,
+        "citation_valid": false,
+        "citation_warnings": [],
+        "support_policy_version": "scientific-claim-support/1.0.0",
+        "citation_indices_valid": true,
+        "lexical_support_checked": false,
+        "scientific_support_status": "not_checked",
+        "claim_assessments": [],
+        "support_warnings": [
+          "structured_extractions_not_scientific_validation"
+        ],
+        "support_coverage": {},
+        "answer_mode": "abstention",
+        "assessment_scope": "none"
+      },
+      "bindings": {
+        "version": "ask-answer-evidence/1.0.0",
+        "mode": "generation_bound",
+        "generation_id": "ffa7e00f-cab6-4254-8348-4569b4458c53",
+        "activation_event_id": "bf1390b9-cf57-53f3-a138-dd73339bfc4a",
+        "manifest_sha256": "b9b22c5d0275386cec7fe34753f2158b8ed29b17d320ea0ace95afdd0f5a832c",
+        "items": [
+          {
+            "kind": "scientific_result",
+            "position": 1,
+            "paper_id": "aps:10.0000/MixedAsk.aed5515add58403a8a37b61190c874e4",
+            "chunk_id": "ig62_ffa7e00fcab6425483484569b4458c53_8efda87e0a27beb3dd63a251d11316ac3233089920e2d97d1572a369a28a3dd4",
+            "content_sha256": "dd9004bb96b9611f417753543c2d754990ff135274cf6d12f21071dce320c187",
+            "member_record_sha256": "8ede2656169bb933bcdaa5190a50ea4d999cbed2cdb81b3579e1a55c700a3de0",
+            "chunk_revision_sha256": "8efda87e0a27beb3dd63a251d11316ac3233089920e2d97d1572a369a28a3dd4",
+            "vector_sha256": "d906e7855844e714af662bb51494575612a3f818d682d1ffe8f25c1ef7173f54",
+            "source_snapshot_sha256": "50b01c7dcd1c8636c78560d6291e89f678afcf739ea05461c3bb7739f9407891",
+            "evidence_revision_id": "f2bc34d6-df79-5383-800a-7867433afbb5",
+            "evidence_record_sha256": "fae4b688c027f21ae61b2267c6ecbc06295eaf28fe0caa031a4d4c55b6fd3bd2",
+            "parent_result_revision_id": "08c6ce64-4af1-5225-ae4b-0a216f6b86eb",
+            "parent_result_sha256": "8127a127c5bc4fc44bf76233c4d479ef093b8da4d3ad009091691eadd252a377",
+            "selection_input_sha256": "daded5b6d038988c7bfdb32adcfabf564963ebfbf1fc8e211fb0c8a42ab3f673",
+            "selection_generation_pin_sha256": "fac860056b9499e0414c44b7520a5a722e68b875f4d3f812f15ee03ac4ac3e74",
+            "selection_grouping_sha256": "a538f5faddf6f4c3b9d5595454f308fb7c9f8f019b8abdb6b3c279eb760adbb9",
+            "has_evidence_pin": true
+          }
+        ]
+      }
+    },
+    "historical_integrity_verified": true,
+    "scientific_acceptance": false,
+    "ml_training_approved": false,
+    "public_release_authorized": false,
+    "currentness_revalidated": false,
+    "reason_codes": []
+  },
+  "result_current_evidence": {
+    "version": "ask-history-current-evidence/1.0.0",
+    "scope": "current_paper_metadata_not_saved_excerpt",
+    "metadata_snapshot_at": "2026-09-09T03:34:47.558175+00:00",
+    "saved_answer_revalidated": false,
+    "scientific_acceptance": false,
+    "ml_training_eligibility_established": false,
+    "sources": [
+      {
+        "paper_id": "aps:10.0000/MixedAsk.aed5515add58403a8a37b61190c874e4",
+        "source_visibility": {
+          "version": "material-visibility/1.0.0",
+          "source_status": "active",
+          "bibliography_available": true,
+          "reported_claim_filter_eligible": true,
+          "scientific_acceptance": false,
+          "warning_codes": []
+        },
+        "metadata_status": "checked",
+        "occurrence_visibility_summary": {
+          "version": "material-visibility/1.0.0",
+          "total_occurrences": 4,
+          "returned_occurrences": 4,
+          "omitted_occurrences": 0,
+          "state_counts": {
+            "unknown": 4
+          },
+          "scientific_acceptance": false,
+          "warning_codes": []
+        },
+        "warning_codes": [],
+        "saved_source_position": 0
+      }
+    ],
+    "warning_codes": [
+      "historical_answer_requires_new_claim_review"
+    ]
+  }
+}

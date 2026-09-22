@@ -1,0 +1,16 @@
+[Unit]
+Description=SCLib backup during ingestion maintenance
+After=docker.service network-online.target sclib-identity-agent.service
+Requires=docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Environment=SCLIB_ROOT=/opt/SCLib_JZIS
+Environment=SCLIB_BACKUP_SKIP_PRUNE=1
+ExecStart=/usr/bin/flock --nonblock --conflict-exit-code 99 /var/lock/sclib-backup.lock /opt/SCLib_JZIS/scripts/backup_postgres.sh
+SuccessExitStatus=99
+TimeoutStartSec=2h
+StandardOutput=journal
+StandardError=journal

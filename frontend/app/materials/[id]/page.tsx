@@ -10,9 +10,8 @@
  *   6. Samples & pressure: sample_form, substrate, doping, pressure_type
  *   7. Tc records table (per-measurement detail from NER/NIMS)
  *
- * All v2 fields are nullable so each section gracefully hides any
- * row with no data; sections themselves hide entirely when every
- * row is empty.
+ * Scientific catalogue values require a current atomic evidence selection.
+ * Missing support stays visible as unavailable, never a legacy scalar fallback.
  */
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -25,6 +24,18 @@ import { familyLabel } from "@/lib/families";
 import { absoluteUrl, serializeJsonLd } from "@/lib/seo";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { FormulaDisplay } from "@/components/FormulaDisplay";
+import { recordClassification, scientificNumber } from "@/lib/result-semantics";
+import { pressureLabel } from "@/lib/pressure-semantics";
+import { JointEpcNotice, PropertyEvidenceFact, PropertyEvidenceSection, PropertyEvidenceValue } from "@/components/PropertyEvidence";
+import { RawScientificArchive, RecordAnomalyReview, ScientificAnomalyNotice } from "@/components/ScientificAnomalies";
+import { evidenceText, objectValue, ORDER_FIELDS, propertyJsonLd, SAMPLE_FIELDS, SC_FIELDS, selectedProperty, STRUCTURE_FIELDS, supportedPropertyDescription } from "@/lib/property-evidence";
+import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice";
+import { eligibleForScientificSeo, visibilityIsRestricted, visibilityLabel } from "@/lib/material-visibility";
+import { MaterialSemanticsMini, MaterialSemanticsPanel } from "@/components/MaterialSemantics";
+import { materialSourceCountLabel } from "@/lib/material-semantics";
+import { StructureEvidencePanel, StructureEvidenceValue } from "@/components/StructureEvidence";
+
+export const dynamic = "force-dynamic";
 
 type MaterialPageProps = {
   params: Promise<{ id: string }>;
@@ -33,12 +44,13 @@ type MaterialPageProps = {
 const loadMaterial = cache(getMaterial);
 
 function materialDescription(mat: Awaited<ReturnType<typeof getMaterial>>): string {
+  if (!eligibleForScientificSeo(mat.visibility)) return `${mat.formula} source-inspection Archive. ${visibilityLabel(mat.visibility)}. Not an accepted superconductivity result.`;
   const properties = [
     mat.family ? familyLabel(mat.family) : null,
-    mat.tc_max != null ? `maximum Tc ${mat.tc_max.toFixed(1)} K` : null,
-    mat.total_papers === 1 ? "1 supporting paper" : `${mat.total_papers} supporting papers`,
+    supportedPropertyDescription(mat.property_evidence, "tc_max"),
+    `${materialSourceCountLabel(mat.material_semantics, mat.total_papers)} (not independent confirmations)`,
   ].filter(Boolean);
-  return `${mat.formula} superconducting material data: ${properties.join(", ")}.`;
+  return `${mat.formula} source-linked material catalogue: ${properties.join(", ")}. Catalogue eligibility is not scientific approval.`;
 }
 
 export async function generateMetadata({
@@ -48,12 +60,15 @@ export async function generateMetadata({
   const id = decodeURIComponent(encodedId);
   try {
     const mat = await loadMaterial(id);
-    const title = `${mat.formula} superconducting material`;
+    const eligible = eligibleForScientificSeo(mat.visibility);
+    if (visibilityIsRestricted(mat.visibility)) return { title: "Material not found", robots: { index: false, follow: false } };
+    const title = `${mat.formula} ${eligible ? "material catalogue" : "material Archive"}`;
     const description = materialDescription(mat);
     const canonical = absoluteUrl(`/materials/${encodeURIComponent(mat.id)}`);
     return {
       title,
       description,
+      robots: eligible ? undefined : { index: false, follow: false, noarchive: true },
       alternates: { canonical },
       openGraph: {
         type: "website",
@@ -84,22 +99,21 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
     if (e instanceof ApiError && e.status === 404) notFound();
     throw e;
   }
+  if (visibilityIsRestricted(mat.visibility)) notFound();
+  const catalogueEligible = eligibleForScientificSeo(mat.visibility);
   const hydrideParameters =
-    mat.family === "hydride" ? await getMaterialHydrideParameters(id) : [];
+    mat.family === "hydride" && catalogueEligible ? await getMaterialHydrideParameters(id) : [];
 
   const flags: [string, boolean | null][] = [
-    ["ambient SC", mat.ambient_sc],
-    ["unconventional", mat.is_unconventional],
-    ["competing order", mat.has_competing_order],
-    ["disputed", mat.disputed],
-    ["retracted", mat.retracted],
+    ["Catalogue risk flag: disputed", mat.disputed],
+    ["Catalogue risk flag: retracted", mat.retracted],
   ];
   const activeFlags = flags.filter(([, v]) => v === true);
   const canonical = absoluteUrl(`/materials/${encodeURIComponent(mat.id)}`);
   const materialStructuredData = {
     "@context": "https://schema.org",
     "@type": "Dataset",
-    name: `${mat.formula} superconducting material data`,
+    name: `${mat.formula} ${catalogueEligible ? "material catalogue" : "material Archive"}`,
     description: materialDescription(mat),
     url: canonical,
     identifier: mat.id,
@@ -109,30 +123,16 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
       mat.family,
       mat.subfamily,
     ].filter(Boolean),
-    variableMeasured: [
-      mat.tc_max != null
-        ? {
-            "@type": "PropertyValue",
-            name: "Maximum critical temperature",
-            value: mat.tc_max,
-            unitText: "kelvin",
-          }
-        : null,
-      mat.tc_ambient != null
-        ? {
-            "@type": "PropertyValue",
-            name: "Ambient-pressure critical temperature",
-            value: mat.tc_ambient,
-            unitText: "kelvin",
-          }
-        : null,
-    ].filter(Boolean),
-    measurementTechnique: "Scientific literature extraction and validation",
-    includedInDataCatalog: {
+    variableMeasured: catalogueEligible ? [
+      propertyJsonLd(mat.property_evidence, "tc_max"),
+      propertyJsonLd(mat.property_evidence, "tc_ambient"),
+    ].filter(Boolean) : [],
+    measurementTechnique: "Scientific literature extraction; result origin is not scientific validation",
+    ...(catalogueEligible ? { includedInDataCatalog: {
       "@type": "DataCatalog",
       name: "SCLib — JZIS Superconductivity Library",
       url: absoluteUrl("/materials"),
-    },
+    } } : {}),
     creator: {
       "@type": "Organization",
       name: "JZ Institute of Science",
@@ -164,8 +164,6 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
           {[
             mat.family ? familyLabel(mat.family) : null,
             mat.subfamily,
-            mat.crystal_structure,
-            mat.structure_phase,
           ]
             .filter(Boolean)
             .join(" · ") || "—"}
@@ -184,7 +182,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 rounded-md border border-sage-border bg-white px-3 py-1.5 text-xs font-medium text-accent-deep shadow-sm transition-colors hover:bg-[rgba(58,125,92,0.06)]"
             >
-              <span>View structure on Materials Project</span>
+              <span>Formula-matched Materials Project entry</span>
               <span className="font-mono text-[10px] text-slate-500">
                 {mat.mp_id}
               </span>
@@ -210,6 +208,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
             </a>
           </div>
         )}
+        {mat.mp_id && <p className="mt-1 text-xs text-slate-500">Formula-level cross-reference; correspondence to a measured sample, pressure state or selected structure is not established by this link.</p>}
         {activeFlags.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-2">
             {activeFlags.map(([label]) => (
@@ -224,37 +223,21 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
         )}
       </div>
 
+      <MaterialVisibilityNotice visibility={mat.visibility} />
+      <p className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">These are source-linked property selections, not a joint observation or an ML feature row. Archive status applies to every property below; a source-linked value does not override a material review hold. Expand each value for its contributing result, source and conditions. Observed/Computed labels describe the source record, not independent validation of each property. Missing source/state associations are not filled from another record. Family labels are catalogue classifications, not measurement evidence.</p>
+      <ScientificAnomalyNotice review={mat.anomaly_review} />
+
       <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        <Fact label="Tc max" value={fmtNum(mat.tc_max, 1)} suffix=" K" />
-        <Fact label="Tc ambient" value={fmtNum(mat.tc_ambient, 1)} suffix=" K" />
+        <PropertyEvidenceFact evidence={mat.property_evidence} field="tc_max" />
+        <PropertyEvidenceFact evidence={mat.property_evidence} field="tc_ambient" />
         <Fact label="arXiv year" value={String(mat.arxiv_year ?? "—")} />
-        <Fact label="Papers" value={mat.total_papers.toString()} />
+        <Fact label="Source links · not replications" value={materialSourceCountLabel(mat.material_semantics, mat.total_papers)} />
       </section>
-      {(mat.tc_max_experimental != null || mat.tc_max_theoretical != null) && (
+      <MaterialSemanticsPanel semantics={mat.material_semantics} />
+      {(selectedProperty(mat.property_evidence, "tc_max_experimental") || selectedProperty(mat.property_evidence, "tc_max_theoretical")) && (
         <section className="-mt-2 grid grid-cols-2 gap-4 md:grid-cols-4">
-          <Fact label="Tc exp." value={fmtNum(mat.tc_max_experimental, 1)} suffix=" K" />
-          <Fact label="Tc theo." value={fmtNum(mat.tc_max_theoretical, 1)} suffix=" K" />
-          <Fact label="Evidence" value={mat.dominant_evidence ?? "—"} />
-        </section>
-      )}
-
-      {mat.tc_max_conditions && (
-        <p className="-mt-4 text-xs text-slate-500">
-          Tc max measured at{" "}
-          <span className="font-medium text-slate-700">
-            {mat.tc_max_conditions}
-          </span>
-        </p>
-      )}
-
-      {/* P2: Interface material decomposition */}
-      {(mat.formula_substrate || mat.formula_overlayer) && (
-        <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <FactFormula label="Overlayer" formula={mat.formula_overlayer} />
-          <FactFormula label="Substrate" formula={mat.formula_substrate} />
-          {mat.layer_thickness_nm != null && (
-            <Fact label="Thickness" value={fmtNum(mat.layer_thickness_nm, 1)} suffix=" nm" />
-          )}
+          <PropertyEvidenceFact evidence={mat.property_evidence} field="tc_max_experimental" />
+          <PropertyEvidenceFact evidence={mat.property_evidence} field="tc_max_theoretical" />
         </section>
       )}
 
@@ -271,12 +254,13 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
                   <th className="px-3 py-3 text-left font-medium">Formula</th>
                   <th className="px-3 py-3 text-right font-medium">Tc max (K)</th>
                   <th className="px-3 py-3 text-right font-medium">Tc amb. (K)</th>
-                  <th className="px-3 py-3 text-right font-medium">Papers</th>
+                  <th className="px-3 py-3 text-right font-medium">Source links</th>
+                  <th className="px-3 py-3 text-left font-medium">Reported classifications</th>
                   <th className="px-3 py-3 text-right font-medium">Doping</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {mat.variants.map((v) => (
+                {mat.variants.filter(v => !visibilityIsRestricted(v.visibility)).map((v) => (
                   <tr key={v.id} className="hover:bg-slate-50">
                     <td className="px-3 py-2.5">
                       <Link
@@ -285,18 +269,21 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
                       >
                         <FormulaDisplay formula={v.formula} />
                       </Link>
+                      <ScientificAnomalyNotice review={v.anomaly_review} compact />
+                      <MaterialVisibilityNotice visibility={v.visibility} compact />
                     </td>
                     <td className="px-3 py-2.5 text-right tabular-nums">
-                      {v.tc_max != null ? v.tc_max.toFixed(1) : "—"}
+                      <PropertyEvidenceValue evidence={v.property_evidence} field="tc_max" compact includeUnit={false} />
                     </td>
                     <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
-                      {v.tc_ambient != null ? v.tc_ambient.toFixed(1) : "—"}
+                      <PropertyEvidenceValue evidence={v.property_evidence} field="tc_ambient" compact includeUnit={false} />
                     </td>
                     <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
-                      {v.total_papers}
+                      {materialSourceCountLabel(v.material_semantics, v.total_papers)}
                     </td>
+                    <td className="min-w-[12rem] px-3 py-2.5"><MaterialSemanticsMini semantics={v.material_semantics} /><div className="mt-2"><span className="text-xs text-slate-500">Structure association</span><StructureEvidenceValue evidence={v.structure_evidence} /></div></td>
                     <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
-                      {v.doping_level != null ? v.doping_level.toFixed(3) : "—"}
+                      <PropertyEvidenceValue evidence={v.property_evidence} field="doping_level" compact />
                     </td>
                   </tr>
                 ))}
@@ -318,68 +305,20 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
       {mat.records.length > 0 && (
         <RecordsTable records={mat.records} />
       )}
+      <RawScientificArchive archive={mat.raw_archive} visibility={mat.visibility} />
+
+      {mat.family === "hydride" && !catalogueEligible && <p className="rounded border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">Specialized hydride results are not loaded for this Archive record. An alternate endpoint cannot bypass its review status.</p>}
 
       {hydrideParameters.length > 0 && (
         <HydrideParametersTable rows={hydrideParameters} />
       )}
 
-      <DetailSection
-        title="Structure"
-        rows={[
-          ["Crystal structure", mat.crystal_structure],
-          ["Space group", mat.space_group],
-          ["Phase", mat.structure_phase],
-          ["Lattice a (Å)", fmtLattice(mat.lattice_params, "a")],
-          ["Lattice c (Å)", fmtLattice(mat.lattice_params, "c")],
-        ]}
-      />
-
-      <DetailSection
-        title="Superconducting parameters"
-        rows={[
-          ["Pairing symmetry", mat.pairing_symmetry],
-          ["Gap structure", mat.gap_structure],
-          [
-            "Hc2",
-            mat.hc2_tesla != null
-              ? `${mat.hc2_tesla.toFixed(1)} T${
-                  mat.hc2_conditions ? ` (${mat.hc2_conditions})` : ""
-                }`
-              : null,
-          ],
-          ["λ_eph (e–ph coupling)", fmtNum(mat.lambda_eph, 2)],
-          ["ω_log", mat.omega_log_k != null ? `${mat.omega_log_k.toFixed(0)} K` : null],
-          ["ρ_s (superfluid stiffness)", mat.rho_s_mev != null ? `${mat.rho_s_mev.toFixed(1)} meV` : null],
-        ]}
-      />
-
-      <DetailSection
-        title="Competing orders"
-        rows={[
-          ["Competing order", mat.competing_order],
-          ["T_CDW", mat.t_cdw_k != null ? `${mat.t_cdw_k.toFixed(1)} K` : null],
-          ["T_SDW", mat.t_sdw_k != null ? `${mat.t_sdw_k.toFixed(1)} K` : null],
-          ["T_AFM", mat.t_afm_k != null ? `${mat.t_afm_k.toFixed(1)} K` : null],
-          [
-            "ρ(T) exponent",
-            mat.rho_exponent != null ? mat.rho_exponent.toFixed(2) : null,
-          ],
-        ]}
-      />
-
-      <DetailSection
-        title="Samples & pressure"
-        rows={[
-          ["Sample form", mat.sample_form],
-          ["Substrate", mat.substrate],
-          ["Pressure type", mat.pressure_type],
-          ["Doping type", mat.doping_type],
-          [
-            "Doping level",
-            mat.doping_level != null ? mat.doping_level.toFixed(3) : null,
-          ],
-        ]}
-      />
+      <StructureEvidencePanel evidence={mat.structure_evidence} />
+      <PropertyEvidenceSection title="Lattice parameters — separate source selections" fields={STRUCTURE_FIELDS.filter(field => field === "lattice_params")} evidence={mat.property_evidence} />
+      <PropertyEvidenceSection title="Superconducting parameters" fields={SC_FIELDS.filter(field => field !== "pairing_symmetry")} evidence={mat.property_evidence} />
+      <JointEpcNotice evidence={mat.property_evidence} />
+      <PropertyEvidenceSection title="Competing orders" fields={ORDER_FIELDS} evidence={mat.property_evidence} />
+      <PropertyEvidenceSection title="Samples & pressure" fields={SAMPLE_FIELDS} evidence={mat.property_evidence} />
 
     </main>
   );
@@ -400,17 +339,18 @@ function HydrideParametersTable({
           independent NER enrichment for pressure, λ, μ*, and ω_log
         </span>
       </div>
+      <p className="mb-3 rounded border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">Independent extraction leads, not association-complete EPC inputs. A row does not establish a shared structure/state/run for λ, μ* and ω_log. Expand each extracted field for source context; these values are not used as catalogue headline selections or model-ready pairs.</p>
       <div className="overflow-x-auto rounded-lg border border-sage-border bg-white">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
             <tr>
               <th className="px-3 py-3 text-left font-medium">Formula</th>
-              <th className="px-3 py-3 text-right font-medium">Tc (K)</th>
+              <th className="px-3 py-3 text-right font-medium">Reported Tc</th>
               <th className="px-3 py-3 text-right font-medium">P (GPa)</th>
               <th className="px-3 py-3 text-right font-medium normal-case">λ</th>
               <th className="px-3 py-3 text-right font-medium normal-case">μ*</th>
               <th className="px-3 py-3 text-right font-medium normal-case">
-                ω_log (K)
+                Reported ω_log
               </th>
               <th className="px-3 py-3 text-left font-medium">Method</th>
               <th className="px-3 py-3 text-right font-medium">Year</th>
@@ -418,27 +358,28 @@ function HydrideParametersTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {rows.map((r) => {
+            {rows.filter(r => !visibilityIsRestricted(r.visibility)).map((r) => {
               const paperRef = paperReference(r.paper_id);
               return (
                 <tr key={r.id} className="hover:bg-slate-50">
                   <td className="px-3 py-2.5 font-medium text-slate-800">
                     <FormulaDisplay formula={r.formula} />
+                    <MaterialVisibilityNotice visibility={r.visibility} compact />
                   </td>
                   <td className="px-3 py-2.5 text-right tabular-nums">
-                    {fmtNum(r.tc_kelvin, 1)}
+                    <HydrideExtractedField row={r} field="tc_kelvin" fallback={r.tc_kelvin} unit="K" />
                   </td>
                   <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
-                    {formatPressure(r.pressure_gpa)}
+                    {pressureLabel(r.pressure_semantics, r.pressure_gpa)}
                   </td>
                   <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
-                    {fmtNum(r.lambda_eph, 2)}
+                    <HydrideExtractedField row={r} field="lambda_eph" fallback={r.lambda_eph} />
                   </td>
                   <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
-                    {fmtNum(r.mu_star, 2)}
+                    <HydrideExtractedField row={r} field="mu_star" fallback={r.mu_star} />
                   </td>
                   <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
-                    {r.omega_log_k != null ? r.omega_log_k.toFixed(0) : "—"}
+                    <HydrideExtractedField row={r} field="omega_log_k" fallback={r.omega_log_k} unit="K" />
                   </td>
                   <td className="px-3 py-2.5 text-slate-600">
                     {r.method || r.evidence_type || "—"}
@@ -482,12 +423,32 @@ function HydrideParametersTable({
   );
 }
 
+function HydrideExtractedField({ row, field, fallback, unit = "" }: { row: HydrideTcParameterRecord; field: string; fallback: number | null; unit?: string }) {
+  const proposal = objectValue(objectValue(row.provenance).extraction_proposal);
+  const quantities = objectValue(proposal.scientific_values);
+  let raw = objectValue(quantities[field]);
+  if (field === "omega_log_k" && raw.raw_value == null) raw = objectValue(quantities.omega_log_source_value);
+  const rawText = evidenceText(raw.raw_value) ?? (Array.isArray(raw.raw_value) && raw.raw_value.length === 2 && raw.raw_value.every(value => evidenceText(value) !== null) ? `[${raw.raw_value.map(evidenceText).join(", ")}]` : null);
+  const displayed = rawText ? `${rawText}${typeof raw.raw_value === "number" && evidenceText(raw.raw_unit) ? ` ${evidenceText(raw.raw_unit)}` : ""}` : fallback == null ? "—" : `${scientificNumber(fallback)}${unit ? ` ${unit}` : ""}`;
+  return <details className="text-xs">
+    <summary className="cursor-pointer"><span>{displayed}</span><span className="block text-[10px] text-slate-500">{rawText ? "Raw extraction" : fallback == null ? "Not reported" : "Legacy extraction · unverified precision"}</span></summary>
+    <dl className="mt-2 max-w-sm space-y-1 text-left font-normal text-slate-600">
+      <div><dt className="inline">Enrichment record: </dt><dd className="inline">{row.id}</dd></div>
+      <div><dt className="inline">Paper: </dt><dd className="inline">{row.paper_id}</dd></div>
+      <div><dt className="inline">Source section: </dt><dd className="inline">{row.source_section ?? "Not reported"}</dd></div>
+      <div><dt className="inline">Method: </dt><dd className="inline">{row.method ?? "Not reported"}</dd></div>
+      <div><dt className="inline">Source unit: </dt><dd className="inline">{evidenceText(raw.raw_unit) ?? "Not reported in this proposal"}</dd></div>
+      <div><dt className="inline">Extraction version: </dt><dd className="inline">{row.prompt_version}</dd></div>
+    </dl>
+    <p className="mt-2 max-w-sm text-left font-normal text-slate-500">No paired-run/state verification is established by this extraction record. A parser or numerical consistency check is not independent source validation.</p>
+  </details>;
+}
+
 /**
  * The "evidence trail" behind the flat columns. Each row is one
  * paper's claim about this material: Tc at some pressure on some
- * sample form measured with some method. Deduped by paper_id +
- * tc_kelvin + pressure_gpa so multiple rows from the same paper
- * reporting the same Tc under the same conditions don't clutter.
+ * sample form reported with some method. Equal scalar values alone
+ * do not establish that two records describe the same result.
  *
  * Sorted most-informative first: Tc descending, then year descending
  * (prefer latest measurement when Tcs tie).
@@ -497,28 +458,17 @@ function RecordsTable({
 }: {
   records: Record<string, unknown>[];
 }) {
-  // Dedupe: same paper reporting same Tc at same pressure = one row.
-  // The NER sometimes emits one record per measurement technique
-  // (resistivity vs susceptibility) which is interesting only when
-  // the Tc differs; otherwise collapse them and show all techniques.
-  const seen = new Map<string, Record<string, unknown> & { _methods: Set<string> }>();
-  for (const r of records) {
-    const tc = num(r.tc_kelvin ?? r.tc);
-    const p = num(r.pressure_gpa ?? r.pressure);
-    const pid = typeof r.paper_id === "string" ? r.paper_id : "";
-    const key = `${pid}::${tc ?? "_"}::${p ?? "_"}`;
-    const prev = seen.get(key);
-    const meas = typeof r.measurement === "string" ? r.measurement : "";
-    if (prev) {
-      if (meas && meas.toLowerCase() !== "unknown") prev._methods.add(meas);
-    } else {
-      const methods = new Set<string>();
-      if (meas && meas.toLowerCase() !== "unknown") methods.add(meas);
-      seen.set(key, { ...r, _methods: methods });
-    }
-  }
+  // Preserve individual extracted results: equal Tc/pressure is not enough
+  // to merge sample, method, origin, criterion or source-role evidence.
+  const rowsWithMethods = records.filter(record => !visibilityIsRestricted(record.visibility)).map<Record<string, unknown> & { _methods: Set<string> }>((record) => ({
+    ...record,
+    _methods: new Set(
+      typeof record.measurement === "string" && record.measurement.toLowerCase() !== "unknown"
+        ? [record.measurement] : [],
+    ),
+  }));
 
-  const rows = Array.from(seen.values()).sort((a, b) => {
+  const rows = rowsWithMethods.sort((a, b) => {
     const ta = num(a.tc_kelvin ?? a.tc) ?? -Infinity;
     const tb = num(b.tc_kelvin ?? b.tc) ?? -Infinity;
     if (ta !== tb) return tb - ta;
@@ -532,31 +482,33 @@ function RecordsTable({
       <div className="mb-3 flex items-baseline justify-between">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
           Evidence ({rows.length} record{rows.length === 1 ? "" : "s"} from{" "}
-          {new Set(rows.map((r) => r.paper_id)).size} paper
-          {new Set(rows.map((r) => r.paper_id)).size === 1 ? "" : "s"})
+          {new Set(rows.map((r) => r.paper_id).filter(id => typeof id === "string" && id.trim())).size} linked bibliographic IDs)
         </h2>
         <span className="text-xs text-slate-400">
-          the flat columns above are aggregates — each line here is one
-          paper&apos;s claim
+          retained extraction records, including proposals that may need review;
+          repeated reports are not independent replications
         </span>
       </div>
       <div className="overflow-x-auto rounded-lg border border-sage-border bg-white">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
             <tr>
-              <th className="px-3 py-3 text-right font-medium">Tc (K)</th>
+              <th className="px-3 py-3 text-right font-medium">Retained Tc (K)</th>
+              <th className="px-3 py-3 text-left font-medium">Record origin / role</th>
+              <th className="px-3 py-3 text-left font-medium">Review status</th>
               <th className="px-3 py-3 text-right font-medium">P (GPa)</th>
               <th className="px-3 py-3 text-left font-medium">Sample</th>
               <th className="px-3 py-3 text-left font-medium">Method</th>
               <th className="px-3 py-3 text-left font-medium">Pairing</th>
               <th className="px-3 py-3 text-right font-medium">Year</th>
-              <th className="px-3 py-3 text-center font-medium">Tier</th>
+              <th className="px-3 py-3 text-center font-medium" title="Source tier is not experimental confirmation">Source tier</th>
               <th className="px-3 py-3 text-left font-medium">Paper</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
             {rows.map((r, i) => {
               const tc = num(r.tc_kelvin ?? r.tc);
+              const classification = recordClassification(r);
               const year = num(r.year ?? r.measurement_year);
               const p = num(r.pressure_gpa ?? r.pressure);
               const pid = typeof r.paper_id === "string" ? r.paper_id : null;
@@ -569,14 +521,16 @@ function RecordsTable({
               return (
                 <tr key={i} className="hover:bg-slate-50">
                   <td className="px-3 py-2.5 text-right tabular-nums font-medium">
-                    {tc != null ? tc.toFixed(1) : "—"}
+                    {tc != null ? scientificNumber(tc) : "—"}
+                    <span className="block text-[10px] font-normal text-slate-500">Stored extraction, not approval</span>
                   </td>
+                  <td className="px-3 py-2.5 text-xs text-slate-600" title={classification.version}>
+                    <span className="block">{classification.status === "conflicted" ? "Classification conflict" : classification.origin}</span>
+                    <span className="text-slate-400">{classification.role} source role</span>
+                  </td>
+                  <td className="px-3 py-2.5"><RecordAnomalyReview assessment={r.anomaly_review} /><MaterialVisibilityNotice visibility={r.visibility} compact scope={objectValue(r.visibility).material_link_status ? "source occurrence" : "material"} /></td>
                   <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
-                    {p == null
-                      ? "—"
-                      : p === 0
-                        ? "ambient"
-                        : p.toFixed(1)}
+                    {pressureLabel(r.pressure_semantics, p)}
                   </td>
                   <td className="px-3 py-2.5 text-slate-600">
                     {sample || "—"}
@@ -668,37 +622,6 @@ function paperReference(paperId: string | null): {
   return { label: id, title: id };
 }
 
-function DetailSection({
-  title,
-  rows,
-}: {
-  title: string;
-  rows: [string, string | number | null | undefined][];
-}) {
-  const filled = rows.filter(([, v]) => v != null && v !== "");
-  if (filled.length === 0) return null;
-  return (
-    <section>
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
-        {title}
-      </h2>
-      <div className="overflow-hidden rounded-lg border border-sage-border bg-white">
-        <dl className="divide-y divide-slate-100">
-          {filled.map(([label, value]) => (
-            <div
-              key={label}
-              className="grid grid-cols-[180px_1fr] gap-4 px-4 py-3 text-sm"
-            >
-              <dt className="text-slate-500">{label}</dt>
-              <dd className="font-medium text-slate-900">{String(value)}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-    </section>
-  );
-}
-
 function Fact({
   label,
   value,
@@ -721,44 +644,6 @@ function Fact({
       </div>
     </div>
   );
-}
-
-/** Like Fact, but renders a chemical formula with subscripts. */
-function FactFormula({
-  label,
-  formula,
-}: {
-  label: string;
-  formula: string | null | undefined;
-}) {
-  return (
-    <div className="rounded-lg border border-sage-border bg-white p-4 shadow-sage">
-      <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
-        {label}
-      </div>
-      <div className="mt-1 text-2xl font-semibold">
-        {formula ? <FormulaDisplay formula={formula} /> : "—"}
-      </div>
-    </div>
-  );
-}
-
-function fmtNum(x: number | null | undefined, digits = 1): string {
-  return x != null ? x.toFixed(digits) : "—";
-}
-
-function fmtLattice(
-  lp: Record<string, number> | null | undefined,
-  key: "a" | "c",
-): string | null {
-  const v = lp?.[key];
-  return typeof v === "number" ? v.toFixed(3) : null;
-}
-
-function formatPressure(x: number | null | undefined): string {
-  if (x == null) return "—";
-  if (x === 0) return "ambient";
-  return x.toFixed(1);
 }
 
 function num(x: unknown): number | null {

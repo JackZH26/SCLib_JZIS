@@ -1,0 +1,79 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "material_id": {
+      "maxLength": 120,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Material Id",
+      "type": "string"
+    },
+    "pressure_status": {
+      "enum": [
+        "explicit_ambient",
+        "reported",
+        "not_reported",
+        "ambiguous"
+      ],
+      "title": "Pressure Status",
+      "type": "string"
+    },
+    "pressure_gpa": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Pressure Gpa"
+    },
+    "temperature_role": {
+      "enum": [
+        "measurement",
+        "synthesis",
+        "simulation",
+        "unknown"
+      ],
+      "title": "Temperature Role",
+      "type": "string"
+    },
+    "temperature_k": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Temperature K"
+    },
+    "phase": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Phase",
+      "type": "string"
+    },
+    "sample_context": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Sample Context",
+      "type": "string"
+    }
+  },
+  "required": [
+    "material_id",
+    "pressure_status",
+    "pressure_gpa",
+    "temperature_role",
+    "temperature_k",
+    "phase",
+    "sample_context"
+  ],
+  "title": "StateContent",
+  "type": "object"
+}

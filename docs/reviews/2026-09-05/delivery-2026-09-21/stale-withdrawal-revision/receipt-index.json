@@ -1,0 +1,127 @@
+{
+  "version": "delivery-receipt-index/1.0.0",
+  "revision_under_full_regression": "bff62fd17f8edb1f91218a7f44a5e9f49af62e1f",
+  "receipts": [
+    {
+      "file": "stale-withdraw-red.xml",
+      "bytes": 1186,
+      "sha256": "cfd7607a33a9bd920458fec23b35e684975bad570d68c832b5122b53b23e290b"
+    },
+    {
+      "file": "stale-withdraw-green.xml",
+      "bytes": 2064,
+      "sha256": "8add17793374560997109dd6b910d0b85675733de974287b2a818dafcf08ffc4"
+    },
+    {
+      "file": "focused-api-r3.xml",
+      "bytes": 45523,
+      "sha256": "2678418384306042d831c33d36c96a53a129137bc0bb98276c11d25f33fdc42e"
+    },
+    {
+      "file": "offline-full-r2.xml",
+      "bytes": 2511678,
+      "sha256": "9449bc194dafcc78a8959d11d41b7140845380e6abd4d723e27ac3ca386421fa"
+    },
+    {
+      "file": "schema-rehearsal-r2.json",
+      "bytes": 116260,
+      "sha256": "75070a88295061dc410886f0f732b5bca6bd0181e8e2329f1340045e09e0b3e5"
+    },
+    {
+      "file": "restore-r2.json",
+      "bytes": 112137,
+      "sha256": "d9fe4e3b3a0f2fddc386dca975dff5afa9a9205c4ff4c1ece2d50bc9ab010e52"
+    },
+    {
+      "file": "capture-manifest-r2.json",
+      "bytes": 2979,
+      "sha256": "a80d487b62533b038f1d5e10f687591cf05146c982c101734ad858d34a3cd76c"
+    },
+    {
+      "file": "secret-triage-r2.json",
+      "bytes": 850,
+      "sha256": "b91d67617cd1e0860dc85de329ad1790ad8c99b946e7080bdb83a45c4ca885e4"
+    },
+    {
+      "file": "security-fingerprints-r2.xml",
+      "bytes": 2462,
+      "sha256": "0080502977095aba07d5312b8162cb2dcb7862c99233ab753cda0f05a48e8ad5"
+    },
+    {
+      "file": "frontend-r4.log",
+      "bytes": 4525,
+      "sha256": "57bb04efb5b50ec5f8c34aa1480b8d02704a6466e64ec165838355475df1ef31"
+    },
+    {
+      "file": "gitleaks-history-r2.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "file": "gitleaks-history-r2.log",
+      "bytes": 113,
+      "sha256": "8dc0756df344ed577d754f91076fd7fa06d11cec2a0aebcf2751106b0367c80a"
+    },
+    {
+      "file": "capacity-final.xml",
+      "bytes": 429,
+      "sha256": "7ee2f741abf0a2743f997b990a61ff826482e371240f36d610154ea66655c4e8"
+    },
+    {
+      "file": "frontend-source-final.log",
+      "bytes": 4255,
+      "sha256": "dc5a885dbdb44e2366f539127ea26208ed60f20e54348cac6dfa90c626a98443"
+    },
+    {
+      "file": "research-browser-r3.json",
+      "bytes": 54021,
+      "sha256": "cfb4ff7302851226132d1c1baee36f11799d9e5af89f86fefc1a8b78368c7fd1"
+    },
+    {
+      "file": "research-browser-r2-failed.json",
+      "bytes": 57784,
+      "sha256": "945291ea0fab887c30c4ba9dfa868ae9f9fbd4a46e49fd1d0f78892d36afcc6f"
+    },
+    {
+      "file": "api-regression-r2-plan.json",
+      "bytes": 150093,
+      "sha256": "40e2f57bd8b1086a319f42098694ec2e6e3f12a4b0de6ad6aa01198a7bc179cb"
+    },
+    {
+      "file": "api-regression-r2-result.json",
+      "bytes": 4911,
+      "sha256": "7e3709e1ad39acfa00a78eff3064feb4e2b42fbf2d1fcccbabd9002119f692cc"
+    },
+    {
+      "file": "api-regression-r2-batch-04.xml",
+      "bytes": 96029,
+      "sha256": "66e63e67e9e8a76775a912f8b8e7b508bd274523bf1f8aabbc67a03618ec9db9"
+    },
+    {
+      "file": "api-regression-r2-batch-01.xml",
+      "bytes": 215888,
+      "sha256": "7f5014c2e1fc9a0612ce80e5b4a66de1d9515291bb8e980449b6a7df5fd1eebf"
+    },
+    {
+      "file": "api-regression-r2-batch-02.xml",
+      "bytes": 91858,
+      "sha256": "12a58817499863af1eb42db6988e8fa1c4b12e0a47744b32955e1284bd04f259"
+    },
+    {
+      "file": "api-regression-r2-batch-03.xml",
+      "bytes": 98549,
+      "sha256": "9cefd411a9dd15dc810b87ef5278dfb564bf4af735f89c850ebb27640007f268"
+    }
+  ],
+  "ordinary_api_status": "incomplete: batch 4 had one restore-worker scope failure; 2236 passed, 1 failed across 4 of 16 batches",
+  "migration_restore_source_comparison": {
+    "verified_same": 740,
+    "total": 741,
+    "changed_files": [
+      "scripts/tests/test_security_workflows.py"
+    ],
+    "note": "The sole later change pins reviewed scanner fingerprints; its 14-case regression passed. Original receipt source identities are preserved."
+  },
+  "scientific_acceptance": false,
+  "production_operations": false
+}

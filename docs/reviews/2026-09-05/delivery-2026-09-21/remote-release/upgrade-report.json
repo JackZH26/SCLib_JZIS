@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "source_revision": "9f529dd",
+  "rehearsal_image_id": "sha256:2d3d06843db6d5dc06088212744b23578b6fb2928fda0d01abe2ff862a11a0a5",
+  "schema_revision": "0078_scientific_result_passage",
+  "migration_seconds": 6.5,
+  "unchanged_original_tables": 20,
+  "changed_original_tables": [],
+  "invalid_indexes": 0,
+  "unvalidated_constraints": 0,
+  "roles": [
+    {
+      "role": "sclib_migrator",
+      "superuser": false,
+      "create_role": false,
+      "create_db": false,
+      "bypass_rls": false
+    },
+    {
+      "role": "sclib_runtime",
+      "superuser": false,
+      "create_role": false,
+      "create_db": false,
+      "bypass_rls": false
+    }
+  ],
+  "runtime_permissions": {
+    "runtime_public_create": false,
+    "runtime_alembic_read": true,
+    "runtime_latest_ledger_read": true
+  },
+  "runtime_schema_check": {
+    "database_mutated": false,
+    "schema_heads": [
+      "0078_scientific_result_passage"
+    ],
+    "status": "compatible"
+  },
+  "network_internal": true,
+  "live_database_modified": false
+}

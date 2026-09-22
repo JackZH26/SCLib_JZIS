@@ -21,6 +21,8 @@ jobs:
   verify-security:
     name: Require matching Security success
     if: >-
+      github.repository == 'JackZH26/SCLib_JZIS' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_branch == 'main'
@@ -65,6 +67,8 @@ jobs:
     name: Publish ${{ matrix.component }}
     needs: verify-security
     if: >-
+      github.repository == 'JackZH26/SCLib_JZIS' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_branch == 'main'
@@ -118,6 +122,34 @@ jobs:
           build-args: GIT_SHA=${{ steps.release.outputs.short_sha }}
           provenance: mode=max
           sbom: true
+      - name: Set up Python for final runtime gate
+        if: ${{ matrix.component == 'api' || matrix.component == 'ingestion' }}
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Verify final digest against the exact triggering Test inventories
+        if: ${{ matrix.component == 'api' || matrix.component == 'ingestion' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_PROJECT: ${{ matrix.component }}
+          RELEASE_DIGEST: ${{ steps.build.outputs.digest }}
+          TEST_RUN_ID: ${{ github.event.workflow_run.id }}
+          TEST_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/verify_release_runtime.py \
+            --project "$RELEASE_PROJECT" --image-digest "$RELEASE_DIGEST" \
+            --test-run-id "$TEST_RUN_ID" --test-run-attempt "$TEST_RUN_ATTEMPT" \
+            --revision "$TARGET_SHA" --output "$RUNNER_TEMP/release-runtime-$RELEASE_PROJECT"
+      - name: Retain final-digest runtime evidence
+        if: ${{ !cancelled() && (matrix.component == 'api' || matrix.component == 'ingestion') }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-runtime-${{ matrix.component }}
+          path: ${{ runner.temp }}/release-runtime-${{ matrix.component }}/
+          if-no-files-found: error
+          retention-days: 30
       - name: Scan published digest
         id: trivy
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0

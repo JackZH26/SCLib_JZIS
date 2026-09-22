@@ -10,10 +10,11 @@ from __future__ import annotations
 import logging
 from datetime import UTC, datetime
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from models.background_jobs_v1 import JOB_LOCK_KEYS
 from models.db import Chunk, Material, Paper, StatsCache
 from models.search import StatsDataPipeline
 from services.metrics import update_dataset_metrics
@@ -131,6 +132,7 @@ async def refresh_dashboard_cache(
     db: AsyncSession,
     *,
     data_pipeline: StatsDataPipeline | None = None,
+    commit: bool = True,
 ) -> dict:
     """Compute stats and upsert the ``dashboard`` row.
 
@@ -138,7 +140,17 @@ async def refresh_dashboard_cache(
     subsequent calls replace atomically. When cron supplies ``data_pipeline``,
     that state is written to a separate cache row so an unrelated hourly
     dashboard refresh cannot overwrite it.
+
+    Scheduled callers use ``commit=False`` so the coordinator commits this
+    upsert and its cycle receipt together. They must publish process metrics
+    separately after that commit; this function performs no external I/O.
     """
+    if type(commit) is not bool:
+        raise ValueError("commit must be Boolean")
+    if commit:
+        # Manual/API refreshes serialize with the scheduled owner before
+        # reading counts. The transaction lock releases with the manual commit.
+        await db.execute(text("SELECT pg_advisory_xact_lock(:key)").bindparams(key=JOB_LOCK_KEYS["stats_refresh"]))
     payload = await compute_stats(db)
     refreshed_at = datetime.fromisoformat(payload["stats_refreshed_at"])
     current_pipeline = data_pipeline or await get_data_pipeline_status(db)
@@ -172,8 +184,16 @@ async def refresh_dashboard_cache(
             )
         )
         await db.execute(pipeline_stmt)
-    await db.commit()
     payload["data_pipeline"] = current_pipeline.model_dump(mode="json")
+    if commit:
+        await db.commit()
+        publish_dashboard_metrics(payload)
+    return payload
+
+
+def publish_dashboard_metrics(payload: dict) -> None:
+    """Publish process-local metrics only after the owning transaction commits."""
+    current_pipeline = StatsDataPipeline.model_validate(payload.get("data_pipeline") or {})
     update_dataset_metrics(
         payload,
         current_pipeline.stages,
@@ -185,4 +205,3 @@ async def refresh_dashboard_cache(
         payload["total_materials"],
         payload["total_chunks"],
     )
-    return payload

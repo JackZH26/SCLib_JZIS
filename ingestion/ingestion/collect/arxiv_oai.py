@@ -19,14 +19,16 @@ concurrently. A trailing ``_throttle`` call blocks on an asyncio lock.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import logging
 import re
 import time
 import xml.etree.ElementTree as ET
 from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from typing import Any
+from urllib.parse import urlsplit
 
 import httpx
 from tenacity import (
@@ -37,7 +39,7 @@ from tenacity import (
 )
 
 from ingestion.config import IngestionSettings, get_settings
-from ingestion.models import PaperMetadata
+from ingestion.models import PaperMetadata, split_arxiv_id
 
 log = logging.getLogger(__name__)
 
@@ -52,6 +54,70 @@ ARXIV_PDF_URL = "https://export.arxiv.org/pdf/{id}"
 
 class ArxivError(RuntimeError):
     """Raised on non-retriable arXiv errors (e.g. 404 for a missing paper)."""
+
+
+class ArxivCaptureError(RuntimeError):
+    """Integrity/binding failure: must not silently degrade to another input."""
+
+
+@dataclass(frozen=True)
+class ArxivDownload:
+    """Observed response bytes; an explicit URL is not a publication timestamp."""
+
+    data: bytes
+    kind: str
+    requested_id: str
+    requested_url: str
+    resolved_url: str
+    captured_at: str
+
+    def provenance(self) -> dict[str, Any]:
+        if not isinstance(self.data, bytes) or not self.data:
+            raise ArxivCaptureError("arXiv capture requires nonempty immutable bytes")
+        if not isinstance(self.captured_at, str) or len(self.captured_at) > 40:
+            raise ArxivCaptureError("invalid arXiv capture observation timestamp")
+        try:
+            observed = datetime.fromisoformat(self.captured_at)
+        except ValueError as exc:
+            raise ArxivCaptureError("invalid arXiv capture observation timestamp") from exc
+        if observed.tzinfo is None:
+            raise ArxivCaptureError("arXiv capture observation timestamp requires timezone")
+        work, version = split_arxiv_id(self.requested_id)
+        _validate_artifact_url(self.requested_url, work, version, self.kind)
+        _validate_artifact_url(self.resolved_url, work, version, self.kind)
+        return {
+            "kind": self.kind,
+            "sha256": hashlib.sha256(self.data).hexdigest(),
+            "byte_length": len(self.data),
+            "captured_at": observed.isoformat(),
+            "requested_url": self.requested_url,
+            "resolved_url": self.resolved_url,
+            "source_version": version,
+            "version_status": "explicit_version_url" if version else "unversioned_unknown",
+            "version_available_at": None,
+        }
+
+
+def _validate_artifact_url(url: str, work: str, version: str | None, kind: str) -> None:
+    """Fail closed on ambiguous redirects; never store query tokens/credentials."""
+    value = urlsplit(url)
+    prefixes = {"source": ("/src/", "/e-print/"), "pdf": ("/pdf/",)}
+    if (
+        len(url) > 256 or value.scheme != "https"
+        or value.netloc not in {"arxiv.org", "export.arxiv.org"}
+        or value.query or value.fragment or kind not in prefixes
+    ):
+        raise ArxivCaptureError("untrusted arXiv artifact response URL")
+    path_id = next((value.path[len(p):] for p in prefixes[kind]
+                    if value.path.startswith(p)), None)
+    if kind == "pdf" and path_id and path_id.endswith(".pdf"):
+        path_id = path_id[:-4]
+    try:
+        resolved_work, resolved_version = split_arxiv_id(path_id or "")
+    except ValueError as exc:
+        raise ArxivCaptureError("unrecognized arXiv artifact response path") from exc
+    if resolved_work != work or (version is not None and resolved_version != version):
+        raise ArxivCaptureError("arXiv artifact response identity/version mismatch")
 
 
 @dataclass
@@ -169,9 +235,7 @@ class ArxivClient:
         for audited gap backfills where replaying an entire historical date
         window would needlessly reprocess papers already present in SCLib.
         """
-        arxiv_id = arxiv_id.strip()
-        if not arxiv_id:
-            raise ValueError("arxiv_id must not be empty")
+        arxiv_id, requested_version = split_arxiv_id(arxiv_id)
 
         root = await self._oai_get(
             {
@@ -191,6 +255,11 @@ class ArxivClient:
         meta = _parse_record(record)
         if meta is None:
             raise ArxivError(f"arXiv metadata record deleted or empty: {arxiv_id}")
+        if meta.arxiv_id != arxiv_id:
+            raise ArxivCaptureError("arXiv metadata response identity mismatch")
+        # OAI exposes current metadata, even when the body request selects vN.
+        # Never label this title/abstract as metadata from that historical vN.
+        meta.requested_version = requested_version
         return meta
 
     # --- File download ------------------------------------------------------
@@ -201,13 +270,54 @@ class ArxivClient:
         retry=retry_if_exception_type((httpx.HTTPError,)),
         reraise=True,
     )
-    async def _file_get(self, url: str) -> bytes:
-        await self._file_throttle.wait()
-        r = await self._client.get(url)
-        if r.status_code == 404:
-            raise ArxivError(f"404 not found: {url}")
-        r.raise_for_status()
-        return r.content
+    async def _file_get(
+        self, url: str, *, work: str, version: str | None, kind: str,
+    ) -> httpx.Response:
+        for _ in range(6):
+            # Validate redirects BEFORE requesting them: credentials, query
+            # tokens, non-arXiv hosts and a lost explicit version are refused.
+            _validate_artifact_url(url, work, version, kind)
+            await self._file_throttle.wait()
+            r = await self._client.get(url, follow_redirects=False)
+            if r.is_redirect:
+                location = r.headers.get("location")
+                if not location:
+                    raise ArxivCaptureError("arXiv redirect has no location")
+                url = str(r.url.join(location))
+                continue
+            if r.status_code == 404:
+                raise ArxivError("arXiv artifact not found")
+            r.raise_for_status()
+            return r
+        raise ArxivCaptureError("too many arXiv artifact redirects")
+
+    async def _download_capture(self, arxiv_id: str, kind: str) -> ArxivDownload:
+        work, version = split_arxiv_id(arxiv_id)
+        requested_id = work + (version or "")
+        template = ARXIV_SRC_URL if kind == "source" else ARXIV_PDF_URL
+        url = template.format(id=requested_id)
+        response = await self._file_get(url, work=work, version=version, kind=kind)
+        if not response.content or "text/html" in response.headers.get("content-type", ""):
+            raise ArxivError("arXiv returned an empty/non-artifact response")
+        capture = ArxivDownload(
+            data=response.content, kind=kind, requested_id=requested_id,
+            requested_url=url, resolved_url=str(response.url),
+            captured_at=datetime.now(timezone.utc).isoformat(),
+        )
+        capture.provenance()  # validate binding before any archive/write
+        return capture
+
+    async def download_source_capture(self, arxiv_id: str) -> ArxivDownload:
+        capture = await self._download_capture(arxiv_id, "source")
+        if capture.data[:5] == b"%PDF-":
+            raise ArxivError(f"{arxiv_id}: /src/ returned a PDF (no LaTeX source available)")
+        return capture
+
+    async def download_pdf_capture(self, arxiv_id: str) -> ArxivDownload:
+        capture = await self._download_capture(arxiv_id, "pdf")
+        if capture.data[:5] != b"%PDF-":
+            raise ArxivError("arXiv PDF endpoint returned non-PDF bytes")
+        return capture
 
     async def download_source(self, arxiv_id: str) -> bytes:
         """Download .tar.gz LaTeX source. Raises ArxivError if unavailable.
@@ -218,23 +328,15 @@ class ArxivClient:
         record the PDF without polluting the ``src/`` prefix in GCS with
         PDF bytes that will later blow up the LaTeX parser.
         """
-        data = await self._file_get(ARXIV_SRC_URL.format(id=arxiv_id))
-        if data[:5] == b"%PDF-":
-            raise ArxivError(
-                f"{arxiv_id}: /src/ returned a PDF (no LaTeX source available)"
-            )
-        return data
+        return (await self.download_source_capture(arxiv_id)).data
 
     async def download_pdf(self, arxiv_id: str) -> bytes:
-        return await self._file_get(ARXIV_PDF_URL.format(id=arxiv_id))
+        return (await self.download_pdf_capture(arxiv_id)).data
 
 
 # ---------------------------------------------------------------------------
 # XML parsing
 # ---------------------------------------------------------------------------
-
-_ID_RE = re.compile(r"^(?:cond-mat/)?([\w\-./]+)$")
-
 
 def _parse_record(record: ET.Element) -> PaperMetadata | None:
     meta_el = record.find("oai:metadata/arxiv:arXiv", OAI_NS)
@@ -245,8 +347,11 @@ def _parse_record(record: ET.Element) -> PaperMetadata | None:
     raw_id = _text(meta_el.find("arxiv:id", OAI_NS))
     if not raw_id:
         return None
-    match = _ID_RE.match(raw_id.strip())
-    arxiv_id = match.group(1) if match else raw_id.strip()
+    try:
+        arxiv_id, _ = split_arxiv_id(raw_id)
+    except ValueError:
+        log.warning("ignoring malformed arXiv metadata identifier")
+        return None
 
     title = _collapse_ws(_text(meta_el.find("arxiv:title", OAI_NS)))
     abstract = _collapse_ws(_text(meta_el.find("arxiv:abstract", OAI_NS)))
@@ -276,7 +381,25 @@ def _parse_record(record: ET.Element) -> PaperMetadata | None:
         categories=categories,
         primary_category=primary,
         doi=doi or None,
+        metadata_modified_date=_parse_date(_text(meta_el.find("arxiv:updated", OAI_NS))),
+        metadata_datestamp=_metadata_datestamp(
+            _text(record.find("oai:header/oai:datestamp", OAI_NS))
+        ),
+        metadata_captured_at=datetime.now(timezone.utc).isoformat(),
+        # Hash explicitly refers to ElementTree serialization, NOT wire bytes.
+        metadata_sha256=hashlib.sha256(ET.tostring(record, encoding="utf-8")).hexdigest(),
     )
+
+
+def _metadata_datestamp(value: str) -> str | None:
+    value = value.strip()
+    if len(value) > 32:
+        return None
+    try:
+        datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return value
 
 
 def _text(el: ET.Element | None) -> str:

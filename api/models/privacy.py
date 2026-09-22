@@ -27,6 +27,12 @@ class AccountDataExport(BaseModel):
     profile: dict[str, Any]
     api_keys: list[dict[str, Any]]
     ask_history: list[dict[str, Any]]
+    answer_evidence_access: dict[str, Any] = Field(default_factory=lambda: {
+        "version": "ask-history-export-access/1.0.0",
+        "inline_receipts_included": False,
+        "access": "New saved-answer evidence receipts are available individually at each history entry's evidence_detail_path using the owner's browser session or bearer token. They are not embedded in this account snapshot.",
+        "retention": "Receipts follow their history entry's deletion and retention; they are not permanent research archives.",
+    })
     bookmarks: list[dict[str, Any]]
     email_verifications: list[dict[str, Any]]
     password_resets: list[dict[str, Any]]

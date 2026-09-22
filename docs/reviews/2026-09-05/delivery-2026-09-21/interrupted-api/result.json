@@ -1,0 +1,97 @@
+{
+  "batches": [
+    {
+      "batch": 1,
+      "counts": {
+        "errors": 0,
+        "failed": 0,
+        "module_cases": {
+          "tests/test_anomaly_surfaces.py": 9,
+          "tests/test_claim_integrity.py": 197,
+          "tests/test_discovery_selection_preparation.py": 75,
+          "tests/test_index_retrieval_http.py": 18,
+          "tests/test_ml_baseline_preparation_sql.py": 3,
+          "tests/test_ml_frozen_provenance.py": 39,
+          "tests/test_ml_review_companion_contract.py": 24,
+          "tests/test_ml_use_submission_admission.py": 19,
+          "tests/test_research_audit_retention.py": 32,
+          "tests/test_research_publication_limits.py": 22,
+          "tests/test_scientific_adjudication_operators.py": 30,
+          "tests/test_scientific_pending_import.py": 35,
+          "tests/test_shadow_import.py": 30,
+          "tests/test_source_task_timeline.py": 8
+        },
+        "passed": 541,
+        "skipped": 0,
+        "test_cases": 541
+      },
+      "junit": "batch-01.xml",
+      "junit_status": "complete_junit_verified",
+      "runner_exit_code": 0
+    },
+    {
+      "batch": 2,
+      "counts": {
+        "errors": 0,
+        "failed": 0,
+        "module_cases": {
+          "tests/test_answer_evidence.py": 38,
+          "tests/test_claim_support.py": 76,
+          "tests/test_disposable_environment.py": 2,
+          "tests/test_index_vector_adapter.py": 66,
+          "tests/test_ml_baseline_rehearsal.py": 41,
+          "tests/test_ml_identity_audit.py": 44,
+          "tests/test_ml_review_companion_integrity_sql.py": 2,
+          "tests/test_ml_use_submissions.py": 22,
+          "tests/test_research_distribution_contract.py": 53,
+          "tests/test_research_publication_schema.py": 75,
+          "tests/test_scientific_adjudication_schema.py": 63,
+          "tests/test_scientific_program_import_operators.py": 71,
+          "tests/test_shadow_import_semantics.py": 15,
+          "tests/test_source_tasks.py": 25
+        },
+        "passed": 593,
+        "skipped": 0,
+        "test_cases": 593
+      },
+      "junit": "batch-02.xml",
+      "junit_status": "complete_junit_verified",
+      "runner_exit_code": 0
+    }
+  ],
+  "counted_batches": [
+    1,
+    2
+  ],
+  "counts": {
+    "errors": 0,
+    "failed": 0,
+    "passed": 1134,
+    "skipped": 0,
+    "test_cases": 1134
+  },
+  "counts_scope": "complete_verified_junit_batches_only",
+  "duration_seconds": 1498.852,
+  "full_module_coverage": false,
+  "module_count": 224,
+  "production_or_scientific_acceptance": false,
+  "reason": null,
+  "status": "incomplete",
+  "unreported_batches": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "version": "owned-api-module-batches/1.1.0"
+}

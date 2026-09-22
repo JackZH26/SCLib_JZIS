@@ -1,0 +1,10 @@
+Disposable native services verified; running api.
+..........                                                               [100%]
+=============================== warnings summary ===============================
+routers/admin.py:84
+  /Users/jackzhou/Documents/SCLib_JZIS/api/routers/admin.py:84: FastAPIDeprecationWarning: `regex` has been deprecated, please use `pattern` instead
+    role: str | None = Query(None, regex="^(admin|active|inactive)?$"),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+10 passed, 1 warning in 61.96s (0:01:01)
+Removed only this run's disposable services and temporary test data.

@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /Users/jackzhou/Documents/SCLib_JZIS/frontend
+
+
+ Test Files  53 passed (53)
+      Tests  1890 passed (1890)
+   Start at  20:08:29
+   Duration  41.88s (transform 2.40s, setup 2.26s, import 7.12s, tests 39.58s, environment 25.25s)
+

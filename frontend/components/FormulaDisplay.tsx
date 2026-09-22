@@ -42,8 +42,9 @@ function parseFormula(formula: string): { text: string; sub: boolean }[] {
  * hovertemplate, which accepts a limited HTML subset incl. <sub>).
  */
 export function formulaToHtml(formula: string): string {
+  const escape = (text: string) => text.replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]!);
   return parseFormula(formula)
-    .map((seg) => (seg.sub ? `<sub>${seg.text}</sub>` : seg.text))
+    .map((seg) => (seg.sub ? `<sub>${escape(seg.text)}</sub>` : escape(seg.text)))
     .join("");
 }
 

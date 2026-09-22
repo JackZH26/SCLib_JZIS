@@ -95,7 +95,7 @@ export default function AdminUsersPage() {
       <div>
         <h2 className="text-lg font-semibold text-sage-ink">User management</h2>
         <p className="mt-1 text-sm text-sage-muted">
-          {total.toLocaleString()} users total. Ban deactivates the account
+          {total.toLocaleString("en-US")} users total. Ban deactivates the account
           (reversible); delete is permanent. Reviewers can act on the audit
           queue but cannot manage members.
         </p>

@@ -24,13 +24,13 @@ export function UsageStatsCard({ stats }: { stats: UsageStats }) {
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Stat
           label="Today"
-          value={stats.today_used.toLocaleString()}
-          sub={`of ${stats.daily_limit.toLocaleString()} (${stats.today_remaining.toLocaleString()} left)`}
+          value={stats.today_used.toLocaleString("en-US")}
+          sub={`of ${stats.daily_limit.toLocaleString("en-US")} (${stats.today_remaining.toLocaleString("en-US")} left)`}
         />
-        <Stat label="Last 7 days" value={stats.week_used.toLocaleString()} />
+        <Stat label="Last 7 days" value={stats.week_used.toLocaleString("en-US")} />
         <Stat
           label="All time"
-          value={stats.all_time_used.toLocaleString()}
+          value={stats.all_time_used.toLocaleString("en-US")}
           sub="via API keys"
         />
       </div>

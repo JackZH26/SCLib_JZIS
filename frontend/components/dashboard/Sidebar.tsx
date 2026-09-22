@@ -26,11 +26,11 @@ export function Sidebar({
   const pathname = usePathname();
 
   return (
-    <aside className="w-56 shrink-0 border-r border-sage-border bg-white/60">
+    <aside className="w-full shrink-0 border-b border-sage-border bg-white/60 md:w-56 md:border-b-0 md:border-r">
       {/* Site Header is sticky at ~64px — align the sidebar's sticky
           top to match so it doesn't slip under the header or leave a
           gap. Keep this in lockstep with Header.tsx padding. */}
-      <nav className="sticky top-16 flex flex-col gap-0.5 p-3 text-sm">
+      <nav className="flex flex-wrap gap-0.5 p-3 text-sm md:sticky md:top-16 md:flex-col" aria-label="Dashboard navigation">
         {items.map((item) => {
           // Exact match for the root /dashboard; prefix match for children
           const active =

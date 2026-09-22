@@ -33,6 +33,11 @@
 
 set -Eeuo pipefail
 
+if [[ -e /opt/SCLib_JZIS/scripts/.sclib-ingestion-paused ]]; then
+    printf '%s\n' 'SCLib ingestion/NER is paused for maintenance; aggregation skipped.'
+    exit 0
+fi
+
 # ---- Config --------------------------------------------------------------
 
 SCLIB_ROOT="${SCLIB_ROOT:-/opt/SCLib_JZIS}"

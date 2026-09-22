@@ -9,7 +9,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from contextlib import asynccontextmanager
-from datetime import UTC, datetime, timedelta
+from datetime import timedelta
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
@@ -21,24 +21,45 @@ from starlette.middleware.gzip import GZipMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from config import allowed_browser_origins, get_settings
-from models import get_session_factory
 from models.db import AskHistory, get_engine
 from models.errors import ApiErrorResponse
 from routers import (
     admin,
     ask,
     auth,
+    background_jobs,
     bookmarks,
     discovery,
+    discovery_priority,
+    discovery_projections,
+    discovery_scientific,
     feedback,
     health,
     history,
     materials,
+    ml_foundation,
+    ml_pilot_registration,
+    ml_use_governance,
+    ml_use_preflight,
+    ml_use_rights,
+    ml_use_runs,
+    ml_use_submissions,
     observability,
     papers,
+    research_distribution_preparation,
+    research_distribution_rights,
+    research_distributions,
+    research_publications,
+    scientific_adjudication,
+    scientific_result_passage,
+    scientific_corrections,
+    scientific_program_imports,
+    scientific_review,
     search,
     seo,
     similar,
+    source_impacts,
+    source_task_operations,
     stats,
     timeline,
     version,
@@ -50,8 +71,8 @@ from services.request_context import (
     resolve_request_id,
 )
 from services.session_config import build_oauth_session_config
-from services.stats_refresh import refresh_dashboard_cache
-from services.timeline_projection import refresh_timeline_projection
+from services.stats_refresh import publish_dashboard_metrics, refresh_dashboard_cache
+from services.timeline_projection import PROJECTION_SCHEMA_VERSION, refresh_timeline_projection
 
 logging.basicConfig(
     level=logging.INFO,
@@ -60,76 +81,88 @@ logging.basicConfig(
 log = logging.getLogger("sclib.api")
 
 
-async def _periodic_stats_refresh(interval_sec: int) -> None:
-    """Recompute ``stats_cache['dashboard']`` every ``interval_sec``.
+async def _run_periodic_job(job_name, interval_sec, handler, *, startup_delay=0,
+                            offset_seconds=0, config=None, after_commit=None):
+    """All replicas poll the same durable UTC cycles; only a lock owner writes.
 
-    The ingest pipeline runs out-of-band (瓦力 cron) and does not refresh
-    the cache itself, so without this task the homepage would forever
-    show whatever counts existed at the last manual ``POST /stats/refresh``.
-    Runs until the app shuts down. Exceptions are logged and swallowed
-    so a transient DB blip never crashes the API process — the next tick
-    retries.
+    Side effects in handlers belong to the coordinator transaction. Optional
+    post-commit work is best effort and cannot change a durable SQL receipt.
     """
-    factory = get_session_factory()
-    # Small delay on startup so the first tick doesn't race with
-    # alembic upgrade + initial request traffic.
-    await asyncio.sleep(30)
+    from services.background_jobs import run_background_cycle
+
+    if startup_delay:
+        await asyncio.sleep(startup_delay)
     while True:
         try:
-            async with factory() as session:
-                payload = await refresh_dashboard_cache(session)
-            log.info(
-                "stats_cache refreshed: %d papers / %d materials / %d chunks",
-                payload["total_papers"],
-                payload["total_materials"],
-                payload["total_chunks"],
-            )
+            receipt = await run_background_cycle(job_name, interval_seconds=interval_sec,
+                handler=handler, offset_seconds=offset_seconds, config=config)
+            if receipt["status"] == "succeeded":
+                log.info("background job %s completed cycle %s", job_name, receipt["cycle_id"])
+                if after_commit is not None:
+                    try:
+                        async with asyncio.timeout(10):
+                            await after_commit(receipt)
+                    except Exception:  # noqa: BLE001 - SQL success is already durable
+                        log.warning("post-commit work failed for %s", job_name, exc_info=True)
+            elif receipt["status"] == "failed":
+                log.warning("background job %s cycle failed; coordinator retry pending", job_name)
+            elif receipt["status"] == "configuration_conflict":
+                log.error("background job %s requires reconciliation of its retained schedule configuration", job_name)
         except asyncio.CancelledError:
             raise
         except Exception:  # noqa: BLE001
-            log.exception("stats_cache refresh failed; retrying on next tick")
-        await asyncio.sleep(interval_sec)
+            log.exception("background job %s unavailable; retrying on next poll", job_name)
+        await asyncio.sleep(min(interval_sec, 30))
+
+
+async def _periodic_stats_refresh(interval_sec: int) -> None:
+    payload = None
+
+    async def handler(session, scheduled_for, cycle_id):
+        nonlocal payload
+        payload = await refresh_dashboard_cache(session, commit=False)
+        return {key: payload[key] for key in ("total_papers", "total_materials", "total_chunks")}
+
+    async def after_commit(_receipt):
+        if payload is not None:
+            publish_dashboard_metrics(payload)
+
+    await _run_periodic_job("stats_refresh", interval_sec, handler, startup_delay=30,
+        config={"policy_version": "dashboard-refresh/1.0.0"}, after_commit=after_commit)
+
+
+async def _timeline_projection_cycle(session, scheduled_for, cycle_id):
+    # Recovering an older schedule must recompute current evidence, not move
+    # its projection watermark backwards to the old scheduled instant.
+    result = await refresh_timeline_projection(session)
+    return {"full_rebuild": result.full_rebuild, "materials_processed": result.materials_processed,
+            "active_materials": result.active_materials, "active_points": result.active_points,
+            "refreshed_at": result.refreshed_at.isoformat()}
+
+
+async def _timeline_after_commit(receipt):
+    """Legacy cache cleanup, never claimed as part of SQL cycle completion."""
+    from services.rate_limit import get_redis
+
+    result = receipt["result"]
+    if result["full_rebuild"] or result["materials_processed"]:
+        redis = get_redis()
+        keys = []
+        # Bound each Redis delete rather than collecting every matching key in
+        # memory. Governance-sensitive reads already bypass legacy Redis bodies.
+        async for key in redis.scan_iter(match="timeline:*", count=200):
+            keys.append(key)
+            if len(keys) == 200:
+                await redis.delete(*keys)
+                keys.clear()
+        if keys:
+            await redis.delete(*keys)
 
 
 async def _periodic_timeline_projection(interval_sec: int) -> None:
-    """Refresh the Timeline projection away from request latency."""
-    from services.rate_limit import get_redis
-
-    factory = get_session_factory()
-    # Alembic runs before Uvicorn in entrypoint.sh. The extra delay keeps the
-    # first full projection build away from startup health probes.
-    await asyncio.sleep(60)
-    while True:
-        try:
-            async with factory() as session:
-                async with session.begin():
-                    result = await refresh_timeline_projection(session)
-            log.info(
-                "timeline projection refreshed: %d materials / %d active points%s",
-                result.materials_processed,
-                result.active_points,
-                " (full rebuild)" if result.full_rebuild else "",
-            )
-            if result.full_rebuild or result.materials_processed:
-                try:
-                    redis = get_redis()
-                    keys = [
-                        key async for key in redis.scan_iter(
-                            match="timeline:*", count=200,
-                        )
-                    ]
-                    if keys:
-                        await redis.delete(*keys)
-                except Exception:  # noqa: BLE001 - TTL remains the safe fallback
-                    log.warning(
-                        "timeline cache invalidation failed after projection refresh",
-                        exc_info=True,
-                    )
-        except asyncio.CancelledError:
-            raise
-        except Exception:  # noqa: BLE001
-            log.exception("timeline projection refresh failed; retrying next tick")
-        await asyncio.sleep(interval_sec)
+    await _run_periodic_job("timeline_projection", interval_sec, _timeline_projection_cycle, startup_delay=60,
+        config={"policy_version": "timeline-refresh/1.0.0", "projection_schema_version": PROJECTION_SCHEMA_VERSION},
+        after_commit=_timeline_after_commit)
 
 
 # Mirrors ingestion/ingestion/extract/formula_validator.py::_BLACKLIST_PATTERN
@@ -168,7 +201,7 @@ _FORMULA_CONCAT_DESCRIPTOR_REGEX = (
 )
 
 
-async def _periodic_formula_audit(interval_sec: int) -> None:
+async def _formula_audit_cycle(session, scheduled_for, cycle_id):
     """Re-flag any materials whose formula slips past the NER +
     aggregator validators. Runs hourly. Idempotent — only flips
     ``needs_review`` on rows currently marked False that match one of
@@ -176,20 +209,15 @@ async def _periodic_formula_audit(interval_sec: int) -> None:
     initial backfills; this loop is the safety net for anything that
     lands between releases.
 
-    Each rule writes a distinct ``review_reason`` so admins can
-    audit / unflag per-category. The set of rules mirrors
-    ``ingestion/.../formula_validator.py``.
+    Each rule supplies a distinct ``review_reason`` only when no older reason
+    exists. Legacy notes do not exempt a row from reevaluation. The set of
+    rules mirrors ``ingestion/.../formula_validator.py``.
     """
     from sqlalchemy import text
 
-    factory = get_session_factory()
-    # Stagger from stats_refresh (30s) and ask_history_prune (90s)
-    # so three lifespan tasks don't all hit the DB at once.
-    await asyncio.sleep(150)
     rules: list[tuple[str, str]] = [
-        # (review_reason, predicate fragment). Each runs as its own
-        # idempotent UPDATE so a regex error in one rule does not
-        # block the others.
+        # (review_reason, predicate fragment). All rule effects share the
+        # cycle transaction so a failed rule cannot leave partial success.
         (
             "ner_extracted_descriptive_text",
             f"formula ~* '{_FORMULA_BLACKLIST_REGEX}' "
@@ -213,32 +241,28 @@ async def _periodic_formula_audit(interval_sec: int) -> None:
             r"formula ~ '[A-Za-z0-9][+\-]$'",
         ),
     ]
-    while True:
-        try:
-            total_flagged = 0
-            async with factory() as session:
-                for reason, predicate in rules:
-                    result = await session.execute(text(f"""
-                        UPDATE materials
-                        SET needs_review = TRUE,
-                            review_reason = '{reason}'
-                        WHERE needs_review = FALSE
-                          AND admin_decision IS NULL
-                          AND ({predicate});
-                    """))
-                    total_flagged += result.rowcount or 0
-                await session.commit()
-            if total_flagged:
-                log.warning(
-                    "formula audit: flagged %d materials across "
-                    "%d naming-rule categories",
-                    total_flagged, len(rules),
-                )
-        except asyncio.CancelledError:
-            raise
-        except Exception:  # noqa: BLE001
-            log.exception("formula audit failed; retrying on next tick")
-        await asyncio.sleep(interval_sec)
+    total_flagged = 0
+    for reason, predicate in rules:
+        result = await session.execute(text(f"""
+            UPDATE materials
+            SET needs_review = TRUE,
+                review_reason = COALESCE(review_reason, '{reason}')
+            WHERE needs_review = FALSE
+              AND ({predicate});
+        """))
+        total_flagged += result.rowcount or 0
+    return {"flagged": total_flagged, "rule_count": len(rules)}
+
+
+async def _periodic_formula_audit(interval_sec: int) -> None:
+    await _run_periodic_job("formula_audit", interval_sec, _formula_audit_cycle, startup_delay=150,
+        config={"policy_version": "formula-audit/1.0.0"})
+
+
+async def _nightly_audit_cycle(session, scheduled_for, cycle_id):
+    from services.audit_runner import run_audit
+
+    return await run_audit(session, commit=False, scheduled_for=scheduled_for, cycle_id=cycle_id)
 
 
 async def _nightly_data_audit(target_hour_utc: int = 20) -> None:
@@ -254,33 +278,16 @@ async def _nightly_data_audit(target_hour_utc: int = 20) -> None:
     The hourly ``_periodic_formula_audit`` already keeps the
     string-shape naming rules tight; this task adds the broader
     Tc / pressure / year / cross-field / retraction surface.
-    """
-    factory = get_session_factory()
-    while True:
-        now = datetime.now(UTC)
-        target = now.replace(
-            hour=target_hour_utc, minute=0, second=0, microsecond=0,
-        )
-        if target <= now:
-            target += timedelta(days=1)
-        sleep_sec = (target - now).total_seconds()
-        log.info(
-            "nightly audit: sleeping %.0fs until %s UTC",
-            sleep_sec, target.isoformat(),
-        )
-        try:
-            await asyncio.sleep(sleep_sec)
-        except asyncio.CancelledError:
-            raise
 
-        try:
-            from services.audit_runner import run_audit
-            async with factory() as session:
-                await run_audit(session)
-        except asyncio.CancelledError:
-            raise
-        except Exception:  # noqa: BLE001
-            log.exception("nightly audit run failed; retrying tomorrow")
+    Poll the shared last-due UTC cycle, including unfinished work after restart.
+    A failed cycle retries through coordinator backoff rather than waiting for
+    tomorrow; successful cycles are not run again by another API replica.
+    """
+    from services.audit_runner import AUDIT_METRIC_VERSION
+
+    await _run_periodic_job("nightly_audit", 86400, _nightly_audit_cycle,
+        offset_seconds=target_hour_utc * 3600,
+        config={"policy_version": "nightly-audit/1.0.0", "audit_metric_version": AUDIT_METRIC_VERSION})
 
 
 async def _periodic_ask_history_prune(interval_sec: int, retention_days: int) -> None:
@@ -291,32 +298,23 @@ async def _periodic_ask_history_prune(interval_sec: int, retention_days: int) ->
     ops dependency — if the API is up, history stays bounded.
     A larger deployment would likely move this to a batch job.
     """
-    factory = get_session_factory()
-    # Offset from the stats refresh so we don't pile two heavy loops on
-    # the same 30-second startup slot.
-    await asyncio.sleep(90)
-    while True:
-        try:
-            cutoff = datetime.now(UTC) - timedelta(days=retention_days)
-            async with factory() as session:
-                result = await session.execute(
-                    delete(AskHistory).where(AskHistory.created_at < cutoff)
-                )
-                await session.commit()
-            deleted = result.rowcount or 0
-            if deleted:
-                log.info("ask_history prune: removed %d rows older than %dd",
-                         deleted, retention_days)
-        except asyncio.CancelledError:
-            raise
-        except Exception:  # noqa: BLE001
-            log.exception("ask_history prune failed; retrying on next tick")
-        await asyncio.sleep(interval_sec)
+    async def handler(session, scheduled_for, cycle_id):
+        # Retries use the same cutoff, not the later recovery wall-clock time.
+        cutoff = scheduled_for - timedelta(days=retention_days)
+        result = await session.execute(delete(AskHistory).where(AskHistory.created_at < cutoff))
+        return {"deleted": result.rowcount or 0, "cutoff": cutoff.isoformat(), "retention_days": retention_days}
+
+    await _run_periodic_job("ask_history_prune", interval_sec, handler, startup_delay=90,
+        config={"policy_version": "ask-history-prune/1.0.0", "retention_days": retention_days})
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = get_settings()
+    # Also covers direct ASGI/uvicorn starts that bypass the container entrypoint.
+    # Complete read-only admission before spawning any background writer.
+    from services.schema_lifecycle import check_application_schema
+    await check_application_schema(get_engine())
     log.info("SCLib API starting (env=%s, backend=%s)",
              settings.environment, settings.email_backend)
 
@@ -618,6 +616,10 @@ async def request_contract_middleware(request: Request, call_next):
         reset_request_id(token)
     response.headers["X-Request-ID"] = request_id
     response.headers["X-API-Version"] = version.API_VERSION
+    if request.url.path.startswith(("/v1/materials", "/v1/claims", "/v1/works", "/v1/ml", "/v1/bookmarks", "/v1/history", "/v1/admin/audit", "/v1/admin/background-jobs", "/v1/paper/", "/v1/search", "/v1/ask", "/v1/timeline", "/v1/sitemap/")):
+        # Mutable governance must be checked on every read, including 404s.
+        # A release-bound cache epoch is a separate future optimization.
+        response.headers["Cache-Control"] = "private, no-store"
     return response
 
 app.include_router(health.router)
@@ -625,6 +627,25 @@ app.include_router(observability.router)
 app.include_router(auth.router, prefix="/v1")
 app.include_router(search.router, prefix="/v1")
 app.include_router(ask.router, prefix="/v1")
+# Keep the phase-1 material-claim route ahead of the legacy
+# ``/materials/{material_id:path}`` catch-all.
+app.include_router(research_publications.router, prefix="/v1")
+app.include_router(ml_use_governance.router, prefix="/v1")
+app.include_router(ml_pilot_registration.router, prefix="/v1")
+app.include_router(ml_use_preflight.router, prefix="/v1")
+app.include_router(ml_use_rights.router, prefix="/v1")
+app.include_router(ml_use_runs.router, prefix="/v1")
+app.include_router(ml_use_submissions.router, prefix="/v1")
+app.include_router(research_distributions.router, prefix="/v1")
+app.include_router(research_distribution_rights.router, prefix="/v1")
+app.include_router(research_distribution_preparation.router, prefix="/v1")
+app.include_router(scientific_program_imports.router, prefix="/v1")
+app.include_router(scientific_review.router, prefix="/v1")
+app.include_router(scientific_adjudication.router, prefix="/v1")
+app.include_router(scientific_result_passage.router, prefix="/v1")
+app.include_router(source_impacts.router, prefix="/v1")
+app.include_router(source_task_operations.router, prefix="/v1")
+app.include_router(ml_foundation.router, prefix="/v1")
 app.include_router(materials.router, prefix="/v1")
 app.include_router(papers.router, prefix="/v1")
 app.include_router(seo.router, prefix="/v1")
@@ -636,4 +657,9 @@ app.include_router(bookmarks.router, prefix="/v1")
 app.include_router(feedback.router, prefix="/v1")
 app.include_router(version.router, prefix="/v1")
 app.include_router(admin.router, prefix="/v1")
+app.include_router(background_jobs.router, prefix="/v1")
+app.include_router(scientific_corrections.router, prefix="/v1")
 app.include_router(discovery.router, prefix="/v1")
+app.include_router(discovery_priority.router, prefix="/v1")
+app.include_router(discovery_projections.router, prefix="/v1")
+app.include_router(discovery_scientific.router, prefix="/v1")

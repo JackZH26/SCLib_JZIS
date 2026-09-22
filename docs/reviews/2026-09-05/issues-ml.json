@@ -1,0 +1,530 @@
+[
+  {
+    "id": "ML01",
+    "title": "Preserve source revisions and result-level availability for temporal research",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "C",
+    "area": "research-provenance",
+    "evidence_level": "Code-confirmed temporal-provenance risk in the local working tree; no production-wide contamination rate measured",
+    "report_sections": [
+      "7.2 M01",
+      "7.5",
+      "13 / checklist 10"
+    ],
+    "summary": "Current extraction updates can attach newer paper contents to the earliest submission date. Introduce immutable source revisions and explicit result-availability semantics before using historical cutoffs, while retaining one scholarly work identity across versions.",
+    "evidence": [
+      {
+        "path": "ingestion/ingestion/collect/arxiv_oai.py",
+        "line": 267,
+        "detail": "The collector derives date_submitted from the arXiv created date; this is a work/publication date, not proof that each extracted result appeared in that version."
+      },
+      {
+        "path": "ingestion/ingestion/index/indexer.py",
+        "line": 332,
+        "detail": "The current paper upsert updates dates and materials_extracted together without a result-level source-revision availability contract."
+      },
+      {
+        "path": "ingestion/ingestion/claims/mapper.py",
+        "line": 855,
+        "detail": "_available_at falls back to the minimum paper availability/submission/publication date, potentially backdating results introduced later."
+      }
+    ],
+    "scope": [
+      "Define work_first_public_at, source_version_public_at, result_available_at, captured_at, availability_basis and unknown/uncertain status; distinguish public knowledge time from local capture time.",
+      "Pin downloaded source versions where the provider supports this; store source revision identifiers, content hashes and locators rather than overwrite scientific provenance.",
+      "Backfill only verifiable version metadata. Retain unknown availability for legacy results whose first occurrence cannot be demonstrated.",
+      "Propagate availability through derived-result dependencies and expose the basis to dataset and retrieval consumers."
+    ],
+    "acceptance": [
+      "A fixture with v1 before cutoff and v2 after cutoff, where v2 first adds Tc or a structure, excludes the new result and its derived features from the earlier knowledge snapshot.",
+      "The same result observed in multiple source versions resolves to one scientific identity with multiple occurrences, while all versions remain grouped under one work for splitting.",
+      "Unknown result availability never silently inherits the earliest work date; strict historical dataset requests exclude it with a machine-readable reason.",
+      "A captured source can be resolved to its exact version and content hash; ingesting a later revision does not mutate the earlier revision or locator.",
+      "A dry-run migration report lists changed, unverifiable and unchanged records without inventing dates; rerunning the metadata import is idempotent.",
+      "The temporal policy and its tests document that retrieval cutoffs do not establish the absence of LLM pretraining contamination."
+    ],
+    "out_of_scope": [
+      "Full-corpus source redownload or production backfill without a separately reviewed rollout",
+      "Claiming historical model novelty when model-training cutoffs are unknown"
+    ],
+    "depends_on": [
+      "EN01"
+    ],
+    "owner_role": "Data engineer with research-provenance review"
+  },
+  {
+    "id": "ML02",
+    "title": "Enforce claim/example integrity and quarantine contradictory negative labels",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "research-schema-integrity",
+    "evidence_level": "Code-confirmed local schema and mapper gaps; release-admission blockers, not a demonstrated production incident",
+    "report_sections": [
+      "7.4",
+      "7.5",
+      "13 / checklist 8",
+      "13 / checklist 9"
+    ],
+    "summary": "Close the explicit_ambient plus NULL CHECK loophole, bind each ML example to the material of its target claim, and prevent a positive Tc interval or lower bound from becoming an accepted non-transition label. Implement additive migrations and real disposable-database tests rather than SQL-string assertions alone.",
+    "evidence": [
+      {
+        "path": "api/models/db.py",
+        "line": 1082,
+        "detail": "The v1 pressure CHECK uses pressure_gpa = 0 without explicitly requiring non-NULL for explicit_ambient."
+      },
+      {
+        "path": "ingestion/ingestion/claims/mapper.py",
+        "line": 219,
+        "detail": "Explicit result status wins, but the subsequent negative-result contradiction check covers only exact Tc, not interval/gt/ge claims."
+      },
+      {
+        "path": "api/models/db.py",
+        "line": 1333,
+        "detail": "MlExample claim_id and material_id are independently valid foreign keys, with no composite target identity guarantee."
+      }
+    ],
+    "scope": [
+      "Add a forward migration that makes required pressure semantics fail closed under SQL NULL logic and validates existing rows before enabling the constraint.",
+      "Use a composite target-claim/material constraint or an equivalently enforced database invariant; do not permit approximate feature matching to redefine target identity.",
+      "Define a complete result-status/value-relation compatibility table for exact, interval, lt/le, gt/ge and unreported values.",
+      "Keep contradictory raw observations and review reasons, but prevent accepted negative labels until the contradiction is resolved against the source."
+    ],
+    "acceptance": [
+      "In an explicitly disposable PostgreSQL instance, explicit_ambient plus NULL is rejected, explicit_ambient plus 0 is accepted, and not_reported plus NULL remains valid.",
+      "Direct SQL insertion/update of an example whose target claim belongs to another material fails, even if both individual identifiers exist.",
+      "Parameterized mapper and persistence tests cover negative status with exact/interval/gt/ge positive-transition claims; every contradiction is retained as pending/inconclusive or rejected from accepted negative data.",
+      "A valid explicitly reported non-transition with Tmin, method, pressure semantics and an appropriate upper-bound/unreported representation remains representable; a missing Tc alone never becomes a negative label.",
+      "Boundary tests reject NaN/Infinity and invalid value shapes through the database, not just the application validator.",
+      "The migration emits a preflight audit of incompatible legacy rows and does not repair them by filling pressure with 0 or discarding raw evidence; released historical migration files remain unchanged."
+    ],
+    "out_of_scope": [
+      "Inferring negative experiments from absent Tc values or Discovery negative-control membership",
+      "Changing accepted historical scientific values without provenance-backed review"
+    ],
+    "depends_on": [
+      "EN01"
+    ],
+    "owner_role": "Backend/data engineer with superconductivity domain reviewer"
+  },
+  {
+    "id": "ML03",
+    "title": "Implement a revision-aware, idempotent shadow research loader",
+    "priority": "P1",
+    "type": "enhancement",
+    "phase": "C",
+    "area": "research-ingestion",
+    "evidence_level": "Documented missing capability: an offline exporter/planner exists, but no approved end-to-end revision-aware database loader",
+    "report_sections": [
+      "7.3 M02",
+      "12.1 WP3",
+      "12.1 WP4",
+      "13 / checklist 11"
+    ],
+    "summary": "Turn reviewed offline plans into a controlled shadow-database import with stable source occurrences, interpretation revisions and snapshot memberships. Preserve legacy identities and raw records, and make dry-run accounting and idempotence prerequisites for any canary load.",
+    "evidence": [
+      {
+        "path": "docs/ML_FOUNDATION_PHASE1.md",
+        "line": 121,
+        "detail": "The existing planner writes deterministic files but explicitly performs no database writes."
+      },
+      {
+        "path": "docs/ML_FOUNDATION_PHASE1.md",
+        "line": 130,
+        "detail": "The future loader must derive the authoritative source snapshot from the verified manifest, not trust source_snapshots.jsonl by itself."
+      },
+      {
+        "path": "docs/RESEARCH_V2_IMPLEMENTATION.md",
+        "line": 55,
+        "detail": "The legacy material/source_record_hash uniqueness boundary is deliberately retained pending a stable occurrence and interpretation-revision loader."
+      },
+      {
+        "path": "api/models/research_schema_v2.py",
+        "line": 396,
+        "detail": "snapshot_event_memberships provide a starting schema for repeat capture without duplicating scientific events."
+      }
+    ],
+    "scope": [
+      "Specify stable work, source revision, source occurrence, result and interpretation-revision identities; keep repeated capture distinct from independent evidence.",
+      "Validate the source export, plan hashes, safe paths, row accounting and accepted work mappings before constructing authoritative source snapshot rows.",
+      "Implement dry-run and transactional shadow import, explicit pending review defaults, deterministic membership upserts and structured failure reports.",
+      "Replace legacy uniqueness only through a reviewed forward migration after compatibility tests; preserve existing claim IDs and legacy public read paths.",
+      "Document interruption/retry behavior, canary selection, post-load parity checks and rollback without deleting previously accepted scientific history."
+    ],
+    "acceptance": [
+      "Two imports of the same reviewed bundle produce the same identities, counts and hashes, with no duplicate claims/events or memberships.",
+      "Capturing the same occurrence in another source snapshot adds the expected membership without counting it as a new independent result; a changed interpretation creates a new revision with a supersession link.",
+      "Dry-run accounts for every input occurrence as reused, inserted, revised, quarantined or failed and leaves all database tables unchanged.",
+      "Missing leaf files, tampered hashes, path traversal, unaccepted work links and incomplete accounting fail before publication; no partially loaded source snapshot becomes validated/frozen.",
+      "A forced interruption followed by retry either rolls back or resumes deterministically according to a documented transaction boundary, retaining the previous valid state.",
+      "Post-load parity independently compares identities, Tc/pressure semantics, source counts and retraction state; legacy records and existing API responses are unchanged by shadow loading.",
+      "No loaded legacy claim becomes accepted merely because parsing or import succeeded; promotion requires the configured scientific and licensing reviews."
+    ],
+    "out_of_scope": [
+      "Automatically enabling research public endpoints",
+      "Production-wide backfill before a reviewed canary and parity report",
+      "Silently replacing the legacy material read model"
+    ],
+    "depends_on": [
+      "ML01",
+      "ML02",
+      "SC01",
+      "SC04",
+      "SC05",
+      "SC07",
+      "SC09",
+      "EN01"
+    ],
+    "owner_role": "Data engineer / backend engineer"
+  },
+  {
+    "id": "ML04",
+    "title": "Freeze complete research dependency closures with concurrency-safe DAG integrity",
+    "priority": "P1",
+    "type": "enhancement",
+    "phase": "C",
+    "area": "research-release-integrity",
+    "evidence_level": "Explicitly documented pre-release gap; existing direct self-reference and relational checks are not a full immutable closure",
+    "report_sections": [
+      "7.3 M02",
+      "12.1 WP4",
+      "13 / checklist 11",
+      "13 / checklist 18"
+    ],
+    "summary": "Provide one authoritative freeze operation that captures the complete dependencies of a research dataset, prevents concurrent cycles and mutations, and preserves immutable history when sources or interpretations are corrected. A populated manifest hash alone is not sufficient proof of a frozen research release.",
+    "evidence": [
+      {
+        "path": "docs/RESEARCH_V2_IMPLEMENTATION.md",
+        "line": 58,
+        "detail": "The implementation explicitly defers multi-hop/concurrent cycle checks and complete dependency-closure freezing."
+      },
+      {
+        "path": "api/models/research_schema_v2.py",
+        "line": 392,
+        "detail": "The current evidence_self check blocks direct self-reference, not arbitrary multi-hop or concurrently introduced cycles."
+      },
+      {
+        "path": "api/models/db.py",
+        "line": 1303,
+        "detail": "A frozen dataset currently requires a manifest hash and timestamp, but this condition does not itself lock all referenced objects."
+      }
+    ],
+    "scope": [
+      "Define the closure over targets, inputs, states, structures, run settings, artifacts, source and interpretation revisions, reviews, memberships and task/registry versions.",
+      "Implement an atomic freeze writer with a documented concurrency/locking strategy shared by all dependency writers.",
+      "Reject multi-hop cycles and prevent post-freeze changes or new edges from altering the frozen closure; verify referenced artifact hashes and availability.",
+      "Represent corrections, retractions and supersessions as new revisions plus an append-only post-release notice; preserve the original frozen contents for reproducibility."
+    ],
+    "acceptance": [
+      "An offline verifier reconstructs the declared closure and hashes from the release bundle and rejects a missing dependency, mismatched revision or changed artifact byte stream.",
+      "Two simultaneous transactions attempting A derives_from B and B derives_from A cannot both commit; longer-cycle and direct-cycle adversarial cases are also rejected.",
+      "A freeze racing with a dependency insertion or result revision either includes a consistent complete version or rejects/retries; it never publishes a mixed closure.",
+      "Attempts to update/delete a frozen target, state, structure, run setting, evidence revision, review or membership cannot change the historical release; attempts to append a dependency to a frozen node are equally guarded.",
+      "A legitimate correction creates a new version and visible supersession/retraction notice without rewriting the old release hash; the corrected version can be independently frozen.",
+      "The same stable occurrence can belong to multiple source snapshots without duplication or loss of membership provenance in either frozen release.",
+      "Freeze retry is idempotent, failed verification never advances release status, and permission-bypass/direct SQL attempts are covered in a guarded disposable database."
+    ],
+    "out_of_scope": [
+      "Treating hash integrity as scientific truth or publication authorization",
+      "Mutating old releases to make corrected results appear historically available"
+    ],
+    "depends_on": [
+      "ML03",
+      "EN01"
+    ],
+    "owner_role": "Backend/database engineer with scientific data governance reviewer"
+  },
+  {
+    "id": "ML05",
+    "title": "Implement a limited scientific property importer with state, structure and run validation",
+    "priority": "P2",
+    "type": "enhancement",
+    "phase": "C",
+    "area": "scientific-properties",
+    "evidence_level": "Documented capability gap: a small backend registry exists, but the 126-field display dictionary is not an import or scientific validation contract",
+    "report_sections": [
+      "4.2",
+      "4.3",
+      "4.4",
+      "4.5",
+      "12.1 WP5"
+    ],
+    "summary": "Complete end-to-end ingestion for a deliberately limited core property set before expanding fields. Each value must remain bound to a validated state, structure, method/run, normalization and source, with unsupported or ambiguous data explicitly quarantined rather than coerced into comparable scalars.",
+    "evidence": [
+      {
+        "path": "api/models/research_schema_v2.py",
+        "line": 25,
+        "detail": "PROPERTY_UNITS currently registers eight scientific quantities and four RPS quantities, not all Discovery display fields."
+      },
+      {
+        "path": "docs/RESEARCH_V2_IMPLEMENTATION.md",
+        "line": 57,
+        "detail": "Artifact existence, type and hash shape explicitly do not replace importer validation of coordinates, composition and scientific matching."
+      },
+      {
+        "path": "api/models/research_schema_v2.py",
+        "line": 1,
+        "detail": "The 0045 schema is versioned and must not be mutated after release; registry expansion needs a forward-compatible version/migration."
+      }
+    ],
+    "scope": [
+      "Version a small backend property registry with value kinds, canonical units, applicability and required scientific context; generate/read frontend definitions from the same contract where practical.",
+      "Implement strict import for available core properties and typed missingness. Keep Tc in material_claims and keep RPS in its inferred assessment pathway.",
+      "Require normalization and method context for DOS, energies/hull, EPC lambda/omega_log, phonons and stiffness; unsupported physical conventions remain unconverted with review reasons.",
+      "Parse coordinate-backed structures safely; record composition/occupancy, cell conventions, symmetry tolerance, artifact hash and state/run matching decisions.",
+      "Use three to five genuine, redistribution-permitted input/output packages spanning more than one context, plus separate negative fixtures for failures and invalid matches; record failures and costs as first-class outcomes."
+    ],
+    "acceptance": [
+      "Each admitted value resolves to its original value/unit, normalized representation, result identity, state, source locator and method/run; unregistered keys or missing mandatory context are rejected or quarantined with explicit reasons.",
+      "Fixtures distinguish EPC lambda from penetration depth, K-valued omega_log from frequency, DOS per atom/formula unit/cell, and two-dimensional from three-dimensional stiffness; no unsupported conversion silently succeeds.",
+      "Energy/hull and phonon entries retain pressure/reference/approximation context, including harmonic versus anharmonic handling; incompatible protocols cannot be silently pooled as equivalent features.",
+      "A formula-only record or structure-description string cannot generate coordinate-derived features; mismatched composition, wrong artifact kind, malformed coordinates and invalid hashes fail importer validation.",
+      "Lambda and omega_log from different pressures or runs cannot be automatically combined; an explicitly reviewed approximate match has a policy/version, rationale and uncertainty rather than masquerading as an exact match.",
+      "The real-package canary can be imported and verified twice with identical results, includes a documented failed/inconclusive outcome, and reports unsupported fields without inflating completeness.",
+      "All newly exposed website-owned labels, units, errors and missingness explanations default to English; synthetic preview values are never accepted by the production importer."
+    ],
+    "out_of_scope": [
+      "Requiring all 126 display fields on every material",
+      "Computing a unique real structure, band structure or Tc from formula alone",
+      "Launching bulk paid DFT/DFPT jobs or executing scripts embedded in imported artifacts"
+    ],
+    "depends_on": [
+      "ML03",
+      "SC02",
+      "SC11"
+    ],
+    "owner_role": "Scientific software/data engineer with condensed-matter reviewer"
+  },
+  {
+    "id": "ML06",
+    "title": "Build task-specific ML datasets with split, temporal and dependency-leakage gates",
+    "priority": "P1",
+    "type": "enhancement",
+    "phase": "D",
+    "area": "ml-datasets",
+    "evidence_level": "Missing formal dataset-builder capability; existing tables and offline source export are not a validated training release",
+    "report_sections": [
+      "7.3 M02",
+      "7.5",
+      "7.6",
+      "12.1 WP6",
+      "13 / checklist 10",
+      "13 / checklist 12"
+    ],
+    "summary": "Create a deterministic dataset builder whose task contract determines admissible labels, features, availability, grouping and evaluation. Prevent outcome-derived and cross-work/series leakage, and publish explicit exclusion and coverage artifacts instead of selecting the most complete aggregate columns.",
+    "evidence": [
+      {
+        "path": "docs/ML_FOUNDATION_PHASE1.md",
+        "line": 188,
+        "detail": "The documented rollout requires work/material/series/time leakage tests before ML snapshots are created."
+      },
+      {
+        "path": "api/models/db.py",
+        "line": 1347,
+        "detail": "ML examples store split and task metadata, but stored fields alone do not validate how assignments or preprocessing were produced."
+      },
+      {
+        "path": "api/models/research_schema_v2.py",
+        "line": 439,
+        "detail": "ml_example_inputs can record input-event lineage and provides a starting point for dependency-aware feature admission."
+      }
+    ],
+    "scope": [
+      "Define versioned task manifests: estimand/target, Tc criterion, measurement window, Observed/Computed policy, pressure/state range, feature budget, cutoff, censoring handling and excluded labels.",
+      "Build examples only from validated frozen inputs and the declared target revision; keep formula/condition and structure subsets explicit.",
+      "Validate work, source occurrence, sample/trajectory, parent series and configured structure-near-duplicate groups before assigning splits; distinguish interpolation, extrapolation and family holdout tasks.",
+      "Traverse feature dependencies for target leakage and temporal availability; enforce train-only fitting of preprocessing and learned retrieval/feature adapters.",
+      "Emit data/task cards, labels/features schemas, fixed split assignments, exclusion/coverage reports, dependency manifest and environment/configuration metadata."
+    ],
+    "acceptance": [
+      "Rebuilding the same task from the same frozen input produces identical example identities, assignments and artifact hashes; no public offset API is used as the consistency boundary.",
+      "Adversarial examples with one work in arXiv/publisher versions, repeated citations, the same sample trajectory and declared near-duplicate groups cannot cross prohibited split boundaries.",
+      "Tc -> inferred lambda -> prediction of the same Tc and Tc-derived gap/coherence-length fixtures fail dependency admission, including multi-hop paths and renamed fields.",
+      "Post-cutoff results or dependencies and unknown availability under a strict historical policy are excluded with reason codes; the v1/v2 source-revision test remains effective through derived features.",
+      "Missing Tc and Discovery negative-control membership cannot create class negatives; censoring and incompatible Tc definitions follow the task contract and appear in coverage/exclusion summaries.",
+      "A test-only extreme value cannot alter training-fold imputation, scaling or feature-selection parameters; learned adapters are fit and versioned within the appropriate training fold.",
+      "The release includes independent work/state/trajectory counts, split balance, missingness, all exclusions and a machine-verifiable leakage report; an invalid task fails publication rather than emitting a warning-only training package."
+    ],
+    "out_of_scope": [
+      "Universal all-family targets or random-split scores presented as new-material discovery evidence",
+      "RPS as a superconductivity ground-truth label",
+      "Deep-model training before the dataset contract is validated"
+    ],
+    "depends_on": [
+      "ML01",
+      "ML02",
+      "ML04",
+      "ML05",
+      "SC09",
+      "SC10"
+    ],
+    "owner_role": "ML/data engineer with domain and benchmark reviewer"
+  },
+  {
+    "id": "ML07",
+    "title": "Restrict public research access to approved releases and enforce recursive export policies",
+    "priority": "P1",
+    "type": "enhancement",
+    "phase": "C",
+    "area": "research-access-export",
+    "evidence_level": "Code-confirmed pre-publication authorization gap and unproven recursive export safety; no unauthorized disclosure demonstrated",
+    "report_sections": [
+      "7.4",
+      "10.6",
+      "13 / checklist 19"
+    ],
+    "summary": "Do not equate ML_FOUNDATION_PUBLIC_ENABLED with approval to disclose every research snapshot. Enforce release-only anonymous access across lists and direct lookups, separate curator/reviewer/publisher authority, and validate exportable nested fields against source-specific access and licensing policies.",
+    "evidence": [
+      {
+        "path": "api/routers/ml_foundation.py",
+        "line": 230,
+        "detail": "Public-identity list routes accept include_unfrozen; a public feature flag is not a release-level approval decision."
+      },
+      {
+        "path": "api/routers/ml_foundation.py",
+        "line": 283,
+        "detail": "The manifest detail route loads a snapshot by ID without a frozen/approved-release filter in this handler."
+      },
+      {
+        "path": "scripts/export_ml_foundation_snapshot.py",
+        "line": 63,
+        "detail": "The exporter documents an exact top-level field contract, but materials.records remains a nested payload requiring its own field policy."
+      },
+      {
+        "path": "scripts/export_ml_foundation_snapshot.py",
+        "line": 523,
+        "detail": "The license manifest is a useful declaration, but declarations alone do not prove nested payloads contain only export-permitted data."
+      }
+    ],
+    "scope": [
+      "Add explicit reviewed/frozen/published release policy and role boundaries; preserve disabled-by-default behavior and separate internal source captures from public research releases.",
+      "Apply identical admission and field-level policies to collections, filters, counts, direct IDs, manifests and downloads; audit newly exposed claim/work endpoints as well.",
+      "Define recursive typed export schemas/allowlists and per-source/per-artifact access metadata; fail closed on unknown nested fields or unresolved export permissions.",
+      "Provide an approval audit trail and an export manifest describing included metadata/structured results, exclusions, licenses and permitted artifact access without redistributing restricted full text."
+    ],
+    "acceptance": [
+      "Anonymous requests cannot retrieve building, pending, rejected or unpublished research data by list filter, include_unfrozen, direct ID, download URL or associated manifest; approved public releases remain accessible.",
+      "An authorization matrix verifies curator/reviewer/publisher/admin actions independently; changing a JSON status or self-declaring approved does not grant publication authority.",
+      "Canary restricted text embedded at multiple depths in records, metadata arrays and run/evidence payloads is rejected or excluded by the documented policy, even after the attacker recomputes checksums.",
+      "Unknown licensing/access status blocks the affected public export rather than being inferred from source name or code comments; the decision and omitted fields/artifacts are auditable.",
+      "A permitted metadata/structured-data bundle still verifies offline and resolves authorized sources without including licensed full text, secrets, private reviewer data or raw connection configuration.",
+      "Permission and visibility changes are tested through cached and uncached routes; withdrawn releases provide the defined notice/access behavior without silently rewriting immutable historical contents."
+    ],
+    "out_of_scope": [
+      "A blanket legal determination that all APS/arXiv-derived records may be redistributed",
+      "Turning on public research routes as part of schema deployment",
+      "Changing public access to unrelated legacy endpoints without an explicit compatibility plan"
+    ],
+    "depends_on": [
+      "ML04",
+      "SC07"
+    ],
+    "owner_role": "Backend/security engineer with data-governance reviewer"
+  },
+  {
+    "id": "ML08",
+    "title": "Run a 60-event reviewed pilot and publish data quality, missingness and curation effort",
+    "priority": "P1",
+    "type": "enhancement",
+    "phase": "B",
+    "area": "research-curation",
+    "evidence_level": "Recommended bounded validation study; no completion, accuracy or sample-size sufficiency claimed",
+    "report_sections": [
+      "4.2",
+      "7.6",
+      "12",
+      "14"
+    ],
+    "summary": "Validate what can actually be recovered from SCLib sources before scaling extraction or ML. Review 60 candidate events using a predeclared selection plan, preserving failures and uncertain associations, and report the feasibility and human effort of each priority field rather than maximizing apparent completeness.",
+    "evidence": [
+      {
+        "path": "docs/ML_FOUNDATION_PHASE1.md",
+        "line": 179,
+        "detail": "The existing rollout requires human review of formula/work/mapper warnings and unexplained failures before loading."
+      },
+      {
+        "path": "docs/RESEARCH_V2_IMPLEMENTATION.md",
+        "line": 57,
+        "detail": "Scientific coordinate validation and state matching remain importer/reviewer responsibilities rather than guarantees of the shadow schema."
+      }
+    ],
+    "scope": [
+      "Preregister 60 candidate events, stratified by a small set of representative material families and evidence conditions, including theoretical/experimental, ambiguous pressure, censored/negative if available, multiple states and difficult source formats.",
+      "Capture source revision/locator, work/sample/state identity, Tc criterion/value, pressure semantics, raw evidence, method and review outcome using a versioned template; separate candidate events from their multiple atomic results.",
+      "Have a second reviewer independently assess a predeclared calibration subset and disputed cases, then retain arbitration and unresolved disagreement records.",
+      "Measure field-specific recoverability, extraction correctness, state-association errors, missingness reasons, source access restrictions and active human curation time.",
+      "Produce a reviewed canary bundle and an explicit go/narrow/stop recommendation for schema, importer and dataset work; permit a manual/offline pilot before the database loader is complete."
+    ],
+    "acceptance": [
+      "The selection manifest identifies all 60 candidates and their selection strata before completion; inaccessible or irrecoverable events remain in the denominator and cannot be silently replaced to improve results.",
+      "Every accepted atomic result resolves to a permitted source locator and explicit sample/state/Tc-criterion interpretation; unresolved associations remain unknown/pending with reasons.",
+      "The pilot report distinguishes candidate events, atomic results, independent works, states and structures; repeated citations or dense pressure points are not counted as independent materials.",
+      "Field-by-field reports separate not reported, not accessible, not extracted, ambiguous, conflicted and not applicable; source and normalization errors are listed independently of coverage.",
+      "The preregistered second-review subset and disagreement log are completed with arbitration/remaining uncertainty recorded; no arbitrary accuracy threshold is used to conceal unresolved scientific cases.",
+      "Curation time and recovery yield are reported by field/source class, with privacy-safe logs and a concrete recommendation on which fields to keep, defer or narrow.",
+      "The deliverable explicitly states that 60 candidate events validate the workflow, not statistical sufficiency for cross-family ML or a deep model; no missing negative examples or structures are manufactured to meet quotas."
+    ],
+    "out_of_scope": [
+      "Full-database re-extraction or completion of all 126 display fields",
+      "Training an ML model on pilot size alone",
+      "Inventing unavailable source permissions, negative labels or state matches"
+    ],
+    "depends_on": [],
+    "owner_role": "Condensed-matter reviewer with data-curation engineer and independent reviewer"
+  },
+  {
+    "id": "ML09",
+    "title": "Publish reproducible ML baseline evaluations against audited dataset releases",
+    "priority": "P2",
+    "type": "enhancement",
+    "phase": "D",
+    "area": "ml-evaluation",
+    "evidence_level": "Recommended research capability; predictive gains and sufficient independent data are not yet established",
+    "report_sections": [
+      "7.6",
+      "12.1 WP6"
+    ],
+    "summary": "Evaluate simple baselines against a fixed audited dataset release and publish reproducible predictions, grouped errors, coverage and limitations. This independently closeable milestone establishes the evidence needed to decide whether more complex models or a separately scoped active-learning experiment are justified; improvement is not assumed.",
+    "evidence": [
+      {
+        "path": "api/models/db.py",
+        "line": 1355,
+        "detail": "Stored work/material/series/duplicate grouping keys can support independent-sample reporting, but do not themselves establish an evaluated model."
+      },
+      {
+        "path": "docs/RESEARCH_V2_IMPLEMENTATION.md",
+        "line": 5,
+        "detail": "The current implementation is an initial database/scoring/interface skeleton, explicitly not final research-platform acceptance or completed scientific data migration."
+      }
+    ],
+    "scope": [
+      "Implement train-only family/statistical, composition, composition-plus-condition and available-structure-subset baselines with fixed splits and reproducible environments.",
+      "Publish per-example predictions and grouped evaluation artifacts, including independent work/trajectory counts, family/pressure strata, missingness and failed prediction coverage.",
+      "Separate observed and computed targets, document censoring and zero/negative handling, and evaluate uncertainty only where the task and sample size support it.",
+      "Define selection, tuning and failure-handling rules before inspecting held-out results; retain failed configurations and avoid post hoc test-set model selection.",
+      "Publish a data/model card and a continue/narrow/stop recommendation. Record insufficient independent data as a limitation and prioritize a data/case-study deliverable over unsupported significance claims."
+    ],
+    "acceptance": [
+      "A clean environment can rebuild the baseline outputs from the pinned public/authorized dataset, split/configuration, code and dependency versions with documented deterministic tolerance.",
+      "Comparisons use identical test cases or explicitly labeled nested subsets; a better result on the easier structure subset is not presented as the causal value of structure features.",
+      "The evaluation reports MAE/median absolute error, appropriate stratified and grouped uncertainty summaries, censoring/negative-label handling and prediction coverage without claiming significance from insufficient independent groups.",
+      "There is no predefined requirement to improve accuracy; negative findings, weak baselines and insufficient sample size remain publishable and determine a documented continue/narrow/stop decision.",
+      "Observed and computed targets are evaluated separately unless an explicit task observation model justifies combination; log-scale metrics never silently transform negative, zero or censored outcomes.",
+      "Model selection uses training/validation information only; a held-out target perturbation cannot alter preprocessing or chosen hyperparameters, and failed configurations remain in the run ledger.",
+      "The final evaluation release pins all data and run manifests, includes a model/data card with applicability and failure modes, and is independently verifiable without conducting active learning or live calculations."
+    ],
+    "out_of_scope": [
+      "Multi-fidelity or active-learning replay, which belongs to a separate issue",
+      "Automatic live experiments or paid computation without separate execution authorization",
+      "Cross-family foundation-model training as a required milestone",
+      "Declaring RPS, physical constraints or additional fields successful before measured comparisons"
+    ],
+    "depends_on": [
+      "ML06",
+      "ML07",
+      "ML08"
+    ],
+    "owner_role": "ML researcher with scientific reviewer and research-budget owner"
+  }
+]

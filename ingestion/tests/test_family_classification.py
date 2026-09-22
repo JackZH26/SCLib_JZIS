@@ -50,4 +50,4 @@ def test_aggregator_elemental_rule_overrides_ner_conventional_vote() -> None:
     )
 
     assert summary["family"] == "elemental"
-    assert summary["is_unconventional"] is False
+    assert summary["is_unconventional"] is None  # A family rule is not a reported observation.

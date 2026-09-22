@@ -1,0 +1,133 @@
+[
+  {
+    "record": {},
+    "knowledge_origin": "Unknown",
+    "classification_status": "unknown",
+    "source_role": "unknown"
+  },
+  {
+    "record": {
+      "paper_type": "experimental",
+      "pressure_gpa": 0
+    },
+    "knowledge_origin": "Unknown",
+    "classification_status": "unknown",
+    "source_role": "unknown"
+  },
+  {
+    "record": {
+      "evidence_type": "primary",
+      "paper_type": "computational"
+    },
+    "knowledge_origin": "Unknown",
+    "classification_status": "unknown",
+    "source_role": "primary"
+  },
+  {
+    "record": {
+      "evidence_type": "primary_theoretical",
+      "pressure_gpa": null
+    },
+    "knowledge_origin": "Computed",
+    "classification_status": "resolved",
+    "source_role": "primary"
+  },
+  {
+    "record": {
+      "evidence_type": "primary_theoretical",
+      "pressure_gpa": 0
+    },
+    "knowledge_origin": "Computed",
+    "classification_status": "resolved",
+    "source_role": "primary"
+  },
+  {
+    "record": {
+      "evidence_type": "primary_experimental",
+      "extraction_method": "LLM"
+    },
+    "knowledge_origin": "Observed",
+    "classification_status": "resolved",
+    "source_role": "primary"
+  },
+  {
+    "record": {
+      "knowledge_origin": "AI-Proposed",
+      "extraction_method": "LLM"
+    },
+    "knowledge_origin": "AI-Proposed",
+    "classification_status": "resolved",
+    "source_role": "unknown"
+  },
+  {
+    "record": {
+      "knowledge_origin": "Inferred"
+    },
+    "knowledge_origin": "Inferred",
+    "classification_status": "resolved",
+    "source_role": "unknown"
+  },
+  {
+    "record": {
+      "method": "first principles",
+      "evidence_type": "cited"
+    },
+    "knowledge_origin": "Computed",
+    "classification_status": "resolved",
+    "source_role": "cited"
+  },
+  {
+    "record": {
+      "measurement": "resistivity",
+      "source_role": "cited"
+    },
+    "knowledge_origin": "Observed",
+    "classification_status": "resolved",
+    "source_role": "cited"
+  },
+  {
+    "record": {
+      "measurement": "resistivity"
+    },
+    "knowledge_origin": "Observed",
+    "classification_status": "resolved",
+    "source_role": "unknown"
+  },
+  {
+    "record": {
+      "evidence_type": "primary_theoretical",
+      "measurement": "resistivity"
+    },
+    "knowledge_origin": "Unknown",
+    "classification_status": "conflicted",
+    "source_role": "primary"
+  },
+  {
+    "record": {
+      "knowledge_origin": "Observed",
+      "method": "DFT"
+    },
+    "knowledge_origin": "Unknown",
+    "classification_status": "conflicted",
+    "source_role": "unknown"
+  },
+  {
+    "record": {
+      "evidence_type": "primary_experimental",
+      "source_role": "cited"
+    },
+    "knowledge_origin": "Observed",
+    "classification_status": "resolved",
+    "source_role": "conflicted"
+  },
+  {
+    "record": {
+      "credibility_tier": "T1",
+      "confidence": 1,
+      "paper_type": "experimental"
+    },
+    "knowledge_origin": "Unknown",
+    "classification_status": "unknown",
+    "source_role": "unknown"
+  }
+]

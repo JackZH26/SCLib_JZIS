@@ -172,7 +172,9 @@ async def test_google_login_redirects_to_google(client):
     r = await client.get("/v1/auth/google/login", follow_redirects=False)
     assert r.status_code in (302, 307)
     location = r.headers.get("location", "")
-    assert "accounts.google.com" in location
+    from urllib.parse import urlsplit
+    target = urlsplit(location)
+    assert target.scheme == "https" and target.netloc == "accounts.google.com"
     assert "client_id=" in location
     assert "redirect_uri=" in location
     # Should set a session cookie

@@ -1,0 +1,92 @@
+{
+  "baseline": {
+    "source_revision": "9f529dd",
+    "network_internal": true,
+    "cloud_credentials_mounted": false,
+    "background_writers_disabled": true,
+    "requests": [
+      {
+        "path": "/readyz",
+        "http_status": 200,
+        "seconds": 0.011
+      },
+      {
+        "path": "/v1/health",
+        "http_status": 200,
+        "seconds": 0.002
+      },
+      {
+        "path": "/v1/version",
+        "http_status": 200,
+        "seconds": 0.56,
+        "site_version": "9f529dd"
+      },
+      {
+        "path": "/v1/stats",
+        "http_status": 200,
+        "seconds": 0.007
+      },
+      {
+        "path": "/v1/materials?limit=3",
+        "http_status": 200,
+        "seconds": 80.023,
+        "response_sha256": "3dc509d9acc8e10247930101534359a1de66ea9c186863031e54e29aba472931",
+        "total": 10507,
+        "returned": 3
+      },
+      {
+        "path": "/v1/similar/arxiv%3Asupr-con%2F9609004?top_k=3",
+        "http_status": 503,
+        "seconds": 0.015
+      }
+    ],
+    "live_database_modified": false
+  },
+  "candidate": {
+    "source_revision": "9f529dd+uncommitted-materials-page-candidate",
+    "candidate_sha256": "2552ce48425a9999f7efdb89f9c4b35bff083f49b69ae201c0ba7e4ba65e9b7a",
+    "network_internal": true,
+    "cloud_credentials_mounted": false,
+    "background_writers_disabled": true,
+    "requests": [
+      {
+        "path": "/readyz",
+        "http_status": 200,
+        "seconds": 0.01
+      },
+      {
+        "path": "/v1/health",
+        "http_status": 200,
+        "seconds": 0.002
+      },
+      {
+        "path": "/v1/version",
+        "http_status": 200,
+        "seconds": 0.537,
+        "site_version": "9f529dd"
+      },
+      {
+        "path": "/v1/stats",
+        "http_status": 200,
+        "seconds": 0.007
+      },
+      {
+        "path": "/v1/materials?limit=3",
+        "http_status": 200,
+        "seconds": 33.468,
+        "response_sha256": "3dc509d9acc8e10247930101534359a1de66ea9c186863031e54e29aba472931",
+        "total": 10507,
+        "returned": 3
+      },
+      {
+        "path": "/v1/similar/arxiv%3Asupr-con%2F9609004?top_k=3",
+        "http_status": 503,
+        "seconds": 0.014
+      }
+    ],
+    "live_database_modified": false
+  },
+  "canonical_material_response_equal": true,
+  "latency_reduction_percent": 58.2,
+  "production_latency_accepted": false
+}

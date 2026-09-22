@@ -6,6 +6,7 @@ SCLIB_ROOT="${SCLIB_ROOT:-/opt/SCLib_JZIS}"
 LOG_DIR="${SCLIB_LOG_DIR:-/var/log/sclib}"
 LOG_FILE="${LOG_DIR}/backup.log"
 RETAIN_DAYS="${SCLIB_BACKUP_RETAIN_DAYS:-35}"
+SKIP_PRUNE="${SCLIB_BACKUP_SKIP_PRUNE:-0}"
 BACKUP_PREFIX="${SCLIB_BACKUP_PREFIX:-postgres}"
 
 mkdir -p "$LOG_DIR"
@@ -88,6 +89,10 @@ log "uploaded artifact=$basename.dump bytes=$local_bytes"
 
 # Retention deletion is strict: an access or delete failure makes the backup
 # job fail so monitoring cannot mistake an unhealthy backup set for success.
+if [[ "$SKIP_PRUNE" == "1" || "${SCLIB_BACKUP_SKIP_PRUNE:-0}" == "1" ]]; then
+  log "DONE backup_postgres artifact=$basename.dump retention_prune=paused"
+  exit 0
+fi
 gcloud storage ls -l "$destination/" > "$listing"
 cutoff_epoch=$(( $(date -u +%s) - RETAIN_DAYS * 86400 ))
 while read -r updated uri; do

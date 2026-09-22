@@ -31,6 +31,12 @@
 # we'd rather a human see the stack trace in logs than paper over it.
 set -Eeuo pipefail
 
+# Host-side guard also covers cron/SSH callers outside systemd.
+if [[ -e /opt/SCLib_JZIS/scripts/.sclib-ingestion-paused ]]; then
+    printf '%s\n' 'SCLib ingestion/NER is paused for maintenance; daily job skipped.'
+    exit 0
+fi
+
 # ---- Single-instance lock ------------------------------------------------
 #
 # Re-exec under flock so a second invocation (e.g. cron racing with a

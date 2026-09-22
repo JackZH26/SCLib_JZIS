@@ -54,7 +54,7 @@ export default async function Landing() {
             Ask a question →
           </Link>
           <Link href="/timeline" className="btn-outline">
-            Explore the Tc timeline →
+            Explore the Reported Tc Timeline →
           </Link>
         </div>
       </section>

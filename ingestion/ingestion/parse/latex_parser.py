@@ -29,9 +29,10 @@ from typing import Iterable
 
 from pylatexenc.latex2text import LatexNodes2Text
 
-from ingestion.models import ParsedPaper, PaperMetadata, Section
+from ingestion.models import PaperMetadata, ParsedPaper, Section
 
 log = logging.getLogger(__name__)
+PARSER_VERSION = "sclib-latex-parser/1.0.0"
 
 _DOCUMENTCLASS_RE = re.compile(r"\\documentclass[\[\{]")
 _INPUT_RE = re.compile(r"\\(?:input|include)\{([^}]+)\}")
@@ -81,7 +82,8 @@ def parse_source_tarball(data: bytes, meta: PaperMetadata) -> ParsedPaper:
     if not sections:
         sections = [Section(name="Body", text=_detex(body))]
 
-    return ParsedPaper(meta=meta, sections=sections, has_latex_source=True)
+    return ParsedPaper(meta=meta, sections=sections, has_latex_source=True,
+                       parser_version=PARSER_VERSION)
 
 
 # ---------------------------------------------------------------------------

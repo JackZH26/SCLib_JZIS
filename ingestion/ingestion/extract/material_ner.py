@@ -13,11 +13,10 @@ Design:
      from DFT / Eliashberg papers — so we pick a prompt specialised for
      that bucket.
   2. Call Gemini with the v2 prompt, temperature 0, JSON-only response.
-  3. Defensively parse + coerce numeric fields (strings like "150 T"
-     become 150.0, ranges like "80-95 K" become the midpoint).
-  4. Fallback: apply STRUCTURE_PHASE_PATTERNS regex to the raw text so
-     RP / cuprate family tags (1212, 2222, infinite_layer, YBCO…) get
-     filled in even when the LLM misses them.
+  3. Preserve raw extraction proposals and deterministically normalize units,
+     bounds, intervals and uncertainties without inventing midpoint values.
+  4. Preserve bounded local structure proposals and unassigned mentions.
+     Paper-wide phase labels never fill a material's structural fields.
 
 The module calls google-genai synchronously; the pipeline wraps calls
 in ``asyncio.to_thread`` to keep the orchestration loop non-blocking.
@@ -35,10 +34,16 @@ from google.genai import types as genai_types
 
 from ingestion.config import get_settings
 from ingestion.extract import formula_validator
+from ingestion.extract.formula_enrichment import enrich_formula, isotope_notation
+from ingestion.extract.scientific_values import json_safe_raw, legacy_scalar, parse_scientific_value
 from ingestion.genai_client import make_genai_client
 from ingestion.models import ParsedPaper
+from ingestion.pressure_semantics import annotate_pressure_records
+from ingestion.structure_evidence import annotate_structure_records
 
 log = logging.getLogger(__name__)
+
+NER_EXTRACTOR_VERSION = "sclib-material-ner/2.1.0"
 
 
 # ---------------------------------------------------------------------------
@@ -81,7 +86,7 @@ def classify_paper_type(title: str, abstract: str) -> PaperType:
 
 
 # ---------------------------------------------------------------------------
-# Structure-phase regex fallback
+# Legacy phase-mention recognizer (never a material assignment fallback)
 # ---------------------------------------------------------------------------
 
 # Patterns go from most-specific (RP numeric labels) to family aliases.
@@ -94,12 +99,12 @@ STRUCTURE_PHASE_PATTERNS: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r"\bRuddlesden[- ]Popper\s*n\s*=\s*1\b"),  "RP_n1"),
     (re.compile(r"\bRuddlesden[- ]Popper\s*n\s*=\s*2\b"),  "RP_n2"),
     (re.compile(r"\bRuddlesden[- ]Popper\s*n\s*=\s*3\b"),  "RP_n3"),
-    (re.compile(r"\b(?:La214|LSCO|La2CuO4)\b",  re.I),     "cuprate_214"),
-    (re.compile(r"\b(?:YBCO|Y[- ]?123|YBa2Cu3O)\b", re.I), "cuprate_123"),
-    (re.compile(r"\bBi[- ]?2212\b", re.I),                 "cuprate_2212"),
-    (re.compile(r"\bBi[- ]?2223\b", re.I),                 "cuprate_2223"),
-    (re.compile(r"\bHg12(?:01|12|23)\b", re.I),            "cuprate_Hg"),
-    (re.compile(r"\bTl[- ]?2212\b|\bTl[- ]?2223\b", re.I), "cuprate_Tl"),
+    (re.compile(r"\b(?:La214|LSCO|La2CuO4)\b",  re.IGNORECASE),     "cuprate_214"),
+    (re.compile(r"\b(?:YBCO|Y[- ]?123|YBa2Cu3O)\b", re.IGNORECASE), "cuprate_123"),
+    (re.compile(r"\bBi[- ]?2212\b", re.IGNORECASE),                 "cuprate_2212"),
+    (re.compile(r"\bBi[- ]?2223\b", re.IGNORECASE),                 "cuprate_2223"),
+    (re.compile(r"\bHg12(?:01|12|23)\b", re.IGNORECASE),            "cuprate_Hg"),
+    (re.compile(r"\bTl[- ]?2212\b|\bTl[- ]?2223\b", re.IGNORECASE), "cuprate_Tl"),
 ]
 
 
@@ -121,13 +126,21 @@ def extract_structure_phase(text: str) -> str | None:
 
 _V2_PROMPT_CORE = """\
 Extract superconducting material data from the text below. Return a
-JSON array only. One object per (material, measurement) pair. If no
-superconducting material is measured, return [].
+JSON array only. One object per (material, result, sample/state) pair. Include
+explicit superconductivity non-detections as well as measured transitions and
+calculated/predicted results. If no such result is reported, return [].
 
 REQUIRED per record:
+- formula_raw: exact source formula notation, retaining isotope superscripts,
+  D/T labels and variable occupancy. Never flatten an isotope mass into an
+  atom count. Preserve isotope notation in formula as well.
+- evidence_text and source_locator: the local source quotation and its
+  section/table/page or other locator supporting THIS measurement. Do not
+  invent unavailable locators. Copy numeric strings with their source units,
+  inequality signs, ranges and uncertainty; do not pre-convert or average.
 - formula: chemical formula in PLAIN TEXT only. STRIP all LaTeX
            markup BEFORE emitting — subscripts go inline as plain
-           digits/letters. NEVER include any of: $ _ { } \  in this
+           digits/letters. NEVER include any of: $ _ { } \\  in this
            field. Greek letters (δ ε α β γ) stay as Unicode.
            Examples (input → emit):
              "La$_{3}$Ni$_{2}$O$_{7}$"                 → "La3Ni2O7"
@@ -138,30 +151,55 @@ REQUIRED per record:
            If the source has math-mode wrappers ``$...$`` around a
            subscript, drop the dollars AND the underscore AND the
            braces — keep only the text content.
-- tc_kelvin: critical temperature in Kelvin, null if not stated
+- tc_kelvin: reported critical-temperature quantity (e.g. "80–95 K",
+             "<2 K", "1e-3 K"), null if not stated. Keep original units.
+- result_status: "observed" | "not_detected" | "inconclusive" | "unknown".
+  Use "not_detected" ONLY for an explicit statement that no superconducting
+  transition was detected for THIS sample under the stated measurement
+  conditions. Missing Tc, a Tc upper bound, a failed calculation, or a material
+  omitted from a table does not establish a negative experimental result.
+  "observed" records a reported transition/result, not scientific acceptance;
+  its experimental or computed origin is specified separately below.
+- knowledge_origin: "Observed" | "Computed" | "Inferred" | "AI-Proposed" |
+  "Unknown", based ONLY on THIS result's stated origin. A measured result is
+  Observed; a DFT/Eliashberg result is Computed; an explicitly inferred result
+  is Inferred; a source-reported generated hypothesis is AI-Proposed. Using an
+  LLM for extraction does NOT make a result AI-Proposed. Paper genre, family,
+  pressure and confidence cannot fill in a missing result origin.
+- source_role: "primary" | "cited" | "unknown", independently of origin.
+  "primary" means THIS paper supplies THIS result; "cited" means prior work.
+  Preserve an explicitly cited computed or measured result with its own origin.
+  Do not reconcile conflicting result-level statements; keep separate source
+  statements separate and retain their local evidence.
 - tc_type: "onset" | "zero_resistance" | "midpoint" | "unknown"
+- pressure_condition: copy an explicit local pressure condition such as
+  "ambient pressure" ONLY if stated for THIS measurement. Otherwise null.
+  Bulk, sample form, ambient_sc and absence of applied-pressure discussion do
+  not establish ambient pressure. Retain this evidence alongside numeric zero.
 - pressure_gpa: MUST be null unless the paper explicitly states a
                 pressure for THIS measurement. Use 0.0 ONLY when the
                 text literally says "ambient pressure", "atmospheric
                 pressure", "P = 0", or "zero pressure". If the paper
                 doesn't mention pressure, emit null — do NOT default
-                to 0.0. Emit the numeric value in GPa when stated.
+                to 0.0. Keep the original value and pressure unit when stated
+                (e.g. "20 kbar"); deterministic software converts it to GPa.
 - measurement: "resistivity" | "susceptibility" | "specific_heat" |
                "muSR" | "ARPES" | "STM" | "neutron" | "unknown"
 - confidence: 0.0-1.0 — your confidence the text actually reports this
 - evidence_type: MUST be one of:
-  "primary_experimental" — Tc was MEASURED in THIS paper for THIS
-    specific formula (resistivity, susceptibility, specific heat, etc.)
-  "primary_theoretical" — Tc was CALCULATED/PREDICTED (DFT, Eliashberg,
-    McMillan, etc.) in THIS paper for THIS formula
-  "cited" — Tc value is mentioned but comes from a DIFFERENT paper.
+  "primary_experimental" — the superconductivity measurement (transition
+    or explicit non-detection) was made in THIS paper for THIS specific
+    formula/state (resistivity, susceptibility, specific heat, etc.)
+  "primary_theoretical" — the result was CALCULATED/PREDICTED (DFT,
+    Eliashberg, McMillan, etc.) in THIS paper for THIS formula/state
+  "cited" — the result is mentioned but comes from a DIFFERENT paper.
     Introduction surveys, comparison tables, "previously reported"
     mentions, reference to prior work by other groups are ALL "cited"
     (e.g. "LaH10 has Tc≈260 K [Drozdov 2019]" in the intro).
-  When in doubt, default to "cited". A formula whose Tc comes
+  When the source role is unclear, omit evidence_type and use source_role
+  "unknown". A formula whose Tc comes
   right before/after a bracketed citation "[12]" or a phrase like
   "reported by X et al" is ALWAYS "cited".
-  Rule: if confidence < 0.5, set evidence_type = "cited" as default.
 - tc_regime: one of "bulk_equilibrium" | "thin_film" | "interface" |
              "high_pressure" | "unknown".
   "bulk_equilibrium" — bulk sample at ambient or low pressure (<1 GPa)
@@ -194,16 +232,45 @@ EXTRACT IF PRESENT (omit or set null otherwise):
           chalcogenide = non-iron chalcogenide (NbSe2, TaS2, TiSe2…)
           elemental = elemental metals (Nb, Pb, Sn, Al, V…)
           conventional = other BCS / phonon-mediated not in above families
-- pairing_symmetry: "d-wave" | "s-wave" | "s_pm" | "p-wave" | "unknown"
+- pairing_symmetry: "d-wave" | "s-wave" | "s_pm" | "p-wave" | "unknown";
+  only when explicitly reported for this material/state, never inferred from family
 - gap_structure: "full_gap" | "nodal" | "multi_gap" | "unknown"
 - crystal_structure: space group or structure type (e.g. "I4/mmm")
 - space_group: space group symbol or number (e.g. "I4/mmm (#139)")
 - structure_phase: RP or cuprate phase label ("1212", "2222", "1313",
                    "infinite_layer", "cuprate_214", "cuprate_123", ...)
+- structure_claims: optional array of separate text-structure proposals.
+  Each object has field (structure_phase, crystal_structure, or space_group),
+  value, evidence_text (an EXACT local sentence/table-row quotation), and
+  source_locator if actually supplied. The quotation must name THIS formula
+  or sample and support THIS state/pressure/doping association. Keep separate
+  states separate; never use a phase found elsewhere in the paper as fallback.
+  Do not infer coordinates, CIF files, structure descriptors, or accepted
+  reviews from a textual phase/space-group label. Ambiguous/cited mentions
+  remain proposals. Preserve source sample_id/sample_label/state_id if given.
 - lattice_a, lattice_c: lattice parameters in angstrom (numbers)
 - t_cdw_k, t_sdw_k, t_afm_k: competing-order transition temps in K
 - rho_exponent: normal-state resistivity exponent n (rho ~ T^n)
 - competing_order: "CDW" | "AFM" | "SDW" | "Mott_insulator" | "PDW"
+- has_competing_order: optional JSON true/false ONLY for an explicit same-state
+  assertion. Omit when silent. An order temperature alone does not establish
+  competition with superconductivity. Preserve the explicit order label above.
+- measurement_method: the source-reported method supporting an explicit
+  presence/absence assertion (short text; do not infer from the paper genre)
+- minimum_temperature_k: lowest temperature explicitly reached in the
+  superconductivity detection measurement for THIS sample/state; retain
+  source units, bounds and uncertainty (e.g. "300 mK"). Missing is null, never
+  inferred from a Tc bound or another sample. This is a detection condition,
+  NOT a critical temperature. Extract it also at this top level when supplied
+  alongside detection_conditions so a non-detection retains its tested window.
+- magnetic_field_t: source-reported magnetic field of THIS measurement;
+  preserve units (e.g. "10 mT"). Missing is null, never default zero, and do
+  not substitute the upper critical field hc2_tesla.
+- detection_conditions: optional JSON object containing the source-reported
+  conditions/limits for that same method and sample. Allowed keys: description,
+  temperature_min_k, temperature_max_k, magnetic_field_t, pressure_gpa,
+  detection_limit, protocol_id. Do not manufacture limits or claim absence
+  outside the tested conditions. Retain only explicit facts.
 - hc2_tesla: upper critical field in Tesla
 - hc2_conditions: conditions string for Hc2 (e.g. "0 K, H parallel c")
 - lambda_eph: electron-phonon coupling constant lambda
@@ -217,7 +284,11 @@ EXTRACT IF PRESENT (omit or set null otherwise):
 - doping_type: "hole" | "electron" | "isovalent" | "none"
 - doping_level: numeric doping x (0..1 range)
 - is_unconventional: true iff explicitly described as unconventional
-                     / non-BCS
+                     / non-BCS for this material/state, never a family default.
+  False requires an explicit qualified statement, not silence or a family rule.
+- For either boolean false, also extract the same-source measurement_method
+  and detection_conditions. If these are absent, retain the reported false
+  without inventing evidence; downstream validation will keep it unresolved.
 - disputed: true iff the paper mentions contested / retracted results
 
 RULES:
@@ -231,12 +302,21 @@ RULES:
   When in doubt, return only the explicit chemical formula
   (e.g. "FeSe" instead of "12%-S doped FeSe", "TaS2" instead of
   "chiral molecule intercalated TaS2 hybrid superlattice").
-- Only extract materials explicitly measured for superconductivity.
+- Only extract materials with an explicit superconductivity measurement,
+  non-detection, or theoretical/computational result. Negative results must
+  remain sample-, method- and condition-specific, never a universal absence.
 - Do not invent data. Fields not in the text must be null / omitted.
-- If Tc > 300 K or Tc < 0.01 K, set confidence <= 0.3.
+- Do not generate pipeline statuses such as not_extracted, failed, reviewed,
+  or accepted. Missingness and review states are determined by the pipeline.
+- Preserve the reported Tc, units, bounds and conditions even when the value
+  is unusually high or low. Do not clip, omit or lower extraction confidence
+  solely because of its magnitude. Scientific plausibility is a separate,
+  versioned review step; confidence describes fidelity to the source text.
 - Distinguish experimental measurements from theoretical predictions.
-  If the paper only predicts Tc from DFT, mark measurement="unknown"
-  and confidence <= 0.5.
+  If THIS result predicts Tc from DFT, use knowledge_origin="Computed" and
+  record the actual computational measurement_method (e.g. "DFT"); do not
+  invent an experimental measurement or lower source-fidelity confidence
+  merely because the result is computed.
 - evidence_type is orthogonal to confidence. A paper may cite a
   prior measurement with 100% confidence — that's still "cited",
   not "primary". primary == THIS paper IS the source. Review /
@@ -258,7 +338,10 @@ Text:
 # The computational bucket adds stronger emphasis on DFT outputs, and
 # tells the model it *should* see lambda_eph / omega_log_k.
 _V2_PROMPT_COMPUTATIONAL_PREFIX = """\
-This paper reports first-principles / DFT / Eliashberg calculations.
+Keyword routing suggests first-principles / DFT / Eliashberg content.
+This routing is NOT evidence of any individual result's origin or source role;
+use the local source statement, including measured or cited results in the
+same paper, and leave unsupported origins unknown.
 Pay particular attention to the computed electron-phonon coupling
 constant (lambda_eph), logarithmic-average phonon frequency
 (omega_log_k, in Kelvin), and any McMillan / Allen-Dynes formula
@@ -293,12 +376,17 @@ def _client() -> genai.Client:
 # Complete list of v2 fields we expose on each extracted record. The
 # aggregator later consumes these to build the material-level summary.
 _V2_FIELDS = (
-    "tc_kelvin", "tc_type", "pressure_gpa", "measurement", "confidence",
+    "tc_kelvin", "tc_type", "pressure_gpa", "pressure_condition", "measurement", "confidence",
     "evidence_type", "tc_regime", "family",
+    "result_status", "outcome_state", "outcome",
+    "knowledge_origin", "result_origin", "evidence_role", "claim_kind", "source_role", "method",
+    "no_transition", "not_detected", "superconductivity_observed", "transition_observed", "is_superconducting",
+    "minimum_temperature_k", "magnetic_field_t",
     "pairing_symmetry", "gap_structure",
     "crystal_structure", "space_group", "structure_phase",
     "lattice_a", "lattice_c",
     "t_cdw_k", "t_sdw_k", "t_afm_k", "rho_exponent", "competing_order",
+    "has_competing_order", "measurement_method", "detection_conditions",
     "hc2_tesla", "hc2_conditions",
     "lambda_eph", "omega_log_k", "rho_s_mev",
     "ambient_sc", "sample_form", "substrate",
@@ -307,10 +395,18 @@ _V2_FIELDS = (
     "disputed",
 )
 
-# evidence_type is a string enum with a strict value set. Anything
-# outside the set is dropped so aggregator filtering stays a simple
-# equality check ("cited" → skip).
-_EVIDENCE_TYPES = {"primary", "primary_experimental", "primary_theoretical", "cited"}
+# Keep every independent result signal for the shared classifier/outcome
+# contract. Choosing one alias or dropping a conflicting origin/role can turn
+# an unresolved result into an apparently unambiguous observation.
+_RESULT_TEXT_FIELDS = {
+    "result_status", "outcome_state", "outcome", "knowledge_origin", "result_origin",
+    "evidence_role", "evidence_type", "claim_kind", "source_role",
+    "measurement", "measurement_method", "method",
+}
+_OUTCOME_BOOL_FIELDS = {
+    "no_transition", "not_detected", "superconductivity_observed",
+    "transition_observed", "is_superconducting",
+}
 
 # tc_regime enum — drives which records contribute to tc_ambient
 _TC_REGIMES = {"bulk_equilibrium", "thin_film", "interface", "high_pressure", "unknown"}
@@ -326,14 +422,13 @@ _FAMILY_ENUM = {
 
 _NUMERIC_FIELDS = {
     "tc_kelvin", "pressure_gpa", "confidence",
+    "minimum_temperature_k", "magnetic_field_t",
     "lattice_a", "lattice_c",
     "t_cdw_k", "t_sdw_k", "t_afm_k", "rho_exponent",
     "hc2_tesla", "lambda_eph", "omega_log_k", "rho_s_mev",
     "doping_level",
 }
-_BOOL_FIELDS = {
-    "ambient_sc", "is_unconventional", "disputed",
-}
+_BOOL_FIELDS = {"ambient_sc", "is_unconventional", "has_competing_order", "disputed"}
 
 # B3: Semantic blacklist — formulas that are syntactically valid but
 # refer to refuted materials, generic placeholders, or family-name
@@ -411,11 +506,14 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
                     parsed.meta.paper_id, text[:200])
         return []
 
-    # Fallback: if the LLM didn't tag a structure_phase anywhere,
-    # try the regex pass over the full body. That's good enough to
-    # catch RP / cuprate labels that the LLM sometimes hallucinates
-    # its way past.
-    phase_fallback = extract_structure_phase(body)
+    return normalize_material_records(records, paper_type=paper_type, body=body,
+                                      paper_id=parsed.meta.paper_id)
+
+
+def normalize_material_records(
+    records: list[Any], *, paper_type: PaperType, body: str = "", paper_id: str = "unknown",
+) -> list[dict[str, Any]]:
+    """Pure normalization boundary shared by ingestion and offline tests."""
 
     cleaned: list[dict[str, Any]] = []
     for r in records:
@@ -429,7 +527,7 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         if raw_f.lower().replace("-", "").replace(" ", "") in _SEMANTIC_BLACKLIST_LOWER:
             log.info(
                 "%s: dropping blacklisted formula=%r",
-                parsed.meta.paper_id, raw_f,
+                paper_id, raw_f,
             )
             continue
 
@@ -437,14 +535,15 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         # "MgB₂" or "La₂₋ₓSrₓCuO₄" normalizes to the same ASCII form
         # as the aggregator's normalize_formula(). Without this, the
         # record's formula and the material's grouping key can diverge.
+        original_formula = str(r.get("formula_raw") or r["formula"])
+        isotope_info = isotope_notation(original_formula)
         raw_f = raw_f.translate(str.maketrans(
             "₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₕₖₗₘₙₒₚₛₜₓ",
             "0123456789+-=()aehklmnopstx",
         ))
-        raw_f = raw_f.translate(str.maketrans(
-            "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾",
-            "0123456789+-=()",
-        ))
+        if isotope_info:
+            # An unresolved original is safer than a different exact formula.
+            raw_f = original_formula
         raw_f = raw_f.replace("−", "-")  # Unicode minus → hyphen
 
         # Whitespace-normalize + validate. Records the LLM produced as
@@ -453,48 +552,71 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         # then re-pollute materials.records on every aggregator pass.
         raw_formula = formula_validator.normalize_whitespace(raw_f)
         ok, reject_reason = formula_validator.validate_formula(raw_formula)
-        if not ok:
+        if not ok and not isotope_info:
             log.info(
                 "%s: dropping NER record formula=%r reason=%s",
-                parsed.meta.paper_id, r.get("formula"), reject_reason,
+                paper_id, r.get("formula"), reject_reason,
             )
             continue
         record: dict[str, Any] = {
             "formula": raw_formula,
+            "formula_raw": original_formula,
             "paper_type": paper_type,
+            "extractor_version": NER_EXTRACTOR_VERSION,
+            "raw_extraction": json_safe_raw(r),
+            "scientific_values": {},
         }
+        if isotope_info:
+            record["composition_status"] = "invalid"
+            record["composition_proposal"] = enrich_formula(original_formula)
+        for key in ("evidence_text", "source_locator", "source_quote", "source_section", "source_page", "source_table"):
+            if key in r:
+                record[key] = json_safe_raw(r[key])
         for field in _V2_FIELDS:
             if field not in r:
                 continue
             value = r[field]
-            if value is None or value == "":
-                continue
             if field in _NUMERIC_FIELDS:
-                coerced = _coerce_float(value)
-                if coerced is None:
-                    continue
-                record[field] = coerced
+                proposal = parse_scientific_value(
+                    value, field, raw_unit=r.get(f"{field}_unit"),
+                    source_context=r.get("evidence_text") or r.get("source_quote"),
+                    source_locator=r.get("source_locator") if isinstance(r.get("source_locator"), dict) else {},
+                )
+                record["scientific_values"][field] = proposal
+                scalar = legacy_scalar(proposal)
+                if scalar is not None:
+                    record[field] = scalar
+                if proposal["status"] == "invalid":
+                    record.setdefault("validation_flags", []).append(f"{field}:{proposal['errors'][0]}")
+            elif value is None or value == "":
+                continue
+            elif field == "detection_conditions":
+                # Preserve structure, including invalid proposals, for the
+                # bounded shared semantics validator. Never stringify a map.
+                record[field] = json_safe_raw(value)
+            elif field in _OUTCOME_BOOL_FIELDS | {"has_competing_order", "is_unconventional"}:
+                if type(value) is bool:
+                    record[field] = value
+                else:
+                    record.setdefault("validation_flags", []).append(f"{field}:explicit_boolean_required")
+            elif field in _RESULT_TEXT_FIELDS:
+                if isinstance(value, str):
+                    record[field] = value.strip()
+                else:
+                    record.setdefault("validation_flags", []).append(f"{field}:explicit_text_required")
             elif field in _BOOL_FIELDS:
                 record[field] = _coerce_bool(value)
             else:
                 record[field] = str(value).strip() or None
 
-        # Regex fallback for structure_phase
-        if "structure_phase" not in record and phase_fallback:
-            record["structure_phase"] = phase_fallback
-
-        # Normalize evidence_type to a known enum value or drop it.
-        # Missing/invalid is left absent — the aggregator treats absent
-        # as "primary" for backward compatibility with legacy records.
-        # B1: "primary" is accepted for backward compat; new records
-        # should use "primary_experimental" or "primary_theoretical".
+        # Normalize spelling only. The shared result classifier recognizes
+        # legacy aliases too; never erase a conflicting origin/role merely
+        # because it is outside the new prompt's smaller vocabulary. Unknown
+        # strings stay unresolved, and malformed types remain in raw_extraction
+        # with a validation flag, not coerced into a source assertion.
         ev = record.get("evidence_type")
         if ev is not None:
-            ev_lower = str(ev).strip().lower()
-            if ev_lower in _EVIDENCE_TYPES:
-                record["evidence_type"] = ev_lower
-            else:
-                record.pop("evidence_type", None)
+            record["evidence_type"] = ev.lower()
 
         # B2: Normalize tc_regime to a known enum value or drop it.
         regime = record.get("tc_regime")
@@ -516,12 +638,9 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
             else:
                 record.pop("family", None)
 
-        # Defensive: enforce the spec's confidence-downgrade for
-        # implausibly high Tc values.
-        tc = record.get("tc_kelvin")
-        conf = record.get("confidence") or 0.0
-        if tc is not None and (tc > 300 or tc < 0.01) and conf >= 0.3:
-            record["confidence"] = 0.3
+        # Extraction confidence is not a scientific plausibility score.
+        # Retain unusual values; the shared anomaly-review policy decides
+        # their property-scoped eligibility without rewriting source data.
 
         # NOTE: we used to default ambient_sc=True when pressure_gpa==0,
         # but ambient vs unknown is exactly what the new prompt asks
@@ -531,9 +650,13 @@ def extract_materials(parsed: ParsedPaper) -> list[dict[str, Any]]:
         # alembic 0009). We rely entirely on the LLM's ambient_sc
         # field now; if it's missing, ambient_sc stays None / unknown.
 
+        # The API/claim mapper derive origin separately; a classifier version
+        # must not become part of raw-source occurrence identity.
         cleaned.append(record)
 
-    return cleaned
+    return annotate_structure_records(
+        annotate_pressure_records(cleaned), body=body, paper_id=paper_id,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -567,36 +690,9 @@ def _parse_json(text: str) -> list[Any] | None:
     return None
 
 
-# Some NER replies stuff units into the number: "150 T", "80-95 K",
-# "14.0 GPa", "0.16±0.02". Strip units, take midpoints, drop ± errors.
-_RANGE_RE = re.compile(r"^\s*([-+]?\d*\.?\d+)\s*[-–—]\s*([-+]?\d*\.?\d+)")
-_NUM_RE   = re.compile(r"[-+]?\d*\.?\d+")
-
-
 def _coerce_float(v: Any) -> float | None:
-    if v is None or v == "":
-        return None
-    if isinstance(v, (int, float)):
-        return float(v)
-    s = str(v).strip()
-    if not s:
-        return None
-    # Range — take the midpoint.
-    m = _RANGE_RE.match(s)
-    if m:
-        try:
-            return (float(m.group(1)) + float(m.group(2))) / 2
-        except (TypeError, ValueError):
-            return None
-    # Pick the first number in the string — handles "150 T",
-    # "14.0 GPa", "0.16 +/- 0.02".
-    nm = _NUM_RE.search(s)
-    if not nm:
-        return None
-    try:
-        return float(nm.group(0))
-    except (TypeError, ValueError):
-        return None
+    """Legacy dimensionless helper: never strip arbitrary units or bounds."""
+    return legacy_scalar(parse_scientific_value(v, "confidence"))
 
 
 def _coerce_bool(v: Any) -> bool | None:

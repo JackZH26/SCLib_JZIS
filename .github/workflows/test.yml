@@ -13,71 +13,92 @@ jobs:
   api-tests:
     name: API (pytest)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_DB: sclib_test
-          POSTGRES_USER: sclib
-          POSTGRES_PASSWORD: sclib_test_pw
-        ports: ["5432:5432"]
-        options: >-
-          --health-cmd "pg_isready -U sclib -d sclib_test"
-          --health-interval 5s
-          --health-timeout 3s
-          --health-retries 10
-      redis:
-        image: redis:7-alpine
-        ports: ["6379:6379"]
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 5s
-          --health-timeout 3s
-          --health-retries 10
-    env:
-      DATABASE_URL: postgresql://sclib:sclib_test_pw@localhost:5432/sclib_test
-      REDIS_URL: redis://localhost:6379
-      JWT_SECRET: test_jwt_secret_not_for_production_use_at_all
-      ENVIRONMENT: test
-      EMAIL_BACKEND: stdout
+    # Native regression exceeded 44 minutes after only four of eight batches.
+    # These are bounded allowances, not measured Linux durations. Individual
+    # disposable service capabilities still expire after one hour unchanged.
+    timeout-minutes: 180
     defaults:
       run:
         working-directory: api
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          # Offline provenance tests compare retained bytes to a historical blob.
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
       - name: Install uv
-        run: pip install --upgrade pip uv
+        run: python -m pip install --disable-pip-version-check uv==0.11.16
       - name: Install dependencies
-        run: uv pip install --system -e ".[dev]"
-      - name: Run tests
-        run: pytest -q
+        run: uv sync --locked --extra dev --python 3.11
+      - name: Verify connection-before-import safety guards (no services)
+        run: .venv/bin/python -m unittest discover -s ../scripts/tests -p test_test_safety.py -v
+      - name: Prepare hash-verified tokenizer data (dependency download)
+        timeout-minutes: 2
+        run: .venv/bin/python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
+      - name: Verify ML08 from the installed API wheel without repository imports
+        timeout-minutes: 3
+        run: |
+          uv build --wheel --out-dir "$RUNNER_TEMP/sclib-ml08-wheel" .
+          .venv/bin/python -m venv "$RUNNER_TEMP/sclib-ml08-installed"
+          "$RUNNER_TEMP/sclib-ml08-installed/bin/python" -m pip install --no-index --no-deps "$RUNNER_TEMP/sclib-ml08-wheel/sclib_api-0.1.0-py3-none-any.whl"
+          "$RUNNER_TEMP/sclib-ml08-installed/bin/python" -I ../scripts/probe_ml_pilot_install.py
+          "$RUNNER_TEMP/sclib-ml08-installed/bin/python" -I ../scripts/probe_ml_pilot_registration_install.py
+          "$RUNNER_TEMP/sclib-ml08-installed/bin/python" -I ../scripts/probe_ml_pilot_review_install.py
+      - name: Verify installed evidence replay and corrupt-context rejection
+        timeout-minutes: 3
+        working-directory: .
+        run: |
+          api/.venv/bin/python -m scripts.tests.run_installed_evidence_probe \
+            --python "$RUNNER_TEMP/sclib-ml08-installed/bin/python" \
+            --wheel "$RUNNER_TEMP/sclib-ml08-wheel/sclib_api-0.1.0-py3-none-any.whl" \
+            --output "$RUNNER_TEMP/sclib-installed-evidence.json"
+      - name: Upload actual installed evidence replay report
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: installed-evidence-replay-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sclib-installed-evidence.json
+          if-no-files-found: error
+      - name: Verify all offline script contracts in the locked API runtime (no services)
+        working-directory: .
+        run: api/.venv/bin/python -m pytest -q scripts/tests
+      - name: Capture test runtime dependency inventory
+        run: |
+          mkdir -p ../runtime-parity-api
+          .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock --pyproject pyproject.toml --revision "$GITHUB_SHA" > ../runtime-parity-api/test-runtime.json
+      - name: Compare built API release image with the locked test runtime
+        run: .venv/bin/python ../scripts/run_runtime_parity.py --project api --tests ../runtime-parity-api/test-runtime.json --output ../runtime-parity-api
+      - name: Prepare ephemeral service images
+        run: |
+          docker pull postgres:16-alpine
+          docker pull redis:7-alpine
+      - name: Run all API modules in separate owned-service batches
+        timeout-minutes: 150
+        working-directory: .
+        run: api/.venv/bin/python -m scripts.tests.run_api_regression --backend docker --batches 8 --output "$RUNNER_TEMP/api-regression"
+      - name: Upload actual API module-batch evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: api-regression-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/api-regression/
+          if-no-files-found: error
+      - name: Verify actual capacity boundaries in separate owned services
+        run: .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q tests_capacity
+      - name: Upload test runtime inventory
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: api-test-runtime-inventory-attempt-${{ github.run_attempt }}
+          path: runtime-parity-api/
+          if-no-files-found: error
 
   migration-tests:
     name: Migration (empty database to head)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_DB: sclib_migration_test
-          POSTGRES_USER: sclib
-          POSTGRES_PASSWORD: sclib_test_pw
-        ports: ["5432:5432"]
-        options: >-
-          --health-cmd "pg_isready -U sclib -d sclib_migration_test"
-          --health-interval 5s
-          --health-timeout 3s
-          --health-retries 10
-    env:
-      DATABASE_URL: postgresql://sclib:sclib_test_pw@localhost:5432/sclib_migration_test
-      JWT_SECRET: test_jwt_secret_not_for_production_use_at_all
-      ENVIRONMENT: test
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: api
@@ -88,34 +109,46 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install uv
-        run: pip install --upgrade pip uv
+        run: python -m pip install --disable-pip-version-check uv==0.11.16
       - name: Install API dependencies
-        run: uv pip install --system -e ".[dev]"
-      - name: Upgrade empty database to migration head
-        run: alembic upgrade head
-      - name: Verify migration head and auth schema
+        run: uv sync --locked --extra dev --python 3.11
+      - name: Prepare hash-verified tokenizer data (dependency download)
+        timeout-minutes: 2
+        run: .venv/bin/python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
+      - name: Capture migration runtime dependency inventory
         run: |
-          CURRENT="$(alembic current | awk '{print $1}')"
-          HEAD="$(alembic heads | awk '{print $1}')"
-          test "$CURRENT" = "$HEAD"
-          python - <<'PY'
-          from sqlalchemy import create_engine, inspect
-          from config import get_settings
-
-          engine = create_engine(get_settings().database_url)
-          schema = inspect(engine)
-          assert {"password_reset_tokens", "auth_audit_events"} <= set(schema.get_table_names())
-          user_columns = {column["name"] for column in schema.get_columns("users")}
-          assert "session_version" in user_columns
-          print("migration schema verified")
-          PY
+          mkdir -p ../runtime-parity-migration
+          .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock --pyproject pyproject.toml --revision "$GITHUB_SHA" > ../runtime-parity-migration/test-runtime.json
+      - name: Compare built API release image with the locked migration runtime
+        run: .venv/bin/python ../scripts/run_runtime_parity.py --project api --tests ../runtime-parity-migration/test-runtime.json --output ../runtime-parity-migration
+      - name: Prepare ephemeral service images
+        run: |
+          docker pull postgres:16-alpine
+          docker pull redis:7-alpine
+      - name: Upgrade and verify an owned disposable database
+        run: .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite migrations --report "$RUNNER_TEMP/schema-rehearsal.json"
+      - name: Upload actual owned migration rehearsal evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: schema-rehearsal-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/schema-rehearsal.json
+          if-no-files-found: error
+      - name: Upload migration runtime inventory
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: migration-test-runtime-inventory-attempt-${{ github.run_attempt }}
+          path: runtime-parity-migration/
+          if-no-files-found: error
 
   ingestion-tests:
     name: Ingestion (pytest, no production ingest)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
-      DATABASE_URL: postgresql://sclib:sclib_test_pw@localhost:5432/sclib_test
+      # Unit tests have no service. This cannot identify a real SCLib database.
+      DATABASE_URL: postgresql://unavailable:unavailable@127.0.0.1:1/unavailable
     defaults:
       run:
         working-directory: ingestion
@@ -126,11 +159,27 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install uv
-        run: pip install --upgrade pip uv
+        run: python -m pip install --disable-pip-version-check uv==0.11.16
       - name: Install dependencies
-        run: uv pip install --system -e ".[dev]"
+        run: uv sync --locked --extra dev --python 3.11
+      - name: Prepare hash-verified tokenizer data (dependency download)
+        timeout-minutes: 2
+        run: .venv/bin/python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
+      - name: Capture ingestion runtime dependency inventory
+        run: |
+          mkdir -p ../runtime-parity-ingestion
+          .venv/bin/python ../scripts/runtime_inventory.py --lock uv.lock --pyproject pyproject.toml --revision "$GITHUB_SHA" > ../runtime-parity-ingestion/test-runtime.json
+      - name: Compare built ingestion release image with the locked test runtime
+        run: .venv/bin/python ../scripts/run_runtime_parity.py --project ingestion --tests ../runtime-parity-ingestion/test-runtime.json --output ../runtime-parity-ingestion
       - name: Run unit tests only
-        run: pytest -q
+        run: .venv/bin/python -m pytest -q
+      - name: Upload ingestion runtime inventory
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ingestion-test-runtime-inventory-attempt-${{ github.run_attempt }}
+          path: runtime-parity-ingestion/
+          if-no-files-found: error
 
   frontend-build:
     name: Frontend (test + pnpm build)
@@ -181,18 +230,34 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Run production mobile E2E
         run: pnpm test:e2e
+      - name: Run isolated private research workbench browsers
+        timeout-minutes: 10
+        env:
+          SCLIB_RESEARCH_BROWSER_OUTPUT: ${{ runner.temp }}/sclib-research-browser
+        run: node tests/e2e/run-research-workbenches.cjs
+      - name: Upload private research browser evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: research-browser-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sclib-research-browser/
+          if-no-files-found: error
+          retention-days: 14
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: playwright-report
-          path: frontend/playwright-report/
+          path: |
+            frontend/playwright-report/
+            frontend/playwright-results.json
+          if-no-files-found: error
           retention-days: 14
 
   operations-config:
     name: Operations (SLO and monitoring config)
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -237,4 +302,36 @@ jobs:
             quay.io/prometheus/alertmanager:v0.33.1 \
             check-config /etc/alertmanager/alertmanager.yml
       - name: Test release-gate calculations
-        run: python -m unittest discover -s scripts/tests -v
+        run: python -m unittest discover -s scripts/tests -p test_check_error_budget.py -v
+      - name: Test private ingress source and observer contracts
+        run: python -m unittest discover -s scripts/tests -p test_private_ingress.py -v
+      - name: Build pinned Nginx and rehearse owned synthetic private ingress
+        timeout-minutes: 5
+        run: |
+          # Development libraries only: no distro Nginx package/service install.
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libpcre2-dev libssl-dev zlib1g-dev
+          nginx_rehearsal_dir="$(mktemp -d "$RUNNER_TEMP/sclib-nginx.XXXXXX")"
+          curl --fail --proto '=https' --tlsv1.2 --max-time 60 \
+            --output "$nginx_rehearsal_dir/nginx.tar.gz" \
+            https://nginx.org/download/nginx-1.30.4.tar.gz
+          printf '%s  %s\n' \
+            '4261dc90e9e47c1c4041276e9aaa3d48ebe2e664f728e14fa95ae6c67d57a08b' \
+            "$nginx_rehearsal_dir/nginx.tar.gz" | sha256sum --check
+          tar -xzf "$nginx_rehearsal_dir/nginx.tar.gz" -C "$nginx_rehearsal_dir" --no-same-owner
+          (
+            cd "$nginx_rehearsal_dir/nginx-1.30.4"
+            ./configure --prefix="$nginx_rehearsal_dir/unused-install-prefix" --with-http_ssl_module
+            make -j 2
+          )
+          python nginx/rehearse_private_intake.py \
+            --nginx "$nginx_rehearsal_dir/nginx-1.30.4/objs/nginx" \
+            --openssl "$(command -v openssl)" \
+            --output "$RUNNER_TEMP/sclib-private-ingress.json"
+      - name: Upload actual synthetic ingress evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: private-ingress-rehearsal-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sclib-private-ingress.json
+          if-no-files-found: error

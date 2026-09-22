@@ -11,6 +11,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from models.history_receipts import HistoryEvidenceDetail, HistoryReceiptSummary
 
 # ---------------------------------------------------------------------------
 # Ask history
@@ -22,7 +23,8 @@ class AskHistoryEntry(BaseModel):
     ``sources`` is the JSONB snapshot saved at answer time. It mirrors
     the :class:`AskSource` shape from ``models.search`` but we type it
     as a generic list so the history API doesn't break when AskSource
-    grows new fields (older rows wouldn't have them).
+    grows new fields (older rows wouldn't have them). ``current_evidence`` is a
+    separate read-time metadata projection, not a review of the saved answer.
     """
 
     model_config = ConfigDict(from_attributes=True)
@@ -31,6 +33,8 @@ class AskHistoryEntry(BaseModel):
     question: str
     answer: str
     sources: list[dict[str, Any]] = Field(default_factory=list)
+    current_evidence: dict[str, Any] = Field(default_factory=dict)
+    receipt: HistoryReceiptSummary = Field(default_factory=HistoryReceiptSummary)
     tokens_used: int | None = None
     latency_ms: int
     language: str | None = None
@@ -42,6 +46,15 @@ class AskHistoryListResponse(BaseModel):
     results: list[AskHistoryEntry]
     limit: int
     offset: int
+
+
+class AskHistoryDetailResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    version: Literal["ask-history-detail/1.0.0"] = "ask-history-detail/1.0.0"
+    entry: AskHistoryEntry
+    evidence: HistoryEvidenceDetail
+    result_current_evidence: dict[str, Any] = Field(default_factory=dict)
 
 
 # ---------------------------------------------------------------------------
@@ -85,6 +98,9 @@ class BookmarkedPaper(BaseModel):
 class BookmarkedMaterial(BaseModel):
     """Bookmark entry joined with materials.* for the dashboard list view."""
 
+    visibility: dict[str, Any] = Field(default_factory=dict)
+    needs_review: bool = True
+    review_reason: str | None = None
     id: UUID
     target_id: str
     created_at: datetime
@@ -95,6 +111,10 @@ class BookmarkedMaterial(BaseModel):
     tc_max: float | None
     tc_ambient: float | None
     arxiv_year: int | None
+    property_evidence: dict[str, Any] = Field(default_factory=dict)
+    material_semantics: dict[str, Any] = Field(default_factory=dict)
+    structure_evidence: dict[str, Any] = Field(default_factory=dict)
+    anomaly_review: dict[str, Any] = Field(default_factory=dict)
 
 
 class BookmarkedPapersResponse(BaseModel):

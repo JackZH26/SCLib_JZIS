@@ -1,0 +1,44 @@
+{
+  "version": "ask-history-detail/1.0.0",
+  "entry": {
+    "id": "ecc20667-741f-4983-a1e5-4458977591af",
+    "question": "An old synthetic question",
+    "answer": "An old saved answer.",
+    "sources": [],
+    "current_evidence": {
+      "version": "ask-history-current-evidence/1.0.0",
+      "scope": "current_paper_metadata_not_saved_excerpt",
+      "metadata_snapshot_at": "2026-09-09T03:34:49.900833+00:00",
+      "saved_answer_revalidated": false,
+      "scientific_acceptance": false,
+      "ml_training_eligibility_established": false,
+      "sources": [],
+      "warning_codes": [
+        "historical_answer_requires_new_claim_review"
+      ]
+    },
+    "receipt": {
+      "version": "ask-history-receipt-summary/1.0.0",
+      "status": "legacy_unpinned",
+      "receipt_sha256": null
+    },
+    "tokens_used": 0,
+    "latency_ms": 2,
+    "language": "en",
+    "created_at": "2026-09-09T03:34:49.856683Z"
+  },
+  "evidence": {
+    "status": "legacy_unpinned",
+    "binding_scope": null,
+    "receipt": null,
+    "historical_integrity_verified": false,
+    "scientific_acceptance": false,
+    "ml_training_approved": false,
+    "public_release_authorized": false,
+    "currentness_revalidated": false,
+    "reason_codes": [
+      "legacy_receipt_not_recorded"
+    ]
+  },
+  "result_current_evidence": {}
+}

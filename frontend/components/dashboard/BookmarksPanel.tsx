@@ -10,6 +10,12 @@
  */
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { PropertyEvidenceValue } from "@/components/PropertyEvidence";
+import { ScientificAnomalyNotice } from "@/components/ScientificAnomalies";
+import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice";
+import { visibilityIsRestricted } from "@/lib/material-visibility";
+import { MaterialSemanticsMini } from "@/components/MaterialSemantics";
+import { StructureEvidenceValue } from "@/components/StructureEvidence";
 
 import {
   ApiError,
@@ -221,13 +227,14 @@ function MaterialsPanel() {
             <th className="px-4 py-2 text-left font-medium">Family</th>
             <th className="px-4 py-2 text-right font-medium">Tc max (K)</th>
             <th className="px-4 py-2 text-right font-medium">Tc ambient</th>
+            <th className="px-4 py-2 text-left font-medium">Reported classifications</th>
             <th className="px-4 py-2 text-right font-medium">arXiv year</th>
             <th className="px-4 py-2 text-left font-medium">Saved</th>
             <th className="px-4 py-2 text-right font-medium">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">
-          {rows.map((m) => (
+          {rows.filter(m => !visibilityIsRestricted(m.visibility)).map((m) => (
             <tr key={m.id} className="hover:bg-slate-50/60">
               <td className="px-4 py-2">
                 <Link
@@ -237,14 +244,17 @@ function MaterialsPanel() {
                 >
                   {m.formula}
                 </Link>
+                <ScientificAnomalyNotice review={m.anomaly_review} compact />
+                <MaterialVisibilityNotice visibility={m.visibility} compact />
               </td>
               <td className="px-4 py-2 text-sage-muted">{m.family ?? "—"}</td>
               <td className="px-4 py-2 text-right tabular-nums text-sage-ink">
-                {m.tc_max != null ? m.tc_max.toFixed(1) : "—"}
+                <PropertyEvidenceValue evidence={m.property_evidence} field="tc_max" compact includeUnit={false} />
               </td>
               <td className="px-4 py-2 text-right tabular-nums text-sage-muted">
-                {m.tc_ambient != null ? m.tc_ambient.toFixed(1) : "—"}
+                <PropertyEvidenceValue evidence={m.property_evidence} field="tc_ambient" compact />
               </td>
+              <td className="min-w-[12rem] px-4 py-2"><MaterialSemanticsMini semantics={m.material_semantics} /><div className="mt-2"><span className="text-xs text-slate-500">Structure association</span><StructureEvidenceValue evidence={m.structure_evidence} /></div></td>
               <td className="px-4 py-2 text-right tabular-nums text-sage-muted">
                 {m.arxiv_year ?? "—"}
               </td>
@@ -290,7 +300,7 @@ function shortAuthors(authors: string[]): string {
 
 function formatAbs(iso: string): string {
   try {
-    return new Date(iso).toLocaleDateString(undefined, {
+    return new Date(iso).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",

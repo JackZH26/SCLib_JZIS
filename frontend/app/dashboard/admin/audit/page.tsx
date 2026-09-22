@@ -6,8 +6,7 @@
  * Two stacked panels:
  *   1. Last-night summary + per-rule report timeline
  *   2. Review queue: every flagged material, with Override / Confirm
- *      actions that record an admin_decision so the nightly job
- *      respects the call.
+ *      legacy notes. Notes do not exempt current evidence from fresh audits.
  */
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -70,15 +69,14 @@ export default function AdminAuditPage() {
   ) {
     let note: string;
     if (kind === "approve") {
-      // Quick path: one-click "this material is fine, restore". The
-      // backend stores the auto-note + reviewer + timestamp in
-      // materials.admin_decision so we still have provenance.
-      note = `approved: ${item.review_reason ?? "n/a"} verified valid by admin`;
+      // A legacy governance flag override is not a scientific approval.
+      // Versioned anomaly decisions and source corrections use separate review.
+      note = `Legacy flag override requested: ${item.review_reason ?? "n/a"}. Does not approve anomalous scientific values or source corrections.`;
     } else {
       const prompted = window.prompt(
         kind === "override"
-          ? `Override flag on ${item.formula}? Add a short justification:`
-          : `Confirm the flag on ${item.formula} after review. Add notes:`,
+          ? `Request a legacy flag override on ${item.formula}. This does not approve scientific values or source corrections. Add a justification:`
+          : `Keep the legacy flag on ${item.formula}. This is a governance decision, not a scientific finding. Add notes:`,
       );
       if (!prompted || !prompted.trim()) return;
       note = prompted.trim();
@@ -111,11 +109,16 @@ export default function AdminAuditPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-lg font-semibold text-sage-ink">Data audit</h2>
+        <p className="my-2 text-sm"><Link href="/dashboard/research/review" className="text-accent-deep underline">Scientific evidence workbench</Link> · Read-only; explicit research access required.</p>
+        {user.is_admin && <Link href="/dashboard/admin/jobs" className="text-sm text-accent-deep underline">Background job status</Link>}
         <p className="mt-1 text-sm text-sage-muted">
           Nightly data audit ran most recently at{" "}
-          <strong>{overview?.last_audit_started ?? "—"}</strong> and flagged{" "}
-          <strong>{overview?.last_audit_total_flagged ?? 0}</strong> new rows.
+          <strong>{overview?.last_audit_started ?? "—"}</strong>. Reported rule matches:{" "}
+          <strong>{overview?.last_audit_total_flagged ?? 0}</strong> (successful checks only; not distinct or newly flagged materials).
           Review queue size: <strong>{overview?.flagged_materials ?? 0}</strong>.
+        </p>
+        <p className="mt-2 rounded border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
+          These controls only request legacy flag changes. They do not approve anomalous scientific values, validate a source or apply source corrections. Versioned anomaly review is separate; the server may reject a legacy override. Historical thresholds are review triggers, not physical upper limits.
         </p>
       </div>
 
@@ -143,7 +146,7 @@ export default function AdminAuditPage() {
                   ].join(" ")}
                 >
                   <code className="font-mono text-xs">{reason}</code>
-                  <span className="font-semibold tabular-nums">{n.toLocaleString()}</span>
+                  <span className="font-semibold tabular-nums">{n.toLocaleString("en-US")}</span>
                 </button>
               ))}
           </div>
@@ -160,6 +163,7 @@ export default function AdminAuditPage() {
         <h3 className="text-sm font-semibold uppercase tracking-wide text-sage-tertiary">
           Recent audit runs
         </h3>
+        <p className="mt-2 text-xs text-sage-muted">A material can match multiple rules while retaining an older queue reason. Queue filters use that stored reason. Failed checks are not zero matches; older reports may count newly flagged rows instead of current matches.</p>
         <div className="mt-3 overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-xs uppercase tracking-wide text-sage-tertiary">
@@ -167,8 +171,8 @@ export default function AdminAuditPage() {
                 <th className="px-3 py-1.5 text-left font-medium">When</th>
                 <th className="px-3 py-1.5 text-left font-medium">Rule</th>
                 <th className="px-3 py-1.5 text-left font-medium">Severity</th>
-                <th className="px-3 py-1.5 text-right font-medium">Flagged</th>
-                <th className="px-3 py-1.5 text-right font-medium">Δ vs prev</th>
+                <th className="px-3 py-1.5 text-right font-medium">Reported matches</th>
+                <th className="px-3 py-1.5 text-right font-medium">Δ vs comparable run</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -184,7 +188,7 @@ export default function AdminAuditPage() {
                                                 : "bg-slate-100 text-slate-700",
                     ].join(" ")}>{r.severity}</span>
                   </td>
-                  <td className="px-3 py-1.5 text-right tabular-nums text-sage-ink">{r.rows_flagged}</td>
+                  <td className="px-3 py-1.5 text-right tabular-nums text-sage-ink">{r.rows_flagged < 0 ? "Check failed" : r.rows_flagged}</td>
                   <td className="px-3 py-1.5 text-right tabular-nums text-sage-muted">
                     {r.delta_vs_previous == null ? "—" : (r.delta_vs_previous > 0 ? `+${r.delta_vs_previous}` : r.delta_vs_previous)}
                   </td>
@@ -210,7 +214,7 @@ export default function AdminAuditPage() {
               <tr>
                 <th className="px-3 py-2 text-left font-medium">Material</th>
                 <th className="px-2 py-2 text-left font-medium">Family</th>
-                <th className="px-2 py-2 text-right font-medium">Tc</th>
+                <th className="px-2 py-2 text-right font-medium">Catalogue Tc</th>
                 <th className="px-2 py-2 text-right font-medium">Papers</th>
                 <th className="px-2 py-2 text-left font-medium">Reason</th>
                 <th className="px-2 py-2 text-right font-medium">Actions</th>
@@ -252,19 +256,19 @@ export default function AdminAuditPage() {
                       <button
                         onClick={() => act("approve", m)}
                         disabled={acting === m.id}
-                        title="One-click: clear the flag with an auto-generated note. The material reappears on /materials immediately."
+                        title="Request a legacy flag override with a generated note. Current source and scientific holds cannot be cleared, and later audits re-evaluate the evidence."
                         className="rounded-md border border-accent bg-[rgba(58,125,92,0.08)] px-2 py-1 text-xs font-medium text-accent-deep hover:bg-[rgba(58,125,92,0.18)] disabled:opacity-60"
-                      >✓ Pass</button>
+                      >Legacy override</button>
                       <button
                         onClick={() => act("override", m)}
                         disabled={acting === m.id}
-                        title="Clear the flag with a custom note (will prompt)."
+                        title="Request a legacy flag override with a custom note. This does not edit source values or exempt evidence from fresh audits."
                         className="rounded-md border border-sage-border bg-white px-2 py-1 text-xs text-accent-deep hover:bg-[rgba(58,125,92,0.08)] disabled:opacity-60"
-                      >Edit…</button>
+                      >Override with note…</button>
                       <button
                         onClick={() => act("confirm", m)}
                         disabled={acting === m.id}
-                        title="Keep the flag (the row stays hidden) but record that an admin has reviewed it."
+                        title="Keep the legacy flag and record a governance note. This does not establish a scientific outcome."
                         className="rounded-md border border-sage-border bg-white px-2 py-1 text-xs text-sage-muted hover:bg-slate-50 disabled:opacity-60"
                       >Hold…</button>
                     </div>
@@ -310,15 +314,16 @@ export default function AdminAuditPage() {
 // queue's Reason column. Full string stays in the title attribute so a
 // hover surfaces the canonical name.
 const REASON_LABELS: Record<string, string> = {
-  tc_max_exceeds_250K:                "Tc > 250 K",
-  tc_exceeds_family_cap:              "Tc > family cap",
-  tc_at_ambient_above_record:         "ambient > record",
+  tc_max_exceeds_250K:                "historical Tc threshold review",
+  tc_exceeds_family_cap:              "historical family threshold review",
+  tc_at_ambient_above_record:         "historical ambient reference review",
   ambient_sc_with_high_pressure:      "ambient + P>0",
   implausible_pressure:               "P out of range",
   hydride_low_pressure_high_tc:       "hydride low-P high-Tc",
   citation_conflation_review_paper:   "citation conflation",
   family_unconv_contradiction:        "family vs unconv",
   sole_source_retracted:              "all sources retracted",
+  source_eligibility_review_required: "source eligibility review",
   ner_extracted_descriptive_text:     "NER caught text not formula",
   english_element_name:               "English element name",
   system_designator_not_compound:     "system, not compound",

@@ -40,15 +40,17 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import json
 import logging
 import sys
 from datetime import datetime, timezone
+from time import perf_counter
 from typing import Any
 
 from ingestion.aps_storage import TdmAudit, TempBagit, write_audit_log
 from ingestion.collect.aps_harvest import ApsClient
 from ingestion.embed.embedder import embed_chunks
-from ingestion.extract.fact_sentences import build_authorized_chunks
+from ingestion.extract.fact_sentences import FactChunkLimitError, build_authorized_chunks
 from ingestion.extract.material_ner import extract_materials
 from ingestion.index.indexer import (
     dispose,
@@ -56,6 +58,7 @@ from ingestion.index.indexer import (
     upsert_aps_chunks_to_vector_search,
     upsert_aps_paper_with_chunks,
 )
+from ingestion.input_observation import new_input_observation, observe_chunks, observe_embeddings
 from ingestion.parse.aps_xml import UnsupportedApsFulltextError, parse_bagit_payload
 
 log = logging.getLogger("ingestion.aps_pipeline")
@@ -81,7 +84,9 @@ async def process_aps_paper(
     is always written (even on failure) unless ``dry_run`` is set, in
     which case the audit is logged but not persisted.
     """
-    result: dict[str, Any] = {"doi": doi, "ok": False, "dry_run": dry_run}
+    observation = new_input_observation()
+    result: dict[str, Any] = {"doi": doi, "ok": False, "dry_run": dry_run,
+                              "input_observation": observation}
     audit = TdmAudit(doi=doi)
     work: TempBagit | None = None
     paper_persisted = False
@@ -122,10 +127,22 @@ async def process_aps_paper(
         # 5. Authorized chunks: abstract + NER fact-sentences (never the
         #    full-text body). Fact sentences are derived from our own
         #    extracted data, keeping Ask/RAG recall high without prose.
-        chunks = build_authorized_chunks(meta, materials)
+        stage_started = perf_counter()
+        try:
+            chunks = build_authorized_chunks(meta, materials)
+        except Exception as exc:
+            reason = (FactChunkLimitError.reason_code if isinstance(exc, FactChunkLimitError)
+                      else "chunk_stage_failed")
+            observation["chunk"] = observe_chunks(status="failed", reason_code=reason,
+                duration_seconds=perf_counter() - stage_started)
+            result["stage"] = "chunk"
+            raise
+        observation["chunk"] = observe_chunks(chunks, status="returned",
+            duration_seconds=perf_counter() - stage_started)
         result["n_chunks"] = len(chunks)
 
         if dry_run:
+            observation["embedding"] = observe_embeddings(chunks, status="skipped", reason_code="dry_run")
             audit.status = "deleted"
             audit.from_temp(work)
             log.info("%s: DRY RUN — skipping DB/VS. audit=%s", doi, audit.to_values())
@@ -134,7 +151,19 @@ async def process_aps_paper(
 
         # 6. Embed (only if we intend to upsert vectors).
         if not skip_vector_search and chunks:
-            await asyncio.to_thread(embed_chunks, chunks)
+            stage_started = perf_counter()
+            try:
+                await asyncio.to_thread(embed_chunks, chunks)
+            except Exception:
+                observation["embedding"] = observe_embeddings(chunks, status="failed",
+                    reason_code="embedding_stage_failed", duration_seconds=perf_counter() - stage_started)
+                result["stage"] = "embed"
+                raise
+            observation["embedding"] = observe_embeddings(chunks, status="returned",
+                duration_seconds=perf_counter() - stage_started)
+        else:
+            observation["embedding"] = observe_embeddings(chunks, status="skipped",
+                reason_code="vector_search_skipped" if skip_vector_search else "no_chunks_produced")
 
         # 7. Cross-source DOI link to an existing arXiv preprint.
         related_id = await find_related_arxiv_paper(doi)
@@ -152,6 +181,17 @@ async def process_aps_paper(
 
         audit.status = "deleted"
         result["ok"] = True
+        return result
+
+    except FactChunkLimitError:
+        # Fixed policy code only: neither exception text nor a traceback may
+        # disclose the rejected scientific result or transient source prose.
+        reason = FactChunkLimitError.reason_code
+        audit.status = "error"
+        audit.error = reason
+        audit.processed_at = audit.processed_at or _now()
+        result.update(stage="chunk", reason_code=reason, error=reason)
+        log.warning("%s: APS chunk rejected (%s)", doi, reason)
         return result
 
     except UnsupportedApsFulltextError as e:
@@ -213,6 +253,8 @@ def _print_status(r: dict[str, Any]) -> None:
     else:
         extra = f"err={r.get('error', '?')[:120]}"
     log.info("[%s] %s — %s", status, r["doi"], extra)
+    if "input_observation" in r:
+        log.info("input_observation=%s", json.dumps(r["input_observation"], sort_keys=True, allow_nan=False))
 
 
 def main(argv: list[str] | None = None) -> int:

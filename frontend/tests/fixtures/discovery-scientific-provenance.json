@@ -1,0 +1,90 @@
+{
+  "asset_writer_sha256": "427d0dd3897780e011a6d9a8dc3ae6831f96b141a550d363484cb11c0b7fa418",
+  "backend": "native_disposable_capability_owned_postgresql_and_redis",
+  "capture_transport": "actual_in_process_ASGI_HTTP_GET_without_authentication",
+  "denied_external_socket_attempts": 0,
+  "files": [
+    {
+      "file": "full-eight.catalogue.json",
+      "sha256": "f6cc63454e0856e51688e097310d512c7e07f911d41ea95fe11721f9c83c2bd7",
+      "size_bytes": 555
+    },
+    {
+      "file": "full-eight.detail.json",
+      "sha256": "e5583f910cbd5323547f2613a13d789d3701be82727b82fe92fb26bf9b7f6162",
+      "size_bytes": 50105
+    },
+    {
+      "file": "lower-score.catalogue.json",
+      "sha256": "07ec6dc902688850db313321e7e35d7014dfa4b8dbf13ffd20f8cdef6cfc2e98",
+      "size_bytes": 555
+    },
+    {
+      "file": "lower-score.detail.json",
+      "sha256": "d024bf4cddc2bb782d725cbb3c1d8bcd7d0aeec88efbc0f3a73e53649816bc7b",
+      "size_bytes": 53943
+    }
+  ],
+  "fixture_adapter": "explicit_ambient/0 in actual SQL before freeze and matching RPS state before unchanged sealing and registration",
+  "git_head": "1d722e62221623adfd84a2a8965406f3642987b3",
+  "lower_score_explicit_selection_verified": true,
+  "ml_training_approved": false,
+  "production_publication_performed": false,
+  "public_GET_full_SQL_state_unchanged": true,
+  "public_wire_is_unmodified": true,
+  "publication_process": "actual_old_complete_dependency_rights_and_publication_then_new_three_account_projection_publication",
+  "real_scientific_pilot": false,
+  "review_scopes_for_phonon": [
+    "extraction_fidelity",
+    "scientific_result"
+  ],
+  "run_id": "8fa1cc8d555fa6698c8fc687b59bc73d",
+  "scientific_reviewed_keys": [
+    "phonon_min_frequency"
+  ],
+  "scientific_unreviewed_keys": [
+    "band_gap",
+    "dos_at_fermi",
+    "electron_phonon_lambda",
+    "energy_above_hull",
+    "formation_energy_per_atom",
+    "omega_log",
+    "superfluid_stiffness"
+  ],
+  "socket_policy": "owned_capability_loopback_ports_only_during_asset_test",
+  "source_pins": {
+    "api/config.py": "235605b5da4f1cd1c551fbf90a4e2b92412611adf35c1850f9f73af1b0b585e4",
+    "api/main.py": "63ca99b231166113598503a5c5fd8dad570c533410c1824f80471ba2e7124016",
+    "api/models/db.py": "80a27fda3f3bfe0cc55ad041a28c0bd18147cd9b47b5115e940a56bc68e6d798",
+    "api/models/discovery_projection_v1.py": "122c291d3fec7d0b6d0340fa99549021de4db2d9f916673f11058553386257f3",
+    "api/pyproject.toml": "83010d8205b72bb873cfd6ade36bc0b6f431a2a3c4ed7276a82febf72fec9ad4",
+    "api/routers/discovery_priority.py": "e2ad13192e5840038e7d6aaddb6616efaf6adfc85225669f16dd688c2876efdf",
+    "api/routers/discovery_scientific.py": "b63140acc7c26e0d35552159f9ab92514928e278414688fa44bd5e0ee34e3c40",
+    "api/services/discovery_projection_governance.py": "607b42a6c2693ebf311a939b890766f1d06387417ed5bf6855c1b82a2cf88b1c",
+    "api/services/discovery_scientific_cells.py": "f1920f9a6248db1e7e14c1e6ef9cd6daf5c0fd3eec39b1cb97271837e0f633e5",
+    "api/services/discovery_scientific_projection.py": "3eed18dc217e1138cce809be37be63adf9832e5616f913f664857da77b4c7106",
+    "api/services/priority_public_bundle.py": "786b21b794cc8f087187bd341f2f8ce6969c3ffd258b973e4bd2ee654a0ca605",
+    "api/services/research_access.py": "a8742aa9e1eeee19c182cce4474ad6da839966d6dce2ff6b866cec2fcdeb7a41",
+    "api/services/research_distribution.py": "68a5c361fc65256809297e080a86c2fc808658105687b91c2c92145decc9c5bb",
+    "api/services/research_distribution_contract.py": "25694b3bdff85c6b824857ca764fad9e28641382e48dd553859b8d110bf26adc",
+    "api/services/research_distribution_inputs.py": "72cc7cce8785bd6ed102f93aabd229500a7748ab8a1383195d7911aae7cb405f",
+    "api/services/research_distribution_rights.py": "1927c4862bd2bc9161785ca9033ae224fda6510981e950e009b9fa386afb8e97",
+    "api/services/research_freeze.py": "db4f01d0d125c876b223b77a42a1e3f5b3db9cb04eac66cf90a2064452f7aad9",
+    "api/services/scientific_result_effects.py": "5e3949245317dd66c39ef2ac36f4d15730534cc0a9ecff3c87e0ca335e464c1e",
+    "api/services/scientific_result_subject.py": "ea73c37843c7b11648c9dbc8b952dbef00f3cbc1743a9db133ac4417afa139a0",
+    "api/tests/conftest.py": "df00d2a3bffa6c33363d46f55d95d0963330d068b43e661b9eb91195e4fd3cd1",
+    "api/tests/rps_distribution_fixtures.py": "3ac5f3daf94f2b23b5d7002788cca2095b9cfb6b903c2a13adcfba2929848fdd",
+    "api/tests/test_discovery_projection_governance.py": "1bf4963464a45a7bcad211894a7eaf2618e8832020ab8369854addd96a9a4a46",
+    "api/tests/test_discovery_scientific_cells.py": "eb365944a40080000911cdb4299023fb32b5eac389a3014e6ec089c16f0e11a6",
+    "api/tests/test_discovery_scientific_http.py": "3ac0e98ebe88bd57978f574695e835f9bbdb46ca418b03a71e86ce1502930616",
+    "api/tests/test_discovery_scientific_projection.py": "b9e3c5e2ef7a33059d1520c3a11ea1b23c8b082de9d7c7224165128efe9bd12e",
+    "api/tests/test_priority_public_bundle.py": "d82aa1d70c263a89ddd4d50f54d939ea5a83a32ca11fe671cd2d8800992f4d66",
+    "api/tests/test_research_freeze.py": "dae10d9821e2a699fbdab37cde4c596531e4b156312df804368d73400aa4417b",
+    "api/tests/test_scientific_adjudication_schema.py": "103bc1a62fc2b90f65a55fb7755b8da76463ed50b3b4259947bb53a9acf8f65d",
+    "scripts/run_disposable_tests.py": "80e3206e970d7b5f80f96822c982ac5ac2c6b9e931b8a55985f690edb510a762",
+    "scripts/test_safety.py": "6c011748b22adee68fc76451750cf317cc5a96c4247cc5bd0a07f877a3a6bb27"
+  },
+  "synthetic_fixture_only": true,
+  "variants_share_same_synthetic_material_and_scientific_rows": true,
+  "version": "synthetic-public-discovery-assets/1.0.0"
+}

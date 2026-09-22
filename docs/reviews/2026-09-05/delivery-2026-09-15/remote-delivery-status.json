@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-09-15T04:22:32.821150+00:00",
+  "repository": "JackZH26/SCLib_JZIS",
+  "account": "JackZH26",
+  "remote_main": "d26fc098565492b78b416fb30b6b1ec7087b24c7",
+  "upgrade_branch_exists": false,
+  "matching_pull_requests": [],
+  "oauth_scopes": [
+    "gist",
+    "read:org",
+    "repo"
+  ],
+  "workflow_scope_present": false,
+  "status": "blocked_by_workflow_permission",
+  "required_user_action": "gh auth refresh -h github.com -s workflow",
+  "remote_ci_run_for_this_delivery": false
+}

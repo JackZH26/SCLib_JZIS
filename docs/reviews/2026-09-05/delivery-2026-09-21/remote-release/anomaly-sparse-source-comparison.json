@@ -1,0 +1,7 @@
+{
+  "repository_api_sha256": "0764ddbff08aa6ab0bd32d68d319f824a6c17056b9193a10d71549a66efc6170",
+  "measured_private_candidate_sha256": "accc8e401b996a43c36a0537b3ed95d4160836a992d2241507965f1794b3db9c",
+  "ast_equal": true,
+  "ast_sha256": "0ecdd8867a1e13af1606611b07d0a0abb366ebadb2637088e7ef1ec7f8c91bd2",
+  "difference": "comments and whitespace only; not a release-image parity claim"
+}

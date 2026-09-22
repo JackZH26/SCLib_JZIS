@@ -1,0 +1,26 @@
+[
+  {
+    "name": "public-api",
+    "passed": true,
+    "observed": 1.0,
+    "target": 0.999,
+    "message": "availability 100.00000% from 241047 requests and 0 errors",
+    "applicable": true
+  },
+  {
+    "name": "ai-api",
+    "passed": false,
+    "observed": null,
+    "target": 0.995,
+    "message": "insufficient traffic (2/20 requests)",
+    "applicable": true
+  },
+  {
+    "name": "data-freshness",
+    "passed": null,
+    "observed": 1609412.923322,
+    "target": 86400,
+    "message": "not assessed: ingestion intentionally paused; retained data age is not a freshness pass",
+    "applicable": false
+  }
+]

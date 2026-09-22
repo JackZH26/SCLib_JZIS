@@ -6,6 +6,9 @@ import {
   friendlyErrorMessage,
   getDiscoveryCandidate,
   getDiscoveryCandidates,
+  isDiscoveryVersionConflict,
+  verifyDiscoveryDetail,
+  verifyDiscoveryPage,
   type DiscoveryCandidate,
   type DiscoveryCandidatePage,
   type DiscoveryCandidateSummary,
@@ -46,7 +49,7 @@ const ROLE_META: Record<string, { title: string; description: string }> = {
   },
   negative_control: {
     title: "Negative Controls",
-    description: "Reviewed records that teach the loop what to avoid in the present proxy or phase regime.",
+    description: "Research-control records for the present proxy or phase regime, not evidence of an experimental negative outcome.",
   },
   failed_memory: {
     title: "Failed Memory",
@@ -77,7 +80,7 @@ function formatEvidenceLabel(evidenceLevel: string) {
     E0: "Early hypothesis",
   };
   if (labels[raw.toUpperCase()]) return labels[raw.toUpperCase()];
-  if (raw.toLowerCase() === "literature-confirmed") return "Literature-confirmed";
+  if (raw.toLowerCase() === "literature-confirmed") return "Literature-reported";
   if (raw.toLowerCase() === "reference") return "Reference";
   if (raw.toLowerCase() === "dft-screened") return "DFT-screened";
   return evidenceLevel;
@@ -199,7 +202,9 @@ function CandidateDetail({ candidate }: { candidate: DiscoveryCandidate }) {
   );
 }
 
-function CandidateCard({ candidate }: { candidate: DiscoveryCandidateSummary }) {
+function CandidateCard({ candidate, dataVersion, onVersionConflict }: {
+  candidate: DiscoveryCandidateSummary; dataVersion: string; onVersionConflict: () => void;
+}) {
   const [detail, setDetail] = useState<DiscoveryCandidate | null>(null);
   const [detailState, setDetailState] = useState<"idle" | "loading" | "error">("idle");
 
@@ -207,9 +212,12 @@ function CandidateCard({ candidate }: { candidate: DiscoveryCandidateSummary }) 
     if (detail || detailState === "loading") return;
     setDetailState("loading");
     try {
-      setDetail(await getDiscoveryCandidate(candidate.candidate_id));
+      const result = await getDiscoveryCandidate(candidate.candidate_id, dataVersion);
+      verifyDiscoveryDetail(result, dataVersion, candidate.candidate_id);
+      setDetail(result);
       setDetailState("idle");
-    } catch {
+    } catch (caught) {
+      if (isDiscoveryVersionConflict(caught)) onVersionConflict();
       setDetailState("error");
     }
   }
@@ -296,6 +304,9 @@ export function DiscoveryFeed({
   const [hasMore, setHasMore] = useState(initialPage.has_more);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [versionExpired, setVersionExpired] = useState(false);
+  const [sourceStatus, setSourceStatus] = useState(initialPage.source_status);
+  const dataVersion = initialPage.data_version;
   const requestSequence = useRef(0);
 
   const roles = useMemo(() => {
@@ -306,7 +317,17 @@ export function DiscoveryFeed({
     return [...known, ...extras];
   }, [roleCounts]);
 
+  function versionConflict() {
+    ++requestSequence.current;
+    setItems([]);
+    setHasMore(false);
+    setLoading(false);
+    setVersionExpired(true);
+    setError("The Discovery feed changed or could not be verified. Reload the latest feed to continue; mixed-version records have been cleared.");
+  }
+
   async function selectRole(role: string | null) {
+    if (versionExpired) return;
     if (role === selectedRole && error === null) return;
     const sequence = ++requestSequence.current;
     setSelectedRole(role);
@@ -316,13 +337,16 @@ export function DiscoveryFeed({
     setError(null);
     setLoading(true);
     try {
-      const page = await getDiscoveryCandidates({ limit: PAGE_SIZE, recordRole: role });
+      const page = await getDiscoveryCandidates({ limit: PAGE_SIZE, recordRole: role, dataVersion });
       if (sequence !== requestSequence.current) return;
+      verifyDiscoveryPage(page, dataVersion, 0, [], role, role ? (roleCounts[role] ?? 0) : totalCandidates);
       setItems(page.items);
       setTotal(page.total);
       setHasMore(page.has_more);
+      setSourceStatus(page.source_status);
     } catch (caught) {
       if (sequence !== requestSequence.current) return;
+      if (isDiscoveryVersionConflict(caught)) { versionConflict(); return; }
       setError(friendlyErrorMessage(caught, "Could not load discovery records."));
     } finally {
       if (sequence === requestSequence.current) setLoading(false);
@@ -330,7 +354,7 @@ export function DiscoveryFeed({
   }
 
   async function loadMore() {
-    if (loading || !hasMore) return;
+    if (loading || !hasMore || versionExpired) return;
     const sequence = ++requestSequence.current;
     setError(null);
     setLoading(true);
@@ -339,13 +363,17 @@ export function DiscoveryFeed({
         offset: items.length,
         limit: PAGE_SIZE,
         recordRole: selectedRole,
+        dataVersion,
       });
       if (sequence !== requestSequence.current) return;
+      verifyDiscoveryPage(page, dataVersion, items.length, items, selectedRole, total);
       setItems((current) => [...current, ...page.items]);
       setTotal(page.total);
       setHasMore(page.has_more);
+      setSourceStatus(page.source_status);
     } catch (caught) {
       if (sequence !== requestSequence.current) return;
+      if (isDiscoveryVersionConflict(caught)) { versionConflict(); return; }
       setError(friendlyErrorMessage(caught, "Could not load more discovery records."));
     } finally {
       if (sequence === requestSequence.current) setLoading(false);
@@ -356,6 +384,7 @@ export function DiscoveryFeed({
 
   return (
     <section className="rounded-2xl border border-sage-border bg-white p-4 shadow-soft sm:p-5">
+      {sourceStatus === "stale" && <p role="status" className="mb-4 text-sm text-amber-800">The latest feed update could not be validated. Showing the last validated version ({initialPage.last_successful_at ?? "validation time unavailable"}).</p>}
       <div className="flex flex-col gap-4">
         <div>
           <h2 className="text-lg font-semibold text-sage-ink">Role-classified records</h2>
@@ -367,6 +396,7 @@ export function DiscoveryFeed({
           <button
             type="button"
             aria-pressed={selectedRole === null}
+            disabled={versionExpired}
             onClick={() => void selectRole(null)}
             className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${
               selectedRole === null
@@ -381,6 +411,7 @@ export function DiscoveryFeed({
               key={role}
               type="button"
               aria-pressed={selectedRole === role}
+              disabled={versionExpired}
               onClick={() => void selectRole(role)}
               className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${
                 selectedRole === role
@@ -405,7 +436,8 @@ export function DiscoveryFeed({
         Showing {items.length} of {total} records
       </p>
 
-      {error && <p className="mt-4 text-sm text-red-700">{error}</p>}
+      {error && <p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
+      {versionExpired && <button type="button" onClick={() => window.location.reload()} className="mt-3 text-sm font-semibold text-accent-deep underline">Reload latest feed</button>}
       {items.length === 0 && !loading && !error ? (
         <div className="mt-4 rounded-2xl border border-dashed border-sage-border bg-sage-surface px-6 py-10 text-center">
           <p className="font-medium text-sage-ink">No public discovery candidates in this role.</p>
@@ -413,7 +445,7 @@ export function DiscoveryFeed({
       ) : (
         <div className="mt-4 space-y-4">
           {items.map((candidate) => (
-            <CandidateCard key={candidate.candidate_id} candidate={candidate} />
+            <CandidateCard key={`${dataVersion}:${candidate.candidate_id}`} candidate={candidate} dataVersion={dataVersion} onVersionConflict={versionConflict} />
           ))}
         </div>
       )}

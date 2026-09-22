@@ -1,0 +1,1175 @@
+{
+  "version": "ask-history-detail/1.0.0",
+  "entry": {
+    "id": "d5a228b0-317a-4139-8f11-6d5ea1056991",
+    "question": "What is Tc of MgB2 at ambient pressure and why?",
+    "answer": "Source-linked extraction records and original explanation candidates are shown separately. Numerical explanation is not established: no reviewed link currently connects these exact extraction records to a claim, sample and original passage. Sharing a paper, catalogue snapshot, Work, formula or reported sample name does not establish that relationship. No model-generated numerical or causal synthesis was performed.",
+    "sources": [
+      {
+        "year": null,
+        "index": 1,
+        "title": "Synthetic distinct superconductivity specimens",
+        "section": "Table 1",
+        "snippet": "Synthetic retained original: MgB2 specimen U in synthetic-phase-U has a reported Tc of 18 K; pressure was not reported. Missing pressure does not establish ambient conditions.",
+        "arxiv_id": null,
+        "paper_id": "aps:10.0000/MixedAsk.fc04b17ff0864c14a0c8b69f84a84fb0",
+        "packing_info": {
+          "version": "evidence-pack-item/1.0.0",
+          "chunk_id": "ig62_e808164d79ce406a965e63c603f1014a_d25f2cd229dc7ba165642417e28756877acf580253901b12df5e04b422c75258",
+          "position": 1,
+          "role_hint": "table",
+          "group_basis": "source_snapshot",
+          "source_group_id": "src:89cc3744b906d2437bf4332c4126f41033499dae53c007d3335caca32c6b2cd8",
+          "selection_reason": "source_diversity",
+          "diversity_group_id": "div:ffd9313e7c0d5f0c69b77dfde63810efb8fcc5e4a47b9fc3dac0693733c678c9",
+          "source_group_basis": "source_snapshot",
+          "scientific_acceptance": false,
+          "source_snapshot_sha256": "9c0d021b90581d40f5265bf5060d02473a64b6eed71d8bd9812bb545e53c0cdc"
+        },
+        "authors_short": "Synthetic Fixture",
+        "material_evidence": [
+          {
+            "formula": "MgB2",
+            "visibility": {
+              "state": "unknown",
+              "version": "material-visibility/1.0.0",
+              "reason_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "source_status": "active",
+              "warning_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "review_revision": null,
+              "archive_available": true,
+              "material_link_status": "unlinked",
+              "scientific_acceptance": false,
+              "public_catalogue_eligible": false,
+              "reported_claim_filter_eligible": true
+            },
+            "result_classification": {
+              "source_role": "primary",
+              "knowledge_origin": "Observed",
+              "classifier_version": "sclib-result-origin/v1",
+              "classification_status": "resolved",
+              "classification_reasons": [
+                "observed_method:measurement_method",
+                "origin_label:knowledge_origin"
+              ]
+            }
+          },
+          {
+            "formula": "MgB2",
+            "visibility": {
+              "state": "unknown",
+              "version": "material-visibility/1.0.0",
+              "reason_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "source_status": "active",
+              "warning_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "review_revision": null,
+              "archive_available": true,
+              "material_link_status": "unlinked",
+              "scientific_acceptance": false,
+              "public_catalogue_eligible": false,
+              "reported_claim_filter_eligible": true
+            },
+            "result_classification": {
+              "source_role": "primary",
+              "knowledge_origin": "Observed",
+              "classifier_version": "sclib-result-origin/v1",
+              "classification_status": "resolved",
+              "classification_reasons": [
+                "observed_method:measurement_method",
+                "origin_label:knowledge_origin"
+              ]
+            }
+          },
+          {
+            "formula": "MgB2",
+            "visibility": {
+              "state": "unknown",
+              "version": "material-visibility/1.0.0",
+              "reason_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "source_status": "active",
+              "warning_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "review_revision": null,
+              "archive_available": true,
+              "material_link_status": "unlinked",
+              "scientific_acceptance": false,
+              "public_catalogue_eligible": false,
+              "reported_claim_filter_eligible": true
+            },
+            "result_classification": {
+              "source_role": "primary",
+              "knowledge_origin": "Observed",
+              "classifier_version": "sclib-result-origin/v1",
+              "classification_status": "resolved",
+              "classification_reasons": [
+                "observed_method:measurement_method",
+                "origin_label:knowledge_origin"
+              ]
+            }
+          },
+          {
+            "formula": "Nb",
+            "visibility": {
+              "state": "unknown",
+              "version": "material-visibility/1.0.0",
+              "reason_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "source_status": "active",
+              "warning_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "review_revision": null,
+              "archive_available": true,
+              "material_link_status": "unlinked",
+              "scientific_acceptance": false,
+              "public_catalogue_eligible": false,
+              "reported_claim_filter_eligible": true
+            },
+            "result_classification": {
+              "source_role": "primary",
+              "knowledge_origin": "Observed",
+              "classifier_version": "sclib-result-origin/v1",
+              "classification_status": "resolved",
+              "classification_reasons": [
+                "observed_method:measurement_method",
+                "origin_label:knowledge_origin"
+              ]
+            }
+          }
+        ],
+        "source_visibility": {
+          "version": "material-visibility/1.0.0",
+          "source_status": "active",
+          "warning_codes": [],
+          "scientific_acceptance": false,
+          "bibliography_available": true,
+          "reported_claim_filter_eligible": true
+        },
+        "evidence_provenance": {
+          "version": "rag-evidence/1.0.0",
+          "chunk_kind": "original_passage",
+          "currentness": "current",
+          "root_status": "unresolved",
+          "warning_codes": [
+            "original_root_unresolved",
+            "source_permission_unresolved",
+            "generation_snapshot_catalogue_freshness_unverified"
+          ],
+          "content_sha256": "a3817701e3cf1f27b6eeba931751c98bb232ca1171585a2c73900f015c3cb141",
+          "source_locator": {
+            "section": "Table 1",
+            "char_end": 175,
+            "char_start": 0
+          },
+          "support_eligible": false,
+          "permission_status": "unresolved",
+          "rendering_version": "sclib-section-chunker/2.0.0",
+          "source_capture_id": null,
+          "extraction_version": null,
+          "evidence_revision_id": "6308c906-8ede-5f4e-854f-ea1b5dea6ca4",
+          "independent_evidence": false,
+          "parent_result_sha256": null,
+          "scientific_acceptance": false,
+          "evidence_record_sha256": "6dc8f0517b12089de23bf153ee66154ce7b62af12bcef9bb1ecfb9a5504b9039",
+          "parent_result_revision_id": null
+        }
+      },
+      {
+        "year": null,
+        "index": 2,
+        "title": "Synthetic distinct superconductivity specimens",
+        "section": "Results",
+        "snippet": "Synthetic retained original: MgB2 specimen A in synthetic-phase-A has a reported Tc of 39 K at ambient pressure. Pairing explanation remains unresolved.",
+        "arxiv_id": null,
+        "paper_id": "aps:10.0000/MixedAsk.fc04b17ff0864c14a0c8b69f84a84fb0",
+        "packing_info": {
+          "version": "evidence-pack-item/1.0.0",
+          "chunk_id": "ig62_e808164d79ce406a965e63c603f1014a_70f95ccd16f5b930ff1884cafcb89468a73b4ac9b163cdbdb1ff3510a2f1c0fc",
+          "position": 2,
+          "role_hint": "results",
+          "group_basis": "source_snapshot",
+          "source_group_id": "src:89cc3744b906d2437bf4332c4126f41033499dae53c007d3335caca32c6b2cd8",
+          "selection_reason": "complementary_role",
+          "diversity_group_id": "div:ffd9313e7c0d5f0c69b77dfde63810efb8fcc5e4a47b9fc3dac0693733c678c9",
+          "source_group_basis": "source_snapshot",
+          "scientific_acceptance": false,
+          "source_snapshot_sha256": "9c0d021b90581d40f5265bf5060d02473a64b6eed71d8bd9812bb545e53c0cdc"
+        },
+        "authors_short": "Synthetic Fixture",
+        "material_evidence": [
+          {
+            "formula": "MgB2",
+            "visibility": {
+              "state": "unknown",
+              "version": "material-visibility/1.0.0",
+              "reason_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "source_status": "active",
+              "warning_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "review_revision": null,
+              "archive_available": true,
+              "material_link_status": "unlinked",
+              "scientific_acceptance": false,
+              "public_catalogue_eligible": false,
+              "reported_claim_filter_eligible": true
+            },
+            "result_classification": {
+              "source_role": "primary",
+              "knowledge_origin": "Observed",
+              "classifier_version": "sclib-result-origin/v1",
+              "classification_status": "resolved",
+              "classification_reasons": [
+                "observed_method:measurement_method",
+                "origin_label:knowledge_origin"
+              ]
+            }
+          },
+          {
+            "formula": "MgB2",
+            "visibility": {
+              "state": "unknown",
+              "version": "material-visibility/1.0.0",
+              "reason_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "source_status": "active",
+              "warning_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "review_revision": null,
+              "archive_available": true,
+              "material_link_status": "unlinked",
+              "scientific_acceptance": false,
+              "public_catalogue_eligible": false,
+              "reported_claim_filter_eligible": true
+            },
+            "result_classification": {
+              "source_role": "primary",
+              "knowledge_origin": "Observed",
+              "classifier_version": "sclib-result-origin/v1",
+              "classification_status": "resolved",
+              "classification_reasons": [
+                "observed_method:measurement_method",
+                "origin_label:knowledge_origin"
+              ]
+            }
+          },
+          {
+            "formula": "MgB2",
+            "visibility": {
+              "state": "unknown",
+              "version": "material-visibility/1.0.0",
+              "reason_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "source_status": "active",
+              "warning_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "review_revision": null,
+              "archive_available": true,
+              "material_link_status": "unlinked",
+              "scientific_acceptance": false,
+              "public_catalogue_eligible": false,
+              "reported_claim_filter_eligible": true
+            },
+            "result_classification": {
+              "source_role": "primary",
+              "knowledge_origin": "Observed",
+              "classifier_version": "sclib-result-origin/v1",
+              "classification_status": "resolved",
+              "classification_reasons": [
+                "observed_method:measurement_method",
+                "origin_label:knowledge_origin"
+              ]
+            }
+          },
+          {
+            "formula": "Nb",
+            "visibility": {
+              "state": "unknown",
+              "version": "material-visibility/1.0.0",
+              "reason_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "source_status": "active",
+              "warning_codes": [
+                "unlinked_unreviewed_occurrence"
+              ],
+              "review_revision": null,
+              "archive_available": true,
+              "material_link_status": "unlinked",
+              "scientific_acceptance": false,
+              "public_catalogue_eligible": false,
+              "reported_claim_filter_eligible": true
+            },
+            "result_classification": {
+              "source_role": "primary",
+              "knowledge_origin": "Observed",
+              "classifier_version": "sclib-result-origin/v1",
+              "classification_status": "resolved",
+              "classification_reasons": [
+                "observed_method:measurement_method",
+                "origin_label:knowledge_origin"
+              ]
+            }
+          }
+        ],
+        "source_visibility": {
+          "version": "material-visibility/1.0.0",
+          "source_status": "active",
+          "warning_codes": [],
+          "scientific_acceptance": false,
+          "bibliography_available": true,
+          "reported_claim_filter_eligible": true
+        },
+        "evidence_provenance": {
+          "version": "rag-evidence/1.0.0",
+          "chunk_kind": "original_passage",
+          "currentness": "current",
+          "root_status": "unresolved",
+          "warning_codes": [
+            "original_root_unresolved",
+            "source_permission_unresolved",
+            "generation_snapshot_catalogue_freshness_unverified"
+          ],
+          "content_sha256": "6d2e879c409e955367654608869caaf29f077e6f4097211d95198678d1478cc4",
+          "source_locator": {
+            "section": "Results",
+            "char_end": 152,
+            "char_start": 0
+          },
+          "support_eligible": false,
+          "permission_status": "unresolved",
+          "rendering_version": "sclib-section-chunker/2.0.0",
+          "source_capture_id": null,
+          "extraction_version": null,
+          "evidence_revision_id": "f6ca3a94-ab8a-544d-800a-a40cd5077bd8",
+          "independent_evidence": false,
+          "parent_result_sha256": null,
+          "scientific_acceptance": false,
+          "evidence_record_sha256": "bc3221a5160e70eb2170596477c7cf8b958386a5a2075b5f1524a5c6cf15c35a",
+          "parent_result_revision_id": null
+        }
+      }
+    ],
+    "current_evidence": {
+      "version": "ask-history-current-evidence/1.0.0",
+      "scope": "current_paper_metadata_not_saved_excerpt",
+      "metadata_snapshot_at": "2026-09-09T03:34:48.551271+00:00",
+      "saved_answer_revalidated": false,
+      "scientific_acceptance": false,
+      "ml_training_eligibility_established": false,
+      "sources": [
+        {
+          "paper_id": "aps:10.0000/MixedAsk.fc04b17ff0864c14a0c8b69f84a84fb0",
+          "source_visibility": {
+            "version": "material-visibility/1.0.0",
+            "source_status": "active",
+            "bibliography_available": true,
+            "reported_claim_filter_eligible": true,
+            "scientific_acceptance": false,
+            "warning_codes": []
+          },
+          "metadata_status": "checked",
+          "occurrence_visibility_summary": {
+            "version": "material-visibility/1.0.0",
+            "total_occurrences": 4,
+            "returned_occurrences": 4,
+            "omitted_occurrences": 0,
+            "state_counts": {
+              "unknown": 4
+            },
+            "scientific_acceptance": false,
+            "warning_codes": []
+          },
+          "warning_codes": [],
+          "saved_source_position": 0
+        },
+        {
+          "paper_id": "aps:10.0000/MixedAsk.fc04b17ff0864c14a0c8b69f84a84fb0",
+          "source_visibility": {
+            "version": "material-visibility/1.0.0",
+            "source_status": "active",
+            "bibliography_available": true,
+            "reported_claim_filter_eligible": true,
+            "scientific_acceptance": false,
+            "warning_codes": []
+          },
+          "metadata_status": "checked",
+          "occurrence_visibility_summary": {
+            "version": "material-visibility/1.0.0",
+            "total_occurrences": 4,
+            "returned_occurrences": 4,
+            "omitted_occurrences": 0,
+            "state_counts": {
+              "unknown": 4
+            },
+            "scientific_acceptance": false,
+            "warning_codes": []
+          },
+          "warning_codes": [],
+          "saved_source_position": 1
+        }
+      ],
+      "warning_codes": [
+        "historical_answer_requires_new_claim_review"
+      ]
+    },
+    "receipt": {
+      "version": "ask-history-receipt-summary/1.0.0",
+      "status": "recorded",
+      "receipt_sha256": "cf836465904e02f3cf9efbb13fce6abe649f416d409e50c120c0b027c4d86a0b"
+    },
+    "tokens_used": 0,
+    "latency_ms": 153,
+    "language": "en",
+    "created_at": "2026-09-09T03:34:48.491242Z"
+  },
+  "evidence": {
+    "status": "verified",
+    "binding_scope": "generation_members",
+    "receipt": {
+      "version": "ask-answer-evidence/1.0.0",
+      "history_id": "d5a228b0-317a-4139-8f11-6d5ea1056991",
+      "record_sha256": "cf836465904e02f3cf9efbb13fce6abe649f416d409e50c120c0b027c4d86a0b",
+      "request_sha256": "c5da30a56e2e2a38ac5a50667139f8226cf5ddb8efdcdf5224046e251910cc2a",
+      "response_sha256": "2ce3a0e29e516022392e2d331368787a1ed742179ce3528bbafa93fd0ea3421f",
+      "bindings_sha256": "dd5f52ada6d86ab883cf1fdbe6f1d3cf60b478c83d38192319f0538f0d17c73f",
+      "request": {
+        "question": "What is Tc of MgB2 at ambient pressure and why?",
+        "max_sources": 3,
+        "language": "en"
+      },
+      "response": {
+        "scientific_mixed": {
+          "version": "scientific-mixed-evidence/1.0.0",
+          "status": "completed",
+          "result_count": 1,
+          "source_count": 2,
+          "max_selected_inputs": 3,
+          "associations": [
+            {
+              "parent_result_revision_id": "27db0dbc-240a-5cec-9840-56907d9966c5",
+              "result_source_snapshot_sha256": "9c0d021b90581d40f5265bf5060d02473a64b6eed71d8bd9812bb545e53c0cdc",
+              "source_index": 1,
+              "source_vector_id": "ig62_e808164d79ce406a965e63c603f1014a_d25f2cd229dc7ba165642417e28756877acf580253901b12df5e04b422c75258",
+              "source_evidence_revision_id": "6308c906-8ede-5f4e-854f-ea1b5dea6ca4",
+              "source_evidence_record_sha256": "6dc8f0517b12089de23bf153ee66154ce7b62af12bcef9bb1ecfb9a5504b9039",
+              "source_content_sha256": "a3817701e3cf1f27b6eeba931751c98bb232ca1171585a2c73900f015c3cb141",
+              "catalogue_relation": "same_snapshot",
+              "status": "not_established",
+              "reason_code": "reviewed_result_passage_bridge_missing"
+            },
+            {
+              "parent_result_revision_id": "27db0dbc-240a-5cec-9840-56907d9966c5",
+              "result_source_snapshot_sha256": "9c0d021b90581d40f5265bf5060d02473a64b6eed71d8bd9812bb545e53c0cdc",
+              "source_index": 2,
+              "source_vector_id": "ig62_e808164d79ce406a965e63c603f1014a_70f95ccd16f5b930ff1884cafcb89468a73b4ac9b163cdbdb1ff3510a2f1c0fc",
+              "source_evidence_revision_id": "f6ca3a94-ab8a-544d-800a-a40cd5077bd8",
+              "source_evidence_record_sha256": "bc3221a5160e70eb2170596477c7cf8b958386a5a2075b5f1524a5c6cf15c35a",
+              "source_content_sha256": "6d2e879c409e955367654608869caaf29f077e6f4097211d95198678d1478cc4",
+              "catalogue_relation": "same_snapshot",
+              "status": "not_established",
+              "reason_code": "reviewed_result_passage_bridge_missing"
+            }
+          ],
+          "reason_codes": [
+            "numerical_explanation_not_established",
+            "reviewed_result_passage_bridge_missing"
+          ],
+          "scientific_acceptance": false,
+          "independent_support_count": null
+        },
+        "evidence_packing": {
+          "version": "evidence-packing/1.0.0",
+          "status": "packed",
+          "candidate_count": 4,
+          "selected_count": 2,
+          "source_group_count": 1,
+          "diversity_group_count": 1,
+          "payload_bytes": 14096,
+          "byte_budget": 262144,
+          "byte_count_method": "utf8-full-payload/1",
+          "max_chunks": 2,
+          "max_per_source": 3,
+          "max_per_work": 3,
+          "reason_counts": {
+            "chunk_limit": 1,
+            "role_already_represented": 1
+          },
+          "reason_codes": [
+            "selection_limits_applied",
+            "complementarity_not_established"
+          ],
+          "independent_support_count": null,
+          "independence_status": "independence_not_established",
+          "scientific_acceptance": false
+        },
+        "input_budget": {
+          "status": "not_requested",
+          "model": null,
+          "profile": "sclib-gemini-text-rag/1.0.0",
+          "request_sha256": null,
+          "payload_bytes": null,
+          "byte_limit": 262144,
+          "input_tokens": null,
+          "max_input_tokens": null,
+          "count_method": "provider_count_tokens",
+          "generation_started": null,
+          "scientific_acceptance": false
+        },
+        "retrieval_generation": {
+          "version": "index-read/1.0.0",
+          "mode": "generation_snapshot",
+          "generation_id": "e808164d-79ce-406a-965e-63c603f1014a",
+          "activation_event_id": "40eef2e7-6d9d-55f5-8223-73023a6f54d6",
+          "manifest_sha256": "d0faf959b0e6cbc5cf854e5bba24bd2dcbd1e52b4ef4693d804332bd4a5f0ade"
+        },
+        "scientific_query": {
+          "version": "scientific-query/1.0.0",
+          "raw_query": "What is Tc of MgB2 at ambient pressure and why?",
+          "normalized_query": "What is Tc of MgB2 at ambient pressure and why?",
+          "language": "en",
+          "intent": "mixed",
+          "status": "resolved",
+          "requested_fields": [
+            "pressure_gpa",
+            "tc_kelvin"
+          ],
+          "formulas": [
+            {
+              "raw_text": "MgB2",
+              "start": 14,
+              "end": 18,
+              "normalization": {
+                "version": "formula-query/1.0.0",
+                "raw_formula": "MgB2",
+                "normalized_formula": "MgB2",
+                "status": "normalized",
+                "reason_codes": []
+              }
+            }
+          ],
+          "constraints": [
+            {
+              "raw_text": "at ambient pressure",
+              "start": 19,
+              "end": 38,
+              "field": "pressure_gpa",
+              "relation": "exact",
+              "value": 0.0,
+              "lower": null,
+              "upper": null,
+              "unit": "GPa",
+              "unit_basis": "explicit_ambient_reference"
+            }
+          ],
+          "evidence_constraints": [],
+          "unresolved_clauses": [],
+          "clarification_questions": [],
+          "scientific_acceptance": false
+        },
+        "scientific_lookup": {
+          "status": "completed",
+          "reason_codes": [
+            "derived_extractions_not_independent_scientific_support",
+            "explanatory_synthesis_not_performed"
+          ],
+          "returned_count": 1,
+          "has_more": false,
+          "scope": "declared_generation_derived_extractions",
+          "scientific_acceptance": false
+        },
+        "scientific_results": [
+          {
+            "result": {
+              "version": "scientific-query-result/1.0.0",
+              "result_id": "legacy-result:033de4636c77fe559d6652656ebec51e368a368bb4f084aa0a8c26d8819a11ed",
+              "record_index": 0,
+              "formula": "MgB2",
+              "family": null,
+              "tc": {
+                "status": "parsed",
+                "relation": "exact",
+                "value": 39.0,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "K",
+                "unit_basis": "explicit",
+                "uncertainty_interpretation": null
+              },
+              "pressure": {
+                "status": "parsed",
+                "relation": "exact",
+                "value": 0.0,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "GPa",
+                "unit_basis": "explicit_ambient_reference",
+                "uncertainty_interpretation": null,
+                "pressure_state": "explicit_ambient"
+              },
+              "minimum_temperature": {
+                "status": "unreported",
+                "relation": "unreported",
+                "value": null,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "K",
+                "unit_basis": "unreported",
+                "uncertainty_interpretation": null
+              },
+              "result_classification": {
+                "knowledge_origin": "Observed",
+                "classification_status": "resolved",
+                "source_role": "primary"
+              },
+              "outcome_state": "unspecified",
+              "reported_context": {
+                "tc_criterion": null,
+                "sample_label": "specimen A",
+                "sample_form": null,
+                "structure_phase": "synthetic-phase-A",
+                "measurement_method": "resistance"
+              },
+              "warning_codes": [
+                "machine_extraction_not_scientific_approval",
+                "same_record_not_resolved_sample_identity",
+                "tc_criterion_unreported_or_unresolved"
+              ],
+              "scientific_acceptance": false,
+              "ml_training_eligible": false,
+              "detection_adequacy_verified": false
+            },
+            "binding": {
+              "paper_id": "aps:10.0000/MixedAsk.fc04b17ff0864c14a0c8b69f84a84fb0",
+              "vector_id": "ig62_e808164d79ce406a965e63c603f1014a_fee7d1d0a754a15a2a080d25126e96165d1791410933f7fdd2b08415522ad09b",
+              "generation_id": "e808164d-79ce-406a-965e-63c603f1014a",
+              "activation_event_id": "40eef2e7-6d9d-55f5-8223-73023a6f54d6",
+              "manifest_sha256": "d0faf959b0e6cbc5cf854e5bba24bd2dcbd1e52b4ef4693d804332bd4a5f0ade",
+              "content_sha256": "dd9004bb96b9611f417753543c2d754990ff135274cf6d12f21071dce320c187",
+              "evidence_revision_id": "01202737-2c92-56fb-9364-8e16d7da743d",
+              "evidence_record_sha256": "93edb8ee0d9749e0ba93ce22ce2205aef71028e369ef15961aa4b80418617602",
+              "parent_result_revision_id": "27db0dbc-240a-5cec-9840-56907d9966c5",
+              "parent_result_sha256": "23cfc8f6ef012cf75ba4c07832d567c35dc9beb094f448c76185fdc81cd9b2df",
+              "association_scope": "derived_extraction_not_original_support"
+            }
+          }
+        ],
+        "answer": "Source-linked extraction records and original explanation candidates are shown separately. Numerical explanation is not established: no reviewed link currently connects these exact extraction records to a claim, sample and original passage. Sharing a paper, catalogue snapshot, Work, formula or reported sample name does not establish that relationship. No model-generated numerical or causal synthesis was performed.",
+        "sources": [
+          {
+            "index": 1,
+            "paper_id": "aps:10.0000/MixedAsk.fc04b17ff0864c14a0c8b69f84a84fb0",
+            "arxiv_id": null,
+            "title": "Synthetic distinct superconductivity specimens",
+            "authors_short": "Synthetic Fixture",
+            "year": null,
+            "section": "Table 1",
+            "snippet": "Synthetic retained original: MgB2 specimen U in synthetic-phase-U has a reported Tc of 18 K; pressure was not reported. Missing pressure does not establish ambient conditions.",
+            "material_evidence": [
+              {
+                "formula": "MgB2",
+                "result_classification": {
+                  "classification_reasons": [
+                    "observed_method:measurement_method",
+                    "origin_label:knowledge_origin"
+                  ],
+                  "classification_status": "resolved",
+                  "classifier_version": "sclib-result-origin/v1",
+                  "knowledge_origin": "Observed",
+                  "source_role": "primary"
+                },
+                "visibility": {
+                  "archive_available": true,
+                  "material_link_status": "unlinked",
+                  "public_catalogue_eligible": false,
+                  "reason_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ],
+                  "reported_claim_filter_eligible": true,
+                  "review_revision": null,
+                  "scientific_acceptance": false,
+                  "source_status": "active",
+                  "state": "unknown",
+                  "version": "material-visibility/1.0.0",
+                  "warning_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ]
+                }
+              },
+              {
+                "formula": "MgB2",
+                "result_classification": {
+                  "classification_reasons": [
+                    "observed_method:measurement_method",
+                    "origin_label:knowledge_origin"
+                  ],
+                  "classification_status": "resolved",
+                  "classifier_version": "sclib-result-origin/v1",
+                  "knowledge_origin": "Observed",
+                  "source_role": "primary"
+                },
+                "visibility": {
+                  "archive_available": true,
+                  "material_link_status": "unlinked",
+                  "public_catalogue_eligible": false,
+                  "reason_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ],
+                  "reported_claim_filter_eligible": true,
+                  "review_revision": null,
+                  "scientific_acceptance": false,
+                  "source_status": "active",
+                  "state": "unknown",
+                  "version": "material-visibility/1.0.0",
+                  "warning_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ]
+                }
+              },
+              {
+                "formula": "MgB2",
+                "result_classification": {
+                  "classification_reasons": [
+                    "observed_method:measurement_method",
+                    "origin_label:knowledge_origin"
+                  ],
+                  "classification_status": "resolved",
+                  "classifier_version": "sclib-result-origin/v1",
+                  "knowledge_origin": "Observed",
+                  "source_role": "primary"
+                },
+                "visibility": {
+                  "archive_available": true,
+                  "material_link_status": "unlinked",
+                  "public_catalogue_eligible": false,
+                  "reason_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ],
+                  "reported_claim_filter_eligible": true,
+                  "review_revision": null,
+                  "scientific_acceptance": false,
+                  "source_status": "active",
+                  "state": "unknown",
+                  "version": "material-visibility/1.0.0",
+                  "warning_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ]
+                }
+              },
+              {
+                "formula": "Nb",
+                "result_classification": {
+                  "classification_reasons": [
+                    "observed_method:measurement_method",
+                    "origin_label:knowledge_origin"
+                  ],
+                  "classification_status": "resolved",
+                  "classifier_version": "sclib-result-origin/v1",
+                  "knowledge_origin": "Observed",
+                  "source_role": "primary"
+                },
+                "visibility": {
+                  "archive_available": true,
+                  "material_link_status": "unlinked",
+                  "public_catalogue_eligible": false,
+                  "reason_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ],
+                  "reported_claim_filter_eligible": true,
+                  "review_revision": null,
+                  "scientific_acceptance": false,
+                  "source_status": "active",
+                  "state": "unknown",
+                  "version": "material-visibility/1.0.0",
+                  "warning_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ]
+                }
+              }
+            ],
+            "source_visibility": {
+              "bibliography_available": true,
+              "reported_claim_filter_eligible": true,
+              "scientific_acceptance": false,
+              "source_status": "active",
+              "version": "material-visibility/1.0.0",
+              "warning_codes": []
+            },
+            "evidence_provenance": {
+              "chunk_kind": "original_passage",
+              "content_sha256": "a3817701e3cf1f27b6eeba931751c98bb232ca1171585a2c73900f015c3cb141",
+              "currentness": "current",
+              "evidence_record_sha256": "6dc8f0517b12089de23bf153ee66154ce7b62af12bcef9bb1ecfb9a5504b9039",
+              "evidence_revision_id": "6308c906-8ede-5f4e-854f-ea1b5dea6ca4",
+              "extraction_version": null,
+              "independent_evidence": false,
+              "parent_result_revision_id": null,
+              "parent_result_sha256": null,
+              "permission_status": "unresolved",
+              "rendering_version": "sclib-section-chunker/2.0.0",
+              "root_status": "unresolved",
+              "scientific_acceptance": false,
+              "source_capture_id": null,
+              "source_locator": {
+                "char_end": 175,
+                "char_start": 0,
+                "section": "Table 1"
+              },
+              "support_eligible": false,
+              "version": "rag-evidence/1.0.0",
+              "warning_codes": [
+                "original_root_unresolved",
+                "source_permission_unresolved",
+                "generation_snapshot_catalogue_freshness_unverified"
+              ]
+            },
+            "packing_info": {
+              "version": "evidence-pack-item/1.0.0",
+              "position": 1,
+              "chunk_id": "ig62_e808164d79ce406a965e63c603f1014a_d25f2cd229dc7ba165642417e28756877acf580253901b12df5e04b422c75258",
+              "source_group_id": "src:89cc3744b906d2437bf4332c4126f41033499dae53c007d3335caca32c6b2cd8",
+              "source_snapshot_sha256": "9c0d021b90581d40f5265bf5060d02473a64b6eed71d8bd9812bb545e53c0cdc",
+              "diversity_group_id": "div:ffd9313e7c0d5f0c69b77dfde63810efb8fcc5e4a47b9fc3dac0693733c678c9",
+              "source_group_basis": "source_snapshot",
+              "group_basis": "source_snapshot",
+              "role_hint": "table",
+              "selection_reason": "source_diversity",
+              "scientific_acceptance": false
+            }
+          },
+          {
+            "index": 2,
+            "paper_id": "aps:10.0000/MixedAsk.fc04b17ff0864c14a0c8b69f84a84fb0",
+            "arxiv_id": null,
+            "title": "Synthetic distinct superconductivity specimens",
+            "authors_short": "Synthetic Fixture",
+            "year": null,
+            "section": "Results",
+            "snippet": "Synthetic retained original: MgB2 specimen A in synthetic-phase-A has a reported Tc of 39 K at ambient pressure. Pairing explanation remains unresolved.",
+            "material_evidence": [
+              {
+                "formula": "MgB2",
+                "result_classification": {
+                  "classification_reasons": [
+                    "observed_method:measurement_method",
+                    "origin_label:knowledge_origin"
+                  ],
+                  "classification_status": "resolved",
+                  "classifier_version": "sclib-result-origin/v1",
+                  "knowledge_origin": "Observed",
+                  "source_role": "primary"
+                },
+                "visibility": {
+                  "archive_available": true,
+                  "material_link_status": "unlinked",
+                  "public_catalogue_eligible": false,
+                  "reason_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ],
+                  "reported_claim_filter_eligible": true,
+                  "review_revision": null,
+                  "scientific_acceptance": false,
+                  "source_status": "active",
+                  "state": "unknown",
+                  "version": "material-visibility/1.0.0",
+                  "warning_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ]
+                }
+              },
+              {
+                "formula": "MgB2",
+                "result_classification": {
+                  "classification_reasons": [
+                    "observed_method:measurement_method",
+                    "origin_label:knowledge_origin"
+                  ],
+                  "classification_status": "resolved",
+                  "classifier_version": "sclib-result-origin/v1",
+                  "knowledge_origin": "Observed",
+                  "source_role": "primary"
+                },
+                "visibility": {
+                  "archive_available": true,
+                  "material_link_status": "unlinked",
+                  "public_catalogue_eligible": false,
+                  "reason_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ],
+                  "reported_claim_filter_eligible": true,
+                  "review_revision": null,
+                  "scientific_acceptance": false,
+                  "source_status": "active",
+                  "state": "unknown",
+                  "version": "material-visibility/1.0.0",
+                  "warning_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ]
+                }
+              },
+              {
+                "formula": "MgB2",
+                "result_classification": {
+                  "classification_reasons": [
+                    "observed_method:measurement_method",
+                    "origin_label:knowledge_origin"
+                  ],
+                  "classification_status": "resolved",
+                  "classifier_version": "sclib-result-origin/v1",
+                  "knowledge_origin": "Observed",
+                  "source_role": "primary"
+                },
+                "visibility": {
+                  "archive_available": true,
+                  "material_link_status": "unlinked",
+                  "public_catalogue_eligible": false,
+                  "reason_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ],
+                  "reported_claim_filter_eligible": true,
+                  "review_revision": null,
+                  "scientific_acceptance": false,
+                  "source_status": "active",
+                  "state": "unknown",
+                  "version": "material-visibility/1.0.0",
+                  "warning_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ]
+                }
+              },
+              {
+                "formula": "Nb",
+                "result_classification": {
+                  "classification_reasons": [
+                    "observed_method:measurement_method",
+                    "origin_label:knowledge_origin"
+                  ],
+                  "classification_status": "resolved",
+                  "classifier_version": "sclib-result-origin/v1",
+                  "knowledge_origin": "Observed",
+                  "source_role": "primary"
+                },
+                "visibility": {
+                  "archive_available": true,
+                  "material_link_status": "unlinked",
+                  "public_catalogue_eligible": false,
+                  "reason_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ],
+                  "reported_claim_filter_eligible": true,
+                  "review_revision": null,
+                  "scientific_acceptance": false,
+                  "source_status": "active",
+                  "state": "unknown",
+                  "version": "material-visibility/1.0.0",
+                  "warning_codes": [
+                    "unlinked_unreviewed_occurrence"
+                  ]
+                }
+              }
+            ],
+            "source_visibility": {
+              "bibliography_available": true,
+              "reported_claim_filter_eligible": true,
+              "scientific_acceptance": false,
+              "source_status": "active",
+              "version": "material-visibility/1.0.0",
+              "warning_codes": []
+            },
+            "evidence_provenance": {
+              "chunk_kind": "original_passage",
+              "content_sha256": "6d2e879c409e955367654608869caaf29f077e6f4097211d95198678d1478cc4",
+              "currentness": "current",
+              "evidence_record_sha256": "bc3221a5160e70eb2170596477c7cf8b958386a5a2075b5f1524a5c6cf15c35a",
+              "evidence_revision_id": "f6ca3a94-ab8a-544d-800a-a40cd5077bd8",
+              "extraction_version": null,
+              "independent_evidence": false,
+              "parent_result_revision_id": null,
+              "parent_result_sha256": null,
+              "permission_status": "unresolved",
+              "rendering_version": "sclib-section-chunker/2.0.0",
+              "root_status": "unresolved",
+              "scientific_acceptance": false,
+              "source_capture_id": null,
+              "source_locator": {
+                "char_end": 152,
+                "char_start": 0,
+                "section": "Results"
+              },
+              "support_eligible": false,
+              "version": "rag-evidence/1.0.0",
+              "warning_codes": [
+                "original_root_unresolved",
+                "source_permission_unresolved",
+                "generation_snapshot_catalogue_freshness_unverified"
+              ]
+            },
+            "packing_info": {
+              "version": "evidence-pack-item/1.0.0",
+              "position": 2,
+              "chunk_id": "ig62_e808164d79ce406a965e63c603f1014a_70f95ccd16f5b930ff1884cafcb89468a73b4ac9b163cdbdb1ff3510a2f1c0fc",
+              "source_group_id": "src:89cc3744b906d2437bf4332c4126f41033499dae53c007d3335caca32c6b2cd8",
+              "source_snapshot_sha256": "9c0d021b90581d40f5265bf5060d02473a64b6eed71d8bd9812bb545e53c0cdc",
+              "diversity_group_id": "div:ffd9313e7c0d5f0c69b77dfde63810efb8fcc5e4a47b9fc3dac0693733c678c9",
+              "source_group_basis": "source_snapshot",
+              "group_basis": "source_snapshot",
+              "role_hint": "results",
+              "selection_reason": "complementary_role",
+              "scientific_acceptance": false
+            }
+          }
+        ],
+        "tokens_used": 0,
+        "query_time_ms": 153,
+        "citation_valid": false,
+        "citation_warnings": [],
+        "support_policy_version": "scientific-claim-support/1.0.0",
+        "citation_indices_valid": true,
+        "lexical_support_checked": false,
+        "scientific_support_status": "not_checked",
+        "claim_assessments": [],
+        "support_warnings": [
+          "numerical_explanation_not_established",
+          "structured_extractions_not_scientific_validation"
+        ],
+        "support_coverage": {},
+        "answer_mode": "abstention",
+        "assessment_scope": "none"
+      },
+      "bindings": {
+        "version": "ask-answer-evidence/1.0.0",
+        "mode": "generation_bound",
+        "generation_id": "e808164d-79ce-406a-965e-63c603f1014a",
+        "activation_event_id": "40eef2e7-6d9d-55f5-8223-73023a6f54d6",
+        "manifest_sha256": "d0faf959b0e6cbc5cf854e5bba24bd2dcbd1e52b4ef4693d804332bd4a5f0ade",
+        "items": [
+          {
+            "kind": "source",
+            "position": 1,
+            "paper_id": "aps:10.0000/MixedAsk.fc04b17ff0864c14a0c8b69f84a84fb0",
+            "chunk_id": "ig62_e808164d79ce406a965e63c603f1014a_d25f2cd229dc7ba165642417e28756877acf580253901b12df5e04b422c75258",
+            "content_sha256": "a3817701e3cf1f27b6eeba931751c98bb232ca1171585a2c73900f015c3cb141",
+            "member_record_sha256": "423a5b974513120fd38d409f1bd3f1c345ab44b786563abe5f3327e6d1e7a9e5",
+            "chunk_revision_sha256": "d25f2cd229dc7ba165642417e28756877acf580253901b12df5e04b422c75258",
+            "vector_sha256": "36f7428aed38418da7153a5a352055fca1072987f9d91bb48e0dc10643647c00",
+            "source_snapshot_sha256": "9c0d021b90581d40f5265bf5060d02473a64b6eed71d8bd9812bb545e53c0cdc",
+            "evidence_revision_id": "6308c906-8ede-5f4e-854f-ea1b5dea6ca4",
+            "evidence_record_sha256": "6dc8f0517b12089de23bf153ee66154ce7b62af12bcef9bb1ecfb9a5504b9039",
+            "parent_result_revision_id": null,
+            "parent_result_sha256": null,
+            "selection_input_sha256": "38bba7092931cd3df85da62a6f259322c49ec37192a8c2b3b7f372a6e09692d1",
+            "selection_generation_pin_sha256": "9062805a4f1b5d134871034f294d45ff33008c5cb194d2b7b4fb7aa8cccafb0c",
+            "selection_grouping_sha256": "c6d51bb0a1db64d595971600ccd27f451940a2888e0bc096bb98d25b7d0b55de",
+            "has_evidence_pin": true
+          },
+          {
+            "kind": "source",
+            "position": 2,
+            "paper_id": "aps:10.0000/MixedAsk.fc04b17ff0864c14a0c8b69f84a84fb0",
+            "chunk_id": "ig62_e808164d79ce406a965e63c603f1014a_70f95ccd16f5b930ff1884cafcb89468a73b4ac9b163cdbdb1ff3510a2f1c0fc",
+            "content_sha256": "6d2e879c409e955367654608869caaf29f077e6f4097211d95198678d1478cc4",
+            "member_record_sha256": "3212713f0b45e8fd6b6ec3e4386940474b542ce783133f9fac286b5f4c9281a4",
+            "chunk_revision_sha256": "70f95ccd16f5b930ff1884cafcb89468a73b4ac9b163cdbdb1ff3510a2f1c0fc",
+            "vector_sha256": "763b14db06eb1e87c433b678047c2056ab4e0d04e82a2a259a7eca3fc6f1d1a5",
+            "source_snapshot_sha256": "9c0d021b90581d40f5265bf5060d02473a64b6eed71d8bd9812bb545e53c0cdc",
+            "evidence_revision_id": "f6ca3a94-ab8a-544d-800a-a40cd5077bd8",
+            "evidence_record_sha256": "bc3221a5160e70eb2170596477c7cf8b958386a5a2075b5f1524a5c6cf15c35a",
+            "parent_result_revision_id": null,
+            "parent_result_sha256": null,
+            "selection_input_sha256": "c0d220b0d25ddb69c09a3e689d8dc1660f9294ddc5b629f551e9611679ad45a0",
+            "selection_generation_pin_sha256": "9062805a4f1b5d134871034f294d45ff33008c5cb194d2b7b4fb7aa8cccafb0c",
+            "selection_grouping_sha256": "c6d51bb0a1db64d595971600ccd27f451940a2888e0bc096bb98d25b7d0b55de",
+            "has_evidence_pin": true
+          },
+          {
+            "kind": "scientific_result",
+            "position": 1,
+            "paper_id": "aps:10.0000/MixedAsk.fc04b17ff0864c14a0c8b69f84a84fb0",
+            "chunk_id": "ig62_e808164d79ce406a965e63c603f1014a_fee7d1d0a754a15a2a080d25126e96165d1791410933f7fdd2b08415522ad09b",
+            "content_sha256": "dd9004bb96b9611f417753543c2d754990ff135274cf6d12f21071dce320c187",
+            "member_record_sha256": "5d867a9f4ea8cd739a7cd124b6b951cab8436c0750b57755174d1cf43188262d",
+            "chunk_revision_sha256": "fee7d1d0a754a15a2a080d25126e96165d1791410933f7fdd2b08415522ad09b",
+            "vector_sha256": "d906e7855844e714af662bb51494575612a3f818d682d1ffe8f25c1ef7173f54",
+            "source_snapshot_sha256": "9c0d021b90581d40f5265bf5060d02473a64b6eed71d8bd9812bb545e53c0cdc",
+            "evidence_revision_id": "01202737-2c92-56fb-9364-8e16d7da743d",
+            "evidence_record_sha256": "93edb8ee0d9749e0ba93ce22ce2205aef71028e369ef15961aa4b80418617602",
+            "parent_result_revision_id": "27db0dbc-240a-5cec-9840-56907d9966c5",
+            "parent_result_sha256": "23cfc8f6ef012cf75ba4c07832d567c35dc9beb094f448c76185fdc81cd9b2df",
+            "selection_input_sha256": "462a7ce1576e356de7715d899de6ce3729bf41dedb2e714fcce7e6a0d6b26818",
+            "selection_generation_pin_sha256": "9062805a4f1b5d134871034f294d45ff33008c5cb194d2b7b4fb7aa8cccafb0c",
+            "selection_grouping_sha256": "c6d51bb0a1db64d595971600ccd27f451940a2888e0bc096bb98d25b7d0b55de",
+            "has_evidence_pin": true
+          }
+        ]
+      }
+    },
+    "historical_integrity_verified": true,
+    "scientific_acceptance": false,
+    "ml_training_approved": false,
+    "public_release_authorized": false,
+    "currentness_revalidated": false,
+    "reason_codes": []
+  },
+  "result_current_evidence": {
+    "version": "ask-history-current-evidence/1.0.0",
+    "scope": "current_paper_metadata_not_saved_excerpt",
+    "metadata_snapshot_at": "2026-09-09T03:34:48.551271+00:00",
+    "saved_answer_revalidated": false,
+    "scientific_acceptance": false,
+    "ml_training_eligibility_established": false,
+    "sources": [
+      {
+        "paper_id": "aps:10.0000/MixedAsk.fc04b17ff0864c14a0c8b69f84a84fb0",
+        "source_visibility": {
+          "version": "material-visibility/1.0.0",
+          "source_status": "active",
+          "bibliography_available": true,
+          "reported_claim_filter_eligible": true,
+          "scientific_acceptance": false,
+          "warning_codes": []
+        },
+        "metadata_status": "checked",
+        "occurrence_visibility_summary": {
+          "version": "material-visibility/1.0.0",
+          "total_occurrences": 4,
+          "returned_occurrences": 4,
+          "omitted_occurrences": 0,
+          "state_counts": {
+            "unknown": 4
+          },
+          "scientific_acceptance": false,
+          "warning_codes": []
+        },
+        "warning_codes": [],
+        "saved_source_position": 0
+      }
+    ],
+    "warning_codes": [
+      "historical_answer_requires_new_claim_review"
+    ]
+  }
+}

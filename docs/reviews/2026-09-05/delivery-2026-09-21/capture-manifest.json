@@ -1,0 +1,57 @@
+[
+  {
+    "capture": "/private/tmp/sclib-rg04-20260921-hs6iuj54/native-captures/test_barrier_edit_needs_new_pr0/main-barrier-wire.json",
+    "archive": "frontend/tests/fixtures/discovery-main-barrier-native.delivery20260921.wire.json",
+    "sha256": "442af4bfe523623521ffe8835832ec1c9298d2dda5808911740169f20771dcdf",
+    "bytes": 200202,
+    "source_pin_count": 297
+  },
+  {
+    "capture": "/private/tmp/sclib-rg04-20260921-hs6iuj54/native-captures/test_actual_three_account_prev0/ml-pilot-attestations-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260921.wire.json",
+    "sha256": "5b80af85e4aff943c87ac19f639743d232ab11086a12db3a4103a81579103761",
+    "bytes": 451439,
+    "source_pin_count": 598
+  },
+  {
+    "capture": "/private/tmp/sclib-rg04-20260921-hs6iuj54/native-captures/test_byte_replay_is_read_only_0/ml-pilot-evidence-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-evidence-native.delivery20260921.wire.json",
+    "sha256": "5d581ecbd9cb7b5aa317f195ab044347abecd681056db73b3c0582eeb427709f",
+    "bytes": 361064,
+    "source_pin_count": 598
+  },
+  {
+    "capture": "/private/tmp/sclib-rg04-20260921-hs6iuj54/native-captures/test_participant_workbench_rea0/ml-pilot-participant-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-participant-native.delivery20260921.wire.json",
+    "sha256": "e9eb2f194b43c71008decd378f7dc50f942af4173a667e734af4222efe3cc269",
+    "bytes": 156201,
+    "source_pin_count": 598
+  },
+  {
+    "capture": "/private/tmp/sclib-rg04-20260921-hs6iuj54/native-captures/test_real_four_file_preflight_0/ml-pilot-review-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-review-native.delivery20260921.wire.json",
+    "sha256": "b115b82371332337b49d66aaa2eb1fa5848d0a89d59c24d19292454d5938ae43",
+    "bytes": 84290,
+    "source_pin_count": 598
+  },
+  {
+    "capture": "/private/tmp/sclib-rg04-20260921-hs6iuj54/native-captures/test_independent_rights_workbe0/ml-rights-wire.json",
+    "archive": "frontend/tests/fixtures/ml-use-rights-native.delivery20260921.wire.json",
+    "sha256": "d15d6c151b60d740a62e1a0ccc695916639938bb701e3ed48314f6516aa38efc",
+    "bytes": 216110,
+    "source_pin_count": 598
+  },
+  {
+    "capture": "/private/tmp/sclib-rg04-20260921-hs6iuj54/native-captures/test_run_workbench_native_wire0/ml-runs-wire.json",
+    "archive": "frontend/tests/fixtures/ml-use-runs-native.delivery20260921.wire.json",
+    "sha256": "d667de9d755e4edfb0316330eac8fb74d335d286e3f253a28405159553d49f3d",
+    "bytes": 198876,
+    "source_pin_count": 598
+  },
+  {
+    "capture": "/private/tmp/sclib-rg04-20260921-hs6iuj54/native-captures/test_synthetic_mixed_http_wire0/synthetic-mixed-ask-response.json",
+    "archive": "frontend/tests/fixtures/scientific-mixed-http.delivery20260921.json",
+    "sha256": "62f0005cf41b79e10985012a63a67e665145fc27520afa82b46bb0c50a3f416e",
+    "bytes": 23355
+  }
+]

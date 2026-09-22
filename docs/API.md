@@ -96,20 +96,61 @@ both available and returned point counts.
 ### `POST /search`
 ```json
 {
-  "query": "room temperature superconductors 2023",
+  "query": "superconductivity",
   "top_k": 10,
   "filters": {
     "year_min": 2020,
-    "year_max": 2024,
-    "material_family": ["cuprate"]
+    "year_max": 2024
   }
 }
 ```
-Combines Google `text-embedding-005` / Vertex ANN candidates with PostgreSQL
+Ordinary topic/year-only search combines Google `text-embedding-005` / Vertex ANN candidates with PostgreSQL
 full-text candidates, applies Reciprocal Rank Fusion and a deterministic
-query-coverage reranker, then joins authoritative paper/chunk rows. A Vertex
-timeout, exhausted retry, or open circuit degrades to PostgreSQL lexical
-retrieval. Each hit carries a `relevance_score` float in `[0, 1]`.
+query-coverage reranker, then hydrates exact retained members of one pinned
+active index generation. A Vertex timeout, exhausted retry, or open circuit
+degrades to PostgreSQL lexical retrieval within that same generation. Without
+an active generation, Search and Ask are explicitly legacy lexical-only; they
+never hydrate positional legacy ANN IDs as current text. Similar requires an
+active generation and otherwise returns sanitized 503. Each Search hit carries
+a `relevance_score` float in `[0, 1]`, not scientific confidence.
+
+Search, Ask and Similar responses include `retrieval_generation` with exactly
+`version` (`index-read/1.0.0`), `mode` (`generation_snapshot` or
+`legacy_lexical_only`), `generation_id`, `activation_event_id` and
+`manifest_sha256`. All three identity fields are non-null in generation mode
+and null in legacy mode. No cloud resource or source payload is exposed there.
+Frozen text and attribution survive mutable chunk replacement; fresh source,
+material and permission holds still apply. An activation event change is
+detected even when the same generation is later restored. Existing Ask history
+does not yet retain this response-level generation/event metadata. See
+[index generations and rollout limits](INDEX_GENERATIONS.md).
+
+Scientific numerical/evidence queries and Search UI scientific filters now
+return separate `scientific_query`, `scientific_lookup`, and
+`scientific_results` envelopes. These are exact-parent machine extractions,
+not original-source support or ML-approved Results. In this mode `results=[]`
+and `total=0` refer only to paper hits; consumers must read the structured row
+count/status. No active generation means `unavailable`, not legacy numerical
+fallback. Mixed explanations explicitly remain unperformed. Numeric Ask is
+provider-free with zero provider tokens and no scientific-support claim.
+See [routing, wire migration and scientific limits](SCIENTIFIC_QUERY_ROUTING.md).
+
+Each result now carries `evidence_provenance` under `rag-evidence/1.0.0`:
+`chunk_kind` (`original_passage`, `abstract`, `derived_fact`, `legacy_unknown`),
+exact retained evidence/parent identifiers and hashes when available, producer
+versions, bounded source coordinates, `root_status`, `permission_status`,
+`currentness`, warnings and three always-false scientific-authority flags.
+`matched_chunk` is empty for known restricted or stale evidence. Unavailable,
+malformed or timed-out provenance resolution returns a sanitized 503, not a
+previously hydrated excerpt. Legacy kind/permissions remain unresolved; this
+does not establish permission to reuse text. See [RAG evidence lineage](RAG_EVIDENCE_LINEAGE.md).
+
+`year_min` / `year_max` are bibliographic Chunk/index-year filters, not
+source-revision or result-availability cutoffs. They do not establish a
+historical knowledge snapshot. Ask has no supported historical cutoff
+parameter; an "as of" year in a question is not a database filter. The
+[temporal consumer contract](TEMPORAL_CONSUMERS.md) describes the separate,
+opt-in ML Foundation claim `cutoff` and its live-read limitations.
 
 ### `POST /ask`
 ```json
@@ -132,6 +173,24 @@ cited extractive snippets instead of failing the entire request.
 Gemini is called from a thread offload so the FastAPI event loop stays
 responsive. Limits: temperature 0.2, max 1024 output tokens.
 
+Each `sources[]` entry also carries `evidence_provenance`. Generation runs without
+a retained database transaction. Before delivering a generated or fallback
+answer, a fresh bounded read-only snapshot rechecks the selected chunk bytes,
+material occurrences, Paper/Work holds and typed provenance. Any change or
+unavailable check withdraws the draft and its old citations/assessments and
+returns an explicit abstention. This check is point-in-time input consistency,
+not scientific validation or a permanent currentness promise.
+
+The v1 lineage has no reviewed-original-root or text-permission approval path:
+all descriptors have `support_eligible=false`, `independent_evidence=false` and
+`scientific_acceptance=false`. Consequently, newly served live sources cannot
+establish a positive scientific-support result through this descriptor version.
+Eligible existing-policy text may appear as a clearly labeled unverified
+extractive fallback; derived Facts are not original quotations. Known restricted,
+stale or malformed evidence supplies neither text nor extracted material data
+to the model/fallback. Saved answers retain their historical metadata; displaying
+a saved descriptor does not revalidate that saved answer or its excerpt.
+
 ## Papers & Materials
 
 ### `GET /paper/{id:path}`
@@ -139,9 +198,17 @@ Path matches include colons: `/paper/arxiv:2512.20530`. Returns full
 paper metadata, abstract, authors, linked materials, and `chunk_count`.
 
 ### `GET /similar/{id:path}?top_k=10`
-Fetches up to 20 chunks for the given paper, runs a batched ANN lookup,
+Fetches up to 20 chunks for the given paper, re-embeds their complete text
+using `RETRIEVAL_QUERY`, runs a batched ANN lookup,
 aggregates neighbor paper IDs by mean distance, excludes self-hits,
 and returns the top-k similar papers.
+
+Embedding completeness/ANN failures and provider timeout return a sanitized
+`503`; only a successful lookup can return an empty result. The provider phase
+has one bounded attempt. A blocking SDK call already in progress cannot be
+forcibly cancelled, but a timed-out request starts no further embedding/ANN
+calls after that call returns. This is a retrieval heuristic, not a scientific
+support score or proof that the index and SQL share an active generation.
 
 ### `GET /materials?family=cuprate&tc_min=77&limit=100`
 Returns aggregated rows from the `materials` table. Sort order is
@@ -150,7 +217,52 @@ Returns aggregated rows from the `materials` table. Sort order is
 
 ### `GET /materials/{id}`
 Returns a single material including its full JSONB `records` array
-(every NIMS measurement aggregated under the normalized formula).
+(legacy observations aggregated under the normalized formula). When Phase 1
+composition enrichment has run, the response also includes
+`composition_status`, `composition_data`, and `composition_enriched_at`.
+
+### ML Foundation (internal typed reads and public metadata releases)
+
+All research routes remain disabled by default. When
+`ML_FOUNDATION_PUBLIC_ENABLED=true`, the original endpoints below still require
+a valid JWT/browser session, an active verified account and an explicit current
+curator/reviewer/publisher research grant. API-key-only credentials, ordinary
+membership and legacy administrator/reviewer flags do not authorize these reads.
+The switch is not publication approval. Responses and errors use
+`Cache-Control: private, no-store`.
+
+`GET /claims` returns condition-aware claim rows with UUID keyset pagination.
+Filters include `material_id`, `work_id`, `evidence_role`, `result_status`, and
+`validity_status`. Raw legacy JSON and licensed source text are not returned.
+
+`GET /claims/{claim_id}` returns one typed claim. `GET
+/materials/{id:path}/claims` returns claims for a material while preserving
+slash-containing material IDs. `GET /works/{work_id}` returns the canonical
+work plus its source-specific paper IDs.
+
+`GET /ml/source-snapshots`, `GET /ml/snapshots`, and `GET
+/ml/snapshots/{snapshot_id}/manifest` expose frozen lineage and dataset policy
+metadata to authorized operators. Building snapshots are excluded by default;
+operator-only inclusion options never enable anonymous access.
+
+These endpoints are an additive shadow path introduced by Alembic revision
+`0044_ml_foundation`; they do not replace `materials.records` in Phase 1.
+
+The separate `GET /ml/releases` collection returns only currently admitted
+metadata publications. `GET /ml/releases/{publication_id}`, the `/manifest`
+suffix and the `/download` suffix return identical canonical JSON bytes and an
+`X-Public-Manifest-SHA256` header. These reads do not require a user identity,
+but require the global switch and independently approved/published version with
+current per-object permissions. Drafts, raw snapshot/capsule IDs, withdrawals,
+negative reviews, revoked permissions/roles and current catalogue/source holds
+cannot bypass admission through any alias or list/count route.
+
+Version `research-public-metadata/1.0.0` contains table counts and opaque hashed
+object/permission receipts only. It excludes material identifiers, scientific
+values, source text, all flexible JSON, coordinates, URIs and artifact bytes.
+It is not a training dataset. No HTTP write/role-provisioning routes are added.
+See [Research publication access](RESEARCH_PUBLICATION_ACCESS.md) for the internal
+workflow, bounded-read behavior and remaining scientific/permission gates.
 
 ### `GET /timeline?family=cuprate`
 Flattens `Material.records` into a list of `(year, tc, formula)`

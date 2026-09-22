@@ -12,6 +12,93 @@ ingest, aggregation, stats refresh, and scoped data-audit jobs.
 
 ---
 
+## Research-v2 development status
+
+The local research branch has separate [implementation records](docs/reviews/2026-09-05/README.md).
+Its latest infrastructure adds [bounded internal research integrity capsules](docs/RESEARCH_RELEASE_FREEZE.md)
+and [explicit schema migration with read-only API admission](docs/SCHEMA_ROLLOUT.md).
+The next boundary adds [explicit research-role access and reviewed metadata-only publications](docs/RESEARCH_PUBLICATION_ACCESS.md).
+Retrieval now also has [immutable index generations and controlled rollback](docs/INDEX_GENERATIONS.md)
+and [formula-safe scientific query routing](docs/SCIENTIFIC_QUERY_ROUTING.md).
+New authenticated answers also retain [private final-output evidence receipts](docs/ANSWER_HISTORY_RECEIPTS.md),
+with exact historical references, honest save outcomes and separate current
+metadata warnings. Legacy history is not retroactively rebound.
+Scientific-program ingestion now also has a [private, pending-only native-file importer](docs/SCIENTIFIC_PENDING_IMPORTS.md)
+with retained source bytes, actual coordinate parsing, durable attempts and
+rollback-only preview. Parsed observations are not approved scientific results.
+A [private scientific evidence workbench](docs/SCIENTIFIC_EVIDENCE_WORKBENCH.md)
+now pairs exact properties with state/run/source metadata and bounded downstream
+references. Its read-only dossier now accompanies a separate
+[exact-result adjudication workflow](docs/SCIENTIFIC_RESULT_ADJUDICATION.md) with
+immutable scoped decisions, explicit previews and same-request recovery.
+Scientific acceptance still does not confer training or publication authority.
+RPS distribution now also has [exact source-binding and descriptor preparation](docs/RPS_DISTRIBUTION_PREPARATION.md)
+for curator preview/atomic registration before the existing
+[dependency rights workbench](docs/RPS_RIGHTS_PREPARATION.md).
+The API prepares private descriptors from existing pinned sources; it does not
+create scientific evidence, approve rights or publish the package.
+An [exact scientific Discovery companion](docs/DISCOVERY_SCIENTIFIC_PROJECTIONS.md)
+now binds explicit material representatives and alternatives to native scientific
+observations, with separate three-account disclosure and opt-in current public
+admission. Its [public browser matrix](docs/DISCOVERY_SCIENTIFIC_MATRIX.md),
+[curator preparation](docs/DISCOVERY_SELECTION_PREPARATION.md), and independent
+[Discovery governance workbench](docs/DISCOVERY_OPERATOR_GOVERNANCE.md) now expose
+separate scientific inspection, append-only history and exact protected actions.
+The [v2 main-barrier contract](docs/DISCOVERY_MAIN_BARRIERS.md) adds explicit,
+context-bound curator interpretations without changing frozen RPS or v1 records.
+A real reviewed pilot remains separate; recorded quantities and research-priority
+scores are not ground truth.
+The [private ML08 review report](docs/ML_PILOT_REPORT.md) provides an offline
+English view of a replayed canary, with complete event/history accounting,
+missingness and recorded effort; it does not authorize scientific acceptance.
+The [private run-review evidence workflow](docs/ML_RUN_EVIDENCE.md) binds short
+review text to exact conditional approvals with controlled read/purge, without
+granting scientific acceptance or execution authority.
+The [private ML08 canary command](docs/ML_PILOT_CANARY.md) binds the frozen
+selection, complete review ledger, explicit context bytes and final documentary
+conclusion through exact replay; it does not authenticate human review or grant
+scientific acceptance or training permission.
+The [private baseline preparation CLI](docs/ML_BASELINE_PREPARATION.md) connects
+audited datasets to reproducible configuration drafts, feature/split coverage
+inspection and exact preparation replay. It does not authorize or run real-data
+model training.
+The [independent ML membership registry](docs/ML_USE_GOVERNANCE.md) adds opt-in
+administrator preview/grant/revoke and current authenticated role inspection.
+It grants neither source access nor model execution; existing roles are not
+automatically converted to ML memberships.
+An [exact ML-use intake and online preflight](docs/ML_USE_PREFLIGHT.md) now links
+locally rebuilt baseline inputs to server-derived registered source requirements.
+The inspection is read-only and grants neither source permission nor execution.
+The [private input reconstruction endpoint](docs/ML_USE_RECONSTRUCTION.md) can
+also receive all eight exact files and rebuild the dataset/preparation in a
+bounded offline worker. It does not authenticate client runtime claims, persist
+an approval request or grant source-use/training permission.
+A separate [current ML audit inspection](docs/ML_USE_CURRENTNESS.md) recaptures
+the full review/label observations and reports their versioned dependency
+inventory in one fresh SQL snapshot. It is not a lasting permission or run grant.
+The [private submission workflow](docs/ML_USE_SUBMISSIONS.md) retains exact
+requests and separately purgeable inputs for recovery and fresh reinspection;
+retained historical evidence is not source-use or training authorization.
+The [independent ML rights registry](docs/ML_USE_RIGHTS.md) records purpose-bound,
+expiring per-resource decisions and checks full current permission coverage;
+neither a historical rights receipt nor coverage alone authorizes training.
+Its private **ML source rights** dashboard provides exact-resource inspection,
+explicit preview/commit and original-key recovery without automatic approvals.
+The [private run-plan registry](docs/ML_USE_RUNS.md) binds independent conditional
+review to exact inputs and budgets; live readiness remains separate from execution.
+Its private **ML run plans** dashboard supports explicit owner budgets,
+independent preview/commit, historical recovery and separate current-condition
+checks; neither the page nor an approval can start a model.
+Numerical/evidence queries and Search UI scientific filters return qualified,
+exact-parent extraction rows separately from ordinary paper hits; without an
+active generation they explicitly report unavailable. These are not reviewed
+scientific Results. See the routing document for client compatibility changes.
+These are not a production rollout, scientifically approved training datasets,
+or permission to redistribute source text and artifacts. The production snapshot
+below is historical and must not be read as validation of these local upgrades.
+
+---
+
 ## What's inside today
 
 Production snapshot checked 2026-06-14 UTC.
@@ -121,8 +208,11 @@ email+password, using a shared JZIS account that also works at
 ```bash
 cp .env.example .env        # fill DB_PASSWORD, JWT_SECRET,
                             # INTERNAL_API_KEY, GCP creds, RESEND_API_KEY
-docker compose up -d        # postgres + redis + api + frontend
-docker compose exec api alembic upgrade head
+docker compose up -d postgres redis
+# Set SCLIB_MIGRATION_DATABASE_URL in this shell to the local-only migration
+# credential; do not store it in the API's .env. See docs/SCHEMA_ROLLOUT.md.
+docker compose run --rm migration
+docker compose up -d api frontend  # startup checks schema; never migrates it
 docker compose run --rm ingestion sclib-ingest --mode smoke --limit 30
 ```
 

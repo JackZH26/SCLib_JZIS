@@ -1,7 +1,12 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
+import io
+import json
+import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 from scripts.check_error_budget import (
@@ -10,6 +15,7 @@ from scripts.check_error_budget import (
     evaluate_availability,
     evaluate_freshness,
     run_checks,
+    main,
 )
 
 
@@ -111,6 +117,40 @@ class ErrorBudgetEvaluationTests(unittest.TestCase):
     def test_invalid_window_is_rejected(self) -> None:
         with self.assertRaises(argparse.ArgumentTypeError):
             _valid_window("30 days")
+
+    def test_intentional_pause_reports_actual_age_without_claiming_freshness(self) -> None:
+        with tempfile.TemporaryDirectory() as root:
+            marker = Path(root) / "paused"
+            marker.write_text("Operator requested ingestion remain paused.\n")
+            output = io.StringIO()
+            with patch("scripts.check_error_budget.prometheus_scalar",
+                       side_effect=[100.0, 0.0, 20.0, 0.0, 1_000_000.0]), contextlib.redirect_stdout(output):
+                code = main(["--ingestion-paused-marker", str(marker), "--json"])
+        self.assertEqual(code, 0)
+        checks = json.loads(output.getvalue())
+        self.assertIsNone(checks[-1]["passed"])
+        self.assertFalse(checks[-1]["applicable"])
+        self.assertEqual(checks[-1]["observed"], 1_000_000.0)
+        self.assertTrue(all(check["passed"] for check in checks[:2]))
+
+    def test_intentional_pause_does_not_waive_failed_or_missing_availability(self) -> None:
+        for traffic in ([100.0, 1.0, 20.0, 0.0, None], [100.0, 0.0, 2.0, None, None]):
+            with self.subTest(traffic=traffic), tempfile.TemporaryDirectory() as root:
+                marker = Path(root) / "paused"
+                marker.write_text("paused")
+                with patch("scripts.check_error_budget.prometheus_scalar", side_effect=traffic), contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(main(["--ingestion-paused-marker", str(marker)]), 1)
+
+    def test_pause_admission_rejects_absent_empty_directory_and_symlink_markers(self) -> None:
+        with tempfile.TemporaryDirectory() as root:
+            root = Path(root)
+            (root / "empty").touch()
+            (root / "valid").write_text("paused")
+            (root / "link").symlink_to(root / "valid")
+            for marker in (root / "absent", root / "empty", root, root / "link"):
+                with self.subTest(marker=marker), patch("scripts.check_error_budget.prometheus_scalar") as scalar, contextlib.redirect_stderr(io.StringIO()):
+                    self.assertEqual(main(["--ingestion-paused-marker", str(marker)]), 2)
+                    scalar.assert_not_called()
 
 
 if __name__ == "__main__":

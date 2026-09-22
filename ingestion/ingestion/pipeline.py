@@ -30,7 +30,7 @@ Per-paper sub-pipeline (see PROJECT_SPEC §9C):
 
     OAI-PMH metadata
         → arXiv source (.tar.gz) or pdf fallback
-        → GCS upload (idempotent: skip if already present)
+        → GCS immutable capture (fresh response; create-or-verify by digest)
         → LaTeX parse → Section list
         → Chunk (512/64 tokens, section-aware)
         → Embed (Google Gen AI text-embedding-005, batched)
@@ -50,17 +50,22 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import copy
+import json
 import logging
 import sys
 from datetime import date, datetime, timedelta, timezone
+from time import perf_counter
 from typing import Any
 
-from ingestion.collect.arxiv_oai import ArxivClient, ArxivError
+from ingestion import storage
 from ingestion.chunk.chunker import chunk_paper
+from ingestion.collect.arxiv_oai import ArxivClient, ArxivError
 from ingestion.config import get_settings
 from ingestion.embed.embedder import embed_chunks
 from ingestion.extract.affiliation_ner import extract_paper_geo
-from ingestion.extract.material_ner import extract_materials
+from ingestion.extract.fact_sentences import FactChunkLimitError
+from ingestion.extract.material_ner import _MAX_CHARS, _assemble_text, extract_materials
 from ingestion.extract.materials_aggregator import aggregate_from_papers
 from ingestion.index.indexer import (
     dispose,
@@ -68,9 +73,10 @@ from ingestion.index.indexer import (
     upsert_paper_geo,
     upsert_paper_with_chunks,
 )
+from ingestion.input_observation import new_input_observation, observe_chunks, observe_embeddings
 from ingestion.models import PaperMetadata, ParsedPaper
 from ingestion.parse.latex_parser import LatexParseError, parse_source_tarball
-from ingestion import storage
+from ingestion.source_capture import build_ingestion_capture
 
 log = logging.getLogger("ingestion.pipeline")
 
@@ -112,63 +118,61 @@ async def process_paper(
 
     result: dict[str, Any] = {
         "arxiv_id": meta.arxiv_id,
+        "requested_version": meta.requested_version,
         "title": meta.title[:80],
         "ok": False,
         "strategy": strategy,
+        "input_observation": new_input_observation(),
     }
 
-    # Short-circuit: abstract_only never touches the network or the parser.
+    # Abstract-only skips artifact download/parsing, not the later service calls.
     if strategy == "abstract_only":
         parsed = ParsedPaper(meta=meta, sections=[], has_latex_source=False)
         return await _finish(parsed, skip_vector_search, skip_ner, skip_geo, result)
 
-    # 1. Fetch + archive
-    data: bytes | None = None
-    if strategy != "force_pdf" and storage.source_exists(meta.arxiv_id, meta.yymm):
-        log.info("%s: source already in GCS, re-downloading bytes for parse",
-                 meta.arxiv_id)
-        try:
-            data = storage.download_source(meta.arxiv_id, meta.yymm)
-        except Exception as e:  # noqa: BLE001
-            result.update({"stage": "download", "error": f"gcs download: {e}"})
-            return result
-    elif strategy == "force_pdf":
+    # 1. Fetch once per invocation. Legacy unversioned work-key caches cannot
+    # prove that their bytes belong to the current OAI metadata or selected vN.
+    # Leave those objects untouched; never silently promote them to evidence.
+    if strategy == "force_pdf":
         # Jump straight to PDF — used when a prior run's tar.gz was junk
         # or /src/ is persistently returning a PDF. This also bypasses
         # any already-polluted src/ cache blob.
         try:
-            pdf = await client.download_pdf(meta.arxiv_id)
-            storage.upload_pdf(meta.arxiv_id, meta.yymm, pdf)
+            capture = await client.download_pdf_capture(meta.download_id)
+            artifact = storage.archive_arxiv_capture(capture)
         except ArxivError as e:
             result.update({"stage": "download", "error": f"pdf: {e}"})
             return result
         parsed = ParsedPaper(meta=meta, sections=[], has_latex_source=False)
+        parsed.ingestion_capture = {"artifact": artifact}
         return await _finish(parsed, skip_vector_search, skip_ner, skip_geo, result)
     else:
         try:
-            data = await client.download_source(meta.arxiv_id)
-            storage.upload_source(meta.arxiv_id, meta.yymm, data)
+            capture = await client.download_source_capture(meta.download_id)
+            artifact = storage.archive_arxiv_capture(capture)
         except ArxivError as e:
             log.warning("%s: no LaTeX source (%s) — falling back to PDF",
                         meta.arxiv_id, e)
             try:
-                pdf = await client.download_pdf(meta.arxiv_id)
-                storage.upload_pdf(meta.arxiv_id, meta.yymm, pdf)
+                capture = await client.download_pdf_capture(meta.download_id)
+                artifact = storage.archive_arxiv_capture(capture)
             except ArxivError as e2:
                 result.update({"stage": "download", "error": f"{e2}"})
                 return result
             # PDF fallback parser not implemented yet — chunk abstract only
             parsed = ParsedPaper(meta=meta, sections=[], has_latex_source=False)
+            parsed.ingestion_capture = {"artifact": artifact}
             return await _finish(parsed, skip_vector_search, skip_ner, skip_geo, result)
 
     # 2. Parse LaTeX
     try:
-        parsed = parse_source_tarball(data, meta)
+        parsed = parse_source_tarball(capture.data, meta)
     except LatexParseError as e:
         log.warning("%s: latex parse failed (%s) — using abstract-only chunk",
                     meta.arxiv_id, e)
         parsed = ParsedPaper(meta=meta, sections=[], has_latex_source=False)
 
+    parsed.ingestion_capture = {"artifact": artifact}
     return await _finish(parsed, skip_vector_search, skip_ner, skip_geo, result)
 
 
@@ -179,31 +183,79 @@ async def _finish(
     skip_geo: bool,
     result: dict[str, Any],
 ) -> dict[str, Any]:
+    observation = result.setdefault("input_observation", new_input_observation())
+    # Preserve the source observation and exact prepared NER document before a
+    # downstream chunk/embed failure can discard the only capture timestamp.
+    # Preparation is not evidence that a provider call actually occurred.
+    try:
+        parsed.ingestion_capture = build_ingestion_capture(
+            parsed, ner_input=_assemble_text(parsed) if not skip_ner else None,
+            document_char_limit=_MAX_CHARS,
+        )
+        if not skip_ner:
+            parsed.ingestion_capture["ner_input"]["status"] = "prepared"
+        manifest = storage.archive_arxiv_capture_manifest(parsed.ingestion_capture)
+        parsed.ingestion_capture["manifest_object"] = manifest
+        result["ingestion_capture"] = copy.deepcopy(parsed.ingestion_capture)
+    except Exception as e:  # noqa: BLE001
+        result.update({"stage": "capture", "error": f"capture archive: {e}"})
+        return result
+
     # 3. Chunk
+    stage_started = perf_counter()
     try:
         chunks = chunk_paper(parsed)
+    except FactChunkLimitError:
+        reason = FactChunkLimitError.reason_code
+        observation["chunk"] = observe_chunks(status="failed", reason_code=reason,
+                                               duration_seconds=perf_counter() - stage_started)
+        result.update({"stage": "chunk", "error": reason, "reason_code": reason})
+        return result
     except Exception as e:  # noqa: BLE001
+        observation["chunk"] = observe_chunks(status="failed", reason_code="chunk_stage_failed",
+                                               duration_seconds=perf_counter() - stage_started)
         result.update({"stage": "chunk", "error": f"{e}"})
         return result
+    observation["chunk"] = observe_chunks(chunks, status="returned",
+                                           duration_seconds=perf_counter() - stage_started)
     result["n_chunks"] = len(chunks)
     if not chunks:
+        observation["chunk"].update(stage_status="failed", reason_code="no_chunks_produced")
         result.update({"stage": "chunk", "error": "no chunks produced"})
         return result
 
     # 4. Embed (sync SDK call — run in a thread to keep the event loop free)
+    stage_started = perf_counter()
     try:
         await asyncio.to_thread(embed_chunks, chunks)
     except Exception as e:  # noqa: BLE001
+        observation["embedding"] = observe_embeddings(chunks, status="failed",
+            reason_code="embedding_stage_failed", duration_seconds=perf_counter() - stage_started)
         result.update({"stage": "embed", "error": f"{e}"})
         return result
+    observation["embedding"] = observe_embeddings(chunks, status="returned",
+                                                  duration_seconds=perf_counter() - stage_started)
 
     # 5. Material NER (optional — skipped for smoke runs without Gemini access)
     materials: list[dict[str, Any]] = []
     if not skip_ner:
+        parsed.ingestion_capture["ner_input"]["status"] = "attempted"
         try:
             materials = await asyncio.to_thread(extract_materials, parsed)
         except Exception as e:  # noqa: BLE001
             log.warning("%s: NER failed: %s", parsed.meta.arxiv_id, e)
+        # Keep the first immutable observation address separately. Never hash a
+        # document containing its own final manifest address or overwrite it.
+        parsed.ingestion_capture["prepared_manifest_object"] = parsed.ingestion_capture.pop("manifest_object")
+        try:
+            manifest = storage.archive_arxiv_capture_manifest(parsed.ingestion_capture)
+            parsed.ingestion_capture["manifest_object"] = manifest
+        except Exception as e:  # noqa: BLE001
+            result.update({"stage": "capture", "error": f"capture archive: {e}"})
+            return result
+    materials = [{**r, "ingestion_capture": copy.deepcopy(parsed.ingestion_capture)}
+                 for r in materials]
+    result["ingestion_capture"] = copy.deepcopy(parsed.ingestion_capture)
     for c in chunks:
         # Attach paper-level materials to every chunk until we have a
         # proper per-chunk NER (Phase 5).
@@ -338,20 +390,21 @@ async def run(
         _print_status(result)
 
         if result.get("ok"):
-            if storage.clear_failure(pool, meta.arxiv_id):
+            if storage.clear_failure(pool, meta.download_id):
                 log.info(
                     "%s: recovered — removed from failure pool",
                     meta.arxiv_id,
                 )
                 pool_was_dirty = True
         else:
-            storage.record_failure(
+            failure = storage.record_failure(
                 pool,
                 meta,
                 stage=result.get("stage", "unknown"),
                 error=result.get("error", "unknown"),
                 strategy="default",
             )
+            _retain_capture_reference(failure, result)
             pool_was_dirty = True
 
     async with ArxivClient() as client:
@@ -429,7 +482,23 @@ async def _run_retry(*, limit: int | None) -> list[dict[str, Any]]:
                  if s not in fp.strategies_tried),
                 "abstract_only",
             )
-            meta = PaperMetadata.from_dict(fp.meta)
+            try:
+                meta = PaperMetadata.from_dict(fp.meta)
+                if meta.download_id != fp.arxiv_id:
+                    raise ValueError("stored retry identifier does not match metadata")
+            except (TypeError, ValueError, KeyError, AttributeError):
+                # Legacy malformed/version-ambiguous metadata is not repaired by
+                # guessing an identifier, and cannot abort unrelated retries.
+                fp.status = "dead"
+                fp.attempt_count += 1
+                fp.last_failed_at = datetime.now(timezone.utc).isoformat()
+                fp.last_stage = "metadata"
+                fp.last_error = "Stored retry metadata is invalid; manual review required"
+                result = {"arxiv_id": fp.arxiv_id, "ok": False, "stage": "metadata",
+                          "error": fp.last_error, "terminal": True, "strategy": strategy}
+                results.append(result)
+                _print_status(result)
+                continue
             log.info("retry: %s attempt=%d strategy=%s (prev stage=%s)",
                      fp.arxiv_id, fp.attempt_count + 1, strategy, fp.last_stage)
 
@@ -446,15 +515,32 @@ async def _run_retry(*, limit: int | None) -> list[dict[str, Any]]:
             if r.get("ok"):
                 storage.clear_failure(pool, fp.arxiv_id)
             else:
-                storage.record_failure(
+                failure = storage.record_failure(
                     pool, meta,
                     stage=r.get("stage", "unknown"),
                     error=r.get("error", "unknown"),
                     strategy=strategy,
                 )
+                _retain_capture_reference(failure, r)
 
     storage.save_failed_papers(pool)
     return results
+
+
+def _retain_capture_reference(failure: storage.FailedPaper, result: dict[str, Any]) -> None:
+    """Link retry diagnostics to an already archived, text-free observation.
+
+    The failure metadata remains a retry record, not an authoritative result
+    availability witness. PaperMetadata.from_dict deliberately ignores this key.
+    """
+    capture = result.get("ingestion_capture")
+    manifest = capture.get("manifest_object") if isinstance(capture, dict) else None
+    prefix = "captures/arxiv/manifests/sha256/"
+    if (isinstance(failure.meta, dict) and isinstance(manifest, str)
+            and manifest.startswith(prefix) and manifest.endswith(".json")):
+        digest = manifest[len(prefix):-5]
+        if len(digest) == 64 and all(char in "0123456789abcdef" for char in digest):
+            failure.meta["last_capture_manifest_object"] = manifest
 
 
 def _print_status(r: dict[str, Any]) -> None:
@@ -466,6 +552,8 @@ def _print_status(r: dict[str, Any]) -> None:
     )
     log.info("[%s] %s %s — %s",
              status, r["arxiv_id"], r.get("title", ""), extra)
+    if "input_observation" in r:
+        log.info("input_observation=%s", json.dumps(r["input_observation"], sort_keys=True, allow_nan=False))
 
 
 # ---------------------------------------------------------------------------

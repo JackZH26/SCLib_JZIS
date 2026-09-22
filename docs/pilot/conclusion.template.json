@@ -1,0 +1,14 @@
+{
+  "schema_version": "ml08-conclusion/1.0.0",
+  "status": "draft",
+  "selection_sha256": null,
+  "review_log_sha256": null,
+  "reviewer_id": null,
+  "completed_at": null,
+  "recommendation": null,
+  "rationale": null,
+  "field_actions": [],
+  "canary_bundle_reference": null,
+  "canary_bundle_sha256": null,
+  "limitations": []
+}

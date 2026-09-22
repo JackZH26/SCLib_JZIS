@@ -241,7 +241,7 @@ async def test_provider_retries_one_immediate_failure() -> None:
 
 
 @pytest.mark.asyncio
-async def test_ask_uses_lexical_fallback_and_one_source_per_paper(
+async def test_ask_uses_legacy_lexical_only_and_one_source_per_paper(
     client, monkeypatch
 ) -> None:
     provider_resilience.reset()
@@ -309,7 +309,7 @@ async def test_ask_uses_lexical_fallback_and_one_source_per_paper(
             citation_warnings=[],
         )
 
-    monkeypatch.setattr("routers.ask.vector_search.embed_query", vector_down)
+    monkeypatch.setattr("routers.ask.index_vector_adapter.query", vector_down)
     monkeypatch.setattr("routers.ask.retrieval.lexical_search", lexical)
     monkeypatch.setattr("routers.ask.rag.generate_answer", generate)
 
@@ -328,7 +328,7 @@ async def test_ask_uses_lexical_fallback_and_one_source_per_paper(
 
 
 @pytest.mark.asyncio
-async def test_search_enforces_material_family_from_postgres_when_vertex_lacks_it(
+async def test_legacy_family_filter_requires_bound_generation_but_browsing_remains_available(
     client, monkeypatch
 ) -> None:
     provider_resilience.reset()
@@ -358,7 +358,7 @@ async def test_search_enforces_material_family_from_postgres_when_vertex_lacks_i
     async def lexical(*_args, **_kwargs):
         return [retrieval.LexicalHit(chunk.id, 2.0)]
 
-    monkeypatch.setattr("routers.search.vector_search.embed_query", vector_down)
+    monkeypatch.setattr("routers.search.index_vector_adapter.query", vector_down)
     monkeypatch.setattr("routers.search.retrieval.lexical_search", lexical)
 
     rejected = await client.post(
@@ -379,5 +379,14 @@ async def test_search_enforces_material_family_from_postgres_when_vertex_lacks_i
     assert rejected.status_code == 200
     assert rejected.json()["results"] == []
     assert accepted.status_code == 200
-    assert [item["paper_id"] for item in accepted.json()["results"]] == [paper.id]
+    for response in (rejected, accepted):
+        assert response.json()["scientific_lookup"]["status"] == "unavailable"
+        assert response.json()["scientific_lookup"]["reason_codes"] == ["active_generation_required"]
+        assert response.json()["scientific_results"] == [] and response.json()["results"] == []
+    # A paper-level record without retained parent binding remains ordinary
+    # bibliography, not a qualified scientific family-filter witness.
+    browsing = await client.post("/v1/search", json={"query": "H3S hydride"})
+    assert browsing.status_code == 200, browsing.text
+    assert [item["paper_id"] for item in browsing.json()["results"]] == [paper.id]
+    assert browsing.json()["results"][0]["materials"][0]["family"] == "hydride"
     provider_resilience.reset()

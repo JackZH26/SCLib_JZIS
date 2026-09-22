@@ -8,9 +8,31 @@ api/ on the Python path.
 """
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Any
+
+_ARXIV_ID = re.compile(
+    r"(?P<work>(?:[0-9]{2}(?:0[1-9]|1[0-2])\.[0-9]{4,5}|"
+    r"[a-z][a-z-]*(?:\.[A-Z]{2})?/[0-9]{2}(?:0[1-9]|1[0-2])[0-9]{3}))"
+    r"(?P<version>v[1-9][0-9]{0,5})?"
+)
+
+
+def split_arxiv_id(identifier: str) -> tuple[str, str | None]:
+    """Split a bounded provider identifier without changing its archive prefix.
+
+    The version is a request selector, not evidence of any result's first date.
+    URLs, path traversal and malformed version suffixes are not identifiers.
+    """
+    if not isinstance(identifier, str) or not identifier.strip():
+        raise ValueError("arxiv_id must not be empty")
+    value = identifier.strip()
+    match = _ARXIV_ID.fullmatch(value) if len(value) <= 64 else None
+    if match is None:
+        raise ValueError("invalid arxiv_id")
+    return match.group("work"), match.group("version")
 
 
 @dataclass
@@ -25,6 +47,28 @@ class PaperMetadata:
     categories: list[str]
     primary_category: str | None
     doi: str | None = None
+    requested_version: str | None = None
+    # Bibliographic/metadata observations only; never result availability.
+    metadata_modified_date: date | None = None
+    metadata_datestamp: str | None = None
+    metadata_captured_at: str | None = None
+    metadata_sha256: str | None = None
+
+    def __post_init__(self) -> None:
+        work, embedded_version = split_arxiv_id(self.arxiv_id)
+        if self.requested_version is not None and (
+            not isinstance(self.requested_version, str)
+            or not re.fullmatch(r"v[1-9][0-9]{0,5}", self.requested_version)
+        ):
+            raise ValueError("invalid requested_version")
+        if embedded_version and self.requested_version not in (None, embedded_version):
+            raise ValueError("conflicting requested arxiv versions")
+        self.arxiv_id = work
+        self.requested_version = embedded_version or self.requested_version
+
+    @property
+    def download_id(self) -> str:
+        return self.arxiv_id + (self.requested_version or "")
 
     @property
     def paper_id(self) -> str:
@@ -35,7 +79,7 @@ class PaperMetadata:
         """First 4 chars of arxiv_id (e.g. '2306') for GCS sharding."""
         # Both old ("cond-mat/0607123") and new ("2306.07275") arxiv ids
         # have a recognizable 4-digit prefix once the slash is stripped.
-        stripped = self.arxiv_id.replace("cond-mat/", "").replace("/", "")
+        stripped = self.arxiv_id.rsplit("/", 1)[-1]
         return stripped[:4]
 
     def to_dict(self) -> dict[str, Any]:
@@ -50,11 +94,18 @@ class PaperMetadata:
             "categories": self.categories,
             "primary_category": self.primary_category,
             "doi": self.doi,
+            "requested_version": self.requested_version,
+            "metadata_modified_date": self.metadata_modified_date.isoformat()
+            if self.metadata_modified_date else None,
+            "metadata_datestamp": self.metadata_datestamp,
+            "metadata_captured_at": self.metadata_captured_at,
+            "metadata_sha256": self.metadata_sha256,
         }
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "PaperMetadata":
         ds = data.get("date_submitted")
+        modified = data.get("metadata_modified_date")
         return cls(
             arxiv_id=data["arxiv_id"],
             title=data["title"],
@@ -64,6 +115,11 @@ class PaperMetadata:
             categories=list(data.get("categories", [])),
             primary_category=data.get("primary_category"),
             doi=data.get("doi"),
+            requested_version=data.get("requested_version"),
+            metadata_modified_date=date.fromisoformat(modified) if modified else None,
+            metadata_datestamp=data.get("metadata_datestamp"),
+            metadata_captured_at=data.get("metadata_captured_at"),
+            metadata_sha256=data.get("metadata_sha256"),
         )
 
 
@@ -213,6 +269,10 @@ class ParsedPaper:
     #: if the OAI-PMH metadata lacked one (rare).
     abstract_override: str | None = None
     has_latex_source: bool = True
+    # arXiv-only derived diagnostics. APS keeps its transient-only path.
+    ingestion_capture: dict[str, Any] = field(default_factory=dict)
+    #: Prospective producer version, not a source revision or review grant.
+    parser_version: str | None = None
 
 
 @dataclass
@@ -238,3 +298,12 @@ class Chunk:
     #: filled in after embedding
     embedding: list[float] | None = None
     materials_mentioned: list[dict[str, Any]] = field(default_factory=list)
+    #: Producer-declared lineage proposal. The trusted SQL writer recomputes
+    #: content/parent hashes and stores it separately from the frozen chunk
+    #: row contract. Legacy chunks without a candidate remain unresolved.
+    evidence_candidate: dict[str, Any] | None = None
+    #: Closed response-completeness metadata. This is a writer attestation,
+    #: not proof of index publication, source permission, or scientific truth.
+    embedding_provenance: dict[str, Any] | None = None
+    #: Kept outside the frozen SQL Chunk schema; generation staging retains it.
+    parser_version: str | None = None

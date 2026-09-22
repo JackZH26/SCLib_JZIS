@@ -1,0 +1,42 @@
+{
+  "report": {
+    "version": "sclib-legacy-input-pack/1.0.0",
+    "specification_sha256": "62dcd1a63aeeb00c6c4318c813ca0323cd258db1b0a1c1581ef2b28d57a0ae3c",
+    "sources": 1117982,
+    "members": 1179386,
+    "source_characters": 1635763861,
+    "source_utf8_bytes": 1679685021,
+    "input_characters": 1658125174,
+    "input_utf8_bytes": 1703379822,
+    "local_tokens": 519140487,
+    "split_sources": 15222,
+    "max_input_tokens": 1536,
+    "inadmissible_embedding_inputs": 0,
+    "papers_with_chunks": 74848,
+    "partitions": 1180,
+    "source_manifest_sha256": "be02f6be0d21da868241a166ff811f885a1be972a577e37f3a47ba5253f86c11",
+    "paper_manifest_sha256": "cb95b25f20aeaeaca8d9809c25977ebf9e04eb153950c60d3bc05d90e5979d69",
+    "member_manifest_sha256": "8570fcb89b24378e8761afbb1c686805b356e642d91e5726be390556baa30e31",
+    "partition_manifest_sha256": "eab3e1ec9a103836c105548e7857dbd0a302f8dcc194702724384549fcdf5680",
+    "retained_text_coverage_complete": true,
+    "original_source_coverage_verified": false,
+    "historical_text_vector_binding_proven": false,
+    "provider_calls": 0,
+    "application_database_writes": 0,
+    "index_writes": 0,
+    "embedding_completion_verified": false,
+    "activation_eligible": false
+  },
+  "elapsed_seconds": 1698.834,
+  "pack_file_sha256": "e159c8ccf9719fe3afc7a269c723c3cceff246af34e7e7f8be8e2f8a4daab591",
+  "pack_file_bytes": 4392534016,
+  "image_id": "sha256:ef9f568c9178e6b916d9020e8cd995c7626f8d768bd4ea14a6723e62c91488b2",
+  "source_database": "isolated restored clone",
+  "network_internal": true,
+  "resource_limits": {
+    "cpus": 2,
+    "memory_bytes": 4294967296
+  },
+  "cloud_credentials_mounted": false,
+  "producer_commit": "ae860ae6960fbaa002252676b9925093412d8344"
+}

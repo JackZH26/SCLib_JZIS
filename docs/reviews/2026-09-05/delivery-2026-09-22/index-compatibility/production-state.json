@@ -1,0 +1,41 @@
+{
+  "public_cutover_performed": false,
+  "model_calls": 0,
+  "index_writes": 0,
+  "verification_emails_sent": 0,
+  "version": {
+    "http_status": 200,
+    "body": {
+      "site_version": "d26fc09",
+      "dataset_version": "v2026.09.03",
+      "api_version": "1"
+    }
+  },
+  "readiness": {
+    "http_status": 200,
+    "body": {
+      "status": "ok",
+      "checked_at": "2026-09-22T03:01:33.889580Z",
+      "dependencies": {
+        "postgres": {
+          "status": "ok",
+          "required": true,
+          "latency_ms": 2
+        },
+        "redis": {
+          "status": "ok",
+          "required": true,
+          "latency_ms": 1
+        }
+      }
+    }
+  },
+  "production_revision": "d26fc098565492b78b416fb30b6b1ec7087b24c7",
+  "ingestion_pause_marker_present": true,
+  "timers": {
+    "sclib-aggregate.timer": "inactive",
+    "sclib-aps-yearly-ingest.timer": "inactive",
+    "sclib-discovery-feed-pull.timer": "inactive",
+    "sclib-maintenance-backup.timer": "active"
+  }
+}

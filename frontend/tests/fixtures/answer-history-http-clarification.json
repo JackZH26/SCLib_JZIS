@@ -1,0 +1,181 @@
+{
+  "version": "ask-history-detail/1.0.0",
+  "entry": {
+    "id": "86039059-3268-4208-b452-113fbd46c8f2",
+    "question": "What is the Tc of Mg¹¹B2?",
+    "answer": "Please clarify the unresolved scientific conditions before a numerical lookup or synthesis. Please clarify the unresolved clauses, including exact material/state, quantity units, evidence category or time scope; no unsupported condition will be discarded.",
+    "sources": [],
+    "current_evidence": {
+      "version": "ask-history-current-evidence/1.0.0",
+      "scope": "current_paper_metadata_not_saved_excerpt",
+      "metadata_snapshot_at": "2026-09-09T03:34:49.392004+00:00",
+      "saved_answer_revalidated": false,
+      "scientific_acceptance": false,
+      "ml_training_eligibility_established": false,
+      "sources": [],
+      "warning_codes": [
+        "historical_answer_requires_new_claim_review"
+      ]
+    },
+    "receipt": {
+      "version": "ask-history-receipt-summary/1.0.0",
+      "status": "recorded",
+      "receipt_sha256": "65d8caa7636064d7b8906d76ee5174fca4f34f65443bf70a1515db3818c46946"
+    },
+    "tokens_used": 0,
+    "latency_ms": 0,
+    "language": "en",
+    "created_at": "2026-09-09T03:34:49.342942Z"
+  },
+  "evidence": {
+    "status": "verified",
+    "binding_scope": "no_selected_evidence",
+    "receipt": {
+      "version": "ask-answer-evidence/1.0.0",
+      "history_id": "86039059-3268-4208-b452-113fbd46c8f2",
+      "record_sha256": "65d8caa7636064d7b8906d76ee5174fca4f34f65443bf70a1515db3818c46946",
+      "request_sha256": "05b99dad668ecd4fffcedcce5aaa686570534a5c2f794b9d9f5269f212ab4f1d",
+      "response_sha256": "0a2bb1ed5a427f570e8a28b26317315e5dde1dc4df54931a7d89ca2e1d841b6e",
+      "bindings_sha256": "35d9e1aedb1c2baefc3d50825439b9ca5cfa3c0d53a98d99de982ae613431f60",
+      "request": {
+        "question": "What is the Tc of Mg¹¹B2?",
+        "max_sources": 3,
+        "language": "en"
+      },
+      "response": {
+        "scientific_mixed": {
+          "version": "scientific-mixed-evidence/1.0.0",
+          "status": "not_requested",
+          "result_count": 0,
+          "source_count": 0,
+          "max_selected_inputs": 0,
+          "associations": [],
+          "reason_codes": [],
+          "scientific_acceptance": false,
+          "independent_support_count": null
+        },
+        "evidence_packing": {
+          "version": "evidence-packing/1.0.0",
+          "status": "not_requested",
+          "candidate_count": 0,
+          "selected_count": 0,
+          "source_group_count": 0,
+          "diversity_group_count": 0,
+          "payload_bytes": null,
+          "byte_budget": null,
+          "byte_count_method": "utf8-full-payload/1",
+          "max_chunks": 20,
+          "max_per_source": 3,
+          "max_per_work": 3,
+          "reason_counts": {},
+          "reason_codes": [],
+          "independent_support_count": null,
+          "independence_status": "independence_not_established",
+          "scientific_acceptance": false
+        },
+        "input_budget": {
+          "status": "not_requested",
+          "model": null,
+          "profile": "sclib-gemini-text-rag/1.0.0",
+          "request_sha256": null,
+          "payload_bytes": null,
+          "byte_limit": 262144,
+          "input_tokens": null,
+          "max_input_tokens": null,
+          "count_method": "provider_count_tokens",
+          "generation_started": null,
+          "scientific_acceptance": false
+        },
+        "retrieval_generation": {
+          "version": "index-read/1.0.0",
+          "mode": "legacy_lexical_only",
+          "generation_id": null,
+          "activation_event_id": null,
+          "manifest_sha256": null
+        },
+        "scientific_query": {
+          "version": "scientific-query/1.0.0",
+          "raw_query": "What is the Tc of Mg¹¹B2?",
+          "normalized_query": "What is the Tc of Mg¹¹B2?",
+          "language": "en",
+          "intent": "numerical",
+          "status": "clarification_required",
+          "requested_fields": [
+            "tc_kelvin"
+          ],
+          "formulas": [
+            {
+              "raw_text": "Mg¹¹B2",
+              "start": 18,
+              "end": 24,
+              "normalization": {
+                "version": "formula-query/1.0.0",
+                "raw_formula": "Mg¹¹B2",
+                "normalized_formula": null,
+                "status": "unresolved",
+                "reason_codes": [
+                  "isotope_or_charge_requires_resolution"
+                ]
+              }
+            }
+          ],
+          "constraints": [],
+          "evidence_constraints": [],
+          "unresolved_clauses": [
+            {
+              "raw_text": "Mg¹¹B2",
+              "start": 18,
+              "end": 24,
+              "reason_code": "isotope_or_charge_requires_resolution"
+            }
+          ],
+          "clarification_questions": [
+            "Please clarify the unresolved clauses, including exact material/state, quantity units, evidence category or time scope; no unsupported condition will be discarded."
+          ],
+          "scientific_acceptance": false
+        },
+        "scientific_lookup": {
+          "status": "clarification_required",
+          "reason_codes": [
+            "unresolved_query_constraints"
+          ],
+          "returned_count": 0,
+          "has_more": false,
+          "scope": "declared_generation_derived_extractions",
+          "scientific_acceptance": false
+        },
+        "scientific_results": [],
+        "answer": "Please clarify the unresolved scientific conditions before a numerical lookup or synthesis. Please clarify the unresolved clauses, including exact material/state, quantity units, evidence category or time scope; no unsupported condition will be discarded.",
+        "sources": [],
+        "tokens_used": 0,
+        "query_time_ms": 0,
+        "citation_valid": false,
+        "citation_warnings": [],
+        "support_policy_version": "scientific-claim-support/1.0.0",
+        "citation_indices_valid": true,
+        "lexical_support_checked": false,
+        "scientific_support_status": "not_checked",
+        "claim_assessments": [],
+        "support_warnings": [],
+        "support_coverage": {},
+        "answer_mode": "abstention",
+        "assessment_scope": "none"
+      },
+      "bindings": {
+        "version": "ask-answer-evidence/1.0.0",
+        "mode": "no_selected_evidence",
+        "generation_id": null,
+        "activation_event_id": null,
+        "manifest_sha256": null,
+        "items": []
+      }
+    },
+    "historical_integrity_verified": true,
+    "scientific_acceptance": false,
+    "ml_training_approved": false,
+    "public_release_authorized": false,
+    "currentness_revalidated": false,
+    "reason_codes": []
+  },
+  "result_current_evidence": {}
+}

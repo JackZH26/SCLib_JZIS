@@ -87,7 +87,7 @@ export function KeysTable({
                   {k.last_used ? formatRelative(k.last_used) : "Never"}
                 </td>
                 <td className="px-4 py-2 text-right tabular-nums text-sage-muted">
-                  {k.total_requests.toLocaleString()}
+                  {k.total_requests.toLocaleString("en-US")}
                 </td>
                 <td className="px-4 py-2 text-right">
                   {k.revoked ? (
@@ -138,7 +138,7 @@ export function KeysTable({
 
 function formatAbs(iso: string): string {
   try {
-    return new Date(iso).toLocaleDateString(undefined, {
+    return new Date(iso).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",

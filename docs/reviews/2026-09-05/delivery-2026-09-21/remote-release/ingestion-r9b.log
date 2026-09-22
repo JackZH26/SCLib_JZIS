@@ -1,0 +1,105 @@
+........................................................................ [  5%]
+.........F..F..F.....F.................................................. [ 11%]
+........................................................................ [ 16%]
+........................................................................ [ 22%]
+........................................................................ [ 27%]
+........................................................................ [ 33%]
+........................................................................ [ 39%]
+........................................................................ [ 44%]
+........................................................................ [ 50%]
+........................................................................ [ 55%]
+........................................................................ [ 61%]
+........................................................................ [ 66%]
+........................................................................ [ 72%]
+........................................................................ [ 78%]
+........................................................................ [ 83%]
+........................................................................ [ 89%]
+........................................................................ [ 94%]
+...................................................................      [100%]
+=================================== FAILURES ===================================
+_ test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[None-coherence_length_nm] _
+
+field = 'coherence_length_nm', proposal = None
+
+    @pytest.mark.parametrize("field", ["lambda_eph", "lattice_a", "coherence_length_nm"])
+    @pytest.mark.parametrize("proposal", [None, {"value": 45}, {"raw_value": True}])
+    def test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar(field, proposal):
+        record = {"scientific_values": {field: proposal}}
+        result = assess(record)
+>       assert result["status"] == "format_invalid"
+E       AssertionError: assert 'no_findings' == 'format_invalid'
+E         
+E         - format_invalid
+E         + no_findings
+
+tests/test_anomaly_review.py:412: AssertionError
+_ test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[proposal1-coherence_length_nm] _
+
+field = 'coherence_length_nm', proposal = {'value': 45}
+
+    @pytest.mark.parametrize("field", ["lambda_eph", "lattice_a", "coherence_length_nm"])
+    @pytest.mark.parametrize("proposal", [None, {"value": 45}, {"raw_value": True}])
+    def test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar(field, proposal):
+        record = {"scientific_values": {field: proposal}}
+        result = assess(record)
+>       assert result["status"] == "format_invalid"
+E       AssertionError: assert 'no_findings' == 'format_invalid'
+E         
+E         - format_invalid
+E         + no_findings
+
+tests/test_anomaly_review.py:412: AssertionError
+_ test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[proposal2-coherence_length_nm] _
+
+field = 'coherence_length_nm', proposal = {'raw_value': True}
+
+    @pytest.mark.parametrize("field", ["lambda_eph", "lattice_a", "coherence_length_nm"])
+    @pytest.mark.parametrize("proposal", [None, {"value": 45}, {"raw_value": True}])
+    def test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar(field, proposal):
+        record = {"scientific_values": {field: proposal}}
+        result = assess(record)
+>       assert result["status"] == "format_invalid"
+E       AssertionError: assert 'no_findings' == 'format_invalid'
+E         
+E         - format_invalid
+E         + no_findings
+
+tests/test_anomaly_review.py:412: AssertionError
+_ test_sparse_record_does_not_skip_unrepresentable_unit_or_shared_context[record2] _
+
+record = {'source_locator': {'page': nan}}
+
+    @pytest.mark.parametrize("record", [
+        {"lambda_eph_unit": float("nan")},
+        {"lattice_a_unit": float("inf")},
+        {"source_locator": {"page": float("nan")}},
+        {"evidence_text": float("nan")},
+    ])
+    def test_sparse_record_does_not_skip_unrepresentable_unit_or_shared_context(record):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_anomaly_review.py:434: Failed
+=============================== warnings summary ===============================
+tests/test_anomaly_aggregation.py::test_driver_retains_high_and_low_numeric_records_but_keeps_source_quality_filters
+tests/test_anomaly_aggregation.py::test_driver_retains_high_and_low_numeric_records_but_keeps_source_quality_filters
+  /Users/jackzhou/Documents/SCLib_JZIS/ingestion/tests/test_anomaly_aggregation.py:207: SADeprecationWarning: DISTINCT ON is currently supported only by the PostgreSQL dialect.  Use of DISTINCT ON for other backends is currently silently ignored, however this usage is deprecated, and will raise CompileError in a future release for all backends that do not support this syntax.
+    query = str(statement)
+
+tests/test_material_semantics_aggregation.py::test_driver_carries_current_source_status_and_old_dispute_into_derived_metadata
+tests/test_material_semantics_aggregation.py::test_driver_carries_current_source_status_and_old_dispute_into_derived_metadata
+  /Users/jackzhou/Documents/SCLib_JZIS/ingestion/tests/test_material_semantics_aggregation.py:158: SADeprecationWarning: DISTINCT ON is currently supported only by the PostgreSQL dialect.  Use of DISTINCT ON for other backends is currently silently ignored, however this usage is deprecated, and will raise CompileError in a future release for all backends that do not support this syntax.
+    sql = str(statement)
+
+tests/test_source_lifecycle_aggregation.py: 30 warnings
+  /Users/jackzhou/Documents/SCLib_JZIS/ingestion/tests/test_source_lifecycle_aggregation.py:129: SADeprecationWarning: DISTINCT ON is currently supported only by the PostgreSQL dialect.  Use of DISTINCT ON for other backends is currently silently ignored, however this usage is deprecated, and will raise CompileError in a future release for all backends that do not support this syntax.
+    sql = str(statement)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_anomaly_review.py::test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[None-coherence_length_nm]
+FAILED tests/test_anomaly_review.py::test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[proposal1-coherence_length_nm]
+FAILED tests/test_anomaly_review.py::test_sparse_record_keeps_explicit_invalid_proposals_without_flat_scalar[proposal2-coherence_length_nm]
+FAILED tests/test_anomaly_review.py::test_sparse_record_does_not_skip_unrepresentable_unit_or_shared_context[record2]
+4 failed, 1287 passed, 34 warnings in 10.11s

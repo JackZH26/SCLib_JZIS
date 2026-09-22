@@ -1,0 +1,563 @@
+[
+  {
+    "id": "DR01",
+    "title": "Gate RPS actions on verified prerequisites and complete resources, and explain contributions honestly",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "Discovery / RPS policy and scientific review",
+    "evidence_level": "Local source inspection and synthetic counterexamples recorded in the review; no production RPS release or production scoring incident established.",
+    "report_sections": [
+      "6.2 D01: prerequisites and resource completeness",
+      "6.3 Contribution explanations",
+      "13 Acceptance invariants 15-16"
+    ],
+    "summary": "The local scorer gates only readiness.lower == 0 and only checks resources present in assessment.costs. An unresolved critical prerequisite represented by readiness 0.25 can therefore remain eligible, and an omitted required resource is invisible to the budget check. Separately, any assessed dimension with lower < 50 is labeled adverse_evidence, even when its negative contribution is caused only by uncertainty. Add explicit action prerequisites, template-backed resource completeness and evidence-aware explanation codes without silently changing the RPS-v1.2 numerical policy.",
+    "evidence": [
+      {
+        "path": "api/services/research_priority.py",
+        "line": 139,
+        "detail": "Assessment stores readiness and a one-to-five-element cost list, but has no explicit prerequisite status or action-template completeness declaration."
+      },
+      {
+        "path": "api/services/research_priority.py",
+        "line": 248,
+        "detail": "Only readiness lower bound zero adds action_not_ready; a positive but blocked readiness anchor is not independently gated."
+      },
+      {
+        "path": "api/services/research_priority.py",
+        "line": 251,
+        "detail": "Budget validation iterates only supplied costs, so a resource omitted from that list is not checked."
+      },
+      {
+        "path": "api/services/research_priority.py",
+        "line": 331,
+        "detail": "An assessed lower bound below 50 is unconditionally translated into adverse_evidence."
+      },
+      {
+        "path": "api/services/priority_releases.py",
+        "line": 203,
+        "detail": "The action hash currently binds summary, outcomes and costs; newly introduced prerequisite/resource declarations must also be bound to review and release identity."
+      }
+    ],
+    "scope": [
+      "Version an action contract with critical prerequisites, dependency references and statuses, plus required-resource declarations validated against reviewed action templates.",
+      "Distinguish required, unknown and not-applicable resources, with a reason for not applicable; represent experimental, sample, equipment and external dependencies even when they are not one of the five currently priced resources.",
+      "Separate evidence polarity, uncertainty discount, missing support and execution-constraint violations in API and English UI explanations; keep scientific evidence judgments distinct from hard execution gates."
+    ],
+    "acceptance": [
+      "A DFPT action without its required coordinate structure and an experiment without its required sample cannot receive an eligible/public score, including when readiness.lower is 0.25. A separately scoped structure-verification or sample-preparation action may be scored only against its own prerequisites and outcomes.",
+      "Every resource required by the action template is explicitly costed or declared not applicable with a reviewed rationale. Omitted memory, human effort or a required experimental/external dependency fails completeness or leaves the action pending; omission is never treated as zero cost. Unknown upper costs remain pending, while a known required cost over budget or unavailable resource remains ineligible.",
+      "Changing a prerequisite, dependency, resource applicability, cost or template revision invalidates the action/assessment review binding and requires a new reviewed release; complete declarations can be reconstructed from the release artifacts.",
+      "Golden tests retain D.lower == 0 or T.lower == 0 as no-supported-gain gates, references/benchmark controls/negative controls as unranked, target mismatch as ineligible, and unresolved target conversion as pending. A negative_control role never creates an experimental negative outcome.",
+      "An assessed anchor 75 with interval [25,100] and only uncertain supporting evidence is not labeled adverse_evidence. Explicit opposing evidence, missing support, uncertainty and an execution constraint produce distinguishable, evidence-linked reasons; a negative priority contribution is not described as proof against superconductivity.",
+      "For eligible inputs, golden tests preserve six fixed-denominator dimensions, the 50% common/50% registered-profile mixture, G = 100DT, A = 50(B + R), raw = 1000 + 45P + 27G + 18A and nearest-50 half-up rounding. Unknown dimensions do not redistribute their weights, and the 5500 baseline plus contributions and rounding exactly reconstructs the displayed score.",
+      "Execution eligibility is not inferred from a universal sign rule for physical fields: a low physical-support dimension alone does not become a cross-family scientific veto. The policy version, migration behavior and distinction between blocked execution and uncertain physical support are documented and visible."
+    ],
+    "out_of_scope": [
+      "Retuning RPS weights, asserting calibrated utility or superconductivity probability, or changing the approved score formula without a separately reviewed policy version.",
+      "Autonomously acquiring samples, scheduling experiments, purchasing compute or approving scientific evidence.",
+      "Treating legacy heuristic scores as RPS assessments."
+    ],
+    "depends_on": [],
+    "owner_role": "Backend policy engineer with a scientific reviewer and frontend collaborator"
+  },
+  {
+    "id": "DR02",
+    "title": "Publish independently verifiable RPS bundles and isolate catalog failures with revision-safe caching",
+    "priority": "P1",
+    "type": "enhancement",
+    "phase": "D",
+    "area": "Discovery / RPS publication and reproducibility",
+    "evidence_level": "Confirmed local API and release-reader capability gaps; failure/caching scenarios are code-derived risks, not measured production incidents. The review did not establish an active public RPS release.",
+    "report_sections": [
+      "1.2 Version boundaries",
+      "6.4 D02: public reproducibility bundle",
+      "10.5 Catalog caching and performance",
+      "13 Acceptance invariant 16"
+    ],
+    "summary": "Local RPS releases already have pinned digests, typed artifacts and review bindings, but public endpoints expose only a subset of the information required to recompute scores and the manifest. The catalog traverses approved releases serially through the verified-release reader (cache hits reuse verification); one failed release aborts the entire catalog, and the two-entry cache can repeatedly evict and revalidate bundles when more releases are listed. Provide a public-safe, self-contained release package and a failure-isolated catalog whose cache identity tracks catalog contents rather than only the policy hash.",
+    "evidence": [
+      {
+        "path": "api/routers/discovery_priority.py",
+        "line": 26,
+        "detail": "Responses without a release use POLICY_HASH as data_version, including the catalog even though its membership can change without a policy change."
+      },
+      {
+        "path": "api/routers/discovery_priority.py",
+        "line": 69,
+        "detail": "The catalog awaits _release for every approved ID without isolating per-release verification failures."
+      },
+      {
+        "path": "api/routers/discovery_priority.py",
+        "line": 121,
+        "detail": "Page responses include campaign ID/version/objective but not the full campaign budget, profile mixes or dimension rules."
+      },
+      {
+        "path": "api/routers/discovery_priority.py",
+        "line": 167,
+        "detail": "Detail returns an assessment, review reference, state/action and selected evidence, not a complete independently recomputable release with rubric, assignment and review artifacts."
+      },
+      {
+        "path": "api/services/priority_releases.py",
+        "line": 321,
+        "detail": "The verified-release cache has maxsize=2; iterating more than two releases in a fixed order can repeatedly evict and revalidate every bundle."
+      }
+    ],
+    "scope": [
+      "Define and serve a versioned public bundle containing campaign/objective/budget/cutoff, scoring policy and rubrics, profile assignments, complete assessment/action inputs, review decisions, permitted evidence metadata, code version and canonical manifests.",
+      "Add a documented offline verification/recomputation entry point with no dependency on private databases, cloud services or unpublished local artifacts.",
+      "Maintain a lightweight verified catalog projection, isolate unavailable releases, and key cache/version behavior to the approved catalog and immutable release digests while preserving fail-closed publication controls."
+    ],
+    "acceptance": [
+      "A clean offline process using only a downloaded public bundle and its declared verifier version reproduces every eligibility result, effective weight, P/G/A bound, raw/display score, contribution and canonical digest. Missing artifacts, changed inputs or incorrect hashes cause an explicit verification failure.",
+      "The bundle includes the complete reviewed DR01 prerequisite/resource contract and all transitive scoring inputs, not only references. Hash integrity, publication authorization and scientific review status are separately reported; passing hash verification is not labeled scientific validation.",
+      "Only administrator-approved, digest-pinned releases are downloadable. Nested payload allowlists exclude restricted source text and private reviewer information; reviewers use consented public identifiers or a documented public attestation. A canary fixture in a nested restricted field cannot appear in the public package.",
+      "With two valid approved releases and one missing or corrupt approved release, the catalog still exposes valid releases and a sanitized degraded/unavailable status, while direct access to the corrupt release fails closed. No legacy, synthetic or unverified assessment is silently substituted and internal paths or exceptions are not exposed.",
+      "Catalog membership, approval or availability changes produce an appropriate new catalog revision/ETag and prevent stale validation status from being presented as current. Release pages, details and downloads retain the same pinned manifest identity, and cache invalidation never bypasses current publication approval.",
+      "A deterministic test with at least four approved releases shows that a warmed catalog request does not reparse/recompute every full bundle on each call. Verification runs outside the async request loop, memory and concurrency are bounded, and concurrent readers cannot publish a partially refreshed catalog.",
+      "Measure and record cold/warm catalog and bundle latency, memory use and verification counts on a declared fixture set; establish an agreed service budget from those measurements rather than inventing a performance claim. Cache and verification errors have bounded, observable retry behavior."
+    ],
+    "out_of_scope": [
+      "Publishing a real RPS campaign, enabling production routes or asserting that the current production catalog is broken.",
+      "Redistributing restricted full text or requiring private reviewer identities to be made public.",
+      "Calibrating RPS scientific utility; that remains a separate Discovery validation deliverable."
+    ],
+    "depends_on": [
+      "DR01",
+      "ML07"
+    ],
+    "owner_role": "Backend release engineer with frontend, operations and scientific publication reviewers"
+  },
+  {
+    "id": "DR03",
+    "title": "Validate legacy Discovery feeds before atomic publication and pin pagination/detail to one version",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "Discovery / legacy feed ingestion and read API",
+    "evidence_level": "Local source inspection and a duplicate-ID validator counterexample documented in the review; duplicate production IDs and a production last-good loss were not established.",
+    "report_sections": [
+      "6.6 D03: legacy feed reliability",
+      "13 Acceptance invariant 17"
+    ],
+    "summary": "The pull script checks JSON syntax and minimal status/count fields rather than the full API contract. The API can replace its previous snapshot with an invalid-feed placeholder, duplicate candidate IDs collapse the detail lookup while remaining separate list rows, and offset pages/details always read the latest snapshot. Add one shared strict validator, atomic validated publication with last-known-good recovery, and a version-bound list/detail contract.",
+    "evidence": [
+      {
+        "path": "scripts/pull_discovery_feed.sh",
+        "line": 61,
+        "detail": "The downloaded feed is checked with jq before later minimal status/count checks; this does not validate DiscoveryResponse or candidate identity uniqueness."
+      },
+      {
+        "path": "api/models/search.py",
+        "line": 447,
+        "detail": "DiscoveryResponse contains a candidate list without a uniqueness validator; candidate numeric fields are ordinary optional floats in the current model."
+      },
+      {
+        "path": "api/routers/discovery.py",
+        "line": 112,
+        "detail": "Invalid input is converted into an invalid-status placeholder rather than retaining a previous known-good feed."
+      },
+      {
+        "path": "api/routers/discovery.py",
+        "line": 146,
+        "detail": "The candidate detail map uses candidate_id as a dictionary key, so repeated IDs overwrite earlier detail records."
+      },
+      {
+        "path": "api/routers/discovery.py",
+        "line": 168,
+        "detail": "DiscoveryFeedStore replaces its stored snapshot with the newly built snapshot even when the new source is invalid."
+      },
+      {
+        "path": "api/routers/discovery.py",
+        "line": 262,
+        "detail": "Candidate pagination accepts offset/limit/role but no expected data version; the detail endpoint at line 301 likewise resolves the current snapshot only."
+      }
+    ],
+    "scope": [
+      "Share a versioned strict feed validator between the producer/pull step and API loader; validate required fields, declared extensions, finite numeric values and unique stable candidate IDs.",
+      "Stage and validate feed plus metadata before atomically promoting a version; retain a durable last-known-good version and expose stale/invalid-new-source status without erasing usable data.",
+      "Bind metadata, role filters, pagination and details to an explicit immutable data_version or release, with documented retention and mismatch behavior."
+    ],
+    "acceptance": [
+      "Fixtures with missing required fields, malformed types, NaN/Infinity, duplicate JSON keys, empty/duplicate candidate IDs or a metadata/content digest mismatch fail the same validator in pull and API paths. Numeric ranges follow documented per-field contracts rather than one invented universal score range.",
+      "A valid JSON file that fails the scientific feed schema never replaces the last-known-good feed or its metadata. Interrupted download/validation/promotion leaves the previous matched pair readable, including after an API restart.",
+      "When a new feed fails, existing good candidates remain available with an explicit stale status, last-successful data_version/time and sanitized failure indicator. With no good version available, the API returns an honest unavailable/planned state rather than claiming an empty validated dataset.",
+      "For any accepted feed, list/detail mapping is one-to-one by candidate_id, candidate counts and role counts agree, and each listed ID retrieves the same candidate revision. Duplicate-ID fixtures are rejected before publication, not silently deduplicated.",
+      "A client that requests page 1 at version V and then requests page 2 or a detail after version V+1 is published either receives the retained V representation or an explicit version conflict/expiry requiring restart. It never receives mixed-version rows; filters, totals and deterministic ordering are bound to V.",
+      "ETags, data_version headers and cached representations agree for metadata, pages and details. A stale last-good response is not mislabeled as newly validated, and the frontend clears/restarts pagination on a version mismatch instead of appending duplicates or omissions.",
+      "Regression fixtures preserve legacy role semantics and visibly separate old heuristic scores from RPS. A negative_control entry remains a research-control role and is not exported or displayed as a measured non-superconducting outcome without an independently linked experimental result."
+    ],
+    "out_of_scope": [
+      "Rewriting the scientific content of the legacy candidate feed or converting its heuristic scores into RPS.",
+      "Claiming the locally reproduced duplicate-ID defect proves duplicate IDs currently exist in production.",
+      "Building a new candidate-generation pipeline."
+    ],
+    "depends_on": [],
+    "owner_role": "Backend/feed engineer with frontend and operations collaborators"
+  },
+  {
+    "id": "DR04",
+    "title": "Connect the scientific Discovery matrix to reviewed data with explicit representative actions and calibration limits",
+    "priority": "P2",
+    "type": "enhancement",
+    "phase": "D",
+    "area": "Discovery / scientific read projection, UI and evaluation",
+    "evidence_level": "Confirmed local capability boundary: the broad scientific matrix is synthetic frontend preview, while the real RPS board is assessment-row based; no claim that 126 scientific fields are already implemented or populated in the backend.",
+    "report_sections": [
+      "4.2 First-phase fields and registry boundary",
+      "6.1 Meaning of RPS",
+      "6.5 One-material layout and role separation",
+      "6.7 Priority validation",
+      "9.2-9.3 Active-learning roles and fixed-budget comparison",
+      "11 Page-level changes"
+    ],
+    "summary": "Build a limited real-data Discovery read projection, not a direct promotion of the synthetic layout. A material row must refer to an explicitly selected state and next action in one frozen campaign/release, with other assessments expandable. Scientific cells must remain traceable to reviewed results, units and conditions; adding fields or selecting a family profile must not silently alter scores. RPS remains policy-based research priority until an independent calibration/evaluation protocol supports stronger claims.",
+    "evidence": [
+      {
+        "path": "frontend/components/DiscoveryLayoutPreview.tsx",
+        "line": 4,
+        "detail": "The matrix imports DISCOVERY_DEMO_ROWS rather than a scientific backend projection."
+      },
+      {
+        "path": "frontend/components/DiscoveryLayoutPreview.tsx",
+        "line": 152,
+        "detail": "The preview explicitly states that it is frontend-only, uses synthetic inputs and requires a curator-selected state/action for real rows; this honest boundary should be preserved."
+      },
+      {
+        "path": "api/models/research_schema_v2.py",
+        "line": 25,
+        "detail": "PROPERTY_UNITS currently registers eight scientific numeric properties and four RPS values, not the broad frontend field dictionary."
+      },
+      {
+        "path": "api/services/priority_releases.py",
+        "line": 245,
+        "detail": "The release read projection is built from assessment entries; there is no frozen material-level representative-action selection manifest."
+      },
+      {
+        "path": "frontend/components/ResearchPriorityBoard.tsx",
+        "line": 120,
+        "detail": "The real board counts and paginates assessments by group, not unique material representatives."
+      },
+      {
+        "path": "api/routers/discovery_priority.py",
+        "line": 58,
+        "detail": "The existing policy endpoint correctly says priority is not superconductivity probability and limits comparability to the same campaign, budget, policy and release."
+      }
+    ],
+    "scope": [
+      "Specify a typed backend read projection for the actually supported first-phase scientific properties and state/evidence context; expose a registry capability inventory that distinguishes implemented, populated and planned extensions.",
+      "Freeze a documented representative-assessment policy for the one-material default view; retain assessment identity for comparison/export and allow other states/actions to be inspected.",
+      "Implement compact grouped scientific columns and traceable cell details while preserving availability, knowledge-origin, review and measurement/computation semantics.",
+      "Specify the first-release interpretation disclaimer and link the calibration/evaluation work to AL01. This UI/projection issue is independently closeable without claiming empirical calibration; any stronger public claim requires the separately reviewed evaluation gate."
+    ],
+    "acceptance": [
+      "At least one reviewed pilot release renders real backend scientific values without importing synthetic demo rows. The API documents which fields are supported/populated; unimplemented frontend dictionary fields are labeled planned and cannot masquerade as database data. The preview remains clearly labeled and isolated from real ranking and exports.",
+      "Each real cell exposes property key/revision, value representation and unit, availability/reason, knowledge origin, review status, result/evidence locator and applicable state/structure/run. Unknown, not computed, not applicable and conflicted remain distinct; none is rendered as a measured zero or converted into a scoring value by the UI.",
+      "The material-level view uses a versioned, reviewed representative assessment selected for the campaign before publication, with selection rationale and alternate state/action links. Adding extra actions or reordering assessments cannot silently replace the representative with the highest score; comparison and export identify the actual assessment rather than treating the material name as a unique scientific state.",
+      "The default compact view shows material/family/profile, state/pressure, next action, RPS/P/G/A, review/evidence and main barrier; grouped expansion supports stability, electronic, pairing, coherence, geometry and competing-order fields. Different-state values are not combined into a fictional single-state row, and unit/normalization conventions remain visible.",
+      "Legacy leads, mechanism actions and unranked references/controls remain distinguishable from new-material discovery actions. A negative_control role does not imply an experimental negative result; empirical negatives require an explicit measured window, conditions, criterion and source-linked outcome. Changing columns or a display filter never recomputes or changes the frozen RPS profile/weights.",
+      "Real scientific rows can ship with the explicit uncalibrated-priority disclaimer and a link to the AL01 evaluation protocol. Do not claim calibrated utility before a separately accepted, pre-specified evaluation reports independent review/adjudication, weight/cost sensitivity, family/coverage breakdowns, fixed-budget baselines, realized outcomes, failures and limitations. Passing this UI issue alone is not evidence that RPS predicts scientific success.",
+      "Until that evaluation supports a stronger claim, English UI and exports state 'Policy-based research priority; empirical calibration pending' and limit comparisons to the frozen campaign/budget/policy/release. Post-release evidence is stored separately from historical assessments; RPS is never used as superconductivity ground truth, and predicting RPS is not advertised as superconducting-material discovery performance."
+    ],
+    "out_of_scope": [
+      "Implementing or backfilling all 126 frontend scientific fields in one release, or assuming composition alone yields structure-, state- or mechanism-dependent quantities.",
+      "Autonomous experimental execution, a new active-learning platform or replacing human publication review.",
+      "Promising that the score is a probability, Tc estimate, universal physical law or empirically validated utility before evaluation."
+    ],
+    "depends_on": [
+      "DR01",
+      "DR02",
+      "ML05",
+      "ML04",
+      "SC07",
+      "ML08"
+    ],
+    "owner_role": "Frontend and backend scientific-data engineers with a superconductivity reviewer and ML evaluation lead"
+  },
+  {
+    "id": "RG01",
+    "title": "Separate citation-index validity from scientific support and validate numerical/material-state claims",
+    "priority": "P1",
+    "type": "bug",
+    "phase": "A",
+    "area": "Ask / citation contract and scientific answer validation",
+    "evidence_level": "Local validator behavior and a synthetic number/negation counterexample documented in the review; the synthetic H3S text is a test fixture, not a factual claim or observed production answer.",
+    "report_sections": [
+      "8.1 R01: citation validity is lexical support only",
+      "11 Search / Ask changes",
+      "13 Acceptance invariant 13"
+    ],
+    "summary": "citation_valid currently combines valid source indices, uncited-claim detection and a weak lexical-overlap heuristic into one Boolean. A citation can pass while reversing negation and changing a temperature, and the ASCII claim detector does not cover Chinese claims equivalently. Define separate mechanical citation checks and claim-support outcomes; add structured checks for material, state, quantity, value/relation, unit and polarity, with explicit uncertainty/refusal when support cannot be established.",
+    "evidence": [
+      {
+        "path": "api/services/rag.py",
+        "line": 162,
+        "detail": "validate_citations explicitly implements a lexical heuristic rather than entailment validation."
+      },
+      {
+        "path": "api/services/rag.py",
+        "line": 194,
+        "detail": "Claim support is tested using limited overlap with words from source title/text, without numeric, unit, relation, polarity or material-state validation."
+      },
+      {
+        "path": "api/services/rag.py",
+        "line": 212,
+        "detail": "The aggregate valid flag is true whenever the heuristic emits no warnings, which does not establish scientific support."
+      },
+      {
+        "path": "api/services/rag.py",
+        "line": 240,
+        "detail": "Claim detection uses ASCII-letter and length conditions, leaving language-dependent coverage gaps."
+      },
+      {
+        "path": "api/routers/ask.py",
+        "line": 199,
+        "detail": "The public Ask response forwards citation_valid and warnings, so downstream consumers need a compatible but honest replacement contract."
+      }
+    ],
+    "scope": [
+      "Version the response contract to distinguish citation_indices_valid, lexical_support_checked and per-claim support status such as supported, contradicted or undetermined; document compatibility/deprecation of citation_valid.",
+      "Validate supported scientific quantities using material/state/property/value/unit/relation/polarity/source tuples and permitted unit conversions rather than matching isolated numbers.",
+      "Cover sentence/atomic-claim attribution, multilingual inputs and safe fallback behavior without presenting a model entailment score as an independent proof."
+    ],
+    "acceptance": [
+      "Out-of-range or nonexistent citation indices fail the index check; valid indices alone never generate a scientific-support badge. Responses clearly distinguish not checked, checked with undetermined support and supported claims, including no-source refusals and extractive fallbacks.",
+      "A synthetic source stating 'H3S showed no superconducting transition at 100 K and ambient pressure' cannot support an answer asserting a transition at 300 K. The fixture is explicitly labeled synthetic, and independent variants changing only negation, number or pressure fail support without requiring a low lexical-overlap score.",
+      "Quantity checks respect equivalent units and value relations: 20 kbar and 2 GPa can match, while incompatible units, a bound converted to an exact value, a range collapsed to an endpoint or a measurement temperature confused with Tc cannot. Uncertainty, censoring and dimensional conventions are retained rather than rounded away.",
+      "A value for one material, sample/state, pressure or Tc criterion cannot support a different material/state/criterion; computed and observed Tc, cited prior work and a paper's own result remain distinct. Multi-material excerpts and missing state context produce an explicit attribution or undetermined status rather than inferred agreement.",
+      "Equivalent English and Chinese claims receive explicit claim-detection coverage, with regression cases for Unicode formulas, negation and mixed-language numerical statements. Unsupported claim types or languages are reported as unchecked/undetermined, not silently accepted.",
+      "When the validator cannot confirm a key scientific assertion, the answer identifies the limitation, cites an allowed source excerpt or abstains instead of claiming verification. Every assessed atomic claim links to its evidence and reason codes, and untrusted source instructions cannot override validation or refusal behavior.",
+      "An adjudicated regression set reports citation-index accuracy separately from scientific support precision/coverage, numeric/unit correctness and abstention behavior. All hard number/negation/material-state counterexamples pass as release gates; any learned support classifier is evaluated against human judgments and its uncertainty is disclosed."
+    ],
+    "out_of_scope": [
+      "Guaranteeing complete automated scientific truth verification or treating lexical overlap/LLM entailment as proof.",
+      "Claiming that the review's synthetic H3S counterexample describes a real material result or a production conversation.",
+      "Replacing source-level provenance and retrieval architecture, which are covered by separate issues."
+    ],
+    "depends_on": [
+      "SC01",
+      "SC04",
+      "SC05"
+    ],
+    "owner_role": "RAG backend engineer with a scientific evidence reviewer and frontend collaborator"
+  },
+  {
+    "id": "RG02",
+    "title": "Type original versus derived Facts evidence and prevent circular provenance from validating extracted claims",
+    "priority": "P1",
+    "type": "enhancement",
+    "phase": "C",
+    "area": "Ingestion / evidence roots, derived Facts and RAG provenance",
+    "evidence_level": "Confirmed local source design: Facts sentences are generated from NER records and indexed without an explicit typed evidence-root contract. Circular confirmation is a preventable downstream risk, not a claim that every current answer is circular.",
+    "report_sections": [
+      "8.2 APS Facts are not independent original evidence",
+      "8.3 Chunk provenance metadata",
+      "10.6 Permissions and governance",
+      "13 Acceptance invariants 13 and 18-19"
+    ],
+    "summary": "Generated Facts chunks help retrieval but are not independent passages from the source publication. Their lineage must distinguish original passages, abstracts and derived facts, resolve to source-version-specific evidence roots and retain extraction/result revisions. Prevent NER -> Facts -> RAG citation -> NER confirmation loops, and avoid prose generation that strengthens a tentative, computed, condition-unknown or negative result into an unconditional positive material property.",
+    "evidence": [
+      {
+        "path": "ingestion/ingestion/extract/fact_sentences.py",
+        "line": 84,
+        "detail": "A generated fact sentence says a formula 'has a critical temperature', requiring a truth-preserving rendering contract for epistemic origin, qualification and result semantics."
+      },
+      {
+        "path": "ingestion/ingestion/extract/fact_sentences.py",
+        "line": 98,
+        "detail": "The fallback can render bulk_equilibrium as ambient pressure; derived text must instead reuse the authoritative pressure semantics without manufacturing a condition."
+      },
+      {
+        "path": "ingestion/ingestion/extract/fact_sentences.py",
+        "line": 143,
+        "detail": "build_fact_chunks converts extracted records to synthetic Facts sentences and stores the record under materials_mentioned."
+      },
+      {
+        "path": "ingestion/ingestion/extract/fact_sentences.py",
+        "line": 170,
+        "detail": "The emitted chunk carries section='Facts', text and record metadata but no typed parent result revision, extraction revision or immutable original evidence-root reference."
+      },
+      {
+        "path": "api/models/db.py",
+        "line": 891,
+        "detail": "Chunk currently has paper/section/text and material mentions but lacks explicit chunk_kind, source-version root and precise locator columns."
+      },
+      {
+        "path": "api/services/rag.py",
+        "line": 40,
+        "detail": "RagSourceInput does not distinguish original and derived text or expose a structured evidence-root/locator contract to generation and validation."
+      }
+    ],
+    "scope": [
+      "Introduce a versioned evidence envelope with chunk_kind, source/work/version identity, content hash, original locator, permission metadata and, for derived facts, parent result revision and extraction/rendering versions.",
+      "Propagate evidence kind, root and derivation information through retrieval, answer citations and UI; resolve original roots before treating citations as supporting independent evidence.",
+      "Make Facts rendering preserve the authoritative result's quantity, state, uncertainty, polarity, knowledge origin and provenance role; keep unverifiable legacy lineage explicitly unresolved."
+    ],
+    "acceptance": [
+      "New original_passage, abstract and derived_fact chunks have explicit schema-validated kinds. Every derived fact references its parent result revision and extraction/rendering version plus the original source-version evidence root or an explicit unresolved-root status; section text alone is not used as the provenance contract.",
+      "Original evidence locators identify the permitted source artifact/version and a stable section/page/table/figure/row/span as applicable. Restricted original text is not fabricated or republished; if the original is unavailable, the UI says so and exposes only permitted metadata/locators or excerpts.",
+      "A NER claim retrieved through its own generated Facts chunk cannot validate, independently confirm or upgrade that claim's review status. Derived citations resolve to original roots, and multiple facts, chunks, paper versions or secondary citations of the same original result are not counted as independent replications.",
+      "Facts rendering preserves computed versus observed, primary versus cited, positive versus not-detected, exact versus interval/bound and known versus unknown state conditions. A bulk-equilibrium tag alone never generates ambient pressure, and a conditional prediction is not phrased as an established unconditional material Tc.",
+      "A source correction, retraction, result revision or rendering-version change marks dependent facts and active retrieval projections stale or invalid until rebuilt/reviewed. New results never silently overwrite the historical lineage used by a published assessment or answer audit.",
+      "Source descriptors, generation prompts and citation detail expose original versus derived evidence consistently. Unsupported or unresolved-root derived facts can aid discovery/navigation but cannot alone satisfy a scientific-support check; repeated derivations cannot amplify confidence through citation count.",
+      "Regression fixtures include a self-citation loop, two derived chunks sharing one root, a secondary-paper citation, a restricted-source locator, an unresolved legacy fact and a corrected original. Each preserves independence, permission and review boundaries, with no auto-acceptance of the parent extraction."
+    ],
+    "out_of_scope": [
+      "Deleting the useful Facts retrieval channel or treating all derived content as scientifically false.",
+      "Recovering unavailable full text, granting new redistribution rights or asserting legal compliance from existing code comments.",
+      "Retroactively marking legacy records reviewed when an original root cannot be established."
+    ],
+    "depends_on": [
+      "ML01",
+      "ML03",
+      "SC05",
+      "SC04"
+    ],
+    "owner_role": "Ingestion/provenance engineer with scientific and source-permission reviewers"
+  },
+  {
+    "id": "RG03",
+    "title": "Version chunks and embedding generations, enforce hard token bounds and reconcile SQL/vector indexes safely",
+    "priority": "P2",
+    "type": "bug",
+    "phase": "C",
+    "area": "Ingestion / chunking, embeddings and index consistency",
+    "evidence_level": "Confirmed local missing version/truncation contracts plus a long-sentence chunking counterexample recorded in the review. SQL/vector inconsistency and server truncation are code-derived risks; their current production incidence was not measured.",
+    "report_sections": [
+      "8.3 Chunk/index consistency",
+      "8.4 Token bounds and truncation",
+      "10.6 Recovery requirements",
+      "13 Acceptance invariant 14"
+    ],
+    "summary": "Chunk IDs currently depend on paper and sequence position, SQL re-ingestion deletes/replaces a paper's chunks while vector ingestion performs upserts, and neither representation binds source/parser/embedding versions. A single long sentence can exceed the requested chunk budget, and the embedder deliberately sends oversized chunks alone without checking truncation. Establish immutable chunk/index-generation identity, complete token-bound enforcement and a migration/reconciliation protocol that prevents stale vectors from being hydrated as different text.",
+    "evidence": [
+      {
+        "path": "ingestion/ingestion/chunk/chunker.py",
+        "line": 73,
+        "detail": "A minimum body budget of 32 is used even when the title/section prefix consumes the configured size, so the complete-text bound is not guaranteed."
+      },
+      {
+        "path": "ingestion/ingestion/chunk/chunker.py",
+        "line": 79,
+        "detail": "Chunk identity uses paper_id plus sequential chunk index, not source/content/parser version."
+      },
+      {
+        "path": "ingestion/ingestion/chunk/chunker.py",
+        "line": 166,
+        "detail": "The oversized splitter splits by sentences; an individual over-budget sentence remains whole and overlap can also exceed the intended window."
+      },
+      {
+        "path": "ingestion/ingestion/embed/embedder.py",
+        "line": 51,
+        "detail": "Embedding requests do not explicitly control or persist provider truncation status; batch token estimates are not a per-input completeness guarantee."
+      },
+      {
+        "path": "ingestion/ingestion/embed/embedder.py",
+        "line": 93,
+        "detail": "An oversized chunk is intentionally sent alone under the assumption that the server truncates it."
+      },
+      {
+        "path": "ingestion/ingestion/index/indexer.py",
+        "line": 359,
+        "detail": "SQL replaces all paper chunks on re-ingestion, while the separate vector upsert path beginning at line 557 does not itself establish an atomic shared generation or old-ID reconciliation contract."
+      }
+    ],
+    "scope": [
+      "Bind chunk identity to source snapshot/version, content hash, locator and parser/chunker revision; bind embeddings to model, dimension, task type and index generation with query/index compatibility checks.",
+      "Enforce complete-input chunk and embedding limits, including title/section prefixes, joins and overlap; explicitly detect or disallow truncation and handle tables, formulas and long OCR spans without losing source coordinates.",
+      "Implement staged index generations or an equivalent recoverable protocol with tombstones/old-vector cleanup, reconciliation and rollback; preserve active and historical artifact identity during migration."
+    ],
+    "acceptance": [
+      "Every emitted chunk, including abstract fallback and derived Facts, obeys the configured complete-text bound after prefixes and overlap. Regression cases cover one oversized sentence, an overlong title, an unpunctuated OCR paragraph, CJK text, a long formula and a table; retained locators allow split pieces to be traced back to their source.",
+      "The embedder enforces documented model-specific per-input and per-request limits and uses explicit truncation handling. Overlength input is re-chunked or rejected before publishing an embedding; provider-reported truncation cannot be silently accepted as complete. Persist token-count method, provider statistics when available, truncation status, model/task/dimension and content hash.",
+      "Re-ingesting a changed source or parser/chunker version cannot reuse an old vector ID for different text without a distinguishable immutable revision. Each retrieval hit is hydrated only when chunk hash and active index generation match; incompatible query/index embedding model, dimension or task configuration fails clearly rather than returning mixed-space neighbors.",
+      "A fixture where a paper shrinks from five chunks to three and another changes content at an existing position leaves no stale old vectors in the active generation. SQL-only success, vector-only success and interrupted promotion are recoverable, idempotent and observable; no partially updated generation becomes the authoritative query source.",
+      "A reconciliation tool/report detects orphan vector IDs, missing vectors, mismatched hashes, model/version mismatches and pending/tombstoned chunks. It supports a read-only dry run and bounded repair plan; health metrics report lag/counts without declaring consistency solely from total chunk counts.",
+      "Migration is demonstrated on a disposable fixture corpus with a staged build, validation, explicit promotion and rollback to the previous known-good index/read projection. It does not require an uncontrolled full production rewrite and preserves evidence roots and historical release/answer references.",
+      "Capture chunk coverage, truncation/rejection counts, embedding cost and build/query latency before and after migration. The report distinguishes configured token bounds from provider tokenizer measurements and does not claim unchanged scientific recall merely because indexing completed."
+    ],
+    "out_of_scope": [
+      "Replacing the embedding provider or re-embedding the entire production corpus without a separately approved, costed migration.",
+      "Claiming that observed SQL/vector inconsistency or provider truncation rates are already known from this code review.",
+      "Treating vector similarity as scientific evidence validation or inferring independent sample counts from chunk totals."
+    ],
+    "depends_on": [
+      "RG02",
+      "EN01"
+    ],
+    "owner_role": "Retrieval/ingestion engineer with operations and scientific-data reviewers"
+  },
+  {
+    "id": "RG04",
+    "title": "Route scientific queries to state-aware results or complementary source evidence and establish an adjudicated gold evaluation",
+    "priority": "P2",
+    "type": "enhancement",
+    "phase": "D",
+    "area": "Search / Ask scientific retrieval and evaluation",
+    "evidence_level": "Confirmed local ASCII lexical matching, generic Ask routing and one-source-per-paper selection; the review identifies evaluation gaps rather than measuring million-chunk production recall.",
+    "report_sections": [
+      "8.5 Scientific routing and gold evaluation",
+      "8.1 Citation-support evaluation",
+      "11 Search / Ask changes",
+      "12 WP8 RAG quality"
+    ],
+    "summary": "Keep hybrid semantic/lexical retrieval, but add formula-aware matching and query routing appropriate to the requested scientific evidence. Numerical/conditional questions should preferentially query source-linked result records, while mechanism explanations need original passages and sometimes complementary methods/table/results chunks from the same work. Replace the universal one-chunk-per-paper cap with bounded evidence packing and work/root diversity, then evaluate retrieval, answers and citations separately on reviewed scientific questions.",
+    "evidence": [
+      {
+        "path": "api/services/retrieval.py",
+        "line": 12,
+        "detail": "The lexical token pattern is ASCII-centric and does not establish domain-safe equivalence for Unicode subscripts or LaTeX formulas."
+      },
+      {
+        "path": "api/services/retrieval.py",
+        "line": 36,
+        "detail": "Lexical retrieval uses the same general text-search path rather than typed material/state/property constraints for quantitative queries."
+      },
+      {
+        "path": "api/routers/ask.py",
+        "line": 44,
+        "detail": "Ask starts with generic ANN retrieval and then generic lexical fusion without an explicit numerical-versus-mechanism routing contract."
+      },
+      {
+        "path": "api/routers/ask.py",
+        "line": 121,
+        "detail": "A second chunk from the same paper is always skipped, even if methods and results provide complementary support."
+      },
+      {
+        "path": "docs/RAG_EVAL.md",
+        "line": 19,
+        "detail": "The existing small seed set has a top-1 smoke gate; lines 31-33 correctly disclaim that it is not a scientific-quality benchmark."
+      }
+    ],
+    "scope": [
+      "Add a traceable query intent/routing contract for exact material/property/condition queries, scientific explanation, comparison and insufficiently specified requests, retaining lexical/provider-failure fallback.",
+      "Normalize supported formula notation into a domain-safe exact lookup while preserving raw formulas, isotopes, doping variables, charge/structure qualifiers and unresolved ambiguity.",
+      "Select complementary chunks with bounded token budgets and original evidence-root/work diversity; route quantitative claims through the shared state-aware result semantics rather than independent material-wide extrema.",
+      "Create an adjudicated, versioned scientific gold set and evaluation report that measures retrieval, answer accuracy, support and operational costs independently."
+    ],
+    "acceptance": [
+      "Routing fixtures direct a numerical Tc/pressure request to typed source-linked results with all conditions satisfied by the same result/state, a mechanism question to original explanatory evidence, and a mixed question to both with provenance. Unsupported or ambiguous constraints prompt clarification or a qualified answer; they are not silently dropped or replaced by a material-level maximum.",
+      "Supported notation tests retrieve MgB2/MgB₂ and LaH10/LaH_{10} equivalents, while isotope superscripts, D versus H, variable stoichiometry and distinct structural/state qualifiers are preserved or explicitly unresolved. The normalizer keeps raw input and a versioned explanation and does not strip all punctuation/digits into a falsely exact composition.",
+      "A question requiring a method paragraph and a result/table from one work can use both chunks, with individual locators and bounded context size. Multiple chunks from the same work/root remain one provenance source for independence counting; diversity controls still admit complementary independent works rather than letting one long paper dominate.",
+      "Retrieval and answer fixtures cover computed versus observed values, primary versus cited results, pressure/sample/Tc-criterion mismatch, negation/not-detected, corrections/retractions and absent evidence. Missing pressure is never silently interpreted as ambient, and a research negative-control role is not substituted for an experimental negative outcome.",
+      "Publish a versioned adjudication protocol and a feasible initial stratified gold set, targeting 100-200 questions subject to reviewer capacity rather than treating that count as statistical sufficiency. Include English/Chinese queries, formula equivalence, units/bounds, multi-material attribution, table/multi-chunk support and refusal cases; each item records expected evidence roots, conditions and acceptable answer/support judgments with disagreements resolved.",
+      "Keep development/tuning cases distinct from held-out evaluation, group related questions by work/root where appropriate, and pin corpus/index/model/prompt/result-policy versions. Report evidence-root recall@k, condition-match accuracy, support precision/coverage, numerical/unit correctness, refusal behavior, family/task coverage and uncertainty separately; the small existing smoke set remains a regression gate, not a million-chunk reliability claim.",
+      "Compare the new routing/evidence packing against the existing hybrid baseline on the same frozen evaluation objects. Record p95 latency, provider fallback rate, context/embedding/generation usage and cost per supported answer; publish regressions and abstentions, and agree release thresholds before inspecting held-out results rather than inventing accuracy guarantees."
+    ],
+    "out_of_scope": [
+      "Replacing hybrid retrieval with a single retrieval method or guaranteeing universal scientific question answering.",
+      "Building a large unreviewed synthetic benchmark and calling it a scientific gold set.",
+      "Using post-cutoff sources for historical discovery claims or interpreting many chunks from one work as independent experimental evidence."
+    ],
+    "depends_on": [
+      "RG01",
+      "RG02",
+      "RG03",
+      "SC04",
+      "SC09",
+      "ML07"
+    ],
+    "owner_role": "Scientific retrieval/ML engineer with superconductivity adjudicators and backend/frontend collaborators"
+  }
+]

@@ -1,0 +1,58 @@
+
+> sclib-frontend@0.1.0 test:source /Users/jackzhou/Documents/SCLib_JZIS/frontend
+> node --test tests/*.test.mjs
+
+✔ API client preserves request correlation and unified quota fields (23.544042ms)
+✔ password reset UI uses generic request copy and a one-time token (11.848542ms)
+✔ dashboard exposes server-side session revocation separately from API keys (1.715084ms)
+✔ browser auth uses credentialed HttpOnly-cookie requests (47.705542ms)
+✔ application source contains no browser-stored JWT fallback (48.767625ms)
+✔ discovery server render uses bounded summary pages (1.037625ms)
+✔ discovery cards virtualize offscreen work and lazy-load dossiers (0.117875ms)
+✔ legacy feed rejects mixed-version pages and uses explicit English recovery copy (0.114541ms)
+✔ synthetic material preview requires an explicit query and development mode (1.456209ms)
+✔ demo rows never enter the live RPS board or call the real detail API (1.34275ms)
+✔ scientific matrix is the ordinary primary surface, with separate original and legacy views (8.34675ms)
+✔ the public matrix never imports fixture/demo data, admin mutations, draft units or a browser scorer (3.387583ms)
+✔ the planned dictionary explains that native units are independently authoritative (0.14225ms)
+✔ default UI has no embedded Chinese copy; query regexes and comments remain supported (312.400791ms)
+✔ date and number display explicitly uses an English locale (179.559916ms)
+✔ document language and metadata remain English (0.350916ms)
+✔ classification filter UI explicitly separates source reports, qualified false and same-state data (7.287375ms)
+✔ public API documents material summary classification scope and nonindependent count basis (31.340167ms)
+✔ desktop navigation collapses into an accessible mobile menu (0.9575ms)
+✔ mobile shells use compact gutters and stack consent actions (0.085667ms)
+✔ browser health reporting is sampled and requires analytics consent (0.852292ms)
+✔ browser errors are reduced to aggregate signals without payload text (0.142166ms)
+✔ the reporter is mounted once at the application root (0.093333ms)
+✔ OAuth links use the public API origin during server rendering (19.137292ms)
+✔ OAuth navigation sources contain no internal or loopback host (1.303333ms)
+✔ standalone trace destinations contain both copied source and real linked dependencies (96.583291ms)
+✔ production browser child excludes inherited credentials, env files and font mocks (0.280333ms)
+✔ public production E2E never reuses a server or permits service worker bypass (0.106042ms)
+✔ every public browser suite installs the fail-closed network fixture (0.507208ms)
+✔ search separates scientific excerpt checks from mechanical citation validation (81.933709ms)
+✔ public API documentation describes hybrid retrieval and citation fields (2.521834ms)
+✔ private browser CI collects all visual TypeScript suites, without replacing public E2E (1.192042ms)
+✔ private browser CI never reuses a server and keeps each output root exclusive (0.193083ms)
+✔ output preparation runs once in the launcher and cannot replace any earlier artifact (2.144083ms)
+✔ the shared research browser server keeps source intake synthetic and copies no env file (0.456791ms)
+✔ all frontend routes receive the required security headers (1.010458ms)
+✔ production CSP is restrictive and permits required integrations (0.268333ms)
+✔ private and authentication routes instruct crawlers not to index (1.181208ms)
+✔ sitemap inventory is paginated and produces canonical encoded URLs (40.227ms)
+✔ robots, canonical metadata, and structured research data are present (1.722916ms)
+✔ stats UI distinguishes aggregate refresh, data snapshot, and pipeline run (0.929459ms)
+✔ daily cron reports each data stage without changing ingest cadence (0.105667ms)
+✔ timeline prefers WebGL and falls back to a bounded SVG renderer (1.367834ms)
+✔ timeline names reported results and keeps unsampled summaries separate (0.159959ms)
+✔ all material-family navigation uses an English elemental label (0.113666ms)
+✔ timeline page requests a bounded compact payload (0.261333ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 46
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1295.222625

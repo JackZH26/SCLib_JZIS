@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { DiscoveryFeed } from "@/components/DiscoveryFeed";
+import { ResearchPriorityBoard } from "@/components/ResearchPriorityBoard";
+import { ScientificDiscoveryMatrix } from "@/components/ScientificDiscoveryMatrix";
+import { DiscoveryFieldGuide } from "@/components/DiscoveryFieldGuide";
 import {
-  getDiscovery,
   getDiscoveryCandidates,
   getDiscoveryMetadata,
+  verifyDiscoveryPage,
   type DiscoveryCandidatePage,
   type DiscoveryMetadata,
 } from "@/lib/api";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Reviewed superconductivity discovery feed",
+  title: "Superconductivity research priorities",
   description:
-    "Review superconductivity candidates that passed physics-informed screening and evidence checks.",
+    "Explore evidence-based, action-specific superconductivity research priorities and historical candidate leads.",
   alternates: { canonical: absoluteUrl("/discovery") },
   openGraph: { url: absoluteUrl("/discovery") },
 };
@@ -24,80 +28,58 @@ async function safeDiscovery(): Promise<{
   page: DiscoveryCandidatePage;
 } | null> {
   try {
-    const [metadata, page] = await Promise.all([
-      getDiscoveryMetadata(),
-      getDiscoveryCandidates({ limit: PAGE_SIZE }),
-    ]);
+    const metadata = await getDiscoveryMetadata();
+    const page = await getDiscoveryCandidates({ limit: PAGE_SIZE, dataVersion: metadata.data_version });
+    verifyDiscoveryPage(page, metadata.data_version, 0, [], null, metadata.total_candidates);
     return { metadata, page };
   } catch {
-    // Rolling-deploy fallback: an older API still exposes the full endpoint.
-    try {
-      const legacy = await getDiscovery();
-      const roleCounts = legacy.candidates.reduce<Record<string, number>>(
-        (counts, candidate) => {
-          const role = candidate.record_role ?? "unclassified";
-          counts[role] = (counts[role] ?? 0) + 1;
-          return counts;
-        },
-        {},
-      );
-      return {
-        metadata: {
-          schema_version: "1",
-          page_title: legacy.page_title,
-          intro: legacy.intro,
-          status: legacy.status,
-          updated_at_utc: legacy.updated_at_utc,
-          source: legacy.source,
-          filter_rules: legacy.filter_rules,
-          total_candidates: legacy.candidates.length,
-          role_counts: roleCounts,
-        },
-        page: {
-          schema_version: "1",
-          items: legacy.candidates.slice(0, PAGE_SIZE),
-          total: legacy.candidates.length,
-          offset: 0,
-          limit: PAGE_SIZE,
-          has_more: legacy.candidates.length > PAGE_SIZE,
-          record_role: null,
-        },
-      };
-    } catch {
-      return null;
-    }
+    // Never combine an unversioned legacy fallback with paginated endpoints.
+    return null;
   }
 }
 
-export default async function DiscoveryPage() {
+export default async function DiscoveryPage({ searchParams }: { searchParams: Promise<{ preview?: string }> }) {
+  // Explicit development-only layout preview. Never replace API errors with fake rows.
+  if (process.env.NODE_ENV === "development" && (await searchParams).preview === "layout") {
+    const { DiscoveryLayoutPreview } = await import("@/components/DiscoveryLayoutPreview");
+    return <DiscoveryLayoutPreview />;
+  }
+  return (
+    <main className="space-y-4">
+      <header className="flex flex-wrap items-baseline justify-between gap-2">
+          <h1 className="text-3xl font-semibold tracking-tight">
+            Discovery
+          </h1>
+          <p className="text-sm text-sage-muted">Material priorities · not superconductivity probabilities</p>
+      </header>
+
+      <ScientificDiscoveryMatrix />
+      <details className="rounded-xl border border-sage-border p-4">
+        <summary className="cursor-pointer text-sm font-semibold">Original RPS assessment releases · action-level view</summary>
+        <p className="my-3 text-sm text-sage-muted">This separate view retains the original assessment catalog. An assessment release is not a published scientific companion or a one-material matrix.</p>
+        <ResearchPriorityBoard />
+      </details>
+      <DiscoveryFieldGuide />
+
+      <Suspense fallback={<p className="text-sm text-sage-muted">Loading historical candidate leads…</p>}>
+        <LegacyDiscovery />
+      </Suspense>
+    </main>
+  );
+}
+
+async function LegacyDiscovery() {
   const data = await safeDiscovery();
   const metadata = data?.metadata;
-
   return (
-    <main className="space-y-8">
-      <section className="space-y-4">
-        <span className="inline-flex items-center gap-2 rounded-full border border-sage-border bg-[rgba(58,125,92,0.08)] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent">
-          Reviewed discovery feed · SCLib × SC SuperLoop
-        </span>
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-            {metadata?.page_title ?? "Discovery"}
-          </h1>
-          {(metadata?.intro ?? [
-            "This page presents reviewed superconductivity candidates exported from SC SuperLoop into SCLib.",
-            "Candidates are generated with physics-informed heuristics, then filtered through prescreening, bounded DFT checks, mechanism audit, and checker review before public display.",
-          ]).map((line) => (
-            <p key={line} className="max-w-4xl text-sm leading-6 text-sage-muted">
-              {line}
-            </p>
-          ))}
-        </div>
-      </section>
 
-      <section className="grid gap-4 md:grid-cols-[1.3fr_1fr]">
+      <details className="space-y-5 rounded-xl border border-sage-border p-5">
+        <summary className="cursor-pointer text-lg font-semibold">Historical candidate leads · pending RPS assessment ({metadata?.total_candidates ?? 0})</summary>
+        <p className="mt-4 text-sm leading-6 text-sage-muted">These records retain the original SC SuperLoop feed and heuristic scores for provenance. They are not new RPS assessments, superconductivity probabilities, or proof of experimental discovery. Original checker status may be pending.</p>
+      <section className="mt-5 grid gap-4 md:grid-cols-[1.3fr_1fr]">
         <div className="rounded-2xl border border-sage-border bg-white p-5 shadow-soft">
           <h2 className="text-sm font-semibold uppercase tracking-[0.08em] text-accent">
-            Public Filter
+            Legacy feed filters
           </h2>
           <div className="mt-4 flex flex-wrap gap-2">
             {(metadata?.filter_rules ?? []).map((rule) => (
@@ -113,13 +95,13 @@ export default async function DiscoveryPage() {
 
         <div className="rounded-2xl border border-sage-border bg-white p-5 shadow-soft">
           <h2 className="text-sm font-semibold uppercase tracking-[0.08em] text-accent">
-            Feed Status
+            Legacy feed status
           </h2>
           <dl className="mt-4 space-y-3 text-sm">
             <div className="flex items-start justify-between gap-4">
               <dt className="text-sage-muted">Status</dt>
               <dd className="font-medium text-sage-ink">
-                {metadata?.status === "active" ? "Active" : "Planned / awaiting reviewed feed"}
+                {!metadata ? "Unavailable" : metadata.source_status === "stale" ? "Stale · last validated version" : metadata.status === "active" ? "Active legacy feed" : "Planned / awaiting feed"}
               </dd>
             </div>
             <div className="flex items-start justify-between gap-4">
@@ -138,7 +120,7 @@ export default async function DiscoveryPage() {
 
       {!data ? (
         <section className="rounded-2xl border border-red-200 bg-red-50 px-6 py-8 text-sm text-red-700">
-          The reviewed discovery feed is temporarily unavailable.
+          The historical candidate feed is temporarily unavailable.
         </section>
       ) : (
         <DiscoveryFeed
@@ -147,6 +129,6 @@ export default async function DiscoveryPage() {
           totalCandidates={data.metadata.total_candidates}
         />
       )}
-    </main>
+      </details>
   );
 }

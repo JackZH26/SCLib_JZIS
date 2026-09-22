@@ -1,0 +1,22 @@
+[
+ {
+  "RuleID": "generic-api-key",
+  "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+  "StartLine": 1,
+  "EndLine": 1,
+  "StartColumn": 16066,
+  "EndColumn": 16113,
+  "Match": "request_key\": \"REDACTED\"",
+  "Secret": "REDACTED",
+  "File": "frontend/tests/fixtures/discovery-main-barrier-native.batch82.wire.json",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 3.6167293,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [],
+  "Fingerprint": "frontend/tests/fixtures/discovery-main-barrier-native.batch82.wire.json:generic-api-key:1"
+ }
+]

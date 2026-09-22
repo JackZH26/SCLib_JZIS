@@ -1,0 +1,45 @@
+# Exact fingerprints for non-secret documentation placeholders and validation
+# strings. Do not replace these with path, commit, or rule-wide ignores.
+d60f0db35de7e46d3f6e1a6907886b134feacef1:README.md:curl-auth-header:133
+7596ef2e5928c46e2b0da6bcfaf48ab6fabe3d35:api/tests/test_unified_auth.py:generic-api-key:319
+3477605e37393b8430068d38a822b758816bc025:PROJECT_SPEC.md:generic-api-key:892
+c499146b223562c5099ab971a149392067ca047e:api/tests/test_session_security.py:generic-api-key:17
+c499146b223562c5099ab971a149392067ca047e:api/tests/test_session_security.py:generic-api-key:54
+
+# Temporary only: reviewed batch82 historical findings; not repository policy.
+00718749b6eb15926ae8cbfc58e02a9432488815:frontend/tests/fixtures/discovery-governance/provenance.json:generic-api-key:860
+00718749b6eb15926ae8cbfc58e02a9432488815:frontend/tests/fixtures/discovery-selection/provenance.json:generic-api-key:217
+02949468802db042e56645e2932b08863a174074:frontend/tests/fixtures/ml-pilot-attestations-native.batch73.wire.json:generic-api-key:1
+02949468802db042e56645e2932b08863a174074:frontend/tests/fixtures/ml-pilot-participant-native.batch73.wire.json:generic-api-key:1
+2cff9326c29b8f441f6436ad98ce47466455697f:frontend/tests/fixtures/discovery-main-barrier-native.batch55.wire.json:generic-api-key:83
+2cff9326c29b8f441f6436ad98ce47466455697f:frontend/tests/fixtures/discovery-main-barrier-native.batch56.wire.json:generic-api-key:83
+2cff9326c29b8f441f6436ad98ce47466455697f:frontend/tests/fixtures/discovery-main-barrier-native.wire.json:generic-api-key:83
+30a8b475608ffbba429ccb5f3ab10275714605e6:frontend/tests/fixtures/source-task-operations-http.json:generic-api-key:150
+30a8b475608ffbba429ccb5f3ab10275714605e6:frontend/tests/fixtures/source-task-operations-http.json:generic-api-key:188
+30a8b475608ffbba429ccb5f3ab10275714605e6:frontend/tests/fixtures/source-task-operations-http.json:generic-api-key:225
+30a8b475608ffbba429ccb5f3ab10275714605e6:frontend/tests/fixtures/source-task-operations-http.json:generic-api-key:276
+30a8b475608ffbba429ccb5f3ab10275714605e6:frontend/tests/fixtures/source-task-operations-http.json:generic-api-key:469
+30a8b475608ffbba429ccb5f3ab10275714605e6:frontend/tests/fixtures/source-task-operations-http.json:generic-api-key:68
+30a8b475608ffbba429ccb5f3ab10275714605e6:frontend/tests/fixtures/source-task-operations-http.json:generic-api-key:81
+531975a02ed78e212b6902314ad53328dc29f83f:frontend/tests/fixtures/discovery-scientific-provenance.json:generic-api-key:67
+634265d7cd2323a077045d4042ee8dbdabe86f19:frontend/tests/fixtures/discovery-main-barrier-native.batch67.wire.json:generic-api-key:1
+add2b2ae76b28588a9eb9aa82dca1d8eae8d30ad:frontend/tests/fixtures/discovery-main-barrier-native.batch57.wire.json:generic-api-key:83
+add2b2ae76b28588a9eb9aa82dca1d8eae8d30ad:frontend/tests/fixtures/discovery-main-barrier-native.wire.json:generic-api-key:83
+c482a478492d537071676e997616fa6b7d74710b:frontend/tests/fixtures/discovery-selection/provenance.json:generic-api-key:1
+c4b8fb5cb0dcd04e37406be5014e298b108ee9e5:frontend/tests/fixtures/discovery-main-barrier-native.batch59.wire.json:generic-api-key:83
+c4b8fb5cb0dcd04e37406be5014e298b108ee9e5:frontend/tests/fixtures/discovery-main-barrier-native.wire.json:generic-api-key:1
+c6f05f1ca757f692d3f5169768b2fd75c6f685eb:docs/reviews/2026-09-05/issues-discovery-rag.json:generic-api-key:183
+cc769d8df206ba64f4633b3a4802199623dfd82b:frontend/tests/fixtures/discovery-main-barrier-native.batch58.wire.json:generic-api-key:83
+cc769d8df206ba64f4633b3a4802199623dfd82b:frontend/tests/fixtures/discovery-main-barrier-native.wire.json:generic-api-key:83
+d42d0dd4ed0ae263fd7b4720982e1ed670bc4598:frontend/tests/fixtures/discovery-main-barrier-native.batch52.wire.json:generic-api-key:83
+d42d0dd4ed0ae263fd7b4720982e1ed670bc4598:frontend/tests/fixtures/discovery-main-barrier-native.batch54.wire.json:generic-api-key:83
+d42d0dd4ed0ae263fd7b4720982e1ed670bc4598:frontend/tests/fixtures/discovery-main-barrier-native.wire.json:generic-api-key:83
+dc716fba4ce14b26623cc70cdd3f5b0c49b0a2f7:frontend/tests/fixtures/discovery-main-barrier-native.batch72.wire.json:generic-api-key:1
+dc716fba4ce14b26623cc70cdd3f5b0c49b0a2f7:frontend/tests/fixtures/ml-pilot-attestations-native.batch72.wire.json:generic-api-key:1
+dc716fba4ce14b26623cc70cdd3f5b0c49b0a2f7:frontend/tests/fixtures/ml-pilot-participant-native.batch72.wire.json:generic-api-key:1
+dd4fb7746a8e7707951884f521088e0a262f5d33:frontend/tests/fixtures/discovery-main-barrier-native.batch68.wire.json:generic-api-key:1
+dd4fb7746a8e7707951884f521088e0a262f5d33:frontend/tests/fixtures/discovery-main-barrier-native.batch69.wire.json:generic-api-key:1
+dd4fb7746a8e7707951884f521088e0a262f5d33:frontend/tests/fixtures/discovery-main-barrier-native.batch70.wire.json:generic-api-key:1
+dd4fb7746a8e7707951884f521088e0a262f5d33:frontend/tests/fixtures/discovery-main-barrier-native.batch71.wire.json:generic-api-key:1
+dd4fb7746a8e7707951884f521088e0a262f5d33:frontend/tests/fixtures/ml-pilot-participant-native.batch70.wire.json:generic-api-key:1
+dd4fb7746a8e7707951884f521088e0a262f5d33:frontend/tests/fixtures/ml-pilot-participant-native.batch71.wire.json:generic-api-key:1

@@ -91,6 +91,7 @@ class Settings(BaseSettings):
     google_application_credentials: str = "/credentials/gcp-api.json"
     vertex_ai_index_endpoint: str = ""
     vertex_ai_deployed_index_id: str = "sclib_papers_v1"
+    retrieval_logical_index: str = Field(default="sclib-main", pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 
     # === AI models ===
     gemini_model: str = "gemini-3.5-flash"
@@ -101,6 +102,10 @@ class Settings(BaseSettings):
     embedding_output_dimensionality: int = 768
     vector_search_timeout_seconds: float = Field(12.0, gt=0, le=120)
     gemini_timeout_seconds: float = Field(30.0, gt=0, le=120)
+    # Application input budgets, not model context-window or billing claims.
+    gemini_input_byte_limit: int = Field(262144, ge=1, le=1048576)
+    gemini_max_input_tokens: int = Field(16384, ge=1, le=131072)
+    gemini_count_timeout_seconds: float = Field(5.0, gt=0, le=120)
     provider_max_attempts: int = Field(2, ge=1, le=3)
     provider_circuit_failure_threshold: int = Field(3, ge=1, le=100)
     provider_circuit_cooldown_seconds: float = Field(60.0, ge=0, le=3600)
@@ -108,6 +113,29 @@ class Settings(BaseSettings):
 
     # === Discovery preview ===
     discovery_feed_path: str = "/data/sclib/discovery/discovery_feed.json"
+
+    # === ML Foundation shadow read path ===
+    # Keep typed claims private until backfill QC and shadow parity gates pass.
+    ml_foundation_public_enabled: bool = False
+    # Separate ML workflow membership administration; never enables training.
+    ml_use_governance_enabled: bool = False
+    # Prospective pilot commitments and own-account confirmations, not ML runs.
+    ml_pilot_registration_enabled: bool = False
+    ml_pilot_review_intake_enabled: bool = False
+    ml_pilot_attestations_enabled: bool = False
+    # Separate authority to receive ephemeral source/context bytes, not a licence.
+    ml_pilot_evidence_intake_enabled: bool = False
+    # RPS bundles are inert until a curator pins a reviewed manifest digest.
+    discovery_rps_public_enabled: bool = False
+    discovery_rps_release_dir: str = "/data/sclib/discovery/rps"
+    discovery_rps_approved_releases: dict[str, str] = Field(default_factory=dict)
+    # Independent disclosure approval: a release manifest alone never enables
+    # downloading unrestricted internal artifacts or reviewer information.
+    discovery_rps_approved_public_bundles: dict[str, str] = Field(default_factory=dict)
+    # Scientific companion cells and representative rationales have their own
+    # reviewed disclosure scope; old RPS approval does not enable this route.
+    discovery_scientific_public_enabled: bool = False
+    discovery_scientific_approved_projections: dict[str, str] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def require_https_for_production_auth(self) -> Settings:

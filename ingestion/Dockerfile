@@ -12,6 +12,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     UV_PROJECT_ENVIRONMENT=/opt/venv \
     UV_PYTHON_DOWNLOADS=0 \
+    TIKTOKEN_CACHE_DIR=/opt/tiktoken-cache \
     PATH="/opt/venv/bin:$PATH"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -25,6 +26,8 @@ WORKDIR /app
 # Install the exact locked graph before copying frequently changing source.
 COPY pyproject.toml uv.lock ./
 RUN uv sync --locked --no-dev --no-install-project
+# Install the hash-verified tokenizer ranks before the non-root offline check.
+RUN python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
 
 COPY ingestion ./ingestion
 # Ingestion runs exclusively from /opt/venv. Package managers are build-time
@@ -43,6 +46,7 @@ RUN groupadd --system --gid 1001 sclib \
  && useradd  --system --uid 1001 --gid sclib --home /app sclib \
  && chown -R sclib:sclib /app
 USER sclib
+RUN --network=none python -c "import tiktoken; assert tiktoken.get_encoding('cl100k_base').encode('SCLib')"
 
 # No ENTRYPOINT — callers pick the console script explicitly so the
 # same image serves both `sclib-ingest` (nightly cron) and

@@ -1,0 +1,42 @@
+{
+  "counts": {
+    "errors": 0,
+    "failed": 0,
+    "module_cases": {
+      "tests/test_api_contract.py": 7,
+      "tests/test_background_jobs_http.py": 9,
+      "tests/test_complementary_diversity.py": 4,
+      "tests/test_discovery_projection_http.py": 59,
+      "tests/test_embedding_ingestion.py": 9,
+      "tests/test_index_generations.py": 47,
+      "tests/test_material_semantics_surfaces.py": 19,
+      "tests/test_materials_phase1_contract.py": 2,
+      "tests/test_ml_claim_visibility.py": 17,
+      "tests/test_ml_feature_provenance_v2.py": 15,
+      "tests/test_ml_label_companion_contract.py": 87,
+      "tests/test_ml_pilot_review_admission.py": 41,
+      "tests/test_ml_reviewed_dataset_sql.py": 14,
+      "tests/test_ml_use_rights.py": 19,
+      "tests/test_privacy_controls.py": 6,
+      "tests/test_rag_reliability.py": 11,
+      "tests/test_research_distribution_preparation_http.py": 59,
+      "tests/test_research_import_schema.py": 46,
+      "tests/test_research_shadow_schema.py": 18,
+      "tests/test_rps_distribution_http.py": 32,
+      "tests/test_scientific_evaluation_capture.py": 30,
+      "tests/test_scientific_lookup_contract.py": 259,
+      "tests/test_scientific_query_results.py": 103,
+      "tests/test_scientific_search_routing.py": 13,
+      "tests/test_source_impact_indexes.py": 7,
+      "tests/test_source_task_operations.py": 43,
+      "tests/test_structure_disclosure.py": 18,
+      "tests/test_timeline_projection_identity.py": 38
+    },
+    "passed": 1032,
+    "skipped": 0,
+    "test_cases": 1032
+  },
+  "full_regression": false,
+  "runner_exit_code": 0,
+  "source_unchanged": true
+}

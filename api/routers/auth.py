@@ -71,6 +71,11 @@ from services.rate_limit import (
     get_user_week_used,
 )
 from services.request_context import client_ip
+from services.research_audit_retention import (
+    RETENTION_MESSAGE,
+    has_research_audit_references,
+    is_research_audit_reference_violation,
+)
 from services.session_config import (
     BrowserSessionConfig,
     build_browser_session_config,
@@ -681,6 +686,8 @@ async def export_me(
                 "latency_ms": item.latency_ms,
                 "language": item.language,
                 "created_at": item.created_at,
+                "evidence_receipt_version": item.evidence_receipt_version,
+                "evidence_detail_path": f"/v1/history/{item.id}",
             }
             for item in history
         ],
@@ -759,8 +766,8 @@ async def delete_me(
 
     The exact account email and, for password-capable accounts, the current
     password provide a fresh confirmation beyond possession of a session.
-    Security audit rows are retained only in de-identified form by the
-    database's ``ON DELETE SET NULL`` constraint.
+    Authentication audit rows are de-identified by ``ON DELETE SET NULL``.
+    Immutable research audit identities need a separately reviewed workflow.
     """
     if user.is_admin:
         raise HTTPException(
@@ -775,20 +782,32 @@ async def delete_me(
     ):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Account confirmation did not match")
 
+    if await has_research_audit_references(db, user.id):
+        raise HTTPException(status.HTTP_409_CONFLICT, RETENTION_MESSAGE, headers={"Cache-Control": "no-store"})
+
     deleted_user_id = user.id
-    add_auth_audit(
-        db,
-        request,
-        event_type="account_delete",
-        outcome="success",
-        account=user.email,
-        user_id=user.id,
-    )
-    # Make the audit row exist before deleting its referenced account; the
-    # FK then clears user_id while retaining the privacy-preserving event.
-    await db.flush()
-    await db.delete(user)
-    await db.commit()
+    try:
+        add_auth_audit(
+            db,
+            request,
+            event_type="account_delete",
+            outcome="success",
+            account=user.email,
+            user_id=user.id,
+        )
+        # Make the audit row exist before deleting its referenced account;
+        # the FK then de-identifies the accepted deletion event.
+        await db.flush()
+        await db.delete(user)
+        await db.commit()
+    except IntegrityError as exc:
+        # A concurrent research grant can appear after the read-only preflight.
+        # Roll back the audit and every cascade before returning a safe hold.
+        await db.rollback()
+        if is_research_audit_reference_violation(exc):
+            raise HTTPException(status.HTTP_409_CONFLICT, RETENTION_MESSAGE,
+                                headers={"Cache-Control": "no-store"}) from None
+        raise
     clear_browser_session_cookie(response, _browser_session_config())
     log.warning("account self-deleted user_id=%s", deleted_user_id)
     return MessageResponse(message="Account and associated private data deleted")

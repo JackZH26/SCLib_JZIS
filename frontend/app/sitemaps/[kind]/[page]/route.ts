@@ -6,7 +6,7 @@ import {
   xmlResponse,
 } from "@/lib/seo";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 function parseRoute(
   kind: string,

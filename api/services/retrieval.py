@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
-from sqlalchemy import func, literal_column, select
+from sqlalchemy import func, literal_column, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.db import Chunk, Paper
@@ -33,6 +33,50 @@ class RankedCandidate:
     rerank_score: float = 0.0
 
 
+async def formula_lexical_search(db, interpretation, pin, *, limit, year_min=None, year_max=None):
+    """Surface-notation equivalents in the bounded retained generation only.
+
+    This is candidate matching, not sample/phase identity or scientific support.
+    No punctuation-stripping, empirical reduction or D/H equivalence is used.
+    """
+    if pin is None or not interpretation.formulas:
+        return []
+    from services.index_generations import load_generation_members, manifest_sha256
+    from services.scientific_query import match_source_formulas
+    wanted = {item.normalization.normalized_formula for item in interpretation.formulas}
+    if interpretation.status != "resolved" or None in wanted:
+        return []
+    from services.index_corpus import is_corpus, formula_candidates
+    if await is_corpus(db, pin["generation_id"]):
+        identifiers = await formula_candidates(db, pin, wanted, limit=limit, year_min=year_min, year_max=year_max)
+        members = await load_generation_members(db, generation_id=pin["generation_id"], vector_ids=identifiers)
+    else:
+        members = await load_generation_members(db, generation_id=pin["generation_id"])
+        if manifest_sha256(members) != pin["manifest_sha256"]:
+            raise ValueError("Formula lookup requires a complete declared generation")
+    matches = []
+    for member in members:
+        snapshot = member["snapshot_json"]
+        year = snapshot.get("year")
+        if ((year_min is not None or year_max is not None) and (type(year) is not int
+                or year_min is not None and year < year_min or year_max is not None and year > year_max)):
+            continue
+        overlap = match_source_formulas(snapshot["text"], wanted)
+        if overlap:
+            matches.append(LexicalHit(member["vector_id"], len(overlap) / len(wanted)))
+    return sorted(matches, key=lambda item: (-item.score, item.chunk_id))[:max(1, min(limit, 300))]
+
+
+def combine_lexical_hits(formula_hits, text_hits, *, limit):
+    """Exact supported notation candidates first, retaining generic fallback."""
+    seen, result = set(), []
+    for item in [*formula_hits, *text_hits]:
+        if item.chunk_id not in seen:
+            seen.add(item.chunk_id)
+            result.append(item)
+    return result[:limit]
+
+
 async def lexical_search(
     db: AsyncSession,
     query_text: str,
@@ -41,8 +85,25 @@ async def lexical_search(
     year_min: int | None = None,
     year_max: int | None = None,
     exclude_retracted: bool = True,
+    generation_id: str | None = None,
 ) -> list[LexicalHit]:
     """Run bounded PostgreSQL web-style full-text search over title + chunk."""
+    if generation_id is not None:
+        statement = text("""SELECT m.vector_id AS id,
+            ts_rank_cd(to_tsvector('english'::regconfig,coalesce(m.snapshot_json->>'title','')||' '||
+                       (m.snapshot_json->>'text')),websearch_to_tsquery('english'::regconfig,:query)) AS rank
+            FROM index_generation_members m JOIN papers p ON p.id=m.paper_id
+            WHERE m.generation_id=:generation
+              AND to_tsvector('english'::regconfig,coalesce(m.snapshot_json->>'title','')||' '||
+                  (m.snapshot_json->>'text')) @@ websearch_to_tsquery('english'::regconfig,:query)
+              AND (NOT :exclude_retracted OR p.status<>'retracted')
+              AND (CAST(:year_min AS integer) IS NULL OR (m.snapshot_json->>'year')::integer>=:year_min)
+              AND (CAST(:year_max AS integer) IS NULL OR (m.snapshot_json->>'year')::integer<=:year_max)
+            ORDER BY rank DESC,m.vector_id LIMIT :limit""")
+        rows = (await db.execute(statement, {"generation": generation_id, "query": query_text,
+            "exclude_retracted": exclude_retracted, "year_min": year_min, "year_max": year_max,
+            "limit": max(1, min(limit, 300))})).all()
+        return [LexicalHit(chunk_id=row.id, score=float(row.rank or 0.0)) for row in rows]
     config = literal_column("'english'::regconfig")
     document = func.to_tsvector(
         config,

@@ -1,0 +1,5 @@
+# Apply only when the operator has explicitly enabled outbound alert delivery.
+services:
+  alertmanager:
+    volumes:
+      - /etc/sclib/credentials/alertmanager-smtp-password:/run/secrets/sclib-alertmanager-smtp-password:ro

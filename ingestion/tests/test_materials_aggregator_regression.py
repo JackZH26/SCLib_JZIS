@@ -17,6 +17,7 @@ def _record(
         "paper_id": paper_id,
         "tc_kelvin": tc_kelvin,
         "pressure_gpa": 0.0,
+        "pressure_state": "explicit_ambient",
         "ambient_sc": ambient_sc,
         "evidence_type": evidence_type,
         "measurement": measurement,
@@ -26,7 +27,7 @@ def _record(
     }
 
 
-def test_cross_paper_summary_separates_theory_and_flags_tc_disagreement():
+def test_cross_paper_summary_separates_theory_without_inventing_a_dispute_or_pairing():
     records = [
         _record("arxiv:2401.00001", 92.0),
         _record("aps:10.1103/example", 58.0),
@@ -47,12 +48,12 @@ def test_cross_paper_summary_separates_theory_and_flags_tc_disagreement():
     assert summary["tc_max_theoretical"] == 155.0
     assert summary["tc_ambient"] == 92.0
     assert summary["total_papers"] == 3
-    assert summary["disputed"] is True
-    assert summary["pairing_symmetry"] == "d-wave"
+    assert summary["disputed"] is False
+    assert summary["pairing_symmetry"] is None
     assert summary["needs_review"] is False
 
 
-def test_bad_record_is_removed_without_hiding_a_corroborated_material():
+def test_numeric_outlier_is_retained_without_hiding_valid_material_properties():
     good = {
         **_record("arxiv:0101446", 39.0),
         "formula": "MgB2",
@@ -66,8 +67,9 @@ def test_bad_record_is_removed_without_hiding_a_corroborated_material():
 
     assert summary["family"] == "mgb2"
     assert summary["tc_max"] == 39.0
-    assert summary["total_papers"] == 1
-    assert summary["records"] == [good]
+    assert summary["total_papers"] == 2  # catalogue provenance, not positive-Tc support
+    assert summary["records"] == [good, impossible]
+    assert summary["anomaly_review"]["counts"]["review_required"] == 1
     assert summary["needs_review"] is False
 
 
@@ -86,7 +88,7 @@ def test_duplicate_records_from_one_paper_do_not_inflate_paper_support():
     assert "confirmed by" not in summary["tc_max_conditions"]
 
 
-def test_equal_maximum_from_two_papers_is_labelled_as_confirmed():
+def test_equal_maximum_from_two_papers_is_labelled_bibliographic_not_confirmed():
     summary = _derive_summary(
         "YBa2Cu3O7",
         [
@@ -96,4 +98,6 @@ def test_equal_maximum_from_two_papers_is_labelled_as_confirmed():
     )
 
     assert summary["total_papers"] == 2
-    assert "confirmed by 2 papers" in summary["tc_max_conditions"]
+    assert "numeric-pool support from 2 bibliographic identifiers" in summary["tc_max_conditions"]
+    assert "not independent replication" in summary["tc_max_conditions"]
+    assert "confirmed" not in summary["tc_max_conditions"]

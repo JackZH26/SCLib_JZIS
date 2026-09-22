@@ -7,6 +7,11 @@
  */
 import Link from "next/link";
 import { LatexText } from "@/components/LatexText";
+import { ScientificMatches } from "@/components/ScientificMatches";
+import type { MatchingScientificResult, SourceVisibility } from "@/lib/api";
+import { SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
+import { EvidenceProvenanceNotice } from "@/components/EvidenceProvenanceNotice";
+import type { EvidenceProvenance } from "@/lib/api";
 
 export interface PaperCardInput {
   paper_id: string;
@@ -19,6 +24,9 @@ export interface PaperCardInput {
   score?: number | null;
   scoreLabel?: string;
   badges?: string[];
+  matchingResults?: MatchingScientificResult[];
+  sourceVisibility?: SourceVisibility;
+  evidenceProvenance?: EvidenceProvenance;
 }
 
 export function PaperCard(p: PaperCardInput) {
@@ -55,6 +63,9 @@ export function PaperCard(p: PaperCardInput) {
           {p.snippet}
         </p>
       )}
+      <ScientificMatches results={p.matchingResults} />
+      <SourceVisibilityNotice visibility={p.sourceVisibility} compact />
+      {p.evidenceProvenance && <EvidenceProvenanceNotice evidence={p.evidenceProvenance} />}
       {p.badges && p.badges.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5">
           {p.badges.map((b) => (

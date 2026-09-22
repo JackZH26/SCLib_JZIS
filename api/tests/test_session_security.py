@@ -145,6 +145,7 @@ def test_production_rejects_insecure_auth_urls(field: str, url: str):
 def test_production_accepts_https_auth_urls():
     settings = _production_settings()
     assert settings.environment == "production"
+    assert Settings.model_fields["ml_foundation_public_enabled"].default is False
 
 
 def test_production_browser_origins_exclude_local_development():

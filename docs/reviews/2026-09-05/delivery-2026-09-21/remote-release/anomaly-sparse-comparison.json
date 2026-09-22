@@ -1,0 +1,12 @@
+{
+  "materials": 18931,
+  "records": 75273,
+  "differing_results": 0,
+  "baseline_seconds": 23.349736815318465,
+  "candidate_seconds": 8.251608159393072,
+  "exceptions_equal": 0,
+  "database_writes": 0,
+  "provider_calls": 0,
+  "raw_text_exported": false,
+  "candidate_sha256": "accc8e401b996a43c36a0537b3ed95d4160836a992d2241507965f1794b3db9c"
+}

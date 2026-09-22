@@ -26,11 +26,11 @@ un-namespaced, but we strip any namespace defensively via ``_local``.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
 import html.entities
 import logging
 import re
 import xml.etree.ElementTree as ET
+from dataclasses import dataclass
 from pathlib import Path
 
 from ingestion.models import ApsArticleMeta, ParsedPaper, Section
@@ -187,7 +187,8 @@ def parse_jats(xml_data: bytes, meta: ApsArticleMeta) -> ParsedPaper:
                 has_table=_has_descendant(body, _TABLE_TAGS),
             )]
 
-    return ParsedPaper(meta=meta, sections=sections, has_latex_source=False)
+    return ParsedPaper(meta=meta, sections=sections, has_latex_source=False,
+                       parser_version="sclib-aps-jats-parser/1.0.0")
 
 
 def parse_ocr(ocr_data: bytes, meta: ApsArticleMeta) -> ParsedPaper:
@@ -207,7 +208,8 @@ def parse_ocr(ocr_data: bytes, meta: ApsArticleMeta) -> ParsedPaper:
     sections = _split_ocr_sections(text)
     if not sections:
         sections = [Section(name="OCR Full Text", text=text)]
-    return ParsedPaper(meta=meta, sections=sections, has_latex_source=False)
+    return ParsedPaper(meta=meta, sections=sections, has_latex_source=False,
+                       parser_version="sclib-aps-ocr-parser/1.0.0")
 
 
 # ---------------------------------------------------------------------------

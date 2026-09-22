@@ -33,7 +33,7 @@ def test_tc_max_conditions_formats_aps_paper_id():
     )
 
     assert summary["tc_max_conditions"] == (
-        "ambient, single crystal, resistivity, DOI: 10.1103/j98r-9m59"
+        "pressure unresolved, single crystal, resistivity, DOI: 10.1103/j98r-9m59"
     )
 
 
@@ -52,5 +52,5 @@ def test_tc_max_conditions_keeps_arxiv_paper_id():
     )
 
     assert summary["tc_max_conditions"] == (
-        "ambient, susceptibility, arXiv:0101446"
+        "pressure unresolved, susceptibility, arXiv:0101446"
     )

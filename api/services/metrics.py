@@ -77,8 +77,13 @@ DB_CONNECTIONS_IN_USE = Gauge(
 )
 RAG_ANSWERS = Counter(
     "sclib_rag_answers_total",
-    "RAG answers by citation and fallback outcome.",
+    "Legacy RAG citation heuristic and provider fallback outcomes; not scientific support.",
     ("citation_valid", "fallback"),
+)
+RAG_SUPPORT_OUTCOMES = Counter(
+    "sclib_rag_support_outcomes_total",
+    "Bounded automated draft excerpt checks, not scientific validation or accuracy.",
+    ("citation_indices_valid", "scientific_support_status", "answer_mode"),
 )
 RAG_SOURCES = Histogram(
     "sclib_rag_sources",
@@ -118,6 +123,17 @@ PIPELINE_STAGE_STATUS = Gauge(
     "sclib_pipeline_stage_status",
     "Pipeline stage status: complete=1, unknown=0, failed=-1.",
     ("stage",),
+)
+BACKGROUND_RESULTS = Counter(
+    "sclib_background_cycle_results_total",
+    "Background cycle outcomes, including busy and already-successful duplicate suppression.",
+    ("job", "outcome"),
+)
+BACKGROUND_DURATION = Histogram(
+    "sclib_background_cycle_duration_seconds",
+    "Committed database cycle attempt duration, not external cache delivery latency.",
+    ("job", "outcome"),
+    buckets=(0.1, 1, 5, 15, 30, 60, 120, 300, 600, 900, 1800, 3600),
 )
 
 _T = TypeVar("_T")
@@ -192,8 +208,17 @@ async def instrument_dependency_call(
     return result
 
 
-def observe_rag(*, sources: int, tokens: int | None, citation_valid: bool, fallback: bool) -> None:
+def observe_rag(*, sources: int, tokens: int | None, citation_valid: bool, fallback: bool,
+                citation_indices_valid: bool = False, scientific_support_status: str = "not_checked",
+                answer_mode: str = "abstention") -> None:
     RAG_ANSWERS.labels(str(citation_valid).lower(), str(fallback).lower()).inc()
+    status = scientific_support_status if scientific_support_status in {
+        "supported", "contradicted", "undetermined", "not_checked",
+    } else "not_checked"
+    mode = answer_mode if answer_mode in {
+        "synthesis", "limited_synthesis", "extractive_fallback", "abstention",
+    } else "abstention"
+    RAG_SUPPORT_OUTCOMES.labels(str(bool(citation_indices_valid)).lower(), status, mode).inc()
     RAG_SOURCES.observe(max(0, sources))
     if tokens is not None:
         RAG_TOKENS.observe(max(0, tokens))

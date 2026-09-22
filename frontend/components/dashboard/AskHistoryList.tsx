@@ -1,4 +1,7 @@
 "use client";
+import { EvidenceProvenanceNotice } from "@/components/EvidenceProvenanceNotice";
+import { PackingSourceNotice } from "@/components/EvidencePackingNotice";
+import { knownHistorySummary } from "@/lib/answer-history";
 
 /**
  * Collapsible list of past /ask questions.
@@ -77,6 +80,7 @@ export function AskHistoryList({
       <ul className="space-y-2">
         {entries.map((e) => {
           const open = expanded.has(e.id);
+          const receipt = knownHistorySummary(e.receipt);
           return (
             <li
               key={e.id}
@@ -93,11 +97,14 @@ export function AskHistoryList({
                   </p>
                   <p className="mt-1 text-xs text-sage-tertiary">
                     {formatDate(e.created_at)} · {e.latency_ms} ms ·{" "}
-                    {e.sources.length} source{e.sources.length === 1 ? "" : "s"}
+                    {e.sources.length.toLocaleString("en-US")} saved citation entr{e.sources.length === 1 ? "y" : "ies"}
                     {e.tokens_used != null ? ` · ${e.tokens_used} tokens` : ""}
                   </p>
                 </button>
                 <div className="flex shrink-0 items-center gap-2">
+                  {receipt && <Link href={`/dashboard/history/${encodeURIComponent(e.id)}`} className="rounded-md border border-sage-border bg-white px-2.5 py-1 text-xs text-accent-deep underline">
+                    {receipt.status === "recorded" ? "View saved receipt" : "View history detail"}
+                  </Link>}
                   <button
                     type="button"
                     onClick={() => toggle(e.id)}
@@ -119,12 +126,19 @@ export function AskHistoryList({
                   <h4 className="text-xs font-semibold uppercase tracking-wide text-sage-tertiary">
                     Question
                   </h4>
+                  {receipt?.status !== "recorded" && <p className="mt-1 text-xs text-amber-900">
+                    {receipt?.status === "unavailable" ? "Saved receipt unavailable; no version binding is established here." : "Legacy unpinned history: exact answer-time bindings were not recorded. Missing references are not reconstructed."}
+                  </p>}
                   <p className="mt-1 whitespace-pre-wrap text-sm text-sage-ink">
                     {e.question}
                   </p>
                   <h4 className="mt-4 text-xs font-semibold uppercase tracking-wide text-sage-tertiary">
                     Answer
                   </h4>
+                  {receipt?.status === "recorded" ? <p className="mt-1 text-xs text-amber-900">Open the saved receipt to inspect retained answer-time checks, structured rows and version bindings. This list preview does not verify them or establish scientific approval.</p> : <>
+                    <p className="mt-1 text-xs text-amber-900">Scientific support status is unknown for this saved answer snapshot. Historical citations are not evidence of scientific verification; the current claim-check audit is not stored here.</p>
+                    <p className="mt-1 text-xs text-amber-900">Structured extraction rows and Result-to-passage association metadata are not reconstructed in this history view. Rerun the original query to inspect a new, separately qualified lookup.</p>
+                  </>}
                   <pre className="mt-1 whitespace-pre-wrap break-words rounded-md bg-white p-3 text-sm leading-relaxed text-sage-ink">
                     {e.answer}
                   </pre>
@@ -133,8 +147,16 @@ export function AskHistoryList({
                       <h4 className="mt-4 text-xs font-semibold uppercase tracking-wide text-sage-tertiary">
                         Sources
                       </h4>
+                      <p className="mt-1 text-xs text-amber-900">Saved citations are historical. Current source and material warnings below describe a request-time metadata snapshot, not a revalidation of the saved excerpt or answer.</p>
+                      <p className="mt-1 text-xs text-amber-900">Citation entries may be complementary passages from the same source, not independent papers or experiments. Saved per-passage selection labels cannot reconstruct the original input-budget report.</p>
+                      {e.current_evidence?.metadata_snapshot_at && <p className="mt-1 text-xs text-sage-muted">Metadata snapshot: {formatDate(e.current_evidence.metadata_snapshot_at)}. Later source changes require a new read.</p>}
+                      {e.current_evidence?.warning_codes.includes("saved_source_inventory_truncated") && <p className="mt-1 text-xs text-amber-900">Some saved sources exceed the current-check limit. Their present evidence status is unknown.</p>}
+                      {e.current_evidence?.warning_codes.includes("current_evidence_output_budget_exhausted") && <p className="mt-1 text-xs text-amber-900">Some current source summaries exceed the response limit and were omitted. Missing summaries do not establish current support.</p>}
                       <ol className="mt-1 space-y-1 text-xs text-sage-muted">
-                        {e.sources.map((s, i) => (
+                        {e.sources.map((s, i) => {
+                          const current = e.current_evidence?.sources.find((item) => item.saved_source_position === i && item.paper_id === s.paper_id);
+                          const states = current?.occurrence_visibility_summary?.state_counts;
+                          return (
                           <li key={i} className="flex gap-2">
                             <span className="font-semibold text-accent-deep">
                               [{s.index ?? i + 1}]
@@ -152,9 +174,18 @@ export function AskHistoryList({
                               )}
                               {s.authors_short ? ` — ${s.authors_short}` : ""}
                               {s.year ? ` (${s.year})` : ""}
+                              <EvidenceProvenanceNotice evidence={s.evidence_provenance} historical />
+                              <PackingSourceNotice source={s} sources={e.sources} historical />
+                              <span className="mt-1 block text-amber-900">
+                                {current && current.metadata_status !== "unavailable" ? `Current source status: ${current.source_visibility.source_status}.` : "Current source status is unavailable; do not treat saved citations as current support."}
+                                {current?.source_visibility.reported_claim_filter_eligible === false && current.metadata_status !== "unavailable" && " Current claim-support eligibility is withheld; review is required."}
+                                {current?.metadata_status === "incomplete" && " Current material occurrence checks are incomplete."}
+                              </span>
+                              {states && <span className="mt-1 block">Current paper occurrences: {Object.entries(states).map(([state, count]) => `${state}: ${count}`).join("; ") || "none"}. Explicit material links only; no matching by formula.</span>}
                             </span>
                           </li>
-                        ))}
+                          );
+                        })}
                       </ol>
                     </>
                   )}
@@ -197,7 +228,7 @@ function truncate(s: string, n: number): string {
 
 function formatDate(iso: string): string {
   try {
-    return new Date(iso).toLocaleString(undefined, {
+    return new Date(iso).toLocaleString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",

@@ -40,9 +40,9 @@ export function StatsCards({ stats }: { stats: StatsResponse }) {
 
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-      <Card label="Papers" value={stats.total_papers.toLocaleString()} />
-      <Card label="Materials" value={stats.total_materials.toLocaleString()} />
-      <Card label="Chunks" value={stats.total_chunks.toLocaleString()} />
+      <Card label="Papers" value={stats.total_papers.toLocaleString("en-US")} />
+      <Card label="Materials" value={stats.total_materials.toLocaleString("en-US")} />
+      <Card label="Chunks" value={stats.total_chunks.toLocaleString("en-US")} />
       <Card
         label="Last ingest"
         value={rel}
