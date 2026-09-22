@@ -1,0 +1,122 @@
+{
+  "revision": "e673df86c2ecb5c6d263f0e747643636bbf732b1",
+  "scope": "owned full-data clone, read-only HTTP; no production cutover; frontend routes are SSR checks, not hydrated browser acceptance",
+  "production_writes": false,
+  "ingestion_executed": false,
+  "emails_sent": 0,
+  "cloud_credentials_mounted": false,
+  "requests": [
+    {
+      "path": "/readyz",
+      "status": 200,
+      "seconds": 2.661,
+      "response_sha256": "68557102d8d6ef8f768eb7b9f99d34c5a95ba8a6a8ab4eec6e8bd12bb231f56a"
+    },
+    {
+      "path": "/v1/version",
+      "status": 200,
+      "seconds": 0.007,
+      "response_sha256": "699c8bd4f94706d70ee0df8b7410b3eccaec29fe22d3e93c0a42036b1b928a43",
+      "site_version": "e673df8"
+    },
+    {
+      "path": "/v1/stats",
+      "status": 200,
+      "seconds": 0.005,
+      "response_sha256": "c4bf81195ec8c104e9588bac9bfe40d2d5c415dc3b4dd2e02a4a680b5d3caddd"
+    },
+    {
+      "path": "/v1/materials?limit=3",
+      "status": 200,
+      "seconds": 0.004,
+      "response_sha256": "3dc509d9acc8e10247930101534359a1de66ea9c186863031e54e29aba472931",
+      "total": 10507,
+      "returned": 3
+    },
+    {
+      "path": "/v1/materials?limit=3",
+      "status": 200,
+      "seconds": 0.004,
+      "response_sha256": "3dc509d9acc8e10247930101534359a1de66ea9c186863031e54e29aba472931",
+      "total": 10507,
+      "returned": 3
+    },
+    {
+      "path": "/v1/paper/arxiv%3Asupr-con%2F9609004",
+      "status": 200,
+      "seconds": 0.008,
+      "response_sha256": "6693819804d773ef3b2fbc50264219f57a7cd5e3fae344ce636e6ac939d2925c"
+    },
+    {
+      "path": "/v1/similar/arxiv%3Asupr-con%2F9609004?top_k=3",
+      "status": 503,
+      "seconds": 0.006,
+      "response_sha256": "e5ab48bea1856fe6f253b9d6013ec8923c380344c4b47ffefe12c76f70af241f",
+      "error": "Similarity search is temporarily unavailable. Please try again later."
+    },
+    {
+      "path": "/sclib",
+      "status": 200,
+      "seconds": 5.455,
+      "bytes": 26805,
+      "body_sha256": "1493222951ef7a738d5c93f6dec8812fed509ec764b1a0088f37822fb204f424",
+      "html_english": true
+    },
+    {
+      "path": "/sclib/materials",
+      "status": 200,
+      "seconds": 0.662,
+      "bytes": 1466038,
+      "body_sha256": "4493b70aa0e5b766e58fe2311510c0d63dd74ac940c9f6ff699562c160394f55",
+      "html_english": true
+    },
+    {
+      "path": "/sclib/stats",
+      "status": 200,
+      "seconds": 0.033,
+      "bytes": 44544,
+      "body_sha256": "d427c22d69be25ed86a799a1a9e80e411c646e0721620aa062e0536242ba2aad",
+      "html_english": true
+    },
+    {
+      "path": "/sclib/timeline",
+      "status": 200,
+      "seconds": 22.42,
+      "bytes": 20987633,
+      "body_sha256": "22d722f205a7149a80aa5a24fc58201d3348aa4dd984770cf5e232d760f923f3",
+      "html_english": true
+    },
+    {
+      "path": "/sclib/search",
+      "status": 200,
+      "seconds": 0.019,
+      "bytes": 21887,
+      "body_sha256": "37ee85e43fcbd447948c2dbd88ae17d949f3c54606f7823a03d7a800ec3ff27f",
+      "html_english": true
+    },
+    {
+      "path": "/sclib/ask",
+      "status": 200,
+      "seconds": 0.019,
+      "bytes": 21887,
+      "body_sha256": "37ee85e43fcbd447948c2dbd88ae17d949f3c54606f7823a03d7a800ec3ff27f",
+      "html_english": true
+    },
+    {
+      "path": "/sclib/discovery",
+      "status": 200,
+      "seconds": 0.047,
+      "bytes": 149813,
+      "body_sha256": "d94f2a6a842247f37a328894824031d93d225044a919741e187eca083ffd7f7c",
+      "html_english": true
+    },
+    {
+      "path": "/sclib/login",
+      "status": 200,
+      "seconds": 0.006,
+      "bytes": 23669,
+      "body_sha256": "39bb2a453c1cbb15dbfca83c7ef64935dcef7beed572d8bbb7672cefe90fb85b",
+      "html_english": true
+    }
+  ]
+}

@@ -44,7 +44,7 @@ describe("native own-review declaration protocol", () => {
     expect(() => review.parseReviewCoverage(raw, own.actor_user_id, reference(), basis)).toThrow();
   });
   it("pins current original replies without resealing historical evidence", () => {
-    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.delivery20260921r9.wire.json")))).toBe("2941daef769740d543c06efe181e0c492473fd775fce4a870fc8e4160abb4feb");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.delivery20260922r2.wire.json")))).toBe("9e51edc70fc07022e281179ff7021a21ff2a8166ea0aaaadeeebfae5a035ed71");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.batch75.wire.json")))).toBe("4c55cf055b23be8554cf3eceb9edcda20bb4f3657b0d1c8eeacdc6f261d517b8");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.batch73.wire.json")))).toBe("9efd63d963bd8a4c0a2ecb8c2294ea4cd615833a35a9f8d49acd49e560c90bb0");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.batch74.wire.json")))).toBe("f5f3f68dbf52e65eaf713e243b2015420c544415c00e498fce7b6982eb135cb6");

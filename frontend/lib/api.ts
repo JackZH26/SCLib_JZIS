@@ -1748,7 +1748,7 @@ export function getTimeline(opts: {
   family?: string;
   experimentalOnly?: boolean;
   onlyAps?: boolean;
-  maxPoints?: 5000 | 10000 | 20000 | 50000;
+  maxPoints?: 2000 | 5000 | 10000 | 20000 | 50000;
   compact?: boolean;
   offset?: number;
   limit?: number;

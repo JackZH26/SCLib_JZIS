@@ -1,0 +1,52 @@
+{
+  "base_revision": "e673df86c2ecb5c6d263f0e747643636bbf732b1",
+  "candidate_source": {
+    "api/routers/timeline.py": "8bd988bf194a5288afe5c5cab79d9acd827165568f642755092e741d70c9caea",
+    "frontend/app/timeline/page.tsx": "dbc4acf13c872ed3f5ec80538ccada9fc4163e90af390ef5d2b872b1e5fc6dd7",
+    "frontend/lib/api.ts": "0dfa41857e093f0e93b526633be8bf5dc8a4ee3f8130abb579f8322c3910b467"
+  },
+  "live_database_modified": false,
+  "cloud_calls": 0,
+  "api": {
+    "requests": [
+      {
+        "budget": 2000,
+        "status": 200,
+        "seconds": 17.255,
+        "bytes": 3772935,
+        "returned": 2000,
+        "full_total": 19338,
+        "sampled": true
+      },
+      {
+        "budget": 10000,
+        "status": 200,
+        "seconds": 17.682,
+        "bytes": 18846439,
+        "returned": 10000,
+        "full_total": 19338,
+        "sampled": true
+      }
+    ],
+    "full_coverage_and_summary_equal": true,
+    "data_version_equal": true
+  },
+  "frontend": [
+    {
+      "path": "/sclib/timeline",
+      "status": 200,
+      "bytes": 4268501,
+      "seconds": 17.519,
+      "display_controls_present": true,
+      "sha256": "033fafd9442ce04a185ed28074a6133eb7f6a9f202806a796677e9516f5840de"
+    },
+    {
+      "path": "/sclib/timeline?display=expanded",
+      "status": 200,
+      "bytes": 20991842,
+      "seconds": 24.852,
+      "display_controls_present": true,
+      "sha256": "faf36542122fa0bf58762579f7637138fa0b39258f011f218d9087a0bd001996"
+    }
+  ]
+}

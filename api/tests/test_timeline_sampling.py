@@ -94,6 +94,35 @@ async def test_reviewed_only_is_rejected_instead_of_silently_returning_legacy_re
 
 
 @pytest.mark.asyncio
+async def test_small_http_display_budget_preserves_full_coverage_and_record_summary(client, monkeypatch):
+    from datetime import UTC, datetime
+    from types import SimpleNamespace
+
+    points = [_point(i, tc_kelvin=float(1 + i % 300)) for i in range(2500)]
+
+    async def projection(*args, **kwargs):
+        return SimpleNamespace(points=points, refreshed_at=datetime(2026, 1, 1, tzinfo=UTC))
+
+    monkeypatch.setattr("routers.timeline.fetch_projected_timeline_points", projection)
+    small = await client.get("/v1/timeline", params={"max_points": 2000, "compact": True})
+    expanded = await client.get("/v1/timeline", params={"max_points": 10000, "compact": True})
+    assert small.status_code == expanded.status_code == 200
+    small, expanded = small.json(), expanded.json()
+    assert len(small["points"]) == 2000
+    assert len(expanded["points"]) == 2500
+    assert small["sampling"]["is_sampled"] is True
+    assert small["sampling"]["total_points"] == 2500
+    for name in ("total_points", "total_materials", "year_min", "year_max"):
+        assert small["coverage"][name] == expanded["coverage"][name]
+    assert small["coverage"]["returned_points"] == small["coverage"]["available_points"] == 2000
+    assert expanded["coverage"]["returned_points"] == expanded["coverage"]["available_points"] == 2500
+    for name in ("record_summary", "data_version"):
+        assert small[name] == expanded[name]
+    invalid = await client.get("/v1/timeline", params={"max_points": 2001})
+    assert invalid.status_code == 422
+
+
+@pytest.mark.asyncio
 async def test_archive_fallback_isolates_malformed_records_without_repairing_originals(client, monkeypatch):
     from models.db import Material, get_session_factory
 

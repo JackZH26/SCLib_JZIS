@@ -66,26 +66,32 @@ with an incident record and an explicit rollback owner.
 
 Before enabling the signed-image deployment workflow for the first time, start
 the observability profile manually and validate its targets. The automated gate
-has no bootstrap bypass: it begins deploying only after the required request
-sample and freshness metric exist.
+has no availability bootstrap bypass: the required request samples must exist.
+When an operator explicitly defers ingestion, set the production environment
+variable `SCLIB_INGESTION_MODE=paused`. Deployment verifies the existing nonempty
+`scripts/.sclib-ingestion-paused` marker and reports data freshness as
+`DEFERRED` (`passed=null`, `applicable=false`), retaining the measured data age.
+This does not claim freshness, resume a timer, or waive public/AI availability.
+The default `active` mode still enforces freshness; removing a marker does not
+silently change the chosen operating mode.
 
 ## Notification routing requirement
 
 The repository default routes alerts to the private Alertmanager console and
-does not contain third-party credentials. Before enabling the production gate,
-the operator must replace or extend `operator-console` in
-`ops/alertmanager/alertmanager.yml` with an approved email, Slack, PagerDuty,
-or other receiver, reload Alertmanager, and send a test alert. Store receiver
-secrets outside Git and mount them read-only. Record the destination and test
-date in the operations log.
+does not contain third-party credentials. The production environment variable
+`SCLIB_ALERT_DELIVERY=console` (the default) selects this configuration without
+an SMTP credential mount or outbound messages. This supports an explicit
+operator decision to defer external notification delivery while upgrading the
+website; it is not a successful delivery test.
 
-The production override loads the approved receiver configuration from
+After approval of an external receiver, set `SCLIB_ALERT_DELIVERY=email`.
+The deployment then includes `docker-compose.alert-email.yml` and loads the approved receiver configuration from
 `/etc/sclib/alertmanager/alertmanager.yml` and the SMTP credential from
 `/etc/sclib/credentials/alertmanager-smtp-password`, mounted read-only as
 `/run/secrets/sclib-alertmanager-smtp-password`. Keep both host files outside
 Git. Validate the config with the deployed Alertmanager version before
 activation; obtain approval for the destination and verification message.
-The default development console configuration remains in the repository.
+Record the destination and actual delivery test date in the operations log.
 
 ## Alert runbooks
 

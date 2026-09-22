@@ -65,7 +65,7 @@ test("all material-family navigation uses an English elemental label", () => {
 });
 
 test("timeline page requests a bounded compact payload", () => {
-  assert.match(page, /maxPoints:\s*10000/);
+  assert.match(page, /maxPoints:\s*expanded\s*\?\s*10000\s*:\s*2000/);
   assert.match(page, /compact:\s*true/);
   const timelineFetch = api.slice(api.indexOf("export function getTimeline("), api.indexOf("export interface DiscoveryFilterRule"));
   assert.match(timelineFetch, /cache:\s*["']no-store["']/);

@@ -56,6 +56,7 @@ _CACHE_CONTROL = "private, no-store"
 class TimelinePointBudget(IntEnum):
     """Rendering budgets accepted from URL query strings."""
 
+    POINTS_2000 = 2000
     POINTS_5000 = 5000
     POINTS_10000 = 10000
     POINTS_20000 = 20000

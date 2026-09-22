@@ -85,6 +85,7 @@ export default async function TimelinePage({
     family?: string;
     experimental_only?: string;
     only_aps?: string;
+    display?: string;
   }>;
 }) {
   const query = await searchParams;
@@ -94,11 +95,15 @@ export default async function TimelinePage({
   // a half-checked state when query strings are sloppy.
   const experimentalOnly = query.experimental_only === "true";
   const onlyAps = query.only_aps === "true";
+  // Full-data acceptance produced a ~20 MB page at 10,000 points. Start with
+  // a bounded display sample; the backend still computes full coverage and
+  // unsampled extrema. Expanded rendering is an explicit user choice.
+  const expanded = query.display === "expanded";
   const data = await getTimeline({
     family: current || undefined,
     experimentalOnly,
     onlyAps,
-    maxPoints: 10000,
+    maxPoints: expanded ? 10000 : 2000,
     compact: true,
   }).catch(() => null);
 
@@ -108,11 +113,13 @@ export default async function TimelinePage({
     nextFamily: string,
     nextExperimentalOnly: boolean,
     nextOnlyAps: boolean,
+    nextExpanded = expanded,
   ): string => {
     const qs = new URLSearchParams();
     if (nextFamily) qs.set("family", nextFamily);
     if (nextExperimentalOnly) qs.set("experimental_only", "true");
     if (nextOnlyAps) qs.set("only_aps", "true");
+    if (nextExpanded) qs.set("display", "expanded");
     const s = qs.toString();
     return s ? `/timeline?${s}` : "/timeline";
   };
@@ -169,6 +176,13 @@ export default async function TimelinePage({
             label="APS sources only"
           />
         </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2 text-sm" aria-label="Timeline display size">
+        <span>Display sample:</span>
+        <FilterToggleLink href={buildHref(current, experimentalOnly, onlyAps, false)} active={!expanded} label="Up to 2,000 results" />
+        <FilterToggleLink href={buildHref(current, experimentalOnly, onlyAps, true)} active={expanded} label="Up to 10,000 results" />
+        <p className="w-full text-xs text-slate-600">The larger display takes longer to load. Coverage counts and reported record summaries use the full eligible selection in both views; sampling limits are shown below.</p>
       </div>
 
       {data == null ? (
