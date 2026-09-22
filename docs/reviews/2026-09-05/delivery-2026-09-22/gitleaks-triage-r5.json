@@ -1,0 +1,19 @@
+{
+  "findings": 13,
+  "reviewed_fingerprints": [
+    {
+      "fingerprint": "a3436b508d87ccfa307c266f7dcada10c404bd9a:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260922r5.wire.json:generic-api-key:1",
+      "classification": "exact_decoded_synthetic_request_key"
+    },
+    {
+      "fingerprint": "a3436b508d87ccfa307c266f7dcada10c404bd9a:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260922r5.wire.json:generic-api-key:1",
+      "classification": "exact_decoded_synthetic_request_key"
+    },
+    {
+      "fingerprint": "a3436b508d87ccfa307c266f7dcada10c404bd9a:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260922r5.wire.json:generic-api-key:1",
+      "classification": "exact_decoded_synthetic_request_key"
+    }
+  ],
+  "credential_findings": 0,
+  "scope": "Exact values were compared privately; no rule, directory or commit-wide exclusion is permitted."
+}
