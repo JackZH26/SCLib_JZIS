@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 
+import json
+import os
 import re
+import shutil
+import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -374,6 +379,43 @@ class SecurityWorkflowTests(unittest.TestCase):
         self.assertIn("command:", api_block)
         self.assertIn("- uvicorn", api_block)
         self.assertIn('- "8000"', api_block)
+
+    @unittest.skipUnless(shutil.which("docker"), "Docker CLI is required for Compose resolution")
+    def test_production_applications_do_not_inherit_infrastructure_passwords(self) -> None:
+        # Exercise actual Compose env_file/override precedence with synthetic
+        # credentials. No daemon, containers, database or real .env is used.
+        with tempfile.TemporaryDirectory(prefix="sclib-compose-env-") as directory:
+            env_file = Path(directory) / ".env"
+            runtime_url = "postgresql+asyncpg://sclib_runtime:" + "application-only@postgres/sclib"
+            env_file.write_text(
+                "DB_PASSWORD=infrastructure-only\n"
+                "GRAFANA_ADMIN_PASSWORD=monitoring-only\n"
+                f"DATABASE_URL={runtime_url}\n"
+            )
+            environment = {key: value for key, value in os.environ.items()
+                           if key in {"PATH", "HOME", "LANG", "LC_ALL", "TMPDIR", "SYSTEMROOT"}}
+            environment.update({f"SCLIB_{name.upper()}_IMAGE":
+                                f"ghcr.io/jackzh26/sclib-{name}@sha256:" + "1" * 64
+                                for name in ("api", "frontend", "ingestion")})
+            result = subprocess.run(
+                ["docker", "compose", "--project-directory", directory,
+                 "--env-file", str(env_file), "--profile", "observability", "--profile", "tools",
+                 "-f", str(ROOT / "docker-compose.yml"),
+                 "-f", str(ROOT / "docker-compose.prod.yml"), "config", "--format", "json"],
+                env=environment, capture_output=True, text=True, timeout=30,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            services = json.loads(result.stdout)["services"]
+            for name in ("api", "ingestion"):
+                with self.subTest(service=name):
+                    actual = services[name]["environment"]
+                    self.assertEqual(actual["DB_PASSWORD"], "")
+                    self.assertEqual(actual["GRAFANA_ADMIN_PASSWORD"], "")
+                    self.assertEqual(actual["DATABASE_URL"], runtime_url)
+            self.assertEqual(services["postgres"]["environment"]["POSTGRES_PASSWORD"], "infrastructure-only")
+            self.assertEqual(services["grafana"]["environment"]["GF_SECURITY_ADMIN_PASSWORD"], "monitoring-only")
+            self.assertEqual(services["migration"]["environment"]["DATABASE_URL"], "")
+            self.assertIn("SCLIB_MIGRATION_DATABASE_URL_FILE", services["migration"]["environment"])
 
     def test_scheduled_jobs_reuse_last_signed_release_manifest(self) -> None:
         deploy = (WORKFLOW_DIR / "deploy.yml").read_text()
