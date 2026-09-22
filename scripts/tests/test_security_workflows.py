@@ -11,6 +11,14 @@ WORKFLOW_DIR = ROOT / ".github" / "workflows"
 # Reviewed immutable findings only. See the batch82 triage and original scan;
 # new fixture revisions must be scanned and reviewed, never covered by a glob.
 REVIEWED_FIXTURE_FINGERPRINTS = {
+    # September 22: exact synthetic keys and the public frontend API source hash.
+    '5d3095a9fc71d6e5f9c83752035135383afe4fc0:docs/reviews/2026-09-05/delivery-2026-09-22/timeline-display-acceptance.json:generic-api-key:6',
+    '5d3095a9fc71d6e5f9c83752035135383afe4fc0:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260922r2.wire.json:generic-api-key:1',
+    '5d3095a9fc71d6e5f9c83752035135383afe4fc0:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260922r1.wire.json:generic-api-key:1',
+    '5d3095a9fc71d6e5f9c83752035135383afe4fc0:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260922r2.wire.json:generic-api-key:1',
+    '5d3095a9fc71d6e5f9c83752035135383afe4fc0:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260922r1.wire.json:generic-api-key:1',
+    '5d3095a9fc71d6e5f9c83752035135383afe4fc0:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260922r2.wire.json:generic-api-key:1',
+
     # r9 receipts: three synthetic request-key archives and one public source-file digest.
     'f390087e544cbe3b71c7f7016687b9e8ad8aac23:docs/reviews/2026-09-05/delivery-2026-09-21/remote-release/anomaly-sparse-source-comparison.json:generic-api-key:2',
     'f390087e544cbe3b71c7f7016687b9e8ad8aac23:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260921r9.wire.json:generic-api-key:1',
