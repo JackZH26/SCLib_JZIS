@@ -257,3 +257,44 @@ async def test_rewindowing_cannot_escape_original_chunk_restriction(db_session):
     hydrated = await index_retrieval.hydrate(db_session, pin, [members[0]["vector_id"]])
     evidence = await index_retrieval.resolve_evidence(db_session, list(hydrated.values()))
     assert evidence[members[0]["vector_id"]]["permission_status"] == "restricted"
+
+
+async def test_readonly_plan_matches_guarded_sql_members_and_rejects_source_drift(db_session):
+    from services.retained_corpus_import import plan_completions, import_completions
+    from services.index_corpus import prepare_members
+
+    entries, originals = [], []
+    identifier = uuid4()
+    for n in (1, 2):
+        chunk, member, args = await input_window(db_session)
+        vector, receipt = completion(chunk["text"])
+        entries.append(
+            {**args, "source_seq": n, "member_seq": n, "vector": vector, "receipt": receipt}
+        )
+        originals.append(chunk["id"])
+    tables = (
+        "chunks",
+        "legacy_index_papers",
+        "legacy_index_sources",
+        "legacy_index_windows",
+        "rag_evidence_revisions",
+        "embedding_completion_receipts",
+        "index_generation_members",
+    )
+
+    async def counts():
+        return [await db_session.scalar(sa.text("SELECT count(*) FROM " + name)) for name in tables]
+
+    before = await counts()
+    plan = await plan_completions(db_session, generation_id=identifier, entries=entries)
+    assert await counts() == before
+    items = await import_completions(db_session, entries=entries)
+    actual = await prepare_members(db_session, generation_id=identifier, items=items)
+    assert plan == actual  # Every typed snapshot, receipt ID/hash and vector ID.
+    await db_session.execute(
+        sa.text("UPDATE chunks SET text=text||' changed' WHERE id=:id"), {"id": originals[0]}
+    )
+    changed = await counts()
+    with pytest.raises(ValueError):
+        await plan_completions(db_session, generation_id=identifier, entries=entries)
+    assert await counts() == changed

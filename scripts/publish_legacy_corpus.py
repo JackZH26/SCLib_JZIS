@@ -203,7 +203,7 @@ async def run(args):
         index_generations as generations,
         index_vector_adapter as adapter,
     )
-    from services.retained_corpus_import import remove_replayed_chunks
+    from services.retained_corpus_import import remove_replayed_chunks, plan_completions
 
     inputs = Inputs(args.pack, args.completions, args.completion_sha256)
     resource = json.loads(Path(args.resource).read_text())
@@ -232,15 +232,11 @@ async def run(args):
                 part += 1
                 require(part <= 20000, "corpus_partition_limit")
                 async with get_session_factory()() as db:
-                    items = await import_batch(db, entries)
-                    members = await corpus.prepare_members(
-                        db, generation_id=identifier, items=items
+                    members = await plan_completions(
+                        db, generation_id=identifier, entries=entries
                     )
                     plan = corpus.partition_plan(members, part)
-                    await remove_replayed_chunks(
-                        db, chunk_ids=[x["chunk_id"] for x in items]
-                    )
-                    await db.commit()
+                    await db.rollback()
                 with journal.db:
                     journal.db.execute(
                         "INSERT INTO plans VALUES(?,?,?,?)",

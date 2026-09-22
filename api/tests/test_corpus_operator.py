@@ -120,6 +120,17 @@ async def test_resumable_operator_preserves_originals_and_activates_only_after_f
     )
     for _ in range(3):
         await run(args)
+    async with get_session_factory()() as db:
+        assert await db.scalar(sa.text("SELECT count(*) FROM chunks")) == 3
+        for table in (
+            "legacy_index_papers",
+            "legacy_index_sources",
+            "legacy_index_windows",
+            "rag_evidence_revisions",
+            "embedding_completion_receipts",
+            "index_generations",
+        ):
+            assert await db.scalar(sa.text("SELECT count(*) FROM " + table)) == 0
     args.command = "stage"
     for _ in range(3):
         await run(args)
