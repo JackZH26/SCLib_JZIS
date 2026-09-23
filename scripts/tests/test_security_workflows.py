@@ -16,6 +16,10 @@ WORKFLOW_DIR = ROOT / ".github" / "workflows"
 # Reviewed immutable findings only. See the batch82 triage and original scan;
 # new fixture revisions must be scanned and reviewed, never covered by a glob.
 REVIEWED_FIXTURE_FINGERPRINTS = {
+    # September 23 r3: exact decoded synthetic request keys; retained triage receipt.
+    '9c3d348a53ae7acf62fd64c026de675d9b0693b0:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260923r3.wire.json:generic-api-key:1',
+    '9c3d348a53ae7acf62fd64c026de675d9b0693b0:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260923r3.wire.json:generic-api-key:1',
+
     # September 23 r2: exact decoded synthetic request keys; retained triage receipt.
     '473c429de54f067c7befa282a189328b9ccf6bf2:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260923r2.wire.json:generic-api-key:1',
     '473c429de54f067c7befa282a189328b9ccf6bf2:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260923r2.wire.json:generic-api-key:1',
