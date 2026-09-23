@@ -1,4 +1,4 @@
-"""0079/0080 owned migration round trips and independent history guards."""
+"""0079–0081 owned migration round trips and independent history guards."""
 
 from test_safety import validate_test_environment, verify_postgres_identity
 
@@ -12,6 +12,7 @@ TABLES = (
     "index_corpus_formula_terms",
     "index_corpus_seals",
     "index_corpus_observations",
+    "index_generation_search",
 )
 
 
@@ -52,7 +53,7 @@ def empty_roundtrip(capability, engine, config):
         verify_postgres_identity(c, capability)
         assert all(
             c.execute(text(f"SELECT count(*) FROM {name}")).scalar_one() == 0
-            for name in TABLES
+            for name in TABLES if name != "index_generation_search"
         )
         before, definitions = snapshot(c, True), objects(c)
     command.downgrade(config, "0078_scientific_result_passage")

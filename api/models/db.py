@@ -1761,6 +1761,10 @@ from models.index_corpus_v1 import register as _register_index_corpus  # noqa: E
 
 INDEX_CORPUS = _register_index_corpus(Base.metadata)
 
+from models.index_search_v1 import register as _register_index_search  # noqa: E402
+
+INDEX_SEARCH = _register_index_search(Base.metadata)
+
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.

@@ -256,7 +256,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
             'all(before[name] for name in _DISCOVERY_PROJECTION_TABLES)',
             'command.downgrade(config, "0069_discovery_projection")', 'assert "exact revision" in str(exc)',
             'frozen_insert_statement().split("AS $$", 1)', 'SELECT prosrc FROM pg_proc',
-            'command.upgrade(config, "head")', '"0080_index_corpus"', "_assert_empty_ml_use_roles(connection)",
+            'command.upgrade(config, "head")', '"0081_index_search"', "_assert_empty_ml_use_roles(connection)",
             "assert functions(connection) == before_functions"):
             self.assertIn(marker, body)
         self.assertEqual(body.count("assert snapshot(connection) == before"), 2)

@@ -90,15 +90,13 @@ async def lexical_search(
     """Run bounded PostgreSQL web-style full-text search over title + chunk."""
     if generation_id is not None:
         statement = text("""SELECT m.vector_id AS id,
-            ts_rank_cd(to_tsvector('english'::regconfig,coalesce(m.snapshot_json->>'title','')||' '||
-                       (m.snapshot_json->>'text')),websearch_to_tsquery('english'::regconfig,:query)) AS rank
-            FROM index_generation_members m JOIN papers p ON p.id=m.paper_id
+            ts_rank_cd(m.document,websearch_to_tsquery('english'::regconfig,:query)) AS rank
+            FROM index_generation_search m JOIN papers p ON p.id=m.paper_id
             WHERE m.generation_id=:generation
-              AND to_tsvector('english'::regconfig,coalesce(m.snapshot_json->>'title','')||' '||
-                  (m.snapshot_json->>'text')) @@ websearch_to_tsquery('english'::regconfig,:query)
+              AND m.document @@ websearch_to_tsquery('english'::regconfig,:query)
               AND (NOT :exclude_retracted OR p.status<>'retracted')
-              AND (CAST(:year_min AS integer) IS NULL OR (m.snapshot_json->>'year')::integer>=:year_min)
-              AND (CAST(:year_max AS integer) IS NULL OR (m.snapshot_json->>'year')::integer<=:year_max)
+              AND (CAST(:year_min AS integer) IS NULL OR m.year>=:year_min)
+              AND (CAST(:year_max AS integer) IS NULL OR m.year<=:year_max)
             ORDER BY rank DESC,m.vector_id LIMIT :limit""")
         rows = (await db.execute(statement, {"generation": generation_id, "query": query_text,
             "exclude_retracted": exclude_retracted, "year_min": year_min, "year_max": year_max,

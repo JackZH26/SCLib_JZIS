@@ -41,6 +41,9 @@ def _assert_empty_ml_runs(connection):
     from sqlalchemy import text
 
     for name in (*_ML_RUN_TABLES, *_ML_PILOT_TABLES, _RESULT_PASSAGE_TABLE, *_LEGACY_CORPUS_TABLES):
+        # 0081 is derived from already-retained 0062 members, not new history.
+        if name == "index_generation_search":
+            continue
         assert connection.execute(text(f"SELECT count(*) FROM public.{name}")).scalar_one() == 0
 
 
@@ -2189,7 +2192,7 @@ def _discovery_main_barrier_roundtrip(capability, engine, config, *, package_id=
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
-        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0080_index_corpus"
+        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0081_index_search"
         _assert_empty_ml_use_roles(connection)
         assert snapshot(connection) == before
         assert functions(connection) == before_functions
@@ -3109,6 +3112,8 @@ def main() -> None:
                 verify_postgres_identity(connection, capability)
                 recorder.phase(connection, "before_read_cutover")
         generation_id = asyncio.run(_index_generations_on_migrated_schema(capability, api_root, receipt_id, recorder=recorder))
+        from migration_index_search import populated_roundtrip as search_roundtrip
+        search_roundtrip(capability, engine, config)
         _index_generation_downgrade_guard(capability, engine, config, generation_id)
         _observed(recorder, "generation_history_downgrade_refused")
         _distributions_empty_roundtrip(capability, engine, config)
