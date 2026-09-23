@@ -44,6 +44,7 @@ describe("native own-review declaration protocol", () => {
     expect(() => review.parseReviewCoverage(raw, own.actor_user_id, reference(), basis)).toThrow();
   });
   it("pins current original replies without resealing historical evidence", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.delivery20260923r1.wire.json")))).toBe("bb7df261d9abaf06dec92951b3bb1ae34717c87b726baa30506060b7e0c09eec");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.delivery20260922r10.wire.json")))).toBe("2786b21c5885d8d3888eba6092f5e014f588ab0b7e74142fe5a4108c5a2fcd02");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.delivery20260922r9.wire.json")))).toBe("752815b3ab195e92cb9f74c23879dd6cff42649a9f9d83472576c3525882e38f");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.batch75.wire.json")))).toBe("4c55cf055b23be8554cf3eceb9edcda20bb4f3657b0d1c8eeacdc6f261d517b8");
@@ -51,8 +52,8 @@ describe("native own-review declaration protocol", () => {
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.batch74.wire.json")))).toBe("f5f3f68dbf52e65eaf713e243b2015420c544415c00e498fce7b6982eb135cb6");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.batch72.wire.json")))).toBe("cd45d0b65b86fc9ea2d33e90ff3b150ebd4c392512e956e2810156cea1e30c3b");
     expect(native.capture_test_path).toBe("api/tests/test_ml_pilot_attestations.py"); expect(native.fixture_notice).toContain("synthetic, not a real independent review");
-    expect(native.source_pins).toHaveLength(612);
-    expect(new Set(native.source_pins.map(p => p.path)).size).toBe(612);
+    expect(native.source_pins).toHaveLength(615);
+    expect(new Set(native.source_pins.map(p => p.path)).size).toBe(615);
     expect(native.coverage).toHaveLength(9);
     for (const p of native.source_pins) { expect(p.path).toMatch(/^(api|scripts)\/[A-Za-z0-9_./-]+\.(py|schema\.json)$/); expect(p.path.split("/")).not.toContain("..");
       expect(sha(readFileSync(resolve(process.cwd(), "..", p.path))), p.path).toBe(p.sha256); }

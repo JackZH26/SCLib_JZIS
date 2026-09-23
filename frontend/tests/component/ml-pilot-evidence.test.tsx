@@ -77,10 +77,11 @@ describe("actual native canary byte inspection", () => {
     if (["type", "oversized"].includes(name)) expect(fetcher).not.toHaveBeenCalled();
   });
   it("retains unmodified native replies and exact selected source pins", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260923r1.wire.json")))).toBe("d43b5accc2fcc08cae99cf6c98341531c4404d74f91a4ac5a64ef832a611d0a7");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260922r10.wire.json")))).toBe("9594b10f4613974c9a45f3e5baddeced409bd586aede3ee0a6506e45f85644ed");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260922r9.wire.json")))).toBe("26ee35ec8d165d3e16ad4b9c5235b8e932d4ad62c404d881b4e0295e8d331f57");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.batch75.wire.json")))).toBe("f8128d35236754dac5164721bb34becc0431751fcc79fac2236fa23f6aa1edd8");
-    expect(native.source_pins).toHaveLength(612);
+    expect(native.source_pins).toHaveLength(615);
     expect(native.capture_test_path).toBe("api/tests/test_ml_pilot_evidence.py");
     expect(native.fixture_notice).toContain("synthetic accounts and events only");
     for (const row of native.source_pins) expect(sha(readFileSync(resolve(process.cwd(), "..", row.path))), row.path).toBe(row.sha256);
