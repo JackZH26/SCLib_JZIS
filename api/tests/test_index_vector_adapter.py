@@ -403,6 +403,24 @@ def test_query_full_datapoint_restricts_deadline_and_three_hashes(monkeypatch):
     assert len(adapter.query_many(pin, ["one", "two"], top_k=2)) == 2
 
 
+def test_public_single_query_empty_response_is_a_successful_empty_result(monkeypatch):
+    pin, _ = fixture_generation(backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    transport.query_override = lambda request: sdk.FindNeighborsResponse()
+    assert adapter.query(pin, "superconductivity", top_k=30, year_min=2099, year_max=2100) == []
+    assert len(transport.query_request.queries) == 1
+    assert [int(x.value_int) for x in transport.query_request.queries[0].datapoint.numeric_restricts] == [2099, 2100]
+
+
+@pytest.mark.parametrize("returned_groups", [0, 1])
+def test_public_batch_missing_query_groups_still_fails_closed(monkeypatch, returned_groups):
+    pin, _ = fixture_generation(backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    transport.query_override = lambda request: sdk.FindNeighborsResponse(nearest_neighbors=[{}] * returned_groups)
+    with pytest.raises(adapter.IndexVectorError, match="Query result inventory is malformed"):
+        adapter.query_many(pin, ["one", "two"], top_k=2)
+
+
 @pytest.mark.parametrize("fault", ["missing_vector", "hash_changed", "duplicate", "nan", "extra_query", "wrong_generation"])
 def test_query_does_not_release_partial_unverified_hits(monkeypatch, fault):
     pin, members = fixture_generation(2, backend="vertex-public")

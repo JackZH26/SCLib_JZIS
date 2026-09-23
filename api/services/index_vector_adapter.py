@@ -374,6 +374,12 @@ class _PublicIndex:
             return_full_datapoint=True, queries=[{"datapoint": {"feature_vector": vector,
                 "restricts": restricts, "numeric_restricts": numeric}, "neighbor_count": top_k} for vector in vectors]),
             timeout=deadline.remaining(), retry=None)
+        # Actual Vertex returns no groups for a successful single query with
+        # no matching datapoints (for example an empty year range). Its one
+        # empty result is unambiguous. Missing groups in a batch still fail the
+        # query inventory check; never invent a mapping for partial responses.
+        if len(vectors) == 1 and not response.nearest_neighbors:
+            return [[]]
         return [[(hit.datapoint, hit.distance) for hit in row.neighbors] for row in response.nearest_neighbors]
 
 
