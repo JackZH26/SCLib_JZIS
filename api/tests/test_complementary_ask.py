@@ -53,7 +53,7 @@ async def complementary(monkeypatch):
         members = await index_generations.load_generation_members(db, generation_id=pin["generation_id"])
     seed = next(item for item in members if item["snapshot_json"]["chunk_index"] == 0)
     point = deepcopy(transport.points[seed["vector_id"]])
-    monkeypatch.setattr(transport, "search", lambda _pin, vectors, *_: [[(deepcopy(point), 0.125)] for _ in vectors])
+    monkeypatch.setattr(transport, "search", lambda _pin, vectors, *_, **_kwargs: [[(deepcopy(point), 0.125)] for _ in vectors])
 
     async def no_lexical(*args, **kwargs):
         return []

@@ -129,7 +129,7 @@ async def mixed_generation(monkeypatch):
         originals = sorted((member for member in members if member["snapshot_json"]["section"] != "Facts"),
                            key=lambda member: member["snapshot_json"]["chunk_index"])
         points = [deepcopy(transport.points[member["vector_id"]]) for member in originals]
-        def search(_pin, vectors, top_k, *_args):
+        def search(_pin, vectors, top_k, *_args, **_kwargs):
             return [[(deepcopy(point), 0.1 + index / 100) for index, point in enumerate(points[:top_k])] for _ in vectors]
         monkeypatch.setattr(transport, "search", search)
         yield {"logical": logical, "meta": meta, "chunks": chunks, "pin": pin, "members": members,

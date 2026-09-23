@@ -77,7 +77,7 @@ async def multi_paper_generation(monkeypatch):
     seeds = [next(member for member in members if member["paper_id"] == paper.paper_id
                   and member["snapshot_json"]["chunk_index"] == 0) for paper in papers]
     points = [deepcopy(transport.points[member["vector_id"]]) for member in seeds]
-    monkeypatch.setattr(transport, "search", lambda _pin, vectors, *_: [
+    monkeypatch.setattr(transport, "search", lambda _pin, vectors, *_, **_kwargs: [
         [(deepcopy(point), 0.1 + index / 100) for index, point in enumerate(points)] for _ in vectors
     ])
 
