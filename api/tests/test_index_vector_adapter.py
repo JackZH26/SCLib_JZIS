@@ -457,7 +457,7 @@ def test_invalid_exclusion_inventory_never_constructs_provider(monkeypatch, excl
 
 
 def test_split_exclusion_queries_share_the_original_deadline(monkeypatch):
-    pin, members = fixture_generation(2, backend="vertex-public")
+    pin, members = fixture_generation(4, backend="vertex-public")
     transport = PublicDouble(monkeypatch, pin)
     clock = [1.0]
     monkeypatch.setattr(adapter.time, "monotonic", lambda: clock[0])
@@ -470,7 +470,22 @@ def test_split_exclusion_queries_share_the_original_deadline(monkeypatch):
     transport.query_override = late
     with pytest.raises(adapter.IndexVectorError, match="deadline exceeded"):
         adapter.query_members(pin, members, top_k=2, excluded_revisions=excluded)
-    assert sum(name == "query" for name, _ in transport.calls) == 1
+    assert 1 <= sum(name == "query" for name, _ in transport.calls) <= 2
+
+
+def test_split_exclusion_queries_run_in_bounded_two_rpc_waves(monkeypatch):
+    pin, members = fixture_generation(4, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    monkeypatch.setattr(adapter, "MAX_QUERY_RPC_BYTES", 7000)
+    excluded = [hashlib.sha256(f"source/{n}".encode()).hexdigest() for n in range(40)]
+    barrier = threading.Barrier(2)
+    def simultaneous(request):
+        assert len(request.queries) == 1
+        barrier.wait(timeout=3)
+        return sdk.FindNeighborsResponse(nearest_neighbors=[{}])
+    transport.query_override = simultaneous
+    assert adapter.query_members(pin, members, top_k=2, excluded_revisions=excluded) == [[], [], [], []]
+    assert sum(name == "query" for name, _ in transport.calls) == 4
 
 
 @pytest.mark.parametrize("returned_groups", [0, 1])

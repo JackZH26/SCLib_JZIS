@@ -19,6 +19,10 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from uuid import UUID, uuid4
 
+# Import the locked SDK during service startup, outside the first request's
+# provider deadline. This constructs no client and performs no network I/O.
+from google.cloud import aiplatform_v1
+
 from config import get_settings
 from services.genai_client import public_credentials as _public_credentials
 from services.embedding_contract import (
@@ -298,7 +302,6 @@ def clear_disposable():
 
 
 def _public_clients(resource):
-    from google.cloud import aiplatform_v1
     options = {"api_endpoint": f"{resource['location']}-aiplatform.googleapis.com"}
     credentials = _public_credentials()
     return (aiplatform_v1.IndexServiceClient(client_options=options, credentials=credentials),
@@ -306,7 +309,6 @@ def _public_clients(resource):
 
 
 def _public_match_client(host):
-    from google.cloud import aiplatform_v1
     return aiplatform_v1.MatchServiceClient(client_options={"api_endpoint": host}, credentials=_public_credentials())
 
 
@@ -331,7 +333,6 @@ class _PublicIndex:
         self.match = _public_match_client(host)
 
     def read(self, ids, deadline):
-        from google.cloud import aiplatform_v1
         from google.api_core.exceptions import NotFound
         pending = list(ids)
         while pending:
@@ -360,12 +361,10 @@ class _PublicIndex:
         return []
 
     def upsert(self, points, deadline):
-        from google.cloud import aiplatform_v1
         self.index.upsert_datapoints(request=aiplatform_v1.UpsertDatapointsRequest(
             index=self.resource["index_resource"], datapoints=points), timeout=deadline.remaining(), retry=None)
 
     def search(self, pin, vectors, top_k, year_min, year_max, deadline, *, excluded_revisions=()):
-        from google.cloud import aiplatform_v1
         restricts = [{"namespace": "sclib_generation", "allow_list": [pin["generation_id"]]},
                      {"namespace": "sclib_space", "allow_list": [_space(pin)]}]
         if excluded_revisions:
@@ -399,8 +398,13 @@ class _PublicIndex:
                     raise IndexVectorError("Query exclusion request exceeds its byte limit")
         requests.append(current)
         result = []
-        for batch in requests:
-            response = self.match.find_neighbors(request=batch, timeout=deadline.remaining(), retry=None)
+        def find(batch, shared_deadline):
+            return self.match.find_neighbors(request=batch[0], timeout=shared_deadline.remaining(), retry=None)
+
+        # At most two independent read RPCs per wave, sharing the original
+        # deadline. Drain every submitted call before failing the whole query.
+        for batches, response in _rpc_batches(find, requests, 1, deadline, parallel=True):
+            batch = batches[0]
             # Actual Vertex omits all groups for a successful empty single
             # query. Missing groups in a batch have no unambiguous mapping.
             if len(batch.queries) == 1 and not response.nearest_neighbors:
