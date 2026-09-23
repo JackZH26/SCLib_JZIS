@@ -11,6 +11,7 @@ beforeEach(() => vi.stubGlobal("crypto", webcrypto));
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 describe("original native pilot participation protocol", () => {
   it("pins the capture, original replies and each current source without resealing old evidence", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260923r4.wire.json")))).toBe("38729ff17b1fed4bf8604aab5d67e835d8ee388dbaabcc882ce7a21bac3e66d9");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260922r10.wire.json")))).toBe("f6cec3fedec5c95256662d75abc60d60a5c3665a74342f78337fa8ca57e11fa5");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260922r9.wire.json")))).toBe("fee017b8b60e62031cded06453c5faf0539ba77643d696a3924840ee23e33b6b");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.batch72.wire.json")))).toBe("51b334293c2e024d7b08648fdeaf0d4a53d0a1595444cd9f6af42239a9e41fb3");
@@ -21,7 +22,7 @@ describe("original native pilot participation protocol", () => {
     expect(http.capture_test_path).toBe("api/tests/test_ml_pilot_participant_wire.py");
     expect(http.fixture_notice).toBe("Actual owned SQL, authenticated HTTP and installed upload worker; synthetic accounts and declared events only, no real scientific approval or source permission.");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.batch75.wire.json")))).toBe("ce0cbb73250fc614964f5f028e20479903eb9f33a7dd1ffd1680ea43c409178a");
-    expect(http.source_pins).toHaveLength(612);
+    expect(http.source_pins).toHaveLength(615);
     expect(new Set(http.source_pins.map(p => p.path)).size).toBe(http.source_pins.length);
     for (const p of http.source_pins) {
       expect(p.path).toMatch(/^(api|scripts)\/[A-Za-z0-9_./-]+\.(py|schema\.json)$/); expect(p.path.split("/")).not.toContain("..");

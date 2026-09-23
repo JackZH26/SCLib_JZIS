@@ -154,3 +154,20 @@ ddce46287d35c013f0c3df623509eab3b3eaec1d:frontend/tests/fixtures/ml-pilot-partic
 7a86652628acc9548b4feabcc40bf92ac52a89a9:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260922r10.wire.json:generic-api-key:1
 7a86652628acc9548b4feabcc40bf92ac52a89a9:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260922r10.wire.json:generic-api-key:1
 7a86652628acc9548b4feabcc40bf92ac52a89a9:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260922r10.wire.json:generic-api-key:1
+
+# September 23: exact reviewed native synthetic request keys; see secret-triage-r1.json.
+6c0225303feb30178f8504eba66e1bc1b0f516d3:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260923r1.wire.json:generic-api-key:1
+6c0225303feb30178f8504eba66e1bc1b0f516d3:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260923r1.wire.json:generic-api-key:1
+6c0225303feb30178f8504eba66e1bc1b0f516d3:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260923r1.wire.json:generic-api-key:1
+
+# September 23 r2: individually decoded synthetic request keys; exact capture fingerprints.
+473c429de54f067c7befa282a189328b9ccf6bf2:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260923r2.wire.json:generic-api-key:1
+473c429de54f067c7befa282a189328b9ccf6bf2:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260923r2.wire.json:generic-api-key:1
+
+# September 23 r3: individually decoded synthetic request keys; exact capture fingerprints.
+9c3d348a53ae7acf62fd64c026de675d9b0693b0:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260923r3.wire.json:generic-api-key:1
+9c3d348a53ae7acf62fd64c026de675d9b0693b0:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260923r3.wire.json:generic-api-key:1
+
+# September 23 r4: individually decoded synthetic request keys; exact capture fingerprints.
+f09b90e58b28aa549dbd1516acb276979a2378c5:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260923r4.wire.json:generic-api-key:1
+f09b90e58b28aa549dbd1516acb276979a2378c5:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260923r4.wire.json:generic-api-key:1

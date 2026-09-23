@@ -48,7 +48,7 @@ async def generation(monkeypatch):
 
 def _one_hit(monkeypatch, fixture, member):
     point = deepcopy(fixture["transport"].points[member["vector_id"]])
-    monkeypatch.setattr(fixture["transport"], "search", lambda _pin, vectors, *_args: [
+    monkeypatch.setattr(fixture["transport"], "search", lambda _pin, vectors, *_args, **_kwargs: [
         [(deepcopy(point), 0.125)] for _ in vectors])
 
 
@@ -159,7 +159,7 @@ async def test_search_rechecks_retained_year_not_mutable_ann_numeric_restriction
     assert member["snapshot_json"]["year"] is None
     point = deepcopy(generation["transport"].points[member["vector_id"]])
     point["numeric_restricts"] = [{"namespace": "year", "value_int": 2026}]
-    monkeypatch.setattr(generation["transport"], "search", lambda _pin, vectors, *_args: [
+    monkeypatch.setattr(generation["transport"], "search", lambda _pin, vectors, *_args, **_kwargs: [
         [(deepcopy(point), 0.125)] for _ in vectors])
     response = await client.post("/v1/search", json={"query": "unmatchedqueryneedle", "filters": {"year_min": 2026}})
     assert response.status_code == 200 and response.json()["results"] == [], response.text

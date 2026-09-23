@@ -177,6 +177,19 @@ async def paper_chunks(db, pin, paper_id, *, limit=20):
     return list((await hydrate(db, pin, ids)).values())
 
 
+async def paper_revision_exclusions(db, pin, paper_id):
+    """Complete bounded source inventory, including unsampled source chunks."""
+    from services.index_vector_adapter import MAX_EXCLUDED_REVISIONS
+    statement = sa.text("SELECT chunk_revision_sha256 FROM index_generation_members "
+                        "WHERE generation_id=:generation AND paper_id=:paper "
+                        "ORDER BY chunk_revision_sha256 LIMIT :limit")
+    revisions = list((await db.execute(statement, {"generation": pin["generation_id"], "paper": paper_id,
+                       "limit": MAX_EXCLUDED_REVISIONS + 1})).scalars().all())
+    if len(revisions) > MAX_EXCLUDED_REVISIONS or len(set(revisions)) != len(revisions):
+        raise IndexRetrievalError("Source revision exclusion inventory exceeds its bound")
+    return revisions
+
+
 async def resolve_evidence(db, chunks):
     from services.rag_evidence import CURRENT_FACT_RENDERER_VERSION, resolve_chunk_evidence
     if not chunks or all(not isinstance(chunk, GenerationChunk) for chunk in chunks):

@@ -16,6 +16,23 @@ WORKFLOW_DIR = ROOT / ".github" / "workflows"
 # Reviewed immutable findings only. See the batch82 triage and original scan;
 # new fixture revisions must be scanned and reviewed, never covered by a glob.
 REVIEWED_FIXTURE_FINGERPRINTS = {
+    # September 23 r4: exact decoded synthetic request keys; retained triage receipt.
+    'f09b90e58b28aa549dbd1516acb276979a2378c5:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260923r4.wire.json:generic-api-key:1',
+    'f09b90e58b28aa549dbd1516acb276979a2378c5:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260923r4.wire.json:generic-api-key:1',
+
+    # September 23 r3: exact decoded synthetic request keys; retained triage receipt.
+    '9c3d348a53ae7acf62fd64c026de675d9b0693b0:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260923r3.wire.json:generic-api-key:1',
+    '9c3d348a53ae7acf62fd64c026de675d9b0693b0:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260923r3.wire.json:generic-api-key:1',
+
+    # September 23 r2: exact decoded synthetic request keys; retained triage receipt.
+    '473c429de54f067c7befa282a189328b9ccf6bf2:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260923r2.wire.json:generic-api-key:1',
+    '473c429de54f067c7befa282a189328b9ccf6bf2:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260923r2.wire.json:generic-api-key:1',
+
+    # September 23 r1: exact decoded synthetic request keys; retained triage receipt.
+    '6c0225303feb30178f8504eba66e1bc1b0f516d3:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260923r1.wire.json:generic-api-key:1',
+    '6c0225303feb30178f8504eba66e1bc1b0f516d3:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260923r1.wire.json:generic-api-key:1',
+    '6c0225303feb30178f8504eba66e1bc1b0f516d3:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260923r1.wire.json:generic-api-key:1',
+
     # September 22 r10: exact decoded synthetic request keys; retained triage receipt.
     '7a86652628acc9548b4feabcc40bf92ac52a89a9:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260922r10.wire.json:generic-api-key:1',
     '7a86652628acc9548b4feabcc40bf92ac52a89a9:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260922r10.wire.json:generic-api-key:1',

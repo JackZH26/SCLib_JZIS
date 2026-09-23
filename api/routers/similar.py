@@ -41,6 +41,9 @@ async def similar_papers(
             evidence = await index_retrieval.resolve_evidence(db, chunks)
             members = [chunk.member for chunk in chunks if evidence[chunk.id]["permission_status"] != "restricted"
                      and evidence[chunk.id]["currentness"] != "stale"]
+            excluded_revisions = await index_retrieval.paper_revision_exclusions(db, pin, paper_id)
+            if any(member["chunk_revision_sha256"] not in excluded_revisions for member in members):
+                raise index_retrieval.IndexRetrievalError("Incomplete source revision exclusion inventory")
             await index_retrieval.require_current_pin(db, pin)
     except Exception:
         raise HTTPException(503, _UNAVAILABLE) from None
@@ -53,7 +56,8 @@ async def similar_papers(
     try:
         per_chunk = await provider_resilience.run_blocking(
             "similar_search", lambda: index_vector_adapter.query_members(
-                pin, members, top_k=min(top_k + 5, index_retrieval.MAX_HYDRATE // len(members)), stop_event=stopped),
+                pin, members, top_k=min(top_k + 5, index_retrieval.MAX_HYDRATE // len(members)), stop_event=stopped,
+                excluded_revisions=excluded_revisions),
             timeout_seconds=settings.vector_search_timeout_seconds,
             failure_threshold=settings.provider_circuit_failure_threshold,
             cooldown_seconds=settings.provider_circuit_cooldown_seconds,
