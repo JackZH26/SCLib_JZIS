@@ -47,6 +47,8 @@ BATCH_SIZE = 100  # SCLib bound; provider readback permits at most 1000 IDs.
 # write batches and the shared operation deadline remain unchanged.
 READ_BATCH_SIZE = 50
 MAX_QUERY_BATCH = 20
+MAX_EXCLUDED_REVISIONS = 20000
+MAX_QUERY_RPC_BYTES = 2 * 1024 * 1024
 # Vertex's float32 cosine calculation can put identical vectors a few ULPs
 # below zero. Accept only roundoff at the mathematical [0, 2] boundaries.
 COSINE_ROUNDOFF = 1e-6
@@ -267,9 +269,11 @@ class DisposableIndex:
                     and pin["generation_id"] in _field(r, "allow_list", [])
                     for r in _field(point, "restricts", []))]
 
-    def search(self, pin, vectors, top_k, year_min, year_max, deadline):
+    def search(self, pin, vectors, top_k, year_min, year_max, deadline, *, excluded_revisions=()):
         deadline.remaining()
         points = sorted(self.inventory(pin), key=lambda point: point["datapoint_id"])
+        excluded = set(excluded_revisions)
+        points = [point for point in points if _tags(point)["sclib_revision"] not in excluded]
         if year_min is not None or year_max is not None:
             def admitted(point):
                 years = [_field(r, "value_int") for r in point.get("numeric_restricts", [])
@@ -360,27 +364,53 @@ class _PublicIndex:
         self.index.upsert_datapoints(request=aiplatform_v1.UpsertDatapointsRequest(
             index=self.resource["index_resource"], datapoints=points), timeout=deadline.remaining(), retry=None)
 
-    def search(self, pin, vectors, top_k, year_min, year_max, deadline):
+    def search(self, pin, vectors, top_k, year_min, year_max, deadline, *, excluded_revisions=()):
         from google.cloud import aiplatform_v1
         restricts = [{"namespace": "sclib_generation", "allow_list": [pin["generation_id"]]},
                      {"namespace": "sclib_space", "allow_list": [_space(pin)]}]
+        if excluded_revisions:
+            # Existing immutable revision tags permit complete source-paper
+            # exclusion before ANN selection, without republishing vectors.
+            restricts.append({"namespace": "sclib_revision", "deny_list": list(excluded_revisions)})
         numeric = []
         if year_min is not None:
             numeric.append({"namespace": "year", "value_int": year_min, "op": "GREATER_EQUAL"})
         if year_max is not None:
             numeric.append({"namespace": "year", "value_int": year_max, "op": "LESS_EQUAL"})
-        response = self.match.find_neighbors(request=aiplatform_v1.FindNeighborsRequest(
-            index_endpoint=self.resource["endpoint_resource"], deployed_index_id=self.resource["deployed_index_id"],
-            return_full_datapoint=True, queries=[{"datapoint": {"feature_vector": vector,
-                "restricts": restricts, "numeric_restricts": numeric}, "neighbor_count": top_k} for vector in vectors]),
-            timeout=deadline.remaining(), retry=None)
-        # Actual Vertex returns no groups for a successful single query with
-        # no matching datapoints (for example an empty year range). Its one
-        # empty result is unambiguous. Missing groups in a batch still fail the
-        # query inventory check; never invent a mapping for partial responses.
-        if len(vectors) == 1 and not response.nearest_neighbors:
-            return [[]]
-        return [[(hit.datapoint, hit.distance) for hit in row.neighbors] for row in response.nearest_neighbors]
+        def request():
+            return aiplatform_v1.FindNeighborsRequest(index_endpoint=self.resource["endpoint_resource"],
+                deployed_index_id=self.resource["deployed_index_id"], return_full_datapoint=True)
+
+        # Large source exclusions repeat in every query. Bound each serialized
+        # RPC instead of truncating the exclusion set or increasing deadlines.
+        requests, current = [], request()
+        for vector in vectors:
+            query = {"datapoint": {"feature_vector": vector, "restricts": restricts,
+                                  "numeric_restricts": numeric}, "neighbor_count": top_k}
+            current.queries.append(query)
+            if current._pb.ByteSize() > MAX_QUERY_RPC_BYTES:
+                del current.queries[-1]
+                if not current.queries:
+                    raise IndexVectorError("Query exclusion request exceeds its byte limit")
+                requests.append(current)
+                current = request()
+                current.queries.append(query)
+                if current._pb.ByteSize() > MAX_QUERY_RPC_BYTES:
+                    raise IndexVectorError("Query exclusion request exceeds its byte limit")
+        requests.append(current)
+        result = []
+        for batch in requests:
+            response = self.match.find_neighbors(request=batch, timeout=deadline.remaining(), retry=None)
+            # Actual Vertex omits all groups for a successful empty single
+            # query. Missing groups in a batch have no unambiguous mapping.
+            if len(batch.queries) == 1 and not response.nearest_neighbors:
+                result.append([])
+                continue
+            if len(response.nearest_neighbors) != len(batch.queries):
+                raise IndexVectorError("Query result inventory is malformed")
+            result.extend([[(hit.datapoint, hit.distance) for hit in row.neighbors]
+                           for row in response.nearest_neighbors])
+        return result
 
 
 def _transport(pin, deadline):
@@ -607,9 +637,14 @@ def _embed(pin, texts, deadline, stop_event=None):
     return vectors
 
 
-def _query(pin, texts, top_k, year_min, year_max, stop_event=None, *, members=None):
+def _query(pin, texts, top_k, year_min, year_max, stop_event=None, *, members=None, excluded_revisions=()):
     try:
         pin = _pin(pin)
+        if (type(excluded_revisions) not in {list, tuple} or len(excluded_revisions) > MAX_EXCLUDED_REVISIONS
+                or any(type(value) is not str or not _SHA.fullmatch(value) for value in excluded_revisions)
+                or len(set(excluded_revisions)) != len(excluded_revisions)):
+            raise IndexVectorError("Invalid excluded revision inventory")
+        excluded = set(excluded_revisions)
         points = None
         if members is not None:
             if type(members) not in {list, tuple} or not 1 <= len(members) <= MAX_QUERY_BATCH:
@@ -638,7 +673,8 @@ def _query(pin, texts, top_k, year_min, year_max, stop_event=None, *, members=No
         vectors = ([point["feature_vector"] for point in points] if points is not None else
                    [[0.0] for _ in texts] if type(transport) is DisposableIndex else _embed(pin, texts, deadline, stop_event))
         _check_cancel(stop_event)
-        rows = transport.search(pin, vectors, top_k, year_min, year_max, deadline)
+        rows = transport.search(pin, vectors, top_k, year_min, year_max, deadline,
+                                excluded_revisions=excluded_revisions)
         deadline.remaining()
         _check_cancel(stop_event)
         if len(rows) != len(texts):
@@ -650,6 +686,8 @@ def _query(pin, texts, top_k, year_min, year_max, stop_event=None, *, members=No
             neighbors, seen = [], set()
             for point, distance in row:
                 verified, revision = _verified_point(pin, point)
+                if revision in excluded:
+                    raise IndexVectorError("Query returned an excluded source revision")
                 years = _numeric(point)
                 if ((year_min is not None or year_max is not None) and
                         (not years or year_min is not None and years[0] < year_min
@@ -676,10 +714,11 @@ def query_many(pin, texts, *, top_k, stop_event=None):
     return _query(pin, texts, top_k, None, None, stop_event)
 
 
-def query_members(pin, members, *, top_k, stop_event=None):
+def query_members(pin, members, *, top_k, stop_event=None, excluded_revisions=()):
     """Document-to-document similarity from exact retained document vectors.
 
     No new embedding is needed, and long document inputs are not mislabeled as
     RETRIEVAL_QUERY. User-entered Search/Ask queries keep their separate task.
     """
-    return _query(pin, None, top_k, None, None, stop_event, members=members)
+    return _query(pin, None, top_k, None, None, stop_event, members=members,
+                  excluded_revisions=excluded_revisions)

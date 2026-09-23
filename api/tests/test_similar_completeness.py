@@ -8,12 +8,39 @@ from types import SimpleNamespace
 import pytest
 
 from models.db import get_session_factory
-from services import index_vector_adapter
+from services import index_vector_adapter, index_generations
 from services.embedding_contract import EmbeddingCompletenessError
 from tests import test_index_retrieval_http as generation_fixtures
-from tests.index_generation_fixtures import publish_and_activate, write_generation
+from tests.index_generation_fixtures import RESOURCE, prepare_generation_items, publish_and_activate, write_generation
+from uuid import uuid4
 
 generation = generation_fixtures.generation
+
+
+@pytest.mark.asyncio
+async def test_similarity_excludes_every_source_chunk_including_unsampled_members(client, generation, monkeypatch):
+    source, chunks, _ = await write_generation(monkeypatch, logical_index=generation["logical"], count=25)
+    target, target_chunks, _ = await write_generation(monkeypatch, logical_index=generation["logical"], count=2)
+    async with get_session_factory()() as db:
+        items = await prepare_generation_items(db, chunks + target_chunks)
+        staged = await index_generations.stage_generation(db, generation_id=str(uuid4()), items=items,
+            resource=RESOURCE, logical_index=generation["logical"], dry_run=False)
+        await db.commit()
+        await publish_and_activate(db, staged, expected_event_id=generation["pin"]["activation_event_id"])
+    actual, calls = index_vector_adapter.query_members, []
+    def capture(pin, members, **kwargs):
+        calls.append((len(members), len(kwargs["excluded_revisions"])))
+        return actual(pin, members, **kwargs)
+    monkeypatch.setattr(index_vector_adapter, "query_members", capture)
+    response = await client.get("/v1/similar/" + source.paper_id + "?top_k=3")
+    assert response.status_code == 200, response.text
+    assert [row["paper_id"] for row in response.json()["results"]] == [target.paper_id]
+    assert calls == [(20, 25)]
+    # An oversized source inventory is never silently truncated to the bound.
+    monkeypatch.setattr(index_vector_adapter, "MAX_EXCLUDED_REVISIONS", 24)
+    response = await client.get("/v1/similar/" + source.paper_id + "?top_k=3")
+    assert response.status_code == 503 and "results" not in response.json()
+    assert calls == [(20, 25)]
 
 
 @pytest.mark.asyncio

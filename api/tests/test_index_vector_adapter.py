@@ -412,6 +412,67 @@ def test_public_single_query_empty_response_is_a_successful_empty_result(monkeyp
     assert [int(x.value_int) for x in transport.query_request.queries[0].datapoint.numeric_restricts] == [2099, 2100]
 
 
+def test_source_revision_exclusions_precede_public_ann_and_are_verified(monkeypatch):
+    pin, members = fixture_generation(3, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    adapter.publish(pin, members)
+    excluded = [member["chunk_revision_sha256"] for member in members[:2]]
+    def filtered(request):
+        denied = next(r for r in request.queries[0].datapoint.restricts if r.namespace == "sclib_revision")
+        assert list(denied.deny_list) == excluded and not denied.allow_list
+        point = transport.points[members[2]["vector_id"]]
+        return sdk.FindNeighborsResponse(nearest_neighbors=[{"neighbors": [{"datapoint": point, "distance": 0.2}]}])
+    transport.query_override = filtered
+    rows = adapter.query_members(pin, members[:1], top_k=2, excluded_revisions=excluded)
+    assert rows[0][0].vector_id == members[2]["vector_id"]
+    transport.query_override = None  # A provider that ignores the filter must fail closed.
+    with pytest.raises(adapter.IndexVectorError, match="excluded source revision"):
+        adapter.query_members(pin, members[:1], top_k=2, excluded_revisions=excluded)
+
+
+def test_large_complete_source_exclusion_splits_bounded_requests_without_truncation(monkeypatch):
+    pin, members = fixture_generation(20, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    adapter.publish(pin, members)
+    excluded = [hashlib.sha256(f"large-source/{n}".encode()).hexdigest() for n in range(3410)]
+    rows = adapter.query_members(pin, members, top_k=2, excluded_revisions=excluded)
+    requests = [kwargs["request"] for name, kwargs in transport.calls if name == "query"]
+    assert len(rows) == 20 and 1 < len(requests) <= 20
+    assert sum(len(request.queries) for request in requests) == 20
+    for request in requests:
+        assert request._pb.ByteSize() <= adapter.MAX_QUERY_RPC_BYTES
+        for query in request.queries:
+            denied = next(r for r in query.datapoint.restricts if r.namespace == "sclib_revision")
+            assert list(denied.deny_list) == excluded
+            assert query.neighbor_count == 2
+
+
+@pytest.mark.parametrize("excluded", [["bad"], ["a" * 64] * 2, ["a" * 64] * 20001, "a" * 64])
+def test_invalid_exclusion_inventory_never_constructs_provider(monkeypatch, excluded):
+    pin, members = fixture_generation(backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    with pytest.raises(adapter.IndexVectorError, match="excluded revision inventory"):
+        adapter.query_members(pin, members, top_k=2, excluded_revisions=excluded)
+    assert transport.factory_calls == 0
+
+
+def test_split_exclusion_queries_share_the_original_deadline(monkeypatch):
+    pin, members = fixture_generation(2, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    clock = [1.0]
+    monkeypatch.setattr(adapter.time, "monotonic", lambda: clock[0])
+    monkeypatch.setattr(adapter, "MAX_QUERY_RPC_BYTES", 7000)
+    excluded = [hashlib.sha256(f"source/{n}".encode()).hexdigest() for n in range(40)]
+    def late(request):
+        assert len(request.queries) == 1
+        clock[0] += 13
+        return sdk.FindNeighborsResponse(nearest_neighbors=[{}])
+    transport.query_override = late
+    with pytest.raises(adapter.IndexVectorError, match="deadline exceeded"):
+        adapter.query_members(pin, members, top_k=2, excluded_revisions=excluded)
+    assert sum(name == "query" for name, _ in transport.calls) == 1
+
+
 @pytest.mark.parametrize("returned_groups", [0, 1])
 def test_public_batch_missing_query_groups_still_fails_closed(monkeypatch, returned_groups):
     pin, _ = fixture_generation(backend="vertex-public")
