@@ -1,6 +1,6 @@
 /** Test-only adapters. Resealed responses below are synthetic, not new SQL evidence. */
 import { createHash } from "node:crypto";
-import native from "../fixtures/ml-use-runs-native.delivery20260923r1.wire.json";
+import native from "../fixtures/ml-use-runs-native.delivery20260923r2.wire.json";
 export const http = native;
 export const reviewText = "SYNTHETIC independent run-budget review record. Not a real human review, scientific pilot or source licence.";
 export const canonical = (v: any): string => {
