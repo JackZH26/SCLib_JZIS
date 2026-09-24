@@ -30,4 +30,6 @@ Public HTTPS requests to already warm pages on the unchanged serving API complet
 
 Relevant SQL regressions cover complete response equivalence for all four sort modes, stable null/tie ordering, same-record filters, selected-page hydration, concurrent cold pages, source mutation during cached-ranking hydration, updates to unselected materials, cache bounds, and existing raw-record/material/source/parent/Work invalidation.
 
+Local validation passed 102 relevant API regression tests in owned disposable PostgreSQL/Redis services, seven native HTTP capture producers, all 1,896 frontend component tests and 46 source checks. The 4,006 source pins in the new unmodified captures match the candidate files; historical archives remain intact. Fatal-error lint and git diff whitespace checks pass.
+
 Before release, complete the normal Test/Security/signed-image pipeline. After deployment, warm `/v1/materials?sort=tc_max&limit=50&offset=0`, then check a repeat (`X-Materials-Cache: HIT`), first visits to offsets 50 and 100, unchanged counts and DTOs, and the Materials HTML pages. The first warm-up may take roughly 20 seconds. Preserve normal pre-release backup and rollback procedures. This document records a tested candidate, not a completed deployment.
