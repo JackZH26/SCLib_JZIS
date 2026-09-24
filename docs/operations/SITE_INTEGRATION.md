@@ -62,10 +62,13 @@ in the release receipt, not assumed from the availability of old images.
 3. Validate the candidate in a separate Nginx `http` wrapper with the production
    MIME types, certificates and includes. Run `nginx -t -c <wrapper>`; do not
    reload while testing. Check that no old static root fallback survives.
-4. Retain the currently running frontend's `.next/static` contents in
-   `/var/lib/sclib/site-migration/legacy-static/`. Only this public asset directory
-   is exposed for old open tabs. Do not copy the old site root, `.env`, application
-   source, `.git` or server build files into a public alias.
+4. Retain only the tested ASRP-free baseline frontend's `.next/static` contents
+   in `/var/lib/sclib/site-migration/legacy-static/`. Audit its public bundles
+   before copying: do not re-expose retired product copy or links from the
+   current pre-integration build. Only this public asset directory is exposed
+   for compatible open tabs. Do not copy the old site root, `.env`, application
+   source, `.git` or server build files into a public alias. Tabs running an
+   older, unretained build may need a reload onto the new website.
 5. Validate the new signed frontend on an unused loopback port before the main
    switch. Use the existing internal API and a read-only smoke test; do not send
    test registration emails or create real accounts for a smoke check.
