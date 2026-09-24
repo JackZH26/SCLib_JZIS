@@ -13,6 +13,7 @@ Baseline production revision: `f33cbe8`. Diagnostics used the actual production 
 | Operation | Baseline | Patched diagnostic |
 | --- | ---: | ---: |
 | Timeline HTML, complete streamed response | 50.08 s | Not measured through patched frontend |
+| Timeline API via public HTTPS, complete response | 39.030 s | Not measured through patched HTTP service |
 | Timeline computation, first / repeated | Live endpoint uncached | 16.850 s / 0.063 s |
 | Search MgB2, top_k=10 | 18.687 s | 6.187 s first / 0.575 s repeated |
 | Search nickelate superconductivity, top_k=10 | Not measured | 4.418 s first / 0.420 s repeated |
