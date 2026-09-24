@@ -3,7 +3,7 @@
  *
  * The browser session lives in an HttpOnly API cookie, so we fetch /me to get
  * the user name + avatar and render them instead of the generic button.
- * Falls back to "Account" while loading or when not logged in.
+ * Shows "Sign in" while loading or when not logged in.
  *
  * Because the header is always mounted, we also subscribe to the
  * same-tab auth-change event (see lib/auth-session.ts) so the chip
@@ -14,30 +14,31 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { onAuthChange } from "@/lib/auth-session";
 import { me, type User, ApiError } from "@/lib/api";
 
 const NAV = [
-  { href: "/", label: "Home" },
   { href: "/search", label: "Search" },
   { href: "/materials", label: "Materials" },
   { href: "/timeline", label: "Reported Tc Timeline" },
   { href: "/discovery", label: "Discovery" },
-  { href: "/stats", label: "Stats" },
+  { href: "/docs", label: "Resources" },
+  { href: "/about", label: "About JZIS" },
 ];
 
 export function Header() {
   const [user, setUser] = useState<User | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const menuButton = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     function refresh() {
       me()
         .then(setUser)
         .catch((err) => {
-          // Expired/missing session: silently show the Account button.
+          // Expired/missing session: silently show the Sign in button.
           if (err instanceof ApiError && err.status === 401) {
             setUser(null);
           }
@@ -54,29 +55,33 @@ export function Header() {
   useEffect(() => {
     if (!menuOpen) return;
     function closeOnEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") setMenuOpen(false);
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuButton.current?.focus();
+      }
     }
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-sage-border bg-[rgba(240,245,240,0.85)] backdrop-blur-md supports-[backdrop-filter]:bg-[rgba(240,245,240,0.72)]">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
+    <header className="site-header sticky top-0 z-50 border-b border-sage-border bg-white">
+      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-6 px-4 sm:px-6">
         <Link href="/" className="flex shrink-0 items-baseline gap-2">
           <span className="bg-sage-gradient-text bg-clip-text text-xl font-bold tracking-tight text-transparent">
             SCLib
           </span>
-          <span className="text-xs font-semibold uppercase tracking-widest text-sage-tertiary">
-            JZIS
+          <span className="text-xs font-semibold uppercase tracking-widest text-sage-muted">
+            by JZIS
           </span>
         </Link>
-        <nav className="hidden items-center gap-5 text-sm md:flex lg:gap-6">
+        <nav aria-label="Primary" className="hidden items-center gap-1 text-sm xl:flex">
           {NAV.map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              className="text-sage-muted transition-colors hover:text-accent-deep"
+              aria-current={pathname === n.href || pathname.startsWith(n.href + "/") ? "page" : undefined}
+              className="site-nav-link whitespace-nowrap rounded-[10px] px-3 py-2.5 font-medium text-sage-muted transition-colors hover:bg-sage-bg hover:text-accent-deep"
             >
               {n.label}
             </Link>
@@ -105,21 +110,22 @@ export function Header() {
             </Link>
           ) : (
             <Link
-              href="/dashboard"
-              className="btn-primary !rounded-lg !px-4 !py-2 !text-sm"
+              href="/login"
+              className="btn-primary ml-3 !px-5 !py-2.5 !text-sm"
             >
-              Account
+              Sign in
             </Link>
           )}
         </nav>
 
         <button
+          ref={menuButton}
           type="button"
           aria-expanded={menuOpen}
           aria-controls="mobile-navigation"
           aria-label={menuOpen ? "Close navigation" : "Open navigation"}
           onClick={() => setMenuOpen((open) => !open)}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-sage-border bg-white/70 text-sage-muted transition-colors hover:bg-white hover:text-accent-deep focus:outline-none focus:ring-2 focus:ring-accent/30 md:hidden"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-sage-border bg-white/70 text-sage-muted transition-colors hover:bg-white hover:text-accent-deep xl:hidden"
         >
           <span className="sr-only">
             {menuOpen ? "Close navigation" : "Open navigation"}
@@ -148,9 +154,9 @@ export function Header() {
         <nav
           id="mobile-navigation"
           aria-label="Mobile navigation"
-          className="absolute inset-x-0 top-full max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-sage-border bg-sage-bg/95 px-4 pb-4 pt-2 shadow-lg backdrop-blur-md md:hidden"
+          className="absolute inset-x-0 top-full max-h-[calc(100dvh-72px)] overflow-y-auto border-b border-sage-border bg-white px-4 pb-5 pt-3 shadow-sage xl:hidden"
         >
-          <div className="mx-auto grid max-w-6xl grid-cols-2 gap-2">
+          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-2">
             {NAV.map((item) => {
               const active =
                 item.href === "/"
@@ -164,8 +170,8 @@ export function Header() {
                   className={
                     "rounded-lg px-3 py-2.5 text-sm font-medium transition-colors " +
                     (active
-                      ? "bg-accent-light text-accent-deep"
-                      : "bg-white/60 text-sage-muted hover:bg-white")
+                      ? "bg-sage-surface text-accent-deep"
+                      : "bg-sage-bg/60 text-sage-muted hover:bg-sage-surface")
                   }
                 >
                   {item.label}
@@ -174,10 +180,10 @@ export function Header() {
             })}
           </div>
           <Link
-            href="/dashboard"
-            className="mx-auto mt-3 flex max-w-6xl items-center justify-center gap-2 rounded-lg bg-sage-gradient px-4 py-2.5 text-sm font-semibold text-white shadow-sm"
+            href={user ? "/dashboard" : "/login"}
+            className="mx-auto mt-3 flex max-w-7xl items-center justify-center gap-2 rounded-lg bg-sage-gradient px-4 py-2.5 text-sm font-semibold text-white shadow-sm"
           >
-            {user ? `Account · ${user.name}` : "Account"}
+            {user ? `Account · ${user.name}` : "Sign in"}
           </Link>
         </nav>
       )}

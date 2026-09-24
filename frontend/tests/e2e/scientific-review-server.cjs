@@ -12,7 +12,7 @@ if (!/^[1-9][0-9]{3,4}$/.test(port || "") || Number(port) > 65535) throw new Err
 const original = path.resolve(__dirname, "../..");
 const isolated = mkdtempSync(path.join(tmpdir(), "sclib-review-browser-workspace-"));
 for (const entry of ["app", "components", "lib", "public", "package.json", "tsconfig.json", "next-env.d.ts",
-  "next.config.js", "postcss.config.js", "tailwind.config.ts"]) {
+  "middleware.ts", "next.config.js", "postcss.config.js", "tailwind.config.ts"]) {
   cpSync(path.join(original, entry), path.join(isolated, entry), { recursive: true });
 }
 symlinkSync(path.join(original, "node_modules"), path.join(isolated, "node_modules"), "dir");

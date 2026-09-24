@@ -16,7 +16,7 @@ const cookieConsent = readFileSync(
 );
 
 test("desktop navigation collapses into an accessible mobile menu", () => {
-  assert.match(header, /hidden items-center[^\n]*md:flex/);
+  assert.match(header, /hidden items-center[^\n]*xl:flex/);
   assert.match(header, /aria-controls="mobile-navigation"/);
   assert.match(header, /aria-expanded=\{menuOpen\}/);
   assert.match(header, /aria-label="Mobile navigation"/);

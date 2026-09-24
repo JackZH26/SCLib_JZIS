@@ -77,13 +77,14 @@ describe("actual native canary byte inspection", () => {
     if (["type", "oversized"].includes(name)) expect(fetcher).not.toHaveBeenCalled();
   });
   it("retains unmodified native replies and exact selected source pins", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.site20260924.wire.json")))).toBe("a23a9dfab8a6fb83cb6cff6e567111d6745831ef4dd10856cb8ac9bb702e6c83");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260924r2.wire.json")))).toBe("b2fa3d1a849a9b955323505c6e4a402c4a6336e170d59bac2936451a2ebb9746");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260924r1.wire.json")))).toBe("6cdd12b418b50f78caae77c21a97990b30ae64fca6412f969d61d4fa26f7de0f");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260923r4.wire.json")))).toBe("5536c723df89e871768a1a8758c114ce7da7f32006d916ea645abdf8b2582a45");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260922r10.wire.json")))).toBe("9594b10f4613974c9a45f3e5baddeced409bd586aede3ee0a6506e45f85644ed");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260922r9.wire.json")))).toBe("26ee35ec8d165d3e16ad4b9c5235b8e932d4ad62c404d881b4e0295e8d331f57");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.batch75.wire.json")))).toBe("f8128d35236754dac5164721bb34becc0431751fcc79fac2236fa23f6aa1edd8");
-    expect(native.source_pins).toHaveLength(617);
+    expect(native.source_pins).toHaveLength(619);
     expect(native.capture_test_path).toBe("api/tests/test_ml_pilot_evidence.py");
     expect(native.fixture_notice).toContain("synthetic accounts and events only");
     for (const row of native.source_pins) expect(sha(readFileSync(resolve(process.cwd(), "..", row.path))), row.path).toBe(row.sha256);

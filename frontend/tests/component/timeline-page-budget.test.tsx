@@ -48,4 +48,17 @@ describe("timeline initial display budget", () => {
       "href", "/timeline?family=iron_based&only_aps=true&display=expanded",
     );
   });
+  it("shows a recoverable failure without drawing fabricated empty data", async () => {
+    mocks.getTimeline.mockRejectedValue(new Error("interrupted response"));
+    render(await TimelinePage({ searchParams: Promise.resolve({
+      family: "iron_based", experimental_only: "true", only_aps: "true", display: "expanded",
+    }) }));
+    expect(mocks.chart).not.toHaveBeenCalled();
+    expect(screen.getByRole("alert")).toHaveTextContent("Timeline data could not be loaded completely");
+    expect(screen.getByRole("link", { name: "Retry timeline" })).toHaveAttribute(
+      "href", "/timeline?family=iron_based&experimental_only=true&only_aps=true&display=expanded",
+    );
+    expect(screen.queryByText(/No eligible reported Tc/)).not.toBeInTheDocument();
+  });
+
 });

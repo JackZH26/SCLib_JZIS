@@ -294,7 +294,7 @@ describe("closed scientific review display guards", () => {
 describe("real private API client wrappers", () => {
   it("uses credentialled no-store GET requests with abort signals and encoded inputs", async () => {
     const real = await vi.importActual<typeof import("@/lib/api")>("@/lib/api");
-    const fetcher = vi.fn().mockResolvedValue(new Response("{}", { status: 200, headers: { "content-type": "application/json" } }));
+    const fetcher = vi.fn().mockImplementation(async () => new Response("{}", { status: 200, headers: { "content-type": "application/json" } }));
     vi.stubGlobal("fetch", fetcher);
     const controller = new AbortController();
     try {

@@ -14,7 +14,7 @@ test("production auth navigation exposes only public or same-origin links", asyn
   );
 
   await page.getByRole("link", { name: "Forgot password?" }).click();
-  await expect(page).toHaveURL(/\/sclib\/forgot-password$/);
+  await expect(page).toHaveURL(/\/forgot-password$/);
   await expect(page.getByRole("heading", { name: "Reset your password" })).toBeVisible();
 
   await page.goto("register");

@@ -11,6 +11,7 @@ beforeEach(() => vi.stubGlobal("crypto", webcrypto));
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 describe("original native pilot participation protocol", () => {
   it("pins the capture, original replies and each current source without resealing old evidence", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.site20260924.wire.json")))).toBe("fbb299b2d7c06204b32928788d0e636345413562ebc55f979d2713dec7f8d89a");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260924r2.wire.json")))).toBe("4154b1331a61a7bec97c96f6dbd2ee2149eb71d5075da45fd9f9c459f3c65722");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json")))).toBe("a64d2d71bd58bd658558d94160d8dbbe7b813d00b5490dc0f3dee9605f73081e");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260923r4.wire.json")))).toBe("38729ff17b1fed4bf8604aab5d67e835d8ee388dbaabcc882ce7a21bac3e66d9");
@@ -24,7 +25,7 @@ describe("original native pilot participation protocol", () => {
     expect(http.capture_test_path).toBe("api/tests/test_ml_pilot_participant_wire.py");
     expect(http.fixture_notice).toBe("Actual owned SQL, authenticated HTTP and installed upload worker; synthetic accounts and declared events only, no real scientific approval or source permission.");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.batch75.wire.json")))).toBe("ce0cbb73250fc614964f5f028e20479903eb9f33a7dd1ffd1680ea43c409178a");
-    expect(http.source_pins).toHaveLength(617);
+    expect(http.source_pins).toHaveLength(619);
     expect(new Set(http.source_pins.map(p => p.path)).size).toBe(http.source_pins.length);
     for (const p of http.source_pins) {
       expect(p.path).toMatch(/^(api|scripts)\/[A-Za-z0-9_./-]+\.(py|schema\.json)$/); expect(p.path.split("/")).not.toContain("..");

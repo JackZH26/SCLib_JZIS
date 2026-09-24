@@ -12,7 +12,7 @@ function childEnvironment(parent) {
     if (parent[key] !== undefined) env[key] = parent[key];
   }
   return { ...env, CI: "1", NODE_ENV: "production", NEXT_TELEMETRY_DISABLED: "1",
-    NEXT_PUBLIC_BASE_PATH: "/sclib",
+    NEXT_PUBLIC_BASE_PATH: "",
     // Preserve public href/CSP semantics; the browser fixture refuses egress.
     NEXT_PUBLIC_API_BASE: "https://api.jzis.org/sclib/v1",
     API_BASE_SERVER: "http://127.0.0.1:1/inert/v1" };
@@ -24,7 +24,7 @@ function createWorkspace(source) {
   mkdirSync(workspaceRoot, { recursive: true, mode: 0o700 });
   const isolated = mkdtempSync(path.join(workspaceRoot, "sclib-public-browser-workspace-"));
   for (const entry of ["app", "components", "lib", "public", "types", "package.json", "tsconfig.json",
-    "next-env.d.ts", "next.config.js", "postcss.config.js", "tailwind.config.ts"]) {
+    "next-env.d.ts", "middleware.ts", "next.config.js", "postcss.config.js", "tailwind.config.ts"]) {
     cpSync(path.join(original, entry), path.join(isolated, entry), { recursive: true });
   }
   symlinkSync(path.join(original, "node_modules"), path.join(isolated, "node_modules"), "dir");

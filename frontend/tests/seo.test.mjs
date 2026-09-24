@@ -37,7 +37,7 @@ test("robots, canonical metadata, and structured research data are present", asy
   ]);
 
   assert.match(robots, /SITE_BASE_URL.*sitemap\.xml/);
-  assert.match(robots, /"\/sclib\/dashboard\/"/);
+  assert.match(robots, /"\/dashboard\/"/);
   assert.match(layout, /metadataBase: new URL\(SITE_ORIGIN\)/);
   assert.match(layout, /"@type": \["WebSite", "Dataset"\]/);
   assert.match(paper, /generateMetadata/);
@@ -45,6 +45,6 @@ test("robots, canonical metadata, and structured research data are present", asy
   assert.match(paper, /citation_title/);
   assert.match(material, /generateMetadata/);
   assert.match(material, /"@type": "Dataset"/);
-  assert.match(deployment, /Sitemap: https:\/\/jzis\.org\/sclib\/sitemap\.xml/);
-  assert.match(deployment, /Do not[\s\S]*replace or proxy the root file/);
+  assert.match(deployment, /Sitemap: https:\/\/jzis\.org\/sitemap\.xml/);
+  assert.match(deployment, /preserve[\s\S]*unrelated[\s\S]*routes/i);
 });

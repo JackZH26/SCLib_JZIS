@@ -1,6 +1,6 @@
 import { expect, restrictToLocalOrigin, test } from "./public-site-fixture";
 
-test("production pages retain English, prefixed assets and the real restrictive CSP", async ({ page }) => {
+test("production pages retain English, root-mounted assets and the real restrictive CSP", async ({ page }) => {
   const response = await page.goto("login");
   expect(response?.status()).toBe(200);
   const headers = response!.headers();
@@ -13,7 +13,7 @@ test("production pages retain English, prefixed assets and the real restrictive 
     nodes.map(node => node.getAttribute("src") ?? node.getAttribute("href")),
   );
   expect(assets.length).toBeGreaterThan(0);
-  for (const asset of assets) expect(asset).toMatch(/^\/sclib\/_next\/static\//);
+  for (const asset of assets) expect(asset).toMatch(/^\/_next\/static\//);
 });
 
 test("the browser restriction actually blocks an attempted external API request", async ({ browser, baseURL }) => {

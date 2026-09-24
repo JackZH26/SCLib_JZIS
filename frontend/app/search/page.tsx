@@ -118,6 +118,10 @@ function SearchInner({ q }: { q: string }) {
 
   return (
     <main className="space-y-6">
+      <div className="product-page-intro">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Search</h1>
+        {!q && <p className="mt-2 text-sm text-sage-muted">Find publications, material reports and answers grounded in the literature.</p>}
+      </div>
       <SearchBar
         initial={q}
         placeholder="Search papers or materials, or just ask a question…"
