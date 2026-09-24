@@ -59,9 +59,36 @@ in the release receipt, not assumed from the availability of old images.
    blocks, HTTP redirects and other top-level configuration remain byte-for-byte
    unchanged. It preserves TLS directives and the private presentation include.
    It never installs files or runs Nginx. Reject unexpected diffs.
-3. Validate the candidate in a separate Nginx `http` wrapper with the production
-   MIME types, certificates and includes. Run `nginx -t -c <wrapper>`; do not
-   reload while testing. Check that no old static root fallback survives.
+3. Validate the candidate in a separate Nginx wrapper with the production MIME
+   types, certificates and includes. **`nginx -t` is not read-only:** it can
+   create temporary directories and change their owners. A separate config
+   filename alone does not isolate those effects. Match the active worker user
+   and explicitly isolate **all five** temporary paths, PID, lock and log files
+   under an owned rehearsal directory before invoking it, for example:
+
+   ```nginx
+   user www-data;
+   pid /private-rehearsal/nginx.pid;
+   lock_file /private-rehearsal/nginx.lock;
+   error_log stderr;
+   events {}
+   http {
+       access_log off;
+       client_body_temp_path /private-rehearsal/body;
+       proxy_temp_path /private-rehearsal/proxy;
+       fastcgi_temp_path /private-rehearsal/fastcgi;
+       uwsgi_temp_path /private-rehearsal/uwsgi;
+       scgi_temp_path /private-rehearsal/scgi;
+       include /etc/nginx/mime.types;
+       include /private-rehearsal/nginx-candidate.conf;
+   }
+   ```
+
+   Substitute a new absolute rehearsal directory, verify the active user, and
+   inspect included files for path overrides. Record production temporary-path
+   ownership/modes before and after `nginx -t -c <wrapper>` and require them to
+   remain identical. Do not reload while testing. Check that no old static root
+   fallback survives. See the 2026-09-24 incident record for why this is required.
 4. Retain only the tested ASRP-free baseline frontend's `.next/static` contents
    in `/var/lib/sclib/site-migration/legacy-static/`. Audit its public bundles
    before copying: do not re-expose retired product copy or links from the

@@ -54,6 +54,13 @@ settings and private presentation include. On VPS2, `nginx -t` succeeded using
 an isolated wrapper under `/tmp/sclib-site-integration-20260924-review/`.
 The live Nginx configuration was not changed or reloaded.
 
+Correction after the Timeline incident: the wrapper isolated the configuration
+file but did **not** isolate temporary paths. Its `nginx -t` changed the owners
+of five production temporary directories to `nobody`, breaking buffered large
+responses. Those owners have now been restored to the active `www-data` user.
+The earlier syntax success must not be interpreted as a side-effect-free
+rehearsal. See `docs/operations/INCIDENT_2026-09-24_NGINX_TEMP_OWNERSHIP.md`.
+
 ## Release status and limitations
 
 This record does not assert full CI completion or production deployment.

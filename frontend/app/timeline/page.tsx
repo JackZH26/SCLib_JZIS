@@ -186,7 +186,13 @@ export default async function TimelinePage({
       </div>
 
       {data == null ? (
-        <p className="text-sm text-red-600">Failed to load timeline.</p>
+        <div role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+          <p>Timeline data could not be loaded completely. Please retry.</p>
+          <a className="mt-2 inline-block font-semibold underline underline-offset-4"
+            href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${buildHref(current, experimentalOnly, onlyAps)}`}>
+            Retry timeline
+          </a>
+        </div>
       ) : (
         <>
           <TcTimeline points={data.points} coverage={data.coverage} sampling={data.sampling} recordSummary={data.record_summary} />

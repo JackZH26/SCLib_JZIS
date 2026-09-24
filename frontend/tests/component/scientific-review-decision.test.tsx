@@ -498,7 +498,7 @@ describe("page selection and private wrappers", () => {
   });
   it("posts bounded JSON only and queries outcomes with encoded keys and credentialled no-store", async () => {
     const real = await vi.importActual<typeof import("@/lib/api")>("@/lib/api");
-    const fetcher = vi.fn().mockResolvedValue(new Response("{}", { status: 200 }));
+    const fetcher = vi.fn().mockImplementation(async () => new Response("{}", { status: 200 }));
     vi.stubGlobal("fetch", fetcher);
     const controller = new AbortController(), r = request();
     try {

@@ -19,7 +19,7 @@ describe("mutable visibility reads and timeline", () => {
     ["timeline", () => getTimeline()],
     ["material sitemap", () => listSitemapResources("material")],
   ] as const)("%s bypasses the mutable Next data cache", async (_name, read) => {
-    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) });
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ points: [] }) });
     vi.stubGlobal("fetch", fetchMock);
     await read();
     const options = fetchMock.mock.calls[0][1];
