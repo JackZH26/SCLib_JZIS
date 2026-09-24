@@ -13,6 +13,7 @@ afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(
 
 describe("native run protocol — original SQL/HTTP bytes", () => {
   it("pins all 617 source inputs including evidence intake, historical bytes, and 28 original response strings", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.delivery20260924r2.wire.json")))).toBe("77d9a8524f83c05789373db4030fe8dc5138a50478bfbacd23561e97e61bda9b");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.delivery20260924r1.wire.json")))).toBe("ce4ff5a69cd582aadb63bf0c1e5510200de72903a532b1590e48173f94a2a6eb");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.delivery20260923r4.wire.json")))).toBe("d703eeb880ba3bd3b94201255613e336dfc515081ababdb8afd5a98bff3a4087");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.delivery20260922r10.wire.json")))).toBe("c8b9fec54ac151e27767d7af56e58a8ef21299f91a2b480c4f19738019b60e35");

@@ -7,6 +7,7 @@ offset/limit pagination.
 """
 from __future__ import annotations
 
+import asyncio
 import heapq
 import inspect
 import json
@@ -14,6 +15,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from functools import wraps
 from typing import Literal
+from weakref import WeakValueDictionary
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy import cast, func, or_, select
@@ -60,10 +62,40 @@ router = APIRouter(tags=["materials"])
 
 
 _material_pages = _MaterialPageCache()
+# Share only ordered identifiers across pages, never ORM contexts or evidence.
+_material_rankings = _MaterialPageCache(max_bytes=16 * 1024 * 1024, max_entries=32)
+_MAX_RANKED_MATERIALS = 100_000
+_MAX_RANKING_BYTES = 4 * 1024 * 1024
+_material_build_locks = WeakValueDictionary()
 
 
 async def _material_page_revision(db):
     return await catalogue_revision(db, year=datetime.now(UTC).year)
+
+
+def _material_cache_parameters(arguments):
+    parameters = {key: value for key, value in arguments.items()
+                  if key not in {"db", "identity"}}
+    return parameters if all(value is None or type(value) in {str, bool, int, float}
+                             for value in parameters.values()) else None
+
+
+def _material_cache_key(revision, parameters, *, ranking=False):
+    values = {key: value for key, value in parameters.items()
+              if not ranking or key not in {"offset", "limit"}}
+    return (*revision, json.dumps(values, sort_keys=True, allow_nan=False).encode())
+
+
+async def _check_material_revision(db, before):
+    if before is not None and await _material_page_revision(db) != before:
+        raise HTTPException(503, "Material catalogue changed during read; retry",
+                            headers={"Retry-After": "1", "Cache-Control": "no-store"})
+
+
+def _material_response(body, cache_status):
+    return Response(content=body, media_type="application/json", headers={
+        "Cache-Control": "private, no-store", "X-Materials-Cache": cache_status,
+    })
 
 
 def _cache_material_pages(function):
@@ -74,29 +106,37 @@ def _cache_material_pages(function):
         arguments = signature.bind(*args, **kwargs)
         arguments.apply_defaults()
         db = arguments.arguments["db"]
-        parameters = {key: value for key, value in arguments.arguments.items()
-                      if key not in {"db", "identity"}}
+        parameters = _material_cache_parameters(arguments.arguments)
         # FastAPI supplies scalar validated values. Internal callers that leave
         # Query/Depends defaults unresolved retain the original uncached path.
-        if any(value is not None and type(value) not in {str, bool, int, float}
-               for value in parameters.values()):
+        if parameters is None:
             return await function(*args, **kwargs)
         before = await _material_page_revision(db)
-        key = (*before, json.dumps(parameters, sort_keys=True, allow_nan=False).encode()) if before else None
-        if key is not None and (body := _material_pages.get(key)) is not None:
+        if before is None:
+            return await function(*args, **kwargs)
+        key = _material_cache_key(before, parameters)
+        if (body := _material_pages.get(key)) is not None:
             # These are bytes produced by the validated DTO below, not raw
             # material input to its scientific projection validators. Replaying
             # them cannot mutate the cache or reclassify an already scoped DTO.
             # Identity/quota middleware still runs on each request.
-            return Response(content=body, media_type="application/json")
-        result = await function(*args, **kwargs)
-        if before is not None:
-            after = await _material_page_revision(db)
-            if after != before:
-                raise HTTPException(503, "Material catalogue changed during read; retry",
-                                    headers={"Retry-After": "1", "Cache-Control": "no-store"})
-            _material_pages.put(key, result.model_dump_json().encode())
-        return result
+            return _material_response(body, "HIT")
+        # Concurrent cold pages with the same filters share the first scan.
+        # Weak references release locks when no builders/waiters retain them.
+        lock_key = _material_cache_key(before, parameters, ranking=True)
+        lock = _material_build_locks.setdefault(lock_key, asyncio.Lock())
+        async with lock:
+            before = await _material_page_revision(db)
+            if before is None:
+                return await function(*args, **kwargs)
+            key = _material_cache_key(before, parameters)
+            if (body := _material_pages.get(key)) is not None:
+                return _material_response(body, "HIT")
+            result = await function(*args, **kwargs)
+            await _check_material_revision(db, before)
+            body = result.model_dump_json().encode()
+            _material_pages.put(key, body)
+            return _material_response(body, "MISS")
 
     return cached
 
@@ -139,6 +179,36 @@ def _current_sort_value(material: MaterialReadContext, field: str) -> float | in
     binding = envelope["properties"][field]
     return (binding["selected"]["value"]
             if binding["status"] == "supported" and binding["selected"] else None)
+
+
+def _matching_material_results(material, filters):
+    matching = matching_result_references(
+        material.records, filters, scope_id=material.id,
+        material_family=material.family,
+        compound_thresholds=review_context(material)["compound_thresholds"],
+    ) if filters.active else []
+    if material.source_scope is not None:
+        matching = [item for item in matching if item["record_index"] in material.source_scope.eligible_indices]
+    return matching
+
+
+async def _page_from_material_ranking(db, identifiers, filters, *, offset, limit):
+    selected_ids = identifiers[offset:offset + limit]
+    selected = []
+    if selected_ids:
+        rows = (await db.execute(select(Material).where(Material.id.in_(selected_ids))
+                                .execution_options(populate_existing=True))).scalars().all()
+        views = {view.id: view for view in await prepare_material_views(db, rows)}
+        if set(views) != set(selected_ids):
+            raise HTTPException(503, "Material catalogue changed during read; retry",
+                                headers={"Retry-After": "1", "Cache-Control": "no-store"})
+        for identifier in selected_ids:
+            material = views[identifier]
+            summary = MaterialSummary.model_validate(material)
+            summary.matching_results = [{**record, "visibility": material.visibility}
+                                        for record in _matching_material_results(material, filters)]
+            selected.append(summary)
+    return MaterialListResponse(total=len(identifiers), results=selected, limit=limit, offset=offset)
 
 
 @router.get("/materials", response_model=MaterialListResponse)
@@ -215,6 +285,7 @@ async def list_materials(
     identity: Identity = Depends(peek_identity),  # noqa: ARG001 — presence sets guest counter header
     db: AsyncSession = Depends(get_db),
 ) -> MaterialListResponse:
+    parameters = _material_cache_parameters(locals())
     if structure_phase:
         raise HTTPException(422, "structure_phase filtering is unavailable until reviewed material/state associations exist. Inspect pending structure_evidence proposals; text labels are not coordinate structures.")
     if ambient_sc is False:
@@ -230,6 +301,14 @@ async def list_materials(
         experimental_only=experimental_only or ambient_sc is True,
         only_aps=only_aps, min_tier=min_tier,
     )
+    # Direct internal calls with unresolved FastAPI defaults remain uncached.
+    revision = await _material_page_revision(db) if parameters is not None else None
+    ranking_key = _material_cache_key(revision, parameters, ranking=True) if revision else None
+    if ranking_key is not None and (ranking := _material_rankings.get(ranking_key)) is not None:
+        result = await _page_from_material_ranking(db, json.loads(ranking), scientific_filters,
+                                                  offset=offset, limit=limit)
+        await _check_material_revision(db, revision)
+        return result
     stmt = select(Material)
     def _apply(where_clause):
         nonlocal stmt
@@ -290,6 +369,8 @@ async def list_materials(
     stream = await db.stream_scalars(stmt.execution_options(yield_per=128))
     page_size = offset + limit
     candidates: list[_MaterialPageCandidate] = []
+    ranking_items = [] if ranking_key is not None else None
+    ranking_bytes = 2
     total = 0
     try:
         async for batch in stream.partitions(128):
@@ -311,16 +392,16 @@ async def list_materials(
                         for field, expected in classification_filters.items()
                     ):
                         continue
-                matching = matching_result_references(
-                    material.records, scientific_filters, scope_id=material.id,
-                    material_family=material.family,
-                    compound_thresholds=review_context(material)["compound_thresholds"],
-                ) if scientific_filters.active else []
-                if material.source_scope is not None:
-                    matching = [item for item in matching if item["record_index"] in material.source_scope.eligible_indices]
+                matching = _matching_material_results(material, scientific_filters)
                 if scientific_filters.active and not matching:
                     continue
                 candidate = _MaterialPageCandidate(material, _current_sort_value(material, sort), matching)
+                if ranking_items is not None:
+                    ranking_bytes += len(json.dumps(material.id).encode()) + 1
+                    if len(ranking_items) >= _MAX_RANKED_MATERIALS or ranking_bytes > _MAX_RANKING_BYTES:
+                        ranking_items = None  # Oversized scans retain the bounded page-heap path.
+                    else:
+                        ranking_items.append((material.id, candidate.sort_value))
                 if len(candidates) < page_size or candidates[0] < candidate:
                     if len(candidates) < page_size:
                         heapq.heappush(candidates, candidate)
@@ -334,7 +415,12 @@ async def list_materials(
         summary = MaterialSummary.model_validate(item.material)
         summary.matching_results = [{**record, "visibility": item.material.visibility} for record in item.matching]
         selected.append(summary)
-    return MaterialListResponse(total=total, results=selected, limit=limit, offset=offset)
+    result = MaterialListResponse(total=total, results=selected, limit=limit, offset=offset)
+    await _check_material_revision(db, revision)
+    if ranking_items is not None:
+        ranking_items.sort(key=lambda item: (item[1] is None, -item[1] if item[1] is not None else 0, item[0]))
+        _material_rankings.put(ranking_key, json.dumps([item[0] for item in ranking_items], separators=(",", ":")).encode())
+    return result
 
 
 @router.get("/materials/{material_id:path}/phase_diagram", response_model=list[PhaseDiagramPoint])

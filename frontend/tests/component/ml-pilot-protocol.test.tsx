@@ -11,6 +11,7 @@ beforeEach(() => vi.stubGlobal("crypto", webcrypto));
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 describe("original native pilot participation protocol", () => {
   it("pins the capture, original replies and each current source without resealing old evidence", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260924r2.wire.json")))).toBe("4154b1331a61a7bec97c96f6dbd2ee2149eb71d5075da45fd9f9c459f3c65722");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json")))).toBe("a64d2d71bd58bd658558d94160d8dbbe7b813d00b5490dc0f3dee9605f73081e");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260923r4.wire.json")))).toBe("38729ff17b1fed4bf8604aab5d67e835d8ee388dbaabcc882ce7a21bac3e66d9");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.delivery20260922r10.wire.json")))).toBe("f6cec3fedec5c95256662d75abc60d60a5c3665a74342f78337fa8ca57e11fa5");
