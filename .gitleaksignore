@@ -182,3 +182,8 @@ f09b90e58b28aa549dbd1516acb276979a2378c5:frontend/tests/fixtures/ml-pilot-partic
 128331840e8b8e3756262156df345e7e68f216a5:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260924r2.wire.json:generic-api-key:1
 128331840e8b8e3756262156df345e7e68f216a5:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r2.wire.json:generic-api-key:1
 128331840e8b8e3756262156df345e7e68f216a5:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r2.wire.json:generic-api-key:1
+
+# Site integration: reviewed native synthetic request keys, see SECRET_TRIAGE_SITE_2026-09-24.md.
+c6b8d125a7d110a22cf8d1b349bd3d5f25e7bf38:frontend/tests/fixtures/discovery-main-barrier-native.site20260924.wire.json:generic-api-key:1
+c6b8d125a7d110a22cf8d1b349bd3d5f25e7bf38:frontend/tests/fixtures/ml-pilot-attestations-native.site20260924.wire.json:generic-api-key:1
+c6b8d125a7d110a22cf8d1b349bd3d5f25e7bf38:frontend/tests/fixtures/ml-pilot-participant-native.site20260924.wire.json:generic-api-key:1
