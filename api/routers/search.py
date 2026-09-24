@@ -91,39 +91,50 @@ async def search(
     # never be interpreted as pointers to the latest mutable Chunk rows.
     settings = get_settings()
     vector_hits = []
+    # Provider I/O has no database work. Run it alongside the sequential SQL
+    # reads; one AsyncSession must never be used concurrently by two tasks.
+    semantic_task = None
     if pin is not None:
-        try:
-            neighbors = await provider_resilience.run_blocking(
-                "vector_search", lambda: index_vector_adapter.query(pin, body.query,
-                    top_k=min(body.top_k * 3, 100), year_min=body.filters.year_min, year_max=body.filters.year_max),
-                timeout_seconds=settings.vector_search_timeout_seconds,
-                max_attempts=settings.provider_max_attempts,
-                failure_threshold=settings.provider_circuit_failure_threshold,
-                cooldown_seconds=settings.provider_circuit_cooldown_seconds,
-            )
-            async with asyncio.timeout(10):
-                vector_hits = await index_retrieval.verified_vector_hits(db, pin, neighbors)
-        except Exception:
-            log.warning("Semantic generation search unavailable; using generation-scoped lexical fallback")
-            await db.rollback()
+        semantic_task = asyncio.create_task(provider_resilience.run_blocking(
+            "vector_search", lambda: index_vector_adapter.query(pin, body.query,
+                top_k=min(body.top_k * 3, 100), year_min=f.year_min, year_max=f.year_max),
+            timeout_seconds=settings.vector_search_timeout_seconds,
+            max_attempts=settings.provider_max_attempts,
+            failure_threshold=settings.provider_circuit_failure_threshold,
+            cooldown_seconds=settings.provider_circuit_cooldown_seconds,
+        ))
 
     candidate_limit = min(body.top_k * 5, 300)
-    lexical_hits = await retrieval.lexical_search(
-        db,
-        interpretation.normalized_query,
-        limit=candidate_limit,
-        year_min=body.filters.year_min,
-        year_max=body.filters.year_max,
-        exclude_retracted=body.filters.exclude_retracted,
-        generation_id=pin["generation_id"] if pin is not None else None,
-    )
     try:
-        async with asyncio.timeout(15):
-            formula_hits = await retrieval.formula_lexical_search(db, interpretation, pin, limit=candidate_limit,
-                year_min=body.filters.year_min, year_max=body.filters.year_max)
-        lexical_hits = retrieval.combine_lexical_hits(formula_hits, lexical_hits, limit=candidate_limit)
-    except Exception:
-        raise HTTPException(503, "Formula-aware retrieval is unavailable") from None
+        lexical_hits = await retrieval.lexical_search(
+            db, interpretation.normalized_query, limit=candidate_limit,
+            year_min=f.year_min, year_max=f.year_max,
+            exclude_retracted=f.exclude_retracted,
+            generation_id=pin["generation_id"] if pin is not None else None,
+        )
+        try:
+            async with asyncio.timeout(15):
+                formula_hits = await retrieval.formula_lexical_search(
+                    db, interpretation, pin, limit=candidate_limit,
+                    year_min=f.year_min, year_max=f.year_max)
+            lexical_hits = retrieval.combine_lexical_hits(formula_hits, lexical_hits, limit=candidate_limit)
+        except Exception:
+            raise HTTPException(503, "Formula-aware retrieval is unavailable") from None
+        if semantic_task is not None:
+            try:
+                neighbors = await semantic_task
+                async with asyncio.timeout(10):
+                    vector_hits = await index_retrieval.verified_vector_hits(db, pin, neighbors)
+            except Exception:
+                log.warning("Semantic generation search unavailable; using generation-scoped lexical fallback")
+                await db.rollback()
+    finally:
+        if semantic_task is not None:
+            if not semantic_task.done():
+                semantic_task.cancel()
+            # Retrieve failures even when SQL or the caller cancelled first.
+            await asyncio.gather(semantic_task, return_exceptions=True)
+
     candidates = retrieval.fuse_rankings(
         vector_hits,
         lexical_hits,

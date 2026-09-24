@@ -348,3 +348,28 @@ async def test_no_active_generation_search_and_ask_are_explicit_legacy_lexical_o
         assert response.json()["retrieval_generation"]["mode"] == "legacy_lexical_only"
         assert response.json()["retrieval_generation"]["generation_id"] is None
     assert calls == []
+
+
+@pytest.mark.asyncio
+async def test_search_overlaps_provider_with_sql_without_sharing_session(client, generation, monkeypatch):
+    from services import retrieval
+    started, release = threading.Event(), threading.Event()
+    original_query, original_lexical = index_vector_adapter.query, retrieval.lexical_search
+    def blocked_provider(*args, **kwargs):
+        started.set()
+        if not release.wait(3):
+            raise AssertionError("SQL never overlapped the provider request")
+        return original_query(*args, **kwargs)
+    async def lexical(*args, **kwargs):
+        assert await asyncio.to_thread(started.wait, 2)
+        try:
+            return await original_lexical(*args, **kwargs)
+        finally:
+            release.set()
+    monkeypatch.setattr(index_vector_adapter, "query", blocked_provider)
+    monkeypatch.setattr(retrieval, "lexical_search", lexical)
+    try:
+        response = await client.post("/v1/search", json={"query": "old snapshot"})
+        assert response.status_code == 200 and response.json()["results"]
+    finally:
+        release.set()

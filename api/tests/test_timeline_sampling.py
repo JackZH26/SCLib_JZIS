@@ -103,6 +103,12 @@ async def test_small_http_display_budget_preserves_full_coverage_and_record_summ
     async def projection(*args, **kwargs):
         return SimpleNamespace(points=points, refreshed_at=datetime(2026, 1, 1, tzinfo=UTC))
 
+    async def uncached(_db):
+        return None
+
+    # This test injects projection points, so explicitly exercise the uncached
+    # projection path. Real raw-source cache coverage has separate SQL tests.
+    monkeypatch.setattr("routers.timeline.catalogue_revision", uncached)
     monkeypatch.setattr("routers.timeline.fetch_projected_timeline_points", projection)
     small = await client.get("/v1/timeline", params={"max_points": 2000, "compact": True})
     expanded = await client.get("/v1/timeline", params={"max_points": 10000, "compact": True})

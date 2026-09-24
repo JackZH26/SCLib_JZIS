@@ -360,27 +360,40 @@ async def stage_partition(db, *, generation_id, partition_id, items):
 async def formula_candidates(db, pin, wanted, *, limit, year_min=None, year_max=None):
     """GIN candidate navigation, followed by exact retained-text verification."""
     require(type(wanted) is set and 1 <= len(wanted) <= 32 and type(limit) is int)
-    rows = (
-        await db.execute(
-            sa.text("""SELECT nav.vector_id,
-        (SELECT count(*) FROM unnest(nav.terms) term WHERE term=ANY(CAST(:wanted AS text[]))) AS matches
-        FROM index_corpus_formula_terms nav JOIN index_generation_members member
-          ON member.generation_id=nav.generation_id AND member.vector_id=nav.vector_id
-        WHERE nav.generation_id=:generation AND nav.terms && CAST(:wanted AS text[])
-          AND nav.content_sha256=member.content_sha256
-          AND nav.record_sha256=public.sclib_index_record_hash_v1(to_jsonb(nav))
-          AND (CAST(:year_min AS integer) IS NULL OR (member.snapshot_json->>'year')::integer>=:year_min)
-          AND (CAST(:year_max AS integer) IS NULL OR (member.snapshot_json->>'year')::integer<=:year_max)
-        ORDER BY matches DESC,nav.vector_id LIMIT :limit"""),
-            {
-                "generation": UUID(pin["generation_id"]),
-                "wanted": sorted(wanted),
-                "limit": min(max(limit, 1), 300),
-                "year_min": year_min,
-                "year_max": year_max,
-            },
+    # Rank the immutable navigation rows before checking retained-member
+    # bindings. Checking/hashing all 22k MgB2 hits for a 50-row request caused
+    # tens of thousands of random reads. Verify every selected row and fail
+    # closed on corruption; never silently backfill from unchecked candidates.
+    year_clause = ""
+    if year_min is not None or year_max is not None:
+        year_clause = """AND EXISTS (
+            SELECT 1 FROM index_generation_members member
+            WHERE member.generation_id=nav.generation_id AND member.vector_id=nav.vector_id
+              AND (CAST(:year_min AS integer) IS NULL OR (member.snapshot_json->>'year')::integer>=:year_min)
+              AND (CAST(:year_max AS integer) IS NULL OR (member.snapshot_json->>'year')::integer<=:year_max)
+        )"""
+    rows = (await db.execute(sa.text(f"""
+        WITH selected AS MATERIALIZED (
+            SELECT nav AS navigation,
+              (SELECT count(*) FROM unnest(nav.terms) term
+               WHERE term=ANY(CAST(:wanted AS text[]))) AS matches
+            FROM index_corpus_formula_terms nav
+            WHERE nav.generation_id=:generation AND nav.terms && CAST(:wanted AS text[])
+              {year_clause}
+            ORDER BY matches DESC,nav.vector_id LIMIT :limit
         )
-    ).all()
+        SELECT (s.navigation).vector_id AS vector_id,
+          (s.navigation).content_sha256=member.content_sha256
+          AND (s.navigation).record_sha256=public.sclib_index_record_hash_v1(to_jsonb(s.navigation)) AS valid
+        FROM selected s LEFT JOIN index_generation_members member
+          ON member.generation_id=(s.navigation).generation_id
+          AND member.vector_id=(s.navigation).vector_id
+        ORDER BY s.matches DESC,(s.navigation).vector_id
+        """), {
+            "generation": UUID(pin["generation_id"]), "wanted": sorted(wanted),
+            "limit": min(max(limit, 1), 300), "year_min": year_min, "year_max": year_max,
+        })).all()
+    require(all(row.valid is True for row in rows))
     return [row.vector_id for row in rows]
 
 
