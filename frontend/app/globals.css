@@ -84,3 +84,55 @@ a:hover {
   .btn-primary, .btn-outline { transition: none; }
   .btn-primary:hover { transform: none; }
 }
+
+/* Shared shell: preserve the SCLib palette and Inter, strengthen hierarchy. */
+:root { color-scheme: light; }
+.site-content:focus { outline: none; }
+.skip-link {
+  position: fixed;
+  top: -5rem;
+  left: 1rem;
+  z-index: 100;
+  padding: .7rem 1rem;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--accent-deep);
+  box-shadow: var(--shadow-hover);
+}
+.skip-link:focus { top: .75rem; }
+.site-nav-link[aria-current="page"] {
+  background: var(--surface);
+  color: var(--accent-deep);
+}
+.site-text-link { color: var(--accent-deep); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--border); }
+.site-text-link:hover { text-decoration-color: currentColor; }
+.library-headline {
+  font-size: clamp(1.8rem, 4.15vw, 3.25rem);
+  line-height: 1.13;
+  letter-spacing: -.045em;
+}
+.hero-material-image { aspect-ratio: 3 / 2; }
+.research-entry { transition: border-color .18s ease, box-shadow .18s ease; }
+.research-entry:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+.entry-arrow { transition: transform .18s ease; }
+.research-entry:hover .entry-arrow { transform: translate(2px, -2px); }
+.contents-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.information-page article > h2:first-child { margin-top: 0; }
+.information-page .prose {
+  --tw-prose-body: var(--text-secondary);
+  --tw-prose-headings: var(--text);
+  --tw-prose-bold: var(--text);
+}
+.product-page-intro { border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; }
+.product-page-intro > p { max-width: 90ch; line-height: 1.75; }
+.material-filters input:not([type="checkbox"]), .material-filters select { min-height: 2.5rem; }
+.material-filters label > span { color: var(--text-secondary); }
+.btn-primary, .btn-outline { white-space: nowrap; }
+.btn-primary:active, .btn-outline:active { transform: translateY(1px); }
+@media (min-width: 1024px) {
+  .hero-material-image { aspect-ratio: 1.1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .research-entry, .entry-arrow, .site-header * { transition: none !important; }
+  .research-entry:hover .entry-arrow, .btn-primary:active, .btn-outline:active { transform: none; }
+}

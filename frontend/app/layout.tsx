@@ -88,7 +88,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="flex min-h-screen flex-col bg-sage-bg font-sans antialiased">
+      <body className="flex min-h-[100dvh] flex-col bg-sage-bg font-sans antialiased">
         <script
           id="sclib-website-structured-data"
           type="application/ld+json"
@@ -96,10 +96,11 @@ export default function RootLayout({
             __html: serializeJsonLd(websiteStructuredData),
           }}
         />
+        <a href="#main-content" className="skip-link">Skip to content</a>
         <Analytics />
         <WebVitalsReporter />
         <Header />
-        <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
+        <div id="main-content" tabIndex={-1} className="site-content mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
           {children}
         </div>
         <Footer />

@@ -6,7 +6,7 @@
  * can handle filters + pagination without a client-side refetch here.
  */
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 export function SearchBar({
   placeholder = "Search papers or materials, or just ask a question…",
@@ -17,6 +17,7 @@ export function SearchBar({
   initial?: string;
   target?: string;
 }) {
+  const inputId = useId();
   const [q, setQ] = useState(initial);
   const router = useRouter();
 
@@ -29,22 +30,26 @@ export function SearchBar({
       }}
       role="search"
       aria-label="Library search"
-      className="flex w-full gap-2"
+      className="library-search w-full"
     >
-      <input
-        type="search"
-        name="q"
-        aria-label="Search papers, materials, or ask a research question"
-        minLength={2}
-        required
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        placeholder={placeholder}
-        className="min-w-0 flex-1 rounded-[10px] border border-sage-border bg-white px-4 py-3 text-base text-sage-ink shadow-sage placeholder:text-sage-tertiary focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
-      />
-      <button type="submit" className="btn-primary shrink-0">
-        Search
-      </button>
+      <label htmlFor={inputId} className="mb-2 block text-sm font-semibold text-sage-ink">Search the library</label>
+      <div className="flex gap-2 rounded-xl border border-sage-border bg-white p-1.5 shadow-sage focus-within:border-accent">
+        <input
+          id={inputId}
+          type="search"
+          name="q"
+          aria-label="Search the library: papers, materials, or a research question"
+          minLength={2}
+          required
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder={placeholder}
+          className="min-w-0 flex-1 rounded-lg bg-white px-3 py-3 text-base text-sage-ink placeholder:text-sage-muted focus-visible:outline-offset-[-2px]"
+        />
+        <button type="submit" className="btn-primary shrink-0 !px-5">
+          Search
+        </button>
+      </div>
     </form>
   );
 }
