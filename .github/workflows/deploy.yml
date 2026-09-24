@@ -249,7 +249,7 @@ jobs:
               *) echo "deployed revision mismatch: $version_json"; exit 1 ;;
             esac
             curl --max-time 15 --fail --silent --show-error \
-              https://jzis.org/sclib/ >/dev/null
+              https://jzis.org/ >/dev/null
 
             # Persist only after every smoke check succeeds. Scheduled ingest
             # and aggregation then reuse the exact signed immutable images
