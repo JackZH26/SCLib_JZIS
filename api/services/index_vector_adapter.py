@@ -13,7 +13,9 @@ import json
 import math
 import re
 import struct
+import threading
 import time
+from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -710,8 +712,35 @@ def _query(pin, texts, top_k, year_min, year_max, stop_event=None, *, members=No
         raise IndexVectorError("Generation query is unavailable or unverifiable") from None
 
 
+# Immutable-generation ANN candidates only, never hydrated text or rights.
+# SQL member bindings, live lifecycle/evidence and the current pin are still
+# checked on each request. A generation/runtime change selects a new key.
+_QUERY_CACHE_TTL = 60.0
+_QUERY_CACHE_MAX = 128
+_query_cache = OrderedDict()
+_query_cache_lock = threading.Lock()
+
+
 def query(pin, query_text, *, top_k, year_min=None, year_max=None):
-    return _query(pin, [query_text], top_k, year_min, year_max)[0]
+    checked = _pin(pin)  # runtime identity remains authoritative on cache hits
+    key = hashlib.sha256(_canonical([checked, query_text, top_k, year_min, year_max])).digest()
+    # Disposables remain uncached: tests/operators can mutate their transport.
+    cacheable = checked["resource"]["backend"] == "vertex-public"
+    if cacheable:
+        with _query_cache_lock:
+            entry = _query_cache.get(key)
+            if entry is not None and entry[0] > time.monotonic():
+                _query_cache.move_to_end(key)
+                return list(entry[1])
+            _query_cache.pop(key, None)
+    result = _query(checked, [query_text], top_k, year_min, year_max)[0]
+    if cacheable:
+        with _query_cache_lock:
+            _query_cache[key] = (time.monotonic() + _QUERY_CACHE_TTL, tuple(result))
+            _query_cache.move_to_end(key)
+            while len(_query_cache) > _QUERY_CACHE_MAX:
+                _query_cache.popitem(last=False)
+    return result
 
 
 def query_many(pin, texts, *, top_k, stop_event=None):

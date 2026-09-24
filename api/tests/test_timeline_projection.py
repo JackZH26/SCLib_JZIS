@@ -319,6 +319,10 @@ async def test_endpoint_rolls_back_and_uses_fallback_when_projection_fails(
     async def _fallback(**kwargs):  # noqa: ARG001
         return fallback
 
+    async def uncached(_db):
+        return None
+
+    monkeypatch.setattr(timeline_router, "catalogue_revision", uncached)
     monkeypatch.setattr(
         timeline_router,
         "fetch_projected_timeline_points",
@@ -375,6 +379,10 @@ async def test_endpoint_prefers_ready_projection_over_jsonb_fallback(monkeypatch
     async def _unexpected_fallback(**kwargs):  # noqa: ARG001
         raise AssertionError("ready projection must bypass JSONB fallback")
 
+    async def uncached(_db):
+        return None
+
+    monkeypatch.setattr(timeline_router, "catalogue_revision", uncached)
     monkeypatch.setattr(timeline_router, "fetch_projected_timeline_points", _projection)
     monkeypatch.setattr(
         timeline_router,

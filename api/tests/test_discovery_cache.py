@@ -180,3 +180,22 @@ async def test_additive_endpoints_page_filter_and_lazy_detail(
         )
     assert exc_info.value.status_code == 404
     _store.clear()
+
+
+@pytest.mark.parametrize("error", [PermissionError("read-only mount"), OSError(30, "Read-only file system")])
+async def test_valid_feed_survives_unwritable_recovery_sidecar(tmp_path, monkeypatch, error):
+    import routers.discovery as routes
+    path = tmp_path / "feed.json"
+    _write_feed(path, [_candidate("lead-1", "exploratory_candidate")])
+    def unwritable(*args):
+        raise error
+    monkeypatch.setattr(routes, "atomic_write_document", unwritable)
+    store = DiscoveryFeedStore()
+    first, status = await store.get(path)
+    assert status == "MISS" and first.source_status == "ready"
+    assert first.metadata.total_candidates == 1 and first.metadata.source_error is None
+    assert (await store.get(path))[0] is first
+    # A later broken feed still recovers the validated process-local version.
+    path.write_text("{invalid json")
+    stale, _ = await store.get(path)
+    assert stale.source_status == "stale" and stale.metadata.total_candidates == 1

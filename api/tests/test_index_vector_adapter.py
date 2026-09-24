@@ -892,3 +892,32 @@ def test_operator_parallel_waves_never_extend_deadline(monkeypatch):
     with pytest.raises(adapter.IndexVectorError, match='deadline'):
         adapter._rpc_batches(slow, list(range(6)), 1, deadline, parallel=True)
     assert set(started) <= {0, 1}
+
+
+def test_public_query_cache_is_bounded_short_lived_and_pin_scoped(monkeypatch):
+    pin, members = fixture_generation(1, backend="vertex-public")
+    transport = PublicDouble(monkeypatch, pin)
+    adapter.publish(pin, members)
+    monkeypatch.setattr(adapter, "_query_cache", adapter.OrderedDict())
+    monkeypatch.setattr(adapter, "_QUERY_CACHE_MAX", 2)
+    clock = [100.0]
+    monkeypatch.setattr(adapter.time, "monotonic", lambda: clock[0])
+    first = adapter.query(pin, "query", top_k=1)
+    query_count = lambda: sum(name == "query" for name, _ in transport.calls)
+    assert query_count() == 1
+    first.clear()
+    assert len(adapter.query(pin, "query", top_k=1)) == 1 and query_count() == 1
+    adapter.query({**pin, "activation_event_id": str(uuid4())}, "query", top_k=1)
+    assert query_count() == 2
+    adapter.query(pin, "another query", top_k=1)
+    assert len(adapter._query_cache) == 2
+    adapter.query(pin, "query", top_k=1)
+    assert query_count() == 4
+    clock[0] += 61
+    adapter.query(pin, "query", top_k=1)
+    assert query_count() == 5
+    transport.endpoint.public_endpoint_enabled = False
+    clock[0] += 61
+    with pytest.raises(adapter.IndexVectorError):
+        adapter.query(pin, "query", top_k=1)
+    assert not adapter._query_cache.get(next(iter(adapter._query_cache), None), (0,))[0] > clock[0]

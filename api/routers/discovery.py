@@ -186,9 +186,13 @@ class DiscoveryFeedStore:
                 return self._snapshot, "HIT"
             try:
                 snapshot = await asyncio.to_thread(_build_snapshot, path, signature)
-                # A local raw feed accepted on first startup also gains durable
-                # recovery. Pull publication already preserves the previous pair.
-                await asyncio.to_thread(atomic_write_document, last_good_path(path), snapshot.document)
+                # Persistence is best-effort for an API reader: production
+                # deliberately mounts this directory read-only. A valid feed
+                # remains usable when its recovery sidecar cannot be written.
+                try:
+                    await asyncio.to_thread(atomic_write_document, last_good_path(path), snapshot.document)
+                except OSError:
+                    log.info("Discovery feed validated; recovery sidecar is not writable")
             except (OSError, ValueError, TypeError, KeyError):
                 log.warning("Discovery update unavailable; attempting last-good recovery")
                 previous = self._snapshot

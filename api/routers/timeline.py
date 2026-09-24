@@ -11,6 +11,7 @@ does not define scientific records or establish scientific acceptance.
 """
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 import logging
@@ -26,6 +27,7 @@ from models import get_db
 from models.db import Material, Paper
 from models.search import TimelineCoverage, TimelinePoint, TimelineResponse
 from services.anomaly_review import ANOMALY_POLICY_VERSION
+from services.catalogue_cache import BoundedResponseCache, catalogue_revision
 from services.http_cache import conditional_json_response, weak_etag
 from services.material_anomalies import review_context
 from services.material_source_scope import current_visibility_allows_view as visibility_allows_view
@@ -51,6 +53,8 @@ log = logging.getLogger(__name__)
 
 _CACHE_SCHEMA_VERSION = "v10-source-scoped-results"
 _CACHE_CONTROL = "private, no-store"
+_timeline_pages = BoundedResponseCache(max_bytes=64 * 1024 * 1024, max_entries=32)
+_timeline_build_lock = asyncio.Lock()
 
 
 class TimelinePointBudget(IntEnum):
@@ -218,9 +222,36 @@ async def timeline(
 ) -> Response:
     if reviewed_only:
         raise HTTPException(422, "Reviewed-only Timeline is unavailable: legacy records do not have revision-bound scientific acceptance.")
-    # Governance is mutable and has no transactional release-wide cache epoch
-    # yet. Re-evaluate live inputs before conditional responses; old Redis bodies
-    # must not resurface quarantined or newly held material.
+    # Recheck committed catalogue/source epochs on every request, including
+    # ETag reads. Cache raw-source computation only: projection tables are not
+    # fenced by these epochs. No browser/CDN stale body can outlive a hold.
+    before = await catalogue_revision(db)
+    if before is not None:
+        variant = _cache_key(family, include_pending, experimental_only, only_aps,
+                             max_points, compact, offset, limit, schema_version).encode()
+        key = (*before, variant)
+        if (cached := _timeline_pages.get(key)) is not None:
+            return _http_response(request, cached.decode(), cache_status="HIT")
+        # Collapse simultaneous cold requests. Re-read the epoch after waiting
+        # so a mutation cannot revive an entry selected before the wait.
+        async with _timeline_build_lock:
+            before = await catalogue_revision(db)
+            if before is not None:
+                key = (*before, variant)
+                if (cached := _timeline_pages.get(key)) is not None:
+                    return _http_response(request, cached.decode(), cache_status="HIT")
+                data = await _build_timeline_fallback(
+                    family=family, include_pending=include_pending,
+                    experimental_only=experimental_only, only_aps=only_aps,
+                    max_points=max_points, offset=offset, limit=limit, db=db,
+                )
+                payload = _serialize_timeline(data, compact=compact)
+                if await catalogue_revision(db) != before:
+                    raise HTTPException(503, "Timeline sources changed during read; retry",
+                        headers={"Retry-After": "1", "Cache-Control": "no-store"})
+                _timeline_pages.put(key, payload.encode())
+                return _http_response(request, payload, cache_status="MISS")
+    # A writing/repeatable-read caller retains live uncached evaluation.
     try:
         projected = await fetch_projected_timeline_points(
             db,
