@@ -1,0 +1,7 @@
+# Native capture secret-scan triage, 2026-09-24
+
+Security run 35952352276 reported 13 `generic-api-key` matches at revision `7c85356fab990e3390142e680d410cf5ded1b25c`. A local Gitleaks rescan reproduced exactly these findings. Each matched only a `request_key` value: one 32-character UUID from the synthetic Discovery main-barrier test, six repeated synthetic participant request IDs and six repeated synthetic attestation request IDs. The latter IDs have explicit `synthetic-` prefixes followed by a random UUID. They are idempotency/correlation identifiers in isolated test records, not credentials.
+
+Each finding was checked against its exact retained archive bytes, field name, UUID shape, rule, line and commit. The capture producers run against owned disposable PostgreSQL/Redis, and their fixture notices explicitly identify synthetic evidence. Sources include `api/tests/test_discovery_main_barrier.py`, `api/tests/test_ml_pilot_attestations.py` and `api/tests/test_ml_pilot_participant_wire.py`; capture hashes and source pins are retained in `capture-manifest-2026-09-24.json` and each archive.
+
+`.gitleaksignore` adds only the three exact commit/file/rule/line fingerprints emitted for these 13 matches, following the existing historical-capture practice. There is no rule-wide or path-wide exclusion, no archive modification, and no change to scanning of later commits. No production credentials were found in this report. The full Security workflow must pass on the release revision before publication.
