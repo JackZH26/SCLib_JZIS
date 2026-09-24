@@ -257,6 +257,7 @@ async def test_cached_pages_follow_actual_committed_catalogue_dependencies(clien
     assert changed.json() != first.json()
     # Compare the complete cached-path result to a fresh unpopulated cache.
     monkeypatch.setattr(routes, "_material_pages", routes._MaterialPageCache())
+    monkeypatch.setattr(routes, "_material_rankings", routes._MaterialPageCache())
     uncached = await client.get("/v1/materials", params=params)
     assert uncached.status_code == 200 and uncached.json() == changed.json()
 
@@ -341,3 +342,145 @@ def test_page_cache_limits_serialized_bytes_and_entry_count():
     assert cache.size == 9
     cache.put((4, b"oversize"), b"payload too large")
     assert len(cache.entries) == 2 and cache.size == 9
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("sort", ("tc_max", "tc_ambient", "total_papers", "arxiv_year"))
+async def test_new_pages_reuse_ranking_and_hydrate_only_the_page(client, db_session, monkeypatch, sort):
+    import routers.materials as routes
+
+    family, _ = await ordered_fixture(db_session)
+    params = {"family": family, "sort": sort}
+    calls, hydrated = [], []
+    original_sort, original_prepare = routes._current_sort_value, routes.prepare_material_views
+
+    def counted(material, field):
+        calls.append(material.id)
+        return original_sort(material, field)
+
+    async def prepared(db, materials):
+        hydrated.extend(row.id for row in materials)
+        return await original_prepare(db, materials)
+
+    monkeypatch.setattr(routes, "_current_sort_value", counted)
+    monkeypatch.setattr(routes, "prepare_material_views", prepared)
+    first = await client.get("/v1/materials", params={**params, "limit": 1})
+    assert first.status_code == 200 and len(calls) == len(hydrated) == 5
+    calls.clear()
+    hydrated.clear()
+    page = await client.get("/v1/materials", params={**params, "offset": 1, "limit": 2})
+    assert page.status_code == 200 and page.json()["total"] == 5
+    assert not calls and set(hydrated) == {row["id"] for row in page.json()["results"]}
+    assert len(hydrated) == 2
+    assert page.headers["cache-control"] == "private, no-store"
+    assert page.headers["x-materials-cache"] == "MISS"
+    repeat = await client.get("/v1/materials", params={**params, "offset": 1, "limit": 2})
+    assert repeat.content == page.content and repeat.headers["x-materials-cache"] == "HIT"
+    assert len(hydrated) == 2
+    # The full raw scan must produce exactly the same response bytes, including
+    # matched records, source governance, null sorting and tied-ID order.
+    monkeypatch.setattr(routes, "_material_pages", routes._MaterialPageCache())
+    monkeypatch.setattr(routes, "_material_rankings", routes._MaterialPageCache())
+    reference = await client.get("/v1/materials", params={**params, "offset": 1, "limit": 2})
+    assert reference.content == page.content
+    assert len(calls) == 5
+
+
+@pytest.mark.asyncio
+async def test_ranking_does_not_reuse_matches_for_different_filters(client, db_session):
+    family, rows = await ordered_fixture(db_session)
+    cases = (
+        ({}, "bcaed"), ({"tc_min": 40}, "bc"),
+        ({"min_papers": 4}, "d"), ({"pressure_min": 1}, ""),
+        ({"knowledge_origin": "Computed"}, ""),
+        ({"has_competing_order": True}, ""), ({"only_aps": True}, ""),
+    )
+    for extra, labels in cases:
+        first = await client.get("/v1/materials", params={"family": family, "limit": 1, **extra})
+        second = await client.get("/v1/materials", params={"family": family, "offset": 1, "limit": 4, **extra})
+        assert first.status_code == second.status_code == 200
+        assert first.json()["total"] == second.json()["total"] == len(labels)
+        assert [row["id"] for row in first.json()["results"] + second.json()["results"]] == [rows[label].id for label in labels]
+
+
+@pytest.mark.asyncio
+async def test_concurrent_cold_pages_share_one_scan(client, db_session, monkeypatch):
+    import asyncio
+    import routers.materials as routes
+
+    family, rows = await ordered_fixture(db_session)
+    calls = []
+    original = routes._current_sort_value
+
+    def counted(material, field):
+        calls.append(material.id)
+        return original(material, field)
+
+    monkeypatch.setattr(routes, "_current_sort_value", counted)
+    responses = await asyncio.gather(*(client.get("/v1/materials", params={
+        "family": family, "limit": 1, "offset": offset,
+    }) for offset in (0, 1, 2)))
+    assert all(response.status_code == 200 for response in responses)
+    assert [response.json()["results"][0]["id"] for response in responses] == [rows[key].id for key in "bca"]
+    assert len(calls) == 5
+    assert not routes._material_build_locks
+
+
+@pytest.mark.asyncio
+async def test_ranking_hit_rejects_a_source_change_during_page_hydration(client, db_session, monkeypatch):
+    import routers.materials as routes
+    from sqlalchemy import text
+
+    family, rows = await ordered_fixture(db_session)
+    first = await client.get("/v1/materials", params={"family": family, "limit": 1})
+    assert first.status_code == 200
+    original = routes.prepare_material_views
+    changed = False
+
+    async def interleaved(*args, **kwargs):
+        nonlocal changed
+        result = await original(*args, **kwargs)
+        if not changed:
+            changed = True
+            await db_session.execute(text("UPDATE materials SET needs_review=true WHERE id=:id"), {"id": rows["c"].id})
+            await db_session.commit()
+        return result
+
+    monkeypatch.setattr(routes, "prepare_material_views", interleaved)
+    params = {"family": family, "offset": 1, "limit": 1}
+    raced = await client.get("/v1/materials", params=params)
+    assert raced.status_code == 503 and raced.headers["retry-after"] == "1"
+    retry = await client.get("/v1/materials", params=params)
+    assert retry.status_code == 200 and retry.json()["total"] == 4
+    assert retry.json()["results"][0]["id"] == rows["a"].id
+
+
+@pytest.mark.asyncio
+async def test_unselected_material_update_invalidates_order_for_unvisited_pages(client, db_session):
+    family, rows = await ordered_fixture(db_session)
+    first = await client.get("/v1/materials", params={"family": family, "limit": 1})
+    assert first.status_code == 200 and first.json()["results"][0]["id"] == rows["b"].id
+    # Use the current source-scoped values: changing a legacy raw record alone
+    # can legitimately disagree with its frozen legacy summary selection.
+    rows["a"].records = [record if index == 0 else {**record, "tc_kelvin": 70}
+                         for index, record in enumerate(rows["a"].records)]
+    await db_session.commit()
+    next_page = await client.get("/v1/materials", params={"family": family, "limit": 1, "offset": 1})
+    assert next_page.status_code == 200 and next_page.json()["results"][0]["id"] == rows["b"].id
+    current_first = await client.get("/v1/materials", params={"family": family, "limit": 1})
+    assert current_first.status_code == 200 and current_first.json()["results"][0]["id"] == rows["a"].id
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("budget", ("_MAX_RANKED_MATERIALS", "_MAX_RANKING_BYTES"))
+async def test_oversized_ranking_falls_back_to_bounded_page_scan(client, db_session, monkeypatch, budget):
+    import routers.materials as routes
+
+    monkeypatch.setattr(routes, "_material_rankings", routes._MaterialPageCache())
+    monkeypatch.setattr(routes, budget, 2)
+    family, rows = await ordered_fixture(db_session)
+    for offset, label in enumerate("bc"):
+        result = await client.get("/v1/materials", params={"family": family, "offset": offset, "limit": 1})
+        assert result.status_code == 200 and result.json()["total"] == 5
+        assert result.json()["results"][0]["id"] == rows[label].id
+    assert not routes._material_rankings.entries
