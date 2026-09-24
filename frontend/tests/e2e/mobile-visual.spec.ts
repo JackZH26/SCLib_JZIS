@@ -37,7 +37,7 @@ test("mobile header opens an accessible navigation menu", async ({ page }) => {
   await page.goto("login");
   await page.getByRole("button", { name: "Open navigation" }).click();
 
-  await expect(page.getByRole("link", { name: "Search" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Discovery" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Account", exact: true })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: "Search" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: "Discovery" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Sign in", exact: true })).toBeVisible();
 });

@@ -27,15 +27,22 @@ export function SearchBar({
         if (q.trim().length < 2) return;
         router.push(`${target}?q=${encodeURIComponent(q.trim())}`);
       }}
+      role="search"
+      aria-label="Library search"
       className="flex w-full gap-2"
     >
       <input
+        type="search"
+        name="q"
+        aria-label="Search papers, materials, or ask a research question"
+        minLength={2}
+        required
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 rounded-[10px] border border-sage-border bg-white px-4 py-3 text-base text-sage-ink shadow-sage placeholder:text-sage-tertiary focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+        className="min-w-0 flex-1 rounded-[10px] border border-sage-border bg-white px-4 py-3 text-base text-sage-ink shadow-sage placeholder:text-sage-tertiary focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
       />
-      <button type="submit" className="btn-primary">
+      <button type="submit" className="btn-primary shrink-0">
         Search
       </button>
     </form>

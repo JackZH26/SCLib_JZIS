@@ -2,12 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
- * Design tokens mirrored from asrp.jzis.org so the two JZIS sites share
- * a visual identity. See tailwind.config.ts for the Tailwind-side mapping;
- * these CSS variables exist so hand-written CSS (plot markers, prose
- * overrides) can reach the same palette without hardcoding hex values.
- */
+/* SCLib palette; shared with tailwind.config.ts and scientific plots. */
 :root {
   --bg:            #f0f5f0;
   --surface:       #e8f0e8;
@@ -19,7 +14,7 @@
   --accent:        #3A7D5C;
   --accent-deep:   #24503A;
   --accent-light:  rgba(58, 125, 92, 0.08);
-  --gradient:      linear-gradient(135deg, #4ea27a, #24503A);
+  --gradient:      linear-gradient(135deg, #3A7D5C, #24503A);
   --gradient-text: linear-gradient(135deg, #3A7D5C, #24503A);
   --shadow:        0 2px 8px rgba(36, 80, 58, 0.06);
   --shadow-hover:  0 8px 24px rgba(36, 80, 58, 0.14);
@@ -33,8 +28,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* asrp uses tight, near-black tracking on headings. Emulate with a
-   small letter-spacing bump so hero type doesn't drift apart. */
+/* Keep research headings compact and readable. */
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
   color: var(--text);
@@ -48,7 +42,7 @@ a:hover {
   color: var(--accent-deep);
 }
 
-/* Reusable primary CTA that matches asrp's .btn-primary gradient. */
+/* Primary action, with accessible white-text contrast across the gradient. */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -66,8 +60,7 @@ a:hover {
   color: #ffffff;
 }
 
-/* Outline CTA (asrp .btn-outline) — used for secondary nav links on
-   the hero. White surface, sage border, accent on hover. */
+/* Secondary actions use the same palette and radius. */
 .btn-outline {
   display: inline-flex;
   align-items: center;
@@ -84,4 +77,10 @@ a:hover {
   border-color: var(--accent);
   background: #f8faf8;
   color: var(--text);
+}
+
+:focus-visible { outline: 2px solid var(--accent-deep); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary, .btn-outline { transition: none; }
+  .btn-primary:hover { transform: none; }
 }

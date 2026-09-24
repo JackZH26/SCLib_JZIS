@@ -9,9 +9,7 @@ import { CookieConsentBanner } from "@/components/CookieConsent";
 import { WebVitalsReporter } from "@/components/WebVitalsReporter";
 import { SITE_BASE_URL, SITE_ORIGIN, serializeJsonLd } from "@/lib/seo";
 
-// asrp.jzis.org uses Inter as its primary sans stack (falling back to
-// the system font). Load it via next/font so Next handles subsetting +
-// self-hosting and we don't add an external CSS request on every page.
+// Preserve the existing SCLib font, self-hosted by Next.js.
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -21,7 +19,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
   title: {
-    default: "SCLib — JZIS Superconductivity Library",
+    default: "SCLib by JZIS | Superconductivity Research Library",
     template: "%s | SCLib",
   },
   description:
@@ -40,13 +38,13 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "SCLib",
     locale: "en_US",
-    title: "SCLib — JZIS Superconductivity Library",
+    title: "SCLib by JZIS | Superconductivity Research Library",
     description:
       "Search superconductivity papers, explore material properties, and ask grounded research questions.",
   },
   twitter: {
     card: "summary",
-    title: "SCLib — JZIS Superconductivity Library",
+    title: "SCLib by JZIS | Superconductivity Research Library",
     description:
       "Search superconductivity papers and explore material properties.",
   },
@@ -66,7 +64,7 @@ export const metadata: Metadata = {
 const websiteStructuredData = {
   "@context": "https://schema.org",
   "@type": ["WebSite", "Dataset"],
-  name: "SCLib — JZIS Superconductivity Library",
+  name: "SCLib by JZIS | Superconductivity Research Library",
   alternateName: "SCLib",
   url: `${SITE_BASE_URL}/`,
   description:

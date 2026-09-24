@@ -10,11 +10,8 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@9.12.0 --activate
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# basePath is read from NEXT_PUBLIC_BASE_PATH at `next build` time and
-# baked into every emitted asset URL and link href. Default /sclib
-# matches production routing under https://jzis.org/sclib. Override
-# with --build-arg NEXT_PUBLIC_BASE_PATH= for a root-mounted dev build.
-ARG NEXT_PUBLIC_BASE_PATH=/sclib
+# Root-mounted unified JZIS website. This setting is baked in at build time.
+ARG NEXT_PUBLIC_BASE_PATH=
 ARG NEXT_PUBLIC_API_BASE=https://api.jzis.org/sclib/v1
 ARG NEXT_PUBLIC_WEB_VITALS_SAMPLE_RATE=0.1
 # GIT_SHA is short commit hash, surfaced on the site footer and
@@ -30,7 +27,7 @@ RUN pnpm build
 
 FROM node:20-alpine AS runner
 WORKDIR /app
-ARG NEXT_PUBLIC_BASE_PATH=/sclib
+ARG NEXT_PUBLIC_BASE_PATH=
 # Re-declare GIT_SHA in the runner stage so it's also baked into the
 # final image's env (Next inlines NEXT_PUBLIC_* at build, but a few
 # server-side reads use process.env at runtime — keeping both is

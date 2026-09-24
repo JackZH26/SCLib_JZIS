@@ -2,6 +2,8 @@
 
 import Script from "next/script";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { isPrivatePage } from "@/lib/site-routes";
 import { loadConsent, type ConsentState } from "./CookieConsent";
 
 const GA_ID = "G-PXQFVFVRST";
@@ -17,6 +19,11 @@ const GA_ID = "G-PXQFVFVRST";
  */
 export function Analytics() {
   const [allowed, setAllowed] = useState(false);
+  const privatePage = isPrivatePage(usePathname());
+
+  useEffect(() => {
+    (window as unknown as Record<string, unknown>)[`ga-disable-${GA_ID}`] = privatePage || !allowed;
+  }, [privatePage, allowed]);
 
   useEffect(() => {
     const consent = loadConsent();
@@ -30,7 +37,7 @@ export function Analytics() {
     return () => window.removeEventListener("consent-change", handler);
   }, []);
 
-  if (!allowed) return null;
+  if (!allowed || privatePage) return null;
 
   return (
     <>
@@ -42,7 +49,12 @@ export function Analytics() {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '${GA_ID}');
+        gtag('config', '${GA_ID}', {
+          page_location: window.location.origin + window.location.pathname,
+          page_referrer: window.location.origin,
+          allow_google_signals: false,
+          allow_ad_personalization_signals: false
+        });
       `}</Script>
     </>
   );

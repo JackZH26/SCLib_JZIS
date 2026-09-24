@@ -1,5 +1,5 @@
 /** Original native response strings; fixtures contain synthetic source bytes only. */
-import fixture from "../fixtures/ml-pilot-evidence-native.delivery20260924r2.wire.json";
+import fixture from "../fixtures/ml-pilot-evidence-native.site20260924.wire.json";
 import { parseReviewPreflight, type ReviewDocuments, type ReviewDocumentSet } from "@/lib/ml-pilot-reviews";
 import { EVIDENCE_MAGIC } from "@/lib/ml-pilot-evidence";
 export const evidenceNative = fixture;

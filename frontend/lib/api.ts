@@ -1635,6 +1635,7 @@ export async function getVersion(opts?: {
   try {
     const res = await fetch(`${API_BASE}/version`, {
       next: { revalidate: opts?.revalidateSec ?? 60 },
+      signal: AbortSignal.timeout(2000),
     });
     if (!res.ok) return null;
     return (await res.json()) as VersionResponse;

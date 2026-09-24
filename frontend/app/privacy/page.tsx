@@ -18,7 +18,7 @@ export default function PrivacyPolicyPage() {
         This policy describes how the JZ Institute of Science
         (&quot;JZIS&quot;, &quot;we&quot;, &quot;us&quot;) handles personal data
         for the JZIS Superconductivity Library (&quot;SCLib&quot;) at{" "}
-        <a href="https://jzis.org/sclib">jzis.org/sclib</a>. JZIS is the
+        <a href="https://jzis.org">jzis.org</a>. JZIS is the
         data user responsible for the SCLib account service. Our address is
         Hong Kong, China, and our privacy contact is{" "}
         <a href="mailto:info@jzis.org">info@jzis.org</a>.

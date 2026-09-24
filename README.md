@@ -6,7 +6,7 @@ semantic search**, a **provenance-traced materials database**, and
 small APS TDM pilot, and NIMS SuperCon seed data, with production
 ingest, aggregation, stats refresh, and scoped data-audit jobs.
 
-**Live:** [jzis.org/sclib](https://jzis.org/sclib) ·
+**Live:** [jzis.org](https://jzis.org) ·
 **API:** [api.jzis.org/sclib/v1](https://api.jzis.org/sclib/v1) ·
 **License:** Apache 2.0 (code) / CC BY 4.0 (data)
 
@@ -126,7 +126,7 @@ systemd; broad data audits are explicit review passes recorded in
 The flat columns on a material page (Tc max, pairing symmetry,
 crystal structure, …) are **aggregates** of per-paper NER records.
 We show both the aggregate *and* the underlying evidence so readers
-can cross-check. Example: [HgBa₂Ca₂Cu₃O₈](https://jzis.org/sclib/materials/mat:hgba2ca2cu3o8)
+can cross-check. Example: [HgBa₂Ca₂Cu₃O₈](https://jzis.org/materials/mat:hgba2ca2cu3o8)
 currently shows `Tc max = 138 K` across 29 source papers after the
 per-compound cap is applied, with the record table below listing each
 paper's claim (Tc, pressure, sample form, measurement method, pairing,
@@ -198,8 +198,8 @@ deliberately stay separate as different doping regimes.
 | **Registered** | email verified, `X-API-Key: scl_…` or JWT | 999 quota-checked requests per day by default |
 
 Registered users get a Google OAuth option in addition to
-email+password, using a shared JZIS account that also works at
-[jzis.org](https://jzis.org) and [asrp.jzis.org](https://asrp.jzis.org).
+email+password. Existing JZIS accounts, API keys and saved research continue
+to work throughout SCLib at [jzis.org](https://jzis.org).
 
 ---
 
@@ -228,7 +228,7 @@ curl -s -X POST https://api.jzis.org/sclib/v1/search \
      -H 'Content-Type: application/json' \
      -d '{"query":"hydride room temperature superconductor","top_k":5}'
 
-# Authenticated — register at jzis.org/sclib/register first
+# Authenticated — register at jzis.org/register first
 curl -s https://api.jzis.org/sclib/v1/materials?family=cuprate&sort=tc_max \
      -H 'X-API-Key: scl_your_key_here'
 ```
@@ -242,7 +242,7 @@ Full endpoint reference: [`docs/API.md`](./docs/API.md).
 ```
                      ┌──────── Nginx (TLS, reverse proxy) ────────┐
                      │                                              │
-  Next.js 14  ◄──────┤ jzis.org/sclib                               │
+  Next.js 15  ◄──────┤ jzis.org                                     │
   (SSR, RSC)         │ api.jzis.org/sclib/v1                        │
                      │                                              │
                      └──┬────────────────┬──────────────────────────┘
@@ -283,7 +283,7 @@ listener. Deploy details: [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md).
 
 ```
 api/              FastAPI + SQLAlchemy + Alembic migrations
-frontend/         Next.js 14 (app router, SSR)
+frontend/         Next.js 15 (app router, SSR)
 ingestion/        Pipelines: arXiv/APS → Postgres + Vertex VS
 scripts/          Host-side cron, audit, backup, and systemd orchestration
 deploy/systemd/   Timer + service units for hourly material aggregation
