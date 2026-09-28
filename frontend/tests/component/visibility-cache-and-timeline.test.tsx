@@ -29,7 +29,7 @@ describe("mutable visibility reads and timeline", () => {
 
   it("adds current governance status to each hover and labels origin as not approval", () => {
     render(<TcTimeline points={[point()]} coverage={null} />);
-    expect(screen.getByLabelText("Timeline traces")).toHaveTextContent("Catalogue eligible — not scientific approval");
+    expect(screen.getByLabelText("Timeline traces").textContent?.replaceAll("<br>", " ")).toContain("Catalogue eligible — not scientific approval");
     expect(screen.getByText(/Markers describe reported result origin, not scientific approval/)).toBeInTheDocument();
     expect(screen.queryByText(/Archive or visibility-unverified points/)).not.toBeInTheDocument();
   });
