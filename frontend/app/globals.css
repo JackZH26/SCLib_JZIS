@@ -107,7 +107,7 @@ a:hover {
 .site-text-link { color: var(--accent-deep); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--border); }
 .site-text-link:hover { text-decoration-color: currentColor; }
 .library-headline {
-  font-size: clamp(1.8rem, 4.15vw, 3.25rem);
+  font-size: clamp(1.65rem, 4.15vw, 3.25rem);
   line-height: 1.13;
   letter-spacing: -.045em;
 }

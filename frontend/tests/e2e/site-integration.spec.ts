@@ -132,6 +132,7 @@ test("hero asset is local, bounded and labelled as conceptual at every layout si
   await expect(artwork).toBeVisible();
   await expect(artwork).toHaveJSProperty("complete", true);
   expect(await artwork.evaluate(img => (img as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+  await page.evaluate(() => document.fonts.ready);
   for (const width of [320, 390, 768, 1024, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     const layout = await page.evaluate(() => {
@@ -141,7 +142,7 @@ test("hero asset is local, bounded and labelled as conceptual at every layout si
         searchBottom: document.querySelector('button[type="submit"]')!.getBoundingClientRect().bottom };
     });
     expect(layout.width).toBeLessThanOrEqual(width);
-    expect(layout.lines).toBeLessThanOrEqual(2.01);
+    expect(layout.lines, `Heading at ${width}px`).toBeLessThanOrEqual(2.01);
     expect(layout.searchBottom).toBeLessThan(700);
   }
   await page.emulateMedia({ reducedMotion: "reduce" });

@@ -155,7 +155,7 @@ async def test_google_callback_redirects_without_exposing_jwt():
         response = await google_callback(request, _OAuthDb(user))
 
     assert response.status_code == 302
-    assert response.headers["location"].endswith("/sclib/auth/callback")
+    assert response.headers["location"] == "https://jzis.org/auth/callback"
     assert "token=" not in response.headers["location"]
     assert "sclib_session=" in response.headers["set-cookie"]
 
