@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 
 /**
  * Cookie-consent categories the user can toggle. "necessary" is always

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { useEffect, useState } from "react";
 
 import { ApiError, historyDetail, type AskResponse } from "@/lib/api";

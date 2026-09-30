@@ -6,7 +6,7 @@
  * deep links. Placeholder tabs (History / Saved / Feedback) ship in
  * phase D but route to "coming soon" stubs until phase E/F fill them.
  */
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { usePathname } from "next/navigation";
 
 interface NavItem {

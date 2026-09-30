@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { objectValue } from "@/lib/property-evidence";
 
 export const STRUCTURE_EVIDENCE_VERSION = "structure-evidence/1.0.0";

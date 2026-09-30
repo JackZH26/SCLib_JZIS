@@ -2,7 +2,7 @@
 
 /** Display clusters are coordinate overlaps, never scientific deduplication. */
 import dynamic from "next/dynamic";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TimelineCoverage, TimelinePoint, TimelineRecordSummary, TimelineSampling } from "@/lib/api";
 import { recordClassification } from "@/lib/result-semantics";

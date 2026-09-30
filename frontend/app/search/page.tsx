@@ -2,7 +2,7 @@
 import { EvidenceProvenanceNotice } from "@/components/EvidenceProvenanceNotice";
 
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { useSearchParams } from "next/navigation";
 import {
   search,

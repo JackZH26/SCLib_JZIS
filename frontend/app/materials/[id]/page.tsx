@@ -14,7 +14,7 @@
  * Missing support stays visible as unavailable, never a legacy scalar fallback.
  */
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { getMaterial, getMaterialHydrideParameters } from "@/lib/api";

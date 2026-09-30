@@ -2,7 +2,7 @@
  * Shows the current guest quota ("2/3 queries remaining today") and
  * a nudge to register. Hidden when `remaining` is null (authed user).
  */
-import Link from "next/link";
+import Link from "@/components/AppLink";
 
 export function GuestBanner({ remaining }: { remaining: number | null }) {
   if (remaining === null || remaining === undefined) return null;

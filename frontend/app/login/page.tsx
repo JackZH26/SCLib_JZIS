@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ApiError, login, friendlyErrorMessage, PUBLIC_API_BASE } from "@/lib/api";

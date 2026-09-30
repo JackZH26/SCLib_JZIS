@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { Children, cloneElement, isValidElement, type ReactNode } from "react";
 
 /** Add stable, local heading anchors without changing any existing anchor. */

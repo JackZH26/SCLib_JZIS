@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { useEffect, useRef, useState } from "react";
 import { ApiError } from "@/lib/api";
 import { onAuthChange } from "@/lib/auth-session";

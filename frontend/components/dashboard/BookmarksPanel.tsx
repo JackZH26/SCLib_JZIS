@@ -8,7 +8,7 @@
  * ConfirmModal, because the action is cheap to redo (just click the
  * ★ button on the detail page) unlike deleting ask history.
  */
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { useCallback, useEffect, useState } from "react";
 import { PropertyEvidenceValue } from "@/components/PropertyEvidence";
 import { ScientificAnomalyNotice } from "@/components/ScientificAnomalies";
