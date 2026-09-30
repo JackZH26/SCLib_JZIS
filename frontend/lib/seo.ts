@@ -1,5 +1,5 @@
 export const SITE_ORIGIN = "https://jzis.org";
-export const SITE_BASE_URL = `${SITE_ORIGIN}/sclib`;
+export const SITE_BASE_URL = `${SITE_ORIGIN}${process.env.NEXT_PUBLIC_BASE_PATH || ""}`;
 export const SITEMAP_PAGE_SIZE = 10_000;
 
 export interface SitemapUrl {

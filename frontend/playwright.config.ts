@@ -2,7 +2,7 @@ import { defineConfig } from "@playwright/test";
 import path from "node:path";
 
 const port = 3102;
-const baseURL = `http://127.0.0.1:${port}/sclib/`;
+const baseURL = `http://127.0.0.1:${port}/`;
 
 export default defineConfig({
   testDir: "./tests/e2e",

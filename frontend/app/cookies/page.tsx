@@ -20,7 +20,7 @@ export default function CookiePolicyPage() {
         This Cookie Policy explains how <strong>JZIS Superconductivity
         Library</strong> (&quot;SCLib&quot;, &quot;we&quot;, &quot;us&quot;)
         uses cookies and similar technologies when you visit{" "}
-        <a href="https://jzis.org/sclib">jzis.org/sclib</a>. It covers
+        <a href="https://jzis.org">jzis.org</a>. It covers
         what cookies are, which cookies we set, and how you can manage
         your preferences.
       </p>

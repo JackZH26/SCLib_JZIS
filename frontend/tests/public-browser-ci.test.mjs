@@ -49,7 +49,7 @@ test("production browser child excludes inherited credentials, env files and fon
   assert.equal(env.NODE_ENV, "production");
   assert.equal(env.API_BASE_SERVER, "http://127.0.0.1:1/inert/v1");
   assert.equal(env.NEXT_PUBLIC_API_BASE, "https://api.jzis.org/sclib/v1");
-  assert.equal(env.NEXT_PUBLIC_BASE_PATH, "/sclib");
+  assert.equal(env.NEXT_PUBLIC_BASE_PATH, "");
   for (const key of ["DATABASE_URL", "NEXT_PUBLIC_GA_ID", "NODE_OPTIONS", "NEXT_FONT_GOOGLE_MOCKED_RESPONSES"]) {
     assert.equal(env[key], undefined);
   }

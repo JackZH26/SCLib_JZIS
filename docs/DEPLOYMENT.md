@@ -59,14 +59,17 @@ source intake. A local rehearsal is not permission to reload this live host.
 1. **Edit `/opt/SCLib_JZIS/.env`** — set
    `DB_PASSWORD`, `JWT_SECRET`, `RESEND_API_KEY`,
    `VERTEX_AI_INDEX_ENDPOINT`, `INTERNAL_API_KEY`.
-2. **Install the frontend proxy block** into
-   `/etc/nginx/sites-available/jzis.org` — copy the `location /sclib`
-   stanza from the comment at the top of `nginx/sclib.conf`. It points at
-   **port 3100**, not 3000.
-3. Preserve the main site's existing root `robots.txt` and append this line
-   to its content: `Sitemap: https://jzis.org/sclib/sitemap.xml`. Do not
-   replace or proxy the root file: it may contain rules for other JZIS sites.
-4. `nginx -t && systemctl reload nginx`
+2. **Prepare the unified website configuration** using
+   `scripts/prepare_site_integration.py` and the audited production Nginx file.
+   Follow [`operations/SITE_INTEGRATION.md`](operations/SITE_INTEGRATION.md) for
+   the coordinated root-path cutover. Preserve the API servers, TLS settings,
+   and unrelated private routes; do not replace the entire host configuration
+   with a standalone example.
+3. The root frontend now owns `robots.txt` and the sitemap index:
+   `Sitemap: https://jzis.org/sitemap.xml`. Preserve the disallow rule for the
+   unrelated private `/york-interview/` route.
+4. Validate the candidate with `nginx -t` in the controlled release window;
+   reload only after the root-mounted frontend is ready and the release gates pass.
 5. Prepare the approved release and start only its database/cache dependencies.
    These are operator deployment instructions, not local test commands. Complete
    the release, backup and identity preflights described below first. Provision
@@ -97,9 +100,9 @@ source intake. A local rehearsal is not permission to reload this live host.
    ```bash
    curl -s http://127.0.0.1:8000/v1/stats | jq .
    curl -s https://api.jzis.org/sclib/v1/stats | jq .
-   curl -sI https://jzis.org/sclib/ | head -1
-   curl -fsS https://jzis.org/robots.txt | grep 'Sitemap: https://jzis.org/sclib/sitemap.xml'
-   curl -fsS https://jzis.org/sclib/sitemap.xml | grep '<sitemapindex'
+   curl -sI https://jzis.org/ | head -1
+   curl -fsS https://jzis.org/robots.txt | grep 'Sitemap: https://jzis.org/sitemap.xml'
+   curl -fsS https://jzis.org/sitemap.xml | grep '<sitemapindex'
    ```
 
 ## Production Google identity

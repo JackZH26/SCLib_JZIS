@@ -154,5 +154,4 @@ def test_production_browser_origins_exclude_local_development():
     assert set(origins) == {
         "https://jzis.org",
         "https://www.jzis.org",
-        "https://asrp.jzis.org",
     }

@@ -125,8 +125,8 @@ export default async function MaterialsPage({
 
   return (
     <main className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Materials</h1>
+      <div className="product-page-intro">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Materials</h1>
         <p className="mt-1 text-sm text-slate-600">
           Catalogue selections for Tc, pairing, structure and competing orders,
           with per-property source records. A material row is not a joint
@@ -139,7 +139,7 @@ export default async function MaterialsPage({
         </p>
       </div>
 
-      <form className="flex flex-wrap items-end gap-3 rounded-lg border border-sage-border bg-white p-4 text-sm shadow-sage">
+      <form className="material-filters flex flex-wrap items-end gap-3 rounded-xl border border-sage-border bg-white p-4 text-sm shadow-sage sm:p-5">
         <label className="flex flex-col gap-1">
           <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Family

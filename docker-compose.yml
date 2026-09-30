@@ -12,9 +12,7 @@ services:
         NEXT_PUBLIC_WEB_VITALS_SAMPLE_RATE: ${NEXT_PUBLIC_WEB_VITALS_SAMPLE_RATE:-0.1}
     container_name: sclib-frontend
     restart: unless-stopped
-    # VPS2 already runs asrp.jzis.org on host port 3000 — bind the
-    # SCLib frontend to 3100 instead and point Nginx at that. Never
-    # collide with existing sites, per CLAUDE.md.
+    # Loopback-only frontend; the unified main site is proxied by Nginx.
     ports:
       - "127.0.0.1:3100:3000"
     environment:
@@ -23,10 +21,9 @@ services:
       # page rendering doesn't hairpin through Nginx + TLS.
       - API_BASE_SERVER=http://api:8000/v1
       - NODE_ENV=production
-    # With basePath=/sclib baked in, Next.js 404s on bare / and serves
-    # the app under /sclib. Probe that path for liveness.
+    # Probe a lightweight public page without a database or statistics request.
     healthcheck:
-      test: ["CMD-SHELL", "wget -q -O- http://127.0.0.1:3000/sclib >/dev/null || exit 1"]
+      test: ["CMD-SHELL", "wget -q -O- http://127.0.0.1:3000/login >/dev/null || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5

@@ -7,7 +7,7 @@ Covers:
   - Google OAuth redirect endpoint
   - Google OAuth callback (mocked userinfo)
   - Account merging: existing local + Google same-email → auth_provider="both"
-  - CORS: asrp.jzis.org allowed
+  - CORS: main website allowed, retired website rejected
 
 All tests use only the ``client`` fixture (no direct ``db_session``) to
 avoid the asyncpg "Event loop is closed" teardown issue that occurs when
@@ -201,7 +201,7 @@ async def test_google_callback_creates_new_user(client):
     r = await _google_callback(client, email, sub, "Brand New User")
     assert r.status_code == 302
     location = r.headers["location"]
-    assert location.endswith("/sclib/auth/callback")
+    assert location == "https://jzis.org/auth/callback"
     assert "token=" not in location
     assert "error" not in location
     assert "sclib_session=" in r.headers["set-cookie"]
@@ -319,8 +319,8 @@ async def test_google_callback_missing_userinfo(client):
 # ---------------------------------------------------------------------------
 
 @pytest.mark.asyncio
-async def test_cors_asrp_allowed(client):
-    """OPTIONS preflight from asrp.jzis.org returns 200 with correct ACAO."""
+async def test_cors_retired_origin_rejected(client):
+    """The retired website must no longer receive credentialed CORS access."""
     r = await client.options(
         "/v1/auth/login",
         headers={
@@ -329,8 +329,8 @@ async def test_cors_asrp_allowed(client):
             "access-control-request-headers": "content-type",
         },
     )
-    assert r.status_code == 200
-    assert r.headers.get("access-control-allow-origin") == "https://asrp.jzis.org"
+    assert r.status_code == 400
+    assert "access-control-allow-origin" not in r.headers
 
 
 @pytest.mark.asyncio

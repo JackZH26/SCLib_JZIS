@@ -8,6 +8,7 @@ import type { TimelineCoverage, TimelinePoint, TimelineRecordSummary, TimelineSa
 import { recordClassification } from "@/lib/result-semantics";
 import { pressureLabel } from "@/lib/pressure-semantics";
 import { FAMILY_COLORS, familyLabel } from "@/lib/families";
+import { timelineHoverSummary } from "@/lib/timeline-hover";
 import { FormulaDisplay } from "@/components/FormulaDisplay";
 import { knownVisibility, visibilityIsRestricted, visibilityLabel } from "@/lib/material-visibility";
 import { clusterTimelinePoints, escapePlotlyHtml, formatTimelineTc, sortedTimelinePoints, timelineOrigin, timelinePointKey, timelineRenderBudget, timelineYearBasis } from "@/lib/timeline-display";
@@ -80,16 +81,8 @@ export function TcTimeline({ points: receivedPoints, coverage, sampling, recordS
       name: escapePlotlyHtml(family === "mixed" ? "Mixed families (overlap)" : family === "unknown" ? "Other / unknown family" : familyLabel(family)),
       x: subset.map(cluster => cluster.year),
       y: subset.map(cluster => cluster.tc_kelvin),
-      customdata: subset.map(cluster => [
-        cluster.id,
-        escapePlotlyHtml(formatTimelineTc(cluster.tc_kelvin)),
-        escapePlotlyHtml(cluster.members.length === 1 ? cluster.members[0].material : `${cluster.members.length} overlapping received results`),
-        escapePlotlyHtml(`${cluster.members.length} received results · ${cluster.sourceCount} linked sources`),
-        // All source strings are escaped before Plotly parses its limited HTML.
-        cluster.members.slice(0, 3).map(point => escapePlotlyHtml(`${point.material}: ${pointOriginRole(point)}; ${visibilityLabel(point.visibility)}; ${pressureLabel(point.pressure_semantics, point.pressure_gpa)}; ${timelineYearBasis(point)}; ${point.paper_id ?? "source unavailable"}`)).join("<br>"),
-        cluster.members.length > 3 ? "<br>More received members: click marker and inspect the table." : "",
-      ]),
-      hovertemplate: "<b>%{customdata[2]}</b><br>Tc = %{customdata[1]}<br>Plotted year = %{x}<br>%{customdata[3]}<br>%{customdata[4]}%{customdata[5]}<br>Click to inspect every received member.<extra></extra>",
+      customdata: subset.map(cluster => [cluster.id, timelineHoverSummary(cluster)]),
+      hovertemplate: "%{customdata[1]}<extra></extra>",
       marker: {
         size: subset.map(cluster => Math.min(15, 6 + Math.log2(cluster.members.length) * 2)),
         opacity: 0.75,
@@ -141,7 +134,7 @@ export function TcTimeline({ points: receivedPoints, coverage, sampling, recordS
           {!isPlotReady && <div className="pointer-events-none absolute right-4 top-2 z-10 rounded bg-white/90 px-3 py-2 text-xs text-slate-500" role="status">Rendering chart… The table is available below.</div>}
           {renderer !== "detecting" && <Plot key={renderer} data={traces} useResizeHandler onInitialized={handleInitialized} onError={renderer === "webgl" ? fallBackToSvg : undefined} onWebGlContextLost={renderer === "webgl" ? fallBackToSvg : undefined}
             onClick={event => { const custom = event.points[0]?.customdata as unknown; if (Array.isArray(custom) && typeof custom[0] === "string") { setSelectedCluster(custom[0]); setPage(0); } }}
-            layout={{ autosize: true, height: 560, margin: { l: 70, r: 20, t: 24, b: 85 }, dragmode: "pan", hovermode: "closest", xaxis: { title: { text: "Reported year (basis shown per result)" }, range: [minYear - 1, maxYear + 1], dtick: maxYear - minYear < 15 ? 1 : undefined, gridcolor: "#eef2ee" }, yaxis: { title: { text: "Reported Tc (K)" }, type: temperatureView === "log" ? "log" : "linear", dtick: temperatureView === "log" ? 1 : undefined, range: yRange, minallowed: temperatureView === "log" ? undefined : 0, gridcolor: "#eef2ee" }, legend: { orientation: "h", y: -0.2 }, paper_bgcolor: "#fff", plot_bgcolor: "#fff" }}
+            layout={{ autosize: true, height: 560, margin: { l: 70, r: 20, t: 24, b: 85 }, dragmode: "pan", hovermode: "closest", hoverlabel: { bgcolor: "#ffffff", bordercolor: "#d7e1da", font: { color: "#25372b", size: 13, family: "Inter, system-ui, sans-serif" }, align: "left" }, xaxis: { title: { text: "Reported year (basis shown per result)" }, range: [minYear - 1, maxYear + 1], dtick: maxYear - minYear < 15 ? 1 : undefined, gridcolor: "#eef2ee" }, yaxis: { title: { text: "Reported Tc (K)" }, type: temperatureView === "log" ? "log" : "linear", dtick: temperatureView === "log" ? 1 : undefined, range: yRange, minallowed: temperatureView === "log" ? undefined : 0, gridcolor: "#eef2ee" }, legend: { orientation: "h", y: -0.2 }, paper_bgcolor: "#fff", plot_bgcolor: "#fff" }}
             config={{ responsive: true, displayModeBar: true, scrollZoom: true, displaylogo: false, modeBarButtonsToRemove: ["lasso2d", "select2d", "autoScale2d", "toggleSpikelines"], toImageButtonOptions: { filename: "sclib-reported-tc-timeline", format: "png", scale: 2 } }} style={{ width: "100%", height: "560px" }} />}
         </div>
       </div>

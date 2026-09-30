@@ -17,11 +17,11 @@ test("registration minimizes required personal data", async ({ page }) => {
   const registration = page.getByRole("main");
   await expect(registration.getByRole("link", { name: "Terms" })).toHaveAttribute(
     "href",
-    "/sclib/terms",
+    "/terms",
   );
   await expect(registration.getByRole("link", { name: "Privacy Policy" })).toHaveAttribute(
     "href",
-    "/sclib/privacy",
+    "/privacy",
   );
 });
 

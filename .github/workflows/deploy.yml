@@ -143,6 +143,14 @@ jobs:
             git diff --quiet
             git diff --cached --quiet
 
+            # The first root-path migration must coordinate application and edge
+            # routing. Refuse an ordinary image-only release on the old site.
+            # This readiness check grants no exception to the SLO gate below.
+            if ! grep -Fq '# Root-mounted unified website.' /etc/nginx/sites-available/jzis.org; then
+              echo 'Coordinated root-site cutover required; see docs/operations/SITE_INTEGRATION.md' >&2
+              exit 1
+            fi
+
             # Fail closed before any pull or migration if the 30-day SLO/error
             # budget is exhausted or Prometheus has insufficient data. Run
             # the tested revision from an isolated worktree so the deployed
@@ -241,7 +249,7 @@ jobs:
               *) echo "deployed revision mismatch: $version_json"; exit 1 ;;
             esac
             curl --max-time 15 --fail --silent --show-error \
-              https://jzis.org/sclib/ >/dev/null
+              https://jzis.org/ >/dev/null
 
             # Persist only after every smoke check succeeds. Scheduled ingest
             # and aggregation then reuse the exact signed immutable images

@@ -65,7 +65,7 @@ export default function RegisterPage() {
     <main className="mx-auto max-w-md px-6 py-16">
       <h1 className="text-2xl font-semibold">Create your JZIS account</h1>
       <p className="mt-1 text-sm text-slate-600">
-        One account for all JZIS products — SCLib, ASRP, and more.
+        Save your research history, bookmark papers and materials, and manage your SCLib API access.
       </p>
       <p className="mt-3 text-xs leading-5 text-slate-500">
         We only require your sign-in details. By creating an account or

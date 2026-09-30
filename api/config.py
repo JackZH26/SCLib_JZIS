@@ -22,7 +22,7 @@ class Settings(BaseSettings):
 
     # === App ===
     environment: Literal["development", "test", "production"] = "production"
-    frontend_url: HttpUrl = Field(default="https://jzis.org/sclib")  # type: ignore[assignment]
+    frontend_url: HttpUrl = Field(default="https://jzis.org")  # type: ignore[assignment]
     api_base_url: HttpUrl = Field(default="https://api.jzis.org/sclib/v1")  # type: ignore[assignment]
     # Trust X-Forwarded-For when picking the client IP for rate limits.
     # True is correct for the VPS2 setup where only Nginx can reach us.
@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     google_client_id: str = ""
     google_client_secret: str = ""
     google_redirect_uri: str = "https://api.jzis.org/v1/auth/google/callback"
-    frontend_callback_url: str = "https://jzis.org/sclib/auth/callback"
+    frontend_callback_url: str = "https://jzis.org/auth/callback"
 
     # === Rate limiting ===
     guest_daily_limit: int = 3
@@ -176,10 +176,7 @@ def allowed_browser_origins(settings: Settings) -> tuple[str, ...]:
         if frontend.scheme and frontend.netloc
         else str(settings.frontend_url)
     )
-    origins = [
-        frontend_origin,
-        "https://asrp.jzis.org",
-    ]
+    origins = [frontend_origin]
     if settings.environment != "production":
         origins.append("http://localhost:3000")
     if frontend.netloc and not frontend.netloc.startswith("www."):

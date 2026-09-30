@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { TcTimeline } from "@/components/TcTimeline";
+import { timelineHoverSummary } from "@/lib/timeline-hover";
 import { formulaToHtml } from "@/components/FormulaDisplay";
 import { clusterTimelinePoints, escapePlotlyHtml, formatTimelineTc, timelineRenderBudget } from "@/lib/timeline-display";
 import type { TimelinePoint, TimelineRecordSummary, TimelineSampling } from "@/lib/api";
@@ -43,6 +44,40 @@ describe("scientific Timeline display helpers", () => {
     expect(escapePlotlyHtml('<img src=x onerror="bad">')).toBe("&lt;img src=x onerror=&quot;bad&quot;&gt;");
     expect(formulaToHtml("H2<script>x</script>")).toBe("H<sub>2</sub>&lt;script&gt;x&lt;/script&gt;");
   });
+  it("keeps hover previews bounded while retaining complete source data for inspection", () => {
+    const input = point("long", { material: "VeryLongSyntheticFormula".repeat(10), paper_id: "doi:" + "source".repeat(100) });
+    const [cluster] = clusterTimelinePoints([input]);
+    const hover = timelineHoverSummary(cluster);
+    expect(hover).toContain("…");
+    expect(hover).not.toContain(input.paper_id);
+    expect(hover).toContain("0.03 K (30 mK)");
+    expect(hover).toContain("Pressure not reported");
+    expect(hover.replaceAll("<br>", " ")).toContain("Catalogue eligible — not scientific approval");
+    expect(cluster.members[0]).toBe(input);
+    expect(hover.split("<br>").length).toBeLessThanOrEqual(9);
+  });
+  it("summarises every member's visibility instead of promoting a mixed overlap", () => {
+    const [cluster] = clusterTimelinePoints([
+      point("a"), point("b", { visibility: materialVisibility("pending") }),
+      point("c", { visibility: materialVisibility("retracted") }), point("d", { visibility: undefined }),
+    ]);
+    const hover = timelineHoverSummary(cluster);
+    expect(hover).toContain("4 overlapping received results");
+    expect(hover).toContain("4 linked sources");
+    expect(hover).toContain("Mixed visibility statuses");
+    expect(hover).toContain("1 catalogue eligible");
+    expect(hover).toContain("3 Archive / unverified");
+    expect(hover).toContain("Not scientific approval");
+    expect(hover).not.toContain("doi:a");
+  });
+  it("escapes source markup after wrapping and retains unverified pressure qualifiers", () => {
+    const [cluster] = clusterTimelinePoints([point("a", { material: '<img src=x onerror="unsafe">', pressure_gpa: 0 })]);
+    const hover = timelineHoverSummary(cluster);
+    expect(hover).toContain("&lt;img");
+    expect(hover).not.toContain("<img");
+    expect(hover).toContain("0 GPa (unverified)");
+    expect(hover).not.toContain("Explicit ambient");
+  });
   it("does not interpret an unversioned origin flag as an observation", () => {
     expect(clusterTimelinePoints([point("a", { classifier_version: undefined })])[0].origin).toBe("Unknown / conflict");
   });
@@ -62,7 +97,7 @@ describe("Reported Tc Timeline accessible UI", () => {
     expect(within(table).queryByText("doi:c")).not.toBeInTheDocument();
     expect(screen.getByRole("option", { name: /2 results · 2 linked sources/ })).toBeInTheDocument();
     expect(screen.getByText(/cluster counts refer to this received selection/)).toBeInTheDocument();
-    expect(screen.getByLabelText("Timeline traces")).toHaveTextContent("2 received results");
+    expect(screen.getByLabelText("Timeline traces")).toHaveTextContent("2 overlapping received results");
   });
   it("paginates all received records, including all members of a large overlap", () => {
     render(<TcTimeline points={Array.from({ length: 26 }, (_, index) => point(String(index).padStart(2, "0")))} coverage={null} />);

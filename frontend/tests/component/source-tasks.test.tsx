@@ -381,7 +381,7 @@ describe("private source-task workbench", () => {
 
 it("API helpers use private cookie/no-store requests, exact commit envelope and encoded lookup selectors", async () => {
   const api = await vi.importActual<typeof import("@/lib/api")>("@/lib/api");
-  const fetch = vi.fn().mockResolvedValue(new Response("{}", { headers: { "content-type": "application/json" } }));
+  const fetch = vi.fn().mockImplementation(async () => new Response("{}", { headers: { "content-type": "application/json" } }));
   vi.stubGlobal("fetch", fetch);
   await api.sourceTaskCapabilities();
   await api.sourceLifecycleHistory("paper", "a/b?secret", 4);

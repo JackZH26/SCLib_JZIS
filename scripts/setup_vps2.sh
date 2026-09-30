@@ -7,7 +7,7 @@
 #   cd /opt/SCLib_JZIS && bash scripts/setup_vps2.sh
 #
 # Prereqs on VPS2:
-#   - Nginx already installed and serving jzis.org + asrp.jzis.org (do NOT break).
+#   - Nginx already installed; preserve existing routes until the integration cutover.
 #   - DNS A record api.jzis.org -> 72.62.251.29.
 #   - An approved OIDC workload identity provider and rotating token agent.
 #

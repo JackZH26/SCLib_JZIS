@@ -246,10 +246,23 @@ async function request<T>(
     const raw = e instanceof Error ? e.message : String(e);
     throw new ApiError(0, null, sanitizeErrorMessage(raw));
   }
-  const body = init.responseByteLimit === undefined ? await res.json().catch(() => ({}))
-    : await boundedJson(res, init.responseByteLimit);
+  let body: unknown;
+  try {
+    body = init.responseByteLimit === undefined ? await res.json()
+      : await boundedJson(res, init.responseByteLimit);
+  } catch (error) {
+    // A 200 response can still end mid-transfer. Never turn unreadable data
+    // into a successful empty object, especially for account/research writes.
+    // Keep the existing bounded-reader errors and HTTP error status handling.
+    if (init.responseByteLimit !== undefined) throw error;
+    if (res.ok && res.status !== 204) {
+      throw new ApiError(0, null, "The response was incomplete or invalid. Please try again.",
+        undefined, res.headers?.get("x-request-id") ?? undefined);
+    }
+    body = {};
+  }
   if (!res.ok) {
-    const detail = (body as { detail?: unknown }).detail;
+    const detail = (body as { detail?: unknown } | null)?.detail;
     const rawMsg =
       typeof detail === "string"
         ? detail
@@ -260,7 +273,7 @@ async function request<T>(
       res.status === 429 ? parseRetryAfter(res.headers.get("retry-after")) : undefined;
     const requestId =
       res.headers.get("x-request-id") ??
-      ((body as { request_id?: unknown }).request_id as string | undefined);
+      ((body as { request_id?: unknown } | null)?.request_id as string | undefined);
     throw new ApiError(
       res.status,
       body,
@@ -1635,6 +1648,7 @@ export async function getVersion(opts?: {
   try {
     const res = await fetch(`${API_BASE}/version`, {
       next: { revalidate: opts?.revalidateSec ?? 60 },
+      signal: AbortSignal.timeout(2000),
     });
     if (!res.ok) return null;
     return (await res.json()) as VersionResponse;
@@ -1768,6 +1782,12 @@ export function getTimeline(opts: {
   return request<TimelineResponse>(`/timeline${qstr ? `?${qstr}` : ""}`, {
     cache: "no-store",
     credentials: "omit",
+  }).then(data => {
+    if (!data || !Array.isArray(data.points) || data.points.some(point =>
+      !point || typeof point.material !== "string" || !Number.isFinite(point.year) || !Number.isFinite(point.tc_kelvin))) {
+      throw new ApiError(0, null, "Timeline data is incomplete or invalid. Please try again.");
+    }
+    return data;
   });
 }
 

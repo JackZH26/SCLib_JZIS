@@ -13,6 +13,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from html import escape as _h
+from urllib.parse import quote
 
 import resend
 
@@ -23,12 +24,12 @@ log = logging.getLogger("sclib.email")
 
 async def send_verification(to: str, name: str, token: str) -> None:
     settings = get_settings()
-    url = f"{settings.frontend_url}/auth/verify?token={token}"
+    url = f"{str(settings.frontend_url).rstrip('/')}/verify?token={quote(token, safe='')}"
     subject = "Verify your JZIS account"
-    html = f"""<p>Hi {name},</p>
+    html = f"""<p>Hi {_h(name)},</p>
 <p>Click to verify your email: <a href="{url}">{url}</a></p>
 <p>Link expires in 24 hours.</p>
-<p>This account gives you access to all JZIS products including SCLib.</p>
+<p>Use your JZIS account to access SCLib.</p>
 <p>— JZIS Team</p>"""
     await _dispatch(to, subject, html)
 
@@ -36,19 +37,19 @@ async def send_verification(to: str, name: str, token: str) -> None:
 async def send_welcome(to: str, name: str, api_key: str) -> None:
     settings = get_settings()
     subject = "Your JZIS API Key is ready"
-    docs = f"{settings.frontend_url}/api-docs"
-    html = f"""<p>Hi {name}, your JZIS account is verified!</p>
+    docs = f"{str(settings.frontend_url).rstrip('/')}/docs/api"
+    html = f"""<p>Hi {_h(name)}, your JZIS account is verified!</p>
 <p>Your API key: <code>{api_key}</code></p>
 <p>Use header: <code>X-API-Key: {api_key}</code></p>
 <p>API docs: <a href="{docs}">{docs}</a></p>
-<p>This account works across all JZIS products — SCLib, ASRP, and more.</p>
+<p>Your JZIS account is ready to use with SCLib.</p>
 <p>— JZIS Team</p>"""
     await _dispatch(to, subject, html)
 
 
 async def send_password_reset(to: str, name: str, token: str) -> None:
     settings = get_settings()
-    url = f"{settings.frontend_url}/reset-password?token={token}"
+    url = f"{str(settings.frontend_url).rstrip('/')}/reset-password?token={quote(token, safe='')}"
     subject = "Reset your JZIS password"
     html = f"""<p>Hi {_h(name)},</p>
 <p>Use this one-time link to reset your password: <a href="{url}">{url}</a></p>

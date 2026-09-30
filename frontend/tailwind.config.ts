@@ -1,18 +1,7 @@
 import type { Config } from "tailwindcss";
 import typography from "@tailwindcss/typography";
 
-/*
- * SCLib shares its visual language with asrp.jzis.org — a light, sage-
- * tinted palette anchored on forest green. Rather than sprinkling bespoke
- * semantic tokens across every component, we *remap* Tailwind's built-in
- * `slate` scale to sage equivalents. Every existing `text-slate-600` /
- * `border-slate-200` / `bg-slate-900` class (and there are ~dozens) picks
- * up the new palette automatically — no component-level churn.
- *
- * Source of truth is /var/www/asrp/index.html :root{} on VPS2; the
- * mapping below preserves Tailwind's light→dark ordering so hover states
- * and contrast pairs still read correctly.
- */
+/* SCLib owns this sage palette. The slate aliases preserve existing data UI. */
 const config: Config = {
   content: [
     "./app/**/*.{ts,tsx}",
@@ -21,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Remapped slate → sage scale (matches asrp tokens)
+        // Existing data components use these sage aliases.
         slate: {
           50:  "#f0f5f0", // --bg         page background
           100: "#e8f0e8", // --surface    section-alt, code bg
@@ -75,7 +64,7 @@ const config: Config = {
         "sage-lg": "0 8px 24px rgba(36, 80, 58, 0.14)",
       },
       backgroundImage: {
-        "sage-gradient":      "linear-gradient(135deg, #4ea27a, #24503A)",
+        "sage-gradient":      "linear-gradient(135deg, #3A7D5C, #24503A)",
         "sage-gradient-text": "linear-gradient(135deg, #3A7D5C, #24503A)",
       },
     },
