@@ -8,7 +8,7 @@
  * operators can eyeball-filter the table without clicking through
  * to each material.
  */
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { ScientificMatches } from "@/components/ScientificMatches";
 import type { MaterialSummary } from "@/lib/api";
 import { familyLabel } from "@/lib/families";

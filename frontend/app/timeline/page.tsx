@@ -11,7 +11,7 @@
 import type { Metadata } from "next";
 import { getTimeline } from "@/lib/api";
 import { TcTimeline } from "@/components/TcTimeline";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { FAMILY_OPTIONS } from "@/lib/families";
 import { absoluteUrl } from "@/lib/seo";
 

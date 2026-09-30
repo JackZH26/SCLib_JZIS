@@ -9,7 +9,7 @@
  * child re-fetching. Children still hit their own endpoints for the
  * tab-specific data (/usage, /keys, etc.).
  */
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 

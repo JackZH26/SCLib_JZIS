@@ -16,7 +16,7 @@ import { knownHistorySummary } from "@/lib/answer-history";
  * source as-is. A later polish commit can swap in react-markdown
  * when we're ready to carry the dependency.
  */
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { useState } from "react";
 
 import {

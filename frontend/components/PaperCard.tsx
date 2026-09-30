@@ -5,7 +5,7 @@
  * chunk/material data stays on the list page so this component
  * can be reused across routes.
  */
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { LatexText } from "@/components/LatexText";
 import { ScientificMatches } from "@/components/ScientificMatches";
 import type { MatchingScientificResult, SourceVisibility } from "@/lib/api";

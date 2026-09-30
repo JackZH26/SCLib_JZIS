@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { useState } from "react";
 import { register, friendlyErrorMessage, PUBLIC_API_BASE } from "@/lib/api";
 

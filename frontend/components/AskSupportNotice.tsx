@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import type { AskClaimAssessment, AskResponse, AskSupportCoverage } from "@/lib/api";
 import { SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
 import { EvidenceProvenanceNotice } from "@/components/EvidenceProvenanceNotice";

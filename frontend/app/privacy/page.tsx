@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {

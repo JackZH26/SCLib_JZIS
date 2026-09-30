@@ -5,7 +5,7 @@
  * API Keys tab so users know how to wire up their key.
  */
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { absoluteUrl } from "@/lib/seo";
 
 const API_BASE = "https://api.jzis.org/sclib/v1";

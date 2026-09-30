@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/AppLink";
 
 import type { ScientificQuantityConstraint, ScientificReportQuantity } from "@/lib/api";
 import { displayQuantity, knownScientificLookup, knownScientificQuery, knownScientificResults } from "@/lib/scientific-query";

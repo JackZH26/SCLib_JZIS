@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { RecordAnomalyReview } from "@/components/ScientificAnomalies";
 import type { MaterialPropertyEvidence, PropertyEvidenceItem } from "@/lib/api";
 import { pressureLabel } from "@/lib/pressure-semantics";

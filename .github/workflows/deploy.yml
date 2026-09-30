@@ -29,7 +29,9 @@ jobs:
         github.event.workflow_run.head_branch == 'main'
       )
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # The verified 8.8 GB production backup alone took 27 minutes. Keep a
+    # bounded window for backup, signature verification, migration and smoke.
+    timeout-minutes: 65
     environment: production
     steps:
       - name: Validate production connection settings
@@ -133,7 +135,7 @@ jobs:
           key: ${{ secrets.VPS2_SSH_KEY }}
           fingerprint: ${{ secrets.VPS2_HOST_FINGERPRINT }}
           port: 22
-          command_timeout: 25m
+          command_timeout: 60m
           envs: GHCR_USERNAME,GHCR_TOKEN,TARGET_SHA,DEPLOY_PATH,SCLIB_FRONTEND_IMAGE,SCLIB_API_IMAGE,SCLIB_INGESTION_IMAGE,SCLIB_INGESTION_MODE,SCLIB_ALERT_DELIVERY
           script: |
             set -euo pipefail

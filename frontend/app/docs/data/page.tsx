@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { InformationPage } from "@/components/InformationPage";
 import { absoluteUrl } from "@/lib/seo";
 

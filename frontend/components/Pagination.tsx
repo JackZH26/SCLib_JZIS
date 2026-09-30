@@ -16,7 +16,7 @@
  * ~7000 rows and hurt TTFB for no real gain). If the backend ever
  * lifts that cap we can drop the MAX_LIMIT clamp here too.
  */
-import Link from "next/link";
+import Link from "@/components/AppLink";
 
 const PAGE_SIZES = [25, 50, 100, 200] as const;
 const MAX_LIMIT = 200;

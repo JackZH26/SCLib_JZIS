@@ -8,7 +8,7 @@
  * plaintext secret is ever shown.
  */
 import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 
 import { listKeys, type ApiKey } from "@/lib/api";
 import { KeysTable } from "@/components/dashboard/KeysTable";

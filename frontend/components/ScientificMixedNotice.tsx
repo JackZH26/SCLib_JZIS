@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/AppLink";
 
 import type { AskResponse } from "@/lib/api";
 import { knownScientificMixedResponse } from "@/lib/scientific-mixed";

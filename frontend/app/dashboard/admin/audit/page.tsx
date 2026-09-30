@@ -9,7 +9,7 @@
  *      legacy notes. Notes do not exempt current evidence from fresh audits.
  */
 import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 
 import {
   ApiError,

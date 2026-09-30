@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import type { MaterialSemanticEvidence, MaterialSemanticField } from "@/lib/api";
 import { objectValue } from "@/lib/property-evidence";
 import { knownMaterialSemantics, MATERIAL_SEMANTIC_FIELDS, MATERIAL_SEMANTIC_LABELS, materialSemanticProperty, materialSemanticValue, negativeEvidenceQualified, semanticCount, semanticEvidence, semanticText } from "@/lib/material-semantics";

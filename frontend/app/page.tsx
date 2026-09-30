@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { SearchBar } from "@/components/SearchBar";
 import { LegacyHomeAnchor } from "@/components/LegacyHomeAnchor";
 import { getLibrarySnapshot } from "@/lib/library-snapshot";

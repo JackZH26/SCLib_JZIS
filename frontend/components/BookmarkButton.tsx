@@ -16,7 +16,7 @@
  * usage ever outgrows that, add a dedicated GET /bookmarks/lookup
  * endpoint — the button contract doesn't change.
  */
-import Link from "next/link";
+import Link from "@/components/AppLink";
 import { useEffect, useState } from "react";
 
 import {
