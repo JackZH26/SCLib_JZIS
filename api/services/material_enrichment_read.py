@@ -12,7 +12,7 @@ from sqlalchemy import and_, func, or_, select
 
 from models.db import Chunk, Paper
 from services.claim_support import is_derived_source_hint
-from services.material_enrichment import build_enrichment_report, digest
+from services.material_enrichment import bounded_source_rows, build_enrichment_report, digest
 from services.rag_evidence import resolve_chunk_evidence
 
 MAX_PAPERS = 8
@@ -119,8 +119,9 @@ def _compile_recovery_report(payload, sources, coverage, scope):
             for field in row["fields"]:
                 field["reason_codes"].append("retained_record_inventory_not_fully_inspected")
     report["candidates_truncated"] = len(report["candidates"]) > 100
-    report["candidates"] = report["candidates"][:100]
+    report["candidates"] = bounded_source_rows(report["candidates"])
     report["counts"]["candidate_facts_returned"] = len(report["candidates"])
+    report["counts"]["candidate_facts_omitted"] = report["counts"]["candidate_facts"] - len(report["candidates"])
     # Specialist statements and rejected-scope findings have independent
     # bounded public windows. Full offline reports retain their own inventory.
     statements = report.get("classification_candidates", [])
@@ -130,8 +131,8 @@ def _compile_recovery_report(payload, sources, coverage, scope):
         or classification_counts.get("source_record_matches_omitted", 0) > 0)
     report["classification_review_findings_truncated"] = (len(findings) > 100
         or classification_counts.get("source_record_review_findings_omitted", 0) > 0)
-    report["classification_candidates"] = statements[:100]
-    report["classification_review_findings"] = findings[:100]
+    report["classification_candidates"] = bounded_source_rows(statements)
+    report["classification_review_findings"] = bounded_source_rows(findings, id_key=None)
     classification_counts.update(candidate_facts_returned=len(report["classification_candidates"]),
                                  candidate_facts_omitted=len(statements) - len(report["classification_candidates"]),
                                  review_findings_returned=len(report["classification_review_findings"]),

@@ -9,7 +9,7 @@ import { compareMainBarrierBasis, getScientificCatalog, getScientificProjection,
 import { parsePreparedSelection, parseSelectionAccess, parseSelectionContext, prepareSelection, prepareSelectionV2, type SelectionRequestV2 } from "@/lib/discovery-selection";
 import { parseCurrentInspection, parseGovernanceHeader, parseOperatorAccess } from "@/lib/discovery-governance";
 import fullWire from "../fixtures/discovery-scientific-full-eight.detail.wire.json";
-import nativeWire from "../fixtures/discovery-main-barrier-native.materials20261002r5.wire.json";
+import nativeWire from "../fixtures/discovery-main-barrier-native.materials20261002r6.wire.json";
 import { hash, verifiedFixture, wires } from "./helpers/discovery-selection-fixtures";
 import { barrierRequest, syntheticV2Prepared } from "./helpers/discovery-main-barrier-fixtures";
 
@@ -43,6 +43,8 @@ function unknownBandGap(p: any) {
 
 describe("actual guarded native v2 wire compatibility", () => {
   it("pins the retained capture and the backend inputs used by this batch", () => {
+    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.materials20261002r6.wire.json"), "utf8")))
+      .toBe("052165f2ba412693c7ae93eea66da6b39e56a8a13ec260ac285b2fb4516e1490");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.materials20261002r5.wire.json"), "utf8")))
       .toBe("2f0fbade86c488f9c9d671586cb4ff156a57596fd05a459bfe86fa6c805e9614");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.materials20261002r3.wire.json"), "utf8")))

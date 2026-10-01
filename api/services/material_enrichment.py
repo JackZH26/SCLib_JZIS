@@ -12,9 +12,10 @@ import hashlib
 import json
 import re
 import unicodedata
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, deque
 from collections.abc import Mapping, Sequence
 from decimal import Decimal
+from itertools import islice
 from typing import Any
 
 from services.claim_support import is_derived_source_hint
@@ -22,7 +23,7 @@ from services.property_evidence import legacy_result_id
 from services.scientific_values import FIELD_UNITS, parse_scientific_value, record_quantity
 
 VERSION = "materials-enrichment/1.0.0"
-EXTRACTOR_VERSION = "materials-literal-extractor/1.0.0"
+EXTRACTOR_VERSION = "materials-literal-extractor/1.0.1"
 MAX_MATERIALS = 1000
 MAX_SOURCES = 10000
 MAX_SOURCE_CHARS = 200000
@@ -134,6 +135,53 @@ def digest(value: Any) -> str:
 
 def text_digest(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def bounded_source_rows(rows, limit=100, id_key="candidate_id"):
+    """Select a reproducible source-fair response window without changing facts.
+
+    Small inventories keep their existing sorted-ID order. For an overflowing
+    inventory, papers take turns, as do each paper's captures and each capture's
+    fields. This avoids one prolific source taking the entire response window.
+    The selected rows retain their original IDs and payloads; callers must still
+    disclose counts and omissions. A source group is not an independent study.
+    """
+    if type(limit) is not int or limit < 0:
+        raise EnrichmentError("candidate_window_limit_invalid")
+    # Review findings have no declared ID. A digest is only a deterministic
+    # selection key and is never inserted into their source-owned payload.
+    key = (lambda row: row[id_key]) if id_key is not None else digest
+    ordered = sorted(rows, key=key)
+    if len(ordered) <= limit:
+        return ordered
+    if limit == 0:
+        return []
+
+    def round_robin(streams):
+        active = deque(iter(stream) for stream in streams)
+        while active:
+            stream = active.popleft()
+            try:
+                row = next(stream)
+            except StopIteration:
+                continue
+            active.append(stream)
+            yield row
+
+    papers = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    for row in ordered:
+        source = row.get("source") or {}
+        papers[source.get("paper_id") or ""][source.get("capture_id") or ""][row.get("field") or ""].append(row)
+    paper_streams = []
+    for paper in sorted(papers):
+        capture_streams = []
+        for capture in sorted(papers[paper]):
+            fields = papers[paper][capture]
+            capture_streams.append(round_robin([fields[field] for field in sorted(fields)]))
+        paper_streams.append(round_robin(capture_streams))
+    # Retain that selection order so a compact frontend prefix also represents
+    # the other inspected papers. This order does not rank scientific evidence.
+    return list(islice(round_robin(paper_streams), limit))
 
 
 def _identifier(value: Any, limit: int = 200) -> bool:
@@ -269,6 +317,39 @@ def _formula_pattern(formula):
     # Presentation spacing may occur inside math formula tokens. No changes to
     # coefficients, signs, uncertainty or element order are made.
     return r"(?<![A-Za-z0-9])" + r"\s*".join(re.escape(char) for char in formula) + r"(?![A-Za-z0-9.(])"
+
+
+def _sample_form_match(text, formula):
+    """Keep physical form descriptions separate from bulk scientific properties.
+
+    The caller supplies a locally matched formula. A form remains a pending
+    literal candidate; it does not establish a sample association. In particular
+    bulk superconductivity, thermodynamic evidence and a bulk superconducting
+    transition say nothing about the specimen's physical form.
+    """
+    target = _formula_pattern(formula)
+    physical_noun = r"(?i:samples?|specimens?|materials?|crystals?|pellets?)\b"
+    negation = re.compile(
+        rf"\b(?i:no|not|without|rather than|instead of)\s+"
+        rf"(?:(?i:a|an|any)\s+)?(?:{target}\s+)?$"
+    )
+    forms = []
+    for match in re.finditer(r"\b(single[ -]crystals?|thin[ -]films?|polycrystalline|bulk)\b", text, re.I):
+        if negation.search(text[:match.start()]):
+            continue
+        raw = match.group().lower()
+        if raw == "bulk":
+            # Only an explicit physical noun (optionally following this exact
+            # formula) admits bulk. Mere nearby scientific keywords do not.
+            if not re.match(rf"[ -]+(?:{target}\s+)?{physical_noun}", text[match.end():]):
+                continue
+            value = "bulk"
+        else:
+            value = "single_crystal" if "single" in raw else "thin_film" if "film" in raw else "polycrystal"
+        forms.append((value, match))
+    # A single-crystal statement is more specific than a physical bulk noun;
+    # sentence order must not let an earlier bulk property hide that statement.
+    return next((form for form in forms if form[0] == "single_crystal"), forms[0] if forms else None)
 
 
 def _simple_composition(formula):
@@ -535,10 +616,12 @@ def extract_source_candidates(material: Mapping[str, Any], record: Mapping[str, 
                 add(field, match.group(), match, _quantity(match[1], field, unit))
         if context["measurement_method"]:
             add("measurement_method", context["measurement_method"])
-        form = re.search(r"\b(single[ -]crystals?|thin[ -]films?|polycrystalline|bulk)\b", flat, re.I)
+        # A different compound's form cannot be assigned by sentence
+        # cooccurrence. This narrow grammar leaves multi-material forms for
+        # source/sample review rather than proposing a phantom association.
+        form = _sample_form_match(flat, formula) if len(all_formulas) <= 1 else None
         if form:
-            value = "single_crystal" if "single" in form.group().lower() else "thin_film" if "film" in form.group().lower() else "polycrystal" if "poly" in form.group().lower() else "bulk"
-            add("sample_form", value, form)
+            add("sample_form", form[0], form[1])
     return list({row["candidate_id"]: row for row in candidates}.values())
 
 

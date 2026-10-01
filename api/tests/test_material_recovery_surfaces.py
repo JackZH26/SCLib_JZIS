@@ -276,3 +276,30 @@ async def test_recovery_reviews_formatted_multiple_temperatures_as_distinct_stat
     assert finding["source"]["content_sha256"] == hashlib.sha256(passage.encode()).hexdigest()
     assert report["classification_counts"]["promoted_facts"] == 0
     assert report["database_changed"] is False
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("passage,expected_forms", [
+    ("NbN exhibits bulk superconductivity at Tc=23 K, supported by heat-capacity measurements.", set()),
+    ("Bulk NbN samples were prepared for resistivity measurements.", {"bulk"}),
+    ("NbN single crystals exhibit bulk superconductivity at Tc=23 K.", {"single_crystal"}),
+    ("No NbN bulk samples were obtained.", set()),
+    ("NbN shows bulk superconductivity while MgB2 samples are single crystals.", set()),
+])
+async def test_recovery_distinguishes_physical_sample_form_from_bulk_superconductivity(client, passage, expected_forms):
+    identifier, papers = await seed_source_inventory({"a": [(passage, "Results", False)]})
+    async with get_session_factory()() as session:
+        original_records = (await session.get(Material, identifier)).records
+    response = await client.get(f"/v1/materials/{identifier}/enrichment")
+    assert response.status_code == 200, response.text
+    report = response.json()
+    forms = [candidate for candidate in report["candidates"] if candidate["field"] == "sample_form"]
+    assert {candidate["value"] for candidate in forms} == expected_forms
+    for candidate in forms:
+        assert candidate["extractor_version"] == "materials-literal-extractor/1.0.1"
+        assert candidate["source"]["paper_id"] == papers["a"]
+        assert candidate["source"]["content_sha256"] == hashlib.sha256(passage.encode()).hexdigest()
+        assert candidate["source_content_checked"] is False and candidate["disposition"] == "pending"
+    assert report["counts"]["promoted_facts"] == 0 and report["database_changed"] is False
+    async with get_session_factory()() as session:
+        assert (await session.get(Material, identifier)).records == original_records

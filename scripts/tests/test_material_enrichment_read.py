@@ -65,9 +65,13 @@ def chunk(index, *, paper_id="paper:1", section="Results", text=None):
 
 
 def test_public_classification_windows_and_hash_are_independent(monkeypatch):
-    body = {"version": "materials-enrichment/1.0.0", "coverage": [], "counts": {},
-            "candidates": [], "classification_candidates": [{"candidate_id": str(i)} for i in range(150)],
-            "classification_review_findings": [{"reason_codes": [str(i)]} for i in range(130)],
+    body = {"version": "materials-enrichment/1.0.0", "coverage": [], "counts": {"candidate_facts": 0},
+            "candidates": [], "classification_candidates": [
+                {"candidate_id": str(i), "field": "reported_order", "source": {"paper_id": "paper:a", "capture_id": "capture:a"}}
+                for i in range(150)],
+            "classification_review_findings": [
+                {"fields": ["reported_order"], "reason_codes": [str(i)], "source": {"paper_id": "paper:a", "capture_id": "capture:a"}}
+                for i in range(130)],
             "classification_counts": {"candidate_facts": 150, "review_findings": 130, "promoted_facts": 0}}
     monkeypatch.setattr(reader, "build_enrichment_report", lambda *_args, **_kwargs: body)
     result = reader._compile_recovery_report({}, [], {}, {
@@ -79,6 +83,25 @@ def test_public_classification_windows_and_hash_are_independent(monkeypatch):
     assert result["classification_counts"] == {"candidate_facts": 150, "review_findings": 130,
         "promoted_facts": 0, "candidate_facts_returned": 100, "candidate_facts_omitted": 50,
         "review_findings_returned": 100, "review_findings_omitted": 30}
+    assert result["report_sha256"] == digest({key: value for key, value in result.items() if key != "report_sha256"})
+
+
+def test_public_window_keeps_sparse_second_source_and_honest_omitted_counts(monkeypatch):
+    dense = [{"candidate_id": f"a:{i:03}", "field": "tc_kelvin", "value": 23,
+              "source": {"paper_id": "paper:a", "capture_id": f"capture:a:{i}"}} for i in range(120)]
+    sparse = {"candidate_id": "z:distinct-tc", "field": "tc_kelvin", "value": 17.5,
+              "source": {"paper_id": "paper:b", "capture_id": "capture:b"}}
+    body = {"version": "materials-enrichment/1.0.0", "coverage": [], "counts": {"candidate_facts": 121},
+            "candidates": [*dense, sparse], "classification_candidates": [],
+            "classification_review_findings": [], "classification_counts": {}}
+    monkeypatch.setattr(reader, "build_enrichment_report", lambda *_args, **_kwargs: body)
+    result = reader._compile_recovery_report({}, [], {}, {
+        "records_total": 0, "records_inspected": 0, "records_truncated": False, "raw_retained_records_total": 0})
+    assert len(result["candidates"]) == 100 and result["candidates_truncated"] is True
+    assert sparse in result["candidates"][:40]
+    assert result["counts"]["candidate_facts"] == 121
+    assert result["counts"]["candidate_facts_returned"] == 100
+    assert result["counts"]["candidate_facts_omitted"] == 21
     assert result["report_sha256"] == digest({key: value for key, value in result.items() if key != "report_sha256"})
 
 

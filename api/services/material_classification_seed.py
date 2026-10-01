@@ -10,7 +10,7 @@ from services.material_classification_candidates import (
     EXTRACTOR_VERSION,
     validate_candidate_identity,
 )
-from services.material_enrichment import AUTHORITY, digest
+from services.material_enrichment import AUTHORITY, bounded_source_rows, digest
 from services.property_evidence import legacy_result_id
 
 SEED_PATH = Path(__file__).parent / "resources" / "material_classification_seed.json"
@@ -108,7 +108,7 @@ def merge_primary_classification_seed(report, material):
         candidate_fields[field] = candidate_fields.get(field, 0) + value
     combined = sorted([*existing, *added], key=lambda candidate: candidate["candidate_id"])
     report["classification_candidates_truncated"] = report.get("classification_candidates_truncated", False) or len(combined) > 100
-    report["classification_candidates"] = combined[:100]
+    report["classification_candidates"] = bounded_source_rows(combined)
     counts["candidate_facts_returned"] = len(report["classification_candidates"])
     counts["candidate_facts_omitted"] = counts.get("candidate_facts_omitted", 0) + max(0, len(combined) - 100)
     return _seal(report)

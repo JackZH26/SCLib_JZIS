@@ -153,8 +153,10 @@ remain private.
 ### Independent primary classification metadata seed
 
 `api/services/resources/material_classification_seed.json` uses
-`material-classification-seed/1.0.0` and is separate from the original 41-candidate
-numeric seed. The current 1.0.1 resource has two candidates for `Cs(V0.93Nb0.07)3Sb5` in
+`material-classification-seed/1.0.0` and is separate from the numeric seed, whose
+original 41 candidates are preserved historically. The numeric literal extractor
+1.0.1 now retains 39 after correcting two bulk-property/sample-form mismatches;
+the classification resource is unchanged. The current classification 1.0.1 resource has two candidates for `Cs(V0.93Nb0.07)3Sb5` in
 [arXiv:2411.18744v1](https://arxiv.org/html/2411.18744v1): one CDW
 `reported_order` source spans and one `single-nodeless` `gap_structure` span.
 They use the explicit same-paper `Nb0.07-CVS` alias-definition proposal. These
@@ -331,7 +333,7 @@ admission, concurrent length changes, honest per-paper omissions and
 cancellation-safe CPU concurrency limits. Classifier/seed regressions cover local
 and coded-alias identity, ambiguous definitions, stance and negation scope,
 single-element comparators, non-detection windows, nested private-metadata
-rejection, unchanged original seed identities, stale/current raw guards and
+rejection, version-bound corrected seed identities, stale/current raw guards and
 idempotent independent seed merging. Test counts should be read from the final
 release receipt rather than from an intermediate source-edit run.
 The API integration tests exercise the actual endpoint and held-material routes
@@ -415,6 +417,25 @@ penetration length supplies no electron–phonon coupling λ. Raw MDR lattice,
 space-group, sample and method fields continue to need interpretation and
 sample/state review. Field availability performs no unit-backed canonical
 conversion or property promotion.
+
+### Corrected physical sample forms and public output allocation
+
+The numeric literal extractor 1.0.1 requires explicit physical bulk sample,
+specimen or material wording; bulk superconductivity does not establish a sample
+form. Rebuilding from unchanged original HTML removes only two false bulk forms
+from the original seed, retaining 39 pending candidates and all 14 quantities.
+The four genuine single-crystal hits and surviving facts' complete reference sets
+remain. Candidate identities are version-bound; old 41-row resources remain
+historical, rather than current packaging proof.
+
+Input fairness alone was insufficient: an actual native CI case showed a sparse
+second paper could disappear in a 100-row hash-prefix output. Public candidate
+overflow now round-robins papers, captures and fields; both seed mergers preserve
+that selection policy. Numeric, classification and finding windows remain
+independently bounded to100, with returned/omitted counts. Offline full reports
+are unchanged. Findings use content-digest ordering without inventing IDs. See
+the [source-field and window correction](operations/MATERIALS_RECOVERY_SAMPLE_FORM_AND_WINDOW_CORRECTION_2026-10-02.md)
+for original candidate identities, source limitations and actual verification.
 
 ### Next measurable curation
 

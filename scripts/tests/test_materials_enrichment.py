@@ -29,6 +29,68 @@ def source(text, **extra):
             "source_status": "active", **extra}
 
 
+def test_small_source_window_preserves_sorted_ids_and_original_payloads():
+    rows = [{"candidate_id": "z", "value": 23}, {"candidate_id": "a", "value": 21.5}]
+    original = deepcopy(rows)
+    selected = enrich.bounded_source_rows(rows, limit=2)
+    assert selected == [rows[1], rows[0]]
+    assert selected[0] is rows[1]
+    assert rows == original
+
+
+def test_overflow_window_keeps_other_paper_and_each_capture_without_rewriting_claims():
+    rows = [{"candidate_id": f"a:{i:03}", "source": {"paper_id": "A", "capture_id": "first"},
+             "field": "measurement_method", "value": "resistivity"} for i in range(120)]
+    late = {"candidate_id": "z:tc", "source": {"paper_id": "B", "capture_id": "other"},
+            "field": "tc_kelvin", "value": 17.5}
+    other_capture = {"candidate_id": "y:tc", "source": {"paper_id": "A", "capture_id": "second"},
+                     "field": "tc_kelvin", "value": 23}
+    rows.extend([late, other_capture])
+    original = deepcopy(rows)
+    assert late not in sorted(rows, key=lambda row: row["candidate_id"])[:100]
+    selected = enrich.bounded_source_rows(rows)
+    assert len(selected) == 100
+    assert late in selected and other_capture in selected
+    assert selected == enrich.bounded_source_rows(list(reversed(rows)))
+    assert selected[1] is late
+    assert selected[2] is other_capture
+    assert {row["source"]["paper_id"] for row in selected[:2]} == {"A", "B"}
+    assert all(any(row is source_row for source_row in rows) for row in selected)
+    assert rows == original
+
+
+def test_overflow_window_rotates_fields_and_supports_review_finding_ids():
+    rows = [{"finding_id": f"a:{i:03}", "source": {"paper_id": "A", "capture_id": "first"},
+             "field": "measurement_method"} for i in range(10)]
+    scientific = {"finding_id": "z:tc", "source": {"paper_id": "A", "capture_id": "first"}, "field": "tc_kelvin"}
+    rows.append(scientific)
+    selected = enrich.bounded_source_rows(rows, limit=2, id_key="finding_id")
+    assert scientific in selected
+    assert len(selected) == 2
+    assert selected == enrich.bounded_source_rows(list(reversed(rows)), limit=2, id_key="finding_id")
+    assert enrich.bounded_source_rows(rows, limit=0, id_key="finding_id") == []
+
+
+def test_review_findings_without_ids_use_digest_order_without_inventing_ids():
+    rows = [{"source": {"paper_id": "A", "capture_id": "first"}, "reason_codes": [f"review_{i}"]}
+            for i in range(10)]
+    sparse = {"source": {"paper_id": "B", "capture_id": "other"}, "reason_codes": ["multiple_conditions"]}
+    rows.append(sparse)
+    original = deepcopy(rows)
+    assert enrich.bounded_source_rows(rows, limit=11, id_key=None) == sorted(rows, key=enrich.digest)
+    selected = enrich.bounded_source_rows(rows, limit=2, id_key=None)
+    assert selected[1] is sparse
+    assert selected == enrich.bounded_source_rows(list(reversed(rows)), limit=2, id_key=None)
+    assert rows == original
+    assert all("finding_id" not in row and "candidate_id" not in row for row in selected)
+
+
+@pytest.mark.parametrize("limit", [-1, True, 1.5, None])
+def test_source_window_rejects_invalid_limits(limit):
+    with pytest.raises(enrich.EnrichmentError, match="candidate_window_limit_invalid"):
+        enrich.bounded_source_rows([], limit=limit)
+
+
 def test_ysch10_typed_pressure_origin_and_text_structure_are_independent_of_cif():
     # Synthetic grammar exercise uses the published quantities but no publisher quotation.
     src = source("Computed YScH10 in the Cmmm phase has Tc = 116 K at 140 GPa.")
@@ -61,6 +123,61 @@ def test_pressure_units_and_missing_pressure_never_become_ambient():
     assert tc["subject"]["pressure_quantity"] is None
     records = enrich.pending_tc_records([tc])
     assert "pressure_gpa" not in records[0]["record"]
+
+
+@pytest.mark.parametrize("text", [
+    "NbN exhibits bulk superconductivity below Tc=16 K.",
+    "NbN has a bulk superconducting transition at Tc=16 K.",
+    "Specific heat measurements confirm the bulk thermodynamic nature of the superconducting transition in NbN at Tc=16 K.",
+    "Heat capacity confirms superconductivity in NbN below Tc=16 K to be of a bulk nature.",
+    "NbN has bulk heat capacity and a superconducting transition at Tc=16 K.",
+])
+def test_bulk_scientific_properties_do_not_assert_physical_sample_form(text):
+    mat = material("NbN")
+    src = source(text)
+    candidates = enrich.extract_source_candidates(mat, mat["records"][0], src)
+    assert not any(c["field"] == "sample_form" for c in candidates)
+    assert [c["value"] for c in candidates if c["field"] == "tc_kelvin"] == [16]
+
+
+@pytest.mark.parametrize("text,expected,raw_form", [
+    ("Bulk NbN samples were prepared.", "bulk", "Bulk"),
+    ("NbN bulk specimens were prepared.", "bulk", "bulk"),
+    ("NbN was prepared as a bulk material.", "bulk", "bulk"),
+    ("Bulk samples of NbN were measured.", "bulk", "Bulk"),
+    ("NbN single crystals show bulk superconductivity.", "single_crystal", "single crystals"),
+    ("Bulk superconductivity was detected in single-crystal NbN samples.", "single_crystal", "single-crystal"),
+    ("Bulk NbN samples were grown as single crystals.", "single_crystal", "single crystals"),
+    ("NbN was prepared as thin films.", "thin_film", "thin films"),
+    ("Polycrystalline NbN samples were measured.", "polycrystal", "Polycrystalline"),
+])
+def test_explicit_physical_forms_keep_exact_spans_and_pending_authority(text, expected, raw_form):
+    mat = material("NbN")
+    src = source(text)
+    forms = [c for c in enrich.extract_source_candidates(mat, mat["records"][0], src) if c["field"] == "sample_form"]
+    assert len(forms) == 1
+    candidate = forms[0]
+    assert candidate["value"] == expected
+    assert candidate["extractor_version"] == "materials-literal-extractor/1.0.1"
+    span = candidate["source"]["span"]
+    assert text[span["char_start"]:span["char_end"]] == raw_form
+    assert enrich.text_digest(raw_form) == span["text_sha256"]
+    assert candidate["subject"]["association_status"] == "pending_source_and_state_review"
+    assert all(candidate[k] is False for k in enrich.AUTHORITY)
+    enrich.validate_candidate_identity(candidate)
+
+
+@pytest.mark.parametrize("text", [
+    "No NbN bulk samples were prepared.",
+    "NbN was not a bulk material.",
+    "NbN was measured without bulk samples.",
+    "No single crystals of NbN were obtained.",
+    "NbN shows bulk superconductivity, whereas MgB2 single crystals were measured.",
+    "Single crystals of MgB2 were measured. NbN has bulk superconductivity at Tc=16 K.",
+])
+def test_negated_and_foreign_sample_forms_do_not_create_phantom_subjects(text):
+    mat = material("NbN")
+    assert not any(c["field"] == "sample_form" for c in enrich.extract_source_candidates(mat, mat["records"][0], source(text)))
 
 
 def test_onset_zero_resistance_and_transition_width_stay_distinct():

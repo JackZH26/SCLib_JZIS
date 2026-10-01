@@ -219,14 +219,21 @@ def test_duplicate_source_statements_retain_multiple_record_refs():
     classify.validate_candidate_identity(candidate)
 
 
-def test_original_41_seed_bytes_and_legacy_candidate_identity_remain_compatible():
+def test_corrected_numeric_seed_is_independent_of_classification_contract():
+    # The original 41-row resource remains in the first upgrade commit with
+    # SHA daa4c0186083e32c2fe601c047c4c9c8acff3b8bc358dcb318e911f44a1e2111.
+    # Literal extractor 1.0.1 deliberately removes two non-physical bulk claims.
     path = ROOT / "api/services/resources/material_enrichment_seed.json"
-    assert hashlib.sha256(path.read_bytes()).hexdigest() == "daa4c0186083e32c2fe601c047c4c9c8acff3b8bc358dcb318e911f44a1e2111"
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == "405109c67636a5157cbc9efcf8e4fbbc9570864fdffe097dbb91eb895a72619c"
     seed = json.loads(path.read_bytes())
     candidates = [candidate for report in seed["reports"] for candidate in report["candidates"]]
-    assert len(candidates) == 41
+    assert len(candidates) == 39
     for candidate in candidates:
+        assert candidate["extractor_version"] == "materials-literal-extractor/1.0.1"
+        assert not (candidate["field"] == "sample_form" and candidate["value"] == "bulk")
         enrich.validate_candidate_identity(candidate)
+    classification_path = ROOT / "api/services/resources/material_classification_seed.json"
+    assert hashlib.sha256(classification_path.read_bytes()).hexdigest() == "d7bf29439311fb7c210fa34f339c47a4e3720775c735e7cfd6218648bcdb5b34"
 
 
 @pytest.mark.parametrize("text,reason", [
