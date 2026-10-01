@@ -197,3 +197,9 @@ c6b8d125a7d110a22cf8d1b349bd3d5f25e7bf38:frontend/tests/fixtures/ml-pilot-partic
 f54eac6f28c655bad338ae726c571e6b97ac4c0c:frontend/tests/fixtures/discovery-main-barrier-native.materials20261001.wire.json:generic-api-key:1
 f54eac6f28c655bad338ae726c571e6b97ac4c0c:frontend/tests/fixtures/ml-pilot-attestations-native.materials20261001.wire.json:generic-api-key:1
 f54eac6f28c655bad338ae726c571e6b97ac4c0c:frontend/tests/fixtures/ml-pilot-participant-native.materials20261001.wire.json:generic-api-key:1
+
+# Final enrichment batch: independently decoded synthetic idempotency IDs only.
+# Review: docs/operations/SECRET_TRIAGE_MATERIALS_2026-10-02.md.
+6dfd994fb41b0160500512ab1d606b1c3a1b2b82:frontend/tests/fixtures/discovery-main-barrier-native.materials20261002.wire.json:generic-api-key:1
+6dfd994fb41b0160500512ab1d606b1c3a1b2b82:frontend/tests/fixtures/ml-pilot-attestations-native.materials20261002.wire.json:generic-api-key:1
+6dfd994fb41b0160500512ab1d606b1c3a1b2b82:frontend/tests/fixtures/ml-pilot-participant-native.materials20261002.wire.json:generic-api-key:1
