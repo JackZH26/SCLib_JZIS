@@ -125,7 +125,8 @@ def test_loader_reads_valid_bounded_metadata_and_degrades_without_source_data(tm
 def test_actual_primary_metadata_retains_source_version_and_exact_refs_without_source_text():
     seed = seeds.load_seed()
     assert seed is not None and seeds._metadata_only(seed)
-    assert len(seed["candidates"]) == 3
+    assert len(seed["candidates"]) == 2
+    assert seed["classification_extractor_version"] == seeds.EXTRACTOR_VERSION
     assert {candidate["material_id"] for candidate in seed["candidates"]} == {"mat:cs(v0.93nb0.07)3sb5"}
     for candidate in seed["candidates"]:
         assert candidate["source"]["paper_id"] == "arxiv:2411.18744"

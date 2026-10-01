@@ -32,7 +32,7 @@ from services.property_evidence import legacy_result_id
 from services.scientific_values import parse_scientific_value
 
 VERSION = "material-classification-candidates/1.0.0"
-EXTRACTOR_VERSION = "materials-source-statement-extractor/1.0.0"
+EXTRACTOR_VERSION = "materials-source-statement-extractor/1.0.1"
 FIELDS = frozenset({"pairing_symmetry", "is_unconventional", "reported_order", "competing_order", "gap_structure"})
 MAX_SEGMENT_CHARS = 1800
 MAX_CANDIDATES_PER_SOURCE = 100
@@ -72,11 +72,17 @@ _METHODS = {
     "nmr": r"(?:NMR|nuclear magnetic resonance)",
     "specific_heat": r"(?:specific heat|heat capacity)",
 }
-_QUANTITY = r"(?:[<>≤≥~≈]\s*)?\d+(?:\.\d+)?(?:\s*(?:±|to|–)\s*\d+(?:\.\d+)?)?"
+_CONDITION_NUMBER = r"[-+−]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+−]?\d+)?(?:\(\d+\))?"
+_QUANTITY = rf"(?:(?:<=|>=|[<>≤≥~≈])\s*)?{_CONDITION_NUMBER}(?:\s*(?:±|\+/-|to|–|-|−)\s*{_CONDITION_NUMBER})?"
+# TeX's trailing ~ or thin-space commands separate a number from its unit.
+# A leading ~ remains an approximation marker. Prevent partial matches in
+# exponents, decimal tokens and ranges from becoming unrelated point values.
+_CONDITION_START = r"(?<![\w.,^+\-−])"
+_UNIT_GAP = r"(?:\s|~|\\[,;! ])*"
 _CONDITIONS = {
-    "pressure": (re.compile(rf"({_QUANTITY})\s*(GPa|MPa|kPa|kbar|bar|Pa|atm)\b"), "pressure_gpa"),
-    "temperature": (re.compile(rf"({_QUANTITY})\s*(mK|K|kelvin)\b"), "temperature_k"),
-    "magnetic_field": (re.compile(rf"({_QUANTITY})\s*(mT|T|Oe|kOe)\b"), "magnetic_field_t"),
+    "pressure": (re.compile(rf"{_CONDITION_START}({_QUANTITY}){_UNIT_GAP}(GPa|MPa|kPa|kbar|bar|Pa|atm)\b"), "pressure_gpa"),
+    "temperature": (re.compile(rf"{_CONDITION_START}({_QUANTITY}){_UNIT_GAP}(mK|K|kelvin)\b"), "temperature_k"),
+    "magnetic_field": (re.compile(rf"{_CONDITION_START}({_QUANTITY}){_UNIT_GAP}(mT|T|Oe|kOe)\b"), "magnetic_field_t"),
 }
 
 
@@ -380,10 +386,12 @@ def extract_classification_candidates(material, record, source, *, include_evide
     candidates, findings, total, findings_total = [], [], 0, 0
     for left, right, sentence in _classification_segments(source["text"]):
         flat, offsets = _flat(sentence)
+        condition_text = flat
         flat = flat.replace("−", "-").replace("–", "-")
         labels = _statement_candidates(flat)
         if not labels:
             continue
+        conditions = _conditions(condition_text)
         reason = None
         binding = None
         if len(sentence) > MAX_SEGMENT_CHARS:
@@ -414,10 +422,12 @@ def extract_classification_candidates(material, record, source, *, include_evide
             reason = "repeated_property_with_negation_requires_clause_review"
         if not reason and _NEGATIVE.search(flat) and not _negative_targets(flat, labels):
             reason = "negation_target_requires_clause_review"
-        if not reason and sum(x["kind"] == "pressure" for x in _conditions(flat)["mentions"]) > 1:
+        if not reason and sum(x["kind"] == "pressure" for x in conditions["mentions"]) > 1:
             reason = "multiple_local_pressure_mentions_require_state_review"
-        if not reason and sum(x["kind"] == "temperature" for x in _conditions(flat)["mentions"]) > 1:
+        if not reason and sum(x["kind"] == "temperature" for x in conditions["mentions"]) > 1:
             reason = "multiple_local_temperature_mentions_require_state_review"
+        if not reason and sum(x["kind"] == "magnetic_field" for x in conditions["mentions"]) > 1:
+            reason = "multiple_local_magnetic_field_mentions_require_state_review"
         if not reason and any(field == "reported_order" for field, _ in labels) and _ORDER_EVOLUTION.search(flat):
             reason = "order_evolution_requires_clause_review"
         if not reason and any(len({m[1].lower() if field != "reported_order" else m.group().lower() for f, m in labels if f == field}) > 1 for field in {f for f, _ in labels}):
@@ -459,7 +469,7 @@ def extract_classification_candidates(material, record, source, *, include_evide
                         "association_status": "pending_source_and_state_review",
                         "binding_span": {"char_start": left+offsets[binding["start"]], "char_end": left+offsets[binding["end"]-1]+1},
                         **({"binding_proposal": binding["binding_proposal"]} if "binding_proposal" in binding else {}),
-                        "conditions": _conditions(flat), "methods": methods},
+                        "conditions": _conditions(condition_text), "methods": methods},
                     "claim": {"stance": stance, "normalized_value": normalized, "value_raw": raw,
                         "source_role": "author_report", "scope": "source_statement_only",
                         "relation_to_superconductivity": relation},

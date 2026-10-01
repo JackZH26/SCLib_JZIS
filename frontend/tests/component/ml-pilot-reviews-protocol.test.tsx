@@ -44,6 +44,7 @@ describe("native own-review declaration protocol", () => {
     expect(() => review.parseReviewCoverage(raw, own.actor_user_id, reference(), basis)).toThrow();
   });
   it("pins current original replies without resealing historical evidence", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.materials20261002r5.wire.json")))).toBe("14d3443f02ccec6c254e8306da852e484529de531abe131d0efe11bba7bb9ce4");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.materials20261002r3.wire.json")))).toBe("52a5fe6d6bbdbd100200520de1eea00a460c099d1e3d9c6f657e6f82328e2da1");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.materials20261002r2.wire.json")))).toBe("fdda5b5a984747e120de219f6dda8bdf432d54131e48edc1f9c6eb3aa4cdff52");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.materials20261002.wire.json")))).toBe("7e672eefb75bc6f4ad337f514b9d07f93aad8eb9bf4c1d6870c8955efd5c1f4c");

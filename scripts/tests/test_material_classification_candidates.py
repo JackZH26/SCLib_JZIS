@@ -413,7 +413,8 @@ def test_genuine_metadata_seed_has_independent_identity_and_no_source_text():
     assert seed["version"] == "material-classification-seed/1.0.0"
     assert seed["seed_sha256"] == enrich.digest({k:v for k,v in seed.items() if k != "seed_sha256"})
     assert seed["source_text_included"] is False
-    assert len(seed["candidates"]) == 3
+    assert len(seed["candidates"]) == 2
+    assert seed["classification_extractor_version"] == classify.EXTRACTOR_VERSION
     assert {row["field"] for row in seed["candidates"]} == {"gap_structure", "reported_order"}
     for candidate in seed["candidates"]:
         classify.validate_candidate_identity(candidate)
@@ -433,3 +434,66 @@ def test_genuine_metadata_seed_has_independent_identity_and_no_source_text():
             for item in value:
                 public_only(item)
     public_only(seed)
+
+
+@pytest.mark.parametrize("temperature", ["40~K", r"40\,K", "4e1 K", "40(2) K"])
+def test_formatted_temperature_cannot_hide_a_second_state(temperature):
+    # A formatted first temperature must not disappear from state review.
+    result = extract(f"NbN exhibits charge order below Tstar={temperature} and Tco=58 K.")
+    assert result["candidates"] == []
+    assert result["review_findings"][0]["reason_codes"] == ["multiple_local_temperature_mentions_require_state_review"]
+
+
+@pytest.mark.parametrize("pressure", ["1~GPa", r"1\,GPa", "1e0 GPa", "1(2) GPa"])
+def test_formatted_pressure_cannot_hide_a_second_state(pressure):
+    result = extract(f"NbN exhibits charge order at {pressure} and 2 GPa.")
+    assert result["candidates"] == []
+    assert result["review_findings"][0]["reason_codes"] == ["multiple_local_pressure_mentions_require_state_review"]
+
+
+@pytest.mark.parametrize("unit,kind", [("K", "temperature"), ("GPa", "pressure"), ("T", "magnetic_field")])
+@pytest.mark.parametrize("token,value,bounds", [("−5", -5, None), ("1e−3", .001, None), ("−40–−30", None, (-40, -30))])
+def test_unicode_signs_and_exponents_cannot_become_positive_tail_values(unit, kind, token, value, bounds):
+    candidate, = extract(f"NbN exhibits charge order at {token} {unit}.")["candidates"]
+    mention, = candidate["subject"]["conditions"]["mentions"]
+    assert mention["kind"] == kind
+    assert mention["raw_value"] == token
+    assert mention["quantity"]["value"] == value
+    if bounds:
+        assert mention["quantity"]["relation"] == "interval"
+        assert (mention["quantity"]["lower"], mention["quantity"]["upper"]) == bounds
+    else:
+        assert mention["quantity"]["relation"] == "exact"
+
+
+@pytest.mark.parametrize("token,expected", [("40~K",40), (r"40\,K",40), ("4e1 K",40), (".5 K",.5)])
+def test_single_formatted_temperature_preserves_the_whole_quantity(token,expected):
+    candidate, = extract(f"NbN exhibits charge order at {token}.")["candidates"]
+    mention, = candidate["subject"]["conditions"]["mentions"]
+    assert mention["quantity"]["value"] == expected
+    assert mention["quantity"]["relation"] == "exact"
+    assert mention["quantity"]["approximate"] is False
+
+
+@pytest.mark.parametrize("token", ["20–40 K", "20-40 K", "2e1 to 4e1 K"])
+def test_temperature_interval_is_not_its_last_endpoint(token):
+    candidate, = extract(f"NbN exhibits charge order within {token}.")["candidates"]
+    mention, = candidate["subject"]["conditions"]["mentions"]
+    assert mention["quantity"]["relation"] == "interval"
+    assert mention["quantity"]["lower"] == 20 and mention["quantity"]["upper"] == 40
+    assert mention["quantity"]["value"] is None
+
+
+def test_leading_approximation_and_unresolved_parenthetic_error_remain_distinct():
+    candidate, = extract("NbN exhibits charge order at ~40 K.")["candidates"]
+    assert candidate["subject"]["conditions"]["mentions"][0]["quantity"]["approximate"] is True
+    candidate, = extract("NbN exhibits charge order at 40(2) K.")["candidates"]
+    mention, = candidate["subject"]["conditions"]["mentions"]
+    assert mention["raw_value"] == "40(2)" and mention["quantity"]["status"] == "invalid"
+    assert mention["quantity"]["value"] is None
+
+
+def test_multiple_magnetic_fields_do_not_define_one_material_state():
+    result = extract("NbN exhibits charge order at 2~T and 5 T.")
+    assert result["candidates"] == []
+    assert result["review_findings"][0]["reason_codes"] == ["multiple_local_magnetic_field_mentions_require_state_review"]

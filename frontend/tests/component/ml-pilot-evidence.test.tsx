@@ -77,6 +77,7 @@ describe("actual native canary byte inspection", () => {
     if (["type", "oversized"].includes(name)) expect(fetcher).not.toHaveBeenCalled();
   });
   it("retains unmodified native replies and exact selected source pins", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r5.wire.json")))).toBe("c02daddf83b7d2342aa099decf46d3b0b51ccf3ad3620f13afb2dff32f72448f");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r3.wire.json")))).toBe("f089103c19aa13026fe5b74a3ca01da882073f89c0936f4bcfde32191341a0bc");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r2.wire.json")))).toBe("7a9c7eab692075479a3e0c1fa92c08c77128737eab9ec251e97595f07a049fa9");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002.wire.json")))).toBe("8df91ddd0d0db4a853177bfa58215d817409119c178292904bcc8c92313a1613");

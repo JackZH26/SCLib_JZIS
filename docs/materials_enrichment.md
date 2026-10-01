@@ -83,7 +83,7 @@ Composition proposals referenced by other facts use the final deduplicated ID.
 
 `api/services/material_classification_candidates.py` emits the independent
 `material-classification-candidates/1.0.0` contract using
-`materials-source-statement-extractor/1.0.0`. The numeric/literal candidate
+`materials-source-statement-extractor/1.0.1`. The numeric/literal candidate
 namespace and identities remain unchanged. The enrichment report adds separate
 `classification_candidates`, `classification_review_findings`,
 `classification_counts` and extractor-version fields; live public windows are
@@ -139,7 +139,8 @@ classification reports. The earlier October 1 **323-source/66-candidate** pilot
 below used a different source inventory; comparing its total directly with 65
 would not measure a parser regression or an extraction improvement.
 
-Four purposefully selected original arXiv captures additionally produced three
+The frozen extractor 1.0.0 benchmark used four purposefully selected original
+arXiv captures and produced three
 admitted statements and 72 deduplicated review findings. Sn/In/Te variable
 composition, nominal/refined Ba/Fe/Pt composition and parenthetic Sr/Fe/Ni
 composition still require subject review. This small ambiguity benchmark is not
@@ -153,19 +154,19 @@ remain private.
 
 `api/services/resources/material_classification_seed.json` uses
 `material-classification-seed/1.0.0` and is separate from the original 41-candidate
-numeric seed. Its three candidates are for `Cs(V0.93Nb0.07)3Sb5` in
-[arXiv:2411.18744v1](https://arxiv.org/html/2411.18744v1): two distinct CDW
+numeric seed. The current 1.0.1 resource has two candidates for `Cs(V0.93Nb0.07)3Sb5` in
+[arXiv:2411.18744v1](https://arxiv.org/html/2411.18744v1): one CDW
 `reported_order` source spans and one `single-nodeless` `gap_structure` span.
 They use the explicit same-paper `Nb0.07-CVS` alias-definition proposal. These
-three statements do not constitute three independent experiments, reviewed
+statements do not constitute independent experiments, reviewed
 pairing symmetry, conventionality, competition with superconductivity or a
 canonical material classification.
 
 The seed contains only constrained candidate metadata, source pins and hashes.
 Its file SHA-256 is
-`6ee4a68ba4ffc7cac838a7d23afbf4b0cb36696e7b07519a91bbfb03549fa898`;
+`d7bf29439311fb7c210fa34f339c47a4e3720775c735e7cfd6218648bcdb5b34`;
 its independently sealed `seed_sha256` is
-`5652a30e82fb12e53403e69654239bef37230f3a728fe9133e386eb03a88f791`.
+`6aa56ccc9b4f1cfbf110dfa692cb4f6474539a674399414040346943db671787`.
 Each candidate references the same two verified current raw original records.
 The identity receipt compares complete public records after removing only
 documented API-derived decorations, and checks raw key/value equality, canonical
@@ -182,6 +183,23 @@ Catalogue/source epoch checks run again before the API response. Seed merging is
 idempotent, reseals the report and updates pending coverage without changing
 numeric candidates, selected properties or raw records. It performs no new
 scientific calculation and does not grant rights to source text.
+
+The 1.0.1 correction recognizes TeX number/unit spacing (`40~K`, `40\\,K`),
+whole signed exponent and decimal tokens, and whole interval/uncertainty tokens before
+applying state guards. Multiple local temperature, pressure or magnetic-field
+mentions require review. In the actual primary abstract, `40~K` and `58 K`
+refer to different transitions; the earlier CDW abstract candidate therefore
+moves into the review queue. The source was recaptured neither as new text nor
+as a new experiment: the resource was rebuilt from the same original capture.
+The other two statements remain pending. A same-input replay still returns
+exactly 65 legacy numerical candidates, zero historical classification
+candidates and 122 historical review findings. The immutable 1.0.0 receipts
+retain their original three-candidate result; current correction receipts are
+separate under `/tmp/sclib-classification-conditions-r5-20261002`. Conditions
+are read before formula-oriented Unicode normalization, preserving original
+minus signs and interval tokens. Parenthetical uncertainty forms that the
+quantity parser cannot resolve remain whole raw tokens with an invalid parse
+status; they are not promoted to a scalar.
 
 ## Offline CLI
 

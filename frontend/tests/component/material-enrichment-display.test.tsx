@@ -38,6 +38,15 @@ function ProviderProbe({ materialId }: { materialId: string }) {
 describe("Recovery candidate quantity and source presentation", () => {
   beforeEach(() => vi.resetAllMocks());
 
+  it.each(["materials-source-statement-extractor/1.0.0", "materials-source-statement-extractor/1.0.1"])("renders pending-scope findings for the supported extractor %s", async (version) => {
+    const body = report([]);
+    body.classification_extractor_version = version;
+    body.classification_review_findings = [{ material_id: "synthetic", fields: ["reported_order"], reason_codes: ["multiple_local_temperature_mentions_require_state_review"] }];
+    vi.mocked(getMaterialEnrichment).mockResolvedValue(body);
+    render(<MaterialEnrichment materialId="synthetic" />);
+    expect(await screen.findByText(/multiple local temperature mentions require state review/)).toBeInTheDocument();
+  });
+
   it("formats parsed values once when original tokens already include their unit", async () => {
     const view = await renderCandidates([candidate("tc_kelvin", "116 K", quantity(116, "K")), candidate("measurement_temperature_k", "250 K", quantity(250, "K")), candidate("pressure_gpa", "140 GPa", quantity(140, "GPa"))]);
     expect(candidateRow("Tc:").querySelector("p")).toHaveTextContent("Tc: 116 K");

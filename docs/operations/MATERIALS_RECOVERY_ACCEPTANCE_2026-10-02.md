@@ -1,5 +1,9 @@
 # Materials recovery acceptance, 2026-10-02
 
+This is the frozen extractor 1.0.0 / R3 receipt. The subsequent 1.0.1 condition
+correction and regenerated two-statement seed have a separate validation record;
+the historical counts and hashes below remain unchanged.
+
 This receipt covers the second Materials iteration on top of the initial browsing
 upgrade. It records local validation; publication must still pass the ordinary
 CI, signed image release, deployment and public revision checks.

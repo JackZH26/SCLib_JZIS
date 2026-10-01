@@ -256,3 +256,23 @@ async def test_recovery_counts_actual_restricted_stale_derived_and_length_omissi
     candidate = next(candidate for candidate in report["candidates"] if candidate["value"] == 23)
     assert candidate["source"]["locator"] == {**locator, "chunk_id": f"{papers['a']}:2"}
     assert candidate["source"]["content_sha256"] == hashlib.sha256(b"NbN has Tc=23 K.").hexdigest()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("passage", [
+    "NbN exhibits charge order below Tstar=40~K and Tco=58 K.",
+    "NbN exhibits charge order at −5 K and 58 K.",
+])
+async def test_recovery_reviews_formatted_multiple_temperatures_as_distinct_states(client, passage):
+    identifier, papers = await seed_source_inventory({"a": [(passage, "Results", False)]})
+    response = await client.get(f"/v1/materials/{identifier}/enrichment")
+    assert response.status_code == 200, response.text
+    report = response.json()
+    assert report["classification_extractor_version"] == "materials-source-statement-extractor/1.0.1"
+    assert report["classification_candidates"] == []
+    finding, = report["classification_review_findings"]
+    assert finding["reason_codes"] == ["multiple_local_temperature_mentions_require_state_review"]
+    assert finding["source"]["paper_id"] == papers["a"]
+    assert finding["source"]["content_sha256"] == hashlib.sha256(passage.encode()).hexdigest()
+    assert report["classification_counts"]["promoted_facts"] == 0
+    assert report["database_changed"] is False
