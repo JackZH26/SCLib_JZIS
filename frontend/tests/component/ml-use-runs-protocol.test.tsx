@@ -13,6 +13,7 @@ afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(
 
 describe("native run protocol — original SQL/HTTP bytes", () => {
   it("pins all 633 source inputs including evidence intake, historical bytes, and 28 original response strings", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.materials20261002r3.wire.json")))).toBe("48744bbb31f6ef491200b3ad67a37b06ce0f66b4a0983c839a1a8b20a53ea145");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.materials20261002r2.wire.json")))).toBe("0ec6301548c6376b02392d5cc03eff62c5ad4c136d964107449606baf124d21a");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.materials20261002.wire.json")))).toBe("c87e11e38b9c3531dde425c748035d43a1e5fe40c8bf9a6e0c2f51f041ecba53");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.materials20261001.wire.json")))).toBe("7f6818707eede03342efd91c98a915f7fd1a8438ec0f402c34e6aa1b0e0d5272");
@@ -38,7 +39,7 @@ describe("native run protocol — original SQL/HTTP bytes", () => {
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.wire.json")))).toBe("1cabdf1fc608c169a82b3b9942a6e672595c860a00b264b339f54e867dd9419f");
     expect(http.fixture_notice).toBe("Actual guarded native SQL and HTTP; synthetic identities and explicit intake compiler double; no real approval or execution.");
     expect(http.capture_test_path).toBe("api/tests/test_ml_use_runs_wire.py");
-    expect(http.source_pins).toHaveLength(633); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(633);
+    expect(http.source_pins).toHaveLength(635); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(635);
     expect(http.source_pins.some(p => p.path === "api/services/ml_pilot_review_admission.py")).toBe(true);
     expect(http.source_pins.some(p => p.path === "scripts/probe_ml_pilot_review_install.py")).toBe(true);
     expect(http.source_pins.some(p => p.path === "api/tests/test_ml_pilot_participant_wire.py")).toBe(true);

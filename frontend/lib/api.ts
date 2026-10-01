@@ -1309,10 +1309,16 @@ export interface MaterialDetail extends MaterialSummary {
 
 export interface MaterialEnrichmentReport {
   candidates_truncated?: boolean;
-  inspection_scope?: { records_total: number; records_inspected: number; records_truncated: boolean; papers_total: number; papers_inspected: number; papers_truncated: boolean };
+  classification_candidates?: Array<Record<string, unknown>>;
+  classification_review_findings?: Array<Record<string, unknown>>;
+  classification_extractor_version?: string;
+  classification_candidates_truncated?: boolean;
+  classification_review_findings_truncated?: boolean;
+  classification_counts?: Record<string, unknown>;
+  inspection_scope?: { records_total: number; records_inspected: number; records_truncated: boolean; papers_total: number; papers_inspected: number; papers_truncated: boolean; chunks_considered?: number; chunks_inspected?: number; chunks_limit?: number; characters_inspected?: number; characters_limit?: number; chunk_sampling?: string };
   version: string;
   candidates: Array<Record<string, unknown>>;
-  coverage: Array<{ material_id: string; formula: string; fields: Array<{ field: string; status: string; retained_present: boolean; candidate_count: number; reason_codes: string[]; routes: string[] }> }>;
+  coverage: Array<{ material_id: string; formula: string; fields: Array<{ field: string; status: string; retained_present: boolean; candidate_count: number; reason_codes: string[]; routes: string[]; classification_review_finding_count?: number }> }>;
   counts: Record<string, unknown>;
   scientific_acceptance: false;
   database_changed: false;

@@ -5,11 +5,45 @@ import { getMaterialEnrichment } from "@/lib/api";
 import type { MaterialEnrichmentReport, PropertyEvidenceItem } from "@/lib/api";
 import Link from "@/components/AppLink";
 import { evidenceText, objectValue, propertyValue, sourceHref } from "@/lib/property-evidence";
+import { MaterialClassificationCandidates } from "@/components/MaterialClassificationCandidates";
+import { useMaterialProviderAvailability } from "@/components/MaterialProviderAvailability";
+import { MATERIAL_PROVIDER_ANCHORS, MATERIAL_PROVIDER_LABELS } from "@/lib/material-provider-availability";
+import type { MaterialReferenceProvider } from "@/lib/material-provider-availability";
 
 const labels: Record<string, string> = { tc_kelvin: "Tc", pressure_gpa: "Pressure", tc_criterion: "Tc criterion", measurement_method: "Method", space_group: "Space group", crystal_structure: "Structure label", lattice_a: "Lattice a", lattice_b: "Lattice b", lattice_c: "Lattice c", lambda_eph: "Electron–phonon coupling λ", omega_log_source_value: "Logarithmic phonon frequency", mu_star: "Coulomb pseudopotential μ*", hc2_tesla: "Upper critical field", atomic_sites: "Atomic sites", site_occupancies: "Site occupancies", composition_identity: "Composition identity", measurement_temperature_k: "Measurement temperature", calculation_method: "Calculation method" };
 const statuses: Record<string, string> = { retained_present: "Retained extraction", pending_review: "Candidate found · review needed", source_unavailable: "Source identity unavailable", not_extracted: "Source text not checked", not_found_in_checked_sources: "No candidate in checked chunks", specialist_extraction_needed: "Specialist source extraction needed" };
 const routes: Record<string, string> = { source_fulltext_and_supplement: "Paper and supplement", source_table_and_supplement: "Source tables and supplement", supercon_source_lookup: "SuperCon source lookup", cod_structure_lookup: "COD structure match", mp_state_matched_structure: "MP structure match with state review", nomad_state_matched_calculation: "NOMAD run with state review", new_structure_calculation: "New structural calculation", new_electron_phonon_calculation: "New electron–phonon calculation" };
 const readable = (value: string) => value.replaceAll("_", " ");
+Object.assign(labels, { sample_form: "Sample form", pairing_symmetry: "Pairing symmetry", is_unconventional: "Superconductivity classification", gap_structure: "Gap structure", reported_order: "Reported order", competing_order: "Competing order", lambda_london_nm: "London penetration depth", xi_gl_nm: "Coherence length", t_cdw_k: "CDW transition temperature", t_sdw_k: "SDW transition temperature", t_afm_k: "AFM transition temperature" });
+Object.assign(labels, {
+  minimum_temperature_k: "Minimum tested temperature", isotope_effect_exponent: "Isotope-effect exponent",
+  debye_temperature_source_value: "Debye temperature", maximum_applied_pressure_source_value: "Maximum applied pressure",
+  gap_ratio_source_value: "Gap ratio", gap_energy_source_value: "Gap energy", meissner_fraction_percent: "Meissner fraction",
+  electronic_specific_heat_coefficient_source_value: "Electronic specific-heat coefficient",
+  transition_width_source_value: "Transition width", dtc_dp_source_value: "Pressure derivative of Tc",
+  hc1_source_value: "Lower critical field",
+});
+Object.assign(routes, { specialist_mechanism_study: "Specialist mechanism study", specialist_experiment: "Specialist experiment", new_calculation_or_experiment: "New calculation or experiment", new_composition_characterization: "New composition characterization", new_calculation_declared_assumption: "New calculation with declared assumptions", new_experiment_or_model_estimate: "New experiment or model estimate" });
+const routeProviders: Record<string, MaterialReferenceProvider> = { supercon_source_lookup: "MDR", cod_structure_lookup: "COD", mp_state_matched_structure: "MP", nomad_state_matched_calculation: "NOMAD" };
+
+function RecoveryRoutes({ values }: { values: string[] }) {
+  return <ul className="space-y-1">{values.map(route => <li key={route}>{routeProviders[route] ? <a className="text-accent-deep underline underline-offset-2" href={`#${MATERIAL_PROVIDER_ANCHORS[routeProviders[route]]}`}>{routes[route] ?? readable(route)}</a> : routes[route] ?? readable(route)}</li>)}</ul>;
+}
+function ProviderFieldReferences({ field, values }: { field: string; values: string[] }) {
+  const availability = useMaterialProviderAvailability();
+  const providers = [...new Set([...values.flatMap(route => routeProviders[route] ? [routeProviders[route]] : []), ...(availability?.fields[field] ?? []).map(entry => entry.provider)])];
+  if (!providers.length) return <span className="text-slate-500">No linked external property lookup</span>;
+  const checked = providers.filter(provider => availability?.providers[provider] && availability.providers[provider]?.status !== "not_requested");
+  if (!checked.length) return <span className="text-slate-500">Lookup not opened</span>;
+  return <ul className="space-y-2">{checked.map(provider => {
+    const state = availability!.providers[provider]!, entry = availability!.fields[field]?.find(value => value.provider === provider);
+    const status = state.status === "loading" ? "Checking…" : state.status === "no_match" ? "No composition match" : state.status === "not_applicable" ? "Not applicable to this composition" : state.status === "unavailable" ? "Lookup unavailable" : "No returned value for this field";
+    const unit = provider === "NOMAD" ? "task" : provider === "MDR" ? "source row" : "record";
+    return <li key={provider}><a className="text-accent-deep underline underline-offset-2" href={`#${state.anchor}`}>{MATERIAL_PROVIDER_LABELS[provider]}</a>: {entry ? `${entry.reference_count} returned ${unit}${entry.reference_count === 1 ? "" : "s"}` : status}
+      {entry && <><span className="mt-1 block text-slate-500">{entry.scope}</span>{entry.review_required_count > 0 && <span className="block text-slate-500">{entry.review_required_count} need value, unit or method interpretation.</span>}{state.truncated && <span className="block text-slate-500">Count covers the returned window.</span>}</>}
+    </li>;
+  })}</ul>;
+}
 
 /** A parsed pending quantity may be displayed without promoting it to a selected fact. */
 function quantityText(field: string, value: unknown, quantity: unknown): string | null {
@@ -136,11 +170,13 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
     {report && <>
       <p className="mt-3 text-sm text-slate-600">{fields.length - missing.length} fields have retained extractions in inspected records · {missing.length} need further source work · {report.candidates.length} recovery candidates.</p>
       {report.inspection_scope && <p className="mt-2 text-xs text-slate-500">Inspected {report.inspection_scope.records_inspected} of {report.inspection_scope.records_total} eligible retained records across {report.inspection_scope.papers_inspected} of {report.inspection_scope.papers_total} linked papers.{(report.inspection_scope.records_truncated || report.inspection_scope.papers_truncated) && " This is a sampled recovery check; remaining records and sources have not been inspected."}</p>}
+      {report.inspection_scope?.chunks_inspected !== undefined && <p className="mt-1 text-xs text-slate-500">Read {report.inspection_scope.chunks_inspected} whole chunks within a {report.inspection_scope.chunks_limit ?? 40}-chunk limit, shared across selected papers. Full papers and supplements have not been checked by this request.</p>}
       {report.candidates_truncated && <p className="mt-2 text-xs text-slate-500">A bounded list of 100 candidates was returned. Field counts may include additional candidates; none represents independent confirmation.</p>}
       <details className="mt-3 rounded-lg border border-sage-border bg-white p-4">
         <summary className="cursor-pointer text-sm font-medium">Inspect field coverage and recovery routes</summary>
         <p className="mt-3 text-xs text-slate-500">This bounded check covers linked chunks, not every full paper or supplement. A missing candidate does not establish that the paper omitted the property. Retained and candidate values still need sample, state and source review.</p>
-        <div className="mt-3 overflow-x-auto"><table className="w-full text-left text-sm"><thead className="border-b border-slate-200 text-xs text-slate-500"><tr><th className="py-2 pr-4">Field</th><th className="py-2 pr-4">Coverage</th><th className="py-2">Recovery route</th></tr></thead><tbody className="divide-y divide-slate-100">{fields.map(field => <tr key={field.field}><td className="py-2 pr-4">{labels[field.field] ?? readable(field.field)}</td><td className="py-2 pr-4">{statuses[field.status] ?? readable(field.status)}{field.candidate_count > 0 && <span className="block text-xs text-slate-500">{field.candidate_count} source candidates</span>}</td><td className="py-2 text-xs text-slate-600">{field.routes.map(route => routes[route] ?? readable(route)).join("; ")}</td></tr>)}</tbody></table></div>
+        <p className="mt-2 text-xs text-slate-500">External field counts appear after opening a reference lookup below. They count returned composition references, not completed catalogue fields or independent experiments.</p>
+        <div className="mt-3 overflow-x-auto"><table className="w-full text-left text-sm"><thead className="border-b border-slate-200 text-xs text-slate-500"><tr><th className="py-2 pr-4">Field</th><th className="py-2 pr-4">Coverage</th><th className="py-2 pr-4">Recovery route</th><th className="py-2">Queried external references</th></tr></thead><tbody className="divide-y divide-slate-100">{fields.map(field => <tr key={field.field}><td className="py-2 pr-4 align-top">{labels[field.field] ?? readable(field.field)}</td><td className="py-2 pr-4 align-top">{statuses[field.status] ?? readable(field.status)}{field.candidate_count > 0 && <span className="block text-xs text-slate-500">{field.candidate_count} source candidates</span>}{(field.classification_review_finding_count ?? 0) > 0 && <span className="block text-xs text-slate-500">{field.classification_review_finding_count} spans need assertion or subject review</span>}</td><td className="py-2 pr-4 align-top text-xs text-slate-600"><RecoveryRoutes values={field.routes} /></td><td className="py-2 align-top text-xs text-slate-600"><ProviderFieldReferences field={field.field} values={field.routes} /></td></tr>)}</tbody></table></div>
       </details>
       {report.candidates.length > 0 && <details className="mt-3 rounded-lg border border-sage-border bg-white p-4">
         <summary className="cursor-pointer text-sm font-medium">Source recovery candidates ({report.candidates.length})</summary>
@@ -167,6 +203,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
         })}</ul>
         {report.candidates.length > 40 && <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs"><p className="text-slate-500">Showing {showAllCandidates ? report.candidates.length : 40} of {report.candidates.length} returned candidates.</p><button type="button" className="rounded text-accent-deep underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-deep" aria-expanded={showAllCandidates} aria-controls={candidateListId} onClick={() => setCandidateExpansion({ materialId, expanded: !showAllCandidates })}>{showAllCandidates ? "Show fewer candidates" : `Show remaining candidates (${report.candidates.length - 40})`}</button></div>}
       </details>}
+      {report.classification_extractor_version === "materials-source-statement-extractor/1.0.0" && <MaterialClassificationCandidates materialId={materialId} candidates={Array.isArray(report.classification_candidates) ? report.classification_candidates : []} findings={Array.isArray(report.classification_review_findings) ? report.classification_review_findings : []} truncated={report.classification_candidates_truncated === true} findingsTruncated={report.classification_review_findings_truncated === true} />}
     </>}
   </section>;
 }

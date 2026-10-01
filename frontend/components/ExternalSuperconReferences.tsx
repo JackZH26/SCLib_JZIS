@@ -3,6 +3,8 @@
 import { useEffect, useId, useState } from "react";
 import { getMaterialSuperconReferences } from "@/lib/api";
 import type { MaterialSuperconReferences, SuperconReferenceCode, SuperconReferenceQuantity } from "@/lib/api";
+import { useProviderAvailabilityPublisher } from "@/components/MaterialProviderAvailability";
+import { emptyProviderAvailability, mapMaterialProviderAvailability, MATERIAL_PROVIDER_ANCHORS } from "@/lib/material-provider-availability";
 
 const datasetUrl = "https://doi.org/10.48505/nims.4487";
 const licenseUrl = "https://creativecommons.org/licenses/by/4.0/";
@@ -107,6 +109,7 @@ function Quantity({ quantity }: { quantity: SuperconReferenceQuantity }) {
 }
 
 export function ExternalSuperconReferences({ materialId }: { materialId: string }) {
+  const publishAvailability = useProviderAvailabilityPublisher(materialId, "MDR");
   const headingId = useId();
   const [expansion, setExpansion] = useState({ materialId, open: false });
   const expanded = expansion.materialId === materialId && expansion.open;
@@ -116,20 +119,24 @@ export function ExternalSuperconReferences({ materialId }: { materialId: string 
   useEffect(() => {
     if (!expanded) return;
     const controller = new AbortController();
+    let settled = false;
     setState({ materialId, report: null, failed: false });
+    publishAvailability(emptyProviderAvailability("MDR", "loading"));
     getMaterialSuperconReferences(materialId, controller.signal).then(value => {
       if (controller.signal.aborted) return;
       if (!validReport(value)) throw new Error("SuperCon reference contract unavailable");
+      settled = true;
       setState({ materialId, report: value, failed: false });
+      publishAvailability(mapMaterialProviderAvailability("MDR", value));
     }).catch(() => {
-      if (!controller.signal.aborted) setState({ materialId, report: null, failed: true });
+      if (!controller.signal.aborted) { settled = true; setState({ materialId, report: null, failed: true }); publishAvailability(emptyProviderAvailability("MDR", "unavailable")); }
     });
-    return () => controller.abort();
-  }, [materialId, expanded]);
+    return () => { controller.abort(); if (!settled) publishAvailability(null); };
+  }, [materialId, expanded, publishAvailability]);
   const summary = report?.status === "available" ? `${report.references.length} of ${report.matches_total} source rows`
     : failed || report?.status === "unavailable" ? "Unavailable" : report?.status === "no_match" ? "No match in this snapshot"
       : report?.status === "not_applicable" ? "Composition review needed" : expanded ? "Loading…" : "Inspect reported criteria";
-  return <section aria-labelledby={headingId} className="border-t border-sage-border pt-5">
+  return <section id={MATERIAL_PROVIDER_ANCHORS.MDR} aria-labelledby={headingId} className="border-t border-sage-border pt-5">
     <details key={materialId} open={expanded} onToggle={event => {
       if (event.target === event.currentTarget) setExpansion({ materialId, open: event.currentTarget.open });
     }}>

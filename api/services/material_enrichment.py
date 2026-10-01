@@ -74,9 +74,9 @@ _NUMERIC_LABELS = {
 FIELD_ROUTES = {
     "tc_kelvin": ["source_fulltext_and_supplement", "supercon_source_lookup", "new_calculation_or_experiment"],
     "pressure_gpa": ["source_fulltext_and_supplement"],
-    "tc_criterion": ["source_fulltext_and_supplement"],
-    "measurement_method": ["source_fulltext_and_supplement"],
-    "sample_form": ["source_fulltext_and_supplement"],
+    "tc_criterion": ["source_fulltext_and_supplement", "supercon_source_lookup"],
+    "measurement_method": ["source_fulltext_and_supplement", "supercon_source_lookup"],
+    "sample_form": ["source_fulltext_and_supplement", "supercon_source_lookup"],
     "space_group": ["source_fulltext_and_supplement", "cod_structure_lookup", "mp_state_matched_structure", "new_structure_calculation"],
     "crystal_structure": ["source_fulltext_and_supplement", "cod_structure_lookup", "mp_state_matched_structure"],
     "lattice_a": ["source_table_and_supplement", "cod_structure_lookup", "mp_state_matched_structure", "new_structure_calculation"],
@@ -87,17 +87,33 @@ FIELD_ROUTES = {
     "site_occupancies": ["source_table_and_supplement", "new_composition_characterization"],
     "composition_identity": ["source_fulltext_and_supplement", "new_composition_characterization"],
     "pairing_symmetry": ["source_fulltext_and_supplement", "specialist_mechanism_study"],
+    "is_unconventional": ["source_fulltext_and_supplement", "specialist_mechanism_study"],
+    "gap_structure": ["source_fulltext_and_supplement", "specialist_mechanism_study"],
+    "reported_order": ["source_fulltext_and_supplement", "specialist_experiment"],
     "competing_order": ["source_fulltext_and_supplement", "specialist_experiment"],
     "lambda_eph": ["source_fulltext_and_supplement", "nomad_state_matched_calculation", "new_electron_phonon_calculation"],
     "omega_log_source_value": ["source_fulltext_and_supplement", "nomad_state_matched_calculation", "new_electron_phonon_calculation"],
     "mu_star": ["source_fulltext_and_supplement", "new_calculation_declared_assumption"],
-    "hc2_tesla": ["source_fulltext_and_supplement", "new_experiment_or_model_estimate"],
-    "lambda_london_nm": ["source_fulltext_and_supplement", "new_experiment_or_model_estimate"],
-    "xi_gl_nm": ["source_fulltext_and_supplement", "new_experiment_or_model_estimate"],
+    "hc2_tesla": ["source_fulltext_and_supplement", "supercon_source_lookup", "new_experiment_or_model_estimate"],
+    "lambda_london_nm": ["source_fulltext_and_supplement", "supercon_source_lookup", "new_experiment_or_model_estimate"],
+    "xi_gl_nm": ["source_fulltext_and_supplement", "supercon_source_lookup", "new_experiment_or_model_estimate"],
 }
-# These routes require a specialist extraction workflow. The literal parser
-# does not infer mechanism or order from family, keywords, or their negation.
-SPECIALIST_EXTRACTION_FIELDS = frozenset({"pairing_symmetry", "competing_order"})
+# References expose these fields, but a route is not a match or an implemented
+# paper extractor. Raw external quantities retain their own source units.
+REFERENCE_ONLY_FIELDS = frozenset({
+    "hc1_source_value", "gap_energy_source_value", "gap_ratio_source_value",
+    "electronic_specific_heat_coefficient_source_value", "debye_temperature_source_value",
+    "isotope_effect_exponent", "dtc_dp_source_value", "maximum_applied_pressure_source_value",
+    "meissner_fraction_percent", "transition_width_source_value", "minimum_temperature_k",
+})
+for _field in REFERENCE_ONLY_FIELDS:
+    FIELD_ROUTES[_field] = ["source_fulltext_and_supplement", "supercon_source_lookup"]
+for _field in ("space_group", "crystal_structure", "lattice_a", "lattice_b", "lattice_c"):
+    FIELD_ROUTES[_field] = [*FIELD_ROUTES[_field], "supercon_source_lookup"]
+PAPER_UNIMPLEMENTED_FIELDS = frozenset({"t_cdw_k", "t_afm_k", "t_sdw_k"})
+for _field in PAPER_UNIMPLEMENTED_FIELDS:
+    FIELD_ROUTES[_field] = ["source_fulltext_and_supplement", "specialist_experiment"]
+SPECIALIST_EXTRACTION_FIELDS = frozenset({"pairing_symmetry", "is_unconventional", "reported_order", "competing_order", "gap_structure"})
 
 
 class EnrichmentError(ValueError):
@@ -689,6 +705,8 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
     Coverage declarations describe what was supplied, not scientific review or
     guaranteed recall. No automatic search outcome uses `not_reported`.
     """
+    from services import material_classification_candidates as classification
+
     if len(materials) > MAX_MATERIALS or len(sources) > MAX_SOURCES:
         raise EnrichmentError("enrichment_inventory_limit")
     paper_sources = defaultdict(list)
@@ -698,6 +716,9 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
     for source in validated:
         paper_sources[source["paper_id"]].append(source)
     all_candidates, coverage_rows = {}, []
+    all_classifications, all_findings = {}, {}
+    classification_total, classification_omitted = 0, 0
+    classification_findings_total, classification_findings_omitted = 0, 0
     if len({m.get("id") for m in materials}) != len(materials):
         raise EnrichmentError("duplicate_material")
     for material in materials:
@@ -706,15 +727,28 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
         records = material.get("records", [])
         if type(records) is not list or len(records) > 5000 or any(not isinstance(r, Mapping) for r in records):
             raise EnrichmentError("retained_records_invalid")
-        material_candidates = {}
+        material_candidates, material_classifications, material_findings = {}, [], {}
         retained_papers = sorted({r["paper_id"] for r in records if _identifier(r.get("paper_id"), 100)})
         for record in records:
             record_sources = paper_sources.get(record.get("paper_id"), [])
+            subject_bindings = classification.discover_subject_bindings(material, record, record_sources)
             identity_candidates = discover_identity_candidates(material, record, record_sources)
             for identity in identity_candidates:
                 material_candidates[identity["candidate_id"]] = identity
             aliases = {identity["raw_value"]["source_formula"]: identity for identity in identity_candidates if identity["field"] == "composition_identity"}
             for source in record_sources:
+                statements = classification.extract_classification_candidates(material, record, source, include_evidence_text=include_evidence_text, subject_bindings=subject_bindings)
+                if len(material_classifications)+len(statements["candidates"]) > classification.MAX_REPORT_ROWS:
+                    raise EnrichmentError("classification_report_row_limit")
+                material_classifications.extend(statements["candidates"])
+                classification_total += statements["counts"]["candidate_statements_total"]
+                classification_omitted += statements["counts"]["candidate_statements_omitted"]
+                classification_findings_total += statements["counts"]["review_findings_total"]
+                classification_findings_omitted += statements["counts"]["review_findings_omitted"]
+                for finding in statements["review_findings"]:
+                    material_findings[digest(finding)] = finding
+                    if len(material_findings) > classification.MAX_REPORT_ROWS:
+                        raise EnrichmentError("classification_report_row_limit")
                 candidates = extract_table_candidates(material, record, source) if source.get("table") is not None else extract_source_candidates(material, record, source)
                 candidates.extend(extract_retained_quantity_matches(material, record, source))
                 for alias, identity in aliases.items():
@@ -731,6 +765,11 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
                 for candidate in candidates:
                     material_candidates[candidate["candidate_id"]] = candidate
         material_candidates = {candidate["candidate_id"]: candidate for candidate in _deduplicate_source_facts(material_candidates.values())}
+        material_classifications = classification.deduplicate_candidates(material_classifications)
+        if len(all_classifications) + len(material_classifications) > classification.MAX_REPORT_ROWS or len(all_findings) + len(material_findings) > classification.MAX_REPORT_ROWS:
+            raise EnrichmentError("classification_report_row_limit")
+        all_classifications.update({row["candidate_id"]: row for row in material_classifications})
+        all_findings.update(material_findings)
         if len(all_candidates) + len(material_candidates) > MAX_CANDIDATES:
             raise EnrichmentError("enrichment_candidate_limit")
         all_candidates.update(material_candidates)
@@ -739,6 +778,8 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
         fields = []
         for field, routes in FIELD_ROUTES.items():
             count = sum(candidate["field"] == field for candidate in material_candidates.values())
+            count += sum(candidate["field"] == field for candidate in material_classifications)
+            findings_count = sum(field in finding["fields"] for finding in material_findings.values())
             present = any(_present(record, field) for record in records)
             reasons = []
             if present:
@@ -750,23 +791,31 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
             elif not retained_papers:
                 status = "source_unavailable"
                 reasons.append("retained_source_identity_missing")
-            elif field in SPECIALIST_EXTRACTION_FIELDS:
-                status = "specialist_extraction_needed"
-                reasons.append("specialist_extractor_not_implemented")
-                if not local_sources:
-                    reasons.append("original_source_capture_not_supplied")
+            elif field in REFERENCE_ONLY_FIELDS:
+                status = "not_extracted"
+                reasons.append("paper_field_extractor_not_implemented")
+                reasons.append("external_reference_route_is_not_a_lookup_hit")
+            elif field in PAPER_UNIMPLEMENTED_FIELDS:
+                status = "not_extracted"
+                reasons.append("paper_field_extractor_not_implemented")
             elif not local_sources:
                 status = "not_extracted"
                 reasons.append("original_source_capture_not_supplied")
             else:
                 status = "not_found_in_checked_sources"
                 reasons.append("bounded_extractor_did_not_find_local_candidate")
+                if field in SPECIALIST_EXTRACTION_FIELDS:
+                    reasons.append("bounded_specialist_grammar_has_incomplete_recall")
+                    if findings_count:
+                        status = "not_extracted"
+                        reasons.append("source_assertion_subject_or_scope_requires_review")
                 if any(not declared_coverage[paper].get("fulltext_checked", False) for paper in retained_papers):
                     reasons.append("fulltext_coverage_incomplete")
                 if any(not declared_coverage[paper].get("supplement_checked", False) for paper in retained_papers):
                     reasons.append("supplement_coverage_incomplete")
             fields.append({"field": field, "status": status, "retained_present": present,
-                           "candidate_count": count, "reason_codes": reasons, "routes": routes})
+                           "candidate_count": count, "reason_codes": reasons, "routes": routes,
+                           **({"classification_review_finding_count": findings_count} if field in SPECIALIST_EXTRACTION_FIELDS else {})})
         coverage_rows.append({"material_id": material["id"], "formula": material["formula"],
                               "retained_record_count": len(records), "retained_paper_ids": retained_papers,
                               "source_capture_count": len(local_sources), "source_coverage": declared_coverage,
@@ -780,6 +829,19 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
               "input_sha256": digest({"materials": list(materials), "sources": validated,
                                       "source_coverage": source_coverage or {}}),
               "candidates": candidates, "coverage": coverage_rows,
+              "classification_candidates": [all_classifications[key] for key in sorted(all_classifications)],
+              "classification_review_findings": [all_findings[key] for key in sorted(all_findings)],
+              "classification_version": classification.VERSION,
+              "classification_extractor_version": classification.EXTRACTOR_VERSION,
+              "classification_counts": {"source_record_statement_matches": classification_total,
+                  "candidate_facts": len(all_classifications), "source_record_matches_omitted": classification_omitted,
+                  "source_record_matches_truncated": classification_omitted > 0,
+                  "review_findings": len(all_findings), "report_row_limit": classification.MAX_REPORT_ROWS,
+                  "source_record_review_findings_total": classification_findings_total,
+                  "source_record_review_findings_omitted": classification_findings_omitted,
+                  "source_record_review_findings_truncated": classification_findings_omitted > 0,
+                  "candidate_fields": dict(sorted(Counter(row["field"] for row in all_classifications.values()).items())),
+                  "promoted_facts": 0},
               "counts": {"materials": len(materials), "retained_records": sum(len(m.get("records", [])) for m in materials),
                          "source_captures": len(validated), "candidate_facts": len(candidates),
                          "candidate_retained_references": sum(candidate["retained_reference_count"] for candidate in candidates),

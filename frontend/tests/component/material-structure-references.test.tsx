@@ -50,8 +50,12 @@ describe("COD structure references", () => {
     const view = render(<ExternalStructureReferences materialId="A" />); open();
     expect(await screen.findByText(/COD reference service unavailable/)).toBeInTheDocument();
     view.rerender(<ExternalStructureReferences materialId="B" />);
+    expect(getMaterialStructureReferences).toHaveBeenCalledTimes(1);
+    expect(document.querySelector("details")).not.toHaveAttribute("open");
+    open();
     expect(await screen.findByText(/No exact-composition reference was returned/)).toBeInTheDocument();
     view.rerender(<ExternalStructureReferences materialId="C" />);
+    open();
     expect(await screen.findByText(/Resolve the source composition/)).toBeInTheDocument();
   });
   it("ignores late material A results while showing material B", async () => {
@@ -59,7 +63,11 @@ describe("COD structure references", () => {
     vi.mocked(getMaterialStructureReferences).mockImplementationOnce(() => new Promise(resolve => { resolveA = resolve; })).mockResolvedValueOnce(report("no_match", []));
     const view = render(<ExternalStructureReferences materialId="A" />); open();
     await waitFor(() => expect(getMaterialStructureReferences).toHaveBeenCalledTimes(1));
+    const signal = vi.mocked(getMaterialStructureReferences).mock.calls[0][1];
     view.rerender(<ExternalStructureReferences materialId="B" />);
+    expect(signal?.aborted).toBe(true);
+    expect(getMaterialStructureReferences).toHaveBeenCalledTimes(1);
+    open();
     expect(await screen.findByText(/No exact-composition reference was returned/)).toBeInTheDocument();
     await act(async () => resolveA(report()));
     expect(screen.queryByRole("link", { name: "COD 4002152 ↗" })).not.toBeInTheDocument();

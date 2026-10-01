@@ -2,6 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MaterialEnrichment } from "@/components/MaterialEnrichment";
 import { getMaterialEnrichment, type MaterialEnrichmentReport } from "@/lib/api";
+import { MaterialProviderAvailabilityProvider, useProviderAvailabilityPublisher } from "@/components/MaterialProviderAvailability";
+import { emptyProviderAvailability } from "@/lib/material-provider-availability";
 
 vi.mock("@/lib/api", () => ({ getMaterialEnrichment: vi.fn() }));
 function candidate(field: string, rawValue: unknown, quantity: Record<string, unknown> | null = null, overrides: Record<string, unknown> = {}): Record<string, unknown> {
@@ -24,6 +26,13 @@ async function renderCandidates(candidates: Record<string, unknown>[]) {
 function candidateRow(label: string): HTMLLIElement {
   const title = screen.getByText((text, element) => element?.tagName === "P" && element.className.includes("font-medium") && text.startsWith(label));
   return title.closest("li")!;
+}
+function ProviderProbe({ materialId }: { materialId: string }) {
+  const publish = useProviderAvailabilityPublisher(materialId, "MDR");
+  return <button onClick={() => publish({ ...emptyProviderAvailability("MDR", "available"), returned_count: 2, truncated: true, fields: {
+    lattice_a: { field: "lattice_a", provider: "MDR", reference_count: 2, reference_ids: ["mdr:1", "mdr:2"], review_required_count: 2,
+      scope: "Raw source lattice column; unit, structure and sample association require review", anchor: "mdr-supercon-references", association_status: "sample_and_state_unreviewed" },
+  } })}>Open synthetic MDR lookup</button>;
 }
 
 describe("Recovery candidate quantity and source presentation", () => {
@@ -97,6 +106,26 @@ describe("Recovery candidate quantity and source presentation", () => {
     render(<MaterialEnrichment materialId="synthetic" />);
     expect(await screen.findAllByText("Specialist source extraction needed")).toHaveLength(2);
     expect(screen.queryByText("No candidate in checked chunks")).not.toBeInTheDocument();
+  });
+
+  it("separates actual external field references from suggested lookup routes", async () => {
+    const body = report([]);
+    body.coverage[0].fields = ["lattice_a", "pressure_gpa", "pairing_symmetry"].map(field => ({ field, status: "not_found_in_checked_sources", retained_present: false, candidate_count: 0, reason_codes: [], routes: field === "pairing_symmetry" ? ["source_fulltext_and_supplement"] : ["supercon_source_lookup"] }));
+    vi.mocked(getMaterialEnrichment).mockResolvedValue(body);
+    render(<MaterialProviderAvailabilityProvider materialId="synthetic"><MaterialEnrichment materialId="synthetic" /><ProviderProbe materialId="synthetic" /></MaterialProviderAvailabilityProvider>);
+    expect(await screen.findAllByText("Lookup not opened")).toHaveLength(2);
+    expect(screen.getByText("No linked external property lookup")).toBeInTheDocument();
+    expect(screen.queryByText(/2 returned source rows/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Open synthetic MDR lookup" }));
+    const lattice = screen.getByText("Lattice a").closest("tr")!;
+    expect(lattice).toHaveTextContent("MDR SuperCon: 2 returned source rows");
+    expect(lattice).toHaveTextContent("unit, structure and sample association require review");
+    expect(lattice).toHaveTextContent("Count covers the returned window");
+    const pressure = screen.getByText("Pressure").closest("tr")!;
+    expect(pressure).toHaveTextContent("No returned value for this field");
+    expect(pressure).not.toHaveTextContent("2 returned source rows");
+    expect(within(lattice).getByRole("link", { name: "MDR SuperCon" })).toHaveAttribute("href", "#mdr-supercon-references");
+    expect(screen.getByText(/not completed catalogue fields or independent experiments/)).toBeInTheDocument();
   });
 
   it("makes onset, zero resistance, unknown pressure and unresolved material binding distinguishable", async () => {

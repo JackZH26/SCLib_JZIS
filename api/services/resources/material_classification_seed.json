@@ -1,0 +1,375 @@
+{
+  "candidates": [
+    {
+      "candidate_id": "classification:027731136785c6fad158f6553733f50ef57d5342834eeefef67eb823e7e4380c",
+      "claim": {
+        "normalized_value": "CDW",
+        "relation_to_superconductivity": null,
+        "scope": "source_statement_only",
+        "source_role": "author_report",
+        "stance": "reported",
+        "value_raw": "charge order"
+      },
+      "database_changed": false,
+      "disposition": "pending",
+      "evidence_text_sha256": "a277be9679ff423967092e98187ea1838dee935033bf7463e9e1af950ebb0183",
+      "extractor_version": "materials-source-statement-extractor/1.0.0",
+      "field": "reported_order",
+      "material_id": "mat:cs(v0.93nb0.07)3sb5",
+      "material_state_reviewed": false,
+      "ml_training_approved": false,
+      "public_release": false,
+      "reason_codes": [
+        "source_statement_is_not_scientific_acceptance",
+        "material_state_association_requires_review",
+        "source_lifecycle_requires_review"
+      ],
+      "retained_record_sha256": "bc2d0a9cba3bfa228fe11cab2e5c9ff515c810604bece23c2aac9d91589de782",
+      "retained_reference_count": 2,
+      "retained_result_id": "legacy-result:dbd53041418a7927491c49cad340988701f5d6be36af75c04f3e6d3b39c425ee",
+      "retained_result_refs": [
+        {
+          "record_sha256": "acc40a5949a1bd749c4b8de9c688e8b5791c1896b5ada44682434e746b5b107c",
+          "result_id": "legacy-result:b7de5451e284eae1200a8721ae7f07652c30caabefcc970d38bc7883e15870fe"
+        },
+        {
+          "record_sha256": "bc2d0a9cba3bfa228fe11cab2e5c9ff515c810604bece23c2aac9d91589de782",
+          "result_id": "legacy-result:dbd53041418a7927491c49cad340988701f5d6be36af75c04f3e6d3b39c425ee"
+        }
+      ],
+      "review_requirements": [
+        "exact_source_content_review",
+        "assertion_role_and_stance_review",
+        "material_state_association_review",
+        "method_and_detection_scope_review"
+      ],
+      "scientific_acceptance": false,
+      "source": {
+        "capture_id": "primary:arxiv:2411.18744:6",
+        "content_sha256": "b9ec10f918b41c83182f8ac6b4daa193495a3bfa3b7e4e55dd38b71b892d3195",
+        "kind": "original_passage",
+        "locator": {
+          "xml_xpath": "//*[@id='S2.p1.1']"
+        },
+        "paper_id": "arxiv:2411.18744",
+        "publication_revision_verified": false,
+        "source_revision": "arxiv:2411.18744v1",
+        "source_revision_basis": "source_asserted_publication_revision",
+        "source_status": "unknown",
+        "source_url": "https://arxiv.org/html/2411.18744v1",
+        "span": {
+          "char_end": 625,
+          "char_start": 450,
+          "text_sha256": "a277be9679ff423967092e98187ea1838dee935033bf7463e9e1af950ebb0183"
+        }
+      },
+      "source_content_checked": false,
+      "subject": {
+        "association_status": "pending_source_and_state_review",
+        "binding_proposal": {
+          "alias_raw": "Nb0.07 -CVS",
+          "association_reviewed": false,
+          "binding_id": "classification-subject-binding:cada8fb1e6026b37aea20bd082d72f4ac06141f32f8dae01ccc0875b7592ba2a",
+          "doping_assignment_raw": "x=0.07",
+          "formula": "Cs(V0.93Nb0.07)3Sb5",
+          "scope": "source_defined_alias_proposal",
+          "source": {
+            "capture_id": "primary:arxiv:2411.18744:0",
+            "content_sha256": "b4ef599ae2452ea2cd9c25bf1fcb3635f063d79ac0b46e4e1a9dbeb8c80abee3",
+            "kind": "original_passage",
+            "locator": {
+              "xml_xpath": "//*[@id='abstract1.1']"
+            },
+            "paper_id": "arxiv:2411.18744",
+            "publication_revision_verified": false,
+            "source_revision": "arxiv:2411.18744v1",
+            "source_revision_basis": "source_asserted_publication_revision",
+            "source_status": "unknown",
+            "source_url": "https://arxiv.org/html/2411.18744v1",
+            "span": {
+              "char_end": 397,
+              "char_start": 136,
+              "text_sha256": "78f91635aa0e3ddf9abb6d0409b21f8b31462723430c65d153ffc473f4ef02ec"
+            }
+          }
+        },
+        "binding_span": {
+          "char_end": 506,
+          "char_start": 495
+        },
+        "conditions": {
+          "measurement_window_verified": false,
+          "mentions": [],
+          "pressure_status": "not_supplied_in_local_statement"
+        },
+        "doping_assignment_raw": null,
+        "formula": "Cs(V0.93Nb0.07)3Sb5",
+        "formula_raw": "Nb0.07 -CVS",
+        "identity_basis": "explicit_source_alias_definition_proposal",
+        "methods": [],
+        "sample_label": null
+      },
+      "version": "material-classification-candidates/1.0.0"
+    },
+    {
+      "candidate_id": "classification:d1703f03d3d06e67db2928b02a5f5da0f1dd215ed8569d452b1c9beff7f191cc",
+      "claim": {
+        "normalized_value": "CDW",
+        "relation_to_superconductivity": null,
+        "scope": "source_statement_only",
+        "source_role": "author_report",
+        "stance": "reported",
+        "value_raw": "charge order"
+      },
+      "database_changed": false,
+      "disposition": "pending",
+      "evidence_text_sha256": "48bcc2df3a02f05bea8fc813374c532e5277131b3dc38ec4f9b5c41092ed2a09",
+      "extractor_version": "materials-source-statement-extractor/1.0.0",
+      "field": "reported_order",
+      "material_id": "mat:cs(v0.93nb0.07)3sb5",
+      "material_state_reviewed": false,
+      "ml_training_approved": false,
+      "public_release": false,
+      "reason_codes": [
+        "source_statement_is_not_scientific_acceptance",
+        "material_state_association_requires_review",
+        "source_lifecycle_requires_review"
+      ],
+      "retained_record_sha256": "acc40a5949a1bd749c4b8de9c688e8b5791c1896b5ada44682434e746b5b107c",
+      "retained_reference_count": 2,
+      "retained_result_id": "legacy-result:b7de5451e284eae1200a8721ae7f07652c30caabefcc970d38bc7883e15870fe",
+      "retained_result_refs": [
+        {
+          "record_sha256": "acc40a5949a1bd749c4b8de9c688e8b5791c1896b5ada44682434e746b5b107c",
+          "result_id": "legacy-result:b7de5451e284eae1200a8721ae7f07652c30caabefcc970d38bc7883e15870fe"
+        },
+        {
+          "record_sha256": "bc2d0a9cba3bfa228fe11cab2e5c9ff515c810604bece23c2aac9d91589de782",
+          "result_id": "legacy-result:dbd53041418a7927491c49cad340988701f5d6be36af75c04f3e6d3b39c425ee"
+        }
+      ],
+      "review_requirements": [
+        "exact_source_content_review",
+        "assertion_role_and_stance_review",
+        "material_state_association_review",
+        "method_and_detection_scope_review"
+      ],
+      "scientific_acceptance": false,
+      "source": {
+        "capture_id": "primary:arxiv:2411.18744:0",
+        "content_sha256": "b4ef599ae2452ea2cd9c25bf1fcb3635f063d79ac0b46e4e1a9dbeb8c80abee3",
+        "kind": "original_passage",
+        "locator": {
+          "xml_xpath": "//*[@id='abstract1.1']"
+        },
+        "paper_id": "arxiv:2411.18744",
+        "publication_revision_verified": false,
+        "source_revision": "arxiv:2411.18744v1",
+        "source_revision_basis": "source_asserted_publication_revision",
+        "source_status": "unknown",
+        "source_url": "https://arxiv.org/html/2411.18744v1",
+        "span": {
+          "char_end": 774,
+          "char_start": 564,
+          "text_sha256": "48bcc2df3a02f05bea8fc813374c532e5277131b3dc38ec4f9b5c41092ed2a09"
+        }
+      },
+      "source_content_checked": false,
+      "subject": {
+        "association_status": "pending_source_and_state_review",
+        "binding_proposal": {
+          "alias_raw": "Nb0.07 -CVS",
+          "association_reviewed": false,
+          "binding_id": "classification-subject-binding:cada8fb1e6026b37aea20bd082d72f4ac06141f32f8dae01ccc0875b7592ba2a",
+          "doping_assignment_raw": "x=0.07",
+          "formula": "Cs(V0.93Nb0.07)3Sb5",
+          "scope": "source_defined_alias_proposal",
+          "source": {
+            "capture_id": "primary:arxiv:2411.18744:0",
+            "content_sha256": "b4ef599ae2452ea2cd9c25bf1fcb3635f063d79ac0b46e4e1a9dbeb8c80abee3",
+            "kind": "original_passage",
+            "locator": {
+              "xml_xpath": "//*[@id='abstract1.1']"
+            },
+            "paper_id": "arxiv:2411.18744",
+            "publication_revision_verified": false,
+            "source_revision": "arxiv:2411.18744v1",
+            "source_revision_basis": "source_asserted_publication_revision",
+            "source_status": "unknown",
+            "source_url": "https://arxiv.org/html/2411.18744v1",
+            "span": {
+              "char_end": 397,
+              "char_start": 136,
+              "text_sha256": "78f91635aa0e3ddf9abb6d0409b21f8b31462723430c65d153ffc473f4ef02ec"
+            }
+          }
+        },
+        "binding_span": {
+          "char_end": 626,
+          "char_start": 615
+        },
+        "conditions": {
+          "measurement_window_verified": false,
+          "mentions": [
+            {
+              "association_status": "local_mention_requires_binding_review",
+              "kind": "temperature",
+              "quantity": {
+                "approximate": false,
+                "errors": [],
+                "field": "temperature_k",
+                "input_unit": "K",
+                "lower": null,
+                "parser_version": "scientific-value/1.0.0",
+                "proposal_hash": "f4c43aad30dfde8d40ba2a1d710e6b1050e9a79f1e77871be4cc7f51e2a008d3",
+                "raw_unit": "K",
+                "raw_value": "58",
+                "relation": "exact",
+                "source_context": null,
+                "source_locator": {},
+                "status": "parsed",
+                "uncertainty": null,
+                "uncertainty_interpretation": null,
+                "unit": "K",
+                "unit_basis": "explicit",
+                "upper": null,
+                "value": 58.0,
+                "value_kind": "point"
+              },
+              "raw_unit": "K",
+              "raw_value": "58"
+            }
+          ],
+          "pressure_status": "not_supplied_in_local_statement"
+        },
+        "doping_assignment_raw": null,
+        "formula": "Cs(V0.93Nb0.07)3Sb5",
+        "formula_raw": "Nb0.07 -CVS",
+        "identity_basis": "explicit_source_alias_definition_proposal",
+        "methods": [],
+        "sample_label": null
+      },
+      "version": "material-classification-candidates/1.0.0"
+    },
+    {
+      "candidate_id": "classification:df8163f8d6079b56c913c020c68ec4760bb97ee2b4557e5ba5f2913dad96d5d7",
+      "claim": {
+        "normalized_value": "single-nodeless",
+        "relation_to_superconductivity": null,
+        "scope": "source_statement_only",
+        "source_role": "author_report",
+        "stance": "reported",
+        "value_raw": "single nodeless"
+      },
+      "database_changed": false,
+      "disposition": "pending",
+      "evidence_text_sha256": "30ec6dad2e84b7b62121166bdd5cba2a2077af5118eb75fd6ed0693a9ca6945d",
+      "extractor_version": "materials-source-statement-extractor/1.0.0",
+      "field": "gap_structure",
+      "material_id": "mat:cs(v0.93nb0.07)3sb5",
+      "material_state_reviewed": false,
+      "ml_training_approved": false,
+      "public_release": false,
+      "reason_codes": [
+        "source_statement_is_not_scientific_acceptance",
+        "material_state_association_requires_review",
+        "source_lifecycle_requires_review"
+      ],
+      "retained_record_sha256": "acc40a5949a1bd749c4b8de9c688e8b5791c1896b5ada44682434e746b5b107c",
+      "retained_reference_count": 2,
+      "retained_result_id": "legacy-result:b7de5451e284eae1200a8721ae7f07652c30caabefcc970d38bc7883e15870fe",
+      "retained_result_refs": [
+        {
+          "record_sha256": "acc40a5949a1bd749c4b8de9c688e8b5791c1896b5ada44682434e746b5b107c",
+          "result_id": "legacy-result:b7de5451e284eae1200a8721ae7f07652c30caabefcc970d38bc7883e15870fe"
+        },
+        {
+          "record_sha256": "bc2d0a9cba3bfa228fe11cab2e5c9ff515c810604bece23c2aac9d91589de782",
+          "result_id": "legacy-result:dbd53041418a7927491c49cad340988701f5d6be36af75c04f3e6d3b39c425ee"
+        }
+      ],
+      "review_requirements": [
+        "exact_source_content_review",
+        "assertion_role_and_stance_review",
+        "material_state_association_review",
+        "method_and_detection_scope_review"
+      ],
+      "scientific_acceptance": false,
+      "source": {
+        "capture_id": "primary:arxiv:2411.18744:15",
+        "content_sha256": "92964ee349d7364a6ceb2d7b8f10cb5039a94d5714370ddbe11f5b5175163901",
+        "kind": "original_passage",
+        "locator": {
+          "xml_xpath": "//*[@id='S3.p1.1']"
+        },
+        "paper_id": "arxiv:2411.18744",
+        "publication_revision_verified": false,
+        "source_revision": "arxiv:2411.18744v1",
+        "source_revision_basis": "source_asserted_publication_revision",
+        "source_status": "unknown",
+        "source_url": "https://arxiv.org/html/2411.18744v1",
+        "span": {
+          "char_end": 342,
+          "char_start": 120,
+          "text_sha256": "30ec6dad2e84b7b62121166bdd5cba2a2077af5118eb75fd6ed0693a9ca6945d"
+        }
+      },
+      "source_content_checked": false,
+      "subject": {
+        "association_status": "pending_source_and_state_review",
+        "binding_proposal": {
+          "alias_raw": "Nb0.07 -CVS",
+          "association_reviewed": false,
+          "binding_id": "classification-subject-binding:cada8fb1e6026b37aea20bd082d72f4ac06141f32f8dae01ccc0875b7592ba2a",
+          "doping_assignment_raw": "x=0.07",
+          "formula": "Cs(V0.93Nb0.07)3Sb5",
+          "scope": "source_defined_alias_proposal",
+          "source": {
+            "capture_id": "primary:arxiv:2411.18744:0",
+            "content_sha256": "b4ef599ae2452ea2cd9c25bf1fcb3635f063d79ac0b46e4e1a9dbeb8c80abee3",
+            "kind": "original_passage",
+            "locator": {
+              "xml_xpath": "//*[@id='abstract1.1']"
+            },
+            "paper_id": "arxiv:2411.18744",
+            "publication_revision_verified": false,
+            "source_revision": "arxiv:2411.18744v1",
+            "source_revision_basis": "source_asserted_publication_revision",
+            "source_status": "unknown",
+            "source_url": "https://arxiv.org/html/2411.18744v1",
+            "span": {
+              "char_end": 397,
+              "char_start": 136,
+              "text_sha256": "78f91635aa0e3ddf9abb6d0409b21f8b31462723430c65d153ffc473f4ef02ec"
+            }
+          }
+        },
+        "binding_span": {
+          "char_end": 229,
+          "char_start": 218
+        },
+        "conditions": {
+          "measurement_window_verified": false,
+          "mentions": [],
+          "pressure_status": "not_supplied_in_local_statement"
+        },
+        "doping_assignment_raw": null,
+        "formula": "Cs(V0.93Nb0.07)3Sb5",
+        "formula_raw": "Nb0.07 -CVS",
+        "identity_basis": "explicit_source_alias_definition_proposal",
+        "methods": [],
+        "sample_label": null
+      },
+      "version": "material-classification-candidates/1.0.0"
+    }
+  ],
+  "classification_extractor_version": "materials-source-statement-extractor/1.0.0",
+  "database_changed": false,
+  "ml_training_approved": false,
+  "public_release": false,
+  "scientific_acceptance": false,
+  "seed_id": "primary-source-classifications/2026-10-02",
+  "seed_sha256": "5652a30e82fb12e53403e69654239bef37230f3a728fe9133e386eb03a88f791",
+  "source_text_included": false,
+  "version": "material-classification-seed/1.0.0"
+}

@@ -8,7 +8,7 @@ from collections import defaultdict
 from urllib.parse import quote
 from weakref import WeakKeyDictionary
 
-from sqlalchemy import func, select
+from sqlalchemy import and_, func, or_, select
 
 from models.db import Chunk, Paper
 from services.claim_support import is_derived_source_hint
@@ -109,6 +109,10 @@ def _compile_recovery_report(payload, sources, coverage, scope):
     report["counts"]["retained_records_inspected"] = scope["records_inspected"]
     report["counts"]["retained_records_omitted"] = scope["records_total"] - scope["records_inspected"]
     for row in report["coverage"]:
+        # Include eligible papers omitted by the paper sampler as well. The
+        # parser only sees sampled records, so its default projection cannot
+        # describe the whole current source inventory on its own.
+        row["source_coverage"] = coverage
         row["retained_record_count_total"] = scope["records_total"]
         row["record_scan_truncated"] = scope["records_truncated"]
         if scope["records_truncated"]:
@@ -117,6 +121,21 @@ def _compile_recovery_report(payload, sources, coverage, scope):
     report["candidates_truncated"] = len(report["candidates"]) > 100
     report["candidates"] = report["candidates"][:100]
     report["counts"]["candidate_facts_returned"] = len(report["candidates"])
+    # Specialist statements and rejected-scope findings have independent
+    # bounded public windows. Full offline reports retain their own inventory.
+    statements = report.get("classification_candidates", [])
+    findings = report.get("classification_review_findings", [])
+    classification_counts = report.get("classification_counts", {})
+    report["classification_candidates_truncated"] = (len(statements) > 100
+        or classification_counts.get("source_record_matches_omitted", 0) > 0)
+    report["classification_review_findings_truncated"] = (len(findings) > 100
+        or classification_counts.get("source_record_review_findings_omitted", 0) > 0)
+    report["classification_candidates"] = statements[:100]
+    report["classification_review_findings"] = findings[:100]
+    classification_counts.update(candidate_facts_returned=len(report["classification_candidates"]),
+                                 candidate_facts_omitted=len(statements) - len(report["classification_candidates"]),
+                                 review_findings_returned=len(report["classification_review_findings"]),
+                                 review_findings_omitted=len(findings) - len(report["classification_review_findings"]))
     report.pop("report_sha256", None)
     report["report_sha256"] = digest(report)
     return report
@@ -146,6 +165,22 @@ async def _bounded_compile(payload, sources, coverage, scope):
     return await asyncio.shield(task)
 
 
+def _chunk_quotas(paper_ids, available):
+    """Share the bounded inspection slots before any source text is fetched."""
+    quotas = dict.fromkeys(paper_ids, 0)
+    remaining = MAX_CHUNKS
+    while remaining:
+        progressed = False
+        for paper in paper_ids:
+            if remaining and quotas[paper] < available.get(paper, 0):
+                quotas[paper] += 1
+                remaining -= 1
+                progressed = True
+        if not progressed:
+            break
+    return quotas
+
+
 async def read_material_enrichment(db, material) -> dict:
     records = material.current_records()
     # Source lifecycle partition precedes retrieval; an excluded occurrence
@@ -167,8 +202,17 @@ async def read_material_enrichment(db, material) -> dict:
     scope["current_eligible_records_total"] = len(records)
     payload = {"id": material.id, "formula": material.formula, "records": selected_records}
     sources, coverage = [], {paper: {"fulltext_checked": False, "supplement_checked": False,
-                                   "scope": "bounded_current_chunks_not_complete_source"}
+                                   "scope": "bounded_current_chunks_not_complete_source",
+                                   "indexed_chunks_total": None, "bounded_indexed_chunks_total": None,
+                                   "chunks_considered": 0, "chunks_inspected": 0, "chunks_supplied": 0,
+                                   "excluded_chunks_total": 0, "excluded_chunk_reasons": {},
+                                   "omitted_chunks_total": None, "omitted_chunk_reasons": {},
+                                   "truncated": paper not in paper_ids,
+                                   "reason_codes": ["paper_sampling_limit"] if paper not in paper_ids else []}
                              for paper in source_ids}
+    scope.update(chunks_limit=MAX_CHUNKS, characters_limit=MAX_CHARS,
+                 chunk_sampling="paper_round_robin_formula_and_table_priority",
+                 chunks_considered=0, chunks_inspected=0, characters_inspected=0)
     if paper_ids:
         # Only bounded publication metadata; this adds neither source text nor
         # a permission/version assertion to the retained chunk descriptor.
@@ -177,34 +221,92 @@ async def read_material_enrichment(db, material) -> dict:
         ))).all()
         source_urls = {paper_id: url for paper_id, doi, arxiv_id in publications
                        if paper_id in paper_ids and (url := _primary_source_url(doi, arxiv_id))}
-        # Prefer exact formula mentions and tables; return whole retained
-        # chunks so headers, units and nearby context survive extraction.
-        chunks = (await db.execute(select(Chunk).where(
-            Chunk.paper_id.in_(paper_ids), func.char_length(Chunk.text).between(1, 20000),
-        ).order_by(Chunk.text.contains(material.formula, autoescape=True).desc(),
-                   Chunk.has_table.desc(), Chunk.paper_id, Chunk.chunk_index, Chunk.id)
-          .limit(MAX_CHUNKS + 1))).scalars().all()
-        truncated = len(chunks) > MAX_CHUNKS
-        selected, chars = [], 0
-        for chunk in chunks[:MAX_CHUNKS]:
-            if chars + len(chunk.text) > MAX_CHARS:
-                truncated = True
-                break
-            selected.append(chunk)
-            chars += len(chunk.text)
+        # Count identifiers/lengths, not text. Allocate across papers before
+        # formula/table ranking can let one paper consume the entire budget.
+        inventory = (await db.execute(select(
+            Chunk.paper_id, func.count().label("indexed_chunks_total"),
+            func.count().filter(func.char_length(Chunk.text).between(1, 20000))
+            .label("bounded_indexed_chunks_total"),
+        ).where(Chunk.paper_id.in_(paper_ids)).group_by(Chunk.paper_id))).all()
+        totals = {paper: (total, bounded) for paper, total, bounded in inventory}
+        quotas = _chunk_quotas(paper_ids, {paper: bounded for paper, _, bounded in inventory})
+        ranked = {}
+        for paper in paper_ids:
+            total, bounded = totals.get(paper, (0, 0))
+            row = coverage[paper]
+            row.update(indexed_chunks_total=total, bounded_indexed_chunks_total=bounded)
+            omitted = row["omitted_chunk_reasons"]
+            if total > bounded:
+                omitted["indexed_chunk_length_outside_bounds"] = total - bounded
+            if bounded > quotas[paper]:
+                omitted["chunk_inspection_limit"] = bounded - quotas[paper]
+            if not total:
+                row["reason_codes"].append("no_indexed_chunks")
+            if quotas[paper]:
+                # Within each paper preserve whole-table and formula priority.
+                ranked[paper] = (await db.execute(select(
+                    Chunk.id, Chunk.paper_id, func.char_length(Chunk.text).label("characters"),
+                ).where(Chunk.paper_id.in_([paper]), func.char_length(Chunk.text).between(1, 20000))
+                  .order_by(Chunk.text.contains(material.formula, autoescape=True).desc(),
+                            Chunk.has_table.desc(), Chunk.chunk_index, Chunk.id)
+                  .limit(quotas[paper]))).all()
+            else:
+                ranked[paper] = []
+            row["chunks_considered"] = len(ranked[paper])
+            if quotas[paper] > len(ranked[paper]):
+                omitted["indexed_chunk_changed_or_unavailable"] = quotas[paper] - len(ranked[paper])
+        admitted, chars = [], 0
+        for position in range(max(quotas.values(), default=0)):
+            for paper in paper_ids:
+                if position >= len(ranked[paper]):
+                    continue
+                identifier, _, characters = ranked[paper][position]
+                if chars + characters > MAX_CHARS:
+                    omitted = coverage[paper]["omitted_chunk_reasons"]
+                    omitted["character_inspection_limit"] = omitted.get("character_inspection_limit", 0) + 1
+                    # A later whole chunk can still fit. Never truncate text,
+                    # alter its locator, or stop all subsequent papers here.
+                    continue
+                admitted.append((identifier, paper, characters))
+                chars += characters
+        selected = []
+        if admitted:
+            # Match the measured lengths so concurrent changes cannot exceed
+            # the text budget between metadata selection and the full read.
+            chunks = (await db.execute(select(Chunk).where(
+                Chunk.paper_id.in_(paper_ids), Chunk.id.in_([identifier for identifier, _, _ in admitted]),
+                or_(*(and_(Chunk.id == identifier, Chunk.paper_id == paper,
+                           func.char_length(Chunk.text) == characters)
+                      for identifier, paper, characters in admitted)),
+            ).limit(MAX_CHUNKS))).scalars().all()
+            by_id = {chunk.id: chunk for chunk in chunks}
+            for identifier, paper, _ in admitted:
+                if identifier in by_id:
+                    selected.append(by_id[identifier])
+                    coverage[paper]["chunks_inspected"] += 1
+                else:
+                    omitted = coverage[paper]["omitted_chunk_reasons"]
+                    omitted["indexed_chunk_changed_or_unavailable"] = omitted.get("indexed_chunk_changed_or_unavailable", 0) + 1
         descriptors = await resolve_chunk_evidence(db, selected)
-        excluded = 0
         for chunk in selected:
             descriptor = descriptors.get(chunk.id, {})
-            if descriptor.get("permission_status") == "restricted" or descriptor.get("currentness") == "stale":
-                excluded += 1
-                continue
+            exclusion = None
+            if descriptor.get("permission_status") == "restricted":
+                exclusion = "source_permission_restricted"
+            elif descriptor.get("currentness") == "stale":
+                exclusion = "source_not_current"
             kind = descriptor.get("chunk_kind", "legacy_unknown")
             # Derived facts do not substitute for their original source. Legacy
             # unknown text can produce unresolved retrieval candidates only.
-            if (kind not in {"original_passage", "abstract", "legacy_unknown"}
-                    or is_derived_source_hint(section=chunk.section, paper_id=chunk.paper_id, text=chunk.text)):
-                excluded += 1
+            if not exclusion and is_derived_source_hint(section=chunk.section, paper_id=chunk.paper_id, text=chunk.text):
+                exclusion = "derived_source"
+            if not exclusion and kind not in {"original_passage", "abstract", "legacy_unknown"}:
+                exclusion = "unsupported_source_kind"
+            if exclusion:
+                row = coverage[chunk.paper_id]
+                row["excluded_chunks_total"] += 1
+                reasons = row["excluded_chunk_reasons"]
+                reasons[exclusion] = reasons.get(exclusion, 0) + 1
                 continue
             content_hash = hashlib.sha256(chunk.text.encode()).hexdigest()
             raw_locator = descriptor.get("source_locator", {})
@@ -225,7 +327,12 @@ async def read_material_enrichment(db, material) -> dict:
                 source["source_url"] = source_urls[chunk.paper_id]
             sources.append(source)
         for paper in paper_ids:
-            coverage[paper]["chunks_supplied"] = sum(source["paper_id"] == paper for source in sources)
-            coverage[paper]["truncated"] = truncated or len(source_ids) > MAX_PAPERS
-            coverage[paper]["excluded_chunks_total"] = excluded
+            row = coverage[paper]
+            row["chunks_supplied"] = sum(source["paper_id"] == paper for source in sources)
+            row["omitted_chunks_total"] = sum(row["omitted_chunk_reasons"].values())
+            row["truncated"] = row["omitted_chunks_total"] > 0
+            row["reason_codes"].extend(row["omitted_chunk_reasons"])
+            row["reason_codes"].extend(row["excluded_chunk_reasons"])
+        scope.update(chunks_considered=sum(row["chunks_considered"] for row in coverage.values()),
+                     chunks_inspected=len(selected), characters_inspected=sum(len(chunk.text) for chunk in selected))
     return await _bounded_compile(payload, sources, coverage, scope)

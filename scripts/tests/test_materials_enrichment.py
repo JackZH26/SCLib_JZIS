@@ -230,20 +230,80 @@ def test_missingness_tracks_checked_scope_and_never_claims_not_reported():
     assert not any(c["status"] == "not_reported" for c in fields.values())
 
 
-def test_unimplemented_specialist_fields_are_not_claimed_unsuccessfully_searched():
+def test_specialist_statements_are_independent_and_presence_does_not_mean_competition():
     mat = material("NbN")
     src = source("NbN has s-wave pairing symmetry. NbN has competing order antiferromagnetism.")
     report = enrich.build_enrichment_report([mat], [src])
     fields = {c["field"]: c for c in report["coverage"][0]["fields"]}
-    for name in ("pairing_symmetry", "competing_order"):
-        assert fields[name]["status"] == "specialist_extraction_needed"
-        assert fields[name]["candidate_count"] == 0
-        assert fields[name]["reason_codes"] == ["specialist_extractor_not_implemented"]
+    assert fields["pairing_symmetry"]["status"] == "pending_review"
+    assert fields["reported_order"]["status"] == "pending_review"
+    assert fields["competing_order"]["status"] == "not_found_in_checked_sources"
+    assert fields["competing_order"]["candidate_count"] == 0
+    assert fields["is_unconventional"]["status"] == "not_found_in_checked_sources"
+    assert report["classification_candidates"]
     assert not any(c["field"] in enrich.SPECIALIST_EXTRACTION_FIELDS for c in report["candidates"])
     mat["records"][0].update(pairing_symmetry="s_wave", competing_order="antiferromagnetic")
     retained = enrich.build_enrichment_report([mat], [src])
     retained_fields = {c["field"]: c for c in retained["coverage"][0]["fields"]}
-    assert all(retained_fields[name]["status"] == "retained_present" for name in enrich.SPECIALIST_EXTRACTION_FIELDS)
+    assert all(retained_fields[name]["status"] == "retained_present" for name in ("pairing_symmetry", "competing_order"))
+
+
+def test_classification_missingness_and_reference_routes_do_not_claim_hits():
+    mat = material("NbN")
+    report = enrich.build_enrichment_report([mat], [])
+    fields = {row["field"]: row for row in report["coverage"][0]["fields"]}
+    assert fields["is_unconventional"]["status"] == "not_extracted"
+    for name in enrich.REFERENCE_ONLY_FIELDS:
+        assert fields[name]["candidate_count"] == 0
+        assert fields[name]["status"] == "not_extracted"
+        assert "supercon_source_lookup" in fields[name]["routes"]
+        assert "external_reference_route_is_not_a_lookup_hit" in fields[name]["reason_codes"]
+    assert report["classification_counts"]["candidate_facts"] == 0
+    for name in enrich.PAPER_UNIMPLEMENTED_FIELDS:
+        assert fields[name]["status"] == "not_extracted"
+        assert "paper_field_extractor_not_implemented" in fields[name]["reason_codes"]
+        assert "supercon_source_lookup" not in fields[name]["routes"]
+    for name in ("space_group", "crystal_structure", "lattice_a", "lattice_b", "lattice_c"):
+        assert "supercon_source_lookup" in fields[name]["routes"]
+
+
+def test_classification_report_keeps_old_candidate_ids_and_redacts_every_private_context():
+    mat = material("NbN")
+    src = source("Computed NbN has Tc=16 K. NbN has s-wave pairing symmetry.")
+    legacy = enrich._deduplicate_source_facts(enrich.extract_source_candidates(mat, mat["records"][0], src))
+    report = enrich.build_enrichment_report([mat], [src], include_evidence_text=False)
+    assert [row["candidate_id"] for row in report["candidates"]] == [row["candidate_id"] for row in legacy]
+    assert report["classification_candidates"]
+    assert all("evidence_text" not in row for row in report["classification_candidates"])
+    assert report["counts"]["candidate_facts"] == len(legacy)
+    assert report["classification_counts"]["candidate_facts"] == 1
+
+
+def test_specialist_inventory_hard_limit_stops_before_unbounded_accumulation(monkeypatch):
+    from services import material_classification_candidates as classify
+    monkeypatch.setattr(classify, "MAX_REPORT_ROWS", 2)
+    mat = material("NbN")
+    src = source("NbN has s-wave pairing. NbN has nodeless superconducting gap. NbN exhibits unconventional superconductivity.")
+    with pytest.raises(enrich.EnrichmentError, match="classification_report_row_limit"):
+        enrich.build_enrichment_report([mat], [src])
+
+
+def test_specialist_source_windows_expose_omissions_separately_from_numeric_counts(monkeypatch):
+    from services import material_classification_candidates as classify
+    monkeypatch.setattr(classify, "MAX_CANDIDATES_PER_SOURCE", 1)
+    monkeypatch.setattr(classify, "MAX_FINDINGS_PER_SOURCE", 1)
+    mat = material("NbN")
+    src = source("NbN has s-wave pairing. NbN has nodeless superconducting gap. Previous work reported NbN has s-wave pairing. Previous work reported NbN has nodal superconducting gap.")
+    report = enrich.build_enrichment_report([mat], [src], include_evidence_text=False)
+    counts = report["classification_counts"]
+    assert counts["source_record_statement_matches"] == 2
+    assert counts["candidate_facts"] == 1
+    assert counts["source_record_matches_omitted"] == 1
+    assert counts["source_record_matches_truncated"] is True
+    assert counts["source_record_review_findings_total"] == 2
+    assert counts["source_record_review_findings_omitted"] == 1
+    assert counts["source_record_review_findings_truncated"] is True
+    assert report["counts"]["candidate_facts"] == 0
 
 
 def test_unicode_subscripts_preserve_exact_source_span():

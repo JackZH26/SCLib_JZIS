@@ -33,11 +33,23 @@ row capture hash is never called a publication version.
 
 The live reader inspects at most 32 retained records, stratified across at most
 eight eligible source papers and evenly spaced through each paper's retained
-record positions. It retrieves at most 40 chunks and 120,000 combined source
-characters. `inspection_scope` reports current eligible and raw retained totals,
-the number actually inspected, and record/paper truncation. Missing fields in a
-truncated record sample carry an explicit incomplete-inventory reason. The
-original records remain unchanged.
+record positions. Its **40-chunk budget is shared across papers**, with at most
+120,000 combined source characters. It counts each selected paper's indexed and
+bounded-length chunks before fetching text, allocates slots in paper round-robin
+order, and ranks formula/table matches within each paper. Whole chunks of 1–20,000
+characters are admitted; text is never cut to fit the character budget. A later
+whole chunk may still fit after an earlier one is omitted. Matching measured
+lengths at the text-read stage prevents a concurrent change from enlarging the
+budget. This is fair bounded allocation, not a guarantee that every paper
+provides usable evidence after permission, currentness and derived-source checks.
+
+`inspection_scope` and per-paper `source_coverage` expose raw/current record
+totals, indexed/bounded chunk counts, considered/inspected/supplied chunks,
+excluded and omitted reasons, and record/paper/chunk/character limits. An
+unsampled paper has unknown indexed/omitted counts and an explicit paper-limit
+reason. Missing fields in a truncated record sample carry an incomplete-inventory
+reason. Neither this request nor a zero candidate count establishes complete
+full-text or supplement coverage. Original records remain unchanged.
 
 When more than eight source papers are linked, a metadata-only `EXISTS` probe
 identifies papers containing indexed nonempty bounded chunks. The reader selects
@@ -46,12 +58,13 @@ slots. This avoids permanently omitting an indexed ninth paper. The probe does
 not establish source permissions, originality or currentness; final chunk
 admission still applies the same source, visibility and derived-text guards.
 
-Pairing symmetry and competing-order classifications currently require a
-specialist extraction step. Their coverage says `specialist_extraction_needed`,
-not that an implemented extractor searched and found nothing. Numeric extractors
-and classification extractors have separate coverage. Selected-source DOI and
-arXiv metadata yield allowlisted primary-publication links, without asserting a
-verified source version or releasing restricted/stale source facts.
+Pairing, unconventional-state, gap and order statements now use the independent
+bounded classifier described below. Its incomplete grammar and rejected-scope
+findings have separate coverage from the established numeric/literal extractor.
+Unimplemented paper-field extraction remains `not_extracted`; an external
+recovery route is not an actual lookup hit. Selected-source DOI and arXiv metadata
+yield allowlisted primary-publication links, without asserting a verified source
+version or releasing restricted/stale source facts.
 
 Synchronous parsing and hashing run with `asyncio.to_thread`, behind a two-worker
 semaphore. Cancelling a request does not release its CPU slot until the underlying
@@ -65,6 +78,110 @@ deduplicates that fact and exposes `retained_result_refs` containing each
 `result_id` and `record_sha256`. Its representative singular fields are preserved
 for existing callers. The reference count does not count independent studies.
 Composition proposals referenced by other facts use the final deduplicated ID.
+
+## Second iteration: source-statement classification
+
+`api/services/material_classification_candidates.py` emits the independent
+`material-classification-candidates/1.0.0` contract using
+`materials-source-statement-extractor/1.0.0`. The numeric/literal candidate
+namespace and identities remain unchanged. The enrichment report adds separate
+`classification_candidates`, `classification_review_findings`,
+`classification_counts` and extractor-version fields; live public windows are
+bounded independently to 100 candidates and 100 findings.
+
+Admitted local statements retain their field, raw/normalized label, author-report
+role and stance (`reported`, `fitted`, `proposed` or `not_detected`). Supported
+fields are `pairing_symmetry`, `is_unconventional`, `gap_structure`,
+`reported_order` and explicit `competing_order`. A gap described as nodeless is
+not converted to s-wave or conventional superconductivity; odd parity is not
+converted to p-wave. A reported order generates a competition candidate only
+when that relation is explicit. Scoped non-detection remains a source statement,
+with method/window limitations, rather than a material-level false value.
+
+The grammar requires a locally identified fixed composition or a uniquely
+resolved local variable composition. A narrowly coded, same-paper sample alias
+can use an independently pinned definition proposal; both definition and claim
+captures remain traceable, and association is unreviewed. Reused aliases with
+conflicting or unresolved doping definitions, arbitrary contextual parentheses,
+single-element substrates, comparisons, cited/background assertions, uncertain
+or rejected hypotheses, unbound negation, contradictory detection clauses and
+multiple state-condition mentions require review. The extractor prioritizes
+precision and does not claim complete recall. Candidate and finding bounds are
+reported rather than silently discarded.
+
+Coverage counts source-statement candidates separately from retained values.
+Rejected subject/assertion scopes leave an explicit review count and
+`not_extracted` status when neither a retained value nor a usable candidate exists. A bounded implemented
+search with no local candidate may say `not_found_in_checked_sources`, with its
+incomplete-recall and full-text/supplement limitations. Public output omits source
+excerpts and free-form private context; nested locators, alias-source metadata,
+methods, condition quantities and claim labels are constrained and validated.
+All candidates remain pending, with scientific acceptance, ML approval, public
+release authority and database mutation flags false.
+
+### October 2 same-input benchmark
+
+The benchmark reused 19 materials, 15 families and 2,257 retained records. The
+frozen adapter excluded 41 generated/Facts chunks from the 362-chunk export,
+leaving **321 normalized historical source captures**. Comparing the old module
+at commit `4ef49494e634412b49b7d82208bb87a713ca312e` with the second iteration on
+these exact inputs produced **65 legacy numeric/literal candidates and 71
+retained-record references in both runs**. Every candidate ID, value, metadata
+object and legacy count was equal; the canonical candidate-list SHA-256 was
+`5dcf69800e72c71aa3f7a96b258c08b685f3e8e14e807e63d805f4826c3ded78`.
+
+The independent classifier admitted **zero classification candidates from those
+321 historical captures**, and produced **122 deduplicated review findings**
+from 192 source-record finding matches. Most findings concern missing local
+material subjects, nonmatching subjects, unresolved retained composition or
+local doping. This is a useful review queue, not evidence that the papers lack
+classification reports. The earlier October 1 **323-source/66-candidate** pilot
+below used a different source inventory; comparing its total directly with 65
+would not measure a parser regression or an extraction improvement.
+
+Four purposefully selected original arXiv captures additionally produced three
+admitted statements and 72 deduplicated review findings. Sn/In/Te variable
+composition, nominal/refined Ba/Fe/Pt composition and parenthetic Sr/Fe/Ni
+composition still require subject review. This small ambiguity benchmark is not
+a population estimate, a precision/recall score or complete supplement coverage.
+Local receipts are `benchmark_receipt.json`, `numeric_compatibility_receipt.json`
+and `classification_seed_identity_receipt.json` under
+`/tmp/sclib_classification_benchmark_20261002`; source text and production exports
+remain private.
+
+### Independent primary classification metadata seed
+
+`api/services/resources/material_classification_seed.json` uses
+`material-classification-seed/1.0.0` and is separate from the original 41-candidate
+numeric seed. Its three candidates are for `Cs(V0.93Nb0.07)3Sb5` in
+[arXiv:2411.18744v1](https://arxiv.org/html/2411.18744v1): two distinct CDW
+`reported_order` source spans and one `single-nodeless` `gap_structure` span.
+They use the explicit same-paper `Nb0.07-CVS` alias-definition proposal. These
+three statements do not constitute three independent experiments, reviewed
+pairing symmetry, conventionality, competition with superconductivity or a
+canonical material classification.
+
+The seed contains only constrained candidate metadata, source pins and hashes.
+Its file SHA-256 is
+`6ee4a68ba4ffc7cac838a7d23afbf4b0cb36696e7b07519a91bbfb03549fa898`;
+its independently sealed `seed_sha256` is
+`5652a30e82fb12e53403e69654239bef37230f3a728fe9133e386eb03a88f791`.
+Each candidate references the same two verified current raw original records.
+The identity receipt compares complete public records after removing only
+documented API-derived decorations, and checks raw key/value equality, canonical
+fingerprints and public assessment result IDs. Current paper status was active
+in that receipt; captured statement status remains `unknown`, and
+`publication_revision_verified` remains false.
+
+The bounded loader validates seed and candidate identities, rejects authority
+changes or nested private metadata, and fails closed if unavailable. Serving
+requires the exact material ID/formula, exact source paper, and **every** retained
+result ID/fingerprint to remain in `material.current_records()`. A changed,
+removed or source-ineligible occurrence suppresses the affected seed statement.
+Catalogue/source epoch checks run again before the API response. Seed merging is
+idempotent, reseals the report and updates pending coverage without changing
+numeric candidates, selected properties or raw records. It performs no new
+scientific calculation and does not grant rights to source text.
 
 ## Offline CLI
 
@@ -186,12 +303,19 @@ inserted into a private local ledger; replay inserted zero and reused all 66.
    gaps, with input structure, composition, pressure, method and convergence
    requirements. The recovery CLI itself does not calculate Tc or stability.
 
-Validation: 35 pure extraction/CLI tests and 25 DB-free reader boundary tests
-cover units, uncertainty, exact source pins, formula/sample distinctions,
+Validation includes pure extraction/CLI and DB-free reader boundary tests for
+units, uncertainty, exact source pins, formula/sample distinctions,
 comparison tables, unknown lineage, derived Facts exclusion, paper/chunk/character
 limits, restricted/stale evidence, metadata-only public egress and local replay.
 Reader tests additionally verify record sampling through deep positions, work
-outside the event-loop thread, and cancellation-safe CPU concurrency limits.
+outside the event-loop thread, fair per-paper chunk quotas, whole-chunk character
+admission, concurrent length changes, honest per-paper omissions and
+cancellation-safe CPU concurrency limits. Classifier/seed regressions cover local
+and coded-alias identity, ambiguous definitions, stance and negation scope,
+single-element comparators, non-detection windows, nested private-metadata
+rejection, unchanged original seed identities, stale/current raw guards and
+idempotent independent seed merging. Test counts should be read from the final
+release receipt rather than from an intermediate source-edit run.
 The API integration tests exercise the actual endpoint and held-material routes
 through the repository's disposable-service runner.
 
@@ -202,8 +326,8 @@ NOMAD and versioned MDR SuperCon references. These panels never select retained 
 promote a matched composition to an established sample/phase identity. External
 provider requests begin when their folded panels are expanded.
 
-All three routes reuse the source-aware fixed-composition guard before cache
-lookup; isotope, variable occupancy, unresolved dopant or interface notation is
+The MP, COD and NOMAD routes reuse the source-aware fixed-composition guard before
+cache lookup; isotope, variable occupancy, unresolved dopant or interface notation is
 not replaced with a parent formula. Each API route checks current catalogue
 eligibility and source partition, then rechecks the source epoch after retrieval.
 Responses are private and `no-store`. Successful provider projections may use a
@@ -241,6 +365,52 @@ See [COD schema](https://wiki.crystallography.net/cod_mysql_schema/),
 [NOMAD API](https://docs.nomad-lab.eu/1.4.3/howto/manage/program/api.html)
 for provider field semantics. Scientific state matching, coordinate validation
 and canonical review remain required before any future promotion.
+
+### Field availability after an explicit lookup
+
+The detail page shares an optional `MaterialProviderAvailabilityProvider` across
+source recovery and the four external panels. Opening one panel triggers only
+that provider's lazy request. Validated returned data updates the coverage
+table's **Queried external references** column for each actually supplied field;
+merely listing a provider as a recovery route creates no field hit.
+
+The column distinguishes unrequested, loading, returned references, a successful
+lookup with **no returned value for this field**, composition `no_match`,
+`not_applicable` identity review and service `unavailable`. Counts are
+provider-specific distinct returned record/task/source-row IDs, bounded by the
+returned window, rather than total search matches or independent experiments.
+Raw unresolved values carry interpretation counts and readable source scope.
+Navigation drops the preceding material's fields/errors, and a cancelled
+in-flight lookup cannot publish a late hit. Panels also work without the shared
+context. A successful folded lookup keeps its inspected references available;
+no background provider fetch is introduced.
+
+MP structure and functional metadata remain computed references with unassociated
+sample/phase/conditions; its unresolved functional placeholder is not a method
+hit. COD cell/diffraction temperature, pressure and method describe the structure
+measurement, not the selected Tc condition; a coordinate flag is not atomic-site
+data. NOMAD XC and spin settings remain calculation metadata, not pairing or
+observed magnetic order. MDR `tc` and explicit `t1/t2/t3/tcsus` source columns
+remain separate; generic recommended Tc alone supplies no criterion. `tcn` and
+transition width supply no Tc, `pmax` supplies no Tc pressure, and London
+penetration length supplies no electron–phonon coupling λ. Raw MDR lattice,
+space-group, sample and method fields continue to need interpretation and
+sample/state review. Field availability performs no unit-backed canonical
+conversion or property promotion.
+
+### Next measurable curation
+
+Review the three primary statements first, then stratify a first 40-item review
+batch from the 122 historical findings by missing-subject, nonmatching-subject,
+variable-composition and cited/conditional reasons. Annotate true subject,
+source role, stance, method and tested condition window, retaining rejected
+cases. Measure field-specific extraction precision and recall against those
+annotations, plus alias/state errors and reviewer disagreement; only then expand
+the grammar or source inventory. Record full-text and supplement coverage
+separately. For external references, audit a bounded sample of actual returned
+field hits and unresolved units/codes before requesting reviewed associations.
+The next deliverable is a reviewed, measurable curation batch; new calculations
+require a separately scoped scientific question and verified inputs.
 
 ## Versioned MDR SuperCon references
 

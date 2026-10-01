@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import { getMaterialExternalReferences } from "@/lib/api";
 import type { ExternalMaterialReferences as ReferenceReport } from "@/lib/api";
 import { scientificNumber } from "@/lib/result-semantics";
+import { useProviderAvailabilityPublisher } from "@/components/MaterialProviderAvailability";
+import { emptyProviderAvailability, mapMaterialProviderAvailability, MATERIAL_PROVIDER_ANCHORS } from "@/lib/material-provider-availability";
 
 const number = (value: number | null, unit = "") => value == null ? "—" : `${scientificNumber(value)}${unit ? ` ${unit}` : ""}`;
 
 export function ExternalMaterialReferences({ materialId }: { materialId: string }) {
+  const publishAvailability = useProviderAvailabilityPublisher(materialId, "MP");
   const [expansion, setExpansion] = useState({ materialId, expanded: false });
   const expanded = expansion.materialId === materialId && expansion.expanded;
   const [state, setState] = useState<{ materialId: string; report: ReferenceReport | null; failed: boolean }>({ materialId, report: null, failed: false });
@@ -16,16 +19,20 @@ export function ExternalMaterialReferences({ materialId }: { materialId: string 
   useEffect(() => {
     if (!expanded) return;
     const controller = new AbortController();
+    let settled = false;
     setState({ materialId, report: null, failed: false });
+    publishAvailability(emptyProviderAvailability("MP", "loading"));
     getMaterialExternalReferences(materialId, controller.signal).then(value => {
       if (controller.signal.aborted) return;
-      if (value.version !== "material-external-references/1.0.0" || value.scientific_acceptance !== false || value.sample_identity_established !== false || !Array.isArray(value.candidates)) throw new Error("Reference contract unavailable");
+      if (value.version !== "material-external-references/1.0.0" || value.scientific_acceptance !== false || value.sample_identity_established !== false || !Array.isArray(value.candidates) || value.candidates.length > 20 || !["available", "no_match", "not_applicable", "unavailable"].includes(value.status)) throw new Error("Reference contract unavailable");
+      settled = true;
       setState({ materialId, report: value, failed: false });
-    }).catch(() => { if (!controller.signal.aborted) setState({ materialId, report: null, failed: true }); });
-    return () => controller.abort();
-  }, [materialId, expanded]);
-  return <section className="space-y-3 border-t border-sage-border pt-6" aria-label="Calculated external references">
-    <details key={materialId} onToggle={event => { if (event.target === event.currentTarget) setExpansion({ materialId, expanded: event.currentTarget.open }); }}>
+      publishAvailability(mapMaterialProviderAvailability("MP", value));
+    }).catch(() => { if (!controller.signal.aborted) { settled = true; setState({ materialId, report: null, failed: true }); publishAvailability(emptyProviderAvailability("MP", "unavailable")); } });
+    return () => { controller.abort(); if (!settled) publishAvailability(null); };
+  }, [materialId, expanded, publishAvailability]);
+  return <section id={MATERIAL_PROVIDER_ANCHORS.MP} className="space-y-3 border-t border-sage-border pt-6" aria-label="Calculated external references">
+    <details key={materialId} open={expanded} onToggle={event => { if (event.target === event.currentTarget) setExpansion({ materialId, expanded: event.currentTarget.open }); }}>
       <summary className="cursor-pointer rounded-sm py-1 text-accent-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-deep"><span className="font-semibold">Materials Project calculated references</span><span className="ml-3 text-sm font-normal text-slate-600">{report?.status === "available" ? `${report.candidates.length} references` : "Inspect computed structures"}</span></summary>
       <div className="mt-3 space-y-3"><p className="max-w-3xl text-sm text-slate-600">Materials Project structures with the same fixed composition. Phase, sample and pressure correspondence require separate review.</p>
     {!report && !failed && <p className="text-sm text-slate-500" role="status">Loading calculated reference data…</p>}
