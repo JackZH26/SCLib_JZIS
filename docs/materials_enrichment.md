@@ -418,17 +418,26 @@ conversion or property promotion.
 
 ### Next measurable curation
 
-Review the three primary statements first, then stratify a first 40-item review
-batch from the 122 historical findings by missing-subject, nonmatching-subject,
-variable-composition and cited/conditional reasons. Annotate true subject,
-source role, stance, method and tested condition window, retaining rejected
-cases. Measure field-specific extraction precision and recall against those
-annotations, plus alias/state errors and reviewer disagreement; only then expand
-the grammar or source inventory. Record full-text and supplement coverage
-separately. For external references, audit a bounded sample of actual returned
-field hits and unresolved units/codes before requesting reviewed associations.
-The next deliverable is a reviewed, measurable curation batch; new calculations
-require a separately scoped scientific question and verified inputs.
+Review the two current primary candidates and the held multi-temperature
+statement before considering property promotion. A frozen extractor 1.0.0 /
+commit `4f548a5` AI-assisted source-scope audit has already sampled 40 of the 122
+historical findings across eight reason groups, nine materials and ten papers.
+It identifies 25 justified holds, 12 source-association opportunities and three
+missing-context cases; all remain unresolved. The opportunities include duplicate
+evidence and cannot be counted as accepted properties or independent experiments.
+The private audit lives under `/tmp/sclib-classification-review-20261002`.
+
+The next deliverable is a domain-reviewed, measurable curation batch using the
+current candidates and these association leads. Annotate true subject, source
+role, stance, method and tested condition window, retaining rejected cases.
+Measure field-specific extraction precision and recall against that independently
+annotated benchmark, plus alias/state errors and reviewer disagreement; the
+existing AI-assisted audit does not establish those scores or formal scientific
+review. Only then expand the grammar or source inventory. Record full-text and
+supplement coverage separately. For external references, audit a bounded sample
+of actual returned field hits and unresolved units/codes before requesting
+reviewed associations. New calculations require a separately scoped scientific
+question and verified inputs.
 
 ## Versioned MDR SuperCon references
 
