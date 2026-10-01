@@ -1,0 +1,4380 @@
+{
+  "version": "materials-source-followup/1.0.0",
+  "prepared_at_utc": "2026-10-01T23:24:05.010310+00:00",
+  "scope": "Finite original-source expression metadata; no retained property/sample/state association",
+  "planned_task_records": 29,
+  "planned_tasks_with_source_expressions": 26,
+  "planned_source_unavailable": 3,
+  "additional_pt_task_records": 5,
+  "total_records": 34,
+  "expression_metadata_records": 31,
+  "count_denominator": "Field-expression task records, not independent experiments or accepted material fields",
+  "manuscript_fulltext_or_private_context_in_public_target_metadata": false,
+  "entries": [
+    {
+      "id": "source-only-r2:ysc:calculation_method_and_origin_statement",
+      "source_group": "ysc",
+      "field": "calculation_method_and_origin_statement",
+      "value": {
+        "method_statement": "Particle swarm structure prediction combined with first-principles calculations",
+        "knowledge_origin": "Computed"
+      },
+      "source_subject": {
+        "source_formula_raw": "Cmmm-YScH10",
+        "study_system_raw": "YScH2n (n=3–6)",
+        "knowledge_origin": "Computed"
+      },
+      "source_window": {
+        "tc_expression_pressure": {
+          "raw_value": "140",
+          "value": 140.0,
+          "raw_unit": "GPa",
+          "unit": "GPa",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "tc_expression": {
+          "raw_value": "116",
+          "value": 116.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "stability_pressure_range_gpa": [
+          140,
+          250
+        ],
+        "stability_range_is_tc_window": false
+      },
+      "source_role": "source_reported_prediction_method",
+      "sources": [
+        {
+          "paper_id": "aps:10.1103/PhysRevB.109.054512",
+          "source_url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.054512",
+          "source_revision": "doi:10.1103/PhysRevB.109.054512",
+          "capture_sha256": "a86963c30969da82f4a18cf3bca44b7ebe46cc6ecef8e56be76996cf8b3e1bbe",
+          "content_sha256": "f89c25811a41caa92baab8416e4698bc2776ae08fa453eca48d9258a20904304",
+          "locator": {
+            "section": "block-5"
+          },
+          "kind": "original_abstract",
+          "source_revision_basis": "official_doi_capture",
+          "current_publication_status": "not_checked",
+          "permissions": "APS copyright; factual metadata/paraphrase only; no fulltext redistribution"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 390,
+              "char_end": 471,
+              "token_sha256": "1157e1ced1479d076d7aed8a2d3159b7bf378a7baa251a153601f922c530c13b",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:ysc:electron_phonon_lambda_source_value",
+      "source_group": "ysc",
+      "field": "electron_phonon_lambda_source_value",
+      "value": null,
+      "source_subject": {
+        "source_formula_raw": "Cmmm-YScH10",
+        "study_system_raw": "YScH2n (n=3–6)",
+        "knowledge_origin": "Computed"
+      },
+      "source_window": {
+        "structure_pressure_parameter_binding": "unestablished"
+      },
+      "source_role": "unresolved_numeric_source_setting",
+      "sources": [
+        {
+          "paper_id": "aps:10.1103/PhysRevB.109.054512",
+          "source_url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.054512",
+          "source_revision": "doi:10.1103/PhysRevB.109.054512",
+          "capture_sha256": "a86963c30969da82f4a18cf3bca44b7ebe46cc6ecef8e56be76996cf8b3e1bbe",
+          "content_sha256": "f89c25811a41caa92baab8416e4698bc2776ae08fa453eca48d9258a20904304",
+          "locator": {
+            "section": "block-5"
+          },
+          "kind": "original_abstract",
+          "source_revision_basis": "official_doi_capture",
+          "current_publication_status": "not_checked",
+          "permissions": "APS copyright; factual metadata/paraphrase only; no fulltext redistribution"
+        }
+      ],
+      "field_locators": [],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Public abstract has no numeric setting for this task; official PDF and supplemental requests returned HTTP401",
+        "No matching accessible author original was identified by bounded official searches; anonymous capture requests, not a universal access claim",
+        "Not a claim that the paper omits the quantity; no inference or new computation performed"
+      ],
+      "inspection_status": "source_unavailable",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:ysc:omega_log_source_value",
+      "source_group": "ysc",
+      "field": "omega_log_source_value",
+      "value": null,
+      "source_subject": {
+        "source_formula_raw": "Cmmm-YScH10",
+        "study_system_raw": "YScH2n (n=3–6)",
+        "knowledge_origin": "Computed"
+      },
+      "source_window": {
+        "structure_pressure_parameter_binding": "unestablished"
+      },
+      "source_role": "unresolved_numeric_source_setting",
+      "sources": [
+        {
+          "paper_id": "aps:10.1103/PhysRevB.109.054512",
+          "source_url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.054512",
+          "source_revision": "doi:10.1103/PhysRevB.109.054512",
+          "capture_sha256": "a86963c30969da82f4a18cf3bca44b7ebe46cc6ecef8e56be76996cf8b3e1bbe",
+          "content_sha256": "f89c25811a41caa92baab8416e4698bc2776ae08fa453eca48d9258a20904304",
+          "locator": {
+            "section": "block-5"
+          },
+          "kind": "original_abstract",
+          "source_revision_basis": "official_doi_capture",
+          "current_publication_status": "not_checked",
+          "permissions": "APS copyright; factual metadata/paraphrase only; no fulltext redistribution"
+        }
+      ],
+      "field_locators": [],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Public abstract has no numeric setting for this task; official PDF and supplemental requests returned HTTP401",
+        "No matching accessible author original was identified by bounded official searches; anonymous capture requests, not a universal access claim",
+        "Not a claim that the paper omits the quantity; no inference or new computation performed"
+      ],
+      "inspection_status": "source_unavailable",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:ysc:mu_star_source_parameter",
+      "source_group": "ysc",
+      "field": "mu_star_source_parameter",
+      "value": null,
+      "source_subject": {
+        "source_formula_raw": "Cmmm-YScH10",
+        "study_system_raw": "YScH2n (n=3–6)",
+        "knowledge_origin": "Computed"
+      },
+      "source_window": {
+        "structure_pressure_parameter_binding": "unestablished"
+      },
+      "source_role": "unresolved_numeric_source_setting",
+      "sources": [
+        {
+          "paper_id": "aps:10.1103/PhysRevB.109.054512",
+          "source_url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.054512",
+          "source_revision": "doi:10.1103/PhysRevB.109.054512",
+          "capture_sha256": "a86963c30969da82f4a18cf3bca44b7ebe46cc6ecef8e56be76996cf8b3e1bbe",
+          "content_sha256": "f89c25811a41caa92baab8416e4698bc2776ae08fa453eca48d9258a20904304",
+          "locator": {
+            "section": "block-5"
+          },
+          "kind": "original_abstract",
+          "source_revision_basis": "official_doi_capture",
+          "current_publication_status": "not_checked",
+          "permissions": "APS copyright; factual metadata/paraphrase only; no fulltext redistribution"
+        }
+      ],
+      "field_locators": [],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Public abstract has no numeric setting for this task; official PDF and supplemental requests returned HTTP401",
+        "No matching accessible author original was identified by bounded official searches; anonymous capture requests, not a universal access claim",
+        "Not a claim that the paper omits the quantity; no inference or new computation performed"
+      ],
+      "inspection_status": "source_unavailable",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:lasm:source_preparation_description",
+      "source_group": "lasm",
+      "field": "source_preparation_description",
+      "value": [
+        {
+          "source_row_id": "155190",
+          "preparation_raw": "solid state reaction",
+          "reference_code": "PRB091064510",
+          "publication_year_raw": "2015"
+        },
+        {
+          "source_row_id": "155423",
+          "preparation_raw": "solid state reaction. ANN(800C or 750 C) optimal condition",
+          "reference_code": "MAT1410.0061",
+          "publication_year_raw": "2014"
+        }
+      ],
+      "source_subject": {
+        "source_formula_raw": "La0.4Sm0.6Bi1S2F0.5O0.5",
+        "composition_kind": "database_declared_composition",
+        "row_correspondence_to_original_paper_sample": "unestablished"
+      },
+      "source_window": {
+        "source_rows_kept_separate": true
+      },
+      "source_role": "database_source_preparation_comment",
+      "sources": [
+        {
+          "capture_id": "mdr:240322:oxide_metallic:155190",
+          "kind": "original_licensed_table_row",
+          "source_url": "https://doi.org/10.48505/nims.4487",
+          "data_file_url": "https://mdr.nims.go.jp/filesets/2347b413-9c15-43b7-90e6-41fe9243b1a5/download",
+          "source_revision": "MDR240322",
+          "capture_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+          "content_sha256": "89101566929c01fc9a0d78e5b78d4dd1cbb0bc75ed93355db1431bdbde85e2ae",
+          "locator": {
+            "source_row_id": "155190",
+            "source_line": 30501,
+            "source_line_end": 30501
+          },
+          "license": "CC BY4.0",
+          "attribution": "NIMS MDR SuperCon, dataset240322; source fields projected/adapted here",
+          "current_publication_status": "not_checked"
+        },
+        {
+          "capture_id": "mdr:240322:oxide_metallic:155423",
+          "kind": "original_licensed_table_row",
+          "source_url": "https://doi.org/10.48505/nims.4487",
+          "data_file_url": "https://mdr.nims.go.jp/filesets/2347b413-9c15-43b7-90e6-41fe9243b1a5/download",
+          "source_revision": "MDR240322",
+          "capture_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+          "content_sha256": "dd94673bafe2b3d7612d8355deb00037d6c7240f07283370566499317ae2236f",
+          "locator": {
+            "source_row_id": "155423",
+            "source_line": 30719,
+            "source_line_end": 30719
+          },
+          "license": "CC BY4.0",
+          "attribution": "NIMS MDR SuperCon, dataset240322; source fields projected/adapted here",
+          "current_publication_status": "not_checked"
+        }
+      ],
+      "field_locators": [
+        {
+          "source_row_id": "155190",
+          "column": "prepcmt",
+          "raw_cell_sha256": "e7499daa4c91bbf2d25af75bf7247870ae03885189957a0d050e962320b6953f"
+        },
+        {
+          "source_row_id": "155423",
+          "column": "prepcmt",
+          "raw_cell_sha256": "2232d6c705afe221c1aeaab7e00125d3815251cf58c16a474df8066a39587169"
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Journal reference row155190 and preprint row155423 remain separate",
+        "prepcmt is not in the current66-column packaged projection"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:lasm:source_anneal_temperature_options",
+      "source_group": "lasm",
+      "field": "source_anneal_temperature_options",
+      "value": {
+        "mdr_row155423_options": [
+          {
+            "raw_value": "800",
+            "value": 800.0,
+            "raw_unit": "C",
+            "unit": "°C",
+            "approximate": false,
+            "raw_uncertainty": null,
+            "uncertainty": null,
+            "uncertainty_interpretation": "not_supplied_in_source_scope",
+            "uncertainty_normalization": null,
+            "parse_status": "reported"
+          },
+          {
+            "raw_value": "750",
+            "value": 750.0,
+            "raw_unit": "C",
+            "unit": "°C",
+            "approximate": false,
+            "raw_uncertainty": null,
+            "uncertainty": null,
+            "uncertainty_interpretation": "not_supplied_in_source_scope",
+            "uncertainty_normalization": null,
+            "parse_status": "reported"
+          }
+        ],
+        "mdr_option_relationship": "or",
+        "primary_series_statement": "For nominal x≥0.5, authors suggest optimum near750°C; temperature not assigned to an individual x=0.6 dataset",
+        "primary_series_recommendation": {
+          "raw_value": "750",
+          "value": 750.0,
+          "raw_unit": "°C",
+          "unit": "°C",
+          "approximate": true,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        }
+      },
+      "source_subject": {
+        "source_formula_raw": "La0.4Sm0.6Bi1S2F0.5O0.5",
+        "composition_kind": "database_declared_composition",
+        "row_correspondence_to_original_paper_sample": "unestablished"
+      },
+      "source_window": {
+        "annealing_duration": null,
+        "individual_source_row_temperature_assignment": "unestablished"
+      },
+      "source_role": "source_preparation_options_and_series_recommendation",
+      "sources": [
+        {
+          "capture_id": "mdr:240322:oxide_metallic:155423",
+          "kind": "original_licensed_table_row",
+          "source_url": "https://doi.org/10.48505/nims.4487",
+          "data_file_url": "https://mdr.nims.go.jp/filesets/2347b413-9c15-43b7-90e6-41fe9243b1a5/download",
+          "source_revision": "MDR240322",
+          "capture_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+          "content_sha256": "dd94673bafe2b3d7612d8355deb00037d6c7240f07283370566499317ae2236f",
+          "locator": {
+            "source_row_id": "155423",
+            "source_line": 30719,
+            "source_line_end": 30719
+          },
+          "license": "CC BY4.0",
+          "attribution": "NIMS MDR SuperCon, dataset240322; source fields projected/adapted here",
+          "current_publication_status": "not_checked"
+        },
+        {
+          "capture_id": "new-original:1410.0061:S3.p3.1",
+          "paper_id": "arxiv:1410.0061",
+          "kind": "original_html_passage",
+          "source_url": "https://arxiv.org/html/1410.0061",
+          "source_revision": "arxiv:1410.0061v1",
+          "source_revision_basis": "official_html_back_to_abstract_version_link",
+          "capture_sha256": "974d934c18cb30bc664226b89c2546b51adc8a3174c8f66a8a0fc6588da5638e",
+          "content_sha256": "c0675ebecfe6b7c60d7e358d16130f00145aede4a26271d4b297994eb1970a53",
+          "locator": {
+            "xml_xpath": "//*[@id='S3.p3.1']"
+          },
+          "captured_at_utc": "2026-10-01T23:09:47.400800+00:00",
+          "current_publication_status": "not_checked",
+          "permissions": "arXiv non-exclusive distribution license; factual metadata/paraphrase only; no full manuscript redistribution"
+        }
+      ],
+      "field_locators": [
+        {
+          "column": "prepcmt",
+          "source_row_id": "155423"
+        },
+        {
+          "original_normalized_selector_spans": [
+            {
+              "char_start": 126,
+              "char_end": 137,
+              "token_sha256": "db657e302afda1b7b0d286d3407626192d6877d84d9f79099214763aa4f0d0a9",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 2
+            },
+            {
+              "char_start": 266,
+              "char_end": 277,
+              "token_sha256": "db657e302afda1b7b0d286d3407626192d6877d84d9f79099214763aa4f0d0a9",
+              "occurrence": 2,
+              "token_occurrences_in_scope": 2
+            },
+            {
+              "char_start": 787,
+              "char_end": 798,
+              "token_sha256": "a4cf5c65bc80fa031026b26c3c8e04996adf61f741bbc06cb85564014e8cb89f",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 2
+            },
+            {
+              "char_start": 1089,
+              "char_end": 1100,
+              "token_sha256": "a4cf5c65bc80fa031026b26c3c8e04996adf61f741bbc06cb85564014e8cb89f",
+              "occurrence": 2,
+              "token_occurrences_in_scope": 2
+            },
+            {
+              "char_start": 937,
+              "char_end": 948,
+              "token_sha256": "008fd6beb4530cf530aefb80daa6ebcf1a1e82a65a62238507729c7a6fd6f834",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 1073,
+              "char_end": 1088,
+              "token_sha256": "f04f5da36797a35269e910670c21a9f1209c74f0220ecb68cc96e11297d039b6",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Do not choose one OR alternative or assign both temperatures to every row",
+        "A series recommendation is not a verified individual sample treatment"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:lasm:susceptibility_transition_definition",
+      "source_group": "lasm",
+      "field": "susceptibility_transition_definition",
+      "value": {
+        "dc_criterion": "ZFC/FC separation",
+        "ac_criterion": "Imaginary susceptibility drops below zero",
+        "mdr_tcsus_values": [
+          {
+            "row_id": "155190",
+            "quantity": {
+              "raw_value": "4.95",
+              "value": 4.95,
+              "raw_unit": "K",
+              "unit": "K",
+              "approximate": false,
+              "raw_uncertainty": null,
+              "uncertainty": null,
+              "uncertainty_interpretation": "not_supplied_in_source_scope",
+              "uncertainty_normalization": null,
+              "parse_status": "reported"
+            }
+          },
+          {
+            "row_id": "155423",
+            "quantity": {
+              "raw_value": "3.75",
+              "value": 3.75,
+              "raw_unit": "K",
+              "unit": "K",
+              "approximate": false,
+              "raw_uncertainty": null,
+              "uncertainty": null,
+              "uncertainty_interpretation": "not_supplied_in_source_scope",
+              "uncertainty_normalization": null,
+              "parse_status": "reported"
+            }
+          }
+        ],
+        "mdr_row_specific_dc_or_ac_assignment": "unestablished"
+      },
+      "source_subject": {
+        "source_formula_raw": "La0.4Sm0.6Bi1S2F0.5O0.5",
+        "composition_kind": "database_declared_composition",
+        "row_correspondence_to_original_paper_sample": "unestablished"
+      },
+      "source_window": {
+        "resistive_midpoint_is_susceptibility_criterion": false
+      },
+      "source_role": "source_method_definition_separate_database_values",
+      "sources": [
+        {
+          "capture_id": "new-original:1410.0061:S3.p5.1",
+          "paper_id": "arxiv:1410.0061",
+          "kind": "original_html_passage",
+          "source_url": "https://arxiv.org/html/1410.0061",
+          "source_revision": "arxiv:1410.0061v1",
+          "source_revision_basis": "official_html_back_to_abstract_version_link",
+          "capture_sha256": "974d934c18cb30bc664226b89c2546b51adc8a3174c8f66a8a0fc6588da5638e",
+          "content_sha256": "0f612d4b56cd12a84c76098349c8a16808da497f909c9519055d3d4d27ecca33",
+          "locator": {
+            "xml_xpath": "//*[@id='S3.p5.1']"
+          },
+          "captured_at_utc": "2026-10-01T23:09:47.400800+00:00",
+          "current_publication_status": "not_checked",
+          "permissions": "arXiv non-exclusive distribution license; factual metadata/paraphrase only; no full manuscript redistribution"
+        },
+        {
+          "capture_id": "mdr:240322:oxide_metallic:155190",
+          "kind": "original_licensed_table_row",
+          "source_url": "https://doi.org/10.48505/nims.4487",
+          "data_file_url": "https://mdr.nims.go.jp/filesets/2347b413-9c15-43b7-90e6-41fe9243b1a5/download",
+          "source_revision": "MDR240322",
+          "capture_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+          "content_sha256": "89101566929c01fc9a0d78e5b78d4dd1cbb0bc75ed93355db1431bdbde85e2ae",
+          "locator": {
+            "source_row_id": "155190",
+            "source_line": 30501,
+            "source_line_end": 30501
+          },
+          "license": "CC BY4.0",
+          "attribution": "NIMS MDR SuperCon, dataset240322; source fields projected/adapted here",
+          "current_publication_status": "not_checked"
+        },
+        {
+          "capture_id": "mdr:240322:oxide_metallic:155423",
+          "kind": "original_licensed_table_row",
+          "source_url": "https://doi.org/10.48505/nims.4487",
+          "data_file_url": "https://mdr.nims.go.jp/filesets/2347b413-9c15-43b7-90e6-41fe9243b1a5/download",
+          "source_revision": "MDR240322",
+          "capture_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+          "content_sha256": "dd94673bafe2b3d7612d8355deb00037d6c7240f07283370566499317ae2236f",
+          "locator": {
+            "source_row_id": "155423",
+            "source_line": 30719,
+            "source_line_end": 30719
+          },
+          "license": "CC BY4.0",
+          "attribution": "NIMS MDR SuperCon, dataset240322; source fields projected/adapted here",
+          "current_publication_status": "not_checked"
+        }
+      ],
+      "field_locators": [
+        {
+          "original_normalized_selector_spans": [
+            {
+              "char_start": 96,
+              "char_end": 120,
+              "token_sha256": "f6a72ab686ca193d6e1384cf8317164a40791e9026b0e1efa4f4be24bae3a8ac",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 145,
+              "char_end": 176,
+              "token_sha256": "5552eec7bd000ddcb8006b293644c323719f6ece5529a32f29524424bc553327",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "column": "tcsus",
+          "source_row_id": "155190"
+        },
+        {
+          "column": "tcsus",
+          "source_row_id": "155423"
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Do not merge the differing source rows or choose dc/ac for their values without local record correspondence"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:lasm:tc_applied_pressure_context",
+      "source_group": "lasm",
+      "field": "tc_applied_pressure_context",
+      "value": {
+        "source_sm_x_raw": "0.6 (within0.1,0.3,0.6,0.8 study)",
+        "pressure_extent_raw": "ambient pressure to≈2.6GPa",
+        "maximum_applied_pressure": {
+          "raw_value": "2.6",
+          "value": 2.6,
+          "raw_unit": "GPa",
+          "unit": "GPa",
+          "approximate": true,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "resistance_temperature_extent_k": [
+          2,
+          280
+        ],
+        "tc_criterion": "Resistivity50% of normal-state value",
+        "width_criterion_percent": [
+          90,
+          10
+        ],
+        "pressure_medium": "1:1 by volume n-pentane/isoamyl alcohol",
+        "pressure_calibration": "Tc(P) of high-purity Sn disk"
+      },
+      "source_subject": {
+        "source_formula_raw": "La1-xSmxO0.5F0.5BiS2",
+        "source_x": {
+          "raw_value": "0.6",
+          "value": 0.6,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "composition_kind": "nominal"
+      },
+      "source_window": {
+        "mdr_recommended_tc_pressure_binding": "unestablished",
+        "study_max_pressure_is_selected_tc_pressure": false
+      },
+      "source_role": "separate_source_pressure_experiment_context",
+      "sources": [
+        {
+          "capture_id": "new-original:1507.03172:S2.p1.1",
+          "paper_id": "arxiv:1507.03172",
+          "kind": "original_html_passage",
+          "source_url": "https://arxiv.org/html/1507.03172",
+          "source_revision": "arxiv:1507.03172v1",
+          "source_revision_basis": "official_html_back_to_abstract_version_link",
+          "capture_sha256": "060d006de30e31f6260f0f29855c1b86a18cbe0bb5e74adc2cfac8eb6c7fcdcb",
+          "content_sha256": "e235df7c6db135c866777e6ee6fa0c2e0019c8848739ebfddb07c47c20f06a25",
+          "locator": {
+            "xml_xpath": "//*[@id='S2.p1.1']"
+          },
+          "captured_at_utc": "2026-10-01T23:08:38.725213+00:00",
+          "current_publication_status": "not_checked",
+          "permissions": "arXiv non-exclusive distribution license; factual metadata/paraphrase only; no full manuscript redistribution"
+        },
+        {
+          "capture_id": "new-original:1507.03172:S3.p1.1",
+          "paper_id": "arxiv:1507.03172",
+          "kind": "original_html_passage",
+          "source_url": "https://arxiv.org/html/1507.03172",
+          "source_revision": "arxiv:1507.03172v1",
+          "source_revision_basis": "official_html_back_to_abstract_version_link",
+          "capture_sha256": "060d006de30e31f6260f0f29855c1b86a18cbe0bb5e74adc2cfac8eb6c7fcdcb",
+          "content_sha256": "5f9ab1f52a041e01282e39e28ed6c1e8baf7fac693a6c8c81b2eb9dcdd1c85f5",
+          "locator": {
+            "xml_xpath": "//*[@id='S3.p1.1']"
+          },
+          "captured_at_utc": "2026-10-01T23:08:38.725213+00:00",
+          "current_publication_status": "not_checked",
+          "permissions": "arXiv non-exclusive distribution license; factual metadata/paraphrase only; no full manuscript redistribution"
+        }
+      ],
+      "field_locators": [
+        {
+          "original_normalized_selector_spans": [
+            {
+              "char_start": 626,
+              "char_end": 674,
+              "token_sha256": "ec69b6cc843b10ddf4b321e049c980e968308a08cc5a00c25262f3a78b015b8c",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 563,
+              "char_end": 594,
+              "token_sha256": "e30e950b5cc0f34381c855bb01457494e1429f7d982829e121fd125633914510",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 683,
+              "char_end": 694,
+              "token_sha256": "effd3e873c9ea246a9bdedae3463c6c6ac3c3da07bbfe4711ccc5ea92a7b210f",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 841,
+              "char_end": 862,
+              "token_sha256": "a992ebc693b61d54ceb67560d110cf6ea6190b60fe21c967b74cd08793c88d4a",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "original_normalized_selector_spans": [
+            {
+              "char_start": 480,
+              "char_end": 483,
+              "token_sha256": "28fdae8deae31d6eafd18b70d878f6d8a3136f267ce273777c089a42ac590438",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 638,
+              "char_end": 641,
+              "token_sha256": "883caeb7ca1165a22441d8487203cc8aa9284ad7c0f5664c704f98ecb10849b4",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 646,
+              "char_end": 649,
+              "token_sha256": "3ccce1f4da948035fd36a399576a50a5248ddc02dd008f3c3668df57c0aa75b5",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 128,
+              "char_end": 147,
+              "token_sha256": "6c6a77d1d38e9aba6d73909fb535838dffbe67c18075b11e97db47dbdc2cd3c5",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "This is a separate pressure paper, not an inferred pressure for the MDR4.2K/4.21K record",
+        "Ambient expression not normalized to0GPa"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:lasm:meissner_measurement_method_and_conditions",
+      "source_group": "lasm",
+      "field": "meissner_measurement_method_and_conditions",
+      "value": {
+        "database_row155423_vols_raw": {
+          "raw_value": "80",
+          "value": 80.0,
+          "raw_unit": null,
+          "unit": "%",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported",
+          "unit_basis": "Official MDR guide column102 explicitly definespercent"
+        },
+        "database_raw_unit": null,
+        "database_column_semantics": "vols (database Meissner fraction label)",
+        "primary_report_context": "dc/ac volume and shielding fractions at2K; Fig5(e) describes shielding volume fraction",
+        "source_evaluation_temperature": {
+          "raw_value": "2",
+          "value": 2.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "dc_zfc_fc_field": {
+          "raw_value": "10",
+          "value": 10.0,
+          "raw_unit": "Oe",
+          "unit": "Oe",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "dc_instrument": "Quantum Design MPMS",
+        "ac_instrument": "Home-built coils/Linear Research LR700",
+        "source80_exact_dc_or_ac_curve_assignment": "unestablished"
+      },
+      "source_subject": {
+        "source_formula_raw": "La0.4Sm0.6Bi1S2F0.5O0.5",
+        "composition_kind": "database_declared_composition",
+        "row_correspondence_to_original_paper_sample": "unestablished"
+      },
+      "source_window": {
+        "source80_dataset_correspondence": "unestablished",
+        "paper_shielding_is_automatically_meissner": false
+      },
+      "source_role": "database_fraction_and_related_primary_method_context",
+      "sources": [
+        {
+          "capture_id": "mdr:240322:oxide_metallic:155423",
+          "kind": "original_licensed_table_row",
+          "source_url": "https://doi.org/10.48505/nims.4487",
+          "data_file_url": "https://mdr.nims.go.jp/filesets/2347b413-9c15-43b7-90e6-41fe9243b1a5/download",
+          "source_revision": "MDR240322",
+          "capture_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+          "content_sha256": "dd94673bafe2b3d7612d8355deb00037d6c7240f07283370566499317ae2236f",
+          "locator": {
+            "source_row_id": "155423",
+            "source_line": 30719,
+            "source_line_end": 30719
+          },
+          "license": "CC BY4.0",
+          "attribution": "NIMS MDR SuperCon, dataset240322; source fields projected/adapted here",
+          "current_publication_status": "not_checked"
+        },
+        {
+          "capture_id": "mdr-guide:4488:column102",
+          "kind": "official_dataset_field_guide",
+          "source_url": "https://doi.org/10.48505/nims.4488",
+          "data_file_url": "https://mdr.nims.go.jp/filesets/dd00e931-e7b7-4bc5-bde2-ba0ff1e9adaf/download",
+          "capture_sha256": "89096c1f006a5d5c256d14394880b31684ad2ce0b4f7ea0d37175256ea6a029d",
+          "content_sha256": "ba78b9915f72af1924ed2e14046bc5a5eb14f54a39b42241ffc45ab8455811c2",
+          "source_revision": "captured_sha256:89096c1f006a5d5c256d14394880b31684ad2ce0b4f7ea0d37175256ea6a029d",
+          "source_revision_basis": "official_guide_snapshot_hash",
+          "extracted_guide_sha256": "5a461471fe48ad26007aeb07359ae525e2ce85b9dd65c1cd87edf11754d9dcc6",
+          "locator": {
+            "column_number": 102,
+            "column": "vols",
+            "extracted_line": 306
+          },
+          "license": "CC BY4.0",
+          "attribution": "NIMS MDR SuperCon data guide",
+          "current_publication_status": "not_checked"
+        },
+        {
+          "capture_id": "new-original:1410.0061:S3.p5.1",
+          "paper_id": "arxiv:1410.0061",
+          "kind": "original_html_passage",
+          "source_url": "https://arxiv.org/html/1410.0061",
+          "source_revision": "arxiv:1410.0061v1",
+          "source_revision_basis": "official_html_back_to_abstract_version_link",
+          "capture_sha256": "974d934c18cb30bc664226b89c2546b51adc8a3174c8f66a8a0fc6588da5638e",
+          "content_sha256": "0f612d4b56cd12a84c76098349c8a16808da497f909c9519055d3d4d27ecca33",
+          "locator": {
+            "xml_xpath": "//*[@id='S3.p5.1']"
+          },
+          "captured_at_utc": "2026-10-01T23:09:47.400800+00:00",
+          "current_publication_status": "not_checked",
+          "permissions": "arXiv non-exclusive distribution license; factual metadata/paraphrase only; no full manuscript redistribution"
+        },
+        {
+          "capture_id": "new-original:1410.0061:S3.F5",
+          "paper_id": "arxiv:1410.0061",
+          "kind": "original_html_passage",
+          "source_url": "https://arxiv.org/html/1410.0061",
+          "source_revision": "arxiv:1410.0061v1",
+          "source_revision_basis": "official_html_back_to_abstract_version_link",
+          "capture_sha256": "974d934c18cb30bc664226b89c2546b51adc8a3174c8f66a8a0fc6588da5638e",
+          "content_sha256": "d133891ddbddf56648ba233f88f58bbd02d549c71765867a31034bbf20f49e31",
+          "locator": {
+            "xml_xpath": "//*[@id='S3.F5']"
+          },
+          "captured_at_utc": "2026-10-01T23:09:47.400800+00:00",
+          "current_publication_status": "not_checked",
+          "permissions": "arXiv non-exclusive distribution license; factual metadata/paraphrase only; no full manuscript redistribution"
+        },
+        {
+          "capture_id": "new-original:1410.0061:S2.p1.1",
+          "paper_id": "arxiv:1410.0061",
+          "kind": "original_html_passage",
+          "source_url": "https://arxiv.org/html/1410.0061",
+          "source_revision": "arxiv:1410.0061v1",
+          "source_revision_basis": "official_html_back_to_abstract_version_link",
+          "capture_sha256": "974d934c18cb30bc664226b89c2546b51adc8a3174c8f66a8a0fc6588da5638e",
+          "content_sha256": "519237eb669fa6258054e8cca04352f597616390c0b93deabd5ca12f80ea57b3",
+          "locator": {
+            "xml_xpath": "//*[@id='S2.p1.1']"
+          },
+          "captured_at_utc": "2026-10-01T23:09:47.400800+00:00",
+          "current_publication_status": "not_checked",
+          "permissions": "arXiv non-exclusive distribution license; factual metadata/paraphrase only; no full manuscript redistribution"
+        }
+      ],
+      "field_locators": [
+        {
+          "column": "vols",
+          "source_row_id": "155423"
+        },
+        {
+          "guide_column_number": 102,
+          "extracted_line": 306
+        },
+        {
+          "original_normalized_selector_spans": [
+            {
+              "char_start": 436,
+              "char_end": 442,
+              "token_sha256": "31422786e6aa2db15468b4d8ec656589552afeedd330ba23a4abe710467c346f",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 351,
+              "char_end": 388,
+              "token_sha256": "4a33de05ee527372a9d8c4432b7f579015de0978d7744cac56dbff4ed809b0a0",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "original_normalized_selector_spans": [
+            {
+              "char_start": 196,
+              "char_end": 201,
+              "token_sha256": "981f0b75010c60e9a26b73101c7b5d41edfc34068e1e1e8ea4912c20abd2d3c8",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 3
+            },
+            {
+              "char_start": 314,
+              "char_end": 319,
+              "token_sha256": "981f0b75010c60e9a26b73101c7b5d41edfc34068e1e1e8ea4912c20abd2d3c8",
+              "occurrence": 2,
+              "token_occurrences_in_scope": 3
+            },
+            {
+              "char_start": 379,
+              "char_end": 384,
+              "token_sha256": "981f0b75010c60e9a26b73101c7b5d41edfc34068e1e1e8ea4912c20abd2d3c8",
+              "occurrence": 3,
+              "token_occurrences_in_scope": 3
+            },
+            {
+              "char_start": 522,
+              "char_end": 547,
+              "token_sha256": "438f6db415a7e71f78d52965b84c9ef789ecddf0d1b49b95ff08aeaf207717b8",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 570,
+              "char_end": 593,
+              "token_sha256": "181a9a7474f193193a5a6b28efd5b238b876d65c11918469208b5a1bfbe276f4",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "original_normalized_selector_spans": [
+            {
+              "char_start": 701,
+              "char_end": 741,
+              "token_sha256": "12f2eefd7bc8615e25b9841dda80d115420f655ca66e083c28a04ea0163f3a11",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 927,
+              "char_end": 931,
+              "token_sha256": "ff66edb76d8006ce837de2620d769831151e0540109156cea0ab0bc8c3470fe1",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "80 is an existing database reference value; new information is method/condition context",
+        "The paper distinguishes shielding/volume; no automatic shielding-to-Meissner equivalence"
+      ],
+      "inspection_status": "source_expression_inspected_correspondence_unresolved",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:sn_in:source_composition_and_local_x_definition",
+      "source_group": "sn_in",
+      "field": "source_composition_and_local_x_definition",
+      "value": {
+        "source_formula_variable": "Sn1-xInxTe",
+        "local_x": {
+          "raw_value": "0.045",
+          "value": 0.045,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "composition_probe": "ICP-AES",
+        "interpreted_fixed_composition": "Sn0.955In0.045Te",
+        "interpretation_basis": "substitution of suppliedx in explicit source formula"
+      },
+      "source_subject": {
+        "source_formula_raw": "Sn1-xInxTe",
+        "source_local_x": {
+          "raw_value": "0.045",
+          "value": 0.045,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "composition_kind": "source concentration measured by ICP-AES; retained association unestablished"
+      },
+      "source_window": {},
+      "source_role": "source_local_composition_definition",
+      "sources": [
+        {
+          "paper_id": "arxiv:1208.0059",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/1208.0059v2",
+          "source_revision": "arxiv:1208.0059v2",
+          "capture_sha256": "95210662ed6f561577749a352f565d9dd2dffa6916d1b0ca45b3cd5dc288d269",
+          "content_sha256": "3847e6f09165cd0370e856584ba2fe258c00b1f612f242dc0d096b64d3e4f556",
+          "locator": {
+            "xml_xpath": "//*[@id='p3.1']"
+          },
+          "capture_id": "primary:arxiv:1208.0059:3",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='p3.1']"
+          },
+          "original_selector_text_sha256": "3db66f8d09d76400c8f94bb338752dcac8be1ef380e1cb9b70a8418cbb200fe0",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        },
+        {
+          "paper_id": "arxiv:1208.0059",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/1208.0059v2",
+          "source_revision": "arxiv:1208.0059v2",
+          "capture_sha256": "95210662ed6f561577749a352f565d9dd2dffa6916d1b0ca45b3cd5dc288d269",
+          "content_sha256": "c0d21f12117e682f82c844ec3f0b3edcf985f7e93d503ba2f1d8f4754b2051a5",
+          "locator": {
+            "xml_xpath": "//*[@id='p4.1']"
+          },
+          "capture_id": "primary:arxiv:1208.0059:5",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='p4.1']"
+          },
+          "original_selector_text_sha256": "33476362f39045bc5819cd30203631ce971b3cb8fb1be5c5b4c4c3c647af26a0",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 534,
+              "char_end": 568,
+              "token_sha256": "d334e7f7e8e58c39574b5e0027f414635746af5a1a1fa762528214f58c96a247",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 330,
+              "char_end": 395,
+              "token_sha256": "50d9da3c9521f3c7158cec1af336773413cb23622c73af1dbd87a8a9f6a428b4",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Other x values and Pb/Tl comparison samples are not inherited"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:sn_in:hall_carrier_density_and_conditions",
+      "source_group": "sn_in",
+      "field": "hall_carrier_density_and_conditions",
+      "value": {
+        "carrier_density_raw": {
+          "raw_value": "8 × 10²⁰",
+          "value": 8e+20,
+          "raw_unit": "cm⁻³",
+          "unit": "cm⁻³",
+          "uncertainty": null,
+          "raw_display_basis": "Original HTML superscript nodesS0.F1.8/S0.F1.9; normalized capture text flattenssuperscripts"
+        },
+        "method": "Carrier density inferred from B-linear Hall-resistivity slope",
+        "geometry": "Six-probe Hall bar; same crystal as resistivity",
+        "carrier_sign_context": "p-type source",
+        "hall_measurement_temperature": null
+      },
+      "source_subject": {
+        "source_formula_raw": "Sn1-xInxTe",
+        "source_local_x": {
+          "raw_value": "0.045",
+          "value": 0.045,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "composition_kind": "source concentration measured by ICP-AES; retained association unestablished"
+      },
+      "source_window": {
+        "hall_density_temperature_status": "not_supplied_in_inspected_text_or_caption",
+        "equipment_temperature_limit_is_hall_temperature": false
+      },
+      "source_role": "source_hall_derived_carrier_density",
+      "sources": [
+        {
+          "paper_id": "arxiv:1208.0059",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/1208.0059v2",
+          "source_revision": "arxiv:1208.0059v2",
+          "capture_sha256": "95210662ed6f561577749a352f565d9dd2dffa6916d1b0ca45b3cd5dc288d269",
+          "content_sha256": "ede76a4f9cc968fac975dff43e8d140fe11918a7abb14c07333300b65f86641e",
+          "locator": {
+            "section": "block-4"
+          },
+          "capture_id": "primary:arxiv:1208.0059:4",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S0.F1']"
+          },
+          "original_selector_text_sha256": "66fba53ef4cef2bc0ff9a381d30e358624aa9755829e2d5dc89ea2f706eab3f3",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        },
+        {
+          "paper_id": "arxiv:1208.0059",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/1208.0059v2",
+          "source_revision": "arxiv:1208.0059v2",
+          "capture_sha256": "95210662ed6f561577749a352f565d9dd2dffa6916d1b0ca45b3cd5dc288d269",
+          "content_sha256": "c0d21f12117e682f82c844ec3f0b3edcf985f7e93d503ba2f1d8f4754b2051a5",
+          "locator": {
+            "xml_xpath": "//*[@id='p4.1']"
+          },
+          "capture_id": "primary:arxiv:1208.0059:5",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='p4.1']"
+          },
+          "original_selector_text_sha256": "33476362f39045bc5819cd30203631ce971b3cb8fb1be5c5b4c4c3c647af26a0",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 1054,
+              "char_end": 1072,
+              "token_sha256": "a25ae242df8804167964e294137244aaf628673701fe3838fe5ae8dccc05eecf",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 648,
+              "char_end": 666,
+              "token_sha256": "d900430337461abd26dd24e64baccf5ec523562f260e4ad36cf7bbb6969158c5",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ],
+          "original_html_superscript_checks": [
+            {
+              "xml_xpath": "//*[@id='S0.F1.8']",
+              "text_sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+              "role": "carrier_density_power_of10"
+            },
+            {
+              "xml_xpath": "//*[@id='S0.F1.9']",
+              "text_sha256": "615bdd17c2556f82f384392ea8557f8cc88b03501c759e23093ab0b2a9b5cd48",
+              "role": "carrier_density_unit_power"
+            }
+          ]
+        },
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 628,
+              "char_end": 689,
+              "token_sha256": "ef49499abec728381e7dabf5a1e4082ae37fa36f5b5c56d345167f0f1a25577c",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "0.37K is the equipment lower bound/Hc2 condition; it is not assigned to the Hall density"
+      ],
+      "inspection_status": "source_expression_inspected_condition_unresolved",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:sn_in:sample_measurement_context",
+      "source_group": "sn_in",
+      "field": "sample_measurement_context",
+      "value": {
+        "sample_form": "Single crystal",
+        "growth": "Vapor transport",
+        "surface_plane": "(001)",
+        "spectroscopy": "Soft point-contact conductance/lock-in technique",
+        "ac_excitation": {
+          "raw_value": "1.35",
+          "value": 1.35,
+          "raw_unit": "µA rms",
+          "unit": "µA rms",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "hc2_source_value": {
+          "raw_value": "0.3",
+          "value": 0.3,
+          "raw_unit": "T",
+          "unit": "T",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "hc2_temperature": {
+          "raw_value": "0.37",
+          "value": 0.37,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "hc2_criterion": "Sharp resistivity onset"
+      },
+      "source_subject": {
+        "source_formula_raw": "Sn1-xInxTe",
+        "source_local_x": {
+          "raw_value": "0.045",
+          "value": 0.045,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "composition_kind": "source concentration measured by ICP-AES; retained association unestablished"
+      },
+      "source_window": {
+        "pressure": null,
+        "pressure_status": "not_supplied_in_inspected_source_scope",
+        "hc2_condition_is_all_source_properties_condition": false
+      },
+      "source_role": "source_sample_and_probe_metadata",
+      "sources": [
+        {
+          "paper_id": "arxiv:1208.0059",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/1208.0059v2",
+          "source_revision": "arxiv:1208.0059v2",
+          "capture_sha256": "95210662ed6f561577749a352f565d9dd2dffa6916d1b0ca45b3cd5dc288d269",
+          "content_sha256": "be3e83dccfd921b06380dbb229dbfbfd16cfc09f8d4ba026aef3d19b4c488c38",
+          "locator": {
+            "xml_xpath": "//*[@id='p5.1']"
+          },
+          "capture_id": "primary:arxiv:1208.0059:6",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='p5.1']"
+          },
+          "original_selector_text_sha256": "f714e0faac845b5a323ade31c56341557ff6a9d3d9ebce5d5335cd6e4667d3a9",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        },
+        {
+          "paper_id": "arxiv:1208.0059",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/1208.0059v2",
+          "source_revision": "arxiv:1208.0059v2",
+          "capture_sha256": "95210662ed6f561577749a352f565d9dd2dffa6916d1b0ca45b3cd5dc288d269",
+          "content_sha256": "c0d21f12117e682f82c844ec3f0b3edcf985f7e93d503ba2f1d8f4754b2051a5",
+          "locator": {
+            "xml_xpath": "//*[@id='p4.1']"
+          },
+          "capture_id": "primary:arxiv:1208.0059:5",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='p4.1']"
+          },
+          "original_selector_text_sha256": "33476362f39045bc5819cd30203631ce971b3cb8fb1be5c5b4c4c3c647af26a0",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 171,
+              "char_end": 199,
+              "token_sha256": "d328fe13e3b9ea9b305cf59e8b307aa5d04425a8c26cc898fbcf35f53cf1bde2",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 53,
+              "char_end": 58,
+              "token_sha256": "3ee6d7be3d1b1b27582724883c27aad3f089c47655b160a96e6a8d898b00a56b",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 652,
+              "char_end": 667,
+              "token_sha256": "93b517437253946ff9f5f3c17205468474cc115677079eaa1b9ecd5b3bc96d94",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 167,
+              "char_end": 189,
+              "token_sha256": "304347651785926b56af4484e73e637c5b8e18ed8248c59ad4c20e4b5e8bea6f",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 892,
+              "char_end": 907,
+              "token_sha256": "eb78f522bc0b0d0f1b94e38a2a258ae12a4964e0087ce684772ef32ae3c23600",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:sn_in:reported_gap_or_pairing_source_claim",
+      "source_group": "sn_in",
+      "field": "reported_gap_or_pairing_source_claim",
+      "value": {
+        "spectroscopic_dip_energy_scale": {
+          "raw_value": "0.1",
+          "value": 0.1,
+          "raw_unit": "meV",
+          "unit": "meV",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "dip_positions_raw": "±0.1meV",
+        "gap_role": "Author associates side dips with superconducting-gap energy scale, not a full gap fit",
+        "pairing_claim": "Odd parity supported by surface-bound-state interpretation and theory",
+        "full_pairing_type_determination": "Explicitly beyond scope"
+      },
+      "source_subject": {
+        "source_formula_raw": "Sn1-xInxTe",
+        "source_local_x": {
+          "raw_value": "0.045",
+          "value": 0.045,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "composition_kind": "source concentration measured by ICP-AES; retained association unestablished"
+      },
+      "source_window": {
+        "pressure": null,
+        "pressure_status": "not_supplied_in_inspected_source_scope"
+      },
+      "source_role": "source_probe_interpretation_and_theoretical_pairing_claim",
+      "sources": [
+        {
+          "paper_id": "arxiv:1208.0059",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/1208.0059v2",
+          "source_revision": "arxiv:1208.0059v2",
+          "capture_sha256": "95210662ed6f561577749a352f565d9dd2dffa6916d1b0ca45b3cd5dc288d269",
+          "content_sha256": "408a1759d27ea2a2b5ae9fb828264f38a2fca7705cb71a6318fd582a5cf27fc3",
+          "locator": {
+            "xml_xpath": "//*[@id='p6.1']"
+          },
+          "capture_id": "primary:arxiv:1208.0059:8",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='p6.1']"
+          },
+          "original_selector_text_sha256": "a5d058c5d3f949ddc65733caca927b321cf54cb6a6e2ec2c714d506b2b6e12a1",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        },
+        {
+          "paper_id": "arxiv:1208.0059",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/1208.0059v2",
+          "source_revision": "arxiv:1208.0059v2",
+          "capture_sha256": "95210662ed6f561577749a352f565d9dd2dffa6916d1b0ca45b3cd5dc288d269",
+          "content_sha256": "02fabb5b43b5a9ed54e5913d7773cdb9c966c9b271534986e51ff63d0a90b894",
+          "locator": {
+            "xml_xpath": "//*[@id='p13.1']"
+          },
+          "capture_id": "primary:arxiv:1208.0059:17",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='p13.1']"
+          },
+          "original_selector_text_sha256": "22f631286d011f7d840617f5f60cd654f89ca181da37c66c07b4b9ad00f024a3",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 359,
+              "char_end": 371,
+              "token_sha256": "54de5324a37294e9f2a2097897e5f4b3de7144358bd7e49b77ac3451f7cd034b",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 69,
+              "char_end": 85,
+              "token_sha256": "fe2ac7401a0fbefcd63af7a5f7b03257d1207d062b9115607126a015cf2111ed",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 534,
+              "char_end": 556,
+              "token_sha256": "cc6e26c65817ecab989995a87a4fa77c6908c6a09089e8588fe2784cd1e9f6b2",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 558,
+              "char_end": 575,
+              "token_sha256": "59a4e43ed44373f04d6221507559d9ad560c3bb3fbc1b5baa6e7c2b0529accf4",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Neither odd-parity claim nor dip scale establishes accepted gap symmetry or a fitted gap parameter"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:sr_ni:source_local_Ni_composition_definition",
+      "source_group": "sr_ni",
+      "field": "source_local_Ni_composition_definition",
+      "value": {
+        "source_formula_variable": "SrFe2-xNixAs2",
+        "local_nominal_x": {
+          "raw_value": "0.16",
+          "value": 0.16,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "interpreted_formula": "SrFe1.84Ni0.16As2",
+        "actual_vs_nominal_statement": "Authors report close agreement; no individual refined x uncertainty supplied"
+      },
+      "source_subject": {
+        "source_formula_raw": "SrFe2-xNixAs2",
+        "source_local_x": {
+          "raw_value": "0.16",
+          "value": 0.16,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "interpreted_fixed_composition": "SrFe1.84Ni0.16As2",
+        "composition_kind": "source nominal x"
+      },
+      "source_window": {},
+      "source_role": "source_local_nominal_composition",
+      "sources": [
+        {
+          "paper_id": "arxiv:0911.2925",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0911.2925v2",
+          "source_revision": "arxiv:0911.2925v2",
+          "capture_sha256": "c6e1b018da37393e83e2cf6599d1f29d3c5025b771b1f0bc479cd2e65f9d8f7f",
+          "content_sha256": "583b5c97aaba0cfb3cc4c7b90fbaecb99f4abac5df6be4e8853c98a93d05de6b",
+          "locator": {
+            "xml_xpath": "//*[@id='S4.p1.1']"
+          },
+          "capture_id": "primary:arxiv:0911.2925:13",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S4.p1.1']"
+          },
+          "original_selector_text_sha256": "2fc1fb34a2fe1c77a6c0f88b286868b7551df47be029757f83043f833a7afa63",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        },
+        {
+          "paper_id": "arxiv:0911.2925",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0911.2925v2",
+          "source_revision": "arxiv:0911.2925v2",
+          "capture_sha256": "c6e1b018da37393e83e2cf6599d1f29d3c5025b771b1f0bc479cd2e65f9d8f7f",
+          "content_sha256": "1a1f4003dbcc47486e7a134fbe9e9b64767f3e4909d9451d9b95b91d4bfb4745",
+          "locator": {
+            "xml_xpath": "//*[@id='S2.p1.1']"
+          },
+          "capture_id": "primary:arxiv:0911.2925:6",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S2.p1.1']"
+          },
+          "original_selector_text_sha256": "a5a82f89e6db96fd545341ec7d290c0efcac7b6ba97d7cd8bbce4c12eeb75e15",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 155,
+              "char_end": 174,
+              "token_sha256": "f24e84a56165c0140c76784d04b6fb05ed4e699e34dbcfaa934cbad673dc4069",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 177,
+              "char_end": 251,
+              "token_sha256": "e1c380329f7b49b418423fc0f3d0ee18ef7844639ed9034d2e913d307d0b5363",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:sr_ni:source_transition_criterion",
+      "source_group": "sr_ni",
+      "field": "source_transition_criterion",
+      "value": {
+        "hc2_curve_definition": "R(T)50% of normal-state value",
+        "fraction": {
+          "raw_value": "0.5",
+          "value": 0.5,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        }
+      },
+      "source_subject": {
+        "source_formula_raw": "SrFe2-xNixAs2",
+        "source_local_x": {
+          "raw_value": "0.16",
+          "value": 0.16,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "interpreted_fixed_composition": "SrFe1.84Ni0.16As2",
+        "composition_kind": "source nominal x"
+      },
+      "source_window": {
+        "field_direction_raw": "parallel to c"
+      },
+      "source_role": "source_curve_definition",
+      "sources": [
+        {
+          "paper_id": "arxiv:0911.2925",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0911.2925v2",
+          "source_revision": "arxiv:0911.2925v2",
+          "capture_sha256": "c6e1b018da37393e83e2cf6599d1f29d3c5025b771b1f0bc479cd2e65f9d8f7f",
+          "content_sha256": "4806c8307cc3df2aa2e40890cfae82597ab0c097450e405d39056bcbf856a60e",
+          "locator": {
+            "xml_xpath": "//*[@id='S4.p2.1']"
+          },
+          "capture_id": "primary:arxiv:0911.2925:15",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S4.p2.1']"
+          },
+          "original_selector_text_sha256": "d2102ff4cd0cbb5558a899e97d0f402ccc94bbd983fffff8616f289ebaf36153",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 203,
+              "char_end": 247,
+              "token_sha256": "f795c91b958aea9a0f542d36c53395e80e18413622eda52750d7b8183b2bad83",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 61,
+              "char_end": 83,
+              "token_sha256": "201192142f82409cdc51b52c10c63a2aaa5ab3e262c02c0351b3be7a6dcfc510",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "A definition of the Hc2-derived transition curve is not every Tc criterion in the series"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:sr_ni:hc2_curve_slope_and_model",
+      "source_group": "sr_ni",
+      "field": "hc2_curve_slope_and_model",
+      "value": {
+        "hc2_slope": {
+          "raw_value": "-2.9",
+          "value": -2.9,
+          "raw_unit": "T/K",
+          "unit": "T/K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "linear_extrapolated_hc2_zero_k": {
+          "raw_value": "25",
+          "value": 25.0,
+          "raw_unit": "T",
+          "unit": "T",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "model": "Linear extrapolation of fitted Hc2(T) slope to0K",
+        "authors_whh_limitation": "Authors argue conventional WHH estimate underestimates their extrapolation",
+        "slope_numeric_fit_temperature_range": null
+      },
+      "source_subject": {
+        "source_formula_raw": "SrFe2-xNixAs2",
+        "source_local_x": {
+          "raw_value": "0.16",
+          "value": 0.16,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "interpreted_fixed_composition": "SrFe1.84Ni0.16As2",
+        "composition_kind": "source nominal x"
+      },
+      "source_window": {
+        "field_direction_raw": "H parallel c",
+        "hc2_criterion": "Resistivity50% normal state",
+        "zero_temperature_role": "extrapolated"
+      },
+      "source_role": "source_curve_derived_slope_and_model_extrapolation",
+      "sources": [
+        {
+          "paper_id": "arxiv:0911.2925",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0911.2925v2",
+          "source_revision": "arxiv:0911.2925v2",
+          "capture_sha256": "c6e1b018da37393e83e2cf6599d1f29d3c5025b771b1f0bc479cd2e65f9d8f7f",
+          "content_sha256": "4806c8307cc3df2aa2e40890cfae82597ab0c097450e405d39056bcbf856a60e",
+          "locator": {
+            "xml_xpath": "//*[@id='S4.p2.1']"
+          },
+          "capture_id": "primary:arxiv:0911.2925:15",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S4.p2.1']"
+          },
+          "original_selector_text_sha256": "d2102ff4cd0cbb5558a899e97d0f402ccc94bbd983fffff8616f289ebaf36153",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        },
+        {
+          "paper_id": "arxiv:0911.2925",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0911.2925v2",
+          "source_revision": "arxiv:0911.2925v2",
+          "capture_sha256": "c6e1b018da37393e83e2cf6599d1f29d3c5025b771b1f0bc479cd2e65f9d8f7f",
+          "content_sha256": "1bf45c3ab9034e8223671d22a006ae0a4766b125114c850e2bee8376e2e5d415",
+          "locator": {
+            "xml_xpath": "//*[@id='S4.p4.1']"
+          },
+          "capture_id": "primary:arxiv:0911.2925:18",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S4.p4.1']"
+          },
+          "original_selector_text_sha256": "9eff3503faba6d418ca58967d4127690fe4d59bebaac0d1977e55dcc02c41529",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        },
+        {
+          "paper_id": "arxiv:0911.2925",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0911.2925v2",
+          "source_revision": "arxiv:0911.2925v2",
+          "capture_sha256": "c6e1b018da37393e83e2cf6599d1f29d3c5025b771b1f0bc479cd2e65f9d8f7f",
+          "content_sha256": "6774e18ec52f589a22eebc6f1d5108d5ac4456f993872633d2eea6f62482927b",
+          "locator": {
+            "xml_xpath": "//*[@id='S4.p3.1']"
+          },
+          "capture_id": "primary:arxiv:0911.2925:17",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S4.p3.1']"
+          },
+          "original_selector_text_sha256": "3a710e1d06a556c4e26af023cfc5d3546a3120c616682913042d4f1c54c39cae",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 524,
+              "char_end": 543,
+              "token_sha256": "7a3971d0783e45860eaed8a56417f5884d73722a0b58a847d2ecc4a2dcba81b5",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 88,
+              "char_end": 103,
+              "token_sha256": "68cb731198a0ed95addbaaf84fb251464910b9fe78753e19d25b85287fda6453",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 529,
+              "char_end": 542,
+              "token_sha256": "177689b6922e89623a7ba4bb5ab9b1f2424a90b158ba2ac712ec5a2fa9b770f5",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "25T is not a directly measured0K critical field",
+        "Do not use the source x=.12/.22 slopes or H perpendicular c curves"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:sr_ni:sample_anneal_conditions",
+      "source_group": "sr_ni",
+      "field": "sample_anneal_conditions",
+      "value": {
+        "present_study_statement": "Single crystals synthesized in excessFeAs and annealed in inert atmosphere",
+        "cited_source_series_protocol": {
+          "temperature": {
+            "raw_value": "700",
+            "value": 700.0,
+            "raw_unit": "°C",
+            "unit": "°C",
+            "approximate": false,
+            "raw_uncertainty": null,
+            "uncertainty": null,
+            "uncertainty_interpretation": "not_supplied_in_source_scope",
+            "uncertainty_normalization": null,
+            "parse_status": "reported"
+          },
+          "duration": {
+            "raw_value": "24",
+            "value": 24.0,
+            "raw_unit": "hours",
+            "unit": "hours",
+            "approximate": false,
+            "raw_uncertainty": null,
+            "uncertainty": null,
+            "uncertainty_interpretation": "not_supplied_in_source_scope",
+            "uncertainty_normalization": null,
+            "parse_status": "reported"
+          },
+          "atmosphere": "Ar"
+        },
+        "cited_illustration_source_formula": "SrFe1.85Ni0.15As2",
+        "protocol_to_x016_specific_sample": "unestablished"
+      },
+      "source_subject": {
+        "source_formula_raw": "SrFe2-xNixAs2",
+        "source_local_x": {
+          "raw_value": "0.16",
+          "value": 0.16,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "interpreted_fixed_composition": "SrFe1.84Ni0.16As2",
+        "composition_kind": "source nominal x"
+      },
+      "source_window": {
+        "specific_x016_anneal_temperature_and_duration": "not_established_by_source_link"
+      },
+      "source_role": "source_series_protocol_separate_from_individual_sample",
+      "sources": [
+        {
+          "paper_id": "arxiv:0911.2925",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0911.2925v2",
+          "source_revision": "arxiv:0911.2925v2",
+          "capture_sha256": "c6e1b018da37393e83e2cf6599d1f29d3c5025b771b1f0bc479cd2e65f9d8f7f",
+          "content_sha256": "1a1f4003dbcc47486e7a134fbe9e9b64767f3e4909d9451d9b95b91d4bfb4745",
+          "locator": {
+            "xml_xpath": "//*[@id='S2.p1.1']"
+          },
+          "capture_id": "primary:arxiv:0911.2925:6",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S2.p1.1']"
+          },
+          "original_selector_text_sha256": "a5a82f89e6db96fd545341ec7d290c0efcac7b6ba97d7cd8bbce4c12eeb75e15",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        },
+        {
+          "capture_id": "new-original:0905.0859:S3.SS6.p1.1",
+          "paper_id": "arxiv:0905.0859",
+          "kind": "original_html_passage",
+          "source_url": "https://arxiv.org/html/0905.0859",
+          "source_revision": "arxiv:0905.0859v2",
+          "source_revision_basis": "official_html_back_to_abstract_version_link",
+          "capture_sha256": "31ec79125ba826f9a9e1566042ab7ea7051034c1cbb7009343bf9e1b527bf1ab",
+          "content_sha256": "4a004d3f8d79a633b9cd01b0714e074cef684ed728a75e893c341f294a9dd13c",
+          "locator": {
+            "xml_xpath": "//*[@id='S3.SS6.p1.1']"
+          },
+          "captured_at_utc": "2026-10-01T23:12:03.611591+00:00",
+          "current_publication_status": "not_checked",
+          "permissions": "arXiv non-exclusive distribution license; factual metadata/paraphrase only; no full manuscript redistribution"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 71,
+              "char_end": 99,
+              "token_sha256": "46239e8de0f3078a485fd5de4385c28485466596826a3507a7128624a4b16ba9",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "original_normalized_selector_spans": [
+            {
+              "char_start": 268,
+              "char_end": 271,
+              "token_sha256": "99ee50221221864d50c60baea6f14d8ac2e235cc6e78be6088cd40cc97fca394",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 278,
+              "char_end": 286,
+              "token_sha256": "f0514e8df84107f48f494271bdb02c616740729edfcfbc10fda4d5bad173a777",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 293,
+              "char_end": 306,
+              "token_sha256": "d352f74b34cf33877f483f5b52df0b08e20db88166f0b2f1a828e5e1eb50ecfd",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 435,
+              "char_end": 452,
+              "token_sha256": "9078c848a777038cd22b9f858e6ae26eebbac9c7c2fa5a9491c5c29dad695487",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "The cited protocol is not automatically an individual x=.16 treatment",
+        "Adjacent x=.15 data do not become x=.16 results"
+      ],
+      "inspection_status": "source_expression_inspected_correspondence_unresolved",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:bapb:source_local_composition_definition",
+      "source_group": "bapb",
+      "field": "source_local_composition_definition",
+      "value": {
+        "source_local_x": {
+          "raw_value": "0.28",
+          "value": 0.28,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        },
+        "composition_probe": "Electron microprobe",
+        "reported_concentration_uncertainty_raw": "±0.02",
+        "reported_concentration_uncertainty": 0.02,
+        "uncertainty_statistical_interpretation": "not_supplied",
+        "source_tc": {
+          "raw_value": "7",
+          "value": 7.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "tc_criterion": null
+      },
+      "source_subject": {
+        "source_formula_raw": "BaPb0.72Bi0.28O3",
+        "variable_formula_raw": "BaPb1-xBixO3",
+        "source_local_x": {
+          "raw_value": "0.28",
+          "value": 0.28,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        }
+      },
+      "source_window": {
+        "source_tc_criterion_status": "not_supplied_in_inspected_passages"
+      },
+      "source_role": "source_local_composition_and_probe_statement",
+      "sources": [
+        {
+          "capture_id": "new-original-pdf:1706.06999:p4",
+          "paper_id": "arxiv:1706.06999",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/1706.06999",
+          "source_revision": "captured_sha256:995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "content_sha256": "97a7da0615779631322a97e390e8c5768b9ea586626f946d407a985581ba9ce0",
+          "locator": {
+            "pdf_page": 4,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "57de32bbace587e53f57218d75e9b4cf9b2b81dcbfd3762339a3a8288e09b191",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:03.330380+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        },
+        {
+          "capture_id": "new-original-pdf:1706.06999:p5",
+          "paper_id": "arxiv:1706.06999",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/1706.06999",
+          "source_revision": "captured_sha256:995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "content_sha256": "ad31cac699a5a36e16a7867dd67c417f71e8ef40b560ed2d5b27eacba8a7de8c",
+          "locator": {
+            "pdf_page": 5,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "57de32bbace587e53f57218d75e9b4cf9b2b81dcbfd3762339a3a8288e09b191",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:03.330380+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 1781,
+              "char_end": 1800,
+              "token_sha256": "d8e74d028d6be4bec3d0123240a542600197c6e11e5d78f9dad5f040915899bf",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 189,
+              "char_end": 221,
+              "token_sha256": "6a78e28b3a1d1762be301c988ef981ca99ba31b4f569b64cc3f644dfe3f420f2",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 268,
+              "char_end": 288,
+              "token_sha256": "f0665ce80107cd2b50752fdab517d5329234e83e7872940181cbe0ada58d979b",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:bapb:reported_short_range_order_claim",
+      "source_group": "bapb",
+      "field": "reported_short_range_order_claim",
+      "value": {
+        "reported_order": "Short-range CDW correlations",
+        "stance": "Authors optical inference; presumptive association",
+        "observed_proxy": "Transient terahertz conductivity response/gap-like behavior aboveTc",
+        "interpreted_crossover_temperature": {
+          "raw_value": "40",
+          "value": 40.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": true,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        }
+      },
+      "source_subject": {
+        "source_formula_raw": "BaPb0.72Bi0.28O3",
+        "variable_formula_raw": "BaPb1-xBixO3",
+        "source_local_x": {
+          "raw_value": "0.28",
+          "value": 0.28,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        }
+      },
+      "source_window": {
+        "window_raw": "Immediately aboveTc up to T≈40K; qualitatively different response above≈40K"
+      },
+      "source_role": "source_optical_interpretation_claim",
+      "sources": [
+        {
+          "capture_id": "new-original-pdf:1706.06999:p1",
+          "paper_id": "arxiv:1706.06999",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/1706.06999",
+          "source_revision": "captured_sha256:995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "content_sha256": "4cb7928850838b5182f9412e76a590006a213128f4ea0fdb4186fa1d8885c50f",
+          "locator": {
+            "pdf_page": 1,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "57de32bbace587e53f57218d75e9b4cf9b2b81dcbfd3762339a3a8288e09b191",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:03.330380+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 1804,
+              "char_end": 1846,
+              "token_sha256": "2903394531c0b5b416f886ece3a5b4b61f10a74b43a09810ed7699ccb65256db",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 1785,
+              "char_end": 1793,
+              "token_sha256": "332380801f744b9e9b5f86408f2a25b96535927834ff4b46df5a362807332ad6",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "This is not direct static long-range order or universal competing-order confirmation"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:bapb:optical_measurement_temperature_window",
+      "source_group": "bapb",
+      "field": "optical_measurement_temperature_window",
+      "value": {
+        "equilibrium_optical_example": {
+          "raw_value": "15",
+          "value": 15.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "transient_drude_example": {
+          "raw_value": "100",
+          "value": 100.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "interpretive_crossover": {
+          "raw_value": "40",
+          "value": 40.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": true,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "full_temperature_sweep_numeric_endpoints": null
+      },
+      "source_subject": {
+        "source_formula_raw": "BaPb0.72Bi0.28O3",
+        "variable_formula_raw": "BaPb1-xBixO3",
+        "source_local_x": {
+          "raw_value": "0.28",
+          "value": 0.28,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        }
+      },
+      "source_window": {
+        "examples_are_not_continuous_sweep_endpoints": true,
+        "these_temperatures_are_tc": false
+      },
+      "source_role": "source_figure_measurement_conditions",
+      "sources": [
+        {
+          "capture_id": "new-original-pdf:1706.06999:p6",
+          "paper_id": "arxiv:1706.06999",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/1706.06999",
+          "source_revision": "captured_sha256:995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "content_sha256": "e826c6b3ad184d1436858713b257a912b4fa8125c90506115db5e460cd216e9e",
+          "locator": {
+            "pdf_page": 6,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "57de32bbace587e53f57218d75e9b4cf9b2b81dcbfd3762339a3a8288e09b191",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:03.330380+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        },
+        {
+          "capture_id": "new-original-pdf:1706.06999:p12",
+          "paper_id": "arxiv:1706.06999",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/1706.06999",
+          "source_revision": "captured_sha256:995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "content_sha256": "1004f193641573f490f6d8e12fbd09d3683414a994bc928e0235be3a7d64ee35",
+          "locator": {
+            "pdf_page": 12,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "57de32bbace587e53f57218d75e9b4cf9b2b81dcbfd3762339a3a8288e09b191",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:03.330380+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 901,
+              "char_end": 921,
+              "token_sha256": "c1ced6afc5ac3369140b1be65333ddbe684de98cc43588bbb14a31bc3b720edd",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 851,
+              "char_end": 880,
+              "token_sha256": "8dae7d4ed17c1e22d202a8acce58a566692d420e42e11b9902eaf8551abd51d1",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:bapb:optical_probe_method",
+      "source_group": "bapb",
+      "field": "optical_probe_method",
+      "value": {
+        "equilibrium_probe": "FTIR BrukerVertex88v; quasi-normal-incidence reflectivity; gold evaporation/Kramers–Kronig analysis",
+        "equilibrium_frequency_extent_thz": [
+          1,
+          150
+        ],
+        "transient_probe": "Pump–probe terahertz reflection/electro-optic sampling inZnTe",
+        "transient_probe_frequency_extent_thz": [
+          0.5,
+          2.5
+        ],
+        "doped_sample_pump_frequency": {
+          "raw_value": "60",
+          "value": 60.0,
+          "raw_unit": "THz",
+          "unit": "THz",
+          "approximate": true,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "pulse_duration_extent_fs": [
+          100,
+          250
+        ],
+        "fluence": {
+          "raw_value": "3.5",
+          "value": 3.5,
+          "raw_unit": "mJ/cm²",
+          "unit": "mJ/cm²",
+          "approximate": true,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        }
+      },
+      "source_subject": {
+        "source_formula_raw": "BaPb0.72Bi0.28O3",
+        "variable_formula_raw": "BaPb1-xBixO3",
+        "source_local_x": {
+          "raw_value": "0.28",
+          "value": 0.28,
+          "raw_unit": null,
+          "unit": "fraction",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+          "parse_status": "reported"
+        }
+      },
+      "source_window": {
+        "ba_bi_o3_pump375_thz_is_target_condition": false
+      },
+      "source_role": "source_optical_probe_and_analysis_conditions",
+      "sources": [
+        {
+          "capture_id": "new-original-pdf:1706.06999:p5",
+          "paper_id": "arxiv:1706.06999",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/1706.06999",
+          "source_revision": "captured_sha256:995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "content_sha256": "ad31cac699a5a36e16a7867dd67c417f71e8ef40b560ed2d5b27eacba8a7de8c",
+          "locator": {
+            "pdf_page": 5,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "57de32bbace587e53f57218d75e9b4cf9b2b81dcbfd3762339a3a8288e09b191",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:03.330380+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        },
+        {
+          "capture_id": "new-original-pdf:1706.06999:p7",
+          "paper_id": "arxiv:1706.06999",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/1706.06999",
+          "source_revision": "captured_sha256:995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+          "content_sha256": "64f0513eed994455c52301b5c75084b2914d8dad2ef1aa5ef149b1df52b6a651",
+          "locator": {
+            "pdf_page": 7,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "57de32bbace587e53f57218d75e9b4cf9b2b81dcbfd3762339a3a8288e09b191",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:03.330380+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 811,
+              "char_end": 850,
+              "token_sha256": "6adbe191163c5f6d767e366da49977042d6d66fbbe2e4b8f5c39131d0df4070e",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 852,
+              "char_end": 858,
+              "token_sha256": "0d95422c5453523fcad3c44fa28c27440e00e8caa13175bfb76cb9dd5474905e",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 953,
+              "char_end": 965,
+              "token_sha256": "3f85de8beb543388e399e016ad21b58627a479ac2711670b23b77aeff2f4a666",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 83,
+              "char_end": 94,
+              "token_sha256": "453932698ac492a4bd33a4080ee61f670efabaeea040506d42218023998d0c89",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 194,
+              "char_end": 201,
+              "token_sha256": "3a9cf7da2ae5d583aef9716a6436c4851fa74e0da09b606b10536c973d38b63b",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 965,
+              "char_end": 978,
+              "token_sha256": "6846ececaf584eee22e46403187e1926ee748668e6e684ccf7a17d9c0dd5f01b",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 520,
+              "char_end": 531,
+              "token_sha256": "bf4f875546a99661fa400f6dee9c69ee81f0c8f406fe6ba3c3fcfe46c804c227",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 840,
+              "char_end": 852,
+              "token_sha256": "be98563d54825fce17cbb0bf5901d6ebb69c06d7c44147583e23e590cb343b1a",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:motm:source_rare_earth_member_definition",
+      "source_group": "motm",
+      "field": "source_rare_earth_member_definition",
+      "value": {
+        "source_rare_earth_member": "Tm",
+        "source_system": "Mo-1212; nominalMoSr2RCu2O8"
+      },
+      "source_subject": {
+        "source_formula_raw": "MoSr2RCu2O8",
+        "source_member_raw": "R=Tm; Mo-1212Tm",
+        "source_nominal_member_interpretation": "MoSr2TmCu2O8",
+        "composition_kind": "nominal_ceramic_source"
+      },
+      "source_window": {
+        "physical_sample_link": "unestablished"
+      },
+      "source_role": "source_explicit_member_definition",
+      "sources": [
+        {
+          "capture_id": "new-original-pdf:cond-mat/0308078:p3",
+          "paper_id": "arxiv:cond-mat/0308078",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/cond-mat/0308078",
+          "source_revision": "captured_sha256:77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "content_sha256": "51631f5afcbca44d38f21bf5136d22267a5009b8d61a5aa45cb0794bc0d2cbea",
+          "locator": {
+            "pdf_page": 3,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "0e68118c12ea5e0fa5df99ba1674f0b8b47209a427be7384b74364f4ccdd8152",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:04.702930+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        },
+        {
+          "capture_id": "new-original-pdf:cond-mat/0308078:p6",
+          "paper_id": "arxiv:cond-mat/0308078",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/cond-mat/0308078",
+          "source_revision": "captured_sha256:77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "content_sha256": "f382ab30e2782f48be111c5ab60baf20149dbd75974ac7e6f7925ce1054b8db9",
+          "locator": {
+            "pdf_page": 6,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "0e68118c12ea5e0fa5df99ba1674f0b8b47209a427be7384b74364f4ccdd8152",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:04.702930+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 1014,
+              "char_end": 1045,
+              "token_sha256": "940c923b8c64d4e163266d4e95794816e8e21a29c5c79b09c2d27a1411113632",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 993,
+              "char_end": 1008,
+              "token_sha256": "05e37fcb51bccffc55ebb5867e911503fb5156508b433cefa65cefdc9e25543d",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 832,
+              "char_end": 843,
+              "token_sha256": "338872468fee19094764873a57771c31ad17316357f0330146f5d0b11f1da027",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Section heading onp5 printsMoSr2RCu2O10; title/preparation/system describeO8, retained as source inconsistency"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:motm:reported_magnetic_order_and_temperature",
+      "source_group": "motm",
+      "field": "reported_magnetic_order_and_temperature",
+      "value": {
+        "source_order": "Authors assign antiferromagnetic order toMo sublattice",
+        "tm_source_tn": {
+          "raw_value": "17",
+          "value": 17.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "source_pairing_of_members": "Ho→16K; Tm→17K",
+        "order_evidence_role": "Magnetization-based author assignment, not a new diffraction proof"
+      },
+      "source_subject": {
+        "source_formula_raw": "MoSr2RCu2O8",
+        "source_member_raw": "R=Tm; Mo-1212Tm",
+        "source_nominal_member_interpretation": "MoSr2TmCu2O8",
+        "composition_kind": "nominal_ceramic_source"
+      },
+      "source_window": {
+        "tn_is_tc": false,
+        "pressure": null,
+        "pressure_status": "not_supplied_in_inspected_source_scope"
+      },
+      "source_role": "source_member_specific_magnetic_order_report",
+      "sources": [
+        {
+          "capture_id": "new-original-pdf:cond-mat/0308078:p6",
+          "paper_id": "arxiv:cond-mat/0308078",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/cond-mat/0308078",
+          "source_revision": "captured_sha256:77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "content_sha256": "f382ab30e2782f48be111c5ab60baf20149dbd75974ac7e6f7925ce1054b8db9",
+          "locator": {
+            "pdf_page": 6,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "0e68118c12ea5e0fa5df99ba1674f0b8b47209a427be7384b74364f4ccdd8152",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:04.702930+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 851,
+              "char_end": 866,
+              "token_sha256": "f28a777bc3d64f040d81594d29dd176feb83c87d092bcc9b797f9cf4bd7b2f6e",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 832,
+              "char_end": 843,
+              "token_sha256": "338872468fee19094764873a57771c31ad17316357f0330146f5d0b11f1da027",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Do not transfer Er24(1)K, Y17K or group11–24K as a measuredTmvalue"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:motm:magnetic_probe_method",
+      "source_group": "motm",
+      "field": "magnetic_probe_method",
+      "value": {
+        "study_probes": [
+          "ZFC/FCdc magnetic susceptibility",
+          "ac magnetic susceptibility"
+        ],
+        "study_temperature_extent_k": [
+          2,
+          400
+        ],
+        "tm_specific_applied_field": null,
+        "tm_probe_context": "Similar behavior to neighboring heavy-R members reported; no explicitTm field in paragraph"
+      },
+      "source_subject": {
+        "source_formula_raw": "MoSr2RCu2O8",
+        "source_member_raw": "R=Tm; Mo-1212Tm",
+        "source_nominal_member_interpretation": "MoSr2TmCu2O8",
+        "composition_kind": "nominal_ceramic_source"
+      },
+      "source_window": {
+        "er_figure30_oe_transferred_to_tm": false
+      },
+      "source_role": "source_study_probe_with_member_context",
+      "sources": [
+        {
+          "capture_id": "new-original-pdf:cond-mat/0308078:p3",
+          "paper_id": "arxiv:cond-mat/0308078",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/cond-mat/0308078",
+          "source_revision": "captured_sha256:77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "content_sha256": "51631f5afcbca44d38f21bf5136d22267a5009b8d61a5aa45cb0794bc0d2cbea",
+          "locator": {
+            "pdf_page": 3,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "0e68118c12ea5e0fa5df99ba1674f0b8b47209a427be7384b74364f4ccdd8152",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:04.702930+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        },
+        {
+          "capture_id": "new-original-pdf:cond-mat/0308078:p6",
+          "paper_id": "arxiv:cond-mat/0308078",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/cond-mat/0308078",
+          "source_revision": "captured_sha256:77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "content_sha256": "f382ab30e2782f48be111c5ab60baf20149dbd75974ac7e6f7925ce1054b8db9",
+          "locator": {
+            "pdf_page": 6,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "0e68118c12ea5e0fa5df99ba1674f0b8b47209a427be7384b74364f4ccdd8152",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:04.702930+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 1888,
+              "char_end": 1912,
+              "token_sha256": "437a40f11982256f1c66a72d76a219d1a6372c1eb10b0f1120a35cce7b27e6b8",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 1935,
+              "char_end": 1966,
+              "token_sha256": "621e695d2e56ca1610fa1c057d7e647f330a0d3f78fbcf843575dda4374e921c",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 1983,
+              "char_end": 1991,
+              "token_sha256": "fdc0e75d2cf99a716c2980243e0637bc05ca99cc66fbcacc64c17412346254d4",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        },
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 798,
+              "char_end": 843,
+              "token_sha256": "e45b20d02009ab67b7070fcd427feeaf7dd1af3aaeeb88facbcfb3769c3a7a79",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "30Oe onp6 pertains toEr and is not assigned toTm"
+      ],
+      "inspection_status": "source_expression_inspected_condition_unresolved",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:motm:tm_member_transition_criterion",
+      "source_group": "motm",
+      "field": "tm_member_transition_criterion",
+      "value": {
+        "source_tm_tc": {
+          "raw_value": "24",
+          "value": 24.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "source_criterion_raw": "Deduced fromχ′ (real ac susceptibility)",
+        "source_pairing_of_members": "Ho→19K; Tm→24K",
+        "tm_specific_onset_midpoint_threshold": null,
+        "granular_context": "Authors distinguish intragrain superconductivity from weak-Josephson intergrain transition"
+      },
+      "source_subject": {
+        "source_formula_raw": "MoSr2RCu2O8",
+        "source_member_raw": "R=Tm; Mo-1212Tm",
+        "source_nominal_member_interpretation": "MoSr2TmCu2O8",
+        "composition_kind": "nominal_ceramic_source"
+      },
+      "source_window": {
+        "tm_tc_is_weak_intergrain_tp": false,
+        "sample_pressure": null
+      },
+      "source_role": "source_member_specific_ac_susceptibility_transition_report",
+      "sources": [
+        {
+          "capture_id": "new-original-pdf:cond-mat/0308078:p6",
+          "paper_id": "arxiv:cond-mat/0308078",
+          "kind": "original_pdf_page",
+          "source_url": "https://arxiv.org/pdf/cond-mat/0308078",
+          "source_revision": "captured_sha256:77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "source_revision_basis": "exact_pdf_capture_hash_unversioned_official_url",
+          "capture_sha256": "77073183cb886d3c4b047dae64824c125f69de757860b4379f83a8f01d55cd3a",
+          "content_sha256": "f382ab30e2782f48be111c5ab60baf20149dbd75974ac7e6f7925ce1054b8db9",
+          "locator": {
+            "pdf_page": 6,
+            "page_number_basis": "one_based_physical_pdf_page"
+          },
+          "extraction": {
+            "program": "pdftotext -layout",
+            "extracted_file_sha256": "0e68118c12ea5e0fa5df99ba1674f0b8b47209a427be7384b74364f4ccdd8152",
+            "normalization": "join_split_whitespace"
+          },
+          "current_publication_status": "not_checked",
+          "captured_at_utc": "2026-10-01T23:09:04.702930+00:00",
+          "permissions": "Factual metadata and short paraphrase only; manuscript redistribution rights not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "normalized_pdf_page_spans": [
+            {
+              "char_start": 871,
+              "char_end": 906,
+              "token_sha256": "23a79b48176b0b762340ed2545b72672874297b91e84cbeeb45945df86fa1c2c",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 832,
+              "char_end": 843,
+              "token_sha256": "338872468fee19094764873a57771c31ad17316357f0330146f5d0b11f1da027",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 361,
+              "char_end": 395,
+              "token_sha256": "684412cce0a79df1884ddb6bbff9b67d8b65be981446f100017db2c15c8e927c",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Do not mark zero resistance or copy explicitEr onset semantics as a measuredTmcriterion"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:fese_cif:listed_atomic_sites",
+      "source_group": "fese_cif",
+      "field": "listed_atomic_sites",
+      "value": [
+        {
+          "label": "Fe1",
+          "element": "Fe",
+          "fractional_coordinates": [
+            {
+              "raw_value": "0",
+              "value": 0.0,
+              "raw_unit": null,
+              "unit": "fractional",
+              "approximate": false,
+              "raw_uncertainty": null,
+              "uncertainty": null,
+              "uncertainty_interpretation": "not_supplied_in_source_scope",
+              "uncertainty_normalization": null,
+              "unit_basis": "CIF fractional-coordinate column semantics; no printed unit",
+              "parse_status": "reported"
+            },
+            {
+              "raw_value": "0",
+              "value": 0.0,
+              "raw_unit": null,
+              "unit": "fractional",
+              "approximate": false,
+              "raw_uncertainty": null,
+              "uncertainty": null,
+              "uncertainty_interpretation": "not_supplied_in_source_scope",
+              "uncertainty_normalization": null,
+              "unit_basis": "CIF fractional-coordinate column semantics; no printed unit",
+              "parse_status": "reported"
+            },
+            {
+              "raw_value": "0",
+              "value": 0.0,
+              "raw_unit": null,
+              "unit": "fractional",
+              "approximate": false,
+              "raw_uncertainty": null,
+              "uncertainty": null,
+              "uncertainty_interpretation": "not_supplied_in_source_scope",
+              "uncertainty_normalization": null,
+              "unit_basis": "CIF fractional-coordinate column semantics; no printed unit",
+              "parse_status": "reported"
+            }
+          ],
+          "occupancy": {
+            "raw_value": "0.996(3)",
+            "value": 0.996,
+            "raw_unit": null,
+            "unit": "fraction",
+            "approximate": false,
+            "raw_uncertainty": "3",
+            "uncertainty": 0.003,
+            "uncertainty_interpretation": "not_supplied_in_source_scope",
+            "uncertainty_normalization": "parentheses_in_last_displayed_digits",
+            "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+            "parse_status": "reported"
+          },
+          "source_multiplicity_raw": "2",
+          "u_iso": {
+            "raw_value": "0.0182(4)",
+            "value": 0.0182,
+            "raw_unit": null,
+            "unit": "Å²",
+            "approximate": false,
+            "raw_uncertainty": "4",
+            "uncertainty": 0.0004,
+            "uncertainty_interpretation": "not_supplied_in_source_scope",
+            "uncertainty_normalization": "parentheses_in_last_displayed_digits",
+            "unit_basis": "CIF_atom_site_U_iso_or_equiv standard dimensional semantics; no printed unit",
+            "parse_status": "reported"
+          },
+          "source_line": 130
+        },
+        {
+          "label": "Se1",
+          "element": "Se",
+          "fractional_coordinates": [
+            {
+              "raw_value": "0",
+              "value": 0.0,
+              "raw_unit": null,
+              "unit": "fractional",
+              "approximate": false,
+              "raw_uncertainty": null,
+              "uncertainty": null,
+              "uncertainty_interpretation": "not_supplied_in_source_scope",
+              "uncertainty_normalization": null,
+              "unit_basis": "CIF fractional-coordinate column semantics; no printed unit",
+              "parse_status": "reported"
+            },
+            {
+              "raw_value": "0.5",
+              "value": 0.5,
+              "raw_unit": null,
+              "unit": "fractional",
+              "approximate": false,
+              "raw_uncertainty": null,
+              "uncertainty": null,
+              "uncertainty_interpretation": "not_supplied_in_source_scope",
+              "uncertainty_normalization": null,
+              "unit_basis": "CIF fractional-coordinate column semantics; no printed unit",
+              "parse_status": "reported"
+            },
+            {
+              "raw_value": "0.26526(14)",
+              "value": 0.26526,
+              "raw_unit": null,
+              "unit": "fractional",
+              "approximate": false,
+              "raw_uncertainty": "14",
+              "uncertainty": 0.00014,
+              "uncertainty_interpretation": "not_supplied_in_source_scope",
+              "uncertainty_normalization": "parentheses_in_last_displayed_digits",
+              "unit_basis": "CIF fractional-coordinate column semantics; no printed unit",
+              "parse_status": "reported"
+            }
+          ],
+          "occupancy": {
+            "raw_value": "1",
+            "value": 1.0,
+            "raw_unit": null,
+            "unit": "fraction",
+            "approximate": false,
+            "raw_uncertainty": null,
+            "uncertainty": null,
+            "uncertainty_interpretation": "not_supplied_in_source_scope",
+            "uncertainty_normalization": null,
+            "unit_basis": "Dimensionless source parameter or occupancy; no printed unit",
+            "parse_status": "reported"
+          },
+          "source_multiplicity_raw": "2",
+          "u_iso": {
+            "raw_value": "0.0178",
+            "value": 0.0178,
+            "raw_unit": null,
+            "unit": "Å²",
+            "approximate": false,
+            "raw_uncertainty": null,
+            "uncertainty": null,
+            "uncertainty_interpretation": "not_supplied_in_source_scope",
+            "uncertainty_normalization": null,
+            "unit_basis": "CIF_atom_site_U_iso_or_equiv standard dimensional semantics; no printed unit",
+            "parse_status": "reported"
+          },
+          "source_line": 131
+        }
+      ],
+      "source_subject": {
+        "source_formula_raw": "Fe Se",
+        "source_declared_vs_refined_occupancy_context": "DeclaredFeSe; Feoccupancy0.996(3), Se1; no accepted defect or composition inference",
+        "known_catalogue_lifecycle_snapshot": "Historical FeSe query wasdisputed/archive",
+        "material_lookup_performed": false,
+        "held_material_release": false
+      },
+      "source_window": {
+        "source_cell_temperature": {
+          "raw_value": "295",
+          "value": 295.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "pressure": null,
+        "pressure_status": "not_supplied_in_captured_cif"
+      },
+      "source_role": "source_reported_refined_atomic_sites",
+      "sources": [
+        {
+          "capture_id": "cod:4002152:captured176432",
+          "kind": "original_cif",
+          "source_url": "https://www.crystallography.net/cod/4002152.cif",
+          "entry_url": "https://www.crystallography.net/cod/4002152.html",
+          "source_revision": "header176432",
+          "source_revision_basis": "captured_cif_header_plus_exact_file_hash",
+          "source_url_revision_pinned": false,
+          "capture_sha256": "83a6bd28f07e9acca04035b5eb29c0bfa18a2a1133eb196ca2d029a029787ad5",
+          "content_sha256": "83a6bd28f07e9acca04035b5eb29c0bfa18a2a1133eb196ca2d029a029787ad5",
+          "license": "COD public-domain/CC0",
+          "current_publication_status": "not_checked",
+          "publication_doi": "10.1021/cm5041612"
+        }
+      ],
+      "field_locators": [
+        {
+          "source_line": 120,
+          "source_line_end": 131,
+          "line_text_sha256": "46cc67bfe0225dc6070a3fc9e1f2b09d0f26c24dac41466cef03487e0670fd9b",
+          "line_hash_basis": "CIF lines without line terminators joinedLF; full original bytes separatelyhashed"
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Independent historical source reference; held-material routes not accessed or bypassed",
+        "A mutable file URL is not a revision-pinned link",
+        "Refined occupancy is not established vacancy concentration or superconducting sample identity",
+        "Coordinate model validation and formal material/state association remainfalse"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:fese_cif:declared_symmetry_operations",
+      "source_group": "fese_cif",
+      "field": "declared_symmetry_operations",
+      "value": {
+        "declared_count": 16,
+        "operations_raw": [
+          "x,y,z",
+          "-x,-y,z",
+          "-y+1/2,x+1/2,z",
+          "y+1/2,-x+1/2,z",
+          "-x+1/2,y+1/2,-z",
+          "x+1/2,-y+1/2,-z",
+          "y,x,-z",
+          "-y,-x,-z",
+          "-x+1/2,-y+1/2,-z",
+          "x+1/2,y+1/2,-z",
+          "y,-x,-z",
+          "-y,x,-z",
+          "x,-y,z",
+          "-x,y,z",
+          "-y+1/2,-x+1/2,z",
+          "y+1/2,x+1/2,z"
+        ]
+      },
+      "source_subject": {
+        "source_formula_raw": "Fe Se",
+        "source_declared_vs_refined_occupancy_context": "DeclaredFeSe; Feoccupancy0.996(3), Se1; no accepted defect or composition inference",
+        "known_catalogue_lifecycle_snapshot": "Historical FeSe query wasdisputed/archive",
+        "material_lookup_performed": false,
+        "held_material_release": false
+      },
+      "source_window": {
+        "source_cell_temperature": {
+          "raw_value": "295",
+          "value": 295.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "pressure": null,
+        "pressure_status": "not_supplied_in_captured_cif"
+      },
+      "source_role": "source_declared_symmetry_operations",
+      "sources": [
+        {
+          "capture_id": "cod:4002152:captured176432",
+          "kind": "original_cif",
+          "source_url": "https://www.crystallography.net/cod/4002152.cif",
+          "entry_url": "https://www.crystallography.net/cod/4002152.html",
+          "source_revision": "header176432",
+          "source_revision_basis": "captured_cif_header_plus_exact_file_hash",
+          "source_url_revision_pinned": false,
+          "capture_sha256": "83a6bd28f07e9acca04035b5eb29c0bfa18a2a1133eb196ca2d029a029787ad5",
+          "content_sha256": "83a6bd28f07e9acca04035b5eb29c0bfa18a2a1133eb196ca2d029a029787ad5",
+          "license": "COD public-domain/CC0",
+          "current_publication_status": "not_checked",
+          "publication_doi": "10.1021/cm5041612"
+        }
+      ],
+      "field_locators": [
+        {
+          "source_line": 101,
+          "source_line_end": 118,
+          "line_text_sha256": "47b0f873ace01a2565c4811ab53bfbeb97eb3081280c1073c6f46dfc1d3c9468",
+          "line_hash_basis": "CIF lines without line terminators joinedLF; full original bytes separatelyhashed"
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Independent historical source reference; held-material routes not accessed or bypassed",
+        "A mutable file URL is not a revision-pinned link",
+        "Refined occupancy is not established vacancy concentration or superconducting sample identity",
+        "Coordinate model validation and formal material/state association remainfalse"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:fese_cif:reported_hall_symbol",
+      "source_group": "fese_cif",
+      "field": "reported_hall_symbol",
+      "value": {
+        "hall_symbol_raw": "P 4ab 2ab -1ab",
+        "original_cod_hall_raw": "-P 4a;-2a"
+      },
+      "source_subject": {
+        "source_formula_raw": "Fe Se",
+        "source_declared_vs_refined_occupancy_context": "DeclaredFeSe; Feoccupancy0.996(3), Se1; no accepted defect or composition inference",
+        "known_catalogue_lifecycle_snapshot": "Historical FeSe query wasdisputed/archive",
+        "material_lookup_performed": false,
+        "held_material_release": false
+      },
+      "source_window": {
+        "source_cell_temperature": {
+          "raw_value": "295",
+          "value": 295.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "pressure": null,
+        "pressure_status": "not_supplied_in_captured_cif"
+      },
+      "source_role": "source_reported_symmetry_label",
+      "sources": [
+        {
+          "capture_id": "cod:4002152:captured176432",
+          "kind": "original_cif",
+          "source_url": "https://www.crystallography.net/cod/4002152.cif",
+          "entry_url": "https://www.crystallography.net/cod/4002152.html",
+          "source_revision": "header176432",
+          "source_revision_basis": "captured_cif_header_plus_exact_file_hash",
+          "source_url_revision_pinned": false,
+          "capture_sha256": "83a6bd28f07e9acca04035b5eb29c0bfa18a2a1133eb196ca2d029a029787ad5",
+          "content_sha256": "83a6bd28f07e9acca04035b5eb29c0bfa18a2a1133eb196ca2d029a029787ad5",
+          "license": "COD public-domain/CC0",
+          "current_publication_status": "not_checked",
+          "publication_doi": "10.1021/cm5041612"
+        }
+      ],
+      "field_locators": [
+        {
+          "source_line": 37,
+          "source_line_end": 37,
+          "line_text_sha256": "9a733ec8dbfd68918eaf32559bcb7b2f6a7715b17041759d35eda2d2ae5283ab",
+          "line_hash_basis": "CIF lines without line terminators joinedLF; full original bytes separatelyhashed"
+        },
+        {
+          "source_line": 96,
+          "source_line_end": 96,
+          "line_text_sha256": "486a98490deaa896951459e3377f0e22acf6126642bbbf90881c1f4eea289f66",
+          "line_hash_basis": "CIF lines without line terminators joinedLF; full original bytes separatelyhashed"
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Independent historical source reference; held-material routes not accessed or bypassed",
+        "A mutable file URL is not a revision-pinned link",
+        "Refined occupancy is not established vacancy concentration or superconducting sample identity",
+        "Coordinate model validation and formal material/state association remainfalse"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:fese_cif:cell_formula_units_z",
+      "source_group": "fese_cif",
+      "field": "cell_formula_units_z",
+      "value": {
+        "raw_value": "2",
+        "value": 2.0,
+        "raw_unit": null,
+        "unit": "formula_units_per_cell",
+        "approximate": false,
+        "raw_uncertainty": null,
+        "uncertainty": null,
+        "uncertainty_interpretation": "not_supplied_in_source_scope",
+        "uncertainty_normalization": null,
+        "unit_basis": "CIF_cell_formula_units_Z column semantics; no printed unit",
+        "parse_status": "reported"
+      },
+      "source_subject": {
+        "source_formula_raw": "Fe Se",
+        "source_declared_vs_refined_occupancy_context": "DeclaredFeSe; Feoccupancy0.996(3), Se1; no accepted defect or composition inference",
+        "known_catalogue_lifecycle_snapshot": "Historical FeSe query wasdisputed/archive",
+        "material_lookup_performed": false,
+        "held_material_release": false
+      },
+      "source_window": {
+        "source_cell_temperature": {
+          "raw_value": "295",
+          "value": 295.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "pressure": null,
+        "pressure_status": "not_supplied_in_captured_cif"
+      },
+      "source_role": "source_cell_formula_units",
+      "sources": [
+        {
+          "capture_id": "cod:4002152:captured176432",
+          "kind": "original_cif",
+          "source_url": "https://www.crystallography.net/cod/4002152.cif",
+          "entry_url": "https://www.crystallography.net/cod/4002152.html",
+          "source_revision": "header176432",
+          "source_revision_basis": "captured_cif_header_plus_exact_file_hash",
+          "source_url_revision_pinned": false,
+          "capture_sha256": "83a6bd28f07e9acca04035b5eb29c0bfa18a2a1133eb196ca2d029a029787ad5",
+          "content_sha256": "83a6bd28f07e9acca04035b5eb29c0bfa18a2a1133eb196ca2d029a029787ad5",
+          "license": "COD public-domain/CC0",
+          "current_publication_status": "not_checked",
+          "publication_doi": "10.1021/cm5041612"
+        }
+      ],
+      "field_locators": [
+        {
+          "source_line": 42,
+          "source_line_end": 42,
+          "line_text_sha256": "c91d98381af1b6e48eaa6cb8f93c9af1c0f82e5061ce97674ad03f5882a69da4",
+          "line_hash_basis": "CIF lines without line terminators joinedLF; full original bytes separatelyhashed"
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Independent historical source reference; held-material routes not accessed or bypassed",
+        "A mutable file URL is not a revision-pinned link",
+        "Refined occupancy is not established vacancy concentration or superconducting sample identity",
+        "Coordinate model validation and formal material/state association remainfalse"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": true,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:pt_extra:source_preparation_and_specific_heat_method",
+      "source_group": "pt_extra",
+      "field": "source_preparation_and_specific_heat_method",
+      "value": {
+        "preparation": "FeAs self-flux growth of single crystals",
+        "specific_heat_method": "Thermal relaxation inQuantumDesignPPMS"
+      },
+      "source_subject": {
+        "source_formula_raw": "BaFe1.90Pt0.10As2",
+        "composition_kind": "source_nominal_formula"
+      },
+      "source_window": {
+        "pressure": null,
+        "pressure_status": "not_supplied_in_inspected_source_scope"
+      },
+      "source_role": "source_preparation_and_measurement_method",
+      "sources": [
+        {
+          "paper_id": "arxiv:0912.2752",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0912.2752v2",
+          "source_revision": "arxiv:0912.2752v2",
+          "capture_sha256": "f74c213adefb0dafe0dde174be506aeeceb00eb0faaaf252891bd2f65d452c9d",
+          "content_sha256": "f689746b3a96a247903779a33f4664eec4577f83c07b45882df123334dc43858",
+          "locator": {
+            "xml_xpath": "//*[@id='S2.p1.1']"
+          },
+          "capture_id": "primary:arxiv:0912.2752:4",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S2.p1.1']"
+          },
+          "original_selector_text_sha256": "ec163f3499cfcacaeafa912dac9bb0c1fb95eb9f133c8111ed72d32252393a24",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 67,
+              "char_end": 88,
+              "token_sha256": "a225a7ea254f5ddbbc51a2eb69b07d7ae6be3f288eb488ba657773271df2cec1",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 1634,
+              "char_end": 1659,
+              "token_sha256": "7095cd0a412e445836a68af8af5b27317b5999dd68bdb7af7edf55cb45381601",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": false,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:pt_extra:source_heating_program",
+      "source_group": "pt_extra",
+      "field": "source_heating_program",
+      "value": {
+        "peak_heating_temperature": {
+          "raw_value": "1150",
+          "value": 1150.0,
+          "raw_unit": "°C",
+          "unit": "°C",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "program": "Slow-cool to an unspecified lower temperature, then quench to room temperature",
+        "atmosphere": "PartialArpressure",
+        "synthesis_pressure": null,
+        "hold_duration": null
+      },
+      "source_subject": {
+        "source_formula_raw": "BaFe1.90Pt0.10As2",
+        "composition_kind": "source_nominal_formula"
+      },
+      "source_window": {
+        "synthesis_atmosphere_is_measurement_pressure": false
+      },
+      "source_role": "source_growth_conditions",
+      "sources": [
+        {
+          "paper_id": "arxiv:0912.2752",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0912.2752v2",
+          "source_revision": "arxiv:0912.2752v2",
+          "capture_sha256": "f74c213adefb0dafe0dde174be506aeeceb00eb0faaaf252891bd2f65d452c9d",
+          "content_sha256": "f689746b3a96a247903779a33f4664eec4577f83c07b45882df123334dc43858",
+          "locator": {
+            "xml_xpath": "//*[@id='S2.p1.1']"
+          },
+          "capture_id": "primary:arxiv:0912.2752:4",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S2.p1.1']"
+          },
+          "original_selector_text_sha256": "ec163f3499cfcacaeafa912dac9bb0c1fb95eb9f133c8111ed72d32252393a24",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 505,
+              "char_end": 512,
+              "token_sha256": "212d80e85cf9000c06d3c5833916c6250a9f3e0f82eb5f38f4b0b60ddaa46a65",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 458,
+              "char_end": 477,
+              "token_sha256": "dbc642a005f78c758a6984778a7e13d4c898b25c10f789d5add0813519a3d2ae",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": false,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:pt_extra:specific_heat_jump_over_tc",
+      "source_group": "pt_extra",
+      "field": "specific_heat_jump_over_tc",
+      "value": {
+        "raw_value": "20",
+        "value": 20.0,
+        "raw_unit": "mJ/mol K",
+        "unit": null,
+        "approximate": true,
+        "raw_uncertainty": null,
+        "uncertainty": null,
+        "uncertainty_interpretation": "not_supplied_in_source_scope",
+        "uncertainty_normalization": null,
+        "parse_status": "unit_requires_review",
+        "unit_review_reason": "Original HTML printsmJ/molK forΔCp/Tc; expected dimensional quantity differs; preserveprintedunitwithoutrepair"
+      },
+      "source_subject": {
+        "source_formula_raw": "BaFe1.90Pt0.10As2",
+        "composition_kind": "source_nominal_formula"
+      },
+      "source_window": {
+        "source_analysis_temperature": {
+          "raw_value": "20",
+          "value": 20.0,
+          "raw_unit": "K",
+          "unit": "K",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "zero_field_data": true,
+        "comparison_field": {
+          "raw_value": "10",
+          "value": 10.0,
+          "raw_unit": "T",
+          "unit": "T",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        }
+      },
+      "source_role": "source_isoentropic_construction_result",
+      "sources": [
+        {
+          "paper_id": "arxiv:0912.2752",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0912.2752v2",
+          "source_revision": "arxiv:0912.2752v2",
+          "capture_sha256": "f74c213adefb0dafe0dde174be506aeeceb00eb0faaaf252891bd2f65d452c9d",
+          "content_sha256": "5b08faf0f10f4a4cdebaa2ebe517799288dfc1289bef4d38bc3f3062e88cc569",
+          "locator": {
+            "xml_xpath": "//*[@id='S3.SS4.p1.1']"
+          },
+          "capture_id": "primary:arxiv:0912.2752:16",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S3.SS4.p1.1']"
+          },
+          "original_selector_text_sha256": "868fef9873a8daa10561ddfe036811e1c621f0674d6492de08ea0d0ef540241f",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 1198,
+              "char_end": 1244,
+              "token_sha256": "06d9b8b05c4b99b282a728a208c8f73ecc4f841fcab3c1422f7b7fff1dcd6f08",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "The source repeated token occurs twice in passage; first occurrence anchors construction result"
+      ],
+      "inspection_status": "source_expression_inspected_unit_requires_review",
+      "belongs_to_remaining29_plan": false,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:pt_extra:specific_heat_analysis_context",
+      "source_group": "pt_extra",
+      "field": "specific_heat_analysis_context",
+      "value": {
+        "construction": "IsoentropicCp/T vsT construction",
+        "comparison_field": {
+          "raw_value": "10",
+          "value": 10.0,
+          "raw_unit": "T",
+          "unit": "T",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        },
+        "bcs_ratio_assumption": {
+          "raw_value": "1.43",
+          "value": 1.43,
+          "raw_unit": null,
+          "unit": "dimensionless",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "unit_basis": "Dimensionless source ratio; no printed unit",
+          "parse_status": "reported"
+        },
+        "superconducting_volume_assumption": {
+          "raw_value": "100",
+          "value": 100.0,
+          "raw_unit": "%",
+          "unit": "%",
+          "approximate": false,
+          "raw_uncertainty": null,
+          "uncertainty": null,
+          "uncertainty_interpretation": "not_supplied_in_source_scope",
+          "uncertainty_normalization": null,
+          "parse_status": "reported"
+        }
+      },
+      "source_subject": {
+        "source_formula_raw": "BaFe1.90Pt0.10As2",
+        "composition_kind": "source_nominal_formula"
+      },
+      "source_window": {
+        "assumed_volume_is_measured_volume": false
+      },
+      "source_role": "source_analysis_definition_and_assumptions",
+      "sources": [
+        {
+          "paper_id": "arxiv:0912.2752",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0912.2752v2",
+          "source_revision": "arxiv:0912.2752v2",
+          "capture_sha256": "f74c213adefb0dafe0dde174be506aeeceb00eb0faaaf252891bd2f65d452c9d",
+          "content_sha256": "5b08faf0f10f4a4cdebaa2ebe517799288dfc1289bef4d38bc3f3062e88cc569",
+          "locator": {
+            "xml_xpath": "//*[@id='S3.SS4.p1.1']"
+          },
+          "capture_id": "primary:arxiv:0912.2752:16",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S3.SS4.p1.1']"
+          },
+          "original_selector_text_sha256": "868fef9873a8daa10561ddfe036811e1c621f0674d6492de08ea0d0ef540241f",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 932,
+              "char_end": 956,
+              "token_sha256": "a771b1534132e6de0c5fad4bf0f59333f5db75ecb5a412e8502004c46652deeb",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 1320,
+              "char_end": 1347,
+              "token_sha256": "658f313b4af6ff41e7014764f45fb673fef06fccacc6c0eccf35367d636a60a9",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            },
+            {
+              "char_start": 1311,
+              "char_end": 1315,
+              "token_sha256": "a204b7e5d2aa36ca47dc59d5944882ecbd996452c4cc35be9607da8e63bc4045",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": false,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    },
+    {
+      "id": "source-only-r2:pt_extra:electronic_specific_heat_coefficient_model",
+      "source_group": "pt_extra",
+      "field": "electronic_specific_heat_coefficient_model",
+      "value": {
+        "raw_value": "14",
+        "value": 14.0,
+        "raw_unit": "mJ/mol K2",
+        "unit": "mJ/(mol·K²)",
+        "approximate": true,
+        "raw_uncertainty": null,
+        "uncertainty": null,
+        "uncertainty_interpretation": "not_supplied_in_source_scope",
+        "uncertainty_normalization": null,
+        "parse_status": "reported"
+      },
+      "source_subject": {
+        "source_formula_raw": "BaFe1.90Pt0.10As2",
+        "composition_kind": "source_nominal_formula"
+      },
+      "source_window": {
+        "bcs_ratio": 1.43,
+        "assumed_superconducting_volume_percent": 100
+      },
+      "source_role": "source_BCS_assumption_derived_estimate",
+      "sources": [
+        {
+          "paper_id": "arxiv:0912.2752",
+          "kind": "original_passage",
+          "source_url": "https://arxiv.org/html/0912.2752v2",
+          "source_revision": "arxiv:0912.2752v2",
+          "capture_sha256": "f74c213adefb0dafe0dde174be506aeeceb00eb0faaaf252891bd2f65d452c9d",
+          "content_sha256": "5b08faf0f10f4a4cdebaa2ebe517799288dfc1289bef4d38bc3f3062e88cc569",
+          "locator": {
+            "xml_xpath": "//*[@id='S3.SS4.p1.1']"
+          },
+          "capture_id": "primary:arxiv:0912.2752:16",
+          "source_revision_basis": "capture_declared_version",
+          "current_publication_status": "not_checked",
+          "original_html_locator": {
+            "xml_xpath": "//*[@id='S3.SS4.p1.1']"
+          },
+          "original_selector_text_sha256": "868fef9873a8daa10561ddfe036811e1c621f0674d6492de08ea0d0ef540241f",
+          "permissions": "Factual metadata and short paraphrase; fulltext redistribution permission not established"
+        }
+      ],
+      "field_locators": [
+        {
+          "capture_text_spans": [
+            {
+              "char_start": 1392,
+              "char_end": 1410,
+              "token_sha256": "77feb7667f11a48f170fa3545f6771d153655a3d4e65df6d3f7a24d287bb9b00",
+              "occurrence": 1,
+              "token_occurrences_in_scope": 1
+            }
+          ]
+        }
+      ],
+      "limitations": [
+        "Source expression does not establish correspondence to a retained material/result/sample/state",
+        "Current source publication status was not checked",
+        "No scientific or training approval",
+        "Not a direct normal-stateγmeasurement",
+        "Cited parentx=0 γ16(2)andDebye134(1)K are excluded"
+      ],
+      "inspection_status": "source_expression_inspected",
+      "belongs_to_remaining29_plan": false,
+      "association_status": "unestablished",
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "database_changed": false,
+      "canonical_promotions": 0,
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "rights_to_original_fulltext_redistribution_established": false,
+      "source_publication_status": "not_checked",
+      "ai_source_expression_inspection": true,
+      "public_release_completed_at_preparation": false
+    }
+  ],
+  "formal_human_review": false,
+  "formal_scientific_review": false,
+  "scientific_acceptance": false,
+  "ml_training_approved": false,
+  "database_changed": false,
+  "canonical_promotions": 0,
+  "selected_result_association": "unestablished",
+  "sample_identity_established": false,
+  "phase_identity_established": false,
+  "rights_to_original_fulltext_redistribution_established": false,
+  "source_publication_status": "not_checked",
+  "ai_source_expression_inspection": true,
+  "original_batch_sha256": "af823526b7c2764c75c116c2d42e48fde3746feac8e5d6635fecaa34f7a41615",
+  "public_release_completed_at_preparation": false
+}

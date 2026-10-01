@@ -5,6 +5,8 @@ import { getMaterialStructureReferences } from "@/lib/api";
 import type { ExternalStructureQuantity, MaterialStructureReferences } from "@/lib/api";
 import { useProviderAvailabilityPublisher } from "@/components/MaterialProviderAvailability";
 import { emptyProviderAvailability, mapMaterialProviderAvailability, MATERIAL_PROVIDER_ANCHORS } from "@/lib/material-provider-availability";
+import { MaterialSourceObservations } from "@/components/MaterialSourceObservations";
+import { sourceObservationsForCod } from "@/lib/material-source-observations";
 
 const codId = /^[1-9][0-9]{6,8}$/;
 const fields = ["a", "b", "c", "alpha", "beta", "gamma"] as const;
@@ -83,6 +85,7 @@ export function ExternalStructureReferences({ materialId }: { materialId: string
         <p className="max-w-4xl text-xs text-slate-500">Missing pressure is not assumed to be ambient. COD’s coordinate flag and linked CIF files have not been validated as this sample’s coordinate model. <a href="https://wiki.crystallography.net/cod_mysql_schema/" target="_blank" rel="noopener noreferrer" className="underline">COD field definitions ↗</a></p>
         {report.truncated && <p className="text-xs text-amber-800">Showing 20 references from the bounded response; additional returned references are omitted.</p>}
         <p className="text-xs text-slate-500">Retrieved: {report.retrieved_at ?? "Unavailable"}. Metadata rows inspected: {report.inspected_entries}.</p>
+        <MaterialSourceObservations window={sourceObservationsForCod(report, materialId)} />
       </>}
     </div>
   </details>;

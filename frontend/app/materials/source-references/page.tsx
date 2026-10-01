@@ -14,7 +14,7 @@ const download = `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/research-pilots/mat
 export default function MaterialsSourceReferencesPage() {
   return <main className="min-w-0 space-y-8">
     <header className="space-y-3">
-      <Link className="site-text-link text-sm" href="/materials">Materials catalogue</Link>
+      <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm"><Link className="site-text-link" href="/materials">Materials catalogue</Link><Link className="site-text-link" href="/materials/source-observations">Additional source observations</Link></div>
       <h1 className="text-3xl font-semibold tracking-tight">Source reference pilot</h1>
       <p className="max-w-3xl text-sm leading-6 text-sage-muted">Seven CrB₂ paper items and three independent crystallographic references, with conditions and original file hashes. Sample and state matching remains pending; current publication status has not been checked.</p>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
