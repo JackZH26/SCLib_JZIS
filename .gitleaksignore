@@ -220,3 +220,8 @@ f54eac6f28c655bad338ae726c571e6b97ac4c0c:frontend/tests/fixtures/ml-pilot-partic
 44872224e1a75ae36e9863ed756df0d7471d424e:frontend/tests/fixtures/discovery-main-barrier-native.materials20261002r5.wire.json:generic-api-key:1
 44872224e1a75ae36e9863ed756df0d7471d424e:frontend/tests/fixtures/ml-pilot-attestations-native.materials20261002r5.wire.json:generic-api-key:1
 44872224e1a75ae36e9863ed756df0d7471d424e:frontend/tests/fixtures/ml-pilot-participant-native.materials20261002r5.wire.json:generic-api-key:1
+
+# Reviewed genuine R6 synthetic request keys; see SECRET_TRIAGE_MATERIALS_2026-10-02_R6.md.
+49020f06b2a3459379033985ab9cc60a1a26f5e3:frontend/tests/fixtures/discovery-main-barrier-native.materials20261002r6.wire.json:generic-api-key:1
+49020f06b2a3459379033985ab9cc60a1a26f5e3:frontend/tests/fixtures/ml-pilot-attestations-native.materials20261002r6.wire.json:generic-api-key:1
+49020f06b2a3459379033985ab9cc60a1a26f5e3:frontend/tests/fixtures/ml-pilot-participant-native.materials20261002r6.wire.json:generic-api-key:1
