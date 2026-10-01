@@ -1,5 +1,6 @@
 /** The URL owns filtering, ordering and paging; properties retain their individual source scope. */
 import type { Metadata } from "next";
+import Link from "next/link";
 import { listMaterials } from "@/lib/api";
 import { MaterialTable } from "@/components/MaterialTable";
 import { MaterialsFilters } from "@/components/MaterialsFilters";
@@ -38,6 +39,7 @@ export default async function MaterialsPage({ searchParams }: { searchParams: Pr
         <p>Catalogue eligibility and source tier do not establish scientific approval, independent replication or ML readiness. Operational anomaly checks flag records for review; “no findings” is not scientific validation. Retained values are not capped or rewritten.</p>
         <p>Sources count identifiers or legacy links, not independent experiments. Source year comes from the displayed Tc result. Optional classification and structure columns may describe other source results or states. The catalogue maximum remains separate when a filter matches another result.</p>
         <p>{data?.sort_basis === "current_projected_catalogue" ? "Sorting uses current source-scoped catalogue projections." : "Sorting uses legacy catalogue columns; unsupported stored values can affect ranking."} Missing data, unavailable sources and pending review remain distinct. Open Evidence for provenance and status details.</p>
+        <p><Link className="site-text-link" href="/materials/source-references">Source reference pilot</Link>: inspect seven CrB₂ paper items and three independent COD structures, with conditions, source links and downloadable metadata.</p>
       </div></details>
     </div>
     {data == null ? <div role="alert" className="materials-error">{queryErrors.length ? queryErrors.join(" ") : query.structure_phase ? "Pending structure proposals cannot be used as reviewed material/state filters." : query.ambient_sc === "false" ? "The negative ambient filter is unsupported: missing ambient evidence is not a negative experiment. Choose Any or Explicit ambient + observed Tc." : "Failed to load materials. Reload the page to try again."}</div> : <>

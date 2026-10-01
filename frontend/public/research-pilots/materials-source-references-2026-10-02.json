@@ -1,0 +1,985 @@
+{
+  "version": "materials-source-reference-pilot/1.0.0",
+  "prepared_on": "2026-10-02",
+  "boundary": {
+    "description": "Seven paper items and three independent crystallographic references, inspected with AI assistance. Sample and state matching to catalogue results remains pending; these items are not independent experiments.",
+    "association": "No physical sample, phase, state or retained-result association established; no association IDs assigned.",
+    "source_access": "Official original URLs and downloadable factual metadata; no fulltext rehosting.",
+    "eligibility_snapshot": {
+      "site_version": "761bbc9",
+      "dataset_version": "v2026.09.03",
+      "observed_at_utc": "2026-10-01T21:00:16.129692+00:00",
+      "CrB2": "catalogue eligible in that snapshot",
+      "MgB2_and_FeSe": "disputed/archive-only in that snapshot",
+      "current_release_recheck_required": true,
+      "external_references_do_not_bypass_holds": true
+    },
+    "unknown_conditions": "Unknown pressure is not ambient; structure temperature/pressure are not Tc conditions.",
+    "scientific_acceptance": false,
+    "formal_human_review": false,
+    "canonical_promotions": 0,
+    "application_seed_added": false,
+    "database_changed": false,
+    "publication_and_currentness": "The current publication status and source lifecycle of each work have not been established for this pilot. Historical catalogue eligibility is not a current source clearance."
+  },
+  "paper_source": {
+    "title": "Pressure-induced superconductivity in itinerant antiferromagnet CrB2",
+    "url": "https://arxiv.org/pdf/2109.15213v1",
+    "requested_arxiv_version": "v1",
+    "pdf_sha256": "036b3c1cb653ee142f202a5b68c54230753621aaf31dfcfd60ea1f4447f1ea03",
+    "bytes": 770583,
+    "AI_source_scope_checked_at_utc": "2026-10-01T21:00:58.366286+00:00",
+    "publication_revision_verified": false,
+    "anchor_coordinate_system": "Unicode Python characters in captured pdftotext -layout page; not PDF geometry",
+    "PDF_or_fulltext_rehosted": false
+  },
+  "paper_findings": [
+    {
+      "id": "crb2-summary-tc-pressure",
+      "label": "Rounded summary Tc",
+      "display_value": "7 K at approximately 100 GPa",
+      "origin": "Experimental report · rounded summary",
+      "scope": "Summary on PDF page 3. Kept separate from the detailed transport result.",
+      "unresolved": "Catalogue result and sample matching pending.",
+      "pages": [
+        3
+      ],
+      "quantities": [
+        {
+          "value": 7,
+          "unit": "K",
+          "relation": "rounded_summary",
+          "role": "Tc source report",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "7"
+        },
+        {
+          "value": 100,
+          "unit": "GPa",
+          "relation": "approximate",
+          "role": "Pressure paired in this source statement",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "100"
+        }
+      ],
+      "source_fields": {
+        "tc": {
+          "value": 7,
+          "unit": "K",
+          "relation": "rounded_summary"
+        },
+        "pressure": {
+          "value": 100,
+          "unit": "GPa",
+          "relation": "approximate"
+        }
+      },
+      "anchors_without_raw_quote": [
+        {
+          "pdf_page_1_based": 3,
+          "character_start": 1010,
+          "character_end": 1013,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "fae19417d858382ee6d70a32433336920c6a3c6fcee92480d5381f0125792ad5"
+        },
+        {
+          "pdf_page_1_based": 3,
+          "character_start": 1019,
+          "character_end": 1026,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "fae19417d858382ee6d70a32433336920c6a3c6fcee92480d5381f0125792ad5"
+        }
+      ],
+      "depends_on": [],
+      "reference_status": "pending",
+      "scientific_acceptance": false,
+      "material_state_reviewed": false,
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "crb2-detailed-tc-pressure",
+      "label": "Detailed transport Tc",
+      "display_value": "Approximately 7.3 K at 110.4 GPa",
+      "origin": "Experimental transport report",
+      "scope": "Transport result on PDF page 4.",
+      "unresolved": "Catalogue result, sample and curve matching pending.",
+      "pages": [
+        4
+      ],
+      "quantities": [
+        {
+          "value": 7.3,
+          "unit": "K",
+          "relation": "approximately",
+          "role": "Tc source report",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "7.3"
+        },
+        {
+          "value": 110.4,
+          "unit": "GPa",
+          "relation": "reported_measurement_pressure",
+          "role": "Pressure paired in this source statement",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "110.4"
+        }
+      ],
+      "source_fields": {
+        "tc": {
+          "value": 7.3,
+          "unit": "K",
+          "relation": "approximately"
+        },
+        "pressure": {
+          "value": 110.4,
+          "unit": "GPa",
+          "relation": "reported_measurement_pressure"
+        },
+        "knowledge_origin": "Observed"
+      },
+      "anchors_without_raw_quote": [
+        {
+          "pdf_page_1_based": 4,
+          "character_start": 2493,
+          "character_end": 2498,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "77ed47bfc677c926827f66fcba78900c2c7837e59eae1e07609381a52f06c0f5"
+        },
+        {
+          "pdf_page_1_based": 4,
+          "character_start": 2506,
+          "character_end": 2511,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "77ed47bfc677c926827f66fcba78900c2c7837e59eae1e07609381a52f06c0f5"
+        }
+      ],
+      "depends_on": [],
+      "reference_status": "pending",
+      "scientific_acceptance": false,
+      "material_state_reviewed": false,
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "crb2-high-pressure-transport-method",
+      "label": "High-pressure measurement method",
+      "display_value": "DC resistivity · van der Pauw · DAC / PPMS",
+      "origin": "Experimental method description",
+      "scope": "Reported above 12 GPa; ruby pressure calibration at room temperature.",
+      "unresolved": "Below 12 GPa, the source describes a separate CAC four-probe protocol.",
+      "pages": [
+        3
+      ],
+      "quantities": [
+        {
+          "value": 12,
+          "unit": "GPa",
+          "relation": "apparatus-domain-boundary",
+          "role": "Threshold between described apparatus branches; not a Tc pressure",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "12"
+        }
+      ],
+      "source_fields": {
+        "method": "dc resistivity, van der Pauw, PPMS, nonmagnetic DAC",
+        "applicability": "reported experiments above12GPa",
+        "pressure_calibration": "ruby scale at room temperature",
+        "low_pressure_branch": {
+          "apparatus": "CAC",
+          "method": "four-probe",
+          "pressure_scope": "below12GPa"
+        },
+        "pressure_calibration_temperature_is_Tc_temperature": false
+      },
+      "anchors_without_raw_quote": [
+        {
+          "pdf_page_1_based": 3,
+          "character_start": 2507,
+          "character_end": 2519,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "fae19417d858382ee6d70a32433336920c6a3c6fcee92480d5381f0125792ad5"
+        }
+      ],
+      "depends_on": [],
+      "reference_status": "pending",
+      "scientific_acceptance": false,
+      "material_state_reviewed": false,
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "crb2-tc-criterion",
+      "label": "Transition criterion",
+      "display_value": "90% of normal-state resistivity",
+      "origin": "Figure-specific definition",
+      "scope": "Figure 2 caption on PDF page 8; associated upper-critical-field curve context on page 5.",
+      "unresolved": "Applicability to individual catalogue results remains unresolved.",
+      "pages": [
+        8
+      ],
+      "quantities": [
+        {
+          "value": 90,
+          "unit": "%",
+          "relation": "definition",
+          "role": "Figure2 normal-state resistivity criterion; not another Tc value",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "90"
+        }
+      ],
+      "source_fields": {
+        "criterion": "90% of normal-state resistivity",
+        "source_scope": "Figure2 transition temperatures, with explicit caption and Hc2 curve context"
+      },
+      "anchors_without_raw_quote": [
+        {
+          "pdf_page_1_based": 8,
+          "character_start": 397,
+          "character_end": 400,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "ae36faf75565b41b3b7bebc95214b443338fb78f5d1109e039ca0b98b7fe165b"
+        }
+      ],
+      "depends_on": [],
+      "reference_status": "pending",
+      "scientific_acceptance": false,
+      "material_state_reviewed": false,
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "crb2-derived-hc2",
+      "label": "Upper critical field, μ₀Hc2(0)",
+      "display_value": "5.81 T at 110.4 GPa",
+      "origin": "Derived from a GL fit to transport",
+      "scope": "Zero-temperature extrapolation on PDF page 5. Figure 2d rounds the same fit to 5.8 T.",
+      "unresolved": "This is a fitted quantity; result and sample matching pending.",
+      "pages": [
+        5
+      ],
+      "quantities": [
+        {
+          "value": 5.81,
+          "unit": "T",
+          "relation": "derived",
+          "role": "GL fit/extrapolation",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "5.81"
+        },
+        {
+          "value": 110.4,
+          "unit": "GPa",
+          "relation": "reported_measurement_pressure",
+          "role": "Pressure of transport-derived fit scope",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "110.4"
+        },
+        {
+          "value": 5.8,
+          "unit": "T",
+          "relation": "rounded_same_fit",
+          "role": "Figure2d label; not independent measurement",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "5.8"
+        }
+      ],
+      "source_fields": {
+        "quantity": "mu0Hc2(0)",
+        "value": 5.81,
+        "unit": "T",
+        "pressure_gpa": 110.4,
+        "temperature_role": "zero-temperature extrapolation",
+        "derivation": "empirical Ginzburg-Landau fit",
+        "criterion": "90% normal-state resistivity",
+        "scientific_role": "derived_from_experimental_transport",
+        "same_fit_figure_rounding": {
+          "value": 5.8,
+          "unit": "T",
+          "figure": "2d",
+          "pdf_page_1_based": 8
+        }
+      },
+      "anchors_without_raw_quote": [
+        {
+          "pdf_page_1_based": 5,
+          "character_start": 720,
+          "character_end": 724,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "ceb72f1af4c9b6649dfead2628f241c700b8350b9b6434e85bf6fbbb55c0e2c1"
+        },
+        {
+          "pdf_page_1_based": 5,
+          "character_start": 693,
+          "character_end": 696,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "ceb72f1af4c9b6649dfead2628f241c700b8350b9b6434e85bf6fbbb55c0e2c1"
+        },
+        {
+          "pdf_page_1_based": 5,
+          "character_start": 730,
+          "character_end": 735,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "ceb72f1af4c9b6649dfead2628f241c700b8350b9b6434e85bf6fbbb55c0e2c1"
+        }
+      ],
+      "depends_on": [
+        "crb2-tc-criterion",
+        "crb2-high-pressure-transport-method"
+      ],
+      "reference_status": "pending",
+      "scientific_acceptance": false,
+      "material_state_reviewed": false,
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "crb2-derived-coherence-length",
+      "label": "Coherence length, ξ_GL(0)",
+      "display_value": "7.54 nm at 110.4 GPa",
+      "origin": "Derived from fitted Hc2(0)",
+      "scope": "Reported on PDF page 5; depends on the fitted upper critical field.",
+      "unresolved": "Result and sample matching pending.",
+      "pages": [
+        5
+      ],
+      "quantities": [
+        {
+          "value": 7.54,
+          "unit": "nm",
+          "relation": "derived",
+          "role": "Derived from fitted Hc2(0)",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "7.54"
+        },
+        {
+          "value": 110.4,
+          "unit": "GPa",
+          "relation": "reported_measurement_pressure",
+          "role": "Pressure of transport-derived fit scope",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "110.4"
+        }
+      ],
+      "source_fields": {
+        "quantity": "xi_GL(0)",
+        "value": 7.54,
+        "unit": "nm",
+        "pressure_gpa": 110.4,
+        "derivation": "Ginzburg-Landau quantity derived from fitted Hc2(0)",
+        "scientific_role": "derived_from_experimental_transport"
+      },
+      "anchors_without_raw_quote": [
+        {
+          "pdf_page_1_based": 5,
+          "character_start": 800,
+          "character_end": 804,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "ceb72f1af4c9b6649dfead2628f241c700b8350b9b6434e85bf6fbbb55c0e2c1"
+        },
+        {
+          "pdf_page_1_based": 5,
+          "character_start": 720,
+          "character_end": 724,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "ceb72f1af4c9b6649dfead2628f241c700b8350b9b6434e85bf6fbbb55c0e2c1"
+        },
+        {
+          "pdf_page_1_based": 5,
+          "character_start": 730,
+          "character_end": 735,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "ceb72f1af4c9b6649dfead2628f241c700b8350b9b6434e85bf6fbbb55c0e2c1"
+        }
+      ],
+      "depends_on": [
+        "crb2-derived-hc2"
+      ],
+      "reference_status": "pending",
+      "scientific_acceptance": false,
+      "material_state_reviewed": false,
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "crb2-reported-structure-label",
+      "label": "Reported structure description",
+      "display_value": "AlB₂ type · P6/mmm",
+      "origin": "Source structure description",
+      "scope": "Ambient-pressure description; separate room-temperature XRD discussion extends to 97.2 GPa.",
+      "unresolved": "Coordinates at 110.4 GPa and association with the COD reference remain unestablished.",
+      "pages": [
+        3,
+        5
+      ],
+      "quantities": [
+        {
+          "value": 97.2,
+          "unit": "GPa",
+          "relation": "upper_pressure_studied",
+          "role": "Separate powder XRD scope; not Tc or CIF reference pressure",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_supplied",
+          "raw": "97.2"
+        }
+      ],
+      "source_fields": {
+        "space_group": "P6/mmm",
+        "structure_type": "AlB2 type",
+        "source_scope": "ambient-pressure description; room-temperature XRD trend studied separately up to97.2GPa"
+      },
+      "anchors_without_raw_quote": [
+        {
+          "pdf_page_1_based": 3,
+          "character_start": 209,
+          "character_end": 215,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "fae19417d858382ee6d70a32433336920c6a3c6fcee92480d5381f0125792ad5"
+        },
+        {
+          "pdf_page_1_based": 5,
+          "character_start": 898,
+          "character_end": 904,
+          "character_coordinate_system": "Unicode Python characters in complete pdftotext -layout page; not PDF geometric offsets",
+          "page_text_sha256": "ceb72f1af4c9b6649dfead2628f241c700b8350b9b6434e85bf6fbbb55c0e2c1"
+        }
+      ],
+      "depends_on": [],
+      "reference_status": "pending",
+      "scientific_acceptance": false,
+      "material_state_reviewed": false,
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "selected_result_association": "unestablished"
+    }
+  ],
+  "structure_references": [
+    {
+      "id": "cod-1510641",
+      "formula": "CrB2",
+      "cod_id": "1510641",
+      "declared_formula": "B2 Cr",
+      "cell_content_formula": "- B2 Cr -",
+      "declared_space_group": "P 6/m m m",
+      "declared_space_group_number": 191,
+      "declared_hall_symbol": "-P 6 2",
+      "lattice": {
+        "a": {
+          "raw": "2.97",
+          "value": 2.97,
+          "unit": "Å",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_length_a",
+          "CIF_line_1_based": 38
+        },
+        "b": {
+          "raw": "2.97",
+          "value": 2.97,
+          "unit": "Å",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_length_b",
+          "CIF_line_1_based": 39
+        },
+        "c": {
+          "raw": "3.07",
+          "value": 3.07,
+          "unit": "Å",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_length_c",
+          "CIF_line_1_based": 40
+        },
+        "alpha": {
+          "raw": "90",
+          "value": 90.0,
+          "unit": "degrees",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_angle_alpha",
+          "CIF_line_1_based": 34
+        },
+        "beta": {
+          "raw": "90",
+          "value": 90.0,
+          "unit": "degrees",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_angle_beta",
+          "CIF_line_1_based": 35
+        },
+        "gamma": {
+          "raw": "120",
+          "value": 120.0,
+          "unit": "degrees",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_angle_gamma",
+          "CIF_line_1_based": 36
+        }
+      },
+      "temperature_k": null,
+      "pressure_gpa": null,
+      "temperature_scope": "Structure measurement temperature not supplied",
+      "structure_conditions": {
+        "celltemp": {
+          "raw": null,
+          "value": null,
+          "standard_uncertainty": null,
+          "unit": "K",
+          "status": "not_supplied",
+          "source_tag": "_cell_measurement_temperature",
+          "source_line": null
+        },
+        "diffrtemp": {
+          "raw": null,
+          "value": null,
+          "standard_uncertainty": null,
+          "unit": "K",
+          "status": "not_supplied",
+          "source_tag": "_diffrn_ambient_temperature",
+          "source_line": null
+        },
+        "cellpressure": {
+          "raw": null,
+          "value": null,
+          "standard_uncertainty": null,
+          "unit": "kPa",
+          "status": "not_supplied",
+          "source_tag": "_cell_measurement_pressure",
+          "source_line": null
+        },
+        "diffrpressure": {
+          "raw": null,
+          "value": null,
+          "standard_uncertainty": null,
+          "unit": "kPa",
+          "status": "not_supplied",
+          "source_tag": "_diffrn_ambient_pressure",
+          "source_line": null
+        }
+      },
+      "Fe_site_occupancy": null,
+      "source": {
+        "entry_url": "https://www.crystallography.net/cod/1510641.html",
+        "cif_url": "https://www.crystallography.net/cod/1510641.cif@176435",
+        "captured_revision": 176435,
+        "version_url_succeeded_at_capture": true,
+        "file_sha256": "bdd1e9169c057b3b0b2e5b16c96d7cde1427c04aaf3668f858ca8b06fc9e67ec",
+        "bytes": 2071,
+        "year": 1954,
+        "doi": "10.1016/0001-6160(54)90090-5",
+        "bibliography": {
+          "authors": "Moskowitz, D.; Glaser, F.W.; Post, B.",
+          "title": "Transition metal diborides",
+          "journal": "Acta Metallurgica",
+          "year": "1954",
+          "volume": "2",
+          "firstpage": "20",
+          "lastpage": "25",
+          "doi": "10.1016/0001-6160(54)90090-5",
+          "CIF_doi": "10.1016/0001-6160(54)90090-5",
+          "COD_method": null,
+          "CIF_radiation_probe": null
+        },
+        "captured_at_utc": "2026-10-01T20:39:12.139572+00:00",
+        "captured_HTTP_status": 200,
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "license_basis": "Each already-captured official COD entry links to CC0 /publicdomain/zero/1.0/; the CIF header states public domain.",
+        "download_is_mutable_current_file": false,
+        "publication_revision_verified": false
+      },
+      "checks": {
+        "parser": "Gemmi0.7.5, isolated task runtime",
+        "CIF_syntax_and_listed_site_coordinates_checked": true,
+        "declared_operations_and_metric_checked": true,
+        "independent_space_group_inference": false,
+        "checkCIF_or_refinement_performed": false,
+        "listed_site_count": 2,
+        "rounding_scope": [
+          "Rounded boron coordinates produce precision-sensitive symmetry-equivalent near-images. The 0.001 Å deduplication check agrees with B2; original coordinates were not changed."
+        ]
+      },
+      "limitations": [
+        "Physical sample, phase and catalogue result matching remain pending.",
+        "Pressure is not supplied in this CIF.",
+        "Temperature is not supplied in this CIF."
+      ],
+      "reference_status": "pending",
+      "scientific_acceptance": false,
+      "material_state_reviewed": false,
+      "coordinate_model_validated": false,
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "cod-1526507",
+      "formula": "MgB2",
+      "cod_id": "1526507",
+      "declared_formula": "B2 Mg",
+      "cell_content_formula": "- B2 Mg -",
+      "declared_space_group": "P 6/m m m",
+      "declared_space_group_number": 191,
+      "declared_hall_symbol": "-P 6 2",
+      "lattice": {
+        "a": {
+          "raw": "3.0823",
+          "value": 3.0823,
+          "unit": "Å",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_length_a",
+          "CIF_line_1_based": 38
+        },
+        "b": {
+          "raw": "3.0823",
+          "value": 3.0823,
+          "unit": "Å",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_length_b",
+          "CIF_line_1_based": 39
+        },
+        "c": {
+          "raw": "3.51461",
+          "value": 3.51461,
+          "unit": "Å",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_length_c",
+          "CIF_line_1_based": 40
+        },
+        "alpha": {
+          "raw": "90",
+          "value": 90.0,
+          "unit": "degrees",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_angle_alpha",
+          "CIF_line_1_based": 34
+        },
+        "beta": {
+          "raw": "90",
+          "value": 90.0,
+          "unit": "degrees",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_angle_beta",
+          "CIF_line_1_based": 35
+        },
+        "gamma": {
+          "raw": "120",
+          "value": 120.0,
+          "unit": "degrees",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_angle_gamma",
+          "CIF_line_1_based": 36
+        }
+      },
+      "temperature_k": null,
+      "pressure_gpa": null,
+      "temperature_scope": "Structure measurement temperature not supplied",
+      "structure_conditions": {
+        "celltemp": {
+          "raw": null,
+          "value": null,
+          "standard_uncertainty": null,
+          "unit": "K",
+          "status": "not_supplied",
+          "source_tag": "_cell_measurement_temperature",
+          "source_line": null
+        },
+        "diffrtemp": {
+          "raw": null,
+          "value": null,
+          "standard_uncertainty": null,
+          "unit": "K",
+          "status": "not_supplied",
+          "source_tag": "_diffrn_ambient_temperature",
+          "source_line": null
+        },
+        "cellpressure": {
+          "raw": null,
+          "value": null,
+          "standard_uncertainty": null,
+          "unit": "kPa",
+          "status": "not_supplied",
+          "source_tag": "_cell_measurement_pressure",
+          "source_line": null
+        },
+        "diffrpressure": {
+          "raw": null,
+          "value": null,
+          "standard_uncertainty": null,
+          "unit": "kPa",
+          "status": "not_supplied",
+          "source_tag": "_diffrn_ambient_pressure",
+          "source_line": null
+        }
+      },
+      "Fe_site_occupancy": null,
+      "source": {
+        "entry_url": "https://www.crystallography.net/cod/1526507.html",
+        "cif_url": "https://www.crystallography.net/cod/1526507.cif@176429",
+        "captured_revision": 176429,
+        "version_url_succeeded_at_capture": true,
+        "file_sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d",
+        "bytes": 2105,
+        "year": 2001,
+        "doi": null,
+        "bibliography": {
+          "authors": "Jorgensen, J.D.; Hinks, D.G.; Short, S.",
+          "title": "Lattice properties of Mg B2 versus temperature and pressure",
+          "journal": "Physical Review, Serie 3. B - Condensed Matter (18,1978-)",
+          "year": "2001",
+          "volume": "63",
+          "firstpage": "2245221",
+          "lastpage": "2245225",
+          "doi": null,
+          "CIF_doi": null,
+          "COD_method": null,
+          "CIF_radiation_probe": null
+        },
+        "captured_at_utc": "2026-10-01T20:39:12.139577+00:00",
+        "captured_HTTP_status": 200,
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "license_basis": "Each already-captured official COD entry links to CC0 /publicdomain/zero/1.0/; the CIF header states public domain.",
+        "download_is_mutable_current_file": false,
+        "publication_revision_verified": false
+      },
+      "checks": {
+        "parser": "Gemmi0.7.5, isolated task runtime",
+        "CIF_syntax_and_listed_site_coordinates_checked": true,
+        "declared_operations_and_metric_checked": true,
+        "independent_space_group_inference": false,
+        "checkCIF_or_refinement_performed": false,
+        "listed_site_count": 2,
+        "rounding_scope": [
+          "Rounded boron coordinates produce precision-sensitive symmetry-equivalent near-images. The 0.001 Å deduplication check agrees with B2; original coordinates were not changed."
+        ]
+      },
+      "limitations": [
+        "Physical sample, phase and catalogue result matching remain pending.",
+        "Pressure is not supplied in this CIF.",
+        "Temperature is not supplied in this CIF."
+      ],
+      "reference_status": "pending",
+      "scientific_acceptance": false,
+      "material_state_reviewed": false,
+      "coordinate_model_validated": false,
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "cod-4002152",
+      "formula": "FeSe",
+      "cod_id": "4002152",
+      "declared_formula": "Fe Se",
+      "cell_content_formula": "- Fe0.996 Se -",
+      "declared_space_group": "P 4/n m m :1",
+      "declared_space_group_number": 129,
+      "declared_hall_symbol": "P 4ab 2ab -1ab",
+      "lattice": {
+        "a": {
+          "raw": "3.77354(5)",
+          "value": 3.77354,
+          "unit": "Å",
+          "standard_uncertainty": 5e-05,
+          "uncertainty_status": "standard_uncertainty",
+          "CIF_tag": "_cell_length_a",
+          "CIF_line_1_based": 43
+        },
+        "b": {
+          "raw": "3.77354(5)",
+          "value": 3.77354,
+          "unit": "Å",
+          "standard_uncertainty": 5e-05,
+          "uncertainty_status": "standard_uncertainty",
+          "CIF_tag": "_cell_length_b",
+          "CIF_line_1_based": 44
+        },
+        "c": {
+          "raw": "5.52226(12)",
+          "value": 5.52226,
+          "unit": "Å",
+          "standard_uncertainty": 0.00012,
+          "uncertainty_status": "standard_uncertainty",
+          "CIF_tag": "_cell_length_c",
+          "CIF_line_1_based": 45
+        },
+        "alpha": {
+          "raw": "90",
+          "value": 90.0,
+          "unit": "degrees",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_angle_alpha",
+          "CIF_line_1_based": 39
+        },
+        "beta": {
+          "raw": "90",
+          "value": 90.0,
+          "unit": "degrees",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_angle_beta",
+          "CIF_line_1_based": 40
+        },
+        "gamma": {
+          "raw": "90",
+          "value": 90.0,
+          "unit": "degrees",
+          "standard_uncertainty": null,
+          "uncertainty_status": "not_reported",
+          "CIF_tag": "_cell_angle_gamma",
+          "CIF_line_1_based": 41
+        }
+      },
+      "temperature_k": 295.0,
+      "pressure_gpa": null,
+      "temperature_scope": "Structure cell and diffraction temperature",
+      "structure_conditions": {
+        "celltemp": {
+          "raw": "295",
+          "value": 295.0,
+          "standard_uncertainty": null,
+          "unit": "K",
+          "status": "reported",
+          "uncertainty_status": "not_reported",
+          "source_tag": "_cell_measurement_temperature",
+          "source_line": 46
+        },
+        "diffrtemp": {
+          "raw": "295",
+          "value": 295.0,
+          "standard_uncertainty": null,
+          "unit": "K",
+          "status": "reported",
+          "uncertainty_status": "not_reported",
+          "source_tag": "_diffrn_ambient_temperature",
+          "source_line": 48
+        },
+        "cellpressure": {
+          "raw": null,
+          "value": null,
+          "standard_uncertainty": null,
+          "unit": "kPa",
+          "status": "not_supplied",
+          "source_tag": "_cell_measurement_pressure",
+          "source_line": null
+        },
+        "diffrpressure": {
+          "raw": null,
+          "value": null,
+          "standard_uncertainty": null,
+          "unit": "kPa",
+          "status": "not_supplied",
+          "source_tag": "_diffrn_ambient_pressure",
+          "source_line": null
+        }
+      },
+      "Fe_site_occupancy": {
+        "raw": "0.996(3)",
+        "value": 0.996,
+        "standard_uncertainty": 0.003,
+        "unit": "dimensionless",
+        "status": "reported",
+        "uncertainty_status": "standard_uncertainty"
+      },
+      "source": {
+        "entry_url": "https://www.crystallography.net/cod/4002152.html",
+        "cif_url": "https://www.crystallography.net/cod/4002152.cif",
+        "captured_revision": 176432,
+        "version_url_succeeded_at_capture": false,
+        "file_sha256": "83a6bd28f07e9acca04035b5eb29c0bfa18a2a1133eb196ca2d029a029787ad5",
+        "bytes": 1555426,
+        "year": 2015,
+        "doi": "10.1021/cm5041612",
+        "bibliography": {
+          "authors": "Greenfield, Joshua T.; Kamali, Saeed; Lee, Kathleen; Kovnir, Kirill",
+          "title": "A Solution for Solution-Produced β-FeSe: Elucidating and Overcoming Factors that Prevent Superconductivity",
+          "journal": "Chemistry of Materials",
+          "year": "2015",
+          "volume": "27",
+          "firstpage": "588",
+          "lastpage": null,
+          "doi": "10.1021/cm5041612",
+          "CIF_doi": "10.1021/cm5041612",
+          "COD_method": "powder diffraction",
+          "CIF_radiation_probe": "x-ray"
+        },
+        "captured_at_utc": "2026-10-01T20:40:49.448229+00:00",
+        "captured_HTTP_status": 200,
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "license_basis": "Each already-captured official COD entry links to CC0 /publicdomain/zero/1.0/; the CIF header states public domain.",
+        "download_is_mutable_current_file": true,
+        "publication_revision_verified": false
+      },
+      "checks": {
+        "parser": "Gemmi0.7.5, isolated task runtime",
+        "CIF_syntax_and_listed_site_coordinates_checked": true,
+        "declared_operations_and_metric_checked": true,
+        "independent_space_group_inference": false,
+        "checkCIF_or_refinement_performed": false,
+        "listed_site_count": 2,
+        "rounding_scope": [
+          "Occupancy-weighted formula unit: Fe0.996Se. Declared and refined compositions remain distinct."
+        ],
+        "occupancy_caveat": "0.996(3) means standard uncertainty0.003;1.0 differs by0.004, about1.33 standard uncertainties. This alone does not establish a physical vacancy concentration."
+      },
+      "limitations": [
+        "Physical sample, phase and catalogue result matching remain pending.",
+        "Pressure is not supplied in this CIF.",
+        "The fixed revision URL was unavailable at capture. The downloaded current URL contained revision 176432; future downloads may differ.",
+        "Refined Fe occupancy is 0.996(3), with standard uncertainty 0.003; this alone does not establish a physical vacancy concentration."
+      ],
+      "reference_status": "pending",
+      "scientific_acceptance": false,
+      "material_state_reviewed": false,
+      "coordinate_model_validated": false,
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "selected_result_association": "unestablished"
+    }
+  ],
+  "inspection": {
+    "mode": "AI-assisted source fidelity and file checks",
+    "pdf_pages_inspected": [
+      3,
+      4,
+      5,
+      8
+    ],
+    "pdf_anchor_checks": 14,
+    "cif_syntax_parses": 3,
+    "cif_listed_site_and_declared_operation_checks": 3,
+    "independent_space_group_inference": false,
+    "checkCIF_or_refinement": false,
+    "new_scientific_model_calculation": false,
+    "formal_human_review": false
+  }
+}
