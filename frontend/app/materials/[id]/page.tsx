@@ -189,7 +189,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
       <details className="border-y border-sage-border py-3 text-sm text-slate-600">
         <summary className="cursor-pointer font-medium">How to read these data</summary>
         <p className="mt-3 max-w-4xl">Each property selection has its own source, conditions and result identity. Expand a value to inspect them. Observed and Computed describe the source report; catalogue eligibility and a clear anomaly check do not establish scientific validity. Different properties need not describe the same sample or state.</p>
-        <p className="mt-2 max-w-4xl">Missing pressure is not ambient pressure. Text structure claims remain separate from validated coordinates. Source recovery candidates and external calculated references do not replace selected measurements or bypass review holds.</p>
+        <p className="mt-2 max-w-4xl">Missing pressure is not ambient pressure. Text structure claims remain separate from validated coordinates. A source-linked value does not override a material review hold. Source recovery candidates and external calculated references do not replace selected measurements.</p>
       </details>
 
       <section className="grid grid-cols-2 gap-4 md:grid-cols-4">

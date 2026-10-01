@@ -12,7 +12,8 @@ beforeEach(() => { vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(); });
 
 describe("native run protocol — original SQL/HTTP bytes", () => {
-  it("pins all 619 source inputs including evidence intake, historical bytes, and 28 original response strings", () => {
+  it("pins all 626 source inputs including evidence intake, historical bytes, and 28 original response strings", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.materials20261001.wire.json")))).toBe("7f6818707eede03342efd91c98a915f7fd1a8438ec0f402c34e6aa1b0e0d5272");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.site20260930.wire.json")))).toBe("3807d16a54ec37dc38f08503ef39c5ff4a514111faba8d5f3c2efca37ad9b366");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.site20260924.wire.json")))).toBe("3e3d8a3fee3fccd74e031c97e998d9d4ca997297a623a8531b046e7c58c19bc7");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.delivery20260924r2.wire.json")))).toBe("77d9a8524f83c05789373db4030fe8dc5138a50478bfbacd23561e97e61bda9b");
@@ -35,7 +36,7 @@ describe("native run protocol — original SQL/HTTP bytes", () => {
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.wire.json")))).toBe("1cabdf1fc608c169a82b3b9942a6e672595c860a00b264b339f54e867dd9419f");
     expect(http.fixture_notice).toBe("Actual guarded native SQL and HTTP; synthetic identities and explicit intake compiler double; no real approval or execution.");
     expect(http.capture_test_path).toBe("api/tests/test_ml_use_runs_wire.py");
-    expect(http.source_pins).toHaveLength(619); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(619);
+    expect(http.source_pins).toHaveLength(626); expect(new Set(http.source_pins.map(p => p.path)).size).toBe(626);
     expect(http.source_pins.some(p => p.path === "api/services/ml_pilot_review_admission.py")).toBe(true);
     expect(http.source_pins.some(p => p.path === "scripts/probe_ml_pilot_review_install.py")).toBe(true);
     expect(http.source_pins.some(p => p.path === "api/tests/test_ml_pilot_participant_wire.py")).toBe(true);
