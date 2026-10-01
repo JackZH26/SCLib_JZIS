@@ -36,6 +36,11 @@ function validReport(value: MaterialCalculationReferences): boolean {
       && row.conditions_status === "not_inspected" && row.match_level === "fixed_composition_only"
       && [row.method, row.program, row.parser, row.structural_type, row.space_group, row.crystal_system, row.material_id].every(field => field === null || typeof field === "string")
       && row.knowledge_origin === (row.method && row.program ? "Computed" : "Unresolved")
+      && (row.xc_functional_names === null || Array.isArray(row.xc_functional_names) && row.xc_functional_names.length > 0 && row.xc_functional_names.length <= 16 && row.xc_functional_names.every(name => typeof name === "string" && name.length > 0 && name.length <= 80 && name === name.trim() && !/[\u0000-\u001f\u007f]/.test(name)))
+      && (row.xc_functional_type === null || typeof row.xc_functional_type === "string" && row.xc_functional_type.length > 0 && row.xc_functional_type.length <= 80 && row.xc_functional_type === row.xc_functional_type.trim() && !/[\u0000-\u001f\u007f]/.test(row.xc_functional_type))
+      && (row.spin_polarized === null || typeof row.spin_polarized === "boolean")
+      && (row.dft_metadata_status === ([row.xc_functional_names, row.xc_functional_type, row.spin_polarized].some(field => field !== null) ? "reported" : "not_supplied") || row.dft_metadata_status === "requires_review" && [row.xc_functional_names, row.xc_functional_type, row.spin_polarized].some(field => field === null))
+      && row.dft_metadata_scope === "reported_underlying_dft_metadata_not_complete_method"
       && row.method_status === (row.method ? "reported" : "unresolved") && Array.isArray(row.source_references) && row.source_references.length <= 8
       && row.source_references.every(link => typeof link?.provider === "string" && typeof link?.url === "string"));
 }
@@ -81,21 +86,27 @@ export function ExternalCalculationReferences({ materialId }: { materialId: stri
             <table className="w-full text-left text-sm">
               <caption className="sr-only">Public NOMAD tasks matched by composition, separate from reported superconducting measurements</caption>
               <thead className="border-b border-sage-border bg-slate-50 text-xs text-slate-600"><tr><th className="px-4 py-3">Task</th><th className="px-4 py-3">Structure</th><th className="px-4 py-3">Method / program</th><th className="px-4 py-3">Provenance</th></tr></thead>
-              <tbody className="divide-y divide-slate-100">{report.references.map(row => <tr key={row.id}>
+              <tbody className="divide-y divide-slate-100">{report.references.map(row => {
+                const dftFallback = row.dft_metadata_status === "requires_review" ? "Unresolved from returned metadata" : "Not supplied in returned metadata";
+                return <tr key={row.id}>
                 <td className="px-4 py-3 align-top"><a href={row.url} target="_blank" rel="noopener noreferrer" className="break-all font-medium text-accent-deep underline underline-offset-2">{row.id} ↗</a><span className="mt-1 block text-xs text-slate-500">{row.formula} · {row.knowledge_origin === "Computed" ? "Computed" : "Context unresolved"}</span></td>
                 <td className="px-4 py-3 align-top">{row.space_group ?? "Not supplied"}<span className="block text-xs text-slate-500">{[row.crystal_system, row.structural_type].filter(Boolean).join(" · ")}</span></td>
-                <td className="px-4 py-3 align-top">{row.method ?? "Method not resolved"}<span className="block text-xs text-slate-500">{row.program ?? "Program not supplied"}</span></td>
+                <td className="px-4 py-3 align-top">{row.method ?? "Method not resolved"}<span className="block text-xs text-slate-500">{row.program ?? "Program not supplied"}</span>{row.xc_functional_names && <span className="mt-1 block text-xs text-slate-600">Underlying DFT XC: {row.xc_functional_names.join(" + ")}</span>}</td>
                 <td className="px-4 py-3 align-top"><details><summary className="cursor-pointer text-accent-deep">Task details</summary><dl className="mt-2 min-w-56 space-y-2 text-xs text-slate-600">
+                  <div><dt className="font-medium">Underlying DFT XC names</dt><dd>{row.xc_functional_names?.join(" + ") ?? dftFallback}</dd></div>
+                  <div><dt className="font-medium">DFT functional class</dt><dd>{row.xc_functional_type ?? dftFallback}</dd></div>
+                  <div><dt className="font-medium">DFT spin polarization</dt><dd>{row.spin_polarized === null ? dftFallback : row.spin_polarized ? "Reported spin-polarized" : "Reported non-spin-polarized"}</dd></div>
                   <div><dt className="font-medium">Source archive</dt><dd><a href={row.archive_url} target="_blank" rel="noopener noreferrer" className="text-accent-deep underline">Inspect NOMAD archive ↗</a></dd></div>
                   <div><dt className="font-medium">Parser</dt><dd>{row.parser ?? "Not supplied"}</dd></div>
                   <div><dt className="font-medium">NOMAD structure identity</dt><dd className="break-all">{row.material_id ?? "Not supplied"}</dd></div>
                   <div><dt className="font-medium">Repository and citation links</dt><dd className="flex flex-wrap gap-x-3 gap-y-1">{row.source_references.filter(link => safeOrigin(link.url)).map(link => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-accent-deep underline">{link.provider} ↗</a>)}{!row.source_references.some(link => safeOrigin(link.url)) && "Not supplied"}</dd></div>
                   <div><dt className="font-medium">Metadata snapshot hash</dt><dd className="break-all font-mono">{row.source_snapshot_sha256}</dd></div>
                 </dl></details></td>
-              </tr>)}</tbody>
+              </tr>;
+              })}</tbody>
             </table>
           </div>
-          <p className="max-w-4xl text-xs text-slate-500">Counts describe tasks, not independent experiments. Imported MP, OQMD or AFLOW tasks can overlap other reference panels. Functional and archive conditions require source inspection. <a href={docsUrl} target="_blank" rel="noopener noreferrer" className="underline">NOMAD API documentation ↗</a></p>
+          <p className="max-w-4xl text-xs text-slate-500">Counts describe tasks, not independent experiments. Imported MP, OQMD or AFLOW tasks can overlap other reference panels. Reported DFT metadata describes the underlying DFT calculation, including for GW tasks; it does not specify the complete method. Archive conditions remain uninspected. <a href={docsUrl} target="_blank" rel="noopener noreferrer" className="underline">NOMAD API documentation ↗</a></p>
           {report.truncated && <p className="text-xs text-amber-800">Showing at most 20 tasks in entry ID order; this is not a census of phases or methods.</p>}
           <p className="text-xs text-slate-500">Retrieved: {retrieved && !Number.isNaN(retrieved.getTime()) ? `${retrieved.toLocaleString("en-GB", { timeZone: "UTC" })} UTC` : "Unavailable"}</p>
         </>}

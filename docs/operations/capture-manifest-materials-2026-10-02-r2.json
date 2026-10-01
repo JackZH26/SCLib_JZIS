@@ -1,0 +1,58 @@
+[
+  {
+    "capture": "/tmp/sclib-materials-native-20261002r2-locked/test_barrier_edit_needs_new_pr0/main-barrier-wire.json",
+    "archive": "frontend/tests/fixtures/discovery-main-barrier-native.materials20261002r2.wire.json",
+    "sha256": "e65224720ad7fe3d706326bb806f41f7ed3452a7971d96220b31282d5b4b0f5a",
+    "bytes": 202001,
+    "source_pin_count": 311,
+    "capture_test_path": "api/tests/test_discovery_main_barrier.py"
+  },
+  {
+    "capture": "/tmp/sclib-materials-native-20261002r2-locked/test_actual_three_account_prev0/ml-pilot-attestations-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-attestations-native.materials20261002r2.wire.json",
+    "sha256": "fdda5b5a984747e120de219f6dda8bdf432d54131e48edc1f9c6eb3aa4cdff52",
+    "bytes": 455941,
+    "source_pin_count": 633,
+    "capture_test_path": "api/tests/test_ml_pilot_attestations.py"
+  },
+  {
+    "capture": "/tmp/sclib-materials-native-20261002r2-locked/test_byte_replay_is_read_only_0/ml-pilot-evidence-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-evidence-native.materials20261002r2.wire.json",
+    "sha256": "7a9c7eab692075479a3e0c1fa92c08c77128737eab9ec251e97595f07a049fa9",
+    "bytes": 366336,
+    "source_pin_count": 633,
+    "capture_test_path": "api/tests/test_ml_pilot_evidence.py"
+  },
+  {
+    "capture": "/tmp/sclib-materials-native-20261002r2-locked/test_participant_workbench_rea0/ml-pilot-participant-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-participant-native.materials20261002r2.wire.json",
+    "sha256": "b7500c93800380de8349cf67b788edacdc448ea3cf5fc2cc3deadd223ea6d8f2",
+    "bytes": 160703,
+    "source_pin_count": 633,
+    "capture_test_path": "api/tests/test_ml_pilot_participant_wire.py"
+  },
+  {
+    "capture": "/tmp/sclib-materials-native-20261002r2-locked/test_real_four_file_preflight_0/ml-pilot-review-wire.json",
+    "archive": "frontend/tests/fixtures/ml-pilot-review-native.materials20261002r2.wire.json",
+    "sha256": "c62f2eac64c1df20f833ebc4052220bbc424a1847b3a0b10d12bc205d77678b6",
+    "bytes": 88792,
+    "source_pin_count": 633,
+    "capture_test_path": "api/tests/test_ml_pilot_review_admission.py"
+  },
+  {
+    "capture": "/tmp/sclib-materials-native-20261002r2-locked/test_independent_rights_workbe0/ml-rights-wire.json",
+    "archive": "frontend/tests/fixtures/ml-use-rights-native.materials20261002r2.wire.json",
+    "sha256": "51a627aceafb94a42bbf9cfc12f3b3616154561fb79add8369a8db51af3670ce",
+    "bytes": 229233,
+    "source_pin_count": 633,
+    "capture_test_path": "api/tests/test_ml_use_rights_wire.py"
+  },
+  {
+    "capture": "/tmp/sclib-materials-native-20261002r2-locked/test_run_workbench_native_wire0/ml-runs-wire.json",
+    "archive": "frontend/tests/fixtures/ml-use-runs-native.materials20261002r2.wire.json",
+    "sha256": "0ec6301548c6376b02392d5cc03eff62c5ad4c136d964107449606baf124d21a",
+    "bytes": 203378,
+    "source_pin_count": 633,
+    "capture_test_path": "api/tests/test_ml_use_runs_wire.py"
+  }
+]

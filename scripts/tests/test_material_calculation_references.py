@@ -60,6 +60,70 @@ def test_multistructure_tasks_and_unknown_method_remain_distinct():
     assert result["scientific_acceptance"] is False
 
 
+def test_raw_underlying_dft_metadata_preserves_order_false_and_main_gw_method():
+    item = row(method="G0W0", program="exciting")
+    item["results"]["method"]["simulation"]["dft"] = {
+        "xc_functional_names": ["GGA_X_PBE", "GGA_C_PBE"],
+        "xc_functional_type": "GGA", "spin_polarized": False,
+    }
+    result = project(payload([item]))
+    ref = result["references"][0]
+    assert ref["method"] == "G0W0" and ref["knowledge_origin"] == "Computed"
+    assert ref["xc_functional_names"] == ["GGA_X_PBE", "GGA_C_PBE"]
+    assert ref["xc_functional_type"] == "GGA" and ref["spin_polarized"] is False
+    assert ref["dft_metadata_status"] == "reported"
+    assert ref["dft_metadata_scope"] == "reported_underlying_dft_metadata_not_complete_method"
+    assert ref["conditions_status"] == "not_inspected"
+    assert nomad._valid_cache(result, "MgB2", "B2Mg")
+
+
+@pytest.mark.parametrize("names", [None, [], [None], [True], [1], ["a"] * 17, ["a" * 81], [" GGA_X_PBE"], ["GGA_X_PBE\n"], "GGA_X_PBE", {"name": "GGA_X_PBE"}])
+def test_dft_name_array_is_nullable_strict_bounded_and_not_truncated(names):
+    item = row()
+    item["results"]["method"]["simulation"]["dft"] = {"xc_functional_names": names}
+    ref = project(payload([item]))["references"][0]
+    assert ref["xc_functional_names"] is None
+    assert ref["dft_metadata_status"] == ("not_supplied" if names is None or names == [] else "requires_review")
+
+
+@pytest.mark.parametrize("spin", [0, 1, "false", "true", [], {}])
+def test_numeric_or_text_spin_values_do_not_become_reported_booleans(spin):
+    metadata = nomad._dft_metadata({"dft": {"spin_polarized": spin}})
+    assert metadata["spin_polarized"] is None and metadata["dft_metadata_status"] == "requires_review"
+
+
+def test_missing_dft_metadata_never_infers_functional_from_method_or_program():
+    ref = project()["references"][0]
+    assert ref["method"] == "DFT" and ref["program"] == "VASP"
+    assert all(ref[key] is None for key in ("xc_functional_names", "xc_functional_type", "spin_polarized"))
+    assert ref["dft_metadata_status"] == "not_supplied"
+    assert nomad._dft_metadata({"dft": {"xc_functional_type": " GGA"}})["xc_functional_type"] is None
+
+
+def test_malformed_supplied_metadata_is_not_absence_and_valid_false_is_retained():
+    item = row()
+    item["results"]["method"]["simulation"]["dft"] = {"xc_functional_names": [None], "spin_polarized": False}
+    result = project(payload([item]))
+    ref = result["references"][0]
+    assert ref["xc_functional_names"] is None and ref["spin_polarized"] is False
+    assert ref["dft_metadata_status"] == "requires_review"
+    assert nomad._valid_cache(result, "MgB2", "B2Mg")
+    absent = project()["references"][0]
+    assert absent["dft_metadata_status"] == "not_supplied"
+
+
+def test_cache_rejects_bad_dft_names_spin_promotions_and_old_missing_scope():
+    result = project()
+    for patch in ({"xc_functional_names": [None]}, {"spin_polarized": 0}, {"dft_metadata_scope": "full_method_verified"}, {"dft_metadata_status": "reported"}):
+        changed = deepcopy(result)
+        changed["references"][0].update(patch)
+        assert not nomad._valid_cache(changed, "MgB2", "B2Mg")
+    for key in ("dft_metadata_scope", "xc_functional_names"):
+        changed = deepcopy(result)
+        changed["references"][0].pop(key)
+        assert not nomad._valid_cache(changed, "MgB2", "B2Mg")
+
+
 @pytest.mark.parametrize("changed", ["B", "B2Mg1-x", "¹¹B2Mg", "B2Mg:Fe", "B2Mg/O"])
 def test_each_returned_composition_label_must_match_exactly(changed):
     item = row()
@@ -258,6 +322,7 @@ async def test_leaf_query_is_public_and_http_422_is_not_absence(monkeypatch):
         await nomad._provider_payload("B2Mg")
     assert observed[0]["owner"] == "public" and observed[0]["pagination"]["page_size"] == 21
     assert observed[0]["query"] == {"results.material.chemical_formula_hill": "B2Mg"}
+    assert {"results.method.simulation.dft.xc_functional_names", "results.method.simulation.dft.xc_functional_type", "results.method.simulation.dft.spin_polarized"} <= set(observed[0]["required"]["include"])
     assert all(field not in {"results.material.symmetry", "results.method.simulation"} for field in observed[0]["required"]["include"])
 
 

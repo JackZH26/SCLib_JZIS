@@ -1,0 +1,2070 @@
+{
+  "version": "material-supercon-references/1.0.0",
+  "provider": "MDR SuperCon",
+  "formula": "Nb",
+  "query_formula": "Nb",
+  "status": "available",
+  "reason": null,
+  "references": [
+    {
+      "id": "mdr:240322:oxide_metallic:90106",
+      "source_row_id": "90106",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "1a96a4f7398f9924c99d7a0acba4cbd5011309e3659bcdb7cf493770885a8123",
+      "source_line": 16275,
+      "source_line_end": 16275,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "PRL0794262",
+        "title": "Superconducting Tc and electron-phonon coupling in Nb to 132 GPa: Magnetic susceptibility at megabar pressures",
+        "journal": "Phys.Rev.Lett., 79(1997)4262",
+        "publication_year_raw": "1997"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.2",
+          "value": 9.2,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.2",
+          "value": 9.2,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:112021",
+      "source_row_id": "112021",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "faa5fb860f6ff65efcb94cae2726b02653cbc476a7e2588e0a4911951e3bfe84",
+      "source_line": 23261,
+      "source_line_end": 23261,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "253",
+        "title": "SUPERCONDUCTING SOLID SOLUTION ALLOYS OF THE TRANSITION ELEMENTS",
+        "journal": "PHYS.REV.,123(1961)1569",
+        "publication_year_raw": "1961"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.2",
+          "value": 9.2,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.2",
+          "value": 9.2,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:112780",
+      "source_row_id": "112780",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "2a27bb45b9b6dd0cf1bef16e5bde330f27f77ef6e55bba24911840e704cb0199",
+      "source_line": 24018,
+      "source_line_end": 24018,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "PRB1490231",
+        "title": "Superconducting properties of high-purity niobium",
+        "journal": "Phys.Rev., 149(1966)231",
+        "publication_year_raw": "1966"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": "1",
+        "label": "Single phase bulk",
+        "status": "reported"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.25",
+          "value": 9.25,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.25",
+          "value": 9.25,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "hc1zero",
+          "label": "Hc1 at 0 K (polycrystal)",
+          "raw_value": "1735",
+          "value": 1735.0,
+          "raw_unit": "Oe",
+          "unit": "Oe",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "hc2zero",
+          "label": "Hc2 at 0 K (polycrystal)",
+          "raw_value": "0.404",
+          "value": 0.404,
+          "raw_unit": "T",
+          "unit": "T",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:112781",
+      "source_row_id": "112781",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "1c729172ec503fa733a8d84e1db58966237217057239ec4819fea35300372eae",
+      "source_line": 24019,
+      "source_line_end": 24019,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "1300",
+        "title": "Precision measurement of anisotropy in the upper critical field of superconducting niobium",
+        "journal": "PHYS.REV.,176(1968)562",
+        "publication_year_raw": "1968"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": "3",
+        "label": "Single crystal bulk",
+        "status": "reported"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.21",
+          "value": 9.21,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.21",
+          "value": 9.21,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "hc2zero",
+          "label": "Hc2 at 0 K (polycrystal)",
+          "raw_value": "0.416",
+          "value": 0.416,
+          "raw_unit": "T",
+          "unit": "T",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:112822",
+      "source_row_id": "112822",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "071741c7abb01bd7f244cb4a73ff5fcb82c4ed1774e8930aee224b14e2d28fb0",
+      "source_line": 24060,
+      "source_line_end": 24060,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "1775",
+        "title": "Surface superconductivity in niobium and niobium-tantalum alloys",
+        "journal": "PHYS.REV.B,9(1974)108",
+        "publication_year_raw": "1974"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.273",
+          "value": 9.273,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.273",
+          "value": 9.273,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "cohere",
+          "label": "Coherence length at 0 K (polycrystal)",
+          "raw_value": "387",
+          "value": 387.0,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "penet",
+          "label": "Penetration depth at 0 K (polycrystal)",
+          "raw_value": "314",
+          "value": 314.0,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:112827",
+      "source_row_id": "112827",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "083dd1ed587492ec1b537b135b7c1c336d4517b14dd0a05ba0bc0c890926626d",
+      "source_line": 24065,
+      "source_line_end": 24065,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "1352",
+        "title": "Nuclear magnetic resonance and specific heat measurements of transition metal and alloys; Ti-V-Fe and Zr-Nb-Mo systems",
+        "journal": "J.PHYS.SOC.JAPAN,22(1967)238",
+        "publication_year_raw": "1967"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.2",
+          "value": 9.2,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.2",
+          "value": 9.2,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "gamma",
+          "label": "Electronic specific heat coefficient",
+          "raw_value": "7.9",
+          "value": 7.9,
+          "raw_unit": "mj/mol.K2",
+          "unit": null,
+          "status": "unit_requires_review",
+          "meaning": "electronic_specific_heat_coefficient",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "debyet",
+          "label": "Debye temperature",
+          "raw_value": "242",
+          "value": 242.0,
+          "raw_unit": null,
+          "unit": null,
+          "status": "unit_not_supplied",
+          "meaning": "temperature_unit_not_supplied",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:112850",
+      "source_row_id": "112850",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "623c590921ed0ac01f587e6af557ac0d39692c65f801ecfa4d5891c20abebdc3",
+      "source_line": 24088,
+      "source_line_end": 24088,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "1307",
+        "title": null,
+        "journal": "PHYS.STAT.SOL.,40(1970)657",
+        "publication_year_raw": "1970"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.18",
+          "value": 9.18,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.18",
+          "value": 9.18,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "hc2zero",
+          "label": "Hc2 at 0 K (polycrystal)",
+          "raw_value": "150",
+          "value": 150.0,
+          "raw_unit": "E+3 A/m",
+          "unit": "10³ A/m",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "gamma",
+          "label": "Electronic specific heat coefficient",
+          "raw_value": "7.74",
+          "value": 7.74,
+          "raw_unit": "mj/mol.K2",
+          "unit": null,
+          "status": "unit_requires_review",
+          "meaning": "electronic_specific_heat_coefficient",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "debyet",
+          "label": "Debye temperature",
+          "raw_value": "248",
+          "value": 248.0,
+          "raw_unit": null,
+          "unit": null,
+          "status": "unit_not_supplied",
+          "meaning": "temperature_unit_not_supplied",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:112918",
+      "source_row_id": "112918",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "8b27ddda522c8ed351c531968fa4907807b73b53d032b8c0d3bac41bcc541628",
+      "source_line": 24156,
+      "source_line_end": 24156,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "1513",
+        "title": "Lattice thermal conductivity of Ta-Nb and Nb-Mo solid solution alloys in normal and superconducting states",
+        "journal": "J.PHYS.C,(SOLID ST.PHYS.),2(1969)629",
+        "publication_year_raw": "1969"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.1",
+          "value": 9.1,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.1",
+          "value": 9.1,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:112938",
+      "source_row_id": "112938",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "c07f31a54c6b8bad5d57a64ced499dab1019c0d6a428eb7dac976befde0895ac",
+      "source_line": 24176,
+      "source_line_end": 24176,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "1771",
+        "title": "The effect of yttrium or gadorinium on the superconducting transition temperature of niobium",
+        "journal": "J.LESS-COMMON.MET.,40(1975)29",
+        "publication_year_raw": "1975"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.16",
+          "value": 9.16,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.16",
+          "value": 9.16,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "hc2zero",
+          "label": "Hc2 at 0 K (polycrystal)",
+          "raw_value": "3.19",
+          "value": 3.19,
+          "raw_unit": "kOe",
+          "unit": "kOe",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:112953",
+      "source_row_id": "112953",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "0160aa8255aa52757dc1c659d1fe54d0594641a3cc428ffbdcd490bbd465b920",
+      "source_line": 24191,
+      "source_line_end": 24191,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "928",
+        "title": "The normal state specific heat of niobium-tantalum alloys",
+        "journal": "PHYS.LETT.A29(1969)284",
+        "publication_year_raw": "1969"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.23",
+          "value": 9.23,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.23",
+          "value": 9.23,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "hc2zero",
+          "label": "Hc2 at 0 K (polycrystal)",
+          "raw_value": "4.2",
+          "value": 4.2,
+          "raw_unit": "kOe",
+          "unit": "kOe",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "gamma",
+          "label": "Electronic specific heat coefficient",
+          "raw_value": "7.8",
+          "value": 7.8,
+          "raw_unit": "mj/mol.K2",
+          "unit": null,
+          "status": "unit_requires_review",
+          "meaning": "electronic_specific_heat_coefficient",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "debyet",
+          "label": "Debye temperature",
+          "raw_value": "280",
+          "value": 280.0,
+          "raw_unit": null,
+          "unit": null,
+          "status": "unit_not_supplied",
+          "meaning": "temperature_unit_not_supplied",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:113113",
+      "source_row_id": "113113",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "aa344761626cf2ae745bac641386e1502ca16ab76b3ce80c802ed884764d0be9",
+      "source_line": 24351,
+      "source_line_end": 24351,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "1002",
+        "title": "Supraconductivite et chaleur specifique d'alliages bases sur Ti3Sb",
+        "journal": "HELVETIA PHYS.ACTA,43(1970)59",
+        "publication_year_raw": "1970"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.4",
+          "value": 9.4,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.4",
+          "value": 9.4,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "gamma",
+          "label": "Electronic specific heat coefficient",
+          "raw_value": "7.8",
+          "value": 7.8,
+          "raw_unit": "mj/mol.K2",
+          "unit": null,
+          "status": "unit_requires_review",
+          "meaning": "electronic_specific_heat_coefficient",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "debyet",
+          "label": "Debye temperature",
+          "raw_value": "277",
+          "value": 277.0,
+          "raw_unit": null,
+          "unit": null,
+          "status": "unit_not_supplied",
+          "meaning": "temperature_unit_not_supplied",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:150869",
+      "source_row_id": "150869",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "bb4593d1475e151be269c2348d63ee785e229069433cda04d4d063a25d975508",
+      "source_line": 26590,
+      "source_line_end": 26590,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "ZFP2080142",
+        "title": "Superleitung von Vanadium, Niob und Tantal unter hohem Druck",
+        "journal": "Z.Physik, 208(1968)142",
+        "publication_year_raw": "1968"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.4",
+          "value": 9.4,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.4",
+          "value": 9.4,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "dtcdp",
+          "label": "dTc/dP at P = 0",
+          "raw_value": "0.12",
+          "value": 0.12,
+          "raw_unit": "K/GPa",
+          "unit": "K/GPa",
+          "status": "reported",
+          "meaning": "pressure_derivative_not_measurement_pressure",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:152558",
+      "source_row_id": "152558",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "751d83986bd606aefb3b9b9b65d1d723f60b57f989e135104ae7a9be8e0ff1b3",
+      "source_line": 28213,
+      "source_line_end": 28213,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "P072064503",
+        "title": "Dependence of magnetic penetration depth on the thickness of superconducting Nb thin films",
+        "journal": "Phys.Rev.B, 72(2005)064503",
+        "publication_year_raw": "2005"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": "W"
+      },
+      "sample_form": {
+        "raw_code": "4",
+        "label": "Film",
+        "status": "reported"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": "mivrowave",
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "7.13",
+          "value": 7.13,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "7.13",
+          "value": 7.13,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "tcwidth",
+          "label": "Resistive transition width",
+          "raw_value": "0.1",
+          "value": 0.1,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "transition_width_not_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "penet",
+          "label": "Penetration depth at 0 K (polycrystal)",
+          "raw_value": "2174",
+          "value": 2174.0,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": "mivrowave",
+          "method_label": "mivrowave",
+          "method_status": "reported"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:152559",
+      "source_row_id": "152559",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "49df5abdd6a26ac02802db0f6708f64128f319c50dbf85be89ce27db2f995d2d",
+      "source_line": 28214,
+      "source_line_end": 28214,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "P072064503",
+        "title": "Dependence of magnetic penetration depth on the thickness of superconducting Nb thin films",
+        "journal": "Phys.Rev.B, 72(2005)064503",
+        "publication_year_raw": "2005"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": "W"
+      },
+      "sample_form": {
+        "raw_code": "4",
+        "label": "Film",
+        "status": "reported"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": "mivrowave",
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "7.95",
+          "value": 7.95,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "7.95",
+          "value": 7.95,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "tcwidth",
+          "label": "Resistive transition width",
+          "raw_value": "0.1",
+          "value": 0.1,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "transition_width_not_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "penet",
+          "label": "Penetration depth at 0 K (polycrystal)",
+          "raw_value": "1361",
+          "value": 1361.0,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": "mivrowave",
+          "method_label": "mivrowave",
+          "method_status": "reported"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:152560",
+      "source_row_id": "152560",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "6a13c7ba25ff58807706b801f0284d79199870693897f535978bba6701bde89f",
+      "source_line": 28215,
+      "source_line_end": 28215,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "P072064503",
+        "title": "Dependence of magnetic penetration depth on the thickness of superconducting Nb thin films",
+        "journal": "Phys.Rev.B, 72(2005)064503",
+        "publication_year_raw": "2005"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": "W"
+      },
+      "sample_form": {
+        "raw_code": "4",
+        "label": "Film",
+        "status": "reported"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": "mivrowave",
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "8.81",
+          "value": 8.81,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "8.81",
+          "value": 8.81,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "tcwidth",
+          "label": "Resistive transition width",
+          "raw_value": "0.1",
+          "value": 0.1,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "transition_width_not_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "penet",
+          "label": "Penetration depth at 0 K (polycrystal)",
+          "raw_value": "1191",
+          "value": 1191.0,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": "mivrowave",
+          "method_label": "mivrowave",
+          "method_status": "reported"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:152561",
+      "source_row_id": "152561",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "63e01dbc85683e7ad5dfa0dc883ec450cd96c13f98e0abd9a092db674483c6db",
+      "source_line": 28216,
+      "source_line_end": 28216,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "P072064503",
+        "title": "Dependence of magnetic penetration depth on the thickness of superconducting Nb thin films",
+        "journal": "Phys.Rev.B, 72(2005)064503",
+        "publication_year_raw": "2005"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": "W"
+      },
+      "sample_form": {
+        "raw_code": "4",
+        "label": "Film",
+        "status": "reported"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": "mivrowave",
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.09",
+          "value": 9.09,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.09",
+          "value": 9.09,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "tcwidth",
+          "label": "Resistive transition width",
+          "raw_value": "0.1",
+          "value": 0.1,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "transition_width_not_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "penet",
+          "label": "Penetration depth at 0 K (polycrystal)",
+          "raw_value": "1008",
+          "value": 1008.0,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": "mivrowave",
+          "method_label": "mivrowave",
+          "method_status": "reported"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:152562",
+      "source_row_id": "152562",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "dd55c53b3698ac0cb5e62d889a06fe7737b89d4d5f00b759b9be366d3b4be415",
+      "source_line": 28217,
+      "source_line_end": 28217,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "P072064503",
+        "title": "Dependence of magnetic penetration depth on the thickness of superconducting Nb thin films",
+        "journal": "Phys.Rev.B, 72(2005)064503",
+        "publication_year_raw": "2005"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": "W"
+      },
+      "sample_form": {
+        "raw_code": "4",
+        "label": "Film",
+        "status": "reported"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": "mivrowave",
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.47",
+          "value": 9.47,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.47",
+          "value": 9.47,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "tcwidth",
+          "label": "Resistive transition width",
+          "raw_value": "0.1",
+          "value": 0.1,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "transition_width_not_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "penet",
+          "label": "Penetration depth at 0 K (polycrystal)",
+          "raw_value": "872",
+          "value": 872.0,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": "mivrowave",
+          "method_label": "mivrowave",
+          "method_status": "reported"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:152563",
+      "source_row_id": "152563",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "7f3fd7f20a709010da48b4496198dedb50b55c6758f28728d235f1d628bc0fd4",
+      "source_line": 28218,
+      "source_line_end": 28218,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "P072064503",
+        "title": "Dependence of magnetic penetration depth on the thickness of superconducting Nb thin films",
+        "journal": "Phys.Rev.B, 72(2005)064503",
+        "publication_year_raw": "2005"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": "W"
+      },
+      "sample_form": {
+        "raw_code": "4",
+        "label": "Film",
+        "status": "reported"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": "mivrowave",
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "9.71",
+          "value": 9.71,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "9.71",
+          "value": 9.71,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "tcwidth",
+          "label": "Resistive transition width",
+          "raw_value": "0.1",
+          "value": 0.1,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "transition_width_not_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "penet",
+          "label": "Penetration depth at 0 K (polycrystal)",
+          "raw_value": "772",
+          "value": 772.0,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": "mivrowave",
+          "method_label": "mivrowave",
+          "method_status": "reported"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:156454",
+      "source_row_id": "156454",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "7a47ab8247e3a3658053c7d0e844bd4c91a88fb7387f434bee10eaa596e100d7",
+      "source_line": 31410,
+      "source_line_end": 31410,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "Nb1",
+      "raw_common_formula": "Nb",
+      "bibliography": {
+        "reference_code": "SST025112001",
+        "title": "Direct measurement of the magnetic penetration depth by magnetic force microscopy",
+        "journal": "Supercond.Sci.Technol., 25(2012)112001",
+        "publication_year_raw": "2012"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": null
+      },
+      "sample_form": {
+        "raw_code": "4",
+        "label": "Film",
+        "status": "reported"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": "MFM",
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "8.8",
+          "value": 8.8,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t1",
+          "label": "Tc (R = 0)",
+          "raw_value": "8.8",
+          "value": 8.8,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "zero_resistance_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "penet",
+          "label": "Penetration depth at 0 K (polycrystal)",
+          "raw_value": "110",
+          "value": 110.0,
+          "raw_unit": "nm",
+          "unit": "nm",
+          "status": "reported",
+          "meaning": "source_column_reports_zero_kelvin",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": "MFM",
+          "method_label": "MFM",
+          "method_status": "reported"
+        }
+      ]
+    }
+  ],
+  "matches_total": 19,
+  "omitted_rows": 0,
+  "truncated": false,
+  "dataset_version": "240322",
+  "dataset_doi": "https://doi.org/10.48505/nims.4487",
+  "license": "CC BY 4.0",
+  "attribution": "MDR SuperCon Datasheet Ver.240322, National Institute for Materials Science (NIMS), DOI 10.48505/nims.4487. Licensed under Creative Commons Attribution 4.0 International.",
+  "scope": "oxide_metallic_curated_source_rows_composition_references_not_selected_material_properties",
+  "snapshot_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+  "resource_sha256": "d1fce28506d68732744858570f6e4ee2a8dfef94630c8b3b48d703b95443707c",
+  "source_publication_status": "not_checked",
+  "scientific_acceptance": false,
+  "sample_identity_established": false,
+  "phase_identity_established": false
+}

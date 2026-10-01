@@ -101,3 +101,46 @@ async def test_unavailable_material_is_checked_before_cache_or_provider(monkeypa
     with pytest.raises(HTTPException) as error:
         await materials.material_external_calculations("mat:excluded", identity=None, db=Session())
     assert error.value.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_reported_dft_metadata_is_additive_and_does_not_promote_underlying_gw_method(monkeypatch):
+    from routers import materials
+
+    material = context()
+
+    class Session:
+        async def get(self, *args):
+            return material
+
+    async def view(*args):
+        return material
+
+    async def revision(*args):
+        return (1,)
+
+    async def fetch(formula, *, current_records):
+        row = {"entry_id": "synthetic_gw", "results": {
+            "material": {"chemical_formula_hill": "NNb"},
+            "method": {"method_name": "G0W0", "simulation": {
+                "program_name": "exciting", "dft": {
+                    "xc_functional_names": ["GGA_X_PBE", "GGA_C_PBE"],
+                    "xc_functional_type": "GGA", "spin_polarized": False,
+                },
+            }},
+        }}
+        return nomad.project_calculation_references(formula, {"data": [row], "pagination": {"total": 1}}, retrieved_at="2026-10-02T00:00:00+00:00")
+
+    monkeypatch.setattr(materials, "material_view", view)
+    monkeypatch.setattr(materials, "_material_page_revision", revision)
+    monkeypatch.setattr(materials, "visibility_allows_view", lambda value: True)
+    monkeypatch.setattr(nomad, "fetch_material_calculation_references", fetch)
+    response = await materials.material_external_calculations("mat:synthetic", identity=None, db=Session())
+    report = json.loads(response.body)
+    row = report["references"][0]
+    assert row["method"] == "G0W0" and row["xc_functional_names"] == ["GGA_X_PBE", "GGA_C_PBE"]
+    assert row["spin_polarized"] is False and row["dft_metadata_status"] == "reported"
+    assert row["dft_metadata_scope"] == "reported_underlying_dft_metadata_not_complete_method"
+    assert row["conditions_status"] == "not_inspected"
+    assert row["phase_identity_established"] is False and report["scientific_acceptance"] is False
+    assert response.headers["cache-control"] == "private, no-store"

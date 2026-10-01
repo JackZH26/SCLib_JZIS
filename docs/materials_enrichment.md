@@ -197,8 +197,8 @@ through the repository's disposable-service runner.
 
 ## External reference services
 
-Eligible material detail pages also offer separate Materials Project, COD and
-NOMAD references. These panels never select retained catalogue properties or
+Eligible material detail pages also offer separate Materials Project, COD,
+NOMAD and versioned MDR SuperCon references. These panels never select retained catalogue properties or
 promote a matched composition to an established sample/phase identity. External
 provider requests begin when their folded panels are expanded.
 
@@ -225,8 +225,12 @@ Materials Project client callers retain their prior transport compatibility.
 - `GET /materials/{id}/external_calculations`: query public NOMAD metadata,
   inspect at most 21 entries and display at most 20. Preserve individual task,
   structure, parser, method/program and allowlisted repository/citation links.
-  Archive temperature, pressure and functional were not inspected; they are not
-  inferred. MP/OQMD/AFLOW overlap is visible and task counts do not count
+  Bounded DFT metadata preserves returned XC functional names/type and explicit
+  spin-polarization settings. Missing metadata remains missing, and underlying
+  DFT metadata is not presented as a complete method or convergence proof. Spin
+  settings describe the calculation, not measured material magnetism. Archive
+  temperature and pressure were not inspected; they are not inferred.
+  MP/OQMD/AFLOW overlap is visible and task counts do not count
   independent experiments.
 
 `no_match`, `not_applicable` and `unavailable` remain distinct. Provider failures
@@ -237,3 +241,63 @@ See [COD schema](https://wiki.crystallography.net/cod_mysql_schema/),
 [NOMAD API](https://docs.nomad-lab.eu/1.4.3/howto/manage/program/api.html)
 for provider field semantics. Scientific state matching, coordinate validation
 and canonical review remain required before any future promotion.
+
+## Versioned MDR SuperCon references
+
+`GET /materials/{id}/external_supercon` is an additional, read-only reference
+projection of NIMS MDR SuperCon Datasheet **Ver.240322**, DOI
+[10.48505/nims.4487](https://doi.org/10.48505/nims.4487). The version metadata
+explicitly licenses the dataset under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); attribution names the
+National Institute for Materials Science and identifies this SCLib projection as
+an adaptation. This permission is specific to the dataset and does not grant
+rights to underlying publication full text.
+
+The bounded official capture contains 33,458 Oxide & Metallic rows, 191 unique
+columns and two actual header rows. Its bytes are pinned by SHA-256
+`f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6`.
+The accompanying Organic table has 569 rows and 49 columns; it was audited but is
+outside this initial lookup because its identity and condition schema differs.
+The digitized-figure `data.zip` is not the main property table. The existing
+legacy NIMS CSV importer is not used for this projection: it can discard richer
+fields, collapse intervals to midpoints and aggregate absent pressure as ambient.
+
+Lookup uses the shared current-source fixed-composition guard. A composition
+match is a reference opportunity, not an established sample or phase relation.
+Versioned row identifiers, physical source-line ranges, complete raw row hashes, bibliography,
+source units and unresolved codes remain distinct. Results show at most 20
+references in source data-number order, with total matches and omitted counts.
+A no-match result is limited to this fixed O&M version. The route retains the
+same eligibility, source-partition, revision and private/no-store fences as
+other material reference routes. No provider key or runtime network fetch is
+required for this packaged version.
+
+Keep recommended, zero-resistance, midpoint, R=100% and susceptibility Tc
+separate. `tcn` records a lowest measurement temperature for a non-detection
+report, including zero-valued source entries; it is never promoted to Tc=0.
+Missing units are not filled from common practice. Undocumented measurement or
+sample codes remain raw and unresolved. `pmax` is maximum applied pressure,
+not pressure associated with any selected Tc. Preserve source derivation methods, critical-field
+orientation and temperature context, and isotope information without assigning
+it to an ordinary-isotope material. Publication/retraction status of underlying
+papers has not been individually checked by this dataset adapter.
+
+A source-aware pilot matched four of 14 eligible queries (from 19 materials)
+to 37 O&M rows: La0.4Sm0.6O0.5F0.5BiS2 (2), Nb (19), NbN (15), PbCe (1).
+The exploratory 232-material list audit produced 52 composition matches to 111
+rows, but did not apply every retained-source spelling guard; it is an
+upper-bound opportunity count. Neither count measures reviewed canonical
+additions or independent experiments. All 33,458 rows and their 66 selected fields were independently compared with
+the original source bytes, and the packaged resource was reproduced
+deterministically. Cold resource loading took 2.01 seconds in the local test,
+with 207 MB peak process RSS; this is a local observation, not a production SLA.
+The adapter preserves existing records
+and does not change ingestion pause state, quarantine, reviewed relations or
+scientific acceptance.
+
+The foundation snapshot exporter no longer assigns a blanket license or version
+DOI from a generic legacy `nims` source label. Its previous hard-coded citation
+misidentified DOI 10.48505/nims.3735 (Supercon 2 Dataset) as an MDR SuperCon
+version. Original source receipts are required to establish legacy dataset
+identity and terms; the new, independently verified Ver.240322 license does not
+retroactively apply to those records. Existing historical exports remain intact.

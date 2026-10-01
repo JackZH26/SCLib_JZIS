@@ -14,7 +14,7 @@ import json
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from functools import wraps
-from typing import Literal
+from typing import Annotated, Literal
 from weakref import WeakValueDictionary
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
@@ -640,6 +640,22 @@ async def material_external_calculations(
     report = await fetch_material_calculation_references(material.formula, current_records=material.current_records())
     await _check_material_revision(db, before)
     return _material_response(json.dumps(report, allow_nan=False).encode(), "CALCULATION_REFERENCE")
+
+
+@router.get("/materials/{material_id:path}/external_supercon")
+async def material_external_supercon(
+    material_id: str,
+    identity: Annotated[Identity, Depends(peek_identity)],  # noqa: ARG001
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> dict:
+    from services.material_supercon_references import fetch_material_supercon_references
+    before = await _material_page_revision(db)
+    material = await material_view(db, await db.get(Material, material_id))
+    if material is None or not visibility_allows_view(material.visibility):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Material not found")
+    report = await fetch_material_supercon_references(material.formula, current_records=material.current_records())
+    await _check_material_revision(db, before)
+    return _material_response(json.dumps(report, allow_nan=False).encode(), "SUPERCON_REFERENCE")
 
 
 @router.get("/materials/{material_id:path}/enrichment")

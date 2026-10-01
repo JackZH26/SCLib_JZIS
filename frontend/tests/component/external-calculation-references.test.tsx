@@ -11,6 +11,7 @@ const row = (id: string, fields: Partial<ExternalCalculationReference> = {}): Ex
   formula: "B2Mg", material_id: `structure_${id}`, upload_id: "upload_1", method: "DFT", program: "VASP", parser: "parsers/vasp", structural_type: "bulk",
   space_group: "P6/mmm", space_group_number: 191, crystal_system: "hexagonal", source_references: [{ provider: "Materials Project", url: "https://next-gen.materialsproject.org/materials/mp-1580" }],
   source_snapshot_sha256: "a".repeat(64), knowledge_origin: "Computed", method_status: "reported", conditions_status: "not_inspected", match_level: "fixed_composition_only", sample_identity_established: false, phase_identity_established: false,
+  xc_functional_names: null, xc_functional_type: null, spin_polarized: null, dft_metadata_status: "not_supplied", dft_metadata_scope: "reported_underlying_dft_metadata_not_complete_method",
   ...fields,
 });
 const report = (fields: Partial<MaterialCalculationReferences> = {}): MaterialCalculationReferences => ({
@@ -39,6 +40,38 @@ describe("NOMAD calculation references", () => {
     expect(screen.getByText(/Counts describe tasks, not independent experiments/)).toBeInTheDocument();
     expect(screen.getByText(/at most 20 tasks in entry ID order/)).toBeInTheDocument();
     expect(screen.queryByText(/0 K|Ambient|Scientific approval|Tc =/)).not.toBeInTheDocument();
+  });
+  it("shows raw DFT names separately from GW method and distinguishes missing metadata from uninspected conditions", async () => {
+    vi.mocked(getMaterialCalculationReferences).mockResolvedValue(report({ references: [row("gw_task", { method: "G0W0", program: "exciting", xc_functional_names: ["GGA_X_PBE", "GGA_C_PBE"], xc_functional_type: "GGA", spin_polarized: false, dft_metadata_status: "reported" }), row("unknown_dft")] }));
+    render(<ExternalCalculationReferences materialId="mat:mgb2" />);
+    expand();
+    await waitFor(() => expect(screen.getByText("G0W0")).toBeInTheDocument());
+    expect(screen.getByText("Underlying DFT XC: GGA_X_PBE + GGA_C_PBE")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByText("Task details")[0]);
+    expect(screen.getByText("Reported non-spin-polarized")).toBeInTheDocument();
+    expect(screen.getByText("GGA")).toBeInTheDocument();
+    expect(screen.getByText(/including for GW tasks; it does not specify the complete method/)).toBeInTheDocument();
+    fireEvent.click(screen.getAllByText("Task details")[1]);
+    expect(screen.getAllByText("Not supplied in returned metadata")).toHaveLength(3);
+    expect(screen.getByText("Not inspected")).toBeInTheDocument();
+  });
+  it("rejects a malformed DFT name array rather than rendering a guessed functional", async () => {
+    const invalid = row("invalid_dft", { xc_functional_names: [null] as unknown as string[], dft_metadata_status: "reported" });
+    vi.mocked(getMaterialCalculationReferences).mockResolvedValue(report({ references: [invalid] }));
+    render(<ExternalCalculationReferences materialId="mat:mgb2" />);
+    expand();
+    await waitFor(() => expect(screen.getByText("Unavailable")).toBeInTheDocument());
+    expect(screen.queryByText("invalid_dft ↗")).not.toBeInTheDocument();
+  });
+  it("distinguishes unresolved supplied metadata from missing leaves without discarding valid false", async () => {
+    vi.mocked(getMaterialCalculationReferences).mockResolvedValue(report({ references: [row("review_dft", { dft_metadata_status: "requires_review", spin_polarized: false })] }));
+    render(<ExternalCalculationReferences materialId="mat:mgb2" />);
+    expand();
+    await waitFor(() => expect(screen.getByText("1 of 89 tasks")).toBeInTheDocument());
+    fireEvent.click(screen.getByText("Task details"));
+    expect(screen.getAllByText("Unresolved from returned metadata")).toHaveLength(2);
+    expect(screen.getByText("Reported non-spin-polarized")).toBeInTheDocument();
+    expect(screen.queryByText("Not supplied in returned metadata")).not.toBeInTheDocument();
   });
   it("distinguishes transport failure from a successful query without matches", async () => {
     vi.mocked(getMaterialCalculationReferences).mockRejectedValueOnce(new Error("Transport"));

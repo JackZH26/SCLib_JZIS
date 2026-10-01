@@ -39,6 +39,9 @@ FIELDS = (
     "results.material.symmetry.space_group_number", "results.material.symmetry.space_group_symbol",
     "results.material.symmetry.crystal_system", "results.method.method_name",
     "results.method.simulation.program_name",
+    "results.method.simulation.dft.xc_functional_names",
+    "results.method.simulation.dft.xc_functional_type",
+    "results.method.simulation.dft.spin_polarized",
 )
 _IDENTIFIER = re.compile(r"[A-Za-z0-9_-]{1,64}")
 
@@ -66,6 +69,35 @@ def _text(value: Any, limit: int = 160) -> str | None:
 
 def _identifier(value: Any) -> str | None:
     return value if type(value) is str and _IDENTIFIER.fullmatch(value) else None
+
+
+def _dft_names(value: Any) -> list[str] | None:
+    # Preserve NOMAD's individual raw names/order. A truncated list or a guessed
+    # functional from the program cannot describe the reported DFT method.
+    if type(value) is not list or not 1 <= len(value) <= 16:
+        return None
+    if any(type(name) is not str or _text(name, 80) != name for name in value):
+        return None
+    return value.copy()
+
+
+def _dft_metadata(simulation: dict) -> dict:
+    dft = simulation.get("dft") if type(simulation.get("dft")) is dict else {}
+    names = _dft_names(dft.get("xc_functional_names"))
+    raw_type = dft.get("xc_functional_type")
+    functional_type = raw_type if type(raw_type) is str and _text(raw_type, 80) == raw_type else None
+    raw_spin = dft.get("spin_polarized")
+    spin = raw_spin if type(raw_spin) is bool else None
+    raw_names = dft.get("xc_functional_names")
+    # None/missing and NOMAD's default empty list represent absent metadata.
+    # Malformed supplied leaves are a different unresolved state, not absence.
+    invalid = (raw_names is not None and raw_names != [] and names is None
+               or raw_type is not None and functional_type is None
+               or raw_spin is not None and spin is None)
+    return {"xc_functional_names": names, "xc_functional_type": functional_type,
+            "spin_polarized": spin,
+            "dft_metadata_status": "requires_review" if invalid else "reported" if any(value is not None for value in (names, functional_type, spin)) else "not_supplied",
+            "dft_metadata_scope": "reported_underlying_dft_metadata_not_complete_method"}
 
 
 def _base(formula: str, status: str, reason: str | None = None, *, query: str | None = None) -> dict:
@@ -185,6 +217,7 @@ def project_calculation_references(formula: str, payload: Any, *, retrieved_at: 
             "method": method_name, "program": program, "parser": _text(row.get("parser_name")),
             "method_status": "reported" if method_name else "unresolved",
             "knowledge_origin": "Computed" if method_name and program else "Unresolved",
+            **_dft_metadata(simulation),
             "structural_type": _text(material.get("structural_type")),
             "space_group": _text(symmetry.get("space_group_symbol")),
             "space_group_number": space_group_number if type(space_group_number) is int and 1 <= space_group_number <= 230 else None,
@@ -236,7 +269,14 @@ def _valid_cache(value: Any, formula: str, query: str) -> bool:
                 or not re.fullmatch(r"[a-f0-9]{64}", str(row.get("source_snapshot_sha256", "")))):
             return False
         # The cache stores only a bounded public projection, never source text.
-        if set(row) - {"id", "url", "archive_url", "formula", "material_id", "upload_id", "method", "program", "parser", "method_status", "knowledge_origin", "structural_type", "space_group", "space_group_number", "crystal_system", "source_references", "source_snapshot_sha256", "match_level", "conditions_status", "sample_identity_established", "phase_identity_established"}:
+        if set(row) - {"id", "url", "archive_url", "formula", "material_id", "upload_id", "method", "program", "parser", "method_status", "knowledge_origin", "xc_functional_names", "xc_functional_type", "spin_polarized", "dft_metadata_status", "dft_metadata_scope", "structural_type", "space_group", "space_group_number", "crystal_system", "source_references", "source_snapshot_sha256", "match_level", "conditions_status", "sample_identity_established", "phase_identity_established"}:
+            return False
+        dft = _dft_metadata({"dft": {key: row.get(key) for key in ("xc_functional_names", "xc_functional_type", "spin_polarized")}})
+        if any(key not in row or row[key] != item for key, item in dft.items() if key != "dft_metadata_status"):
+            return False
+        status = row.get("dft_metadata_status")
+        if status != dft["dft_metadata_status"] and not (
+                status == "requires_review" and any(row[key] is None for key in ("xc_functional_names", "xc_functional_type", "spin_polarized"))):
             return False
         for field in ("method", "program", "parser", "structural_type", "space_group", "crystal_system"):
             if row.get(field) is not None and _text(row[field]) is None:
@@ -294,7 +334,7 @@ async def fetch_material_calculation_references(
     query = hill_query_formula(fixed) if fixed is not None else None
     if query is None:
         return _base(formula, "not_applicable", "composition_requires_resolution")
-    key = "materials:nomad:1:" + hashlib.sha256(formula.encode()).hexdigest()
+    key = "materials:nomad:2:" + hashlib.sha256(formula.encode()).hexdigest()
     if key not in _locks and len(_locks) >= MAX_LOCKS:
         return _base(formula, "unavailable", "reference_request_capacity", query=query)
     slot = _locks.setdefault(key, _LockSlot(asyncio.Lock()))
