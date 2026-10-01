@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import type { MaterialEnrichmentReport, MaterialStructureReferences } from "@/lib/api";
 import publicBatch from "@/public/research-pilots/materials-source-observations-2026-10-02.json";
-import { groupSourceObservations, loadSourceObservationBatch, observationLabel, observationValue, sourceObservationsForCod, sourceObservationsForRecovery } from "@/lib/material-source-observations";
+import { groupSourceObservations, loadSourceObservationBatch, observationLabel, observationValue, sourceObservationWindow, sourceObservationsForCod, sourceObservationsForRecovery } from "@/lib/material-source-observations";
 
 const clone = <T,>(v: T): T => JSON.parse(JSON.stringify(v));
 const literal = JSON.parse(readFileSync(resolve(process.cwd(), "../api/services/resources/material_enrichment_seed.json"), "utf8"));
@@ -129,5 +129,19 @@ describe("Field-specific source observations", () => {
       mutate(changed.entries[0] as unknown as Record<string, unknown>, changed);
       expect(loadSourceObservationBatch(changed)).toBeNull();
     }
+  });
+
+  it("refuses coordinated value changes that retain a pinned source identity, including a subset export", () => {
+    const batch = loadSourceObservationBatch()!;
+    const changed = clone(batch);
+    const site = (changed.entries[11].value as Array<Record<string, unknown>>)[0];
+    const coordinate = (site.fractional_coordinates as Array<Record<string, unknown>>)[0];
+    coordinate.raw_value = "0.3334";
+    coordinate.value = 0.3334;
+    expect(loadSourceObservationBatch(changed)).toBeNull();
+    expect(sourceObservationWindow([changed.entries[11]], null, "independent_captured_sources")).toBeNull();
+    const original = batch.entries[11];
+    const reordered = Object.fromEntries(Object.entries(original).reverse());
+    expect(sourceObservationWindow([reordered as typeof original], null, "independent_captured_sources")?.entries).toEqual([original]);
   });
 });

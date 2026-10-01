@@ -152,7 +152,21 @@ function observation(v: unknown): v is SourceObservation {
       && quantity(s.occupancy, "dimensionless") && row(s.occupancy).unit_source_field === "_atom_site_occupancy";
   });
 }
-/** This closed field mapping validates a public projection; it does not attest scientific validity or source rights. */
+function matchesSnapshot(value: unknown, expected: unknown, depth = 0): boolean {
+  if (depth > 24) return false;
+  if (expected === null || typeof expected !== "object") return value === expected;
+  if (Array.isArray(expected)) return Array.isArray(value) && value.length === expected.length && value.length <= 128
+    && value.every((entry, index) => matchesSnapshot(entry, expected[index], depth + 1));
+  if (value === null || typeof value !== "object" || Array.isArray(value)) return false;
+  const current = value as Record<string, unknown>, pinned = expected as Record<string, unknown>, keys = Object.keys(pinned);
+  return keys.length <= 64 && Object.keys(current).length === keys.length
+    && keys.every(key => Object.hasOwn(current, key) && matchesSnapshot(current[key], pinned[key], depth + 1));
+}
+function matchesPinnedObservation(entry: SourceObservation): boolean {
+  const expected = rawBatch.entries.find(value => value.id === entry.id);
+  return expected !== undefined && matchesSnapshot(entry, expected);
+}
+/** Checks the closed mapping and finite inspected snapshot, not scientific validity or source rights. */
 export function loadSourceObservationBatch(value: unknown = rawBatch): SourceObservationBatch | null {
   const b = row(value);
   if (!closed(b, ["version", "prepared_on", "scope", "source_case_count", "field_projection_count", "field_count_is_independent_experiments", "ai_source_expression_inspected", "fulltext_or_private_context_included", "entries", "original_batch_sha256", "prior_source_expression_batch_sha256", "canonical_promotions", "selected_result_association", ...FLAGS]) || !scalarExcept(b, ["entries"])
@@ -160,11 +174,11 @@ export function loadSourceObservationBatch(value: unknown = rawBatch): SourceObs
     || FLAGS.some(key => b[key] !== false) || b.canonical_promotions !== 0 || b.selected_result_association !== "unestablished"
     || b.field_count_is_independent_experiments !== false || b.fulltext_or_private_context_included !== false
     || b.ai_source_expression_inspected !== true || !/^\d{4}-\d{2}-\d{2}$/.test(String(b.prepared_on)) || b.source_case_count !== 3 || b.field_projection_count !== 15 || !Array.isArray(b.entries) || b.entries.length !== 15
-    || !b.entries.every(observation) || new Set(b.entries.map(e => e.id)).size !== 15) return null;
+    || !b.entries.every(observation) || new Set(b.entries.map(e => e.id)).size !== 15 || !matchesSnapshot(b, rawBatch)) return null;
   return JSON.parse(JSON.stringify(b)) as SourceObservationBatch;
 }
 export function sourceObservationWindow(entries: SourceObservation[], materialId: string | null, basis: string): SourceObservationWindow | null {
-  if (!entries.length || entries.length > 15 || !entries.every(observation) || new Set(entries.map(e => e.id)).size !== entries.length || !text(basis) || materialId !== null && !text(materialId)) return null;
+  if (!entries.length || entries.length > 15 || !entries.every(entry => observation(entry) && matchesPinnedObservation(entry)) || new Set(entries.map(e => e.id)).size !== entries.length || !text(basis) || materialId !== null && !text(materialId)) return null;
   return { version: "material-source-observation-window/1.0.0", view_context: { material_id: materialId, matching_basis: basis }, original_batch_sha256: ORIGINAL_BATCH_SHA, prior_source_expression_batch_sha256: PRIOR_BATCH_SHA,
     entries: JSON.parse(JSON.stringify(entries)), scientific_acceptance: false, canonical_promotions: 0, selected_result_association: "unestablished" };
 }
