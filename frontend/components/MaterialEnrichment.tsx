@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { getMaterialEnrichment } from "@/lib/api";
 import type { MaterialEnrichmentReport, PropertyEvidenceItem } from "@/lib/api";
 import Link from "@/components/AppLink";
@@ -12,15 +12,63 @@ const routes: Record<string, string> = { source_fulltext_and_supplement: "Paper 
 const readable = (value: string) => value.replaceAll("_", " ");
 
 /** A parsed pending quantity may be displayed without promoting it to a selected fact. */
+function quantityText(field: string, value: unknown, quantity: unknown): string | null {
+  const parsed = objectValue(quantity);
+  if (!Object.keys(parsed).length) return null;
+  const formatted = propertyValue({ property: field, value: value ?? parsed.value ?? null, quantity: parsed } as PropertyEvidenceItem);
+  return formatted === "—" ? null : formatted;
+}
 function candidateValue(candidate: Record<string, unknown>): string | null {
-  const quantity = objectValue(candidate.quantity);
-  if (Object.keys(quantity).length) {
-    const formatted = propertyValue({ property: evidenceText(candidate.field) ?? "candidate", value: candidate.value ?? quantity.value ?? null, quantity } as PropertyEvidenceItem);
-    if (formatted !== "—") return formatted;
-  }
+  const formatted = quantityText(evidenceText(candidate.field) ?? "candidate", candidate.value, candidate.quantity);
+  if (formatted) return formatted;
   // Original tokens can already contain a unit. Preserve them verbatim instead
   // of appending raw_unit or inferring a canonical unit when parsing failed.
   return evidenceText(candidate.raw_value) ?? evidenceText(candidate.value);
+}
+function candidateContext(candidate: Record<string, unknown>): [string, string][] {
+  const subject = objectValue(candidate.subject), field = evidenceText(candidate.field);
+  const entries: [string, string][] = [];
+  if (field === "tc_kelvin") {
+    const criterion = evidenceText(subject.tc_criterion) ?? "unknown";
+    entries.push(["Tc criterion", ({ onset: "Onset", midpoint: "Midpoint", zero_resistance: "Zero resistance", unknown: "Unknown" } as Record<string, string>)[criterion] ?? readable(criterion)]);
+    const pressure = quantityText("pressure_gpa", null, subject.pressure_quantity);
+    const pressureState = evidenceText(subject.pressure_state);
+    entries.push(["Pressure context", pressureState === "ambiguous" ? "Ambiguous in source context" : pressure && ["reported", "explicit_ambient"].includes(pressureState ?? "") ? `${pressure}${pressureState === "explicit_ambient" ? " (explicit ambient)" : ""}` : pressureState === "not_reported" ? "Not reported in source context" : "Unresolved"]);
+  }
+  if (field === "pressure_gpa") {
+    // A pressure value or interval alone cannot identify its scientific role.
+    // Only explicit role metadata can distinguish stability from a Tc condition.
+    const role = evidenceText(subject.pressure_role) ?? evidenceText(candidate.pressure_role);
+    entries.push(["Pressure role", role === "stability_range" ? "Stability range; not a Tc condition" : role === "tc_condition" ? "Tc condition; association pending" : "Unresolved; stability ranges are not Tc conditions"]);
+    if (subject.pressure_state === "ambiguous") entries.push(["Pressure context", "Ambiguous in source context"]);
+  }
+  const origin = evidenceText(subject.knowledge_origin);
+  if (origin || field === "tc_kelvin") entries.push(["Source origin", origin && ["Observed", "Computed", "Inferred", "AI-Proposed"].includes(origin) ? `${origin} report` : "Unknown"]);
+  const method = evidenceText(subject.measurement_method);
+  if (method) entries.push(["Method", readable(method)]);
+  for (const [key, label] of [["sample_label", "Sample"], ["state_label", "State"], ["phase_label", "Phase"], ["run_label", "Run"]]) {
+    const value = evidenceText(subject[key]);
+    if (value) entries.push([label, value]);
+  }
+  const rowLabel = evidenceText(candidate.table_row_label);
+  if (rowLabel) entries.push(["Source table row", rowLabel]);
+  const sourceFormula = evidenceText(subject.source_formula) ?? evidenceText(subject.table_column_formula);
+  if (sourceFormula) entries.push(["Source formula", sourceFormula]);
+  const identity = evidenceText(subject.identity_basis);
+  const associations: Record<string, string> = {
+    retained_quantity_source_scoped_search_hit: "Source-scoped value match; local material binding unresolved",
+    nominal_refined_composition_proposal: "Nominal/refined sample association pending",
+    source_refinement_context_proposal: "Refined-site association pending",
+    exact_table_column_formula: "Table-column association pending",
+    exact_formula_local: "Local formula match; sample and state association pending",
+  };
+  if (identity) entries.push(["Association", associations[identity] ?? "Source, sample and state association pending"]);
+  if ((field === "atomic_sites" || field === "site_occupancies") && candidateValue(candidate)) entries.push(["Structure", "Site and structure association pending; validated coordinates unavailable"]);
+  return entries;
+}
+function CandidateContext({ candidate }: { candidate: Record<string, unknown> }) {
+  const entries = candidateContext(candidate);
+  return entries.length ? <dl className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600" aria-label="Pending source context">{entries.map(([label, value]) => <div className="max-w-full break-words" key={label}><dt className="inline font-medium">{label}: </dt><dd className="inline">{value}</dd></div>)}</dl> : null;
 }
 function primarySourceUrl(value: unknown): string | null {
   if (typeof value !== "string") return null;
@@ -62,11 +110,15 @@ function sourceLocator(source: Record<string, unknown>): string {
 }
 export function MaterialEnrichment({ materialId }: { materialId: string }) {
   const [state, setState] = useState<{ materialId: string; report: MaterialEnrichmentReport | null; failed: boolean }>({ materialId, report: null, failed: false });
+  const [candidateExpansion, setCandidateExpansion] = useState({ materialId, expanded: false });
+  const showAllCandidates = candidateExpansion.materialId === materialId && candidateExpansion.expanded;
+  const candidateListId = useId();
   const report = state.materialId === materialId ? state.report : null;
   const failed = state.materialId === materialId && state.failed;
   useEffect(() => {
     const controller = new AbortController();
     setState({ materialId, report: null, failed: false });
+    setCandidateExpansion({ materialId, expanded: false });
     getMaterialEnrichment(materialId, controller.signal).then(value => {
       if (controller.signal.aborted) return;
       if (value.version !== "materials-enrichment/1.0.0" || value.scientific_acceptance !== false || value.database_changed !== false || !Array.isArray(value.coverage) || !Array.isArray(value.candidates)) throw new Error("Recovery contract unavailable");
@@ -93,7 +145,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
       {report.candidates.length > 0 && <details className="mt-3 rounded-lg border border-sage-border bg-white p-4">
         <summary className="cursor-pointer text-sm font-medium">Source recovery candidates ({report.candidates.length})</summary>
         <p className="mt-3 text-xs text-slate-500">These extraction candidates are separate from the selected properties above. Source spans identify retained content; publication version and material-state correspondence may remain unresolved.</p>
-        <ul className="mt-3 divide-y divide-slate-100">{report.candidates.slice(0, 40).map((candidate, index) => {
+        <ul id={candidateListId} className="mt-3 divide-y divide-slate-100">{report.candidates.slice(0, showAllCandidates ? report.candidates.length : 40).map((candidate, index) => {
           const source = objectValue(candidate.source), quantity = objectValue(candidate.quantity);
           const value = candidateValue(candidate);
           const primaryUrl = primarySourceUrl(source.source_url);
@@ -102,6 +154,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
           const structured = !value && Object.keys(objectValue(candidate.raw_value ?? candidate.value)).length > 0;
           return <li key={evidenceText(candidate.candidate_id) ?? index} className="py-3 text-sm">
             <p className="font-medium">{labels[field] ?? readable(field)}: {value ?? (field === "composition_identity" ? "Sample association proposal" : structured ? ["atomic_sites", "site_occupancies"].includes(field) ? "Reported site context" : "Structured source value" : "Value unavailable")} <span className="ml-2 text-xs font-normal text-amber-800">Review needed</span></p>
+            <CandidateContext candidate={candidate} />
             {structured && <StructuredCandidate candidate={candidate} />}
             <p className="mt-1 text-xs text-slate-500">{evidenceText(source.paper_id) ?? "Source identifier unavailable"} · {readable(evidenceText(source.kind) ?? "unknown source")} {sourceLocator(source) && <span className="block">{sourceLocator(source)}</span>}</p>
             {primaryUrl ? <a className="mt-1 inline-block text-xs text-accent-deep underline" href={primaryUrl} target="_blank" rel="noopener noreferrer">Open primary source</a> : paperHref && <Link className="mt-1 inline-block text-xs text-accent-deep underline" href={paperHref}>Open linked paper</Link>}
@@ -112,7 +165,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
               <div><dt className="inline">Source span: </dt><dd className="inline">{["char_start", "char_end", "text_sha256"].flatMap(key => evidenceText(objectValue(source.span)[key]) ? [`${readable(key)}: ${evidenceText(objectValue(source.span)[key])}`] : []).join("; ") || "Not supplied"}</dd></div><div><dt className="inline">Checks still required: </dt><dd className="inline">{Array.isArray(candidate.reason_codes) ? candidate.reason_codes.filter((code): code is string => typeof code === "string").map(readable).join("; ") : "Source and state review"}</dd></div></dl></details>
           </li>;
         })}</ul>
-        {report.candidates.length > 40 && <p className="mt-2 text-xs text-slate-500">Showing the first 40 returned candidates.</p>}
+        {report.candidates.length > 40 && <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs"><p className="text-slate-500">Showing {showAllCandidates ? report.candidates.length : 40} of {report.candidates.length} returned candidates.</p><button type="button" className="rounded text-accent-deep underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-deep" aria-expanded={showAllCandidates} aria-controls={candidateListId} onClick={() => setCandidateExpansion({ materialId, expanded: !showAllCandidates })}>{showAllCandidates ? "Show fewer candidates" : `Show remaining candidates (${report.candidates.length - 40})`}</button></div>}
       </details>}
     </>}
   </section>;
