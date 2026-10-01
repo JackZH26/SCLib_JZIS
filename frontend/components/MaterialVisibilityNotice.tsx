@@ -1,12 +1,13 @@
 import { knownOccurrenceVisibility, knownSourceVisibility, knownVisibility, SOURCE_SCOPED_VISIBILITY_VERSION, sourceVisibilityLabel, visibilityLabel, visibilityWarning } from "@/lib/material-visibility";
 
 /** Reason codes only: private reviewer notes and source text never become UI advice. */
-export function MaterialVisibilityNotice({ visibility, compact = false, scope = "material" }: {
-  visibility: unknown; compact?: boolean; scope?: "material" | "source occurrence";
+export function MaterialVisibilityNotice({ visibility, compact = false, scope = "material", quietIfClear = false }: {
+  visibility: unknown; compact?: boolean; scope?: "material" | "source occurrence"; quietIfClear?: boolean;
 }) {
   const v = scope === "source occurrence" ? knownOccurrenceVisibility(visibility) : knownVisibility(visibility);
   const sourceScope = v?.version === SOURCE_SCOPED_VISIBILITY_VERSION ? v.source_scope : null;
   const catalogue = !sourceScope && v?.state === "catalogue" && v.public_catalogue_eligible;
+  if (quietIfClear && catalogue && !v.reason_codes.length && !v.warning_codes.some(code => code !== "catalogue_is_not_scientific_acceptance")) return null;
   return <div className={`${compact ? "mt-1 text-[11px]" : "rounded-lg border p-4 text-sm"} ${catalogue ? "border-slate-200 bg-slate-50 text-slate-600" : "border-amber-200 bg-amber-50 text-amber-950"}`} aria-label={`${scope} visibility`}>
     <p className="font-medium">{visibilityLabel(v, scope)}</p>
     {(!compact || sourceScope) && <p className="mt-1">{visibilityWarning(v, scope)}</p>}

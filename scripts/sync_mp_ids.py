@@ -19,18 +19,16 @@ Usage::
     # re-sync stale rows (default cutoff: 30 days):
     docker compose exec -T api python /app/scripts/sync_mp_ids.py --max-age-days 30
 
-Throttling: MP allows 5 req/s on the free tier. We sleep
-``--throttle-sec`` (default 0.25 = 4 req/s) between requests so we
-stay safely under the limit. Roughly 11k materials at 4 req/s →
-~45 minutes for a full backfill.
+Throttling: a conservative default of 0.25 seconds between requests keeps this
+batch below the provider's documented request budget; it is not a tier promise.
 
 Idempotency: rerun is safe. ``mp_synced_at`` filters out rows touched
 within ``max_age_days``. Pass ``--force`` to ignore that filter.
 
 Failure handling: per-formula errors (404, transient 5xx, network)
-are logged and the row is skipped — we still stamp ``mp_synced_at``
-so we don't retry on every run, but we leave ``mp_id`` NULL so a
-later forced re-sync can fill it. Hard failures (bad credentials,
+are logged and the row is left untouched, preserving a prior cross-reference
+and allowing a later retry. An error is never recorded as a no-match result.
+Hard failures (bad credentials,
 bad DB) abort the script.
 """
 from __future__ import annotations
@@ -129,7 +127,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--throttle-sec", type=float, default=0.25,
         help="Sleep this long between MP requests (default: 0.25 = 4 req/s, "
-             "safely under MP's 5 req/s free-tier cap).",
+             "a conservative provider request budget).",
     )
     p.add_argument(
         "--dry-run", action="store_true",
@@ -179,8 +177,8 @@ async def _process_one(
 ) -> tuple[bool, str | None, bool]:
     """Sync one material. Returns (matched, primary_mp_id, sent_request).
 
-    Skip-on-error: per-formula HTTP errors are logged, the row is
-    stamped (mp_synced_at) with mp_id=NULL, and we move on. Hard
+    Skip-on-error: per-formula errors leave existing linkage and freshness
+    metadata unchanged so a later run can retry. Hard
     auth (401/403) errors raise — the run aborts cleanly.
 
     The sent_request flag is False when the formula was filtered
@@ -210,21 +208,24 @@ async def _process_one(
         return False, None, False
 
     try:
-        rows = await mp.search_by_formula(cleaned)
+        rows = await mp.search_by_formula(cleaned, strict=True)
     except httpx.HTTPStatusError as e:
         if e.response.status_code in (401, 403):
             raise  # bad credentials → abort
         log.warning(
-            "MP HTTP %s for %s (%s); stamping with no match",
+            "MP HTTP %s for %s (%s); preserving existing linkage",
             e.response.status_code, material_id, formula,
         )
-        rows = []
-    except httpx.RequestError as e:
+        return False, None, True
+    except httpx.RequestError:
         log.warning(
-            "MP transport error for %s (%s): %s; stamping with no match",
-            material_id, formula, e,
+            "MP transport error for %s (%s); preserving existing linkage",
+            material_id, formula,
         )
-        rows = []
+        return False, None, True
+    except ValueError:
+        log.warning("MP response unavailable for %s; preserving existing linkage", material_id)
+        return False, None, True
 
     primary, alternates = best_match(rows)
     if verbose and primary:

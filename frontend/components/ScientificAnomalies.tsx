@@ -42,9 +42,10 @@ export function RecordAnomalyReview({ assessment }: { assessment: unknown }) {
   </details>;
 }
 
-export function ScientificAnomalyNotice({ review, compact = false }: { review?: MaterialAnomalyReview; compact?: boolean }) {
+export function ScientificAnomalyNotice({ review, compact = false, quietIfClear = false }: { review?: MaterialAnomalyReview; compact?: boolean; quietIfClear?: boolean }) {
   if (!review && compact) return null;
   const known = hasMaterialAnomalyReview(review);
+  if (quietIfClear && known && review?.needs_review === false) return null;
   const counts = objectValue(review?.counts);
   const count = (key: string) => { const value = counts[key]; return typeof value === "number" && Number.isInteger(value) && value >= 0 ? value.toLocaleString("en-US") : "Unavailable"; };
   return <details className={compact ? "mt-1 max-w-sm text-xs" : "rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm"}>

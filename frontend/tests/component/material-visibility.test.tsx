@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { MaterialVisibilityNotice, SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
 import { RawScientificArchive } from "@/components/ScientificAnomalies";
@@ -67,7 +67,7 @@ describe("shared visibility contract", () => {
   it("list rows carry their own pending warning and explicitly restricted rows are suppressed", () => {
     const row = { id: "pending", formula: "SYNTHETIC", total_papers: 1, variant_count: 0, visibility: materialVisibility("pending") } as MaterialSummary;
     render(<MaterialTable rows={[row, { ...row, id: "secret", formula: "RESTRICTED-FORMULA", visibility: materialVisibility("quarantined") }]} />);
-    expect(screen.getByText("Archive — review pending")).toBeInTheDocument();
+    expect(screen.getByText("Archive: review pending")).toBeInTheDocument();
     expect(screen.queryByText("RESTRICTED-FORMULA")).not.toBeInTheDocument();
   });
 
@@ -237,6 +237,8 @@ describe("conditional source-scoped material visibility", () => {
       visibility: sourceScopedMaterialVisibility() } as MaterialSummary;
     render(<MaterialTable rows={[row]} />);
     expect(screen.getByText("SYNTHETIC")).toBeInTheDocument();
+    expect(screen.getByText("Eligible sources only")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Evidence for SYNTHETIC" }));
     expect(screen.getByText(/Only eligible reported source records/)).toBeInTheDocument();
     expect(screen.queryByText("Catalogue eligible — not scientific approval")).not.toBeInTheDocument();
   });

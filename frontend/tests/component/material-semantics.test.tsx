@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { MaterialSemanticValue, MaterialSemanticsPanel } from "@/components/MaterialSemantics";
 import { MaterialTable } from "@/components/MaterialTable";
@@ -7,12 +7,18 @@ import { materialSemanticValue, materialSourceCountLabel, negativeEvidenceQualif
 import { materialSemantics, semanticProperty, semanticReport } from "../fixtures/material-semantics";
 import { atomicItem, propertyEnvelope } from "../fixtures/property-evidence";
 
+function showScientificColumns(...labels: string[]) {
+  fireEvent.click(screen.getByText("Scientific columns"));
+  for (const label of labels) fireEvent.click(screen.getByLabelText(label));
+}
+
 describe("material classification semantics", () => {
   it("does not turn stale legacy flags or old atomic classifications into reported cells", () => {
     const row = { id: "synthetic", formula: "SYNTHETIC", family: "cuprate", pairing_symmetry: "stale-d-wave", is_unconventional: true, has_competing_order: false, total_papers: 7, variant_count: 0, property_evidence: propertyEnvelope(atomicItem("pairing_symmetry", "old-d-wave"), atomicItem("is_unconventional", true), atomicItem("has_competing_order", false)) } as MaterialSummary;
     const { container } = render(<MaterialTable rows={[row]} />);
+    showScientificColumns("Pairing", "Unconventional", "Competing order", "Phase");
     expect(screen.getAllByText("Unknown")).toHaveLength(4); // Three classifications plus the separate SC11 phase.
-    expect(screen.getByText("0/6")).toBeInTheDocument();
+    expect(screen.queryByText("0/6")).not.toBeInTheDocument();
     expect(screen.getByText("7 legacy links")).toBeInTheDocument();
     expect(container.textContent).not.toMatch(/stale-d-wave|old-d-wave|Reported false|Reported true/);
   });
@@ -106,7 +112,7 @@ describe("material classification semantics", () => {
     const value = materialSemantics();
     value.priors.push({ property: "pairing_symmetry", value: "synthetic-d-wave", knowledge_origin: "Inferred", basis: "legacy_family_heuristic", policy_version: value.version, provenance: { kind: "legacy_sclib_application_rule", scientific_citation: null }, applicability: { family: "cuprate", sample_state: "not_assessed", universally_applicable: false } });
     render(<><MaterialTable rows={[{ id: "synthetic", formula: "SYNTHETIC", total_papers: 7, variant_count: 0, material_semantics: value } as MaterialSummary]} /><MaterialSemanticsPanel semantics={value} /></>);
-    expect(screen.getByText("0/6")).toBeInTheDocument();
+    expect(screen.queryByText("0/6")).not.toBeInTheDocument();
     expect(screen.getByText("2 IDs")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Family and domain priors · Inferred, not measured" })).toBeInTheDocument();
     expect(screen.getByText(/synthetic-d-wave · Inferred prior/)).toBeInTheDocument();
@@ -117,7 +123,8 @@ describe("material classification semantics", () => {
   it("counts reported false as a source-linked field, not an assumed missing value", () => {
     const value = materialSemantics({ has_competing_order: semanticProperty(false, semanticReport(false, { negative_qualified: true, detection_conditions: { pressure_gpa: 0 } })), pairing_symmetry: semanticProperty("synthetic s-wave") });
     render(<MaterialTable rows={[{ id: "synthetic", formula: "SYNTHETIC", total_papers: 7, variant_count: 0, material_semantics: value } as MaterialSummary]} />);
-    expect(screen.getByText("2/6")).toBeInTheDocument();
+    showScientificColumns("Pairing", "Competing order");
+    expect(screen.queryByText("2/6")).not.toBeInTheDocument();
     expect(screen.getByText("Reported false (scoped)")).toBeInTheDocument();
     expect(screen.getByText("synthetic s-wave")).toBeInTheDocument();
   });

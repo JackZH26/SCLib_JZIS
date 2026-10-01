@@ -713,6 +713,9 @@ export interface MaterialExtract {
 }
 
 export interface MatchingScientificResult {
+  matching_result_count?: number;
+  matching_results_truncated?: boolean;
+  tc_evidence?: PropertyEvidenceItem | null;
   visibility?: MaterialVisibility | SourceOccurrenceVisibility;
   result_id: string;
   record_index: number;
@@ -1302,6 +1305,42 @@ export interface MaterialDetail extends MaterialSummary {
   mp_id: string | null;
   mp_alternate_ids: string[];
   mp_synced_at: string | null;
+}
+
+export interface MaterialEnrichmentReport {
+  candidates_truncated?: boolean;
+  inspection_scope?: { records_total: number; records_inspected: number; records_truncated: boolean; papers_total: number; papers_inspected: number; papers_truncated: boolean };
+  version: string;
+  candidates: Array<Record<string, unknown>>;
+  coverage: Array<{ material_id: string; formula: string; fields: Array<{ field: string; status: string; retained_present: boolean; candidate_count: number; reason_codes: string[]; routes: string[] }> }>;
+  counts: Record<string, unknown>;
+  scientific_acceptance: false;
+  database_changed: false;
+}
+export function getMaterialEnrichment(id: string, signal?: AbortSignal) {
+  return request<MaterialEnrichmentReport>(`/materials/${encodeURIComponent(id)}/enrichment`, { signal, cache: "no-store", responseByteLimit: 2 * 1024 * 1024 });
+}
+
+export interface ExternalMaterialReference {
+  id: string; url: string; formula: string; knowledge_origin: "Computed";
+  sample_identity_established: false; phase_identity_established: false;
+  space_group: string | null; crystal_system: string | null;
+  lattice: Record<string, number>; band_gap_ev: number | null;
+  density_g_cm3: number | null; volume_angstrom3: number | null;
+  energy_above_hull_ev_atom: number | null; formation_energy_ev_atom: number | null;
+  is_metal: boolean | null; is_stable: boolean | null;
+  origins: Array<{ property: string; task_id: string; last_updated: string | null }>;
+  last_updated: string | null; source_snapshot_sha256: string; functional: string;
+}
+export interface ExternalMaterialReferences {
+  version: "material-external-references/1.0.0";
+  status: "available" | "no_match" | "not_applicable" | "unavailable";
+  reason: string | null; candidates: ExternalMaterialReference[]; truncated: boolean;
+  retrieved_at: string | null; scientific_acceptance: false; sample_identity_established: false;
+  reference_conditions: string; methodology_url: string;
+}
+export function getMaterialExternalReferences(id: string, signal?: AbortSignal) {
+  return request<ExternalMaterialReferences>(`/materials/${encodeURIComponent(id)}/external_references`, { signal, cache: "no-store", responseByteLimit: 512 * 1024 });
 }
 
 export interface VariantSummary {

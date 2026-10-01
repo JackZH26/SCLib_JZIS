@@ -34,6 +34,9 @@ class Settings(BaseSettings):
     # === Redis ===
     redis_url: str = "redis://redis:6379"
 
+    # Read-only calculated reference data; never a source of measured Tc.
+    mp_api_key: str = ""
+
     # === Auth ===
     jwt_secret: str = Field(..., min_length=32)
     jwt_expiry_hours: int = 24

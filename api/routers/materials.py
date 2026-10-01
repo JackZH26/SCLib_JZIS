@@ -22,6 +22,7 @@ from sqlalchemy import cast, func, or_, select
 from sqlalchemy.dialects.postgresql import JSONPATH
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from config import get_settings
 from models import get_db
 from models.db import HydrideTcParameter, Material
 from models.search import (
@@ -36,9 +37,12 @@ from routers.deps import Identity, peek_identity
 from services.anomaly_review import eligible_for_property
 from services.catalogue_cache import (
     BoundedResponseCache as _MaterialPageCache,
+)
+from services.catalogue_cache import (
     catalogue_revision,
 )
 from services.material_anomalies import material_review, record_assessment, review_context
+from services.material_external_references import fetch_external_references
 from services.material_property_projection import project_material_semantics
 from services.material_scoped_properties import scoped_property_evidence
 from services.material_source_scope import current_visibility_allows_view as visibility_allows_view
@@ -192,6 +196,29 @@ def _matching_material_results(material, filters):
     return matching
 
 
+def _public_matching_results(material, matches):
+    """Attach a full same-occurrence quantity only to displayed page rows.
+
+    A filtering lower bound is not an exact Tc. Never borrow the material's
+    maximum, pressure or criterion from a different occurrence.
+    """
+    result = []
+    for reference in matches[:30]:
+        record = material.records[reference["record_index"]]
+        envelope = build_property_evidence(
+            [record], scope_id=material.id, property_fields=["tc_max"],
+            include_joint_epc=False, anomaly_context=review_context(material),
+        )
+        binding = envelope["properties"]["tc_max"]
+        candidates = [binding.get("selected"), *binding.get("evidence", [])]
+        evidence = next((item for item in candidates if item
+                         and item["result_id"] == reference["result_id"]), None)
+        result.append({**reference, "visibility": material.visibility,
+                       "tc_evidence": evidence, "matching_result_count": len(matches),
+                       "matching_results_truncated": len(matches) > 30})
+    return result
+
+
 async def _page_from_material_ranking(db, identifiers, filters, *, offset, limit):
     selected_ids = identifiers[offset:offset + limit]
     selected = []
@@ -205,8 +232,7 @@ async def _page_from_material_ranking(db, identifiers, filters, *, offset, limit
         for identifier in selected_ids:
             material = views[identifier]
             summary = MaterialSummary.model_validate(material)
-            summary.matching_results = [{**record, "visibility": material.visibility}
-                                        for record in _matching_material_results(material, filters)]
+            summary.matching_results = _public_matching_results(material, _matching_material_results(material, filters))
             selected.append(summary)
     return MaterialListResponse(total=len(identifiers), results=selected, limit=limit, offset=offset)
 
@@ -413,7 +439,7 @@ async def list_materials(
     selected = []
     for item in sorted(candidates, reverse=True)[offset:offset + limit]:
         summary = MaterialSummary.model_validate(item.material)
-        summary.matching_results = [{**record, "visibility": item.material.visibility} for record in item.matching]
+        summary.matching_results = _public_matching_results(item.material, item.matching)
         selected.append(summary)
     result = MaterialListResponse(total=total, results=selected, limit=limit, offset=offset)
     await _check_material_revision(db, revision)
@@ -563,6 +589,44 @@ async def material_hydride_parameters(
         dto.visibility = visibility
         result.append(dto)
     return result
+
+
+@router.get("/materials/{material_id:path}/external_references")
+async def material_external_references(
+    material_id: str,
+    identity: Identity = Depends(peek_identity),  # noqa: ARG001
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    """Composition-level computed references, outside all sample selections."""
+    before = await _material_page_revision(db)
+    material = await material_view(db, await db.get(Material, material_id))
+    if material is None or not visibility_allows_view(material.visibility):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Material not found")
+    report = await fetch_external_references(
+        material.formula, api_key=get_settings().mp_api_key,
+        current_records=material.current_records(),
+    )
+    await _check_material_revision(db, before)
+    return _material_response(json.dumps(report, allow_nan=False).encode(), "REFERENCE")
+
+
+@router.get("/materials/{material_id:path}/enrichment")
+async def material_enrichment(
+    material_id: str,
+    identity: Identity = Depends(peek_identity),  # noqa: ARG001
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    before = await _material_page_revision(db)
+    material = await material_view(db, await db.get(Material, material_id))
+    if material is None or not visibility_allows_view(material.visibility):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Material not found")
+    from services.material_enrichment_read import read_material_enrichment
+    from services.material_enrichment_seed import merge_primary_seed
+    report = merge_primary_seed(await read_material_enrichment(db, material), material)
+    # Catalogue and source epochs cover correction/withdrawal while the
+    # bounded extraction worker is running. Publish only the same snapshot.
+    await _check_material_revision(db, before)
+    return _material_response(json.dumps(report, allow_nan=False).encode(), "RECOVERY")
 
 
 @router.get("/materials/{material_id:path}", response_model=MaterialDetail)

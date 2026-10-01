@@ -14,8 +14,9 @@ describe("atomic property evidence", () => {
     expect(screen.queryByText("8888")).not.toBeInTheDocument();
     expect(screen.queryByText("fictional-pairing")).not.toBeInTheDocument();
     expect(screen.getAllByText("Source unavailable").length).toBeGreaterThan(0);
-    expect(screen.getByText(/Sorting uses legacy catalogue columns/)).toBeInTheDocument();
-    expect(screen.getByText("0/6")).toBeInTheDocument();
+    expect(screen.getByText(/Tc and conditions share one result/)).toBeInTheDocument();
+    expect(screen.queryByText("0/6")).not.toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: "Evidence status" })).toBeInTheDocument();
   });
 
   it("takes maximum Hc2 conditions and provenance from B, never A", () => {

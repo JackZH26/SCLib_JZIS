@@ -90,6 +90,7 @@ class MaterialsProjectClient:
             "symmetry",
         ),
         limit: int = 50,
+        strict: bool = False,
     ) -> list[dict[str, Any]]:
         """Return MP summary docs whose ``formula_pretty`` matches.
 
@@ -111,6 +112,8 @@ class MaterialsProjectClient:
         body = resp.json()
         data = body.get("data") if isinstance(body, dict) else None
         if not isinstance(data, list):
+            if strict:
+                raise ValueError("MP summary response data is unavailable")
             log.warning(
                 "MP /materials/summary returned unexpected shape for %s: %r",
                 formula,
