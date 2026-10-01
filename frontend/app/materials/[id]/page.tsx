@@ -34,6 +34,11 @@ import { eligibleForScientificSeo, visibilityIsRestricted, visibilityLabel } fro
 import { MaterialSemanticsMini, MaterialSemanticsPanel } from "@/components/MaterialSemantics";
 import { materialSourceCountLabel } from "@/lib/material-semantics";
 import { StructureEvidencePanel, StructureEvidenceValue } from "@/components/StructureEvidence";
+import { ExternalMaterialReferences } from "@/components/ExternalMaterialReferences";
+import { MaterialEnrichment } from "@/components/MaterialEnrichment";
+import { ExternalStructureReferences } from "@/components/ExternalStructureReferences";
+import { ExternalCalculationReferences } from "@/components/ExternalCalculationReferences";
+import { ExternalSuperconReferences } from "@/components/ExternalSuperconReferences";
 
 export const dynamic = "force-dynamic";
 
@@ -168,47 +173,6 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
             .filter(Boolean)
             .join(" · ") || "—"}
         </p>
-        {mat.mp_id && (
-          // Cross-link to Materials Project for DFT structure / band data.
-          // Rendered only when the Phase B sync (scripts/sync_mp_ids.py)
-          // matched this formula. The "+N polymorphs" hint surfaces
-          // mp_alternate_ids when the formula has multiple structures
-          // (e.g. high-pressure phases) so the reader knows the chosen
-          // mp_id is just the lowest-energy one.
-          <div className="mt-3">
-            <a
-              href={`https://next-gen.materialsproject.org/materials/${mat.mp_id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-md border border-sage-border bg-white px-3 py-1.5 text-xs font-medium text-accent-deep shadow-sm transition-colors hover:bg-[rgba(58,125,92,0.06)]"
-            >
-              <span>Formula-matched Materials Project entry</span>
-              <span className="font-mono text-[10px] text-slate-500">
-                {mat.mp_id}
-              </span>
-              {mat.mp_alternate_ids.length > 1 && (
-                <span className="text-[10px] text-slate-500">
-                  · +{mat.mp_alternate_ids.length - 1} polymorph
-                  {mat.mp_alternate_ids.length - 1 === 1 ? "" : "s"}
-                </span>
-              )}
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M7 17L17 7M9 7h8v8" />
-              </svg>
-            </a>
-          </div>
-        )}
-        {mat.mp_id && <p className="mt-1 text-xs text-slate-500">Formula-level cross-reference; correspondence to a measured sample, pressure state or selected structure is not established by this link.</p>}
         {activeFlags.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-2">
             {activeFlags.map(([label]) => (
@@ -223,9 +187,13 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
         )}
       </div>
 
-      <MaterialVisibilityNotice visibility={mat.visibility} />
-      <p className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">These are source-linked property selections, not a joint observation or an ML feature row. Archive status applies to every property below; a source-linked value does not override a material review hold. Expand each value for its contributing result, source and conditions. Observed/Computed labels describe the source record, not independent validation of each property. Missing source/state associations are not filled from another record. Family labels are catalogue classifications, not measurement evidence.</p>
-      <ScientificAnomalyNotice review={mat.anomaly_review} />
+      <MaterialVisibilityNotice visibility={mat.visibility} quietIfClear />
+      <ScientificAnomalyNotice review={mat.anomaly_review} quietIfClear />
+      <details className="border-y border-sage-border py-3 text-sm text-slate-600">
+        <summary className="cursor-pointer font-medium">How to read these data</summary>
+        <p className="mt-3 max-w-4xl">Each property selection has its own source, conditions and result identity. Expand a value to inspect them. Observed and Computed describe the source report; catalogue eligibility and a clear anomaly check do not establish scientific validity. Different properties need not describe the same sample or state.</p>
+        <p className="mt-2 max-w-4xl">Missing pressure is not ambient pressure. Text structure claims remain separate from validated coordinates. A source-linked value does not override a material review hold. Source recovery candidates and external calculated references do not replace selected measurements.</p>
+      </details>
 
       <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <PropertyEvidenceFact evidence={mat.property_evidence} field="tc_max" />
@@ -233,7 +201,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
         <Fact label="arXiv year" value={String(mat.arxiv_year ?? "—")} />
         <Fact label="Source links · not replications" value={materialSourceCountLabel(mat.material_semantics, mat.total_papers)} />
       </section>
-      <MaterialSemanticsPanel semantics={mat.material_semantics} />
+      <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Reported classifications and mechanism evidence</summary><div className="mt-4"><MaterialSemanticsPanel semantics={mat.material_semantics} /></div></details>
       {(selectedProperty(mat.property_evidence, "tc_max_experimental") || selectedProperty(mat.property_evidence, "tc_max_theoretical")) && (
         <section className="-mt-2 grid grid-cols-2 gap-4 md:grid-cols-4">
           <PropertyEvidenceFact evidence={mat.property_evidence} field="tc_max_experimental" />
@@ -269,8 +237,8 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
                       >
                         <FormulaDisplay formula={v.formula} />
                       </Link>
-                      <ScientificAnomalyNotice review={v.anomaly_review} compact />
-                      <MaterialVisibilityNotice visibility={v.visibility} compact />
+                      <ScientificAnomalyNotice review={v.anomaly_review} compact quietIfClear />
+                      <MaterialVisibilityNotice visibility={v.visibility} compact quietIfClear />
                     </td>
                     <td className="px-3 py-2.5 text-right tabular-nums">
                       <PropertyEvidenceValue evidence={v.property_evidence} field="tc_max" compact includeUnit={false} />
@@ -313,12 +281,15 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
         <HydrideParametersTable rows={hydrideParameters} />
       )}
 
-      <StructureEvidencePanel evidence={mat.structure_evidence} />
-      <PropertyEvidenceSection title="Lattice parameters — separate source selections" fields={STRUCTURE_FIELDS.filter(field => field === "lattice_params")} evidence={mat.property_evidence} />
-      <PropertyEvidenceSection title="Superconducting parameters" fields={SC_FIELDS.filter(field => field !== "pairing_symmetry")} evidence={mat.property_evidence} />
-      <JointEpcNotice evidence={mat.property_evidence} />
-      <PropertyEvidenceSection title="Competing orders" fields={ORDER_FIELDS} evidence={mat.property_evidence} />
-      <PropertyEvidenceSection title="Samples & pressure" fields={SAMPLE_FIELDS} evidence={mat.property_evidence} />
+      <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Structure and lattice evidence</summary><div className="mt-4 space-y-6"><StructureEvidencePanel evidence={mat.structure_evidence} /><PropertyEvidenceSection title="Lattice parameters — separate source selections" fields={STRUCTURE_FIELDS.filter(field => field === "lattice_params")} evidence={mat.property_evidence} /></div></details>
+      <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Superconducting parameters</summary><div className="mt-4 space-y-6"><PropertyEvidenceSection title="Superconducting parameters" fields={SC_FIELDS.filter(field => field !== "pairing_symmetry")} evidence={mat.property_evidence} /><JointEpcNotice evidence={mat.property_evidence} /></div></details>
+      <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Competing orders</summary><div className="mt-4"><PropertyEvidenceSection title="Competing orders" fields={ORDER_FIELDS} evidence={mat.property_evidence} /></div></details>
+      <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Samples and pressure evidence</summary><div className="mt-4"><PropertyEvidenceSection title="Samples & pressure" fields={SAMPLE_FIELDS} evidence={mat.property_evidence} /></div></details>
+      {catalogueEligible && <MaterialEnrichment materialId={mat.id} />}
+      {catalogueEligible && <ExternalSuperconReferences materialId={mat.id} />}
+      {catalogueEligible && <ExternalMaterialReferences materialId={mat.id} />}
+      {catalogueEligible && <ExternalStructureReferences materialId={mat.id} />}
+      {catalogueEligible && <ExternalCalculationReferences materialId={mat.id} />}
 
     </main>
   );

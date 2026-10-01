@@ -82,10 +82,14 @@ def test_canonical_json_and_error_redaction_are_deterministic() -> None:
     )
     assert license_manifest["contains_nims_records"] is True
     nims_terms = license_manifest["source_terms"]["nims"]
-    assert "CC BY 4.0" in nims_terms
-    assert "10.48505/nims.3735" in nims_terms
-    assert "non-commercial" not in nims_terms.lower()
-    assert "restricted" not in nims_terms.lower()
+    # A generic legacy source label does not prove which NIMS dataset was
+    # captured or license that historical content under a newer MDR release.
+    assert "unverified without source receipts" in nims_terms
+    assert "no blanket license or version citation" in nims_terms
+    assert "CC BY 4.0" not in nims_terms
+    assert "10.48505/nims.3735" not in nims_terms
+    assert "10.48505/nims.4487" not in nims_terms
+    assert license_manifest["distribution_status"] == "not_cleared_for_public_release"
 
 
 @pytest.mark.asyncio

@@ -558,8 +558,10 @@ def build_license_manifest(
             "arxiv": "upstream paper-specific terms remain applicable",
             "aps": "derived structured data only; no licensed full text is exported",
             "nims": (
-                "CC BY 4.0; NIMS SuperCon v22.12.03, DOI 10.48505/nims.3735; "
-                "NIMS attribution required"
+                "Legacy NIMS-labelled records: original dataset, version and license "
+                "remain unverified without source receipts; no blanket license or "
+                "version citation is assigned by this export. NIMS attribution and "
+                "applicable source terms must be established before release."
             ),
             "materials_project": "CC BY 4.0; Materials Project attribution required",
         },

@@ -1,0 +1,172 @@
+"use client";
+
+import { useEffect, useId, useState } from "react";
+import { getMaterialEnrichment } from "@/lib/api";
+import type { MaterialEnrichmentReport, PropertyEvidenceItem } from "@/lib/api";
+import Link from "@/components/AppLink";
+import { evidenceText, objectValue, propertyValue, sourceHref } from "@/lib/property-evidence";
+
+const labels: Record<string, string> = { tc_kelvin: "Tc", pressure_gpa: "Pressure", tc_criterion: "Tc criterion", measurement_method: "Method", space_group: "Space group", crystal_structure: "Structure label", lattice_a: "Lattice a", lattice_b: "Lattice b", lattice_c: "Lattice c", lambda_eph: "Electron–phonon coupling λ", omega_log_source_value: "Logarithmic phonon frequency", mu_star: "Coulomb pseudopotential μ*", hc2_tesla: "Upper critical field", atomic_sites: "Atomic sites", site_occupancies: "Site occupancies", composition_identity: "Composition identity", measurement_temperature_k: "Measurement temperature", calculation_method: "Calculation method" };
+const statuses: Record<string, string> = { retained_present: "Retained extraction", pending_review: "Candidate found · review needed", source_unavailable: "Source identity unavailable", not_extracted: "Source text not checked", not_found_in_checked_sources: "No candidate in checked chunks", specialist_extraction_needed: "Specialist source extraction needed" };
+const routes: Record<string, string> = { source_fulltext_and_supplement: "Paper and supplement", source_table_and_supplement: "Source tables and supplement", supercon_source_lookup: "SuperCon source lookup", cod_structure_lookup: "COD structure match", mp_state_matched_structure: "MP structure match with state review", nomad_state_matched_calculation: "NOMAD run with state review", new_structure_calculation: "New structural calculation", new_electron_phonon_calculation: "New electron–phonon calculation" };
+const readable = (value: string) => value.replaceAll("_", " ");
+
+/** A parsed pending quantity may be displayed without promoting it to a selected fact. */
+function quantityText(field: string, value: unknown, quantity: unknown): string | null {
+  const parsed = objectValue(quantity);
+  if (!Object.keys(parsed).length) return null;
+  const formatted = propertyValue({ property: field, value: value ?? parsed.value ?? null, quantity: parsed } as PropertyEvidenceItem);
+  return formatted === "—" ? null : formatted;
+}
+function candidateValue(candidate: Record<string, unknown>): string | null {
+  const formatted = quantityText(evidenceText(candidate.field) ?? "candidate", candidate.value, candidate.quantity);
+  if (formatted) return formatted;
+  // Original tokens can already contain a unit. Preserve them verbatim instead
+  // of appending raw_unit or inferring a canonical unit when parsing failed.
+  return evidenceText(candidate.raw_value) ?? evidenceText(candidate.value);
+}
+function candidateContext(candidate: Record<string, unknown>): [string, string][] {
+  const subject = objectValue(candidate.subject), field = evidenceText(candidate.field);
+  const entries: [string, string][] = [];
+  if (field === "tc_kelvin") {
+    const criterion = evidenceText(subject.tc_criterion) ?? "unknown";
+    entries.push(["Tc criterion", ({ onset: "Onset", midpoint: "Midpoint", zero_resistance: "Zero resistance", unknown: "Unknown" } as Record<string, string>)[criterion] ?? readable(criterion)]);
+    const pressure = quantityText("pressure_gpa", null, subject.pressure_quantity);
+    const pressureState = evidenceText(subject.pressure_state);
+    entries.push(["Pressure context", pressureState === "ambiguous" ? "Ambiguous in source context" : pressure && ["reported", "explicit_ambient"].includes(pressureState ?? "") ? `${pressure}${pressureState === "explicit_ambient" ? " (explicit ambient)" : ""}` : pressureState === "not_reported" ? "Not reported in source context" : "Unresolved"]);
+  }
+  if (field === "pressure_gpa") {
+    // A pressure value or interval alone cannot identify its scientific role.
+    // Only explicit role metadata can distinguish stability from a Tc condition.
+    const role = evidenceText(subject.pressure_role) ?? evidenceText(candidate.pressure_role);
+    entries.push(["Pressure role", role === "stability_range" ? "Stability range; not a Tc condition" : role === "tc_condition" ? "Tc condition; association pending" : "Unresolved; stability ranges are not Tc conditions"]);
+    if (subject.pressure_state === "ambiguous") entries.push(["Pressure context", "Ambiguous in source context"]);
+  }
+  const origin = evidenceText(subject.knowledge_origin);
+  if (origin || field === "tc_kelvin") entries.push(["Source origin", origin && ["Observed", "Computed", "Inferred", "AI-Proposed"].includes(origin) ? `${origin} report` : "Unknown"]);
+  const method = evidenceText(subject.measurement_method);
+  if (method) entries.push(["Method", readable(method)]);
+  for (const [key, label] of [["sample_label", "Sample"], ["state_label", "State"], ["phase_label", "Phase"], ["run_label", "Run"]]) {
+    const value = evidenceText(subject[key]);
+    if (value) entries.push([label, value]);
+  }
+  const rowLabel = evidenceText(candidate.table_row_label);
+  if (rowLabel) entries.push(["Source table row", rowLabel]);
+  const sourceFormula = evidenceText(subject.source_formula) ?? evidenceText(subject.table_column_formula);
+  if (sourceFormula) entries.push(["Source formula", sourceFormula]);
+  const identity = evidenceText(subject.identity_basis);
+  const associations: Record<string, string> = {
+    retained_quantity_source_scoped_search_hit: "Source-scoped value match; local material binding unresolved",
+    nominal_refined_composition_proposal: "Nominal/refined sample association pending",
+    source_refinement_context_proposal: "Refined-site association pending",
+    exact_table_column_formula: "Table-column association pending",
+    exact_formula_local: "Local formula match; sample and state association pending",
+  };
+  if (identity) entries.push(["Association", associations[identity] ?? "Source, sample and state association pending"]);
+  if ((field === "atomic_sites" || field === "site_occupancies") && candidateValue(candidate)) entries.push(["Structure", "Site and structure association pending; validated coordinates unavailable"]);
+  return entries;
+}
+function CandidateContext({ candidate }: { candidate: Record<string, unknown> }) {
+  const entries = candidateContext(candidate);
+  return entries.length ? <dl className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600" aria-label="Pending source context">{entries.map(([label, value]) => <div className="max-w-full break-words" key={label}><dt className="inline font-medium">{label}: </dt><dd className="inline">{value}</dd></div>)}</dl> : null;
+}
+function primarySourceUrl(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  try {
+    const url = new URL(value);
+    return ["https:", "http:"].includes(url.protocol) && !url.username && !url.password ? url.href : null;
+  } catch { return null; }
+}
+function structuredEntries(field: string, value: unknown): [string, string][] {
+  const raw = objectValue(value);
+  const fields: Record<string, string> = field === "composition_identity" ? {
+    catalogue_formula: "Catalogue formula", source_formula: "Source formula", nominal_formula_raw: "Nominal formula (source)", refined_formula_raw: "Refined formula (source)", relation: "Proposed relationship",
+  } : { site: "Site", fractional_coordinate_raw: "Fractional coordinate (source)", wyckoff_position: "Wyckoff position", coordinates_raw: "Coordinates (source)", interpretation: "Source interpretation" };
+  const entries: [string, string][] = Object.entries(fields).flatMap(([key, label]) => {
+    const text = evidenceText(raw[key]);
+    if (!text) return [];
+    return [[label, key === "relation" || key === "interpretation" ? readable(text) : text]];
+  });
+  const elements = Array.isArray(raw.site_elements) ? raw.site_elements.filter((item): item is string => typeof item === "string" && /^[A-Z][a-z]?$/.test(item)) : [];
+  if (elements.length) entries.push(["Site elements", elements.join(" / ")]);
+  for (const [element, fraction] of Object.entries(objectValue(raw.fractions_raw))) {
+    const text = evidenceText(fraction);
+    if (/^[A-Z][a-z]?$/.test(element) && text) entries.push([`${element} occupancy (source)`, text]);
+  }
+  return entries;
+}
+function StructuredCandidate({ candidate }: { candidate: Record<string, unknown> }) {
+  const field = evidenceText(candidate.field) ?? "";
+  const entries = structuredEntries(field, candidate.raw_value ?? candidate.value);
+  if (!entries.length) return <p className="mt-2 text-xs text-slate-600">Structured value needs source inspection.</p>;
+  return <dl className="mt-2 grid gap-2 text-xs sm:grid-cols-2" aria-label="Structured recovery candidate">{entries.map(([label, value]) => <div key={label}><dt className="text-slate-500">{label}</dt><dd className="mt-0.5 break-words text-slate-700">{value}</dd></div>)}<div className="sm:col-span-2 text-amber-800">{field === "composition_identity" ? "Nominal and refined formulas are a proposed sample association; they are not automatically equivalent." : "Site, occupancy and structure correspondence still need source review. These fields do not supply validated coordinates."}</div></dl>;
+}
+function sourceLocator(source: Record<string, unknown>): string {
+  const locator = objectValue(source.locator);
+  return ["page", "table", "figure", "section", "row", "column", "char_start", "char_end", "xml_xpath", "chunk_id"].flatMap(key => {
+    const value = evidenceText(locator[key]);
+    return value ? [`${readable(key)}: ${value}`] : [];
+  }).join("; ");
+}
+export function MaterialEnrichment({ materialId }: { materialId: string }) {
+  const [state, setState] = useState<{ materialId: string; report: MaterialEnrichmentReport | null; failed: boolean }>({ materialId, report: null, failed: false });
+  const [candidateExpansion, setCandidateExpansion] = useState({ materialId, expanded: false });
+  const showAllCandidates = candidateExpansion.materialId === materialId && candidateExpansion.expanded;
+  const candidateListId = useId();
+  const report = state.materialId === materialId ? state.report : null;
+  const failed = state.materialId === materialId && state.failed;
+  useEffect(() => {
+    const controller = new AbortController();
+    setState({ materialId, report: null, failed: false });
+    setCandidateExpansion({ materialId, expanded: false });
+    getMaterialEnrichment(materialId, controller.signal).then(value => {
+      if (controller.signal.aborted) return;
+      if (value.version !== "materials-enrichment/1.0.0" || value.scientific_acceptance !== false || value.database_changed !== false || !Array.isArray(value.coverage) || !Array.isArray(value.candidates)) throw new Error("Recovery contract unavailable");
+      setState({ materialId, report: value, failed: false });
+    }).catch(() => { if (!controller.signal.aborted) setState({ materialId, report: null, failed: true }); });
+    return () => controller.abort();
+  }, [materialId]);
+  const fields = report?.coverage.find(row => row.material_id === materialId)?.fields ?? [];
+  const missing = fields.filter(field => !field.retained_present);
+  return <section className="border-t border-sage-border pt-6" aria-label="Field coverage and source recovery">
+    <h2 className="text-lg font-semibold">Field coverage &amp; source recovery</h2>
+    <p className="mt-1 max-w-3xl text-sm text-slate-600">See which fields are retained, which need source review, and where missing information can be recovered.</p>
+    {!report && !failed && <p className="mt-3 text-sm text-slate-500" role="status">Checking linked source chunks…</p>}
+    {failed && <p className="mt-3 text-sm text-slate-600">Source recovery is unavailable for this request. Retained values above are unchanged.</p>}
+    {report && <>
+      <p className="mt-3 text-sm text-slate-600">{fields.length - missing.length} fields have retained extractions in inspected records · {missing.length} need further source work · {report.candidates.length} recovery candidates.</p>
+      {report.inspection_scope && <p className="mt-2 text-xs text-slate-500">Inspected {report.inspection_scope.records_inspected} of {report.inspection_scope.records_total} eligible retained records across {report.inspection_scope.papers_inspected} of {report.inspection_scope.papers_total} linked papers.{(report.inspection_scope.records_truncated || report.inspection_scope.papers_truncated) && " This is a sampled recovery check; remaining records and sources have not been inspected."}</p>}
+      {report.candidates_truncated && <p className="mt-2 text-xs text-slate-500">A bounded list of 100 candidates was returned. Field counts may include additional candidates; none represents independent confirmation.</p>}
+      <details className="mt-3 rounded-lg border border-sage-border bg-white p-4">
+        <summary className="cursor-pointer text-sm font-medium">Inspect field coverage and recovery routes</summary>
+        <p className="mt-3 text-xs text-slate-500">This bounded check covers linked chunks, not every full paper or supplement. A missing candidate does not establish that the paper omitted the property. Retained and candidate values still need sample, state and source review.</p>
+        <div className="mt-3 overflow-x-auto"><table className="w-full text-left text-sm"><thead className="border-b border-slate-200 text-xs text-slate-500"><tr><th className="py-2 pr-4">Field</th><th className="py-2 pr-4">Coverage</th><th className="py-2">Recovery route</th></tr></thead><tbody className="divide-y divide-slate-100">{fields.map(field => <tr key={field.field}><td className="py-2 pr-4">{labels[field.field] ?? readable(field.field)}</td><td className="py-2 pr-4">{statuses[field.status] ?? readable(field.status)}{field.candidate_count > 0 && <span className="block text-xs text-slate-500">{field.candidate_count} source candidates</span>}</td><td className="py-2 text-xs text-slate-600">{field.routes.map(route => routes[route] ?? readable(route)).join("; ")}</td></tr>)}</tbody></table></div>
+      </details>
+      {report.candidates.length > 0 && <details className="mt-3 rounded-lg border border-sage-border bg-white p-4">
+        <summary className="cursor-pointer text-sm font-medium">Source recovery candidates ({report.candidates.length})</summary>
+        <p className="mt-3 text-xs text-slate-500">These extraction candidates are separate from the selected properties above. Source spans identify retained content; publication version and material-state correspondence may remain unresolved.</p>
+        <ul id={candidateListId} className="mt-3 divide-y divide-slate-100">{report.candidates.slice(0, showAllCandidates ? report.candidates.length : 40).map((candidate, index) => {
+          const source = objectValue(candidate.source), quantity = objectValue(candidate.quantity);
+          const value = candidateValue(candidate);
+          const primaryUrl = primarySourceUrl(source.source_url);
+          const paperHref = sourceHref(source);
+          const field = evidenceText(candidate.field) ?? "Field";
+          const structured = !value && Object.keys(objectValue(candidate.raw_value ?? candidate.value)).length > 0;
+          return <li key={evidenceText(candidate.candidate_id) ?? index} className="py-3 text-sm">
+            <p className="font-medium">{labels[field] ?? readable(field)}: {value ?? (field === "composition_identity" ? "Sample association proposal" : structured ? ["atomic_sites", "site_occupancies"].includes(field) ? "Reported site context" : "Structured source value" : "Value unavailable")} <span className="ml-2 text-xs font-normal text-amber-800">Review needed</span></p>
+            <CandidateContext candidate={candidate} />
+            {structured && <StructuredCandidate candidate={candidate} />}
+            <p className="mt-1 text-xs text-slate-500">{evidenceText(source.paper_id) ?? "Source identifier unavailable"} · {readable(evidenceText(source.kind) ?? "unknown source")} {sourceLocator(source) && <span className="block">{sourceLocator(source)}</span>}</p>
+            {primaryUrl ? <a className="mt-1 inline-block text-xs text-accent-deep underline" href={primaryUrl} target="_blank" rel="noopener noreferrer">Open primary source</a> : paperHref && <Link className="mt-1 inline-block text-xs text-accent-deep underline" href={paperHref}>Open linked paper</Link>}
+            <details className="mt-2 text-xs"><summary className="cursor-pointer text-accent-deep">Source identity and checks</summary><dl className="mt-2 space-y-1 break-all text-slate-600">
+              <div><dt className="inline">Raw source value: </dt><dd className="inline">{evidenceText(candidate.raw_value) ?? (structured ? "See structured fields above" : "Not supplied")}</dd></div>
+              {Object.keys(quantity).length > 0 && <><div><dt className="inline">Source unit: </dt><dd className="inline">{evidenceText(quantity.raw_unit) ?? "Not supplied"}</dd></div><div><dt className="inline">Quantity relation / parser status: </dt><dd className="inline">{evidenceText(quantity.relation) ?? "Unavailable"} / {evidenceText(quantity.status) ?? "Unavailable"}</dd></div></>}
+              <div><dt className="inline">Content hash: </dt><dd className="inline font-mono">{evidenceText(source.content_sha256)}</dd></div><div><dt className="inline">Retained revision: </dt><dd className="inline">{evidenceText(source.source_revision)}</dd></div>
+              <div><dt className="inline">Source span: </dt><dd className="inline">{["char_start", "char_end", "text_sha256"].flatMap(key => evidenceText(objectValue(source.span)[key]) ? [`${readable(key)}: ${evidenceText(objectValue(source.span)[key])}`] : []).join("; ") || "Not supplied"}</dd></div><div><dt className="inline">Checks still required: </dt><dd className="inline">{Array.isArray(candidate.reason_codes) ? candidate.reason_codes.filter((code): code is string => typeof code === "string").map(readable).join("; ") : "Source and state review"}</dd></div></dl></details>
+          </li>;
+        })}</ul>
+        {report.candidates.length > 40 && <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs"><p className="text-slate-500">Showing {showAllCandidates ? report.candidates.length : 40} of {report.candidates.length} returned candidates.</p><button type="button" className="rounded text-accent-deep underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-deep" aria-expanded={showAllCandidates} aria-controls={candidateListId} onClick={() => setCandidateExpansion({ materialId, expanded: !showAllCandidates })}>{showAllCandidates ? "Show fewer candidates" : `Show remaining candidates (${report.candidates.length - 40})`}</button></div>}
+      </details>}
+    </>}
+  </section>;
+}

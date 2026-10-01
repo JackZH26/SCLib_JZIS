@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import MaterialsPage from "@/app/materials/page";
 import { MaterialTable } from "@/components/MaterialTable";
@@ -113,8 +113,10 @@ describe("pending-only structure evidence", () => {
   it("table never counts a stale phase as linked coverage", () => {
     const row = { id: "synthetic", formula: "SYNTHETIC", total_papers: 1, variant_count: 0, structure_phase: "STALE PHASE", structure_evidence: envelope(), property_evidence: propertyEnvelope(atomicItem("structure_phase", "STALE PHASE")) } as MaterialSummary;
     const { container } = render(<MaterialTable rows={[row]} />);
+    fireEvent.click(screen.getByText("Scientific columns"));
+    fireEvent.click(screen.getByLabelText("Phase"));
     expect(screen.getByText("Pending source review")).toBeInTheDocument();
-    expect(screen.getByText("0/6")).toBeInTheDocument();
+    expect(screen.queryByText("0/6")).not.toBeInTheDocument();
     expect(container.textContent).not.toContain("STALE PHASE");
   });
 
@@ -122,7 +124,8 @@ describe("pending-only structure evidence", () => {
     render(await MaterialsPage({ searchParams: Promise.resolve({ structure_phase: "old-phase", family: "hydride", tc_min: "20", page: "3" }) }));
     expect(vi.mocked(listMaterials)).not.toHaveBeenCalled();
     expect(screen.getByText(/Your saved phase filter was not silently ignored/)).toBeInTheDocument();
-    expect(screen.getByDisplayValue("old-phase")).toBeDisabled();
+    expect(screen.getByPlaceholderText("Pending source review")).toHaveValue("old-phase");
+    expect(screen.getByPlaceholderText("Pending source review")).toBeDisabled();
     const link = screen.getByRole("link", { name: /Remove the phase filter/ });
     expect(link).toHaveAttribute("href", "/materials?family=hydride&tc_min=20");
   });

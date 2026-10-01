@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { MaterialTable } from "@/components/MaterialTable";
@@ -40,6 +40,8 @@ describe("result classification display", () => {
     render(<MaterialTable rows={[row]} />);
     expect(screen.getAllByText("Computed").length).toBeGreaterThan(0);
     expect(screen.getByText("0.001")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Scientific columns"));
+    fireEvent.click(screen.getByLabelText("Source tier"));
     expect(screen.getByRole("columnheader", { name: "Source tier" })).toHaveAttribute(
       "title", "Source tier is not experimental confirmation",
     );

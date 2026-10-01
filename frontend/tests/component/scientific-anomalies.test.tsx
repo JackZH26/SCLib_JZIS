@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { JointEpcNotice, PropertyEvidenceValue } from "@/components/PropertyEvidence";
 import { RawScientificArchive, RecordAnomalyReview, ScientificAnomalyNotice } from "@/components/ScientificAnomalies";
@@ -73,6 +73,8 @@ describe("scientific anomaly display", () => {
     const material = { id: "synthetic", formula: "TEST", anomaly_review: materialAnomalyReview(), total_papers: 1, variant_count: 0 } as MaterialSummary;
     render(<MaterialTable rows={[material]} />);
     expect(screen.getAllByRole("row")).toHaveLength(2);
+    expect(screen.getByText("Review required")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Evidence for TEST" }));
     expect(screen.getByText("Scientific anomaly review required")).toBeInTheDocument();
     expect(screen.getByText(/Retained records assessed: 1/)).toBeInTheDocument();
     expect(screen.getByText(/not independent experiments/)).toBeInTheDocument();

@@ -713,6 +713,9 @@ export interface MaterialExtract {
 }
 
 export interface MatchingScientificResult {
+  matching_result_count?: number;
+  matching_results_truncated?: boolean;
+  tc_evidence?: PropertyEvidenceItem | null;
   visibility?: MaterialVisibility | SourceOccurrenceVisibility;
   result_id: string;
   record_index: number;
@@ -1302,6 +1305,130 @@ export interface MaterialDetail extends MaterialSummary {
   mp_id: string | null;
   mp_alternate_ids: string[];
   mp_synced_at: string | null;
+}
+
+export interface MaterialEnrichmentReport {
+  candidates_truncated?: boolean;
+  inspection_scope?: { records_total: number; records_inspected: number; records_truncated: boolean; papers_total: number; papers_inspected: number; papers_truncated: boolean };
+  version: string;
+  candidates: Array<Record<string, unknown>>;
+  coverage: Array<{ material_id: string; formula: string; fields: Array<{ field: string; status: string; retained_present: boolean; candidate_count: number; reason_codes: string[]; routes: string[] }> }>;
+  counts: Record<string, unknown>;
+  scientific_acceptance: false;
+  database_changed: false;
+}
+export function getMaterialEnrichment(id: string, signal?: AbortSignal) {
+  return request<MaterialEnrichmentReport>(`/materials/${encodeURIComponent(id)}/enrichment`, { signal, cache: "no-store", responseByteLimit: 2 * 1024 * 1024 });
+}
+
+export interface ExternalMaterialReference {
+  id: string; url: string; formula: string; knowledge_origin: "Computed";
+  sample_identity_established: false; phase_identity_established: false;
+  space_group: string | null; crystal_system: string | null;
+  lattice: Record<string, number>; band_gap_ev: number | null;
+  density_g_cm3: number | null; volume_angstrom3: number | null;
+  energy_above_hull_ev_atom: number | null; formation_energy_ev_atom: number | null;
+  is_metal: boolean | null; is_stable: boolean | null;
+  origins: Array<{ property: string; task_id: string; last_updated: string | null }>;
+  last_updated: string | null; source_snapshot_sha256: string; functional: string;
+}
+export interface ExternalMaterialReferences {
+  version: "material-external-references/1.0.0";
+  status: "available" | "no_match" | "not_applicable" | "unavailable";
+  reason: string | null; candidates: ExternalMaterialReference[]; truncated: boolean;
+  retrieved_at: string | null; scientific_acceptance: false; sample_identity_established: false;
+  reference_conditions: string; methodology_url: string;
+}
+export function getMaterialExternalReferences(id: string, signal?: AbortSignal) {
+  return request<ExternalMaterialReferences>(`/materials/${encodeURIComponent(id)}/external_references`, { signal, cache: "no-store", responseByteLimit: 512 * 1024 });
+}
+
+export type ExternalReferenceStatus = "available" | "no_match" | "not_applicable" | "unavailable";
+export interface ExternalStructureQuantity {
+  value: number; unit: string; uncertainty: number | null;
+  raw_value: string; raw_uncertainty: string | null;
+  uncertainty_type: "standard_uncertainty" | "unreported" | "unresolved";
+  source_field: string; uncertainty_source_field: string;
+}
+export interface ExternalStructureReference {
+  id: string; url: string; cif_url: string; knowledge_origin: "Observed" | "Unresolved";
+  declared_formula: string | null; cell_content_formula: string | null;
+  composition_relation: "same_composition" | "different_composition" | "unresolved" | "not_supplied";
+  match_level: string; space_group: string | null; hall_symbol: string | null; space_group_number: number | null;
+  lattice: Record<string, ExternalStructureQuantity>; volume: ExternalStructureQuantity | null;
+  measurement_conditions: { cell_temperature: ExternalStructureQuantity | null; diffraction_temperature: ExternalStructureQuantity | null; cell_pressure: ExternalStructureQuantity | null; diffraction_pressure: ExternalStructureQuantity | null };
+  method: string | null; method_status: "reported" | "unreported";
+  source_revision: string | null; revision_status: "reported" | "unreported"; source_updated: string | null;
+  source_snapshot_sha256: string; source_status: string | null; provider_flags: string | null;
+  bibliography: { doi: string | null; doi_url: string | null; title: string | null; journal: string | null; year: number | null };
+  provider_has_coordinates: boolean; coordinate_model_validated: false; cif_validation_status: "external_file_not_validated";
+  sample_identity_established: false; phase_identity_established: false;
+}
+export interface MaterialStructureReferences {
+  version: "material-crystal-references/1.0.0"; provider: "COD"; formula: string; query_formula: string | null;
+  status: ExternalReferenceStatus; reason: string | null; references: ExternalStructureReference[];
+  retrieved_at: string | null; matches_total: number | null; inspected_entries: number; truncated: boolean;
+  source_response_sha256: string | null; scientific_acceptance: false; sample_identity_established: false;
+  phase_identity_established: false; database_changed: false; scope: string; reference_conditions: string; methodology_url: string;
+}
+export function getMaterialStructureReferences(id: string, signal?: AbortSignal) {
+  return request<MaterialStructureReferences>(`/materials/${encodeURIComponent(id)}/external_structures`, { signal, cache: "no-store", responseByteLimit: 512 * 1024 });
+}
+export interface ExternalCalculationReference {
+  id: string; url: string; archive_url: string; formula: string; material_id: string | null; upload_id: string | null;
+  method: string | null; program: string | null; parser: string | null; structural_type: string | null;
+  xc_functional_names: string[] | null; xc_functional_type: string | null; spin_polarized: boolean | null;
+  dft_metadata_status: "reported" | "not_supplied" | "requires_review";
+  dft_metadata_scope: "reported_underlying_dft_metadata_not_complete_method";
+  space_group: string | null; space_group_number: number | null; crystal_system: string | null;
+  source_references: Array<{ provider: string; url: string }>; source_snapshot_sha256: string;
+  knowledge_origin: "Computed" | "Unresolved"; method_status: "reported" | "unresolved";
+  conditions_status: "not_inspected"; match_level: "fixed_composition_only";
+  sample_identity_established: false; phase_identity_established: false;
+}
+export interface MaterialCalculationReferences {
+  version: "material-calculation-references/1.0.0"; provider: "NOMAD"; formula: string; query_formula: string | null;
+  status: ExternalReferenceStatus; reason: string | null; references: ExternalCalculationReference[];
+  retrieved_at: string | null; matches_total: number | null; inspected_entries: number; truncated: boolean;
+  scientific_acceptance: false; sample_identity_established: false; phase_identity_established: false;
+  scope: string; reference_conditions: string; methodology_url: string;
+}
+export function getMaterialCalculationReferences(id: string, signal?: AbortSignal) {
+  return request<MaterialCalculationReferences>(`/materials/${encodeURIComponent(id)}/external_calculations`, { signal, cache: "no-store", responseByteLimit: 512 * 1024 });
+}
+
+export interface SuperconReferenceCode {
+  raw_code: string | null; label: string | null; status: "reported" | "not_supplied" | "requires_review";
+}
+export interface SuperconReferenceQuantity {
+  field: string; label: string; raw_value: string; value: number | null;
+  raw_unit: string | null; unit: string | null;
+  status: "reported" | "unit_not_supplied" | "unit_requires_review" | "value_requires_review";
+  meaning: string; temperature_raw: string | null; direction: string | null;
+  source_method_raw: string | null; method_label: string | null; method_status: "reported" | "not_supplied" | "requires_review";
+}
+export interface ExternalSuperconReference {
+  id: string; source_row_id: string; source_table: "oxide_metallic";
+  source_file: string; source_sha256: string; source_row_sha256: string; source_line: number; source_line_end: number; url: string;
+  formula: string; raw_common_formula: string | null;
+  bibliography: { reference_code: string | null; title: string | null; journal: string | null; publication_year_raw: string | null };
+  structure: { space_group: string | null; space_group_number: number | null; space_group_number_raw: string | null; common_name: string | null };
+  sample_form: SuperconReferenceCode; structure_method: SuperconReferenceCode; tc_method: SuperconReferenceCode;
+  isotope_element: string | null; isotope_exchange_ratio: string | null; sample_identifier: string | null;
+  raw_source_method_fields: Record<"mhc1" | "mhc2" | "mcohere" | "mpenet" | "gapmeth" | "gamcom" | "mdebye", string | null>;
+  quantities: SuperconReferenceQuantity[];
+}
+export interface MaterialSuperconReferences {
+  version: "material-supercon-references/1.0.0"; provider: "MDR SuperCon"; formula: string; query_formula: string | null;
+  status: ExternalReferenceStatus; reason: string | null; references: ExternalSuperconReference[];
+  matches_total: number | null; omitted_rows: number; truncated: boolean;
+  dataset_version: "240322"; dataset_doi: string; license: "CC BY 4.0"; attribution: string;
+  scope: "oxide_metallic_curated_source_rows_composition_references_not_selected_material_properties";
+  snapshot_sha256: string | null; resource_sha256: string | null; source_publication_status: "not_checked";
+  scientific_acceptance: false; sample_identity_established: false; phase_identity_established: false;
+}
+export function getMaterialSuperconReferences(id: string, signal?: AbortSignal) {
+  return request<MaterialSuperconReferences>(`/materials/${encodeURIComponent(id)}/external_supercon`, { signal, cache: "no-store", responseByteLimit: 512 * 1024 });
 }
 
 export interface VariantSummary {

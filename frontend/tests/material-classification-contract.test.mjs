@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("classification filter UI explicitly separates source reports, qualified false and same-state data", async () => {
-  const page = await readFile("app/materials/page.tsx", "utf8");
+  const page = await readFile("app/materials/page.tsx", "utf8") + await readFile("components/MaterialsFilters.tsx", "utf8");
   assert.match(page, /Reported true/);
   assert.match(page, /Qualified reported false/);
   assert.match(page, /not a joint Tc\/state result/);

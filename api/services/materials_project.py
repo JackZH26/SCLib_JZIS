@@ -27,6 +27,7 @@ Conventions:
 """
 from __future__ import annotations
 
+import json
 import logging
 from contextlib import asynccontextmanager
 from typing import Any, AsyncIterator
@@ -90,6 +91,8 @@ class MaterialsProjectClient:
             "symmetry",
         ),
         limit: int = 50,
+        strict: bool = False,
+        max_response_bytes: int | None = None,
     ) -> list[dict[str, Any]]:
         """Return MP summary docs whose ``formula_pretty`` matches.
 
@@ -100,17 +103,44 @@ class MaterialsProjectClient:
 
         Empty list when no match — the partial-index assumption in
         the materials table holds (most rows will have no MP id).
+
+        A byte limit opts into an identity-encoded streaming request, bounded
+        before JSON parsing. Omitted limits preserve the existing batch client.
         """
         params = {
             "formula": formula,
             "_fields": ",".join(fields),
             "_limit": limit,
         }
-        resp = await self._client.get("/materials/summary/", params=params)
-        resp.raise_for_status()
-        body = resp.json()
+        if max_response_bytes is None:
+            resp = await self._client.get("/materials/summary/", params=params)
+            resp.raise_for_status()
+            body = resp.json()
+        else:
+            if type(max_response_bytes) is not int or max_response_bytes <= 0:
+                raise ValueError("MP response byte limit must be positive")
+            async with self._client.stream("GET", "/materials/summary/", params=params,
+                                           headers={"Accept-Encoding": "identity"}) as resp:
+                resp.raise_for_status()
+                # Counting decoded chunks would allow a compressed block to
+                # expand without a bound inside the HTTP decoder first.
+                if resp.headers.get("content-encoding", "identity").lower().strip() != "identity":
+                    raise ValueError("MP bounded response requires identity encoding")
+                declared = resp.headers.get("content-length")
+                if declared is not None and (not declared.isdigit() or int(declared) > max_response_bytes):
+                    raise ValueError("MP response exceeds byte limit")
+                raw = bytearray()
+                # Identity encoding makes these the wire bytes, while this API
+                # also supports a transport supplying an already-buffered body.
+                async for block in resp.aiter_bytes(chunk_size=min(65536, max_response_bytes + 1)):
+                    if len(raw) + len(block) > max_response_bytes:
+                        raise ValueError("MP response exceeds byte limit")
+                    raw.extend(block)
+                body = json.loads(raw)
         data = body.get("data") if isinstance(body, dict) else None
         if not isinstance(data, list):
+            if strict:
+                raise ValueError("MP summary response data is unavailable")
             log.warning(
                 "MP /materials/summary returned unexpected shape for %s: %r",
                 formula,
