@@ -191,3 +191,9 @@ c6b8d125a7d110a22cf8d1b349bd3d5f25e7bf38:frontend/tests/fixtures/ml-pilot-partic
 # Root-site release: reviewed synthetic request keys, SECRET_TRIAGE_SITE_2026-09-30.md.
 650d1ef21f5554e0e0e0bfffb67270203ebbb1e3:frontend/tests/fixtures/ml-pilot-attestations-native.site20260930.wire.json:generic-api-key:1
 650d1ef21f5554e0e0e0bfffb67270203ebbb1e3:frontend/tests/fixtures/ml-pilot-participant-native.site20260930.wire.json:generic-api-key:1
+
+# Materials upgrade: 13 independently decoded synthetic request IDs in three exact lines.
+# Review: docs/operations/SECRET_TRIAGE_MATERIALS_2026-10-01.md.
+f54eac6f28c655bad338ae726c571e6b97ac4c0c:frontend/tests/fixtures/discovery-main-barrier-native.materials20261001.wire.json:generic-api-key:1
+f54eac6f28c655bad338ae726c571e6b97ac4c0c:frontend/tests/fixtures/ml-pilot-attestations-native.materials20261001.wire.json:generic-api-key:1
+f54eac6f28c655bad338ae726c571e6b97ac4c0c:frontend/tests/fixtures/ml-pilot-participant-native.materials20261001.wire.json:generic-api-key:1

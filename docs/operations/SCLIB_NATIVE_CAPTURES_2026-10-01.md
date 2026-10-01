@@ -47,6 +47,11 @@ assertion, and still compare every selected current source pin with its actual
 file. The review-preflight archive remains retained audit evidence, as in earlier
 batches.
 
+The six focused frontend protocol suites passed all 384 tests in 3.64 seconds.
+All 97 pre-existing archive hash assertion strings were compared with the prior
+commit and retained verbatim. `git diff --check` passed. These focused results
+are separate from the release pipeline's complete frontend regression run.
+
 These captures contain synthetic accounts, evidence, review events and explicit
 compiler doubles. They prove the tested native SQL/HTTP and installed-worker
 behavior; they do not establish scientific approval, source permission or
