@@ -319,7 +319,7 @@ def _formula_pattern(formula):
     return r"(?<![A-Za-z0-9])" + r"\s*".join(re.escape(char) for char in formula) + r"(?![A-Za-z0-9.(])"
 
 
-def _sample_form_match(text, formula):
+def _sample_form_match(text, formula, *, require_direct_binding=False):
     """Keep physical form descriptions separate from bulk scientific properties.
 
     The caller supplies a locally matched formula. A form remains a pending
@@ -346,6 +346,20 @@ def _sample_form_match(text, formula):
             value = "bulk"
         else:
             value = "single_crystal" if "single" in raw else "thin_film" if "film" in raw else "polycrystal"
+        if require_direct_binding:
+            # In a comparison, retain an explicit "NbN thin film" or
+            # "thin films of NbN" noun phrase without inheriting the other
+            # compound's form. A physical bulk noun may sit between bulk and
+            # "of NbN", or follow the exact formula in "bulk NbN samples".
+            before = text[:match.start()]
+            after = text[match.end():]
+            bound_before = re.search(rf"{target}[ -]+$", before)
+            bound_after = re.match(rf"[ -]+(?i:of)[ -]+{target}", after)
+            if raw == "bulk":
+                bound_after = bound_after or re.match(rf"[ -]+{physical_noun}[ -]+(?i:of)[ -]+{target}", after)
+                bound_after = bound_after or re.match(rf"[ -]+{target}[ -]+{physical_noun}", after)
+            if not (bound_before or bound_after):
+                continue
         forms.append((value, match))
     # A single-crystal statement is more specific than a physical bulk noun;
     # sentence order must not let an earlier bulk property hide that statement.
@@ -616,10 +630,10 @@ def extract_source_candidates(material: Mapping[str, Any], record: Mapping[str, 
                 add(field, match.group(), match, _quantity(match[1], field, unit))
         if context["measurement_method"]:
             add("measurement_method", context["measurement_method"])
-        # A different compound's form cannot be assigned by sentence
-        # cooccurrence. This narrow grammar leaves multi-material forms for
-        # source/sample review rather than proposing a phantom association.
-        form = _sample_form_match(flat, formula) if len(all_formulas) <= 1 else None
+        # Multiple formula-like tokens require an explicit local noun-phrase
+        # binding. They must not erase a directly named subject's own form or
+        # allow another compound's form to transfer by mere cooccurrence.
+        form = _sample_form_match(flat, formula, require_direct_binding=len(all_formulas) > 1)
         if form:
             add("sample_form", form[0], form[1])
     return list({row["candidate_id"]: row for row in candidates}.values())

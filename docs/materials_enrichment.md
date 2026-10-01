@@ -84,7 +84,8 @@ Composition proposals referenced by other facts use the final deduplicated ID.
 `api/services/material_classification_candidates.py` emits the independent
 `material-classification-candidates/1.0.0` contract using
 `materials-source-statement-extractor/1.0.1`. The numeric/literal candidate
-namespace and identities remain unchanged. The enrichment report adds separate
+namespace remains separate; its sample-form correction uses numeric extractor
+`materials-literal-extractor/1.0.1` as described below. The enrichment report adds separate
 `classification_candidates`, `classification_review_findings`,
 `classification_counts` and extractor-version fields; live public windows are
 bounded independently to 100 candidates and 100 findings.
@@ -427,6 +428,18 @@ from the original seed, retaining 39 pending candidates and all 14 quantities.
 The four genuine single-crystal hits and surviving facts' complete reference sets
 remain. Candidate identities are version-bound; old 41-row resources remain
 historical, rather than current packaging proof.
+
+Multi-formula contexts require a direct target/form noun-phrase association,
+such as `NbN thin film` or `thin films of NbN`. This preserves the explicitly
+named subject's own form in a comparison while withholding another compound's
+form. Direct negation remains excluded. A same-input 321-source replay now
+returns 63 candidate facts and 69 retained-reference associations: only two
+bulk-property forms are removed from the historical 65/71 inventory. The two
+explicit NbN thin-film descriptions withheld by the intermediate R6 guard are
+restored. The other 61 complete candidate payloads and reference sets remain
+exactly equal to R6; classification still returns zero candidates and 122
+unchanged scope findings. This inventory is separate from the 39-row primary
+seed, and direct wording remains a pending association rather than sample review.
 
 Input fairness alone was insufficient: an actual native CI case showed a sparse
 second paper could disappear in a 100-row hash-prefix output. Public candidate

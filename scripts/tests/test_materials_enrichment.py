@@ -180,6 +180,43 @@ def test_negated_and_foreign_sample_forms_do_not_create_phantom_subjects(text):
     assert not any(c["field"] == "sample_form" for c in enrich.extract_source_candidates(mat, mat["records"][0], source(text)))
 
 
+@pytest.mark.parametrize("text,expected,raw_form", [
+    ("The NbN thin-film has high resistivity, whereas the NbTiN film has lower resistivity.", "thin_film", "thin-film"),
+    ("The defect layer (SI) contains the NbN thin film, while the field is maximized at its surface.", "thin_film", "thin film"),
+    ("Thin films of NbN were measured, whereas MgB2 specimens were used for comparison.", "thin_film", "Thin films"),
+    ("NbN single crystals exhibit bulk superconductivity, whereas MgB2 was used for comparison.", "single_crystal", "single crystals"),
+    ("Bulk NbN samples were measured, whereas MgB2 was used for comparison.", "bulk", "Bulk"),
+    ("Bulk samples of NbN were measured, whereas MgB2 was used for comparison.", "bulk", "Bulk"),
+])
+def test_explicit_own_form_binding_survives_other_local_formula_tokens(text, expected, raw_form):
+    mat = material("NbN")
+    src = source(text)
+    forms = [c for c in enrich.extract_source_candidates(mat, mat["records"][0], src) if c["field"] == "sample_form"]
+    assert len(forms) == 1
+    candidate = forms[0]
+    assert candidate["value"] == expected
+    span = candidate["source"]["span"]
+    assert text[span["char_start"]:span["char_end"]] == raw_form
+    assert candidate["subject"]["formula"] == "NbN"
+    assert candidate["subject"]["association_status"] == "pending_source_and_state_review"
+    assert "multiple_materials_in_local_context" in candidate["reason_codes"]
+    enrich.validate_candidate_identity(candidate)
+
+
+@pytest.mark.parametrize("text", [
+    "NbN was measured, whereas single crystals of MgB2 were used for comparison.",
+    "NbN was measured, whereas bulk samples of MgB2 were used for comparison.",
+    "NbN exhibits bulk superconductivity, whereas MgB2 thin films were measured.",
+    "No NbN thin films were obtained, whereas MgB2 single crystals were measured.",
+    "No thin films of NbN were obtained, whereas MgB2 single crystals were measured.",
+    "No NbN bulk samples were obtained, whereas MgB2 specimens were measured.",
+    "Single crystals of MgB2 were prepared. NbN exhibits bulk superconductivity.",
+])
+def test_comparative_and_parent_form_statements_cannot_cross_fill_target(text):
+    mat = material("NbN")
+    assert not any(c["field"] == "sample_form" for c in enrich.extract_source_candidates(mat, mat["records"][0], source(text)))
+
+
 def test_onset_zero_resistance_and_transition_width_stay_distinct():
     mat = material("BaFe1.906Pt0.094As2")
     src = source("BaFe1.906Pt0.094As2 resistivity has a superconducting transition onset at Tc = 23 K and zero resistance by 21.5 K, with transition width ΔTc < 1.5 K.")

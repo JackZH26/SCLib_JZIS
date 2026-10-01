@@ -9,7 +9,7 @@ import { ApiError } from "@/lib/api";
 import { notifyAuthChange } from "@/lib/auth-session";
 import { importCanonical, importDigest } from "@/lib/scientific-imports";
 import * as rights from "@/lib/ml-use-rights";
-import http from "../fixtures/ml-use-rights-native.materials20261002r6.wire.json";
+import http from "../fixtures/ml-use-rights-native.materials20261002r7.wire.json";
 
 vi.mock("@/lib/ml-use-rights", async original => ({ ...await original<typeof import("@/lib/ml-use-rights")>(),
   getMlRightsAccess: vi.fn(), inspectMlRights: vi.fn(), previewMlRights: vi.fn(), commitMlRights: vi.fn(), recoverMlRights: vi.fn() }));
@@ -48,6 +48,7 @@ afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.use
 describe("actual native ML rights protocol", () => {
   it("pins the exact native archive and all 635 backend/harness/schema source files", () => {
     const hash = (b: Buffer) => createHash("sha256").update(b).digest("hex");
+    expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.materials20261002r7.wire.json")))).toBe("96bb7f0b8f2bf9079e9cf90daeddad070f5c36ab36b33a46365bfe1ec51f1118");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.materials20261002r6.wire.json")))).toBe("d8d294869ab1a355a7055e2414910913c62e84085a1bdd309618eaa51ed271d3");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.materials20261002r5.wire.json")))).toBe("63457aa183fbbeb2767c0ab7a3f8a60031f24a1830166c496d6b1eade0bcbaa5");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.materials20261002r3.wire.json")))).toBe("9b6ddf6ed2444ea1cec2a3361208f9eafd4d4c71c885f83b74cb51a299ed85de");

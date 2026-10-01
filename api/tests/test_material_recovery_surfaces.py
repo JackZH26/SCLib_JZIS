@@ -285,6 +285,9 @@ async def test_recovery_reviews_formatted_multiple_temperatures_as_distinct_stat
     ("NbN single crystals exhibit bulk superconductivity at Tc=23 K.", {"single_crystal"}),
     ("No NbN bulk samples were obtained.", set()),
     ("NbN shows bulk superconductivity while MgB2 samples are single crystals.", set()),
+    ("NbN thin-film in this study is compared with the NbTiN film from a different study.", {"thin_film"}),
+    ("NbN thin film contains a surface defect layer labelled SI.", {"thin_film"}),
+    ("NbN and NbTiN films were compared; the thin-film specimen belongs to NbTiN.", set()),
 ])
 async def test_recovery_distinguishes_physical_sample_form_from_bulk_superconductivity(client, passage, expected_forms):
     identifier, papers = await seed_source_inventory({"a": [(passage, "Results", False)]})

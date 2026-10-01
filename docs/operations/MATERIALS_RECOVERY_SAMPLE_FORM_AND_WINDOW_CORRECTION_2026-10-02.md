@@ -111,3 +111,40 @@ source bytes; R6 protocol captures are not a production deployment receipt.
 The source audit is AI-assisted evidence checking, not independent domain review,
 a precision/recall benchmark or formal scientific curation. Candidate promotion
 remains zero.
+
+## Direct-binding follow-up
+
+The subsequent correction admits explicit target/form noun phrases in a
+multi-formula context, including `NbN thin film` and `thin films of NbN`.
+Another compound's form, direct negation and bulk superconducting properties
+remain excluded. The literal module SHA-256 is
+`13a2e420f124945facce8264b3bf9a8bbddd499d899d534a50eb053427dc6b8e`.
+Same-input output is now 63 candidates and 69 retained-reference associations,
+removing only the two bulk-property forms from the historical 65/71 inventory.
+All 61 R6 surviving complete candidate payloads/IDs/reference sets are identical;
+the two explicit NbN thin-film candidates are restored. Classification is still
+zero candidates and 122 unchanged findings; all five resource files are unchanged.
+The primary numeric seed remains 39, separate from this source inventory.
+
+Independent metadata-only receipt SHA-256 is
+`bf8eff4837424390f482bd84648ca98e0c05efc3b91043336ff8abdb8e4504a9`;
+root's reproducible same-input receipt is
+`df12a0de5901ca000967340cbd3361837aaea40dd71ece3eb73a4735b2461124`.
+Eighteen genuine native API cases passed in 3.48 seconds with owned-service
+cleanup, including direct-bound NbN descriptions and foreign-only comparisons.
+The eight focused pure modules passed 369 cases and seven subtests in 3.32 seconds.
+Installed-only verification again matches all 361 Python files and five
+resources, with 39 numeric/two classification candidates and real offline MDR
+Nb/NbN inventories of 19/15. The wheel is 4,200,253 bytes, SHA-256
+`4283ca8bad3a7b27f2410cfa748c06e18cf37ebc1468d05fab15b5d8403c3682`.
+Its proof SHA-256 is
+`addb6d2250516c523f67a2c09f8d4d75489ebc19a26798ae537aeeb2f6a49916`.
+Seven fresh unchanged native producers generated R7 captures in 55.80 seconds,
+with cleanup and 4,123 pins matching these corrected source bytes. All previous
+archives and assertions remain intact. The complete final frontend run passed
+2,032 tests across 64 files, the source suite passed 46 tests and the production
+build generated 44 routes. After building, a separate TypeScript check passed;
+the earlier concurrent check encountered transient missing generated files
+while the build replaced `.next/types`, without a source change.
+Exact-head CI, signed release, deployment and public acceptance remain separate
+required gates. R6 retains its original checkpoint meaning.
