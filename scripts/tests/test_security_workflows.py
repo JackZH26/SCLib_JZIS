@@ -16,6 +16,10 @@ WORKFLOW_DIR = ROOT / ".github" / "workflows"
 # Reviewed immutable findings only. See the batch82 triage and original scan;
 # new fixture revisions must be scanned and reviewed, never covered by a glob.
 REVIEWED_FIXTURE_FINGERPRINTS = {
+    # Recovery R7: SECRET_TRIAGE_MATERIALS_2026-10-02_R7.md.
+    'f4f3eba860bb7b4f4f00a2beb4829a167198707a:frontend/tests/fixtures/ml-pilot-attestations-native.materials20261002r7.wire.json:generic-api-key:1',
+    'f4f3eba860bb7b4f4f00a2beb4829a167198707a:frontend/tests/fixtures/ml-pilot-participant-native.materials20261002r7.wire.json:generic-api-key:1',
+
     # Recovery R6: SECRET_TRIAGE_MATERIALS_2026-10-02_R6.md.
     '49020f06b2a3459379033985ab9cc60a1a26f5e3:frontend/tests/fixtures/discovery-main-barrier-native.materials20261002r6.wire.json:generic-api-key:1',
     '49020f06b2a3459379033985ab9cc60a1a26f5e3:frontend/tests/fixtures/ml-pilot-attestations-native.materials20261002r6.wire.json:generic-api-key:1',
