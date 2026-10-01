@@ -43,9 +43,9 @@
 .materials-methodology > div { position: absolute; right: 0; top: calc(100% + .5rem); width: min(38rem, calc(100vw - 3rem)); padding: 1rem; border: 1px solid var(--materials-line); border-radius: .4rem; background: var(--materials-surface); z-index: 15; box-shadow: 0 8px 28px rgb(36 80 58 / .1); line-height: 1.65; }
 .materials-methodology p + p { margin-top: .75rem; }
 .materials-table-section { min-width: 0; }
-.materials-table-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; padding: 0 0 .6rem; font-size: .75rem; color: var(--materials-muted); }
-.materials-column-picker { position: relative; }
-.materials-column-picker fieldset { position: absolute; right: 0; top: calc(100% + .5rem); z-index: 15; width: 16rem; padding: 1rem; border: 1px solid var(--materials-line); border-radius: .4rem; background: var(--materials-surface); box-shadow: 0 8px 28px rgb(36 80 58 / .1); }
+.materials-table-tools { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; padding: 0 0 .6rem; font-size: .75rem; color: var(--materials-muted); }
+.materials-column-picker { position: static; }
+.materials-column-picker fieldset { position: absolute; right: 0; top: calc(100% + .5rem); z-index: 15; width: min(16rem, calc(100vw - 2rem)); padding: 1rem; border: 1px solid var(--materials-line); border-radius: .4rem; background: var(--materials-surface); box-shadow: 0 8px 28px rgb(36 80 58 / .1); }
 .materials-column-picker legend { float: left; width: 100%; font-size: .8rem; font-weight: 600; padding-bottom: .3rem; }
 .materials-column-picker p { clear: both; margin-bottom: .75rem; line-height: 1.5; }
 .materials-column-picker label + label { margin-top: .65rem; }
