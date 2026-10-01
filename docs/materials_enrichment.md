@@ -39,6 +39,20 @@ the number actually inspected, and record/paper truncation. Missing fields in a
 truncated record sample carry an explicit incomplete-inventory reason. The
 original records remain unchanged.
 
+When more than eight source papers are linked, a metadata-only `EXISTS` probe
+identifies papers containing indexed nonempty bounded chunks. The reader selects
+indexed papers across the complete ordering before evenly filling remaining
+slots. This avoids permanently omitting an indexed ninth paper. The probe does
+not establish source permissions, originality or currentness; final chunk
+admission still applies the same source, visibility and derived-text guards.
+
+Pairing symmetry and competing-order classifications currently require a
+specialist extraction step. Their coverage says `specialist_extraction_needed`,
+not that an implemented extractor searched and found nothing. Numeric extractors
+and classification extractors have separate coverage. Selected-source DOI and
+arXiv metadata yield allowlisted primary-publication links, without asserting a
+verified source version or releasing restricted/stale source facts.
+
 Synchronous parsing and hashing run with `asyncio.to_thread`, behind a two-worker
 semaphore. Cancelling a request does not release its CPU slot until the underlying
 worker terminates. The existing `claim_support.is_derived_source_hint` is shared
@@ -172,7 +186,7 @@ inserted into a private local ledger; replay inserted zero and reused all 66.
    gaps, with input structure, composition, pressure, method and convergence
    requirements. The recovery CLI itself does not calculate Tc or stability.
 
-Validation: 34 pure extraction/CLI tests and 16 DB-free reader boundary tests
+Validation: 35 pure extraction/CLI tests and 25 DB-free reader boundary tests
 cover units, uncertainty, exact source pins, formula/sample distinctions,
 comparison tables, unknown lineage, derived Facts exclusion, paper/chunk/character
 limits, restricted/stale evidence, metadata-only public egress and local replay.
@@ -180,3 +194,46 @@ Reader tests additionally verify record sampling through deep positions, work
 outside the event-loop thread, and cancellation-safe CPU concurrency limits.
 The API integration tests exercise the actual endpoint and held-material routes
 through the repository's disposable-service runner.
+
+## External reference services
+
+Eligible material detail pages also offer separate Materials Project, COD and
+NOMAD references. These panels never select retained catalogue properties or
+promote a matched composition to an established sample/phase identity. External
+provider requests begin when their folded panels are expanded.
+
+All three routes reuse the source-aware fixed-composition guard before cache
+lookup; isotope, variable occupancy, unresolved dopant or interface notation is
+not replaced with a parent formula. Each API route checks current catalogue
+eligibility and source partition, then rechecks the source epoch after retrieval.
+Responses are private and `no-store`. Successful provider projections may use a
+24-hour internal Redis cache. Provider requests have a 512 KiB identity-encoding
+body limit, an overall 12-second deadline and per-provider shared request budgets.
+Unexpected compression is rejected in these bounded paths. Existing unbounded
+Materials Project client callers retain their prior transport compatibility.
+
+- `GET /materials/{id}/external_references`: up to 20 MP computed composition
+  references with task IDs and the provider's reference-condition limitations.
+- `GET /materials/{id}/external_structures`: up to 20 COD structures. Preserve
+  declared and calculated cell-content formulas separately, diffraction method,
+  lattice values and uncertainties, temperature/pressure and revision links.
+  COD pressure fields use kPa, not GPa. Missing pressure does not imply ambient.
+  A provider coordinate flag or external CIF link is not a validated local
+  coordinate model. Measurement origin stays unresolved unless explicit method
+  metadata supports diffraction. Held, erroneous, retracted or explicitly
+  theoretical records are not admitted by this experimental-reference adapter.
+- `GET /materials/{id}/external_calculations`: query public NOMAD metadata,
+  inspect at most 21 entries and display at most 20. Preserve individual task,
+  structure, parser, method/program and allowlisted repository/citation links.
+  Archive temperature, pressure and functional were not inspected; they are not
+  inferred. MP/OQMD/AFLOW overlap is visible and task counts do not count
+  independent experiments.
+
+`no_match`, `not_applicable` and `unavailable` remain distinct. Provider failures
+cannot become claims that the provider lacks data. References retain snapshot
+hashes and retrieval times; source IDs/hashes sit in expandable provenance.
+See [COD schema](https://wiki.crystallography.net/cod_mysql_schema/),
+[COD API](https://wiki.crystallography.net/RESTful_API/), and
+[NOMAD API](https://docs.nomad-lab.eu/1.4.3/howto/manage/program/api.html)
+for provider field semantics. Scientific state matching, coordinate validation
+and canonical review remain required before any future promotion.

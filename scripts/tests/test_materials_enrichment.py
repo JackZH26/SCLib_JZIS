@@ -230,6 +230,22 @@ def test_missingness_tracks_checked_scope_and_never_claims_not_reported():
     assert not any(c["status"] == "not_reported" for c in fields.values())
 
 
+def test_unimplemented_specialist_fields_are_not_claimed_unsuccessfully_searched():
+    mat = material("NbN")
+    src = source("NbN has s-wave pairing symmetry. NbN has competing order antiferromagnetism.")
+    report = enrich.build_enrichment_report([mat], [src])
+    fields = {c["field"]: c for c in report["coverage"][0]["fields"]}
+    for name in ("pairing_symmetry", "competing_order"):
+        assert fields[name]["status"] == "specialist_extraction_needed"
+        assert fields[name]["candidate_count"] == 0
+        assert fields[name]["reason_codes"] == ["specialist_extractor_not_implemented"]
+    assert not any(c["field"] in enrich.SPECIALIST_EXTRACTION_FIELDS for c in report["candidates"])
+    mat["records"][0].update(pairing_symmetry="s_wave", competing_order="antiferromagnetic")
+    retained = enrich.build_enrichment_report([mat], [src])
+    retained_fields = {c["field"]: c for c in retained["coverage"][0]["fields"]}
+    assert all(retained_fields[name]["status"] == "retained_present" for name in enrich.SPECIALIST_EXTRACTION_FIELDS)
+
+
 def test_unicode_subscripts_preserve_exact_source_span():
     mat = material()
     src = source("Computed YScH₁₀ has Tc = 116 K at 140 GPa.")

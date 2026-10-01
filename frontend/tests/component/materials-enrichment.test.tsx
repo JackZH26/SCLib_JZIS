@@ -5,12 +5,15 @@ import { MaterialEnrichment } from "@/components/MaterialEnrichment";
 import { getMaterialExternalReferences, getMaterialEnrichment } from "@/lib/api";
 
 vi.mock("@/lib/api", () => ({ getMaterialExternalReferences: vi.fn(), getMaterialEnrichment: vi.fn() }));
+const expandReferences = () => fireEvent.click(screen.getByText("Materials Project calculated references"));
 
 describe("Materials recovery and external references", () => {
   beforeEach(() => vi.resetAllMocks());
   it("displays computed polymorphs independently and never equates metallicity with superconductivity", async () => {
     vi.mocked(getMaterialExternalReferences).mockResolvedValue({ version: "material-external-references/1.0.0", scientific_acceptance: false, sample_identity_established: false, status: "available", candidates: ["mp-aaaaaciu", "mp-2"].map(id => ({ id, url: `https://next-gen.materialsproject.org/materials/${id}`, sample_identity_established: false, phase_identity_established: false, space_group: "Fm-3m", crystal_system: "Cubic", band_gap_ev: 0, density_g_cm3: 8.3, energy_above_hull_ev_atom: 0.01, lattice: { a: 4.4 }, origins: [], source_snapshot_sha256: "1".repeat(64), functional: "Unresolved" })), reference_conditions: "0 K reference", methodology_url: "https://docs.materialsproject.org", retrieved_at: "2026-10-01T00:00:00Z", truncated: false } as Awaited<ReturnType<typeof getMaterialExternalReferences>>);
     render(<ExternalMaterialReferences materialId="mat:nbn" />);
+    expect(getMaterialExternalReferences).not.toHaveBeenCalled();
+    expandReferences();
     await waitFor(() => expect(screen.getByRole("link", { name: "mp-aaaaaciu ↗" })).toBeInTheDocument());
     expect(screen.getAllByText("Computed · composition match")).toHaveLength(2);
     expect(screen.getByText(/A zero band gap does not establish superconductivity/)).toBeInTheDocument();
@@ -19,6 +22,7 @@ describe("Materials recovery and external references", () => {
   it("shows an unavailable request separately from a provider no-match", async () => {
     vi.mocked(getMaterialExternalReferences).mockRejectedValue(new Error("Transport failed"));
     render(<ExternalMaterialReferences materialId="mat:nbn" />);
+    expandReferences();
     await waitFor(() => expect(screen.getByText(/Reference service unavailable/)).toBeInTheDocument());
     expect(screen.queryByText(/No fixed-composition match/)).not.toBeInTheDocument();
   });
@@ -27,9 +31,13 @@ describe("Materials recovery and external references", () => {
     let rejectB: (reason: Error) => void = () => {};
     vi.mocked(getMaterialExternalReferences).mockResolvedValueOnce(a).mockImplementationOnce(() => new Promise((_, reject) => { rejectB = reject; }));
     const view = render(<ExternalMaterialReferences materialId="A" />);
+    expandReferences();
     await waitFor(() => expect(screen.getByText(/No fixed-composition match/)).toBeInTheDocument());
     view.rerender(<ExternalMaterialReferences materialId="B" />);
     expect(screen.queryByText(/No fixed-composition match/)).not.toBeInTheDocument();
+    expect(getMaterialExternalReferences).toHaveBeenCalledTimes(1);
+    expandReferences();
+    await waitFor(() => expect(getMaterialExternalReferences).toHaveBeenCalledTimes(2));
     expect(screen.getByText(/Loading calculated reference/)).toBeInTheDocument();
     await act(async () => rejectB(new Error("B unavailable")));
     expect(screen.getByText(/Reference service unavailable/)).toBeInTheDocument();

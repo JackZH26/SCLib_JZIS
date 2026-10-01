@@ -8,10 +8,13 @@ import { scientificNumber } from "@/lib/result-semantics";
 const number = (value: number | null, unit = "") => value == null ? "—" : `${scientificNumber(value)}${unit ? ` ${unit}` : ""}`;
 
 export function ExternalMaterialReferences({ materialId }: { materialId: string }) {
+  const [expansion, setExpansion] = useState({ materialId, expanded: false });
+  const expanded = expansion.materialId === materialId && expansion.expanded;
   const [state, setState] = useState<{ materialId: string; report: ReferenceReport | null; failed: boolean }>({ materialId, report: null, failed: false });
   const report = state.materialId === materialId ? state.report : null;
   const failed = state.materialId === materialId && state.failed;
   useEffect(() => {
+    if (!expanded) return;
     const controller = new AbortController();
     setState({ materialId, report: null, failed: false });
     getMaterialExternalReferences(materialId, controller.signal).then(value => {
@@ -20,9 +23,11 @@ export function ExternalMaterialReferences({ materialId }: { materialId: string 
       setState({ materialId, report: value, failed: false });
     }).catch(() => { if (!controller.signal.aborted) setState({ materialId, report: null, failed: true }); });
     return () => controller.abort();
-  }, [materialId]);
+  }, [materialId, expanded]);
   return <section className="space-y-3 border-t border-sage-border pt-6" aria-label="Calculated external references">
-    <div><h2 className="text-lg font-semibold">Calculated references</h2><p className="mt-1 max-w-3xl text-sm text-slate-600">Materials Project structures with the same fixed composition. Phase, sample and pressure correspondence require separate review.</p></div>
+    <details key={materialId} onToggle={event => { if (event.target === event.currentTarget) setExpansion({ materialId, expanded: event.currentTarget.open }); }}>
+      <summary className="cursor-pointer rounded-sm py-1 text-accent-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-deep"><span className="font-semibold">Materials Project calculated references</span><span className="ml-3 text-sm font-normal text-slate-600">{report?.status === "available" ? `${report.candidates.length} references` : "Inspect computed structures"}</span></summary>
+      <div className="mt-3 space-y-3"><p className="max-w-3xl text-sm text-slate-600">Materials Project structures with the same fixed composition. Phase, sample and pressure correspondence require separate review.</p>
     {!report && !failed && <p className="text-sm text-slate-500" role="status">Loading calculated reference data…</p>}
     {(failed || report?.status === "unavailable") && <p className="text-sm text-slate-600">Reference service unavailable. No conclusion about database coverage can be drawn from this request.</p>}
     {report?.status === "not_applicable" && <p className="text-sm text-slate-600">Resolve this composition, interface or isotope notation before matching a bulk reference structure.</p>}
@@ -50,5 +55,7 @@ export function ExternalMaterialReferences({ materialId }: { materialId: string 
       {report.truncated && <p className="text-xs text-amber-800">Only the first 20 returned references are shown; other polymorphs may exist.</p>}
       <p className="text-xs text-slate-500">Retrieved: {report.retrieved_at ? new Date(report.retrieved_at).toLocaleString("en-GB", { timeZone: "UTC" }) + " UTC" : "Unavailable"}</p>
     </>}
+      </div>
+    </details>
   </section>;
 }

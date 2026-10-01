@@ -15,6 +15,7 @@ import { absoluteUrl, serializeJsonLd } from "@/lib/seo";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { PaperCard } from "@/components/PaperCard";
 import { pressureLabel } from "@/lib/pressure-semantics";
+import { sourceHref } from "@/lib/property-evidence";
 import { MaterialVisibilityNotice, SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
 import { knownSourceVisibility, sourceVisibilityLabel, visibilityIsRestricted } from "@/lib/material-visibility";
 
@@ -40,6 +41,8 @@ export async function generateMetadata({
   const id = decodeURIComponent(encodedId);
   try {
     const paper = await loadPaper(id);
+    const publisherUrl = sourceHref({ doi: paper.doi });
+    const arxivUrl = sourceHref({ arxiv_id: paper.arxiv_id });
     const sourceActive = knownSourceVisibility(paper.source_visibility)?.source_status === "active";
     const description = sourceActive ? descriptionFromAbstract(paper.abstract) : `Bibliographic source Archive. ${sourceVisibilityLabel(paper.source_visibility)}. Retained for source inspection, not scientific approval.`;
     const canonical = absoluteUrl(`/paper/${encodeURIComponent(paper.id)}`);
@@ -63,11 +66,11 @@ export async function generateMetadata({
         ...(paper.date_submitted
           ? { citation_publication_date: paper.date_submitted }
           : {}),
-        ...(paper.doi ? { citation_doi: paper.doi } : {}),
-        ...(paper.arxiv_id
+        ...(publisherUrl && paper.doi ? { citation_doi: paper.doi } : {}),
+        ...(arxivUrl && paper.arxiv_id
           ? {
               citation_arxiv_id: paper.arxiv_id,
-              citation_pdf_url: `https://arxiv.org/pdf/${paper.arxiv_id}`,
+              citation_pdf_url: arxivUrl.replace("/abs/", "/pdf/"),
             }
           : {}),
       },
@@ -97,6 +100,8 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
   const similar = await getSimilar(id, 6).catch(() => null);
   const sourceActive = knownSourceVisibility(paper.source_visibility)?.source_status === "active";
   const canonical = absoluteUrl(`/paper/${encodeURIComponent(paper.id)}`);
+  const publisherUrl = sourceHref({ doi: paper.doi });
+  const arxivUrl = sourceHref({ arxiv_id: paper.arxiv_id });
   const paperStructuredData = {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
@@ -107,13 +112,10 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
     datePublished: paper.date_submitted,
     dateModified: paper.indexed_at,
     identifier: [
-      paper.arxiv_id ? `arXiv:${paper.arxiv_id}` : null,
-      paper.doi ? `https://doi.org/${paper.doi}` : null,
+      arxivUrl ? `arXiv:${paper.arxiv_id}` : null,
+      publisherUrl,
     ].filter(Boolean),
-    sameAs: [
-      paper.arxiv_id ? `https://arxiv.org/abs/${paper.arxiv_id}` : null,
-      paper.doi ? `https://doi.org/${paper.doi}` : null,
-    ].filter(Boolean),
+    sameAs: [arxivUrl, publisherUrl].filter(Boolean),
     ...(paper.journal
       ? {
           isPartOf: {
@@ -162,6 +164,10 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
             .filter(Boolean)
             .join(" · ")}
         </p>
+        {(publisherUrl || arxivUrl) && <nav className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Original publication links">
+          {publisherUrl && <a href={publisherUrl} target="_blank" rel="noopener noreferrer" className="text-accent-deep underline underline-offset-2">Open publisher source</a>}
+          {arxivUrl && <a href={arxivUrl} target="_blank" rel="noopener noreferrer" className="text-accent-deep underline underline-offset-2">Open arXiv source</a>}
+        </nav>}
         <div className="mt-2 flex flex-wrap gap-2">
           {paper.credibility_tier && (
             <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${

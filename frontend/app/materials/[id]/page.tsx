@@ -36,6 +36,8 @@ import { materialSourceCountLabel } from "@/lib/material-semantics";
 import { StructureEvidencePanel, StructureEvidenceValue } from "@/components/StructureEvidence";
 import { ExternalMaterialReferences } from "@/components/ExternalMaterialReferences";
 import { MaterialEnrichment } from "@/components/MaterialEnrichment";
+import { ExternalStructureReferences } from "@/components/ExternalStructureReferences";
+import { ExternalCalculationReferences } from "@/components/ExternalCalculationReferences";
 
 export const dynamic = "force-dynamic";
 
@@ -284,6 +286,8 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
       <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Samples and pressure evidence</summary><div className="mt-4"><PropertyEvidenceSection title="Samples & pressure" fields={SAMPLE_FIELDS} evidence={mat.property_evidence} /></div></details>
       {catalogueEligible && <MaterialEnrichment materialId={mat.id} />}
       {catalogueEligible && <ExternalMaterialReferences materialId={mat.id} />}
+      {catalogueEligible && <ExternalStructureReferences materialId={mat.id} />}
+      {catalogueEligible && <ExternalCalculationReferences materialId={mat.id} />}
 
     </main>
   );

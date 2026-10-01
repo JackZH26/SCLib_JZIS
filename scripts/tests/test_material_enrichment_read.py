@@ -18,13 +18,22 @@ from services.material_enrichment import digest, validate_candidate_identity  # 
 
 
 class FakeReadSession:
-    def __init__(self, chunks):
-        self.chunks, self.statements = chunks, []
+    def __init__(self, chunks, *, papers=()):
+        self.chunks, self.papers, self.statements = chunks, papers, []
 
     async def execute(self, statement):
         self.statements.append(statement)
         assert statement.is_select
-        return SimpleNamespace(scalars=lambda: SimpleNamespace(all=lambda: self.chunks))
+        parameters = statement.compile().params
+        paper_ids = next(value for value in parameters.values() if type(value) is list)
+        if len(statement.column_descriptions) == 3 and statement.column_descriptions[0]["entity"] is reader.Paper:
+            return SimpleNamespace(all=lambda: [paper for paper in self.papers if paper[0] in paper_ids])
+        selected = [c for c in self.chunks if c.paper_id in paper_ids and 0 < len(c.text) <= 20000]
+        if len(statement.column_descriptions) == 1 and statement.column_descriptions[0]["entity"] is reader.Paper:
+            values = sorted({c.paper_id for c in selected})
+        else:
+            values = selected[:reader.MAX_CHUNKS + 1]
+        return SimpleNamespace(scalars=lambda: SimpleNamespace(all=lambda: values))
 
 
 def material(records=None):
@@ -67,6 +76,42 @@ async def test_descriptor_holds_generated_facts_and_public_egress(monkeypatch):
 
 
 @pytest.mark.asyncio
+async def test_bounded_primary_links_use_selected_publication_metadata_without_releasing_held_evidence(monkeypatch):
+    records = [{"paper_id": f"paper:{i}", "formula": "YScH10", "tc_kelvin": 116} for i in range(4)]
+    chunks = [chunk(i, paper_id=record["paper_id"]) for i, record in enumerate(records)]
+    publications = [("paper:0", "10.1234/value(1)?x#part", "2401.01234v2"),
+                    ("paper:1", "javascript:alert(1)", "2401.01234v2"),
+                    ("paper:2", "10.1234/stale", None), ("paper:3", "10.1234/restricted", None),
+                    ("paper:excluded", "10.1234/excluded", None)]
+    async def descriptors(_db, selected):
+        return {c.id: {"currentness": "stale" if c.paper_id == "paper:2" else "current",
+                       "permission_status": "restricted" if c.paper_id == "paper:3" else "unresolved"}
+                for c in selected}
+    monkeypatch.setattr(reader, "resolve_chunk_evidence", descriptors)
+    db = FakeReadSession(chunks, papers=publications)
+    report = await reader.read_material_enrichment(db, material(records))
+    urls = {c["source"]["paper_id"]: c["source"].get("source_url") for c in report["candidates"]}
+    assert urls == {"paper:0": "https://doi.org/10.1234/value%281%29%3Fx%23part",
+                    "paper:1": "https://arxiv.org/abs/2401.01234v2"}
+    assert all(c["source"]["publication_revision_verified"] is False for c in report["candidates"])
+    assert all(c["source"]["source_revision_basis"] == "retained_chunk_capture_not_publication_version" for c in report["candidates"])
+    assert len(db.statements[0].column_descriptions) == 3
+    assert {c["name"] for c in db.statements[0].column_descriptions} == {"id", "doi", "arxiv_id"}
+    assert "stale" not in str(report) and "https://doi.org/10.1234/restricted" not in str(report)
+
+
+@pytest.mark.parametrize("doi,arxiv_id,expected", [
+    (None, "hep-th/9901001v3", "https://arxiv.org/abs/hep-th/9901001v3"),
+    ("10.1234/value\n", "javascript:alert(1)", None),
+    ("https://evil.invalid/10.1234/value", "2401.01234?private=1", None),
+    ("10.1234/", "2401.01234#fragment", None),
+    (None, None, None),
+])
+def test_primary_link_identifier_validation_never_guesses_opaque_ids(doi, arxiv_id, expected):
+    assert reader._primary_source_url(doi, arxiv_id) == expected
+
+
+@pytest.mark.asyncio
 async def test_paper_and_chunk_caps_use_only_current_eligible_source_partition(monkeypatch):
     records = [{"paper_id": f"paper:{i:02}", "formula": "YScH10", "tc_kelvin": 116} for i in range(10)]
     selected_ids = []
@@ -76,14 +121,71 @@ async def test_paper_and_chunk_caps_use_only_current_eligible_source_partition(m
     monkeypatch.setattr(reader, "resolve_chunk_evidence", descriptors)
     db = FakeReadSession([chunk(i, paper_id="paper:00") for i in range(reader.MAX_CHUNKS + 1)])
     report = await reader.read_material_enrichment(db, material(records))
-    parameters = db.statements[0].compile().params
+    probe_parameters = db.statements[0].compile().params
+    probe_papers = next(value for value in probe_parameters.values() if type(value) is list)
+    assert set(probe_papers) == {f"paper:{i:02}" for i in range(10)}
+    assert "paper:excluded" not in probe_papers
+    parameters = db.statements[1].compile().params
     queried_papers = next(value for value in parameters.values() if type(value) is list)
     assert len(queried_papers) == reader.MAX_PAPERS
     assert "paper:excluded" not in queried_papers
-    assert set(queried_papers) == {f"paper:{i:02}" for i in range(8)}
+    assert "paper:00" in queried_papers
+    assert "paper:09" in queried_papers
+    assert set(queried_papers) != {f"paper:{i:02}" for i in range(8)}
     assert len(selected_ids) == reader.MAX_CHUNKS
     assert report["coverage"][0]["source_coverage"]["paper:00"]["truncated"] is True
     assert report["counts"]["source_captures"] == reader.MAX_CHUNKS
+
+
+@pytest.mark.asyncio
+async def test_ninth_paper_only_indexed_source_is_reachable_and_unlinked_source_cannot_prioritize(monkeypatch):
+    records = [{"paper_id": f"paper:{i:02}", "formula": "YScH10", "tc_kelvin": 116} for i in range(9)]
+    db = FakeReadSession([chunk(8, paper_id="paper:08"), chunk(99, paper_id="paper:excluded")])
+    async def descriptors(_db, selected):
+        return {}
+    monkeypatch.setattr(reader, "resolve_chunk_evidence", descriptors)
+    report = await reader.read_material_enrichment(db, material(records))
+    tc = next(c for c in report["candidates"] if c["field"] == "tc_kelvin")
+    assert tc["source"]["paper_id"] == "paper:08"
+    assert report["counts"]["source_captures"] == 1
+    assert report["inspection_scope"]["papers_with_bounded_indexed_chunks"] == 1
+    assert report["inspection_scope"]["papers_inspected"] == reader.MAX_PAPERS
+    assert report["inspection_scope"]["papers_total"] == 9
+    assert report["inspection_scope"]["papers_truncated"] is True
+    assert report["counts"]["retained_records_inspected"] == reader.MAX_PAPERS
+    for statement in db.statements:
+        queried = next(value for value in statement.compile().params.values() if type(value) is list)
+        assert "paper:excluded" not in queried
+
+
+@pytest.mark.asyncio
+async def test_indexed_paper_priority_spans_large_inventory_and_preserves_evidence_gates(monkeypatch):
+    records = [{"paper_id": f"paper:{i:03}", "formula": "YScH10", "tc_kelvin": 116} for i in range(100)]
+    chunks = [chunk(i, paper_id=record["paper_id"]) for i, record in enumerate(records)]
+    chunks[99].section = "Generated Facts"
+    queried = []
+    async def descriptors(_db, selected):
+        queried.extend(c.paper_id for c in selected)
+        return {c.id: {"currentness": "stale" if c.paper_id == "paper:000" else "current",
+                       "permission_status": "restricted" if c.paper_id == "paper:084" else "unresolved"}
+                for c in selected}
+    monkeypatch.setattr(reader, "resolve_chunk_evidence", descriptors)
+    report = await reader.read_material_enrichment(FakeReadSession(chunks), material(records))
+    assert set(queried) == {f"paper:{i:03}" for i in (0, 14, 28, 42, 56, 70, 84, 99)}
+    assert report["inspection_scope"]["papers_with_bounded_indexed_chunks"] == 100
+    assert report["inspection_scope"]["records_inspected"] == reader.MAX_PAPERS
+    assert report["counts"]["source_captures"] == 5
+    assert not {"paper:000", "paper:084", "paper:099"} & {c["source"]["paper_id"] for c in report["candidates"]}
+    assert report["inspection_scope"]["paper_sampling"] == "indexed_chunk_priority_evenly_spaced_eligible_inventory"
+
+
+def test_no_indexed_priority_still_spans_whole_eligible_paper_inventory():
+    records = [{"paper_id": f"paper:{i:03}", "formula": "YScH10", "tc_kelvin": 116} for i in range(100)]
+    selected, _, paper_ids, scope = reader._sample_records(records, indexed_paper_ids=[])
+    assert paper_ids == [f"paper:{i:03}" for i in (0, 14, 28, 42, 56, 70, 84, 99)]
+    assert len(selected) == reader.MAX_PAPERS
+    assert scope["papers_with_bounded_indexed_chunks"] == 0
+    assert scope["records_truncated"] is True
 
 
 @pytest.mark.asyncio

@@ -169,6 +169,8 @@ async def test_cache_reuses_references_without_upstream_and_errors_are_not_absen
         async def __aenter__(self): return self
         async def __aexit__(self, *args): pass
         async def search_by_formula(self, *args, **kwargs):
+            assert kwargs["strict"] is True
+            assert kwargs["max_response_bytes"] == references.MAX_BYTES
             Client.calls += 1
             return [row()]
     monkeypatch.setattr(references, "MaterialsProjectClient", Client)

@@ -90,6 +90,15 @@ describe("Recovery candidate quantity and source presentation", () => {
     expect(await screen.findByText(/Inspected 32 of 500 eligible retained records across 8 of 12 linked papers/)).toHaveTextContent("remaining records and sources have not been inspected");
   });
 
+  it("states when specialist extraction is needed instead of implying an unsuccessful classification search", async () => {
+    const body = report([]);
+    body.coverage[0].fields = ["pairing_symmetry", "competing_order"].map(field => ({ field, status: "specialist_extraction_needed", retained_present: false, candidate_count: 0, reason_codes: ["specialist_extractor_not_implemented"], routes: ["source_fulltext_and_supplement"] }));
+    vi.mocked(getMaterialEnrichment).mockResolvedValue(body);
+    render(<MaterialEnrichment materialId="synthetic" />);
+    expect(await screen.findAllByText("Specialist source extraction needed")).toHaveLength(2);
+    expect(screen.queryByText("No candidate in checked chunks")).not.toBeInTheDocument();
+  });
+
   it("makes onset, zero resistance, unknown pressure and unresolved material binding distinguishable", async () => {
     await renderCandidates([
       candidate("tc_kelvin", "23 K", quantity(23, "K"), { candidate_id: "tc:onset", subject: { tc_criterion: "onset", knowledge_origin: "Observed", pressure_state: "not_reported", measurement_method: "resistivity", identity_basis: "nominal_refined_composition_proposal", source_formula: "BaFe1.90Pt0.10As2", private_notes: "PRIVATE SUBJECT" } }),

@@ -95,6 +95,9 @@ FIELD_ROUTES = {
     "lambda_london_nm": ["source_fulltext_and_supplement", "new_experiment_or_model_estimate"],
     "xi_gl_nm": ["source_fulltext_and_supplement", "new_experiment_or_model_estimate"],
 }
+# These routes require a specialist extraction workflow. The literal parser
+# does not infer mechanism or order from family, keywords, or their negation.
+SPECIALIST_EXTRACTION_FIELDS = frozenset({"pairing_symmetry", "competing_order"})
 
 
 class EnrichmentError(ValueError):
@@ -747,6 +750,11 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
             elif not retained_papers:
                 status = "source_unavailable"
                 reasons.append("retained_source_identity_missing")
+            elif field in SPECIALIST_EXTRACTION_FIELDS:
+                status = "specialist_extraction_needed"
+                reasons.append("specialist_extractor_not_implemented")
+                if not local_sources:
+                    reasons.append("original_source_capture_not_supplied")
             elif not local_sources:
                 status = "not_extracted"
                 reasons.append("original_source_capture_not_supplied")

@@ -42,6 +42,7 @@ from services.catalogue_cache import (
     catalogue_revision,
 )
 from services.material_anomalies import material_review, record_assessment, review_context
+from services.material_crystal_references import fetch_material_crystal_references
 from services.material_external_references import fetch_external_references
 from services.material_property_projection import project_material_semantics
 from services.material_scoped_properties import scoped_property_evidence
@@ -608,6 +609,37 @@ async def material_external_references(
     )
     await _check_material_revision(db, before)
     return _material_response(json.dumps(report, allow_nan=False).encode(), "REFERENCE")
+
+
+@router.get("/materials/{material_id:path}/external_structures")
+async def material_external_structures(
+    material_id: str,
+    identity: Identity = Depends(peek_identity),  # noqa: ARG001
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    before = await _material_page_revision(db)
+    material = await material_view(db, await db.get(Material, material_id))
+    if material is None or not visibility_allows_view(material.visibility):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Material not found")
+    report = await fetch_material_crystal_references(material.formula, current_records=material.current_records())
+    await _check_material_revision(db, before)
+    return _material_response(json.dumps(report, allow_nan=False).encode(), "STRUCTURE_REFERENCE")
+
+
+@router.get("/materials/{material_id:path}/external_calculations")
+async def material_external_calculations(
+    material_id: str,
+    identity: Identity = Depends(peek_identity),  # noqa: ARG001
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    from services.material_calculation_references import fetch_material_calculation_references
+    before = await _material_page_revision(db)
+    material = await material_view(db, await db.get(Material, material_id))
+    if material is None or not visibility_allows_view(material.visibility):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Material not found")
+    report = await fetch_material_calculation_references(material.formula, current_records=material.current_records())
+    await _check_material_revision(db, before)
+    return _material_response(json.dumps(report, allow_nan=False).encode(), "CALCULATION_REFERENCE")
 
 
 @router.get("/materials/{material_id:path}/enrichment")

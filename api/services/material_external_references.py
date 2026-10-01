@@ -11,6 +11,7 @@ import json
 import math
 import re
 import time
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Any
 
@@ -28,11 +29,23 @@ FIELDS = ("material_id", "formula_pretty", "symmetry", "structure", "density",
 MAX_CANDIDATES = 20
 MAX_BYTES = 512 * 1024
 CACHE_TTL = 86400
-_locks: dict[str, asyncio.Lock] = {}
+@dataclass
+class _LockSlot:
+    lock: asyncio.Lock
+    users: int = 0
+
+
+_locks: dict[str, _LockSlot] = {}
 
 
 def _number(value: Any) -> float | None:
-    return float(value) if type(value) in {int, float} and math.isfinite(value) else None
+    if type(value) not in {int, float}:
+        return None
+    try:
+        number = float(value)
+    except OverflowError:
+        return None
+    return number if math.isfinite(number) else None
 
 
 def _text(value: Any, limit=160) -> str | None:
@@ -149,35 +162,39 @@ async def fetch_external_references(
     # Bound lock inventory even when callers submit many different formulae.
     if key not in _locks and len(_locks) >= 128:
         return _base(formula, "unavailable", "reference_request_capacity")
-    lock = _locks.setdefault(key, asyncio.Lock())
+    slot = _locks.setdefault(key, _LockSlot(asyncio.Lock()))
+    slot.users += 1
     try:
-        async with lock:
-            redis = get_redis()
-            cached = await redis.get(key)
-            if cached and len(cached.encode()) <= MAX_BYTES:
-                value = json.loads(cached)
-                if (type(value) is dict and value.get("version") == VERSION and value.get("formula") == formula
-                        and value.get("scientific_acceptance") is False and value.get("sample_identity_established") is False
-                        and value.get("status") in {"available", "no_match"}):
-                    return value
-            budget_key = f"materials:external:budget:{int(time.time())}"
-            async with redis.pipeline(transaction=True) as pipeline:
-                pipeline.incr(budget_key)
-                pipeline.expire(budget_key, 3)
-                used, _ = await pipeline.execute()
-            if used > 5:
-                return _base(formula, "unavailable", "provider_request_budget")
-            async with MaterialsProjectClient(api_key, timeout=httpx.Timeout(12.0, connect=4.0)) as client:
-                rows = await client.search_by_formula(query, fields=FIELDS, limit=MAX_CANDIDATES + 1, strict=True)
-            result = project_external_references(formula, rows, retrieved_at=datetime.now(UTC).isoformat())
-            body = json.dumps(result, allow_nan=False, separators=(",", ":"))
-            if result["status"] in {"available", "no_match"} and len(body.encode()) <= MAX_BYTES:
-                await redis.set(key, body, ex=CACHE_TTL)
-            return result
-    except (httpx.HTTPError, RedisError, ValueError, TypeError, KeyError):
+        async with asyncio.timeout(12.0):
+            async with slot.lock:
+                redis = get_redis()
+                cached = await redis.get(key)
+                if cached and len(cached if isinstance(cached, bytes) else cached.encode()) <= MAX_BYTES:
+                    value = json.loads(cached)
+                    if (type(value) is dict and value.get("version") == VERSION and value.get("formula") == formula
+                            and value.get("scientific_acceptance") is False and value.get("sample_identity_established") is False
+                            and value.get("status") in {"available", "no_match"}):
+                        return value
+                budget_key = f"materials:external:budget:{int(time.time())}"
+                async with redis.pipeline(transaction=True) as pipeline:
+                    pipeline.incr(budget_key)
+                    pipeline.expire(budget_key, 3)
+                    used, _ = await pipeline.execute()
+                if type(used) is not int or used > 5:
+                    return _base(formula, "unavailable", "provider_request_budget")
+                async with MaterialsProjectClient(api_key, timeout=httpx.Timeout(12.0, connect=4.0)) as client:
+                    rows = await client.search_by_formula(query, fields=FIELDS, limit=MAX_CANDIDATES + 1,
+                                                         strict=True, max_response_bytes=MAX_BYTES)
+                result = project_external_references(formula, rows, retrieved_at=datetime.now(UTC).isoformat())
+                body = json.dumps(result, allow_nan=False, separators=(",", ":"))
+                if result["status"] in {"available", "no_match"} and len(body.encode()) <= MAX_BYTES:
+                    await redis.set(key, body, ex=CACHE_TTL)
+                return result
+    except (httpx.HTTPError, RedisError, ValueError, TypeError, KeyError, TimeoutError, OverflowError, RecursionError):
         # Errors never turn into scientific absence; credentials and upstream
         # exception objects are deliberately not included in public output.
         return _base(formula, "unavailable", "provider_or_cache_unavailable")
     finally:
-        if not lock.locked():
-            _locks.pop(key, None)
+        slot.users -= 1
+        if slot.users == 0 and _locks.get(key) is slot:
+            _locks.pop(key)
