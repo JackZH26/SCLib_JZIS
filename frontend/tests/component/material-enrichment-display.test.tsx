@@ -117,6 +117,37 @@ describe("Recovery candidate quantity and source presentation", () => {
     expect(screen.queryByText("No candidate in checked chunks")).not.toBeInTheDocument();
   });
 
+  it.each([
+    "source_assertion_subject_or_scope_requires_review",
+    "paper_field_extractor_not_implemented",
+    "original_source_capture_not_supplied",
+  ])("does not turn an extraction gap into a checked-source or absence claim: %s", async reason => {
+    const body = report([]);
+    body.coverage[0].fields = [{ field: "pairing_symmetry", status: "not_extracted", retained_present: false, candidate_count: 0, reason_codes: [reason], routes: ["source_fulltext_and_supplement"] }];
+    vi.mocked(getMaterialEnrichment).mockResolvedValue(body);
+    render(<MaterialEnrichment materialId="synthetic" />);
+    expect(await screen.findByText("Not extracted")).toBeInTheDocument();
+    expect(screen.queryByText("Source text not checked")).not.toBeInTheDocument();
+    expect(screen.queryByText("No candidate in checked chunks")).not.toBeInTheDocument();
+    expect(screen.queryByText("Not reported")).not.toBeInTheDocument();
+  });
+
+  it("keeps a bounded no-candidate result and unavailable source identity separate from an extraction gap", async () => {
+    const body = report([]);
+    body.coverage[0].fields = [
+      { field: "pairing_symmetry", status: "not_extracted", retained_present: false, candidate_count: 0, reason_codes: ["source_assertion_subject_or_scope_requires_review"], routes: [] },
+      { field: "tc_criterion", status: "not_found_in_checked_sources", retained_present: false, candidate_count: 0, reason_codes: ["bounded_extractor_did_not_find_local_candidate"], routes: [] },
+      { field: "pressure_gpa", status: "source_unavailable", retained_present: false, candidate_count: 0, reason_codes: ["retained_source_identity_missing"], routes: [] },
+    ];
+    vi.mocked(getMaterialEnrichment).mockResolvedValue(body);
+    render(<MaterialEnrichment materialId="synthetic" />);
+    await screen.findByText("Not extracted");
+    expect(screen.getByText("Pairing symmetry").closest("tr")).toHaveTextContent("Not extracted");
+    expect(screen.getByText("Tc criterion").closest("tr")).toHaveTextContent("No candidate in checked chunks");
+    expect(screen.getByText("Pressure").closest("tr")).toHaveTextContent("Source identity unavailable");
+    expect(screen.getByText(/A missing candidate does not establish that the paper omitted the property/)).toBeInTheDocument();
+  });
+
   it("separates actual external field references from suggested lookup routes", async () => {
     const body = report([]);
     body.coverage[0].fields = ["lattice_a", "pressure_gpa", "pairing_symmetry"].map(field => ({ field, status: "not_found_in_checked_sources", retained_present: false, candidate_count: 0, reason_codes: [], routes: field === "pairing_symmetry" ? ["source_fulltext_and_supplement"] : ["supercon_source_lookup"] }));

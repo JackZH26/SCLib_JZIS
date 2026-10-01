@@ -51,6 +51,15 @@ reason. Missing fields in a truncated record sample carry an incomplete-inventor
 reason. Neither this request nor a zero candidate count establishes complete
 full-text or supplement coverage. Original records remain unchanged.
 
+The coverage label **Not extracted** leaves source inspection unresolved: this
+status can mean an unimplemented extractor, an unavailable capture, or a checked
+statement whose subject or scope still needs review. It does not mean the source
+was unexamined or that the property was absent. Missing provenance, method or
+state metadata displays **Not supplied in this record**, limiting the
+gap to that record. Explicit supplied `Unknown` values remain unchanged;
+**No candidate in checked chunks** remains a bounded extraction result, not a
+claim about the complete paper or supplement.
+
 When more than eight source papers are linked, a metadata-only `EXISTS` probe
 identifies papers containing indexed nonempty bounded chunks. The reader selects
 indexed papers across the complete ordering before evenly filling remaining

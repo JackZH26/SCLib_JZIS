@@ -981,6 +981,7 @@ def pending_tc_records(candidates: Sequence[dict]) -> list[dict]:
         pressure = subject["pressure_quantity"]
         record = {"formula_raw": subject["formula"], "paper_id": source["paper_id"],
                   "tc_kelvin": candidate["raw_value"], "tc_criterion": subject.get("tc_criterion", "unknown"),
+                  "tc_definition": subject.get("tc_criterion", "unknown"),
                   "knowledge_origin": subject["knowledge_origin"], "measurement_method": subject["measurement_method"],
                   "pressure_state": subject["pressure_state"], "validity_status": "pending",
                   "source_locator": {**source["locator"], "char_start": source["span"]["char_start"], "char_end": source["span"]["char_end"]},
