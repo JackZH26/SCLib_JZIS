@@ -237,7 +237,7 @@ describe("conditional source-scoped material visibility", () => {
       visibility: sourceScopedMaterialVisibility() } as MaterialSummary;
     render(<MaterialTable rows={[row]} />);
     expect(screen.getByText("SYNTHETIC")).toBeInTheDocument();
-    expect(screen.getByText("Eligible sources only")).toBeInTheDocument();
+    expect(screen.getByText("1 excluded record")).toHaveAttribute("title", expect.stringContaining("2 of 3 retained records"));
     fireEvent.click(screen.getByRole("button", { name: "Evidence for SYNTHETIC" }));
     expect(screen.getByText(/Only eligible reported source records/)).toBeInTheDocument();
     expect(screen.queryByText("Catalogue eligible — not scientific approval")).not.toBeInTheDocument();

@@ -125,6 +125,22 @@ export function mapMaterialProviderAvailability(provider: MaterialReferenceProvi
       hc2zero: "hc2_tesla", phc2zero: "hc2_tesla", nhc2zero: "hc2_tesla", hc2t: "hc2_tesla", phc2t: "hc2_tesla", nhc2t: "hc2_tesla",
       penet: "lambda_london_nm", ppenet: "lambda_london_nm", npenet: "lambda_london_nm",
       cohere: "xi_gl_nm", pcohere: "xi_gl_nm", ncohere: "xi_gl_nm",
+      hc1zero: "hc1_source_value", hc1t: "hc1_source_value",
+      gap: "gap_energy_source_value", gapene: "gap_ratio_source_value",
+      gamma: "electronic_specific_heat_coefficient_source_value", debyet: "debye_temperature_source_value",
+      isotope: "isotope_effect_exponent", dtcdp: "dtc_dp_source_value",
+      pmax: "maximum_applied_pressure_source_value", vols: "meissner_fraction_percent",
+      tcwidth: "transition_width_source_value", tcn: "minimum_temperature_k",
+    };
+    const quantityScopes: Record<string, string> = {
+      tcn: "Lowest tested temperature in a source non-superconducting report; not Tc, with the source unit retained",
+      tcwidth: "Source resistive transition width; not another Tc value",
+      pmax: "Maximum pressure applied in the source; not the selected Tc pressure, with the source unit retained",
+      gap: "Source energy-gap representation and unit; not pairing symmetry or an associated selected result",
+      gapene: "Source dimensionless 2 delta(0) / k Tc ratio; not an energy-gap value",
+      isotope: "Source isotope-effect exponent; isotope and sample association remain unreviewed",
+      dtcdp: "Source dTc/dP at P = 0; not a Tc measurement pressure",
+      vols: "Source Meissner volume fraction in percent; sample and state association remain unreviewed",
     };
     for (const row of rows) {
       if (supplied(row.structure?.space_group) || finite(row.structure?.space_group_number) || supplied(row.structure?.space_group_number_raw)) add("space_group", row.id, true);
@@ -135,11 +151,11 @@ export function mapMaterialProviderAvailability(provider: MaterialReferenceProvi
       if (supplied(row.structure_method?.raw_code) || supplied(row.structure_method?.label)) add("structure_method", row.id, true);
       for (const q of row.quantities) {
         if (!supplied(q.raw_value)) continue;
-        const unresolved = q.status !== "reported";
+        const unresolved = q.status !== "reported" || !finite(q.value) || !supplied(q.unit) || q.method_status === "requires_review";
         if (tcFields.has(q.field)) add("tc_kelvin", row.id, unresolved);
         if (criterionFields.has(q.field)) add("tc_criterion", row.id, false, "Explicit resistance or susceptibility criterion in a source row; not associated with the selected Tc");
         const field = quantityFields[q.field];
-        if (field) add(field, row.id, unresolved || q.field.startsWith("lat"), q.field.startsWith("lat") ? "Raw source lattice column; unit, structure and sample association require review" : scope.MDR);
+        if (field) add(field, row.id, unresolved || q.field.startsWith("lat"), q.field.startsWith("lat") ? "Raw source lattice column; unit, structure and sample association require review" : quantityScopes[q.field] ?? scope.MDR);
         if (supplied(q.temperature_raw)) add("measurement_temperature_k", row.id, true, "Raw source quantity temperature condition with no resolved unit; not the selected Tc temperature");
         // tcn is a non-superconducting test limit, tcwidth a width, pmax an
         // applied-pressure maximum. None supplies Tc or its pressure condition.

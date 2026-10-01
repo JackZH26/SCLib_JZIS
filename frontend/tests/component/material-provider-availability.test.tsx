@@ -18,6 +18,7 @@ import type {
   ExternalSuperconReference, MaterialSuperconReferences, SuperconReferenceQuantity,
 } from "@/lib/api";
 import nbSnapshot from "../fixtures/mdr-supercon-nb-240322.json";
+import laSmSnapshot from "../fixtures/mdr-supercon-la-sm-240322.json";
 
 vi.mock("@/lib/api", () => ({
   getMaterialExternalReferences: vi.fn(), getMaterialStructureReferences: vi.fn(),
@@ -131,6 +132,69 @@ describe("actual provider field mapping", () => {
     expect(availability.fields.lambda_eph).toBeUndefined();
     expect(availability.fields.lambda_london_nm.reference_count).toBe(1);
     expect(availability.fields.xi_gl_nm.reference_count).toBe(1);
+    expect(availability.fields.minimum_temperature_k.scope).toMatch(/not Tc/);
+    expect(availability.fields.transition_width_source_value.scope).toMatch(/not another Tc/);
+    expect(availability.fields.maximum_applied_pressure_source_value.scope).toMatch(/not the selected Tc pressure/);
+    expect(availability.fields.maximum_applied_pressure_source_value.review_required_count).toBe(1);
+  });
+  it("counts the actual packaged La–Sm source row's 80% Meissner fraction without filling a selected property", () => {
+    const report = laSmSnapshot as MaterialSuperconReferences;
+    const row = report.references.find(item => item.source_row_id === "155423")!;
+    expect(row.quantities.find(item => item.field === "vols")).toMatchObject({
+      raw_value: "80", value: 80, raw_unit: null, unit: "%", status: "reported",
+      meaning: "source_column_reports_percent",
+    });
+    expect(row.source_row_sha256).toBe("dd94673bafe2b3d7612d8355deb00037d6c7240f07283370566499317ae2236f");
+    const availability = mapMaterialProviderAvailability("MDR", report);
+    expect(availability.fields.meissner_fraction_percent).toMatchObject({
+      reference_count: 1, reference_ids: ["mdr:240322:oxide_metallic:155423"],
+      review_required_count: 0, association_status: "sample_and_state_unreviewed",
+    });
+    expect(availability.fields.meissner_fraction_percent.scope).toMatch(/Source Meissner volume fraction/);
+  });
+  it("counts all existing MDR auxiliary coverage fields while deduplicating directions and preserving scientific roles", () => {
+    const quantities = [
+      mdrQuantity("hc1zero", { unit: "T", raw_unit: "T" }), mdrQuantity("hc1t", { unit: "T", raw_unit: "T" }),
+      mdrQuantity("gap", { unit: "meV", raw_unit: "meV" }), mdrQuantity("gapene", { unit: "dimensionless", raw_unit: null }),
+      mdrQuantity("gamma", { unit: "mJ/(mol K²)", raw_unit: "mJ/mol.K2" }),
+      mdrQuantity("debyet", { unit: null, raw_unit: null, status: "unit_not_supplied" }),
+      mdrQuantity("isotope", { unit: "dimensionless", raw_unit: null }),
+      mdrQuantity("dtcdp", { unit: "K/GPa", raw_unit: "K/GPa" }),
+      mdrQuantity("pmax", { unit: null, raw_unit: null, status: "unit_not_supplied" }),
+      mdrQuantity("vols", { unit: "%", raw_unit: null }), mdrQuantity("tcwidth"), mdrQuantity("tcn"),
+    ];
+    const availability = mapMaterialProviderAvailability("MDR", mdrReport([mdrRow(quantities)]));
+    for (const field of ["hc1_source_value", "gap_energy_source_value", "gap_ratio_source_value",
+      "electronic_specific_heat_coefficient_source_value", "debye_temperature_source_value", "isotope_effect_exponent",
+      "dtc_dp_source_value", "maximum_applied_pressure_source_value", "meissner_fraction_percent",
+      "transition_width_source_value", "minimum_temperature_k"]) {
+      expect(availability.fields[field].reference_count, field).toBe(1);
+    }
+    expect(availability.fields.hc1_source_value.review_required_count).toBe(0);
+    expect(availability.fields.debye_temperature_source_value.review_required_count).toBe(1);
+    expect(availability.fields.gap_ratio_source_value.scope).toMatch(/dimensionless/);
+    expect(availability.fields.isotope_effect_exponent.scope).toMatch(/isotope and sample association remain unreviewed/);
+    expect(availability.fields.dtc_dp_source_value.scope).toMatch(/not a Tc measurement pressure/);
+    for (const field of ["tc_kelvin", "tc_criterion", "pressure_gpa", "lambda_eph", "pairing_symmetry"]) expect(availability.fields[field]).toBeUndefined();
+  });
+  it("retains unresolved raw values, absent units and undocumented method codes as review-required references", () => {
+    const availability = mapMaterialProviderAvailability("MDR", mdrReport([mdrRow([
+      mdrQuantity("tcn", { raw_value: "2–4", value: null, status: "value_requires_review" }),
+      mdrQuantity("pmax", { unit: null, raw_unit: null, status: "unit_not_supplied" }),
+      mdrQuantity("gap", { unit: null, raw_unit: "mV", status: "unit_requires_review" }),
+      mdrQuantity("gamma", { unit: "mJ/(mol K²)", raw_unit: "mJ/mol.K2", source_method_raw: "3", method_label: null, method_status: "requires_review" }),
+      // A directly invoked mapper remains conservative if scalar metadata is
+      // internally inconsistent; panels separately reject malformed contracts.
+      mdrQuantity("vols", { unit: "%", raw_unit: null, value: null }),
+      mdrQuantity("unmapped_source_column"),
+    ])]));
+    for (const field of ["minimum_temperature_k", "maximum_applied_pressure_source_value", "gap_energy_source_value",
+      "electronic_specific_heat_coefficient_source_value", "meissner_fraction_percent"]) {
+      expect(availability.fields[field]).toMatchObject({ reference_count: 1, review_required_count: 1 });
+    }
+    expect(availability.fields.unmapped_source_column).toBeUndefined();
+    expect(availability.fields.tc_kelvin).toBeUndefined();
+    expect(availability.fields.pressure_gpa).toBeUndefined();
   });
   it("counts distinct MDR rows, separates explicit criteria and retains unresolved source values as review-required references", () => {
     const generic = mapMaterialProviderAvailability("MDR", mdrReport([mdrRow([mdrQuantity("tc")])]));
@@ -160,6 +224,20 @@ describe("actual provider field mapping", () => {
 
 describe("optional shared provider availability", () => {
   beforeEach(() => vi.resetAllMocks());
+  it("publishes the real La–Sm row's Meissner availability only after validating and opening its source panel", async () => {
+    vi.mocked(getMaterialSuperconReferences).mockResolvedValue(laSmSnapshot as MaterialSuperconReferences);
+    render(<MaterialProviderAvailabilityProvider materialId="La0.4Sm0.6O0.5F0.5BiS2"><Probe /><ExternalSuperconReferences materialId="La0.4Sm0.6O0.5F0.5BiS2" /></MaterialProviderAvailabilityProvider>);
+    expect(getMaterialSuperconReferences).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByText("MDR SuperCon references"));
+    await waitFor(() => expect(readSnapshot().providers.MDR?.status).toBe("available"));
+    expect(readSnapshot().providers.MDR?.returned_count).toBe(2);
+    expect(readSnapshot().fields.meissner_fraction_percent[0]).toMatchObject({
+      reference_count: 1, reference_ids: ["mdr:240322:oxide_metallic:155423"],
+      review_required_count: 0, association_status: "sample_and_state_unreviewed",
+    });
+    expect(readSnapshot().fields.pressure_gpa).toBeUndefined();
+    expect(screen.getByText("80 %")).toBeInTheDocument();
+  });
   it("does not request providers until each panel is opened, then aggregates actual source-specific references", async () => {
     vi.mocked(getMaterialExternalReferences).mockResolvedValue(mpReport());
     vi.mocked(getMaterialStructureReferences).mockResolvedValue(codReport());

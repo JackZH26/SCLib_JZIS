@@ -7,6 +7,8 @@ import Link from "@/components/AppLink";
 import { evidenceText, objectValue, propertyValue, sourceHref } from "@/lib/property-evidence";
 import { MaterialClassificationCandidates } from "@/components/MaterialClassificationCandidates";
 import { useMaterialProviderAvailability } from "@/components/MaterialProviderAvailability";
+import { downloadMaterialRecoveryMetadata, projectSourceCoverage, recoveryReasonLabel } from "@/lib/material-recovery-metadata";
+import type { MaterialSourceCoverage } from "@/lib/api";
 import { MATERIAL_PROVIDER_ANCHORS, MATERIAL_PROVIDER_LABELS } from "@/lib/material-provider-availability";
 import type { MaterialReferenceProvider } from "@/lib/material-provider-availability";
 
@@ -142,9 +144,31 @@ function sourceLocator(source: Record<string, unknown>): string {
     return value ? [`${readable(key)}: ${value}`] : [];
   }).join("; ");
 }
+const inspectionCount = (value: unknown) => typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value.toLocaleString("en-US") : "Not inspected";
+function SourceInspectionScope({ sources }: { sources: Record<string, MaterialSourceCoverage> }) {
+  const entries = Object.entries(sources);
+  if (!entries.length) return null;
+  return <details className="mt-3 rounded-lg border border-sage-border bg-white p-4">
+    <summary className="cursor-pointer text-sm font-medium">Per-paper inspection scope ({entries.length})</summary>
+    <p className="mt-3 text-xs text-slate-500">Counts describe this bounded chunk request. Reading or supplying a chunk does not mean the full paper or supplement was checked. Uninspected counts remain unknown.</p>
+    <ul className="mt-3 divide-y divide-slate-100">{entries.map(([paper, row]) => {
+      const reasonCounts = { ...row.omitted_chunk_reasons, ...row.excluded_chunk_reasons };
+      const reasons = [...new Set([...Object.keys(reasonCounts), ...(row.reason_codes ?? [])])];
+      return <li key={paper} className="min-w-0 py-3 text-xs text-slate-600">
+        <p className="break-words font-medium text-slate-700">{paper}</p>
+        <p className="mt-1">{row.reason_codes?.includes("paper_sampling_limit") ? "Not sampled · paper limit" : row.chunks_inspected ? "Chunks read within this request" : "No chunks read in this request"}</p>
+        <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-4">
+          {[["Indexed", row.indexed_chunks_total], ["Within length bounds", row.bounded_indexed_chunks_total], ["Considered", row.chunks_considered], ["Read", row.chunks_inspected], ["Supplied to extractor", row.chunks_supplied], ["Excluded", row.excluded_chunks_total], ["Omitted", row.omitted_chunks_total]].map(([label, count]) => <div key={String(label)}><dt className="text-slate-500">{label}</dt><dd className="mt-0.5 tabular-nums">{inspectionCount(count)}</dd></div>)}
+        </dl>
+        {reasons.length > 0 && <ul className="mt-2 list-disc space-y-1 pl-4">{reasons.map(reason => <li key={reason}>{recoveryReasonLabel(reason)}{reasonCounts[reason] !== undefined ? ` (${inspectionCount(reasonCounts[reason])} chunk${reasonCounts[reason] === 1 ? "" : "s"})` : ""}</li>)}</ul>}
+      </li>;
+    })}</ul>
+  </details>;
+}
 export function MaterialEnrichment({ materialId }: { materialId: string }) {
   const [state, setState] = useState<{ materialId: string; report: MaterialEnrichmentReport | null; failed: boolean }>({ materialId, report: null, failed: false });
   const [candidateExpansion, setCandidateExpansion] = useState({ materialId, expanded: false });
+  const [downloadFailure, setDownloadFailure] = useState<string | null>(null);
   const showAllCandidates = candidateExpansion.materialId === materialId && candidateExpansion.expanded;
   const candidateListId = useId();
   const report = state.materialId === materialId ? state.report : null;
@@ -153,6 +177,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
     const controller = new AbortController();
     setState({ materialId, report: null, failed: false });
     setCandidateExpansion({ materialId, expanded: false });
+    setDownloadFailure(null);
     getMaterialEnrichment(materialId, controller.signal).then(value => {
       if (controller.signal.aborted) return;
       if (value.version !== "materials-enrichment/1.0.0" || value.scientific_acceptance !== false || value.database_changed !== false || !Array.isArray(value.coverage) || !Array.isArray(value.candidates)) throw new Error("Recovery contract unavailable");
@@ -161,6 +186,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
     return () => controller.abort();
   }, [materialId]);
   const fields = report?.coverage.find(row => row.material_id === materialId)?.fields ?? [];
+  const sourceCoverage = projectSourceCoverage(report?.coverage.find(row => row.material_id === materialId)?.source_coverage);
   const missing = fields.filter(field => !field.retained_present);
   return <section className="border-t border-sage-border pt-6" aria-label="Field coverage and source recovery">
     <h2 className="text-lg font-semibold">Field coverage &amp; source recovery</h2>
@@ -172,11 +198,16 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
       {report.inspection_scope && <p className="mt-2 text-xs text-slate-500">Inspected {report.inspection_scope.records_inspected} of {report.inspection_scope.records_total} eligible retained records across {report.inspection_scope.papers_inspected} of {report.inspection_scope.papers_total} linked papers.{(report.inspection_scope.records_truncated || report.inspection_scope.papers_truncated) && " This is a sampled recovery check; remaining records and sources have not been inspected."}</p>}
       {report.inspection_scope?.chunks_inspected !== undefined && <p className="mt-1 text-xs text-slate-500">Read {report.inspection_scope.chunks_inspected} whole chunks within a {report.inspection_scope.chunks_limit ?? 40}-chunk limit, shared across selected papers. Full papers and supplements have not been checked by this request.</p>}
       {report.candidates_truncated && <p className="mt-2 text-xs text-slate-500">A bounded list of 100 candidates was returned. Field counts may include additional candidates; none represents independent confirmation.</p>}
+      <div className="mt-3 text-xs"><button type="button" className="rounded text-accent-deep underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-deep" onClick={() => {
+        try { setDownloadFailure(downloadMaterialRecoveryMetadata(report, materialId) ? null : materialId); }
+        catch { setDownloadFailure(materialId); }
+      }}>Download recovery metadata (JSON)</button><p className="mt-1 text-slate-500">Returned candidates, sources and record references. This is a bounded snapshot for review.</p>{downloadFailure === materialId && <p className="mt-1 text-slate-600" role="status">Metadata download is unavailable for this request.</p>}</div>
+      <SourceInspectionScope sources={sourceCoverage} />
       <details className="mt-3 rounded-lg border border-sage-border bg-white p-4">
         <summary className="cursor-pointer text-sm font-medium">Inspect field coverage and recovery routes</summary>
         <p className="mt-3 text-xs text-slate-500">This bounded check covers linked chunks, not every full paper or supplement. A missing candidate does not establish that the paper omitted the property. Retained and candidate values still need sample, state and source review.</p>
         <p className="mt-2 text-xs text-slate-500">External field counts appear after opening a reference lookup below. They count returned composition references, not completed catalogue fields or independent experiments.</p>
-        <div className="mt-3 overflow-x-auto"><table className="w-full text-left text-sm"><thead className="border-b border-slate-200 text-xs text-slate-500"><tr><th className="py-2 pr-4">Field</th><th className="py-2 pr-4">Coverage</th><th className="py-2 pr-4">Recovery route</th><th className="py-2">Queried external references</th></tr></thead><tbody className="divide-y divide-slate-100">{fields.map(field => <tr key={field.field}><td className="py-2 pr-4 align-top">{labels[field.field] ?? readable(field.field)}</td><td className="py-2 pr-4 align-top">{statuses[field.status] ?? readable(field.status)}{field.candidate_count > 0 && <span className="block text-xs text-slate-500">{field.candidate_count} source candidates</span>}{(field.classification_review_finding_count ?? 0) > 0 && <span className="block text-xs text-slate-500">{field.classification_review_finding_count} spans need assertion or subject review</span>}</td><td className="py-2 pr-4 align-top text-xs text-slate-600"><RecoveryRoutes values={field.routes} /></td><td className="py-2 align-top text-xs text-slate-600"><ProviderFieldReferences field={field.field} values={field.routes} /></td></tr>)}</tbody></table></div>
+        <div className="mt-3 overflow-x-auto"><table className="w-full text-left text-sm"><thead className="border-b border-slate-200 text-xs text-slate-500"><tr><th className="py-2 pr-4">Field</th><th className="py-2 pr-4">Coverage</th><th className="py-2 pr-4">Recovery route</th><th className="py-2">Queried external references</th></tr></thead><tbody className="divide-y divide-slate-100">{fields.map(field => <tr key={field.field}><td className="py-2 pr-4 align-top">{labels[field.field] ?? readable(field.field)}</td><td className="py-2 pr-4 align-top">{statuses[field.status] ?? readable(field.status)}{field.candidate_count > 0 && <span className="block text-xs text-slate-500">{field.candidate_count} source candidates</span>}{(field.classification_review_finding_count ?? 0) > 0 && <span className="block text-xs text-slate-500">{field.classification_review_finding_count} spans need assertion or subject review</span>}{field.reason_codes?.length > 0 && <details className="mt-1 text-xs text-slate-500"><summary className="cursor-pointer text-accent-deep">Why this status</summary><ul className="mt-1 space-y-1">{field.reason_codes.map(reason => <li key={reason}>{recoveryReasonLabel(reason)}</li>)}</ul></details>}</td><td className="py-2 pr-4 align-top text-xs text-slate-600"><RecoveryRoutes values={field.routes} /></td><td className="py-2 align-top text-xs text-slate-600"><ProviderFieldReferences field={field.field} values={field.routes} /></td></tr>)}</tbody></table></div>
       </details>
       {report.candidates.length > 0 && <details className="mt-3 rounded-lg border border-sage-border bg-white p-4">
         <summary className="cursor-pointer text-sm font-medium">Source recovery candidates ({report.candidates.length})</summary>
@@ -195,6 +226,8 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
             <p className="mt-1 text-xs text-slate-500">{evidenceText(source.paper_id) ?? "Source identifier unavailable"} · {readable(evidenceText(source.kind) ?? "unknown source")} {sourceLocator(source) && <span className="block">{sourceLocator(source)}</span>}</p>
             {primaryUrl ? <a className="mt-1 inline-block text-xs text-accent-deep underline" href={primaryUrl} target="_blank" rel="noopener noreferrer">Open primary source</a> : paperHref && <Link className="mt-1 inline-block text-xs text-accent-deep underline" href={paperHref}>Open linked paper</Link>}
             <details className="mt-2 text-xs"><summary className="cursor-pointer text-accent-deep">Source identity and checks</summary><dl className="mt-2 space-y-1 break-all text-slate-600">
+              <div><dt className="inline">Candidate ID: </dt><dd className="inline font-mono">{evidenceText(candidate.candidate_id) ?? "Not supplied"}</dd></div>
+              {Array.isArray(candidate.retained_result_refs) && <div><dt className="inline">Retained record references: </dt><dd className="inline">{candidate.retained_result_refs.length}; full identifiers are included in the metadata download, not counts of independent experiments.</dd></div>}
               <div><dt className="inline">Raw source value: </dt><dd className="inline">{evidenceText(candidate.raw_value) ?? (structured ? "See structured fields above" : "Not supplied")}</dd></div>
               {Object.keys(quantity).length > 0 && <><div><dt className="inline">Source unit: </dt><dd className="inline">{evidenceText(quantity.raw_unit) ?? "Not supplied"}</dd></div><div><dt className="inline">Quantity relation / parser status: </dt><dd className="inline">{evidenceText(quantity.relation) ?? "Unavailable"} / {evidenceText(quantity.status) ?? "Unavailable"}</dd></div></>}
               <div><dt className="inline">Content hash: </dt><dd className="inline font-mono">{evidenceText(source.content_sha256)}</dd></div><div><dt className="inline">Retained revision: </dt><dd className="inline">{evidenceText(source.source_revision)}</dd></div>

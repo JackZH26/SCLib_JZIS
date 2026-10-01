@@ -42,7 +42,7 @@ function DisplayConditions({ display }: { display: MaterialsTcDisplay }) {
   const conditions = objectValue(display.item.conditions);
   const criterion = materialTcCriterion(evidenceText(conditions.tc_criterion ?? conditions.tc_type));
   const calculation = propertyOrigin(display.item) === "Computed" ? evidenceText(conditions.calculation_method ?? conditions.method) : null;
-  return <><span>{pressureLabel(state.pressure_semantics, typeof state.pressure_gpa === "number" ? state.pressure_gpa : null)}</span><span className="materials-secondary">{criterion ?? calculation ?? "Criterion not reported"}</span></>;
+  return <><span>{pressureLabel(state.pressure_semantics, typeof state.pressure_gpa === "number" ? state.pressure_gpa : null)}</span><span className="materials-secondary">{criterion ?? calculation ?? "Criterion not supplied"}</span></>;
 }
 /** Put decision-relevant source and conditions before the full provenance inventory. */
 function CoreTcEvidence({ item }: { item: PropertyEvidenceItem }) {
@@ -56,10 +56,10 @@ function CoreTcEvidence({ item }: { item: PropertyEvidenceItem }) {
   const quantity = objectValue(item.quantity);
   return <dl className="materials-core-evidence" aria-label="Displayed Tc source and conditions">
     <div className="materials-core-source"><dt>Source</dt><dd>{href ? <Link href={href}>{sourceLabel}</Link> : sourceLabel}</dd></div>
-    <div><dt>Source year</dt><dd>{evidenceText(source.year) ?? "Not reported"}</dd></div>
+    <div><dt>Source year</dt><dd>{evidenceText(source.year) ?? "Not supplied in this record"}</dd></div>
     <div><dt>Pressure</dt><dd>{pressureLabel(state.pressure_semantics, typeof state.pressure_gpa === "number" ? state.pressure_gpa : null)}</dd></div>
-    <div><dt>Tc criterion</dt><dd title={criterion ?? undefined}>{materialTcCriterion(criterion) ?? "Not reported"}</dd></div>
-    <div><dt>Method</dt><dd>{method ?? "Not reported"}</dd></div>
+    <div><dt>Tc criterion</dt><dd title={criterion ?? undefined}>{materialTcCriterion(criterion) ?? "Not supplied in this record"}</dd></div>
+    <div><dt>Method</dt><dd>{method ?? "Not supplied in this record"}</dd></div>
     <div><dt>Result origin</dt><dd>{propertyOrigin(item)}</dd></div>
     <div><dt>Quantity relation / parser status</dt><dd>{evidenceText(quantity.relation) ?? "Unavailable"} / {evidenceText(quantity.status) ?? "Unavailable"}</dd></div>
   </dl>;
@@ -68,7 +68,7 @@ function RowWarnings({ material }: { material: MaterialSummary }) {
   const visibility = knownVisibility(material.visibility);
   const review = material.anomaly_review;
   return <div className="materials-row-warnings">
-    {visibility?.version === SOURCE_SCOPED_VISIBILITY_VERSION ? <span className="materials-scope" title="Only eligible reported source records contribute; excluded records remain subject to Archive access rules.">Eligible sources only</span> : visibility?.state !== "catalogue" ? <span className="materials-warning">{visibilityLabel(material.visibility).replaceAll(" — ", ": ")}</span> : null}
+    {visibility?.version === SOURCE_SCOPED_VISIBILITY_VERSION ? <span className="materials-scope" title={`${visibility.source_scope.eligible_records} of ${visibility.source_scope.total_records} retained records contribute to this view. Excluded records remain subject to Archive access rules.`}>{visibility.source_scope.excluded_records} excluded record{visibility.source_scope.excluded_records === 1 ? "" : "s"}</span> : visibility?.state !== "catalogue" ? <span className="materials-warning">{visibilityLabel(material.visibility).replaceAll(" — ", ": ")}</span> : null}
     {review && (!hasMaterialAnomalyReview(review) || review.needs_review) && <span className="materials-warning">{hasMaterialAnomalyReview(review) ? "Review required" : "Review status unavailable"}</span>}
     {material.needs_review && !review?.needs_review && <span className="materials-warning">Source review pending</span>}
   </div>;
@@ -120,7 +120,7 @@ export function MaterialTable({ rows, resultFiltersActive = false }: { rows: Mat
             <td title={display.matched?.family ? "Family declared for this matching result" : "Catalogue family classification, not a measured property"}>{rowFamily ? familyLabel(rowFamily) : "Unclassified"}</td>
             <td className="materials-tc-cell"><DisplayTc display={display} material={material} /></td>
             <td className="materials-conditions-cell"><DisplayConditions display={display} /></td>
-            <td className="materials-year">{year ?? "Not reported"}</td>
+            <td className="materials-year">{year ?? "Not supplied"}</td>
             <td><button type="button" className="materials-sources-link" onClick={() => setInspection(material)} aria-label={`Sources for ${material.formula}`}>{materialSourceCountLabel(material.material_semantics, material.total_papers)}</button>{material.variant_count > 0 && <span className="materials-secondary">{material.variant_count} variants</span>}</td>
             <td><button type="button" className="materials-evidence-button" onClick={() => setInspection(material)} aria-label={`Evidence for ${material.formula}`}>Evidence</button><span className="materials-secondary">{display.item ? locatorAvailable(display.item) ? "Locator available" : "Locator missing" : "Source unavailable"}</span></td>
             {OPTIONAL_COLUMNS.filter(column => columns.includes(column.key)).map(column => <td key={column.key}><OptionalCell column={column.key} material={material} /></td>)}

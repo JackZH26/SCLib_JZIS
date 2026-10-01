@@ -310,6 +310,31 @@ omitting private `evidence_text` because its separate SHA-256 remains pinned.
 The real offline snapshot/plan/import was executed: 66 candidates were first
 inserted into a private local ledger; replay inserted zero and reused all 66.
 
+## Inspecting and downloading the returned recovery window
+
+The material page exposes the reader's existing per-paper `source_coverage` in a
+collapsed inspection section. Indexed, bounded-length, considered, read,
+supplied, excluded and omitted chunks remain distinct, with their actual budget
+or source reasons. A paper outside the sampling limit keeps its uninspected
+totals as unknown. Field-level reasons can also be opened separately. These
+counts do not establish fulltext or supplement coverage.
+
+`Download recovery metadata (JSON)` creates a local
+`materials-recovery-metadata/1.0.0` snapshot of the current material's returned
+window. An explicit, recursive allowlist preserves pending candidate IDs,
+quantities, units, conditions, source locators, complete returned record
+references, input/report hashes and counts. Source text, context excerpts,
+private notes and raw-record objects are excluded. Known scientific structured
+values retain their field-specific keys rather than arbitrary nested objects.
+Unsupported or promoted candidates are omitted with a rejection count.
+
+The snapshot retains pending/false authority flags. It is not the original
+candidate hash-validation payload, a full-paper capture or an ingestion package;
+candidate IDs identify the original proposals. Navigating to another material
+removes the old download while its new response is pending. External-reference
+field feedback separately counts only actual returned source rows, records or
+tasks; auxiliary MDR quantities keep their own scientific roles.
+
 ## Next data run
 
 1. Export a bounded, current source-scoped sample using read-only queries. Pin
@@ -324,11 +349,15 @@ inserted into a private local ledger; replay inserted zero and reused all 66.
 4. Review nominal/refined composition and sample/pressure/state relations before
    turning a source candidate into a property record. Reviewed source text and
    reviewed coordinate files have separate gates.
-5. Use the existing additive ingestion, reviewer and immutable passage-link
-   workflows for genuinely reviewed records. Retain original values and record
-   superseding interpretations instead of editing them in place. External MP,
-   COD or NOMAD entries require their own structure/state matching and stay
-   external references until that matching is established.
+5. Check that the additive ingestion, reviewer and immutable passage-link
+   workflows support the specific record type and review authority before using
+   them for reviewed records. The current recovery service is read-only and its
+   Tc handoff remains pending; there is no generic review/append adapter for all
+   seed fields, external structures or derived quantities. Add the missing
+   field-specific contracts and reviewed source/sample/state associations before
+   importing those records. Retain original values and record superseding
+   interpretations instead of editing them in place. External MP, COD or NOMAD
+   entries remain references until their own structure/state matching is established.
 6. Create explicit computation tasks only for remaining scientifically useful
    gaps, with input structure, composition, pressure, method and convergence
    requirements. The recovery CLI itself does not calculate Tc or stability.

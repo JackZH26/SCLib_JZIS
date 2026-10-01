@@ -1307,7 +1307,38 @@ export interface MaterialDetail extends MaterialSummary {
   mp_synced_at: string | null;
 }
 
+/** Per-paper scope from the existing bounded reader; null counts mean uninspected. */
+export interface MaterialSourceCoverage {
+  fulltext_checked?: boolean;
+  supplement_checked?: boolean;
+  scope?: string;
+  indexed_chunks_total?: number | null;
+  bounded_indexed_chunks_total?: number | null;
+  chunks_considered?: number;
+  chunks_inspected?: number;
+  chunks_supplied?: number;
+  excluded_chunks_total?: number;
+  excluded_chunk_reasons?: Record<string, number>;
+  omitted_chunks_total?: number | null;
+  omitted_chunk_reasons?: Record<string, number>;
+  truncated?: boolean;
+  reason_codes?: string[];
+}
+export interface MaterialEnrichmentCoverage {
+  material_id: string;
+  formula: string;
+  retained_record_count?: number;
+  retained_record_count_total?: number;
+  record_scan_truncated?: boolean;
+  retained_paper_ids?: string[];
+  source_capture_count?: number;
+  source_coverage?: Record<string, MaterialSourceCoverage>;
+  fields: Array<{ field: string; status: string; retained_present: boolean; candidate_count: number; reason_codes: string[]; routes: string[]; classification_review_finding_count?: number }>;
+}
 export interface MaterialEnrichmentReport {
+  extractor_version?: string;
+  input_sha256?: string;
+  report_sha256?: string;
   candidates_truncated?: boolean;
   classification_candidates?: Array<Record<string, unknown>>;
   classification_review_findings?: Array<Record<string, unknown>>;
@@ -1315,10 +1346,10 @@ export interface MaterialEnrichmentReport {
   classification_candidates_truncated?: boolean;
   classification_review_findings_truncated?: boolean;
   classification_counts?: Record<string, unknown>;
-  inspection_scope?: { records_total: number; records_inspected: number; records_truncated: boolean; papers_total: number; papers_inspected: number; papers_truncated: boolean; chunks_considered?: number; chunks_inspected?: number; chunks_limit?: number; characters_inspected?: number; characters_limit?: number; chunk_sampling?: string };
+  inspection_scope?: { version?: string; records_total: number; records_inspected: number; records_truncated: boolean; records_limit?: number; raw_retained_records_total?: number; current_eligible_records_total?: number; papers_total: number; papers_inspected: number; papers_truncated: boolean; papers_limit?: number; papers_with_bounded_indexed_chunks?: number; record_sampling?: string; paper_sampling?: string; chunks_considered?: number; chunks_inspected?: number; chunks_limit?: number; characters_inspected?: number; characters_limit?: number; chunk_sampling?: string };
   version: string;
   candidates: Array<Record<string, unknown>>;
-  coverage: Array<{ material_id: string; formula: string; fields: Array<{ field: string; status: string; retained_present: boolean; candidate_count: number; reason_codes: string[]; routes: string[]; classification_review_finding_count?: number }> }>;
+  coverage: MaterialEnrichmentCoverage[];
   counts: Record<string, unknown>;
   scientific_acceptance: false;
   database_changed: false;
