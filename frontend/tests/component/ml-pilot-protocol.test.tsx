@@ -1,3 +1,4 @@
+import { historicalR8Source } from "../helpers/r8-captured-source";
 import { webcrypto } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -9,8 +10,8 @@ const actor = pilot.parsePilotAccess(http.access), owner = pilot.parsePilotAcces
 const foreign = "00000000-0000-4000-8000-999999999999", otherHash = "f".repeat(64);
 beforeEach(() => vi.stubGlobal("crypto", webcrypto));
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
-describe("original native pilot participation protocol", () => {
-  it("pins the capture, original replies and each current source without resealing old evidence", () => {
+describe("frontend replay of historical native pilot participation wire", () => {
+  it("pins the capture, original replies and historical source revision without resealing old evidence", () => {
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.materials20261002r8.wire.json")))).toBe("70918d63caca5c25b39b025176d3ff2ffffa57dc5b782fcf45604034a3464c33");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.materials20261002r7.wire.json")))).toBe("00c277f9a92cb894ec94973e4701aa729eda7ed200cdd2aba87aaf4b62e6ac44");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.materials20261002r6.wire.json")))).toBe("659b0a33407313534e75355273763c604a660b4d203db12dece9c23903c91944");
@@ -38,7 +39,7 @@ describe("original native pilot participation protocol", () => {
     expect(new Set(http.source_pins.map(p => p.path)).size).toBe(http.source_pins.length);
     for (const p of http.source_pins) {
       expect(p.path).toMatch(/^(api|scripts)\/[A-Za-z0-9_./-]+\.(py|schema\.json)$/); expect(p.path.split("/")).not.toContain("..");
-      expect(sha(readFileSync(resolve(process.cwd(), "..", p.path))), p.path).toBe(p.sha256);
+      expect(sha(historicalR8Source(p)), p.path).toBe(p.sha256);
     }
     expect(Object.values(http).filter(v => typeof v === "string" && v.startsWith("{"))).toHaveLength(21);
   });

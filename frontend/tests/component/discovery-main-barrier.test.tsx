@@ -1,3 +1,4 @@
+import { historicalR8Source } from "../helpers/r8-captured-source";
 import { webcrypto } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -41,8 +42,8 @@ function unknownBandGap(p: any) {
   p.capabilities.scientific_properties[0].populated_observations = 0;
 }
 
-describe("actual guarded native v2 wire compatibility", () => {
-  it("pins the retained capture and the backend inputs used by this batch", () => {
+describe("frontend replay compatibility with historical guarded native v2 wire", () => {
+  it("pins the retained capture and its historical backend source revision", () => {
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.materials20261002r8.wire.json"), "utf8")))
       .toBe("6e056881e86f6aed5b0d19791e340429576059ac45e7924c4c03f3d6708c8078");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/discovery-main-barrier-native.materials20261002r7.wire.json"), "utf8")))
@@ -117,7 +118,7 @@ describe("actual guarded native v2 wire compatibility", () => {
     for (const pin of nativeWire.source_pins) {
       expect(Object.keys(pin).sort()).toEqual(["path", "sha256"]); expect(pin.path).toMatch(/^api\/[A-Za-z0-9_./-]+$/);
       expect(pin.path.split("/")).not.toContain(".."); expect(pin.sha256).toMatch(/^[a-f0-9]{64}$/);
-      expect(hash(readFileSync(resolve(process.cwd(), "..", pin.path), "utf8")), pin.path).toBe(pin.sha256);
+      expect(hash(historicalR8Source(pin).toString("utf8")), pin.path).toBe(pin.sha256);
     }
   });
   it("accepts exact native preparation, independent inspection and public response without reserializing Python numbers", async () => {

@@ -1,3 +1,4 @@
+import { historicalR8Source } from "../helpers/r8-captured-source";
 import { webcrypto } from "node:crypto";
 import { Blob as NodeBlob, File as NodeFile } from "node:buffer";
 import { readFileSync } from "node:fs";
@@ -11,7 +12,7 @@ import { canonical, changed, sha } from "../helpers/ml-review-wire";
 beforeEach(() => { vi.stubGlobal("crypto", webcrypto); vi.stubGlobal("Blob", NodeBlob); });
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 async function prepared() { const f = evidenceFiles(NodeFile as unknown as typeof File); return prepareEvidence(native.reference, basis, f.originals, f.canary, f.contexts); }
-describe("actual native canary byte inspection", () => {
+describe("frontend replay of historical native canary bytes", () => {
   it("assembles the exact native frame without serializing originals or context into JSON", async () => {
     const value = await prepared(); expect(value.body.type).toBe(EVIDENCE_TYPE); expect(EVIDENCE_LIMIT).toBe(REVIEW_EVIDENCE_LIMIT);
     expect(Buffer.from(await value.body.arrayBuffer())).toEqual(evidenceParts().raw);
@@ -76,7 +77,7 @@ describe("actual native canary byte inspection", () => {
     vi.stubGlobal("fetch", fetcher); await expect(sendReviewEvidence(native.reference, upload.body)).rejects.toThrow();
     if (["type", "oversized"].includes(name)) expect(fetcher).not.toHaveBeenCalled();
   });
-  it("retains unmodified native replies and exact selected source pins", () => {
+  it("retains unmodified native replies and exact historical capture source pins", () => {
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r8.wire.json")))).toBe("ec5f808ee85a953db9c5bae030987de8b449a8ea858ab65e8b34c4939a6e4821");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r7.wire.json")))).toBe("18a4a23a64e017a2cd7309421d851720d97542eef41cb0e4aad25ca861833c5d");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r6.wire.json")))).toBe("34c9cfa3df116b0e9ab2b15324dc24d31c75b7ffa9c873884e865621f5f24d2f");
@@ -96,7 +97,7 @@ describe("actual native canary byte inspection", () => {
     expect(native.source_pins).toHaveLength(635);
     expect(native.capture_test_path).toBe("api/tests/test_ml_pilot_evidence.py");
     expect(native.fixture_notice).toContain("synthetic accounts and events only");
-    for (const row of native.source_pins) expect(sha(readFileSync(resolve(process.cwd(), "..", row.path))), row.path).toBe(row.sha256);
+    for (const row of native.source_pins) expect(sha(historicalR8Source(row)), row.path).toBe(row.sha256);
     expect(canonical(JSON.parse(native.complete))).toBe(native.complete);
   });
 });

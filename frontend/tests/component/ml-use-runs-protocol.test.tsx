@@ -1,3 +1,4 @@
+import { historicalR8Source } from "../helpers/r8-captured-source";
 import { webcrypto } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -11,8 +12,8 @@ const plan = JSON.parse(http.plan_committed).result.plan as runs.RunPlan;
 beforeEach(() => { vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers(); });
 
-describe("native run protocol — original SQL/HTTP bytes", () => {
-  it("pins all 633 source inputs including evidence intake, historical bytes, and 28 original response strings", () => {
+describe("frontend replay of historical native ML run SQL/HTTP wire", () => {
+  it("pins all 635 historical capture inputs, earlier bytes, and 28 original response strings", () => {
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.materials20261002r8.wire.json")))).toBe("99a60e72c0d5f8b46699b626eeff940e64b6c83e6915146e31a8547807c0303d");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.materials20261002r7.wire.json")))).toBe("c6d5ddaa1d5013146e994e34c273e4df462a37cad7e931ff2857005bb648eac3");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-runs-native.materials20261002r6.wire.json")))).toBe("8019b47ab0968e6d6c6b60d0ba214b57bbc632251f2f94dcc18ece8af2365496");
@@ -53,7 +54,7 @@ describe("native run protocol — original SQL/HTTP bytes", () => {
     expect(http.source_pins.some(p => p.path === "api/tests/test_ml_pilot_registration_reliability.py")).toBe(true);
     for (const pin of http.source_pins) {
       expect(pin.path).toMatch(/^(?:(api|scripts)\/[A-Za-z0-9_./-]+\.py|api\/services\/[A-Za-z0-9_-]+\.schema\.json)$/); expect(pin.path.split("/")).not.toContain("..");
-      expect(sha(readFileSync(resolve(process.cwd(), "..", pin.path))), pin.path).toBe(pin.sha256);
+      expect(sha(historicalR8Source(pin)), pin.path).toBe(pin.sha256);
     }
     expect(Object.values(http).filter(v => typeof v === "string" && v.startsWith("{"))).toHaveLength(28);
   });

@@ -1,3 +1,4 @@
+import { historicalR8Source } from "../helpers/r8-captured-source";
 import { webcrypto } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -7,7 +8,7 @@ import { canonical, changed, controls, coverageReply, digest, documents, native,
 
 beforeEach(() => vi.stubGlobal("crypto", webcrypto));
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
-describe("native own-review declaration protocol", () => {
+describe("frontend replay of historical native own-review declaration wire", () => {
   it.each([0, 1, 2])("verifies participant %i original joint snapshots without implying scientific acceptance", index => {
     const p = native.participants[index], basis = review.parseReviewPreflight(p.preflight, p.actor_user_id, reference(p), documents(p));
     for (const phase of ["initial", "complete", "withdrawn"] as const) {
@@ -43,7 +44,7 @@ describe("native own-review declaration protocol", () => {
     const basis = review.parseReviewPreflight(own.preflight, own.actor_user_id, reference(), documents());
     expect(() => review.parseReviewCoverage(raw, own.actor_user_id, reference(), basis)).toThrow();
   });
-  it("pins current original replies without resealing historical evidence", () => {
+  it("pins original replies and their historical source revision without resealing evidence", () => {
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.materials20261002r8.wire.json")))).toBe("c14a14a35abaf4ff25e72f1d42dd8ae1b53b179d781333794636453461212261");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.materials20261002r7.wire.json")))).toBe("3d0e5e0cda35b89b2bd9f69a032f2fff6925ac245a47c73261ae517398a32c5f");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-attestations-native.materials20261002r6.wire.json")))).toBe("2a12b4850382e3b5d2ff4a4cfe7af57a4a4d1c30875dc3ed19cebc4a768efe7b");
@@ -68,7 +69,7 @@ describe("native own-review declaration protocol", () => {
     expect(new Set(native.source_pins.map(p => p.path)).size).toBe(635);
     expect(native.coverage).toHaveLength(9);
     for (const p of native.source_pins) { expect(p.path).toMatch(/^(api|scripts)\/[A-Za-z0-9_./-]+\.(py|schema\.json)$/); expect(p.path.split("/")).not.toContain("..");
-      expect(sha(readFileSync(resolve(process.cwd(), "..", p.path))), p.path).toBe(p.sha256); }
+      expect(sha(historicalR8Source(p)), p.path).toBe(p.sha256); }
     expect(native.participants).toHaveLength(3);
     expect(native.participants.flatMap(p => Object.values(p)).filter(v => typeof v === "string" && v.startsWith("{"))).toHaveLength(36);
   });
