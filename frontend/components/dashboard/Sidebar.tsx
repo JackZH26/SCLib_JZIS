@@ -8,6 +8,7 @@
  */
 import Link from "@/components/AppLink";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 interface NavItem {
   href: string;
@@ -24,13 +25,23 @@ export function Sidebar({
   items: NavItem[];
 }) {
   const pathname = usePathname();
+  const [openFor, setOpenFor] = useState<string | null>(null);
+  const expanded = openFor === pathname;
+  const activeItem = items.find(item => item.href === "/dashboard"
+    ? pathname === item.href : pathname.startsWith(item.href));
 
   return (
     <aside className="w-full shrink-0 border-b border-sage-border bg-white/60 md:w-56 md:border-b-0 md:border-r">
+      <button type="button" aria-controls="dashboard-navigation" aria-expanded={expanded}
+        onClick={() => setOpenFor(expanded ? null : pathname)}
+        className="flex min-h-11 w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm text-sage-ink md:hidden">
+        <span>Workspace navigation{activeItem ? ` · ${activeItem.label}` : ""}</span>
+        <span aria-hidden="true">{expanded ? "−" : "+"}</span>
+      </button>
       {/* Site Header is sticky at ~64px — align the sidebar's sticky
           top to match so it doesn't slip under the header or leave a
           gap. Keep this in lockstep with Header.tsx padding. */}
-      <nav className="flex flex-wrap gap-0.5 p-3 text-sm md:sticky md:top-16 md:flex-col" aria-label="Dashboard navigation">
+      <nav id="dashboard-navigation" className={`${expanded ? "flex" : "hidden"} flex-wrap gap-0.5 p-3 text-sm md:sticky md:top-16 md:flex md:flex-col`} aria-label="Dashboard navigation">
         {items.map((item) => {
           // Exact match for the root /dashboard; prefix match for children
           const active =
@@ -41,6 +52,8 @@ export function Sidebar({
             <Link
               key={item.href}
               href={item.href}
+              aria-current={active ? "page" : undefined}
+              onClick={() => setOpenFor(null)}
               className={[
                 "flex items-center justify-between rounded-md px-3 py-2 transition-colors",
                 active

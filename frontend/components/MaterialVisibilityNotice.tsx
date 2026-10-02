@@ -15,7 +15,10 @@ export function MaterialVisibilityNotice({ visibility, compact = false, scope = 
     {scope === "source occurrence" && <p className="mt-1">Source-occurrence policy only; no material identity or catalogue acceptance is inferred from the formula.</p>}
     {!compact && v && <>
       {v.reason_codes.length > 0 && <p className="mt-2">Reasons: {v.reason_codes.map(code => code.replaceAll("_", " ")).join("; ")}</p>}
-      <p className="mt-2 break-all text-xs">Policy: {v.version} · source status: {v.source_status} · review revision: {v.review_revision ?? "No resolved material revision"}</p>
+      <details className="mt-2 text-xs">
+        <summary className="cursor-pointer font-medium">Source status and revision</summary>
+        <p className="mt-2 break-words">Policy: {v.version} · source status: {v.source_status} · review revision: <span className="break-all">{v.review_revision ?? "No resolved material revision"}</span></p>
+      </details>
     </>}
   </div>;
 }

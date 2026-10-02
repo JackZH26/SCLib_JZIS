@@ -42,6 +42,17 @@ describe("shared visibility contract", () => {
     expect(screen.queryByText(/PRIVATE/)).not.toBeInTheDocument();
   });
 
+  it.each([materialVisibility("pending"), sourceScopedMaterialVisibility()])("keeps eligibility warnings visible and lets readers expand source revision details", visibility => {
+    render(<MaterialVisibilityNotice visibility={visibility} />);
+    expect(screen.getByText(visibilityLabel(visibility))).toBeVisible();
+    expect(screen.getByText(visibilityWarning(visibility))).toBeVisible();
+    const policy = screen.getByText(/Policy: material-visibility/);
+    expect(policy).not.toBeVisible();
+    fireEvent.click(screen.getByText("Source status and revision"));
+    expect(policy).toBeVisible();
+    expect(policy).toHaveTextContent(visibility.review_revision!);
+  });
+
   it("keeps current visibility and warnings attached to downloaded raw records", () => {
     const archive = rawArchive();
     const visibility = materialVisibility("pending");

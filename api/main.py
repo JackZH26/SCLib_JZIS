@@ -36,6 +36,9 @@ from routers import (
     feedback,
     health,
     history,
+    material_field_cases,
+    material_field_review,
+    material_literal_fields,
     materials,
     ml_foundation,
     ml_pilot_registration,
@@ -58,9 +61,8 @@ from routers import (
     search,
     seo,
     similar,
-    source_impacts,
     source_expressions,
-    material_field_cases,
+    source_impacts,
     source_properties,
     source_task_operations,
     stats,
@@ -651,6 +653,8 @@ app.include_router(source_task_operations.router, prefix="/v1")
 app.include_router(source_properties.router, prefix="/v1")
 app.include_router(source_expressions.router, prefix="/v1")
 app.include_router(material_field_cases.router, prefix="/v1")
+app.include_router(material_field_review.router, prefix="/v1")
+app.include_router(material_literal_fields.router, prefix="/v1")
 app.include_router(ml_foundation.router, prefix="/v1")
 app.include_router(materials.router, prefix="/v1")
 app.include_router(papers.router, prefix="/v1")
