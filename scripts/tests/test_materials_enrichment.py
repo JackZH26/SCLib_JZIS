@@ -158,7 +158,7 @@ def test_explicit_physical_forms_keep_exact_spans_and_pending_authority(text, ex
     assert len(forms) == 1
     candidate = forms[0]
     assert candidate["value"] == expected
-    assert candidate["extractor_version"] == "materials-literal-extractor/1.0.1"
+    assert candidate["extractor_version"] == "materials-literal-extractor/1.1.0"
     span = candidate["source"]["span"]
     assert text[span["char_start"]:span["char_end"]] == raw_form
     assert enrich.text_digest(raw_form) == span["text_sha256"]
@@ -412,10 +412,12 @@ def test_classification_missingness_and_reference_routes_do_not_claim_hits():
         assert fields[name]["status"] == "not_extracted"
         assert "supercon_source_lookup" in fields[name]["routes"]
         assert "external_reference_route_is_not_a_lookup_hit" in fields[name]["reason_codes"]
+        assert "original_source_capture_not_supplied" in fields[name]["reason_codes"]
     assert report["classification_counts"]["candidate_facts"] == 0
     for name in enrich.PAPER_UNIMPLEMENTED_FIELDS:
         assert fields[name]["status"] == "not_extracted"
-        assert "paper_field_extractor_not_implemented" in fields[name]["reason_codes"]
+        assert "original_source_capture_not_supplied" in fields[name]["reason_codes"]
+        assert "paper_field_extractor_not_implemented" not in fields[name]["reason_codes"]
         assert "supercon_source_lookup" not in fields[name]["routes"]
     for name in ("space_group", "crystal_structure", "lattice_a", "lattice_b", "lattice_c"):
         assert "supercon_source_lookup" in fields[name]["routes"]

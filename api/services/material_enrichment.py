@@ -23,7 +23,7 @@ from services.property_evidence import legacy_result_id
 from services.scientific_values import FIELD_UNITS, parse_scientific_value, record_quantity
 
 VERSION = "materials-enrichment/1.0.0"
-EXTRACTOR_VERSION = "materials-literal-extractor/1.0.1"
+EXTRACTOR_VERSION = "materials-literal-extractor/1.1.0"
 MAX_MATERIALS = 1000
 MAX_SOURCES = 10000
 MAX_SOURCE_CHARS = 200000
@@ -99,8 +99,8 @@ FIELD_ROUTES = {
     "lambda_london_nm": ["source_fulltext_and_supplement", "supercon_source_lookup", "new_experiment_or_model_estimate"],
     "xi_gl_nm": ["source_fulltext_and_supplement", "supercon_source_lookup", "new_experiment_or_model_estimate"],
 }
-# References expose these fields, but a route is not a match or an implemented
-# paper extractor. Raw external quantities retain their own source units.
+# Historical grouping names remain compatible with offline callers. These
+# fields now have bounded paper grammars; a reference route is still not a hit.
 REFERENCE_ONLY_FIELDS = frozenset({
     "hc1_source_value", "gap_energy_source_value", "gap_ratio_source_value",
     "electronic_specific_heat_coefficient_source_value", "debye_temperature_source_value",
@@ -115,6 +115,110 @@ PAPER_UNIMPLEMENTED_FIELDS = frozenset({"t_cdw_k", "t_afm_k", "t_sdw_k"})
 for _field in PAPER_UNIMPLEMENTED_FIELDS:
     FIELD_ROUTES[_field] = ["source_fulltext_and_supplement", "specialist_experiment"]
 SPECIALIST_EXTRACTION_FIELDS = frozenset({"pairing_symmetry", "is_unconventional", "reported_order", "competing_order", "gap_structure"})
+LITERAL_SOURCE_FIELDS = REFERENCE_ONLY_FIELDS | PAPER_UNIMPLEMENTED_FIELDS
+
+# These are source values, deliberately outside the canonical scientific-value
+# registry. Never infer a unit, convert a value, or interpret printed uncertainty.
+_SOURCE_POINT = r"[-+−]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?(?:\(\d+\))?"
+_SOURCE_AMOUNT = rf"(?:(?:<=|>=|[<>≤≥~≈]|below|above|at most|at least|around|about|approximately|up to|as high as|reaches|reached)\s*)?{_SOURCE_POINT}(?:\s*(?:±|\+/-|to|–|—|-)\s*{_SOURCE_POINT})?"
+_SOURCE_LINK = r"\s*(?:(?:=|:)|(?:is|was|of|at))?\s*"
+_HEAT_UNIT = r"(?:mJ|[µμ]J|uJ|J)(?:[/·⋅*\s(]{0,6}(?:mol(?:[ -]at\.)?|K)(?:\s*\^?\s*[-−]?\d{1,2})?[)]?){1,3}"
+_SOURCE_FIELD_SPECS = {
+    "hc1_source_value": (r"(?:[µμ]0\s*)?(?:H\s*c\s*1(?:\(0\))?|lower critical field)", r"(?:mT|T|kOe|Oe|gauss|G)", "reported_property"),
+    "gap_energy_source_value": (r"(?:superconducting(?: energy)? gap|(?:energy gap|gap energy)|(?:Δ|\\Delta)(?:\(0\)|0)?)", r"(?:meV|[µμ]eV|ueV|eV|K)", "reported_property"),
+    "gap_ratio_source_value": (r"(?:superconducting gap ratio|gap ratio|2\s*(?:Δ|\\Delta)(?:\(0\)|0)?\s*/\s*k\s*B\s*T\s*c)", None, "reported_property"),
+    "electronic_specific_heat_coefficient_source_value": (r"(?:electronic specific[ -]heat coefficient|Sommerf(?:eld|ield) (?:coefficient|constant)|(?:γ|\\gamma|gamma)(?:\s*n)?)", _HEAT_UNIT, "reported_property"),
+    "debye_temperature_source_value": (r"(?:Debye temperature|(?:[Θθ]|\\Theta|\\theta)\s*D)", r"(?:mK|K|kelvin)", "reported_property"),
+    "isotope_effect_exponent": (r"(?:isotope(?:[ -]effect)? (?:exponent|coefficient)|α|\\alpha|alpha)", None, "reported_property"),
+    "dtc_dp_source_value": (r"(?:d\s*T\s*c\s*/\s*d\s*P|pressure derivative of T\s*c)", r"(?:mK|K)\s*(?:/\s*(?:GPa|MPa|kbar|bar|Pa)|(?:GPa|MPa|kbar|bar|Pa)\s*\^?[-−]1)", "reported_property"),
+    "maximum_applied_pressure_source_value": (r"(?:(?:maximum|highest)(?: applied)? pressure|pressures?\s+up to|(?:measurements?|experiments?)\s+(?:were\s+)?(?:performed|carried out)\s+up to)", r"(?:GPa|MPa|kPa|kbar|bar|Pa|atm)", "study_extent"),
+    "meissner_fraction_percent": (r"(?:Meissner (?:fraction|volume fraction)|field[ -]cooled Meissner fraction)", r"(?:%|percent)", "reported_property"),
+    "transition_width_source_value": (r"(?:(?:superconducting|resistive|resistance) transition width|superconducting width|transition width|(?:Δ|\\Delta)\s*T\s*c?)", r"(?:mK|K|kelvin)", "reported_property"),
+    "minimum_temperature_k": (r"(?:(?:lowest|minimum)(?: measurement)? temperature|(?:measured|measurements|measurements were performed|resistivity|resistance|susceptibility|heat capacity)\s+down to)", r"(?:mK|K|kelvin)", "measurement_limit"),
+    "t_cdw_k": (r"(?:T\s*CDW|(?:charge[ -]density[ -]wave|CDW)(?: ordering| transition)?(?: temperature)?)", r"(?:mK|K|kelvin)", "reported_order_transition"),
+    "t_afm_k": (r"(?:T\s*N|N[ée]el temperature|(?:antiferromagnetic|AFM)(?: ordering| transition)(?: temperature)?)", r"(?:mK|K|kelvin)", "reported_order_transition"),
+    "t_sdw_k": (r"(?:T\s*SDW|(?:spin[ -]density[ -]wave|SDW)(?: ordering| transition)?(?: temperature)?)", r"(?:mK|K|kelvin)", "reported_order_transition"),
+}
+
+
+def _source_field_pattern(field):
+    cue, unit, _ = _SOURCE_FIELD_SPECS[field]
+    # Unit-less quantities are admitted only for explicitly named ratios and
+    # exponents. Other fields require the complete printed unit token.
+    suffix = rf"[\s~]*(?P<unit>{unit})(?![A-Za-z0-9])" if unit else r"(?:\s*(?P<unit>dimensionless))?(?![\w(]|\.\d)(?!\s*(?:±|\+/-|to\b|–|—|-\s*\d|[×x]\s*10))"
+    return re.compile(rf"(?<!\w)(?P<cue>{cue})(?![A-Za-z]){_SOURCE_LINK}(?P<amount>{_SOURCE_AMOUNT}){suffix}", re.I)
+
+
+_SOURCE_FIELD_PATTERNS = {field: _source_field_pattern(field) for field in _SOURCE_FIELD_SPECS}
+_SOURCE_UNIT_TAIL = re.compile(r"\s*(?:[/^·⋅*]|[-−]\s*\d|(?:K|mK|meV|[µμ]eV|eV|J|mJ|mol|T|mT|nm|Å|GPa|MPa|kPa|Pa|kbar|bar|atm|s|ms|[µμ]s|m|cm|mm|kg|g|Hz|kHz|MHz|GHz|N|W|A|V|C|H|F|S|Oe|kOe|G|gauss|percent|degrees?|deg|Ω)(?!\w)|%)")
+_SOURCE_DIMENSIONLESS_END = re.compile(
+    r"\s*(?:$|[.,;!?)]|(?:and|or|with|as|from|for|by|at|in|is|was|were|which|that|where|while|although|whereas|compared|consistent|rather|according)(?!\w))",
+    re.I,
+)
+_SOURCE_ELEMENT_COMPARISON = re.compile(
+    r"\b(?i:compared (?:with|to)|rather than|versus|vs\.?|whereas|and)\s+(?:"
+    + "|".join(sorted(_ELEMENTS, key=lambda token: (-len(token), token)))
+    + r")(?![A-Za-z0-9])(?!\s*[=:<>≤≥])")
+
+
+def _source_field_matches(text):
+    """Finite local source grammar; no normalization or scientific entailment."""
+    for field, pattern in _SOURCE_FIELD_PATTERNS.items():
+        for match in pattern.finditer(text):
+            cue = match.group("cue")
+            before = text[max(0, match.start()-80):match.start()]
+            if re.search(r"\b(?:no|not|without|absence of|absent|undetected|not detected)\b[^.;]*$", before, re.I):
+                continue
+            if field == "gap_energy_source_value" and (re.search(r"\b(?:band|semiconductor|CDW|charge[ -]density[ -]wave) gap\b", text, re.I)
+                    or not re.search(r"\b(?:superconduct|BCS|pairing|tunneling)\w*\b", text, re.I)
+                    or not re.search(r"\b(?:gap|gap energy)\b", text, re.I)):
+                continue
+            if field == "gap_energy_source_value" and re.match(r"(?:Δ|\\Delta)", cue) and not re.search(r"\b(?:gap(?: energy| size)?|energy gap)\s*[,(:]?\s*$", before, re.I):
+                continue
+            if field == "isotope_effect_exponent" and not re.search(r"\bisotope(?:[ -]effect)? (?:exponent|coefficient)\b", text, re.I):
+                continue
+            if field == "isotope_effect_exponent" and re.fullmatch(r"(?:α|\\alpha|alpha)", cue, re.I) and not re.search(r"\bisotope(?:[ -]effect)? (?:exponent|coefficient)\s*[,(:]?\s*$", before, re.I):
+                continue
+            if field == "transition_width_source_value" and not re.search(r"\b(?:superconduct|resistiv|resistance)\w*\b|\bT\s*c\b", text, re.I):
+                continue
+            if field == "transition_width_source_value" and not re.search(r"\b(?:width|broadening)\b", text, re.I):
+                continue
+            if field == "transition_width_source_value" and re.match(r"(?:Δ|\\Delta)", cue) and not re.search(r"\b(?:transition width|transition broadening|superconducting width)\s*[,(:]?\s*$", before, re.I):
+                continue
+            if field in PAPER_UNIMPLEMENTED_FIELDS:
+                # A lower measurement bound or an XRD temperature is never an
+                # ordering temperature, even beside a named transition.
+                if re.search(r"\b(?:down to|diffraction|XRD|measured at|measurement temperature|transition width)\b", text, re.I):
+                    continue
+                if field == "t_afm_k" and re.fullmatch(r"T\s*N", cue, re.I) and not re.search(r"\b(?:antiferromagnet|AFM|N[ée]el)\w*\b", text, re.I):
+                    continue
+            if field == "electronic_specific_heat_coefficient_source_value":
+                unit = match.group("unit")
+                if not re.search(r"mol", unit, re.I) or not re.search(r"K", unit):
+                    continue
+                if re.match(r"(?:γ|\\gamma|gamma)", cue, re.I) and not re.search(r"\b(?:electronic specific[ -]heat coefficient|Sommerf(?:eld|ield) (?:coefficient|constant))\s*[,(:]?\s*$", before, re.I):
+                    continue
+                compact_unit = re.sub(r"[\s^(){}·⋅*]", "", unit).replace("−", "-")
+                if not re.fullmatch(r"(?:mJ|[µμ]J|uJ|J)(?:/(?:mol(?:-at\.)?)/?K2|(?:mol(?:-at\.)?)-1K-2|K-2(?:mol(?:-at\.)?)-1)", compact_unit):
+                    continue
+            if match.groupdict().get("unit") is not None and _SOURCE_UNIT_TAIL.match(text[match.end():]):
+                continue
+            # The finite unit list is not a complete scientific grammar. A
+            # ratio/exponent needs a complete expression ending or a separated
+            # prose connector, never an unknown unit or clipped scale factor.
+            if field in {"gap_ratio_source_value", "isotope_effect_exponent"} and not _SOURCE_DIMENSIONLESS_END.match(text[match.end():]):
+                continue
+            yield field, match
+
+
+def _extent_pressure(text, match):
+    matched = any(found.start() <= match.start() and match.end() <= found.end()
+                  for found in _SOURCE_FIELD_PATTERNS["maximum_applied_pressure_source_value"].finditer(text))
+    # Recognizable apparatus/range extents are withheld from Tc conditions even
+    # when their wording is outside the narrower applied-maximum grammar.
+    before = text[max(0, match.start()-100):match.start()]
+    other_extent = re.search(r"\b(?:pressure range\s+(?:extends(?: up)? to|reaches)|pressure\s+(?:was\s+)?(?:increased|raised|swept)(?:\s+up)?\s+to|(?:pressure cell|cell|instrument)\s+(?:capacity|limit|rated(?: to| for)?))\s*(?:is|of|=|:)?\s*$", before, re.I)
+    return matched or other_extent is not None
 
 
 class EnrichmentError(ValueError):
@@ -465,7 +569,8 @@ def _direct_quantity_binding(text, anchor, quantity):
 
 
 def _context(text: str) -> dict[str, Any]:
-    pressures = [_quantity(match[1], "pressure_gpa", match[2]) for match in _PRESSURE.finditer(text)]
+    pressures = [_quantity(match[1], "pressure_gpa", match[2]) for match in _PRESSURE.finditer(text)
+                 if not _extent_pressure(text, match)]
     ambient = bool(re.search(r"\b(?:ambient|atmospheric) pressure\b", text, re.I))
     pressure = pressures[0] if len(pressures) == 1 else None
     if ambient and not pressures:
@@ -595,6 +700,8 @@ def extract_source_candidates(material: Mapping[str, Any], record: Mapping[str, 
                 add("tc_criterion", criterion, anchor, local_context=local)
         pressure_matches = list(_PRESSURE.finditer(flat))
         for match in pressure_matches:
+            if _extent_pressure(flat, match):
+                continue
             # Multiple conditions in a multi-material statement cannot be
             # assigned by mere sentence cooccurrence. Retain only a pressure
             # following this exact formula before the next different formula.
@@ -624,10 +731,72 @@ def extract_source_candidates(material: Mapping[str, Any], record: Mapping[str, 
         for field, label in _NUMERIC_LABELS.items():
             pattern = re.compile(rf"{label}\s*(?:=|is|of|:|approximately)?\s*({_VALUE})\s*(K|meV|THz|cm\^-1|T|mT|nm|angstrom|Å)?", re.I)
             for match in pattern.finditer(flat):
+                if field == "lambda_eph" and match.group().lstrip().startswith("λ") and not re.search(r"\b(?:electron[ -]phonon|EPC)\b", flat, re.I):
+                    continue
                 unit = match[2]
                 if FIELD_UNITS[field] != "1" and not unit:
                     continue
                 add(field, match.group(), match, _quantity(match[1], field, unit))
+        for field, match in _source_field_matches(flat):
+            # Only a preceding foreign subject can own this property. Scientific
+            # assignments such as B=2 T or Tc=16 K are not elemental subjects.
+            if _SOURCE_ELEMENT_COMPARISON.search(flat[:match.start()]):
+                continue
+            if len(all_formulas) > 1 and not any(target.end() <= match.start() and not any(
+                    other.start() >= target.end() and other.start() < match.end()
+                    and normalize_formula(other.group()) != formula for other in formula_mentions)
+                    and re.fullmatch(r"\s*(?:has|shows|exhibits|:)\s*", flat[target.end():match.start()], re.I)
+                    for target in matches):
+                continue
+            def original_span(a, z, _left=left, _offsets=offsets):
+                start, end = _left + _offsets[a], _left + _offsets[z-1] + 1
+                # Flattening removed presentation braces. Include closing TeX
+                # delimiters belonging to this token; do not cut H_{c1} or K^{-2}.
+                depth = source["text"][start:end].count("{") - source["text"][start:end].count("}")
+                if 0 < depth <= 8 and source["text"][end:end+depth] == "}" * depth:
+                    end += depth
+                return {"char_start": start, "char_end": end,
+                        "text_sha256": text_digest(source["text"][start:end])}
+            value_span = original_span(match.start("amount"), match.end("amount"))
+            unit_span = original_span(match.start("unit"), match.end("unit")) if match.groupdict().get("unit") is not None else None
+            if unit_span is not None:
+                unit_start, unit_end = unit_span["char_start"], unit_span["char_end"]
+                wrapper = re.search(r"\\(?:mathrm|text|rm)\s*\{\s*$", source["text"][max(left, unit_start-24):unit_start])
+                if wrapper is not None and source["text"][unit_end:unit_end+1] == "}":
+                    unit_start = max(left, unit_start-24) + wrapper.start()
+                    depth = source["text"][unit_start:unit_end].count("{") - source["text"][unit_start:unit_end].count("}")
+                    if 0 < depth <= 8 and source["text"][unit_end:unit_end+depth] == "}" * depth:
+                        unit_end += depth
+                    unit_span = {"char_start": unit_start, "char_end": unit_end,
+                                 "text_sha256": text_digest(source["text"][unit_start:unit_end])}
+            end = (unit_span or value_span)["char_end"]
+            # Recover from captured text, not NFKC/TeX-flattened presentation.
+            raw = source["text"][value_span["char_start"]:end].strip()
+            amount = source["text"][value_span["char_start"]:value_span["char_end"]]
+            uncertainty = re.search(r"\(\d+\)|(?:±|\+/-)\s*[-+−]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?", amount)
+            role = _SOURCE_FIELD_SPECS[field][2]
+            qualifiers = []
+            if _CAUTION.search(flat):
+                qualifiers.append("cited_negative_or_qualified_context")
+            if _COMPUTED.search(flat):
+                qualifiers.append("model_or_calculation_context")
+            if re.search(r"\b(?:fit|fitted|estimate|estimated|extrapolat)\w*\b", flat, re.I):
+                qualifiers.append("fit_or_estimate_context")
+            if re.search(r"\b(?:model|inferred|deduced|rather than measured|not measured)\b", flat, re.I):
+                qualifiers.append("inference_or_unmeasured_context")
+            proposed = _candidate(material=material, record=record, source=source, field=field,
+                raw_value=raw, start=value_span["char_start"], end=end, sentence=sentence,
+                context={**context, "field_role": role},
+                reasons=[*reasons, "raw_source_value_not_normalized", "reported_scope_requires_review"])
+            proposed["source_value"] = {"raw_value": raw,
+                "raw_unit": source["text"][unit_span["char_start"]:unit_span["char_end"]].strip() if unit_span else None,
+                "raw_uncertainty": uncertainty.group() if uncertainty else None,
+                "normalization": "none", "role": role, "qualifiers": qualifiers,
+                "field_cue": source["text"][original_span(match.start("cue"), match.end("cue"))["char_start"]:original_span(match.start("cue"), match.end("cue"))["char_end"]],
+                "value_span": value_span, "unit_span": unit_span,
+                "cue_span": original_span(match.start("cue"), match.end("cue"))}
+            proposed["candidate_id"] = "enrichment:" + digest({k: v for k, v in proposed.items() if k not in {"candidate_id", "evidence_text"}})
+            candidates.append(proposed)
         if context["measurement_method"]:
             add("measurement_method", context["measurement_method"])
         # Multiple formula-like tokens require an explicit local noun-phrase
@@ -888,19 +1057,16 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
             elif not retained_papers:
                 status = "source_unavailable"
                 reasons.append("retained_source_identity_missing")
-            elif field in REFERENCE_ONLY_FIELDS:
-                status = "not_extracted"
-                reasons.append("paper_field_extractor_not_implemented")
-                reasons.append("external_reference_route_is_not_a_lookup_hit")
-            elif field in PAPER_UNIMPLEMENTED_FIELDS:
-                status = "not_extracted"
-                reasons.append("paper_field_extractor_not_implemented")
             elif not local_sources:
                 status = "not_extracted"
                 reasons.append("original_source_capture_not_supplied")
+                if field in REFERENCE_ONLY_FIELDS:
+                    reasons.append("external_reference_route_is_not_a_lookup_hit")
             else:
                 status = "not_found_in_checked_sources"
                 reasons.append("bounded_extractor_did_not_find_local_candidate")
+                if field in LITERAL_SOURCE_FIELDS:
+                    reasons.append("bounded_source_value_grammar_has_incomplete_recall")
                 if field in SPECIALIST_EXTRACTION_FIELDS:
                     reasons.append("bounded_specialist_grammar_has_incomplete_recall")
                     if findings_count:

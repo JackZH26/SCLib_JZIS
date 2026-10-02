@@ -111,6 +111,13 @@ export function eligibleForScientificSeo(value: unknown): boolean {
     v.archive_available && ["active", "unknown"].includes(v.source_status);
 }
 
+/** Validated source partitions permit catalogue reads without enabling scientific SEO. */
+export function eligibleForCatalogueRead(value: unknown): boolean {
+  const v = knownVisibility(value);
+  return !!v && v.state === "catalogue" && v.public_catalogue_eligible && v.archive_available &&
+    (v.version === SOURCE_SCOPED_VISIBILITY_VERSION || ["active", "unknown"].includes(v.source_status));
+}
+
 export function visibilityLabel(value: unknown, scope: "material" | "source occurrence" = "material"): string {
   const v = scope === "source occurrence" ? knownOccurrenceVisibility(value) : knownVisibility(value);
   if (!v) return "Archive — visibility unverified";

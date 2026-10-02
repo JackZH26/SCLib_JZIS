@@ -30,7 +30,7 @@ import { JointEpcNotice, PropertyEvidenceFact, PropertyEvidenceSection, Property
 import { RawScientificArchive, RecordAnomalyReview, ScientificAnomalyNotice } from "@/components/ScientificAnomalies";
 import { evidenceText, objectValue, ORDER_FIELDS, propertyJsonLd, SAMPLE_FIELDS, SC_FIELDS, selectedProperty, STRUCTURE_FIELDS, supportedPropertyDescription } from "@/lib/property-evidence";
 import { MaterialVisibilityNotice } from "@/components/MaterialVisibilityNotice";
-import { eligibleForScientificSeo, visibilityIsRestricted, visibilityLabel } from "@/lib/material-visibility";
+import { eligibleForCatalogueRead, eligibleForScientificSeo, visibilityIsRestricted, visibilityLabel } from "@/lib/material-visibility";
 import { MaterialSemanticsMini, MaterialSemanticsPanel } from "@/components/MaterialSemantics";
 import { materialSourceCountLabel } from "@/lib/material-semantics";
 import { StructureEvidencePanel, StructureEvidenceValue } from "@/components/StructureEvidence";
@@ -106,9 +106,10 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
     throw e;
   }
   if (visibilityIsRestricted(mat.visibility)) notFound();
-  const catalogueEligible = eligibleForScientificSeo(mat.visibility);
+  const scientificSeoEligible = eligibleForScientificSeo(mat.visibility);
+  const catalogueReadEligible = eligibleForCatalogueRead(mat.visibility);
   const hydrideParameters =
-    mat.family === "hydride" && catalogueEligible ? await getMaterialHydrideParameters(id) : [];
+    mat.family === "hydride" && catalogueReadEligible ? await getMaterialHydrideParameters(id) : [];
 
   const flags: [string, boolean | null][] = [
     ["Catalogue risk flag: disputed", mat.disputed],
@@ -119,7 +120,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
   const materialStructuredData = {
     "@context": "https://schema.org",
     "@type": "Dataset",
-    name: `${mat.formula} ${catalogueEligible ? "material catalogue" : "material Archive"}`,
+    name: `${mat.formula} ${scientificSeoEligible ? "material catalogue" : "material Archive"}`,
     description: materialDescription(mat),
     url: canonical,
     identifier: mat.id,
@@ -129,12 +130,12 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
       mat.family,
       mat.subfamily,
     ].filter(Boolean),
-    variableMeasured: catalogueEligible ? [
+    variableMeasured: scientificSeoEligible ? [
       propertyJsonLd(mat.property_evidence, "tc_max"),
       propertyJsonLd(mat.property_evidence, "tc_ambient"),
     ].filter(Boolean) : [],
     measurementTechnique: "Scientific literature extraction; result origin is not scientific validation",
-    ...(catalogueEligible ? { includedInDataCatalog: {
+    ...(scientificSeoEligible ? { includedInDataCatalog: {
       "@type": "DataCatalog",
       name: "SCLib — JZIS Superconductivity Library",
       url: absoluteUrl("/materials"),
@@ -276,7 +277,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
       )}
       <RawScientificArchive archive={mat.raw_archive} visibility={mat.visibility} />
 
-      {mat.family === "hydride" && !catalogueEligible && <p className="rounded border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">Specialized hydride results are not loaded for this Archive record. An alternate endpoint cannot bypass its review status.</p>}
+      {mat.family === "hydride" && !catalogueReadEligible && <p className="rounded border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">Specialized hydride results are not loaded for this Archive record. An alternate endpoint cannot bypass its review status.</p>}
 
       {hydrideParameters.length > 0 && (
         <HydrideParametersTable rows={hydrideParameters} />
@@ -286,7 +287,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
       <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Superconducting parameters</summary><div className="mt-4 space-y-6"><PropertyEvidenceSection title="Superconducting parameters" fields={SC_FIELDS.filter(field => field !== "pairing_symmetry")} evidence={mat.property_evidence} /><JointEpcNotice evidence={mat.property_evidence} /></div></details>
       <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Competing orders</summary><div className="mt-4"><PropertyEvidenceSection title="Competing orders" fields={ORDER_FIELDS} evidence={mat.property_evidence} /></div></details>
       <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Samples and pressure evidence</summary><div className="mt-4"><PropertyEvidenceSection title="Samples & pressure" fields={SAMPLE_FIELDS} evidence={mat.property_evidence} /></div></details>
-      {catalogueEligible && <MaterialProviderAvailabilityProvider materialId={mat.id}>
+      {catalogueReadEligible && <MaterialProviderAvailabilityProvider materialId={mat.id}>
         <MaterialEnrichment materialId={mat.id} />
         <ExternalSuperconReferences materialId={mat.id} />
         <ExternalMaterialReferences materialId={mat.id} />
