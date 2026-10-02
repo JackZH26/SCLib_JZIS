@@ -166,3 +166,42 @@ test("the preserved light theme and image budget do not depend on OS preferences
     expect((await response.body()).length).toBeLessThan(100_000);
   }
 });
+
+test("Materials formula lookup submits its GET form with existing filters and resets pagination", async ({ page }) => {
+  // The owned SSR API is inert. This proves form navigation and URL state,
+  // not native database matches, scientific values or source associations.
+  await page.goto("/materials?q=NbN&family=conventional&tc_min=20&pressure_max=150&knowledge_origin=Computed&page=9&per_page=100&sort=tc_ambient");
+  await page.getByRole("button", { name: "Reject all", exact: true }).click();
+  const formula = page.getByRole("searchbox", { name: "Formula contains", exact: true });
+  await expect(formula).toHaveValue("NbN");
+  await expect(formula).toHaveAttribute("placeholder", "e.g. NbN or BiTeCl");
+  // HTML counts UTF-16 units; the API admits at most 200 Unicode code points.
+  await expect(formula).toHaveAttribute("maxlength", "400");
+  const form = page.locator("#materials-filter-form");
+  await expect(form).toHaveAttribute("method", "get");
+  await expect(form).toHaveAttribute("action", "/materials");
+  await expect(form.locator('[name="q"]')).toHaveCount(1);
+  await expect(form.locator('input[type="hidden"][name="q"]')).toHaveCount(0);
+  await expect(form.locator('[name="page"]')).toHaveCount(0);
+  await formula.fill("BiTeCl");
+  await formula.press("Enter");
+  await expect.poll(() => new URL(page.url()).searchParams.get("q")).toBe("BiTeCl");
+  const query = new URL(page.url()).searchParams;
+  expect(query.getAll("q")).toEqual(["BiTeCl"]);
+  expect(query.has("page")).toBe(false);
+  expect(query.get("family")).toBe("conventional");
+  expect(query.get("tc_min")).toBe("20");
+  expect(query.get("pressure_max")).toBe("150");
+  expect(query.get("knowledge_origin")).toBe("Computed");
+  expect(query.get("per_page")).toBe("100");
+  expect(query.get("sort")).toBe("tc_ambient");
+  await expect(formula).toHaveValue("BiTeCl");
+  await expect(page.getByLabel("Tc ≥ (K)", { exact: true })).toHaveValue("20");
+  await expect(page.getByLabel("Pressure ≤ (GPa)", { exact: true })).toHaveValue("150");
+  await expect(page.getByRole("combobox", { name: "Result origin", exact: true })).toHaveValue("Computed");
+  const clear = page.getByRole("link", { name: "Clear filters", exact: true });
+  await expect(clear).toHaveAttribute("href", "/materials");
+  await clear.click();
+  await expect(page).toHaveURL(/\/materials$/);
+  await expect(formula).toHaveValue("");
+});

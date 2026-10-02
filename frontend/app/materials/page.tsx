@@ -6,7 +6,7 @@ import { MaterialTable } from "@/components/MaterialTable";
 import { MaterialsFilters } from "@/components/MaterialsFilters";
 import { Pagination } from "@/components/Pagination";
 import { absoluteUrl } from "@/lib/seo";
-import { materialsHref, materialsPageIndex, materialsPageSize, materialsParams, materialsQueryErrors, materialResultFiltersActive, type MaterialsQuery } from "@/lib/materials-browser";
+import { materialsHref, materialsPageIndex, materialsPageSize, materialsParams, materialsQueryErrors, materialsQueryFromSearchParams, materialResultFiltersActive, type MaterialsSearchParams } from "@/lib/materials-browser";
 import "./materials.css";
 
 export const metadata: Metadata = {
@@ -15,12 +15,12 @@ export const metadata: Metadata = {
   alternates: { canonical: absoluteUrl("/materials") }, openGraph: { url: absoluteUrl("/materials") },
 };
 
-export default async function MaterialsPage({ searchParams }: { searchParams: Promise<MaterialsQuery> }) {
-  const query = await searchParams;
+export default async function MaterialsPage({ searchParams }: { searchParams: Promise<MaterialsSearchParams> }) {
+  const { query, errors: parameterErrors } = materialsQueryFromSearchParams(await searchParams);
   const page = materialsPageIndex(query.page);
   const perPage = materialsPageSize(query.per_page);
   const params = materialsParams(query);
-  const queryErrors = materialsQueryErrors(query);
+  const queryErrors = [...parameterErrors, ...materialsQueryErrors(query)];
   const data = query.structure_phase || queryErrors.length ? null : await listMaterials(params).catch(() => null);
   // A full-document recovery discards stale route state and preserves all other filters.
   const phaseRecoveryHref = `${process.env.NEXT_PUBLIC_BASE_PATH || ""}${materialsHref(query, ["structure_phase"])}`;

@@ -330,7 +330,7 @@ describe("explicit private scientific import workflow", () => {
     expect(screen.getByText(/This does not run a calculation, approve science or admit ML training data/)).toBeVisible();
   });
   it("previews actual bytes then commits the exact pin and body only after a separate click", async () => {
-    const heading = await prepare(); expect(heading).toHaveFocus();
+    const heading = await prepare(); await waitFor(() => expect(heading).toHaveFocus());
     expect(scientificImportSubmit).toHaveBeenCalledOnce();
     const body = vi.mocked(scientificImportSubmit).mock.calls[0][0];
     expect(body).toEqual({ ...http.request, request_key: body.request_key, dry_run: true, expected_request_sha256: pin });
@@ -338,7 +338,7 @@ describe("explicit private scientific import workflow", () => {
     expect(screen.queryByText(http.preview.result.row_ids.property)).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Open scientific evidence workbench" })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Commit exact preview" }));
-    const receipt = await screen.findByRole("heading", { name: "Durable import receipt" }); expect(receipt).toHaveFocus();
+    const receipt = await screen.findByRole("heading", { name: "Durable import receipt" }); await waitFor(() => expect(receipt).toHaveFocus());
     expect(vi.mocked(scientificImportSubmit).mock.calls[1][0]).toEqual({ ...body, dry_run: false });
     expect(screen.getByText(http.committed.result.row_ids.property)).toBeVisible();
     expect(screen.getByRole("link", { name: "Open scientific evidence workbench" })).toHaveAttribute("href", "/dashboard/research/review");
