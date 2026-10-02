@@ -293,6 +293,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
         <ExternalStructureReferences materialId={mat.id} />
         <ExternalCalculationReferences materialId={mat.id} />
       </MaterialProviderAvailabilityProvider>}
+      <p className="text-xs text-sage-muted"><Link href={`/dashboard/research/material-field-cases?material=${encodeURIComponent(mat.id)}`} prefetch={false} className="text-accent-deep underline">Open private field cases for this material</Link> · Authorized workspace; source proposals remain pending.</p>
 
     </main>
   );

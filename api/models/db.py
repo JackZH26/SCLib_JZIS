@@ -1773,6 +1773,10 @@ from models.source_expression_intake_v2 import register as _register_source_expr
 
 SOURCE_EXPRESSION_INTAKE = _register_source_expressions(Base.metadata)
 
+from models.material_field_cases_v1 import register as _register_material_field_cases  # noqa: E402
+
+MATERIAL_FIELD_CASES = _register_material_field_cases(Base.metadata)
+
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.

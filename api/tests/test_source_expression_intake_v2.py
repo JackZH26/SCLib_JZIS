@@ -62,10 +62,15 @@ def _migration(connection, action):
 
 @pytest.mark.asyncio
 async def test_empty_0083_roundtrip_preserves_all_0082_rows(db_session):
+    # The additive 0084 field-case namespace has restrictive foreign keys to
+    # 0083. Its own empty-only downgrade refuses retained audit history.
+    from tests.test_material_field_cases import migration as field_case_migration
     before = await state(db_session)
     connection = await db_session.connection()
+    await connection.run_sync(lambda conn: field_case_migration(conn, "downgrade"))
     await connection.run_sync(lambda conn: _migration(conn, "downgrade"))
     await connection.run_sync(lambda conn: _migration(conn, "upgrade"))
+    await connection.run_sync(lambda conn: field_case_migration(conn, "upgrade"))
     assert await state(db_session) == before
     await db_session.commit()
 
