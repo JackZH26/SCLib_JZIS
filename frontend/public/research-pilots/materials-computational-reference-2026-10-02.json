@@ -1,0 +1,1519 @@
+{
+  "version": "materials-computational-reference/1.0.0",
+  "prepared_on": "2026-10-02",
+  "status": "independent_source_metadata_pending",
+  "authority": {
+    "human_review": false,
+    "scientific_acceptance": false,
+    "sample_identity_established": false,
+    "phase_identity_established": false,
+    "material_state_association": "unestablished",
+    "selected_result_association": "unestablished",
+    "canonical_promotions": 0,
+    "ml_training_approved": false,
+    "calculation_executed": false,
+    "database_changed": false,
+    "raw_source_publication": false,
+    "raw_source_redistribution_rights_established": false
+  },
+  "reference": {
+    "entry_id": "0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq",
+    "upload_id": "5IvJz3uWTeu7Sgf197BSnw",
+    "formula": "B2Cr",
+    "knowledge_origin": "Computed",
+    "match_level": "fixed_composition_only",
+    "entry_url": "https://nomad-lab.eu/prod/v1/gui/search/entries/entry/id/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq",
+    "source_origin": {
+      "entry_hash": "uAYOjF6d_QSs5sjomuNYIJdYxyN1",
+      "entry_published": true,
+      "entry_with_embargo": false,
+      "last_processing_time": "2023-06-05T23:57:15.535521+00:00",
+      "license_reported_by_entry": "CC BY 4.0",
+      "mainfile": "oqmd/icsd/30416/relaxation/vasprun.xml",
+      "nomad_processing_version": "1.2.0rc1.dev126+g2552cffd2",
+      "original_metadata_references": [
+        "http://dx.doi.org/10.1007/s11837-013-0755-4",
+        "http://oqmd.org"
+      ],
+      "source_references": [
+        {
+          "provider": "DOI",
+          "url": "https://doi.org/10.1007/s11837-013-0755-4"
+        },
+        {
+          "provider": "OQMD",
+          "url": "https://oqmd.org"
+        }
+      ]
+    },
+    "currentness": {
+      "cross_projection_atomic_snapshot_established": false,
+      "entry_hash_and_selected_metadata_equal_before_after": true,
+      "historical_summary_archive_byte_equivalence_established": false
+    },
+    "historical_summary_sha256": "670d30a366ee5f923234ce20ece06bc99dcc359e8b99e3de6d028e1765152a14",
+    "historical_entry_snapshot_sha256": "654a195a79799ead6a0c3c11fff44a5a2f2c4b3e22e0e0a7feaa3dc3e1b25530",
+    "summary_capture_retrieved_at": "2026-10-02T03:16:49.496630+00:00",
+    "calculation_bindings": {
+      "initial_and_final_structure_differ": true,
+      "method_ref": "#/run/0/method/0",
+      "original_archive_indices_preserved_despite_compacted_response_arrays": true,
+      "system_ref": "#/run/0/system/2",
+      "workflow_input_structure_ref": "#/run/0/system/0",
+      "workflow_result_ref": "#/run/0/calculation/2"
+    }
+  },
+  "archive_projection_sources": [
+    {
+      "response_number": 1,
+      "method": "POST",
+      "url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq/archive/query",
+      "requested_at_utc": "2026-10-02T05:10:57.607407+00:00",
+      "response_bytes": 160465,
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "response_complete": true
+    },
+    {
+      "response_number": 2,
+      "method": "POST",
+      "url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq/archive/query",
+      "requested_at_utc": "2026-10-02T05:12:12.215051+00:00",
+      "response_bytes": 11937,
+      "response_sha256": "ffe6328fa1439ef64099264b83746697ef2e8238c55726f91ef3d32d760569c6",
+      "response_complete": true
+    },
+    {
+      "response_number": 3,
+      "method": "POST",
+      "url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq/archive/query",
+      "requested_at_utc": "2026-10-02T05:13:48.061246+00:00",
+      "response_bytes": 1006,
+      "response_sha256": "3d0bc61800e9e322810cb4e30c3f47bc523a41b38862c8ed0505c7d06ef05f10",
+      "response_complete": true
+    },
+    {
+      "response_number": 4,
+      "method": "POST",
+      "url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq/archive/query",
+      "requested_at_utc": "2026-10-02T05:14:59.996422+00:00",
+      "response_bytes": 710,
+      "response_sha256": "45fc52a84ffc4804f0313741e30ad0a535e1af3e52b43ae9296c7af3838dac1b",
+      "response_complete": true
+    }
+  ],
+  "archive_fields": [
+    {
+      "field_id": "program_name",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/program/name",
+      "raw_value": "VASP",
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/program/name",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "program_version",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/program/version",
+      "raw_value": "5.3.2 13Sep12 (build Apr 01 2013 09:32:17) complex serial LinuxIFC",
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/program/version",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "electronic_method",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/method/0/electronic/method",
+      "raw_value": "DFT",
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/method/0/electronic/method",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "xc_functional_name",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/method/0/dft/xc_functional/name",
+      "raw_value": "GGA_C_PBE+GGA_X_PBE",
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/method/0/dft/xc_functional/name",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "k_mesh_sampling_method",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/method/0/k_mesh/sampling_method",
+      "raw_value": "Gamma-centered",
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/method/0/k_mesh/sampling_method",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "k_mesh_grid",
+      "limitation": "Reported mesh; not independently proven integration or convergence.",
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/method/0/k_mesh/grid",
+      "raw_value": [
+        14,
+        14,
+        11
+      ],
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/method/0/k_mesh/grid",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "reported_archive_metadata",
+      "unit": "dimensionless_count"
+    },
+    {
+      "field_id": "k_mesh_n_points",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/method/0/k_mesh/n_points",
+      "raw_value": 2156,
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/method/0/k_mesh/n_points",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "reported_archive_metadata",
+      "unit": "dimensionless_count"
+    },
+    {
+      "field_id": "basis_set_type",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/method/0/electrons_representation/0/type",
+      "raw_value": "plane waves",
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/method/0/electrons_representation/0/type",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "basis_native_tier",
+      "limitation": "Source native-tier label, not independent accuracy proof.",
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/method/0/electrons_representation/0/native_tier",
+      "raw_value": "accurate",
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/method/0/electrons_representation/0/native_tier",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "basis_cutoff_valence",
+      "limitation": "Legacy schema definition lookup returned404; raw value retained without assigningJ or convertingeV.",
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/method/0/electrons_representation/0/basis_set/0/cutoff",
+      "raw_value": 5.104630886522039e-17,
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/method/0/electrons_representation/0/basis_set/0/cutoff",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "unit_definition_unavailable_in_checked_scope",
+      "unit": null
+    },
+    {
+      "field_id": "basis_cutoff_augmentation",
+      "limitation": "Legacy schema definition lookup returned404; raw value retained without assigningJ or convertingeV.",
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/method/0/electrons_representation/0/basis_set/1/cutoff",
+      "raw_value": 8.579880179798759e-17,
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/method/0/electrons_representation/0/basis_set/1/cutoff",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "unit_definition_unavailable_in_checked_scope",
+      "unit": null
+    },
+    {
+      "field_id": "scf_energy_change_threshold",
+      "limitation": "Raw parameter only; no assigned unit or independent SCF convergence claim.",
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/method/0/scf/threshold_energy_change",
+      "raw_value": 1.602176634e-23,
+      "response_number": 1,
+      "response_pointer": "/data/archive/run/0/method/0/scf/threshold_energy_change",
+      "response_sha256": "a9a522de1805f3652802c30f30d45ccf4b985296b327d831e71b219d24a1a529",
+      "role": "computed_task_metadata",
+      "status": "unit_definition_unavailable_in_checked_scope",
+      "unit": null
+    },
+    {
+      "field_id": "core_electron_treatment",
+      "limitation": "Pseudopotential family/label/version not supplied in inspected method.",
+      "normalized_value": null,
+      "original_archive_pointer": "/results/method/simulation/dft/core_electron_treatment",
+      "raw_value": "pseudopotential",
+      "response_number": 3,
+      "response_pointer": "/data/archive/results/method/simulation/dft/core_electron_treatment",
+      "response_sha256": "3d0bc61800e9e322810cb4e30c3f47bc523a41b38862c8ed0505c7d06ef05f10",
+      "role": "normalized_method_metadata",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "dos_spin_polarized_flag",
+      "limitation": "Not an explicit original input spin setting, not magnetic order or measured magnetism.",
+      "normalized_value": null,
+      "original_archive_pointer": "/results/properties/electronic/dos_electronic/0/spin_polarized",
+      "raw_value": true,
+      "response_number": 3,
+      "response_pointer": "/data/archive/results/properties/electronic/dos_electronic/0/spin_polarized",
+      "response_sha256": "3d0bc61800e9e322810cb4e30c3f47bc523a41b38862c8ed0505c7d06ef05f10",
+      "role": "normalized_electronic_DOS_flag",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "final_system_composition",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/system/2/chemical_composition_hill",
+      "raw_value": "B2Cr",
+      "response_number": 2,
+      "response_pointer": "/data/archive/run/0/system/0/chemical_composition_hill",
+      "response_sha256": "ffe6328fa1439ef64099264b83746697ef2e8238c55726f91ef3d32d760569c6",
+      "role": "computed_system",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "final_system_atom_labels",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/system/2/atoms/labels",
+      "raw_value": [
+        "B",
+        "B",
+        "Cr"
+      ],
+      "response_number": 2,
+      "response_pointer": "/data/archive/run/0/system/0/atoms/labels",
+      "response_sha256": "ffe6328fa1439ef64099264b83746697ef2e8238c55726f91ef3d32d760569c6",
+      "role": "computed_system",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "final_system_periodic",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/system/2/atoms/periodic",
+      "raw_value": [
+        true,
+        true,
+        true
+      ],
+      "response_number": 2,
+      "response_pointer": "/data/archive/run/0/system/0/atoms/periodic",
+      "response_sha256": "ffe6328fa1439ef64099264b83746697ef2e8238c55726f91ef3d32d760569c6",
+      "role": "computed_system",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "final_system_lattice_vectors_raw",
+      "limitation": "Raw coordinate array from actual calculation-linked system2. Legacy schema lookup404; no Angstrom/metre conversion or physical sample association.",
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/system/2/atoms/lattice_vectors",
+      "raw_value": [
+        [
+          2.95061293e-10,
+          -2.535e-15,
+          0.0
+        ],
+        [
+          -1.47532842e-10,
+          2.55529263e-10,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.0409649100000004e-10
+        ]
+      ],
+      "response_number": 2,
+      "response_pointer": "/data/archive/run/0/system/0/atoms/lattice_vectors",
+      "response_sha256": "ffe6328fa1439ef64099264b83746697ef2e8238c55726f91ef3d32d760569c6",
+      "role": "computed_structure",
+      "status": "unit_definition_unavailable_in_checked_scope",
+      "unit": null
+    },
+    {
+      "field_id": "final_system_positions_raw",
+      "limitation": "Raw array only; not a validated SCLib coordinate model or experimental structure.",
+      "normalized_value": null,
+      "original_archive_pointer": "/run/0/system/2/atoms/positions",
+      "raw_value": [
+        [
+          1.4753552368044376e-10,
+          8.51865329381618e-11,
+          1.5204824550000002e-10
+        ],
+        [
+          5.952606495020989e-15,
+          1.703627555166533e-10,
+          1.5204824550000002e-10
+        ],
+        [
+          1.72755816121e-15,
+          2.99221798488e-15,
+          0.0
+        ]
+      ],
+      "response_number": 2,
+      "response_pointer": "/data/archive/run/0/system/0/atoms/positions",
+      "response_sha256": "ffe6328fa1439ef64099264b83746697ef2e8238c55726f91ef3d32d760569c6",
+      "role": "computed_structure",
+      "status": "unit_definition_unavailable_in_checked_scope",
+      "unit": null
+    },
+    {
+      "field_id": "workflow_type",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/workflow2/method/type",
+      "raw_value": "cell_shape",
+      "response_number": 2,
+      "response_pointer": "/data/archive/workflow2/method/type",
+      "response_sha256": "ffe6328fa1439ef64099264b83746697ef2e8238c55726f91ef3d32d760569c6",
+      "role": "source_workflow",
+      "status": "reported_archive_metadata",
+      "unit": null
+    },
+    {
+      "field_id": "workflow_optimization_steps",
+      "limitation": null,
+      "normalized_value": null,
+      "original_archive_pointer": "/workflow2/results/optimization_steps",
+      "raw_value": 3,
+      "response_number": 2,
+      "response_pointer": "/data/archive/workflow2/results/optimization_steps",
+      "response_sha256": "ffe6328fa1439ef64099264b83746697ef2e8238c55726f91ef3d32d760569c6",
+      "role": "source_workflow",
+      "status": "reported_archive_metadata",
+      "unit": "dimensionless_count"
+    },
+    {
+      "field_id": "workflow_is_converged_geometry_flag",
+      "limitation": "Reported source flag; no rerun or independent convergence verification.",
+      "normalized_value": null,
+      "original_archive_pointer": "/workflow2/results/is_converged_geometry",
+      "raw_value": true,
+      "response_number": 2,
+      "response_pointer": "/data/archive/workflow2/results/is_converged_geometry",
+      "response_sha256": "ffe6328fa1439ef64099264b83746697ef2e8238c55726f91ef3d32d760569c6",
+      "role": "source_workflow_report_flag",
+      "status": "reported_archive_metadata",
+      "unit": null
+    }
+  ],
+  "archive_unavailable_fields": [
+    {
+      "checked_scope": "Explicit last calculationpressure requested plus run/method/system2/workflow projection and captured quantity inventory",
+      "field_id": "calculation_pressure",
+      "limitation": "No0GPa assumption; stress tensor not converted into applied/Tc pressure.",
+      "normalized_value": null,
+      "status": "not_supplied_in_checked_archive_projection"
+    },
+    {
+      "checked_scope": "Explicit last calculationtemperature requested plus run/method/system2/workflow projection and captured quantity inventory",
+      "field_id": "calculation_temperature",
+      "limitation": "No0K assumption; no connection to superconducting Tc measurement.",
+      "normalized_value": null,
+      "status": "not_supplied_in_checked_archive_projection"
+    },
+    {
+      "checked_scope": "Full run0/method projection and normalizedresults/method",
+      "field_id": "original_input_spin_setting",
+      "limitation": "DOS spin_polarizedtrue cannot replace absent original spin setting.",
+      "normalized_value": null,
+      "status": "not_supplied_in_checked_archive_projection"
+    },
+    {
+      "checked_scope": "Full run0/method and captured quantity inventory",
+      "field_id": "original_SOC_or_relativistic_setting",
+      "limitation": "Absence is not SOCfalse.",
+      "normalized_value": null,
+      "status": "not_supplied_in_checked_archive_projection"
+    },
+    {
+      "checked_scope": "Full method atomparameters/electronic and normalized coretreatment",
+      "field_id": "pseudopotential_identity_version",
+      "limitation": "pseudopotential type is reported but exact datasets not supplied.",
+      "normalized_value": null,
+      "status": "not_supplied_in_checked_archive_projection"
+    },
+    {
+      "checked_scope": "Full run0/method and captured quantity inventory",
+      "field_id": "smearing_setting",
+      "limitation": "No smearing type/width invented.",
+      "normalized_value": null,
+      "status": "not_supplied_in_checked_archive_projection"
+    },
+    {
+      "checked_scope": "No relevant source quantities in inspected projections",
+      "field_id": "electronic_phonon_coupling_or_Tc",
+      "limitation": "No new sourceTc,lambda_eph,omega_log ormu_star and no calculation performed.",
+      "normalized_value": null,
+      "status": "not_supplied_in_checked_archive_projection"
+    }
+  ],
+  "native_source": {
+    "url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq/raw/vasprun.xml",
+    "requested_at_utc": "2026-10-02T05:33:27.092797+00:00",
+    "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+    "captured_bytes": 2097152,
+    "complete_file_established": false,
+    "HTTP_EOF_observed": false,
+    "truncated_at_read_bound": true,
+    "whole_XML_well_formed": false,
+    "last_calculation_checked": false,
+    "validated_final_geometry_established": false,
+    "source_blocks": [
+      {
+        "tag": "incar",
+        "fragment_bytes": 741,
+        "fragment_sha256": "c2bf70239f4a3529e673415113aed265c731ec3c2dc228b53a0869f10842424e",
+        "original_byte_span_zero_based_half_open": [
+          433,
+          1174
+        ],
+        "original_utf8_character_span_zero_based_half_open": [
+          433,
+          1174
+        ]
+      },
+      {
+        "tag": "parameters",
+        "fragment_bytes": 11171,
+        "fragment_sha256": "009a958a39e3816be1745f8c0c43c1bd5e736079e3edb3386ffe138b87ccdcd4",
+        "original_byte_span_zero_based_half_open": [
+          33240,
+          44411
+        ],
+        "original_utf8_character_span_zero_based_half_open": [
+          33240,
+          44411
+        ]
+      },
+      {
+        "tag": "generator",
+        "fragment_bytes": 375,
+        "fragment_sha256": "77616d7b6972fdfd84692a99f33d27eabf43ded6c1ea3bfcc04b6e6a62e8c3c1",
+        "original_byte_span_zero_based_half_open": [
+          56,
+          431
+        ],
+        "original_utf8_character_span_zero_based_half_open": [
+          56,
+          431
+        ]
+      },
+      {
+        "tag": "atominfo",
+        "fragment_bytes": 879,
+        "fragment_sha256": "bdfd3cc9df0eaf25332aa208309544d2ed48ac55607d8ae5cc71080e06578b3a",
+        "original_byte_span_zero_based_half_open": [
+          44413,
+          45292
+        ],
+        "original_utf8_character_span_zero_based_half_open": [
+          44413,
+          45292
+        ]
+      }
+    ]
+  },
+  "native_inputs": [
+    {
+      "native_tag": "EDIFF",
+      "raw_scalar_lexeme": "0.00010000",
+      "role": "independent computed entry native input; no experimental association",
+      "source_blocks_absent": [
+        "incar"
+      ],
+      "source_blocks_reported": [
+        "parameters"
+      ],
+      "status": "native_input_reported",
+      "unit": "eV",
+      "occurrences": [
+        {
+          "declared_xml_type": null,
+          "raw_scalar_text": "      0.00010000",
+          "raw_scalar_utf8_hex": "202020202020302e3030303130303030",
+          "element_byte_span_zero_based_half_open": [
+            33552,
+            33588
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            33552,
+            33588
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            33568,
+            33584
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            33568,
+            33584
+          ],
+          "literal_element_sha256": "0d1be338f9ff1d3fb3b6321e2cdeb358dd152d1fe71c37b9b32f07ef306e0e1c",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "source_block": "parameters",
+          "source_fragment_sha256": "009a958a39e3816be1745f8c0c43c1bd5e736079e3edb3386ffe138b87ccdcd4",
+          "interpreted_value": "0.00010000",
+          "interpretation": "decimal lexeme retained as string; no XML type attribute supplied"
+        }
+      ]
+    },
+    {
+      "native_tag": "ISPIN",
+      "raw_scalar_lexeme": "2",
+      "role": "independent computed entry native input; no experimental association",
+      "source_blocks_absent": [],
+      "source_blocks_reported": [
+        "incar",
+        "parameters"
+      ],
+      "status": "native_input_reported",
+      "unit": null,
+      "occurrences": [
+        {
+          "declared_xml_type": "int",
+          "raw_scalar_text": "     2",
+          "raw_scalar_utf8_hex": "202020202032",
+          "element_byte_span_zero_based_half_open": [
+            564,
+            601
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            564,
+            601
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            591,
+            597
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            591,
+            597
+          ],
+          "literal_element_sha256": "73cfc0266354a2f2b267c443230173dfb514f7e71f388ae4e7d23c766a24cc4e",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "source_block": "incar",
+          "source_fragment_sha256": "c2bf70239f4a3529e673415113aed265c731ec3c2dc228b53a0869f10842424e",
+          "interpreted_value": 2,
+          "interpretation": "integer declared by XML"
+        },
+        {
+          "declared_xml_type": "int",
+          "raw_scalar_text": "     2",
+          "raw_scalar_utf8_hex": "202020202032",
+          "element_byte_span_zero_based_half_open": [
+            34720,
+            34757
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            34720,
+            34757
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            34747,
+            34753
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            34747,
+            34753
+          ],
+          "literal_element_sha256": "73cfc0266354a2f2b267c443230173dfb514f7e71f388ae4e7d23c766a24cc4e",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "source_block": "parameters",
+          "source_fragment_sha256": "009a958a39e3816be1745f8c0c43c1bd5e736079e3edb3386ffe138b87ccdcd4",
+          "interpreted_value": 2,
+          "interpretation": "integer declared by XML"
+        }
+      ]
+    },
+    {
+      "native_tag": "LSORBIT",
+      "raw_scalar_lexeme": "F",
+      "role": "independent computed entry native input; no experimental association",
+      "source_blocks_absent": [
+        "incar"
+      ],
+      "source_blocks_reported": [
+        "parameters"
+      ],
+      "status": "native_input_reported",
+      "unit": null,
+      "occurrences": [
+        {
+          "declared_xml_type": "logical",
+          "raw_scalar_text": " F  ",
+          "raw_scalar_utf8_hex": "20462020",
+          "element_byte_span_zero_based_half_open": [
+            34931,
+            34972
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            34931,
+            34972
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            34964,
+            34968
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            34964,
+            34968
+          ],
+          "literal_element_sha256": "52009f0e7bb20037cf29222cef9ddf91a20e3488c73ab62697d34bd634c2b2b4",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "source_block": "parameters",
+          "source_fragment_sha256": "009a958a39e3816be1745f8c0c43c1bd5e736079e3edb3386ffe138b87ccdcd4",
+          "interpreted_value": false,
+          "interpretation": "logical declared by XML; literal F/T retained"
+        }
+      ]
+    },
+    {
+      "native_tag": "LNONCOLLINEAR",
+      "raw_scalar_lexeme": "F",
+      "role": "independent computed entry native input; no experimental association",
+      "source_blocks_absent": [
+        "incar"
+      ],
+      "source_blocks_reported": [
+        "parameters"
+      ],
+      "status": "native_input_reported",
+      "unit": null,
+      "occurrences": [
+        {
+          "declared_xml_type": "logical",
+          "raw_scalar_text": " F  ",
+          "raw_scalar_utf8_hex": "20462020",
+          "element_byte_span_zero_based_half_open": [
+            34762,
+            34809
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            34762,
+            34809
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            34801,
+            34805
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            34801,
+            34805
+          ],
+          "literal_element_sha256": "af7c0145dadd5a8f13a92402bf1902c5273726aee027c9e39caeebdba840a1e6",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "source_block": "parameters",
+          "source_fragment_sha256": "009a958a39e3816be1745f8c0c43c1bd5e736079e3edb3386ffe138b87ccdcd4",
+          "interpreted_value": false,
+          "interpretation": "logical declared by XML; literal F/T retained"
+        }
+      ]
+    },
+    {
+      "native_tag": "ISMEAR",
+      "raw_scalar_lexeme": "1",
+      "role": "independent computed entry native input; no experimental association",
+      "source_blocks_absent": [],
+      "source_blocks_reported": [
+        "incar",
+        "parameters"
+      ],
+      "status": "native_input_reported",
+      "unit": null,
+      "occurrences": [
+        {
+          "declared_xml_type": "int",
+          "raw_scalar_text": "     1",
+          "raw_scalar_utf8_hex": "202020202031",
+          "element_byte_span_zero_based_half_open": [
+            876,
+            914
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            876,
+            914
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            904,
+            910
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            904,
+            910
+          ],
+          "literal_element_sha256": "37ff359f91cbafbb847e78b1b28801a205a0348f043dcf86b4a2af15baeb3b77",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "source_block": "incar",
+          "source_fragment_sha256": "c2bf70239f4a3529e673415113aed265c731ec3c2dc228b53a0869f10842424e",
+          "interpreted_value": 1,
+          "interpretation": "integer declared by XML"
+        },
+        {
+          "declared_xml_type": "int",
+          "raw_scalar_text": "     1",
+          "raw_scalar_utf8_hex": "202020202031",
+          "element_byte_span_zero_based_half_open": [
+            34009,
+            34047
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            34009,
+            34047
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            34037,
+            34043
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            34037,
+            34043
+          ],
+          "literal_element_sha256": "37ff359f91cbafbb847e78b1b28801a205a0348f043dcf86b4a2af15baeb3b77",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "source_block": "parameters",
+          "source_fragment_sha256": "009a958a39e3816be1745f8c0c43c1bd5e736079e3edb3386ffe138b87ccdcd4",
+          "interpreted_value": 1,
+          "interpretation": "integer declared by XML"
+        }
+      ]
+    },
+    {
+      "native_tag": "SIGMA",
+      "raw_scalar_lexeme": "0.20000000",
+      "role": "independent computed entry native input; no experimental association",
+      "source_blocks_absent": [],
+      "source_blocks_reported": [
+        "incar",
+        "parameters"
+      ],
+      "status": "native_input_reported",
+      "unit": null,
+      "occurrences": [
+        {
+          "declared_xml_type": null,
+          "raw_scalar_text": "      0.20000000",
+          "raw_scalar_utf8_hex": "202020202020302e3230303030303030",
+          "element_byte_span_zero_based_half_open": [
+            917,
+            953
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            917,
+            953
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            933,
+            949
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            933,
+            949
+          ],
+          "literal_element_sha256": "0e4e34348d954467f73ce860fb932e6d0eb13298c7ea49e09ac877c5978ef600",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "source_block": "incar",
+          "source_fragment_sha256": "c2bf70239f4a3529e673415113aed265c731ec3c2dc228b53a0869f10842424e",
+          "interpreted_value": "0.20000000",
+          "interpretation": "decimal lexeme retained as string; no XML type attribute supplied"
+        },
+        {
+          "declared_xml_type": null,
+          "raw_scalar_text": "      0.20000000",
+          "raw_scalar_utf8_hex": "202020202020302e3230303030303030",
+          "element_byte_span_zero_based_half_open": [
+            34052,
+            34088
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            34052,
+            34088
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            34068,
+            34084
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            34068,
+            34084
+          ],
+          "literal_element_sha256": "0e4e34348d954467f73ce860fb932e6d0eb13298c7ea49e09ac877c5978ef600",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "source_block": "parameters",
+          "source_fragment_sha256": "009a958a39e3816be1745f8c0c43c1bd5e736079e3edb3386ffe138b87ccdcd4",
+          "interpreted_value": "0.20000000",
+          "interpretation": "decimal lexeme retained as string; no XML type attribute supplied"
+        }
+      ]
+    },
+    {
+      "native_tag": "PSTRESS",
+      "raw_scalar_lexeme": "0.00000000",
+      "role": "independent computed entry native input; no experimental association",
+      "source_blocks_absent": [
+        "incar"
+      ],
+      "source_blocks_reported": [
+        "parameters"
+      ],
+      "status": "native_input_reported",
+      "unit": null,
+      "occurrences": [
+        {
+          "declared_xml_type": null,
+          "raw_scalar_text": "      0.00000000",
+          "raw_scalar_utf8_hex": "202020202020302e3030303030303030",
+          "element_byte_span_zero_based_half_open": [
+            37430,
+            37468
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            37430,
+            37468
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            37448,
+            37464
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            37448,
+            37464
+          ],
+          "literal_element_sha256": "68209a13f0fa8ecf65d48ea0d816d0105dc5dcd70468ff4f96770ae7f1dd2933",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "source_block": "parameters",
+          "source_fragment_sha256": "009a958a39e3816be1745f8c0c43c1bd5e736079e3edb3386ffe138b87ccdcd4",
+          "interpreted_value": "0.00000000",
+          "interpretation": "decimal lexeme retained as string; no XML type attribute supplied"
+        }
+      ]
+    },
+    {
+      "native_tag": "ENAUG",
+      "raw_scalar_lexeme": "535.51400000",
+      "role": "independent computed entry native input; no experimental association",
+      "source_blocks_absent": [
+        "incar"
+      ],
+      "source_blocks_reported": [
+        "parameters"
+      ],
+      "status": "native_input_reported",
+      "unit": null,
+      "occurrences": [
+        {
+          "declared_xml_type": null,
+          "raw_scalar_text": "    535.51400000",
+          "raw_scalar_utf8_hex": "202020203533352e3531343030303030",
+          "element_byte_span_zero_based_half_open": [
+            33512,
+            33548
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            33512,
+            33548
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            33528,
+            33544
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            33528,
+            33544
+          ],
+          "literal_element_sha256": "135ea86aa0e135af93f4775a339a89beef842345c965ad0cf33d942cda888bc7",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "source_block": "parameters",
+          "source_fragment_sha256": "009a958a39e3816be1745f8c0c43c1bd5e736079e3edb3386ffe138b87ccdcd4",
+          "interpreted_value": "535.51400000",
+          "interpretation": "decimal lexeme retained as string; no XML type attribute supplied"
+        }
+      ]
+    }
+  ],
+  "native_unavailable_inputs": [
+    {
+      "native_tag": "ENCUT",
+      "raw_scalar_lexeme": null,
+      "role": "independent computed entry native input; no experimental association",
+      "source_blocks_absent": [
+        "incar",
+        "parameters"
+      ],
+      "source_blocks_reported": [],
+      "status": "not_found_in_two_checked_complete_blocks",
+      "unit": null
+    }
+  ],
+  "native_EDIFF_unit_source": {
+    "provider": "Official VASP Wiki",
+    "url": "https://vasp.at/wiki/index.php/EDIFF",
+    "response_sha256": "deac44c5c7349fea45ed83d7bbcf0ac6ad0be7f77de13555539fab293ae80662",
+    "byte_span_zero_based_half_open": [
+      24864,
+      24934
+    ],
+    "plain_text_quote": "EDIFF is specified in units of eV.",
+    "definition_scope": "Native EDIFF tag, current official documentation; not legacy NOMAD schema or an exact historical version lookup"
+  },
+  "native_generator_fields": [
+    {
+      "declared_xml_type": "string",
+      "raw_scalar_text": "vasp ",
+      "raw_scalar_utf8_hex": "7661737020",
+      "element_byte_span_zero_based_half_open": [
+        70,
+        111
+      ],
+      "element_utf8_character_span_zero_based_half_open": [
+        70,
+        111
+      ],
+      "scalar_byte_span_zero_based_half_open": [
+        102,
+        107
+      ],
+      "scalar_utf8_character_span_zero_based_half_open": [
+        102,
+        107
+      ],
+      "literal_element_sha256": "859354c2246a6edba5cffc0cde1042912bf2051589e5707b08c7361d1b6f94e8",
+      "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+      "source_block": "generator",
+      "source_fragment_sha256": "77616d7b6972fdfd84692a99f33d27eabf43ded6c1ea3bfcc04b6e6a62e8c3c1",
+      "native_field": "program",
+      "role": "native generator header, not paper publication or experimental measurement metadata"
+    },
+    {
+      "declared_xml_type": "string",
+      "raw_scalar_text": "5.3.2  ",
+      "raw_scalar_utf8_hex": "352e332e322020",
+      "element_byte_span_zero_based_half_open": [
+        114,
+        157
+      ],
+      "element_utf8_character_span_zero_based_half_open": [
+        114,
+        157
+      ],
+      "scalar_byte_span_zero_based_half_open": [
+        146,
+        153
+      ],
+      "scalar_utf8_character_span_zero_based_half_open": [
+        146,
+        153
+      ],
+      "literal_element_sha256": "22f2ea39b6ee35e5324a2506b4f4f7e770a2ba7893d4e861503bb1de867cdc00",
+      "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+      "source_block": "generator",
+      "source_fragment_sha256": "77616d7b6972fdfd84692a99f33d27eabf43ded6c1ea3bfcc04b6e6a62e8c3c1",
+      "native_field": "version",
+      "role": "native generator header, not paper publication or experimental measurement metadata"
+    },
+    {
+      "declared_xml_type": "string",
+      "raw_scalar_text": "13Sep12 (build Apr 01 2013 09:32:17) complex                          serial ",
+      "raw_scalar_utf8_hex": "3133536570313220286275696c642041707220303120323031332030393a33323a31372920636f6d706c6578202020202020202020202020202020202020202020202020202073657269616c20",
+      "element_byte_span_zero_based_half_open": [
+        160,
+        276
+      ],
+      "element_utf8_character_span_zero_based_half_open": [
+        160,
+        276
+      ],
+      "scalar_byte_span_zero_based_half_open": [
+        195,
+        272
+      ],
+      "scalar_utf8_character_span_zero_based_half_open": [
+        195,
+        272
+      ],
+      "literal_element_sha256": "a9036f325ed6ff620db5d7b6ffbeeca31c49e3795a8a2c6dcdc65f58b4f6cc84",
+      "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+      "source_block": "generator",
+      "source_fragment_sha256": "77616d7b6972fdfd84692a99f33d27eabf43ded6c1ea3bfcc04b6e6a62e8c3c1",
+      "native_field": "subversion",
+      "role": "native generator header, not paper publication or experimental measurement metadata"
+    },
+    {
+      "declared_xml_type": "string",
+      "raw_scalar_text": "LinuxIFC ",
+      "raw_scalar_utf8_hex": "4c696e757849464320",
+      "element_byte_span_zero_based_half_open": [
+        279,
+        325
+      ],
+      "element_utf8_character_span_zero_based_half_open": [
+        279,
+        325
+      ],
+      "scalar_byte_span_zero_based_half_open": [
+        312,
+        321
+      ],
+      "scalar_utf8_character_span_zero_based_half_open": [
+        312,
+        321
+      ],
+      "literal_element_sha256": "511e963329400f2acbe3ef0234cf0a93c447eb7bb49660861059fb02574b25ef",
+      "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+      "source_block": "generator",
+      "source_fragment_sha256": "77616d7b6972fdfd84692a99f33d27eabf43ded6c1ea3bfcc04b6e6a62e8c3c1",
+      "native_field": "platform",
+      "role": "native generator header, not paper publication or experimental measurement metadata"
+    },
+    {
+      "declared_xml_type": "string",
+      "raw_scalar_text": "2014 01 17 ",
+      "raw_scalar_utf8_hex": "3230313420303120313720",
+      "element_byte_span_zero_based_half_open": [
+        328,
+        372
+      ],
+      "element_utf8_character_span_zero_based_half_open": [
+        328,
+        372
+      ],
+      "scalar_byte_span_zero_based_half_open": [
+        357,
+        368
+      ],
+      "scalar_utf8_character_span_zero_based_half_open": [
+        357,
+        368
+      ],
+      "literal_element_sha256": "8094d49053a4da3efb00a99c10ab27e4360bef0d4acd4a28130ed442cdfc26a9",
+      "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+      "source_block": "generator",
+      "source_fragment_sha256": "77616d7b6972fdfd84692a99f33d27eabf43ded6c1ea3bfcc04b6e6a62e8c3c1",
+      "native_field": "date",
+      "role": "native generator header, not paper publication or experimental measurement metadata"
+    },
+    {
+      "declared_xml_type": "string",
+      "raw_scalar_text": "16:21:49 ",
+      "raw_scalar_utf8_hex": "31363a32313a343920",
+      "element_byte_span_zero_based_half_open": [
+        375,
+        417
+      ],
+      "element_utf8_character_span_zero_based_half_open": [
+        375,
+        417
+      ],
+      "scalar_byte_span_zero_based_half_open": [
+        404,
+        413
+      ],
+      "scalar_utf8_character_span_zero_based_half_open": [
+        404,
+        413
+      ],
+      "literal_element_sha256": "7b3f4745e6d43237c99708e431d00301a668218eecd5e3a19827d1d2e76e7427",
+      "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+      "source_block": "generator",
+      "source_fragment_sha256": "77616d7b6972fdfd84692a99f33d27eabf43ded6c1ea3bfcc04b6e6a62e8c3c1",
+      "native_field": "time",
+      "role": "native generator header, not paper publication or experimental measurement metadata"
+    }
+  ],
+  "native_potential_labels": [
+    {
+      "array_name": "atomtypes",
+      "dataset_label_literal": "PAW_PBE B 06Sep2000",
+      "element_label": "B",
+      "exact_bitwise_dataset_identity_established": false,
+      "potential_content_hash": null,
+      "potential_file_retrieved": false,
+      "row_index_zero_based": 0,
+      "source_fragment_sha256": "bdfd3cc9df0eaf25332aa208309544d2ed48ac55607d8ae5cc71080e06578b3a",
+      "selected_native_fields": [
+        {
+          "declared_xml_type": "int",
+          "raw_scalar_text": "   2",
+          "raw_scalar_utf8_hex": "20202032",
+          "element_byte_span_zero_based_half_open": [
+            45013,
+            45024
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            45013,
+            45024
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            45016,
+            45020
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            45016,
+            45020
+          ],
+          "literal_element_sha256": "fe9e7b3c7b7fa108e343fded817fa0609faf3ccecf7fbe6b04d5d48a4e6d0e3b",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "column_index_zero_based": 0,
+          "native_field": "atomspertype",
+          "type_source": "original atomtypes field header",
+          "unit": null,
+          "role": "native input atomtype/dataset label metadata"
+        },
+        {
+          "declared_xml_type": "string",
+          "raw_scalar_text": "B ",
+          "raw_scalar_utf8_hex": "4220",
+          "element_byte_span_zero_based_half_open": [
+            45024,
+            45033
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            45024,
+            45033
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            45027,
+            45029
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            45027,
+            45029
+          ],
+          "literal_element_sha256": "eef2ab10ef57ab3b4ae58499f91511f9b246eec05d6394c0aaec482705dd4fdb",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "column_index_zero_based": 1,
+          "native_field": "element",
+          "type_source": "original atomtypes field header",
+          "unit": null,
+          "role": "native input atomtype/dataset label metadata"
+        },
+        {
+          "declared_xml_type": null,
+          "raw_scalar_text": "      3.00000000",
+          "raw_scalar_utf8_hex": "202020202020332e3030303030303030",
+          "element_byte_span_zero_based_half_open": [
+            45056,
+            45079
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            45056,
+            45079
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            45059,
+            45075
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            45059,
+            45075
+          ],
+          "literal_element_sha256": "4168b989a388978dbae6800cd69b386eb56c04bc233ce6b23e5d8db88a2ccc61",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "column_index_zero_based": 3,
+          "native_field": "valence",
+          "type_source": "original atomtypes field header",
+          "unit": null,
+          "role": "native input atomtype/dataset label metadata"
+        },
+        {
+          "declared_xml_type": "string",
+          "raw_scalar_text": "PAW_PBE B 06Sep2000                     ",
+          "raw_scalar_utf8_hex": "5041575f504245204220303653657032303030202020202020202020202020202020202020202020",
+          "element_byte_span_zero_based_half_open": [
+            45079,
+            45126
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            45079,
+            45126
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            45082,
+            45122
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            45082,
+            45122
+          ],
+          "literal_element_sha256": "72b066d1606bf37922aaef573dce525651c8b5407f3d44cb28a3ebc37f0b1a95",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "column_index_zero_based": 4,
+          "native_field": "pseudopotential",
+          "type_source": "original atomtypes field header",
+          "unit": null,
+          "role": "native input atomtype/dataset label metadata"
+        }
+      ]
+    },
+    {
+      "array_name": "atomtypes",
+      "dataset_label_literal": "PAW_PBE Cr 06Sep2000",
+      "element_label": "Cr",
+      "exact_bitwise_dataset_identity_established": false,
+      "potential_content_hash": null,
+      "potential_file_retrieved": false,
+      "row_index_zero_based": 1,
+      "source_fragment_sha256": "bdfd3cc9df0eaf25332aa208309544d2ed48ac55607d8ae5cc71080e06578b3a",
+      "selected_native_fields": [
+        {
+          "declared_xml_type": "int",
+          "raw_scalar_text": "   1",
+          "raw_scalar_utf8_hex": "20202031",
+          "element_byte_span_zero_based_half_open": [
+            45140,
+            45151
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            45140,
+            45151
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            45143,
+            45147
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            45143,
+            45147
+          ],
+          "literal_element_sha256": "211f27fd530fac6abc60406298634dd9d9b527caacd6cd19b719135b8adbadd5",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "column_index_zero_based": 0,
+          "native_field": "atomspertype",
+          "type_source": "original atomtypes field header",
+          "unit": null,
+          "role": "native input atomtype/dataset label metadata"
+        },
+        {
+          "declared_xml_type": "string",
+          "raw_scalar_text": "Cr",
+          "raw_scalar_utf8_hex": "4372",
+          "element_byte_span_zero_based_half_open": [
+            45151,
+            45160
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            45151,
+            45160
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            45154,
+            45156
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            45154,
+            45156
+          ],
+          "literal_element_sha256": "3e6415f6dcc0deecfc0be021617ba857f3f642eb4fe6585ede525ad904a6ecd6",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "column_index_zero_based": 1,
+          "native_field": "element",
+          "type_source": "original atomtypes field header",
+          "unit": null,
+          "role": "native input atomtype/dataset label metadata"
+        },
+        {
+          "declared_xml_type": null,
+          "raw_scalar_text": "      6.00000000",
+          "raw_scalar_utf8_hex": "202020202020362e3030303030303030",
+          "element_byte_span_zero_based_half_open": [
+            45183,
+            45206
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            45183,
+            45206
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            45186,
+            45202
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            45186,
+            45202
+          ],
+          "literal_element_sha256": "a76b06902a2e4962850819003966423f8bd72062ba2b75784acde1413f7200de",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "column_index_zero_based": 3,
+          "native_field": "valence",
+          "type_source": "original atomtypes field header",
+          "unit": null,
+          "role": "native input atomtype/dataset label metadata"
+        },
+        {
+          "declared_xml_type": "string",
+          "raw_scalar_text": "PAW_PBE Cr 06Sep2000                    ",
+          "raw_scalar_utf8_hex": "5041575f504245204372203036536570323030302020202020202020202020202020202020202020",
+          "element_byte_span_zero_based_half_open": [
+            45206,
+            45253
+          ],
+          "element_utf8_character_span_zero_based_half_open": [
+            45206,
+            45253
+          ],
+          "scalar_byte_span_zero_based_half_open": [
+            45209,
+            45249
+          ],
+          "scalar_utf8_character_span_zero_based_half_open": [
+            45209,
+            45249
+          ],
+          "literal_element_sha256": "a19b1c8b8a40f549d469a3a94a9efea45f39e002bda5d6bb156bf2197c554712",
+          "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+          "column_index_zero_based": 4,
+          "native_field": "pseudopotential",
+          "type_source": "original atomtypes field header",
+          "unit": null,
+          "role": "native input atomtype/dataset label metadata"
+        }
+      ]
+    }
+  ],
+  "software_consistency": {
+    "archive_program_version_raw": "5.3.2 13Sep12 (build Apr 01 2013 09:32:17) complex serial LinuxIFC",
+    "native_version_subversion_platform_whitespace_joined": "5.3.2 13Sep12 (build Apr 01 2013 09:32:17) complex serial LinuxIFC",
+    "exact_string_equal_after_declared_whitespace_join": true,
+    "limitation": "Header consistency only; not proof of full file completeness or reproducible runtime."
+  },
+  "unresolved": [
+    {
+      "field": "Native ENCUT",
+      "reason": "Not found in the two complete checked INCAR and parameters blocks. No default, alternate cutoff or absence elsewhere is established."
+    },
+    {
+      "field": "Legacy archive units",
+      "reason": "Cutoff, SCF threshold and raw coordinate units remain unresolved. Native EDIFF documentation does not establish legacy NOMAD quantity units."
+    },
+    {
+      "field": "POTCAR identity and availability",
+      "reason": "Two dataset label/date strings are reported; potential file bytes, hashes, license and availability were not established."
+    },
+    {
+      "field": "Source physical pressure and temperature",
+      "reason": "Not supplied in the checked archive projections. Native PSTRESS is a model input; its documented kB unit is a separate tag annotation, not a Tc measurement pressure. No experimental 0 GPa or 0 K condition is inferred."
+    },
+    {
+      "field": "Full native output and final geometry",
+      "reason": "The source capture stops at 2 MiB. The final calculation and a unit-bearing validated final geometry were not checked."
+    },
+    {
+      "field": "Reproduction and independent calculation",
+      "reason": "No executable/runtime or complete input model was established. No new computation was run; the calculation task remains blocked."
+    }
+  ],
+  "task_boundary": {
+    "run_gate": "NOT_OPEN",
+    "calculation_executed": false,
+    "task_proposals_are_source_facts": false,
+    "source_spin_input_is_magnetic_order": false,
+    "native_PSTRESS_is_Tc_pressure": false,
+    "new_native_unit_assigns_legacy_archive_units": false
+  },
+  "evidence_overlap": "The 22 selected archive fields, 8 native input settings and 2 potential-label rows overlap. They are evidence groups for one computed entry, not counts of distinct material properties or independent experiments.",
+  "native_tag_documentation_annotations": [
+    {
+      "native_tag": "SIGMA",
+      "documented_unit": "eV",
+      "documented_meaning": "Smearing width",
+      "interpretation_role": "official_native_tag_definition_annotation",
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/SIGMA",
+        "revision_url": "https://vasp.at/wiki/index.php?title=SIGMA&oldid=29259",
+        "observed_revision_id": "29259",
+        "capture_kind": "web_tool_rendered_page_text",
+        "page_text_capture_sha256": "17bab1864685b0797c08d1830a9004a40267321ac5fb3213bd1651e401160a55",
+        "raw_HTML_response_hash_established": false,
+        "retrieved_at_utc": "2026-10-02T06:01:14.571223+00:00"
+      },
+      "limitation": "Native smearing input; no measured temperature is assigned."
+    },
+    {
+      "native_tag": "ENAUG",
+      "documented_unit": "eV",
+      "documented_meaning": "Augmentation-charge plane-wave cutoff tag",
+      "interpretation_role": "official_native_tag_definition_annotation",
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/ENAUG",
+        "revision_url": "https://vasp.at/wiki/index.php?title=ENAUG&oldid=26953",
+        "observed_revision_id": "26953",
+        "capture_kind": "web_tool_rendered_page_text",
+        "page_text_capture_sha256": "17bab1864685b0797c08d1830a9004a40267321ac5fb3213bd1651e401160a55",
+        "raw_HTML_response_hash_established": false,
+        "retrieved_at_utc": "2026-10-02T06:01:14.571423+00:00"
+      },
+      "limitation": "A documented tag definition does not establish that this run used the value as an effective cutoff; behavior depends on PREC. The native row is input metadata."
+    },
+    {
+      "native_tag": "PSTRESS",
+      "documented_unit": "kB",
+      "documented_meaning": "Pressure/stress-tensor model input",
+      "interpretation_role": "official_native_tag_definition_annotation",
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/PSTRESS",
+        "revision_url": "https://vasp.at/wiki/index.php?title=PSTRESS&oldid=25988",
+        "observed_revision_id": "25988",
+        "capture_kind": "web_tool_rendered_page_text",
+        "page_text_capture_sha256": "17bab1864685b0797c08d1830a9004a40267321ac5fb3213bd1651e401160a55",
+        "raw_HTML_response_hash_established": false,
+        "retrieved_at_utc": "2026-10-02T06:01:14.571431+00:00"
+      },
+      "limitation": "The literal documented unit is retained without conversion. This remains a model input, not a Tc measurement pressure, applied experimental pressure or ambient-pressure classification."
+    },
+    {
+      "native_tag": "ISMEAR",
+      "documented_unit": null,
+      "documented_meaning": "Methfessel-Paxton order 1",
+      "interpretation_role": "official_native_tag_definition_annotation",
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/ISMEAR",
+        "revision_url": "https://vasp.at/wiki/index.php?title=ISMEAR&oldid=37501",
+        "observed_revision_id": "37501",
+        "capture_kind": "web_tool_rendered_page_text",
+        "page_text_capture_sha256": "17bab1864685b0797c08d1830a9004a40267321ac5fb3213bd1651e401160a55",
+        "raw_HTML_response_hash_established": false,
+        "retrieved_at_utc": "2026-10-02T06:01:14.571443+00:00"
+      },
+      "limitation": "Order 1 is an interpretation of the observed native integer 1 using the documented positive-code rule; it does not establish accuracy, convergence or experimental occupation."
+    }
+  ]
+}

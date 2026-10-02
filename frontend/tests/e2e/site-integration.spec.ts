@@ -104,6 +104,9 @@ test("keyboard navigation skips the shell and restores focus after menu escape",
   await page.getByRole("link", { name: "Skip to content" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.locator("#main-content")).toBeFocused();
+  const headingBox = (await page.getByRole("heading", { level: 1 }).boundingBox())!;
+  const headerBox = (await page.locator("header").boundingBox())!;
+  expect(headingBox.y).toBeGreaterThanOrEqual(headerBox.y + headerBox.height);
   const toggle = page.getByRole("button", { name: "Open navigation" });
   await toggle.click();
   await page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: "Resources", exact: true }).focus();

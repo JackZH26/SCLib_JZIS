@@ -15,7 +15,7 @@ export default function MaterialsSourceObservationsPage() {
   const window = batch ? sourceObservationWindow(batch.entries, null, "independent_captured_sources") : null;
   return <main className="min-w-0 space-y-6">
     <header className="space-y-3">
-      <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm"><Link className="site-text-link" href="/materials">Materials catalogue</Link><Link className="site-text-link" href="/materials/source-references">Paper and CIF reference pilot</Link><Link className="site-text-link" href="/materials/source-observations/followup">Preparation, probes and additional sources</Link></div>
+      <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm"><Link className="site-text-link" href="/materials">Materials catalogue</Link><Link className="site-text-link" href="/materials/source-references">Paper and CIF reference pilot</Link><Link className="site-text-link" href="/materials/source-observations/followup">Preparation, probes and additional sources</Link><Link className="site-text-link" href="/materials/source-observations/computational-references">Computational references</Link></div>
       <h1 className="text-3xl font-semibold tracking-tight">Source observations</h1>
       <p className="max-w-3xl text-sm leading-6 text-sage-muted">Inspect source curve parameters, separate fit windows and listed crystallographic sites, with conditions and exact locators.</p>
       <p className="max-w-3xl text-xs leading-5 text-sage-muted">These captured source observations are independent of selected catalogue properties. No physical sample/state association or scientific approval is established. Original files may differ from their current download versions.</p>

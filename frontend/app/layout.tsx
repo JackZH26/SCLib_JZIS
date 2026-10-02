@@ -100,7 +100,7 @@ export default function RootLayout({
         <Analytics />
         <WebVitalsReporter />
         <Header />
-        <div id="main-content" tabIndex={-1} className="site-content mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
+        <div id="main-content" tabIndex={-1} className="site-content scroll-mt-24 mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
           {children}
         </div>
         <Footer />
