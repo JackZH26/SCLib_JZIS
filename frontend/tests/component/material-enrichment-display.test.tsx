@@ -38,6 +38,28 @@ function ProviderProbe({ materialId }: { materialId: string }) {
 describe("Recovery candidate quantity and source presentation", () => {
   beforeEach(() => vi.resetAllMocks());
 
+  it("links a literal candidate to its private review scope without importing or selecting a result", async () => {
+    const candidateId = `enrichment:${"a".repeat(64)}`;
+    await renderCandidates([candidate("maximum_applied_pressure_source_value", "50.8 GPa", null, {
+      candidate_id: candidateId,
+      source_value: { raw_value: "50.8 GPa", raw_unit: "GPa", normalization: "none", role: "study_extent" },
+    })]);
+    const link = screen.getByRole("link", { name: "Review original field source" });
+    expect(link).toHaveAttribute("href", `/dashboard/research/material-literal-fields?material=synthetic&field=maximum_applied_pressure_source_value&candidate=${encodeURIComponent(candidateId)}`);
+    expect(getMaterialEnrichment).toHaveBeenCalledTimes(1);
+    expect(link).not.toHaveAttribute("target");
+  });
+
+  it("withholds the literal workflow link for unknown fields, malformed pins or converted values", async () => {
+    const candidateId = `enrichment:${"a".repeat(64)}`;
+    await renderCandidates([
+      candidate("unknown_source_value", "7", null, { candidate_id: candidateId, source_value: { normalization: "none" } }),
+      candidate("gap_energy_source_value", "4.2 meV", null, { candidate_id: "unbound-candidate", source_value: { normalization: "none" } }),
+      candidate("hc1_source_value", "12 mT", quantity(0.012, "tesla"), { candidate_id: candidateId, source_value: { normalization: "none" } }),
+    ]);
+    expect(screen.queryByRole("link", { name: "Review original field source" })).not.toBeInTheDocument();
+  });
+
   it("preserves literal property units and printed uncertainty without deriving a canonical quantity", async () => {
     await renderCandidates([candidate("gap_energy_source_value", "0.590(5) meV", null, {
       source_value: { raw_value: "0.590(5) meV", raw_unit: "meV", raw_uncertainty: "(5)", normalization: "none", role: "reported_property", field_cue: "superconducting gap", qualifiers: ["model_or_calculation_context"], private_notes: "PRIVATE SOURCE" },

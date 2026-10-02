@@ -39,9 +39,9 @@ async def read(request):
 
 
 @router.get("/capabilities")
-async def capabilities(request: Request):
+async def capabilities(request: Request, profile: str | None = None):
     async with read(request) as (db, actor):
-        value = await service.capabilities(db, actor_user_id=actor)
+        value = await service.capabilities(db, actor_user_id=actor, profile=profile)
     return _response(value)
 
 
@@ -82,22 +82,22 @@ async def outcome(request: Request, request_key: str, expected_request_sha256: s
 
 @router.get("/targets")
 async def targets(request: Request, offset: int = 0, limit: int = 8, material_id: str | None = None,
-                  field_id: str | None = None):
+                  field_id: str | None = None, profile: str | None = None):
     async with read(request) as (db, actor):
         value = await service.targets(db, actor_user_id=actor, offset=offset, limit=limit,
-                                      material_id=material_id, field_id=field_id)
+                                      material_id=material_id, field_id=field_id, profile=profile)
     return _response(value)
 
 
 @router.get("/targets/{target_id}")
-async def target(request: Request, target_id: str):
+async def target(request: Request, target_id: str, profile: str | None = None):
     async with read(request) as (db, actor):
-        value = await service.target_detail(db, actor_user_id=actor, target_id=target_id)
+        value = await service.target_detail(db, actor_user_id=actor, target_id=target_id, profile=profile)
     return _response(value)
 
 
 @router.get("/materials/{material_id:path}")
-async def material(request: Request, material_id: str, offset: int = 0, limit: int = 8):
+async def material(request: Request, material_id: str, offset: int = 0, limit: int = 8, profile: str | None = None):
     async with read(request) as (db, actor):
-        value = await service.material_adapter(db, actor_user_id=actor, material_id=material_id, offset=offset, limit=limit)
+        value = await service.material_adapter(db, actor_user_id=actor, material_id=material_id, offset=offset, limit=limit, profile=profile)
     return _response(value)

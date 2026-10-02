@@ -11,6 +11,7 @@ import sqlalchemy as sa
 from models.db import Base
 from models.source_expression_intake_v2 import LOCK_FUNCTION, TABLE_ORDER
 from services import source_expression_contract_v2 as contract
+from services import source_expression_contract_v2_1 as literal_contract
 from services.research_release_manifest import canonical, digest
 from services.source_property_pending import (
     SourcePropertyConflict,
@@ -27,8 +28,25 @@ from services.source_property_pending import (
 )
 
 VERSION = "source-expression-intake/2.0.0"
+LITERAL_VERSION = "source-expression-intake/2.1.0"
 MAX_EXPRESSION_PAGE_SIZE = 8
 NAMESPACE = UUID("0a0e56cd-a9bf-4c29-b85a-85293a2fcb38")
+
+
+def profile_contract(profile=None):
+    require(profile is None or profile == literal_contract.PROFILE, "source_expression_profile_required")
+    return contract if profile is None else literal_contract
+
+
+def package_contract(package):
+    require(type(package) is dict, "source_expression_package_required")
+    version = package.get("version")
+    require(type(version) is str and version in {contract.VERSION, literal_contract.VERSION}, "supported_package_version_required")
+    return contract if version == contract.VERSION else literal_contract
+
+
+def intake_version(selected):
+    return VERSION if selected is contract else LITERAL_VERSION
 
 
 def _stable(*parts):
@@ -60,7 +78,8 @@ async def _write(db, dry_run):
         raise
 
 
-async def capabilities(db, *, actor_user_id):
+async def capabilities(db, *, actor_user_id, profile=None):
+    selected = profile_contract(profile)
     _, session = await reader(db, actor_user_id)
     from services.research_access import ResearchAccessDenied
 
@@ -69,14 +88,14 @@ async def capabilities(db, *, actor_user_id):
     except ResearchAccessDenied:
         grant = None
     return {
-        "version": VERSION,
-        "package_version": contract.VERSION,
+        "version": intake_version(selected),
+        "package_version": selected.VERSION,
         "actor_user_id": str(identifier(actor_user_id)),
         "session_version": session,
         "can_import": grant is not None,
         "curator_grant_id": None if grant is None else str(grant["id"]),
-        "registry_sha256": contract.REGISTRY_SHA256,
-        "field_profiles": dict(contract.FIELDS),
+        "registry_sha256": selected.REGISTRY_SHA256,
+        "field_profiles": dict(selected.FIELDS),
         "max_source_bytes": contract.MAX_TEXT_BYTES,
         "max_expressions": contract.MAX_EXPRESSIONS,
         "max_package_bytes": contract.MAX_PACKAGE_BYTES,
@@ -91,9 +110,11 @@ async def capabilities(db, *, actor_user_id):
 
 def _receipt(row, *, replayed=False, dry_run=False):
     _intact(row)
-    request_body = {"version": VERSION, "package_sha256": row["package_sha256"]}
+    selected = package_contract(json.loads(row["package_json"]))
+    version = intake_version(selected)
+    request_body = {"version": version, "package_sha256": row["package_sha256"]}
     preview_body = {
-        "version": VERSION,
+        "version": version,
         "request_key": row["request_key"],
         "request_sha256": row["request_sha256"],
         "actor": _body(
@@ -102,7 +123,7 @@ def _receipt(row, *, replayed=False, dry_run=False):
         "manifest": row["expression_manifest"],
     }
     return {
-        "version": VERSION,
+        "version": version,
         "receipt_id": str(row["id"]),
         "receipt_sha256": row["record_sha256"],
         "actor_user_id": str(row["actor_user_id"]),
@@ -135,8 +156,10 @@ async def import_package(
     db, *, actor_user_id, request_key_value, package, dry_run=True, expected_preview_sha256=None
 ):
     key = request_key(request_key_value)
-    prepared = contract.compile_package(package)
-    req_hash = digest({"version": VERSION, "package_sha256": prepared.package_sha256})
+    selected = package_contract(package)
+    prepared = selected.compile_package(package)
+    version = intake_version(selected)
+    req_hash = digest({"version": version, "package_sha256": prepared.package_sha256})
     async with _write(db, dry_run) as changed:
         grant, session = await _grant(db, actor_user_id, "curator")
         old = (
@@ -208,7 +231,7 @@ async def import_package(
         }
         preview = digest(
             {
-                "version": VERSION,
+                "version": version,
                 "request_key": key,
                 "request_sha256": req_hash,
                 "actor": _body(actor),
@@ -429,8 +452,10 @@ async def _expression_dto(db, row, *, include_receipt=False):
         row["import_receipt_sha256"] == receipt["record_sha256"],
         "source_expression_receipt_integrity_unavailable",
     )
-    entry = json.loads(receipt["package_json"])["expressions"][row["entry_index"]]
-    expected = contract.project(source["source_metadata"], source["source_text"], entry)
+    package = json.loads(receipt["package_json"])
+    selected = package_contract(package)
+    entry = package["expressions"][row["entry_index"]]
+    expected = selected.project(source["source_metadata"], source["source_text"], entry)
     require(
         digest(entry) == row["entry_sha256"]
         and digest(expected) == row["projection_sha256"]
@@ -466,12 +491,13 @@ async def _expression_dto(db, row, *, include_receipt=False):
 
 
 async def expressions(
-    db, *, actor_user_id, offset=0, limit=8, source_id=None, field_id=None, currentness=None
+    db, *, actor_user_id, offset=0, limit=8, source_id=None, field_id=None, currentness=None, profile=None
 ):
+    selected = profile_contract(profile)
     await reader(db, actor_user_id)
     _bounds(offset, limit, maximum=MAX_EXPRESSION_PAGE_SIZE)
     table, older = _table(2), _table(2).alias("newer")
-    filters = [
+    filters = [table.c.field_id.in_(tuple(selected.FIELDS)),
         ~sa.exists(
             sa.select(1).where(
                 older.c.expression_key == table.c.expression_key,
@@ -480,7 +506,7 @@ async def expressions(
         )
     ]
     if field_id is not None:
-        require(field_id in contract.FIELDS, "closed_field_filter_required")
+        require(field_id in selected.FIELDS, "closed_field_filter_required")
         filters.append(table.c.field_id == field_id)
     if source_id is not None:
         contract.text(source_id)
@@ -499,7 +525,7 @@ async def expressions(
         .all()
     )
     return {
-        "version": VERSION,
+        "version": intake_version(selected),
         "total": total,
         "offset": offset,
         "limit": limit,
@@ -510,7 +536,8 @@ async def expressions(
     }
 
 
-async def expression(db, *, actor_user_id, revision_id):
+async def expression(db, *, actor_user_id, revision_id, profile=None):
+    selected = profile_contract(profile)
     await reader(db, actor_user_id)
     row = (
         (await db.execute(sa.select(_table(2)).where(_table(2).c.id == identifier(revision_id))))
@@ -519,4 +546,5 @@ async def expression(db, *, actor_user_id, revision_id):
     )
     if row is None:
         raise SourcePropertyNotFound("source_expression_revision_unavailable")
-    return {"version": VERSION, **await _expression_dto(db, row, include_receipt=True)}
+    require(row["field_id"] in selected.FIELDS, "source_expression_profile_mismatch")
+    return {"version": intake_version(selected), **await _expression_dto(db, row, include_receipt=True)}

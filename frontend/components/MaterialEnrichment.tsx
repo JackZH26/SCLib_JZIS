@@ -13,6 +13,7 @@ import { downloadMaterialRecoveryMetadata, projectSourceCoverage, recoveryReason
 import type { MaterialSourceCoverage } from "@/lib/api";
 import { MATERIAL_PROVIDER_ANCHORS, MATERIAL_PROVIDER_LABELS } from "@/lib/material-provider-availability";
 import type { MaterialReferenceProvider } from "@/lib/material-provider-availability";
+import { LITERAL_CASE_FIELDS } from "@/lib/material-literal-fields";
 
 const labels: Record<string, string> = { tc_kelvin: "Tc", pressure_gpa: "Pressure", tc_criterion: "Tc criterion", measurement_method: "Method", space_group: "Space group", crystal_structure: "Structure label", lattice_a: "Lattice a", lattice_b: "Lattice b", lattice_c: "Lattice c", lambda_eph: "Electron–phonon coupling λ", omega_log_source_value: "Logarithmic phonon frequency", mu_star: "Coulomb pseudopotential μ*", hc2_tesla: "Upper critical field", atomic_sites: "Atomic sites", site_occupancies: "Site occupancies", composition_identity: "Composition identity", measurement_temperature_k: "Measurement temperature", calculation_method: "Calculation method" };
 const statuses: Record<string, string> = { retained_present: "Retained extraction", pending_review: "Candidate found · review needed", source_unavailable: "Source identity unavailable", not_extracted: "Not extracted", not_found_in_checked_sources: "No candidate in checked chunks", specialist_extraction_needed: "Specialist source extraction needed" };
@@ -232,6 +233,11 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
           const primaryUrl = primarySourceUrl(source.source_url);
           const paperHref = sourceHref(source);
           const field = evidenceText(candidate.field) ?? "Field";
+          const candidateId = evidenceText(candidate.candidate_id);
+          const literalFieldLink = LITERAL_CASE_FIELDS.some(item => item === field)
+            && candidateId !== null && /^enrichment:[a-f0-9]{64}$/.test(candidateId)
+            && sourceValue.normalization === "none" && candidate.quantity == null
+            ? `/dashboard/research/material-literal-fields?${new URLSearchParams({ material: materialId, field, candidate: candidateId })}` : null;
           const structured = !value && Object.keys(objectValue(candidate.raw_value ?? candidate.value)).length > 0;
           return <li key={evidenceText(candidate.candidate_id) ?? index} className="py-3 text-sm">
             <p className="font-medium">{labels[field] ?? readable(field)}: {value ?? (field === "composition_identity" ? "Sample association proposal" : structured ? ["atomic_sites", "site_occupancies"].includes(field) ? "Reported site context" : "Structured source value" : "Value unavailable")} <span className="ml-2 text-xs font-normal text-amber-800">Review needed</span></p>
@@ -239,6 +245,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
             {structured && <StructuredCandidate candidate={candidate} />}
             <p className="mt-1 text-xs text-slate-500">{evidenceText(source.paper_id) ?? "Source identifier unavailable"} · {readable(evidenceText(source.kind) ?? "unknown source")} {sourceLocator(source) && <span className="block">{sourceLocator(source)}</span>}</p>
             {primaryUrl ? <a className="mt-1 inline-block text-xs text-accent-deep underline" href={primaryUrl} target="_blank" rel="noopener noreferrer">Open primary source</a> : paperHref && <Link className="mt-1 inline-block text-xs text-accent-deep underline" href={paperHref}>Open linked paper</Link>}
+            {literalFieldLink && <Link className="mt-2 block w-fit rounded text-xs text-accent-deep underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-deep" href={literalFieldLink}>Review original field source</Link>}
             <details className="mt-2 text-xs"><summary className="cursor-pointer text-accent-deep">Source identity and checks</summary><dl className="mt-2 space-y-1 break-words text-slate-600">
               <div><dt className="inline">Candidate ID: </dt><dd className="inline font-mono">{evidenceText(candidate.candidate_id) ?? "Not supplied"}</dd></div>
               {Array.isArray(candidate.retained_result_refs) && <div><dt className="inline">Retained record references: </dt><dd className="inline">{candidate.retained_result_refs.length}; full identifiers are included in the metadata download, not counts of independent experiments.</dd></div>}

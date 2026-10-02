@@ -3,32 +3,62 @@ from __future__ import annotations
 
 import hashlib
 import json
-from uuid import UUID, uuid5
 from contextlib import asynccontextmanager
+from uuid import UUID, uuid5
 
 import sqlalchemy as sa
 
 from models.db import Base, Material
 from models.material_field_cases_v1 import TABLE_ORDER
 from services import material_field_case_contract as contract
+from services import material_field_case_contract_v1_1 as literal_contract
 from services import source_expression_intake_v2 as expressions
-from services.material_visibility_adapter import material_view
-from services.material_visibility import normalize_source_status
 from services.material_source_scope import current_visibility_allows_view
+from services.material_visibility import normalize_source_status
+from services.material_visibility_adapter import material_view
 from services.property_evidence import legacy_result_id
 from services.research_access import ResearchAccessDenied
 from services.research_release_manifest import canonical, digest
 from services.source_lifecycle import resolve_paper_lifecycle, resolve_work_lifecycle
 from services.source_lifecycle_status import lifecycle_review_required
-from services.source_property_pending import (_body, _grant, _insert, _session, checksum,
-    identifier, reader, require, request_key, SourcePropertyConflict, SourcePropertyNotFound)
+from services.source_property_pending import (
+    SourcePropertyConflict,
+    SourcePropertyNotFound,
+    _body,
+    _grant,
+    _insert,
+    _session,
+    checksum,
+    identifier,
+    reader,
+    request_key,
+    require,
+)
 
 VERSION = contract.VERSION
 NAMESPACE = UUID("b2377ff3-e435-4cf1-a565-c43471b2abe8")
+LITERAL_READ_HOLDS = ("literal_capture_superseded", "literal_capture_authority_held",
+                      "literal_import_authority_held", "literal_association_authority_held")
 FIELD_MAP = {"measurement_method": "method_statement", "sample_form": "sample_form_statement",
     "space_group": "structure_statement", "crystal_structure": "structure_statement",
     "pairing_symmetry": "classification_statement", "gap_structure": "classification_statement",
     "is_unconventional": "classification_statement", "competing_order": "classification_statement"}
+
+
+def profile_contract(profile=None):
+    require(profile is None or profile == literal_contract.PROFILE, "field_case_profile_required")
+    return contract if profile is None else literal_contract
+
+
+def request_contract(request):
+    require(type(request) is dict, "field_case_closed_object_required")
+    version = request.get("version")
+    require(type(version) is str and version in {contract.REQUEST_VERSION, literal_contract.REQUEST_VERSION}, "field_case_request_version")
+    return contract if version == contract.REQUEST_VERSION else literal_contract
+
+
+def row_contract(row):
+    return request_contract(json.loads(row["request_json"]))
 
 
 def table(operation):
@@ -41,7 +71,7 @@ def text_sha(value):
 
 def intact(row):
     require(digest(_body(row)) == row["record_sha256"], "field_case_receipt_integrity_unavailable")
-    contract.validate(json.loads(row["request_json"]))
+    row_contract(row).validate(json.loads(row["request_json"]))
     require(text_sha(row["request_json"]) == row["request_sha256"]
             and text_sha(row["context_json"]) == row["context_sha256"]
             and text_sha(row["preview_json"]) == row["preview_sha256"], "field_case_proof_integrity_unavailable")
@@ -121,20 +151,32 @@ async def context(db, *, actor_user_id, material_id, kind="retained_result", rec
         "closure": closure(json.loads(body)), "eligibility": await eligibility(db, body, target), **contract.AUTHORITY}
 
 
-async def capabilities(db, *, actor_user_id):
+async def capabilities(db, *, actor_user_id, profile=None):
+    selected = profile_contract(profile)
     _, session = await reader(db, actor_user_id)
     try:
         grant, _ = await _grant(db, actor_user_id, "curator")
     except ResearchAccessDenied:
         grant = None
-    return {"version": VERSION, "request_version": contract.REQUEST_VERSION,
+    result = {"version": selected.VERSION, "request_version": selected.REQUEST_VERSION,
         "actor_user_id": str(actor_user_id), "session_version": session,
         "curator_grant_id": None if grant is None else str(grant["id"]), "can_write": grant is not None,
-        "field_ids": list(contract.FIELDS), "outcomes": list(contract.OUTCOMES), "reason_codes": list(contract.REASONS),
+        "field_ids": list(selected.FIELDS), "outcomes": list(contract.OUTCOMES), "reason_codes": list(contract.REASONS),
         "expression_field_map": {field: FIELD_MAP.get(field, field) if FIELD_MAP.get(field, field) in expressions.contract.FIELDS else
-            "tc_kelvin:criterion_statement:reported_result_condition" if field == "tc_criterion" else None for field in contract.FIELDS},
+            "tc_kelvin:criterion_statement:reported_result_condition" if field == "tc_criterion" else None for field in selected.FIELDS},
         "max_page_size": 8, "max_operation_bytes": contract.MAX_BYTES, **contract.AUTHORITY}
 
+    if selected is literal_contract:
+        result["read_hold_reason_codes"] = list(LITERAL_READ_HOLDS)
+        result["field_ids"] = list(literal_contract.ALL_FIELDS)
+        result["expression_field_map"].update({
+            field: FIELD_MAP.get(field, field) if FIELD_MAP.get(field, field) in expressions.contract.FIELDS
+            else "tc_kelvin:criterion_statement:reported_result_condition" if field == "tc_criterion" else None
+            for field in contract.FIELDS})
+        result["expression_field_map"].update({field: field for field in literal_contract.FIELDS})
+        result["field_request_versions"] = {field: contract.REQUEST_VERSION if field in contract.FIELDS else literal_contract.REQUEST_VERSION for field in literal_contract.ALL_FIELDS}
+        result["profile"] = literal_contract.PROFILE
+    return result
 
 @asynccontextmanager
 async def write(db, dry_run):
@@ -157,7 +199,7 @@ async def write(db, dry_run):
 
 def receipt(row, *, replayed=False, dry_run=False):
     intact(row)
-    return {"version": VERSION, "receipt_id": str(row["id"]), "receipt_sha256": row["record_sha256"],
+    return {"version": row_contract(row).VERSION, "receipt_id": str(row["id"]), "receipt_sha256": row["record_sha256"],
         "operation": row["operation"], "target_id": str(row["id"] if row["operation"] == "target" else row["target_id"]),
         "actor_user_id": str(row["actor_user_id"]), "actor_grant_id": str(row["actor_grant_id"]),
         "actor_session_version": row["actor_session_version"], "request_key": row["request_key"],
@@ -168,7 +210,8 @@ def receipt(row, *, replayed=False, dry_run=False):
 
 
 async def operate(db, *, actor_user_id, request, dry_run=True, expected_preview_sha256=None):
-    contract.validate(request)
+    selected = request_contract(request)
+    selected.validate(request)
     op, p = request["operation"], request["payload"]
     request_text = canonical(request).decode()
     request_sha = text_sha(request_text)
@@ -193,12 +236,14 @@ async def operate(db, *, actor_user_id, request, dry_run=True, expected_preview_
             target = await row_by_id(db, "target", p["target_id"])
             if target["record_sha256"] != p["target_sha256"]:
                 raise SourcePropertyConflict("field_case_target_pin_changed")
+            require(row_contract(target) is selected and target["field_id"] in selected.FIELDS, "field_case_target_profile_mismatch")
             context_text, target_id, field = target["context_json"], target["id"], target["field_id"]
             if p["predecessor"] is not None:
                 previous_id = identifier(p["predecessor"]["id"])
                 previous_sha = p["predecessor"]["record_sha256"]
             if op == "association":
-                expression = await expressions.expression(db, actor_user_id=actor_user_id, revision_id=p["expression_revision_id"])
+                expression = await expressions.expression(db, actor_user_id=actor_user_id, revision_id=p["expression_revision_id"],
+                    profile=literal_contract.PROFILE if selected is literal_contract else None)
                 if expression["record_sha256"] != p["expression_record_sha256"]:
                     raise SourcePropertyConflict("field_case_expression_pin_changed")
                 expression_id, expression_sha = identifier(expression["id"]), expression["record_sha256"]
@@ -208,7 +253,7 @@ async def operate(db, *, actor_user_id, request, dry_run=True, expected_preview_
         row_id = uuid5(NAMESPACE, digest([str(actor_user_id), request["request_key"]]))
         actor = {"actor_user_id": identifier(actor_user_id), "actor_grant_id": grant["id"], "actor_session_version": session}
         context_sha = text_sha(context_text)
-        preview_text = canonical({"version": VERSION, "actor": _body(actor), "request_sha256": request_sha,
+        preview_text = canonical({"version": selected.VERSION, "actor": _body(actor), "request_sha256": request_sha,
                                   "receipt_id": str(row_id), "context_sha256": context_sha}).decode()
         preview_sha = text_sha(preview_text)
         if not dry_run and expected_preview_sha256 != preview_sha:
@@ -236,6 +281,26 @@ async def outcome(db, *, actor_user_id, request_key_value, expected_request_sha2
                 raise SourcePropertyConflict("field_case_outcome_pin_changed")
             return receipt(row, replayed=True)
     raise SourcePropertyNotFound("field_case_outcome_unavailable_not_proof_of_failure")
+
+
+async def literal_read_holds(db, association, expression_row, expression):
+    """Current raw-profile reads withhold stale inputs; immutable history stays."""
+    reasons = []
+    if expression["capture"]["latest_retained_capture_for_source"] is not True:
+        reasons.append(LITERAL_READ_HOLDS[0])
+    capture = (await db.execute(sa.select(expressions._table(0)).where(
+        expressions._table(0).c.id == expression_row["capture_id"]))).mappings().one()
+    receipt = (await db.execute(sa.select(expressions._table(1)).where(
+        expressions._table(1).c.id == expression_row["import_receipt_id"]))).mappings().one()
+    for row, reason in ((capture, LITERAL_READ_HOLDS[1]), (receipt, LITERAL_READ_HOLDS[2]),
+                        (association, LITERAL_READ_HOLDS[3])):
+        current = await db.scalar(sa.text(
+            "SELECT public.sclib_material_field_review_authority_v1(:actor,:grant,:session,'curator')"),
+            {"actor": row["actor_user_id"], "grant": row["actor_grant_id"],
+             "session": row["actor_session_version"]})
+        if current is not True:
+            reasons.append(reason)
+    return reasons
 
 
 async def entry(db, row, *, actor_user_id, include_expression=False, expression_budget=None):
@@ -273,6 +338,8 @@ async def entry(db, row, *, actor_user_id, include_expression=False, expression_
         capture_source = expression["capture"]["source"]
         if capture_source["rights_status"] == "restricted" or capture_source["currentness"] == "historical":
             reasons.append("source_lifecycle_held")
+        if row_contract(row) is literal_contract:
+            reasons.extend(await literal_read_holds(db, row, expression_row, expression))
         result["eligibility"] = {"eligible": not reasons, "reason_codes": sorted(set(reasons))}
         permitted = include_expression and not reasons
         if permitted and expression_budget is not None:
@@ -292,28 +359,32 @@ def bounds(offset, limit):
             "field_case_page_bound")
 
 
-async def targets(db, *, actor_user_id, offset=0, limit=8, material_id=None, field_id=None, byte_bound=True):
+async def targets(db, *, actor_user_id, offset=0, limit=8, material_id=None, field_id=None, byte_bound=True, profile=None):
+    selected = profile_contract(profile)
     _, session = await reader(db, actor_user_id)
     bounds(offset, limit)
-    t, filters = table("target"), []
+    t = table("target")
+    filters = [t.c.field_id.in_(selected.FIELDS)]
     if material_id is not None:
         contract.bounded_text(material_id, 100)
         filters.append(t.c.payload["target"]["material_id"].astext == material_id)
     if field_id is not None:
-        require(field_id in contract.FIELDS, "field_case_field_filter")
+        require(field_id in selected.FIELDS, "field_case_field_filter")
         filters.append(t.c.field_id == field_id)
     total = await db.scalar(sa.select(sa.func.count()).select_from(t).where(*filters))
     rows = (await db.execute(sa.select(t).where(*filters).order_by(t.c.created_at, t.c.id).offset(offset).limit(limit))).mappings().all()
-    result = {"version": VERSION, "actor_user_id": str(actor_user_id), "session_version": session,
+    result = {"version": selected.VERSION, "actor_user_id": str(actor_user_id), "session_version": session,
         "total": total, "offset": offset, "limit": limit,
         "entries": [await entry(db, row, actor_user_id=actor_user_id) for row in rows], **contract.AUTHORITY}
     return bounded_response(result) if byte_bound else result
 
 
-async def target_detail(db, *, actor_user_id, target_id, include_expression=True, expression_budget=None):
+async def target_detail(db, *, actor_user_id, target_id, include_expression=True, expression_budget=None, profile=None):
+    selected = profile_contract(profile)
     _, session = await reader(db, actor_user_id)
     target = await row_by_id(db, "target", target_id)
-    result = {"version": VERSION, "actor_user_id": str(actor_user_id), "session_version": session,
+    require(row_contract(target) is selected, "field_case_target_profile_mismatch")
+    result = {"version": selected.VERSION, "actor_user_id": str(actor_user_id), "session_version": session,
         "target": await entry(db, target, actor_user_id=actor_user_id), **contract.AUTHORITY}
     for operation, listkey, totalkey, returnedkey in (("association", "associations", "association_total", "association_returned"),
                                                      ("attempt", "attempts", "attempt_total", "attempt_returned")):
@@ -329,17 +400,18 @@ async def target_detail(db, *, actor_user_id, target_id, include_expression=True
     return bounded_response(result)
 
 
-async def material_adapter(db, *, actor_user_id, material_id, offset=0, limit=8):
+async def material_adapter(db, *, actor_user_id, material_id, offset=0, limit=8, profile=None):
+    selected = profile_contract(profile)
     _, session = await reader(db, actor_user_id)
-    page = await targets(db, actor_user_id=actor_user_id, material_id=material_id, offset=offset, limit=limit, byte_bound=False)
+    page = await targets(db, actor_user_id=actor_user_id, material_id=material_id, offset=offset, limit=limit, byte_bound=False, profile=profile)
     material = await material_view(db, await db.get(Material, material_id))
     allowed = material is not None and current_visibility_allows_view(material.visibility)
     # No private source expression is returned through an ineligible material.
     budget = {"remaining": 8, "returned": 0, "omitted": 0}
     entries = [await target_detail(db, actor_user_id=actor_user_id, target_id=row["id"], include_expression=allowed,
-                                   expression_budget=budget)
+                                   expression_budget=budget, profile=profile)
                for row in page["entries"]]
-    result = {"version": VERSION, "actor_user_id": str(actor_user_id), "session_version": session,
+    result = {"version": selected.VERSION, "actor_user_id": str(actor_user_id), "session_version": session,
         "material_id": material_id, "total": page["total"], "offset": offset, "limit": limit, "entries": entries,
         "eligibility": {"eligible": allowed, "reason_codes": [] if allowed else ["material_not_currently_eligible"]},
         "expressions_returned": budget["returned"], "expressions_omitted": budget["omitted"], **contract.AUTHORITY}
