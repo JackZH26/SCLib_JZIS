@@ -172,7 +172,8 @@ test("Materials formula lookup submits its GET form with existing filters and re
   const formula = page.getByRole("searchbox", { name: "Formula contains", exact: true });
   await expect(formula).toHaveValue("NbN");
   await expect(formula).toHaveAttribute("placeholder", "e.g. NbN or BiTeCl");
-  await expect(formula).toHaveAttribute("maxlength", "200");
+  // HTML counts UTF-16 units; the API admits at most 200 Unicode code points.
+  await expect(formula).toHaveAttribute("maxlength", "400");
   const form = page.locator("#materials-filter-form");
   await expect(form).toHaveAttribute("method", "get");
   await expect(form).toHaveAttribute("action", "/materials");
@@ -194,7 +195,7 @@ test("Materials formula lookup submits its GET form with existing filters and re
   await expect(formula).toHaveValue("BiTeCl");
   await expect(page.getByLabel("Tc ≥ (K)", { exact: true })).toHaveValue("20");
   await expect(page.getByLabel("Pressure ≤ (GPa)", { exact: true })).toHaveValue("150");
-  await expect(page.getByLabel("Result origin", { exact: true })).toHaveValue("Computed");
+  await expect(page.getByRole("combobox", { name: "Result origin", exact: true })).toHaveValue("Computed");
   const clear = page.getByRole("link", { name: "Clear filters", exact: true });
   await expect(clear).toHaveAttribute("href", "/materials");
   await clear.click();
