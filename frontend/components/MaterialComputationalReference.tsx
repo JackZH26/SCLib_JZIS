@@ -171,7 +171,10 @@ export function MaterialComputationalReference({ data }: { data: ComputationalRe
       <summary className="w-fit cursor-pointer text-accent-deep">View computational reference metadata (JSON)</summary>
       <p className="mt-2 text-xs leading-5 text-sage-muted">Archive fields, native input settings and potential-label rows overlap. They are evidence groups for one entry, not counts of distinct properties or independent experiments. Raw coordinate arrays are unvalidated, unit-unresolved archive metadata.</p>
       <pre className="mt-3 max-h-80 max-w-full overflow-auto whitespace-pre-wrap break-all rounded-md border border-sage-border bg-sage-surface p-3 text-xs leading-5" tabIndex={0} aria-label="Computational reference metadata JSON">{JSON.stringify(data, null, 2)}</pre>
-      <a href={computationalReferenceMetadataPath} className="site-text-link mt-2 inline-block text-xs">Static metadata JSON resource</a>
+      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs">
+        <a href={computationalReferenceMetadataPath} className="site-text-link">Static metadata JSON resource</a>
+        <a href={`${computationalReferenceMetadataPath}.sha256`} className="site-text-link" download>Download SHA-256</a>
+      </div>
       <p className="mt-2 break-all font-mono text-xs text-sage-muted">Static resource SHA-256: {computationalReferenceSnapshotSha256}</p>
     </details>
   </article>;
