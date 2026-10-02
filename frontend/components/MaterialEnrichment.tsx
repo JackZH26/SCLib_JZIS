@@ -57,6 +57,8 @@ function quantityText(field: string, value: unknown, quantity: unknown): string 
   return formatted === "—" ? null : formatted;
 }
 function candidateValue(candidate: Record<string, unknown>): string | null {
+  const sourceValue = objectValue(candidate.source_value);
+  if (sourceValue.normalization === "none") return evidenceText(sourceValue.raw_value) ?? evidenceText(candidate.raw_value);
   const formatted = quantityText(evidenceText(candidate.field) ?? "candidate", candidate.value, candidate.quantity);
   if (formatted) return formatted;
   // Original tokens can already contain a unit. Preserve them verbatim instead
@@ -66,6 +68,15 @@ function candidateValue(candidate: Record<string, unknown>): string | null {
 function candidateContext(candidate: Record<string, unknown>): [string, string][] {
   const subject = objectValue(candidate.subject), field = evidenceText(candidate.field);
   const entries: [string, string][] = [];
+  const sourceValue = objectValue(candidate.source_value);
+  const roles: Record<string, string> = {
+    study_extent: "Pressure range studied; association with Tc unresolved",
+    measurement_limit: "Lowest measurement temperature; not a transition temperature",
+    reported_order_transition: "Reported ordering transition; state association pending",
+    reported_property: "Reported property; sample and state association pending",
+  };
+  const role = evidenceText(sourceValue.role) ?? evidenceText(subject.field_role);
+  if (role && roles[role]) entries.push(["Source role", roles[role]]);
   if (field === "tc_kelvin") {
     const criterion = evidenceText(subject.tc_criterion) ?? "unknown";
     entries.push(["Tc criterion", ({ onset: "Onset", midpoint: "Midpoint", zero_resistance: "Zero resistance", unknown: "Unknown" } as Record<string, string>)[criterion] ?? readable(criterion)]);
@@ -216,7 +227,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
         <summary className="cursor-pointer text-sm font-medium">Source recovery candidates ({report.candidates.length})</summary>
         <p className="mt-3 text-xs text-slate-500">These extraction candidates are separate from the selected properties above. Source spans identify retained content; publication version and material-state correspondence may remain unresolved.</p>
         <ul id={candidateListId} className="mt-3 divide-y divide-slate-100">{report.candidates.slice(0, showAllCandidates ? report.candidates.length : 40).map((candidate, index) => {
-          const source = objectValue(candidate.source), quantity = objectValue(candidate.quantity);
+          const source = objectValue(candidate.source), quantity = objectValue(candidate.quantity), sourceValue = objectValue(candidate.source_value);
           const value = candidateValue(candidate);
           const primaryUrl = primarySourceUrl(source.source_url);
           const paperHref = sourceHref(source);
@@ -228,13 +239,20 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
             {structured && <StructuredCandidate candidate={candidate} />}
             <p className="mt-1 text-xs text-slate-500">{evidenceText(source.paper_id) ?? "Source identifier unavailable"} · {readable(evidenceText(source.kind) ?? "unknown source")} {sourceLocator(source) && <span className="block">{sourceLocator(source)}</span>}</p>
             {primaryUrl ? <a className="mt-1 inline-block text-xs text-accent-deep underline" href={primaryUrl} target="_blank" rel="noopener noreferrer">Open primary source</a> : paperHref && <Link className="mt-1 inline-block text-xs text-accent-deep underline" href={paperHref}>Open linked paper</Link>}
-            <details className="mt-2 text-xs"><summary className="cursor-pointer text-accent-deep">Source identity and checks</summary><dl className="mt-2 space-y-1 break-all text-slate-600">
+            <details className="mt-2 text-xs"><summary className="cursor-pointer text-accent-deep">Source identity and checks</summary><dl className="mt-2 space-y-1 break-words text-slate-600">
               <div><dt className="inline">Candidate ID: </dt><dd className="inline font-mono">{evidenceText(candidate.candidate_id) ?? "Not supplied"}</dd></div>
               {Array.isArray(candidate.retained_result_refs) && <div><dt className="inline">Retained record references: </dt><dd className="inline">{candidate.retained_result_refs.length}; full identifiers are included in the metadata download, not counts of independent experiments.</dd></div>}
               <div><dt className="inline">Raw source value: </dt><dd className="inline">{evidenceText(candidate.raw_value) ?? (structured ? "See structured fields above" : "Not supplied")}</dd></div>
+              {sourceValue.normalization === "none" && <>
+                <div><dt className="inline">Source unit: </dt><dd className="inline">{evidenceText(sourceValue.raw_unit) ?? "No unit printed"}</dd></div>
+                {evidenceText(sourceValue.raw_uncertainty) && <div><dt className="inline">Printed uncertainty: </dt><dd className="inline">{evidenceText(sourceValue.raw_uncertainty)}</dd></div>}
+                <div><dt className="inline">Value handling: </dt><dd className="inline">Original source tokens; no unit conversion or uncertainty interpretation</dd></div>
+                {evidenceText(sourceValue.field_cue) && <div><dt className="inline">Property label in source: </dt><dd className="inline">{evidenceText(sourceValue.field_cue)}</dd></div>}
+                {Array.isArray(sourceValue.qualifiers) && sourceValue.qualifiers.length > 0 && <div><dt className="inline">Context requiring review: </dt><dd className="inline">{sourceValue.qualifiers.filter((code): code is string => typeof code === "string").map(recoveryReasonLabel).join("; ")}</dd></div>}
+              </>}
               {Object.keys(quantity).length > 0 && <><div><dt className="inline">Source unit: </dt><dd className="inline">{evidenceText(quantity.raw_unit) ?? "Not supplied"}</dd></div><div><dt className="inline">Quantity relation / parser status: </dt><dd className="inline">{evidenceText(quantity.relation) ?? "Unavailable"} / {evidenceText(quantity.status) ?? "Unavailable"}</dd></div></>}
               <div><dt className="inline">Content hash: </dt><dd className="inline font-mono">{evidenceText(source.content_sha256)}</dd></div><div><dt className="inline">Retained revision: </dt><dd className="inline">{evidenceText(source.source_revision)}</dd></div>
-              <div><dt className="inline">Source span: </dt><dd className="inline">{["char_start", "char_end", "text_sha256"].flatMap(key => evidenceText(objectValue(source.span)[key]) ? [`${readable(key)}: ${evidenceText(objectValue(source.span)[key])}`] : []).join("; ") || "Not supplied"}</dd></div><div><dt className="inline">Checks still required: </dt><dd className="inline">{Array.isArray(candidate.reason_codes) ? candidate.reason_codes.filter((code): code is string => typeof code === "string").map(readable).join("; ") : "Source and state review"}</dd></div></dl></details>
+              <div><dt className="inline">Source span: </dt><dd className="inline">{["char_start", "char_end", "text_sha256"].flatMap(key => evidenceText(objectValue(source.span)[key]) ? [`${readable(key)}: ${evidenceText(objectValue(source.span)[key])}`] : []).join("; ") || "Not supplied"}</dd></div><div><dt className="inline">Checks still required: </dt><dd className="inline">{Array.isArray(candidate.reason_codes) ? candidate.reason_codes.filter((code): code is string => typeof code === "string").map(recoveryReasonLabel).join("; ") : "Source and state review"}</dd></div></dl></details>
           </li>;
         })}</ul>
         {report.candidates.length > 40 && <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs"><p className="text-slate-500">Showing {showAllCandidates ? report.candidates.length : 40} of {report.candidates.length} returned candidates.</p><button type="button" className="rounded text-accent-deep underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-deep" aria-expanded={showAllCandidates} aria-controls={candidateListId} onClick={() => setCandidateExpansion({ materialId, expanded: !showAllCandidates })}>{showAllCandidates ? "Show fewer candidates" : `Show remaining candidates (${report.candidates.length - 40})`}</button></div>}

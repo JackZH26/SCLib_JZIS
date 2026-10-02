@@ -38,6 +38,58 @@ function ProviderProbe({ materialId }: { materialId: string }) {
 describe("Recovery candidate quantity and source presentation", () => {
   beforeEach(() => vi.resetAllMocks());
 
+  it("preserves literal property units and printed uncertainty without deriving a canonical quantity", async () => {
+    await renderCandidates([candidate("gap_energy_source_value", "0.590(5) meV", null, {
+      source_value: { raw_value: "0.590(5) meV", raw_unit: "meV", raw_uncertainty: "(5)", normalization: "none", role: "reported_property", field_cue: "superconducting gap", qualifiers: ["model_or_calculation_context"], private_notes: "PRIVATE SOURCE" },
+    })]);
+    const row = candidateRow("Gap energy:");
+    expect(row.querySelector("p")).toHaveTextContent("Gap energy: 0.590(5) meV");
+    expect(row.querySelector("p")).not.toHaveTextContent("meV meV");
+    expect(row).toHaveTextContent("Printed uncertainty: (5)");
+    expect(row).toHaveTextContent("Original source tokens; no unit conversion or uncertainty interpretation");
+    expect(row).toHaveTextContent("Value appears in a model or calculation context");
+    expect(row).not.toHaveTextContent("exact / parsed");
+    expect(row).toHaveTextContent("Review needed");
+    expect(document.body.textContent).not.toContain("PRIVATE SOURCE");
+  });
+
+  it("distinguishes study pressure and measurement limits from transition conditions", async () => {
+    await renderCandidates([
+      candidate("maximum_applied_pressure_source_value", "50.8 GPa", null, { source_value: { raw_value: "50.8 GPa", raw_unit: "GPa", normalization: "none", role: "study_extent" } }),
+      candidate("minimum_temperature_k", "50 mK", null, { source_value: { raw_value: "50 mK", raw_unit: "mK", normalization: "none", role: "measurement_limit" } }),
+      candidate("t_afm_k", "139 K", null, { source_value: { raw_value: "139 K", raw_unit: "K", normalization: "none", role: "reported_order_transition" } }),
+    ]);
+    expect(candidateRow("Maximum applied pressure:")).toHaveTextContent("Pressure range studied; association with Tc unresolved");
+    const minimum = candidateRow("Minimum tested temperature:");
+    expect(minimum.querySelector("p")).toHaveTextContent("50 mK");
+    expect(minimum).toHaveTextContent("Lowest measurement temperature; not a transition temperature");
+    expect(minimum.querySelector("p")).not.toHaveTextContent("0.05 K");
+    expect(candidateRow("AFM transition temperature:")).toHaveTextContent("Reported ordering transition; state association pending");
+    expect(screen.queryByText("Tc condition; association pending")).not.toBeInTheDocument();
+  });
+
+  it("preserves bound and approximation words in source-only display", async () => {
+    await renderCandidates([
+      candidate("transition_width_source_value", "below 1.5 K", null, { source_value: { raw_value: "below 1.5 K", raw_unit: "K", normalization: "none", role: "reported_property" } }),
+      candidate("debye_temperature_source_value", "approximately 492 K", null, { source_value: { raw_value: "approximately 492 K", raw_unit: "K", normalization: "none", role: "reported_property", qualifiers: ["fit_or_estimate_context"] } }),
+    ]);
+    expect(candidateRow("Transition width:").querySelector("p")).toHaveTextContent("Transition width: below 1.5 K");
+    expect(candidateRow("Debye temperature:").querySelector("p")).toHaveTextContent("Debye temperature: approximately 492 K");
+    expect(candidateRow("Debye temperature:")).toHaveTextContent("Value appears in a fit, estimate or extrapolation");
+    expect(document.body.textContent).not.toContain("exact / parsed");
+  });
+
+  it("keeps an incomplete literal search distinct from a claim that the paper did not report a field", async () => {
+    const body = report([]);
+    body.coverage[0].fields = [{ field: "debye_temperature_source_value", status: "not_found_in_checked_sources", retained_present: false, candidate_count: 0, reason_codes: ["bounded_source_value_grammar_has_incomplete_recall"], routes: ["source_fulltext_and_supplement"] }];
+    vi.mocked(getMaterialEnrichment).mockResolvedValue(body);
+    render(<MaterialEnrichment materialId="synthetic" />);
+    expect(await screen.findByText("Literal extraction does not cover every reported value or table")).toBeInTheDocument();
+    expect(screen.getByText("Debye temperature").closest("tr")).toHaveTextContent("No candidate in checked chunks");
+    expect(screen.queryByText("Not reported")).not.toBeInTheDocument();
+    expect(screen.queryByText("This field has no implemented paper extractor")).not.toBeInTheDocument();
+  });
+
   it.each(["materials-source-statement-extractor/1.0.0", "materials-source-statement-extractor/1.0.1"])("renders pending-scope findings for the supported extractor %s", async (version) => {
     const body = report([]);
     body.classification_extractor_version = version;

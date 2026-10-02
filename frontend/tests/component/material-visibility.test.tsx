@@ -4,7 +4,7 @@ import { MaterialVisibilityNotice, SourceVisibilityNotice } from "@/components/M
 import { RawScientificArchive } from "@/components/ScientificAnomalies";
 import { MaterialTable } from "@/components/MaterialTable";
 import { ScientificMatches } from "@/components/ScientificMatches";
-import { archiveExport, eligibleForScientificSeo, knownOccurrenceVisibility, knownSourceVisibility, knownVisibility, visibilityLabel, visibilityWarning } from "@/lib/material-visibility";
+import { archiveExport, eligibleForCatalogueRead, eligibleForScientificSeo, knownOccurrenceVisibility, knownSourceVisibility, knownVisibility, visibilityLabel, visibilityWarning } from "@/lib/material-visibility";
 import type { MaterialSummary, MatchingScientificResult } from "@/lib/api";
 import { materialVisibility, occurrenceVisibility, sourceScopedMaterialVisibility, sourceVisibility } from "../fixtures/material-visibility";
 import { rawArchive } from "../fixtures/scientific-anomalies";
@@ -12,6 +12,7 @@ import { rawArchive } from "../fixtures/scientific-anomalies";
 describe("shared visibility contract", () => {
   it.each([undefined, {}, { ...materialVisibility(), version: "future" }, { ...materialVisibility(), scientific_acceptance: true }, { ...materialVisibility(), review_revision: "" }, { ...materialVisibility("pending"), public_catalogue_eligible: true }])("missing or contradictory visibility never enables scientific SEO: %j", value => {
     expect(knownVisibility(value)).toBeNull();
+    expect(eligibleForCatalogueRead(value)).toBe(false);
     expect(eligibleForScientificSeo(value)).toBe(false);
     expect(visibilityLabel(value)).toContain("visibility unverified");
   });
@@ -19,6 +20,7 @@ describe("shared visibility contract", () => {
   it.each(["pending", "disputed", "corrected", "retracted", "unknown"] as const)("clearly marks %s as Archive and not scientific approval", state => {
     const value = materialVisibility(state);
     render(<MaterialVisibilityNotice visibility={value} />);
+    expect(eligibleForCatalogueRead(value)).toBe(false);
     expect(eligibleForScientificSeo(value)).toBe(false);
     expect(screen.getByLabelText("material visibility")).toHaveTextContent("Archive");
     expect(screen.getByLabelText("material visibility")).toHaveTextContent("synthetic-review-revision");
@@ -27,10 +29,12 @@ describe("shared visibility contract", () => {
 
   it("eligible catalogue is a read policy, not a scientifically verified result", () => {
     render(<MaterialVisibilityNotice visibility={materialVisibility()} />);
+    expect(eligibleForCatalogueRead(materialVisibility())).toBe(true);
     expect(eligibleForScientificSeo(materialVisibility())).toBe(true);
     expect(screen.getByText("Catalogue eligible — not scientific approval")).toBeInTheDocument();
     expect(screen.getByText(/not experimental confirmation/)).toBeInTheDocument();
     expect(eligibleForScientificSeo({ ...materialVisibility(), source_status: "retracted" })).toBe(false);
+    expect(eligibleForCatalogueRead({ ...materialVisibility(), source_status: "retracted" })).toBe(false);
   });
 
   it("does not render private notes or arbitrary reason messages", () => {
@@ -114,6 +118,7 @@ describe("conditional source-scoped material visibility", () => {
   it.each(["active", "unknown", "mixed", "retracted", "corrected"] as const)("does not infer source-scoped eligibility from the aggregate %s status", source_status => {
     const value = { ...sourceScopedMaterialVisibility(), source_status };
     expect(knownVisibility(value)).toEqual(value);
+    expect(eligibleForCatalogueRead(value)).toBe(true);
     expect(eligibleForScientificSeo(value)).toBe(false);
   });
 
@@ -136,7 +141,10 @@ describe("conditional source-scoped material visibility", () => {
         warning_codes: original.warning_codes.filter(code => code !== removed),
         warning_messages: original.warning_messages.filter((_, index) => original.warning_codes[index] !== removed) })),
     ];
-    for (const value of values) expect(knownVisibility(value)).toBeNull();
+    for (const value of values) {
+      expect(knownVisibility(value)).toBeNull();
+      expect(eligibleForCatalogueRead(value)).toBe(false);
+    }
   });
 
   it.each([
@@ -153,6 +161,7 @@ describe("conditional source-scoped material visibility", () => {
   ])("rejects invalid v2 outer fields without falling back to v1: %j", patch => {
     const value = { ...sourceScopedMaterialVisibility(), ...patch };
     expect(knownVisibility(value)).toBeNull();
+    expect(eligibleForCatalogueRead(value)).toBe(false);
     expect(eligibleForScientificSeo(value)).toBe(false);
     expect(visibilityLabel(value)).toContain("unverified");
   });
@@ -173,6 +182,7 @@ describe("conditional source-scoped material visibility", () => {
     const value = sourceScopedMaterialVisibility();
     const broken = { ...value, source_scope: { ...value.source_scope, ...patch } };
     expect(knownVisibility(broken)).toBeNull();
+    expect(eligibleForCatalogueRead(broken)).toBe(false);
     expect(eligibleForScientificSeo(broken)).toBe(false);
   });
 
@@ -182,11 +192,13 @@ describe("conditional source-scoped material visibility", () => {
       const broken = { ...value } as Record<string, unknown>;
       delete broken[key];
       expect(knownVisibility(broken)).toBeNull();
+      expect(eligibleForCatalogueRead(broken)).toBe(false);
     }
     for (const key of Object.keys(value.source_scope)) {
       const broken = { ...value.source_scope } as Record<string, unknown>;
       delete broken[key];
       expect(knownVisibility({ ...value, source_scope: broken })).toBeNull();
+      expect(eligibleForCatalogueRead({ ...value, source_scope: broken })).toBe(false);
     }
   });
 

@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import MaterialDetailPage, { generateMetadata } from "@/app/materials/[id]/page";
 import { BookmarksPanel } from "@/components/dashboard/BookmarksPanel";
-import { ApiError, getMaterial, getMaterialHydrideParameters, listMaterialBookmarks, listPaperBookmarks, type MaterialDetail } from "@/lib/api";
+import { ApiError, getMaterial, getMaterialCalculationReferences, getMaterialEnrichment, getMaterialExternalReferences, getMaterialHydrideParameters, getMaterialStructureReferences, getMaterialSuperconReferences, listMaterialBookmarks, listPaperBookmarks, type MaterialDetail } from "@/lib/api";
 import { atomicItem, propertyEnvelope } from "../fixtures/property-evidence";
 import { anomalyAssessment, materialAnomalyReview, rawArchive } from "../fixtures/scientific-anomalies";
 import { materialVisibility, sourceScopedMaterialVisibility } from "../fixtures/material-visibility";
@@ -10,7 +10,7 @@ import { materialSemantics, semanticProperty, semanticReport } from "../fixtures
 
 vi.mock("@/lib/api", async importOriginal => {
   const actual = await importOriginal<typeof import("@/lib/api")>();
-  return { ...actual, getMaterial: vi.fn(), getMaterialHydrideParameters: vi.fn(), listMaterialBookmarks: vi.fn(), listPaperBookmarks: vi.fn() };
+  return { ...actual, getMaterial: vi.fn(), getMaterialEnrichment: vi.fn(), getMaterialExternalReferences: vi.fn(), getMaterialStructureReferences: vi.fn(), getMaterialCalculationReferences: vi.fn(), getMaterialSuperconReferences: vi.fn(), getMaterialHydrideParameters: vi.fn(), listMaterialBookmarks: vi.fn(), listPaperBookmarks: vi.fn() };
 });
 vi.mock("@/components/BookmarkButton", () => ({ BookmarkButton: () => <span>Save control</span> }));
 
@@ -24,9 +24,24 @@ function material(): MaterialDetail {
   } as unknown as MaterialDetail;
 }
 
+const recoveryPanelNames = [
+  "Field coverage & source recovery", "MDR SuperCon references",
+  "Materials Project calculated references", "Crystal structure references · COD", "NOMAD calculation references",
+];
+const externalLookups = [getMaterialExternalReferences, getMaterialStructureReferences, getMaterialCalculationReferences, getMaterialSuperconReferences];
+
+function expectRecoveryWithheld() {
+  for (const name of recoveryPanelNames) expect(screen.queryByText(name)).not.toBeInTheDocument();
+  expect(getMaterialEnrichment).not.toHaveBeenCalled();
+  expect(getMaterialHydrideParameters).not.toHaveBeenCalled();
+  for (const lookup of externalLookups) expect(lookup).not.toHaveBeenCalled();
+}
+
 describe("atomic evidence across material surfaces", () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    // Keep incidental eligible-page recovery reads pending without network I/O.
+    vi.mocked(getMaterialEnrichment).mockImplementation(() => new Promise(() => {}));
     vi.mocked(getMaterialHydrideParameters).mockResolvedValue([]);
     vi.mocked(listPaperBookmarks).mockResolvedValue({ total: 0, results: [] });
   });
@@ -69,9 +84,10 @@ describe("atomic evidence across material surfaces", () => {
     expect(jsonld.variableMeasured[0].value).toBe("≈ 0.001 ± 0.0001");
   });
 
-  it("shows source-scoped atomic selections while withholding mixed-source scientific SEO", async () => {
+  it.each(["active", "unknown", "mixed", "retracted", "corrected"] as const)("loads source-scoped recovery and hydride panels for aggregate %s without enabling scientific SEO", async source_status => {
     const mat = material();
-    mat.visibility = sourceScopedMaterialVisibility();
+    mat.family = "hydride";
+    mat.visibility = { ...sourceScopedMaterialVisibility(), source_status };
     mat.disputed = false;
     mat.retracted = false;
     mat.arxiv_year = null;
@@ -80,14 +96,26 @@ describe("atomic evidence across material surfaces", () => {
     mat.property_evidence.selection_policy = "source-scoped-atomic-selection/1.0.0";
     mat.property_evidence.properties.tc_max.selection = "deterministic_result";
     vi.mocked(getMaterial).mockResolvedValue(mat);
+    vi.mocked(getMaterialEnrichment).mockResolvedValue({
+      version: "materials-enrichment/1.0.0", scientific_acceptance: false, database_changed: false,
+      counts: {}, candidates: [], coverage: [{ material_id: mat.id, formula: mat.formula, fields: [] }],
+    });
     const metadata = await generateMetadata({ params: Promise.resolve({ id: mat.id }) });
+    expect(metadata.robots).toMatchObject({ index: false, follow: false, noarchive: true });
     expect(metadata.description).not.toContain("39 K");
     const { container } = render(await MaterialDetailPage({ params: Promise.resolve({ id: mat.id }) }));
     expect(screen.getByText("39 K")).toBeInTheDocument();
     expect(screen.getAllByText(/Only eligible reported source records/)).toHaveLength(2);
+    for (const name of recoveryPanelNames) expect(screen.getByText(name)).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Download recovery metadata (JSON)" })).toBeInTheDocument();
+    expect(getMaterialEnrichment).toHaveBeenCalledWith(mat.id, expect.any(AbortSignal));
+    expect(getMaterialHydrideParameters).toHaveBeenCalledExactlyOnceWith(mat.id);
+    for (const lookup of externalLookups) expect(lookup).not.toHaveBeenCalled(); // References remain lazy.
+    expect(screen.queryByText(/Specialized hydride results are not loaded/)).not.toBeInTheDocument();
     expect(container.textContent).not.toContain("9999");
     const jsonld = JSON.parse(container.querySelector("#sclib-material-structured-data")!.textContent!);
     expect(jsonld.variableMeasured).toEqual([]);
+    expect(jsonld.includedInDataCatalog).toBeUndefined();
   });
 
   it("bookmarks share the source guard instead of displaying stale Tc scalars", async () => {
@@ -145,7 +173,7 @@ describe("atomic evidence across material surfaces", () => {
   it("does not look for Archive or enrichment data when the server hides the material", async () => {
     vi.mocked(getMaterial).mockRejectedValue(new ApiError(404, {}, "Material not found"));
     await expect(MaterialDetailPage({ params: Promise.resolve({ id: "restricted" }) })).rejects.toThrow();
-    expect(vi.mocked(getMaterialHydrideParameters)).not.toHaveBeenCalled();
+    expectRecoveryWithheld();
   });
 
   it.each(["pending", "disputed", "corrected", "retracted", "unknown"] as const)("%s material stays inspectable but never publishes quantitative SEO", async state => {
@@ -164,17 +192,39 @@ describe("atomic evidence across material surfaces", () => {
     const jsonld = JSON.parse(container.querySelector("#sclib-material-structured-data")!.textContent!);
     expect(jsonld.variableMeasured).toEqual([]);
     expect(jsonld.includedInDataCatalog).toBeUndefined();
-    expect(vi.mocked(getMaterialHydrideParameters)).not.toHaveBeenCalled();
+    expectRecoveryWithheld();
   });
 
   it("missing policy does not gain scientific SEO merely from complete property evidence", async () => {
     const mat = material();
+    mat.family = "hydride";
     mat.property_evidence = propertyEnvelope(atomicItem("tc_max", 20));
     vi.mocked(getMaterial).mockResolvedValue(mat);
     const metadata = await generateMetadata({ params: Promise.resolve({ id: mat.id }) });
     expect(metadata.robots).toMatchObject({ index: false });
     expect(metadata.description).not.toContain("20 K");
     expect(metadata.description).toContain("visibility unverified");
+    render(await MaterialDetailPage({ params: Promise.resolve({ id: mat.id }) }));
+    expectRecoveryWithheld();
+  });
+
+  it.each([
+    { version: "material-visibility/3.0.0" }, { public_catalogue_eligible: false },
+    { warning_messages: ["Scientific approval"] }, { review_revision: "invalid" },
+    { source_scope: { ...sourceScopedMaterialVisibility().source_scope, eligible_records: 0 } },
+    { source_scope: { ...sourceScopedMaterialVisibility().source_scope, fingerprint: "not-a-hash" } },
+  ])("does not load recovery or hydride data for a malformed source-scoped envelope: %j", async patch => {
+    const mat = material();
+    mat.family = "hydride";
+    mat.visibility = { ...sourceScopedMaterialVisibility(), ...patch } as MaterialDetail["visibility"];
+    vi.mocked(getMaterial).mockResolvedValue(mat);
+    const metadata = await generateMetadata({ params: Promise.resolve({ id: mat.id }) });
+    expect(metadata.robots).toMatchObject({ index: false, follow: false });
+    const { container } = render(await MaterialDetailPage({ params: Promise.resolve({ id: mat.id }) }));
+    expectRecoveryWithheld();
+    const jsonld = JSON.parse(container.querySelector("#sclib-material-structured-data")!.textContent!);
+    expect(jsonld.variableMeasured).toEqual([]);
+    expect(jsonld.includedInDataCatalog).toBeUndefined();
   });
 
   it("explicit quarantine suppresses page data even in a stale successful API response", async () => {
@@ -184,7 +234,7 @@ describe("atomic evidence across material surfaces", () => {
     const metadata = await generateMetadata({ params: Promise.resolve({ id: mat.id }) });
     expect(metadata.title).toBe("Material not found");
     await expect(MaterialDetailPage({ params: Promise.resolve({ id: mat.id }) })).rejects.toThrow();
-    expect(vi.mocked(getMaterialHydrideParameters)).not.toHaveBeenCalled();
+    expectRecoveryWithheld();
   });
 
   it("pending bookmarks display the same Archive policy warning", async () => {

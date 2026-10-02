@@ -261,7 +261,11 @@ async def test_recovery_counts_actual_restricted_stale_derived_and_length_omissi
 @pytest.mark.asyncio
 @pytest.mark.parametrize("bad_section", [" Results", "Results ", "Results\nSynthetic label"])
 async def test_recovery_excludes_invalid_locator_without_normalizing_retained_data(client, bad_section):
-    from services.material_enrichment import EnrichmentError, validate_candidate_identity, validate_source
+    from services.material_enrichment import (
+        EnrichmentError,
+        validate_candidate_identity,
+        validate_source,
+    )
 
     invalid_text, valid_text = "NbN has Tc=999 K.", "NbN has Tc=17.5 K."
     identifier, papers = await seed_source_inventory({
@@ -435,10 +439,87 @@ async def test_recovery_distinguishes_physical_sample_form_from_bulk_superconduc
     forms = [candidate for candidate in report["candidates"] if candidate["field"] == "sample_form"]
     assert {candidate["value"] for candidate in forms} == expected_forms
     for candidate in forms:
-        assert candidate["extractor_version"] == "materials-literal-extractor/1.0.1"
+        assert candidate["extractor_version"] == "materials-literal-extractor/1.1.0"
         assert candidate["source"]["paper_id"] == papers["a"]
         assert candidate["source"]["content_sha256"] == hashlib.sha256(passage.encode()).hexdigest()
         assert candidate["source_content_checked"] is False and candidate["disposition"] == "pending"
     assert report["counts"]["promoted_facts"] == 0 and report["database_changed"] is False
     async with get_session_factory()() as session:
         assert (await session.get(Material, identifier)).records == original_records
+
+
+@pytest.mark.asyncio
+async def test_recovery_reads_all_fourteen_literal_source_fields_without_promotion_or_unit_loss(client):
+    # Synthetic native integration fixtures, not reported scientific values.
+    from services.material_enrichment import (
+        AUTHORITY,
+        LITERAL_SOURCE_FIELDS,
+        validate_candidate_identity,
+    )
+
+    printed = {
+        "hc1_source_value": ("NbN has lower critical field above 200(5) mT.", "above 200(5) mT", "reported_property"),
+        "gap_energy_source_value": (r"NbN has superconducting gap \Delta(0) = 0.590(5)~\mathrm{meV}.", r"0.590(5)~\mathrm{meV}", "reported_property"),
+        "gap_ratio_source_value": ("NbN has superconducting gap ratio = 3.53 ± 0.04.", "3.53 ± 0.04", "reported_property"),
+        "electronic_specific_heat_coefficient_source_value": (r"NbN has electronic specific-heat coefficient \gamma = 3.16 \mathrm{mJ mol^{-1} K^{-2}}.", r"3.16 \mathrm{mJ mol^{-1} K^{-2}}", "reported_property"),
+        "debye_temperature_source_value": ("NbN has Debye temperature approximately 492(2) K.", "approximately 492(2) K", "reported_property"),
+        "isotope_effect_exponent": ("NbN has isotope-effect exponent α = 0.42 ± 0.03.", "0.42 ± 0.03", "reported_property"),
+        "dtc_dp_source_value": ("NbN has dTc/dP = −0.8 ± 0.1 K/GPa.", "−0.8 ± 0.1 K/GPa", "reported_property"),
+        "maximum_applied_pressure_source_value": ("NbN has Tc=23 K and maximum applied pressure = 50.8 GPa.", "50.8 GPa", "study_extent"),
+        "meissner_fraction_percent": ("NbN has field-cooled Meissner fraction = 12 ± 2 %.", "12 ± 2 %", "reported_property"),
+        "transition_width_source_value": ("NbN has superconducting transition width below 1.5 K.", "below 1.5 K", "reported_property"),
+        "minimum_temperature_k": ("NbN resistivity down to 0.3 K was measured.", "0.3 K", "measurement_limit"),
+        "t_cdw_k": ("NbN has CDW transition temperature = 94 ± 1 K.", "94 ± 1 K", "reported_order_transition"),
+        "t_afm_k": ("NbN has Néel temperature = 24(2) K.", "24(2) K", "reported_order_transition"),
+        "t_sdw_k": ("NbN has SDW transition at 135 K.", "135 K", "reported_order_transition"),
+    }
+    assert set(printed) == LITERAL_SOURCE_FIELDS
+    invalid_units = ["NbN has superconducting gap ratio = 3.5 Hz.",
+                     "NbN has superconducting gap ratio = 3.5 N.",
+                     "NbN has isotope exponent = 0.5 Oe.",
+                     "NbN has isotope exponent = 0.5 G.",
+                     "NbN has isotope exponent = 0.5 fictionalunit.",
+                     r"NbN has superconducting gap ratio = 3.5 \times 10^{-3}."]
+    inventory = [(text, "Synthetic bounded grammar fixture", False) for text, _, _ in printed.values()]
+    inventory.extend((text, "Synthetic invalid dimensionless unit fixture", False) for text in invalid_units)
+    identifier, papers = await seed_source_inventory({"a": inventory})
+    async with get_session_factory()() as session:
+        original_records = (await session.get(Material, identifier)).records
+    response = await client.get(f"/v1/materials/{identifier}/enrichment")
+    assert response.status_code == 200, response.text
+    assert response.headers["cache-control"] == "private, no-store"
+    report = response.json()
+    literal_rows = [row for row in report["candidates"] if row["field"] in printed]
+    assert len(literal_rows) == 14
+    rows = {row["field"]: row for row in literal_rows}
+    assert set(rows) == set(printed)
+    for field, (text, raw, role) in printed.items():
+        candidate = rows[field]
+        assert candidate["value"] == candidate["raw_value"] == raw
+        assert candidate["quantity"] is None and candidate["source_value"]["normalization"] == "none"
+        assert candidate["source_value"]["role"] == candidate["subject"]["field_role"] == role
+        assert candidate["source"]["paper_id"] == papers["a"]
+        assert candidate["source"]["content_sha256"] == hashlib.sha256(text.encode()).hexdigest()
+        assert candidate["source"]["kind"] == "legacy_unknown"
+        assert candidate["source_content_checked"] is False and candidate["disposition"] == "pending"
+        assert "evidence_text" not in candidate
+        assert all(candidate[key] is False for key in AUTHORITY)
+        for name in ("value_span", "unit_span", "cue_span"):
+            span = candidate["source_value"][name]
+            if span is not None:
+                exact = text[span["char_start"]:span["char_end"]]
+                assert hashlib.sha256(exact.encode()).hexdigest() == span["text_sha256"]
+        validate_candidate_identity(candidate)
+    assert report["inspection_scope"]["chunks_inspected"] == 20
+    assert report["counts"]["promoted_facts"] == 0 and report["database_changed"] is False
+    fields = {row["field"]: row for row in report["coverage"][0]["fields"]}
+    assert all(fields[field]["status"] == "pending_review" for field in printed)
+    tc = next(row for row in report["candidates"] if row["field"] == "tc_kelvin")
+    assert tc["subject"]["pressure_quantity"] is None
+    assert not any(row["field"] == "pressure_gpa" for row in report["candidates"])
+    repeated = await client.get(f"/v1/materials/{identifier}/enrichment")
+    assert repeated.status_code == 200 and repeated.json() == report
+    async with get_session_factory()() as session:
+        assert (await session.get(Material, identifier)).records == original_records
+        for index, (text, _, _) in enumerate(inventory):
+            assert (await session.get(Chunk, f"{papers['a']}:{index}")).text == text

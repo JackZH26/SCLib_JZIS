@@ -34,6 +34,27 @@ describe("Current bounded recovery metadata and source scope", () => {
   beforeEach(() => vi.resetAllMocks());
   afterEach(() => vi.restoreAllMocks());
 
+  it("exports every newly supported source field with raw tokens, roles and spans without exporting arbitrary nested context", () => {
+    const id = materialIds[0], body = report(id), base = clone(body.candidates[0]);
+    const fields = ["hc1_source_value", "gap_energy_source_value", "gap_ratio_source_value", "electronic_specific_heat_coefficient_source_value", "debye_temperature_source_value", "isotope_effect_exponent", "dtc_dp_source_value", "maximum_applied_pressure_source_value", "meissner_fraction_percent", "transition_width_source_value", "minimum_temperature_k", "t_cdw_k", "t_afm_k", "t_sdw_k"];
+    const valueSpan = { char_start: 20, char_end: 28, text_sha256: "3".repeat(64) };
+    body.candidates = fields.map((field, index) => ({ ...clone(base), candidate_id: `enrichment:${index.toString(16).padStart(64, "0")}`, field,
+      raw_value: "0.590(5) meV", value: "0.590(5) meV", quantity: null,
+      subject: { field_role: "reported_property", private_notes: "PRIVATE SOURCE VALUE" },
+      source_value: { raw_value: "0.590(5) meV", raw_unit: "meV", raw_uncertainty: "(5)", normalization: "none", role: "reported_property", field_cue: "synthetic test label", qualifiers: ["model_or_calculation_context"], value_span: { ...valueSpan, private_notes: "PRIVATE SOURCE VALUE" }, unit_span: null, cue_span: valueSpan, private_notes: "PRIVATE SOURCE VALUE", raw_record: { secret: "PRIVATE SOURCE VALUE" } },
+    }));
+    const exported = materialRecoveryMetadata(body, id)!;
+    expect(exported.candidates.map(row => row.field)).toEqual(fields);
+    expect(exported.returned_window.rejected_candidate_count).toBe(0);
+    for (const row of exported.candidates) {
+      expect(row.quantity).toBeNull();
+      expect(row.subject).toEqual({ field_role: "reported_property" });
+      expect(row.source_value).toEqual({ raw_value: "0.590(5) meV", raw_unit: "meV", raw_uncertainty: "(5)", normalization: "none", role: "reported_property", field_cue: "synthetic test label", qualifiers: ["model_or_calculation_context"], value_span: valueSpan, unit_span: null, cue_span: valueSpan });
+      expect(row.scientific_acceptance).toBe(false);
+    }
+    expect(JSON.stringify(exported)).not.toContain("PRIVATE SOURCE VALUE");
+  });
+
   it("keeps each paper’s actual budget and exclusions distinct, with unknown unsampled counts", async () => {
     vi.mocked(getMaterialEnrichment).mockResolvedValue(report());
     render(<MaterialEnrichment materialId={materialIds[0]} />);
