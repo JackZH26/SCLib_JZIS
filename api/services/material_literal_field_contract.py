@@ -42,4 +42,3 @@ QUALIFIERS = (
 REGISTRY_SHA256 = digest(
     {"version": VERSION, "fields": FIELDS, "roles": list(FIELD_ROLES)}
 )
-
