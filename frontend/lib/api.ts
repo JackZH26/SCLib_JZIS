@@ -1764,6 +1764,8 @@ export interface MaterialListResponse {
 }
 
 export interface MaterialListParams {
+  /** Literal catalogue formula text, not chemical equivalence or phase identity. */
+  q?: string;
   family?: string;
   tc_min?: number;
   ambient_sc?: boolean;
@@ -1789,6 +1791,7 @@ export interface MaterialListParams {
 
 export function listMaterials(params: MaterialListParams) {
   const qs = new URLSearchParams();
+  if (params.q) qs.set("q", params.q);
   if (params.family) qs.set("family", params.family);
   if (params.tc_min != null) qs.set("tc_min", String(params.tc_min));
   if (params.ambient_sc != null) qs.set("ambient_sc", String(params.ambient_sc));

@@ -17,7 +17,7 @@ from functools import wraps
 from typing import Annotated, Literal
 from weakref import WeakValueDictionary
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
 from sqlalchemy import cast, func, or_, select
 from sqlalchemy.dialects.postgresql import JSONPATH
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -44,6 +44,11 @@ from services.catalogue_cache import (
 from services.material_anomalies import material_review, record_assessment, review_context
 from services.material_crystal_references import fetch_material_crystal_references
 from services.material_external_references import fetch_external_references
+from services.material_formula_text import (
+    FormulaTextQueryError,
+    formula_text_contains,
+    formula_text_pattern,
+)
 from services.material_property_projection import project_material_semantics
 from services.material_scoped_properties import scoped_property_evidence
 from services.material_source_scope import current_visibility_allows_view as visibility_allows_view
@@ -80,9 +85,14 @@ async def _material_page_revision(db):
 
 def _material_cache_parameters(arguments):
     parameters = {key: value for key, value in arguments.items()
-                  if key not in {"db", "identity"}}
+                  if key not in {"db", "identity", "request"}}
     return parameters if all(value is None or type(value) in {str, bool, int, float}
                              for value in parameters.values()) else None
+
+
+def _check_formula_query_multiplicity(request):
+    if request is not None and len(request.query_params.getlist("q")) > 1:
+        raise HTTPException(422, "q must be supplied at most once")
 
 
 def _material_cache_key(revision, parameters, *, ranking=False):
@@ -110,6 +120,13 @@ def _cache_material_pages(function):
     async def cached(*args, **kwargs):
         arguments = signature.bind(*args, **kwargs)
         arguments.apply_defaults()
+        # Reject ambiguous raw input before a warm cache can replay the scalar
+        # FastAPI would otherwise choose from repeated query parameters.
+        _check_formula_query_multiplicity(arguments.arguments.get("request"))
+        try:
+            formula_text_pattern(arguments.arguments["q"])
+        except FormulaTextQueryError as exc:
+            raise HTTPException(422, str(exc)) from None
         db = arguments.arguments["db"]
         parameters = _material_cache_parameters(arguments.arguments)
         # FastAPI supplies scalar validated values. Internal callers that leave
@@ -311,8 +328,18 @@ async def list_materials(
     ),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001 — presence sets guest counter header
     db: AsyncSession = Depends(get_db),
+    q: Annotated[str | None, Query(
+        json_schema_extra={"maxLength": 200},
+        description="Case-insensitive literal catalogue formula text contains filter, with NFKC normalization for pasted subscripts. No alias, chemical-equivalence, phase or sample matching. Blank text applies no formula filter.",
+    )] = None,
+    request: Request = None,
 ) -> MaterialListResponse:
+    _check_formula_query_multiplicity(request)
     parameters = _material_cache_parameters(locals())
+    try:
+        formula_clause = formula_text_contains(Material.formula, q)
+    except FormulaTextQueryError as exc:
+        raise HTTPException(422, str(exc)) from None
     if structure_phase:
         raise HTTPException(422, "structure_phase filtering is unavailable until reviewed material/state associations exist. Inspect pending structure_evidence proposals; text labels are not coordinate structures.")
     if ambient_sc is False:
@@ -340,6 +367,11 @@ async def list_materials(
     def _apply(where_clause):
         nonlocal stmt
         stmt = stmt.where(where_clause)
+
+    # Formula text supplies only a necessary catalogue prefilter. Every
+    # visibility, live-source and same-occurrence predicate still runs below.
+    if formula_clause is not None:
+        _apply(formula_clause)
 
     for clause in material_prefilter(include_archive=include_pending):
         _apply(clause)
