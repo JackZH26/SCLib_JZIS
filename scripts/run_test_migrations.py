@@ -3205,6 +3205,8 @@ def main() -> None:
         from migration_legacy_corpus import empty_roundtrip as corpus_empty, retained_history as corpus_retained
         corpus_empty(capability, engine, config)
         corpus_retained(capability, engine, config)
+        from migration_source_expressions import empty_roundtrip as source_expression_empty
+        source_expression_empty(capability, engine, config)
         if recorder is not None:
             with engine.connect() as connection:
                 verify_postgres_identity(connection, capability)

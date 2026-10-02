@@ -11,6 +11,24 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class SchemaLifecycleBoundaryTests(unittest.TestCase):
+    def test_empty_expression_and_field_roundtrip_uses_separate_migration_database(self):
+        helper = (ROOT / "scripts/migration_source_expressions.py").read_text()
+        for marker in ('command.downgrade(config, "0082_source_property_pending")',
+                       'command.upgrade(config, "head")', "assert_empty(connection)",
+                       "snapshot(connection) == before", "objects(connection) == definitions",
+                       'assert any(before.values())', "verify_postgres_identity(connection, capability)"):
+            self.assertIn(marker, helper)
+        for forbidden in ("TRUNCATE", "DISABLE TRIGGER", "DELETE FROM"):
+            self.assertNotIn(forbidden, helper)
+        source = (ROOT / "scripts/run_test_migrations.py").read_text().split("def main()", 1)[1]
+        self.assertLess(source.index("corpus_retained(capability, engine, config)"),
+                        source.index("source_expression_empty(capability, engine, config)"))
+        self.assertLess(source.index("source_expression_empty(capability, engine, config)"),
+                        source.index('recorder.phase(connection, "final")'))
+        api_test = (ROOT / "api/tests/test_source_expression_intake_v2.py").read_text()
+        self.assertNotIn("async def test_empty_0083_roundtrip", api_test)
+        self.assertIn('with pytest.raises(RuntimeError, match="Refusing downgrade")', api_test)
+
     def test_result_passage_migration_is_additive_and_empty_roundtrip_is_last(self):
         migration = (ROOT / "api/alembic/versions/0078_scientific_result_passage.py").read_text()
         upgrade, downgrade = migration.split("def upgrade()", 1)[1].split("def downgrade()", 1)
