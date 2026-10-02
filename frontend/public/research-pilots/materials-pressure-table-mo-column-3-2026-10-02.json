@@ -1,0 +1,789 @@
+{
+  "version": "material-pressure-table-subject/1.0.0",
+  "original_batch_sha256": "788144f67d439d0a5051e3b5144c988311e5423ccfa56402beb5566744ebe284",
+  "source_subject_id": "mo_nominal_column_3",
+  "expression_count": 6,
+  "entries": [
+    {
+      "id": "source-record:mo:07",
+      "source_subject_id": "mo_nominal_column_3",
+      "source_id": "private-primary:arxiv:1603.02892:pdf-raw:20261002-r1",
+      "expression_key": "714247be1eadb8d625b3d82554795be44c03ebfeb7c8980d556b98ee2c9e4cce",
+      "field_id": "tc_kelvin",
+      "subject": {
+        "formula": "Mo5P1.07(4)B1.93(4)",
+        "sample_label": "Mo5PB2",
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "table1:nominal:mo5pb2:rho-zero",
+        "raw_label": "Tρ=0\nc"
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "8.8(2)",
+        "raw_unit": "K",
+        "value": null,
+        "unit": null,
+        "uncertainty": null,
+        "uncertainty_interpretation": null,
+        "approximate": false,
+        "relation": "unresolved",
+        "status": "unit_requires_review",
+        "unit_basis": "unresolved"
+      },
+      "conditions": [
+        {
+          "field_id": "method_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "resistivity",
+            "status": "source_statement"
+          }
+        },
+        {
+          "field_id": "criterion_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "resistivity reaches zero",
+            "status": "source_statement"
+          }
+        }
+      ],
+      "locator": {
+        "page": 3,
+        "slide": null,
+        "table": "Table I",
+        "row": 10,
+        "column": 3,
+        "section": "III. RESULTS AND DISCUSSION",
+        "member": "pdftotext-raw/page-3/table-I"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 10681,
+              "end": 10700,
+              "sha256": "5909431bb93561f669411926cfe65e5b84a12e948adb1dd4fb25ed8b3f906d33"
+            }
+          ],
+          "sample_label_spans": [
+            {
+              "start": 10628,
+              "end": 10634,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            }
+          ]
+        },
+        "window": {
+          "id": "table1:nominal:mo5pb2:rho-zero",
+          "label_spans": [
+            {
+              "start": 10940,
+              "end": 10946,
+              "sha256": "f558ce745b7ce0b7e95733a9dd030e109de62d5e3e16bb8f4f5933ab6910ef3b"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 10958,
+            "end": 10964,
+            "sha256": "f01042e751177ddf046e394cbed6559bacc1c31edf21699f1cdf92af6ebe37a4"
+          }
+        ],
+        "unit_spans": [
+          {
+            "start": 10948,
+            "end": 10949,
+            "sha256": "86be9a55762d316a3026c2836d044f5fc76e34da10e1b45feee5f18be7edb177"
+          }
+        ],
+        "conditions": [
+          {
+            "field_id": "method_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 8076,
+                "end": 8087,
+                "sha256": "c4ee0b1e5b04298471cffe2fc1bd5c1dd3fde022f5f75ac70d1d2584d6027115"
+              }
+            ],
+            "unit_spans": []
+          },
+          {
+            "field_id": "criterion_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 8250,
+                "end": 8274,
+                "sha256": "45ef77049fe3663634f3a78ae9b178201c8de6270878019abe07bbbe6ccad4b8"
+              }
+            ],
+            "unit_spans": []
+          }
+        ]
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    },
+    {
+      "id": "source-record:mo:08",
+      "source_subject_id": "mo_nominal_column_3",
+      "source_id": "private-primary:arxiv:1603.02892:pdf-raw:20261002-r1",
+      "expression_key": "a96c58073c1eb4fea65e4fa4bc0f12f95b526feeb33404f0f29fdffa4da485fa",
+      "field_id": "tc_kelvin",
+      "subject": {
+        "formula": "Mo5P1.07(4)B1.93(4)",
+        "sample_label": "Mo5PB2",
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "table1:nominal:mo5pb2:chi-onset",
+        "raw_label": "Tχ′\nonset\nc"
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "8.7(2)",
+        "raw_unit": "K",
+        "value": null,
+        "unit": null,
+        "uncertainty": null,
+        "uncertainty_interpretation": null,
+        "approximate": false,
+        "relation": "unresolved",
+        "status": "unit_requires_review",
+        "unit_basis": "unresolved"
+      },
+      "conditions": [
+        {
+          "field_id": "method_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "ac magnetic susceptibility",
+            "status": "source_statement"
+          }
+        },
+        {
+          "field_id": "criterion_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "onset of\ndiamagnetism",
+            "status": "source_statement"
+          }
+        }
+      ],
+      "locator": {
+        "page": 3,
+        "slide": null,
+        "table": "Table I",
+        "row": 11,
+        "column": 3,
+        "section": "III. RESULTS AND DISCUSSION",
+        "member": "pdftotext-raw/page-3/table-I"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 10681,
+              "end": 10700,
+              "sha256": "5909431bb93561f669411926cfe65e5b84a12e948adb1dd4fb25ed8b3f906d33"
+            }
+          ],
+          "sample_label_spans": [
+            {
+              "start": 10628,
+              "end": 10634,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            }
+          ]
+        },
+        "window": {
+          "id": "table1:nominal:mo5pb2:chi-onset",
+          "label_spans": [
+            {
+              "start": 10972,
+              "end": 10983,
+              "sha256": "1a57351dad0aeda5c83848a46956509bee0bfac4a73263e4ac64669b4a637b67"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 10995,
+            "end": 11001,
+            "sha256": "91bad098f9588975aad879062cde1c3937ce33989be4f4aaf1cbcf3ffdbadcc1"
+          }
+        ],
+        "unit_spans": [
+          {
+            "start": 10985,
+            "end": 10986,
+            "sha256": "86be9a55762d316a3026c2836d044f5fc76e34da10e1b45feee5f18be7edb177"
+          }
+        ],
+        "conditions": [
+          {
+            "field_id": "method_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 8045,
+                "end": 8071,
+                "sha256": "a10d03088a999327631a97feff6bf542cbed9fd1fdd7722001914745086e5e16"
+              }
+            ],
+            "unit_spans": []
+          },
+          {
+            "field_id": "criterion_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 8185,
+                "end": 8206,
+                "sha256": "e1b357bc53877615f984dcfe2830a1f73316d19f06994c52fa023ae41d49b079"
+              }
+            ],
+            "unit_spans": []
+          }
+        ]
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    },
+    {
+      "id": "source-record:mo:09",
+      "source_subject_id": "mo_nominal_column_3",
+      "source_id": "private-primary:arxiv:1603.02892:pdf-raw:20261002-r1",
+      "expression_key": "abe543bfcf015ec01a01a133ab8b26055c23749df1de5f6cf98d38cd155d1b01",
+      "field_id": "lattice_a",
+      "subject": {
+        "formula": "Mo5P1.07(4)B1.93(4)",
+        "sample_label": "Mo5PB2",
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "table1:nominal:mo5pb2:room-temperature-xrd",
+        "raw_label": "room temperature x-ray diffraction analysis"
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "5.97303(7)",
+        "raw_unit": "Å",
+        "value": null,
+        "unit": null,
+        "uncertainty": null,
+        "uncertainty_interpretation": null,
+        "approximate": false,
+        "relation": "unresolved",
+        "status": "unit_requires_review",
+        "unit_basis": "unresolved"
+      },
+      "conditions": [
+        {
+          "field_id": "window_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "room temperature",
+            "status": "source_statement"
+          }
+        },
+        {
+          "field_id": "method_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "Powder X-ray diffraction",
+            "status": "source_statement"
+          }
+        }
+      ],
+      "locator": {
+        "page": 3,
+        "slide": null,
+        "table": "Table I",
+        "row": 3,
+        "column": 3,
+        "section": "III. RESULTS AND DISCUSSION",
+        "member": "pdftotext-raw/page-3/table-I"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 10681,
+              "end": 10700,
+              "sha256": "5909431bb93561f669411926cfe65e5b84a12e948adb1dd4fb25ed8b3f906d33"
+            }
+          ],
+          "sample_label_spans": [
+            {
+              "start": 10628,
+              "end": 10634,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            }
+          ]
+        },
+        "window": {
+          "id": "table1:nominal:mo5pb2:room-temperature-xrd",
+          "label_spans": [
+            {
+              "start": 10395,
+              "end": 10438,
+              "sha256": "a2d934b53af6728332f623e9ff59c188157dec741155ac31c8f54026b7407c60"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 10738,
+            "end": 10748,
+            "sha256": "80dff8d7a98b3680345c5070b6c5f3bd89790e67bf897c3d06b85c497a77f32c"
+          }
+        ],
+        "unit_spans": [
+          {
+            "start": 10724,
+            "end": 10726,
+            "sha256": "446b2da699e20cd17905c4d73147935ffe84e37d2df872fb5c72fcf1838715cc"
+          }
+        ],
+        "conditions": [
+          {
+            "field_id": "window_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 10395,
+                "end": 10411,
+                "sha256": "bbd142092f244c7a50c9b8de416b741d3a2c512dbb9f369f0fc925b6c9d2a009"
+              }
+            ],
+            "unit_spans": []
+          },
+          {
+            "field_id": "method_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 5472,
+                "end": 5496,
+                "sha256": "632baa32ed705c580bcdd464fee22d7856991208ff24d22069cfbff88cabcf9c"
+              }
+            ],
+            "unit_spans": []
+          }
+        ]
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    },
+    {
+      "id": "source-record:mo:10",
+      "source_subject_id": "mo_nominal_column_3",
+      "source_id": "private-primary:arxiv:1603.02892:pdf-raw:20261002-r1",
+      "expression_key": "29803fccbf284385d2b6fd495af7af7336f4a82a92125cd53fcefb8a5fc4252f",
+      "field_id": "lattice_c",
+      "subject": {
+        "formula": "Mo5P1.07(4)B1.93(4)",
+        "sample_label": "Mo5PB2",
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "table1:nominal:mo5pb2:room-temperature-xrd",
+        "raw_label": "room temperature x-ray diffraction analysis"
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "11.076(1)",
+        "raw_unit": "Å",
+        "value": null,
+        "unit": null,
+        "uncertainty": null,
+        "uncertainty_interpretation": null,
+        "approximate": false,
+        "relation": "unresolved",
+        "status": "unit_requires_review",
+        "unit_basis": "unresolved"
+      },
+      "conditions": [
+        {
+          "field_id": "window_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "room temperature",
+            "status": "source_statement"
+          }
+        },
+        {
+          "field_id": "method_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "Powder X-ray diffraction",
+            "status": "source_statement"
+          }
+        }
+      ],
+      "locator": {
+        "page": 3,
+        "slide": null,
+        "table": "Table I",
+        "row": 4,
+        "column": 3,
+        "section": "III. RESULTS AND DISCUSSION",
+        "member": "pdftotext-raw/page-3/table-I"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 10681,
+              "end": 10700,
+              "sha256": "5909431bb93561f669411926cfe65e5b84a12e948adb1dd4fb25ed8b3f906d33"
+            }
+          ],
+          "sample_label_spans": [
+            {
+              "start": 10628,
+              "end": 10634,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            }
+          ]
+        },
+        "window": {
+          "id": "table1:nominal:mo5pb2:room-temperature-xrd",
+          "label_spans": [
+            {
+              "start": 10395,
+              "end": 10438,
+              "sha256": "a2d934b53af6728332f623e9ff59c188157dec741155ac31c8f54026b7407c60"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 10777,
+            "end": 10786,
+            "sha256": "f13da59dfcefa7fa0acbc6f4bea6189b4e077db0d68144f0d118404077b82264"
+          }
+        ],
+        "unit_spans": [
+          {
+            "start": 10763,
+            "end": 10765,
+            "sha256": "446b2da699e20cd17905c4d73147935ffe84e37d2df872fb5c72fcf1838715cc"
+          }
+        ],
+        "conditions": [
+          {
+            "field_id": "window_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 10395,
+                "end": 10411,
+                "sha256": "bbd142092f244c7a50c9b8de416b741d3a2c512dbb9f369f0fc925b6c9d2a009"
+              }
+            ],
+            "unit_spans": []
+          },
+          {
+            "field_id": "method_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 5472,
+                "end": 5496,
+                "sha256": "632baa32ed705c580bcdd464fee22d7856991208ff24d22069cfbff88cabcf9c"
+              }
+            ],
+            "unit_spans": []
+          }
+        ]
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    },
+    {
+      "id": "source-record:mo:11",
+      "source_subject_id": "mo_nominal_column_3",
+      "source_id": "private-primary:arxiv:1603.02892:pdf-raw:20261002-r1",
+      "expression_key": "2141ea83febee0038a2bc179b236a0c8695aab44961b65bf3ef66b775a51f2e3",
+      "field_id": "structure_statement",
+      "subject": {
+        "formula": "Mo5P1.07(4)B1.93(4)",
+        "sample_label": "Mo5PB2",
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "table1:nominal:mo5pb2:room-temperature-xrd",
+        "raw_label": "room temperature x-ray diffraction analysis"
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "I4/mcm",
+        "status": "source_statement"
+      },
+      "conditions": [
+        {
+          "field_id": "window_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "room temperature",
+            "status": "source_statement"
+          }
+        },
+        {
+          "field_id": "method_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "Powder X-ray diffraction",
+            "status": "source_statement"
+          }
+        }
+      ],
+      "locator": {
+        "page": 3,
+        "slide": null,
+        "table": "Table I",
+        "row": null,
+        "column": 3,
+        "section": "III. RESULTS AND DISCUSSION",
+        "member": "pdftotext-raw/page-3/table-I"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 10681,
+              "end": 10700,
+              "sha256": "5909431bb93561f669411926cfe65e5b84a12e948adb1dd4fb25ed8b3f906d33"
+            }
+          ],
+          "sample_label_spans": [
+            {
+              "start": 10628,
+              "end": 10634,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            }
+          ]
+        },
+        "window": {
+          "id": "table1:nominal:mo5pb2:room-temperature-xrd",
+          "label_spans": [
+            {
+              "start": 10395,
+              "end": 10438,
+              "sha256": "a2d934b53af6728332f623e9ff59c188157dec741155ac31c8f54026b7407c60"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 10452,
+            "end": 10458,
+            "sha256": "352a4a9ea4c7d0344bd3732acd253d9be9658fc23abe4623c0f9e9f515f41608"
+          }
+        ],
+        "unit_spans": [],
+        "conditions": [
+          {
+            "field_id": "window_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 10395,
+                "end": 10411,
+                "sha256": "bbd142092f244c7a50c9b8de416b741d3a2c512dbb9f369f0fc925b6c9d2a009"
+              }
+            ],
+            "unit_spans": []
+          },
+          {
+            "field_id": "method_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 5472,
+                "end": 5496,
+                "sha256": "632baa32ed705c580bcdd464fee22d7856991208ff24d22069cfbff88cabcf9c"
+              }
+            ],
+            "unit_spans": []
+          }
+        ]
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    },
+    {
+      "id": "source-record:mo:12",
+      "source_subject_id": "mo_nominal_column_3",
+      "source_id": "private-primary:arxiv:1603.02892:pdf-raw:20261002-r1",
+      "expression_key": "c4987c5f1531ec5f8e0db1987efe948791ffcc3345a8e49c026b47ce9367dd2b",
+      "field_id": "sample_form_statement",
+      "subject": {
+        "formula": "Mo5P1.07(4)B1.93(4)",
+        "sample_label": "Mo5PB2",
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "table1:nominal:mo5pb2:sample",
+        "raw_label": "Nominal comp."
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "Polycrystalline samples",
+        "status": "source_statement"
+      },
+      "conditions": [],
+      "locator": {
+        "page": 1,
+        "slide": null,
+        "table": null,
+        "row": null,
+        "column": null,
+        "section": "II. PROCEDURES",
+        "member": "pdftotext-raw/page-1/procedures; table-I nominal column declaration"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 10681,
+              "end": 10700,
+              "sha256": "5909431bb93561f669411926cfe65e5b84a12e948adb1dd4fb25ed8b3f906d33"
+            }
+          ],
+          "sample_label_spans": [
+            {
+              "start": 10628,
+              "end": 10634,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            }
+          ]
+        },
+        "window": {
+          "id": "table1:nominal:mo5pb2:sample",
+          "label_spans": [
+            {
+              "start": 10602,
+              "end": 10615,
+              "sha256": "24399bb5d373bbc5ffc4583eb4d6ad927afad30b74edb02a2d7d7135c46bdbe7"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 4462,
+            "end": 4485,
+            "sha256": "8dd60b06dac4bd33cc1bb2b6e227992e0c871e19bea8ec22e30280aa60967fdc"
+          }
+        ],
+        "unit_spans": [],
+        "conditions": []
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    }
+  ],
+  "sources": [
+    {
+      "id": "private-primary:arxiv:1603.02892:pdf-raw:20261002-r1",
+      "public_reference_label": "arxiv:1603.02892:captured-pdf-2026-10-02",
+      "paper_id": "arxiv:1603.02892",
+      "source_url": "https://arxiv.org/pdf/1603.02892",
+      "source_revision": "arXiv:1603.02892v1 (label observed in captured PDF)",
+      "source_revision_basis": "label observed in captured PDF; current publication equivalence unresolved",
+      "parent_pdf_sha256": "e132a511543478639f01bf06f43bd7f4d4d1ef4d29415e2024b1a5b1f8747c3e",
+      "source_content_sha256": "cad135f61877a5c6ef43162ec5276992efd5c1df24e6455b7fa80a9990885122",
+      "prepared_package_file_sha256": "f503220bce5941786798573a6d3f6acbfdd858d4101a35ab367026484566cd28",
+      "captured_at_utc": "2026-10-02T04:01:01.451775+00:00",
+      "source_currentness": "unresolved",
+      "source_rights": "unresolved",
+      "parent_source_bytes_independently_reextracted": true,
+      "parent_reextract_review_receipt_sha256": "e31b5f67dd6042b8920b4d62427862e92bca6ddb368a5235cd1e8b60a13516fe",
+      "native_semantic_parity_receipt_sha256": "2f9a7bb75ed44cb0147df01617c4124c7e1b8ab8e11c16d13a21974588604b06",
+      "current_url_is_capture_version_pinned": false,
+      "revision_correspondence": "unresolved",
+      "official_arxiv_v1_submission_date": "2016-03-09"
+    }
+  ],
+  "status": "pending",
+  "selected_result_association": "unestablished",
+  "sample_identity_established": false,
+  "phase_identity_established": false,
+  "scientific_acceptance": false,
+  "canonical_promotions": 0,
+  "ml_training_approved": false,
+  "formal_human_review": false,
+  "formal_scientific_review": false,
+  "database_changed": false,
+  "original_fulltext_or_private_context_included": false,
+  "rights_to_original_fulltext_redistribution_established": false,
+  "counts_are_independent_experiments": false
+}

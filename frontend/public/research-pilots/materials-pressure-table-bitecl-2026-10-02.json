@@ -1,0 +1,684 @@
+{
+  "version": "material-pressure-table-subject/1.0.0",
+  "original_batch_sha256": "788144f67d439d0a5051e3b5144c988311e5423ccfa56402beb5566744ebe284",
+  "source_subject_id": "bitecl",
+  "expression_count": 6,
+  "entries": [
+    {
+      "id": "source-record:bitecl:01",
+      "source_subject_id": "bitecl",
+      "source_id": "private-primary:arxiv:1501.06203:pdf-raw:20261002-r1",
+      "expression_key": "2ff50ea81eaeb8eb4d97c9e73cfc8d8b5d6cbc2cf4bcc783e87290e862bcc043",
+      "field_id": "tc_kelvin",
+      "subject": {
+        "formula": "BiTeCl",
+        "sample_label": null,
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "tc:highest:15gpa",
+        "raw_label": "highest critical temperature"
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "7",
+        "raw_unit": "K",
+        "value": 7.0,
+        "unit": "K",
+        "uncertainty": null,
+        "uncertainty_interpretation": null,
+        "approximate": false,
+        "relation": "exact",
+        "status": "parsed",
+        "unit_basis": "source_printed"
+      },
+      "conditions": [
+        {
+          "field_id": "pressure_gpa",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "15",
+            "raw_unit": "GPa",
+            "value": null,
+            "unit": null,
+            "uncertainty": null,
+            "uncertainty_interpretation": null,
+            "approximate": false,
+            "relation": "unresolved",
+            "status": "unit_requires_review",
+            "unit_basis": "unresolved"
+          }
+        }
+      ],
+      "locator": {
+        "page": 2,
+        "slide": null,
+        "table": null,
+        "row": null,
+        "column": null,
+        "section": "Experimental methods and high-pressure results",
+        "member": "pdftotext-raw/page-2"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 99,
+              "end": 105,
+              "sha256": "38b7b1a84b8ada41cfba2745d3dcb172cab020484cfb374f98de5079cda782a7"
+            }
+          ],
+          "sample_label_spans": []
+        },
+        "window": {
+          "id": "tc:highest:15gpa",
+          "label_spans": [
+            {
+              "start": 6414,
+              "end": 6442,
+              "sha256": "c407f3af8d52ce434be209b27d5c1d9e1c2c8e3d227b4c208b319d3a7e5b7917"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 6449,
+            "end": 6450,
+            "sha256": "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451"
+          }
+        ],
+        "unit_spans": [
+          {
+            "start": 6451,
+            "end": 6452,
+            "sha256": "86be9a55762d316a3026c2836d044f5fc76e34da10e1b45feee5f18be7edb177"
+          }
+        ],
+        "conditions": [
+          {
+            "field_id": "pressure_gpa",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 6456,
+                "end": 6458,
+                "sha256": "e629fa6598d732768f7c726b4b621285f9c3b85303900aa912017db7617d8bdb"
+              }
+            ],
+            "unit_spans": [
+              {
+                "start": 6459,
+                "end": 6462,
+                "sha256": "2a08ccbefb3cecad479dc0de498d1ce17cc0f262635cfcc4b697ab83da51fe93"
+              }
+            ]
+          }
+        ]
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    },
+    {
+      "id": "source-record:bitecl:02",
+      "source_subject_id": "bitecl",
+      "source_id": "private-primary:arxiv:1501.06203:pdf-raw:20261002-r1",
+      "expression_key": "4dbfc3e9e8201ba98ad96cf9818a0a94ca8cf340a0a6498e1049e73cff1f26f7",
+      "field_id": "pressure_gpa",
+      "subject": {
+        "formula": "BiTeCl",
+        "sample_label": null,
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "tc:highest:15gpa",
+        "raw_label": "highest critical temperature"
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "15",
+        "raw_unit": "GPa",
+        "value": null,
+        "unit": null,
+        "uncertainty": null,
+        "uncertainty_interpretation": null,
+        "approximate": false,
+        "relation": "unresolved",
+        "status": "unit_requires_review",
+        "unit_basis": "unresolved"
+      },
+      "conditions": [],
+      "locator": {
+        "page": 2,
+        "slide": null,
+        "table": null,
+        "row": null,
+        "column": null,
+        "section": "Experimental methods and high-pressure results",
+        "member": "pdftotext-raw/page-2"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 99,
+              "end": 105,
+              "sha256": "38b7b1a84b8ada41cfba2745d3dcb172cab020484cfb374f98de5079cda782a7"
+            }
+          ],
+          "sample_label_spans": []
+        },
+        "window": {
+          "id": "tc:highest:15gpa",
+          "label_spans": [
+            {
+              "start": 6414,
+              "end": 6442,
+              "sha256": "c407f3af8d52ce434be209b27d5c1d9e1c2c8e3d227b4c208b319d3a7e5b7917"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 6456,
+            "end": 6458,
+            "sha256": "e629fa6598d732768f7c726b4b621285f9c3b85303900aa912017db7617d8bdb"
+          }
+        ],
+        "unit_spans": [
+          {
+            "start": 6459,
+            "end": 6462,
+            "sha256": "2a08ccbefb3cecad479dc0de498d1ce17cc0f262635cfcc4b697ab83da51fe93"
+          }
+        ],
+        "conditions": []
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    },
+    {
+      "id": "source-record:bitecl:03",
+      "source_subject_id": "bitecl",
+      "source_id": "private-primary:arxiv:1501.06203:pdf-raw:20261002-r1",
+      "expression_key": "66119c2d9b4cbc3f88790de2acd43cce2a1b15f95f80d2cdecc88c1057ef6f3b",
+      "field_id": "sample_form_statement",
+      "subject": {
+        "formula": "BiTeCl",
+        "sample_label": null,
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "transport:sample",
+        "raw_label": "High quality single crystals"
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "single crystals",
+        "status": "source_statement"
+      },
+      "conditions": [],
+      "locator": {
+        "page": 2,
+        "slide": null,
+        "table": null,
+        "row": null,
+        "column": null,
+        "section": "Experimental methods and high-pressure results",
+        "member": "pdftotext-raw/page-2"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 99,
+              "end": 105,
+              "sha256": "38b7b1a84b8ada41cfba2745d3dcb172cab020484cfb374f98de5079cda782a7"
+            }
+          ],
+          "sample_label_spans": []
+        },
+        "window": {
+          "id": "transport:sample",
+          "label_spans": [
+            {
+              "start": 6609,
+              "end": 6637,
+              "sha256": "1fb836840c67b50369e1fb68382545e59ca43ede443f0a928e7e18a3282b6988"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 6622,
+            "end": 6637,
+            "sha256": "d6ae1aa01e6d466ff9552410c82adaff7bdc6b0fdb47ed504d59d753e60810ea"
+          }
+        ],
+        "unit_spans": [],
+        "conditions": []
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    },
+    {
+      "id": "source-record:bitecl:04",
+      "source_subject_id": "bitecl",
+      "source_id": "private-primary:arxiv:1501.06203:pdf-raw:20261002-r1",
+      "expression_key": "4413a9c1050eba9cc7584bd7a89074218406f5f0c969f35eee9b72e560afe226",
+      "field_id": "method_statement",
+      "subject": {
+        "formula": "BiTeCl",
+        "sample_label": null,
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "transport:instrument",
+        "raw_label": "Resistivity\nand Hall coefficient"
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "Resistivity\nand Hall coefficient were measured using the Quantum\nDesign PPMS-9.",
+        "status": "source_statement"
+      },
+      "conditions": [],
+      "locator": {
+        "page": 2,
+        "slide": null,
+        "table": null,
+        "row": null,
+        "column": null,
+        "section": "Experimental methods and high-pressure results",
+        "member": "pdftotext-raw/page-2"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 99,
+              "end": 105,
+              "sha256": "38b7b1a84b8ada41cfba2745d3dcb172cab020484cfb374f98de5079cda782a7"
+            }
+          ],
+          "sample_label_spans": []
+        },
+        "window": {
+          "id": "transport:instrument",
+          "label_spans": [
+            {
+              "start": 7144,
+              "end": 7176,
+              "sha256": "189a4d8f59a62a533988ca24482d6c899a668f721bb9f5ae19f90bef4714c261"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 7144,
+            "end": 7223,
+            "sha256": "b49207222ca7e6ad29013f002e87d5179dc17ae06ba9fb2ef91309bf611c2635"
+          }
+        ],
+        "unit_spans": [],
+        "conditions": []
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    },
+    {
+      "id": "source-record:bitecl:05",
+      "source_subject_id": "bitecl",
+      "source_id": "private-primary:arxiv:1501.06203:pdf-raw:20261002-r1",
+      "expression_key": "4f3b5c8243d5349954ae412d46391e511b7adb12bc0c02b8f2856e3516349e09",
+      "field_id": "method_statement",
+      "subject": {
+        "formula": "BiTeCl",
+        "sample_label": null,
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "figure2-caption:criterion:24.1gpa",
+        "raw_label": "24.1 GPa and 50.8 GPa, respectively."
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "resistivity",
+        "status": "source_statement"
+      },
+      "conditions": [
+        {
+          "field_id": "criterion_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "90% resistivity transition",
+            "status": "source_statement"
+          }
+        },
+        {
+          "field_id": "pressure_gpa",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "24.1",
+            "raw_unit": "GPa",
+            "value": 24.1,
+            "unit": "GPa",
+            "uncertainty": null,
+            "uncertainty_interpretation": null,
+            "approximate": false,
+            "relation": "exact",
+            "status": "parsed",
+            "unit_basis": "source_printed"
+          }
+        }
+      ],
+      "locator": {
+        "page": 2,
+        "slide": null,
+        "table": null,
+        "row": null,
+        "column": null,
+        "section": "Figure 2 caption",
+        "member": "pdftotext-raw/page-2/figure-2-caption"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 99,
+              "end": 105,
+              "sha256": "38b7b1a84b8ada41cfba2745d3dcb172cab020484cfb374f98de5079cda782a7"
+            }
+          ],
+          "sample_label_spans": []
+        },
+        "window": {
+          "id": "figure2-caption:criterion:24.1gpa",
+          "label_spans": [
+            {
+              "start": 8110,
+              "end": 8146,
+              "sha256": "38a2c9e51fdbab46562b0824a7c7fa6f5f69bd8872ae46ddf4ba0b2c3a11edda"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 8178,
+            "end": 8189,
+            "sha256": "c4ee0b1e5b04298471cffe2fc1bd5c1dd3fde022f5f75ac70d1d2584d6027115"
+          }
+        ],
+        "unit_spans": [],
+        "conditions": [
+          {
+            "field_id": "criterion_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 8174,
+                "end": 8200,
+                "sha256": "34bfba3f6822a317267a0736dd969ae6d1dba18455a9acb5c09d16dfe8c5352a"
+              }
+            ],
+            "unit_spans": []
+          },
+          {
+            "field_id": "pressure_gpa",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 8110,
+                "end": 8114,
+                "sha256": "f19e213ffd2e15c947d3e383f65e62c1af8daff69fb8f54878888ee3be5d7017"
+              }
+            ],
+            "unit_spans": [
+              {
+                "start": 8115,
+                "end": 8118,
+                "sha256": "2a08ccbefb3cecad479dc0de498d1ce17cc0f262635cfcc4b697ab83da51fe93"
+              }
+            ]
+          }
+        ]
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    },
+    {
+      "id": "source-record:bitecl:06",
+      "source_subject_id": "bitecl",
+      "source_id": "private-primary:arxiv:1501.06203:pdf-raw:20261002-r1",
+      "expression_key": "f388f5ce14c9aaf9658c7cce998badaa225633e6ad5acaf2aeee61fae39d3200",
+      "field_id": "method_statement",
+      "subject": {
+        "formula": "BiTeCl",
+        "sample_label": null,
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "figure2-caption:criterion:50.8gpa",
+        "raw_label": "24.1 GPa and 50.8 GPa, respectively."
+      },
+      "source_role": "source_reported",
+      "knowledge_origin": "Observed",
+      "value": {
+        "raw_value": "resistivity",
+        "status": "source_statement"
+      },
+      "conditions": [
+        {
+          "field_id": "criterion_statement",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "90% resistivity transition",
+            "status": "source_statement"
+          }
+        },
+        {
+          "field_id": "pressure_gpa",
+          "role": "reported_result_condition",
+          "value": {
+            "raw_value": "50.8",
+            "raw_unit": "GPa",
+            "value": 50.8,
+            "unit": "GPa",
+            "uncertainty": null,
+            "uncertainty_interpretation": null,
+            "approximate": false,
+            "relation": "exact",
+            "status": "parsed",
+            "unit_basis": "source_printed"
+          }
+        }
+      ],
+      "locator": {
+        "page": 2,
+        "slide": null,
+        "table": null,
+        "row": null,
+        "column": null,
+        "section": "Figure 2 caption",
+        "member": "pdftotext-raw/page-2/figure-2-caption"
+      },
+      "field_spans": {
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 99,
+              "end": 105,
+              "sha256": "38b7b1a84b8ada41cfba2745d3dcb172cab020484cfb374f98de5079cda782a7"
+            }
+          ],
+          "sample_label_spans": []
+        },
+        "window": {
+          "id": "figure2-caption:criterion:50.8gpa",
+          "label_spans": [
+            {
+              "start": 8110,
+              "end": 8146,
+              "sha256": "38a2c9e51fdbab46562b0824a7c7fa6f5f69bd8872ae46ddf4ba0b2c3a11edda"
+            }
+          ]
+        },
+        "value_spans": [
+          {
+            "start": 8178,
+            "end": 8189,
+            "sha256": "c4ee0b1e5b04298471cffe2fc1bd5c1dd3fde022f5f75ac70d1d2584d6027115"
+          }
+        ],
+        "unit_spans": [],
+        "conditions": [
+          {
+            "field_id": "criterion_statement",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 8174,
+                "end": 8200,
+                "sha256": "34bfba3f6822a317267a0736dd969ae6d1dba18455a9acb5c09d16dfe8c5352a"
+              }
+            ],
+            "unit_spans": []
+          },
+          {
+            "field_id": "pressure_gpa",
+            "role": "reported_result_condition",
+            "value_spans": [
+              {
+                "start": 8123,
+                "end": 8127,
+                "sha256": "4b496eeadd9973b98c5c89462c0cff7495d74d62ab9253a635394e0fed996ef7"
+              }
+            ],
+            "unit_spans": [
+              {
+                "start": 8115,
+                "end": 8118,
+                "sha256": "2a08ccbefb3cecad479dc0de498d1ce17cc0f262635cfcc4b697ab83da51fe93"
+              }
+            ]
+          }
+        ]
+      },
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "ml_training_approved": false,
+      "formal_human_review": false,
+      "formal_scientific_review": false,
+      "database_changed": false
+    }
+  ],
+  "sources": [
+    {
+      "id": "private-primary:arxiv:1501.06203:pdf-raw:20261002-r1",
+      "public_reference_label": "arxiv:1501.06203:captured-pdf-2026-10-02",
+      "paper_id": "arxiv:1501.06203",
+      "source_url": "https://arxiv.org/pdf/1501.06203",
+      "source_revision": "arXiv:1501.06203v1 (label observed in captured PDF)",
+      "source_revision_basis": "label observed in captured PDF; current publication equivalence unresolved",
+      "parent_pdf_sha256": "869767ddd980c07e2f2d86ce0eae94dd7e906b758e8be0b2dfcd5b2d9967b5d2",
+      "source_content_sha256": "fc724806dbc74299c8b782b523ce5433ff07cae73efb84e945613f9501750451",
+      "prepared_package_file_sha256": "34bb4c106b5d97c0f883b3bdda25046f031a513b6fbeb16d6688c6feab55bd82",
+      "captured_at_utc": "2026-10-02T04:01:00.130955+00:00",
+      "source_currentness": "unresolved",
+      "source_rights": "unresolved",
+      "parent_source_bytes_independently_reextracted": true,
+      "parent_reextract_review_receipt_sha256": "e31b5f67dd6042b8920b4d62427862e92bca6ddb368a5235cd1e8b60a13516fe",
+      "native_semantic_parity_receipt_sha256": "2f9a7bb75ed44cb0147df01617c4124c7e1b8ab8e11c16d13a21974588604b06",
+      "current_url_is_capture_version_pinned": false,
+      "revision_correspondence": "unresolved",
+      "pdf_internal_date_raw": "July 7, 2018",
+      "official_arxiv_v1_submission_date": "2015-01-25"
+    }
+  ],
+  "status": "pending",
+  "selected_result_association": "unestablished",
+  "sample_identity_established": false,
+  "phase_identity_established": false,
+  "scientific_acceptance": false,
+  "canonical_promotions": 0,
+  "ml_training_approved": false,
+  "formal_human_review": false,
+  "formal_scientific_review": false,
+  "database_changed": false,
+  "original_fulltext_or_private_context_included": false,
+  "rights_to_original_fulltext_redistribution_established": false,
+  "counts_are_independent_experiments": false,
+  "source_label_conflict": {
+    "source_id": "private-primary:arxiv:1501.06203:pdf-raw:20261002-r1",
+    "figure": "Figure 2",
+    "pdf_page": 2,
+    "caption_and_main_text_pressure_raw": "50.8 GPa",
+    "inset_legend_pressure_raw": "50.1 GPa",
+    "caption_pressure_span": {
+      "start": 8123,
+      "end": 8127,
+      "sha256": "4b496eeadd9973b98c5c89462c0cff7495d74d62ab9253a635394e0fed996ef7"
+    },
+    "inset_legend_span": {
+      "start": 7919,
+      "end": 7927,
+      "sha256": "c316dc7c9732dfd711d4e17cffaafcecbf8a7768136b3b940315ee40b666bd08"
+    },
+    "resolved": false,
+    "caption_expression_window_id": "figure2-caption:criterion:50.8gpa",
+    "common_physical_pressure_established": false
+  }
+}
