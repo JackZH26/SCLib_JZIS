@@ -60,14 +60,9 @@ def _migration(connection, action):
         getattr(module, action)()
 
 
-@pytest.mark.asyncio
-async def test_empty_0083_roundtrip_preserves_all_0082_rows(db_session):
-    before = await state(db_session)
-    connection = await db_session.connection()
-    await connection.run_sync(lambda conn: _migration(conn, "downgrade"))
-    await connection.run_sync(lambda conn: _migration(conn, "upgrade"))
-    assert await state(db_session) == before
-    await db_session.commit()
+# Empty 0083/0084 round trips run in scripts/migration_source_expressions.py
+# on the runner's separate migration database. This API database intentionally
+# retains earlier tests' committed audit rows; nonempty refusal stays below.
 
 
 @pytest.mark.asyncio

@@ -200,7 +200,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
       <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <PropertyEvidenceFact evidence={mat.property_evidence} field="tc_max" />
         <PropertyEvidenceFact evidence={mat.property_evidence} field="tc_ambient" />
-        <Fact label="arXiv year" value={String(mat.arxiv_year ?? "—")} />
+        <Fact label="Catalogue year" value={String(mat.arxiv_year ?? "—")} />
         <Fact label="Source links · not replications" value={materialSourceCountLabel(mat.material_semantics, mat.total_papers)} />
       </section>
       <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Reported classifications and mechanism evidence</summary><div className="mt-4"><MaterialSemanticsPanel semantics={mat.material_semantics} /></div></details>
@@ -294,6 +294,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
         <ExternalStructureReferences materialId={mat.id} />
         <ExternalCalculationReferences materialId={mat.id} />
       </MaterialProviderAvailabilityProvider>}
+      <p className="text-xs text-sage-muted"><Link href={`/dashboard/research/material-field-cases?material=${encodeURIComponent(mat.id)}`} prefetch={false} className="text-accent-deep underline">Open private field cases for this material</Link> · Authorized workspace; source proposals remain pending.</p>
 
     </main>
   );
