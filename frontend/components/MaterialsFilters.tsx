@@ -3,7 +3,7 @@ import { FamilyFilterField } from "@/components/FamilyFilterField";
 import { MaterialsOriginField } from "@/components/MaterialsOriginField";
 import { MATERIALS_ADVANCED_KEYS, materialFilterChips, materialsHref, type MaterialsQuery } from "@/lib/materials-browser";
 
-const FIELD_KEYS = new Set(["family", "tc_min", "pressure_max", "knowledge_origin", "experimental_only", "page", "sort", "per_page", ...MATERIALS_ADVANCED_KEYS]);
+const FIELD_KEYS = new Set(["q", "family", "tc_min", "pressure_max", "knowledge_origin", "experimental_only", "page", "sort", "per_page", ...MATERIALS_ADVANCED_KEYS]);
 
 export function MaterialsFilters({ query, pageSize }: { query: MaterialsQuery; pageSize: number }) {
   const chips = materialFilterChips(query);
@@ -19,6 +19,7 @@ export function MaterialsFilters({ query, pageSize }: { query: MaterialsQuery; p
       <input type="hidden" name="per_page" value={pageSize} />
       {Object.entries(query).filter(([key, value]) => value && !FIELD_KEYS.has(key)).map(([key, value]) => <input key={key} type="hidden" name={key} value={value} />)}
       <div className="materials-basic-grid">
+        <label className="materials-field materials-formula-field"><span id="materials-formula-label">Formula contains</span><input type="search" name="q" maxLength={400} defaultValue={query.q ?? ""} placeholder="e.g. NbN or BiTeCl" aria-labelledby="materials-formula-label" aria-describedby="materials-formula-help" /><small id="materials-formula-help">Case-insensitive text, including subscripts.</small></label>
         <div className="materials-field materials-family-field"><span id="materials-family-label">Family</span><FamilyFilterField key={query.family ?? ""} initial={query.family ?? ""} /></div>
         <label className="materials-field"><span>Tc ≥ (K)</span><input type="number" name="tc_min" min="0" step="any" defaultValue={query.tc_min ?? ""} placeholder="Any Tc" /></label>
         <label className="materials-field"><span>Pressure ≤ (GPa)</span><input type="number" name="pressure_max" min="0" step="any" defaultValue={query.pressure_max ?? ""} placeholder="Any pressure" /></label>

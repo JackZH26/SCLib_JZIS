@@ -1,0 +1,17 @@
+# Materials formula lookup
+
+The Materials catalogue now has a **Formula contains** input in the existing GET filter form. Researchers can find catalogue rows while retaining family, Tc, pressure, result-origin and advanced filters. Submitting a new query or removing its chip resets pagination; Clear filters returns to the unfiltered catalogue.
+
+`GET /v1/materials?q=CrB₂` applies case-insensitive literal text containment to catalogue formula labels. Both stored labels and query text receive NFKC normalization, so pasted subscripts match ordinary digits. `CrB2` can also match `CrB20`; `B2Cr` is not treated as equivalent. Percent, underscore and backslash remain literal characters. This lookup does not establish chemical equivalence, an alias, a phase, a physical sample or a shared material state.
+
+The query is optional and blank text applies no formula filter. The API rejects C0/C1 controls and text exceeding 200 Unicode code points before or after normalization. The page validates the same raw and normalized limits before requesting results. Its native input allows 400 UTF-16 units so 200 non-BMP code points fit; the page and API still enforce the 200-code-point limit. Whitespace removal matches Python's `str.strip`; U+FEFF remains literal text. Error messages do not echo submitted text.
+
+The API rejects repeated `q` parameters before catalogue/cache reads, including warm-cache requests. The page rejects repeated filter parameters with a static alert; first values are retained only for displaying removable controls and are never sent as an accepted query. Submitting the single-value form or Clear filters lets the reader recover.
+
+Formula text is only a catalogue prefilter. Current source eligibility, visibility and same-result Tc/pressure/origin rules still determine returned rows. The formula query alone does not choose a different Tc observation. Page and ranking caches include `q`, and warm responses still recheck source eligibility.
+
+The PostgreSQL implementation uses the fixed `NFKC` grammar token and a bound, escaped LIKE pattern. The database must use UTF8, as documented in [PostgreSQL string functions](https://www.postgresql.org/docs/15/functions-string.html). This change adds no schema migration, scientific property, catalogue promotion or workflow permission.
+
+Local validation: 164 Python tests passed using fresh owned PostgreSQL/Redis services (16 new native cases, 73 helper cases and 75 existing catalogue regressions); all owned services were cleaned up. The focused frontend run passed 43 tests across three files, and TypeScript and the production build passed. Browser checks cover the GET form, keyboard submission, preserving other filters, chip removal, responsive layout, repeated-query recovery, non-BMP input and U+FEFF preservation. The browser preview uses an inert API destination: its unavailable-results message is expected and does not validate scientific result contents. Real query and source-policy behavior is covered by the native integration cases.
+
+The new browser navigation regression is included for the ordinary repository CI. Public deployment acceptance is recorded separately after the exact release is published.

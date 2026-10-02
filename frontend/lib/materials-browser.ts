@@ -4,10 +4,23 @@ import { eligibleAtomicItem, hasPropertyContract, objectValue, selectedProperty 
 import { visibilityIsRestricted } from "@/lib/material-visibility";
 
 export type MaterialsQuery = Record<string, string | undefined>;
+export type MaterialsSearchParams = Record<string, string | string[] | undefined>;
+/** Repeated URL values can be displayed for recovery but never admitted as a query. */
+export function materialsQueryFromSearchParams(raw: MaterialsSearchParams): { query: MaterialsQuery; errors: string[] } {
+  const repeated = Object.values(raw).some(Array.isArray);
+  return {
+    query: Object.fromEntries(Object.entries(raw).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value])),
+    errors: repeated ? ["Each material filter must have one value. Remove repeated query parameters or clear filters."] : [],
+  };
+}
 export const MATERIALS_PAGE_SIZES = [25, 50, 100, 200];
 const SORTS = ["tc_max", "tc_ambient", "arxiv_year", "total_papers"];
 const ORIGINS = ["Observed", "Computed", "Inferred", "AI-Proposed", "Unknown"];
 const TRI = (value?: string) => value === "true" ? true : value === "false" ? false : undefined;
+// Python str.strip whitespace; U+FEFF remains literal formula text.
+const stripFormulaWhitespace = (raw: string) => raw.replace(/^[\u0009-\u000d\u001c-\u0020\u0085\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]+|[\u0009-\u000d\u001c-\u0020\u0085\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]+$/g, "");
+const formulaText = (raw?: string) => raw === undefined ? undefined : stripFormulaWhitespace(raw.normalize("NFKC")) || undefined;
+const formulaControls = /[\u0000-\u001f\u007f-\u009f]/;
 const nonnegative = (raw?: string) => {
   if (!raw?.trim()) return undefined;
   const value = Number(raw);
@@ -24,6 +37,10 @@ export function materialsPageIndex(raw?: string): number {
 /** Invalid scientific filters must not silently broaden a shared query. */
 export function materialsQueryErrors(query: MaterialsQuery): string[] {
   const errors: string[] = [];
+  if (query.q !== undefined) {
+    const normalized = query.q.normalize("NFKC");
+    if (Array.from(query.q).length > 200 || Array.from(normalized).length > 200 || formulaControls.test(query.q) || formulaControls.test(normalized)) errors.push("Formula text must contain at most 200 characters and no control characters.");
+  }
   for (const [key, label] of [["tc_min", "Tc minimum"], ["pressure_min", "Pressure minimum"], ["pressure_max", "Pressure maximum"], ["min_papers", "Minimum source links"]]) {
     if (!query[key]) continue;
     const value = nonnegative(query[key]);
@@ -42,6 +59,7 @@ export function materialsParams(query: MaterialsQuery): MaterialListParams {
   const tier = ["T1", "T2", "T3"].includes(query.min_tier ?? "") ? query.min_tier as MaterialListParams["min_tier"] : undefined;
   const minPapers = nonnegative(query.min_papers);
   return {
+    q: formulaText(query.q),
     family: query.family || undefined, tc_min: nonnegative(query.tc_min), pressure_max: nonnegative(query.pressure_max),
     pressure_min: nonnegative(query.pressure_min), include_unknown_pressure: query.include_unknown_pressure === "true",
     knowledge_origin: origin, source_role: query.source_role === "primary" || query.source_role === "cited" ? query.source_role : undefined,
@@ -57,6 +75,7 @@ export function materialsParams(query: MaterialsQuery): MaterialListParams {
 
 export const MATERIALS_ADVANCED_KEYS = ["pairing_symmetry", "is_unconventional", "has_competing_order", "ambient_sc", "min_tier", "min_papers", "only_aps", "include_skeletons", "structure_phase", "pressure_min", "source_role", "include_unknown_pressure", "parents_only"];
 const FILTER_LABELS: Record<string, string> = {
+  q: "Formula",
   family: "Family", tc_min: "Tc ≥", pressure_max: "Pressure ≤", pressure_min: "Pressure ≥", knowledge_origin: "Origin", experimental_only: "Observed only",
   pairing_symmetry: "Pairing", is_unconventional: "Unconventional", has_competing_order: "Competing order", ambient_sc: "Ambient result",
   min_tier: "Source tier", min_papers: "Source links ≥", only_aps: "APS only", include_skeletons: "Library-only entries", structure_phase: "Saved phase (unavailable)",
@@ -64,11 +83,11 @@ const FILTER_LABELS: Record<string, string> = {
 };
 export function materialFilterChips(query: MaterialsQuery): { key: string; label: string }[] {
   return Object.entries(FILTER_LABELS).flatMap(([key, label]) => {
-    const value = query[key];
+    const value = key === "q" && query[key] !== undefined ? stripFormulaWhitespace(query[key]!) : query[key];
     if (!value || (["experimental_only", "only_aps", "include_skeletons", "include_unknown_pressure", "parents_only"].includes(key) && value !== "true")) return [];
     if (key === "experimental_only" && query.knowledge_origin === "Observed") return [];
     const unit = key === "tc_min" ? " K" : key.startsWith("pressure_") ? " GPa" : "";
-    const text = value === "true" ? (key === "ambient_sc" ? "Explicit ambient" : "Yes") : value === "false" ? "Qualified false" : value;
+    const text = key === "q" ? value : value === "true" ? (key === "ambient_sc" ? "Explicit ambient" : "Yes") : value === "false" ? "Qualified false" : value;
     return [{ key, label: `${label}: ${text}${unit}` }];
   });
 }
