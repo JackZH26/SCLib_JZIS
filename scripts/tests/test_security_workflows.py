@@ -43,6 +43,33 @@ REVIEWED_SOURCE_DIGEST_FINGERPRINTS = {
     for path, (_, lines) in REVIEWED_SOURCE_DIGESTS.items()
     for line in lines
 }
+# Pressure/table expression identities are SHA-256 values, independently checked
+# against the original v2 tuples. Pin the introducing commit and complete files;
+# new revisions require a separate review and exact fingerprint registration.
+PRESSURE_TABLE_DIGEST_COMMIT = "119b1ccd52e419ffb75cd818e3bf382d7878d4f6"
+REVIEWED_PRESSURE_TABLE_DIGESTS = {
+    "frontend/public/research-pilots/materials-pressure-table-bitecl-2026-10-02.json": (
+        "01b164002ff2e092dd7f52cbba095acf3ae31322b97d25346b4f211d7cb5f5b3",
+        (11, 135, 223, 297, 371, 501),
+    ),
+    "frontend/public/research-pilots/materials-pressure-table-mo-column-2-2026-10-02.json": (
+        "2e3652462a9ae3e5610b24cc86dbedad237423ab8d0f61234e9589468c1db149",
+        (11, 147, 283, 419, 555, 677),
+    ),
+    "frontend/public/research-pilots/materials-pressure-table-mo-column-3-2026-10-02.json": (
+        "93fc3388cc32ab05c0a1e985d917aff256b1c6ba5eaf337ade209dceae3eaa9d",
+        (11, 147, 283, 419, 555, 677),
+    ),
+    "frontend/public/research-pilots/materials-pressure-table-sources-2026-10-02.json": (
+        "788144f67d439d0a5051e3b5144c988311e5423ccfa56402beb5566744ebe284",
+        (58, 182, 270, 344, 418, 548, 678, 814, 950, 1086, 1222, 1344, 1424, 1560, 1696, 1832, 1968, 2090),
+    ),
+}
+REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS = {
+    f"{PRESSURE_TABLE_DIGEST_COMMIT}:{path}:generic-api-key:{line}"
+    for path, (_, lines) in REVIEWED_PRESSURE_TABLE_DIGESTS.items()
+    for line in lines
+}
 # Reviewed immutable findings only. See the batch82 triage and original scan;
 # new fixture revisions must be scanned and reviewed, never covered by a glob.
 REVIEWED_FIXTURE_FINGERPRINTS = {
@@ -430,8 +457,28 @@ class SecurityWorkflowTests(unittest.TestCase):
                     "c499146b223562c5099ab971a149392067ca047e:"
                     "api/tests/test_session_security.py:generic-api-key:54"
                 ),
-            } | REVIEWED_FIXTURE_FINGERPRINTS | REVIEWED_SOURCE_DIGEST_FINGERPRINTS,
+            } | REVIEWED_FIXTURE_FINGERPRINTS | REVIEWED_SOURCE_DIGEST_FINGERPRINTS | REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS,
         )
+
+    def test_pressure_table_exceptions_bind_exact_expression_hash_lines(self) -> None:
+        self.assertEqual(len(REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS), 36)
+        unique_keys = set()
+        for path, (file_sha, lines) in REVIEWED_PRESSURE_TABLE_DIGESTS.items():
+            raw = (ROOT / path).read_bytes()
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), file_sha)
+            source_lines = raw.decode("utf-8").splitlines()
+            metadata = json.loads(raw)
+            self.assertIs(metadata["scientific_acceptance"], False)
+            self.assertEqual(metadata["canonical_promotions"], 0)
+            self.assertEqual(metadata["status"], "pending")
+            self.assertEqual(metadata["selected_result_association"], "unestablished")
+            keys = {entry["expression_key"] for entry in metadata["entries"]}
+            self.assertEqual(len(keys), len(lines))
+            for line in lines:
+                self.assertRegex(source_lines[line - 1], r'^\s*"expression_key": "[0-9a-f]{64}",$')
+                self.assertIn(json.loads("{" + source_lines[line - 1].strip().rstrip(",") + "}")["expression_key"], keys)
+            unique_keys.update(keys)
+        self.assertEqual(len(unique_keys), 18)
 
     def test_source_digest_exceptions_bind_exact_public_bytes_and_audit(self) -> None:
         triage = json.loads(
