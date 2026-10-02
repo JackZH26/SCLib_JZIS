@@ -259,6 +259,142 @@ async def test_recovery_counts_actual_restricted_stale_derived_and_length_omissi
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("bad_section", [" Results", "Results ", "Results\nSynthetic label"])
+async def test_recovery_excludes_invalid_locator_without_normalizing_retained_data(client, bad_section):
+    from services.material_enrichment import EnrichmentError, validate_candidate_identity, validate_source
+
+    invalid_text, valid_text = "NbN has Tc=999 K.", "NbN has Tc=17.5 K."
+    identifier, papers = await seed_source_inventory({
+        "a": [(invalid_text, bad_section, True), (valid_text, "Results", False)],
+    })
+    invalid_id, valid_id = f"{papers['a']}:0", f"{papers['a']}:1"
+    # The strict source contract must continue rejecting the original locator.
+    with pytest.raises(EnrichmentError, match="^source_locator_invalid$"):
+        validate_source({"id": invalid_id, "paper_id": papers["a"], "text": invalid_text,
+                         "content_sha256": hashlib.sha256(invalid_text.encode()).hexdigest(),
+                         "source_revision": "synthetic-retained-revision", "kind": "legacy_unknown",
+                         "locator": {"chunk_id": invalid_id, "section": bad_section}})
+    async with get_session_factory()() as session:
+        original_records = (await session.get(Material, identifier)).records
+
+    response = await client.get(f"/v1/materials/{identifier}/enrichment")
+    assert response.status_code == 200, response.text
+    assert "no-store" in response.headers["cache-control"]
+    report = response.json()
+    row = report["coverage"][0]["source_coverage"][papers["a"]]
+    assert row["chunks_inspected"] == 2 and row["chunks_supplied"] == 1
+    assert row["excluded_chunks_total"] == 1
+    assert row["excluded_chunk_reasons"] == {"source_locator_invalid": 1}
+    assert row["reason_codes"] == ["source_locator_invalid"]
+    assert row["scope"] == "bounded_current_chunks_not_complete_source"
+    assert row["fulltext_checked"] is False and row["supplement_checked"] is False
+    assert report["inspection_scope"]["characters_inspected"] == len(invalid_text) + len(valid_text)
+    assert report["counts"]["source_captures"] == 1
+    assert any(c["field"] == "tc_kelvin" and c["value"] == 17.5 for c in report["candidates"])
+    for candidate in report["candidates"]:
+        assert candidate["source"]["capture_id"] == valid_id
+        assert candidate["source"]["locator"] == {"chunk_id": valid_id, "section": "Results"}
+        assert candidate["source"]["content_sha256"] == hashlib.sha256(valid_text.encode()).hexdigest()
+        assert candidate["source_content_checked"] is False and "evidence_text" not in candidate
+        validate_candidate_identity(candidate)
+    assert report["classification_candidates"] == []
+    assert report["counts"]["promoted_facts"] == 0 and report["database_changed"] is False
+    async with get_session_factory()() as session:
+        chunk = await session.get(Chunk, invalid_id)
+        assert chunk.text == invalid_text and chunk.section == bad_section
+        assert (await session.get(Material, identifier)).records == original_records
+
+
+@pytest.mark.asyncio
+async def test_recovery_all_invalid_locators_preserve_unresolved_source_scope(client):
+    identifier, papers = await seed_source_inventory({
+        "a": [("NbN has Tc=999 K.", " Results", False),
+              ("NbN has Tc=998 K.", "Results\nSynthetic label", False)],
+    })
+    response = await client.get(f"/v1/materials/{identifier}/enrichment")
+    assert response.status_code == 200, response.text
+    report = response.json()
+    row = report["coverage"][0]["source_coverage"][papers["a"]]
+    assert row["indexed_chunks_total"] == row["chunks_inspected"] == row["excluded_chunks_total"] == 2
+    assert row["chunks_supplied"] == row["omitted_chunks_total"] == 0
+    assert row["excluded_chunk_reasons"] == {"source_locator_invalid": 2}
+    assert row["reason_codes"] == ["source_locator_invalid"]
+    assert row["fulltext_checked"] is False and row["supplement_checked"] is False
+    assert report["counts"]["source_captures"] == 0
+    assert report["candidates"] == report["classification_candidates"] == []
+    assert all(field["status"] != "not_found_in_checked_sources"
+               for field in report["coverage"][0]["fields"])
+    lattice = next(field for field in report["coverage"][0]["fields"] if field["field"] == "lattice_a")
+    assert lattice["status"] == "not_extracted"
+    assert lattice["reason_codes"] == ["original_source_capture_not_supplied"]
+    assert report["scientific_acceptance"] is False and report["database_changed"] is False
+
+
+@pytest.mark.asyncio
+async def test_recovery_invalid_locators_spend_shared_read_budget_and_keep_other_paper(client):
+    invalid_text, valid_text = "NbN has Tc=999 K.", "NbN has Tc=17.5 K."
+    identifier, papers = await seed_source_inventory({
+        "a": [(invalid_text, " Results", True)] * 45,
+        "b": [(valid_text, "Results", False)],
+    })
+    response = await client.get(f"/v1/materials/{identifier}/enrichment")
+    assert response.status_code == 200, response.text
+    report = response.json()
+    scope = report["inspection_scope"]
+    assert scope["chunks_considered"] == scope["chunks_inspected"] == 40
+    assert scope["characters_inspected"] == 39 * len(invalid_text) + len(valid_text)
+    coverage = report["coverage"][0]["source_coverage"]
+    first, second = coverage[papers["a"]], coverage[papers["b"]]
+    assert first["chunks_supplied"] == 0 and first["excluded_chunks_total"] == 39
+    assert first["excluded_chunk_reasons"] == {"source_locator_invalid": 39}
+    assert first["omitted_chunk_reasons"] == {"chunk_inspection_limit": 6}
+    assert first["truncated"] is True
+    assert second["chunks_supplied"] == 1 and second["excluded_chunks_total"] == 0
+    assert report["counts"]["source_captures"] == 1
+    assert any(c["field"] == "tc_kelvin" and c["value"] == 17.5 for c in report["candidates"])
+    assert all(c["source"]["paper_id"] == papers["b"] for c in report["candidates"])
+    for row in coverage.values():
+        assert row["chunks_supplied"] + row["excluded_chunks_total"] + row["omitted_chunks_total"] == row["indexed_chunks_total"]
+        assert row["fulltext_checked"] is False and row["supplement_checked"] is False
+
+
+@pytest.mark.asyncio
+async def test_recovery_held_paper_is_excluded_before_invalid_locator_inspection(client):
+    identifier, papers = await seed_source_inventory({
+        "a": [("NbN has Tc=999 K.", " Results", True)],
+        "b": [("NbN has Tc=17.5 K.", "Results", False)],
+    })
+    async with get_session_factory()() as session:
+        paper = await session.get(Paper, papers["a"])
+        paper.status = "withdrawn"
+        await session.commit()
+    response = await client.get(f"/v1/materials/{identifier}/enrichment")
+    assert response.status_code == 200, response.text
+    report = response.json()
+    assert set(report["coverage"][0]["source_coverage"]) == {papers["b"]}
+    assert report["inspection_scope"]["raw_retained_records_total"] == 2
+    assert report["inspection_scope"]["current_eligible_records_total"] == 1
+    assert report["inspection_scope"]["chunks_inspected"] == 1
+    assert report["counts"]["source_captures"] == 1
+    assert all(c["source"]["paper_id"] == papers["b"] for c in report["candidates"])
+    assert report["scientific_acceptance"] is False and report["database_changed"] is False
+
+
+def test_recovery_locator_preflight_does_not_swallow_source_integrity_failure():
+    from services.material_enrichment import EnrichmentError
+    from services.material_enrichment_read import _compile_recovery_report
+
+    source = {"id": "synthetic:chunk", "paper_id": "synthetic:paper", "text": "NbN has Tc=999 K.",
+              "content_sha256": "0" * 64, "source_revision": "synthetic-retained-revision",
+              "kind": "legacy_unknown", "locator": {"section": " Results"}}
+    # A malformed locator cannot turn an independent content-integrity error
+    # into an apparently successful empty report.
+    with pytest.raises(EnrichmentError, match="^source_content_changed$"):
+        _compile_recovery_report({"id": "synthetic:material", "formula": "NbN", "records": []},
+                                 [source], {}, {})
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize("passage", [
     "NbN exhibits charge order below Tstar=40~K and Tco=58 K.",
     "NbN exhibits charge order at −5 K and 58 K.",

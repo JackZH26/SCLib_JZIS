@@ -12,7 +12,9 @@ from sqlalchemy import and_, func, or_, select
 
 from models.db import Chunk, Paper
 from services.claim_support import is_derived_source_hint
-from services.material_enrichment import bounded_source_rows, build_enrichment_report, digest
+from services.material_enrichment import (
+    EnrichmentError, bounded_source_rows, build_enrichment_report, digest, validate_source,
+)
 from services.rag_evidence import resolve_chunk_evidence
 
 MAX_PAPERS = 8
@@ -102,7 +104,26 @@ def _sample_records(records, *, indexed_paper_ids=None):
 
 def _compile_recovery_report(payload, sources, coverage, scope):
     """All synchronous parsing, hashing and public projection run in a worker."""
-    report = build_enrichment_report([payload], sources, source_coverage=coverage, include_evidence_text=False)
+    usable_sources = []
+    for source in sources:
+        try:
+            validate_source(source)
+        except EnrichmentError as error:
+            reason = str(error)
+            if reason not in {"source_locator_required", "source_locator_invalid", "source_locator_span_invalid"}:
+                raise
+            # Already-read fragments still consume the shared inspection budget.
+            # Never repair retained coordinates or admit a fabricated locator.
+            row = coverage[source["paper_id"]]
+            row["chunks_supplied"] -= 1
+            row["excluded_chunks_total"] += 1
+            reasons = row["excluded_chunk_reasons"]
+            reasons[reason] = reasons.get(reason, 0) + 1
+            if reason not in row["reason_codes"]:
+                row["reason_codes"].append(reason)
+        else:
+            usable_sources.append(source)
+    report = build_enrichment_report([payload], usable_sources, source_coverage=coverage, include_evidence_text=False)
     report["inspection_scope"] = scope
     report["counts"]["retained_records"] = scope["records_total"]
     report["counts"]["raw_retained_records"] = scope["raw_retained_records_total"]
