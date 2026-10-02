@@ -68,7 +68,7 @@ function RowWarnings({ material }: { material: MaterialSummary }) {
   const visibility = knownVisibility(material.visibility);
   const review = material.anomaly_review;
   return <div className="materials-row-warnings">
-    {visibility?.version === SOURCE_SCOPED_VISIBILITY_VERSION ? <span className="materials-scope" title={`${visibility.source_scope.eligible_records} of ${visibility.source_scope.total_records} retained records contribute to this view. Excluded records remain subject to Archive access rules.`}>{visibility.source_scope.excluded_records} excluded record{visibility.source_scope.excluded_records === 1 ? "" : "s"}</span> : visibility?.state !== "catalogue" ? <span className="materials-warning">{visibilityLabel(material.visibility).replaceAll(" — ", ": ")}</span> : null}
+    {visibility?.version === SOURCE_SCOPED_VISIBILITY_VERSION && visibility.source_scope.excluded_records > 0 ? <span className="materials-scope" title={`${visibility.source_scope.eligible_records} of ${visibility.source_scope.total_records} retained records contribute to this view. Excluded records remain subject to Archive access rules.`}>{visibility.source_scope.excluded_records} excluded record{visibility.source_scope.excluded_records === 1 ? "" : "s"}</span> : visibility?.state !== "catalogue" ? <span className="materials-warning">{visibilityLabel(material.visibility).replaceAll(" — ", ": ")}</span> : null}
     {review && (!hasMaterialAnomalyReview(review) || review.needs_review) && <span className="materials-warning">{hasMaterialAnomalyReview(review) ? "Review required" : "Review status unavailable"}</span>}
     {material.needs_review && !review?.needs_review && <span className="materials-warning">Source review pending</span>}
   </div>;

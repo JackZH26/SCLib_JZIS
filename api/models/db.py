@@ -1765,6 +1765,10 @@ from models.index_search_v1 import register as _register_index_search  # noqa: E
 
 INDEX_SEARCH = _register_index_search(Base.metadata)
 
+from models.source_property_pending_v1 import register as _register_source_properties  # noqa: E402
+
+SOURCE_PROPERTY_PENDING = _register_source_properties(Base.metadata)
+
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.

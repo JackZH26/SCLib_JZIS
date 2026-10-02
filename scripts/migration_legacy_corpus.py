@@ -1,6 +1,8 @@
 """0079–0081 owned migration round trips and independent history guards."""
 
 from test_safety import validate_test_environment, verify_postgres_identity
+from migration_source_properties import TABLES as SOURCE_PROPERTY_TABLES
+from migration_source_properties import assert_empty as assert_empty_source_properties
 
 TABLES = (
     "legacy_index_papers",
@@ -28,7 +30,7 @@ def snapshot(connection, old_only=False):
         .scalars()
         .all()
         for name in inspect(connection).get_table_names(schema="public")
-        if name != "alembic_version" and (not old_only or name not in TABLES)
+        if name != "alembic_version" and (not old_only or name not in {*TABLES, *SOURCE_PROPERTY_TABLES})
     }
 
 
@@ -51,6 +53,7 @@ def empty_roundtrip(capability, engine, config):
     with engine.connect() as c:
         assert check_connection_schema(c)["status"] == "compatible"
         verify_postgres_identity(c, capability)
+        assert_empty_source_properties(c)
         assert all(
             c.execute(text(f"SELECT count(*) FROM {name}")).scalar_one() == 0
             for name in TABLES if name != "index_generation_search"
@@ -71,6 +74,7 @@ def empty_roundtrip(capability, engine, config):
     with engine.connect() as c:
         assert check_connection_schema(c)["status"] == "compatible"
         verify_postgres_identity(c, capability)
+        assert_empty_source_properties(c)
         assert snapshot(c, True) == before and objects(c) == definitions
         assert (
             c.execute(

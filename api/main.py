@@ -51,14 +51,15 @@ from routers import (
     research_distributions,
     research_publications,
     scientific_adjudication,
-    scientific_result_passage,
     scientific_corrections,
     scientific_program_imports,
+    scientific_result_passage,
     scientific_review,
     search,
     seo,
     similar,
     source_impacts,
+    source_properties,
     source_task_operations,
     stats,
     timeline,
@@ -645,6 +646,7 @@ app.include_router(scientific_adjudication.router, prefix="/v1")
 app.include_router(scientific_result_passage.router, prefix="/v1")
 app.include_router(source_impacts.router, prefix="/v1")
 app.include_router(source_task_operations.router, prefix="/v1")
+app.include_router(source_properties.router, prefix="/v1")
 app.include_router(ml_foundation.router, prefix="/v1")
 app.include_router(materials.router, prefix="/v1")
 app.include_router(papers.router, prefix="/v1")

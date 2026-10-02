@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from test_safety import validate_test_environment, verify_postgres_identity
 from migration_legacy_corpus import TABLES as LEGACY_CORPUS_TABLES
+from migration_source_properties import TABLES as SOURCE_PROPERTY_TABLES
+from migration_source_properties import assert_empty as assert_empty_source_properties
 
 TABLE = "scientific_result_passage_links"
 
@@ -14,7 +16,7 @@ def snapshot(connection, *, old_only=True):
         name: connection.execute(text(
             f'SELECT to_jsonb(t) FROM public."{name}" t ORDER BY to_jsonb(t)::text')).scalars().all()
         for name in inspect(connection).get_table_names(schema="public")
-        if not old_only or name not in {TABLE, "alembic_version", *LEGACY_CORPUS_TABLES}
+        if not old_only or name not in {TABLE, "alembic_version", *LEGACY_CORPUS_TABLES, *SOURCE_PROPERTY_TABLES}
     }
 
 
@@ -39,6 +41,7 @@ def empty_roundtrip(capability, engine, config):
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
+        assert_empty_source_properties(connection)
         assert connection.execute(text(f"SELECT count(*) FROM {TABLE}")).scalar_one() == 0
         before, definitions = snapshot(connection), objects(connection)
         assert all(definitions[0]) and len(definitions[1]) == 3
@@ -59,6 +62,7 @@ def empty_roundtrip(capability, engine, config):
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
+        assert_empty_source_properties(connection)
         assert snapshot(connection) == before
         assert objects(connection) == definitions
 

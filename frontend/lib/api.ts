@@ -39,6 +39,42 @@ export class ApiError extends Error {
   }
 }
 
+// Authenticated pending source history. No write is retried automatically.
+export function sourcePropertyCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request("/research/source-properties/capabilities", { cache: "no-store", signal, responseByteLimit: 8192 });
+}
+export function sourcePropertyList(offset = 0, limit = 25, profile?: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ offset: String(offset), limit: String(limit) });
+  if (profile) query.set("profile", profile);
+  return request(`/research/source-properties/observations?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function sourcePropertyDetail(id: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/source-properties/observations/${encodeURIComponent(id)}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function sourcePropertyDownload(id: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/source-properties/observations/${encodeURIComponent(id)}/download`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function sourcePropertyImportPreview(body: import("./source-properties").PropertyImportRequest, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/source-properties/imports/preview", { method: "POST", body: JSON.stringify(body), cache: "no-store", signal, responseByteLimit: 65536 });
+}
+export function sourcePropertyImportCommit(body: import("./source-properties").PropertyImportRequest, expectedPreviewSha256: string, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/source-properties/imports/commit", { method: "POST", body: JSON.stringify({ ...body, expected_preview_sha256: expectedPreviewSha256 }), cache: "no-store", signal, responseByteLimit: 65536 });
+}
+export function sourcePropertyImportOutcome(requestKey: string, expectedRequestSha256: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ request_key: requestKey, expected_request_sha256: expectedRequestSha256 });
+  return request(`/research/source-properties/imports/outcome?${query}`, { cache: "no-store", signal, responseByteLimit: 65536 });
+}
+export function sourcePropertyReviewPreview(body: import("./source-properties").PropertyReviewRequest, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/source-properties/reviews/preview", { method: "POST", body: JSON.stringify({ request: body }), cache: "no-store", signal, responseByteLimit: 16384 });
+}
+export function sourcePropertyReviewCommit(body: import("./source-properties").PropertyReviewRequest, expectedPreviewSha256: string, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/source-properties/reviews/commit", { method: "POST", body: JSON.stringify({ request: body, expected_preview_sha256: expectedPreviewSha256 }), cache: "no-store", signal, responseByteLimit: 16384 });
+}
+export function sourcePropertyReviewOutcome(requestKey: string, expectedRequestSha256: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ request_key: requestKey, expected_request_sha256: expectedRequestSha256 });
+  return request(`/research/source-properties/reviews/outcome?${query}`, { cache: "no-store", signal, responseByteLimit: 16384 });
+}
+
 // Private bounded imports. File selection never calls these write helpers itself.
 export function scientificImportAccess(signal?: AbortSignal): Promise<unknown> {
   return request("/ml/scientific-program-imports/capabilities", { signal, cache: "no-store", responseByteLimit: 4096 });

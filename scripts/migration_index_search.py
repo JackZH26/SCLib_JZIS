@@ -1,6 +1,8 @@
 """0081 backfill/roundtrip on owned migrated data, including sealed members."""
 
 from test_safety import validate_test_environment, verify_postgres_identity
+from migration_source_properties import TABLES as SOURCE_PROPERTY_TABLES
+from migration_source_properties import assert_empty as assert_empty_source_properties
 
 
 def populated_roundtrip(capability, engine, config):
@@ -12,7 +14,7 @@ def populated_roundtrip(capability, engine, config):
         return {name: connection.execute(text(
             f'SELECT to_jsonb(t) FROM public."{name}" t ORDER BY to_jsonb(t)::text'
         )).scalars().all() for name in inspect(connection).get_table_names(schema="public")
-            if name not in {"alembic_version", "index_generation_search"}}
+            if name not in {"alembic_version", "index_generation_search", *SOURCE_PROPERTY_TABLES}}
 
     def projected(connection):
         rows = connection.execute(text("""SELECT to_jsonb(s) FROM index_generation_search s
@@ -31,6 +33,7 @@ def populated_roundtrip(capability, engine, config):
     validate_test_environment()
     with engine.connect() as c:
         verify_postgres_identity(c, capability)
+        assert_empty_source_properties(c)
         before, documents = retained(c), projected(c)
     command.downgrade(config, "0080_index_corpus")
     with engine.connect() as c:
@@ -41,5 +44,6 @@ def populated_roundtrip(capability, engine, config):
     with engine.connect() as c:
         assert check_connection_schema(c)["status"] == "compatible"
         verify_postgres_identity(c, capability)
+        assert_empty_source_properties(c)
         assert retained(c) == before and projected(c) == documents
     print("Populated full-text backfill/roundtrip preserved all original records, hashes and active pins.")

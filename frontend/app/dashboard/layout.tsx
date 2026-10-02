@@ -27,6 +27,7 @@ const NAV_BASE = [
   { href: "/dashboard/research/review", label: "Scientific evidence" },
   { href: "/dashboard/research/imports", label: "Scientific imports" },
   { href: "/dashboard/research/source-tasks", label: "Source tasks" },
+  { href: "/dashboard/research/source-properties", label: "Source properties" },
   { href: "/dashboard/research/distributions", label: "Distribution rights" },
   { href: "/dashboard/research/ml-rights", label: "ML source rights" },
   { href: "/dashboard/research/ml-runs", label: "ML run plans" },
@@ -106,26 +107,26 @@ export default function DashboardLayout({
               : NAV_BASE
         } />
         <section className="min-w-0 flex-1">
-          <header className="mb-6 flex items-start justify-between gap-4">
-            <div className="flex items-center gap-3">
+          <header className="mb-6 grid items-start gap-4 sm:grid-cols-[minmax(0,1fr)_auto]">
+            <div className="flex min-w-0 items-center gap-3">
               {user.avatar_url ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
                   src={user.avatar_url}
                   alt=""
                   referrerPolicy="no-referrer"
-                  className="h-10 w-10 rounded-full"
+                  className="h-10 w-10 shrink-0 rounded-full"
                 />
               ) : (
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-sm font-semibold text-white">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-semibold text-white">
                   {user.name.charAt(0).toUpperCase()}
                 </span>
               )}
-              <div>
-                <h1 className="text-2xl font-semibold text-sage-ink">
+              <div className="min-w-0">
+                <h1 className="break-words text-2xl font-semibold text-sage-ink">
                   {user.name}
                 </h1>
-                <p className="text-sm text-sage-muted">{user.email}</p>
+                <p className="break-all text-sm text-sage-muted">{user.email}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
