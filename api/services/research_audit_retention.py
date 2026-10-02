@@ -60,6 +60,9 @@ AUDIT_USER_REFERENCES = (
     ("source_expression_captures_v2", "actor_user_id"),
     ("source_expression_imports_v2", "actor_user_id"),
     ("source_expression_revisions_v2", "actor_user_id"),
+    ("material_field_targets_v1", "actor_user_id"),
+    ("material_field_associations_v1", "actor_user_id"),
+    ("material_field_attempts_v1", "actor_user_id"),
 )
 # PostgreSQL's exact names for the deliberately unnamed audit identity FKs.
 # Restrict this classifier to these explicitly listed constraints and SQLSTATE 23503;

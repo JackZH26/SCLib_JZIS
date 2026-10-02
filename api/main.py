@@ -60,6 +60,7 @@ from routers import (
     similar,
     source_impacts,
     source_expressions,
+    material_field_cases,
     source_properties,
     source_task_operations,
     stats,
@@ -649,6 +650,7 @@ app.include_router(source_impacts.router, prefix="/v1")
 app.include_router(source_task_operations.router, prefix="/v1")
 app.include_router(source_properties.router, prefix="/v1")
 app.include_router(source_expressions.router, prefix="/v1")
+app.include_router(material_field_cases.router, prefix="/v1")
 app.include_router(ml_foundation.router, prefix="/v1")
 app.include_router(materials.router, prefix="/v1")
 app.include_router(papers.router, prefix="/v1")

@@ -1,4 +1,4 @@
-"""Empty 0082/0083 inventories for older owned migration round trips.
+"""Empty 0082/0083/0084 inventories for older owned migration round trips.
 
 Importing this helper opens no connections or clients. Callers verify their
 owned database before passing a connection. Populated/refusal snapshots must
@@ -15,7 +15,12 @@ INTAKE_V2_TABLES = (
     "source_expression_imports_v2",
     "source_expression_revisions_v2",
 )
-TABLES = (*V1_TABLES, *INTAKE_V2_TABLES)
+FIELD_CASE_TABLES = (
+    "material_field_targets_v1",
+    "material_field_associations_v1",
+    "material_field_attempts_v1",
+)
+TABLES = (*V1_TABLES, *INTAKE_V2_TABLES, *FIELD_CASE_TABLES)
 
 
 def assert_empty(connection):
