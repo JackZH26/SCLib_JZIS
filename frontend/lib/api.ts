@@ -39,6 +39,39 @@ export class ApiError extends Error {
   }
 }
 
+// Private new-source intake. Selecting a file never invokes a write; recovery is GET-only.
+export function sourceExpressionCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request("/research/source-expressions/capabilities", { cache: "no-store", signal, responseByteLimit: 16384 });
+}
+export function sourceExpressionList(offset = 0, limit = 8, filters: import("./source-expressions").ExpressionFilters = {}, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ offset: String(offset), limit: String(limit) });
+  if (filters.field) query.set("field_id", filters.field);
+  if (filters.sourceId) query.set("source_id", filters.sourceId);
+  if (filters.currentness) query.set("currentness", filters.currentness);
+  return request(`/research/source-expressions/expressions?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function sourceExpressionDetail(id: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/source-expressions/expressions/${encodeURIComponent(id)}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function sourceExpressionCaptures(offset = 0, limit = 25, currentness?: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ offset: String(offset), limit: String(limit) });
+  if (currentness) query.set("currentness", currentness);
+  return request(`/research/source-expressions/captures?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function sourceExpressionCaptureDetail(id: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/source-expressions/captures/${encodeURIComponent(id)}`, { cache: "no-store", signal, responseByteLimit: 16384 });
+}
+export function sourceExpressionPreview(body: import("./source-expressions").ExpressionImportRequest, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/source-expressions/imports/preview", { method: "POST", body: JSON.stringify(body), cache: "no-store", signal, responseByteLimit: 1024 * 1024 });
+}
+export function sourceExpressionCommit(body: import("./source-expressions").ExpressionImportRequest, previewSha: string, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/source-expressions/imports/commit", { method: "POST", body: JSON.stringify({ ...body, expected_preview_sha256: previewSha }), cache: "no-store", signal, responseByteLimit: 1024 * 1024 });
+}
+export function sourceExpressionOutcome(requestKey: string, requestSha: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ request_key: requestKey, expected_request_sha256: requestSha });
+  return request(`/research/source-expressions/imports/outcome?${query}`, { cache: "no-store", signal, responseByteLimit: 1024 * 1024 });
+}
+
 // Authenticated pending source history. No write is retried automatically.
 export function sourcePropertyCapabilities(signal?: AbortSignal): Promise<unknown> {
   return request("/research/source-properties/capabilities", { cache: "no-store", signal, responseByteLimit: 8192 });
