@@ -16,6 +16,7 @@ export default function MaterialSourceFollowupPage() {
       <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Materials source pages">
         <Link href="/materials" className="site-text-link">Materials catalogue</Link>
         <Link href="/materials/source-observations" className="site-text-link">Initial source observations</Link>
+        <Link href="/materials/source-observations/pressure-and-tables" className="site-text-link">Pressure and table records</Link>
       </nav>
       <h1 className="text-3xl font-semibold tracking-tight">Additional source records</h1>
       <p className="max-w-3xl text-sm leading-6 text-sage-muted">Inspect preparation, probe definitions, model estimates and crystal metadata with their conditions and original sources.</p>
