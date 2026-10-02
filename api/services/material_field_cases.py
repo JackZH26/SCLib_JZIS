@@ -13,7 +13,8 @@ from models.material_field_cases_v1 import TABLE_ORDER
 from services import material_field_case_contract as contract
 from services import source_expression_intake_v2 as expressions
 from services.material_visibility_adapter import material_view
-from services.material_visibility import normalize_source_status, visibility_allows_view
+from services.material_visibility import normalize_source_status
+from services.material_source_scope import current_visibility_allows_view
 from services.property_evidence import legacy_result_id
 from services.research_access import ResearchAccessDenied
 from services.research_release_manifest import canonical, digest
@@ -94,7 +95,7 @@ async def eligibility(db, context_text, target):
         reasons.append("target_fingerprint_changed")
     body = json.loads(context_text)
     material = await material_view(db, await db.get(Material, body["material_id"]))
-    if material is None or not visibility_allows_view(material.visibility):
+    if material is None or not current_visibility_allows_view(material.visibility):
         reasons.append("material_not_currently_eligible")
     else:
         result = body["result"]
@@ -332,7 +333,7 @@ async def material_adapter(db, *, actor_user_id, material_id, offset=0, limit=8)
     _, session = await reader(db, actor_user_id)
     page = await targets(db, actor_user_id=actor_user_id, material_id=material_id, offset=offset, limit=limit, byte_bound=False)
     material = await material_view(db, await db.get(Material, material_id))
-    allowed = material is not None and visibility_allows_view(material.visibility)
+    allowed = material is not None and current_visibility_allows_view(material.visibility)
     # No private source expression is returned through an ineligible material.
     budget = {"remaining": 8, "returned": 0, "omitted": 0}
     entries = [await target_detail(db, actor_user_id=actor_user_id, target_id=row["id"], include_expression=allowed,

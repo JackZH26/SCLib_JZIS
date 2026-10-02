@@ -127,8 +127,13 @@ identity stays unresolved. Fragment integrity, latest expression head and
 publication currentness/rights remain separate fields.
 
 Material reads reuse material_view/current_records, inherited holds and exact
-current eligible inventory. Distinct windows/models/criteria are parallel
-proposals; different numbers do not imply conflict. Fields count official
+current eligible inventory. Both whole-material v1 visibility and v2 mixed-source
+partitions are supported. In a mixed material, each target must still match its
+exact eligible paper/record/hash triple; equal Tc values cannot transfer eligibility
+from an active source to a held occurrence. Source withdrawal suppresses its
+expressions even when the retained target bytes have not changed.
+Distinct windows/models/criteria are parallel proposals; different numbers do
+not imply conflict. Fields count official
 records, pending expressions, attempts and independent references separately.
 No attempt reports an entire paper unreported after a bounded check.
 Removal of a retained record or native closure yields

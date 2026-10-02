@@ -12,6 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from config import get_settings
 from models.db import Base, get_engine
 from models.material_field_cases_v1 import TABLE_ORDER
+from services.material_source_scope import VISIBILITY_VERSION
 from services import material_field_cases as service
 from services.material_field_case_contract import REQUEST_VERSION
 from services.research_release_manifest import canonical, digest
@@ -189,6 +190,66 @@ async def test_held_source_cannot_restore_material_or_expression(db_session, sta
     assert not panel["eligibility"]["eligible"]
     item = panel["entries"][0]["associations"][0]
     assert item["expression"] is None and "source_lifecycle_held" in item["eligibility"]["reason_codes"]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("held_status", ["disputed", "retracted", "corrected"])
+async def test_source_scoped_field_targets_use_exact_current_records_and_keep_holds(db_session, held_status):
+    operator = await research_operator()
+    material, active_paper = await retained(db_session)
+    held_paper = "field-held:" + uuid4().hex
+    await add(db_session, "papers", id=held_paper, source="arxiv", title="Synthetic held source",
+              authors=[], abstract="Synthetic fixture only", status=held_status)
+    materials = Base.metadata.tables["materials"]
+    active_raw = (await db_session.scalar(sa.select(materials.c.records).where(materials.c.id == material)))[0]
+    # Equal Tc must not grant a held occurrence the other source's membership.
+    held_raw = {**active_raw, "paper_id": held_paper}
+    original_records = [active_raw, held_raw]
+    await db_session.execute(sa.update(materials).where(materials.c.id == material).values(records=original_records))
+
+    contexts, receipts = [], []
+    for index in (0, 1):
+        ctx = await service.context(db_session, actor_user_id=operator["id"], material_id=material, record_index=index)
+        contexts.append(ctx)
+        req = operation("target", {"field_id": "tc_kelvin", "target": ctx["target"]})
+        receipts.append(await save(db_session, operator, req))
+    assert contexts[0]["eligibility"] == {"eligible": True, "reason_codes": []}
+    assert contexts[1]["eligibility"] == {"eligible": False, "reason_codes": ["material_not_currently_eligible"]}
+    assert contexts[0]["closure"]["legacy_result_id"] != contexts[1]["closure"]["legacy_result_id"]
+    for index in (0, 1):
+        assert contexts[index]["closure"]["retained_record_sha256"] == digest(original_records[index])
+        assert contexts[index]["closure"]["legacy_result_id"] == service.legacy_result_id(original_records[index], scope_id=material)
+
+    material_view = await service.material_view(db_session, await db_session.get(service.Material, material))
+    assert material_view.visibility["version"] == VISIBILITY_VERSION
+    assert material_view.source_scope.eligible_indices == (0,)
+    assert material_view.current_records() == [active_raw]
+    _, evidence = await expression(db_session, operator)
+    for receipt, paper in zip(receipts, (active_paper, held_paper)):
+        await save(db_session, operator, association(receipt, evidence, paper))
+
+    panel = await service.material_adapter(db_session, actor_user_id=operator["id"], material_id=material)
+    assert panel["eligibility"] == {"eligible": True, "reason_codes": []}
+    assert panel["expressions_returned"] == 1
+    entries = {entry["target"]["id"]: entry for entry in panel["entries"]}
+    assert entries[receipts[0]["target_id"]]["associations"][0]["expression"] is not None
+    held = entries[receipts[1]["target_id"]]["associations"][0]
+    assert held["expression"] is None
+    assert set(held["eligibility"]["reason_codes"]) == {"material_not_currently_eligible", "source_lifecycle_held"}
+    assert await db_session.scalar(sa.select(materials.c.records).where(materials.c.id == material)) == original_records
+
+    # An authoritative source-only change leaves target bytes intact but removes
+    # its eligible triple. No other record or pending expression clears that hold.
+    papers = Base.metadata.tables["papers"]
+    await db_session.execute(sa.update(papers).where(papers.c.id == active_paper).values(status="withdrawn"))
+    assert await service.sql_context(db_session, contexts[0]["target"]) == contexts[0]["context_canonical_json"]
+    panel = await service.material_adapter(db_session, actor_user_id=operator["id"], material_id=material)
+    assert not panel["eligibility"]["eligible"] and panel["expressions_returned"] == 0
+    for entry in panel["entries"]:
+        assert not entry["target"]["eligibility"]["eligible"]
+        assert entry["associations"][0]["expression"] is None
+        assert "source_lifecycle_held" in entry["associations"][0]["eligibility"]["reason_codes"]
+    assert await db_session.scalar(sa.select(materials.c.records).where(materials.c.id == material)) == original_records
 
 
 @pytest.mark.asyncio
