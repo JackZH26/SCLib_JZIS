@@ -57,6 +57,9 @@ AUDIT_USER_REFERENCES = (
     ("source_property_import_receipts", "actor_user_id"),
     ("source_property_observation_revisions", "actor_user_id"),
     ("source_property_review_appends", "actor_user_id"),
+    ("source_expression_captures_v2", "actor_user_id"),
+    ("source_expression_imports_v2", "actor_user_id"),
+    ("source_expression_revisions_v2", "actor_user_id"),
 )
 # PostgreSQL's exact names for the deliberately unnamed audit identity FKs.
 # Restrict this classifier to these explicitly listed constraints and SQLSTATE 23503;

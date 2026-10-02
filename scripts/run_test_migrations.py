@@ -36,7 +36,8 @@ _ML_PILOT_TABLES = ("ml_pilot_registrations", "ml_pilot_participants", "ml_pilot
                     "ml_pilot_review_attestations")
 _RESULT_PASSAGE_TABLE = "scientific_result_passage_links"
 _SOURCE_PROPERTY_TABLES = ("source_property_import_receipts", "source_property_observation_revisions",
-                           "source_property_review_appends")
+                           "source_property_review_appends", "source_expression_captures_v2",
+                           "source_expression_imports_v2", "source_expression_revisions_v2")
 
 
 def _assert_empty_source_properties(connection):
@@ -2203,7 +2204,7 @@ def _discovery_main_barrier_roundtrip(capability, engine, config, *, package_id=
     with engine.connect() as connection:
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
-        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0082_source_property_pending"
+        assert connection.execute(text("SELECT version_num FROM public.alembic_version")).scalar_one() == "0083_source_expression_intake"
         _assert_empty_ml_use_roles(connection)
         assert snapshot(connection) == before
         assert functions(connection) == before_functions

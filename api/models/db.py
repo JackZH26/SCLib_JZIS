@@ -1769,6 +1769,10 @@ from models.source_property_pending_v1 import register as _register_source_prope
 
 SOURCE_PROPERTY_PENDING = _register_source_properties(Base.metadata)
 
+from models.source_expression_intake_v2 import register as _register_source_expressions  # noqa: E402
+
+SOURCE_EXPRESSION_INTAKE = _register_source_expressions(Base.metadata)
+
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
