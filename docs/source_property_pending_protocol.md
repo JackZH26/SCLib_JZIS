@@ -98,6 +98,17 @@ preceding note; it cannot erase another reviewer's opinion, rewrite source
 values or clear a source hold. Other reviewers may append their own differing
 source-expression notes. All observations remain pending after every action.
 
+## Validation scope
+
+The retained R8 native wire fixtures are historical captures. Their archived
+bytes and source pins are checked against the fixed capture ancestor
+`748bb23710b409ebb927806e945048bd2608e5ec`; they are not evidence of a new R8
+native run on this implementation. The current source-property implementation
+is validated separately by its current contract, authenticated HTTP, SQL,
+migration and frontend tests. Historical capture verification fails if the
+ancestor or a pinned source blob is missing; CI therefore fetches Git ancestry
+for the frontend regression job. No historical fixture or digest is resealed.
+
 ## Deliberate remaining work
 
 This first backend admits initial revisions of the two fixed snapshots only.

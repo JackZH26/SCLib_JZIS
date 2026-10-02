@@ -1,3 +1,4 @@
+import { historicalR8Source } from "../helpers/r8-captured-source";
 import { createHash, webcrypto } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -45,8 +46,8 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.useRealTimers();
   if (originalScroll) Object.defineProperty(HTMLElement.prototype, "scrollIntoView", originalScroll); else Reflect.deleteProperty(HTMLElement.prototype, "scrollIntoView"); });
 
-describe("actual native ML rights protocol", () => {
-  it("pins the exact native archive and all 635 backend/harness/schema source files", () => {
+describe("frontend replay of historical native ML rights wire", () => {
+  it("pins the exact native archive and all 635 historical capture source files", () => {
     const hash = (b: Buffer) => createHash("sha256").update(b).digest("hex");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.materials20261002r8.wire.json")))).toBe("e0cc0b739dee3a90b68a46665fec4a214a523bbfb54b2a49669d7675492e1376");
     expect(hash(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-use-rights-native.materials20261002r7.wire.json")))).toBe("96bb7f0b8f2bf9079e9cf90daeddad070f5c36ab36b33a46365bfe1ec51f1118");
@@ -84,7 +85,7 @@ describe("actual native ML rights protocol", () => {
     expect(http.source_pins.some(p => p.path === "scripts/probe_ml_pilot_registration_install.py")).toBe(true);
     expect(http.source_pins.some(p => p.path === "api/tests/test_ml_pilot_registration_reliability.py")).toBe(true);
     for (const p of http.source_pins) { expect(p.path).toMatch(/^(?:(api|scripts)\/[A-Za-z0-9_./-]+\.py|api\/services\/[A-Za-z0-9_-]+\.schema\.json)$/); expect(p.path.split("/")).not.toContain("..");
-      expect(hash(readFileSync(resolve(process.cwd(), "..", p.path))), p.path).toBe(p.sha256); }
+      expect(hash(historicalR8Source(p)), p.path).toBe(p.sha256); }
   });
   it("verifies actual access, two pages, three decisions, record hashes and historical outcomes", async () => {
     const first = await rights.parseMlRightsPage(http.unreviewed, actor, query);
