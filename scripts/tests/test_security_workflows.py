@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import re
 import shutil
@@ -13,6 +14,35 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW_DIR = ROOT / ".github" / "workflows"
+# These positions were independently checked against the captured public source
+# spans. Pin both the original commit and the full immutable file bytes: a new
+# source revision must receive its own review, rather than inherit an exception.
+SOURCE_DIGEST_COMMIT = "374e9b34a3ddc8aefb76792f07879b5b53ee965f"
+REVIEWED_SOURCE_DIGESTS = {
+    "frontend/public/research-pilots/materials-source-observations-2026-10-02.json": (
+        "ac144451b2f03ca2e0e3dbd9ec27748e8257e1cac86473f384d6e5c34ea5f43e",
+        (59, 128, 198, 266, 328, 333, 425, 515, 605, 707, 811, 915),
+    ),
+    "frontend/public/research-pilots/materials-source-followup-2026-10-02.json": (
+        "c4014251af24bb8618f718ecd65edd13cc6c4afa00f7b0f82fa9ea29f192c1f8",
+        (
+            81, 478, 485, 492, 499, 506, 513, 652, 659, 790, 797, 804, 811,
+            822, 829, 836, 843, 1040, 1051, 1058, 1065, 1072, 1079, 1090,
+            1097, 1216, 1227, 1343, 1350, 1373, 1519, 1526, 1533, 1544,
+            1551, 1670, 1677, 1688, 1695, 1813, 1824, 1922, 1929, 2081,
+            2092, 2103, 2235, 2246, 2253, 2260, 2267, 2407, 2418, 2425,
+            2526, 2533, 2680, 2691, 2837, 2844, 2851, 2862, 2869, 2876,
+            2883, 2890, 2989, 2996, 3007, 3100, 3107, 3215, 3222, 3229,
+            3240, 3333, 3340, 3347, 3925, 3932, 4018, 4025, 4130, 4239,
+            4246, 4253, 4334,
+        ),
+    ),
+}
+REVIEWED_SOURCE_DIGEST_FINGERPRINTS = {
+    f"{SOURCE_DIGEST_COMMIT}:{path}:generic-api-key:{line}"
+    for path, (_, lines) in REVIEWED_SOURCE_DIGESTS.items()
+    for line in lines
+}
 # Reviewed immutable findings only. See the batch82 triage and original scan;
 # new fixture revisions must be scanned and reviewed, never covered by a glob.
 REVIEWED_FIXTURE_FINGERPRINTS = {
@@ -400,8 +430,57 @@ class SecurityWorkflowTests(unittest.TestCase):
                     "c499146b223562c5099ab971a149392067ca047e:"
                     "api/tests/test_session_security.py:generic-api-key:54"
                 ),
-            } | REVIEWED_FIXTURE_FINGERPRINTS,
+            } | REVIEWED_FIXTURE_FINGERPRINTS | REVIEWED_SOURCE_DIGEST_FINGERPRINTS,
         )
+
+    def test_source_digest_exceptions_bind_exact_public_bytes_and_audit(self) -> None:
+        triage = json.loads(
+            (ROOT / "docs/reviews/2026-10-02/materials-source-observations/secret-triage.json")
+            .read_text()
+        )
+        self.assertEqual(triage["version"], "materials-source-span-secret-triage/1.0.0")
+        self.assertEqual(triage["reviewed_findings"], 99)
+        self.assertEqual(triage["exact_fingerprints"], 99)
+        for key in ("broad_rules_disabled", "path_or_commit_globs_used", "raw_projection_files_rewritten"):
+            self.assertIs(triage[key], False)
+        self.assertEqual(triage["original_scan_exit_code"], 1)
+        self.assertEqual(triage["original_scan_scope"], f"HEAD ancestors at {SOURCE_DIGEST_COMMIT}")
+        entries = triage["entries"]
+        self.assertEqual(len(entries), 99)
+        self.assertEqual({entry["fingerprint"] for entry in entries}, REVIEWED_SOURCE_DIGEST_FINGERPRINTS)
+        for path, (file_sha, lines) in REVIEWED_SOURCE_DIGESTS.items():
+            raw = (ROOT / path).read_bytes()
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), file_sha)
+            source_lines = raw.decode("utf-8").splitlines()
+            file_entries = [entry for entry in entries if entry["file"] == path]
+            self.assertEqual(sorted(entry["line"] for entry in file_entries), sorted(lines))
+            self.assertEqual(len(file_entries), len(lines))
+            for entry in file_entries:
+                self.assertEqual(entry["commit"], SOURCE_DIGEST_COMMIT)
+                self.assertEqual(entry["rule_id"], "generic-api-key")
+                self.assertEqual(entry["source_field"], "token_sha256")
+                self.assertEqual(entry["file_sha256"], file_sha)
+                self.assertEqual(
+                    entry["fingerprint"],
+                    f"{SOURCE_DIGEST_COMMIT}:{path}:generic-api-key:{entry['line']}",
+                )
+                self.assertIs(entry["exact_original_line_verified"], True)
+                self.assertEqual(
+                    entry["classification"],
+                    "Public captured-source text-span SHA-256 digest; not an authentication credential",
+                )
+                self.assertRegex(
+                    source_lines[entry["line"] - 1],
+                    r'^\s*"token_sha256": "[0-9a-f]{64}"[,]?$',
+                )
+        self.assertEqual(triage["independent_review"], {
+            "receipt_sha256": "22f72393e9480346f2a1324f4d21e780adcf746a71ce30fc4d12a86df6d88772",
+            "archive_manifest_sha256": "a458961cd00d7213ac7b96c860954b093eb7dd575d6861022ba9b58fc451607a",
+            "original_capture_digest_fields_recomputed": 100,
+            "original_capture_digest_mismatches": 0,
+            "exact_fingerprint_set_verified": True,
+            "scientific_acceptance": False,
+        })
 
     def test_release_binds_scan_signature_and_provenance_to_digest(self) -> None:
         release = (WORKFLOW_DIR / "release-images.yml").read_text()
