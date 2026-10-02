@@ -22,6 +22,15 @@ export type ReviewReceipt = Authority & { version: string; receipt_id: string; r
 export type ReviewDecision = Authority & { id: string; record_sha256: string; record_canonical_json: string; target_id: string; field_id: ReviewField; decision: ReviewItem["decision"]; is_head: boolean; field_fidelity_accepted: boolean; effective_value: Row | null; effective_value_canonical_json: string | null; reason_codes: string[]; source_identity_status: string; created_at: string };
 export type ReviewEffective = Authority & { version: string; actor_user_id: string; session_version: number; target_id: string; field_id: ReviewField; field_fidelity_accepted: boolean; effective_value: Row | null; effective_value_canonical_json: string | null; decision: ReviewDecision | null };
 export const fieldReviewLabel = (field: string) => ({ tc_criterion: "Tc criterion", measurement_method: "Measurement method", pressure_gpa: "Tc result pressure" }[field] ?? field.replaceAll("_", " "));
+/** Target field names differ from the frozen source-expression vocabulary. */
+export function reviewFieldSourceSelection(field: string, projection: { field_id: string; conditions: { field_id: string; role: string }[] }): { field: ReviewField; kind: "condition" | "value"; index: string } | null {
+  if (!FIELD_REVIEW_FIELDS.some(f => f === field)) return null;
+  const selected = field as ReviewField;
+  const sourceField = { tc_criterion: "criterion_statement", measurement_method: "method_statement", pressure_gpa: "pressure_gpa" }[selected];
+  if (selected === "measurement_method" && projection.field_id === "method_statement") return { field: selected, kind: "value", index: "0" };
+  const conditions = projection.conditions.map((c, index) => ({ ...c, index })).filter(c => c.field_id === sourceField && c.role === "reported_result_condition");
+  return projection.field_id === "tc_kelvin" && conditions.length === 1 ? { field: selected, kind: "condition", index: String(conditions[0].index) } : null;
+}
 export const fieldReviewCheckLabel = (key: ReviewCheck) => ({ source_identity_and_fragment: "Publication identity and original source fragment", field_value_and_unit_boundary: "Field meaning, printed value and unit boundary", retained_result_window_and_sample_scope: "Same Tc result window and sample scope", semantic_missingness_and_conflicts: "Missing field and conflicts with existing aliases" }[key]);
 export function fieldReviewUuid(value: unknown): value is string { return typeof value === "string" && /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(value); }
 function row(value: unknown): value is Row { return typeof value === "object" && value !== null && !Array.isArray(value); }

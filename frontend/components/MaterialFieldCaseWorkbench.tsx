@@ -5,7 +5,7 @@ import Link from "@/components/AppLink";
 import { useDashboardUser } from "@/components/dashboard/user-context";
 import { ApiError, materialFieldCaseCapabilities, materialFieldCaseCommit, materialFieldCaseContext, materialFieldCaseDetail, materialFieldCaseMaterial, materialFieldCaseOutcome, materialFieldCasePreview, sourceExpressionDetail, sourceExpressionList } from "@/lib/api";
 import { onAuthChange } from "@/lib/auth-session";
-import { FIELD_REVIEW_FIELDS } from "@/lib/material-field-review";
+import { reviewFieldSourceSelection } from "@/lib/material-field-review";
 import { expressionCanonical, expressionSha, expressionSourceHref, knownExpressionPage, knownSourceRevision, sourceValueLabel, type ExpressionPage, type SourceRevision } from "@/lib/source-expressions";
 import { compatibleFieldExpression, fieldCaseEntryActor, fieldCaseEntryChain, fieldCaseLabel, fieldCaseReason, fieldCaseRecovery, fieldCaseText, fieldCaseTargetSummary, knownFieldCaseCapabilities, knownFieldCaseContext, knownFieldCaseDetail, knownFieldCaseMaterial, knownFieldCaseReceipt, knownFieldCaseRequest, FIELD_CASE_OUTCOMES, FIELD_CASE_REASONS, FIELD_CASE_REQUEST_VERSION, type FieldCaseAssociationPayload, type FieldCaseAttemptPayload, type FieldCaseCapabilities, type FieldCaseContext, type FieldCaseDetail, type FieldCaseEntry, type FieldCaseMaterialPage, type FieldCaseReceipt, type FieldCaseRecovery, type FieldCaseRequest, type FieldCaseTargetPayload, type TargetKind } from "@/lib/material-field-cases";
 
@@ -41,10 +41,7 @@ function TargetSummary({ canonical }: { canonical: string }) {
 function RowHistory({ entry, onWithdraw, canWithdraw, reviewField }: { entry: FieldCaseEntry; onWithdraw?: () => void; canWithdraw?: boolean; reviewField?: string }) {
   const attempt = entry.operation === "attempt" ? entry.payload as FieldCaseAttemptPayload : null, association = entry.operation === "association" ? entry.payload as FieldCaseAssociationPayload : null;
   const projection = entry.expression?.projection;
-  const conditions = projection?.conditions.map((c, index) => ({ ...c, index })).filter(c => c.field_id === reviewField && c.role === "reported_result_condition") ?? [];
-  const standaloneMethod = reviewField === "measurement_method" && projection?.field_id === "measurement_method";
-  const reviewSelection = reviewField && FIELD_REVIEW_FIELDS.some(f => f === reviewField) && (standaloneMethod || projection?.field_id === "tc_kelvin" && conditions.length === 1)
-    ? { field: reviewField, kind: standaloneMethod ? "value" : "condition", index: standaloneMethod ? "0" : String(conditions[0].index) } : null;
+  const reviewSelection = reviewField && projection ? reviewFieldSourceSelection(reviewField, projection) : null;
   return <li className="space-y-2 border-t border-sage-border py-3 first:border-t-0">
     <p className="text-sm font-medium">{attempt ? fieldCaseReason(attempt.outcome) : association?.action === "withdraw" ? "Proposal withdrawn" : "Source association proposed"} <span className="font-normal text-sage-muted">· {entry.is_head ? "Current head" : "Historical entry"}</span></p>
     <Disposition entry={entry} />

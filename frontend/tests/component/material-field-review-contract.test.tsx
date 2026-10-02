@@ -1,12 +1,24 @@
 import { webcrypto } from "node:crypto";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { expressionSha } from "@/lib/source-expressions";
-import { knownReviewCapabilities, knownReviewContext, knownReviewEffective, knownReviewReceipt, knownReviewRequest, reviewRecovery, reviewSourceValue, loadReviewRecovery, retainReviewRecovery, clearReviewRecovery } from "@/lib/material-field-review";
+import { knownReviewCapabilities, knownReviewContext, knownReviewEffective, knownReviewReceipt, knownReviewRequest, reviewRecovery, reviewSourceValue, reviewFieldSourceSelection, loadReviewRecovery, retainReviewRecovery, clearReviewRecovery } from "@/lib/material-field-review";
 import { reviewActor, reviewCap, reviewExpression, reviewTarget, syntheticReviewCanonical, syntheticReviewContext, syntheticReviewEffective, syntheticReviewReceipt, syntheticReviewRequest } from "../helpers/material-field-review-test-data";
 beforeEach(() => { sessionStorage.clear(); vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => vi.unstubAllGlobals());
 const selector = { targetId: reviewTarget, expressionId: reviewExpression, fieldId: "tc_criterion" as const, componentKind: "condition" as const, componentIndex: 0 };
 describe("Source-scoped field fidelity contracts", () => {
+  it("maps genuine frozen source field names to their distinct retained targets and exact component positions", () => {
+    // Field names and positions from the synthetic Python/native source-v2 Tc fixture.
+    const projection = { field_id: "tc_kelvin", conditions: ["method_statement", "criterion_statement", "pressure_gpa"].map(field_id => ({ field_id, role: "reported_result_condition" })) };
+    expect(reviewFieldSourceSelection("tc_criterion", projection)).toEqual({ field: "tc_criterion", kind: "condition", index: "1" });
+    expect(reviewFieldSourceSelection("measurement_method", projection)).toEqual({ field: "measurement_method", kind: "condition", index: "0" });
+    expect(reviewFieldSourceSelection("pressure_gpa", projection)).toEqual({ field: "pressure_gpa", kind: "condition", index: "2" });
+    expect(reviewFieldSourceSelection("measurement_method", { field_id: "method_statement", conditions: [] })).toEqual({ field: "measurement_method", kind: "value", index: "0" });
+    expect(reviewFieldSourceSelection("hc2_tesla", projection)).toBeNull();
+    expect(reviewFieldSourceSelection("tc_criterion", { ...projection, conditions: [...projection.conditions, projection.conditions[1]] })).toBeNull();
+    expect(reviewFieldSourceSelection("pressure_gpa", { ...projection, conditions: [{ field_id: "pressure_gpa", role: "study_extent" }] })).toBeNull();
+    expect(reviewFieldSourceSelection("measurement_method", { field_id: "measurement_method", conditions: [] })).toBeNull();
+  });
   it("preserves inline units from the frozen Python quantity compiler and appends only separately selected printed units", () => {
     // Frozen quantity('2 GPa', None, 'pressure_gpa') and quantity('2', 'GPa', 'pressure_gpa').
     const value = { raw_value: "2 GPa", raw_unit: "GPa", value: 2, unit: "GPa", uncertainty: null, uncertainty_interpretation: null, approximate: false, relation: "exact", status: "parsed", unit_basis: "source_printed" };
