@@ -1,4 +1,4 @@
-"""Empty 0083/0084 round trip on the fresh owned migration rehearsal.
+"""Empty 0083–0086 round trip on the fresh owned migration rehearsal.
 
 The API suite retains committed expression and field-case audit history. Its
 nonempty downgrade tests must keep that history; no fixture clears it. This
@@ -7,10 +7,34 @@ namespace is populated, with all earlier rehearsal rows retained.
 """
 from __future__ import annotations
 
-from migration_source_properties import FIELD_CASE_TABLES, INTAKE_V2_TABLES
+from migration_source_properties import FIELD_CASE_TABLES, FIELD_REVIEW_TABLES, INTAKE_V2_TABLES
 from test_safety import validate_test_environment, verify_postgres_identity
 
-TABLES = (*INTAKE_V2_TABLES, *FIELD_CASE_TABLES)
+TABLES = (*INTAKE_V2_TABLES, *FIELD_CASE_TABLES, *FIELD_REVIEW_TABLES)
+
+
+def function_signatures():
+    from models.material_field_cases_v1 import FUNCTION_SIGNATURES as FIELD_FUNCTIONS
+    from models.material_field_review_v1 import FUNCTION_SIGNATURES as REVIEW_FUNCTIONS
+    from models.material_literal_fields_v1 import FUNCTION_SIGNATURES as LITERAL_FUNCTIONS
+    from models.source_expression_intake_v2 import FUNCTION_SIGNATURES as INTAKE_FUNCTIONS
+
+    return (*INTAKE_FUNCTIONS, *FIELD_FUNCTIONS, *REVIEW_FUNCTIONS, *LITERAL_FUNCTIONS)
+
+
+def expected_triggers():
+    # Independent inventory: every frozen guard remains present, alongside the
+    # finite literal dispatch and review guards added by the later revisions.
+    return {
+        *((table, name) for table in INTAKE_V2_TABLES
+          for name in ("se83_insert", "se83_immutable", "se83_truncate")),
+        *((table, name) for table in INTAKE_V2_TABLES[1:]
+          for name in ("se83_complete", "aa86_profile", "se86_insert")),
+        *((table, name) for table in FIELD_CASE_TABLES
+          for name in ("fc84_insert", "fc84_immutable", "fc84_truncate", "aa86_profile", "fc86_insert")),
+        *((table, name) for table in FIELD_REVIEW_TABLES
+          for name in ("fr85_insert", "fr85_immutable", "fr85_truncate", "fr85_complete")),
+    }
 
 
 def snapshot(connection):
@@ -26,14 +50,12 @@ def snapshot(connection):
 
 
 def objects(connection):
-    from models.material_field_cases_v1 import FUNCTION_SIGNATURES as FIELD_FUNCTIONS
-    from models.source_expression_intake_v2 import FUNCTION_SIGNATURES as INTAKE_FUNCTIONS
     from sqlalchemy import text
 
     functions = tuple(connection.execute(text(
         "SELECT pg_get_functiondef(to_regprocedure(:signature))"),
         {"signature": f"public.{name}({arguments})"}).scalar_one_or_none()
-        for name, arguments in (*INTAKE_FUNCTIONS, *FIELD_FUNCTIONS))
+        for name, arguments in function_signatures())
     triggers = tuple(connection.execute(text("""SELECT c.relname,t.tgname,pg_get_triggerdef(t.oid)
         FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid
         JOIN pg_namespace n ON n.oid=c.relnamespace
@@ -66,8 +88,6 @@ def public_objects(connection):
 def empty_roundtrip(capability, engine, config):
     validate_test_environment()
     from alembic import command
-    from models.material_field_cases_v1 import FUNCTION_SIGNATURES as FIELD_FUNCTIONS
-    from models.source_expression_intake_v2 import FUNCTION_SIGNATURES as INTAKE_FUNCTIONS
     from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
     from sqlalchemy import inspect, text
 
@@ -80,12 +100,13 @@ def empty_roundtrip(capability, engine, config):
         all_definitions = public_objects(connection)
         new_signatures = {connection.execute(text("SELECT to_regprocedure(:signature)::text"),
             {"signature": f"public.{name}({arguments})"}).scalar_one()
-            for name, arguments in (*INTAKE_FUNCTIONS, *FIELD_FUNCTIONS)}
+            for name, arguments in function_signatures()}
         earlier_definitions = ({key: value for key, value in all_definitions[0].items()
                                 if key not in new_signatures},
                                tuple(row for row in all_definitions[1] if row[0] not in TABLES))
         assert any(before.values()), "Earlier rehearsal rows must actually be populated"
-        assert all(definitions[0]) and len(definitions[1]) == 20
+        assert all(definitions[0])
+        assert {(row[0], row[1]) for row in definitions[1]} == expected_triggers()
     command.downgrade(config, "0082_source_property_pending")
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
@@ -95,7 +116,7 @@ def empty_roundtrip(capability, engine, config):
         except SchemaLifecycleError as exc:
             assert "exact revision" in str(exc)
         else:
-            raise AssertionError("0084 API must refuse 0082 schema")
+            raise AssertionError("0086 API must refuse 0082 schema")
         assert not set(TABLES) & set(inspect(connection).get_table_names(schema="public"))
         assert snapshot(connection) == before
         assert public_objects(connection) == earlier_definitions
@@ -111,4 +132,4 @@ def empty_roundtrip(capability, engine, config):
         assert snapshot(connection) == before
         assert objects(connection) == definitions
         assert public_objects(connection) == all_definitions
-    print("Empty 0083/0084 round trip preserved every earlier SQL row and restored all functions/triggers.")
+    print("Empty 0083–0086 round trip preserved every earlier SQL row and restored all functions/triggers.")
