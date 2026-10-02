@@ -3,10 +3,79 @@ import { describe, expect, it } from "vitest";
 import MaterialsComputationalReferencesPage, { metadata } from "@/app/materials/source-observations/computational-references/page";
 import MaterialsSourceObservationsPage from "@/app/materials/source-observations/page";
 import { MaterialComputationalReference } from "@/components/MaterialComputationalReference";
+import { MaterialComputationalNativeOutput } from "@/components/MaterialComputationalNativeOutput";
+import { computationalNativeOutputMetadataPath, loadComputationalNativeOutput } from "@/lib/material-computational-native-output";
 import { computationalReferenceMetadataPath, loadComputationalReference } from "@/lib/material-computational-reference";
 
 const data = loadComputationalReference()!;
+const completeNative = loadComputationalNativeOutput()!;
 describe("Computational reference scientific presentation", () => {
+  it("shows the reported native geometry with documentary units and unresolved convergence in the English page", () => {
+    render(<MaterialsComputationalReferencesPage />);
+    expect(screen.getAllByRole("heading", { level: 2 })).toHaveLength(1);
+    expect(screen.getByRole("heading", { name: "Reported final structure" })).toBeInTheDocument();
+    const basis = screen.getByRole("region", { name: "Lattice basis, horizontally scrollable" });
+    const sites = screen.getByRole("region", { name: "Reported atomic positions, horizontally scrollable" });
+    for (const region of [basis, sites]) {
+      expect(region).toHaveAttribute("tabindex", "0");
+      expect(region).toHaveClass("max-w-full", "overflow-x-auto");
+      expect(within(region).getAllByRole("row")).toHaveLength(4);
+    }
+    expect(within(basis).getByText("2.95061293")).toBeInTheDocument();
+    expect(within(basis).getByText("-0.00002535")).toBeInTheDocument();
+    expect(within(sites).getByRole("rowheader", { name: "3 · Cr" })).toBeInTheDocument();
+    expect(within(sites).getAllByText("0.00001171")).toHaveLength(2);
+    expect(screen.getByText(/Convergence has not been independently assessed/)).toBeInTheDocument();
+    expect(screen.getByText(/The captured basis and positions have no explicit XML unit attributes/)).toHaveTextContent("Historical archive units retain their earlier unresolved status");
+    const earlierInputs = screen.getByText("Earlier prefix input snapshot").closest("details")!;
+    expect(earlierInputs).not.toHaveAttribute("open");
+    expect(within(earlierInputs).getByText("Earlier prefix input settings")).toBeInTheDocument();
+    expect(screen.getByText("Earlier snapshot gaps and current limits").closest("details")).not.toHaveAttribute("open");
+    expect(screen.getByText(/The entries below describe the earlier archive and 2 MiB prefix captures/)).toBeInTheDocument();
+    expect(screen.getByText("Earlier archive and prefix provenance")).toBeInTheDocument();
+    expect(screen.getByText("Earlier reference metadata (JSON)")).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/[\u4e00-\u9fff]|\u2014/);
+  });
+
+  it("retains conflicting native contexts and separate raw energy channels inside folded details", () => {
+    render(<MaterialComputationalNativeOutput data={completeNative} />);
+    const inputDisclosure = screen.getByText("Full-source input settings (17 tags)").closest("details")!;
+    expect(inputDisclosure).not.toHaveAttribute("open");
+    const inputs = screen.getByRole("region", { name: "Full native input contexts, horizontally scrollable" });
+    expect(within(inputs).getAllByRole("row")).toHaveLength(27);
+    const starts = within(inputs).getAllByRole("rowheader", { name: "ISTART" }).map(header => header.closest("tr")!);
+    expect(starts).toHaveLength(2);
+    expect(within(starts[0]).getByText("1")).toBeInTheDocument();
+    expect(within(starts[0]).getByText("INCAR")).toBeInTheDocument();
+    expect(within(starts[1]).getByText("0")).toBeInTheDocument();
+    expect(within(starts[1]).getByText("Parameters · Electronic startup")).toBeInTheDocument();
+    const limits = within(inputs).getAllByRole("rowheader", { name: "NELM" }).map(header => header.closest("tr")!);
+    expect(within(limits[0]).getByText("60")).toBeInTheDocument();
+    expect(within(limits[0]).getByText("Parameters · Electronic convergence")).toBeInTheDocument();
+    expect(within(limits[1]).getByText("1")).toBeInTheDocument();
+    expect(within(limits[1]).getByText("Parameters · Response functions")).toBeInTheDocument();
+    const energies = screen.getByText("Parameter differences and energy channels").closest("details")!;
+    expect(energies).not.toHaveAttribute("open");
+    expect(within(energies).getByText("0.00094910")).toBeInTheDocument();
+    expect(within(energies).getAllByText("-23.86534907")).toHaveLength(2);
+    expect(within(energies).getByText(/A corrected final energy and a convergence conclusion have not been assigned/)).toBeInTheDocument();
+    expect(screen.getByText(/ENMAX remains a separate tag/)).toBeInTheDocument();
+  });
+
+  it("offers distinct complete-source JSON and checksum links while keeping raw XML at its original provider", () => {
+    render(<MaterialComputationalNativeOutput data={completeNative} />);
+    const pre = screen.getByLabelText("Complete native output metadata JSON");
+    expect(pre.closest("details")).not.toHaveAttribute("open");
+    expect(pre).toHaveAttribute("tabindex", "0");
+    expect(JSON.parse(pre.textContent!)).toEqual(completeNative);
+    expect(screen.getByRole("link", { name: "Download complete-source JSON" })).toHaveAttribute("href", computationalNativeOutputMetadataPath);
+    expect(screen.getByRole("link", { name: "Download complete-source JSON" })).toHaveAttribute("download");
+    expect(screen.getByRole("link", { name: "Complete-source SHA-256" })).toHaveAttribute("href", `${computationalNativeOutputMetadataPath}.sha256`);
+    expect(screen.getByRole("link", { name: "Complete-source SHA-256" })).toHaveAttribute("download");
+    expect(screen.getByRole("link", { name: "Original native XML at NOMAD" })).toHaveAttribute("href", completeNative.native_source.url);
+    expect(screen.getByText(/Its 2021 processing timestamp differs/)).toHaveTextContent("historical archive hash was not reverified");
+  });
+
   it("presents one computed entry with readable method, grid and workflow metadata", () => {
     render(<MaterialsComputationalReferencesPage />);
     expect(screen.getByRole("heading", { level: 1, name: "Computational references" })).toBeInTheDocument();

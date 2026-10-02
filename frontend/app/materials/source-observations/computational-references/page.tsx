@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MaterialComputationalReference } from "@/components/MaterialComputationalReference";
 import { loadComputationalReference } from "@/lib/material-computational-reference";
+import { loadComputationalNativeOutput } from "@/lib/material-computational-native-output";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Materials computational references",
-  description: "Inspect one independent CrB2 NOMAD computation: reported method, literal native input settings, potential labels and exact source locators. Units and physical associations retain their checked scope.",
+  description: "Inspect one independent CrB2 NOMAD computation: reported final structure from complete native XML, literal input contexts, archive metadata and source provenance. Convergence and experimental associations retain their checked scope.",
   alternates: { canonical: absoluteUrl("/materials/source-observations/computational-references") },
 };
 
@@ -18,8 +19,8 @@ export default function MaterialsComputationalReferencesPage() {
         <Link href="/materials/source-observations" className="site-text-link">Source observations</Link>
       </nav>
       <h1 className="text-3xl font-semibold tracking-tight">Computational references</h1>
-      <p className="max-w-3xl text-sm leading-6 text-sage-muted">Read reported computation metadata and partial native input settings, with source roles, units and unresolved fields kept explicit.</p>
+      <p className="max-w-3xl text-sm leading-6 text-sage-muted">Read the reported final structure, computation settings and exact source values, with provenance available for each reference.</p>
     </header>
-    <MaterialComputationalReference data={loadComputationalReference()} />
+    <MaterialComputationalReference data={loadComputationalReference()} nativeOutput={loadComputationalNativeOutput()} />
   </main>;
 }
