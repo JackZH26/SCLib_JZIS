@@ -77,6 +77,11 @@ describe("actual native canary byte inspection", () => {
     if (["type", "oversized"].includes(name)) expect(fetcher).not.toHaveBeenCalled();
   });
   it("retains unmodified native replies and exact selected source pins", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r8.wire.json")))).toBe("ec5f808ee85a953db9c5bae030987de8b449a8ea858ab65e8b34c4939a6e4821");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r7.wire.json")))).toBe("18a4a23a64e017a2cd7309421d851720d97542eef41cb0e4aad25ca861833c5d");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r6.wire.json")))).toBe("34c9cfa3df116b0e9ab2b15324dc24d31c75b7ffa9c873884e865621f5f24d2f");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r5.wire.json")))).toBe("c02daddf83b7d2342aa099decf46d3b0b51ccf3ad3620f13afb2dff32f72448f");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r3.wire.json")))).toBe("f089103c19aa13026fe5b74a3ca01da882073f89c0936f4bcfde32191341a0bc");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002r2.wire.json")))).toBe("7a9c7eab692075479a3e0c1fa92c08c77128737eab9ec251e97595f07a049fa9");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261002.wire.json")))).toBe("8df91ddd0d0db4a853177bfa58215d817409119c178292904bcc8c92313a1613");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.materials20261001.wire.json")))).toBe("3231c092d019a84e59e8d122128d3bda45ae60ac1f2deb829dc58f63ffd69fc2");
@@ -88,7 +93,7 @@ describe("actual native canary byte inspection", () => {
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260922r10.wire.json")))).toBe("9594b10f4613974c9a45f3e5baddeced409bd586aede3ee0a6506e45f85644ed");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.delivery20260922r9.wire.json")))).toBe("26ee35ec8d165d3e16ad4b9c5235b8e932d4ad62c404d881b4e0295e8d331f57");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-evidence-native.batch75.wire.json")))).toBe("f8128d35236754dac5164721bb34becc0431751fcc79fac2236fa23f6aa1edd8");
-    expect(native.source_pins).toHaveLength(633);
+    expect(native.source_pins).toHaveLength(635);
     expect(native.capture_test_path).toBe("api/tests/test_ml_pilot_evidence.py");
     expect(native.fixture_notice).toContain("synthetic accounts and events only");
     for (const row of native.source_pins) expect(sha(readFileSync(resolve(process.cwd(), "..", row.path))), row.path).toBe(row.sha256);

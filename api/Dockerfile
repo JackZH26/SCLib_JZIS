@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.7
-FROM python:3.11-slim AS base
+# Keep the tested Python 3.11.16/trixie index fixed; install OS fixes below.
+FROM python:3.11-slim@sha256:e41613d42d4891e4930f79523f93f81bbc7632584ec65e36ab055f41a800b41e AS base
 
 # uv 0.11.16 multi-platform image index, pinned by digest so the build tool
 # itself cannot change underneath a release build.
@@ -15,11 +16,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PATH="/opt/venv/bin:$PATH"
 
 # System deps: build tools for psycopg2, curl for healthchecks, tini for PID 1
+# Refresh base PCRE2 and fail if mirrors lack the CVE-2026-103111 fix.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
+        libpcre2-8-0 \
         libpq-dev \
         curl \
         tini \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libpcre2-8-0)" ge '10.46-1~deb13u3' \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

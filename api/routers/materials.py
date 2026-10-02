@@ -668,9 +668,11 @@ async def material_enrichment(
     material = await material_view(db, await db.get(Material, material_id))
     if material is None or not visibility_allows_view(material.visibility):
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Material not found")
+    from services.material_classification_seed import merge_primary_classification_seed
     from services.material_enrichment_read import read_material_enrichment
     from services.material_enrichment_seed import merge_primary_seed
     report = merge_primary_seed(await read_material_enrichment(db, material), material)
+    report = merge_primary_classification_seed(report, material)
     # Catalogue and source epochs cover correction/withdrawal while the
     # bounded extraction worker is running. Publish only the same snapshot.
     await _check_material_revision(db, before)

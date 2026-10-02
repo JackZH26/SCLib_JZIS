@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import sys
 import threading
 from collections import Counter
@@ -20,19 +21,35 @@ from services.material_enrichment import digest, validate_candidate_identity  # 
 class FakeReadSession:
     def __init__(self, chunks, *, papers=()):
         self.chunks, self.papers, self.statements = chunks, papers, []
+        self.measured_lengths = {}
 
     async def execute(self, statement):
         self.statements.append(statement)
         assert statement.is_select
         parameters = statement.compile().params
         paper_ids = next(value for value in parameters.values() if type(value) is list)
-        if len(statement.column_descriptions) == 3 and statement.column_descriptions[0]["entity"] is reader.Paper:
+        columns = statement.column_descriptions
+        names = {column["name"] for column in columns}
+        if len(columns) == 3 and columns[0]["entity"] is reader.Paper:
             return SimpleNamespace(all=lambda: [paper for paper in self.papers if paper[0] in paper_ids])
         selected = [c for c in self.chunks if c.paper_id in paper_ids and 0 < len(c.text) <= 20000]
-        if len(statement.column_descriptions) == 1 and statement.column_descriptions[0]["entity"] is reader.Paper:
+        if names == {"paper_id", "indexed_chunks_total", "bounded_indexed_chunks_total"}:
+            rows = [(paper, sum(c.paper_id == paper for c in self.chunks),
+                     sum(c.paper_id == paper for c in selected)) for paper in paper_ids]
+            return SimpleNamespace(all=lambda: rows)
+        if names == {"id", "paper_id", "characters"}:
+            formula = next(value for value in parameters.values() if type(value) is str)
+            selected.sort(key=lambda c: (formula not in c.text, not c.has_table, c.chunk_index, c.id))
+            selected = selected[:statement._limit_clause.value]
+            self.measured_lengths.update({c.id: len(c.text) for c in selected})
+            rows = [(c.id, c.paper_id, len(c.text)) for c in selected]
+            return SimpleNamespace(all=lambda: rows)
+        if len(columns) == 1 and columns[0]["entity"] is reader.Paper:
             values = sorted({c.paper_id for c in selected})
         else:
-            values = selected[:reader.MAX_CHUNKS + 1]
+            identifiers = parameters["id_1"]
+            values = [c for c in selected if c.id in identifiers and len(c.text) == self.measured_lengths[c.id]]
+            values = values[:statement._limit_clause.value]
         return SimpleNamespace(scalars=lambda: SimpleNamespace(all=lambda: values))
 
 
@@ -45,6 +62,47 @@ def material(records=None):
 def chunk(index, *, paper_id="paper:1", section="Results", text=None):
     return SimpleNamespace(id=f"chunk:{index}", paper_id=paper_id, section=section, chunk_index=index,
                            text=text or "Computed YScH10 has Tc=116 K at 140 GPa.", has_table=False)
+
+
+def test_public_classification_windows_and_hash_are_independent(monkeypatch):
+    body = {"version": "materials-enrichment/1.0.0", "coverage": [], "counts": {"candidate_facts": 0},
+            "candidates": [], "classification_candidates": [
+                {"candidate_id": str(i), "field": "reported_order", "source": {"paper_id": "paper:a", "capture_id": "capture:a"}}
+                for i in range(150)],
+            "classification_review_findings": [
+                {"fields": ["reported_order"], "reason_codes": [str(i)], "source": {"paper_id": "paper:a", "capture_id": "capture:a"}}
+                for i in range(130)],
+            "classification_counts": {"candidate_facts": 150, "review_findings": 130, "promoted_facts": 0}}
+    monkeypatch.setattr(reader, "build_enrichment_report", lambda *_args, **_kwargs: body)
+    result = reader._compile_recovery_report({}, [], {}, {
+        "records_total": 0, "records_inspected": 0, "records_truncated": False, "raw_retained_records_total": 0})
+    assert result["candidates"] == []
+    assert len(result["classification_candidates"]) == len(result["classification_review_findings"]) == 100
+    assert result["classification_candidates_truncated"] is True
+    assert result["classification_review_findings_truncated"] is True
+    assert result["classification_counts"] == {"candidate_facts": 150, "review_findings": 130,
+        "promoted_facts": 0, "candidate_facts_returned": 100, "candidate_facts_omitted": 50,
+        "review_findings_returned": 100, "review_findings_omitted": 30}
+    assert result["report_sha256"] == digest({key: value for key, value in result.items() if key != "report_sha256"})
+
+
+def test_public_window_keeps_sparse_second_source_and_honest_omitted_counts(monkeypatch):
+    dense = [{"candidate_id": f"a:{i:03}", "field": "tc_kelvin", "value": 23,
+              "source": {"paper_id": "paper:a", "capture_id": f"capture:a:{i}"}} for i in range(120)]
+    sparse = {"candidate_id": "z:distinct-tc", "field": "tc_kelvin", "value": 17.5,
+              "source": {"paper_id": "paper:b", "capture_id": "capture:b"}}
+    body = {"version": "materials-enrichment/1.0.0", "coverage": [], "counts": {"candidate_facts": 121},
+            "candidates": [*dense, sparse], "classification_candidates": [],
+            "classification_review_findings": [], "classification_counts": {}}
+    monkeypatch.setattr(reader, "build_enrichment_report", lambda *_args, **_kwargs: body)
+    result = reader._compile_recovery_report({}, [], {}, {
+        "records_total": 0, "records_inspected": 0, "records_truncated": False, "raw_retained_records_total": 0})
+    assert len(result["candidates"]) == 100 and result["candidates_truncated"] is True
+    assert sparse in result["candidates"][:40]
+    assert result["counts"]["candidate_facts"] == 121
+    assert result["counts"]["candidate_facts_returned"] == 100
+    assert result["counts"]["candidate_facts_omitted"] == 21
+    assert result["report_sha256"] == digest({key: value for key, value in result.items() if key != "report_sha256"})
 
 
 @pytest.mark.asyncio
@@ -200,6 +258,125 @@ async def test_combined_source_character_cap_is_checked_before_descriptor_resolu
     assert sum(selected_lengths) <= reader.MAX_CHARS
     assert sum(selected_lengths) + len(text) > reader.MAX_CHARS
     assert report["coverage"][0]["source_coverage"]["paper:1"]["truncated"] is True
+
+
+@pytest.mark.asyncio
+async def test_first_paper_cannot_consume_second_papers_unique_fact(monkeypatch):
+    records = [{"paper_id": paper, "formula": "YScH10", "tc_kelvin": 116}
+               for paper in ("paper:a", "paper:b")]
+    chunks = [chunk(i, paper_id="paper:a") for i in range(45)]
+    for c in chunks:
+        c.has_table = True
+    chunks.append(chunk(100, paper_id="paper:b", text="YScH10 has Tc=17.5 K, measured by resistivity."))
+    observed = []
+    async def descriptors(_db, selected):
+        observed.extend(selected)
+        return {}
+    monkeypatch.setattr(reader, "resolve_chunk_evidence", descriptors)
+    report = await reader.read_material_enrichment(FakeReadSession(chunks), material(records))
+    assert len(observed) == reader.MAX_CHUNKS
+    assert observed[1].paper_id == "paper:b"
+    assert any(c["field"] == "tc_kelvin" and c["value"] == 17.5
+               and c["source"]["paper_id"] == "paper:b" for c in report["candidates"])
+    coverage = report["coverage"][0]["source_coverage"]
+    assert coverage["paper:a"]["chunks_supplied"] == 39
+    assert coverage["paper:a"]["omitted_chunk_reasons"] == {"chunk_inspection_limit": 6}
+    assert coverage["paper:b"]["chunks_supplied"] == 1
+    assert coverage["paper:b"]["truncated"] is False
+
+
+@pytest.mark.asyncio
+async def test_nonfitting_chunk_does_not_hide_later_whole_chunk_or_forge_hash(monkeypatch):
+    first = "YScH10 has Tc=116 K. " + "x" * 50
+    nonfitting = "YScH10 has Tc=999 K. " + "y" * 80
+    later = "YScH10 has Tc=17.5 K."
+    monkeypatch.setattr(reader, "MAX_CHARS", len(first) + len(later))
+    supplied = []
+    async def descriptors(_db, selected):
+        supplied.extend(selected)
+        return {c.id: {"source_locator": {"page": 8, "char_start": 125, "char_end": 145}} for c in selected}
+    monkeypatch.setattr(reader, "resolve_chunk_evidence", descriptors)
+    report = await reader.read_material_enrichment(FakeReadSession([
+        chunk(0, text=first), chunk(1, text=nonfitting), chunk(2, text=later),
+    ]), material())
+    assert [c.id for c in supplied] == ["chunk:0", "chunk:2"]
+    assert [c.text for c in supplied] == [first, later]
+    assert report["inspection_scope"]["characters_inspected"] == len(first) + len(later)
+    coverage = report["coverage"][0]["source_coverage"]["paper:1"]
+    assert coverage["chunks_considered"] == 3 and coverage["chunks_inspected"] == 2
+    assert coverage["omitted_chunk_reasons"] == {"character_inspection_limit": 1}
+    assert coverage["omitted_chunks_total"] == 1 and coverage["excluded_chunks_total"] == 0
+    candidate = next(c for c in report["candidates"] if c["value"] == 17.5)
+    assert candidate["source"]["content_sha256"] == hashlib.sha256(later.encode()).hexdigest()
+    assert candidate["source"]["locator"] == {"page": 8, "char_start": 125, "char_end": 145,
+                                              "chunk_id": "chunk:2", "section": "Results"}
+    assert all(c["value"] != 999 for c in report["candidates"])
+
+
+@pytest.mark.asyncio
+async def test_per_paper_exclusions_length_omissions_and_unsampled_sources_are_honest(monkeypatch):
+    records = [{"paper_id": f"paper:{i:02}", "formula": "YScH10"} for i in range(9)]
+    chunks = [chunk(0, paper_id="paper:00", section="Facts"),
+              chunk(1, paper_id="paper:00"), chunk(2, paper_id="paper:08"),
+              chunk(3, paper_id="paper:08", text="x" * 20001)]
+    async def descriptors(_db, selected):
+        return {"chunk:1": {"permission_status": "restricted"}}
+    monkeypatch.setattr(reader, "resolve_chunk_evidence", descriptors)
+    report = await reader.read_material_enrichment(FakeReadSession(chunks), material(records))
+    coverage = report["coverage"][0]["source_coverage"]
+    first, last = coverage["paper:00"], coverage["paper:08"]
+    assert first["excluded_chunks_total"] == 2
+    assert first["excluded_chunk_reasons"] == {"derived_source": 1, "source_permission_restricted": 1}
+    assert last["excluded_chunks_total"] == 0 and last["chunks_supplied"] == 1
+    assert last["omitted_chunk_reasons"] == {"indexed_chunk_length_outside_bounds": 1}
+    assert last["indexed_chunks_total"] == 2 and last["bounded_indexed_chunks_total"] == 1
+    for row in (first, last):
+        assert row["chunks_supplied"] + row["excluded_chunks_total"] + row["omitted_chunks_total"] == row["indexed_chunks_total"]
+    omitted = next(row for row in coverage.values() if "paper_sampling_limit" in row["reason_codes"])
+    assert omitted["chunks_inspected"] == 0 and omitted["indexed_chunks_total"] is None
+    assert omitted["omitted_chunks_total"] is None and omitted["truncated"] is True
+
+
+@pytest.mark.asyncio
+async def test_character_limit_explicit_when_every_paper_cannot_be_supplied(monkeypatch):
+    records = [{"paper_id": paper, "formula": "YScH10"} for paper in ("paper:a", "paper:b")]
+    text = "YScH10 has Tc=116 K."
+    monkeypatch.setattr(reader, "MAX_CHARS", len(text))
+    async def descriptors(_db, _selected):
+        return {}
+    monkeypatch.setattr(reader, "resolve_chunk_evidence", descriptors)
+    report = await reader.read_material_enrichment(FakeReadSession([
+        chunk(0, paper_id="paper:a", text=text), chunk(1, paper_id="paper:b", text=text),
+    ]), material(records))
+    coverage = report["coverage"][0]["source_coverage"]
+    assert coverage["paper:a"]["chunks_supplied"] == 1
+    assert coverage["paper:b"]["chunks_supplied"] == 0
+    assert coverage["paper:b"]["omitted_chunk_reasons"] == {"character_inspection_limit": 1}
+    assert coverage["paper:b"]["fulltext_checked"] is False
+
+
+@pytest.mark.asyncio
+async def test_chunk_length_change_after_metadata_cannot_exceed_text_budget(monkeypatch):
+    original = chunk(0)
+    monkeypatch.setattr(reader, "MAX_CHARS", len(original.text))
+    class ChangingSession(FakeReadSession):
+        async def execute(self, statement):
+            result = await super().execute(statement)
+            if "characters" in {column["name"] for column in statement.column_descriptions}:
+                original.text += " Changed synthetic text exceeds the measured budget."
+            return result
+    resolved = []
+    async def descriptors(_db, selected):
+        resolved.extend(selected)
+        return {}
+    monkeypatch.setattr(reader, "resolve_chunk_evidence", descriptors)
+    report = await reader.read_material_enrichment(ChangingSession([original]), material())
+    assert resolved == [] and report["candidates"] == []
+    assert report["inspection_scope"]["characters_inspected"] == 0
+    row = report["coverage"][0]["source_coverage"]["paper:1"]
+    assert row["chunks_considered"] == 1 and row["chunks_inspected"] == 0
+    assert row["omitted_chunk_reasons"] == {"indexed_chunk_changed_or_unavailable": 1}
+    assert row["omitted_chunks_total"] == 1 and row["truncated"] is True
 
 
 @pytest.mark.asyncio

@@ -1,0 +1,297 @@
+{
+  "version": "material-supercon-references/1.0.0",
+  "provider": "MDR SuperCon",
+  "formula": "La0.4Sm0.6O0.5F0.5BiS2",
+  "query_formula": "La0.4Sm0.6O0.5F0.5BiS2",
+  "status": "available",
+  "reason": null,
+  "references": [
+    {
+      "id": "mdr:240322:oxide_metallic:155190",
+      "source_row_id": "155190",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "89101566929c01fc9a0d78e5b78d4dd1cbb0bc75ed93355db1431bdbde85e2ae",
+      "source_line": 30501,
+      "source_line_end": 30501,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "La0.4Sm0.6Bi1S2F0.5O0.5",
+      "raw_common_formula": "(La,Sm)(O,F)BiS2",
+      "bibliography": {
+        "reference_code": "PRB091064510",
+        "title": "Enhancement of superconductivity in La1-xSmxO0.5F0.5BiS2",
+        "journal": "Phys.Rev.B, 91(2015)064510",
+        "publication_year_raw": "2015"
+      },
+      "structure": {
+        "space_group": "P4/nmm",
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": "CeOBiS2"
+      },
+      "sample_form": {
+        "raw_code": "1",
+        "label": "Single phase bulk",
+        "status": "reported"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "4.21",
+          "value": 4.21,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "4.21",
+          "value": 4.21,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "tcsus",
+          "label": "Tc (susceptibility)",
+          "raw_value": "4.95",
+          "value": 4.95,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "susceptibility_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "lata",
+          "label": "Lattice a",
+          "raw_value": "4.0077",
+          "value": 4.0077,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "lattice_parameter",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "latc",
+          "label": "Lattice c",
+          "raw_value": "13.4096",
+          "value": 13.4096,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "lattice_parameter",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    },
+    {
+      "id": "mdr:240322:oxide_metallic:155423",
+      "source_row_id": "155423",
+      "source_table": "oxide_metallic",
+      "source_file": "20240322_MDR_OAndM.txt",
+      "source_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+      "source_row_sha256": "dd94673bafe2b3d7612d8355deb00037d6c7240f07283370566499317ae2236f",
+      "source_line": 30719,
+      "source_line_end": 30719,
+      "url": "https://doi.org/10.48505/nims.4487",
+      "formula": "La0.4Sm0.6Bi1S2F0.5O0.5",
+      "raw_common_formula": "(La,Sm)(O,F)BiS2",
+      "bibliography": {
+        "reference_code": "MAT1410.0061",
+        "title": "Enhancement of Superconductivity in La1-xSmxO0.5F0.5BiS2",
+        "journal": "cond-mat/1410.0061",
+        "publication_year_raw": "2014"
+      },
+      "structure": {
+        "space_group": null,
+        "space_group_number": null,
+        "space_group_number_raw": null,
+        "common_name": "CeOBiS2"
+      },
+      "sample_form": {
+        "raw_code": "1",
+        "label": "Single phase bulk",
+        "status": "reported"
+      },
+      "structure_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "tc_method": {
+        "raw_code": null,
+        "label": null,
+        "status": "not_supplied"
+      },
+      "isotope_element": null,
+      "isotope_exchange_ratio": null,
+      "sample_identifier": null,
+      "raw_source_method_fields": {
+        "mhc1": null,
+        "mhc2": null,
+        "mcohere": null,
+        "mpenet": null,
+        "gapmeth": null,
+        "gamcom": null,
+        "mdebye": null
+      },
+      "quantities": [
+        {
+          "field": "tc",
+          "label": "Tc (recommended for source sample)",
+          "raw_value": "4.2",
+          "value": 4.2,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "recommended_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "t2",
+          "label": "Tc (midpoint)",
+          "raw_value": "4.2",
+          "value": 4.2,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "midpoint_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "tcsus",
+          "label": "Tc (susceptibility)",
+          "raw_value": "3.75",
+          "value": 3.75,
+          "raw_unit": "K",
+          "unit": "K",
+          "status": "reported",
+          "meaning": "susceptibility_tc",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "lata",
+          "label": "Lattice a",
+          "raw_value": "4.0075",
+          "value": 4.0075,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "lattice_parameter",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "latc",
+          "label": "Lattice c",
+          "raw_value": "13.41",
+          "value": 13.41,
+          "raw_unit": "A",
+          "unit": "Å",
+          "status": "reported",
+          "meaning": "lattice_parameter",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        },
+        {
+          "field": "vols",
+          "label": "Meissner volume fraction",
+          "raw_value": "80",
+          "value": 80.0,
+          "raw_unit": null,
+          "unit": "%",
+          "status": "reported",
+          "meaning": "source_column_reports_percent",
+          "temperature_raw": null,
+          "direction": null,
+          "source_method_raw": null,
+          "method_label": null,
+          "method_status": "not_supplied"
+        }
+      ]
+    }
+  ],
+  "matches_total": 2,
+  "omitted_rows": 0,
+  "truncated": false,
+  "dataset_version": "240322",
+  "dataset_doi": "https://doi.org/10.48505/nims.4487",
+  "license": "CC BY 4.0",
+  "attribution": "MDR SuperCon Datasheet Ver.240322, National Institute for Materials Science (NIMS), DOI 10.48505/nims.4487. Licensed under Creative Commons Attribution 4.0 International.",
+  "scope": "oxide_metallic_curated_source_rows_composition_references_not_selected_material_properties",
+  "snapshot_sha256": "f599ef0040c18521e386f758ee826fe269f67ef369c1a007656035d03ccdfdf6",
+  "resource_sha256": "d1fce28506d68732744858570f6e4ee2a8dfef94630c8b3b48d703b95443707c",
+  "source_publication_status": "not_checked",
+  "scientific_acceptance": false,
+  "sample_identity_established": false,
+  "phase_identity_established": false
+}

@@ -6,7 +6,12 @@ from collections import Counter
 from functools import lru_cache
 from pathlib import Path
 
-from services.material_enrichment import AUTHORITY, digest, validate_candidate_identity
+from services.material_enrichment import (
+    AUTHORITY,
+    bounded_source_rows,
+    digest,
+    validate_candidate_identity,
+)
 from services.property_evidence import legacy_result_id
 
 SEED_PATH = Path(__file__).parent / "resources" / "material_enrichment_seed.json"
@@ -96,8 +101,9 @@ def merge_primary_seed(report, material):
         counts["candidate_fields"][field] = counts["candidate_fields"].get(field, 0) + count
     candidates = sorted([*report["candidates"], *added], key=lambda c: c["candidate_id"])
     report["candidates_truncated"] = report.get("candidates_truncated", False) or len(candidates) > 100
-    report["candidates"] = candidates[:100]
+    report["candidates"] = bounded_source_rows(candidates)
     counts["candidate_facts_returned"] = len(report["candidates"])
+    counts["candidate_facts_omitted"] = counts["candidate_facts"] - len(report["candidates"])
     return _reseal(report)
 
 

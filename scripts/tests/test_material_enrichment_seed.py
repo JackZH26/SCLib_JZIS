@@ -31,7 +31,17 @@ def test_actual_packaged_seed_is_metadata_only_validated_and_complete():
     seed = seeds.load_seed()
     assert seed is not None
     assert seeds._metadata_only(seed)
-    assert sum(len(r["candidates"]) for r in seed["reports"]) == 41
+    candidates = [c for r in seed["reports"] for c in r["candidates"]]
+    assert len(candidates) == 39
+    assert seed["extractor_version"] == "materials-literal-extractor/1.0.1"
+    assert all(c["extractor_version"] == seed["extractor_version"] for c in candidates)
+    forms = [c for c in candidates if c["field"] == "sample_form"]
+    assert len(forms) == 4
+    assert all(c["value"] == "single_crystal" for c in forms)
+    assert not any(c["source"]["capture_id"] in {
+        "primary:arxiv:0912.2752:16", "primary:arxiv:0912.2752:20"
+    } for c in forms)
+    assert sum(c["quantity"] is not None for c in candidates) == 14
     assert seed["seed_sha256"] == digest({k: v for k, v in seed.items() if k != "seed_sha256"})
 
 

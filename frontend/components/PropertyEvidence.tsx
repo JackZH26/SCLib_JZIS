@@ -8,7 +8,7 @@ import {
 } from "@/lib/property-evidence";
 
 function Field({ label, value }: { label: string; value: unknown }) {
-  return <div className="grid grid-cols-[7rem_1fr] gap-2"><dt className="text-slate-500">{label}</dt><dd className="break-words text-slate-700">{evidenceText(value) ?? "Not reported"}</dd></div>;
+  return <div className="grid grid-cols-[7rem_1fr] gap-2"><dt className="text-slate-500">{label}</dt><dd className="break-words text-slate-700">{evidenceText(value) ?? "Not supplied in this record"}</dd></div>;
 }
 
 function locatorText(value: unknown): string | null {

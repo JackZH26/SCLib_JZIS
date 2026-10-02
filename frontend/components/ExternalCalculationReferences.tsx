@@ -3,6 +3,8 @@
 import { useEffect, useId, useState } from "react";
 import { getMaterialCalculationReferences } from "@/lib/api";
 import type { MaterialCalculationReferences } from "@/lib/api";
+import { useProviderAvailabilityPublisher } from "@/components/MaterialProviderAvailability";
+import { emptyProviderAvailability, mapMaterialProviderAvailability, MATERIAL_PROVIDER_ANCHORS } from "@/lib/material-provider-availability";
 
 const entryPattern = /^[A-Za-z0-9_-]{1,64}$/;
 const entryUrl = (id: string) => `https://nomad-lab.eu/prod/v1/gui/search/entries/entry/id/${id}`;
@@ -46,6 +48,7 @@ function validReport(value: MaterialCalculationReferences): boolean {
 }
 
 export function ExternalCalculationReferences({ materialId }: { materialId: string }) {
+  const publishAvailability = useProviderAvailabilityPublisher(materialId, "NOMAD");
   const headingId = useId();
   const [expansion, setExpansion] = useState<{ materialId: string; open: boolean }>({ materialId, open: false });
   const expanded = expansion.materialId === materialId && expansion.open;
@@ -55,19 +58,23 @@ export function ExternalCalculationReferences({ materialId }: { materialId: stri
   useEffect(() => {
     if (!expanded) return;
     const controller = new AbortController();
+    let settled = false;
     setState({ materialId, report: null, failed: false });
+    publishAvailability(emptyProviderAvailability("NOMAD", "loading"));
     getMaterialCalculationReferences(materialId, controller.signal).then(value => {
       if (controller.signal.aborted) return;
       if (!validReport(value)) throw new Error("Calculation reference contract unavailable");
+      settled = true;
       setState({ materialId, report: value, failed: false });
+      publishAvailability(mapMaterialProviderAvailability("NOMAD", value));
     }).catch(() => {
-      if (!controller.signal.aborted) setState({ materialId, report: null, failed: true });
+      if (!controller.signal.aborted) { settled = true; setState({ materialId, report: null, failed: true }); publishAvailability(emptyProviderAvailability("NOMAD", "unavailable")); }
     });
-    return () => controller.abort();
-  }, [materialId, expanded]);
+    return () => { controller.abort(); if (!settled) publishAvailability(null); };
+  }, [materialId, expanded, publishAvailability]);
   const count = report?.status === "available" ? `${report.references.length}${report.matches_total != null && report.matches_total > report.references.length ? ` of ${report.matches_total}` : ""} tasks` : null;
   const retrieved = report?.retrieved_at ? new Date(report.retrieved_at) : null;
-  return <section aria-labelledby={headingId} className="border-t border-sage-border pt-5">
+  return <section id={MATERIAL_PROVIDER_ANCHORS.NOMAD} aria-labelledby={headingId} className="border-t border-sage-border pt-5">
     <details key={materialId} open={expanded} onToggle={event => {
       if (event.target === event.currentTarget) setExpansion({ materialId, open: event.currentTarget.open });
     }}>

@@ -39,6 +39,7 @@ import { MaterialEnrichment } from "@/components/MaterialEnrichment";
 import { ExternalStructureReferences } from "@/components/ExternalStructureReferences";
 import { ExternalCalculationReferences } from "@/components/ExternalCalculationReferences";
 import { ExternalSuperconReferences } from "@/components/ExternalSuperconReferences";
+import { MaterialProviderAvailabilityProvider } from "@/components/MaterialProviderAvailability";
 
 export const dynamic = "force-dynamic";
 
@@ -285,11 +286,13 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
       <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Superconducting parameters</summary><div className="mt-4 space-y-6"><PropertyEvidenceSection title="Superconducting parameters" fields={SC_FIELDS.filter(field => field !== "pairing_symmetry")} evidence={mat.property_evidence} /><JointEpcNotice evidence={mat.property_evidence} /></div></details>
       <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Competing orders</summary><div className="mt-4"><PropertyEvidenceSection title="Competing orders" fields={ORDER_FIELDS} evidence={mat.property_evidence} /></div></details>
       <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Samples and pressure evidence</summary><div className="mt-4"><PropertyEvidenceSection title="Samples & pressure" fields={SAMPLE_FIELDS} evidence={mat.property_evidence} /></div></details>
-      {catalogueEligible && <MaterialEnrichment materialId={mat.id} />}
-      {catalogueEligible && <ExternalSuperconReferences materialId={mat.id} />}
-      {catalogueEligible && <ExternalMaterialReferences materialId={mat.id} />}
-      {catalogueEligible && <ExternalStructureReferences materialId={mat.id} />}
-      {catalogueEligible && <ExternalCalculationReferences materialId={mat.id} />}
+      {catalogueEligible && <MaterialProviderAvailabilityProvider materialId={mat.id}>
+        <MaterialEnrichment materialId={mat.id} />
+        <ExternalSuperconReferences materialId={mat.id} />
+        <ExternalMaterialReferences materialId={mat.id} />
+        <ExternalStructureReferences materialId={mat.id} />
+        <ExternalCalculationReferences materialId={mat.id} />
+      </MaterialProviderAvailabilityProvider>}
 
     </main>
   );

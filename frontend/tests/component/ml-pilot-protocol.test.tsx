@@ -11,6 +11,11 @@ beforeEach(() => vi.stubGlobal("crypto", webcrypto));
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 describe("original native pilot participation protocol", () => {
   it("pins the capture, original replies and each current source without resealing old evidence", () => {
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.materials20261002r8.wire.json")))).toBe("70918d63caca5c25b39b025176d3ff2ffffa57dc5b782fcf45604034a3464c33");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.materials20261002r7.wire.json")))).toBe("00c277f9a92cb894ec94973e4701aa729eda7ed200cdd2aba87aaf4b62e6ac44");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.materials20261002r6.wire.json")))).toBe("659b0a33407313534e75355273763c604a660b4d203db12dece9c23903c91944");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.materials20261002r5.wire.json")))).toBe("a1bf0bd64ffcaf0961e4cc9bb2acca668ac65d572f8a6bad3c483103b6938b95");
+    expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.materials20261002r3.wire.json")))).toBe("58a000ddbeb9d538a875bd0c63061ebc56be07d221688383058015cb76eddb01");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.materials20261002r2.wire.json")))).toBe("b7500c93800380de8349cf67b788edacdc448ea3cf5fc2cc3deadd223ea6d8f2");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.materials20261002.wire.json")))).toBe("0c11230974a33058a087ecd8043afc05039e6aa15f5513687824f7cc6d0d52fb");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.materials20261001.wire.json")))).toBe("6f5dca40577daf3de5cc2c2d64191075621db7b3f8f93e3b1255062cc967b241");
@@ -29,7 +34,7 @@ describe("original native pilot participation protocol", () => {
     expect(http.capture_test_path).toBe("api/tests/test_ml_pilot_participant_wire.py");
     expect(http.fixture_notice).toBe("Actual owned SQL, authenticated HTTP and installed upload worker; synthetic accounts and declared events only, no real scientific approval or source permission.");
     expect(sha(readFileSync(resolve(process.cwd(), "tests/fixtures/ml-pilot-participant-native.batch75.wire.json")))).toBe("ce0cbb73250fc614964f5f028e20479903eb9f33a7dd1ffd1680ea43c409178a");
-    expect(http.source_pins).toHaveLength(633);
+    expect(http.source_pins).toHaveLength(635);
     expect(new Set(http.source_pins.map(p => p.path)).size).toBe(http.source_pins.length);
     for (const p of http.source_pins) {
       expect(p.path).toMatch(/^(api|scripts)\/[A-Za-z0-9_./-]+\.(py|schema\.json)$/); expect(p.path.split("/")).not.toContain("..");

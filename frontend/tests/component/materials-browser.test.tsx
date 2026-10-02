@@ -6,7 +6,7 @@ import { MaterialsFilters } from "@/components/MaterialsFilters";
 import { listMaterials, type MaterialSummary, type MatchingScientificResult } from "@/lib/api";
 import { materialFilterChips, materialRowTc, materialsHref, materialsParams } from "@/lib/materials-browser";
 import { atomicItem, propertyEnvelope } from "../fixtures/property-evidence";
-import { materialVisibility } from "../fixtures/material-visibility";
+import { materialVisibility, sourceScopedMaterialVisibility } from "../fixtures/material-visibility";
 import { materialAnomalyReview } from "../fixtures/scientific-anomalies";
 
 vi.mock("@/lib/api", async importOriginal => ({ ...await importOriginal<typeof import("@/lib/api")>(), listMaterials: vi.fn() }));
@@ -63,6 +63,20 @@ describe("Materials browser scientific state and density", () => {
     expect(identity).not.toHaveAttribute("open"); fireEvent.click(within(identity).getByText("Result identity and missing context")); expect(identity).toHaveAttribute("open");
     expect(identity).toHaveTextContent("zero_resistance"); expect(identity).toHaveTextContent(tc.result_id);
   });
+  it("keeps missing match context scoped to its record instead of declaring a paper omission or borrowing another result", () => {
+    const a = atomicItem("tc_max", 39, { result_id: "A", conditions: { tc_criterion: "zero_resistance", measurement_method: "Four-probe resistivity" }, source: { paper_id: "paper:A", year: 2026 } });
+    const b = atomicItem("tc_max", 23, { result_id: "B", conditions: {}, source: { paper_id: "paper:B" } });
+    render(<MaterialTable rows={[material({ property_evidence: propertyEnvelope(a), matching_results: [matching("B", b)] })]} resultFiltersActive />);
+    const row = screen.getByRole("rowheader", { name: "MgB2" }).closest("tr")!;
+    expect(row).toHaveTextContent("Criterion not supplied"); expect(row).toHaveTextContent("Not supplied");
+    expect(row).not.toHaveTextContent("Criterion not reported"); expect(row).not.toHaveTextContent("2026"); expect(row).not.toHaveTextContent("Zero resistance");
+    fireEvent.click(within(row).getByRole("button", { name: "Evidence for MgB2" }));
+    const core = screen.getByLabelText("Displayed Tc source and conditions");
+    for (const label of ["Source year", "Tc criterion", "Method"]) {
+      expect(within(core).getByText(label).nextElementSibling).toHaveTextContent(/^Not supplied in this record$/);
+    }
+    expect(core).toHaveTextContent("paper:B"); expect(core).not.toHaveTextContent("paper:A"); expect(core).not.toHaveTextContent("Four-probe resistivity");
+  });
   it("never displays a matching lower bound as an exact Tc or falls back to an unrelated selected value", () => {
     const row = material({ matching_results: [matching("unlocated-B")] });
     const display = materialRowTc(row, true);
@@ -110,8 +124,9 @@ describe("Materials browser scientific state and density", () => {
   });
 
   it("shows real review holds while restricted materials stay absent", () => {
-    render(<MaterialTable rows={[material({ visibility: materialVisibility("pending"), anomaly_review: materialAnomalyReview() }), material({ id: "secret", formula: "SECRET", visibility: materialVisibility("quarantined") })]} />);
+    render(<MaterialTable rows={[material({ visibility: materialVisibility("pending"), anomaly_review: materialAnomalyReview() }), material({ id: "partial", formula: "NbN", visibility: sourceScopedMaterialVisibility() }), material({ id: "secret", formula: "SECRET", visibility: materialVisibility("quarantined") })]} />);
     expect(screen.getByText("Archive: review pending")).toBeInTheDocument(); expect(screen.getByText("Review required")).toBeInTheDocument(); expect(screen.queryByText("SECRET")).not.toBeInTheDocument();
+    expect(screen.getByText("1 excluded record")).toHaveAttribute("title", expect.stringContaining("2 of 3 retained records")); expect(screen.queryByText("Eligible sources only")).not.toBeInTheDocument();
   });
 
   it("keeps the full formula in an accessible link", () => {

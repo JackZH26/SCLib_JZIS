@@ -2,6 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MaterialEnrichment } from "@/components/MaterialEnrichment";
 import { getMaterialEnrichment, type MaterialEnrichmentReport } from "@/lib/api";
+import { MaterialProviderAvailabilityProvider, useProviderAvailabilityPublisher } from "@/components/MaterialProviderAvailability";
+import { emptyProviderAvailability } from "@/lib/material-provider-availability";
 
 vi.mock("@/lib/api", () => ({ getMaterialEnrichment: vi.fn() }));
 function candidate(field: string, rawValue: unknown, quantity: Record<string, unknown> | null = null, overrides: Record<string, unknown> = {}): Record<string, unknown> {
@@ -25,9 +27,25 @@ function candidateRow(label: string): HTMLLIElement {
   const title = screen.getByText((text, element) => element?.tagName === "P" && element.className.includes("font-medium") && text.startsWith(label));
   return title.closest("li")!;
 }
+function ProviderProbe({ materialId }: { materialId: string }) {
+  const publish = useProviderAvailabilityPublisher(materialId, "MDR");
+  return <button onClick={() => publish({ ...emptyProviderAvailability("MDR", "available"), returned_count: 2, truncated: true, fields: {
+    lattice_a: { field: "lattice_a", provider: "MDR", reference_count: 2, reference_ids: ["mdr:1", "mdr:2"], review_required_count: 2,
+      scope: "Raw source lattice column; unit, structure and sample association require review", anchor: "mdr-supercon-references", association_status: "sample_and_state_unreviewed" },
+  } })}>Open synthetic MDR lookup</button>;
+}
 
 describe("Recovery candidate quantity and source presentation", () => {
   beforeEach(() => vi.resetAllMocks());
+
+  it.each(["materials-source-statement-extractor/1.0.0", "materials-source-statement-extractor/1.0.1"])("renders pending-scope findings for the supported extractor %s", async (version) => {
+    const body = report([]);
+    body.classification_extractor_version = version;
+    body.classification_review_findings = [{ material_id: "synthetic", fields: ["reported_order"], reason_codes: ["multiple_local_temperature_mentions_require_state_review"] }];
+    vi.mocked(getMaterialEnrichment).mockResolvedValue(body);
+    render(<MaterialEnrichment materialId="synthetic" />);
+    expect(await screen.findByText(/multiple local temperature mentions require state review/)).toBeInTheDocument();
+  });
 
   it("formats parsed values once when original tokens already include their unit", async () => {
     const view = await renderCandidates([candidate("tc_kelvin", "116 K", quantity(116, "K")), candidate("measurement_temperature_k", "250 K", quantity(250, "K")), candidate("pressure_gpa", "140 GPa", quantity(140, "GPa"))]);
@@ -97,6 +115,57 @@ describe("Recovery candidate quantity and source presentation", () => {
     render(<MaterialEnrichment materialId="synthetic" />);
     expect(await screen.findAllByText("Specialist source extraction needed")).toHaveLength(2);
     expect(screen.queryByText("No candidate in checked chunks")).not.toBeInTheDocument();
+  });
+
+  it.each([
+    "source_assertion_subject_or_scope_requires_review",
+    "paper_field_extractor_not_implemented",
+    "original_source_capture_not_supplied",
+  ])("does not turn an extraction gap into a checked-source or absence claim: %s", async reason => {
+    const body = report([]);
+    body.coverage[0].fields = [{ field: "pairing_symmetry", status: "not_extracted", retained_present: false, candidate_count: 0, reason_codes: [reason], routes: ["source_fulltext_and_supplement"] }];
+    vi.mocked(getMaterialEnrichment).mockResolvedValue(body);
+    render(<MaterialEnrichment materialId="synthetic" />);
+    expect(await screen.findByText("Not extracted")).toBeInTheDocument();
+    expect(screen.queryByText("Source text not checked")).not.toBeInTheDocument();
+    expect(screen.queryByText("No candidate in checked chunks")).not.toBeInTheDocument();
+    expect(screen.queryByText("Not reported")).not.toBeInTheDocument();
+  });
+
+  it("keeps a bounded no-candidate result and unavailable source identity separate from an extraction gap", async () => {
+    const body = report([]);
+    body.coverage[0].fields = [
+      { field: "pairing_symmetry", status: "not_extracted", retained_present: false, candidate_count: 0, reason_codes: ["source_assertion_subject_or_scope_requires_review"], routes: [] },
+      { field: "tc_criterion", status: "not_found_in_checked_sources", retained_present: false, candidate_count: 0, reason_codes: ["bounded_extractor_did_not_find_local_candidate"], routes: [] },
+      { field: "pressure_gpa", status: "source_unavailable", retained_present: false, candidate_count: 0, reason_codes: ["retained_source_identity_missing"], routes: [] },
+    ];
+    vi.mocked(getMaterialEnrichment).mockResolvedValue(body);
+    render(<MaterialEnrichment materialId="synthetic" />);
+    await screen.findByText("Not extracted");
+    expect(screen.getByText("Pairing symmetry").closest("tr")).toHaveTextContent("Not extracted");
+    expect(screen.getByText("Tc criterion").closest("tr")).toHaveTextContent("No candidate in checked chunks");
+    expect(screen.getByText("Pressure").closest("tr")).toHaveTextContent("Source identity unavailable");
+    expect(screen.getByText(/A missing candidate does not establish that the paper omitted the property/)).toBeInTheDocument();
+  });
+
+  it("separates actual external field references from suggested lookup routes", async () => {
+    const body = report([]);
+    body.coverage[0].fields = ["lattice_a", "pressure_gpa", "pairing_symmetry"].map(field => ({ field, status: "not_found_in_checked_sources", retained_present: false, candidate_count: 0, reason_codes: [], routes: field === "pairing_symmetry" ? ["source_fulltext_and_supplement"] : ["supercon_source_lookup"] }));
+    vi.mocked(getMaterialEnrichment).mockResolvedValue(body);
+    render(<MaterialProviderAvailabilityProvider materialId="synthetic"><MaterialEnrichment materialId="synthetic" /><ProviderProbe materialId="synthetic" /></MaterialProviderAvailabilityProvider>);
+    expect(await screen.findAllByText("Lookup not opened")).toHaveLength(2);
+    expect(screen.getByText("No linked external property lookup")).toBeInTheDocument();
+    expect(screen.queryByText(/2 returned source rows/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Open synthetic MDR lookup" }));
+    const lattice = screen.getByText("Lattice a").closest("tr")!;
+    expect(lattice).toHaveTextContent("MDR SuperCon: 2 returned source rows");
+    expect(lattice).toHaveTextContent("unit, structure and sample association require review");
+    expect(lattice).toHaveTextContent("Count covers the returned window");
+    const pressure = screen.getByText("Pressure").closest("tr")!;
+    expect(pressure).toHaveTextContent("No returned value for this field");
+    expect(pressure).not.toHaveTextContent("2 returned source rows");
+    expect(within(lattice).getByRole("link", { name: "MDR SuperCon" })).toHaveAttribute("href", "#mdr-supercon-references");
+    expect(screen.getByText(/not completed catalogue fields or independent experiments/)).toBeInTheDocument();
   });
 
   it("makes onset, zero resistance, unknown pressure and unresolved material binding distinguishable", async () => {

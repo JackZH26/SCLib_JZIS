@@ -30,6 +30,28 @@ describe("atomic property evidence", () => {
     expect(screen.queryByText("Along c at 5 K")).not.toBeInTheDocument();
   });
 
+  it("limits absent provenance, method and state metadata to this retained extraction", () => {
+    render(<AtomicEvidenceDetails item={atomicItem("tc_max", 20, { source: { paper_id: "paper:B" }, conditions: {}, state: {} })} />);
+    for (const label of ["Locator", "Method", "State ID", "Sample ID", "Structure ID", "Run ID", "Tc criterion"]) {
+      expect(screen.getByText(label).nextElementSibling).toHaveTextContent(/^Not supplied in this record$/);
+    }
+    expect(screen.getByText("Source").nextElementSibling).toHaveTextContent(/^paper:B$/);
+    expect(screen.queryByText("Not reported")).not.toBeInTheDocument();
+  });
+
+  it("preserves supplied unknown metadata and same-record evidence instead of applying the absence label", () => {
+    render(<AtomicEvidenceDetails item={atomicItem("tc_max", 20, {
+      source: { paper_id: "paper:B", source_locator: { table: "2", row: "3" } },
+      conditions: { measurement_method: "resistivity", tc_criterion: "Unknown" },
+      state: { state_id: "Unknown", sample_id: "sample:B" },
+    })} />);
+    expect(screen.getByText("Locator").nextElementSibling).toHaveTextContent(/^table: 2 · row: 3$/);
+    expect(screen.getByText("Method").nextElementSibling).toHaveTextContent(/^resistivity$/);
+    expect(screen.getByText("State ID").nextElementSibling).toHaveTextContent(/^Unknown$/);
+    expect(screen.getByText("Tc criterion").nextElementSibling).toHaveTextContent(/^Unknown$/);
+    expect(screen.getByText("Sample ID").nextElementSibling).toHaveTextContent(/^sample:B$/);
+  });
+
   it("preserves small numbers, approximation, uncertainty and censored quantities", () => {
     const item = atomicItem("tc_max", 0.001);
     item.quantity = { ...item.quantity, approximate: true, uncertainty: 0.0001 };
@@ -112,13 +134,14 @@ describe("atomic property evidence", () => {
     const envelope = propertyEnvelope(atomicItem("lambda_eph", 3), atomicItem("omega_log_k", 1000));
     const lambda = atomicItem("lambda_eph", 2, { result_id: "actual-linked-lambda" });
     const omega = atomicItem("omega_log_k", 800, { result_id: "actual-linked-omega" });
-    envelope.joint_epc = { status: "eligible", selected: { pair_id: "pair:test", lambda, omega_log: omega, association_basis: "explicit_state_structure_run_protocol", eligible_meaning: "association_complete_only", allen_dynes_applicability: "not_assessed" }, pairs: [], warnings: [] };
+    envelope.joint_epc = { status: "eligible", selected: { pair_id: "pair:test", lambda, omega_log: omega, association_basis: "explicit_state_structure_run_protocol", eligible_meaning: "association_complete_only", allen_dynes_applicability: "not_assessed", review: { review_id: null } }, pairs: [], warnings: [] };
     render(<JointEpcNotice evidence={envelope} />);
     expect(screen.getByText("Linked λ_eph: 2")).toBeInTheDocument();
     expect(screen.getByText("Linked ω_log: 800 K")).toBeInTheDocument();
     expect(screen.getByText("actual-linked-lambda")).toBeInTheDocument();
     expect(screen.getByText("actual-linked-omega")).toBeInTheDocument();
     expect(screen.getByText(/not scientific validation or permission/)).toBeInTheDocument();
+    expect(screen.getByText("review id").nextElementSibling).toHaveTextContent(/^Not supplied in this record$/);
   });
 
   it("keeps bounded alternatives separate and discloses the response scope", () => {

@@ -12,9 +12,10 @@ import hashlib
 import json
 import re
 import unicodedata
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, deque
 from collections.abc import Mapping, Sequence
 from decimal import Decimal
+from itertools import islice
 from typing import Any
 
 from services.claim_support import is_derived_source_hint
@@ -22,7 +23,7 @@ from services.property_evidence import legacy_result_id
 from services.scientific_values import FIELD_UNITS, parse_scientific_value, record_quantity
 
 VERSION = "materials-enrichment/1.0.0"
-EXTRACTOR_VERSION = "materials-literal-extractor/1.0.0"
+EXTRACTOR_VERSION = "materials-literal-extractor/1.0.1"
 MAX_MATERIALS = 1000
 MAX_SOURCES = 10000
 MAX_SOURCE_CHARS = 200000
@@ -74,9 +75,9 @@ _NUMERIC_LABELS = {
 FIELD_ROUTES = {
     "tc_kelvin": ["source_fulltext_and_supplement", "supercon_source_lookup", "new_calculation_or_experiment"],
     "pressure_gpa": ["source_fulltext_and_supplement"],
-    "tc_criterion": ["source_fulltext_and_supplement"],
-    "measurement_method": ["source_fulltext_and_supplement"],
-    "sample_form": ["source_fulltext_and_supplement"],
+    "tc_criterion": ["source_fulltext_and_supplement", "supercon_source_lookup"],
+    "measurement_method": ["source_fulltext_and_supplement", "supercon_source_lookup"],
+    "sample_form": ["source_fulltext_and_supplement", "supercon_source_lookup"],
     "space_group": ["source_fulltext_and_supplement", "cod_structure_lookup", "mp_state_matched_structure", "new_structure_calculation"],
     "crystal_structure": ["source_fulltext_and_supplement", "cod_structure_lookup", "mp_state_matched_structure"],
     "lattice_a": ["source_table_and_supplement", "cod_structure_lookup", "mp_state_matched_structure", "new_structure_calculation"],
@@ -87,17 +88,33 @@ FIELD_ROUTES = {
     "site_occupancies": ["source_table_and_supplement", "new_composition_characterization"],
     "composition_identity": ["source_fulltext_and_supplement", "new_composition_characterization"],
     "pairing_symmetry": ["source_fulltext_and_supplement", "specialist_mechanism_study"],
+    "is_unconventional": ["source_fulltext_and_supplement", "specialist_mechanism_study"],
+    "gap_structure": ["source_fulltext_and_supplement", "specialist_mechanism_study"],
+    "reported_order": ["source_fulltext_and_supplement", "specialist_experiment"],
     "competing_order": ["source_fulltext_and_supplement", "specialist_experiment"],
     "lambda_eph": ["source_fulltext_and_supplement", "nomad_state_matched_calculation", "new_electron_phonon_calculation"],
     "omega_log_source_value": ["source_fulltext_and_supplement", "nomad_state_matched_calculation", "new_electron_phonon_calculation"],
     "mu_star": ["source_fulltext_and_supplement", "new_calculation_declared_assumption"],
-    "hc2_tesla": ["source_fulltext_and_supplement", "new_experiment_or_model_estimate"],
-    "lambda_london_nm": ["source_fulltext_and_supplement", "new_experiment_or_model_estimate"],
-    "xi_gl_nm": ["source_fulltext_and_supplement", "new_experiment_or_model_estimate"],
+    "hc2_tesla": ["source_fulltext_and_supplement", "supercon_source_lookup", "new_experiment_or_model_estimate"],
+    "lambda_london_nm": ["source_fulltext_and_supplement", "supercon_source_lookup", "new_experiment_or_model_estimate"],
+    "xi_gl_nm": ["source_fulltext_and_supplement", "supercon_source_lookup", "new_experiment_or_model_estimate"],
 }
-# These routes require a specialist extraction workflow. The literal parser
-# does not infer mechanism or order from family, keywords, or their negation.
-SPECIALIST_EXTRACTION_FIELDS = frozenset({"pairing_symmetry", "competing_order"})
+# References expose these fields, but a route is not a match or an implemented
+# paper extractor. Raw external quantities retain their own source units.
+REFERENCE_ONLY_FIELDS = frozenset({
+    "hc1_source_value", "gap_energy_source_value", "gap_ratio_source_value",
+    "electronic_specific_heat_coefficient_source_value", "debye_temperature_source_value",
+    "isotope_effect_exponent", "dtc_dp_source_value", "maximum_applied_pressure_source_value",
+    "meissner_fraction_percent", "transition_width_source_value", "minimum_temperature_k",
+})
+for _field in REFERENCE_ONLY_FIELDS:
+    FIELD_ROUTES[_field] = ["source_fulltext_and_supplement", "supercon_source_lookup"]
+for _field in ("space_group", "crystal_structure", "lattice_a", "lattice_b", "lattice_c"):
+    FIELD_ROUTES[_field] = [*FIELD_ROUTES[_field], "supercon_source_lookup"]
+PAPER_UNIMPLEMENTED_FIELDS = frozenset({"t_cdw_k", "t_afm_k", "t_sdw_k"})
+for _field in PAPER_UNIMPLEMENTED_FIELDS:
+    FIELD_ROUTES[_field] = ["source_fulltext_and_supplement", "specialist_experiment"]
+SPECIALIST_EXTRACTION_FIELDS = frozenset({"pairing_symmetry", "is_unconventional", "reported_order", "competing_order", "gap_structure"})
 
 
 class EnrichmentError(ValueError):
@@ -118,6 +135,53 @@ def digest(value: Any) -> str:
 
 def text_digest(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def bounded_source_rows(rows, limit=100, id_key="candidate_id"):
+    """Select a reproducible source-fair response window without changing facts.
+
+    Small inventories keep their existing sorted-ID order. For an overflowing
+    inventory, papers take turns, as do each paper's captures and each capture's
+    fields. This avoids one prolific source taking the entire response window.
+    The selected rows retain their original IDs and payloads; callers must still
+    disclose counts and omissions. A source group is not an independent study.
+    """
+    if type(limit) is not int or limit < 0:
+        raise EnrichmentError("candidate_window_limit_invalid")
+    # Review findings have no declared ID. A digest is only a deterministic
+    # selection key and is never inserted into their source-owned payload.
+    key = (lambda row: row[id_key]) if id_key is not None else digest
+    ordered = sorted(rows, key=key)
+    if len(ordered) <= limit:
+        return ordered
+    if limit == 0:
+        return []
+
+    def round_robin(streams):
+        active = deque(iter(stream) for stream in streams)
+        while active:
+            stream = active.popleft()
+            try:
+                row = next(stream)
+            except StopIteration:
+                continue
+            active.append(stream)
+            yield row
+
+    papers = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    for row in ordered:
+        source = row.get("source") or {}
+        papers[source.get("paper_id") or ""][source.get("capture_id") or ""][row.get("field") or ""].append(row)
+    paper_streams = []
+    for paper in sorted(papers):
+        capture_streams = []
+        for capture in sorted(papers[paper]):
+            fields = papers[paper][capture]
+            capture_streams.append(round_robin([fields[field] for field in sorted(fields)]))
+        paper_streams.append(round_robin(capture_streams))
+    # Retain that selection order so a compact frontend prefix also represents
+    # the other inspected papers. This order does not rank scientific evidence.
+    return list(islice(round_robin(paper_streams), limit))
 
 
 def _identifier(value: Any, limit: int = 200) -> bool:
@@ -253,6 +317,53 @@ def _formula_pattern(formula):
     # Presentation spacing may occur inside math formula tokens. No changes to
     # coefficients, signs, uncertainty or element order are made.
     return r"(?<![A-Za-z0-9])" + r"\s*".join(re.escape(char) for char in formula) + r"(?![A-Za-z0-9.(])"
+
+
+def _sample_form_match(text, formula, *, require_direct_binding=False):
+    """Keep physical form descriptions separate from bulk scientific properties.
+
+    The caller supplies a locally matched formula. A form remains a pending
+    literal candidate; it does not establish a sample association. In particular
+    bulk superconductivity, thermodynamic evidence and a bulk superconducting
+    transition say nothing about the specimen's physical form.
+    """
+    target = _formula_pattern(formula)
+    physical_noun = r"(?i:samples?|specimens?|materials?|crystals?|pellets?)\b"
+    negation = re.compile(
+        rf"\b(?i:no|not|without|rather than|instead of)\s+"
+        rf"(?:(?i:a|an|any)\s+)?(?:{target}\s+)?$"
+    )
+    forms = []
+    for match in re.finditer(r"\b(single[ -]crystals?|thin[ -]films?|polycrystalline|bulk)\b", text, re.I):
+        if negation.search(text[:match.start()]):
+            continue
+        raw = match.group().lower()
+        if raw == "bulk":
+            # Only an explicit physical noun (optionally following this exact
+            # formula) admits bulk. Mere nearby scientific keywords do not.
+            if not re.match(rf"[ -]+(?:{target}\s+)?{physical_noun}", text[match.end():]):
+                continue
+            value = "bulk"
+        else:
+            value = "single_crystal" if "single" in raw else "thin_film" if "film" in raw else "polycrystal"
+        if require_direct_binding:
+            # In a comparison, retain an explicit "NbN thin film" or
+            # "thin films of NbN" noun phrase without inheriting the other
+            # compound's form. A physical bulk noun may sit between bulk and
+            # "of NbN", or follow the exact formula in "bulk NbN samples".
+            before = text[:match.start()]
+            after = text[match.end():]
+            bound_before = re.search(rf"{target}[ -]+$", before)
+            bound_after = re.match(rf"[ -]+(?i:of)[ -]+{target}", after)
+            if raw == "bulk":
+                bound_after = bound_after or re.match(rf"[ -]+{physical_noun}[ -]+(?i:of)[ -]+{target}", after)
+                bound_after = bound_after or re.match(rf"[ -]+{target}[ -]+{physical_noun}", after)
+            if not (bound_before or bound_after):
+                continue
+        forms.append((value, match))
+    # A single-crystal statement is more specific than a physical bulk noun;
+    # sentence order must not let an earlier bulk property hide that statement.
+    return next((form for form in forms if form[0] == "single_crystal"), forms[0] if forms else None)
 
 
 def _simple_composition(formula):
@@ -519,10 +630,12 @@ def extract_source_candidates(material: Mapping[str, Any], record: Mapping[str, 
                 add(field, match.group(), match, _quantity(match[1], field, unit))
         if context["measurement_method"]:
             add("measurement_method", context["measurement_method"])
-        form = re.search(r"\b(single[ -]crystals?|thin[ -]films?|polycrystalline|bulk)\b", flat, re.I)
+        # Multiple formula-like tokens require an explicit local noun-phrase
+        # binding. They must not erase a directly named subject's own form or
+        # allow another compound's form to transfer by mere cooccurrence.
+        form = _sample_form_match(flat, formula, require_direct_binding=len(all_formulas) > 1)
         if form:
-            value = "single_crystal" if "single" in form.group().lower() else "thin_film" if "film" in form.group().lower() else "polycrystal" if "poly" in form.group().lower() else "bulk"
-            add("sample_form", value, form)
+            add("sample_form", form[0], form[1])
     return list({row["candidate_id"]: row for row in candidates}.values())
 
 
@@ -689,6 +802,8 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
     Coverage declarations describe what was supplied, not scientific review or
     guaranteed recall. No automatic search outcome uses `not_reported`.
     """
+    from services import material_classification_candidates as classification
+
     if len(materials) > MAX_MATERIALS or len(sources) > MAX_SOURCES:
         raise EnrichmentError("enrichment_inventory_limit")
     paper_sources = defaultdict(list)
@@ -698,6 +813,9 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
     for source in validated:
         paper_sources[source["paper_id"]].append(source)
     all_candidates, coverage_rows = {}, []
+    all_classifications, all_findings = {}, {}
+    classification_total, classification_omitted = 0, 0
+    classification_findings_total, classification_findings_omitted = 0, 0
     if len({m.get("id") for m in materials}) != len(materials):
         raise EnrichmentError("duplicate_material")
     for material in materials:
@@ -706,15 +824,28 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
         records = material.get("records", [])
         if type(records) is not list or len(records) > 5000 or any(not isinstance(r, Mapping) for r in records):
             raise EnrichmentError("retained_records_invalid")
-        material_candidates = {}
+        material_candidates, material_classifications, material_findings = {}, [], {}
         retained_papers = sorted({r["paper_id"] for r in records if _identifier(r.get("paper_id"), 100)})
         for record in records:
             record_sources = paper_sources.get(record.get("paper_id"), [])
+            subject_bindings = classification.discover_subject_bindings(material, record, record_sources)
             identity_candidates = discover_identity_candidates(material, record, record_sources)
             for identity in identity_candidates:
                 material_candidates[identity["candidate_id"]] = identity
             aliases = {identity["raw_value"]["source_formula"]: identity for identity in identity_candidates if identity["field"] == "composition_identity"}
             for source in record_sources:
+                statements = classification.extract_classification_candidates(material, record, source, include_evidence_text=include_evidence_text, subject_bindings=subject_bindings)
+                if len(material_classifications)+len(statements["candidates"]) > classification.MAX_REPORT_ROWS:
+                    raise EnrichmentError("classification_report_row_limit")
+                material_classifications.extend(statements["candidates"])
+                classification_total += statements["counts"]["candidate_statements_total"]
+                classification_omitted += statements["counts"]["candidate_statements_omitted"]
+                classification_findings_total += statements["counts"]["review_findings_total"]
+                classification_findings_omitted += statements["counts"]["review_findings_omitted"]
+                for finding in statements["review_findings"]:
+                    material_findings[digest(finding)] = finding
+                    if len(material_findings) > classification.MAX_REPORT_ROWS:
+                        raise EnrichmentError("classification_report_row_limit")
                 candidates = extract_table_candidates(material, record, source) if source.get("table") is not None else extract_source_candidates(material, record, source)
                 candidates.extend(extract_retained_quantity_matches(material, record, source))
                 for alias, identity in aliases.items():
@@ -731,6 +862,11 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
                 for candidate in candidates:
                     material_candidates[candidate["candidate_id"]] = candidate
         material_candidates = {candidate["candidate_id"]: candidate for candidate in _deduplicate_source_facts(material_candidates.values())}
+        material_classifications = classification.deduplicate_candidates(material_classifications)
+        if len(all_classifications) + len(material_classifications) > classification.MAX_REPORT_ROWS or len(all_findings) + len(material_findings) > classification.MAX_REPORT_ROWS:
+            raise EnrichmentError("classification_report_row_limit")
+        all_classifications.update({row["candidate_id"]: row for row in material_classifications})
+        all_findings.update(material_findings)
         if len(all_candidates) + len(material_candidates) > MAX_CANDIDATES:
             raise EnrichmentError("enrichment_candidate_limit")
         all_candidates.update(material_candidates)
@@ -739,6 +875,8 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
         fields = []
         for field, routes in FIELD_ROUTES.items():
             count = sum(candidate["field"] == field for candidate in material_candidates.values())
+            count += sum(candidate["field"] == field for candidate in material_classifications)
+            findings_count = sum(field in finding["fields"] for finding in material_findings.values())
             present = any(_present(record, field) for record in records)
             reasons = []
             if present:
@@ -750,23 +888,31 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
             elif not retained_papers:
                 status = "source_unavailable"
                 reasons.append("retained_source_identity_missing")
-            elif field in SPECIALIST_EXTRACTION_FIELDS:
-                status = "specialist_extraction_needed"
-                reasons.append("specialist_extractor_not_implemented")
-                if not local_sources:
-                    reasons.append("original_source_capture_not_supplied")
+            elif field in REFERENCE_ONLY_FIELDS:
+                status = "not_extracted"
+                reasons.append("paper_field_extractor_not_implemented")
+                reasons.append("external_reference_route_is_not_a_lookup_hit")
+            elif field in PAPER_UNIMPLEMENTED_FIELDS:
+                status = "not_extracted"
+                reasons.append("paper_field_extractor_not_implemented")
             elif not local_sources:
                 status = "not_extracted"
                 reasons.append("original_source_capture_not_supplied")
             else:
                 status = "not_found_in_checked_sources"
                 reasons.append("bounded_extractor_did_not_find_local_candidate")
+                if field in SPECIALIST_EXTRACTION_FIELDS:
+                    reasons.append("bounded_specialist_grammar_has_incomplete_recall")
+                    if findings_count:
+                        status = "not_extracted"
+                        reasons.append("source_assertion_subject_or_scope_requires_review")
                 if any(not declared_coverage[paper].get("fulltext_checked", False) for paper in retained_papers):
                     reasons.append("fulltext_coverage_incomplete")
                 if any(not declared_coverage[paper].get("supplement_checked", False) for paper in retained_papers):
                     reasons.append("supplement_coverage_incomplete")
             fields.append({"field": field, "status": status, "retained_present": present,
-                           "candidate_count": count, "reason_codes": reasons, "routes": routes})
+                           "candidate_count": count, "reason_codes": reasons, "routes": routes,
+                           **({"classification_review_finding_count": findings_count} if field in SPECIALIST_EXTRACTION_FIELDS else {})})
         coverage_rows.append({"material_id": material["id"], "formula": material["formula"],
                               "retained_record_count": len(records), "retained_paper_ids": retained_papers,
                               "source_capture_count": len(local_sources), "source_coverage": declared_coverage,
@@ -780,6 +926,19 @@ def build_enrichment_report(materials: Sequence[Mapping[str, Any]], sources: Seq
               "input_sha256": digest({"materials": list(materials), "sources": validated,
                                       "source_coverage": source_coverage or {}}),
               "candidates": candidates, "coverage": coverage_rows,
+              "classification_candidates": [all_classifications[key] for key in sorted(all_classifications)],
+              "classification_review_findings": [all_findings[key] for key in sorted(all_findings)],
+              "classification_version": classification.VERSION,
+              "classification_extractor_version": classification.EXTRACTOR_VERSION,
+              "classification_counts": {"source_record_statement_matches": classification_total,
+                  "candidate_facts": len(all_classifications), "source_record_matches_omitted": classification_omitted,
+                  "source_record_matches_truncated": classification_omitted > 0,
+                  "review_findings": len(all_findings), "report_row_limit": classification.MAX_REPORT_ROWS,
+                  "source_record_review_findings_total": classification_findings_total,
+                  "source_record_review_findings_omitted": classification_findings_omitted,
+                  "source_record_review_findings_truncated": classification_findings_omitted > 0,
+                  "candidate_fields": dict(sorted(Counter(row["field"] for row in all_classifications.values()).items())),
+                  "promoted_facts": 0},
               "counts": {"materials": len(materials), "retained_records": sum(len(m.get("records", [])) for m in materials),
                          "source_captures": len(validated), "candidate_facts": len(candidates),
                          "candidate_retained_references": sum(candidate["retained_reference_count"] for candidate in candidates),
@@ -822,6 +981,7 @@ def pending_tc_records(candidates: Sequence[dict]) -> list[dict]:
         pressure = subject["pressure_quantity"]
         record = {"formula_raw": subject["formula"], "paper_id": source["paper_id"],
                   "tc_kelvin": candidate["raw_value"], "tc_criterion": subject.get("tc_criterion", "unknown"),
+                  "tc_definition": subject.get("tc_criterion", "unknown"),
                   "knowledge_origin": subject["knowledge_origin"], "measurement_method": subject["measurement_method"],
                   "pressure_state": subject["pressure_state"], "validity_status": "pending",
                   "source_locator": {**source["locator"], "char_start": source["span"]["char_start"], "char_end": source["span"]["char_end"]},

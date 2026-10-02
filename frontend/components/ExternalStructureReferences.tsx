@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { getMaterialStructureReferences } from "@/lib/api";
 import type { ExternalStructureQuantity, MaterialStructureReferences } from "@/lib/api";
+import { useProviderAvailabilityPublisher } from "@/components/MaterialProviderAvailability";
+import { emptyProviderAvailability, mapMaterialProviderAvailability, MATERIAL_PROVIDER_ANCHORS } from "@/lib/material-provider-availability";
 
 const codId = /^[1-9][0-9]{6,8}$/;
 const fields = ["a", "b", "c", "alpha", "beta", "gamma"] as const;
@@ -21,6 +23,8 @@ function validReport(value: MaterialStructureReferences) {
     && value.phase_identity_established === false && value.database_changed === false
     && ["available", "no_match", "not_applicable", "unavailable"].includes(value.status)
     && Array.isArray(value.references) && value.references.length <= 20
+    && (value.status !== "available" || value.references.length > 0)
+    && (value.status === "available" || value.references.length === 0)
     && value.references.every(row => codId.test(row.id) && ["Observed", "Unresolved"].includes(row.knowledge_origin)
       && row.sample_identity_established === false && row.phase_identity_established === false
       && row.coordinate_model_validated === false && row.cif_validation_status === "external_file_not_validated"
@@ -28,26 +32,32 @@ function validReport(value: MaterialStructureReferences) {
 }
 
 export function ExternalStructureReferences({ materialId }: { materialId: string }) {
-  const [expanded, setExpanded] = useState(false);
+  const publishAvailability = useProviderAvailabilityPublisher(materialId, "COD");
+  const [expansion, setExpansion] = useState({ materialId, open: false });
+  const expanded = expansion.materialId === materialId && expansion.open;
   const [state, setState] = useState<{ materialId: string; report: MaterialStructureReferences | null; failed: boolean }>({ materialId, report: null, failed: false });
   const report = state.materialId === materialId ? state.report : null;
   const failed = state.materialId === materialId && state.failed;
   useEffect(() => {
     if (!expanded) return;
     const controller = new AbortController();
+    let settled = false;
     setState({ materialId, report: null, failed: false });
+    publishAvailability(emptyProviderAvailability("COD", "loading"));
     getMaterialStructureReferences(materialId, controller.signal).then(value => {
       if (controller.signal.aborted) return;
       if (!validReport(value)) throw new Error("Structure reference contract unavailable");
+      settled = true;
       setState({ materialId, report: value, failed: false });
-    }).catch(() => { if (!controller.signal.aborted) setState({ materialId, report: null, failed: true }); });
-    return () => controller.abort();
-  }, [materialId, expanded]);
-  return <details className="border-t border-sage-border pt-5" onToggle={event => { if (event.target === event.currentTarget) setExpanded(event.currentTarget.open); }}>
+      publishAvailability(mapMaterialProviderAvailability("COD", value));
+    }).catch(() => { if (!controller.signal.aborted) { settled = true; setState({ materialId, report: null, failed: true }); publishAvailability(emptyProviderAvailability("COD", "unavailable")); } });
+    return () => { controller.abort(); if (!settled) publishAvailability(null); };
+  }, [materialId, expanded, publishAvailability]);
+  return <details id={MATERIAL_PROVIDER_ANCHORS.COD} key={materialId} open={expanded} className="border-t border-sage-border pt-5" onToggle={event => { if (event.target === event.currentTarget) setExpansion({ materialId, open: event.currentTarget.open }); }}>
     <summary className="cursor-pointer text-base font-semibold text-accent-deep">Crystal structure references · COD{report?.status === "available" ? ` (${report.references.length})` : ""}</summary>
     <div className="mt-3 space-y-3">
       <p className="max-w-4xl text-sm text-slate-600">Published crystal metadata matched by composition. These references are separate from this material’s retained properties; sample and phase correspondence need review.</p>
-      {!report && !failed && <p role="status" className="text-sm text-slate-500">Loading COD structure references…</p>}
+      {expanded && !report && !failed && <p role="status" className="text-sm text-slate-500">Loading COD structure references…</p>}
       {(failed || report?.status === "unavailable") && <p role="status" className="text-sm text-slate-600">COD reference service unavailable. Database coverage remains unresolved for this request.</p>}
       {report?.status === "not_applicable" && <p className="text-sm text-slate-600">Resolve the source composition, isotope or interface before querying a bulk crystal reference.</p>}
       {report?.status === "no_match" && <p className="text-sm text-slate-600">No exact-composition reference was returned by COD. This result does not establish scientific absence.</p>}
