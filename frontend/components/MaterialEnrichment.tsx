@@ -6,6 +6,8 @@ import type { MaterialEnrichmentReport, PropertyEvidenceItem } from "@/lib/api";
 import Link from "@/components/AppLink";
 import { evidenceText, objectValue, propertyValue, sourceHref } from "@/lib/property-evidence";
 import { MaterialClassificationCandidates } from "@/components/MaterialClassificationCandidates";
+import { MaterialSourceObservations } from "@/components/MaterialSourceObservations";
+import { sourceObservationsForRecovery } from "@/lib/material-source-observations";
 import { useMaterialProviderAvailability } from "@/components/MaterialProviderAvailability";
 import { downloadMaterialRecoveryMetadata, projectSourceCoverage, recoveryReasonLabel } from "@/lib/material-recovery-metadata";
 import type { MaterialSourceCoverage } from "@/lib/api";
@@ -188,6 +190,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
   const fields = report?.coverage.find(row => row.material_id === materialId)?.fields ?? [];
   const sourceCoverage = projectSourceCoverage(report?.coverage.find(row => row.material_id === materialId)?.source_coverage);
   const missing = fields.filter(field => !field.retained_present);
+  const sourceObservations = report ? sourceObservationsForRecovery(report, materialId) : null;
   return <section className="border-t border-sage-border pt-6" aria-label="Field coverage and source recovery">
     <h2 className="text-lg font-semibold">Field coverage &amp; source recovery</h2>
     <p className="mt-1 max-w-3xl text-sm text-slate-600">See which fields are retained, which need source review, and where missing information can be recovered.</p>
@@ -237,6 +240,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
         {report.candidates.length > 40 && <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs"><p className="text-slate-500">Showing {showAllCandidates ? report.candidates.length : 40} of {report.candidates.length} returned candidates.</p><button type="button" className="rounded text-accent-deep underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-deep" aria-expanded={showAllCandidates} aria-controls={candidateListId} onClick={() => setCandidateExpansion({ materialId, expanded: !showAllCandidates })}>{showAllCandidates ? "Show fewer candidates" : `Show remaining candidates (${report.candidates.length - 40})`}</button></div>}
       </details>}
       {["materials-source-statement-extractor/1.0.0", "materials-source-statement-extractor/1.0.1"].includes(report.classification_extractor_version ?? "") && <MaterialClassificationCandidates materialId={materialId} candidates={Array.isArray(report.classification_candidates) ? report.classification_candidates : []} findings={Array.isArray(report.classification_review_findings) ? report.classification_review_findings : []} truncated={report.classification_candidates_truncated === true} findingsTruncated={report.classification_review_findings_truncated === true} />}
+      {sourceObservations && <div className="mt-4"><MaterialSourceObservations window={sourceObservations} /></div>}
     </>}
   </section>;
 }
