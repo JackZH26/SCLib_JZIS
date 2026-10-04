@@ -3,6 +3,8 @@ import {
   computationalReferenceMetadataPath, computationalReferenceSnapshotSha256,
   type ArchiveReferenceField, type ComputationalReference, type NativeReferenceInput, type NativeTagDocumentationAnnotation,
 } from "@/lib/material-computational-reference";
+import { type ComputationalNativeOutput } from "@/lib/material-computational-native-output";
+import { MaterialComputationalNativeOutput } from "@/components/MaterialComputationalNativeOutput";
 
 const sourceDate = (value: string) => new Date(value).toLocaleDateString("en-GB", { timeZone: "UTC", day: "numeric", month: "long", year: "numeric" });
 function PublicSourceLink({ url, children }: { url: string; children: React.ReactNode }) {
@@ -84,10 +86,12 @@ const inputNotes: Record<string, string> = {
   PSTRESS: "Original model input with unresolved unit. This is not a Tc measurement pressure or a 0 GPa assignment.",
   ENAUG: "Original decimal input with unresolved unit. It does not assign a unit to the archive cutoff values.",
 };
-function NativeInputs({ data }: { data: ComputationalReference }) {
+function NativeInputs({ data, completeSourceAvailable = false }: { data: ComputationalReference; completeSourceAvailable?: boolean }) {
   return <section className="min-w-0" aria-labelledby="nomad-native-heading">
-    <h3 id="nomad-native-heading" className="text-base font-semibold">Original input settings, partial source</h3>
-    <p className="mt-2 text-xs leading-5 text-sage-muted">Only complete INCAR and parameters subtrees inside a 2 MiB prefix were checked. The whole XML is incomplete; the final calculation was not inspected.</p>
+    <h3 id="nomad-native-heading" className="text-base font-semibold">{completeSourceAvailable ? "Earlier prefix input settings" : "Original input settings, partial source"}</h3>
+    <p className="mt-2 text-xs leading-5 text-sage-muted">{completeSourceAvailable
+      ? "This earlier snapshot checked INCAR and parameters inside a 2 MiB prefix. The separate complete-source projection above retains additional contexts; the earlier metadata bytes remain unchanged."
+      : "Only complete INCAR and parameters subtrees inside a 2 MiB prefix were checked. The whole XML is incomplete; the final calculation was not inspected."}</p>
     <div className="mt-3 max-w-full overflow-x-auto rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep" tabIndex={0} role="region" aria-label="Native VASP input settings, horizontally scrollable">
       <table className="w-full min-w-[24rem] text-left text-sm tabular-nums">
         <caption className="sr-only">Eight literal native input tags with exact source precision, units and interpretation boundaries.</caption>
@@ -123,10 +127,10 @@ function PotentialLabels({ data }: { data: ComputationalReference }) {
   </section>;
 }
 
-function SourceProvenance({ data }: { data: ComputationalReference }) {
+function SourceProvenance({ data, completeSourceAvailable = false }: { data: ComputationalReference; completeSourceAvailable?: boolean }) {
   const origin = data.reference.source_origin;
   return <details className="min-w-0 text-xs leading-5 text-sage-muted">
-    <summary className="w-fit cursor-pointer text-accent-deep">Source identity, capture and remaining units</summary>
+    <summary className="w-fit cursor-pointer text-accent-deep">{completeSourceAvailable ? "Earlier archive and prefix provenance" : "Source identity, capture and remaining units"}</summary>
     <div className="mt-3 space-y-3">
       <dl className="space-y-1">
         <div><dt className="inline font-medium">Entry: </dt><dd className="inline break-all font-mono">{data.reference.entry_id}</dd></div>
@@ -150,7 +154,7 @@ function SourceProvenance({ data }: { data: ComputationalReference }) {
   </details>;
 }
 
-export function MaterialComputationalReference({ data }: { data: ComputationalReference | null }) {
+export function MaterialComputationalReference({ data, nativeOutput }: { data: ComputationalReference | null; nativeOutput?: ComputationalNativeOutput | null }) {
   if (!data) return <p role="status" className="text-sm text-sage-muted">Captured computational reference metadata is unavailable.</p>;
   return <article className="min-w-0 space-y-6 rounded-lg border border-sage-border bg-white p-4 sm:p-5" aria-labelledby="crb2-computed-heading">
     <div className="space-y-2">
@@ -158,17 +162,22 @@ export function MaterialComputationalReference({ data }: { data: ComputationalRe
       <p className="max-w-4xl text-sm leading-6 text-sage-muted">NOMAD composition B2Cr. This is one independent computed entry, with no selected superconducting result, physical sample or material-state association.</p>
       <PublicSourceLink url={data.reference.entry_url}>Open NOMAD entry</PublicSourceLink>
     </div>
+    {nativeOutput !== undefined && <MaterialComputationalNativeOutput data={nativeOutput} />}
     <ArchiveSummary data={data} />
-    <NativeInputs data={data} />
+    {nativeOutput ? <details className="min-w-0 text-sm">
+      <summary className="w-fit cursor-pointer text-accent-deep">Earlier prefix input snapshot</summary>
+      <div className="mt-3"><NativeInputs data={data} completeSourceAvailable /></div>
+    </details> : <NativeInputs data={data} />}
     <PotentialLabels data={data} />
     <details className="min-w-0 text-sm">
-      <summary className="w-fit cursor-pointer text-accent-deep">Missing fields and checked scope</summary>
+      <summary className="w-fit cursor-pointer text-accent-deep">{nativeOutput ? "Earlier snapshot gaps and current limits" : "Missing fields and checked scope"}</summary>
+      {nativeOutput && <p className="mt-3 text-xs leading-5 text-sage-muted">The entries below describe the earlier archive and 2 MiB prefix captures. Complete-source geometry and input contexts are shown above; the earlier metadata remains a separate historical snapshot.</p>}
       <dl className="mt-3 space-y-3 text-xs leading-5 text-sage-muted">{data.unresolved.map(item => <div key={item.field}><dt className="font-semibold">{item.field}</dt><dd>{item.reason}</dd></div>)}</dl>
       <p className="mt-3 text-xs leading-5 text-sage-muted">Native spin/occupation inputs supplement the earlier archive-only absence checks. Their source scopes remain separate. No new calculation, canonical promotion, scientific acceptance or ML training approval is granted.</p>
     </details>
-    <SourceProvenance data={data} />
+    <SourceProvenance data={data} completeSourceAvailable={Boolean(nativeOutput)} />
     <details className="min-w-0 text-sm">
-      <summary className="w-fit cursor-pointer text-accent-deep">View computational reference metadata (JSON)</summary>
+      <summary className="w-fit cursor-pointer text-accent-deep">{nativeOutput ? "Earlier reference metadata (JSON)" : "View computational reference metadata (JSON)"}</summary>
       <p className="mt-2 text-xs leading-5 text-sage-muted">Archive fields, native input settings and potential-label rows overlap. They are evidence groups for one entry, not counts of distinct properties or independent experiments. Raw coordinate arrays are unvalidated, unit-unresolved archive metadata.</p>
       <pre className="mt-3 max-h-80 max-w-full overflow-auto whitespace-pre-wrap break-all rounded-md border border-sage-border bg-sage-surface p-3 text-xs leading-5" tabIndex={0} aria-label="Computational reference metadata JSON">{JSON.stringify(data, null, 2)}</pre>
       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs">

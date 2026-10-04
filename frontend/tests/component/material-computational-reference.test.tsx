@@ -3,10 +3,47 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import snapshot from "@/public/research-pilots/materials-computational-reference-2026-10-02.json";
+import completeNative from "@/public/research-pilots/materials-computational-native-output-2026-10-02.json";
+import { computationalNativeOutputHref, computationalNativeOutputSnapshotSha256, loadComputationalNativeOutput } from "@/lib/material-computational-native-output";
 import { archiveReferenceField, archiveReferenceValue, computationalReferenceHref, computationalReferenceMetadataPath, computationalReferenceSnapshotSha256, loadComputationalReference } from "@/lib/material-computational-reference";
 
 const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value));
 describe("Finite independent NOMAD computation metadata", () => {
+  it("pins a separate complete-source projection with the same entry and preserves unresolved scientific authority", () => {
+    const data = loadComputationalNativeOutput()!;
+    const filename = "materials-computational-native-output-2026-10-02.json";
+    const bytes = readFileSync(resolve(process.cwd(), "public/research-pilots", filename));
+    const digest = createHash("sha256").update(bytes).digest("hex");
+    expect(digest).toBe(computationalNativeOutputSnapshotSha256);
+    expect(readFileSync(resolve(process.cwd(), "public/research-pilots", `${filename}.sha256`), "utf8")).toBe(`${digest}  ${filename}\n`);
+    expect(data.reference.entry_id).toBe(snapshot.reference.entry_id);
+    expect(data.previous_reference.asset_sha256).toBe(computationalReferenceSnapshotSha256);
+    expect(data.native_source).toMatchObject({ source_sha256: "09b0088b66057f364ae436c6e6d15621572408aede91e19ae0b5ce1594f99d5e", captured_bytes: 3835451, complete_file_established: true, native_calculation_count: 3 });
+    expect(new Set(data.native_inputs.map(field => field.native_tag)).size).toBe(17);
+    expect(data.native_inputs).toHaveLength(26);
+    expect(data.reported_final_geometry.convergence_assessment).toBeNull();
+    expect(data.native_energy_channels.corrected_energy).toBeNull();
+    expect(data.historical_archive_projection.entry_hash_reverified_by_complete_native_capture).toBe(false);
+    expect(data.authority).toMatchObject({ scientific_acceptance: false, human_review: false, ml_training_approved: false, canonical_promotions: 0, selected_result_association: null });
+    expect(JSON.stringify(data)).not.toMatch(/\/Users\/|\/private\/|\/tmp\/|<modeling|literal_source_html|password|credential|base64/);
+  });
+
+  it("rejects altered full-source precision, locators, completeness, units or scientific authority", () => {
+    const mutations: ((value: typeof completeNative) => void)[] = [
+      value => { value.reported_final_geometry.basis_raw_lexemes[0][0] = "2.9506"; },
+      value => { value.native_inputs.find(input => input.native_tag === "ISTART")!.raw_scalar_lexeme = "0"; },
+      value => { value.native_energy_channels.last_ionic[2].source_xpath = "./calculation[2]/energy[1]/i[3]"; },
+      value => { value.native_source.complete_file_established = false; },
+      value => { value.reported_final_geometry.documented_unit_convention.basis = "nm"; },
+      value => { value.authority.scientific_acceptance = true; },
+      value => { (value as unknown as Record<string, unknown>).raw_XML = "unreviewed"; },
+    ];
+    for (const mutate of mutations) { const value = clone(completeNative); mutate(value); expect(loadComputationalNativeOutput(value)).toBeNull(); }
+    expect(loadComputationalNativeOutput(null)).toBeNull();
+    expect(computationalNativeOutputHref(completeNative.native_source.url)).toBe(completeNative.native_source.url);
+    for (const href of ["javascript:alert(1)", `${completeNative.native_source.url}?private=1`, "http://nomad-lab.eu/", "/private/tmp/vasprun.xml"]) expect(computationalNativeOutputHref(href)).toBeNull();
+  });
+
   it("pins the public snapshot bytes and the overlapping evidence groups for exactly one composition reference", () => {
     const data = loadComputationalReference()!;
     const filename = "materials-computational-reference-2026-10-02.json";

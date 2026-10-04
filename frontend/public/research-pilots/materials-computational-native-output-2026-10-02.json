@@ -1,0 +1,679 @@
+{
+  "version": "materials-computational-native-output/1.0.0",
+  "prepared_on": "2026-10-02",
+  "status": "independent_complete_native_output_metadata_pending",
+  "authority": {
+    "human_review": false,
+    "scientific_acceptance": false,
+    "sample_identity_established": false,
+    "phase_identity_established": false,
+    "experiment_association": null,
+    "material_state_association": null,
+    "selected_result_association": null,
+    "source_record_association": null,
+    "canonical_promotions": 0,
+    "ml_training_approved": false,
+    "ml_use_approved": false,
+    "calculation_executed": false,
+    "database_changed": false,
+    "raw_source_publication": false,
+    "raw_source_redistribution_rights_established": false,
+    "canonical_public_property_promotion_approved": false
+  },
+  "reference": {
+    "entry_id": "0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq",
+    "upload_id": "5IvJz3uWTeu7Sgf197BSnw",
+    "formula": "B2Cr",
+    "knowledge_origin": "Computed",
+    "role": "independent previously computed model; experimental sample and state association unresolved",
+    "match_level": "fixed_composition_only",
+    "entry_url": "https://nomad-lab.eu/prod/v1/gui/search/entries/entry/id/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq",
+    "mainfile": "oqmd/icsd/30416/relaxation/vasprun.xml",
+    "experiment_association": null,
+    "state_association": null,
+    "selected_result_association": null
+  },
+  "native_source": {
+    "url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq/raw/vasprun.xml",
+    "requested_at_utc": "2026-10-02T14:14:02.934950+00:00",
+    "method": "GET",
+    "status": 200,
+    "retry_count": 0,
+    "captured_bytes": 3835451,
+    "source_sha256": "09b0088b66057f364ae436c6e6d15621572408aede91e19ae0b5ce1594f99d5e",
+    "complete_file_established": true,
+    "HTTP_EOF_observed": true,
+    "EOF_evidence": "Frozen successful capture receipt and read-to-EOF loop; no HTTP repeated during this draft.",
+    "whole_XML_well_formed": true,
+    "XML_external_entity_declarations_absent": true,
+    "native_calculation_count": 3,
+    "last_calculation_scstep_count": 5,
+    "counts_scope": "Three native calculation blocks in one run; no independent experiment count.",
+    "raw_source_published_or_imported": false
+  },
+  "indexed_projection": {
+    "url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq",
+    "captured_before_at_utc": "2026-10-02T14:14:01.758990+00:00",
+    "captured_after_at_utc": "2026-10-02T14:14:08.086846+00:00",
+    "bytes": 21219,
+    "body_sha256": "ffcb6470122b82a4df618f1ddaee55a1a3a705069fa3b585f36f1dfd42d8df6d",
+    "full_bytes_equal_before_after": true,
+    "identity": {
+      "entry_id": "0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq",
+      "upload_id": "5IvJz3uWTeu7Sgf197BSnw",
+      "mainfile": "oqmd/icsd/30416/relaxation/vasprun.xml",
+      "published": true,
+      "processed": true,
+      "with_embargo": false,
+      "last_processing_time": "2021-12-24T11:59:42.356000",
+      "calc_id": "0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq",
+      "license": "CC BY 4.0"
+    },
+    "entry_hash_field_present": false,
+    "last_processing_time": "2021-12-24T11:59:42.356000",
+    "nomad_processing_version": "1.0.0",
+    "scope": "Indexed entry metadata; distinct from historical archive projection.",
+    "cross_projection_atomic_snapshot_established": false
+  },
+  "historical_archive_projection": {
+    "entry_hash": "uAYOjF6d_QSs5sjomuNYIJdYxyN1",
+    "last_processing_time": "2023-06-05T23:57:15.535521+00:00",
+    "nomad_processing_version": "1.2.0rc1.dev126+g2552cffd2",
+    "reported_in_asset_sha256": "c42acb658f255e020c65266a3da891a7acd05426ccb71b052f38c0e13406837d",
+    "entry_hash_reverified_by_complete_native_capture": false,
+    "cross_projection_atomic_snapshot_established": false,
+    "whole_historical_file_byte_equivalence_established": false,
+    "legacy_archive_coordinate_units_repaired": false
+  },
+  "previous_reference": {
+    "asset_filename": "materials-computational-reference-2026-10-02.json",
+    "version": "materials-computational-reference/1.0.0",
+    "asset_sha256": "c42acb658f255e020c65266a3da891a7acd05426ccb71b052f38c0e13406837d",
+    "asset_changed": false,
+    "frozen_prefix": {
+      "captured_bytes": 2097152,
+      "source_prefix_sha256": "793f7aedb4bf93e31e6b4342cf30747c7d4bbf59cf60f6b1532799c884adc111",
+      "requested_at_utc": "2026-10-02T05:33:27.092797+00:00",
+      "full_native_prefix_bytes_equal": true,
+      "complete_historical_file_equivalence_established": false
+    }
+  },
+  "reported_final_geometry": {
+    "label": "Reported finalpos",
+    "role": "Independent computed geometry; sample and state association unresolved.",
+    "source_xpath": "./structure[2][@name='finalpos']",
+    "basis_source_xpath": "./structure[2][@name='finalpos']/crystal[1]/varray[1][@name='basis']",
+    "positions_source_xpath": "./structure[2][@name='finalpos']/varray[1][@name='positions']",
+    "last_calculation_basis_source_xpath": "./calculation[3]/structure[1]/crystal[1]/varray[1][@name='basis']",
+    "last_calculation_positions_source_xpath": "./calculation[3]/structure[1]/varray[1][@name='positions']",
+    "basis_vector_source_xpaths": [
+      "./structure[2][@name='finalpos']/crystal[1]/varray[1][@name='basis']/v[1]",
+      "./structure[2][@name='finalpos']/crystal[1]/varray[1][@name='basis']/v[2]",
+      "./structure[2][@name='finalpos']/crystal[1]/varray[1][@name='basis']/v[3]"
+    ],
+    "position_vector_source_xpaths": [
+      "./structure[2][@name='finalpos']/varray[1][@name='positions']/v[1]",
+      "./structure[2][@name='finalpos']/varray[1][@name='positions']/v[2]",
+      "./structure[2][@name='finalpos']/varray[1][@name='positions']/v[3]"
+    ],
+    "atom_labels_in_source_order": [
+      "B",
+      "B",
+      "Cr"
+    ],
+    "atom_label_source_xpaths": [
+      "./atominfo[1]/array[1][@name='atoms']/set[1]/rc[1]/c[1]",
+      "./atominfo[1]/array[1][@name='atoms']/set[1]/rc[2]/c[1]",
+      "./atominfo[1]/array[1][@name='atoms']/set[1]/rc[3]/c[1]"
+    ],
+    "atom_count": 3,
+    "basis_raw_lexemes": [
+      [
+        "2.95061293",
+        "-0.00002535",
+        "0.00000000"
+      ],
+      [
+        "-1.47532842",
+        "2.55529263",
+        "0.00000000"
+      ],
+      [
+        "0.00000000",
+        "0.00000000",
+        "3.04096491"
+      ]
+    ],
+    "positions_raw_lexemes": [
+      [
+        "0.66670877",
+        "0.33337952",
+        "0.50000000"
+      ],
+      [
+        "0.33337952",
+        "0.66670877",
+        "0.50000000"
+      ],
+      [
+        "0.00001171",
+        "0.00001171",
+        "0.00000000"
+      ]
+    ],
+    "documented_unit_convention": {
+      "basis": "angstrom",
+      "basis_display_unit": "Å",
+      "positions": "fractional/direct",
+      "annotation_id": "vasprun",
+      "explicit_XML_units": false,
+      "status": "Primary-format documentary convention; not explicit XML units or legacy archive unit repair.",
+      "documentation_revision_id": "37162",
+      "documentation_response_sha256": "bcbc45da1c8bf26ecbc239fafc1c288609a7ee0468af12ad1e35b952ed491f86",
+      "version_limit": "The 2026 page uses VASP 6.5.0 examples and a newer top-level step layout. The actual generator is 5.3.2 with calculation wrappers. No original 5.3.2 documentation edition recovered. No explicit XML units or historical NOMAD archive unit repair."
+    },
+    "consistency_checks": {
+      "whole_XML_well_formed": true,
+      "finalpos_unique": true,
+      "atom_count_matches_positions": true,
+      "finite_basis_and_positions": true,
+      "nonsingular_basis": true,
+      "final_and_last_calculation_coordinate_lexemes_equal": true
+    },
+    "convergence_assessment": null,
+    "derived_cell_parameters": null,
+    "CIF_generated": false,
+    "sample_state_association": null
+  },
+  "native_generator_fields": [
+    {
+      "native_tag": "program",
+      "source_xpath": "./generator[1]/i[1][@name='program']",
+      "source_context": "./generator[1]",
+      "declared_xml_type": "string",
+      "raw_scalar_lexeme": "vasp",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "version",
+      "source_xpath": "./generator[1]/i[2][@name='version']",
+      "source_context": "./generator[1]",
+      "declared_xml_type": "string",
+      "raw_scalar_lexeme": "5.3.2",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "subversion",
+      "source_xpath": "./generator[1]/i[3][@name='subversion']",
+      "source_context": "./generator[1]",
+      "declared_xml_type": "string",
+      "raw_scalar_lexeme": "13Sep12 (build Apr 01 2013 09:32:17) complex                          serial",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "platform",
+      "source_xpath": "./generator[1]/i[4][@name='platform']",
+      "source_context": "./generator[1]",
+      "declared_xml_type": "string",
+      "raw_scalar_lexeme": "LinuxIFC",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "date",
+      "source_xpath": "./generator[1]/i[5][@name='date']",
+      "source_context": "./generator[1]",
+      "declared_xml_type": "string",
+      "raw_scalar_lexeme": "2014 01 17",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "time",
+      "source_xpath": "./generator[1]/i[6][@name='time']",
+      "source_context": "./generator[1]",
+      "declared_xml_type": "string",
+      "raw_scalar_lexeme": "16:21:49",
+      "normalized_value": null,
+      "unit": null
+    }
+  ],
+  "native_inputs": [
+    {
+      "native_tag": "ENMAX",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/i[2][@name='ENMAX']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']",
+      "declared_xml_type": null,
+      "raw_scalar_lexeme": "318.60600000",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "ENAUG",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/i[3][@name='ENAUG']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']",
+      "declared_xml_type": null,
+      "raw_scalar_lexeme": "535.51400000",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "EDIFF",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/i[4][@name='EDIFF']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']",
+      "declared_xml_type": null,
+      "raw_scalar_lexeme": "0.00010000",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "EDIFFG",
+      "source_xpath": "./parameters[1]/separator[4][@name='ionic']/i[5][@name='EDIFFG']",
+      "source_context": "./parameters[1]/separator[4][@name='ionic']",
+      "declared_xml_type": null,
+      "raw_scalar_lexeme": "0.00100000",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "ISPIN",
+      "source_xpath": "./incar[1]/i[4][@name='ISPIN']",
+      "source_context": "./incar[1]",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "2",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "ISPIN",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/separator[4][@name='electronic spin']/i[1][@name='ISPIN']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']/separator[4][@name='electronic spin']",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "2",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "LSORBIT",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/separator[4][@name='electronic spin']/i[4][@name='LSORBIT']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']/separator[4][@name='electronic spin']",
+      "declared_xml_type": "logical",
+      "raw_scalar_lexeme": "F",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "LNONCOLLINEAR",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/separator[4][@name='electronic spin']/i[2][@name='LNONCOLLINEAR']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']/separator[4][@name='electronic spin']",
+      "declared_xml_type": "logical",
+      "raw_scalar_lexeme": "F",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "ISMEAR",
+      "source_xpath": "./incar[1]/i[10][@name='ISMEAR']",
+      "source_context": "./incar[1]",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "1",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "ISMEAR",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/separator[1][@name='electronic smearing']/i[1][@name='ISMEAR']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']/separator[1][@name='electronic smearing']",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "1",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "SIGMA",
+      "source_xpath": "./incar[1]/i[11][@name='SIGMA']",
+      "source_context": "./incar[1]",
+      "declared_xml_type": null,
+      "raw_scalar_lexeme": "0.20000000",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "SIGMA",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/separator[1][@name='electronic smearing']/i[2][@name='SIGMA']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']/separator[1][@name='electronic smearing']",
+      "declared_xml_type": null,
+      "raw_scalar_lexeme": "0.20000000",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "PSTRESS",
+      "source_xpath": "./parameters[1]/separator[4][@name='ionic']/i[4][@name='PSTRESS']",
+      "source_context": "./parameters[1]/separator[4][@name='ionic']",
+      "declared_xml_type": null,
+      "raw_scalar_lexeme": "0.00000000",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "ISTART",
+      "source_xpath": "./incar[1]/i[1][@name='ISTART']",
+      "source_context": "./incar[1]",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "1",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "ISTART",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/separator[3][@name='electronic startup']/i[1][@name='ISTART']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']/separator[3][@name='electronic startup']",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "0",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "NELM",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/separator[6][@name='electronic convergence']/i[1][@name='NELM']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']/separator[6][@name='electronic convergence']",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "60",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "NELM",
+      "source_xpath": "./parameters[1]/separator[16][@name='response functions']/i[20][@name='NELM']",
+      "source_context": "./parameters[1]/separator[16][@name='response functions']",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "1",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "NSW",
+      "source_xpath": "./incar[1]/i[8][@name='NSW']",
+      "source_context": "./incar[1]",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "60",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "NSW",
+      "source_xpath": "./parameters[1]/separator[4][@name='ionic']/i[1][@name='NSW']",
+      "source_context": "./parameters[1]/separator[4][@name='ionic']",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "60",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "IBRION",
+      "source_xpath": "./incar[1]/i[7][@name='IBRION']",
+      "source_context": "./incar[1]",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "2",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "IBRION",
+      "source_xpath": "./parameters[1]/separator[4][@name='ionic']/i[2][@name='IBRION']",
+      "source_context": "./parameters[1]/separator[4][@name='ionic']",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "2",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "ISIF",
+      "source_xpath": "./incar[1]/i[9][@name='ISIF']",
+      "source_context": "./incar[1]",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "3",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "ISIF",
+      "source_xpath": "./parameters[1]/separator[4][@name='ionic']/i[3][@name='ISIF']",
+      "source_context": "./parameters[1]/separator[4][@name='ionic']",
+      "declared_xml_type": "int",
+      "raw_scalar_lexeme": "3",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "PREC",
+      "source_xpath": "./incar[1]/i[2][@name='PREC']",
+      "source_context": "./incar[1]",
+      "declared_xml_type": "string",
+      "raw_scalar_lexeme": "acc",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "PREC",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/i[1][@name='PREC']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']",
+      "declared_xml_type": "string",
+      "raw_scalar_lexeme": "acc",
+      "normalized_value": null,
+      "unit": null
+    },
+    {
+      "native_tag": "LREAL",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/separator[2][@name='electronic projectors']/i[1][@name='LREAL']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']/separator[2][@name='electronic projectors']",
+      "declared_xml_type": "logical",
+      "raw_scalar_lexeme": "F",
+      "normalized_value": null,
+      "unit": null
+    }
+  ],
+  "native_unavailable_inputs": [
+    {
+      "native_tag": "ENCUT",
+      "status": "not_observed_in_complete_native_output",
+      "checked_scope": "Every element of the SHA-pinned complete vasprun.xml, matching its name attribute exactly to ENCUT.",
+      "source_sha256": "09b0088b66057f364ae436c6e6d15621572408aede91e19ae0b5ce1594f99d5e",
+      "observed_occurrence_count": 0,
+      "occurrences": [],
+      "normalized_value": null,
+      "unit": null,
+      "default_applied": false,
+      "ENMAX_used_as_ENCUT": false
+    }
+  ],
+  "native_energy_channels": {
+    "last_ionic": [
+      {
+        "native_tag": "e_fr_energy",
+        "source_xpath": "./calculation[3]/energy[1]/i[1][@name='e_fr_energy']",
+        "declared_xml_type": null,
+        "raw_scalar_lexeme": "-23.86503271",
+        "normalized_value": null,
+        "unit": null
+      },
+      {
+        "native_tag": "e_wo_entrp",
+        "source_xpath": "./calculation[3]/energy[1]/i[2][@name='e_wo_entrp']",
+        "declared_xml_type": null,
+        "raw_scalar_lexeme": "-23.86534907",
+        "normalized_value": null,
+        "unit": null
+      },
+      {
+        "native_tag": "e_0_energy",
+        "source_xpath": "./calculation[3]/energy[1]/i[3][@name='e_0_energy']",
+        "declared_xml_type": null,
+        "raw_scalar_lexeme": "0.00094910",
+        "normalized_value": null,
+        "unit": null
+      }
+    ],
+    "last_electronic": [
+      {
+        "native_tag": "e_fr_energy",
+        "source_xpath": "./calculation[3]/scstep[5]/energy[1]/i[10][@name='e_fr_energy']",
+        "declared_xml_type": null,
+        "raw_scalar_lexeme": "-23.86503271",
+        "normalized_value": null,
+        "unit": null
+      },
+      {
+        "native_tag": "e_wo_entrp",
+        "source_xpath": "./calculation[3]/scstep[5]/energy[1]/i[11][@name='e_wo_entrp']",
+        "declared_xml_type": null,
+        "raw_scalar_lexeme": "-23.86598181",
+        "normalized_value": null,
+        "unit": null
+      },
+      {
+        "native_tag": "e_0_energy",
+        "source_xpath": "./calculation[3]/scstep[5]/energy[1]/i[12][@name='e_0_energy']",
+        "declared_xml_type": null,
+        "raw_scalar_lexeme": "-23.86534907",
+        "normalized_value": null,
+        "unit": null
+      }
+    ],
+    "mapping_status": "deferred",
+    "corrected_energy": null,
+    "parser_executed": false,
+    "ionic_and_last_electronic_channels_collapsed": false,
+    "scope": "Raw channels of final native calculation and its last electronic step; no corrected energy, convergence or stability inferred."
+  },
+  "primary_documentation_annotations": [
+    {
+      "name": "vasprun",
+      "source_url": "https://vasp.at/wiki/Vasprun.xml",
+      "requested_at_utc": "2026-10-02T14:23:16.621532+00:00",
+      "bytes": 90492,
+      "sha256": "bcbc45da1c8bf26ecbc239fafc1c288609a7ee0468af12ad1e35b952ed491f86",
+      "annotation": "Current format documentation presents basis as angstrom lattice vectors, positions as fractional/direct coordinates, and finalpos as the ending structure.",
+      "native_fields": [
+        "basis",
+        "positions"
+      ],
+      "scope_limit": "The 2026 page uses VASP 6.5.0 examples and a newer top-level step layout. The actual generator is 5.3.2 with calculation wrappers. No original 5.3.2 documentation edition recovered. No explicit XML units or historical NOMAD archive unit repair.",
+      "observed_page_revision_id": "37162",
+      "observed_page_last_edit_text": "This page was last edited on 17 June 2026, at 08:25."
+    },
+    {
+      "name": "ediffg",
+      "source_url": "https://vasp.at/wiki/EDIFFG",
+      "requested_at_utc": "2026-10-02T14:23:18.257288+00:00",
+      "bytes": 30743,
+      "sha256": "15a862cd2ddae62f36a1c0221fcbd8767d81986a42aeac853aa2febe0512e15e",
+      "annotation": "Positive EDIFFG describes an ionic energy-change criterion; negative values describe a force-norm criterion.",
+      "native_fields": [
+        "EDIFFG"
+      ],
+      "scope_limit": "No convergence or failure conclusion from closure, step counts, small forces, or a possibly different energy channel.",
+      "observed_page_revision_id": "32794",
+      "observed_page_last_edit_text": "This page was last edited on 24 October 2025, at 07:37."
+    },
+    {
+      "name": "pstress",
+      "source_url": "https://vasp.at/wiki/PSTRESS",
+      "requested_at_utc": "2026-10-02T14:23:19.412894+00:00",
+      "bytes": 29984,
+      "sha256": "57131bd3969bc32759c2ddfecea3d2ba57a7b7b0ee38e66d8a01c3e15a7c087e",
+      "annotation": "PSTRESS is a model external-pressure/stress correction documented in kB.",
+      "native_fields": [
+        "PSTRESS"
+      ],
+      "scope_limit": "No experimental pressure, hydrostatic pressure, or Tc condition inferred.",
+      "observed_page_revision_id": "25988",
+      "observed_page_last_edit_text": "This page was last edited on 19 August 2024, at 12:10."
+    },
+    {
+      "name": "ediff",
+      "source_url": "https://vasp.at/wiki/EDIFF",
+      "requested_at_utc": "2026-10-02T14:23:20.859393+00:00",
+      "bytes": 30834,
+      "sha256": "deac44c5c7349fea45ed83d7bbcf0ac6ad0be7f77de13555539fab293ae80662",
+      "annotation": "EDIFF is an electronic stopping parameter documented in eV.",
+      "native_fields": [
+        "EDIFF"
+      ],
+      "scope_limit": "No independent demonstration of electronic convergence; no defaults applied.",
+      "observed_page_revision_id": "32792",
+      "observed_page_last_edit_text": "This page was last edited on 24 October 2025, at 07:28."
+    },
+    {
+      "name": "encut",
+      "source_url": "https://vasp.at/wiki/ENCUT",
+      "requested_at_utc": "2026-10-02T14:23:21.970087+00:00",
+      "bytes": 32707,
+      "sha256": "8e1ae92e4d4e6e4532bef94da96b23d281320e9fa2a593fed0278565586d215f",
+      "annotation": "ENCUT is a plane-wave cutoff documented in eV.",
+      "native_fields": [
+        "ENCUT"
+      ],
+      "scope_limit": "No ENCUT occurrence in full XML. ENMAX remains distinct; no documented default applied.",
+      "observed_page_revision_id": "26956",
+      "observed_page_last_edit_text": "This page was last edited on 17 October 2024, at 09:50."
+    },
+    {
+      "name": "enaug",
+      "source_url": "https://vasp.at/wiki/ENAUG",
+      "requested_at_utc": "2026-10-02T14:23:22.947151+00:00",
+      "bytes": 30604,
+      "sha256": "b4a980925b77adf61d57ce4da44d5e8efac7ea0f9b1f0bf46f6f4898ada58de2",
+      "annotation": "ENAUG is an augmentation-charge cutoff documented in eV.",
+      "native_fields": [
+        "ENAUG"
+      ],
+      "scope_limit": "Documentary annotation of the observed native tag; no model completeness or convergence claim.",
+      "observed_page_revision_id": "26953",
+      "observed_page_last_edit_text": "This page was last edited on 17 October 2024, at 09:48."
+    },
+    {
+      "name": "sigma",
+      "source_url": "https://vasp.at/wiki/SIGMA",
+      "requested_at_utc": "2026-10-02T14:23:23.900020+00:00",
+      "bytes": 29319,
+      "sha256": "386ae12845ca309c357f6d68d643fc4d5ca84c0467e1c447270170f23aa293c1",
+      "annotation": "SIGMA is a smearing-width parameter documented in eV.",
+      "native_fields": [
+        "SIGMA"
+      ],
+      "scope_limit": "Native 0.20000000 lexemes and separate INCAR/parameter contexts preserved.",
+      "observed_page_revision_id": "29259",
+      "observed_page_last_edit_text": "This page was last edited on 27 February 2025, at 10:34."
+    },
+    {
+      "name": "pymatgen-outputs",
+      "source_url": "https://raw.githubusercontent.com/materialsproject/pymatgen-core/v2026.9.23/src/pymatgen/io/vasp/outputs.py",
+      "requested_at_utc": "2026-10-02T14:23:25.058770+00:00",
+      "bytes": 338516,
+      "sha256": "bcbf78190f1f53dec1afdb4faac3a600098134e914052732ddef9cee9aa26f9f",
+      "annotation": "The tagged Vasprun parser reads structure lattice and positions, has an explicit final-energy correction, and uses step-limit convergence heuristics.",
+      "scope_limit": "Source reading only; parser not executed. Defer any corrected-energy mapping, preserve native channels, adopt no convergence flag.",
+      "source_version": "v2026.9.23",
+      "source_symbols": [
+        "Vasprun._parse_structure",
+        "Vasprun.final_energy",
+        "Vasprun.converged_ionic"
+      ]
+    }
+  ],
+  "unresolved": [
+    "Original VASP 5.3.2 format documentation edition was not recovered; current revision 37162 describes newer examples/layout.",
+    "No explicit coordinate units in XML; no repair of historical NOMAD archive coordinate units.",
+    "Indexed processing time 2021 and historical archive processing time 2023 are distinct projections; historical archive entry hash not reverified.",
+    "ISTART INCAR 1 and startup-parameter 0 remain separate; electronic NELM 60 and response-functions NELM 1 remain separate.",
+    "ENMAX is not replaced by ENCUT; no ENCUT occurrence and no default cutoff applied.",
+    "Ionic-summary e_0_energy differs from last-electronic e_0_energy; raw channels retained and parser correction deferred.",
+    "Ionic and electronic convergence, reproduction completeness, experimental sample/state/phase association and superconducting Tc/EPC remain unestablished.",
+    "No new calculation, potential-file identity, derived cell parameters, CIF, canonical promotion or ML approval."
+  ]
+}
