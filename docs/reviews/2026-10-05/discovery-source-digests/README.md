@@ -23,3 +23,14 @@ its complete ancestor-history scan are repeated with the exceptions applied.
 The current GitHub head still requires its own successful Security and Test
 checks before an ordinary merge. This review makes no scientific acceptance,
 model validation or production deployment claim.
+
+## Downstream LaH₁₀/LaD₁₀ pressure table
+
+Scanning the downstream commits found 56 further matches in the seven-row
+pressure table introduced by `97c2d5f00c443f9a67f59d4ad15ec5c687d06406`.
+`lah10-secret-triage.json` records their exact fingerprints. All 49 numeric
+tokens and seven formula tokens were independently recomputed from the frozen
+arXiv text at their retained offsets and from the public JSON. Only those exact
+lines are excepted. The expanded workflow suite passes 19 tests with one
+existing optional-tool skip. This is a local history-scan finding, not a claim
+that the downstream PR has already passed CI.

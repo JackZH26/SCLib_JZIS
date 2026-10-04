@@ -24,6 +24,14 @@ REVIEWED_AB2H24_DIGEST_FINGERPRINTS = {
     f"{AB2H24_DIGEST_COMMIT}:{AB2H24_DIGEST_FILE}:generic-api-key:{line}"
     for line in AB2H24_DIGEST_LINES
 }
+LAH10_DIGEST_COMMIT = "97c2d5f00c443f9a67f59d4ad15ec5c687d06406"
+LAH10_DIGEST_FILE = "frontend/public/research-pilots/discovery-lah10-pressure-series-2026-10-04.json"
+LAH10_DIGEST_SHA = "f80b7b855c154163dc4a18d02489fc8c97882154abc735ff6582fddaf0804e9c"
+LAH10_DIGEST_LINES = (387, 408, 423, 438, 453, 468, 483, 498, 512, 533, 548, 563, 578, 593, 608, 623, 637, 658, 673, 688, 703, 718, 733, 748, 762, 783, 798, 813, 828, 843, 858, 873, 887, 908, 923, 938, 953, 968, 983, 998, 1012, 1033, 1048, 1063, 1078, 1093, 1108, 1123, 1137, 1158, 1173, 1188, 1203, 1218, 1233, 1248)
+REVIEWED_LAH10_DIGEST_FINGERPRINTS = {
+    f"{LAH10_DIGEST_COMMIT}:{LAH10_DIGEST_FILE}:generic-api-key:{line}"
+    for line in LAH10_DIGEST_LINES
+}
 # These positions were independently checked against the captured public source
 # spans. Pin both the original commit and the full immutable file bytes: a new
 # source revision must receive its own review, rather than inherit an exception.
@@ -467,7 +475,7 @@ class SecurityWorkflowTests(unittest.TestCase):
                     "c499146b223562c5099ab971a149392067ca047e:"
                     "api/tests/test_session_security.py:generic-api-key:54"
                 ),
-            } | REVIEWED_FIXTURE_FINGERPRINTS | REVIEWED_SOURCE_DIGEST_FINGERPRINTS | REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS | REVIEWED_AB2H24_DIGEST_FINGERPRINTS,
+            } | REVIEWED_FIXTURE_FINGERPRINTS | REVIEWED_SOURCE_DIGEST_FINGERPRINTS | REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS | REVIEWED_AB2H24_DIGEST_FINGERPRINTS | REVIEWED_LAH10_DIGEST_FINGERPRINTS,
         )
 
     def test_ab2h24_exceptions_recompute_public_literal_hashes(self) -> None:
@@ -498,6 +506,31 @@ class SecurityWorkflowTests(unittest.TestCase):
             })
             self.assertRegex(source_lines[line - 1], r'^\s*"token_sha256": "[0-9a-f]{64}"[,]?$')
             self.assertIn(digest, source_lines[line - 1])
+
+    def test_lah10_exceptions_recompute_public_literal_hashes(self) -> None:
+        raw = (ROOT / LAH10_DIGEST_FILE).read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(), LAH10_DIGEST_SHA)
+        data = json.loads(raw)
+        triage = json.loads((ROOT / "docs/reviews/2026-10-05/discovery-source-digests/lah10-secret-triage.json").read_text())
+        self.assertEqual(triage["file_sha256"], LAH10_DIGEST_SHA)
+        self.assertEqual(triage["source_text_sha256"], data["source"]["derived_text_sha256"])
+        self.assertEqual(triage["commit"], LAH10_DIGEST_COMMIT)
+        self.assertEqual(triage["file"], LAH10_DIGEST_FILE)
+        self.assertEqual(triage["findings"], 56)
+        self.assertEqual(triage["source_tokens_recomputed"], 56)
+        self.assertEqual({x["fingerprint"] for x in triage["entries"]}, REVIEWED_LAH10_DIGEST_FINGERPRINTS)
+        tokens = []
+        for row in data["rows"]:
+            tokens.append((row["id"], "formula", row["formula"], row["formula_locator"]))
+            tokens.extend((row["id"], key, value["raw_value"], value["locator"]) for key, value in row.items() if isinstance(value, dict) and "raw_value" in value)
+        self.assertEqual(len(tokens), 56)
+        self.assertEqual(len(triage["entries"]), 56)
+        for line, (row_id, field, token, locator), entry in zip(LAH10_DIGEST_LINES, tokens, triage["entries"]):
+            digest = hashlib.sha256(token.encode()).hexdigest()
+            self.assertEqual(digest, locator["token_sha256"])
+            self.assertEqual(entry, {"fingerprint": f"{LAH10_DIGEST_COMMIT}:{LAH10_DIGEST_FILE}:generic-api-key:{line}", "line": line, "row_id": row_id, "field": field, "char_start": locator["char_start"], "char_end": locator["char_end"], "literal_sha256": digest})
+            self.assertIn(digest, raw.decode().splitlines()[line - 1])
+            self.assertRegex(raw.decode().splitlines()[line - 1], r'^\s*"token_sha256": "[0-9a-f]{64}"[,]?$')
 
     def test_pressure_table_exceptions_bind_exact_expression_hash_lines(self) -> None:
         self.assertEqual(len(REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS), 36)
