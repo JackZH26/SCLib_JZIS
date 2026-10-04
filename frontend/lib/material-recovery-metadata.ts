@@ -73,7 +73,7 @@ function quantity(value: unknown): ObjectRow | null {
 function sourceValue(value: unknown): ObjectRow | null {
   const row = object(value);
   if (row.normalization !== "none") return null;
-  return { ...pick(row, ["raw_value", "raw_unit", "raw_uncertainty", "normalization", "role", "field_cue"]),
+  return { ...pick(row, ["raw_value", "raw_unit", "raw_uncertainty", "normalization", "role", "field_cue", "unit_basis"]),
     qualifiers: codes(row.qualifiers), value_span: span(row.value_span),
     unit_span: row.unit_span == null ? null : span(row.unit_span), cue_span: span(row.cue_span) };
 }
@@ -117,6 +117,11 @@ function candidate(value: unknown, materialId: string, classification: boolean):
   else {
     result.raw_value = rawValue(row.raw_value); result.value = rawValue(row.value); result.quantity = quantity(row.quantity);
     if (row.source_value) result.source_value = sourceValue(row.source_value);
+    if (object(row.table_binding).version === "captured-table-binding/1.0.0") {
+      const binding = object(row.table_binding);
+      result.table_binding = { version: binding.version, header_span: span(binding.header_span),
+        label_span: span(binding.label_span), caption_span: binding.caption_span == null ? null : span(binding.caption_span) };
+    }
   }
   if (row.identity_candidate) {
     const identity = object(row.identity_candidate);

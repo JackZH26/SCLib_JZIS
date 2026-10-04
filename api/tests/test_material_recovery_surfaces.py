@@ -450,7 +450,7 @@ async def test_recovery_distinguishes_physical_sample_form_from_bulk_superconduc
     forms = [candidate for candidate in report["candidates"] if candidate["field"] == "sample_form"]
     assert {candidate["value"] for candidate in forms} == expected_forms
     for candidate in forms:
-        assert candidate["extractor_version"] == "materials-literal-extractor/1.1.1"
+        assert candidate["extractor_version"] == "materials-literal-extractor/1.2.0"
         assert candidate["source"]["paper_id"] == papers["a"]
         assert candidate["source"]["content_sha256"] == hashlib.sha256(passage.encode()).hexdigest()
         assert candidate["source_content_checked"] is False and candidate["disposition"] == "pending"

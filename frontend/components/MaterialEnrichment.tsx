@@ -73,7 +73,11 @@ function quantityText(field: string, value: unknown, quantity: unknown): string 
 }
 function candidateValue(candidate: Record<string, unknown>): string | null {
   const sourceValue = objectValue(candidate.source_value);
-  if (sourceValue.normalization === "none") return evidenceText(sourceValue.raw_value) ?? evidenceText(candidate.raw_value);
+  if (sourceValue.normalization === "none") {
+    const raw = evidenceText(sourceValue.raw_value) ?? evidenceText(candidate.raw_value);
+    const rowUnit = sourceValue.unit_basis === "table_row_label" ? evidenceText(sourceValue.raw_unit) : null;
+    return raw && rowUnit ? `${raw} ${rowUnit}` : raw;
+  }
   const formatted = quantityText(evidenceText(candidate.field) ?? "candidate", candidate.value, candidate.quantity);
   if (formatted) return formatted;
   // Original tokens can already contain a unit. Preserve them verbatim instead
@@ -120,6 +124,7 @@ function candidateContext(candidate: Record<string, unknown>): [string, string][
   }
   const rowLabel = evidenceText(candidate.table_row_label);
   if (rowLabel) entries.push(["Source table row", rowLabel]);
+  if (sourceValue.unit_basis === "table_row_label") entries.push(["Unit source", "Printed in the table row label"]);
   const sourceFormula = evidenceText(subject.source_formula) ?? evidenceText(subject.table_column_formula);
   if (sourceFormula) entries.push(["Source formula", sourceFormula]);
   const identity = evidenceText(subject.identity_basis);
@@ -261,6 +266,8 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
           const literalFieldLink = LITERAL_CASE_FIELDS.some(item => item === field)
             && candidateId !== null && /^enrichment:[a-f0-9]{64}$/.test(candidateId)
             && sourceValue.normalization === "none" && candidate.quantity == null
+            && objectValue(candidate.subject).identity_basis !== "exact_table_column_formula"
+            && sourceValue.unit_basis !== "table_row_label"
             ? `/dashboard/research/material-literal-fields?${new URLSearchParams({ material: materialId, field, candidate: candidateId })}` : null;
           const structured = !value && Object.keys(objectValue(candidate.raw_value ?? candidate.value)).length > 0;
           return <li key={evidenceText(candidate.candidate_id) ?? index} className="py-3 text-sm">
