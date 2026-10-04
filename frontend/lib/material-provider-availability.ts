@@ -1,3 +1,4 @@
+import { validNomadElectronic } from "@/lib/nomad-electronic-references";
 import type {
   ExternalMaterialReferences,
   MaterialCalculationReferences,
@@ -114,6 +115,7 @@ export function mapMaterialProviderAvailability(provider: MaterialReferenceProvi
       if (supplied(row.method)) add("calculation_method", row.id, row.method_status !== "reported");
       if (Array.isArray(row.xc_functional_names) && row.xc_functional_names.some(supplied) || supplied(row.xc_functional_type)) add("xc_functional", row.id, row.dft_metadata_status === "requires_review", "Underlying DFT functional metadata; not pairing symmetry or a complete calculation method");
       if (boolean(row.spin_polarized)) add("dft_spin_polarization", row.id, row.dft_metadata_status === "requires_review", "Calculation spin setting; not observed magnetism or competing order");
+      if (validNomadElectronic(row.electronic) && row.electronic.status === "reported") add("band_gap_ev", row.id, row.knowledge_origin !== "Computed", "Task electronic band-gap readings; DOS and band-structure channels are separate, with no measured metallicity or superconducting-gap inference");
     }
   } else {
     const rows = (report as MaterialSuperconReferences).references;

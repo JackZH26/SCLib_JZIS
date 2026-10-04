@@ -417,6 +417,22 @@ Materials Project client callers retain their prior transport compatibility.
   Cache generation 3 excludes earlier, potentially incomplete Hill lookups;
   historical source snapshots remain unchanged. Field definitions are in the
   [NOMAD results schema](https://github.com/FAIRmat-NFDI/nomad/blob/2b16820bdf83f57437c906addae3faf955ca4acf/nomad/datamodel/results.py#L1148-L1171).
+  Electronic band-gap references preserve DOS versus band-structure origin,
+  source group and spin-channel index, source spin flag and direct/indirect
+  type when supplied. The documented index quantities store joules; display
+  values use `1 eV = 1.602176634e-19 J`, retaining source numbers alongside them.
+  Zero is a reported value, never a missing-value fallback or measured-metallicity
+  classification. These electronic gaps do not fill superconducting energy-gap
+  or pairing fields. Each task retains its structure and method context;
+  unresolved calculation origin remains unresolved in field coverage.
+  The additive `nomad-electronic-references/1.0.0` field distinguishes reported,
+  not supplied and source review. Old API responses without this field remain
+  readable as uninspected. Cache generation 4 refreshes pre-electronic responses.
+  Per task, at most four DOS and four band-structure groups with two channel
+  readings per group are projected. Malformed or oversized fields require
+  source review without truncation; they do not discard valid task metadata.
+  See [NOMAD stored/display units](https://nomad-lab.eu/prod/v1/docs/howto/plugins/tools/units.html)
+  and the linked band-gap schema exposed beside the source quantities.
   Bounded DFT metadata preserves returned XC functional names/type and explicit
   spin-polarization settings. Missing metadata remains missing, and underlying
   DFT metadata is not presented as a complete method or convergence proof. Spin

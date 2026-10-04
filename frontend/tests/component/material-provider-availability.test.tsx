@@ -7,6 +7,7 @@ import { ExternalStructureReferences } from "@/components/ExternalStructureRefer
 import { ExternalCalculationReferences } from "@/components/ExternalCalculationReferences";
 import { ExternalSuperconReferences } from "@/components/ExternalSuperconReferences";
 import { mapMaterialProviderAvailability } from "@/lib/material-provider-availability";
+import { NOMAD_GAP_SCHEMA } from "@/lib/nomad-electronic-references";
 import {
   getMaterialExternalReferences, getMaterialStructureReferences,
   getMaterialCalculationReferences, getMaterialSuperconReferences,
@@ -120,6 +121,19 @@ describe("actual provider field mapping", () => {
     expect(availability.fields.xc_functional.scope).toMatch(/not pairing symmetry/);
     expect(availability.fields.dft_spin_polarization.scope).toMatch(/not observed magnetism/);
     for (const field of ["pairing_symmetry", "is_unconventional", "competing_order", "lambda_eph", "pressure_gpa"]) expect(availability.fields[field]).toBeUndefined();
+  });
+  it("counts a zero electronic gap once per task rather than once per spin channel", () => {
+    const source = nomadRow({ electronic: {
+      version: "nomad-electronic-references/1.0.0", scope: "task_electronic_band_gaps_not_superconducting_gaps", unit_schema_url: NOMAD_GAP_SCHEMA,
+      status: "reported", band_gaps: [0, 1].map(spin_channel_index => ({ source_kind: "dos_electronic", group_index: 0, spin_channel_index, spin_polarized: true, gap_type: null, value_j: 0, value_ev: 0 })),
+    } });
+    const availability = mapMaterialProviderAvailability("NOMAD", nomadReport({ references: [source, nomadRow({ id: "not_inspected" })] }));
+    expect(availability.fields.band_gap_ev.reference_count).toBe(1);
+    for (const field of ["is_metal", "gap_structure", "gap_energy_source_value", "pairing_symmetry", "tc_kelvin"]) expect(availability.fields[field]).toBeUndefined();
+    const unresolved = mapMaterialProviderAvailability("NOMAD", nomadReport({ references: [{ ...source, method: null, method_status: "unresolved", knowledge_origin: "Unresolved" }] }));
+    expect(unresolved.fields.band_gap_ev.review_required_count).toBe(1);
+    source.electronic!.band_gaps[0].value_ev = 1;
+    expect(mapMaterialProviderAvailability("NOMAD", nomadReport({ references: [source] })).fields.band_gap_ev).toBeUndefined();
   });
   it("keeps MDR test limits, widths and maximum pressure separate from Tc, and penetration length separate from electron–phonon coupling", () => {
     const availability = mapMaterialProviderAvailability("MDR", mdrReport([mdrRow([

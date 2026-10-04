@@ -1,0 +1,48 @@
+{
+  "endpoint": "https://nomad-lab.eu/prod/v1/api/v1/entries/query",
+  "request": {
+    "owner": "public",
+    "query": {
+      "results.material.chemical_formula_reduced": "Al2O3"
+    },
+    "pagination": {
+      "page_size": 21,
+      "order_by": "entry_id",
+      "order": "asc"
+    },
+    "required": {
+      "include": [
+        "entry_id",
+        "upload_id",
+        "parser_name",
+        "mainfile",
+        "references",
+        "results.material.chemical_formula_hill",
+        "results.material.chemical_formula_reduced",
+        "results.material.material_id",
+        "results.material.structural_type",
+        "results.material.symmetry.space_group_number",
+        "results.material.symmetry.space_group_symbol",
+        "results.material.symmetry.crystal_system",
+        "results.method.method_name",
+        "results.method.simulation.program_name",
+        "results.method.simulation.dft.xc_functional_names",
+        "results.method.simulation.dft.xc_functional_type",
+        "results.method.simulation.dft.spin_polarized",
+        "results.properties.electronic.dos_electronic.band_gap.value",
+        "results.properties.electronic.dos_electronic.band_gap.index",
+        "results.properties.electronic.dos_electronic.band_gap.type",
+        "results.properties.electronic.dos_electronic.spin_polarized",
+        "results.properties.electronic.band_structure_electronic.band_gap.value",
+        "results.properties.electronic.band_structure_electronic.band_gap.index",
+        "results.properties.electronic.band_structure_electronic.band_gap.type",
+        "results.properties.electronic.band_structure_electronic.spin_polarized"
+      ]
+    }
+  },
+  "status": 200,
+  "captured_at_utc": "2026-10-04T22:53:35.140084+00:00",
+  "bytes": 16749,
+  "sha256": "ee220b0ffa8df1da02fd2e67eb32a1993dd9a700421c501c674ffc8e0b8557ce",
+  "production_writes": 0
+}

@@ -256,9 +256,10 @@ async def test_cache_hit_budget_and_24h_cache_for_success_only(monkeypatch):
 @pytest.mark.parametrize(("formula", "legacy_query", "cell_formula"), [
     ("B2C", "CB2", "C2B4"), ("Al2O3", "Al2O3", "Al4O6"),
 ])
-async def test_reduced_lookup_does_not_reuse_old_hill_no_match_cache(monkeypatch, formula, legacy_query, cell_formula):
+@pytest.mark.parametrize("generation", [2, 3])
+async def test_reduced_lookup_does_not_reuse_old_hill_no_match_cache(monkeypatch, formula, legacy_query, cell_formula, generation):
     digest = hashlib.sha256(formula.encode()).hexdigest()
-    legacy_key, current_key = "materials:nomad:2:" + digest, "materials:nomad:3:" + digest
+    legacy_key, current_key = f"materials:nomad:{generation}:" + digest, "materials:nomad:4:" + digest
     legacy = project(payload([], 0), formula=formula)
     # Earlier lookups were incomplete even when the query spelling was identical.
     legacy["query_formula"] = legacy_query

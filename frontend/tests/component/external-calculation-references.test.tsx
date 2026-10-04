@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ExternalCalculationReferences } from "@/components/ExternalCalculationReferences";
 import { getMaterialCalculationReferences } from "@/lib/api";
 import type { ExternalCalculationReference, MaterialCalculationReferences } from "@/lib/api";
+import { NOMAD_GAP_SCHEMA } from "@/lib/nomad-electronic-references";
 
 vi.mock("@/lib/api", () => ({ getMaterialCalculationReferences: vi.fn() }));
 
@@ -25,6 +26,37 @@ const expand = () => fireEvent.click(screen.getByText("NOMAD calculation referen
 
 describe("NOMAD calculation references", () => {
   beforeEach(() => vi.resetAllMocks());
+  it("shows computed electronic gaps in eV with source joules and separate DOS spin channels", async () => {
+    vi.mocked(getMaterialCalculationReferences).mockResolvedValue(report({ references: [row("dos_task", { electronic: {
+      version: "nomad-electronic-references/1.0.0", scope: "task_electronic_band_gaps_not_superconducting_gaps", unit_schema_url: NOMAD_GAP_SCHEMA,
+      status: "reported", band_gaps: [
+        { source_kind: "dos_electronic", group_index: 0, spin_channel_index: 0, spin_polarized: true, gap_type: null, value_j: 0, value_ev: 0 },
+        { source_kind: "dos_electronic", group_index: 0, spin_channel_index: 1, spin_polarized: true, gap_type: null, value_j: 3.204353268e-19, value_ev: 2 },
+      ],
+    } })] }));
+    render(<ExternalCalculationReferences materialId="mat:mgb2" />);
+    expand();
+    await waitFor(() => expect(screen.getByText("Electronic band gap")).toBeInTheDocument());
+    fireEvent.click(screen.getByText("DOS · 2 readings"));
+    expect(screen.getByText("DOS · group 0 · channel 0")).toBeVisible();
+    expect(screen.getByText("DOS · group 0 · channel 1")).toBeVisible();
+    expect(screen.getByText("2 eV")).toBeVisible();
+    expect(screen.getByText("Source: 0 J")).toBeVisible();
+    expect(screen.getByText("Source: 3.204353268e-19 J")).toBeVisible();
+    expect(screen.getByRole("link", { name: "Source unit definition" })).toHaveAttribute("href", NOMAD_GAP_SCHEMA);
+    expect(screen.getByText(/not superconducting gaps or measured metallicity/)).toBeInTheDocument();
+    expect(screen.queryByText(/^Metal|Tc =|Nodeless$/)).not.toBeInTheDocument();
+  });
+  it("rejects a changed eV conversion before rendering or publishing a field hit", async () => {
+    vi.mocked(getMaterialCalculationReferences).mockResolvedValue(report({ references: [row("changed_gap", { electronic: {
+      version: "nomad-electronic-references/1.0.0", scope: "task_electronic_band_gaps_not_superconducting_gaps", unit_schema_url: NOMAD_GAP_SCHEMA,
+      status: "reported", band_gaps: [{ source_kind: "dos_electronic", group_index: 0, spin_channel_index: null, spin_polarized: null, gap_type: null, value_j: 1.602176634e-19, value_ev: 100 }],
+    } })] }));
+    render(<ExternalCalculationReferences materialId="mat:mgb2" />);
+    expand();
+    await waitFor(() => expect(screen.getByText("Unavailable")).toBeInTheDocument());
+    expect(screen.queryByText("100 eV")).not.toBeInTheDocument();
+  });
   it("starts folded, preserves structures/tasks and distinguishes unresolved methods and conditions", async () => {
     vi.mocked(getMaterialCalculationReferences).mockResolvedValue(report());
     const view = render(<ExternalCalculationReferences materialId="mat:mgb2" />);

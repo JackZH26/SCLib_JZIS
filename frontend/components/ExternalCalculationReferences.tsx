@@ -3,6 +3,8 @@
 import { useEffect, useId, useState } from "react";
 import { getMaterialCalculationReferences } from "@/lib/api";
 import type { MaterialCalculationReferences } from "@/lib/api";
+import { validNomadElectronic } from "@/lib/nomad-electronic-references";
+import { NomadElectronicReading } from "@/components/NomadElectronicReading";
 import { useProviderAvailabilityPublisher } from "@/components/MaterialProviderAvailability";
 import { emptyProviderAvailability, mapMaterialProviderAvailability, MATERIAL_PROVIDER_ANCHORS } from "@/lib/material-provider-availability";
 
@@ -43,6 +45,7 @@ function validReport(value: MaterialCalculationReferences): boolean {
       && (row.spin_polarized === null || typeof row.spin_polarized === "boolean")
       && (row.dft_metadata_status === ([row.xc_functional_names, row.xc_functional_type, row.spin_polarized].some(field => field !== null) ? "reported" : "not_supplied") || row.dft_metadata_status === "requires_review" && [row.xc_functional_names, row.xc_functional_type, row.spin_polarized].some(field => field === null))
       && row.dft_metadata_scope === "reported_underlying_dft_metadata_not_complete_method"
+      && (row.electronic === undefined || validNomadElectronic(row.electronic))
       && row.method_status === (row.method ? "reported" : "unresolved") && Array.isArray(row.source_references) && row.source_references.length <= 8
       && row.source_references.every(link => typeof link?.provider === "string" && typeof link?.url === "string"));
 }
@@ -89,17 +92,18 @@ export function ExternalCalculationReferences({ materialId }: { materialId: stri
         {report?.status === "no_match" && <p className="text-sm text-slate-600">No exact fixed-composition task was returned by NOMAD. Parent compounds have not been substituted.</p>}
         {report?.status === "available" && <>
           <p className="max-w-4xl text-sm text-slate-600">Temperature and pressure: <span className="font-medium">Not inspected</span>. Matching composition does not establish sample or phase identity.</p>
-          <div className="overflow-x-auto rounded-lg border border-sage-border bg-white">
-            <table className="w-full text-left text-sm">
+          <div tabIndex={0} role="region" aria-label="NOMAD calculation reference table" className="overflow-x-auto rounded-lg border border-sage-border bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-deep">
+            <table className="w-full min-w-[56rem] text-left text-sm">
               <caption className="sr-only">Public NOMAD tasks matched by composition, separate from reported superconducting measurements</caption>
-              <thead className="border-b border-sage-border bg-slate-50 text-xs text-slate-600"><tr><th className="px-4 py-3">Task</th><th className="px-4 py-3">Structure</th><th className="px-4 py-3">Method / program</th><th className="px-4 py-3">Provenance</th></tr></thead>
+              <thead className="border-b border-sage-border bg-slate-50 text-xs text-slate-600"><tr><th className="w-64 px-4 py-3">Task</th><th className="w-32 px-4 py-3">Structure</th><th className="w-64 px-4 py-3">Method / program</th><th className="px-4 py-3">Electronic band gap</th><th className="px-4 py-3">Provenance</th></tr></thead>
               <tbody className="divide-y divide-slate-100">{report.references.map(row => {
                 const dftFallback = row.dft_metadata_status === "requires_review" ? "Unresolved from returned metadata" : "Not supplied in returned metadata";
                 return <tr key={row.id}>
                 <td className="px-4 py-3 align-top"><a href={row.url} target="_blank" rel="noopener noreferrer" className="break-all font-medium text-accent-deep underline underline-offset-2">{row.id} ↗</a><span className="mt-1 block text-xs text-slate-500">{row.formula} · {row.knowledge_origin === "Computed" ? "Computed" : "Context unresolved"}</span></td>
                 <td className="px-4 py-3 align-top">{row.space_group ?? "Not supplied"}<span className="block text-xs text-slate-500">{[row.crystal_system, row.structural_type].filter(Boolean).join(" · ")}</span></td>
                 <td className="px-4 py-3 align-top">{row.method ?? "Method not resolved"}<span className="block text-xs text-slate-500">{row.program ?? "Program not supplied"}</span>{row.xc_functional_names && <span className="mt-1 block text-xs text-slate-600">Underlying DFT XC: {row.xc_functional_names.join(" + ")}</span>}</td>
-                <td className="px-4 py-3 align-top"><details><summary className="cursor-pointer text-accent-deep">Task details</summary><dl className="mt-2 min-w-56 space-y-2 text-xs text-slate-600">
+                <td className="px-4 py-3 align-top"><NomadElectronicReading report={row.electronic} /></td>
+                <td className="px-4 py-3 align-top"><details><summary className="cursor-pointer whitespace-nowrap text-accent-deep">Task details</summary><dl className="mt-2 min-w-56 space-y-2 text-xs text-slate-600">
                   <div><dt className="font-medium">Underlying DFT XC names</dt><dd>{row.xc_functional_names?.join(" + ") ?? dftFallback}</dd></div>
                   <div><dt className="font-medium">DFT functional class</dt><dd>{row.xc_functional_type ?? dftFallback}</dd></div>
                   <div><dt className="font-medium">DFT spin polarization</dt><dd>{row.spin_polarized === null ? dftFallback : row.spin_polarized ? "Reported spin-polarized" : "Reported non-spin-polarized"}</dd></div>
@@ -113,6 +117,7 @@ export function ExternalCalculationReferences({ materialId }: { materialId: stri
               })}</tbody>
             </table>
           </div>
+          {report.references.some(row => row.electronic?.band_gaps.length) && <p className="max-w-4xl text-xs text-slate-500">Electronic band gaps describe the source task, not superconducting gaps or measured metallicity. DOS and band-structure readings retain their source groups and spin channels. A reported zero is distinct from missing data.</p>}
           <p className="max-w-4xl text-xs text-slate-500">Counts describe tasks, not independent experiments. Imported MP, OQMD or AFLOW tasks can overlap other reference panels. Reported DFT metadata describes the underlying DFT calculation, including for GW tasks; it does not specify the complete method. Archive conditions remain uninspected. <a href={docsUrl} target="_blank" rel="noopener noreferrer" className="underline">NOMAD API documentation ↗</a></p>
           {report.truncated && <p className="text-xs text-amber-800">Showing at most 20 tasks in entry ID order; this is not a census of phases or methods.</p>}
           <p className="text-xs text-slate-500">Retrieved: {retrieved && !Number.isNaN(retrieved.getTime()) ? `${retrieved.toLocaleString("en-GB", { timeZone: "UTC" })} UTC` : "Unavailable"}</p>

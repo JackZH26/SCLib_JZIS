@@ -23,6 +23,11 @@ import httpx
 from redis.exceptions import RedisError
 
 from services._composition.formula_enrichment import enrich_formula
+from services.material_electronic_references import FIELDS as ELECTRONIC_FIELDS
+from services.material_electronic_references import (
+    project_electronic_references,
+    valid_electronic_references,
+)
 from services.material_external_references import external_query_formula
 from services.rate_limit import get_redis
 
@@ -44,7 +49,7 @@ FIELDS = (
     "results.method.simulation.dft.xc_functional_names",
     "results.method.simulation.dft.xc_functional_type",
     "results.method.simulation.dft.spin_polarized",
-)
+) + ELECTRONIC_FIELDS
 _IDENTIFIER = re.compile(r"[A-Za-z0-9_-]{1,64}")
 
 
@@ -227,6 +232,8 @@ def project_calculation_references(formula: str, payload: Any, *, retrieved_at: 
         symmetry = material.get("symmetry") if type(material.get("symmetry")) is dict else {}
         method = results.get("method") if type(results.get("method")) is dict else {}
         simulation = method.get("simulation") if type(method.get("simulation")) is dict else {}
+        properties = results.get("properties")
+        electronic = properties.get("electronic") if type(properties) is dict else None if properties is None else False
         method_name, program = _text(method.get("method_name")), _text(simulation.get("program_name"))
         space_group_number = symmetry.get("space_group_number")
         seen.add(entry)
@@ -239,6 +246,7 @@ def project_calculation_references(formula: str, payload: Any, *, retrieved_at: 
             "method_status": "reported" if method_name else "unresolved",
             "knowledge_origin": "Computed" if method_name and program else "Unresolved",
             **_dft_metadata(simulation),
+            "electronic": project_electronic_references(electronic),
             "structural_type": _text(material.get("structural_type")),
             "space_group": _text(symmetry.get("space_group_symbol")),
             "space_group_number": space_group_number if type(space_group_number) is int and 1 <= space_group_number <= 230 else None,
@@ -290,7 +298,9 @@ def _valid_cache(value: Any, formula: str, query: str) -> bool:
                 or not re.fullmatch(r"[a-f0-9]{64}", str(row.get("source_snapshot_sha256", "")))):
             return False
         # The cache stores only a bounded public projection, never source text.
-        if set(row) - {"id", "url", "archive_url", "formula", "material_id", "upload_id", "method", "program", "parser", "method_status", "knowledge_origin", "xc_functional_names", "xc_functional_type", "spin_polarized", "dft_metadata_status", "dft_metadata_scope", "structural_type", "space_group", "space_group_number", "crystal_system", "source_references", "source_snapshot_sha256", "match_level", "conditions_status", "sample_identity_established", "phase_identity_established"}:
+        if set(row) - {"id", "url", "archive_url", "formula", "material_id", "upload_id", "method", "program", "parser", "method_status", "knowledge_origin", "xc_functional_names", "xc_functional_type", "spin_polarized", "dft_metadata_status", "dft_metadata_scope", "structural_type", "space_group", "space_group_number", "crystal_system", "source_references", "source_snapshot_sha256", "match_level", "conditions_status", "sample_identity_established", "phase_identity_established", "electronic"}:
+            return False
+        if not valid_electronic_references(row.get("electronic")):
             return False
         dft = _dft_metadata({"dft": {key: row.get(key) for key in ("xc_functional_names", "xc_functional_type", "spin_polarized")}})
         if any(key not in row or row[key] != item for key, item in dft.items() if key != "dft_metadata_status"):
@@ -355,8 +365,8 @@ async def fetch_material_calculation_references(
     query = reduced_query_formula(fixed) if fixed is not None else None
     if query is None:
         return _base(formula, "not_applicable", "composition_requires_resolution")
-    # Earlier Hill lookups can be incomplete even when query spelling matches.
-    key = "materials:nomad:3:" + hashlib.sha256(formula.encode()).hexdigest()
+    # Earlier lookups omit electronic fields, and Hill queries can miss cells.
+    key = "materials:nomad:4:" + hashlib.sha256(formula.encode()).hexdigest()
     if key not in _locks and len(_locks) >= MAX_LOCKS:
         return _base(formula, "unavailable", "reference_request_capacity", query=query)
     slot = _locks.setdefault(key, _LockSlot(asyncio.Lock()))
