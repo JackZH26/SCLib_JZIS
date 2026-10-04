@@ -16,6 +16,7 @@ export default function DiscoveryStructuresPage() {
       <h1 className="text-3xl font-semibold tracking-tight">Structure references</h1>
       <p className="max-w-3xl text-base leading-6">Inspect source coordinates, explore a lattice change, and export a proposal for further calculation.</p>
       <p className="max-w-3xl text-sm leading-6 text-sage-muted">Three captured COD references provide starting geometries. Host stability and association with catalogue measurements remain unestablished.</p>
+      <Link className="site-text-link inline-flex min-h-11 items-center text-sm" href="/discovery/structures/candidates">Build site modification candidates</Link>
     </header>
     <DiscoveryStructureWorkspace />
   </main>;
