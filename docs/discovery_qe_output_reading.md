@@ -117,7 +117,10 @@ file-chain tests. Synthetic headers are never passed off as solver-valid files.
   force/stress conversion and native array dimensions.
 - [Pinned QEXSD 25.05.21 schema](https://github.com/QEF/qeschemas/blob/02afc7df576658492a9b2f1aa47218a3b153ebd9/PW_CPV/previous_schemas/qes_250521.xsd).
 
-Authenticated execution records, persistent computational feedback, convergence
-series, competing-state comparison, DFPT and scientific review remain subsequent
-work. This local reader does not change the existing archival source-feedback
-contract.
+The reader now supports a [sampled numerical study](discovery_qe_convergence.md)
+and [follow-up input preparation](discovery_qe_follow_up.md). An independent
+[Python preflight](discovery_qe_server_preflight.md) also parses original input,
+XML, stdout and UPF bytes in the API runtime. It is the parser foundation for
+subsequent computational feedback. HTTP persistence, saved-action association,
+authenticated execution, competing-state comparison, DFPT and scientific review
+remain separate work. The existing archival source-feedback contract is unchanged.
