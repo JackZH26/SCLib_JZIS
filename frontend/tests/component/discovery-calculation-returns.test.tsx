@@ -67,6 +67,7 @@ it("saves a byte-pinned return and replays the saved report before downloading a
   vi.mocked(discoveryCalculationDetail).mockResolvedValue({ ...clone(wire.detail), receipt: saved });
   fireEvent.click(screen.getByRole("button", { name: "Read saved calculation" }));
   await screen.findByRole("region", { name: "Saved calculation detail" });
+  expect(screen.getByText(wire.context.next_action.question, { exact: false })).toBeVisible();
   const create = vi.fn(() => "blob:owned-test-file"), revoke = vi.fn(); vi.stubGlobal("URL", Object.assign(URL, { createObjectURL: create, revokeObjectURL: revoke }));
   const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
   vi.mocked(discoveryCalculationFile).mockResolvedValue(new Uint8Array(Buffer.from(wire.upload.files_base64[0], "base64")));
