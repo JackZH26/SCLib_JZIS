@@ -26,12 +26,20 @@ function FindingDetails({ finding }: { finding: ScientificAnomalyFinding }) {
 }
 
 /** The input is the assessment of this record, not a guessed material-level join. */
-export function RecordAnomalyReview({ assessment }: { assessment: unknown }) {
+export function RecordAnomalyReview({ assessment, compact = false }: { assessment: unknown; compact?: boolean }) {
   const review = objectValue(assessment);
   const known = hasAnomalyPolicy(assessment);
   const findings = known && Array.isArray(review.findings) ? review.findings as ScientificAnomalyFinding[] : [];
+  const clear = known && review.status === "no_findings" &&
+    typeof review.result_id === "string" && review.result_id.trim().length > 0 &&
+    Array.isArray(review.findings) && findings.length === 0 && review.total_findings === 0 &&
+    review.findings_truncated === false && Array.isArray(review.review_required_properties) &&
+    review.review_required_properties.length === 0;
+  const summary = compact && clear ? "Review details"
+    : compact && known && review.status === "no_findings" ? "Review metadata incomplete"
+    : anomalyStatus(assessment);
   return <details className="max-w-lg text-left text-xs font-normal">
-    <summary className="cursor-pointer text-amber-900">{anomalyStatus(assessment)}</summary>
+    <summary className={`cursor-pointer ${compact && clear ? "text-slate-500" : "text-amber-900"}`}>{summary}</summary>
     <p className="mt-2 text-slate-600">{known ? `Policy: ${review.version}. No findings is not scientific acceptance. A format issue means the parser or metadata needs review, not that the physics is impossible.` : "This response does not establish a supported anomaly assessment. Missing or unknown policy metadata is not approval."}</p>
     {known && <>
       <p className="mt-1 break-all text-slate-600">Result: {evidenceText(review.result_id) ?? "Unavailable"}</p>

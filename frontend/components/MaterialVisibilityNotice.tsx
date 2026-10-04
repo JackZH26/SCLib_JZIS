@@ -7,7 +7,7 @@ export function MaterialVisibilityNotice({ visibility, compact = false, scope = 
   const v = scope === "source occurrence" ? knownOccurrenceVisibility(visibility) : knownVisibility(visibility);
   const sourceScope = v?.version === SOURCE_SCOPED_VISIBILITY_VERSION ? v.source_scope : null;
   const catalogue = !sourceScope && v?.state === "catalogue" && v.public_catalogue_eligible;
-  if (quietIfClear && catalogue && !v.reason_codes.length && !v.warning_codes.some(code => code !== "catalogue_is_not_scientific_acceptance")) return null;
+  if (quietIfClear && scope === "material" && catalogue && !v.reason_codes.length && !v.warning_codes.some(code => code !== "catalogue_is_not_scientific_acceptance")) return null;
   return <div className={`${compact ? "mt-1 text-[11px]" : "rounded-lg border p-4 text-sm"} ${catalogue ? "border-slate-200 bg-slate-50 text-slate-600" : "border-amber-200 bg-amber-50 text-amber-950"}`} aria-label={`${scope} visibility`}>
     <p className="font-medium">{visibilityLabel(v, scope)}</p>
     {(!compact || sourceScope) && <p className="mt-1">{visibilityWarning(v, scope)}</p>}

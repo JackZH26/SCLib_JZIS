@@ -96,6 +96,14 @@ describe("shared visibility contract", () => {
     expect(screen.getByText(/No resolved material revision/)).toBeInTheDocument();
   });
 
+  it("retains the source-occurrence boundary even when a resolved catalogue record requests quiet display", () => {
+    const visibility = { ...materialVisibility(), material_link_status: "resolved", reported_claim_filter_eligible: true };
+    expect(knownOccurrenceVisibility(visibility)).not.toBeNull();
+    render(<MaterialVisibilityNotice visibility={visibility} compact quietIfClear scope="source occurrence" />);
+    expect(screen.getByLabelText("source occurrence visibility")).toBeVisible();
+    expect(screen.getByText(/no material identity or catalogue acceptance is inferred from the formula/)).toBeVisible();
+  });
+
   it("numeric source-report matches do not promote unlinked occurrences to catalogue approval", () => {
     const result = { result_id: "result:test", record_index: 0, formula: "TEST", tc_lower_bound_k: 20, pressure_semantics: {}, result_classification: {}, filter_policy_version: "test", visibility: occurrenceVisibility() } as MatchingScientificResult;
     render(<ScientificMatches results={[result]} />);
