@@ -21,3 +21,5 @@ Local validation on merged-main `0a35c5dfccfd03c5f15d8ed5e56f8b58309648f5`:
 - Actual browser JSON and SHA-256 downloads were rehashed and matched the shipped bytes. No browser error logs were observed on the inspected source pages. Temporary tabs, viewport overrides and the local server were cleaned up.
 
 The initial two test-selector failures, the initial closed-fragment browser observation and the Mo heading obstruction were preserved before repair. These local checks do not prove a new public deployment; exact-head CI and signed production release have their own gates. The separate dependency security update is PR #103.
+
+The source-context branch was then based on PR #103's exact head `f4c062e76e69d8b3bd15e7f77b70c44ffa514de7`. A fresh frozen installation, unchanged high-severity production audit, the same 62 tests, TypeScript validation and the 54-page production build all passed on the combined dependency/source-context tree. The 19-field asset and all pre-existing source-resource bytes remained unchanged.
