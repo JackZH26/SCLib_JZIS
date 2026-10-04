@@ -19,7 +19,7 @@ function finite(value: number, min: number, max: number, label: string, integer 
   return value;
 }
 const num = (value: number) => Object.is(value, -0) || Math.abs(value) < 1e-15 ? "0" : Number(value.toPrecision(15)).toString();
-const hashBytes = async (bytes: Uint8Array) => Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new Uint8Array(bytes).buffer))).map(value => value.toString(16).padStart(2, "0")).join("");
+export const qeFileSha256 = async (bytes: Uint8Array) => Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new Uint8Array(bytes).buffer))).map(value => value.toString(16).padStart(2, "0")).join("");
 
 /** Inspect exact local UPF bytes. This is a format/scope check, not a pseudopotential validation. */
 export async function inspectQeUpf(file: QeFile) {
@@ -45,7 +45,7 @@ export async function inspectQeUpf(file: QeFile) {
   const parse = (raw: string) => /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eEdD][+-]?\d+)?$/.test(raw) ? Number(raw.replace(/[dD]/, "e")) : NaN;
   const valence = finite(parse(attr("z_valence")), 0.000001, 118, "UPF valence electron count");
   const recommendation = (key: string) => { const value = parse(attr(key)); return Number.isFinite(value) && value > 0 ? value : null; };
-  return { filename: name, sha256: await hashBytes(bytes), byte_length: bytes.length, element, functional: "PBE" as const,
+  return { filename: name, sha256: await qeFileSha256(bytes), byte_length: bytes.length, element, functional: "PBE" as const,
     raw_functional: attr("functional"), relativistic, pseudo_type: attr("pseudo_type"), valence_electrons: valence,
     header_cutoffs_ry: { wavefunction: recommendation("wfc_cutoff"), charge_density: recommendation("rho_cutoff") },
     provenance: "User-selected local bytes; provider and license are not independently established." };

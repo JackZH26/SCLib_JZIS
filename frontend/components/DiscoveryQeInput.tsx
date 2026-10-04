@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { CombinedBatch } from "@/lib/discovery-combined-candidates";
 import { inspectQeUpf, prepareQeInput, UPF_BYTE_LIMIT, type PreparedQe, type QeFile, type QePseudo, type QeSettings } from "@/lib/discovery-qe-input";
 
@@ -95,6 +96,7 @@ export function DiscoveryQeInput({ batch, candidateId }: { batch: CombinedBatch;
       <button className="btn-outline disabled:opacity-50" disabled={reading || busy || files.length === 0} onClick={() => void prepare()}>{busy ? "Preparing QE inputs…" : "Prepare QE inputs"}</button>
       {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
       {result && <div className="min-w-0 space-y-4 border-t border-sage-border pt-4"><h4 className="font-semibold">Inputs prepared</h4><p className="text-sm">{result.manifest.expected_valence_electrons.toLocaleString("en-US")} valence electrons after the declared cell charge. No calculation has been run.</p>{result.manifest.warnings.length > 0 && <ul className="list-disc space-y-1 pl-5 text-sm text-amber-800">{result.manifest.warnings.map(warning => <li key={warning}>{warning}</li>)}</ul>}<p className="text-sm leading-6">Place the selected UPF files in <code>pseudo/</code> next to the inputs. Run the separate initialization check first (<code>nstep=0</code>), then the calculation input with your installed <code>pw.x</code>.</p><div className="flex flex-wrap gap-3"><button className="btn-outline" onClick={() => download("execution")}>Download calculation input</button><button className="btn-outline" onClick={() => download("initialization")}>Download initialization input</button><button className="btn-outline" onClick={() => download("manifest")}>Download QE manifest</button><button className="btn-outline" onClick={() => download("sha256")}>Download QE checksums</button></div><details className="min-w-0 text-sm"><summary className="w-fit cursor-pointer text-accent-deep">Inspect calculation input</summary><pre tabIndex={0} aria-label="Scrollable Quantum ESPRESSO input" className="mt-3 max-h-96 overflow-auto rounded border border-sage-border bg-white p-3 text-xs">{result.executionInput}</pre></details></div>}
+      <p className="text-sm"><Link className="site-text-link" href="/discovery/calculations">Read completed QE output</Link> with the original manifest, input and UPF files.</p>
       {status && <p role="status" className="text-xs text-sage-muted">{status}</p>}
     </div>
   </details>;
