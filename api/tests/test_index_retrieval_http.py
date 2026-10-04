@@ -373,3 +373,107 @@ async def test_search_overlaps_provider_with_sql_without_sharing_session(client,
         assert response.status_code == 200 and response.json()["results"]
     finally:
         release.set()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("route", ["similar", "search", "ask"])
+async def test_provider_wait_returns_real_single_sql_connection_for_authenticated_paper_read(
+    client, generation, registered_user, monkeypatch, route,
+):
+    from uuid import UUID
+
+    from sqlalchemy.ext.asyncio import create_async_engine
+
+    import models.db as db_module
+    from models.db import AskHistory
+    from routers import ask as ask_router
+    from services.rate_limit import get_user_today_used
+
+    user, token = registered_user
+    actor_id = user.id
+    headers = {"Authorization": "Bearer " + token}
+    settings = get_settings()
+    engine = create_async_engine(
+        db_module._to_async_dsn(settings.database_url),
+        pool_size=1,
+        max_overflow=0,
+        pool_timeout=0.5,
+    )
+    entered, release, finished = threading.Event(), threading.Event(), threading.Event()
+    adapter_name = "query_members" if route == "similar" else "query"
+    original_adapter = getattr(index_vector_adapter, adapter_name)
+    request = None
+
+    def blocked_adapter(*args, **kwargs):
+        entered.set()
+        try:
+            assert release.wait(10), "Provider barrier was not released"
+            return original_adapter(*args, **kwargs)
+        finally:
+            finished.set()
+
+    def generate(_question, sources, **kwargs):
+        return rag.extractive_fallback(sources, evidence_packing=kwargs.get("evidence_packing"))
+
+    db_module.get_session_factory.cache_clear()
+    try:
+        with monkeypatch.context() as patch:
+            patch.setattr(db_module, "get_engine", lambda: engine)
+            # History imports get_engine directly; it must use this same real
+            # pool, rather than silently escaping to the suite's NullPool.
+            patch.setattr(ask_router, "get_engine", lambda: engine)
+            patch.setattr(index_vector_adapter, adapter_name, blocked_adapter)
+            patch.setattr(rag, "generate_answer", generate)
+            patch.setattr(settings, "vector_search_timeout_seconds", 12.0)
+            patch.setattr(settings, "provider_max_attempts", 1)
+            try:
+                if route == "similar":
+                    operation = client.get("/v1/similar/" + generation["meta"].paper_id, headers=headers)
+                else:
+                    field = "query" if route == "search" else "question"
+                    operation = client.post("/v1/" + route, json={field: "old snapshot"}, headers=headers)
+                request = asyncio.create_task(operation)
+                assert await asyncio.to_thread(entered.wait, 3), "Adapter did not reach the provider barrier"
+
+                # Search starts provider work alongside SQL. The paper read
+                # may queue behind those reads, but must finish after their
+                # rollback while the real adapter worker remains blocked.
+                paper = await asyncio.wait_for(client.get(
+                    "/v1/paper/" + generation["meta"].paper_id, headers=headers,
+                ), 2)
+                assert paper.status_code == 200, paper.text
+                assert paper.json()["id"] == generation["meta"].paper_id
+                assert not release.is_set() and not finished.is_set()
+                assert not request.done()
+
+                release.set()
+                response = await asyncio.wait_for(asyncio.shield(request), 5)
+                assert response.status_code == 200, response.text
+                assert await asyncio.to_thread(finished.wait, 1)
+                _assert_generation(response.json(), generation["pin"])
+                used = 0 if route == "similar" else 1
+                assert await get_user_today_used(actor_id) == used
+                if route != "similar":
+                    assert response.json()["remaining"] == settings.registered_daily_limit - used
+                if route == "ask":
+                    history = response.json()["history"]
+                    assert history["status"] == "saved", history
+                    async with db_module.get_session_factory()() as db:
+                        saved = await db.get(AskHistory, UUID(history["history_id"]))
+                        assert saved is not None and saved.user_id == actor_id
+                        assert saved.question == "old snapshot"
+                        assert saved.answer == response.json()["answer"]
+                assert engine.sync_engine.pool.checkedout() == 0
+            finally:
+                release.set()
+                if request is not None:
+                    try:
+                        await asyncio.wait_for(asyncio.shield(request), 5)
+                    except (Exception, asyncio.CancelledError):
+                        request.cancel()
+                        await asyncio.gather(request, return_exceptions=True)
+                if entered.is_set():
+                    assert await asyncio.to_thread(finished.wait, 3), "Adapter worker did not drain"
+    finally:
+        db_module.get_session_factory.cache_clear()
+        await engine.dispose()
