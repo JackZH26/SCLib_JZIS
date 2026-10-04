@@ -560,6 +560,31 @@ additions or independent experiments. All 33,458 rows and their 66 selected fiel
 the original source bytes, and the packaged resource was reproduced
 deterministically. Cold resource loading took 2.01 seconds in the local test,
 with 207 MB peak process RSS; this is a local observation, not a production SLA.
+
+## Separate measurement and Tc calculation methods
+
+Literal extractor `materials-literal-extractor/1.1.1` keeps measurement and
+calculation roles separate in recovery coverage, pending Tc handoffs, public
+source context and metadata downloads. A retained `calculation_method` does not
+fill the measurement-method gap. Ambiguous legacy `method` tokens fill a role
+only when the token identifies that role; retained records are not rewritten.
+
+Eliashberg and Allen–Dynes produce a pending Tc calculation-method candidate
+only for a finite, explicit local Tc-to-solver relation. Generic DFT/DFPT
+settings describe potential structure, electronic or EPC inputs, not a Tc
+solver. Source diffraction methods remain measurement hints with unresolved Tc
+association. Direct Tc measurement context needs a finite local relation;
+normal-state method inventories, other subjects, alternatives and negations
+cannot supply it. Mixed observed/computed wording keeps origin unresolved.
+Retained-value search hits with an unresolved material subject carry no selected
+Tc method. This bounded grammar intentionally has incomplete recall.
+
+Historical sealed candidates keep their original extractor versions and
+identities. New extractions have new versioned identities; source review must
+use their current source/result pins. This change adds no SQL review field,
+review permission, canonical field promotion or scientific acceptance. Generic
+paper-wide methods and cross-caption/row associations still need source and
+state interpretation rather than automatic inheritance.
 The adapter preserves existing records
 and does not change ingestion pause state, quarantine, reviewed relations or
 scientific acceptance.

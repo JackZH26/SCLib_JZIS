@@ -51,12 +51,14 @@ describe("Materials recovery and external references", () => {
     await waitFor(() => expect(screen.getByText(/Source recovery is unavailable/)).toBeInTheDocument());
     await act(async () => resolveA({ version: "materials-enrichment/1.0.0", scientific_acceptance: false, database_changed: false, candidates: [], counts: {}, coverage: [{ material_id: "A", formula: "A", fields: [] }] }));
     expect(screen.getByText(/Source recovery is unavailable/)).toBeInTheDocument();
-    expect(screen.queryByText(/fields have retained extractions/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/in at least one inspected record/)).not.toBeInTheDocument();
   });
   it("explains partial recovery coverage and preserves candidate status", async () => {
     vi.mocked(getMaterialEnrichment).mockResolvedValue({ version: "materials-enrichment/1.0.0", scientific_acceptance: false, database_changed: false, counts: {}, candidates: [{ candidate_id: "candidate:1", field: "space_group", value: "Cmmm", raw_value: "Cmmm", source: { paper_id: "paper:1", kind: "legacy_unknown", content_sha256: "1".repeat(64), source_revision: "retained-capture", locator: { section: "Results" } }, reason_codes: ["publication_revision_unverified"] }], coverage: [{ material_id: "mat:ysch10", formula: "YScH10", fields: [{ field: "space_group", status: "pending_review", retained_present: false, candidate_count: 1, reason_codes: [], routes: ["source_fulltext_and_supplement"] }, { field: "pressure_gpa", status: "not_found_in_checked_sources", retained_present: false, candidate_count: 0, reason_codes: [], routes: [] }] }] });
     render(<MaterialEnrichment materialId="mat:ysch10" />);
-    await waitFor(() => expect(screen.getByText(/2 need further source work/)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText(/2 fields have no retained extraction in this check/)).toBeInTheDocument());
+    expect(screen.getByText(/an extraction in at least one inspected record/)).toBeInTheDocument();
+    expect(screen.queryByText(/fully covered|Record coverage:/)).not.toBeInTheDocument();
     fireEvent.click(screen.getByText("Inspect field coverage and recovery routes"));
     expect(screen.getByText(/not every full paper or supplement/)).toBeInTheDocument();
     expect(screen.getByText("No candidate in checked chunks")).toBeInTheDocument();

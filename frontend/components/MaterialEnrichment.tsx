@@ -14,8 +14,10 @@ import type { MaterialSourceCoverage } from "@/lib/api";
 import { MATERIAL_PROVIDER_ANCHORS, MATERIAL_PROVIDER_LABELS } from "@/lib/material-provider-availability";
 import type { MaterialReferenceProvider } from "@/lib/material-provider-availability";
 import { LITERAL_CASE_FIELDS } from "@/lib/material-literal-fields";
+import { recordCoverageSummary, verifiedRecordCoverage } from "@/lib/material-record-coverage";
+import type { MaterialRecordCoverage } from "@/lib/api";
 
-const labels: Record<string, string> = { tc_kelvin: "Tc", pressure_gpa: "Pressure", tc_criterion: "Tc criterion", measurement_method: "Method", space_group: "Space group", crystal_structure: "Structure label", lattice_a: "Lattice a", lattice_b: "Lattice b", lattice_c: "Lattice c", lambda_eph: "Electron–phonon coupling λ", omega_log_source_value: "Logarithmic phonon frequency", mu_star: "Coulomb pseudopotential μ*", hc2_tesla: "Upper critical field", atomic_sites: "Atomic sites", site_occupancies: "Site occupancies", composition_identity: "Composition identity", measurement_temperature_k: "Measurement temperature", calculation_method: "Calculation method" };
+const labels: Record<string, string> = { tc_kelvin: "Tc", pressure_gpa: "Pressure", tc_criterion: "Tc criterion", measurement_method: "Measurement method", space_group: "Space group", crystal_structure: "Structure label", lattice_a: "Lattice a", lattice_b: "Lattice b", lattice_c: "Lattice c", lambda_eph: "Electron–phonon coupling λ", omega_log_source_value: "Logarithmic phonon frequency", mu_star: "Coulomb pseudopotential μ*", hc2_tesla: "Upper critical field", atomic_sites: "Atomic sites", site_occupancies: "Site occupancies", composition_identity: "Composition identity", measurement_temperature_k: "Measurement temperature", calculation_method: "Calculation method" };
 const statuses: Record<string, string> = { retained_present: "Retained extraction", pending_review: "Candidate found · review needed", source_unavailable: "Source identity unavailable", not_extracted: "Not extracted", not_found_in_checked_sources: "No candidate in checked chunks", specialist_extraction_needed: "Specialist source extraction needed" };
 const routes: Record<string, string> = { source_fulltext_and_supplement: "Paper and supplement", source_table_and_supplement: "Source tables and supplement", supercon_source_lookup: "SuperCon source lookup", cod_structure_lookup: "COD structure match", mp_state_matched_structure: "MP structure match with state review", nomad_state_matched_calculation: "NOMAD run with state review", new_structure_calculation: "New structural calculation", new_electron_phonon_calculation: "New electron–phonon calculation" };
 const readable = (value: string) => value.replaceAll("_", " ");
@@ -30,6 +32,16 @@ Object.assign(labels, {
 });
 Object.assign(routes, { specialist_mechanism_study: "Specialist mechanism study", specialist_experiment: "Specialist experiment", new_calculation_or_experiment: "New calculation or experiment", new_composition_characterization: "New composition characterization", new_calculation_declared_assumption: "New calculation with declared assumptions", new_experiment_or_model_estimate: "New experiment or model estimate" });
 const routeProviders: Record<string, MaterialReferenceProvider> = { supercon_source_lookup: "MDR", cod_structure_lookup: "COD", mp_state_matched_structure: "MP", nomad_state_matched_calculation: "NOMAD" };
+
+function RecordFieldStatus({ coverage, field }: { coverage: MaterialRecordCoverage; field: string }) {
+  const row = coverage.fields.find(item => item.field === field);
+  if (!row) return <span>Record coverage unavailable</span>;
+  return <div className="space-y-1">
+    <p>{row.counts.present}/{coverage.records_total} records with retained values</p>
+    <p className="text-xs text-slate-500">{row.counts.missing} missing · {row.counts.unchecked} unchecked · {row.counts.not_applicable} not applicable</p>
+    {row.applicability_unknown > 0 && <p className="text-xs text-slate-500">Applicability unresolved for {row.applicability_unknown} missing record{row.applicability_unknown === 1 ? "" : "s"}.</p>}
+  </div>;
+}
 
 function RecoveryRoutes({ values }: { values: string[] }) {
   return <ul className="space-y-1">{values.map(route => <li key={route}>{routeProviders[route] ? <a className="text-accent-deep underline underline-offset-2" href={`#${MATERIAL_PROVIDER_ANCHORS[routeProviders[route]]}`}>{routes[route] ?? readable(route)}</a> : routes[route] ?? readable(route)}</li>)}</ul>;
@@ -75,6 +87,8 @@ function candidateContext(candidate: Record<string, unknown>): [string, string][
     measurement_limit: "Lowest measurement temperature; not a transition temperature",
     reported_order_transition: "Reported ordering transition; state association pending",
     reported_property: "Reported property; sample and state association pending",
+    source_measurement_method: "Source measurement description; association with Tc unresolved",
+    tc_calculation_method: "Tc calculation method; source and state association pending",
   };
   const role = evidenceText(sourceValue.role) ?? evidenceText(subject.field_role);
   if (role && roles[role]) entries.push(["Source role", roles[role]]);
@@ -95,7 +109,9 @@ function candidateContext(candidate: Record<string, unknown>): [string, string][
   const origin = evidenceText(subject.knowledge_origin);
   if (origin || field === "tc_kelvin") entries.push(["Source origin", origin && ["Observed", "Computed", "Inferred", "AI-Proposed"].includes(origin) ? `${origin} report` : "Unknown"]);
   const method = evidenceText(subject.measurement_method);
-  if (method) entries.push(["Method", readable(method)]);
+  if (method) entries.push(["Measurement method", readable(method)]);
+  const calculationMethod = evidenceText(subject.calculation_method);
+  if (calculationMethod) entries.push([field === "tc_kelvin" ? "Tc calculation method" : "Calculation method", readable(calculationMethod)]);
   for (const [key, label] of [["sample_label", "Sample"], ["state_label", "State"], ["phase_label", "Phase"], ["run_label", "Run"]]) {
     const value = evidenceText(subject[key]);
     if (value) entries.push([label, value]);
@@ -192,16 +208,21 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
     setState({ materialId, report: null, failed: false });
     setCandidateExpansion({ materialId, expanded: false });
     setDownloadFailure(null);
-    getMaterialEnrichment(materialId, controller.signal).then(value => {
+    getMaterialEnrichment(materialId, controller.signal).then(async value => {
       if (controller.signal.aborted) return;
       if (value.version !== "materials-enrichment/1.0.0" || value.scientific_acceptance !== false || value.database_changed !== false || !Array.isArray(value.coverage) || !Array.isArray(value.candidates)) throw new Error("Recovery contract unavailable");
-      setState({ materialId, report: value, failed: false });
+      const coverage = value.record_coverage === undefined ? undefined : await verifiedRecordCoverage(value.record_coverage, materialId);
+      if (value.record_coverage !== undefined && !coverage) throw new Error("Record coverage contract unavailable");
+      if (controller.signal.aborted) return;
+      setState({ materialId, report: { ...value, ...(coverage ? { record_coverage: coverage } : {}) }, failed: false });
     }).catch(() => { if (!controller.signal.aborted) setState({ materialId, report: null, failed: true }); });
     return () => controller.abort();
   }, [materialId]);
   const fields = report?.coverage.find(row => row.material_id === materialId)?.fields ?? [];
   const sourceCoverage = projectSourceCoverage(report?.coverage.find(row => row.material_id === materialId)?.source_coverage);
   const missing = fields.filter(field => !field.retained_present);
+  const recordCoverage = report?.record_coverage;
+  const recordSummary = recordCoverage ? recordCoverageSummary(recordCoverage) : null;
   const sourceObservations = report ? sourceObservationsForRecovery(report, materialId) : null;
   return <section className="border-t border-sage-border pt-6" aria-label="Field coverage and source recovery">
     <h2 className="text-lg font-semibold">Field coverage &amp; source recovery</h2>
@@ -209,7 +230,8 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
     {!report && !failed && <p className="mt-3 text-sm text-slate-500" role="status">Checking linked source chunks…</p>}
     {failed && <p className="mt-3 text-sm text-slate-600">Source recovery is unavailable for this request. Retained values above are unchanged.</p>}
     {report && <>
-      <p className="mt-3 text-sm text-slate-600">{fields.length - missing.length} fields have retained extractions in inspected records · {missing.length} need further source work · {report.candidates.length} recovery candidates.</p>
+      <p className="mt-3 text-sm text-slate-600">{recordCoverage?.records_total === 0 ? "No current eligible retained records for field coverage" : recordSummary ? `${recordSummary.complete} fields fully covered in applicable current records · ${recordSummary.incomplete} fields missing or unchecked${recordSummary.notApplicable > 0 ? ` · ${recordSummary.notApplicable} fields not applicable to inspected result roles` : ""}` : `${fields.length - missing.length} fields have an extraction in at least one inspected record · ${missing.length} fields have no retained extraction in this check`} · {report.candidates.length} recovery candidates.</p>
+      {recordCoverage && <p className="mt-2 text-xs text-slate-500">Record coverage: {recordCoverage.records_inspected}/{recordCoverage.records_total} current eligible retained records inspected · {recordCoverage.records_unchecked} unchecked. Counts describe catalogue records, not independent experiments. Explicit observed and computed result roles determine method applicability; unknown roles remain unresolved.</p>}
       {report.inspection_scope && <p className="mt-2 text-xs text-slate-500">Inspected {report.inspection_scope.records_inspected} of {report.inspection_scope.records_total} eligible retained records across {report.inspection_scope.papers_inspected} of {report.inspection_scope.papers_total} linked papers.{(report.inspection_scope.records_truncated || report.inspection_scope.papers_truncated) && " This is a sampled recovery check; remaining records and sources have not been inspected."}</p>}
       {report.inspection_scope?.chunks_inspected !== undefined && <p className="mt-1 text-xs text-slate-500">Read {report.inspection_scope.chunks_inspected} whole chunks within a {report.inspection_scope.chunks_limit ?? 40}-chunk limit, shared across selected papers. Full papers and supplements have not been checked by this request.</p>}
       {report.candidates_truncated && <p className="mt-2 text-xs text-slate-500">A bounded list of 100 candidates was returned. Field counts may include additional candidates; none represents independent confirmation.</p>}
@@ -222,7 +244,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
         <summary className="cursor-pointer text-sm font-medium">Inspect field coverage and recovery routes</summary>
         <p className="mt-3 text-xs text-slate-500">This bounded check covers linked chunks, not every full paper or supplement. A missing candidate does not establish that the paper omitted the property. Retained and candidate values still need sample, state and source review.</p>
         <p className="mt-2 text-xs text-slate-500">External field counts appear after opening a reference lookup below. They count returned composition references, not completed catalogue fields or independent experiments.</p>
-        <div role="region" aria-label="Scrollable field coverage and recovery routes" tabIndex={0} className="mt-3 min-w-0 max-w-full overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"><table className="w-full min-w-[40rem] text-left text-sm"><thead className="border-b border-slate-200 text-xs text-slate-500"><tr><th className="py-2 pr-4">Field</th><th className="py-2 pr-4">Coverage</th><th className="py-2 pr-4">Recovery route</th><th className="py-2">Queried external references</th></tr></thead><tbody className="divide-y divide-slate-100">{fields.map(field => <tr key={field.field}><td className="py-2 pr-4 align-top">{labels[field.field] ?? readable(field.field)}</td><td className="py-2 pr-4 align-top">{statuses[field.status] ?? readable(field.status)}{field.candidate_count > 0 && <span className="block text-xs text-slate-500">{field.candidate_count} source candidates</span>}{(field.classification_review_finding_count ?? 0) > 0 && <span className="block text-xs text-slate-500">{field.classification_review_finding_count} spans need assertion or subject review</span>}{field.reason_codes?.length > 0 && <details className="mt-1 text-xs text-slate-500"><summary className="cursor-pointer text-accent-deep">Why this status</summary><ul className="mt-1 space-y-1">{field.reason_codes.map(reason => <li key={reason}>{recoveryReasonLabel(reason)}</li>)}</ul></details>}</td><td className="py-2 pr-4 align-top text-xs text-slate-600"><RecoveryRoutes values={field.routes} /></td><td className="py-2 align-top text-xs text-slate-600"><ProviderFieldReferences field={field.field} values={field.routes} /></td></tr>)}</tbody></table></div>
+        <div role="region" aria-label="Scrollable field coverage and recovery routes" tabIndex={0} className="mt-3 min-w-0 max-w-full overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"><table className="w-full min-w-[40rem] text-left text-sm"><thead className="border-b border-slate-200 text-xs text-slate-500"><tr><th className="py-2 pr-4">Field</th><th className="py-2 pr-4">Coverage</th><th className="py-2 pr-4">Recovery route</th><th className="py-2">Queried external references</th></tr></thead><tbody className="divide-y divide-slate-100">{fields.map(field => <tr key={field.field}><td className="py-2 pr-4 align-top">{labels[field.field] ?? readable(field.field)}</td><td className="py-2 pr-4 align-top">{recordCoverage ? <RecordFieldStatus coverage={recordCoverage} field={field.field} /> : statuses[field.status] ?? readable(field.status)}{field.candidate_count > 0 && <span className="block text-xs text-slate-500">{field.candidate_count} source candidates</span>}{(field.classification_review_finding_count ?? 0) > 0 && <span className="block text-xs text-slate-500">{field.classification_review_finding_count} spans need assertion or subject review</span>}{field.reason_codes?.length > 0 && <details className="mt-1 text-xs text-slate-500"><summary className="cursor-pointer text-accent-deep">Why this status</summary><ul className="mt-1 space-y-1">{field.reason_codes.map(reason => <li key={reason}>{recoveryReasonLabel(reason)}</li>)}</ul></details>}</td><td className="py-2 pr-4 align-top text-xs text-slate-600"><RecoveryRoutes values={field.routes} /></td><td className="py-2 align-top text-xs text-slate-600"><ProviderFieldReferences field={field.field} values={field.routes} /></td></tr>)}</tbody></table></div>
       </details>
       {report.candidates.length > 0 && <details className="mt-3 rounded-lg border border-sage-border bg-white p-4">
         <summary className="cursor-pointer text-sm font-medium">Source recovery candidates ({report.candidates.length})</summary>

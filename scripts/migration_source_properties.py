@@ -5,6 +5,8 @@ owned database before passing a connection. Populated/refusal snapshots must
 continue to include these tables; only old-head comparisons exclude them.
 """
 
+from migration_discovery_designs import assert_empty as assert_empty_discovery_designs
+
 V1_TABLES = (
     "source_property_import_receipts",
     "source_property_observation_revisions",
@@ -30,5 +32,6 @@ TABLES = (*V1_TABLES, *INTAKE_V2_TABLES, *FIELD_CASE_TABLES, *FIELD_REVIEW_TABLE
 def assert_empty(connection):
     from sqlalchemy import text
 
+    assert_empty_discovery_designs(connection)
     for name in TABLES:
         assert connection.execute(text(f'SELECT count(*) FROM public."{name}"')).scalar_one() == 0

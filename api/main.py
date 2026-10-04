@@ -37,6 +37,7 @@ from routers import (
     health,
     history,
     material_field_cases,
+    discovery_designs,
     material_field_review,
     material_literal_fields,
     materials,
@@ -653,6 +654,7 @@ app.include_router(source_task_operations.router, prefix="/v1")
 app.include_router(source_properties.router, prefix="/v1")
 app.include_router(source_expressions.router, prefix="/v1")
 app.include_router(material_field_cases.router, prefix="/v1")
+app.include_router(discovery_designs.router, prefix="/v1")
 app.include_router(material_field_review.router, prefix="/v1")
 app.include_router(material_literal_fields.router, prefix="/v1")
 app.include_router(ml_foundation.router, prefix="/v1")

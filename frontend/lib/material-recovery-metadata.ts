@@ -1,4 +1,5 @@
 import type { MaterialEnrichmentReport, MaterialSourceCoverage } from "@/lib/api";
+import { projectRecordCoverage } from "./material-record-coverage";
 
 type ObjectRow = Record<string, unknown>;
 const object = (value: unknown): ObjectRow => value != null && typeof value === "object" && !Array.isArray(value) ? value as ObjectRow : {};
@@ -87,7 +88,7 @@ function rawValue(value: unknown): unknown {
 }
 function subject(value: unknown): ObjectRow {
   const row = object(value);
-  const result = pick(row, ["formula", "formula_raw", "source_formula", "identity_basis", "association_status", "knowledge_origin", "measurement_method", "tc_criterion", "pressure_state", "pressure_role", "field_role", "sample_label", "state_label", "phase_label", "run_label", "table_column", "table_column_formula", "respective_alignment", "doping_assignment_raw"]);
+  const result = pick(row, ["formula", "formula_raw", "source_formula", "identity_basis", "association_status", "knowledge_origin", "measurement_method", "calculation_method", "tc_criterion", "pressure_state", "pressure_role", "field_role", "sample_label", "state_label", "phase_label", "run_label", "table_column", "table_column_formula", "respective_alignment", "doping_assignment_raw"]);
   if (Object.hasOwn(row, "pressure_quantity")) result.pressure_quantity = quantity(row.pressure_quantity);
   if (row.binding_span) result.binding_span = span(row.binding_span);
   if (row.binding_proposal) {
@@ -102,7 +103,7 @@ function subject(value: unknown): ObjectRow {
   return result;
 }
 const AUTHORITY_KEYS = ["scientific_acceptance", "ml_training_approved", "public_release", "database_changed", "source_content_checked", "material_state_reviewed"];
-const LITERAL_FIELDS = ["tc_kelvin", "pressure_gpa", "tc_criterion", "measurement_method", "sample_form", "space_group", "crystal_structure", "lattice_a", "lattice_b", "lattice_c", "lattice_alpha", "lattice_beta", "lattice_gamma", "atomic_sites", "site_occupancies", "composition_identity", "measurement_temperature_k", "lambda_eph", "omega_log_source_value", "mu_star", "hc2_tesla", "lambda_london_nm", "xi_gl_nm"];
+const LITERAL_FIELDS = ["tc_kelvin", "pressure_gpa", "tc_criterion", "measurement_method", "calculation_method", "sample_form", "space_group", "crystal_structure", "lattice_a", "lattice_b", "lattice_c", "lattice_alpha", "lattice_beta", "lattice_gamma", "atomic_sites", "site_occupancies", "composition_identity", "measurement_temperature_k", "lambda_eph", "omega_log_source_value", "mu_star", "hc2_tesla", "lambda_london_nm", "xi_gl_nm"];
 LITERAL_FIELDS.push("hc1_source_value", "gap_energy_source_value", "gap_ratio_source_value", "electronic_specific_heat_coefficient_source_value", "debye_temperature_source_value", "isotope_effect_exponent", "dtc_dp_source_value", "maximum_applied_pressure_source_value", "meissner_fraction_percent", "transition_width_source_value", "minimum_temperature_k", "t_cdw_k", "t_afm_k", "t_sdw_k");
 const CLASSIFICATION_FIELDS = ["pairing_symmetry", "is_unconventional", "gap_structure", "reported_order", "competing_order"];
 function candidate(value: unknown, materialId: string, classification: boolean): ObjectRow | null {
@@ -152,6 +153,7 @@ export function materialRecoveryMetadata(report: MaterialEnrichmentReport, mater
     classification_primary_source_seed: pick(object(report).classification_primary_source_seed, ["status", "seed_id", "seed_sha256", "candidate_facts_added"]),
     inspection_scope: pick(report.inspection_scope, ["version", "records_total", "records_inspected", "records_truncated", "records_limit", "raw_retained_records_total", "current_eligible_records_total", "papers_total", "papers_inspected", "papers_truncated", "papers_limit", "papers_with_bounded_indexed_chunks", "record_sampling", "paper_sampling", "chunks_considered", "chunks_inspected", "chunks_limit", "characters_inspected", "characters_limit", "chunk_sampling"]),
     source_coverage: projectSourceCoverage(coverage.source_coverage),
+    record_coverage: projectRecordCoverage(report.record_coverage, materialId),
     coverage: coverage.fields.map(row => ({ ...pick(row, ["field", "status", "retained_present", "candidate_count", "classification_review_finding_count"]), reason_codes: codes(row.reason_codes), routes: codes(row.routes) })),
     counts: pick(report.counts, COUNT_KEYS), classification_counts: pick(report.classification_counts, COUNT_KEYS),
     returned_window: { literal_received: report.candidates.length, literal_exported: literals.length, literal_truncated: report.candidates_truncated === true, classification_received: report.classification_candidates?.length ?? 0, classification_exported: statements.length, classification_truncated: report.classification_candidates_truncated === true, review_findings_truncated: report.classification_review_findings_truncated === true, rejected_candidate_count: report.candidates.length + (report.classification_candidates?.length ?? 0) - literals.length - statements.length },

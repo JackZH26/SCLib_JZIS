@@ -18,6 +18,15 @@ function locatorText(value: unknown): string | null {
   return ["section", "page", "paragraph", "figure", "table", "row", "column", "line", "chunk_id", "span_id"].flatMap(key => evidenceText(locator[key]) ? [`${key}: ${evidenceText(locator[key])}`] : []).join(" · ") || null;
 }
 
+/** Preserve source field roles even when a record supplies several methods. */
+function SourceMethodFields({ conditions }: { conditions: Record<string, unknown> }) {
+  const supplied = [
+    ["calculation_method", "Calculation method"], ["measurement_method", "Measurement method"],
+    ["method", "Reported method"], ["measurement", "Measurement context"],
+  ].filter(([key]) => evidenceText(conditions[key]));
+  return supplied.length ? <>{supplied.map(([key, label]) => <Field key={key} label={label} value={conditions[key]} />)}</> : <Field label="Method" value={null} />;
+}
+
 /** Only this selected record supplies conditions. Never read a material scalar. */
 export function AtomicEvidenceDetails({ item }: { item: PropertyEvidenceItem }) {
   const source = objectValue(item.source);
@@ -36,7 +45,7 @@ export function AtomicEvidenceDetails({ item }: { item: PropertyEvidenceItem }) 
       <Field label="Record origin" value={propertyOrigin(item)} />
       <Field label="Record source role" value={origin.source_role} />
       {origin.classification_status === "conflicted" && <Field label="Classification" value="Conflict — not resolved evidence" />}
-      <Field label="Method" value={conditions.calculation_method ?? conditions.measurement_method ?? conditions.method ?? conditions.measurement} />
+      <SourceMethodFields conditions={conditions} />
       <Field label="Protocol" value={conditions.protocol_id ?? conditions.calculation_protocol} />
       <Field label="State ID" value={state.state_id} />
       <Field label="Sample ID" value={state.sample_id} />

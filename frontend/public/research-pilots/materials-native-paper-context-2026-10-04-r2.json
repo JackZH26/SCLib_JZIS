@@ -1,0 +1,807 @@
+{
+  "version": "materials-native-paper-context/1.0.0",
+  "prepared_on": "2026-10-04",
+  "status": "source_qualified_reading",
+  "counts_are_independent_experiments": false,
+  "canonical_field_updates": 0,
+  "authority": {
+    "formal_human_review": false,
+    "scientific_acceptance": false,
+    "sample_identity_established": false,
+    "state_identity_established": false,
+    "selected_result_association_established": false,
+    "canonical_promotions": 0,
+    "database_operations": 0,
+    "source_imports": 0,
+    "new_calculations": 0,
+    "ml_training_approved": false
+  },
+  "sources": [
+    {
+      "id": "fete",
+      "paper_id": "arxiv:0911.4758",
+      "source_url": "https://arxiv.org/pdf/0911.4758v1",
+      "revision": "0911.4758v1",
+      "pdf_bytes": 388055,
+      "pdf_sha256": "3648d27c3f7a152518c9160c95cf4fa21a2419bbb4f35dbd601c9f5a317937c4",
+      "derived_text_sha256": "22f18b59c63823a6d0b74b22cf74086eb8072c9b940d03ad0964f58d702b8fb3",
+      "pdf_pages": 8,
+      "capture_finished_at": "2026-10-04T01:47:37.516996+00:00",
+      "review_scope": "Complete PDF capture; bounded methods and classification review. No supplement checked.",
+      "bibliographic_note": "Equivalence to the retained ingestion and publisher edition remains unestablished.",
+      "publisher_revision_equivalence_verified": false,
+      "current_publication_status": "not_checked"
+    },
+    {
+      "id": "organic",
+      "paper_id": "arxiv:cond-mat/0612431",
+      "source_url": "https://arxiv.org/pdf/cond-mat/0612431v1",
+      "revision": "cond-mat/0612431v1",
+      "pdf_bytes": 689376,
+      "pdf_sha256": "9d57f4ae6d69fff25920e91b4cb75bf2f182609b87e9de226b6b2600cbe8c2ce",
+      "derived_text_sha256": "dd2ffa0d638cc52d2d489084a9336deb179b905cee307bace5bf69b1108b33d0",
+      "pdf_pages": 5,
+      "capture_finished_at": "2026-10-04T01:47:39.476581+00:00",
+      "review_scope": "Complete PDF capture; bounded methods and classification review. No supplement checked.",
+      "bibliographic_note": "Equivalence to the retained ingestion and publisher edition remains unestablished.",
+      "publisher_revision_equivalence_verified": false,
+      "current_publication_status": "not_checked"
+    },
+    {
+      "id": "nickelate",
+      "paper_id": "arxiv:2309.09462",
+      "source_url": "https://arxiv.org/pdf/2309.09462v4",
+      "revision": "2309.09462v4",
+      "pdf_bytes": 12297652,
+      "pdf_sha256": "4f45c314ec6617bd85507451f5936debfb1599abd1a41dd1330ca260198b93bb",
+      "derived_text_sha256": "66540a883214bcc512a11778ab4c5f494e2ae888b4e1d1cebc3fa2a53e3dec93",
+      "pdf_pages": 10,
+      "capture_finished_at": "2026-10-04T02:02:13.293381+00:00",
+      "review_scope": "Complete 10-page PDF capture; bounded method and claim review. No separate supplement fetched.",
+      "bibliographic_note": "The official arXiv record declares DOI 10.1103/PhysRevB.109.144511. Publisher and retained-ingestion byte equivalence remain unestablished.",
+      "publisher_revision_equivalence_verified": false,
+      "current_publication_status": "not_checked"
+    },
+    {
+      "id": "thca",
+      "paper_id": "aps:10.1103/7lg7-l3x8",
+      "source_url": "https://journals.aps.org/prresearch/pdf/10.1103/7lg7-l3x8",
+      "revision": "APS published PDF, 23 June 2025",
+      "pdf_bytes": 1750600,
+      "pdf_sha256": "d601beae68163ed8e423fca34cbf6513330a9a8b12cdff75b1d5f30d623d5a81",
+      "derived_text_sha256": "a31918c668f46c46f37683c1828bc3b64fce84b1de7d526918e38ca45cab63df",
+      "derived_text_basis": "pypdf page text joined in page order with LF, FF, LF; no text normalization",
+      "pdf_pages": 7,
+      "capture_finished_at": "2026-10-04T10:26:04.560697+00:00",
+      "review_scope": "Complete publisher PDF captured; pages 1–3 inspected for source identity, methods and Table I. No supplement or original calculation input files checked.",
+      "bibliographic_note": "Bowen Jiang, Xin Zhong and Hanyu Liu, Underlying mechanism for high-temperature superconductivity in ternary hydride AB2H24, Physical Review Research 7, 023296 (2025), DOI 10.1103/7lg7-l3x8. PDF states CC BY 4.0. Equivalence to retained ingestion bytes and current publication status remain unverified.",
+      "publisher_revision_equivalence_verified": false,
+      "current_publication_status": "not_checked"
+    }
+  ],
+  "contexts": [
+    {
+      "id": "paper-context-fete",
+      "title": "FeTeSe: methods and sample scope",
+      "subject": "Fe1+δTe1−xSex series, including x = 0.48.",
+      "material_id": "mat:fe1te0.52se0.48",
+      "source_id": "fete",
+      "selected_result_association": "unestablished",
+      "reading_scope": "source_qualified_series_context",
+      "frozen_classification_statuses": {
+        "pairing_symmetry": "not_extracted",
+        "reported_order": "not_extracted"
+      },
+      "navigation_identity": {
+        "kind": "exact_selected_identity_only",
+        "material_id": "mat:fe1te0.52se0.48",
+        "result_id": "legacy-result:17c34bd20d1efd2f3d2cae898af035089b6e0e53a04489f96bfd6c10c000478a",
+        "paper_id": "arxiv:0911.4758",
+        "establishes_native_source_selected_result_association": false
+      },
+      "attribution_note": "Retain δ and nominal versus measured composition. The cited NMR source was not captured. No native-edition sample or selected-result association is established.",
+      "rows": [
+        {
+          "label": "Study methods",
+          "summary": "Quartz-tube growth; XRD/Rietveld and SEM-EDX characterization; SQUID ZFC/FC at 20 Oe; four-probe resistivity to 14 T.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "fete:series-methods"
+          ]
+        },
+        {
+          "label": "Composition and state",
+          "summary": "The series includes x = 0.48. Its H ∥ c susceptibility is uncorrected for Fe(II); Table I has no EDX row for x = 0.48.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "fete:table-I-six-EDX-rows",
+            "fete:x048-raw-data-and-spin-fluctuations"
+          ]
+        },
+        {
+          "label": "Pairing scope",
+          "summary": "NMR/d-wave discussion concerns Fe1.04Te0.67Se0.33 and cited x = 0.28/0.33 samples; no pairing assignment for x = 0.48 is established.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "fete:sample-specific-NMR-citation",
+            "fete:reference-30-samples"
+          ]
+        },
+        {
+          "label": "Magnetic context",
+          "summary": "Parent antiferromagnetism and substituted-series spin fluctuations do not establish static order at x = 0.48.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "fete:undoped-AF-transition",
+            "fete:Se-substitution-AF-qualification",
+            "fete:x048-raw-data-and-spin-fluctuations"
+          ]
+        }
+      ],
+      "additional_locator_ids": [
+        "fete:table-I-six-EDX-rows",
+        "fete:reference-30-samples"
+      ]
+    },
+    {
+      "id": "paper-context-organic",
+      "title": "κ-H8-Br: ultrasound and thermal history",
+      "subject": "Undeuterated κ-[BEDT-TTF]2Cu[N(CN)2]Br with controlled thermal history.",
+      "material_id": "mat:κ-[bedtttf]2cun(cn)2br",
+      "source_id": "organic",
+      "selected_result_association": "unestablished",
+      "reading_scope": "source_only_without_selected_result",
+      "frozen_classification_statuses": {
+        "pairing_symmetry": "not_extracted",
+        "reported_order": "not_extracted"
+      },
+      "navigation_identity": {
+        "kind": "finite_material_backlink_only",
+        "material_id": "mat:κ-[bedtttf]2cun(cn)2br",
+        "result_id": null,
+        "selected_paper_id": null,
+        "allow_material_detail_selected_reading": false,
+        "establishes_native_source_selected_result_association": false
+      },
+      "attribution_note": "Disorder provides an internal-pressure proxy; no numerical hydrostatic pressure is recovered. No selected catalogue Tc or result is linked to this source context.",
+      "rows": [
+        {
+          "label": "Ultrasound study",
+          "summary": "Undeuterated κ-H8-Br; ultrasound at 30–450 MHz, upward sweeps from 2 K, perpendicular fields to 16 T; ambient external pressure.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "organic:identity-ambient-disorder",
+            "organic:methods-thermal-history-field"
+          ]
+        },
+        {
+          "label": "Thermal histories",
+          "summary": "Methods: FT before annealing. Figure 1: SL before the 70 K anneal. Keep these reported protocols separate.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "organic:methods-thermal-history-field",
+            "organic:alternate-pre-anneal-history"
+          ]
+        },
+        {
+          "label": "Pairing scope",
+          "summary": "A-70K attenuation challenges conventional s-wave behavior; the paper leaves pairing symmetry unresolved.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "organic:A70K-attenuation-state",
+            "organic:s-wave-negative-literal",
+            "organic:symmetry-unresolved-literal"
+          ]
+        },
+        {
+          "label": "Magnetic and SC context",
+          "summary": "≈ 15 K anomaly: the authors suggest an antiferromagnetic interpretation. Near 11.9 K: separate superconducting phase-coherence context.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "organic:tentative-15K-AF-interpretation",
+            "organic:119K-phase-coherence",
+            "organic:conclusion-competition-and-symmetry"
+          ]
+        }
+      ],
+      "additional_locator_ids": [
+        "organic:internal-v-hydrostatic-pressure"
+      ]
+    },
+    {
+      "id": "paper-context-nickelate",
+      "title": "La4Ni3O9.99: experiment and calculated model",
+      "subject": "Polycrystalline trilayer resistance measurements and a separate stoichiometric theoretical model.",
+      "material_id": "mat:la4ni3o9.99",
+      "source_id": "nickelate",
+      "selected_result_association": "unestablished",
+      "reading_scope": "source_qualified_experimental_and_computed_contexts",
+      "frozen_classification_statuses": {
+        "is_unconventional": "not_extracted",
+        "reported_order": "not_extracted"
+      },
+      "navigation_identity": {
+        "kind": "exact_selected_identity_only",
+        "material_id": "mat:la4ni3o9.99",
+        "result_id": "legacy-result:575b0f079349106ca62b042e5602c02142d387af0c99ff57d14fe40bc0530d9a",
+        "paper_id": "aps:10.1103/PhysRevB.109.144511",
+        "establishes_native_source_selected_result_association": false
+      },
+      "attribution_note": "The onset and pressure are already retained in the same catalogue result. Predicted tetragonal I4/mmm and its transition descriptions (10–15 GPa in detailed results; around 20 GPa later) are separate from measured sample structure.",
+      "rows": [
+        {
+          "label": "Resistance onset",
+          "summary": "Polycrystalline La4Ni3O9.99 reaches a resistance onset of 23 K at 79.2 GPa, defined by deviation from linear resistance. Authors require further confirmation.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "nickelate:O999-experimental-results",
+            "nickelate:confirmation-onset23K792GPa"
+          ]
+        },
+        {
+          "label": "Measurement protocol",
+          "summary": "Four-terminal DAC resistance; boron-doped diamond electrodes and cBN powder. Calibration uses ruby fluorescence through 20 GPa and diamond Raman above 20 GPa.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "nickelate:experimental-method"
+          ]
+        },
+        {
+          "label": "Distinct pressure states",
+          "summary": "The source reports a resistance drop below 5 K at 32.8 GPa. Field curves at 69.4 GPa (0–7 T) are separate from the 79.2 GPa onset point.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "nickelate:O999-experimental-results",
+            "nickelate:Fig5-trilayer-pressure-field-context"
+          ]
+        },
+        {
+          "label": "Calculated model",
+          "summary": "DFT/FLEX predictions concern stoichiometric La4Ni3O10, with gap calculations at 40 GPa. Model λ denotes a linearized Eliashberg eigenvalue, not electron–phonon coupling.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "nickelate:calculated-versus-cited-structure",
+            "nickelate:electronic-kernel-model-eigenvalue",
+            "nickelate:Fig2-calculated40GPa"
+          ]
+        },
+        {
+          "label": "Order claims",
+          "summary": "Antiferromagnetic models are cited background. CDW competition is speculative and outside the study scope; observed order and unconventional classification remain unresolved.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "nickelate:cited-AF-models",
+            "nickelate:unconventional-bilayer-background",
+            "nickelate:CDW-speculation-out-of-scope"
+          ]
+        }
+      ],
+      "additional_locator_ids": [
+        "nickelate:conclusion-transition-approx20GPa",
+        "nickelate:reference73-in-preparation"
+      ]
+    },
+    {
+      "id": "paper-context-thca",
+      "title": "ThCa₂H₂₄: calculated Tc and computational methods",
+      "subject": "ThCa2H24 in the AB2H24 computational series: a theoretical table result at 300 GPa.",
+      "material_id": "mat:thca2h24",
+      "source_id": "thca",
+      "selected_result_association": "unestablished",
+      "reading_scope": "source_qualified_computational_context",
+      "navigation_identity": {
+        "kind": "exact_selected_identity_only",
+        "material_id": "mat:thca2h24",
+        "result_id": "legacy-result:4d9aa6126689e8fad54ce66a8bd0667b65f7aa5587d7cc6e4de1e90dc08700d2",
+        "paper_id": "aps:10.1103/7lg7-l3x8",
+        "establishes_native_source_selected_result_association": false
+      },
+      "attribution_note": "The stored formula, 250 K, 300 GPa and source.paper_id match this source table. This supports related reading; native-edition state, structure and run associations remain unestablished.",
+      "rows": [
+        {
+          "label": "Calculated table result",
+          "summary": "Table I reports predicted Tc = 250 K for ThCa2H24 at 300 GPa. The caption supplies the pressure and the Tc column explicitly gives K.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "thca:table-I-caption-header-row"
+          ]
+        },
+        {
+          "label": "Tc calculation",
+          "summary": "Direct solution of the isotropic Migdal–Eliashberg equation using Elk, with assumed Coulomb pseudopotential μ* = 0.1. Table I repeats the isotropic Eliashberg method and μ* setting.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "thca:computational-details",
+            "thca:table-I-caption-header-row"
+          ]
+        },
+        {
+          "label": "Table parameters and units",
+          "summary": "The same ThCa2H24 row reports electron–phonon λ = 2.96 and ωlog = 530. Table I does not print an ωlog unit; its unit remains unresolved in this reading.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "thca:table-I-caption-header-row"
+          ]
+        },
+        {
+          "label": "EPC calculation settings",
+          "summary": "Paper-wide EPC settings: Quantum ESPRESSO, ultrasoft pseudopotentials, 60 Ry cutoff, k spacing 2π × 0.02 Å−1 and q spacing 2π × 0.04 Å−1. No selected-result calculation run is assigned here.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "thca:computational-details"
+          ]
+        },
+        {
+          "label": "Structure calculation settings",
+          "summary": "Paper-wide structure/band settings at 300 GPa: VASP, PBE-GGA/PAW, 750 eV and Monkhorst–Pack spacing 2π × 0.02 Å−1. Finite-displacement/vaspkit stability checks and the substituted P6/mmm prototype remain separate from a retained coordinate or run file.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "thca:computational-details"
+          ]
+        },
+        {
+          "label": "Stability questions",
+          "summary": "The class-level discussion says most compounds lack thermodynamic stability at 300 GPa and become dynamically unstable at 250 GPa. A compound-specific stability conclusion for ThCa2H24 requires further source review.",
+          "kind": "source_summary",
+          "normalized_value": null,
+          "locator_ids": [
+            "thca:stability-context-qualified-class"
+          ]
+        }
+      ],
+      "additional_locator_ids": [
+        "thca:source-identity-and-publication"
+      ]
+    }
+  ],
+  "locators": [
+    {
+      "id": "fete:Se-substitution-AF-qualification",
+      "label": "Se substitution: qualified magnetic behavior",
+      "source_id": "fete",
+      "pages_one_based": [
+        3
+      ],
+      "char_start": 12705,
+      "char_end": 12907,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "6a02d2f59b553c933e4a3473f67e956a8c3a5acbe1a9f24779f69814e57fa9e6"
+    },
+    {
+      "id": "fete:reference-30-samples",
+      "label": "Reference 30: cited sample compositions",
+      "source_id": "fete",
+      "pages_one_based": [
+        8
+      ],
+      "char_start": 33726,
+      "char_end": 34410,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "f14659b02eb6333ec5ab5af716a27fa38c95a70fdc7631e154250d7ab0e01863"
+    },
+    {
+      "id": "fete:sample-specific-NMR-citation",
+      "label": "NMR discussion: sample composition",
+      "source_id": "fete",
+      "pages_one_based": [
+        6
+      ],
+      "char_start": 25280,
+      "char_end": 25608,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "679143401dfe71a48a3e034c3385f9f30893803cb942d31ba3a506b86c3bb0ee"
+    },
+    {
+      "id": "fete:series-methods",
+      "label": "Series measurement methods",
+      "source_id": "fete",
+      "pages_one_based": [
+        2
+      ],
+      "char_start": 5942,
+      "char_end": 7685,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "3cbe90322c8417b7f208ec0dc33770bf591cc7deee7353ceb2eadb661ceffaa3"
+    },
+    {
+      "id": "fete:table-I-six-EDX-rows",
+      "label": "Table I: six EDX compositions",
+      "source_id": "fete",
+      "pages_one_based": [
+        4
+      ],
+      "char_start": 17232,
+      "char_end": 17749,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "9ab6e53aa28d079eaa110bb8909e68e537d40e27c8e1093b7cc2840159de870d"
+    },
+    {
+      "id": "fete:undoped-AF-transition",
+      "label": "Undoped-parent antiferromagnetic transition",
+      "source_id": "fete",
+      "pages_one_based": [
+        2
+      ],
+      "char_start": 11100,
+      "char_end": 11310,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "c960ba9d11e45e6e67fe0ed5430874d1bf4fce9311c6eec9fd2465deffa44531"
+    },
+    {
+      "id": "fete:x048-raw-data-and-spin-fluctuations",
+      "label": "x = 0.48: raw susceptibility and spin fluctuations",
+      "source_id": "fete",
+      "pages_one_based": [
+        4
+      ],
+      "char_start": 18620,
+      "char_end": 19576,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "0360fd2702f6a7e1fbbe3bc88795bd87d4bcca5e841ac5a4b32133aff1860631"
+    },
+    {
+      "id": "organic:119K-phase-coherence",
+      "label": "Superconducting phase coherence near 11.9 K",
+      "source_id": "organic",
+      "pages_one_based": [
+        3
+      ],
+      "char_start": 15162,
+      "char_end": 15351,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "4909cf5a17e9cbae84eb554ec1df34a667713395baccd22081bb7e1c230e5a31"
+    },
+    {
+      "id": "organic:A70K-attenuation-state",
+      "label": "A-70K attenuation analysis",
+      "source_id": "organic",
+      "pages_one_based": [
+        3
+      ],
+      "char_start": 10112,
+      "char_end": 10661,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "1264ba4fcd91d6a77ff44849d17025b65405b62b64ef3bd98e352126c4b7b941"
+    },
+    {
+      "id": "organic:alternate-pre-anneal-history",
+      "label": "Figure 1: pre-anneal history",
+      "source_id": "organic",
+      "pages_one_based": [
+        2
+      ],
+      "char_start": 6724,
+      "char_end": 6855,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "753d2ed82128f7e89e95053d86fbe8e4650a8ce4b4b4b2a933d762692e1c0bbb"
+    },
+    {
+      "id": "organic:conclusion-competition-and-symmetry",
+      "label": "Conclusion: competition and pairing symmetry",
+      "source_id": "organic",
+      "pages_one_based": [
+        4
+      ],
+      "char_start": 16580,
+      "char_end": 18041,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "187edcbd71eb8d8c6e211710b4bc22a316b3c2452b68d02531720640d5255fde"
+    },
+    {
+      "id": "organic:identity-ambient-disorder",
+      "label": "Sample identity, ambient pressure and disorder",
+      "source_id": "organic",
+      "pages_one_based": [
+        1
+      ],
+      "char_start": 2624,
+      "char_end": 3386,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "fc8de04af49a222ec5d13d6511bdec5c144d95d0a934f744538309f73f9f6ace"
+    },
+    {
+      "id": "organic:internal-v-hydrostatic-pressure",
+      "label": "Internal pressure and hydrostatic comparisons",
+      "source_id": "organic",
+      "pages_one_based": [
+        2
+      ],
+      "char_start": 6937,
+      "char_end": 7743,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "3776647703182bf8c4c0d3beb0c83779334f653b4b737a11663587e7e4a5db88"
+    },
+    {
+      "id": "organic:methods-thermal-history-field",
+      "label": "Ultrasound methods and thermal history",
+      "source_id": "organic",
+      "pages_one_based": [
+        2
+      ],
+      "char_start": 4613,
+      "char_end": 5901,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "3362571fa65c695b7e3c38a7c31daa9631a5ecfd6406efda78ef3d32329a64d5"
+    },
+    {
+      "id": "organic:s-wave-negative-literal",
+      "label": "Conventional s-wave interpretation",
+      "source_id": "organic",
+      "pages_one_based": [
+        1
+      ],
+      "char_start": 1201,
+      "char_end": 1257,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "818835b84bdc6b030bc94260649de0246a2a2b41368b16a303bfe917c164fcc3"
+    },
+    {
+      "id": "organic:symmetry-unresolved-literal",
+      "label": "Pairing symmetry remains unresolved",
+      "source_id": "organic",
+      "pages_one_based": [
+        4
+      ],
+      "char_start": 17961,
+      "char_end": 18001,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "bed8f8f096e6017a0939acd637f9fa64ffbdbf33c67ffec18a07aeccecd9675c"
+    },
+    {
+      "id": "organic:tentative-15K-AF-interpretation",
+      "label": "Tentative magnetic interpretation near 15 K",
+      "source_id": "organic",
+      "pages_one_based": [
+        3
+      ],
+      "char_start": 13990,
+      "char_end": 14773,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "40d42b79fe883c1230e4c05d0782d2b598723288053f1f904ad6698778e164ec"
+    },
+    {
+      "id": "nickelate:CDW-speculation-out-of-scope",
+      "label": "CDW speculation and study scope",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        7
+      ],
+      "char_start": 29048,
+      "char_end": 29408,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "e309a76e15a2842d00ed7de5d8199226300b93b15ef2955950fad8aca8a40f43"
+    },
+    {
+      "id": "nickelate:Fig2-calculated40GPa",
+      "label": "Figure 2: calculation at 40 GPa",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        5
+      ],
+      "char_start": 22848,
+      "char_end": 22941,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "a08052142be68ca5ee918c8d44a3de64db0a45dc706f7fc36700595c93e8cf48"
+    },
+    {
+      "id": "nickelate:Fig5-trilayer-pressure-field-context",
+      "label": "Figure 5: trilayer pressure and field curves",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        7
+      ],
+      "char_start": 28393,
+      "char_end": 28642,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "2f824e02533fd042544b5aabf772faf7538e8b8ee53b948ee4aca774cbfb667b"
+    },
+    {
+      "id": "nickelate:O999-experimental-results",
+      "label": "Experimental results: La4Ni3O9.99",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        6
+      ],
+      "char_start": 24864,
+      "char_end": 27012,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "157cbafee9e7b16b5c48c05933b92597af1655830c4aec9d26d37fce084d84ed"
+    },
+    {
+      "id": "nickelate:calculated-versus-cited-structure",
+      "label": "Calculated structure and cited phases",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        3
+      ],
+      "char_start": 12725,
+      "char_end": 14865,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "31ccb660f7c7f3d26a66ccfecf2099ee6789eaae12e184af69545d57db264b48"
+    },
+    {
+      "id": "nickelate:cited-AF-models",
+      "label": "Antiferromagnetic model background",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        1
+      ],
+      "char_start": 3002,
+      "char_end": 3750,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "e70f3f50c9fce8a4df1993bb88074e142384d1d988c9e484ead27ba6b00315ba"
+    },
+    {
+      "id": "nickelate:conclusion-transition-approx20GPa",
+      "label": "Conclusion: transition near 20 GPa",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        6
+      ],
+      "char_start": 27012,
+      "char_end": 27809,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "f32484b8c90a253e6ccc492ce1e2fd7786a5b5cae8b87822925c83de5f17b67c"
+    },
+    {
+      "id": "nickelate:confirmation-onset23K792GPa",
+      "label": "Onset confirmation: 23 K at 79.2 GPa",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        7
+      ],
+      "char_start": 30022,
+      "char_end": 30464,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "781740238df3a246d31f854be71865441979340fce87c28fbb592680035ec712"
+    },
+    {
+      "id": "nickelate:electronic-kernel-model-eigenvalue",
+      "label": "Pairing kernel and model eigenvalue",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        2,
+        3
+      ],
+      "char_start": 10664,
+      "char_end": 11651,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "52346b04a0c3dc5c22b8bd0b138cd7f64859d05e391dd175003cc7d17906a68d"
+    },
+    {
+      "id": "nickelate:experimental-method",
+      "label": "Experimental measurement method",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        3
+      ],
+      "char_start": 11652,
+      "char_end": 12725,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "13657278961e6542bd7ddaaf9131cbb57cda99af6ccded568fd35a8b7c9d50d7"
+    },
+    {
+      "id": "nickelate:reference73-in-preparation",
+      "label": "Reference 73: preparation details pending",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        9
+      ],
+      "char_start": 38200,
+      "char_end": 38247,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "2a6fcccb4ec0f33ec6f30478739d6fe26a5da3dfa47d0f68ea4772f3251378e7"
+    },
+    {
+      "id": "nickelate:unconventional-bilayer-background",
+      "label": "Bilayer unconventional-model background",
+      "source_id": "nickelate",
+      "pages_one_based": [
+        1
+      ],
+      "char_start": 4813,
+      "char_end": 5081,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "b88de5570aa3b099c5a254b3a2ae1bbdd06fe52309ba20ad543c4eb51cd1f5d3"
+    },
+    {
+      "id": "thca:source-identity-and-publication",
+      "label": "Published source identity",
+      "source_id": "thca",
+      "pages_one_based": [
+        1
+      ],
+      "char_start": 0,
+      "char_end": 592,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+      "window_sha256": "bc9f495d214b7ec84e03fa6255b704992d534e115928bb0a9db49152440cc3de"
+    },
+    {
+      "id": "thca:computational-details",
+      "label": "Tc, EPC and structure calculation methods",
+      "source_id": "thca",
+      "pages_one_based": [
+        2
+      ],
+      "char_start": 7577,
+      "char_end": 9005,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+      "window_sha256": "fef8beed70039b87c927b4a53a14daf15650d840c919092f9e3ab6775a39b1eb"
+    },
+    {
+      "id": "thca:table-I-caption-header-row",
+      "label": "Table I: caption, units and ThCa2H24 row",
+      "source_id": "thca",
+      "pages_one_based": [
+        3
+      ],
+      "char_start": 9717,
+      "char_end": 10031,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+      "window_sha256": "bf638938c1d5795c94bcd7f2cd071dde391adcd3d4e3ebd6fa04d128f939ee89"
+    },
+    {
+      "id": "thca:stability-context-qualified-class",
+      "label": "Class-level stability discussion",
+      "source_id": "thca",
+      "pages_one_based": [
+        3
+      ],
+      "char_start": 10548,
+      "char_end": 11073,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+      "window_sha256": "0b07f6b87c435caec4668b3f50752a68be44f0bdd969b63799d264a23cdfb140"
+    }
+  ]
+}

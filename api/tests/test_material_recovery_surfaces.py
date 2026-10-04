@@ -79,6 +79,17 @@ async def test_recovery_omits_facts_and_excerpts_and_never_changes_retained_reco
     body = response.json()
     assert body["scientific_acceptance"] is False and body["database_changed"] is False
     assert body["counts"]["promoted_facts"] == 0
+    from services.material_enrichment import digest
+    record_coverage = body["record_coverage"]
+    assert record_coverage["version"] == "materials-record-field-coverage/1.0.0"
+    assert record_coverage["records_total"] == record_coverage["records_inspected"] == 2
+    assert record_coverage["records_unchecked"] == 0
+    assert record_coverage["coverage_sha256"] == digest(
+        {key: value for key, value in record_coverage.items() if key != "coverage_sha256"})
+    # The independent DTO must not rewrite either seed's existing report identity.
+    assert body["report_sha256"] == digest(
+        {key: value for key, value in body.items() if key not in {"report_sha256", "record_coverage"}})
+    assert all(sum(row["counts"].values()) == 2 for row in record_coverage["fields"])
     assert body["candidates"]
     for candidate in body["candidates"]:
         assert "evidence_text" not in candidate
@@ -147,8 +158,8 @@ async def test_recovery_discards_snapshot_if_source_withdraws_during_read(client
     from services import material_enrichment_read
     original = material_enrichment_read.read_material_enrichment
 
-    async def withdrawing(db, material):
-        report = await original(db, material)
+    async def withdrawing(db, material, **options):
+        report = await original(db, material, **options)
         async with get_session_factory()() as session:
             paper = await session.get(Paper, records[0]["paper_id"])
             paper.status = "withdrawn"
@@ -439,7 +450,7 @@ async def test_recovery_distinguishes_physical_sample_form_from_bulk_superconduc
     forms = [candidate for candidate in report["candidates"] if candidate["field"] == "sample_form"]
     assert {candidate["value"] for candidate in forms} == expected_forms
     for candidate in forms:
-        assert candidate["extractor_version"] == "materials-literal-extractor/1.1.0"
+        assert candidate["extractor_version"] == "materials-literal-extractor/1.1.1"
         assert candidate["source"]["paper_id"] == papers["a"]
         assert candidate["source"]["content_sha256"] == hashlib.sha256(passage.encode()).hexdigest()
         assert candidate["source_content_checked"] is False and candidate["disposition"] == "pending"

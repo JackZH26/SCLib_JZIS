@@ -46,10 +46,22 @@ describe("atomic property evidence", () => {
       state: { state_id: "Unknown", sample_id: "sample:B" },
     })} />);
     expect(screen.getByText("Locator").nextElementSibling).toHaveTextContent(/^table: 2 · row: 3$/);
-    expect(screen.getByText("Method").nextElementSibling).toHaveTextContent(/^resistivity$/);
+    expect(screen.getByText("Measurement method").nextElementSibling).toHaveTextContent(/^resistivity$/);
     expect(screen.getByText("State ID").nextElementSibling).toHaveTextContent(/^Unknown$/);
     expect(screen.getByText("Tc criterion").nextElementSibling).toHaveTextContent(/^Unknown$/);
     expect(screen.getByText("Sample ID").nextElementSibling).toHaveTextContent(/^sample:B$/);
+  });
+
+  it("keeps coexisting method fields visible under their supplied roles", () => {
+    const conditions = { calculation_method: "Allen-Dynes model", measurement_method: "Four-probe resistivity", method: "Generic source protocol", measurement: "Comparison susceptibility trace" };
+    const item = atomicItem("tc_max", 20, { conditions, origin: { knowledge_origin: "Unknown" } });
+    render(<AtomicEvidenceDetails item={item} />);
+    expect(screen.getByText("Calculation method").nextElementSibling).toHaveTextContent(/^Allen-Dynes model$/);
+    expect(screen.getByText("Measurement method").nextElementSibling).toHaveTextContent(/^Four-probe resistivity$/);
+    expect(screen.getByText("Reported method").nextElementSibling).toHaveTextContent(/^Generic source protocol$/);
+    expect(screen.getByText("Measurement context").nextElementSibling).toHaveTextContent(/^Comparison susceptibility trace$/);
+    expect(screen.queryByText("Method")).not.toBeInTheDocument();
+    expect(item.conditions).toEqual(conditions);
   });
 
   it("preserves small numbers, approximation, uncertainty and censored quantities", () => {

@@ -4,6 +4,7 @@ import { MaterialEnrichment } from "@/components/MaterialEnrichment";
 import { getMaterialEnrichment, type MaterialEnrichmentReport } from "@/lib/api";
 import { MaterialProviderAvailabilityProvider, useProviderAvailabilityPublisher } from "@/components/MaterialProviderAvailability";
 import { emptyProviderAvailability } from "@/lib/material-provider-availability";
+import { materialRecoveryMetadata } from "@/lib/material-recovery-metadata";
 
 vi.mock("@/lib/api", () => ({ getMaterialEnrichment: vi.fn() }));
 function candidate(field: string, rawValue: unknown, quantity: Record<string, unknown> | null = null, overrides: Record<string, unknown> = {}): Record<string, unknown> {
@@ -37,6 +38,27 @@ function ProviderProbe({ materialId }: { materialId: string }) {
 
 describe("Recovery candidate quantity and source presentation", () => {
   beforeEach(() => vi.resetAllMocks());
+
+  it("distinguishes a Tc calculation method from experimental measurement and generic source hints", async () => {
+    await renderCandidates([
+      candidate("tc_kelvin", "116 K", quantity(116, "K"), { subject: { calculation_method: "eliashberg", measurement_method: null, knowledge_origin: "Computed" } }),
+      candidate("measurement_method", "x_ray_diffraction", null, { subject: { measurement_method: "x_ray_diffraction", field_role: "source_measurement_method" } }),
+    ]);
+    const tc = candidateRow("Tc: 116 K");
+    expect(tc).toHaveTextContent("Tc calculation method: eliashberg");
+    expect(tc).not.toHaveTextContent("Measurement method:");
+    expect(candidateRow("Measurement method:")).toHaveTextContent("Source measurement description; association with Tc unresolved");
+    expect(screen.queryByRole("link", { name: "Review original field source" })).not.toBeInTheDocument();
+  });
+
+  it("exports separate method roles without opening a calculation-method review permission or private metadata", () => {
+    const authority = { version: "materials-enrichment/1.0.0", material_id: "synthetic", disposition: "pending", scientific_acceptance: false, ml_training_approved: false, public_release: false, database_changed: false, source_content_checked: false, material_state_reviewed: false };
+    const solver = candidate("calculation_method", "eliashberg", null, { ...authority, candidate_id: `enrichment:${"a".repeat(64)}`, subject: { calculation_method: "eliashberg", measurement_method: null, field_role: "tc_calculation_method", private_notes: "PRIVATE METHOD" } });
+    const metadata = materialRecoveryMetadata(report([solver]), "synthetic", "2026-10-04T00:00:00Z");
+    expect(metadata?.returned_window.literal_exported).toBe(1);
+    expect(metadata?.candidates[0]).toMatchObject({ field: "calculation_method", subject: { calculation_method: "eliashberg", measurement_method: null, field_role: "tc_calculation_method" }, scientific_acceptance: false });
+    expect(JSON.stringify(metadata)).not.toContain("PRIVATE METHOD");
+  });
 
   it("exposes field coverage as a named keyboard-focusable region after opening its disclosure", async () => {
     const body = report([]);
@@ -266,7 +288,7 @@ describe("Recovery candidate quantity and source presentation", () => {
       candidate("tc_kelvin", "116 K", quantity(116, "K"), { candidate_id: "tc:unknown", subject: { tc_criterion: "unknown", knowledge_origin: "Unknown", pressure_state: "reported", pressure_quantity: quantity(140, "GPa"), identity_basis: "exact_formula_local" } }),
     ]);
     const onset = candidateRow("Tc: 23 K"), zero = candidateRow("Tc: 21.5 K"), unknown = candidateRow("Tc: 116 K");
-    expect(onset).toHaveTextContent("Tc criterion: Onset"); expect(onset).toHaveTextContent("Source origin: Observed report"); expect(onset).toHaveTextContent("Method: resistivity"); expect(onset).toHaveTextContent("Nominal/refined sample association pending");
+    expect(onset).toHaveTextContent("Tc criterion: Onset"); expect(onset).toHaveTextContent("Source origin: Observed report"); expect(onset).toHaveTextContent("Measurement method: resistivity"); expect(onset).toHaveTextContent("Nominal/refined sample association pending");
     expect(zero).toHaveTextContent("Tc criterion: Zero resistance"); expect(zero).toHaveTextContent("local material binding unresolved");
     expect(onset).toHaveTextContent("Pressure context: Not reported in source context"); expect(zero).not.toHaveTextContent("0 GPa");
     expect(unknown).toHaveTextContent("Tc criterion: Unknown"); expect(unknown).toHaveTextContent("Pressure context: 140 GPa"); expect(unknown).toHaveTextContent("Source origin: Unknown"); expect(unknown).not.toHaveTextContent("Computed report");
@@ -310,20 +332,20 @@ describe("Recovery candidate quantity and source presentation", () => {
   it("reveals every returned candidate, collapses to 40, and resets expansion on material change", async () => {
     const candidates = Array.from({ length: 41 }, (_, index) => candidate("measurement_method", `Synthetic method ${index + 1}`, null, { candidate_id: `method:${index}` }));
     const view = await renderCandidates(candidates);
-    expect(screen.queryByText(/Method: Synthetic method 41/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Measurement method: Synthetic method 41/)).not.toBeInTheDocument();
     const show = screen.getByRole("button", { name: "Show remaining candidates (1)" });
     expect(show).toHaveAttribute("aria-expanded", "false"); expect(document.getElementById(show.getAttribute("aria-controls")!)).toHaveProperty("tagName", "UL");
     fireEvent.click(show);
-    expect(candidateRow("Method: Synthetic method 41")).toBeInTheDocument(); expect(screen.getByText("Showing 41 of 41 returned candidates.")).toBeInTheDocument();
+    expect(candidateRow("Measurement method: Synthetic method 41")).toBeInTheDocument(); expect(screen.getByText("Showing 41 of 41 returned candidates.")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Show fewer candidates" }));
-    expect(screen.queryByText(/Method: Synthetic method 41/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Measurement method: Synthetic method 41/)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Show remaining candidates (1)" }));
     const other = report(candidates.map(item => ({ ...item, raw_value: String(item.raw_value).replace("Synthetic", "Other") })));
     other.coverage[0].material_id = "other";
     vi.mocked(getMaterialEnrichment).mockResolvedValue(other);
     view.rerender(<MaterialEnrichment materialId="other" />);
-    await waitFor(() => expect(screen.getByText(/^Method: Other method 1$/)).toBeInTheDocument());
-    expect(screen.queryByText(/Method: Other method 41/)).not.toBeInTheDocument(); expect(screen.getByRole("button", { name: "Show remaining candidates (1)" })).toHaveAttribute("aria-expanded", "false");
-    expect(screen.queryByText(/Method: Synthetic method/)).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/^Measurement method: Other method 1$/)).toBeInTheDocument());
+    expect(screen.queryByText(/Measurement method: Other method 41/)).not.toBeInTheDocument(); expect(screen.getByRole("button", { name: "Show remaining candidates (1)" })).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByText(/Measurement method: Synthetic method/)).not.toBeInTheDocument();
   });
 });

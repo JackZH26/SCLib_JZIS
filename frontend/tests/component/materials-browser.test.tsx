@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import MaterialsPage from "@/app/materials/page";
 import { MaterialTable } from "@/components/MaterialTable";
 import { MaterialsFilters } from "@/components/MaterialsFilters";
@@ -10,6 +10,7 @@ import { materialVisibility, sourceScopedMaterialVisibility } from "../fixtures/
 import { materialAnomalyReview } from "../fixtures/scientific-anomalies";
 
 vi.mock("@/lib/api", async importOriginal => ({ ...await importOriginal<typeof import("@/lib/api")>(), listMaterials: vi.fn() }));
+afterEach(() => vi.unstubAllEnvs());
 function material(overrides: Partial<MaterialSummary> = {}): MaterialSummary {
   return { id: "synthetic", formula: "MgB2", family: "boride", tc_max: 9999, tc_ambient: 8888, arxiv_year: 1999, total_papers: 1, variant_count: 0, visibility: materialVisibility(), property_evidence: propertyEnvelope(atomicItem("tc_max", 39)), ...overrides } as MaterialSummary;
 }
@@ -50,7 +51,7 @@ describe("Materials browser scientific state and density", () => {
   });
 
   it("shows readable core evidence first while retaining raw criterion and technical context", () => {
-    const tc = atomicItem("tc_max", 39, { conditions: { tc_criterion: "zero_resistance", measurement_method: "Four-probe resistivity" }, state: { pressure_semantics: { classifier_version: "pressure-policy/1.0.0", pressure_state: "explicit_ambient" } } });
+    const tc = atomicItem("tc_max", 39, { conditions: { tc_criterion: "zero_resistance", measurement_method: "Four-probe resistivity" }, origin: { knowledge_origin: "Observed" }, state: { pressure_semantics: { classifier_version: "pressure-policy/1.0.0", pressure_state: "explicit_ambient" } } });
     render(<MaterialTable rows={[material({ property_evidence: propertyEnvelope(tc) })]} />);
     expect(screen.getByRole("table")).toHaveTextContent("Zero resistance");
     expect(screen.getByRole("table")).not.toHaveTextContent("zero_resistance");
@@ -64,8 +65,8 @@ describe("Materials browser scientific state and density", () => {
     expect(identity).toHaveTextContent("zero_resistance"); expect(identity).toHaveTextContent(tc.result_id);
   });
   it("keeps missing match context scoped to its record instead of declaring a paper omission or borrowing another result", () => {
-    const a = atomicItem("tc_max", 39, { result_id: "A", conditions: { tc_criterion: "zero_resistance", measurement_method: "Four-probe resistivity" }, source: { paper_id: "paper:A", year: 2026 } });
-    const b = atomicItem("tc_max", 23, { result_id: "B", conditions: {}, source: { paper_id: "paper:B" } });
+    const a = atomicItem("tc_max", 39, { result_id: "A", conditions: { tc_criterion: "zero_resistance", measurement_method: "Four-probe resistivity" }, origin: { knowledge_origin: "Observed" }, source: { paper_id: "paper:A", year: 2026 } });
+    const b = atomicItem("tc_max", 23, { result_id: "B", conditions: {}, origin: { knowledge_origin: "Observed" }, source: { paper_id: "paper:B" } });
     render(<MaterialTable rows={[material({ property_evidence: propertyEnvelope(a), matching_results: [matching("B", b)] })]} resultFiltersActive />);
     const row = screen.getByRole("rowheader", { name: "MgB2" }).closest("tr")!;
     expect(row).toHaveTextContent("Criterion not supplied"); expect(row).toHaveTextContent("Not supplied");
@@ -76,6 +77,79 @@ describe("Materials browser scientific state and density", () => {
       expect(within(core).getByText(label).nextElementSibling).toHaveTextContent(/^Not supplied in this record$/);
     }
     expect(core).toHaveTextContent("paper:B"); expect(core).not.toHaveTextContent("paper:A"); expect(core).not.toHaveTextContent("Four-probe resistivity");
+  });
+  it("describes missing computed context as a record-level calculation-method gap", () => {
+    const tc = atomicItem("tc_max", 250, { conditions: {}, state: { pressure_semantics: { classifier_version: "pressure-policy/1.0.0", pressure_state: "reported", pressure_gpa: 300 } } });
+    render(<MaterialTable rows={[material({ formula: "ThCa2H24", property_evidence: propertyEnvelope(tc) })]} />);
+    const row = screen.getByRole("rowheader", { name: "ThCa2H24" }).closest("tr")!;
+    expect(row).toHaveTextContent("250 K"); expect(row).toHaveTextContent("300 GPa"); expect(row).toHaveTextContent("Computed");
+    expect(row).toHaveTextContent("Calculation method not supplied"); expect(row).not.toHaveTextContent("Criterion not supplied");
+    fireEvent.click(within(row).getByRole("button", { name: "Evidence for ThCa2H24" }));
+    const core = screen.getByLabelText("Displayed Tc source and conditions");
+    expect(within(core).getByText("Calculation method").nextElementSibling).toHaveTextContent(/^Not supplied in this record$/);
+    expect(within(core).queryByText(/Tc criterion/)).not.toBeInTheDocument();
+    expect(core).not.toHaveTextContent("DFT"); expect(core).not.toHaveTextContent("Not reported");
+    expect(tc.conditions).toEqual({});
+  });
+  it("keeps a supplied computed method visible while retaining a supplied criterion in evidence", () => {
+    const tc = atomicItem("tc_max", 116, { conditions: { calculation_method: "Allen-Dynes equation", tc_criterion: "onset", measurement_method: "Source sample resistivity" } });
+    render(<MaterialTable rows={[material({ property_evidence: propertyEnvelope(tc) })]} />);
+    expect(screen.getByRole("table")).toHaveTextContent("Allen-Dynes equation"); expect(screen.getByRole("table")).not.toHaveTextContent("Onset");
+    fireEvent.click(screen.getByRole("button", { name: "Evidence for MgB2" }));
+    const core = screen.getByLabelText("Displayed Tc source and conditions");
+    expect(within(core).getByText("Calculation method").nextElementSibling).toHaveTextContent("Allen-Dynes equation");
+    expect(within(core).getByText("Reported Tc criterion").nextElementSibling).toHaveTextContent("Onset");
+    const raw = screen.getByText("Result identity and missing context").closest("details")!;
+    expect(raw).toHaveTextContent("Source sample resistivity"); expect(raw).toHaveTextContent("onset");
+    expect(tc.conditions).toEqual({ calculation_method: "Allen-Dynes equation", tc_criterion: "onset", measurement_method: "Source sample resistivity" });
+  });
+  it("keeps a generic method on its computed result without requiring an experimental criterion", () => {
+    const tc = atomicItem("tc_max", 23, { conditions: { method: "Reported model protocol" } });
+    render(<MaterialTable rows={[material({ property_evidence: propertyEnvelope(tc) })]} />);
+    expect(screen.getByRole("table")).toHaveTextContent("Reported model protocol"); expect(screen.getByRole("table")).not.toHaveTextContent("Criterion not supplied");
+    fireEvent.click(screen.getByRole("button", { name: "Evidence for MgB2" }));
+    const core = screen.getByLabelText("Displayed Tc source and conditions");
+    expect(within(core).getByText("Reported method").nextElementSibling).toHaveTextContent("Reported model protocol");
+    expect(within(core).queryByText("Calculation method")).not.toBeInTheDocument();
+    expect(within(core).queryByText(/Tc criterion/)).not.toBeInTheDocument();
+  });
+  it("opens a source reading from the displayed result while leaving absent formal method context unchanged", () => {
+    const tc = atomicItem("tc_max", 250, { result_id: "legacy-result:4d9aa6126689e8fad54ce66a8bd0667b65f7aa5587d7cc6e4de1e90dc08700d2", conditions: {}, source: { paper_id: "aps:10.1103/7lg7-l3x8" } });
+    render(<MaterialTable rows={[material({ id: "mat:thca2h24", formula: "ThCa2H24", property_evidence: propertyEnvelope(tc) })]} />);
+    fireEvent.click(screen.getByRole("button", { name: "Evidence for ThCa2H24" }));
+    const reading = within(screen.getByRole("complementary", { name: "Related paper context" }));
+    expect(reading.getByRole("link", { name: "Calculated Tc method and source table parameters" })).toHaveAttribute("href", "/materials/source-observations/paper-contexts#paper-context-thca");
+    expect(within(screen.getByLabelText("Displayed Tc source and conditions")).getByText("Calculation method").nextElementSibling).toHaveTextContent(/^Not supplied in this record$/);
+    expect(tc.conditions).toEqual({});
+  });
+  it("does not expose the catalogue source reading when the displayed match has another result identity", () => {
+    const a = atomicItem("tc_max", 250, { result_id: "legacy-result:4d9aa6126689e8fad54ce66a8bd0667b65f7aa5587d7cc6e4de1e90dc08700d2", source: { paper_id: "aps:10.1103/7lg7-l3x8" } });
+    const b = atomicItem("tc_max", 200, { result_id: "unrelated-B", source: { paper_id: "aps:10.1103/7lg7-l3x8" } });
+    render(<MaterialTable rows={[material({ id: "mat:thca2h24", formula: "ThCa2H24", property_evidence: propertyEnvelope(a), matching_results: [matching("unrelated-B", b)] })]} resultFiltersActive />);
+    fireEvent.click(screen.getByRole("button", { name: "Evidence for ThCa2H24" }));
+    expect(screen.queryByRole("complementary", { name: "Related paper context" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Calculated Tc method and source table parameters" })).not.toBeInTheDocument();
+  });
+  it("keeps the reading's configured base path in a native anchor", () => {
+    vi.stubEnv("NEXT_PUBLIC_BASE_PATH", "/sclib-preview");
+    const tc = atomicItem("tc_max", 250, { result_id: "legacy-result:4d9aa6126689e8fad54ce66a8bd0667b65f7aa5587d7cc6e4de1e90dc08700d2", source: { paper_id: "aps:10.1103/7lg7-l3x8" } });
+    render(<MaterialTable rows={[material({ id: "mat:thca2h24", formula: "ThCa2H24", property_evidence: propertyEnvelope(tc) })]} />);
+    fireEvent.click(screen.getByRole("button", { name: "Evidence for ThCa2H24" }));
+    expect(screen.getByRole("link", { name: "Calculated Tc method and source table parameters" })).toHaveAttribute("href", "/sclib-preview/materials/source-observations/paper-contexts#paper-context-thca");
+  });
+  it("does not borrow the catalogue method or relabel sample measurements as a matched calculation method", () => {
+    const a = atomicItem("tc_max", 39, { result_id: "A", conditions: { calculation_method: "Catalogue-only model" }, source: { paper_id: "paper:A", year: 2026 } });
+    const b = atomicItem("tc_max", 23, { result_id: "B", conditions: { measurement_method: "Sample-only measurement" }, source: { paper_id: "paper:B" } });
+    const matched = { ...matching("B", b), result_classification: { knowledge_origin: "Computed" } };
+    render(<MaterialTable rows={[material({ property_evidence: propertyEnvelope(a), matching_results: [matched] })]} resultFiltersActive />);
+    const row = screen.getByRole("rowheader", { name: "MgB2" }).closest("tr")!;
+    expect(row).toHaveTextContent("Calculation method not supplied"); expect(row).not.toHaveTextContent("Catalogue-only model"); expect(row).not.toHaveTextContent("Sample-only measurement");
+    fireEvent.click(within(row).getByRole("button", { name: "Evidence for MgB2" }));
+    const core = screen.getByLabelText("Displayed Tc source and conditions");
+    expect(core).toHaveTextContent("paper:B"); expect(core).not.toHaveTextContent("paper:A");
+    expect(within(core).getByText("Calculation method").nextElementSibling).toHaveTextContent(/^Not supplied in this record$/);
+    expect(core).not.toHaveTextContent("Sample-only measurement");
+    expect(screen.getByText("Result identity and missing context").closest("details")).toHaveTextContent("Sample-only measurement");
   });
   it("never displays a matching lower bound as an exact Tc or falls back to an unrelated selected value", () => {
     const row = material({ matching_results: [matching("unlocated-B")] });

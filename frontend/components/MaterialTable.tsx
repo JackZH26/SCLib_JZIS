@@ -18,6 +18,7 @@ import { StructureEvidencePanel, StructureEvidenceValue } from "@/components/Str
 import { pressureLabel } from "@/lib/pressure-semantics";
 import { ScientificMatches } from "@/components/ScientificMatches";
 import { materialRowTc, materialTcCriterion, materialTcQuantityKind, type MaterialsTcDisplay } from "@/lib/materials-browser";
+import { materialStudyReading } from "@/lib/material-study-reading";
 
 const OPTIONAL_COLUMNS = [
   { key: "tc_ambient", label: "Ambient Tc (K)" }, { key: "pairing_symmetry", label: "Pairing" },
@@ -40,9 +41,11 @@ function DisplayConditions({ display }: { display: MaterialsTcDisplay }) {
   if (!display.item) return <span className="materials-muted">{display.matched ? "See matching evidence" : "No linked Tc result"}</span>;
   const state = objectValue(display.item.state);
   const conditions = objectValue(display.item.conditions);
+  const computed = propertyOrigin(display.item) === "Computed";
   const criterion = materialTcCriterion(evidenceText(conditions.tc_criterion ?? conditions.tc_type));
-  const calculation = propertyOrigin(display.item) === "Computed" ? evidenceText(conditions.calculation_method ?? conditions.method) : null;
-  return <><span>{pressureLabel(state.pressure_semantics, typeof state.pressure_gpa === "number" ? state.pressure_gpa : null)}</span><span className="materials-secondary">{criterion ?? calculation ?? "Criterion not supplied"}</span></>;
+  const reportedMethod = evidenceText(conditions.method);
+  const calculation = evidenceText(conditions.calculation_method) ?? (reportedMethod ? `Reported method: ${reportedMethod}` : null);
+  return <><span>{pressureLabel(state.pressure_semantics, typeof state.pressure_gpa === "number" ? state.pressure_gpa : null)}</span><span className="materials-secondary">{computed ? calculation ?? "Calculation method not supplied" : criterion ?? "Criterion not supplied"}</span></>;
 }
 /** Put decision-relevant source and conditions before the full provenance inventory. */
 function CoreTcEvidence({ item }: { item: PropertyEvidenceItem }) {
@@ -51,15 +54,19 @@ function CoreTcEvidence({ item }: { item: PropertyEvidenceItem }) {
   const conditions = objectValue(item.conditions);
   const href = sourceHref(source);
   const sourceLabel = evidenceText(source.paper_id ?? source.doi ?? source.arxiv_id) ?? "Source unavailable";
+  const computed = propertyOrigin(item) === "Computed";
   const criterion = evidenceText(conditions.tc_criterion ?? conditions.tc_type);
-  const method = evidenceText(conditions.calculation_method ?? conditions.measurement_method ?? conditions.method ?? conditions.measurement);
+  const calculation = evidenceText(conditions.calculation_method);
+  const reportedMethod = evidenceText(conditions.method);
+  const method = computed ? calculation ?? reportedMethod : evidenceText(conditions.calculation_method ?? conditions.measurement_method ?? conditions.method ?? conditions.measurement);
+  const methodLabel = computed ? calculation ? "Calculation method" : reportedMethod ? "Reported method" : "Calculation method" : "Method";
   const quantity = objectValue(item.quantity);
   return <dl className="materials-core-evidence" aria-label="Displayed Tc source and conditions">
     <div className="materials-core-source"><dt>Source</dt><dd>{href ? <Link href={href}>{sourceLabel}</Link> : sourceLabel}</dd></div>
     <div><dt>Source year</dt><dd>{evidenceText(source.year) ?? "Not supplied in this record"}</dd></div>
     <div><dt>Pressure</dt><dd>{pressureLabel(state.pressure_semantics, typeof state.pressure_gpa === "number" ? state.pressure_gpa : null)}</dd></div>
-    <div><dt>Tc criterion</dt><dd title={criterion ?? undefined}>{materialTcCriterion(criterion) ?? "Not supplied in this record"}</dd></div>
-    <div><dt>Method</dt><dd>{method ?? "Not supplied in this record"}</dd></div>
+    {(!computed || criterion) && <div><dt>{computed ? "Reported Tc criterion" : "Tc criterion"}</dt><dd title={criterion ?? undefined}>{materialTcCriterion(criterion) ?? "Not supplied in this record"}</dd></div>}
+    <div><dt>{methodLabel}</dt><dd>{method ?? "Not supplied in this record"}</dd></div>
     <div><dt>Result origin</dt><dd>{propertyOrigin(item)}</dd></div>
     <div><dt>Quantity relation / parser status</dt><dd>{evidenceText(quantity.relation) ?? "Unavailable"} / {evidenceText(quantity.status) ?? "Unavailable"}</dd></div>
   </dl>;
@@ -98,6 +105,7 @@ export function MaterialTable({ rows, resultFiltersActive = false }: { rows: Mat
   }, [inspection]);
   const close = () => { dialog.current?.close?.(); dialog.current?.removeAttribute("open"); setInspection(null); };
   const inspectedDisplay = inspection ? materialRowTc(inspection, resultFiltersActive) : null;
+  const relatedReading = inspection && inspectedDisplay?.item ? materialStudyReading(inspection.id, inspectedDisplay.item) : null;
   if (!visibleRows.length) return <div className="materials-empty" role="status">No materials match these filters. Try widening the Tc or pressure range.</div>;
   return <section aria-label="Material results" className="materials-table-section">
     <div className="materials-table-tools">
@@ -133,8 +141,9 @@ export function MaterialTable({ rows, resultFiltersActive = false }: { rows: Mat
         <header><div><h2 id={titleId}><FormulaDisplay formula={inspection.formula} /></h2><p>Source evidence and reported conditions</p></div><button type="button" onClick={close} autoFocus className="materials-dialog-close">Close</button></header>
         <div className="materials-inspection-content">
           <section><h3>{inspectedDisplay.usesMatch ? "Matched Tc result" : "Displayed Tc result"}</h3>
-            {inspectedDisplay.item ? <><p className="materials-inspection-value">{propertyValue(inspectedDisplay.item)} <span>{propertyOrigin(inspectedDisplay.item)}</span></p><CoreTcEvidence item={inspectedDisplay.item} /><details className="materials-full-result-context"><summary>Result identity and missing context</summary><p className="materials-inspection-note">Raw criterion tokens, result and state identifiers, source locator, and all retained context fields are available below. Missing context is not inferred from another result.</p><AtomicEvidenceDetails item={inspectedDisplay.item} /></details></> : <p>{propertyStatus(inspection.property_evidence, "tc_max")}. No legacy scalar or filter lower bound is substituted for a source-linked Tc quantity.</p>}
+            {inspectedDisplay.item ? <><p className="materials-inspection-value">{propertyValue(inspectedDisplay.item)} <span>{propertyOrigin(inspectedDisplay.item)}</span></p><CoreTcEvidence item={inspectedDisplay.item} /><details className="materials-full-result-context"><summary>Result identity and missing context</summary><p className="materials-inspection-note">Raw criterion tokens, supplied method fields, result and state identifiers, and source locators are available below. Missing context is not inferred from another result.</p><AtomicEvidenceDetails item={inspectedDisplay.item} /></details></> : <p>{propertyStatus(inspection.property_evidence, "tc_max")}. No legacy scalar or filter lower bound is substituted for a source-linked Tc quantity.</p>}
             {inspectedDisplay.usesMatch && <p className="materials-inspection-note">This result matches your filters. It may differ from the catalogue maximum. {inspectedDisplay.matchCount} matching result{inspectedDisplay.matchCount === 1 ? " is" : "s are"} included in this response.</p>}
+            {relatedReading && <aside className="materials-full-result-context" aria-label="Related paper context"><a className="materials-detail-link" href={relatedReading.href}>{relatedReading.label}</a><p className="materials-inspection-note">{relatedReading.note}</p>{relatedReading.companion && <a className="materials-detail-link" href={relatedReading.companion.href}>{relatedReading.companion.label}</a>}</aside>}
           </section>
           {resultFiltersActive && <details><summary>Matching result references</summary><ScientificMatches results={inspection.matching_results} scope="material" /></details>}
           <details><summary>Other catalogue selections and result alternatives</summary><p className="materials-inspection-note">Each property has its own source and conditions. These selections are not a joint observation, and unavailable values do not establish absence.</p><div className="materials-inspection-properties"><PropertyEvidenceValue evidence={inspection.property_evidence} field="tc_max" /><PropertyEvidenceValue evidence={inspection.property_evidence} field="tc_ambient" /></div></details>

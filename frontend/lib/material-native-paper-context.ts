@@ -1,10 +1,10 @@
-import snapshot from "@/public/research-pilots/materials-native-paper-context-2026-10-04.json";
+import snapshot from "@/public/research-pilots/materials-native-paper-context-2026-10-04-r2.json";
 
 export type NativePaperContextBatch = typeof snapshot;
 export type NativePaperContext = NativePaperContextBatch["contexts"][number];
 
-export const nativePaperContextDownloadPath = (process.env.NEXT_PUBLIC_BASE_PATH || "") + "/research-pilots/materials-native-paper-context-2026-10-04.json";
-export const nativePaperContextSnapshotSha256 = "6c8b6b57c8a0e66a916ba2abf8bcafe9b849f56ef9a6ff0e4b4a8f0b4c1b4404";
+export const nativePaperContextDownloadPath = (process.env.NEXT_PUBLIC_BASE_PATH || "") + "/research-pilots/materials-native-paper-context-2026-10-04-r2.json";
+export const nativePaperContextSnapshotSha256 = "aa70b25f3a9ab81da27fd01efa9bf33a9288027806b4040f861a3aab64ab8c6c";
 
 const isRow = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === "object" && !Array.isArray(value);
 const hash = (value: unknown): value is string => typeof value === "string" && /^[a-f0-9]{64}$/.test(value);
@@ -50,7 +50,10 @@ export function nativePaperContextSourceHref(sourceId: string, page?: number): s
   const source = snapshot.sources.find(source => source.id === sourceId);
   if (!source) return null;
   const url = new URL(source.source_url);
-  if (url.protocol !== "https:" || url.hostname !== "arxiv.org" || url.username || url.password || url.port || url.search) return null;
+  const capturedPublisher = source.id === "thca"
+    && source.source_url === "https://journals.aps.org/prresearch/pdf/10.1103/7lg7-l3x8";
+  if (url.protocol !== "https:" || (url.hostname !== "arxiv.org" && !capturedPublisher)
+    || url.username || url.password || url.port || url.search) return null;
   if (page !== undefined) {
     if (!Number.isSafeInteger(page) || page < 1 || page > source.pdf_pages) return null;
     url.hash = "page=" + page;

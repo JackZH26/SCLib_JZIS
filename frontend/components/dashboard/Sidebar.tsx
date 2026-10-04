@@ -27,8 +27,8 @@ export function Sidebar({
   const pathname = usePathname();
   const [openFor, setOpenFor] = useState<string | null>(null);
   const expanded = openFor === pathname;
-  const activeItem = items.find(item => item.href === "/dashboard"
-    ? pathname === item.href : pathname.startsWith(item.href));
+  const activeItem = items.find(item => pathname === item.href ||
+    (item.href !== "/dashboard" && pathname.startsWith(`${item.href}/`)));
 
   return (
     <aside className="w-full shrink-0 border-b border-sage-border bg-white/60 md:w-56 md:border-b-0 md:border-r">
@@ -43,11 +43,7 @@ export function Sidebar({
           gap. Keep this in lockstep with Header.tsx padding. */}
       <nav id="dashboard-navigation" className={`${expanded ? "flex" : "hidden"} flex-wrap gap-0.5 p-3 text-sm md:sticky md:top-16 md:flex md:flex-col`} aria-label="Dashboard navigation">
         {items.map((item) => {
-          // Exact match for the root /dashboard; prefix match for children
-          const active =
-            item.href === "/dashboard"
-              ? pathname === "/dashboard"
-              : pathname.startsWith(item.href);
+          const active = item === activeItem;
           return (
             <Link
               key={item.href}
