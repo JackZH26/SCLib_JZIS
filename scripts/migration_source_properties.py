@@ -6,6 +6,7 @@ continue to include these tables; only old-head comparisons exclude them.
 """
 
 from migration_discovery_designs import assert_empty as assert_empty_discovery_designs
+from migration_discovery_condition_batches import assert_empty as assert_empty_condition_batches
 
 V1_TABLES = (
     "source_property_import_receipts",
@@ -33,5 +34,6 @@ def assert_empty(connection):
     from sqlalchemy import text
 
     assert_empty_discovery_designs(connection)
+    assert_empty_condition_batches(connection)
     for name in TABLES:
         assert connection.execute(text(f'SELECT count(*) FROM public."{name}"')).scalar_one() == 0

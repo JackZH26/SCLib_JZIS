@@ -1,0 +1,13 @@
+{
+  "capture_date": "2026-10-04",
+  "capture_kind": "synthetic_native_sql_http",
+  "captured_by": "root native test harness",
+  "copied_without_reserialization": true,
+  "fixture": "discovery-condition-batches-native.synthetic.json",
+  "source_file": "/var/folders/m0/ztnj2ywn613cqhtb3_ym0xyc0000gn/T/sclib-condition-batch-native-wire-20261004-xxsc238j/wire.json",
+  "wire_bytes": 197241,
+  "wire_sha256": "cd1d32e31f716152e834d980f34278ee0db6c7bc335ce537002426123cc1ba4d",
+  "scientific_validation": false,
+  "calculation_executed": false,
+  "note": "Native batch and child ledger transport over an explicitly synthetic scientific fixture; this is not evidence of a real calculation, experiment or scientific result."
+}

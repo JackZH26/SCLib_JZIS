@@ -10,7 +10,7 @@ import { expressionCanonical, expressionSha } from "@/lib/source-expressions";
 import type { DesignRequest } from "@/lib/discovery-designs";
 
 vi.mock("@/components/dashboard/user-context", () => ({ useDashboardUser: () => ({ user: { id: wire.capabilities.actor_user_id } }) }));
-vi.mock("@/lib/api", async original => ({ ...await original<typeof import("@/lib/api")>(), discoveryDesignCapabilities: vi.fn(), discoveryDesignContext: vi.fn(), discoveryDesignPreview: vi.fn(), discoveryDesignCommit: vi.fn(), discoveryDesignOutcome: vi.fn(), discoveryDesignPage: vi.fn(), discoveryDesignDetail: vi.fn() }));
+vi.mock("@/lib/api", async original => ({ ...await original<typeof import("@/lib/api")>(), discoveryDesignCapabilities: vi.fn(), discoveryDesignContext: vi.fn(), discoveryDesignPreview: vi.fn(), discoveryDesignCommit: vi.fn(), discoveryDesignOutcome: vi.fn(), discoveryDesignPage: vi.fn(), discoveryDesignDetail: vi.fn(), discoveryConditionBatchCapabilities: vi.fn().mockRejectedValue(new Error("Batch capability unavailable in existing design tests")) }));
 beforeEach(() => { vi.resetAllMocks(); vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 const capability = () => knownDesignCapabilities(wire.capabilities, wire.capabilities.actor_user_id)!;

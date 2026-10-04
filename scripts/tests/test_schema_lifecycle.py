@@ -11,6 +11,38 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class SchemaLifecycleBoundaryTests(unittest.TestCase):
+    def test_condition_batch_roundtrip_is_independent_empty_and_preserves_earlier_objects(self):
+        migration = (ROOT / "api/alembic/versions/0088_discovery_condition_batches.py").read_text()
+        upgrade, downgrade = migration.split("def upgrade()", 1)[1].split("def downgrade()", 1)
+        self.assertNotIn("INSERT", upgrade)
+        self.assertIn('down_revision = "0087_discovery_designs"', migration)
+        self.assertLess(downgrade.index("ACCESS EXCLUSIVE"), downgrade.index("SELECT EXISTS"))
+        self.assertLess(downgrade.index("raise RuntimeError"), downgrade.index("DROP TABLE"))
+        helper = (ROOT / "scripts/migration_discovery_condition_batches.py").read_text()
+        for marker in ('command.downgrade(config, "0087_discovery_designs")',
+                       'command.upgrade(config, "head")', 'assert any(before.values())',
+                       'snapshot(connection) == before', 'public_objects(connection) == earlier',
+                       'public_objects(connection) == definitions', 'assert_empty(connection)',
+                       'verify_postgres_identity(connection, capability)', 'exact revision'):
+            self.assertIn(marker, helper)
+        for forbidden in ("TRUNCATE", "DISABLE TRIGGER", "DELETE FROM"):
+            self.assertNotIn(forbidden, helper)
+        source = (ROOT / "scripts/run_test_migrations.py").read_text()
+        main = source.split("def main()", 1)[1]
+        self.assertLess(main.index("condition_batch_empty(capability, engine, config)"),
+                        main.index("_result_impact_indexes_roundtrip(capability, engine, config, populated=False)"))
+        empty = source.split("def _assert_empty_source_properties", 1)[1].split("def _assert_empty_ml_runs", 1)[0]
+        self.assertIn("_assert_empty_condition_batches(connection)", empty)
+        for name in ("migration_pilot_registration.py", "migration_pilot_attestations.py",
+                     "migration_scientific_result_passage.py", "migration_index_search.py",
+                     "migration_legacy_corpus.py", "migration_source_expressions.py"):
+            body = (ROOT / "scripts" / name).read_text()
+            self.assertIn("from migration_discovery_condition_batches import TABLES", body)
+            self.assertIn("*DISCOVERY_CONDITION_BATCH_TABLES", body)
+        body = (ROOT / "scripts/migration_source_expressions.py").read_text()
+        self.assertIn("assert_empty_condition_batches(connection)", body)
+        self.assertIn("*condition_batch_function_signatures()", body)
+
     def test_empty_expression_and_field_roundtrip_uses_separate_migration_database(self):
         helper = (ROOT / "scripts/migration_source_expressions.py").read_text()
         for marker in ('command.downgrade(config, "0082_source_property_pending")',
@@ -212,7 +244,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
                        "_assert_empty_ml_use_roles(connection)", "FUNCTION_SIGNATURES", "to_regprocedure"):
             self.assertIn(marker, block)
         self.assertEqual(block.count("assert snapshot(connection) == before"), 2)
-        self.assertIn('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES, _RESULT_PASSAGE_TABLE, *_LEGACY_CORPUS_TABLES, *_SOURCE_PROPERTY_TABLES, *_DISCOVERY_DESIGN_TABLES}', block)
+        self.assertIn('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES, _RESULT_PASSAGE_TABLE, *_LEGACY_CORPUS_TABLES, *_SOURCE_PROPERTY_TABLES, *_DISCOVERY_DESIGN_TABLES, *_DISCOVERY_CONDITION_BATCH_TABLES}', block)
         self.assertIn('assert "exact revision" in str(exc)', block)
         for connection in block.split("with engine.connect() as connection:")[1:]:
             self.assertLess(connection.index("check_connection_schema(connection)"),
@@ -270,7 +302,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
     def test_main_barrier_roundtrip_retains_every_v1_byte_and_the_exact_frozen_function(self):
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         body = source.split("def _discovery_main_barrier_roundtrip", 1)[1].split("async def _discovery_projection_replays_on_migrated_schema", 1)[0]
-        for marker in ('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES, _RESULT_PASSAGE_TABLE, *_LEGACY_CORPUS_TABLES, *_SOURCE_PROPERTY_TABLES, *_DISCOVERY_DESIGN_TABLES}', "_assert_empty_discovery_projections(connection)",
+        for marker in ('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES, _RESULT_PASSAGE_TABLE, *_LEGACY_CORPUS_TABLES, *_SOURCE_PROPERTY_TABLES, *_DISCOVERY_DESIGN_TABLES, *_DISCOVERY_CONDITION_BATCH_TABLES}', "_assert_empty_discovery_projections(connection)",
             'all(before[name] for name in _DISCOVERY_PROJECTION_TABLES)',
             'command.downgrade(config, "0069_discovery_projection")', 'assert "exact revision" in str(exc)',
             'frozen_insert_statement().split("AS $$", 1)', 'SELECT prosrc FROM pg_proc',
