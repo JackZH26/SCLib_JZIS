@@ -9,19 +9,19 @@ import re
 import threading
 
 import sqlalchemy as sa
-from config import get_settings
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
+
+from config import get_settings
+from routers.discovery_designs import read
+from routers.research_distributions import _strict_json
+from routers.source_properties import HEADERS, _session
+from routers.source_properties import PrivateRoute as SharedRoute
 from services import discovery_calculation_contract as contract
 from services import discovery_calculations as service
 from services import discovery_designs as designs
 from services.discovery_feedback_contract import checksum, closed
 from services.research_release_manifest import canonical
 from services.source_property_pending import SourcePropertyConflict, SourcePropertyError
-
-from routers.discovery_designs import read
-from routers.research_distributions import _strict_json
-from routers.source_properties import HEADERS, _session
-from routers.source_properties import PrivateRoute as SharedRoute
 
 # 81 MiB raw files, base64 expansion, and a bounded metadata request. One upload
 # and one native parse per process. A timed-out thread retains its worker slot.
@@ -198,7 +198,8 @@ async def reading(request, return_id):
             # not a bad request from the researcher. Never expose partial values.
             raise failure(503) from None
         result = {"receipt": service.receipt(row), "eligibility": eligible,
-                  "report": json.loads(prepared.report_json) if prepared else None, **contract.AUTHORITY}
+                  "report": json.loads(prepared.report_json) if prepared else None,
+                  "report_canonical_json": prepared.report_json if prepared else None, **contract.AUTHORITY}
     # Native parsing runs without write locks. Recheck the design in a fresh
     # transaction before exposing values or bytes after that potentially slow work.
     if prepared:

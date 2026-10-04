@@ -120,6 +120,46 @@ export function discoveryFeedbackPage(designId: string, offset = 0, signal?: Abo
   return request(`/research/discovery-feedback/designs/${encodeURIComponent(designId)}/returns?${new URLSearchParams({ offset: String(offset), limit: "8" })}`, { cache: "no-store", signal, responseByteLimit: 4 * 1024 * 1024 });
 }
 
+// Private original-file calculation custody. Reads never promote a scientific field.
+export function discoveryCalculationCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-calculations/capabilities", { cache: "no-store", signal, responseByteLimit: 16384 });
+}
+export function discoveryCalculationContext(designId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-calculations/designs/${encodeURIComponent(designId)}/context`, { cache: "no-store", signal, responseByteLimit: 131072 });
+}
+export function discoveryCalculationPreview(body: import("./discovery-calculations").CalculationUpload, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-calculations/operations/preview", { method: "POST", body: JSON.stringify(body), cache: "no-store", signal, responseByteLimit: 1048576 });
+}
+export function discoveryCalculationCommit(body: import("./discovery-calculations").CalculationUpload, previewSha: string, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-calculations/operations/commit", { method: "POST", body: JSON.stringify({ ...body, expected_preview_sha256: previewSha }), cache: "no-store", signal, responseByteLimit: 262144 });
+}
+export function discoveryCalculationOutcome(requestKey: string, requestSha: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-calculations/operations/outcome?${new URLSearchParams({ request_key: requestKey, expected_request_sha256: requestSha })}`, { cache: "no-store", signal, responseByteLimit: 262144 });
+}
+export function discoveryCalculationPage(designId: string, offset = 0, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-calculations/designs/${encodeURIComponent(designId)}/returns?${new URLSearchParams({ offset: String(offset), limit: "8" })}`, { cache: "no-store", signal, responseByteLimit: 1048576 });
+}
+export function discoveryCalculationDetail(returnId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-calculations/returns/${encodeURIComponent(returnId)}`, { cache: "no-store", signal, responseByteLimit: 1048576 });
+}
+/** Bounded authenticated byte download; callers verify the complete hash before saving locally. */
+export async function discoveryCalculationFile(returnId: string, ordinal: number, size: number, signal?: AbortSignal): Promise<Uint8Array> {
+  if (!Number.isSafeInteger(ordinal) || ordinal < 0 || ordinal > 10 || !Number.isSafeInteger(size) || size < 1 || size > 8388608) throw new Error("Invalid native file selector");
+  let response: Response;
+  try { response = await fetch(`${API_BASE}/research/discovery-calculations/returns/${encodeURIComponent(returnId)}/files/${ordinal}`, { credentials: "include", cache: "no-store", signal }); }
+  catch { throw new ApiError(0, null, "Original file unavailable."); }
+  if (!response.ok) { const body = await boundedJson(response, 16384); throw new ApiError(response.status, body, `HTTP ${response.status}`); }
+  const reader = response.body?.getReader();
+  if (!reader) throw new ApiError(0, null, "Original file unavailable.");
+  const bytes = new Uint8Array(size); let offset = 0, chunks = 0;
+  try {
+    while (true) { const { done, value } = await reader.read(); if (done) break; if (offset + value.length > size || ++chunks > 4096) throw new Error("File response limit"); bytes.set(value, offset); offset += value.length; }
+    if (offset !== size) throw new Error("Incomplete original file");
+    return bytes;
+  } catch { await reader.cancel().catch(() => {}); throw new ApiError(0, null, "Original file unavailable."); }
+  finally { reader.releaseLock(); }
+}
+
 // Private condition batches. Every write is explicit; uncertain saves use GET only.
 export function discoveryConditionBatchCapabilities(signal?: AbortSignal): Promise<unknown> {
   return request("/research/discovery-condition-batches/capabilities", { cache: "no-store", signal, responseByteLimit: 16384 });

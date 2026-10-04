@@ -1,20 +1,23 @@
 """Authenticated local HTTP -> original bytes -> SQL -> native reconstruction."""
 import asyncio
+import hashlib
 import json
+import tempfile
 import threading
 from dataclasses import replace
+from pathlib import Path
 from uuid import uuid4
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from config import get_settings
 from models.db import Base, get_engine
 from routers import discovery_calculations as route
 from services import discovery_calculation_contract as contract
 from services import discovery_calculations as service
-from services.research_release_manifest import digest
+from services.research_release_manifest import canonical, digest
 from services.session_config import build_browser_session_config
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from tests.research_access_helpers import research_operator, research_user, revoke_research_grant
 from tests.test_discovery_calculations import case, saved, wire
 from tests.test_discovery_design_http import private
@@ -27,6 +30,7 @@ PREFIX = "/v1/research/discovery-calculations"
 @pytest.fixture
 def enabled(monkeypatch):
     monkeypatch.setenv("DISCOVERY_CALCULATIONS_ENABLED", "true")
+    monkeypatch.setenv("DISCOVERY_DESIGNS_ENABLED", "true")
     get_settings.cache_clear()
     yield
     get_settings.cache_clear()
@@ -88,6 +92,8 @@ async def test_http_private_save_recover_report_and_exact_original_download(clie
     assert detail.json()["report"]["status"] == "scf_reported_converged"
     assert detail.json()["report"]["observations"]["total_energy"]["value"] == -31.19334546679567
     assert not detail.json()["candidate_source_association_verified"]
+    assert hashlib.sha256(detail.json()["report_canonical_json"].encode()).hexdigest() == commit.json()["report_sha256"]
+    assert json.loads(detail.json()["report_canonical_json"]) == detail.json()["report"]
     for i, raw in enumerate(files):
         r = await client.get(PREFIX + f"/returns/{rid}/files/{i}", headers=actor["headers"])
         assert r.status_code == 200 and r.content == raw
@@ -100,6 +106,31 @@ async def test_http_private_save_recover_report_and_exact_original_download(clie
         assert "-31.193" not in r.text
     replay = await client.post(PREFIX + "/operations/commit", json=body, headers=actor["headers"])
     assert replay.status_code == 200 and replay.json()["replayed"]
+    cap = await client.get(PREFIX + "/capabilities", headers=actor["headers"])
+    design_cap = await client.get("/v1/research/discovery-designs/capabilities", headers=actor["headers"])
+    parent_detail = await client.get("/v1/research/discovery-designs/designs/" + parent["design_id"], headers=actor["headers"])
+    page = await client.get(PREFIX + "/designs/" + parent["design_id"] + "/returns", headers=actor["headers"])
+    for response in (cap, design_cap, parent_detail, page):
+        assert response.status_code == 200, response.text
+        private(response)
+    capture = {"synthetic_actors_and_upf_headers": True, "no_authenticated_execution": True,
+        "design_capabilities": design_cap.json(), "parent": parent_detail.json(), "capabilities": cap.json(),
+        "context": ctx.json(), "upload": wire(req, files), "preview": preview.json(), "commit": commit.json(),
+        "outcome": out.json(), "detail": detail.json(), "page": page.json()}
+    await save(db_session, actor, {"version": "discovery-design-operation/1.0.0", "request_key": "withdraw-native-capture:" + uuid4().hex,
+        "operation": "withdraw", "payload": {"design_id": parent["design_id"], "predecessor": {"id": parent["receipt_id"],
+        "record_sha256": parent["receipt_sha256"]}, "reason": "Synthetic plan withdrawn after original-byte replay"}})
+    await db_session.commit()
+    held = await client.get(PREFIX + "/returns/" + rid, headers=actor["headers"])
+    assert held.status_code == 200 and not held.json()["eligibility"]["eligible"]
+    assert held.json()["report"] is None and held.json()["report_canonical_json"] is None
+    capture["held_detail"] = held.json()
+    destination = Path(tempfile.mkdtemp(prefix="sclib-calculation-native-wire-20261005-")) / "wire.json"
+    destination.parent.chmod(0o700)
+    destination.write_bytes(canonical(capture))
+    destination.chmod(0o600)
+    print("Owned-local calculation wire:", destination)
+
 
 
 @pytest.mark.asyncio

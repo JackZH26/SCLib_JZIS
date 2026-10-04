@@ -10,8 +10,9 @@ or superconducting.
 Version: `discovery-calculation-return/1.0.0`. Migration:
 `0090_discovery_calculations`. Default setting:
 `DISCOVERY_CALCULATIONS_ENABLED=false`. No production import is part of this
-change. The browser's QE preparation/reading tools remain local tools until the
-new private API is connected to them.
+change. Saved calculation plans now expose a private return form in the research
+design workbench. The separate QE preparation/reading tools remain local tools;
+their JSON reports are not accepted as original calculation evidence.
 
 ## Research and scientific scope
 
@@ -79,7 +80,8 @@ apply. An enabled deployment must configure its reverse proxy's request size,
 process count, memory and private-file retention budget explicitly; default-off
 is not evidence that any production deployment has this capacity configured.
 
-A fresh preview includes `report`, its exact `report_canonical_json`, and the
+A fresh preview and eligible saved detail include `report`, its exact
+`report_canonical_json`, and the
 report digest in the receipt. The write response contains custody proof, not
 scientific approval. An identical retry returns the original receipt. Changed
 bytes or metadata under the same key conflict. After an uncertain HTTP outcome,
@@ -103,16 +105,41 @@ with no partial values. A changed/withdrawn plan or held source preserves privat
 receipt history but withholds native readings and file downloads. Reads recheck
 current role/source state and the design after potentially slow native parsing.
 
-## Remaining user workflow
+## Research workbench
 
-Connect the existing saved-plan and QE panels to preview/commit/outcome/history,
-then independently replay downloaded bytes in the browser. The UI must show
-the saved research question, execution status, numerical convergence, original
-file links and next decision without repeating technical policy prose in every
-row. It must separately verify candidate/source-coordinate construction;
+Inspecting a saved calculation plan exposes its exact question and a return
+form for the original input, XML, stdout and UPFs. Selecting files does not send
+them. Researchers explicitly record findings, choose a next decision and
+acknowledge the unverified association before requesting a native preview.
+Saving requires the unchanged preview and retains its original files privately.
+
+The browser verifies the request, preview and receipt hashes against the chosen
+plan revision, actor and file inventory. It hashes the backend's original report
+text without reserializing Python decimal tokens. The server independently
+parses the native files; this client proof check is not a second scientific
+parser or authenticated execution receipt. A saved reading is reconstructed
+from the retained bytes before the page displays quantities or downloads.
+
+Results show numerical convergence, energy with original units, findings and the
+next decision. Exact method/geometry, raw tokens, unresolved questions and
+receipt proofs are expandable. The upload form collapses when inspecting saved
+results. History and file actions stack on small screens. Every download is
+bounded to its inventory size and hashed before asking the browser to save it;
+the UI says "Download requested" because it cannot confirm the user's disk.
+
+On an uncertain save, only the original request identity and hashes survive a
+private-view clear. The workbench locks conflicting edits and uses a GET outcome
+check, never an automatic second upload. Hiding the page or changing sessions
+clears files, notes and readings; stale responses cannot restore them. No browser
+storage is used for calculation files or recovery records.
+
+## Remaining scientific workflow
+
+Candidate/source-coordinate construction still needs separate verification;
 current file custody does not establish that association. Authenticated runner
 receipts, scientific adjudication, Materials field promotion and ML admission
-remain separate unfinished work.
+remain unfinished work. The deployment flag remains off, and enabling it needs
+the migration and private-route capacity configuration described above.
 
 ## Validation scope
 
@@ -123,3 +150,11 @@ append-only guards, deferred inventory rejection, forged report digests and
 populated downgrade refusal. Native XML/stdout are earlier QE captures;
 repository UPF fixtures are explicitly synthetic headers. These tests establish
 software behavior, not scientific certification.
+
+The checked-in `discovery-calculations-native.synthetic.json` fixture is an
+unaltered capture from an owned PostgreSQL/HTTP rehearsal, including preview,
+commit, GET recovery, history, detail and withdrawal. Its actors and UPF headers
+are synthetic. Browser/component transport variants are separately named
+synthetic fixtures and do not replace that capture. Client tests cover proof
+mutations, original-byte corruption/truncation/overflow, explicit upload,
+uncertain-save recovery, parent locks and private-view clearing.

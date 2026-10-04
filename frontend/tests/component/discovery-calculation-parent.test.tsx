@@ -1,0 +1,37 @@
+import React from "react";
+import { webcrypto } from "node:crypto";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { DiscoveryDesignWorkbench } from "@/components/DiscoveryDesignWorkbench";
+import { discoveryDesignCapabilities, discoveryDesignDetail, discoveryDesignPage } from "@/lib/api";
+import { DESIGN_AUTHORITY } from "@/lib/discovery-designs";
+import { calculationRecovery, type CalculationReceipt } from "@/lib/discovery-calculations";
+import wire from "../fixtures/discovery-calculations-native.synthetic.json";
+vi.mock("@/components/dashboard/user-context", () => ({ useDashboardUser: () => ({ user: { id: wire.capabilities.actor_user_id } }) }));
+vi.mock("@/components/DiscoveryConditionBatchWorkspace", () => ({ DiscoveryConditionBatchWorkspace: () => null }));
+vi.mock("@/components/DiscoveryEvidenceFeedback", () => ({ DiscoveryEvidenceFeedback: () => null }));
+vi.mock("@/components/DiscoveryCalculationReturns", () => ({ DiscoveryCalculationReturns: (props: any) => <div aria-label="Calculation parent integration"><button disabled={props.disabled} onClick={() => props.onSaveDispatched(calculationRecovery(wire.commit as CalculationReceipt, wire.capabilities.actor_user_id))}>Dispatch synthetic calculation</button>{props.saveRecovery && <button disabled={props.disabled} onClick={() => props.onSaveResolved(props.saveRecovery)}>Resolve original calculation</button>}</div> }));
+vi.mock("@/lib/api", async original => ({ ...await original<typeof import("@/lib/api")>(), discoveryDesignCapabilities: vi.fn(), discoveryDesignPage: vi.fn(), discoveryDesignDetail: vi.fn() }));
+beforeEach(() => {
+  vi.stubGlobal("crypto", webcrypto); vi.resetAllMocks();
+  vi.mocked(discoveryDesignCapabilities).mockResolvedValue(structuredClone(wire.design_capabilities));
+  vi.mocked(discoveryDesignDetail).mockResolvedValue(structuredClone(wire.parent));
+  vi.mocked(discoveryDesignPage).mockResolvedValue({ ...DESIGN_AUTHORITY, version: wire.parent.version, actor_user_id: wire.parent.actor_user_id, session_version: wire.parent.session_version, offset: 0, limit: 8, total: 1, entries: structuredClone(wire.parent.entries) });
+});
+afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
+it("holds parent edits through an unknown calculation save and restores hash-only recovery after the child unmounts", async () => {
+  render(<DiscoveryDesignWorkbench />);
+  fireEvent.click(await screen.findByRole("button", { name: "Load saved designs" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Inspect history" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Dispatch synthetic calculation" }));
+  expect(screen.getByRole("button", { name: "New independent proposal" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Revise current proposal" })).toBeDisabled();
+  act(() => { window.dispatchEvent(new Event("pagehide")); });
+  expect(screen.queryByRole("button", { name: "Resolve original calculation" })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Refresh access" }));
+  const resolve = await screen.findByRole("button", { name: "Resolve original calculation" });
+  expect(screen.getByRole("button", { name: "New independent proposal" })).toBeDisabled(); expect(resolve).toBeEnabled();
+  fireEvent.click(resolve);
+  expect(screen.getByRole("button", { name: "New independent proposal" })).toBeEnabled();
+  expect(screen.getByRole("button", { name: "Dispatch synthetic calculation" })).toBeInTheDocument();
+});
