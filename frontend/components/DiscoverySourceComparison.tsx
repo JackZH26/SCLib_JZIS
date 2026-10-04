@@ -18,7 +18,7 @@ function SourceScatter({ rows, selected, id }: { rows: DiscoverySourceRow[]; sel
       className="max-w-full overflow-x-auto rounded-lg border border-sage-border bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-deep">
       <svg viewBox="0 0 560 332" className="block h-auto w-full min-w-[32rem]" role="img" aria-labelledby={`${id}-plot-title ${id}-plot-description`}>
         <title id={`${id}-plot-title`}>Published EPC lambda and computed Tc at 300 GPa</title>
-        <desc id={`${id}-plot-description`}>{rows.length} separate source rows, with lambda in dimensionless units and computed Tc in kelvin. Filled markers identify selected table rows. Use the table checkboxes to select up to two compounds. Fixed axes are retained across filters.</desc>
+        <desc id={`${id}-plot-description`}>{`${rows.length} separate source rows, with lambda in dimensionless units and computed Tc in kelvin. Filled markers identify selected table rows. Use the table checkboxes to select up to two compounds. Fixed axes are retained across filters.`}</desc>
         {[0, 50, 100, 150, 200, 250, 300].map(tick => <g key={`y-${tick}`}>
           <line x1={62} x2={516} y1={y(tick)} y2={y(tick)} stroke="#d4e4d4" />
           <text x={52} y={y(tick) + 4} textAnchor="end" fill="#5a6b5a" fontSize={12}>{tick}</text>
@@ -34,7 +34,7 @@ function SourceScatter({ rows, selected, id }: { rows: DiscoverySourceRow[]; sel
         {rows.map(row => <circle key={row.id} data-source-row-id={row.id} data-selected={selected.includes(row.id) ? "true" : "false"}
           cx={x(row.electron_phonon_lambda.value)} cy={y(row.computed_tc.value)} r={selected.includes(row.id) ? 6 : 4.5}
           stroke="#24503A" strokeWidth={1.5} fill={selected.includes(row.id) ? "#24503A" : "#ffffff"}>
-          <title>{row.formula}: λ {row.electron_phonon_lambda.raw_value}; computed Tc {row.computed_tc.raw_value} K; source row {row.source_data_row}</title>
+          <title>{`${row.formula}: λ ${row.electron_phonon_lambda.raw_value}; computed Tc ${row.computed_tc.raw_value} K; source row ${row.source_data_row}`}</title>
         </circle>)}
       </svg>
     </div>
