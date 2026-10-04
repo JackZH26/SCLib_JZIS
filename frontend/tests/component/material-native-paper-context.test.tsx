@@ -114,6 +114,8 @@ describe("Native paper context preserves sample and interpretation boundaries", 
     const pre = screen.getByLabelText("Paper context metadata JSON");
     expect(pre).toHaveClass("max-h-80", "max-w-full", "overflow-auto", "whitespace-pre-wrap", "break-all");
     expect(pre).toHaveAttribute("tabindex", "0");
+    expect(screen.getByRole("region", { name: "Paper context metadata JSON" })).toBe(pre);
+    pre.focus(); expect(pre).toHaveFocus();
     expect(JSON.parse(pre.textContent!)).toEqual(loadNativePaperContexts());
     expect(screen.getByRole("link", { name: "Download paper contexts (JSON)" })).toHaveAttribute("href", nativePaperContextDownloadPath);
     expect(screen.getByRole("link", { name: "Download paper context SHA-256" })).toHaveAttribute("download");

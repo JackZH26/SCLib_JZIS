@@ -41,6 +41,7 @@ export function MaterialNativePaperContexts({ batch }: { batch: NativePaperConte
     <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
       <Link className="site-text-link" href={"/materials/" + encodeURIComponent(context.material_id)}>Open catalogue entry</Link>
       <a className="site-text-link" href={nativePaperContextSourceHref(context.source_id)!} target="_blank" rel="noopener noreferrer">Read original paper ↗</a>
+      {context.source_id === "fete" && <Link className="site-text-link" href="/materials/source-observations/fe-te-se-samples">Inspect nominal and EDX sample tables</Link>}
     </div>
     <SourceDetails context={context} batch={checked} />
   </section>)}</div>;
@@ -58,7 +59,7 @@ export function NativePaperContextDownloads({ batch }: { batch: NativePaperConte
         <a className="site-text-link" href={nativePaperContextDownloadPath + ".sha256"} download>Download paper context SHA-256</a>
       </div>
       <p className="break-all font-mono">Metadata SHA-256: {nativePaperContextSnapshotSha256}</p>
-      <pre className="max-h-80 max-w-full overflow-auto whitespace-pre-wrap break-all rounded-md border border-sage-border bg-sage-surface p-3 text-xs leading-5" tabIndex={0} aria-label="Paper context metadata JSON">{JSON.stringify(checked, null, 2)}</pre>
+      <pre role="region" className="max-h-80 max-w-full overflow-auto whitespace-pre-wrap break-all rounded-md border border-sage-border bg-sage-surface p-3 text-xs leading-5" tabIndex={0} aria-label="Paper context metadata JSON">{JSON.stringify(checked, null, 2)}</pre>
     </div>
   </details>;
 }
