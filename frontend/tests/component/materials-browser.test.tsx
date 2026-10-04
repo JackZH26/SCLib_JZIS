@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import MaterialsPage from "@/app/materials/page";
 import { MaterialTable } from "@/components/MaterialTable";
 import { MaterialsFilters } from "@/components/MaterialsFilters";
@@ -10,6 +10,7 @@ import { materialVisibility, sourceScopedMaterialVisibility } from "../fixtures/
 import { materialAnomalyReview } from "../fixtures/scientific-anomalies";
 
 vi.mock("@/lib/api", async importOriginal => ({ ...await importOriginal<typeof import("@/lib/api")>(), listMaterials: vi.fn() }));
+afterEach(() => vi.unstubAllEnvs());
 function material(overrides: Partial<MaterialSummary> = {}): MaterialSummary {
   return { id: "synthetic", formula: "MgB2", family: "boride", tc_max: 9999, tc_ambient: 8888, arxiv_year: 1999, total_papers: 1, variant_count: 0, visibility: materialVisibility(), property_evidence: propertyEnvelope(atomicItem("tc_max", 39)), ...overrides } as MaterialSummary;
 }
@@ -111,6 +112,30 @@ describe("Materials browser scientific state and density", () => {
     expect(within(core).getByText("Reported method").nextElementSibling).toHaveTextContent("Reported model protocol");
     expect(within(core).queryByText("Calculation method")).not.toBeInTheDocument();
     expect(within(core).queryByText(/Tc criterion/)).not.toBeInTheDocument();
+  });
+  it("opens a source reading from the displayed result while leaving absent formal method context unchanged", () => {
+    const tc = atomicItem("tc_max", 250, { result_id: "legacy-result:4d9aa6126689e8fad54ce66a8bd0667b65f7aa5587d7cc6e4de1e90dc08700d2", conditions: {}, source: { paper_id: "aps:10.1103/7lg7-l3x8" } });
+    render(<MaterialTable rows={[material({ id: "mat:thca2h24", formula: "ThCa2H24", property_evidence: propertyEnvelope(tc) })]} />);
+    fireEvent.click(screen.getByRole("button", { name: "Evidence for ThCa2H24" }));
+    const reading = within(screen.getByRole("complementary", { name: "Related paper context" }));
+    expect(reading.getByRole("link", { name: "Calculated Tc method and source table parameters" })).toHaveAttribute("href", "/materials/source-observations/paper-contexts#paper-context-thca");
+    expect(within(screen.getByLabelText("Displayed Tc source and conditions")).getByText("Calculation method").nextElementSibling).toHaveTextContent(/^Not supplied in this record$/);
+    expect(tc.conditions).toEqual({});
+  });
+  it("does not expose the catalogue source reading when the displayed match has another result identity", () => {
+    const a = atomicItem("tc_max", 250, { result_id: "legacy-result:4d9aa6126689e8fad54ce66a8bd0667b65f7aa5587d7cc6e4de1e90dc08700d2", source: { paper_id: "aps:10.1103/7lg7-l3x8" } });
+    const b = atomicItem("tc_max", 200, { result_id: "unrelated-B", source: { paper_id: "aps:10.1103/7lg7-l3x8" } });
+    render(<MaterialTable rows={[material({ id: "mat:thca2h24", formula: "ThCa2H24", property_evidence: propertyEnvelope(a), matching_results: [matching("unrelated-B", b)] })]} resultFiltersActive />);
+    fireEvent.click(screen.getByRole("button", { name: "Evidence for ThCa2H24" }));
+    expect(screen.queryByRole("complementary", { name: "Related paper context" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Calculated Tc method and source table parameters" })).not.toBeInTheDocument();
+  });
+  it("keeps the reading's configured base path in a native anchor", () => {
+    vi.stubEnv("NEXT_PUBLIC_BASE_PATH", "/sclib-preview");
+    const tc = atomicItem("tc_max", 250, { result_id: "legacy-result:4d9aa6126689e8fad54ce66a8bd0667b65f7aa5587d7cc6e4de1e90dc08700d2", source: { paper_id: "aps:10.1103/7lg7-l3x8" } });
+    render(<MaterialTable rows={[material({ id: "mat:thca2h24", formula: "ThCa2H24", property_evidence: propertyEnvelope(tc) })]} />);
+    fireEvent.click(screen.getByRole("button", { name: "Evidence for ThCa2H24" }));
+    expect(screen.getByRole("link", { name: "Calculated Tc method and source table parameters" })).toHaveAttribute("href", "/sclib-preview/materials/source-observations/paper-contexts#paper-context-thca");
   });
   it("does not borrow the catalogue method or relabel sample measurements as a matched calculation method", () => {
     const a = atomicItem("tc_max", 39, { result_id: "A", conditions: { calculation_method: "Catalogue-only model" }, source: { paper_id: "paper:A", year: 2026 } });

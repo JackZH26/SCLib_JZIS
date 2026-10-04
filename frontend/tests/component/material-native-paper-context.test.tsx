@@ -11,7 +11,7 @@ afterEach(() => { cleanup(); vi.unstubAllEnvs(); });
 
 describe("Native paper context preserves sample and interpretation boundaries", () => {
   it("pins downloadable metadata and keeps paraphrases separate from normalized material values", () => {
-    const name = "materials-native-paper-context-2026-10-04.json";
+    const name = "materials-native-paper-context-2026-10-04-r2.json";
     const raw = readFileSync(`public/research-pilots/${name}`);
     expect(createHash("sha256").update(raw).digest("hex")).toBe(nativePaperContextSnapshotSha256);
     expect(readFileSync(`public/research-pilots/${name}.sha256`, "utf8")).toBe(`${nativePaperContextSnapshotSha256}  ${name}\n`);
@@ -27,6 +27,38 @@ describe("Native paper context preserves sample and interpretation boundaries", 
       }
     }
     expect(raw.toString()).not.toMatch(/\/private\/tmp|\/Users\/|"raw_value"|"full_text"/);
+    const previous = readFileSync("public/research-pilots/materials-native-paper-context-2026-10-04.json");
+    expect(createHash("sha256").update(previous).digest("hex")).toBe("6c8b6b57c8a0e66a916ba2abf8bcafe9b849f56ef9a6ff0e4b4a8f0b4c1b4404");
+    expect(batch.contexts.filter(context => context.source_id !== "thca")).toEqual(JSON.parse(previous.toString()).contexts);
+  });
+
+  it("separates the hydride table result, assumed Tc model and paper-wide calculation settings", () => {
+    render(<Page />);
+    const section = within(screen.getByRole("region", { name: "ThCa₂H₂₄: calculated Tc and computational methods" }));
+    expect(section.getByText(/Table I reports predicted Tc = 250 K/)).toHaveTextContent("300 GPa");
+    expect(section.getByText(/Direct solution of the isotropic Migdal–Eliashberg/)).toHaveTextContent("Elk, with assumed Coulomb pseudopotential μ* = 0.1");
+    expect(section.getByText(/electron–phonon λ = 2.96/)).toHaveTextContent("ωlog = 530");
+    expect(section.getByText(/Table I does not print an ωlog unit/)).toHaveTextContent("unit remains unresolved");
+    expect(section.getByText(/Paper-wide EPC settings/)).toHaveTextContent("Quantum ESPRESSO, ultrasoft pseudopotentials, 60 Ry");
+    expect(section.getByText(/Paper-wide structure\/band settings/)).toHaveTextContent("VASP, PBE-GGA/PAW, 750 eV");
+    expect(section.getByText(/class-level discussion/)).toHaveTextContent("compound-specific stability conclusion for ThCa2H24 requires further source review");
+    expect(section.queryByText(/530 K|Allen–Dynes|experimentally verified|QE.*PAW.*750 eV/)).not.toBeInTheDocument();
+    const context = loadNativePaperContexts()!.contexts.find(context => context.source_id === "thca")!;
+    expect(context.selected_result_association).toBe("unestablished");
+    expect(context).not.toHaveProperty("frozen_classification_statuses");
+    for (const row of context.rows) expect(row.normalized_value).toBeNull();
+  });
+
+  it("requires the hydride material, selected result and APS identity together for related reading", () => {
+    const material = "mat:thca2h24";
+    const selected = { result_id: "legacy-result:4d9aa6126689e8fad54ce66a8bd0667b65f7aa5587d7cc6e4de1e90dc08700d2", source: { paper_id: "aps:10.1103/7lg7-l3x8" } };
+    expect(materialStudyReading(material, selected)?.href).toBe("/materials/source-observations/paper-contexts#paper-context-thca");
+    expect(materialStudyReading("mat:thca2h20", selected)).toBeNull();
+    expect(materialStudyReading(material, { ...selected, result_id: "legacy-result:other-pressure" })).toBeNull();
+    expect(materialStudyReading(material, { ...selected, source: { paper_id: "aps:10.1103/other-edition" } })).toBeNull();
+    expect(materialStudyReading(material, { source: selected.source })).toBeNull();
+    vi.stubEnv("NEXT_PUBLIC_BASE_PATH", "/sclib-preview");
+    expect(materialStudyReading(material, selected)?.href).toBe("/sclib-preview/materials/source-observations/paper-contexts#paper-context-thca");
   });
 
   it("shows Fe NMR attribution to other compositions without assigning their pairing to x = 0.48", () => {
@@ -92,6 +124,8 @@ describe("Native paper context preserves sample and interpretation boundaries", 
       (b: any) => { b.sources[0].source_url = "https://example.org/unreviewed.pdf"; },
       (b: any) => { b.locators[0].char_end += 1; },
       (b: any) => { b.raw_full_text = "unreviewed source text"; },
+      (b: any) => { b.contexts.find((c: any) => c.source_id === "thca").rows[2].summary = "ωlog = 530 K"; },
+      (b: any) => { b.sources.find((s: any) => s.id === "thca").source_url = "https://journals.aps.org/prresearch/pdf/10.1103/other-edition"; },
     ];
     for (const edit of edits) {
       const changed = loadNativePaperContexts()!;
@@ -106,6 +140,10 @@ describe("Native paper context preserves sample and interpretation boundaries", 
     expect(nativePaperContextSourceHref("organic", 4)).toBe("https://arxiv.org/pdf/cond-mat/0612431v1#page=4");
     for (const page of [0, -1, 1.2, 9, NaN, Infinity]) expect(nativePaperContextSourceHref("fete", page)).toBeNull();
     expect(nativePaperContextSourceHref("https://example.org/unreviewed.pdf")).toBeNull();
+    expect(nativePaperContextSourceHref("thca", 2)).toBe("https://journals.aps.org/prresearch/pdf/10.1103/7lg7-l3x8#page=2");
+    expect(nativePaperContextSourceHref("thca", 7)).toBe("https://journals.aps.org/prresearch/pdf/10.1103/7lg7-l3x8#page=7");
+    for (const page of [0, -1, 1.2, 8, NaN, Infinity]) expect(nativePaperContextSourceHref("thca", page)).toBeNull();
+    expect(nativePaperContextSourceHref("https://journals.aps.org/prresearch/pdf/10.1103/7lg7-l3x8", 2)).toBeNull();
   });
 
   it("keeps provenance and downloadable JSON closed, contained and English by default", () => {

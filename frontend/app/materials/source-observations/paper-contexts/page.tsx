@@ -20,8 +20,8 @@ export default function MaterialPaperContextsPage() {
         <Link className="site-text-link" href="/materials/source-observations/followup">Additional source records</Link>
       </nav>
       <h1 className="text-3xl font-semibold tracking-tight">Paper contexts and open questions</h1>
-      <p className="max-w-3xl text-sm leading-6 text-sage-muted">Read sample-qualified methods and unresolved claims from captured paper editions.</p>
-      <p className="max-w-3xl text-xs leading-5 text-sage-muted">Numbers here describe the source's samples and conditions. They remain separate from selected catalogue measurements and classifications.</p>
+      <p className="max-w-3xl text-sm leading-6 text-sage-muted">Read sample-qualified and computational methods, with open questions from captured paper editions.</p>
+      <p className="max-w-3xl text-xs leading-5 text-sage-muted">Numbers here describe the source's samples or calculated models and conditions. They remain separate from selected catalogue results and classifications.</p>
     </header>
     <MaterialNativePaperContexts batch={batch} />
     <NativePaperContextDownloads batch={batch} />

@@ -1,6 +1,14 @@
 /** Related paper readings for inspected result identities; no property overlay. */
 const readings = [
   {
+    materialId: "mat:thca2h24",
+    resultId: "legacy-result:4d9aa6126689e8fad54ce66a8bd0667b65f7aa5587d7cc6e4de1e90dc08700d2",
+    paperId: "aps:10.1103/7lg7-l3x8",
+    href: "/materials/source-observations/paper-contexts#paper-context-thca",
+    label: "Calculated Tc method and source table parameters",
+    note: "The source table reports 250 K at 300 GPa and specifies its Tc method. Paper-wide calculation settings and unresolved units remain source context.",
+  },
+  {
     materialId: "mat:yin3",
     resultId: "legacy-result:eb421498255ee0ca85ef1f76f5ed333768f48bd7fb5389f8fc69fc9bb6707814",
     paperId: "arxiv:1112.3083",

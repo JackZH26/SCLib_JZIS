@@ -18,6 +18,7 @@ import { StructureEvidencePanel, StructureEvidenceValue } from "@/components/Str
 import { pressureLabel } from "@/lib/pressure-semantics";
 import { ScientificMatches } from "@/components/ScientificMatches";
 import { materialRowTc, materialTcCriterion, materialTcQuantityKind, type MaterialsTcDisplay } from "@/lib/materials-browser";
+import { materialStudyReading } from "@/lib/material-study-reading";
 
 const OPTIONAL_COLUMNS = [
   { key: "tc_ambient", label: "Ambient Tc (K)" }, { key: "pairing_symmetry", label: "Pairing" },
@@ -104,6 +105,7 @@ export function MaterialTable({ rows, resultFiltersActive = false }: { rows: Mat
   }, [inspection]);
   const close = () => { dialog.current?.close?.(); dialog.current?.removeAttribute("open"); setInspection(null); };
   const inspectedDisplay = inspection ? materialRowTc(inspection, resultFiltersActive) : null;
+  const relatedReading = inspection && inspectedDisplay?.item ? materialStudyReading(inspection.id, inspectedDisplay.item) : null;
   if (!visibleRows.length) return <div className="materials-empty" role="status">No materials match these filters. Try widening the Tc or pressure range.</div>;
   return <section aria-label="Material results" className="materials-table-section">
     <div className="materials-table-tools">
@@ -141,6 +143,7 @@ export function MaterialTable({ rows, resultFiltersActive = false }: { rows: Mat
           <section><h3>{inspectedDisplay.usesMatch ? "Matched Tc result" : "Displayed Tc result"}</h3>
             {inspectedDisplay.item ? <><p className="materials-inspection-value">{propertyValue(inspectedDisplay.item)} <span>{propertyOrigin(inspectedDisplay.item)}</span></p><CoreTcEvidence item={inspectedDisplay.item} /><details className="materials-full-result-context"><summary>Result identity and missing context</summary><p className="materials-inspection-note">Raw criterion tokens, supplied method fields, result and state identifiers, and source locators are available below. Missing context is not inferred from another result.</p><AtomicEvidenceDetails item={inspectedDisplay.item} /></details></> : <p>{propertyStatus(inspection.property_evidence, "tc_max")}. No legacy scalar or filter lower bound is substituted for a source-linked Tc quantity.</p>}
             {inspectedDisplay.usesMatch && <p className="materials-inspection-note">This result matches your filters. It may differ from the catalogue maximum. {inspectedDisplay.matchCount} matching result{inspectedDisplay.matchCount === 1 ? " is" : "s are"} included in this response.</p>}
+            {relatedReading && <aside className="materials-full-result-context" aria-label="Related paper context"><a className="materials-detail-link" href={relatedReading.href}>{relatedReading.label}</a><p className="materials-inspection-note">{relatedReading.note}</p>{relatedReading.companion && <a className="materials-detail-link" href={relatedReading.companion.href}>{relatedReading.companion.label}</a>}</aside>}
           </section>
           {resultFiltersActive && <details><summary>Matching result references</summary><ScientificMatches results={inspection.matching_results} scope="material" /></details>}
           <details><summary>Other catalogue selections and result alternatives</summary><p className="materials-inspection-note">Each property has its own source and conditions. These selections are not a joint observation, and unavailable values do not establish absence.</p><div className="materials-inspection-properties"><PropertyEvidenceValue evidence={inspection.property_evidence} field="tc_max" /><PropertyEvidenceValue evidence={inspection.property_evidence} field="tc_ambient" /></div></details>
