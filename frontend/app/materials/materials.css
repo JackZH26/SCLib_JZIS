@@ -12,13 +12,14 @@
 .materials-formula-field small { color: var(--materials-muted); font-size: .75rem; font-weight: 400; line-height: 1.4; }
 .materials-field { display: grid; gap: .35rem; min-width: 0; font-size: .8rem; font-weight: 500; line-height: 1.3; }
 .materials-field > span { color: var(--materials-muted); }
-.materials-browser .materials-field input:not([type="hidden"]), .materials-browser .materials-field select, .materials-family-field > div > button, .materials-sort select {
+.materials-browser .materials-field input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]), .materials-browser .materials-field select, .materials-family-field > div > button, .materials-sort select {
   width: 100%; min-width: 0; height: 42px; border: 1px solid var(--materials-line); border-radius: .3rem; background: var(--materials-surface); color: var(--materials-ink); padding: .5rem .65rem; font-size: .875rem; font-weight: 400; line-height: 1.3;
 }
 .materials-browser input::placeholder { color: #617568; opacity: 1; }
 .materials-browser select:focus-visible, .materials-browser input:focus-visible, .materials-browser button:focus-visible, .materials-browser a:focus-visible, .materials-browser summary:focus-visible { outline: 2px solid var(--materials-accent); outline-offset: 3px; }
 .materials-family-field > div > button span { color: var(--materials-ink); }
-.materials-family-field > div > div { width: min(17rem, calc(100vw - 4rem)); }
+.materials-family-field > div > div { left: 0; width: min(17rem, calc(100vw - 4rem)); }
+.materials-browser .materials-family-field input[type="checkbox"] { flex: 0 0 1rem; width: 1rem; min-width: 1rem; height: 1rem; padding: 0; accent-color: var(--materials-accent); }
 .materials-filter-actions { display: flex; align-items: center; gap: .75rem; height: 42px; white-space: nowrap; }
 .materials-filter-actions .btn-primary { min-height: 42px; padding: .5rem 1rem; border-radius: .3rem; font-size: .875rem; }
 .materials-clear { color: var(--materials-muted); font-size: .8rem; text-decoration: underline; text-underline-offset: 3px; }
