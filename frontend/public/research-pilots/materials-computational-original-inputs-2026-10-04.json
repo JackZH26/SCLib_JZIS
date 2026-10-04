@@ -1,0 +1,1019 @@
+{
+  "version": "materials-computational-original-inputs/1.0.0",
+  "status": "source_qualified_reference",
+  "prepared_on": "2026-10-04",
+  "reference": {
+    "entry_id": "0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq",
+    "upload_id": "5IvJz3uWTeu7Sgf197BSnw",
+    "mainfile": "oqmd/icsd/30416/relaxation/vasprun.xml",
+    "formula": "B2Cr",
+    "knowledge_origin": "Computed"
+  },
+  "counts": {
+    "recovered_original_input_file_count": 3,
+    "original_INCAR_control_count": 19,
+    "POSCAR_source_site_count": 3,
+    "provider_returned_path_count": 20,
+    "independent_computed_entry_count": 1,
+    "independent_experiment_count_established": false,
+    "formal_material_property_additions": 0
+  },
+  "source_files": [
+    {
+      "name": "INCAR",
+      "source_url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq/raw/INCAR",
+      "provider_path": "oqmd/icsd/30416/relaxation/INCAR",
+      "captured_at_utc": "2026-10-04T04:09:13.991760+00:00",
+      "HTTP_status": 200,
+      "complete_body": true,
+      "source_bytes": 469,
+      "source_sha256": "4d8039f059a12f650c757b3a1247918756f27460753b3172449a6779c59188b2",
+      "directory_size_matches_capture": true,
+      "raw_body_redistributed": false
+    },
+    {
+      "name": "POSCAR",
+      "source_url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq/raw/POSCAR",
+      "provider_path": "oqmd/icsd/30416/relaxation/POSCAR",
+      "captured_at_utc": "2026-10-04T04:09:07.441948+00:00",
+      "HTTP_status": 200,
+      "complete_body": true,
+      "source_bytes": 228,
+      "source_sha256": "d724f952998cbb6888625378368a0fec7f9ca37a98685ef39a629e68523239f3",
+      "directory_size_matches_capture": true,
+      "raw_body_redistributed": false
+    },
+    {
+      "name": "KPOINTS",
+      "source_url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq/raw/KPOINTS",
+      "provider_path": "oqmd/icsd/30416/relaxation/KPOINTS",
+      "captured_at_utc": "2026-10-04T04:09:08.520097+00:00",
+      "HTTP_status": 200,
+      "complete_body": true,
+      "source_bytes": 32,
+      "source_sha256": "c9f61a045a63101e8a9c154c10218c2c10a8c63e487585ec166d1287935d8c15",
+      "directory_size_matches_capture": true,
+      "raw_body_redistributed": false
+    }
+  ],
+  "entry_capture": {
+    "published": true,
+    "with_embargo": false,
+    "license_as_reported": "CC BY 4.0",
+    "last_processing_time": "2021-12-24T11:59:42.356000",
+    "entry_before_after_byte_equal": true,
+    "entry_before_after_sha256": "ffcb6470122b82a4df618f1ddaee55a1a3a705069fa3b585f36f1dfd42d8df6d",
+    "entry_before_finished_at": "2026-10-04T04:07:45.240799+00:00",
+    "entry_after_finished_at": "2026-10-04T04:09:47.406722+00:00",
+    "no_fresh_XML_download": true
+  },
+  "provider_inventory": {
+    "source_url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq/rawdir",
+    "response_sha256": "c34bd026f034af4416416a9f283ec478a88c7d92e46ede8277a7e191b7bfed2f",
+    "returned_file_count": 20,
+    "pagination_present": false,
+    "capture_scope": "Twenty paths returned for this entry mainfile directory. Only INCAR, POSCAR and KPOINTS bodies were recovered in this capture.",
+    "other_file_contents_checked": false,
+    "provider_absence_claim": false
+  },
+  "file_relationship_scope": {
+    "documentation_url": "https://docs.nomad-lab.eu/explanation/basics.html",
+    "scope": "NOMAD entry-directory auxiliary files do not on their own prove that every file was used by this computation. Written numeric agreement with the frozen XML input contexts is shown separately."
+  },
+  "incar_controls": [
+    {
+      "tag": "PREC",
+      "raw_value_lexeme": "ACC",
+      "source_line": {
+        "line": 2,
+        "byte_start_inclusive": 23,
+        "byte_end_exclusive": 36,
+        "line_sha256": "110c0780cac6fb25e4dbb354fae479488d7db087ff936d254dbc0628614f6b2c"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[2][@name='PREC']",
+          "native_tag": "i",
+          "native_type_attribute": "string",
+          "raw_text": "acc",
+          "text_sha256": "414322309db5c06d090a2e922ccc3e00708c993b9b96405de127b7fd8da2dd21",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        },
+        {
+          "xpath": "./parameters[1]/separator[2][@name='electronic']/i[1][@name='PREC']",
+          "native_tag": "i",
+          "native_type_attribute": "string",
+          "raw_text": "acc",
+          "text_sha256": "414322309db5c06d090a2e922ccc3e00708c993b9b96405de127b7fd8da2dd21",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "ISTART",
+      "raw_value_lexeme": "1",
+      "source_line": {
+        "line": 3,
+        "byte_start_inclusive": 36,
+        "byte_end_exclusive": 49,
+        "line_sha256": "180e49b3e3c7eff35e35180c17d910c7fbfca4df794df11c9e2e182da0fcc0b4"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[1][@name='ISTART']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     1",
+          "text_sha256": "fe56d3e6ef2c8239d116573fac4a146bfa069ceaf8e187e8f09fd85e5f61bfff",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        },
+        {
+          "xpath": "./parameters[1]/separator[2][@name='electronic']/separator[3][@name='electronic startup']/i[1][@name='ISTART']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     0",
+          "text_sha256": "4cc78cfd77a8a35a75f4ec74239d1ac0af50c97952cede7c2ca0f6c1e849c82f",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "ICHARG",
+      "raw_value_lexeme": "1",
+      "source_line": {
+        "line": 4,
+        "byte_start_inclusive": 49,
+        "byte_end_exclusive": 62,
+        "line_sha256": "ae07bbd821c9a67d87e042441b06f2d551af2851af93d31c393ded37fb1c34bf"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[5][@name='ICHARG']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     1",
+          "text_sha256": "fe56d3e6ef2c8239d116573fac4a146bfa069ceaf8e187e8f09fd85e5f61bfff",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        },
+        {
+          "xpath": "./parameters[1]/separator[2][@name='electronic']/separator[3][@name='electronic startup']/i[2][@name='ICHARG']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     1",
+          "text_sha256": "fe56d3e6ef2c8239d116573fac4a146bfa069ceaf8e187e8f09fd85e5f61bfff",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "ISPIN",
+      "raw_value_lexeme": "2",
+      "source_line": {
+        "line": 5,
+        "byte_start_inclusive": 62,
+        "byte_end_exclusive": 73,
+        "line_sha256": "55b3d04312c7cdfe0bca968dd161d0310f64613a52fae39cb870391edbf684a2"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[4][@name='ISPIN']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     2",
+          "text_sha256": "4d8286b0df46d6da582eb892e206a2f7c4667edd87f128d3d562e917b0ff0989",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        },
+        {
+          "xpath": "./parameters[1]/separator[2][@name='electronic']/separator[4][@name='electronic spin']/i[1][@name='ISPIN']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     2",
+          "text_sha256": "4d8286b0df46d6da582eb892e206a2f7c4667edd87f128d3d562e917b0ff0989",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "MAGMOM",
+      "raw_value_lexeme": "2*0.0000 1*5.0000",
+      "source_line": {
+        "line": 6,
+        "byte_start_inclusive": 73,
+        "byte_end_exclusive": 102,
+        "line_sha256": "7c6df14ace66ff341614671d9b5700713e8d1c790cd4e036ad57c145424cd8f7"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/v[1][@name='MAGMOM']",
+          "native_tag": "v",
+          "native_type_attribute": null,
+          "raw_text": "      0.00000000      0.00000000      5.00000000",
+          "text_sha256": "27277ae9a5aa6a2a665fb7a3f529972f5e4decac85af9ab68f5fdbeae0af9274",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        },
+        {
+          "xpath": "./parameters[1]/separator[2][@name='electronic']/separator[4][@name='electronic spin']/v[1][@name='MAGMOM']",
+          "native_tag": "v",
+          "native_type_attribute": null,
+          "raw_text": "      0.00000000      0.00000000      5.00000000",
+          "text_sha256": "27277ae9a5aa6a2a665fb7a3f529972f5e4decac85af9ab68f5fdbeae0af9274",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "NSW",
+      "raw_value_lexeme": "60",
+      "source_line": {
+        "line": 10,
+        "byte_start_inclusive": 157,
+        "byte_end_exclusive": 168,
+        "line_sha256": "5f3a7eb60b5443763b07fcc9edbee8005688689ce3a54f42fa5f3c217fd60b7c"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[8][@name='NSW']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "    60",
+          "text_sha256": "ff9cc764ad1e5eb82af248697eef9892371afdd2f59ab53dd672ea6129262d53",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        },
+        {
+          "xpath": "./parameters[1]/separator[4][@name='ionic']/i[1][@name='NSW']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "    60",
+          "text_sha256": "ff9cc764ad1e5eb82af248697eef9892371afdd2f59ab53dd672ea6129262d53",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "IBRION",
+      "raw_value_lexeme": "2",
+      "source_line": {
+        "line": 11,
+        "byte_start_inclusive": 168,
+        "byte_end_exclusive": 181,
+        "line_sha256": "b65747a2903dfe5e5a88f68ed849cbe81395370198bbc88d94e54537c699f151"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[7][@name='IBRION']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     2",
+          "text_sha256": "4d8286b0df46d6da582eb892e206a2f7c4667edd87f128d3d562e917b0ff0989",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        },
+        {
+          "xpath": "./parameters[1]/separator[4][@name='ionic']/i[2][@name='IBRION']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     2",
+          "text_sha256": "4d8286b0df46d6da582eb892e206a2f7c4667edd87f128d3d562e917b0ff0989",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "ISIF",
+      "raw_value_lexeme": "3",
+      "source_line": {
+        "line": 12,
+        "byte_start_inclusive": 181,
+        "byte_end_exclusive": 192,
+        "line_sha256": "1fad6e19f9dbf52961bafd3bc6edea6d4bc292db6bf4f30ce012dfeec6f8f050"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[9][@name='ISIF']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     3",
+          "text_sha256": "e301bc3fbef1422dfb745a9270cbf5039ef3e563f47cd62abcdd116c4acf1fa7",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        },
+        {
+          "xpath": "./parameters[1]/separator[4][@name='ionic']/i[3][@name='ISIF']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     3",
+          "text_sha256": "e301bc3fbef1422dfb745a9270cbf5039ef3e563f47cd62abcdd116c4acf1fa7",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "NELMIN",
+      "raw_value_lexeme": "5",
+      "source_line": {
+        "line": 15,
+        "byte_start_inclusive": 229,
+        "byte_end_exclusive": 242,
+        "line_sha256": "282ada92420be817f2aef3e04ac79e05cfc569e6aa4fa76db9f8ac4abea00e69"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[6][@name='NELMIN']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     5",
+          "text_sha256": "8330f580321313133f1ac3c82643c18174dd50da92a7c47e3dd3b8947afcd36a",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        },
+        {
+          "xpath": "./parameters[1]/separator[2][@name='electronic']/separator[6][@name='electronic convergence']/i[3][@name='NELMIN']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     5",
+          "text_sha256": "8330f580321313133f1ac3c82643c18174dd50da92a7c47e3dd3b8947afcd36a",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "ALGO",
+      "raw_value_lexeme": "FAST",
+      "source_line": {
+        "line": 16,
+        "byte_start_inclusive": 242,
+        "byte_end_exclusive": 256,
+        "line_sha256": "beff8d8499a6e792e71722bf1116fd2f26ac2c4077d20847562d1f17b6b21913"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[3][@name='ALGO']",
+          "native_tag": "i",
+          "native_type_attribute": "string",
+          "raw_text": " FAST",
+          "text_sha256": "9ef18e76a983f4427538888d5f87c59f216f99932db76a8023c94ee82adc11ec",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "LCHARG",
+      "raw_value_lexeme": ".TRUE.",
+      "source_line": {
+        "line": 19,
+        "byte_start_inclusive": 275,
+        "byte_end_exclusive": 293,
+        "line_sha256": "09a9954dd372dc283668cc79b943cc65c11cd93a5f8116acdd60c7f1f7a56f9e"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[13][@name='LCHARG']",
+          "native_tag": "i",
+          "native_type_attribute": "logical",
+          "raw_text": " T  ",
+          "text_sha256": "47f0ac988d31b4773adc1958a1bc893bf1703a69d83e8dfcfad4b3b8e3843b33",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        },
+        {
+          "xpath": "./parameters[1]/separator[8][@name='writing']/i[3][@name='LCHARG']",
+          "native_tag": "i",
+          "native_type_attribute": "logical",
+          "raw_text": " T  ",
+          "text_sha256": "47f0ac988d31b4773adc1958a1bc893bf1703a69d83e8dfcfad4b3b8e3843b33",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "LWAVE",
+      "raw_value_lexeme": ".FALSE.",
+      "source_line": {
+        "line": 20,
+        "byte_start_inclusive": 293,
+        "byte_end_exclusive": 311,
+        "line_sha256": "e831d4de0b5fc8d3d9b1a2239b377d1845dccafec7bde23b6a7a60fca1a73bc9"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[12][@name='LWAVE']",
+          "native_tag": "i",
+          "native_type_attribute": "logical",
+          "raw_text": " F  ",
+          "text_sha256": "7c65699bf06c99bfac059012c0c61a2cf1258472021e6aa4c4d345d11d44d96a",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        },
+        {
+          "xpath": "./parameters[1]/separator[8][@name='writing']/i[2][@name='LWAVE']",
+          "native_tag": "i",
+          "native_type_attribute": "logical",
+          "raw_text": " F  ",
+          "text_sha256": "7c65699bf06c99bfac059012c0c61a2cf1258472021e6aa4c4d345d11d44d96a",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "LELF",
+      "raw_value_lexeme": ".FALSE.",
+      "source_line": {
+        "line": 21,
+        "byte_start_inclusive": 311,
+        "byte_end_exclusive": 328,
+        "line_sha256": "f13278e5899f0d15e40b80c7d6493fecd14d7fd693ee93f6c001fc9c90d5c858"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[16][@name='LELF']",
+          "native_tag": "i",
+          "native_type_attribute": "logical",
+          "raw_text": " F  ",
+          "text_sha256": "7c65699bf06c99bfac059012c0c61a2cf1258472021e6aa4c4d345d11d44d96a",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        },
+        {
+          "xpath": "./parameters[1]/separator[8][@name='writing']/i[7][@name='LELF']",
+          "native_tag": "i",
+          "native_type_attribute": "logical",
+          "raw_text": " F  ",
+          "text_sha256": "7c65699bf06c99bfac059012c0c61a2cf1258472021e6aa4c4d345d11d44d96a",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "LHVAR",
+      "raw_value_lexeme": ".FALSE.",
+      "source_line": {
+        "line": 22,
+        "byte_start_inclusive": 328,
+        "byte_end_exclusive": 346,
+        "line_sha256": "08c1eda83694ff4e20b17434a7847ecfb53690bc88faed631134c6f5670b574c"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "LVTOT",
+      "raw_value_lexeme": ".FALSE.",
+      "source_line": {
+        "line": 23,
+        "byte_start_inclusive": 346,
+        "byte_end_exclusive": 364,
+        "line_sha256": "8896688963433cbfc358054a4d359a0f4f0e7e7d8d155fcdc00328f852834f32"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[14][@name='LVTOT']",
+          "native_tag": "i",
+          "native_type_attribute": "logical",
+          "raw_text": " F  ",
+          "text_sha256": "7c65699bf06c99bfac059012c0c61a2cf1258472021e6aa4c4d345d11d44d96a",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        },
+        {
+          "xpath": "./parameters[1]/separator[8][@name='writing']/i[5][@name='LVTOT']",
+          "native_tag": "i",
+          "native_type_attribute": "logical",
+          "raw_text": " F  ",
+          "text_sha256": "7c65699bf06c99bfac059012c0c61a2cf1258472021e6aa4c4d345d11d44d96a",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "ISMEAR",
+      "raw_value_lexeme": "1",
+      "source_line": {
+        "line": 26,
+        "byte_start_inclusive": 375,
+        "byte_end_exclusive": 388,
+        "line_sha256": "9e64841db66f688b1231628447e3f623a80a83521de9c2ed3447742f892cb04b"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[10][@name='ISMEAR']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     1",
+          "text_sha256": "fe56d3e6ef2c8239d116573fac4a146bfa069ceaf8e187e8f09fd85e5f61bfff",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        },
+        {
+          "xpath": "./parameters[1]/separator[2][@name='electronic']/separator[1][@name='electronic smearing']/i[1][@name='ISMEAR']",
+          "native_tag": "i",
+          "native_type_attribute": "int",
+          "raw_text": "     1",
+          "text_sha256": "fe56d3e6ef2c8239d116573fac4a146bfa069ceaf8e187e8f09fd85e5f61bfff",
+          "native_unit_attributes": {},
+          "comparison": "same_trimmed_source_lexeme"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "SIGMA",
+      "raw_value_lexeme": "0.2",
+      "source_line": {
+        "line": 27,
+        "byte_start_inclusive": 388,
+        "byte_end_exclusive": 402,
+        "line_sha256": "c35382cc7c56db148e5cb84f3f58048eec759e3e4b013b44a2bcfb8c4502d08e"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[11][@name='SIGMA']",
+          "native_tag": "i",
+          "native_type_attribute": null,
+          "raw_text": "      0.20000000",
+          "text_sha256": "9a7d51d463beeaf201112162f0f724c02a15f454a5284516426e5d0a08e6e6f7",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        },
+        {
+          "xpath": "./parameters[1]/separator[2][@name='electronic']/separator[1][@name='electronic smearing']/i[2][@name='SIGMA']",
+          "native_tag": "i",
+          "native_type_attribute": null,
+          "raw_text": "      0.20000000",
+          "text_sha256": "9a7d51d463beeaf201112162f0f724c02a15f454a5284516426e5d0a08e6e6f7",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "MAGNETISM",
+      "raw_value_lexeme": "FERRO",
+      "source_line": {
+        "line": 30,
+        "byte_start_inclusive": 435,
+        "byte_end_exclusive": 455,
+        "line_sha256": "d3de13761b209d4b36f7477e1a47cdc2f3555437346e6d7de44e358578a5f13f"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    },
+    {
+      "tag": "LORBIT",
+      "raw_value_lexeme": "11",
+      "source_line": {
+        "line": 31,
+        "byte_start_inclusive": 455,
+        "byte_end_exclusive": 469,
+        "line_sha256": "70f9c8aaf9b5b7db0e6b68f14544b70cec5394b9187778d73ff8adae2b3aa3b5"
+      },
+      "native_unit": null,
+      "normalized_value": null,
+      "frozen_xml_occurrences": [
+        {
+          "xpath": "./incar[1]/i[15][@name='LORBIT']",
+          "native_tag": "i",
+          "native_type_attribute": "logical",
+          "raw_text": " F  ",
+          "text_sha256": "7c65699bf06c99bfac059012c0c61a2cf1258472021e6aa4c4d345d11d44d96a",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        },
+        {
+          "xpath": "./parameters[1]/separator[7][@name='dos']/i[1][@name='LORBIT']",
+          "native_tag": "i",
+          "native_type_attribute": "logical",
+          "raw_text": " F  ",
+          "text_sha256": "7c65699bf06c99bfac059012c0c61a2cf1258472021e6aa4c4d345d11d44d96a",
+          "native_unit_attributes": {},
+          "comparison": "different_source_lexemes_preserved"
+        }
+      ],
+      "association_role": "uploader raw input control; effective runtime role not established"
+    }
+  ],
+  "poscar": {
+    "scale": {
+      "raw_lexeme": "1.0",
+      "source_line": {
+        "line": 2,
+        "byte_start_inclusive": 5,
+        "byte_end_exclusive": 10,
+        "line_sha256": "5ecc4e6b221135f55fa97bbe2a13420d120e5b2f63200f6723ae92aa3a978c60"
+      },
+      "normalized_value": null
+    },
+    "species_names": {
+      "raw_lexeme": "B Cr",
+      "source_line": {
+        "line": 6,
+        "byte_start_inclusive": 92,
+        "byte_end_exclusive": 97,
+        "line_sha256": "a1bd479b65ccb1725d92f856fab170ea7675573e08a37027535506395f32a496"
+      },
+      "normalized_value": null
+    },
+    "ions_per_species": {
+      "raw_lexeme": "2 1",
+      "source_line": {
+        "line": 7,
+        "byte_start_inclusive": 97,
+        "byte_end_exclusive": 101,
+        "line_sha256": "dfac347cb71ae693ba8a54687f7112aff24ec67f88a3c66f69a7bf968fa2ac16"
+      },
+      "normalized_value": null
+    },
+    "coordinate_mode": {
+      "raw_lexeme": "direct",
+      "source_line": {
+        "line": 8,
+        "byte_start_inclusive": 101,
+        "byte_end_exclusive": 108,
+        "line_sha256": "96f56a26868e3613cca099b0457840e9e532b916a4de8572946edca4b12a5a15"
+      },
+      "normalized_value": null
+    },
+    "basis_rows": [
+      {
+        "raw_lexeme": "2.970000 0.000000 0.000000",
+        "source_line": {
+          "line": 3,
+          "byte_start_inclusive": 10,
+          "byte_end_exclusive": 37,
+          "line_sha256": "72f198facf41621416a096610db3f18828e338f62259910530cceb7c0096cd88"
+        },
+        "normalized_value": null
+      },
+      {
+        "raw_lexeme": "-1.485000 2.572095 0.000000",
+        "source_line": {
+          "line": 4,
+          "byte_start_inclusive": 37,
+          "byte_end_exclusive": 65,
+          "line_sha256": "90381a5dcca0148869b24a9c5c92832e33a9b1676260cde2a35059bd2a82d29c"
+        },
+        "normalized_value": null
+      },
+      {
+        "raw_lexeme": "0.000000 0.000000 3.070000",
+        "source_line": {
+          "line": 5,
+          "byte_start_inclusive": 65,
+          "byte_end_exclusive": 92,
+          "line_sha256": "eee8aa838a38852ff5a9433b36ecab65a8d39a08e319ea4e6af741f7f41a0a1b"
+        },
+        "normalized_value": null
+      }
+    ],
+    "position_rows": [
+      {
+        "raw_lexeme": "0.6667000000 0.3334000000 0.5000000000",
+        "source_line": {
+          "line": 9,
+          "byte_start_inclusive": 108,
+          "byte_end_exclusive": 148,
+          "line_sha256": "d8ad8dfe2c4c81da1b1d11e7e861c7b7d9c8295f335be3457eb63e117fdb099d"
+        },
+        "normalized_value": null
+      },
+      {
+        "raw_lexeme": "0.3334000000 0.6667000000 0.5000000000",
+        "source_line": {
+          "line": 10,
+          "byte_start_inclusive": 148,
+          "byte_end_exclusive": 188,
+          "line_sha256": "6003d58801e525ffa467ca4465e4a7973dd9e0c8e375c1081ee42d1554b7e829"
+        },
+        "normalized_value": null
+      },
+      {
+        "raw_lexeme": "0.0000000000 0.0000000000 0.0000000000",
+        "source_line": {
+          "line": 11,
+          "byte_start_inclusive": 188,
+          "byte_end_exclusive": 228,
+          "line_sha256": "743dee96eacd3f2d9b83c74fbf974acb055141c3d980f0ce5d3ba2cc421fdb4d"
+        },
+        "normalized_value": null
+      }
+    ],
+    "source_species_labels_in_order": [
+      "B",
+      "B",
+      "Cr"
+    ],
+    "role": "Original input geometry; separate from the captured XML finalpos geometry.",
+    "species_scope": "POSCAR line 6 labels and line 7 counts identify the displayed input groups. Their B/B/Cr order agrees with the frozen XML atominfo. The POSCAR header comment is not used for species; POTCAR identity remains unestablished.",
+    "native_explicit_physical_unit": null
+  },
+  "kpoints": {
+    "number_line": {
+      "raw_lexeme": "0",
+      "source_line": {
+        "line": 2,
+        "byte_start_inclusive": 9,
+        "byte_end_exclusive": 12,
+        "line_sha256": "41076331dd794a2a155e9a375f6d9227cb82906867adce1b5089aa553c4ccaa9"
+      },
+      "normalized_value": null
+    },
+    "generation_mode": {
+      "raw_lexeme": "Gamma",
+      "source_line": {
+        "line": 3,
+        "byte_start_inclusive": 12,
+        "byte_end_exclusive": 18,
+        "line_sha256": "b224db22f41e15b37331bc4322abca5f3e23ba1d1a0693c3210047a83bb57fdd"
+      },
+      "normalized_value": null
+    },
+    "mesh": {
+      "raw_lexeme": "14 14 11",
+      "source_line": {
+        "line": 4,
+        "byte_start_inclusive": 18,
+        "byte_end_exclusive": 27,
+        "line_sha256": "91ed9ad16b7a882fd24c69a67e04b9ed53880261799883e710847ce42b7c9847"
+      },
+      "normalized_value": null
+    },
+    "mesh_lexemes": [
+      "14",
+      "14",
+      "11"
+    ],
+    "shift": {
+      "raw_lexeme": "0 0 0",
+      "source_line": {
+        "line": 5,
+        "byte_start_inclusive": 27,
+        "byte_end_exclusive": 32,
+        "line_sha256": "4a31f3538925bbcbda013611e7e88a16a04e1c6b4247892ef7b91168949d83f0"
+      },
+      "normalized_value": null
+    },
+    "role": "Original mesh input; effective irreducible sampling and numerical convergence have not been assessed."
+  },
+  "frozen_XML_comparison": {
+    "source_bytes": 3835451,
+    "source_sha256": "09b0088b66057f364ae436c6e6d15621572408aede91e19ae0b5ce1594f99d5e",
+    "generator_version_raw_text": "5.3.2  ",
+    "generator_version_xpath": "./generator[1]/i[2][@name='version']",
+    "checks": [
+      {
+        "comparison": "POSCAR initial basis",
+        "source_line": 3,
+        "frozen_xml_xpath": "./structure[1][@name='initialpos']/crystal[1]/varray[1][@name='basis']/v[1]",
+        "frozen_xml_raw_text": "       2.97000000       0.00000000       0.00000000 ",
+        "native_type_attribute": null,
+        "decimal_token_representation_equality": true,
+        "comparison_semantics": "Comparison of source-written decimal tokens only; no units, convergence, experimental association or effective-control claim"
+      },
+      {
+        "comparison": "POSCAR initial basis",
+        "source_line": 4,
+        "frozen_xml_xpath": "./structure[1][@name='initialpos']/crystal[1]/varray[1][@name='basis']/v[2]",
+        "frozen_xml_raw_text": "      -1.48500000       2.57209500       0.00000000 ",
+        "native_type_attribute": null,
+        "decimal_token_representation_equality": true,
+        "comparison_semantics": "Comparison of source-written decimal tokens only; no units, convergence, experimental association or effective-control claim"
+      },
+      {
+        "comparison": "POSCAR initial basis",
+        "source_line": 5,
+        "frozen_xml_xpath": "./structure[1][@name='initialpos']/crystal[1]/varray[1][@name='basis']/v[3]",
+        "frozen_xml_raw_text": "       0.00000000       0.00000000       3.07000000 ",
+        "native_type_attribute": null,
+        "decimal_token_representation_equality": true,
+        "comparison_semantics": "Comparison of source-written decimal tokens only; no units, convergence, experimental association or effective-control claim"
+      },
+      {
+        "comparison": "POSCAR initial positions",
+        "source_line": 9,
+        "frozen_xml_xpath": "./structure[1][@name='initialpos']/varray[1][@name='positions']/v[1]",
+        "frozen_xml_raw_text": "       0.66670000       0.33340000       0.50000000 ",
+        "native_type_attribute": null,
+        "decimal_token_representation_equality": true,
+        "comparison_semantics": "Comparison of source-written decimal tokens only; no units, convergence, experimental association or effective-control claim"
+      },
+      {
+        "comparison": "POSCAR initial positions",
+        "source_line": 10,
+        "frozen_xml_xpath": "./structure[1][@name='initialpos']/varray[1][@name='positions']/v[2]",
+        "frozen_xml_raw_text": "       0.33340000       0.66670000       0.50000000 ",
+        "native_type_attribute": null,
+        "decimal_token_representation_equality": true,
+        "comparison_semantics": "Comparison of source-written decimal tokens only; no units, convergence, experimental association or effective-control claim"
+      },
+      {
+        "comparison": "POSCAR initial positions",
+        "source_line": 11,
+        "frozen_xml_xpath": "./structure[1][@name='initialpos']/varray[1][@name='positions']/v[3]",
+        "frozen_xml_raw_text": "       0.00000000       0.00000000       0.00000000 ",
+        "native_type_attribute": null,
+        "decimal_token_representation_equality": true,
+        "comparison_semantics": "Comparison of source-written decimal tokens only; no units, convergence, experimental association or effective-control claim"
+      },
+      {
+        "comparison": "KPOINTS mesh",
+        "source_line": 4,
+        "frozen_xml_xpath": "./kpoints[1]/generation[1]/v[1][@name='divisions']",
+        "frozen_xml_raw_text": "      14       14       11 ",
+        "native_type_attribute": "int",
+        "decimal_token_representation_equality": true,
+        "comparison_semantics": "Comparison of source-written decimal tokens only; no units, convergence, experimental association or effective-control claim"
+      },
+      {
+        "comparison": "KPOINTS shift",
+        "source_line": 5,
+        "frozen_xml_xpath": "./kpoints[1]/generation[1]/v[2][@name='usershift']",
+        "frozen_xml_raw_text": "      0.00000000       0.00000000       0.00000000 ",
+        "native_type_attribute": null,
+        "decimal_token_representation_equality": true,
+        "comparison_semantics": "Comparison of source-written decimal tokens only; no units, convergence, experimental association or effective-control claim"
+      }
+    ],
+    "explicit_POSCAR_species_order_matches_XML_atominfo": true,
+    "source_XML_species_order": [
+      "B",
+      "B",
+      "Cr"
+    ],
+    "POSCAR_input_basis_differs_from_XML_final_basis": true
+  },
+  "source_differences": [
+    {
+      "id": "LORBIT",
+      "original_input": "11",
+      "original_line": 31,
+      "XML_values": [
+        "F",
+        "F"
+      ],
+      "XML_declared_types": [
+        "logical",
+        "logical"
+      ],
+      "interpretation": "Unresolved source difference. Original INCAR and both XML contexts remain separate; an effective runtime value has not been assigned."
+    },
+    {
+      "id": "ISTART",
+      "original_input": "1",
+      "original_line": 3,
+      "XML_values": [
+        "1",
+        "0"
+      ],
+      "XML_declared_types": [
+        "int",
+        "int"
+      ],
+      "interpretation": "Original INCAR and XML INCAR report 1; XML electronic-startup parameters report 0. Restart-file identity and effective startup remain unresolved."
+    },
+    {
+      "id": "MAGMOM",
+      "original_input": "2*0.0000 1*5.0000",
+      "original_line": 6,
+      "XML_values": [
+        "0.00000000      0.00000000      5.00000000",
+        "0.00000000      0.00000000      5.00000000"
+      ],
+      "XML_declared_types": [
+        null,
+        null
+      ],
+      "interpretation": "Original repetition syntax and XML components preserve their source precision. These are inputs; final or ordered magnetic moments have not been assigned."
+    }
+  ],
+  "interpretation_limits": [
+    {
+      "id": "ENCUT",
+      "evidence": "No ENCUT control was found in the complete 469-byte original INCAR or the earlier complete captured XML. ENMAX is a separate XML tag; no default cutoff is supplied."
+    },
+    {
+      "id": "MAGNETISM",
+      "evidence": "The original INCAR Uncategorized/OQMD codes block labels MAGNETISM as FERRO. This uploader input string is not physical magnetic-order evidence or a verified VASP runtime control."
+    },
+    {
+      "id": "restart_and_potential",
+      "evidence": "Directory paths establish returned metadata only. Other source bodies, POTCAR identity, restart-file contents, numerical convergence and experiment correspondence remain unestablished."
+    }
+  ],
+  "format_annotations": [
+    {
+      "file": "POSCAR",
+      "url": "https://vasp.at/wiki/index.php/POSCAR",
+      "observed_revision_id": 37632,
+      "documented_convention": "Current documentation assigns lattice components multiplied by the scale to angstroms; direct positions are fractional. The species-name line is descriptive, while POTCAR plus counts establishes runtime species.",
+      "role": "Current format annotation, not original VASP 5.3.2 edition or potential identity proof."
+    },
+    {
+      "file": "KPOINTS",
+      "url": "https://vasp.at/wiki/index.php/KPOINTS",
+      "observed_revision_id": 35974,
+      "documented_convention": "Zero selects automatic mesh generation; Gamma selects a centered mesh. The following lines give subdivisions and optional shift.",
+      "role": "Current format annotation, not effective sampling or convergence proof."
+    },
+    {
+      "file": "INCAR",
+      "url": "https://vasp.at/wiki/index.php/INCAR",
+      "observed_revision_id": 34757,
+      "documented_convention": "Tag assignments and repetition syntax belong to input-file text. Source spelling and repeated values are retained separately from XML controls.",
+      "role": "Current format annotation, not validation of uploader-specific control labels."
+    }
+  ],
+  "documentation_capture": {
+    "captured_on": "2026-10-04",
+    "kind": "grouped_web_tool_rendered_text",
+    "tool_result_capture_sha256": "57ec321f7d7b8f83ba4805a163237a9391178abb2f3ea467ed0d549820e69f51",
+    "original_HTML_response_hash_established": false,
+    "scope": "Hash identifies a serialized container of two grouped rendered tool responses, not individual page HTML bytes. Current definitions do not establish historical version equivalence."
+  },
+  "locator_convention": "Line numbers are 1-based. Byte ranges are 0-based and half-open and address the complete original source line, including its line ending. Line SHA-256 hashes that full original line; displayed values are selected lexemes.",
+  "snapshot_scope": "Fresh entry metadata before and after these downloads was byte-identical. This does not establish an atomic provider snapshot, current download equality or equivalence to earlier archive projections. The 2 October XML was not refetched.",
+  "authority": {
+    "formal_human_review": false,
+    "scientific_acceptance": false,
+    "ML_approval": false,
+    "material_sample_state_selected_result_association": null,
+    "canonical_promotions": 0,
+    "production_imports": 0,
+    "new_calculations": 0,
+    "execution_authorized": false,
+    "raw_source_body_publication": false,
+    "POTCAR_identity_established": false,
+    "restart_identity_established": false,
+    "convergence_validated": false,
+    "effective_runtime_controls_validated": false
+  }
+}

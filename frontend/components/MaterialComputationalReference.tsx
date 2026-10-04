@@ -6,6 +6,8 @@ import {
 import { type ComputationalNativeOutput } from "@/lib/material-computational-native-output";
 import { type ComputationalInputContext } from "@/lib/material-computational-input-context";
 import { MaterialComputationalNativeOutput } from "@/components/MaterialComputationalNativeOutput";
+import { MaterialComputationalOriginalInputs } from "@/components/MaterialComputationalOriginalInputs";
+import { type ComputationalOriginalInputs } from "@/lib/material-computational-original-inputs";
 
 const sourceDate = (value: string) => new Date(value).toLocaleDateString("en-GB", { timeZone: "UTC", day: "numeric", month: "long", year: "numeric" });
 function PublicSourceLink({ url, children }: { url: string; children: React.ReactNode }) {
@@ -155,7 +157,7 @@ function SourceProvenance({ data, completeSourceAvailable = false }: { data: Com
   </details>;
 }
 
-export function MaterialComputationalReference({ data, nativeOutput, additionalInputContext }: { data: ComputationalReference | null; nativeOutput?: ComputationalNativeOutput | null; additionalInputContext?: ComputationalInputContext | null }) {
+export function MaterialComputationalReference({ data, nativeOutput, additionalInputContext, originalInputs }: { data: ComputationalReference | null; nativeOutput?: ComputationalNativeOutput | null; additionalInputContext?: ComputationalInputContext | null; originalInputs?: ComputationalOriginalInputs | null }) {
   if (!data) return <p role="status" className="text-sm text-sage-muted">Captured computational reference metadata is unavailable.</p>;
   return <article className="min-w-0 space-y-6 rounded-lg border border-sage-border bg-white p-4 sm:p-5" aria-labelledby="crb2-computed-heading">
     <div className="space-y-2">
@@ -164,6 +166,7 @@ export function MaterialComputationalReference({ data, nativeOutput, additionalI
       <PublicSourceLink url={data.reference.entry_url}>Open NOMAD entry</PublicSourceLink>
     </div>
     {nativeOutput !== undefined && <MaterialComputationalNativeOutput data={nativeOutput} additionalInputContext={additionalInputContext} />}
+    {originalInputs !== undefined && <MaterialComputationalOriginalInputs data={originalInputs} />}
     <ArchiveSummary data={data} />
     {nativeOutput ? <details className="min-w-0 text-sm">
       <summary className="w-fit cursor-pointer text-accent-deep">Earlier prefix input snapshot</summary>

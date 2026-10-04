@@ -4,6 +4,7 @@ import { MaterialComputationalReference } from "@/components/MaterialComputation
 import { loadComputationalReference } from "@/lib/material-computational-reference";
 import { loadComputationalNativeOutput } from "@/lib/material-computational-native-output";
 import { loadComputationalInputContext } from "@/lib/material-computational-input-context";
+import { loadComputationalOriginalInputs } from "@/lib/material-computational-original-inputs";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -22,6 +23,6 @@ export default function MaterialsComputationalReferencesPage() {
       <h1 className="text-3xl font-semibold tracking-tight">Computational references</h1>
       <p className="max-w-3xl text-sm leading-6 text-sage-muted">Read the reported final structure, computation settings and exact source values, with provenance available for each reference.</p>
     </header>
-    <MaterialComputationalReference data={loadComputationalReference()} nativeOutput={loadComputationalNativeOutput()} additionalInputContext={loadComputationalInputContext()} />
+    <MaterialComputationalReference data={loadComputationalReference()} nativeOutput={loadComputationalNativeOutput()} additionalInputContext={loadComputationalInputContext()} originalInputs={loadComputationalOriginalInputs()} />
   </main>;
 }

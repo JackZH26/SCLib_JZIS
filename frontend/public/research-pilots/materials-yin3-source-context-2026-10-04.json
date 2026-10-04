@@ -1,0 +1,597 @@
+{
+  "version": "materials-yin3-source-context/1.0.0",
+  "status": "source_qualified_reference",
+  "prepared_on": "2026-10-04",
+  "formula": "YIn3",
+  "study_samples": [
+    "A",
+    "B"
+  ],
+  "observation_count": 9,
+  "source_locator_count": 12,
+  "source": {
+    "final_url": "https://arxiv.org/html/1112.3083v1",
+    "paper_id": "arxiv:1112.3083",
+    "edition": "v1",
+    "edition_basis": "Version-qualified official URL and native paper identifier; current HTML conversion, not original 2011 HTML bytes.",
+    "bytes": 58286,
+    "sha256": "10b8722eb2a7f8d8a7e41aa6b797ab2ffb8ed749e550522ec0a0de16c2248dc5",
+    "status": 200,
+    "requested_at_utc": "2026-10-04T04:10:35.583216+00:00",
+    "completed_at_utc": "2026-10-04T04:10:35.976432+00:00"
+  },
+  "edition_note": {
+    "HTML_conversion_date_printed": "August 24, 2026",
+    "interpretation": "2026 HTML conversion date is not the 2011 paper submission date. Publisher/retained-ingestion edition equivalence is unestablished.",
+    "native_paper_banner": "arXiv:1112.3083v1 [cond-mat.supr-con] 14 Dec 2011"
+  },
+  "source_capture_scope": "Complete version-qualified primary HTML response. Supplement completeness and publisher-edition equivalence have not been checked. The HTML conversion date is separate from the paper date.",
+  "saved_catalogue_context": {
+    "catalogue_eligible": true,
+    "formula": "YIn3",
+    "id": "mat:yin3",
+    "origin": "Observed",
+    "paper_id": "arxiv:1112.3083",
+    "result_id": "legacy-result:eb421498255ee0ca85ef1f76f5ed333768f48bd7fb5389f8fc69fc9bb6707814",
+    "review_revision": "89458ce78aaa6bf90d64c539ce3fc3ef44d344011be6d0e8db8b49451d6432fe",
+    "source_scope_fingerprint": null,
+    "source_status": "active",
+    "saved_API_version": {
+      "api_version": "1",
+      "dataset_version": "v2026.09.03",
+      "site_version": "ab2760b"
+    },
+    "retained_raw_tc_kelvin": 1.2,
+    "retained_method": "resistivity",
+    "retained_criterion": "onset",
+    "sample_id": null,
+    "state_id": null,
+    "structure_id": null,
+    "run_id": null,
+    "legacy_pressure_read_state": "ambiguous",
+    "scope": "Saved version-fenced catalogue identity only. Source specimens remain separate; no sample or ambient-pressure assignment has been made."
+  },
+  "observations": [
+    {
+      "id": "study-sample-preparation",
+      "scope": "Two named single-crystal specimens A and B; comparative study context only",
+      "source_refs": [
+        "S2.p1.1",
+        "S2.p2.1",
+        "S3.p3.1"
+      ],
+      "summary": "Resistivity specimens were polished; susceptibility and heat-capacity preparation retained excess indium. Heat capacity is B-specific."
+    },
+    {
+      "id": "sample-b-discussion-onsets",
+      "raw_expressions": [
+        {
+          "criterion": "onset",
+          "method": "resistivity",
+          "raw_unit": "K",
+          "raw_value": "1.08"
+        },
+        {
+          "criterion": "onset",
+          "method": "susceptibility",
+          "raw_unit": "K",
+          "raw_value": "0.95"
+        },
+        {
+          "criterion": "onset",
+          "method": "heat capacity",
+          "raw_unit": "K",
+          "raw_value": "0.90"
+        }
+      ],
+      "scope": "Sample B; Results and Discussion summary",
+      "source_refs": [
+        "S3.p5.1"
+      ],
+      "summary": "Three method-specific onsets for sample B."
+    },
+    {
+      "id": "sample-b-resistivity-interval",
+      "raw_expressions": [
+        {
+          "raw_unit": "K",
+          "raw_values": [
+            "1.08",
+            "0.98"
+          ],
+          "role": "printed_transition_interval"
+        }
+      ],
+      "scope": "Sample B; four-wire resistivity after polishing",
+      "source_refs": [
+        "S3.p3.1",
+        "S3.F3"
+      ],
+      "summary": "Printed transition interval; no derived width."
+    },
+    {
+      "id": "sample-a-resistivity-context",
+      "raw_expressions": [
+        {
+          "criterion": "transition_drop_begins",
+          "raw_lexeme": "about 1.2 K"
+        },
+        {
+          "criterion": "transition_drop_completion_bound",
+          "raw_lexeme": "above 1 K"
+        }
+      ],
+      "scope": "Sample A; separate from B",
+      "source_refs": [
+        "S3.p3.1",
+        "S3.F3"
+      ],
+      "summary": "Approximate sample A descriptions; no retained-result sample assignment."
+    },
+    {
+      "id": "ac-susceptibility-method",
+      "raw_expressions": [
+        {
+          "raw_unit": "Hz",
+          "raw_value": "12",
+          "role": "frequency"
+        },
+        {
+          "raw_lexeme": "about 0.4 gauss",
+          "role": "applied_ac_field"
+        }
+      ],
+      "scope": "Reported ac susceptibility method; paragraph source context",
+      "source_refs": [
+        "S3.p1.1"
+      ],
+      "summary": "Reported ac conditions; applicability remains source-specific."
+    },
+    {
+      "id": "sample-b-susceptibility-contexts",
+      "raw_expressions": [
+        {
+          "context": "Figure 1 sample B caption",
+          "raw_unit": "mK",
+          "raw_value": "950",
+          "role": "sharp_jump"
+        },
+        {
+          "context": "Results Figure 1 main-graph description",
+          "criterion": "drop_onset",
+          "raw_unit": "mK",
+          "raw_value": "960"
+        },
+        {
+          "context": "Results Figure 1 main-graph description",
+          "criterion": "fully_superconducting_by",
+          "raw_unit": "mK",
+          "raw_value": "825"
+        },
+        {
+          "context": "Discussion sample B summary",
+          "criterion": "onset",
+          "raw_unit": "K",
+          "raw_value": "0.95"
+        }
+      ],
+      "scope": "Figure 1 and Results paragraph versus Discussion summary",
+      "source_refs": [
+        "S2.F1",
+        "S3.p1.1",
+        "S3.p5.1"
+      ],
+      "summary": "Caption, Results and Discussion retain different descriptions."
+    },
+    {
+      "id": "sample-b-heat-capacity-method-and-feature",
+      "raw_expressions": [
+        {
+          "raw_lexeme": "relaxation method",
+          "role": "method"
+        },
+        {
+          "raw_unit": "mK",
+          "raw_value": "825",
+          "role": "feature_temperature"
+        },
+        {
+          "raw_unit": "mg",
+          "raw_value": "57.55",
+          "role": "sample_mass"
+        },
+        {
+          "context": "Discussion summary",
+          "criterion": "onset",
+          "raw_unit": "K",
+          "raw_value": "0.90"
+        }
+      ],
+      "scope": "Sample B; heat capacity",
+      "source_refs": [
+        "S3.p2.1",
+        "S3.F2",
+        "S3.p5.1"
+      ],
+      "summary": "Feature temperature and onset have separate roles."
+    },
+    {
+      "id": "indium-and-susceptibility-caution",
+      "scope": "Figure 1 inset A and source interpretation of remnant indium shielding",
+      "source_refs": [
+        "S2.F1",
+        "S3.p1.1",
+        "S2.p2.1"
+      ],
+      "summary": "Remnant-indium shielding complicates interpretation; signal share is not an accepted Meissner fraction."
+    },
+    {
+      "id": "author-mechanism-interpretation",
+      "scope": "Authors Discussion; contrast to Ce-based comparators",
+      "source_refs": [
+        "S3.p7.1",
+        "S3.p5.1",
+        "S4.p1.1"
+      ],
+      "summary": "Authors consider YIn3 likely conventional and phonon-mediated; unconventional comparator language retains its separate subject."
+    }
+  ],
+  "source_locators": {
+    "S2.F1": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 5367,
+        "start": 4917
+      },
+      "derived_text_sha256": "891284855b69c1f4e52d24d8bc5645c74d026ff453e4a7a8d4a735bdb66f31ac",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 5372,
+        "start": 4922
+      },
+      "native_dom_id": "S2.F1",
+      "native_fragment_sha256": "d42fec1814d33b066100cbb39f7b136c5ecf7856e712dc1c7277909aaa2e257a",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 329,
+        "start": 319
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 26192,
+        "start": 25101
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[2]/figure",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S2.F1"
+    },
+    "S2.p1.1": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 4274,
+        "start": 3611
+      },
+      "derived_text_sha256": "eae7c11718a52fbfb47929382b0288066a557767746768ce301d3f85dda3a06a",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 4279,
+        "start": 3615
+      },
+      "native_dom_id": "S2.p1.1",
+      "native_fragment_sha256": "80fbe88d15a372cb2c22e87cff93066defbb89d301e745b249b788351424312c",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 305,
+        "start": 296
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 24208,
+        "start": 22776
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[2]/div[1]/p",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S2.p1.1"
+    },
+    "S2.p2.1": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 4916,
+        "start": 4275
+      },
+      "derived_text_sha256": "2b9f2fe9d6d253946dac9f44df863255d9800d4d821d13661d8590d340b37070",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 4921,
+        "start": 4280
+      },
+      "native_dom_id": "S2.p2.1",
+      "native_fragment_sha256": "787d48643e8ab5fcd4bc8033b935d1826c955cc6e04461c18fa68b54c78a5f8d",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 317,
+        "start": 308
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 25093,
+        "start": 24250
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[2]/div[2]/p",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S2.p2.1"
+    },
+    "S3.F2": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 7527,
+        "start": 7485
+      },
+      "derived_text_sha256": "fa6f7bf9b65c5f15f4c220283097eb36e5a7a8eafc8382185098fc5f3b8c130d",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 7532,
+        "start": 7490
+      },
+      "native_dom_id": "S3.F2",
+      "native_fragment_sha256": "0a38ea847ad2dd3823875a84a37c7920f6815e572c2d3faeb46ce77f2b2d1ecb",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 373,
+        "start": 369
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 30769,
+        "start": 30084
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[3]/figure[1]",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S3.F2"
+    },
+    "S3.F3": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 9164,
+        "start": 9062
+      },
+      "derived_text_sha256": "7996f7e0509b41e8d13d8f51e2b6089f7bff90ed564397d553f15d80ad512355",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 9169,
+        "start": 9067
+      },
+      "native_dom_id": "S3.F3",
+      "native_fragment_sha256": "f708cc5a3ca63b7f78df7567a02239b1c7d495e23758709c8128b3fcf8320784",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 404,
+        "start": 400
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 34440,
+        "start": 33697
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[3]/figure[2]",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S3.F3"
+    },
+    "S3.p1.1": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 6624,
+        "start": 5395
+      },
+      "derived_text_sha256": "863dfc8fa8f9e7bc8632ef2ce0e4968840286b51a9edf39df8c24e4e658dcc0e",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 6629,
+        "start": 5400
+      },
+      "native_dom_id": "S3.p1.1",
+      "native_fragment_sha256": "4ef6df00e77d071d8b78ddb08f87e4972439c3b34efc5dd927900ad574a07fae",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 352,
+        "start": 335
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 28133,
+        "start": 26394
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[3]/div[1]/p",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S3.p1.1"
+    },
+    "S3.p2.1": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 7484,
+        "start": 6625
+      },
+      "derived_text_sha256": "ca23af2734c9ecde595f5c86afbd5774f4bc4ac271cf0a5a2d6ea2fa6d5d89c1",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 7489,
+        "start": 6630
+      },
+      "native_dom_id": "S3.p2.1",
+      "native_fragment_sha256": "75704e4fba47b9ddfe45c9635c7035ee9fb298637810bd2d1e0e323871ec413d",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 367,
+        "start": 355
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 30076,
+        "start": 28175
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[3]/div[2]/p",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S3.p2.1"
+    },
+    "S3.p3.1": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 8406,
+        "start": 7528
+      },
+      "derived_text_sha256": "3b641059498043a09ca00fbb83828b1e16ffaffba691e7790e42c10440128ae7",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 8411,
+        "start": 7533
+      },
+      "native_dom_id": "S3.p3.1",
+      "native_fragment_sha256": "36d63871442aaf40dc3403ff52fabae8d0bf296a3f00b6e921db3b4d5cd43dcb",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 386,
+        "start": 375
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 32470,
+        "start": 30804
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[3]/div[3]/p",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S3.p3.1"
+    },
+    "S3.p4.1": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 9061,
+        "start": 8407
+      },
+      "derived_text_sha256": "4120bd025581917573110a176622c6ad08fbfdce3288f3b725b16ce0b33e7985",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 9066,
+        "start": 8412
+      },
+      "native_dom_id": "S3.p4.1",
+      "native_fragment_sha256": "8a40c845a8b4fbffc57614464acaadd07fc492d5719feb5cac8e32617a340dcb",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 398,
+        "start": 389
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 33689,
+        "start": 32512
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[3]/div[4]/p",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S3.p4.1"
+    },
+    "S3.p5.1": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 10246,
+        "start": 9165
+      },
+      "derived_text_sha256": "eb54b64cc0f69c5ec4671be4abe5d3ffd2b05123e914faa0e21601122faf7c92",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 10251,
+        "start": 9170
+      },
+      "native_dom_id": "S3.p5.1",
+      "native_fragment_sha256": "816c3ebaa1c9e0baeb0db68f52c896c393954360bc1e201cf228a5fa488a35ce",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 421,
+        "start": 406
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 35921,
+        "start": 34475
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[3]/div[5]/p",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S3.p5.1"
+    },
+    "S3.p7.1": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 12335,
+        "start": 11342
+      },
+      "derived_text_sha256": "030badd247b81a1ae97404193c7d3bb1d159e6e2793fdc8b48db6cfd33d449c5",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 12340,
+        "start": 11347
+      },
+      "native_dom_id": "S3.p7.1",
+      "native_fragment_sha256": "53c22df1193a18b8abde41114312bac54c7bd6d6f300c579783bd9ed910008bd",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 457,
+        "start": 443
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 40183,
+        "start": 38862
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[3]/div[7]/p",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S3.p7.1"
+    },
+    "S4.p1.1": {
+      "derivation_policy": "Collapse whitespace; represent math nodes with native alttext; other HTML element text and tails retained. Exact native HTML retained separately.",
+      "derived_text_char_span": {
+        "convention": "zero_based_half_open_Unicode_codepoints",
+        "end": 12839,
+        "start": 12350
+      },
+      "derived_text_sha256": "4d50378a57f53d17f954c6ef759e1c01a91581af08d31f36682aff6e7880d38a",
+      "derived_text_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 12844,
+        "start": 12355
+      },
+      "native_dom_id": "S4.p1.1",
+      "native_fragment_sha256": "3956f6ad2fc9ee91fc2cf8a2e66c4e6f4d3cbae11f5a1c91e7110d94789bd1b1",
+      "native_html_lines": {
+        "convention": "one_based_inclusive",
+        "end": 471,
+        "start": 464
+      },
+      "native_html_utf8_byte_span": {
+        "convention": "zero_based_half_open",
+        "end": 41212,
+        "start": 40379
+      },
+      "native_xpath": "/html/body/div[2]/div[2]/article/section[4]/div/p",
+      "source_url": "https://arxiv.org/html/1112.3083v1#S4.p1.1"
+    }
+  },
+  "derived_article_text_sha256": "0175728569bdf08cc52176e170505b04f6c53b9f8178de8332e358fe32d73a1e",
+  "comparison_scope": "Original temperature roles, units and qualifiers are retained separately. No reconciliation, rounding, unit conversion or selected-value rewrite is applied.",
+  "classification": {
+    "author_qualifier": "likely",
+    "author_interpretation": "conventional, phonon-mediated",
+    "is_unconventional": null,
+    "classification_assigned": null,
+    "scope": "Author interpretation in the captured paper, not an accepted binary material classification."
+  },
+  "authority": {
+    "scientific_acceptance": false,
+    "human_review": false,
+    "ML_approval": false,
+    "physical_sample_binding_to_selected_result": null,
+    "canonical_properties_added": 0,
+    "database_writes": 0,
+    "new_calculations": 0,
+    "raw_source_body_publication": false,
+    "independent_experiment_count_established": false
+  }
+}

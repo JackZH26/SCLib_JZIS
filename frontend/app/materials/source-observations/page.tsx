@@ -22,6 +22,7 @@ export default function MaterialsSourceObservationsPage() {
       {batch && <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm"><span className="text-sage-muted">Prepared {batch.prepared_on}</span><a className="site-text-link" href={sourceObservationDownloadPath} download>Download captured observation metadata (JSON)</a><a className="site-text-link" href={`${sourceObservationDownloadPath}.sha256`} download>Download SHA-256</a></div>}
     </header>
     <p className="max-w-3xl text-sm"><Link className="site-text-link" href="/materials/source-observations/paper-contexts">Paper contexts and open questions</Link>: sample-qualified methods and unresolved claims from additional captured studies.</p>
+    <p className="max-w-3xl text-sm"><Link className="site-text-link" href="/materials/source-observations/yin3-transitions">YIn₃ transitions by sample and method</Link>: compare criterion-specific temperatures and the authors’ qualified interpretation.</p>
     {window ? <MaterialSourceObservations window={window} defaultExpanded /> : <p className="text-sm text-sage-muted" role="status">Captured source observations are unavailable. The catalogue remains available.</p>}
   </main>;
 }
