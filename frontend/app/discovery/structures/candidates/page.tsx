@@ -16,6 +16,7 @@ export default function SiteCandidatesPage() {
       <h1 className="text-3xl font-semibold tracking-tight">Site modification candidates</h1>
       <p className="max-w-3xl text-base leading-6">Choose a real source structure, build a supercell, and change one atomic site.</p>
       <p className="max-w-3xl text-sm leading-6 text-sage-muted">Coordinate proposals are prepared locally. Energies, stability and superconducting properties require further calculation.</p>
+      <p className="text-sm"><Link href="/discovery/structures/combinations" className="site-text-link inline-flex min-h-11 items-center">Combine multiple sites and lattice changes</Link></p>
     </header>
     <DiscoverySiteCandidates />
   </main>;
