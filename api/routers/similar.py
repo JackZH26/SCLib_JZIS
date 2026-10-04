@@ -51,6 +51,9 @@ async def similar_papers(
         return SimilarResponse(source_paper_id=paper_id, results=[],
                                retrieval_generation=generation_read_metadata(pin))
 
+    # Only detached generation inputs cross provider I/O. Return the read
+    # connection now; hydration below rechecks target evidence and the live pin.
+    await db.rollback()
     stopped = threading.Event()
     settings = get_settings()
     try:

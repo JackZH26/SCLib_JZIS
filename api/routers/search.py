@@ -121,6 +121,9 @@ async def search(
         except Exception:
             raise HTTPException(503, "Formula-aware retrieval is unavailable") from None
         if semantic_task is not None:
+            # Lexical hits and the pin are detached inputs. Release the SQL
+            # connection while awaiting the independent provider task.
+            await db.rollback()
             try:
                 neighbors = await semantic_task
                 async with asyncio.timeout(10):
@@ -130,10 +133,16 @@ async def search(
                 await db.rollback()
     finally:
         if semantic_task is not None:
-            if not semantic_task.done():
-                semantic_task.cancel()
-            # Retrieve failures even when SQL or the caller cancelled first.
-            await asyncio.gather(semantic_task, return_exceptions=True)
+            try:
+                if not semantic_task.done():
+                    # SQL failure/cancellation must also return its connection
+                    # before waiting for provider cancellation to finish.
+                    await db.rollback()
+            finally:
+                if not semantic_task.done():
+                    semantic_task.cancel()
+                # Retrieve failures even when SQL or the caller cancelled first.
+                await asyncio.gather(semantic_task, return_exceptions=True)
 
     candidates = retrieval.fuse_rankings(
         vector_hits,
