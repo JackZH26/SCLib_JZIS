@@ -1,6 +1,14 @@
 /** Related paper readings for inspected result identities; no property overlay. */
 const readings = [
   {
+    materialId: "mat:yin3",
+    resultId: "legacy-result:eb421498255ee0ca85ef1f76f5ed333768f48bd7fb5389f8fc69fc9bb6707814",
+    paperId: "arxiv:1112.3083",
+    href: "/materials/source-observations/yin3-transitions",
+    label: "Transitions by sample, method and source context",
+    note: "The paper distinguishes samples A and B and technique-specific onsets. Its likely conventional interpretation is source-qualified; the selected 1.2 K result has no assigned study sample.",
+  },
+  {
     materialId: "mat:bitecl",
     resultId: "legacy-result:728957cf5518e15646f532d9d27aedd22bca169618e1ef790265914d1d76bad9",
     paperId: "arxiv:1501.06203",
