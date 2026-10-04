@@ -7,7 +7,7 @@ import type { DesignCapabilities, DesignEntry, ResearchDesign } from "@/lib/disc
 const input = "mt-1 block min-h-11 w-full min-w-0 rounded-lg border border-sage-border bg-white px-3 py-2 text-sm text-sage-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent";
 const button = "min-h-11 rounded-lg border border-sage-border bg-white px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent disabled:opacity-50";
 const primary = "min-h-11 rounded-lg bg-accent-deep px-4 py-2 text-sm font-medium text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent disabled:opacity-50";
-type Props = { entry: DesignEntry; capabilities: DesignCapabilities; disabled?: boolean; onSelect: (proposal: ResearchDesign) => void };
+type Props = { entry: DesignEntry; capabilities: DesignCapabilities; disabled?: boolean; onSelect: (proposal: ResearchDesign) => void; onGenerated?: (manifest: ConditionSweepManifest | null) => void };
 
 function axes(pressures: string, temperatures: string): ConditionSweepAxes {
   const lines = (text: string) => text.trim() ? text.trim().split(/\r?\n/).map(line => line.trim()) : [];
@@ -36,7 +36,7 @@ export function DiscoveryConditionSweepPlanner(props: Props) {
     grant: props.capabilities.curator_grant_id, entry: props.entry });
   return <Planner key={identity} {...props} />;
 }
-function Planner({ entry, capabilities, disabled = false, onSelect }: Props) {
+function Planner({ entry, capabilities, disabled = false, onSelect, onGenerated }: Props) {
   const [pressures, setPressures] = useState(""), [temperatures, setTemperatures] = useState("");
   const [estimated, setEstimated] = useState<{ axes: ConditionSweepAxes; value: ConditionSweepEstimate } | null>(null);
   const [manifest, setManifest] = useState<ConditionSweepManifest | null>(null), [error, setError] = useState("");
@@ -44,20 +44,20 @@ function Planner({ entry, capabilities, disabled = false, onSelect }: Props) {
   const generation = useRef(0), mounted = useRef(true), disclosure = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     mounted.current = true;
-    const clear = () => { ++generation.current; setPressures(""); setTemperatures(""); setEstimated(null); setManifest(null); setError(""); setBusy(false); setOffset(0); setDownloaded(false); if (disclosure.current) disclosure.current.open = false; };
+    const clear = () => { ++generation.current; onGenerated?.(null); setPressures(""); setTemperatures(""); setEstimated(null); setManifest(null); setError(""); setBusy(false); setOffset(0); setDownloaded(false); if (disclosure.current) disclosure.current.open = false; };
     const visibility = () => { if (document.visibilityState === "hidden") clear(); };
     window.addEventListener("pagehide", clear); document.addEventListener("visibilitychange", visibility);
     return () => { mounted.current = false; ++generation.current; window.removeEventListener("pagehide", clear); document.removeEventListener("visibilitychange", visibility); };
   }, []);
-  function change(update: () => void) { ++generation.current; update(); setEstimated(null); setManifest(null); setError(""); setBusy(false); setOffset(0); setDownloaded(false); }
+  function change(update: () => void) { ++generation.current; onGenerated?.(null); update(); setEstimated(null); setManifest(null); setError(""); setBusy(false); setOffset(0); setDownloaded(false); }
   function estimate(event: FormEvent) {
-    event.preventDefault(); if (disabled || busy) return; ++generation.current; setManifest(null); setError(""); setDownloaded(false);
+    event.preventDefault(); if (disabled || busy) return; ++generation.current; onGenerated?.(null); setManifest(null); setError(""); setDownloaded(false);
     try { const next = axes(pressures, temperatures); setEstimated({ axes: next, value: estimateConditionSweep(next) }); }
     catch (caught) { setEstimated(null); setError(message(caught)); }
   }
   async function generate() {
-    if (!estimated || disabled || busy) return; const current = ++generation.current; setBusy(true); setManifest(null); setError(""); setOffset(0); setDownloaded(false);
-    try { const next = await createConditionSweep({ capabilities, entry, axes: estimated.axes }); if (mounted.current && current === generation.current) setManifest(next); }
+    if (!estimated || disabled || busy) return; const current = ++generation.current; onGenerated?.(null); setBusy(true); setManifest(null); setError(""); setOffset(0); setDownloaded(false);
+    try { const next = await createConditionSweep({ capabilities, entry, axes: estimated.axes }); if (mounted.current && current === generation.current) { setManifest(next); onGenerated?.(structuredClone(next)); } }
     catch (caught) { if (mounted.current && current === generation.current) setError(message(caught)); }
     finally { if (mounted.current && current === generation.current) setBusy(false); }
   }

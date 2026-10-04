@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "@/components/AppLink";
 import { DiscoveryConditionSweepPlanner } from "@/components/DiscoveryConditionSweepPlanner";
+import { DiscoveryConditionBatchWorkspace } from "@/components/DiscoveryConditionBatchWorkspace";
+import type { ConditionSweepManifest } from "@/lib/discovery-condition-sweep";
+import { knownConditionBatchSaveRecovery, type ConditionBatchChild, type ConditionBatchSaveRecovery } from "@/lib/discovery-condition-batches";
 import { useDashboardUser } from "@/components/dashboard/user-context";
 import { ApiError, discoveryDesignCapabilities, discoveryDesignCommit, discoveryDesignContext, discoveryDesignDetail, discoveryDesignOutcome, discoveryDesignPage, discoveryDesignPreview } from "@/lib/api";
 import { onAuthChange } from "@/lib/auth-session";
@@ -42,13 +45,19 @@ export function DiscoveryDesignWorkbench({ initialMaterialId = "", initialProper
   const [page, setPage] = useState<DesignPage | null>(null), [detail, setDetail] = useState<DesignDetail | null>(null), [editing, setEditing] = useState<DesignEntry | null>(null);
   const [prepared, setPrepared] = useState<{ request: DesignRequest; receipt: DesignReceipt; recovery: DesignRecovery } | null>(null), [saved, setSaved] = useState<DesignReceipt | null>(null), [recovery, setRecovery] = useState<DesignRecovery | null>(null);
   const [withdrawReason, setWithdrawReason] = useState("");
+  const [generated, setGenerated] = useState<ConditionSweepManifest | null>(null);
+  const [batchDraft, setBatchDraft] = useState(0);
+  const [batchPending, setBatchPending] = useState(false);
+  const batchRetained = useRef<ConditionBatchSaveRecovery | null>(null);
   const mounted = useRef(false), sequence = useRef(0), controller = useRef<AbortController | null>(null), retained = useRef<DesignRecovery | null>(null), previousActor = useRef<string | null>(null);
-  const cap = access?.actor_user_id === user.id ? access : null, locked = busy || recovery !== null;
+  const cap = access?.actor_user_id === user.id ? access : null, locked = busy || recovery !== null || batchPending;
   function clearProposal() { setContext(null); setForm(emptyResearchDesign()); setParent(null); setEditing(null); setPrepared(null); setSaved(null); setWithdrawReason(""); }
-  function clearPrivate() { ++sequence.current; controller.current?.abort(); setAccess(null); setPage(null); setDetail(null); clearProposal(); setRecovery(null); setBusy(false); }
+  function clearPrivate() { ++sequence.current; controller.current?.abort(); setAccess(null); setPage(null); setDetail(null); setGenerated(null); clearProposal(); setRecovery(null); setBusy(false); setBatchPending(batchRetained.current?.actorId === user.id); }
+  function batchDispatched(pins: ConditionBatchSaveRecovery) { if (!knownConditionBatchSaveRecovery(pins) || pins.actorId !== user.id) return; batchRetained.current = structuredClone(pins); setBatchPending(true); }
+  function batchResolved(pins: ConditionBatchSaveRecovery) { if (batchRetained.current && pins.actorId === user.id && expressionCanonical(batchRetained.current) === expressionCanonical(pins)) { batchRetained.current = null; setBatchPending(false); } }
   function begin() { const id = ++sequence.current; controller.current?.abort(); const c = new AbortController(); controller.current = c; return { signal: c.signal, active: () => mounted.current && sequence.current === id, run: <T,>(call: () => Promise<T>) => bounded(call, c) }; }
   function fail(error: unknown) {
-    setBusy(false); setPrepared(null); setContext(null); setPage(null); setDetail(null); setSaved(null);
+    setBusy(false); setPrepared(null); setGenerated(null); setContext(null); setPage(null); setDetail(null); setSaved(null);
     if (error instanceof ApiError && [401, 403].includes(error.status)) { clearPrivate(); retained.current = null; setMessage("Research access or session changed. Private information has been cleared."); }
     else if (error instanceof ApiError && error.status === 404) setMessage("This research-design interface or exact record is unavailable. No scientific absence was inferred.");
     else if (error instanceof ApiError && error.status === 409) setMessage("The source, design head or access changed. Reload before preparing another preview.");
@@ -56,14 +65,14 @@ export function DiscoveryDesignWorkbench({ initialMaterialId = "", initialProper
   }
   async function refresh() {
     if (busy) return; const op = begin(); setAccess(null); setContext(null); setPage(null); setDetail(null); setPrepared(null); setSaved(null); setBusy(true); setMessage("");
-    try { const next = knownDesignCapabilities(await op.run(() => discoveryDesignCapabilities(op.signal)), user.id); if (!op.active()) return; if (!next) throw new Error("Invalid capability"); setAccess(next); setBusy(false); if (retained.current?.actorId === user.id) { setRecovery(retained.current); setMessage("The original save needs an outcome check. No write will be retried."); } }
+    try { const next = knownDesignCapabilities(await op.run(() => discoveryDesignCapabilities(op.signal)), user.id); if (!op.active()) return; if (!next) throw new Error("Invalid capability"); setAccess(next); setBusy(false); if (retained.current?.actorId === user.id) { setRecovery(retained.current); setMessage("The original save needs an outcome check. No write will be retried."); } if (batchRetained.current?.actorId === user.id) { setBatchPending(true); setMessage("The original batch save needs a GET outcome check. Draft editing remains held; no write will be retried."); } }
     catch (error) { if (op.active()) fail(error); }
   }
   useEffect(() => {
     if (previousActor.current !== null && previousActor.current !== user.id) { setKind("unanchored"); setMaterial(""); setProperty(""); setIndex("0"); }
     previousActor.current = user.id;
-    mounted.current = true; retained.current = null; clearPrivate(); void refresh();
-    const unsubscribe = onAuthChange(() => { retained.current = null; clearPrivate(); setKind("unanchored"); setMaterial(""); setProperty(""); setIndex("0"); setMessage("Session changed. Private information has been cleared; refresh access."); });
+    mounted.current = true; retained.current = null; batchRetained.current = null; clearPrivate(); void refresh();
+    const unsubscribe = onAuthChange(() => { retained.current = null; batchRetained.current = null; clearPrivate(); setKind("unanchored"); setMaterial(""); setProperty(""); setIndex("0"); setMessage("Session changed. Private information has been cleared; refresh access."); });
     const hide = () => { clearPrivate(); setKind("unanchored"); setMaterial(""); setProperty(""); setIndex("0"); setMessage("Private source values and drafts cleared after leaving this page. Refresh access to continue."); };
     const visibility = () => { if (document.visibilityState === "hidden") hide(); };
     document.addEventListener("visibilitychange", visibility); window.addEventListener("pagehide", hide);
@@ -71,8 +80,8 @@ export function DiscoveryDesignWorkbench({ initialMaterialId = "", initialProper
     // The authenticated user owns every source view and draft.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id]);
-  function edit(next: ResearchDesign) { setForm(next); setPrepared(null); setSaved(null); setMessage(""); }
-  function selectorEdit(update: () => void) { update(); setContext(null); setPrepared(null); setSaved(null); }
+  function edit(next: ResearchDesign) { if (batchRetained.current) return; setGenerated(null); setBatchDraft(n => n + 1); setForm(next); setPrepared(null); setSaved(null); setMessage(""); }
+  function selectorEdit(update: () => void) { if (batchRetained.current) return; setGenerated(null); setBatchDraft(n => n + 1); update(); setContext(null); setPrepared(null); setSaved(null); }
   async function loadContext() {
     if (!cap || locked) return; const current = cap, op = begin(); setContext(null); setPrepared(null); setBusy(true); setMessage("");
     const expected = { kind, material_id: kind === "unanchored" ? null : material, record_index: kind === "retained_result" && /^\d{1,4}$/.test(index) ? Number(index) : null, property_id: kind === "native_property" ? property : null };
@@ -89,19 +98,31 @@ export function DiscoveryDesignWorkbench({ initialMaterialId = "", initialProper
     try { const next = await knownDesignDetail(await op.run(() => discoveryDesignDetail(entry.design_id, op.signal)), current, entry.design_id); if (!op.active()) return; if (!next) throw new Error("Invalid history"); setDetail(next); setBusy(false); }
     catch (error) { if (op.active()) fail(error); }
   }
+  async function openBatchChild(pin: ConditionBatchChild) {
+    if (!cap || locked) return; const current = cap, selected = structuredClone(pin), op = begin(); setGenerated(null); setDetail(null); setPrepared(null); setBusy(true); setMessage("");
+    try {
+      const next = await knownDesignDetail(await op.run(() => discoveryDesignDetail(selected.design_id, op.signal)), current, selected.design_id);
+      if (!op.active()) return;
+      const initial = next?.entries.find(e => e.revision === 1);
+      if (!next || initial && (initial.id !== selected.revision_id || initial.record_sha256 !== selected.record_sha256) || next.entries.some(e => e.id === selected.revision_id && e.record_sha256 !== selected.record_sha256)) throw new Error("Invalid child design history");
+      setDetail(next); setBusy(false); setMessage("Opened the candidate's native design history. Later revisions keep the ordinary design revision chain.");
+    } catch (error) { if (op.active()) fail(error); }
+  }
   function useDesign(entry: DesignEntry, fork = false) {
-    if (locked || entry.status === "withdrawn") return;
+    if (locked || batchRetained.current || entry.status === "withdrawn") return;
+    setGenerated(null);
+    setBatchDraft(n => n + 1);
     setKind(entry.baseline.kind); setMaterial(entry.baseline.material_id ?? ""); setProperty(entry.baseline.property_id ?? ""); setIndex(String(entry.baseline.record_index ?? 0));
     setForm(structuredClone(entry.design)); setParent(fork ? { design_id: entry.design_id, revision_id: entry.id, record_sha256: entry.record_sha256 } : entry.parent); setEditing(fork ? null : entry); setContext(null); setPrepared(null); setSaved(null);
     setMessage("Proposal copied. Reload its exact baseline before previewing; source values are not inherited.");
   }
   function useScenario(entry: DesignEntry, proposal: ResearchDesign) {
-    if (locked || !cap || !entry.is_head || entry.status !== "proposed" || !entry.eligibility.eligible) return;
+    if (locked || batchRetained.current || !cap || !entry.is_head || entry.status !== "proposed" || !entry.eligibility.eligible) return;
     useDesign(entry, true); setForm(structuredClone(proposal));
     setMessage("Requested conditions copied into a linked proposal. Reload the current baseline before previewing. The generation manifest remains local.");
   }
   async function previewRequest(request: DesignRequest) {
-    if (!cap || locked) return;
+    if (!cap || locked || batchRetained.current) return;
     if (!knownDesignRequest(request)) { setMessage("Complete the host, modification, hypothesis, prerequisites and at least two distinct outcomes with different decisions."); return; }
     const canonical = expressionCanonical(request);
     if (new TextEncoder().encode(canonical).length > DESIGN_MAX_BYTES) { setMessage("This design exceeds the supported request size. Shorten the proposal before previewing."); return; }
@@ -121,7 +142,7 @@ export function DiscoveryDesignWorkbench({ initialMaterialId = "", initialProper
       : { version: DESIGN_REQUEST_VERSION, request_key: `discovery-design:${crypto.randomUUID()}`, operation: "propose", payload: common });
   }
   async function save() {
-    if (!cap || !prepared || locked) return; const current = cap, selected = prepared, op = begin(); retained.current = selected.recovery; setBusy(true); setMessage("");
+    if (!cap || !prepared || locked || batchRetained.current) return; const current = cap, selected = prepared, op = begin(); retained.current = selected.recovery; setBusy(true); setMessage("");
     try { const next = await knownDesignReceipt(await op.run(() => discoveryDesignCommit(selected.request, selected.recovery.previewSha, op.signal)), current, selected.recovery, "commit"); if (!op.active()) return; if (!next) throw new Error("Invalid save"); retained.current = null; setRecovery(null); clearProposal(); setDetail(null); setPage(null); setSaved(next); setBusy(false); setMessage("Saved to your private research-design history. Load saved designs to inspect its current source scope."); }
     catch (error) {
       if (!op.active()) return;
@@ -144,7 +165,8 @@ export function DiscoveryDesignWorkbench({ initialMaterialId = "", initialProper
       {page && <section className={section} aria-label="Saved research designs"><h3 className="font-semibold">Saved designs <span className="font-normal text-sage-muted">({page.entries.length} of {page.total})</span></h3>{!page.entries.length && <p className="text-sm text-sage-muted">No saved designs in this window. Outline a hypothesis below.</p>}<ul className="divide-y divide-sage-border">{page.entries.map(e => <li key={e.id} className="flex flex-wrap items-start justify-between gap-3 py-3"><div className="min-w-0"><p className="break-words font-medium">{e.design.host_label} → {e.design.state_label}</p><p className="text-xs text-sage-muted">Revision {e.revision} · {e.status} · {readable(e.design.next_action.kind)}</p>{!e.eligibility.eligible && <p className="text-xs text-amber-800">{e.eligibility.reason_codes.map(readable).join(" · ")}</p>}</div><button className={button} disabled={locked} onClick={() => void inspect(e)}>Inspect history</button></li>)}</ul><div className="flex flex-wrap gap-2"><button className={button} disabled={locked || page.offset === 0} onClick={() => void loadPage(Math.max(0, page.offset - 8))}>Previous window</button><button className={button} disabled={locked || page.offset + page.entries.length >= page.total} onClick={() => void loadPage(page.offset + 8)}>Next window</button></div></section>}
       {detail && head && <section className={section} aria-label="Research design history"><h3 className="font-semibold">Design history</h3><p className="text-xs text-sage-muted">Latest {detail.entries.length} of {detail.revision_total} immutable revisions. Links describe proposed modifications of a research design.</p><BaselineView context={head} /><div className="flex flex-wrap gap-2"><button className={button} disabled={locked || head.status === "withdrawn"} onClick={() => useDesign(head)}>Revise current proposal</button><button className={button} disabled={locked || head.status === "withdrawn"} onClick={() => useDesign(head, true)}>Start linked proposal</button></div><ol className="divide-y divide-sage-border">{detail.entries.map(e => <li key={e.id} className="space-y-2 py-3"><p className="text-sm font-medium">Revision {e.revision} · {e.operation} · {e.is_head ? "current head" : "historical"}</p><p className="break-words text-sm">{e.design.hypothesis}</p><details className="text-xs"><summary className="cursor-pointer">Inspect exact proposal and pins</summary><pre className="mt-2 max-h-72 overflow-auto whitespace-pre-wrap break-all rounded-lg bg-sage-surface p-3">{e.receipt.receipt_canonical_json}</pre></details></li>)}</ol>{head.status !== "withdrawn" && <div className="space-y-3 border-t border-sage-border pt-3"><label className="block text-sm">Withdrawal reason<textarea className={input} maxLength={2000} value={withdrawReason} disabled={locked} onChange={e => { setWithdrawReason(e.target.value); setPrepared(null); }} /></label><button className={button} disabled={locked || !withdrawReason.trim()} onClick={() => void previewRequest({ version: DESIGN_REQUEST_VERSION, request_key: `discovery-design:${crypto.randomUUID()}`, operation: "withdraw", payload: { design_id: head.design_id, predecessor: { id: head.id, record_sha256: head.record_sha256 }, reason: withdrawReason.trim() } })}>Preview withdrawal</button></div>}</section>}
       <section className={section} aria-label="Design baseline selection"><div className="flex flex-wrap items-center justify-between gap-3"><h3 className="font-semibold">1. Source baseline</h3><button className={button} disabled={locked} onClick={() => { clearProposal(); setKind("unanchored"); setMaterial(""); setProperty(""); setIndex("0"); }}>New independent proposal</button></div><div className="grid gap-3 sm:grid-cols-2"><label className="text-sm">Baseline type<select className={input} value={kind} disabled={locked} onChange={e => selectorEdit(() => setKind(e.target.value as DesignBaseline["kind"]))}><option value="unanchored">Unanchored hypothesis</option><option value="retained_result">Retained catalogue result</option><option value="native_property">Native scientific property</option></select></label>{kind !== "unanchored" && <label className="text-sm">Exact material ID<input className={input} maxLength={100} value={material} disabled={locked} onChange={e => selectorEdit(() => setMaterial(e.target.value))} /></label>}{kind === "retained_result" && <label className="text-sm">Retained record index<input className={input} inputMode="numeric" value={index} disabled={locked} onChange={e => selectorEdit(() => setIndex(e.target.value))} /></label>}{kind === "native_property" && <label className="text-sm">Exact property ID<input className={input} maxLength={36} value={property} disabled={locked} onChange={e => selectorEdit(() => setProperty(e.target.value))} /></label>}</div><button className={button} disabled={locked} onClick={() => void loadContext()}>Load exact baseline</button>{context && <BaselineView context={context} />}</section>
-      {head?.is_head && head.status === "proposed" && head.eligibility.eligible && head.baseline.kind !== "unanchored" && <section className={section} aria-label="Design condition sweep"><DiscoveryConditionSweepPlanner entry={head} capabilities={cap} disabled={locked} onSelect={proposal => useScenario(head, proposal)} /></section>}
+      {head?.is_head && head.status === "proposed" && head.eligibility.eligible && head.baseline.kind !== "unanchored" && <section className={section} aria-label="Design condition sweep"><DiscoveryConditionSweepPlanner entry={head} capabilities={cap} disabled={locked} onSelect={proposal => useScenario(head, proposal)} onGenerated={setGenerated} /></section>}
+      <section className={section}><DiscoveryConditionBatchWorkspace capabilities={cap} generated={head?.is_head && head.status === "proposed" && head.eligibility.eligible && generated?.parent.record_sha256 === head.record_sha256 ? generated : null} disabled={busy || recovery !== null} invalidationKey={batchDraft} saveRecovery={batchRetained.current?.actorId === user.id ? batchRetained.current : null} onSaveDispatched={batchDispatched} onSaveResolved={batchResolved} onOpenChild={pin => void openBatchChild(pin)} onScopeInvalid={fail} /></section>
       <form onSubmit={propose} noValidate aria-label="Persistent research design" className={section}>
         <h3 className="font-semibold">2. {editing ? "Revise the current proposal" : parent ? "Outline a linked proposal" : "Outline a research proposal"}</h3>{parent && <p className="break-all text-xs text-sage-muted">Proposed modification of design {parent.design_id} · exact revision {parent.revision_id}. This link does not establish material genealogy.</p>}
         <fieldset disabled={locked} className="space-y-4">

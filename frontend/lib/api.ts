@@ -99,6 +99,46 @@ export function discoveryDesignDetail(designId: string, signal?: AbortSignal): P
   return request(`/research/discovery-designs/designs/${encodeURIComponent(designId)}`, { cache: "no-store", signal, responseByteLimit: 1024 * 1024 });
 }
 
+// Private condition batches. Every write is explicit; uncertain saves use GET only.
+export function discoveryConditionBatchCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-condition-batches/capabilities", { cache: "no-store", signal, responseByteLimit: 16384 });
+}
+export function discoveryConditionBatchPreview(body: import("./discovery-condition-batches").ConditionBatchRequest, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-condition-batches/operations/preview", { method: "POST", body: JSON.stringify({ request: body }), cache: "no-store", signal, responseByteLimit: 512 * 1024 });
+}
+export function discoveryConditionBatchCommit(body: import("./discovery-condition-batches").ConditionBatchRequest, previewSha: string, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-condition-batches/operations/commit", { method: "POST", body: JSON.stringify({ request: body, expected_preview_sha256: previewSha }), cache: "no-store", signal, responseByteLimit: 512 * 1024 });
+}
+export function discoveryConditionBatchOutcome(requestKey: string, requestSha: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-condition-batches/operations/outcome?${new URLSearchParams({ request_key: requestKey, expected_request_sha256: requestSha })}`, { cache: "no-store", signal, responseByteLimit: 512 * 1024 });
+}
+export function discoveryConditionBatchPage(offset = 0, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-condition-batches/batches?${new URLSearchParams({ offset: String(offset), limit: "8" })}`, { cache: "no-store", signal, responseByteLimit: 1024 * 1024 });
+}
+export function discoveryConditionBatchDetail(batchId: string, offset = 0, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-condition-batches/batches/${encodeURIComponent(batchId)}?${new URLSearchParams({ offset: String(offset), limit: "8" })}`, { cache: "no-store", signal, responseByteLimit: 1024 * 1024 });
+}
+/** Preserve original canonical UTF-8 export bytes instead of reserializing JSON. */
+export async function discoveryConditionBatchManifest(batchId: string, signal?: AbortSignal): Promise<string> {
+  let response: Response;
+  try { response = await fetch(`${API_BASE}/research/discovery-condition-batches/batches/${encodeURIComponent(batchId)}/manifest`, { credentials: "include", cache: "no-store", signal }); }
+  catch (error) { throw new ApiError(0, null, sanitizeErrorMessage(error instanceof Error ? error.message : String(error))); }
+  if (!response.ok) {
+    const body = await boundedJson(response, 16384);
+    throw new ApiError(response.status, body, `HTTP ${response.status}`, response.status === 429 ? parseRetryAfter(response.headers.get("retry-after")) : undefined, response.headers.get("x-request-id") ?? undefined);
+  }
+  const reader = response.body?.getReader();
+  if (!reader) throw new ApiError(0, null, "Batch manifest unavailable.");
+  const parts: Uint8Array[] = []; let size = 0;
+  try {
+    while (true) { const { done, value } = await reader.read(); if (done) break; size += value.byteLength; if (size > 4194304 + 128 || parts.length >= 4096) throw new Error("Manifest response limit"); parts.push(value); }
+    const bytes = new Uint8Array(size); let offset = 0;
+    for (const part of parts) { bytes.set(part, offset); offset += part.byteLength; }
+    return new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
+  } catch { await reader.cancel().catch(() => {}); throw new ApiError(0, null, "Batch manifest unavailable."); }
+  finally { reader.releaseLock(); }
+}
+
 export function materialFieldCaseCapabilities(signal?: AbortSignal): Promise<unknown> {
   return request("/research/material-field-cases/capabilities", { cache: "no-store", signal, responseByteLimit: 16384 });
 }

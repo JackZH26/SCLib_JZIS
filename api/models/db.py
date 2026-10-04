@@ -1781,6 +1781,10 @@ from models.discovery_design_v1 import register as _register_discovery_designs  
 
 DISCOVERY_DESIGNS = _register_discovery_designs(Base.metadata)
 
+from models.discovery_condition_batch_v1 import register as _register_discovery_condition_batches  # noqa: E402
+
+DISCOVERY_CONDITION_BATCHES = _register_discovery_condition_batches(Base.metadata)
+
 from models.material_field_review_v1 import (  # noqa: E402
     register as _register_material_field_review,
 )
