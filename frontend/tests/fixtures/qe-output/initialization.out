@@ -1,0 +1,210 @@
+
+     Program PWSCF v.7.5 starts on  5Oct2026 at  1:57:38 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+         "P. Giannozzi et al., J. Chem. Phys. 152 154105 (2020);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI & OpenMP), running on       1 processor cores
+     Number of MPI processes:                 1
+     Threads/MPI process:                     1
+
+     MPI processes distributed on     1 nodes
+     0 MiB available memory on the printing compute node when the environment starts
+
+     Reading input from sclib_c61aacfeeff540ae-check.in
+
+     Current dimensions of program PWSCF are:
+     Max number of different atomic species (ntypx) = 10
+     Max number of k-points (npk) =  40000
+     Max angular momentum in pseudopotentials (lmaxx) =  4
+     file Al.pbe-n-kjpaw_psl.1.0.0.UPF: wavefunction(s)  3S 3P renormalized
+     file C.pbe-n-kjpaw_psl.1.0.0.UPF: wavefunction(s)  2S 2P renormalized
+     file Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF: wavefunction(s)  2P renormalized
+
+     Subspace diagonalization in iterative solution of the eigenvalue problem:
+     a serial algorithm will be used
+
+
+     G-vector sticks info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Sum        4675    2347    649               294221   104173   15071
+
+     Using Slab Decomposition
+
+
+
+     bravais-lattice index     =            0
+     lattice parameter (alat)  =      11.8824  a.u.
+     unit-cell volume          =    1656.7031 (a.u.)^3
+     number of atoms/cell      =           24
+     number of atomic types    =            4
+     number of electrons       =       121.00
+     number of Kohn-Sham states=           73
+     kinetic-energy cutoff     =      60.0000  Ry
+     charge density cutoff     =     480.0000  Ry
+     scf convergence threshold =      1.0E-08
+     mixing beta               =       0.3000
+     number of iterations used =            8  plain     mixing
+     Exchange-correlation= SLA  PW   PBX  PBC
+                           (   1   4   3   4   0   0   0)
+
+     celldm(1)=  11.882394  celldm(2)=   0.000000  celldm(3)=   0.000000
+     celldm(4)=   0.000000  celldm(5)=   0.000000  celldm(6)=   0.000000
+
+     crystal axes: (cart. coord. in units of alat)
+               a(1) = (   1.000000   0.000000   0.000000 )  
+               a(2) = (  -0.500000   0.866025   0.000000 )  
+               a(3) = (   0.000000   0.000000   1.140256 )  
+
+     reciprocal axes: (cart. coord. in units 2 pi/alat)
+               b(1) = (  1.000000  0.577350 -0.000000 )  
+               b(2) = (  0.000000  1.154701  0.000000 )  
+               b(3) = (  0.000000 -0.000000  0.876996 )  
+
+
+     PseudoPot. # 1 for Al read from file:
+     ./pseudo/Al.pbe-n-kjpaw_psl.1.0.0.UPF
+     MD5 check sum: 502b6b27b9c6270cab5dd1084b96fa6d
+     Pseudo is Projector augmented-wave + core cor, Zval =  3.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.3
+     Shape of augmentation charge: PSQ
+     Using radial grid of 1135 points,  6 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+                l(5) =   2
+                l(6) =   2
+     Q(r) pseudized with 0 coefficients 
+
+
+     PseudoPot. # 2 for B  read from file:
+     ./pseudo/B.pbe-n-kjpaw_psl.1.0.0.UPF
+     MD5 check sum: 8c825a5969375aca5c2c6ad5945b3059
+     Pseudo is Projector augmented-wave + core cor, Zval =  3.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.3
+     Shape of augmentation charge: PSQ
+     Using radial grid of 1059 points,  4 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+     Q(r) pseudized with 0 coefficients 
+
+
+     PseudoPot. # 3 for C  read from file:
+     ./pseudo/C.pbe-n-kjpaw_psl.1.0.0.UPF
+     MD5 check sum: 5f16ad9a65e90284d1d834d4ab3b0f7d
+     Pseudo is Projector augmented-wave + core cor, Zval =  4.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.3
+     Shape of augmentation charge: PSQ
+     Using radial grid of 1073 points,  4 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+     Q(r) pseudized with 0 coefficients 
+
+
+     PseudoPot. # 4 for Mg read from file:
+     ./pseudo/Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF
+     MD5 check sum: fda14e0d92a6a9a5ebed782e5a4b3067
+     Pseudo is Projector augmented-wave + core cor, Zval = 10.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.3
+     Shape of augmentation charge: PSQ
+     Using radial grid of 1129 points,  4 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+     Q(r) pseudized with 0 coefficients 
+
+
+     atomic species   valence    mass     pseudopotential
+     Al                3.00    26.98154     Al( 1.00)
+     B                 3.00    10.81000     B ( 1.00)
+     C                 4.00    12.01100     C ( 1.00)
+     Mg               10.00    24.30500     Mg( 1.00)
+
+     No symmetry found
+
+
+
+   Cartesian axes
+
+     site n.     atom                  positions (alat units)
+         1        Al     tau(   1) = (   0.0000000   0.0000000   0.0000000  )
+         2        C      tau(   2) = (  -0.0000250   0.2886896   0.2850639  )
+         3        B      tau(   3) = (   0.2499750   0.1443231   0.2850639  )
+         4        Mg     tau(   4) = (   0.0000000   0.0000000   0.5701278  )
+         5        B      tau(   5) = (  -0.0000250   0.2886896   0.8551917  )
+         6        B      tau(   6) = (   0.2499750   0.1443231   0.8551917  )
+         7        Mg     tau(   7) = (  -0.2500000   0.4330127   0.0000000  )
+         8        B      tau(   8) = (  -0.2500250   0.7217023   0.2850639  )
+         9        B      tau(   9) = (  -0.0000250   0.5773358   0.2850639  )
+        10        Mg     tau(  10) = (  -0.2500000   0.4330127   0.5701278  )
+        11        B      tau(  11) = (  -0.2500250   0.7217023   0.8551917  )
+        12        B      tau(  12) = (  -0.0000250   0.5773358   0.8551917  )
+        13        Mg     tau(  13) = (   0.5000000   0.0000000   0.0000000  )
+        14        B      tau(  14) = (   0.4999750   0.2886896   0.2850639  )
+        15        B      tau(  15) = (   0.7499750   0.1443231   0.2850639  )
+        16        Mg     tau(  16) = (   0.5000000   0.0000000   0.5701278  )
+        17        B      tau(  17) = (   0.4999750   0.2886896   0.8551917  )
+        18        B      tau(  18) = (   0.7499750   0.1443231   0.8551917  )
+        19        Mg     tau(  19) = (   0.2500000   0.4330127   0.0000000  )
+        20        B      tau(  20) = (   0.2499750   0.7217023   0.2850639  )
+        21        B      tau(  21) = (   0.4999750   0.5773358   0.2850639  )
+        22        Mg     tau(  22) = (   0.2500000   0.4330127   0.5701278  )
+        23        B      tau(  23) = (   0.2499750   0.7217023   0.8551917  )
+        24        B      tau(  24) = (   0.4999750   0.5773358   0.8551917  )
+
+     number of k points=     8  Marzari-Vanderbilt smearing, width (Ry)=  0.0200
+                       cart. coord. in units 2pi/alat
+        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.2500000
+        k(    2) = (   0.0000000   0.0000000  -0.4384982), wk =   0.2500000
+        k(    3) = (   0.0000000  -0.5773503   0.0000000), wk =   0.2500000
+        k(    4) = (   0.0000000  -0.5773503  -0.4384982), wk =   0.2500000
+        k(    5) = (   0.5000000  -0.2886751   0.0000000), wk =   0.2500000
+        k(    6) = (  -0.5000000  -0.2886751   0.0000000), wk =   0.2500000
+        k(    7) = (   0.5000000  -0.2886751  -0.4384982), wk =   0.2500000
+        k(    8) = (  -0.5000000  -0.2886751  -0.4384982), wk =   0.2500000
+
+     Dense  grid:   294221 G-vectors     FFT dimensions: (  90,  90,  96)
+
+     Smooth grid:   104173 G-vectors     FFT dimensions: (  60,  60,  72)
+
+     Estimated max dynamical RAM per process >       1.38 GB
+
+     Writing config-init to output data dir ./out/sclib_c61aacfeeff540ae_check.save/ :
+     XML data file
+
+
+     Called by init_run:
+
+     Called by electrons:
+
+     Called by c_bands:
+
+     Called by *egterg:
+
+     Called by h_psi:
+
+     General routines
+
+     Parallel routines
+
+     PWSCF        :      0.24s CPU      0.28s WALL
+
+
+   This run was terminated on:   1:57:38   5Oct2026            
+
+=------------------------------------------------------------------------------=
+   JOB DONE.
+=------------------------------------------------------------------------------=

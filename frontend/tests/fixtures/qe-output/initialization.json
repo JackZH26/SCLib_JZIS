@@ -1,0 +1,1039 @@
+{
+  "version": "discovery-qe-input/1.0.0",
+  "id": "qe-input:c61aacfeeff540ae8eb8ee7da99425589159c6bdf21ae4f9cd95562f7f853b4a",
+  "candidate": {
+    "atoms": [
+      {
+        "id": "image-0-cell-0-0-0",
+        "label": "S1",
+        "element": "Al",
+        "fractional": [
+          0,
+          0,
+          0
+        ],
+        "occupancy": 1,
+        "source_site_label": "Mg1",
+        "source_expanded_index": 0,
+        "cell_translation": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "image-1-cell-0-0-0",
+        "label": "S2",
+        "element": "C",
+        "fractional": [
+          0.16665,
+          0.33335,
+          0.25
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 1,
+        "cell_translation": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "image-2-cell-0-0-0",
+        "label": "S3",
+        "element": "B",
+        "fractional": [
+          0.33330000000000004,
+          0.16665,
+          0.25
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 2,
+        "cell_translation": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "image-0-cell-0-0-1",
+        "label": "S4",
+        "element": "Mg",
+        "fractional": [
+          0,
+          0,
+          0.5
+        ],
+        "occupancy": 1,
+        "source_site_label": "Mg1",
+        "source_expanded_index": 0,
+        "cell_translation": [
+          0,
+          0,
+          1
+        ]
+      },
+      {
+        "id": "image-1-cell-0-0-1",
+        "label": "S5",
+        "element": "B",
+        "fractional": [
+          0.16665,
+          0.33335,
+          0.75
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 1,
+        "cell_translation": [
+          0,
+          0,
+          1
+        ]
+      },
+      {
+        "id": "image-2-cell-0-0-1",
+        "label": "S6",
+        "element": "B",
+        "fractional": [
+          0.33330000000000004,
+          0.16665,
+          0.75
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 2,
+        "cell_translation": [
+          0,
+          0,
+          1
+        ]
+      },
+      {
+        "id": "image-0-cell-0-1-0",
+        "label": "S7",
+        "element": "Mg",
+        "fractional": [
+          0,
+          0.5,
+          0
+        ],
+        "occupancy": 1,
+        "source_site_label": "Mg1",
+        "source_expanded_index": 0,
+        "cell_translation": [
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "image-1-cell-0-1-0",
+        "label": "S8",
+        "element": "B",
+        "fractional": [
+          0.16665,
+          0.83335,
+          0.25
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 1,
+        "cell_translation": [
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "image-2-cell-0-1-0",
+        "label": "S9",
+        "element": "B",
+        "fractional": [
+          0.33330000000000004,
+          0.66665,
+          0.25
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 2,
+        "cell_translation": [
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "image-0-cell-0-1-1",
+        "label": "S10",
+        "element": "Mg",
+        "fractional": [
+          0,
+          0.5,
+          0.5
+        ],
+        "occupancy": 1,
+        "source_site_label": "Mg1",
+        "source_expanded_index": 0,
+        "cell_translation": [
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "id": "image-1-cell-0-1-1",
+        "label": "S11",
+        "element": "B",
+        "fractional": [
+          0.16665,
+          0.83335,
+          0.75
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 1,
+        "cell_translation": [
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "id": "image-2-cell-0-1-1",
+        "label": "S12",
+        "element": "B",
+        "fractional": [
+          0.33330000000000004,
+          0.66665,
+          0.75
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 2,
+        "cell_translation": [
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "id": "image-0-cell-1-0-0",
+        "label": "S13",
+        "element": "Mg",
+        "fractional": [
+          0.5,
+          0,
+          0
+        ],
+        "occupancy": 1,
+        "source_site_label": "Mg1",
+        "source_expanded_index": 0,
+        "cell_translation": [
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "image-1-cell-1-0-0",
+        "label": "S14",
+        "element": "B",
+        "fractional": [
+          0.66665,
+          0.33335,
+          0.25
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 1,
+        "cell_translation": [
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "image-2-cell-1-0-0",
+        "label": "S15",
+        "element": "B",
+        "fractional": [
+          0.8333,
+          0.16665,
+          0.25
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 2,
+        "cell_translation": [
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "image-0-cell-1-0-1",
+        "label": "S16",
+        "element": "Mg",
+        "fractional": [
+          0.5,
+          0,
+          0.5
+        ],
+        "occupancy": 1,
+        "source_site_label": "Mg1",
+        "source_expanded_index": 0,
+        "cell_translation": [
+          1,
+          0,
+          1
+        ]
+      },
+      {
+        "id": "image-1-cell-1-0-1",
+        "label": "S17",
+        "element": "B",
+        "fractional": [
+          0.66665,
+          0.33335,
+          0.75
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 1,
+        "cell_translation": [
+          1,
+          0,
+          1
+        ]
+      },
+      {
+        "id": "image-2-cell-1-0-1",
+        "label": "S18",
+        "element": "B",
+        "fractional": [
+          0.8333,
+          0.16665,
+          0.75
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 2,
+        "cell_translation": [
+          1,
+          0,
+          1
+        ]
+      },
+      {
+        "id": "image-0-cell-1-1-0",
+        "label": "S19",
+        "element": "Mg",
+        "fractional": [
+          0.5,
+          0.5,
+          0
+        ],
+        "occupancy": 1,
+        "source_site_label": "Mg1",
+        "source_expanded_index": 0,
+        "cell_translation": [
+          1,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "image-1-cell-1-1-0",
+        "label": "S20",
+        "element": "B",
+        "fractional": [
+          0.66665,
+          0.83335,
+          0.25
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 1,
+        "cell_translation": [
+          1,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "image-2-cell-1-1-0",
+        "label": "S21",
+        "element": "B",
+        "fractional": [
+          0.8333,
+          0.66665,
+          0.25
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 2,
+        "cell_translation": [
+          1,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "image-0-cell-1-1-1",
+        "label": "S22",
+        "element": "Mg",
+        "fractional": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "occupancy": 1,
+        "source_site_label": "Mg1",
+        "source_expanded_index": 0,
+        "cell_translation": [
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "id": "image-1-cell-1-1-1",
+        "label": "S23",
+        "element": "B",
+        "fractional": [
+          0.66665,
+          0.83335,
+          0.75
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 1,
+        "cell_translation": [
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "id": "image-2-cell-1-1-1",
+        "label": "S24",
+        "element": "B",
+        "fractional": [
+          0.8333,
+          0.66665,
+          0.75
+        ],
+        "occupancy": 1,
+        "source_site_label": "B1",
+        "source_expanded_index": 2,
+        "cell_translation": [
+          1,
+          1,
+          1
+        ]
+      }
+    ],
+    "cell": {
+      "a": 6.287892,
+      "b": 6.287892,
+      "c": 7.169804399999999,
+      "alpha": 90,
+      "beta": 90,
+      "gamma": 120
+    },
+    "edits": [
+      {
+        "target": {
+          "id": "image-0-cell-0-0-0",
+          "label": "S1",
+          "element": "Mg",
+          "fractional": [
+            0,
+            0,
+            0
+          ],
+          "occupancy": 1,
+          "source_site_label": "Mg1",
+          "source_expanded_index": 0,
+          "cell_translation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "operation": {
+          "kind": "substitution",
+          "element": "Al"
+        }
+      },
+      {
+        "target": {
+          "id": "image-1-cell-0-0-0",
+          "label": "S2",
+          "element": "B",
+          "fractional": [
+            0.16665,
+            0.33335,
+            0.25
+          ],
+          "occupancy": 1,
+          "source_site_label": "B1",
+          "source_expanded_index": 1,
+          "cell_translation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "operation": {
+          "kind": "substitution",
+          "element": "C"
+        }
+      }
+    ],
+    "strain_percent": 2,
+    "id": "combined-candidate:2d69735e1c222bf312a8a760b989bf45fd81271bf777b94d1fde2ef671888a9e",
+    "parent_id": "supercell:9ebd97739a4c539e3a64540963d2b9183791fe129bd66f28ed9178fd3e1fe590",
+    "composition": {
+      "Al": 1,
+      "B": 15,
+      "C": 1,
+      "Mg": 7
+    },
+    "cif": "data_sclib_combined_candidate\n# Unrelaxed ordered coordinate proposal; no energy, stability or Tc calculation.\n# Source: https://www.crystallography.net/cod/1526507.cif@176429\n# Source CIF SHA-256: 0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d\n# Supercell repeats: 2 2 2\n# Uniform linear lattice change (%): 2\n# image-0-cell-0-0-0: Mg -> Al\n# image-1-cell-0-0-0: B -> C\n# Charge, magnetic state and target temperature/pressure are unspecified.\n# Source expansion uses a 0.001 A periodic merge tolerance; fractional coordinates are not idealized.\n# Source uncertainties remain in the JSON; new uncertainties are not estimated.\n_audit_creation_method 'SCLib explicit site modifications and uniform lattice change; unrelaxed'\n_cell_length_a 6.287892\n_cell_length_b 6.287892\n_cell_length_c 7.1698044\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 120\n_symmetry_space_group_name_H-M 'P 1'\n_symmetry_Int_Tables_number 1\nloop_\n_symmetry_equiv_pos_as_xyz\n'x,y,z'\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\n_atom_site_occupancy\nS1 Al 0 0 0 1\nS2 C 0.16665 0.33335 0.25 1\nS3 B 0.3333 0.16665 0.25 1\nS4 Mg 0 0 0.5 1\nS5 B 0.16665 0.33335 0.75 1\nS6 B 0.3333 0.16665 0.75 1\nS7 Mg 0 0.5 0 1\nS8 B 0.16665 0.83335 0.25 1\nS9 B 0.3333 0.66665 0.25 1\nS10 Mg 0 0.5 0.5 1\nS11 B 0.16665 0.83335 0.75 1\nS12 B 0.3333 0.66665 0.75 1\nS13 Mg 0.5 0 0 1\nS14 B 0.66665 0.33335 0.25 1\nS15 B 0.8333 0.16665 0.25 1\nS16 Mg 0.5 0 0.5 1\nS17 B 0.66665 0.33335 0.75 1\nS18 B 0.8333 0.16665 0.75 1\nS19 Mg 0.5 0.5 0 1\nS20 B 0.66665 0.83335 0.25 1\nS21 B 0.8333 0.66665 0.25 1\nS22 Mg 0.5 0.5 0.5 1\nS23 B 0.66665 0.83335 0.75 1\nS24 B 0.8333 0.66665 0.75 1\n",
+    "cif_sha256": "fad65f815496e34c257107816e23ece21fdab71f2a431da87542009a72754654",
+    "nominal_change": {
+      "changed_sites": 2,
+      "original_total_sites": 24,
+      "original_total_site_fraction": 0.08333333333333333,
+      "by_original_species": [
+        {
+          "element": "B",
+          "changed_sites": 1,
+          "original_species_sites": 16,
+          "fraction": 0.0625
+        },
+        {
+          "element": "Mg",
+          "changed_sites": 1,
+          "original_species_sites": 8,
+          "fraction": 0.125
+        }
+      ],
+      "basis": "Changed original sites, including replacements and removals; not a measured concentration or carrier density."
+    },
+    "volume_ratio": 1.0612080000000002
+  },
+  "parent_id": "supercell:9ebd97739a4c539e3a64540963d2b9183791fe129bd66f28ed9178fd3e1fe590",
+  "source_reference": {
+    "id": "cod-1526507",
+    "formula": "MgB2",
+    "declared_formula": "B2 Mg",
+    "space_group": "P 6/m m m",
+    "space_group_number": 191,
+    "lattice": {
+      "a": {
+        "raw": "3.0823",
+        "value": 3.0823,
+        "unit": "Å",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_length_a",
+        "CIF_line_1_based": 38
+      },
+      "b": {
+        "raw": "3.0823",
+        "value": 3.0823,
+        "unit": "Å",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_length_b",
+        "CIF_line_1_based": 39
+      },
+      "c": {
+        "raw": "3.51461",
+        "value": 3.51461,
+        "unit": "Å",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_length_c",
+        "CIF_line_1_based": 40
+      },
+      "alpha": {
+        "raw": "90",
+        "value": 90,
+        "unit": "degrees",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_angle_alpha",
+        "CIF_line_1_based": 34
+      },
+      "beta": {
+        "raw": "90",
+        "value": 90,
+        "unit": "degrees",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_angle_beta",
+        "CIF_line_1_based": 35
+      },
+      "gamma": {
+        "raw": "120",
+        "value": 120,
+        "unit": "degrees",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_angle_gamma",
+        "CIF_line_1_based": 36
+      }
+    },
+    "structure_conditions": {
+      "celltemp": {
+        "raw": null,
+        "value": null,
+        "standard_uncertainty": null,
+        "unit": "K",
+        "status": "not_supplied",
+        "source_tag": "_cell_measurement_temperature",
+        "source_line": null
+      },
+      "diffrtemp": {
+        "raw": null,
+        "value": null,
+        "standard_uncertainty": null,
+        "unit": "K",
+        "status": "not_supplied",
+        "source_tag": "_diffrn_ambient_temperature",
+        "source_line": null
+      },
+      "cellpressure": {
+        "raw": null,
+        "value": null,
+        "standard_uncertainty": null,
+        "unit": "kPa",
+        "status": "not_supplied",
+        "source_tag": "_cell_measurement_pressure",
+        "source_line": null
+      },
+      "diffrpressure": {
+        "raw": null,
+        "value": null,
+        "standard_uncertainty": null,
+        "unit": "kPa",
+        "status": "not_supplied",
+        "source_tag": "_diffrn_ambient_pressure",
+        "source_line": null
+      }
+    },
+    "source": {
+      "entry_url": "https://www.crystallography.net/cod/1526507.html",
+      "cif_url": "https://www.crystallography.net/cod/1526507.cif@176429",
+      "captured_revision": 176429,
+      "version_url_succeeded_at_capture": true,
+      "file_sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d",
+      "bytes": 2105,
+      "year": 2001,
+      "doi": null,
+      "bibliography": {
+        "authors": "Jorgensen, J.D.; Hinks, D.G.; Short, S.",
+        "title": "Lattice properties of Mg B2 versus temperature and pressure",
+        "journal": "Physical Review, Serie 3. B - Condensed Matter (18,1978-)",
+        "year": "2001",
+        "volume": "63",
+        "firstpage": "2245221",
+        "lastpage": "2245225",
+        "doi": null,
+        "CIF_doi": null,
+        "COD_method": null,
+        "CIF_radiation_probe": null
+      },
+      "captured_at_utc": "2026-10-01T20:39:12.139577+00:00",
+      "captured_HTTP_status": 200,
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_basis": "Each already-captured official COD entry links to CC0 /publicdomain/zero/1.0/; the CIF header states public domain.",
+      "download_is_mutable_current_file": false,
+      "publication_revision_verified": false
+    },
+    "original_cif_filename": "1526507-0eb4eaf60989.cif",
+    "sites": [
+      {
+        "label": "Mg1",
+        "element": "Mg",
+        "fractional": [
+          {
+            "raw": "0",
+            "value": 0
+          },
+          {
+            "raw": "0",
+            "value": 0
+          },
+          {
+            "raw": "0",
+            "value": 0
+          }
+        ],
+        "occupancy": {
+          "raw": "1",
+          "value": 1
+        }
+      },
+      {
+        "label": "B1",
+        "element": "B",
+        "fractional": [
+          {
+            "raw": "0.3333",
+            "value": 0.3333
+          },
+          {
+            "raw": "0.6667",
+            "value": 0.6667
+          },
+          {
+            "raw": "0.5",
+            "value": 0.5
+          }
+        ],
+        "occupancy": {
+          "raw": "1",
+          "value": 1
+        }
+      }
+    ],
+    "declared_symmetry_operations": [
+      "x,y,z",
+      "x-y,x,z",
+      "-y,x-y,z",
+      "-x,-y,z",
+      "-x+y,-x,z",
+      "y,-x+y,z",
+      "-y,-x,-z",
+      "x-y,-y,-z",
+      "x,x-y,-z",
+      "y,x,-z",
+      "-x+y,y,-z",
+      "-x,-x+y,-z",
+      "-x,-y,-z",
+      "-x+y,-x,-z",
+      "y,-x+y,-z",
+      "x,y,-z",
+      "x-y,x,-z",
+      "-y,x-y,-z",
+      "y,x,z",
+      "-x+y,y,z",
+      "-x,-x+y,z",
+      "-y,-x,z",
+      "x-y,-y,z",
+      "x,x-y,z"
+    ],
+    "display_unit_cell_sites": [
+      {
+        "source_site_label": "Mg1",
+        "element": "Mg",
+        "fractional": [
+          0,
+          0,
+          0
+        ],
+        "occupancy": {
+          "raw": "1",
+          "value": 1
+        },
+        "representative_operation_index": 0,
+        "equivalent_operation_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ]
+      },
+      {
+        "source_site_label": "B1",
+        "element": "B",
+        "fractional": [
+          0.3333,
+          0.6667,
+          0.5
+        ],
+        "occupancy": {
+          "raw": "1",
+          "value": 1
+        },
+        "representative_operation_index": 0,
+        "equivalent_operation_indices": [
+          0,
+          2,
+          4,
+          6,
+          8,
+          10,
+          13,
+          15,
+          17,
+          19,
+          21,
+          23
+        ]
+      },
+      {
+        "source_site_label": "B1",
+        "element": "B",
+        "fractional": [
+          0.6666000000000001,
+          0.3333,
+          0.5
+        ],
+        "occupancy": {
+          "raw": "1",
+          "value": 1
+        },
+        "representative_operation_index": 1,
+        "equivalent_operation_indices": [
+          1,
+          3,
+          5,
+          7,
+          9,
+          11,
+          12,
+          14,
+          16,
+          18,
+          20,
+          22
+        ]
+      }
+    ],
+    "limitations": [
+      "Physical sample, phase and catalogue result matching remain pending.",
+      "Pressure is not supplied in this CIF.",
+      "Temperature is not supplied in this CIF."
+    ],
+    "rounding_notes": [
+      "Rounded boron coordinates produce precision-sensitive symmetry-equivalent near-images. The 0.001 Å deduplication check agrees with B2; original coordinates were not changed."
+    ]
+  },
+  "construction_request": {
+    "referenceId": "cod-1526507",
+    "repeats": [
+      2,
+      2,
+      2
+    ],
+    "sites": [
+      {
+        "targetId": "image-0-cell-0-0-0",
+        "replacements": "Al",
+        "vacancy": false,
+        "unchanged": false
+      },
+      {
+        "targetId": "image-1-cell-0-0-0",
+        "replacements": "C",
+        "vacancy": true,
+        "unchanged": false
+      }
+    ],
+    "strain": "2"
+  },
+  "settings": {
+    "ecutwfc": 60,
+    "ecutrho": 480,
+    "charge": 1,
+    "degauss": 0.02,
+    "conv_thr": 1e-8,
+    "electron_maxstep": 100,
+    "mixing_beta": 0.3,
+    "max_seconds": 600,
+    "ionic_steps": 50,
+    "etot_conv_thr": 0.00001,
+    "forc_conv_thr": 0.0001,
+    "calculation": "scf",
+    "nspin": 1,
+    "smearing": "mv",
+    "mesh": [
+      2,
+      2,
+      2
+    ],
+    "shifts": [
+      0,
+      0,
+      0
+    ],
+    "species": [
+      {
+        "element": "Al",
+        "mass_amu": 26.9815385,
+        "starting_magnetization": null
+      },
+      {
+        "element": "B",
+        "mass_amu": 10.81,
+        "starting_magnetization": null
+      },
+      {
+        "element": "C",
+        "mass_amu": 12.011,
+        "starting_magnetization": null
+      },
+      {
+        "element": "Mg",
+        "mass_amu": 24.305,
+        "starting_magnetization": null
+      }
+    ]
+  },
+  "pseudopotentials": [
+    {
+      "filename": "Al.pbe-n-kjpaw_psl.1.0.0.UPF",
+      "sha256": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a",
+      "byte_length": 1678298,
+      "element": "Al",
+      "functional": "PBE",
+      "raw_functional": "SLA  PW   PBX  PBC",
+      "relativistic": "scalar",
+      "pseudo_type": "PAW",
+      "valence_electrons": 3,
+      "header_cutoffs_ry": {
+        "wavefunction": 29.49430269848,
+        "charge_density": 143.4836801931
+      },
+      "provenance": "User-selected local bytes; provider and license are not independently established."
+    },
+    {
+      "filename": "B.pbe-n-kjpaw_psl.1.0.0.UPF",
+      "sha256": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135",
+      "byte_length": 848121,
+      "element": "B",
+      "functional": "PBE",
+      "raw_functional": "SLA  PW   PBX  PBC",
+      "relativistic": "scalar",
+      "pseudo_type": "PAW",
+      "valence_electrons": 3,
+      "header_cutoffs_ry": {
+        "wavefunction": 42.58873786381,
+        "charge_density": 324.5670417417
+      },
+      "provenance": "User-selected local bytes; provider and license are not independently established."
+    },
+    {
+      "filename": "C.pbe-n-kjpaw_psl.1.0.0.UPF",
+      "sha256": "8a25fbf64c4fa257c68c01dc9a96e5b23c6a5ac0b09f45f271e1c946a65ed657",
+      "byte_length": 858332,
+      "element": "C",
+      "functional": "PBE",
+      "raw_functional": "SLA  PW   PBX  PBC",
+      "relativistic": "scalar",
+      "pseudo_type": "PAW",
+      "valence_electrons": 4,
+      "header_cutoffs_ry": {
+        "wavefunction": 40.1867666283,
+        "charge_density": 326.2605925982
+      },
+      "provenance": "User-selected local bytes; provider and license are not independently established."
+    },
+    {
+      "filename": "Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+      "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+      "byte_length": 958554,
+      "element": "Mg",
+      "functional": "PBE",
+      "raw_functional": "SLA  PW   PBX  PBC",
+      "relativistic": "scalar",
+      "pseudo_type": "PAW",
+      "valence_electrons": 10,
+      "header_cutoffs_ry": {
+        "wavefunction": 58.12090792647,
+        "charge_density": 385.1152484009
+      },
+      "provenance": "User-selected local bytes; provider and license are not independently established."
+    }
+  ],
+  "expected_valence_electrons": 121,
+  "cell_vectors_angstrom": [
+    [
+      6.287892,
+      0,
+      0
+    ],
+    [
+      -3.143945999999999,
+      5.445474208252942,
+      0
+    ],
+    [
+      4.3902390044863044e-16,
+      7.604117013140886e-16,
+      7.169804399999999
+    ]
+  ],
+  "warnings": [],
+  "files": {
+    "execution": {
+      "filename": "sclib_c61aacfeeff540ae.in",
+      "sha256": "44afb1034ed42d4ff28368e36954835212bff0629757ee3ee23121e649c7a32b"
+    },
+    "initialization": {
+      "filename": "sclib_c61aacfeeff540ae-check.in",
+      "sha256": "f8931218087b0155e1bc7b8aa9c6179722f3a5e38786044f51cafb57d96c276d"
+    }
+  },
+  "method": {
+    "engine": "Quantum ESPRESSO pw.x",
+    "documentation": "https://www.quantum-espresso.org/Doc/INPUT_PW.html",
+    "functional": "PBE from consistent UPF headers; no input_dft override",
+    "geometry": "Periodic 3D cell; fixed lattice vectors; ionic positions relaxed only if calculation=relax.",
+    "spin": "One type per element; collinear only; no same-element antiferromagnetic sublattices or spin-orbit coupling.",
+    "charge": "Positive tot_charge removes electrons; non-neutral periodic cells use a compensating homogeneous background.",
+    "smearing": "Numerical occupation broadening; not an assigned experimental temperature.",
+    "solver_defaults": "Unlisted pw.x options use the installed engine defaults. Capture its version and output for reproducibility."
+  },
+  "scope": {
+    "status": "prepared_input",
+    "calculation_executed": false,
+    "initialization_checked": false,
+    "numerical_convergence_established": false,
+    "relaxed": false,
+    "energy_calculated": false,
+    "stability_validated": false,
+    "tc_calculated": false,
+    "scientific_acceptance": false,
+    "ml_training_approved": false,
+    "database_write": false,
+    "target_temperature_k": null,
+    "target_pressure_gpa": null
+  },
+  "next_checks": [
+    "Keep the exact selected UPF bytes in ./pseudo and verify every file hash.",
+    "Run the separate nstep=0 initialization input with your installed pw.x.",
+    "Capture engine version, execution command, resources, stdout and all input hashes.",
+    "Converge basis, k mesh, smearing, bands and electronic/ionic thresholds for the chosen observable.",
+    "Compare relevant structural, charge and magnetic states before interpreting stability or superconductivity."
+  ]
+}
