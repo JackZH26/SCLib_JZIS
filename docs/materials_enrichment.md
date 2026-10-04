@@ -428,6 +428,17 @@ Materials Project client callers retain their prior transport compatibility.
   The additive `nomad-electronic-references/1.0.0` field distinguishes reported,
   not supplied and source review. Old API responses without this field remain
   readable as uninspected. Cache generation 4 refreshes pre-electronic responses.
+  Optional `?band_gap_only=true` applies a provider-side DOS-or-band-structure
+  nonnegative-gap query before the 21-entry inspection / 20-reference limit.
+  `query_scope` distinguishes `all` from `band_gap`, with separate cache keys;
+  `matches_total` always describes the requested scope. Zero-valued gaps remain
+  included. NOMAD 1.4.3 rejects a numeric-zero range boundary via a truthiness
+  validator, so the request uses the supported numeric string `"0"` with the
+  `:gte` operator. The captured Al2O3 query returned 63 matching tasks and is
+  preserved with its request/hash receipt. Filtering is opt-in, aborts older
+  requests and clears old rows immediately; older backends without an explicit
+  filtered scope cannot silently supply an unfiltered result. No matching gap
+  task does not mean the composition has no other calculation tasks.
   Per task, at most four DOS and four band-structure groups with two channel
   readings per group are projected. Malformed or oversized fields require
   source review without truncation; they do not discard valid task metadata.

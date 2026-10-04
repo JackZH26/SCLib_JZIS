@@ -23,9 +23,69 @@ const report = (fields: Partial<MaterialCalculationReferences> = {}): MaterialCa
   scope: "computed_task_composition_references_not_selected_material_properties", reference_conditions: "Not inspected", methodology_url: "https://docs.nomad-lab.eu/1.4.3/howto/manage/program/api.html", ...fields,
 });
 const expand = () => fireEvent.click(screen.getByText("NOMAD calculation references"));
+const filterGaps = () => fireEvent.click(screen.getByRole("checkbox", { name: /Only tasks with electronic band gaps/ }));
+const gapReport = (): MaterialCalculationReferences => report({ query_scope: "band_gap", matches_total: 63, references: [row("filtered_task", { electronic: {
+  version: "nomad-electronic-references/1.0.0", scope: "task_electronic_band_gaps_not_superconducting_gaps", unit_schema_url: NOMAD_GAP_SCHEMA,
+  status: "reported", band_gaps: [{ source_kind: "dos_electronic", group_index: 0, spin_channel_index: 0, spin_polarized: false, gap_type: null, value_j: 0, value_ev: 0 }],
+} })] });
 
 describe("NOMAD calculation references", () => {
   beforeEach(() => vi.resetAllMocks());
+  it("queries the provider when the filter changes and clears previously displayed unfiltered tasks", async () => {
+    let resolveFiltered: (value: MaterialCalculationReferences) => void = () => {};
+    vi.mocked(getMaterialCalculationReferences).mockResolvedValueOnce(report()).mockImplementationOnce(() => new Promise(resolve => { resolveFiltered = resolve; }));
+    render(<ExternalCalculationReferences materialId="mat:mgb2" />);
+    expand();
+    await screen.findByText("task_a ↗");
+    filterGaps();
+    expect(screen.queryByText("task_a ↗")).not.toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Loading public calculation metadata");
+    expect(getMaterialCalculationReferences).toHaveBeenLastCalledWith("mat:mgb2", expect.any(AbortSignal), true);
+    await act(async () => resolveFiltered(gapReport()));
+    expect(screen.getByText("1 of 63 tasks matching the band-gap filter")).toBeInTheDocument();
+    expect(screen.getAllByText("0 eV")[0]).toBeVisible();
+    expect(screen.getByText(/within the band-gap filter/)).toBeInTheDocument();
+  });
+  it("ignores a late unfiltered response after the filter changes", async () => {
+    let resolveAll: (value: MaterialCalculationReferences) => void = () => {};
+    vi.mocked(getMaterialCalculationReferences).mockImplementationOnce(() => new Promise(resolve => { resolveAll = resolve; })).mockResolvedValueOnce(gapReport());
+    render(<ExternalCalculationReferences materialId="mat:mgb2" />);
+    expand();
+    await waitFor(() => expect(getMaterialCalculationReferences).toHaveBeenCalledTimes(1));
+    const signal = vi.mocked(getMaterialCalculationReferences).mock.calls[0][1];
+    filterGaps();
+    expect(signal?.aborted).toBe(true);
+    await screen.findByText("filtered_task ↗");
+    await act(async () => resolveAll(report()));
+    expect(screen.queryByText("task_a ↗")).not.toBeInTheDocument();
+    expect(screen.getByText("1 of 63 tasks matching the band-gap filter")).toBeInTheDocument();
+  });
+  it.each([undefined, "all"] as const)("rejects an older backend that ignores the requested filter (%s)", async query_scope => {
+    vi.mocked(getMaterialCalculationReferences).mockResolvedValueOnce(report()).mockResolvedValueOnce({ ...gapReport(), query_scope });
+    render(<ExternalCalculationReferences materialId="mat:mgb2" />);
+    expand();
+    await screen.findByText("task_a ↗");
+    filterGaps();
+    await screen.findByText("Unavailable");
+    expect(screen.queryByText("filtered_task ↗")).not.toBeInTheDocument();
+  });
+  it("describes an empty filtered result precisely and resets the filter for another material", async () => {
+    vi.mocked(getMaterialCalculationReferences).mockResolvedValueOnce(report()).mockResolvedValueOnce(report({ query_scope: "band_gap", status: "no_match", references: [], matches_total: 0, inspected_entries: 0, truncated: false }));
+    const view = render(<ExternalCalculationReferences materialId="A" />);
+    expand();
+    await screen.findByText("task_a ↗");
+    filterGaps();
+    await screen.findByText(/Other calculation tasks may be available/);
+    expect(screen.queryByText(/No exact fixed-composition task was returned/)).not.toBeInTheDocument();
+    view.rerender(<ExternalCalculationReferences materialId="B" />);
+    expect(screen.getByRole("checkbox", { hidden: true })).not.toBeChecked();
+    expect(getMaterialCalculationReferences).toHaveBeenCalledTimes(2);
+    expect(screen.queryByText(/Other calculation tasks may be available/)).not.toBeInTheDocument();
+    view.rerender(<ExternalCalculationReferences materialId="A" />);
+    expect(screen.getByRole("checkbox", { hidden: true })).not.toBeChecked();
+    expect(screen.getByText("Inspect calculation tasks")).toBeInTheDocument();
+    expect(getMaterialCalculationReferences).toHaveBeenCalledTimes(2);
+  });
   it("shows computed electronic gaps in eV with source joules and separate DOS spin channels", async () => {
     vi.mocked(getMaterialCalculationReferences).mockResolvedValue(report({ references: [row("dos_task", { electronic: {
       version: "nomad-electronic-references/1.0.0", scope: "task_electronic_band_gaps_not_superconducting_gaps", unit_schema_url: NOMAD_GAP_SCHEMA,
@@ -45,7 +105,7 @@ describe("NOMAD calculation references", () => {
     expect(screen.getByText("Source: 3.204353268e-19 J")).toBeVisible();
     expect(screen.getByRole("link", { name: "Source unit definition" })).toHaveAttribute("href", NOMAD_GAP_SCHEMA);
     expect(screen.getByText(/not superconducting gaps or measured metallicity/)).toBeInTheDocument();
-    expect(screen.queryByText(/^Metal|Tc =|Nodeless$/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/^(?:Metal.*|Tc =.*|Nodeless)$/)).not.toBeInTheDocument();
   });
   it("rejects a changed eV conversion before rendering or publishing a field hit", async () => {
     vi.mocked(getMaterialCalculationReferences).mockResolvedValue(report({ references: [row("changed_gap", { electronic: {

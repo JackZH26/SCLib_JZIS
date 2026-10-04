@@ -1697,13 +1697,14 @@ export interface ExternalCalculationReference {
 }
 export interface MaterialCalculationReferences {
   version: "material-calculation-references/1.0.0"; provider: "NOMAD"; formula: string; query_formula: string | null;
+  query_scope?: "all" | "band_gap";
   status: ExternalReferenceStatus; reason: string | null; references: ExternalCalculationReference[];
   retrieved_at: string | null; matches_total: number | null; inspected_entries: number; truncated: boolean;
   scientific_acceptance: false; sample_identity_established: false; phase_identity_established: false;
   scope: string; reference_conditions: string; methodology_url: string;
 }
-export function getMaterialCalculationReferences(id: string, signal?: AbortSignal) {
-  return request<MaterialCalculationReferences>(`/materials/${encodeURIComponent(id)}/external_calculations`, { signal, cache: "no-store", responseByteLimit: 512 * 1024 });
+export function getMaterialCalculationReferences(id: string, signal?: AbortSignal, bandGapOnly = false) {
+  return request<MaterialCalculationReferences>(`/materials/${encodeURIComponent(id)}/external_calculations${bandGapOnly ? "?band_gap_only=true" : ""}`, { signal, cache: "no-store", responseByteLimit: 512 * 1024 });
 }
 
 export interface SuperconReferenceCode {

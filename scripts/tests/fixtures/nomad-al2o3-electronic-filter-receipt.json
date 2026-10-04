@@ -1,0 +1,63 @@
+{
+  "endpoint": "https://nomad-lab.eu/prod/v1/api/v1/entries/query",
+  "request": {
+    "owner": "public",
+    "query": {
+      "and": [
+        {
+          "results.material.chemical_formula_reduced": "Al2O3"
+        },
+        {
+          "or": [
+            {
+              "results.properties.electronic.dos_electronic.band_gap.value:gte": "0"
+            },
+            {
+              "results.properties.electronic.band_structure_electronic.band_gap.value:gte": "0"
+            }
+          ]
+        }
+      ]
+    },
+    "pagination": {
+      "page_size": 21,
+      "order_by": "entry_id",
+      "order": "asc"
+    },
+    "required": {
+      "include": [
+        "entry_id",
+        "upload_id",
+        "parser_name",
+        "mainfile",
+        "references",
+        "results.material.chemical_formula_hill",
+        "results.material.chemical_formula_reduced",
+        "results.material.material_id",
+        "results.material.structural_type",
+        "results.material.symmetry.space_group_number",
+        "results.material.symmetry.space_group_symbol",
+        "results.material.symmetry.crystal_system",
+        "results.method.method_name",
+        "results.method.simulation.program_name",
+        "results.method.simulation.dft.xc_functional_names",
+        "results.method.simulation.dft.xc_functional_type",
+        "results.method.simulation.dft.spin_polarized",
+        "results.properties.electronic.band_structure_electronic.band_gap.value",
+        "results.properties.electronic.band_structure_electronic.band_gap.index",
+        "results.properties.electronic.band_structure_electronic.band_gap.type",
+        "results.properties.electronic.band_structure_electronic.spin_polarized",
+        "results.properties.electronic.dos_electronic.band_gap.value",
+        "results.properties.electronic.dos_electronic.band_gap.index",
+        "results.properties.electronic.dos_electronic.band_gap.type",
+        "results.properties.electronic.dos_electronic.spin_polarized"
+      ]
+    }
+  },
+  "status": 200,
+  "captured_at_utc": "2026-10-04T23:15:29.275805+00:00",
+  "bytes": 19087,
+  "sha256": "90b272958ffbaf13a3db69974878a5c27789dc65455fe6197e42433d1486802a",
+  "production_writes": 0,
+  "query_rationale": "NOMAD v1.4.3 Range uses truthiness for boundary validation; ComparableValue explicitly includes strings. Numeric-string zero preserves inclusive zero without an arbitrary positive threshold."
+}

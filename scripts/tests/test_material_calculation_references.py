@@ -223,13 +223,102 @@ class FakeRedis:
 
 
 @pytest.mark.asyncio
-async def test_original_isotope_and_dopant_guard_precedes_cache(monkeypatch):
+@pytest.mark.parametrize("band_gap_only", [False, True])
+async def test_original_isotope_and_dopant_guard_precedes_cache(monkeypatch, band_gap_only):
     cache = FakeRedis(json.dumps(project()))
     monkeypatch.setattr(nomad, "get_redis", lambda: cache)
     for records in ([{"formula_raw": "¹¹B2Mg"}], [{"raw_extraction": {"formula": "MgB2-x"}}], [{"formula": "MgB1.9C0.1"}]):
-        result = await nomad.fetch_material_calculation_references("MgB2", current_records=records)
+        result = await nomad.fetch_material_calculation_references("MgB2", current_records=records, band_gap_only=band_gap_only)
         assert result["status"] == "not_applicable"
+        assert result["query_scope"] == ("band_gap" if band_gap_only else "all")
     assert cache.reads == 0
+
+
+def test_captured_filtered_response_finds_tasks_beyond_the_first_unfiltered_window():
+    root = Path(__file__).parent / "fixtures"
+    raw = (root / "nomad-al2o3-electronic-filter.json").read_bytes()
+    receipt = json.loads((root / "nomad-al2o3-electronic-filter-receipt.json").read_text())
+    assert receipt["status"] == 200 and hashlib.sha256(raw).hexdigest() == receipt["sha256"]
+    result = nomad.project_calculation_references("Al2O3", json.loads(raw), retrieved_at=receipt["captured_at_utc"], query_scope="band_gap")
+    assert result["status"] == "available" and result["query_scope"] == "band_gap"
+    assert len(result["references"]) == 20 and result["matches_total"] == 63 and result["truncated"]
+    assert all(ref["electronic"]["status"] == "reported" for ref in result["references"])
+    first_window = project(json.loads((root / "nomad-al2o3-electronic-response.json").read_text()), "Al2O3")
+    assert len({ref["id"] for ref in result["references"]} - {ref["id"] for ref in first_window["references"]}) >= 18
+    assert nomad._valid_cache(result, "Al2O3", "Al2O3", "band_gap")
+    assert not nomad._valid_cache(result, "Al2O3", "Al2O3")
+
+
+def test_filtered_projection_keeps_zero_and_review_but_does_not_promote_empty_metadata():
+    zero, invalid, missing = row("zero"), row("invalid"), row("missing")
+    zero["results"]["properties"] = {"electronic": {"dos_electronic": [{"band_gap": [{"value": 0}]}]}}
+    invalid["results"]["properties"] = {"electronic": {"dos_electronic": [{"band_gap": [{"value": -1}]}]}}
+    result = nomad.project_calculation_references("MgB2", payload([zero, invalid, missing]), retrieved_at="2026-10-05T00:00:00+00:00", query_scope="band_gap")
+    assert {ref["id"] for ref in result["references"]} == {"zero", "invalid"}
+    assert next(ref for ref in result["references"] if ref["id"] == "zero")["electronic"]["band_gaps"][0]["value_ev"] == 0
+    assert nomad._valid_cache(result, "MgB2", "B2Mg", "band_gap")
+    missing_result = nomad.project_calculation_references("MgB2", payload([missing]), retrieved_at="2026-10-05T00:00:00+00:00", query_scope="band_gap")
+    assert missing_result["status"] == "unavailable"
+    empty = nomad.project_calculation_references("MgB2", payload([]), retrieved_at="2026-10-05T00:00:00+00:00", query_scope="band_gap")
+    assert empty["status"] == "no_match" and empty["reason"] == "no_electronic_band_gap_task_returned"
+    assert nomad._valid_cache(empty, "MgB2", "B2Mg", "band_gap")
+    assert not nomad._valid_cache(empty, "MgB2", "B2Mg")
+
+
+@pytest.mark.asyncio
+async def test_filtered_query_is_provider_side_and_zero_inclusive(monkeypatch):
+    original = httpx.AsyncClient
+    observed = []
+
+    class ResponseStream(httpx.AsyncByteStream):
+        async def __aiter__(self):
+            yield json.dumps(payload([])).encode()
+
+    def respond(request):
+        observed.append(json.loads(request.content))
+        return httpx.Response(200, stream=ResponseStream())
+
+    monkeypatch.setattr(nomad.httpx, "AsyncClient", lambda **kwargs: original(transport=httpx.MockTransport(respond), **kwargs))
+    await nomad._provider_payload("B2Mg", band_gap_only=True)
+    body = observed[0]
+    assert body["owner"] == "public" and body["pagination"]["page_size"] == 21
+    assert body["query"] == {"and": [{"results.material.chemical_formula_reduced": "B2Mg"}, {"or": [
+        {"results.properties.electronic.dos_electronic.band_gap.value:gte": "0"},
+        {"results.properties.electronic.band_structure_electronic.band_gap.value:gte": "0"},
+    ]}]}
+
+
+@pytest.mark.asyncio
+async def test_scopes_have_separate_cache_keys_and_ignore_mislabeled_cached_data(monkeypatch):
+    class KeyedCache(FakeRedis):
+        values = {}
+
+        async def get(self, key):
+            return self.values.get(key)
+
+        async def set(self, key, value, ex):
+            self.values[key] = value
+
+    cache, calls = KeyedCache(), []
+    monkeypatch.setattr(nomad, "get_redis", lambda: cache)
+
+    async def provider(query, *, band_gap_only=False):
+        calls.append((query, band_gap_only))
+        return payload([])
+
+    monkeypatch.setattr(nomad, "_provider_payload", provider)
+    all_tasks = await nomad.fetch_material_calculation_references("MgB2")
+    gap_tasks = await nomad.fetch_material_calculation_references("MgB2", band_gap_only=True)
+    assert len(cache.values) == 2 and calls == [("B2Mg", False), ("B2Mg", True)]
+    assert await nomad.fetch_material_calculation_references("MgB2") == all_tasks
+    assert await nomad.fetch_material_calculation_references("MgB2", band_gap_only=True) == gap_tasks
+    assert len(calls) == 2
+    for key in cache.values:
+        if ":band_gap:" in key:
+            cache.values[key] = json.dumps(all_tasks)
+    refreshed = await nomad.fetch_material_calculation_references("MgB2", band_gap_only=True)
+    assert refreshed["status"] == "no_match" and refreshed["query_scope"] == "band_gap"
+    assert refreshed["reason"] == gap_tasks["reason"] and len(calls) == 3
 
 
 @pytest.mark.asyncio

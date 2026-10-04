@@ -661,6 +661,7 @@ async def material_external_structures(
 @router.get("/materials/{material_id:path}/external_calculations")
 async def material_external_calculations(
     material_id: str,
+    band_gap_only: bool = False,
     identity: Identity = Depends(peek_identity),  # noqa: ARG001
     db: AsyncSession = Depends(get_db),
 ) -> dict:
@@ -669,7 +670,8 @@ async def material_external_calculations(
     material = await material_view(db, await db.get(Material, material_id))
     if material is None or not visibility_allows_view(material.visibility):
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Material not found")
-    report = await fetch_material_calculation_references(material.formula, current_records=material.current_records())
+    options = {"band_gap_only": True} if band_gap_only else {}
+    report = await fetch_material_calculation_references(material.formula, current_records=material.current_records(), **options)
     await _check_material_revision(db, before)
     return _material_response(json.dumps(report, allow_nan=False).encode(), "CALCULATION_REFERENCE")
 

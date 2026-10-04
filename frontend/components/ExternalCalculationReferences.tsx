@@ -24,8 +24,9 @@ function safeOrigin(url: string): boolean {
   } catch { return false; }
 }
 
-function validReport(value: MaterialCalculationReferences): boolean {
+function validReport(value: MaterialCalculationReferences, bandGapOnly: boolean): boolean {
   return value?.version === "material-calculation-references/1.0.0" && value.provider === "NOMAD"
+    && (bandGapOnly ? value.query_scope === "band_gap" : value.query_scope === undefined || value.query_scope === "all")
     && value.scientific_acceptance === false && value.sample_identity_established === false && value.phase_identity_established === false
     && ["available", "no_match", "not_applicable", "unavailable"].includes(value.status)
     && Array.isArray(value.references) && value.references.length <= 20
@@ -46,36 +47,45 @@ function validReport(value: MaterialCalculationReferences): boolean {
       && (row.dft_metadata_status === ([row.xc_functional_names, row.xc_functional_type, row.spin_polarized].some(field => field !== null) ? "reported" : "not_supplied") || row.dft_metadata_status === "requires_review" && [row.xc_functional_names, row.xc_functional_type, row.spin_polarized].some(field => field === null))
       && row.dft_metadata_scope === "reported_underlying_dft_metadata_not_complete_method"
       && (row.electronic === undefined || validNomadElectronic(row.electronic))
+      && (!bandGapOnly || row.electronic !== undefined && row.electronic.status !== "not_supplied")
       && row.method_status === (row.method ? "reported" : "unresolved") && Array.isArray(row.source_references) && row.source_references.length <= 8
       && row.source_references.every(link => typeof link?.provider === "string" && typeof link?.url === "string"));
 }
 
 export function ExternalCalculationReferences({ materialId }: { materialId: string }) {
+  return <CalculationReferencePanel key={materialId} materialId={materialId} />;
+}
+
+function CalculationReferencePanel({ materialId }: { materialId: string }) {
   const publishAvailability = useProviderAvailabilityPublisher(materialId, "NOMAD");
   const headingId = useId();
   const [expansion, setExpansion] = useState<{ materialId: string; open: boolean }>({ materialId, open: false });
   const expanded = expansion.materialId === materialId && expansion.open;
-  const [state, setState] = useState<{ materialId: string; report: MaterialCalculationReferences | null; failed: boolean }>({ materialId, report: null, failed: false });
-  const report = state.materialId === materialId ? state.report : null;
-  const failed = state.materialId === materialId && state.failed;
+  const [filter, setFilter] = useState({ materialId, bandGapOnly: false });
+  const bandGapOnly = filter.materialId === materialId && filter.bandGapOnly;
+  const [state, setState] = useState<{ materialId: string; bandGapOnly: boolean; report: MaterialCalculationReferences | null; failed: boolean }>({ materialId, bandGapOnly: false, report: null, failed: false });
+  const currentState = state.materialId === materialId && state.bandGapOnly === bandGapOnly;
+  const report = currentState ? state.report : null;
+  const failed = currentState && state.failed;
   useEffect(() => {
     if (!expanded) return;
     const controller = new AbortController();
     let settled = false;
-    setState({ materialId, report: null, failed: false });
+    setState({ materialId, bandGapOnly, report: null, failed: false });
     publishAvailability(emptyProviderAvailability("NOMAD", "loading"));
-    getMaterialCalculationReferences(materialId, controller.signal).then(value => {
+    const request = bandGapOnly ? getMaterialCalculationReferences(materialId, controller.signal, true) : getMaterialCalculationReferences(materialId, controller.signal);
+    request.then(value => {
       if (controller.signal.aborted) return;
-      if (!validReport(value)) throw new Error("Calculation reference contract unavailable");
+      if (!validReport(value, bandGapOnly)) throw new Error("Calculation reference contract unavailable");
       settled = true;
-      setState({ materialId, report: value, failed: false });
+      setState({ materialId, bandGapOnly, report: value, failed: false });
       publishAvailability(mapMaterialProviderAvailability("NOMAD", value));
     }).catch(() => {
-      if (!controller.signal.aborted) { settled = true; setState({ materialId, report: null, failed: true }); publishAvailability(emptyProviderAvailability("NOMAD", "unavailable")); }
+      if (!controller.signal.aborted) { settled = true; setState({ materialId, bandGapOnly, report: null, failed: true }); publishAvailability(emptyProviderAvailability("NOMAD", "unavailable")); }
     });
     return () => { controller.abort(); if (!settled) publishAvailability(null); };
-  }, [materialId, expanded, publishAvailability]);
-  const count = report?.status === "available" ? `${report.references.length}${report.matches_total != null && report.matches_total > report.references.length ? ` of ${report.matches_total}` : ""} tasks` : null;
+  }, [materialId, bandGapOnly, expanded, publishAvailability]);
+  const count = report?.status === "available" ? `${report.references.length}${report.matches_total != null && report.matches_total > report.references.length ? ` of ${report.matches_total}` : ""} tasks${bandGapOnly ? " matching the band-gap filter" : ""}` : null;
   const retrieved = report?.retrieved_at ? new Date(report.retrieved_at) : null;
   return <section id={MATERIAL_PROVIDER_ANCHORS.NOMAD} aria-labelledby={headingId} className="border-t border-sage-border pt-5">
     <details key={materialId} open={expanded} onToggle={event => {
@@ -86,10 +96,14 @@ export function ExternalCalculationReferences({ materialId }: { materialId: stri
         <span className="ml-3 text-sm font-normal text-slate-600">{count ?? (!report && !failed ? expanded ? "Loading…" : "Inspect calculation tasks" : failed || report?.status === "unavailable" ? "Unavailable" : report?.status === "no_match" ? "No match returned" : "Composition review needed")}</span>
       </summary>
       <div className="mt-3 space-y-3">
+        <label className="flex w-fit cursor-pointer items-start gap-2 py-1 text-sm text-slate-600">
+          <input type="checkbox" checked={bandGapOnly} onChange={event => setFilter({ materialId, bandGapOnly: event.target.checked })} className="mt-0.5 h-4 w-4 shrink-0 accent-[color:var(--accent-deep)]" />
+          <span>Only tasks with electronic band gaps <span className="text-xs">(includes reported zero)</span></span>
+        </label>
         {expanded && !report && !failed && <p className="text-sm text-slate-600" role="status">Loading public calculation metadata…</p>}
         {(failed || report?.status === "unavailable") && <p className="text-sm text-slate-600">NOMAD is unavailable for this request. Database coverage cannot be determined.</p>}
         {report?.status === "not_applicable" && <p className="text-sm text-slate-600">Resolve the exact source composition, isotope or interface notation before querying calculation references.</p>}
-        {report?.status === "no_match" && <p className="text-sm text-slate-600">No exact fixed-composition task was returned by NOMAD. Parent compounds have not been substituted.</p>}
+        {report?.status === "no_match" && <p className="text-sm text-slate-600">{bandGapOnly ? "No tasks with nonnegative electronic band-gap values were returned for this exact composition. Other calculation tasks may be available." : "No exact fixed-composition task was returned by NOMAD. Parent compounds have not been substituted."}</p>}
         {report?.status === "available" && <>
           <p className="max-w-4xl text-sm text-slate-600">Temperature and pressure: <span className="font-medium">Not inspected</span>. Matching composition does not establish sample or phase identity.</p>
           <div tabIndex={0} role="region" aria-label="NOMAD calculation reference table" className="overflow-x-auto rounded-lg border border-sage-border bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-deep">
@@ -119,7 +133,7 @@ export function ExternalCalculationReferences({ materialId }: { materialId: stri
           </div>
           {report.references.some(row => row.electronic?.band_gaps.length) && <p className="max-w-4xl text-xs text-slate-500">Electronic band gaps describe the source task, not superconducting gaps or measured metallicity. DOS and band-structure readings retain their source groups and spin channels. A reported zero is distinct from missing data.</p>}
           <p className="max-w-4xl text-xs text-slate-500">Counts describe tasks, not independent experiments. Imported MP, OQMD or AFLOW tasks can overlap other reference panels. Reported DFT metadata describes the underlying DFT calculation, including for GW tasks; it does not specify the complete method. Archive conditions remain uninspected. <a href={docsUrl} target="_blank" rel="noopener noreferrer" className="underline">NOMAD API documentation ↗</a></p>
-          {report.truncated && <p className="text-xs text-amber-800">Showing at most 20 tasks in entry ID order; this is not a census of phases or methods.</p>}
+          {report.truncated && <p className="text-xs text-amber-800">Showing at most 20 tasks in entry ID order{bandGapOnly ? " within the band-gap filter" : ""}; this is not a census of phases or methods.</p>}
           <p className="text-xs text-slate-500">Retrieved: {retrieved && !Number.isNaN(retrieved.getTime()) ? `${retrieved.toLocaleString("en-GB", { timeZone: "UTC" })} UTC` : "Unavailable"}</p>
         </>}
       </div>
