@@ -40,6 +40,7 @@ export default async function MaterialsPage({ searchParams }: { searchParams: Pr
         <p>Sources count identifiers or legacy links, not independent experiments. Source year comes from the displayed Tc result. Optional classification and structure columns may describe other source results or states. The catalogue maximum remains separate when a filter matches another result.</p>
         <p>{data?.sort_basis === "current_projected_catalogue" ? "Sorting uses current source-scoped catalogue projections." : "Sorting uses legacy catalogue columns; unsupported stored values can affect ranking."} Missing data, unavailable sources and pending review remain distinct. Open Evidence for provenance and status details.</p>
         <p><Link className="site-text-link" href="/materials/source-references">Source reference pilot</Link>: inspect seven CrB₂ paper items and three independent COD structures, with conditions, source links and downloadable metadata.</p>
+        <p><Link className="site-text-link" href="/materials/source-references/organic">Organic source references</Link>: search the complete versioned NIMS Organic table with separate transition and pressure fields.</p>
         <p><Link className="site-text-link" href="/materials/source-observations/paper-contexts">Paper contexts and open questions</Link>: inspect sample-qualified methods and unresolved claims with original source locators.</p>
       </div></details>
     </div>
