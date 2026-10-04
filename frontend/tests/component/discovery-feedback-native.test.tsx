@@ -1,0 +1,30 @@
+import { webcrypto } from "node:crypto";
+import { beforeEach, afterEach, expect, it, vi } from "vitest";
+import { feedbackDesignPin, knownFeedbackCapabilities, knownFeedbackContext, knownFeedbackPage, knownFeedbackReceipt, knownFeedbackRecovery, knownFeedbackRequest } from "@/lib/discovery-feedback";
+import { knownDesignCapabilities, knownDesignDetail, knownDesignReceipt } from "@/lib/discovery-designs";
+import wire from "../fixtures/discovery-feedback-native.synthetic.json";
+import designWire from "../fixtures/discovery-designs-native.synthetic.json";
+
+beforeEach(() => vi.stubGlobal("crypto", webcrypto));
+afterEach(() => vi.unstubAllGlobals());
+it("replays actual synthetic SQL/HTTP evidence returns and durable follow-up receipts without science or execution authority", async () => {
+  expect(wire.reconstructed_retained_fixture).toBe(true); expect(wire.no_human_scientific_review).toBe(true);
+  const designCap = knownDesignCapabilities({ ...designWire.capabilities, actor_user_id: wire.capabilities.actor_user_id, session_version: wire.capabilities.session_version, curator_grant_id: wire.capabilities.curator_grant_id }, wire.capabilities.actor_user_id)!;
+  const cap = knownFeedbackCapabilities(wire.capabilities, designCap)!; expect(cap).not.toBeNull();
+  const parent = await knownDesignDetail(wire.parent, designCap, wire.parent.design_id); expect(parent).not.toBeNull();
+  expect(await feedbackDesignPin(parent!.entries[0])).toEqual(wire.context.design);
+  expect(knownFeedbackRequest(wire.request)).toBe(true);
+  expect(await knownFeedbackContext(wire.context, cap, { design: wire.context.design, materialId: wire.context.evidence.material_id, recordIndex: wire.context.evidence.record_index })).toEqual(wire.context);
+  const ref = { actorId: cap.actor_user_id, requestKey: wire.request.request_key, requestSha: wire.preview.request_sha256, previewSha: wire.preview.preview_sha256, receiptSha: wire.preview.receipt_sha256, receiptId: wire.preview.receipt_id, design: wire.context.design, operation: "return_evidence" as const, feedback: null, child: null };
+  expect(knownFeedbackRecovery(ref)).toBe(true);
+  expect(await knownFeedbackReceipt(wire.preview, cap, ref, "preview")).toEqual(wire.preview);
+  expect(await knownFeedbackReceipt(wire.commit, cap, ref, "commit")).toEqual(wire.commit);
+  expect(await knownFeedbackReceipt(wire.outcome, cap, ref, "outcome")).toEqual(wire.outcome);
+  expect(await knownDesignReceipt(wire.child_commit, designCap)).toEqual(wire.child_commit);
+  const link = { ...ref, requestKey: wire.link_request.request_key, requestSha: wire.link_preview.request_sha256, previewSha: wire.link_preview.preview_sha256, receiptSha: wire.link_preview.receipt_sha256, receiptId: wire.link_preview.receipt_id, operation: "link_follow_up" as const, feedback: wire.link_request.payload.feedback, child: wire.link_request.payload.child };
+  expect(knownFeedbackRequest(wire.link_request)).toBe(true); expect(knownFeedbackRecovery(link)).toBe(true);
+  expect(await knownFeedbackReceipt(wire.link_preview, cap, link, "preview")).toEqual(wire.link_preview);
+  expect(await knownFeedbackReceipt(wire.link_commit, cap, link, "commit")).toEqual(wire.link_commit);
+  expect(await knownFeedbackReceipt(wire.link_outcome, cap, link, "outcome")).toEqual(wire.link_outcome);
+  expect(await knownFeedbackPage(wire.page, cap, wire.page.design_id, 0)).toEqual(wire.page);
+});

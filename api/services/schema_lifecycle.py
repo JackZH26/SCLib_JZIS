@@ -11,6 +11,7 @@ import json
 import os
 import stat
 import sys
+from contextlib import contextmanager
 from pathlib import Path
 
 from alembic.config import Config
@@ -72,6 +73,29 @@ def acquire_migration_lock(connection: Connection) -> None:
     connection.commit()
     if acquired is not True:
         raise SchemaLifecycleError("Another schema operation is active; retry the entire migration job later.")
+
+
+@contextmanager
+def migration_lock(connection: Connection):
+    """Hold through all migration transactions and acknowledge release before return.
+
+    Closing a NullPool connection remains the failure fallback, but PostgreSQL
+    may process its disconnect after the next dedicated session has arrived.
+    Explicit release avoids that race without waiting for a competing migrator.
+    """
+    acquire_migration_lock(connection)
+    try:
+        yield
+    finally:
+        if not connection.closed and not connection.invalidated:
+            # Also clear a failed migration transaction before session unlock.
+            connection.rollback()
+            released = connection.execute(
+                text("SELECT pg_advisory_unlock(:key)"), {"key": MIGRATION_LOCK_KEY}
+            ).scalar_one()
+            connection.commit()
+            if released is not True:
+                raise SchemaLifecycleError("The migration session no longer owns its lock.")
 
 
 def check_connection_schema(connection: Connection) -> dict:

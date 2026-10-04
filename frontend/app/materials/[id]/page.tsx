@@ -449,8 +449,9 @@ function RecordsTable({
 }) {
   // Preserve individual extracted results: equal Tc/pressure is not enough
   // to merge sample, method, origin, criterion or source-role evidence.
-  const rowsWithMethods = records.filter(record => !visibilityIsRestricted(record.visibility)).map<Record<string, unknown> & { _methods: Set<string> }>((record) => ({
+  const rowsWithMethods = records.map((record, rawIndex) => ({ record, rawIndex })).filter(({ record }) => !visibilityIsRestricted(record.visibility)).map<Record<string, unknown> & { _methods: Set<string>; _retainedIndex: number }>(({ record, rawIndex }) => ({
     ...record,
+    _retainedIndex: rawIndex,
     _methods: new Set(
       typeof record.measurement === "string" && record.measurement.toLowerCase() !== "unknown"
         ? [record.measurement] : [],
@@ -499,7 +500,7 @@ function RecordsTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {rows.map((r, i) => {
+            {rows.map((r) => {
               const tc = num(r.tc_kelvin ?? r.tc);
               const classification = recordClassification(r);
               const year = num(r.year ?? r.measurement_year);
@@ -512,7 +513,7 @@ function RecordsTable({
               const pairing =
                 typeof r.pairing_symmetry === "string" ? r.pairing_symmetry : "";
               return (
-                <tr key={i} className="hover:bg-slate-50">
+                <tr key={r._retainedIndex} id={`retained-record-${r._retainedIndex}`} tabIndex={-1} aria-label={`Retained record index ${r._retainedIndex}`} className="scroll-mt-28 hover:bg-slate-50 target:bg-sage-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
                   <td className="px-3 py-2.5 text-right tabular-nums font-medium">
                     {tc != null ? scientificNumber(tc) : "—"}
                     <RetainedTcCriteria record={r} />
