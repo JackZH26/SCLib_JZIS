@@ -124,8 +124,11 @@ Results show numerical convergence, energy with original units, findings and the
 next decision. Exact method/geometry, raw tokens, unresolved questions and
 receipt proofs are expandable. The upload form collapses when inspecting saved
 results. History and file actions stack on small screens. Every download is
-bounded to its inventory size and hashed before asking the browser to save it;
-the UI says "Download requested" because it cannot confirm the user's disk.
+bounded to its inventory size and hashed before exposing a "Save verified file"
+link. The researcher explicitly clicks that link to save it. Its object URL
+remains available until the view changes, access is refreshed or another file is
+prepared; clearing the private view revokes it. The UI says "Download requested"
+because it cannot confirm the user's disk.
 
 On an uncertain save, only the original request identity and hashes survive a
 private-view clear. The workbench locks conflicting edits and uses a GET outcome
@@ -158,3 +161,8 @@ are synthetic. Browser/component transport variants are separately named
 synthetic fixtures and do not replace that capture. Client tests cover proof
 mutations, original-byte corruption/truncation/overflow, explicit upload,
 uncertain-save recovery, parent locks and private-view clearing.
+
+The isolated research-browser suite additionally opens the actual dashboard,
+selects a saved calculation and checks downloaded input, stdout, XML and both
+UPFs byte-for-byte at desktop and 320 px widths. Its HTTP transport uses the
+captured synthetic fixture; it is not an authenticated production rehearsal.

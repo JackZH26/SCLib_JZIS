@@ -91,6 +91,11 @@ REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS = {
 # Reviewed immutable findings only. See the batch82 triage and original scan;
 # new fixture revisions must be scanned and reviewed, never covered by a glob.
 REVIEWED_FIXTURE_FINGERPRINTS = {
+    # Original delivery capture: calculation-returns/historical-request-id-triage.json.
+    '9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260924r1.wire.json:generic-api-key:1',
+    '9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json:generic-api-key:1',
+    '9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json:generic-api-key:1',
+
     # Recovery R8: SECRET_TRIAGE_MATERIALS_2026-10-02_R8.md.
     '01c42e51ae9f815c3997a33b44f5dc8ba117ae1f:frontend/tests/fixtures/discovery-main-barrier-native.materials20261002r8.wire.json:generic-api-key:1',
     '01c42e51ae9f815c3997a33b44f5dc8ba117ae1f:frontend/tests/fixtures/ml-pilot-attestations-native.materials20261002r8.wire.json:generic-api-key:1',
@@ -477,6 +482,40 @@ class SecurityWorkflowTests(unittest.TestCase):
                 ),
             } | REVIEWED_FIXTURE_FINGERPRINTS | REVIEWED_SOURCE_DIGEST_FINGERPRINTS | REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS | REVIEWED_AB2H24_DIGEST_FINGERPRINTS | REVIEWED_LAH10_DIGEST_FINGERPRINTS,
         )
+
+    def test_original_delivery_request_id_exceptions_replay_historical_bytes(self) -> None:
+        triage = json.loads((ROOT / "docs/reviews/2026-10-05/calculation-returns/historical-request-id-triage.json").read_text())
+        commit = "9291e394407501b8e7ea9b600823c9e2177eec64"
+        self.assertEqual(triage["historical_commit"], commit)
+        self.assertEqual(triage["finding_count"], 13)
+        entries = triage["entries"]
+        self.assertEqual(len(entries), 13)
+        expected = {value for value in REVIEWED_FIXTURE_FINGERPRINTS if value.startswith(commit + ":")}
+        self.assertEqual(len(expected), 3)
+        self.assertEqual({entry["fingerprint"] for entry in entries}, expected)
+        cached = {}
+        def original(path):
+            if path not in cached:
+                cached[path] = subprocess.check_output(["git", "show", f"{commit}:{path}"], cwd=ROOT, timeout=10)
+            return cached[path]
+        for entry in entries:
+            raw = original(entry["file"])
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), entry["file_sha256"])
+            self.assertEqual(entry["fingerprint"], f"{commit}:{entry['file']}:generic-api-key:1")
+            token = raw[entry["start_byte"]:entry["end_byte"]]
+            self.assertEqual(hashlib.sha256(token).hexdigest(), entry["match_sha256"])
+            decoded = token.decode().replace('\\"', '"')
+            self.assertRegex(decoded, r'^request_key": "(?:synthetic-(?:participation|declaration|withdraw)-)?[0-9a-f]{32}"$')
+            self.assertEqual(decoded.split(': ', 1)[1].strip('"')[:-32], entry["request_key_prefix"])
+            self.assertEqual(entry["generator"], "uuid4().hex")
+        self.assertEqual(len(triage["generators"]), 3)
+        for generator in triage["generators"]:
+            raw = original(generator["file"])
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), generator["sha256"])
+            for source in generator["lines"]:
+                self.assertEqual(raw.decode().splitlines()[source["line"] - 1], source["text"])
+                self.assertIn("request_key", source["text"])
+                self.assertIn("uuid4().hex", source["text"])
 
     def test_ab2h24_exceptions_recompute_public_literal_hashes(self) -> None:
         raw = (ROOT / AB2H24_DIGEST_FILE).read_bytes()

@@ -71,9 +71,14 @@ it("saves a byte-pinned return and replays the saved report before downloading a
   const create = vi.fn(() => "blob:owned-test-file"), revoke = vi.fn(); vi.stubGlobal("URL", Object.assign(URL, { createObjectURL: create, revokeObjectURL: revoke }));
   const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
   vi.mocked(discoveryCalculationFile).mockResolvedValue(new Uint8Array(Buffer.from(wire.upload.files_base64[0], "base64")));
-  fireEvent.click(screen.getByRole("button", { name: "Download input" }));
+  fireEvent.click(screen.getByRole("button", { name: "Prepare download input" }));
   await screen.findByText(/size and SHA-256 match the saved original/);
-  expect(create).toHaveBeenCalledTimes(1); expect(click).toHaveBeenCalledTimes(1); await waitFor(() => expect(revoke).toHaveBeenCalledWith("blob:owned-test-file"), { timeout: 1500 });
+  expect(create).toHaveBeenCalledTimes(1); expect(click).not.toHaveBeenCalled();
+  const link = screen.getByRole("link", { name: "Save verified input" });
+  expect(link).toHaveAttribute("href", "blob:owned-test-file"); expect(link).toHaveAttribute("download", wire.upload.request.files[0].name);
+  expect(revoke).not.toHaveBeenCalled();
+  act(() => { window.dispatchEvent(new Event("pagehide")); });
+  expect(revoke).toHaveBeenCalledWith("blob:owned-test-file"); expect(screen.queryByRole("link", { name: "Save verified input" })).not.toBeInTheDocument();
   expect(discoveryCalculationFile).toHaveBeenCalledWith(saved.receipt_id, 0, wire.upload.request.files[0].size_bytes, expect.any(AbortSignal));
 });
 
@@ -104,7 +109,7 @@ it("withholds native numbers and downloads after a saved plan is withdrawn", asy
   fireEvent.click(screen.getByRole("button", { name: "Inspect return" }));
   await screen.findByRole("region", { name: "Saved calculation detail" });
   expect(screen.getByText(/Original files and quantities are withheld/)).toBeInTheDocument();
-  expect(screen.queryByText(/-3.119334/)).not.toBeInTheDocument(); expect(screen.queryByRole("button", { name: "Download input" })).not.toBeInTheDocument();
+  expect(screen.queryByText(/-3.119334/)).not.toBeInTheDocument(); expect(screen.queryByRole("button", { name: "Prepare download input" })).not.toBeInTheDocument();
 });
 
 it("rejects corrupted downloaded bytes and clears private readings after access loss", async () => {
@@ -114,7 +119,7 @@ it("rejects corrupted downloaded bytes and clears private readings after access 
   await screen.findByRole("region", { name: "Saved calculation detail" });
   const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
   vi.mocked(discoveryCalculationFile).mockResolvedValue(new Uint8Array([1, 2]));
-  fireEvent.click(screen.getByRole("button", { name: "Download input" }));
+  fireEvent.click(screen.getByRole("button", { name: "Prepare download input" }));
   await screen.findByText(/response could not be verified/); expect(click).not.toHaveBeenCalled();
   vi.mocked(discoveryCalculationCapabilities).mockRejectedValue(new ApiError(403, null, "access changed"));
   fireEvent.click(screen.getByRole("button", { name: "Refresh calculation access" }));

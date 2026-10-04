@@ -15,7 +15,7 @@ test("private browser CI collects all visual TypeScript suites, without replacin
   assert.match(config, /testMatch: "\*\.visual\.ts"/);
   const suites = readdirSync(new URL("./e2e/", import.meta.url)).filter(name => name.endsWith(".visual.ts"));
   for (const name of ["ml-pilot-reviews", "ml-pilot-participation", "ml-use-rights", "ml-use-runs",
-    "scientific-review", "scientific-imports", "source-task-operations", "answer-history", "distribution-rights"]) {
+    "scientific-review", "scientific-imports", "source-task-operations", "answer-history", "distribution-rights", "discovery-calculations"]) {
     assert.ok(suites.includes(`${name}.visual.ts`), name);
   }
   const job = workflow.split("\n  frontend-e2e:")[1].split("\n  operations-config:")[0];

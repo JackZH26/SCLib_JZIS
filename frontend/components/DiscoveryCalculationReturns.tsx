@@ -41,15 +41,17 @@ function Workspace({ capabilities: access, entry, disabled = false, invalidation
   const [prepared, setPrepared] = useState<Prepared | null>(null), [saved, setSaved] = useState<CalculationEntry | null>(null), [page, setPage] = useState<CalculationPage | null>(null), [reading, setReading] = useState<CalculationReading | null>(null), [recovery, setRecovery] = useState<CalculationRecovery | null>(initial);
   const mounted = useRef(false), sequence = useRef(0), controller = useRef<AbortController | null>(null), inFlight = useRef(false), pending = useRef<CalculationRecovery | null>(initial), previousDraft = useRef(invalidationKey), previousEntry = useRef(entry?.record_sha256 ?? null);
   const downloadUrls = useRef(new Set<string>());
+  const [downloadReady, setDownloadReady] = useState<{ url: string; name: string; receiptId: string; ordinal: number } | null>(null);
   function releaseDownloads() { for (const url of downloadUrls.current) URL.revokeObjectURL(url); downloadUrls.current.clear(); }
+  function clearDownload() { releaseDownloads(); setDownloadReady(null); }
   const locked = disabled || busy || recovery !== null;
   const currentEntry = entry?.is_head && entry.status === "proposed" && entry.eligibility.eligible && entry.design.next_action.kind === "calculation";
   function clearDraft() { setSources([]); setFileEpoch(n => n + 1); setFindings(""); setDecision(""); setReason(""); setUnknowns(""); setLinked(false); setPrepared(null); }
-  function clear() { releaseDownloads(); ++sequence.current; controller.current?.abort(); inFlight.current = false; setCap(null); setContext(null); setReading(null); setPage(null); setSaved(null); clearDraft(); setRecovery(pending.current); setBusy(false); }
+  function clear() { clearDownload(); ++sequence.current; controller.current?.abort(); inFlight.current = false; setCap(null); setContext(null); setReading(null); setPage(null); setSaved(null); clearDraft(); setRecovery(pending.current); setBusy(false); }
   function begin() { const id = ++sequence.current; controller.current?.abort(); const c = new AbortController(); controller.current = c; inFlight.current = true; setBusy(true); return { signal: c.signal, active: () => mounted.current && sequence.current === id, run: <T,>(call: () => Promise<T>) => bounded(call, c) }; }
   function finish() { inFlight.current = false; setBusy(false); }
   function fail(error: unknown) {
-    finish(); setPrepared(null); setReading(null); setSaved(null); setPage(null); setContext(null);
+    finish(); clearDownload(); setPrepared(null); setReading(null); setSaved(null); setPage(null); setContext(null);
     if (error instanceof ApiError && [401, 403].includes(error.status)) { pending.current = null; clear(); setMessage("Research access or session changed. Private files and notes have been cleared."); }
     else if (error instanceof ApiError && error.status === 404) setMessage("Calculation returns are not available in this research scope.");
     else if (error instanceof ApiError && error.status === 409) setMessage("The research plan or source changed. Reload the saved plan before continuing.");
@@ -59,7 +61,7 @@ function Workspace({ capabilities: access, entry, disabled = false, invalidation
   }
   async function refresh() {
     if (disabled || inFlight.current) return;
-    const e = entry ? structuredClone(entry) : null, op = begin(); setCap(null); setContext(null); setReading(null); setPage(null); setPrepared(null); setSaved(null); setMessage("");
+    const e = entry ? structuredClone(entry) : null, op = begin(); clearDownload(); setCap(null); setContext(null); setReading(null); setPage(null); setPrepared(null); setSaved(null); setMessage("");
     try {
       const next = knownCalculationCapabilities(await op.run(() => discoveryCalculationCapabilities(op.signal)), access);
       if (!op.active()) return; if (!next) throw new Error("Invalid calculation capabilities");
@@ -89,7 +91,7 @@ function Workspace({ capabilities: access, entry, disabled = false, invalidation
   function edit(change: () => void) { if (locked || pending.current) return; change(); setPrepared(null); setSaved(null); setMessage(""); }
   async function preview(event: FormEvent) {
     event.preventDefault(); if (!cap || !context?.eligibility.eligible || !currentEntry || locked || inFlight.current || !linked || !decision) return;
-    const c = structuredClone(cap), design = structuredClone(context.design), selected = [...sources], op = begin(); setPrepared(null); setSaved(null); setReading(null); setMessage("");
+    const c = structuredClone(cap), design = structuredClone(context.design), selected = [...sources], op = begin(); clearDownload(); setPrepared(null); setSaved(null); setReading(null); setMessage("");
     try {
       const upload = await op.run(() => prepareCalculationUpload({ version: CALCULATION_REQUEST_VERSION, request_key: `calculation:${crypto.randomUUID()}`, design, association: "researcher_linked_unverified", findings: findings.trim(), decision, reason: reason.trim(), unknowns: unknowns.split(/\r?\n/).map(s => s.trim()).filter(Boolean) }, selected));
       if (!op.active()) return;
@@ -121,22 +123,22 @@ function Workspace({ capabilities: access, entry, disabled = false, invalidation
   async function loadPage(offset = 0) {
     const id = entry?.design_id ?? saved?.receipt.design.design_id;
     if (!cap || !id || locked || inFlight.current) return;
-    const c = structuredClone(cap), op = begin(); setPage(null); setReading(null); setPrepared(null); setMessage("");
+    const c = structuredClone(cap), op = begin(); clearDownload(); setPage(null); setReading(null); setPrepared(null); setMessage("");
     try { const result = await knownCalculationPage(await op.run(() => discoveryCalculationPage(id, offset, op.signal)), c, id, offset); if (!op.active()) return; if (!result) throw new Error("Invalid history"); setPage(result); finish(); } catch (error) { if (op.active()) fail(error); }
   }
   async function inspect(selected: CalculationEntry) {
     if (!cap || locked || inFlight.current) return;
-    const c = structuredClone(cap), chosen = structuredClone(selected), op = begin(); setReading(null); setPrepared(null); setMessage("");
+    const c = structuredClone(cap), chosen = structuredClone(selected), op = begin(); clearDownload(); setReading(null); setPrepared(null); setMessage("");
     try { const result = await knownCalculationReading(await op.run(() => discoveryCalculationDetail(chosen.receipt.receipt_id, op.signal)), c, chosen); if (!op.active()) return; if (!result) throw new Error("Invalid retained reading"); setReading(result); finish(); } catch (error) { if (op.active()) fail(error); }
   }
   async function download(ordinal: number) {
     if (!reading?.eligibility.eligible || !reading.report || locked || inFlight.current) return;
     const chosen = structuredClone(reading), f = chosen.request.files[ordinal]; if (!f) return;
-    const op = begin(); setMessage("");
+    const op = begin(); clearDownload(); setMessage("");
     try {
       const bytes = await op.run(() => discoveryCalculationFile(chosen.receipt.receipt_id, ordinal, f.size_bytes, op.signal));
       if (!op.active()) return; const hash = await calculationByteSha(bytes); if (!op.active()) return; if (hash !== f.sha256) throw new Error("Original byte mismatch");
-      const url = URL.createObjectURL(new Blob([new Uint8Array(bytes)], { type: "application/octet-stream" })); const a = document.createElement("a"); a.href = url; a.download = f.name; downloadUrls.current.add(url); document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => { if (downloadUrls.current.delete(url)) URL.revokeObjectURL(url); }, 1000); finish(); setMessage(`Verified ${f.name}; size and SHA-256 match the saved original. Download requested.`);
+      const url = URL.createObjectURL(new Blob([new Uint8Array(bytes)], { type: "application/octet-stream" })); downloadUrls.current.add(url); setDownloadReady({ url, name: f.name, receiptId: chosen.receipt.receipt_id, ordinal }); finish(); setMessage(`Verified ${f.name}; size and SHA-256 match the saved original. Use “Save verified file” to download it.`);
     } catch (error) { if (op.active()) fail(error); }
   }
   return <div className="min-w-0 space-y-4" aria-label="Private calculation returns">
@@ -160,6 +162,6 @@ function Workspace({ capabilities: access, entry, disabled = false, invalidation
     {prepared && !recovery && <section className={panel} aria-label="Exact calculation preview"><Reading reading={prepared.reading} /><p className="text-sm">Decision: <strong>{readable(prepared.upload.request.decision)}</strong> — {prepared.upload.request.reason}</p><p className="text-xs text-sage-muted">Saving retains {prepared.upload.request.files.length} original files and this decision in your private plan history.</p><details className="text-xs"><summary className="cursor-pointer">Inspect exact request and file fingerprints</summary><pre className="mt-2 max-h-64 overflow-auto whitespace-pre-wrap break-all">{prepared.reading.receipt.request_canonical_json}</pre></details><button type="button" className={primary} disabled={locked} onClick={() => void save()}>Save original files and decision</button></section>}
     {saved && <section className={panel} aria-label="Saved calculation receipt"><h4 className="font-medium">Saved calculation return</h4><p className="text-sm">{readable(saved.request.decision)} · {saved.request.files.length} original files</p><button type="button" className={button} disabled={locked} onClick={() => void inspect(saved)}>Read saved calculation</button><details className="text-xs"><summary className="cursor-pointer">Inspect immutable receipt</summary><pre className="mt-2 max-h-64 overflow-auto whitespace-pre-wrap break-all">{saved.receipt.receipt_canonical_json}</pre></details></section>}
     {page && <section className={panel} aria-label="Calculation return history"><h4 className="font-medium">Saved returns ({page.total.toLocaleString("en-US")})</h4>{!page.entries.length && <p className="text-sm text-sage-muted">No saved calculation returns in this window.</p>}<ul className="divide-y divide-sage-border">{page.entries.map(item => <li key={item.receipt.receipt_id} className="flex min-w-0 flex-col items-start justify-between gap-3 py-3 sm:flex-row"><div className="min-w-0 flex-1"><p className="text-sm font-medium">{readable(item.request.decision)} · {item.request.files.length} files</p><p className="break-words text-sm [overflow-wrap:anywhere]">{item.request.reason}</p>{!item.eligibility.eligible && <p className="text-xs text-amber-800">{item.eligibility.reason_codes.map(readable).join("; ")}</p>}</div><button type="button" className={button} disabled={locked} onClick={() => void inspect(item)}>Inspect return</button></li>)}</ul><div className="flex flex-wrap gap-2"><button type="button" className={button} disabled={locked || page.offset === 0} onClick={() => void loadPage(Math.max(0, page.offset - 8))}>Previous returns</button><button type="button" className={button} disabled={locked || page.offset + page.entries.length >= page.total || page.offset >= 1000} onClick={() => void loadPage(page.offset + 8)}>Next returns</button></div></section>}
-    {reading && <section className={panel} aria-label="Saved calculation detail"><Reading reading={reading} /><div className="space-y-2 break-words text-sm [overflow-wrap:anywhere]"><p><strong>Findings:</strong> {reading.request.findings}</p><p><strong>Decision:</strong> {readable(reading.request.decision)} — {reading.request.reason}</p>{reading.request.unknowns.length > 0 && <details><summary className="cursor-pointer">Remaining unknowns ({reading.request.unknowns.length})</summary><ul className="mt-2 list-inside list-disc">{reading.request.unknowns.map(s => <li key={s}>{s}</li>)}</ul></details>}</div>{reading.report && reading.eligibility.eligible && <div className="space-y-2"><h4 className="text-sm font-medium">Retained original files</h4><ul className="space-y-2">{reading.request.files.map((f, i) => <li key={`${f.role}:${f.name}`} className="flex min-w-0 flex-col items-start justify-between gap-2 text-sm sm:flex-row sm:items-center"><span className="min-w-0 flex-1 break-all">{f.name} <span className="text-xs text-sage-muted">({f.size_bytes.toLocaleString("en-US")} bytes)</span></span><button type="button" aria-label={`Download ${f.role === "upf" ? f.name : f.role}`} className={button} disabled={locked} onClick={() => void download(i)}>Download</button></li>)}</ul></div>}</section>}
+    {reading && <section className={panel} aria-label="Saved calculation detail"><Reading reading={reading} /><div className="space-y-2 break-words text-sm [overflow-wrap:anywhere]"><p><strong>Findings:</strong> {reading.request.findings}</p><p><strong>Decision:</strong> {readable(reading.request.decision)} — {reading.request.reason}</p>{reading.request.unknowns.length > 0 && <details><summary className="cursor-pointer">Remaining unknowns ({reading.request.unknowns.length})</summary><ul className="mt-2 list-inside list-disc">{reading.request.unknowns.map(s => <li key={s}>{s}</li>)}</ul></details>}</div>{reading.report && reading.eligibility.eligible && <div className="space-y-2"><h4 className="text-sm font-medium">Retained original files</h4><ul className="space-y-2">{reading.request.files.map((f, i) => <li key={`${f.role}:${f.name}`} className="flex min-w-0 flex-col items-start justify-between gap-2 text-sm sm:flex-row sm:items-center"><span className="min-w-0 flex-1 break-all">{f.name} <span className="text-xs text-sage-muted">({f.size_bytes.toLocaleString("en-US")} bytes)</span></span>{downloadReady?.receiptId === reading.receipt.receipt_id && downloadReady.ordinal === i && !locked ? <a href={downloadReady.url} download={downloadReady.name} aria-label={`Save verified ${f.role === "upf" ? f.name : f.role}`} className={`${button} inline-flex items-center`} onClick={() => setMessage(`Download requested for ${f.name}. The saved bytes were verified before this link was created.`)}>Save verified file</a> : <button type="button" aria-label={`Prepare download ${f.role === "upf" ? f.name : f.role}`} className={button} disabled={locked} onClick={() => void download(i)}>Prepare download</button>}</li>)}</ul></div>}</section>}
   </div>;
 }

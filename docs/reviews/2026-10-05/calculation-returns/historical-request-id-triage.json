@@ -1,0 +1,181 @@
+{
+  "version": "synthetic-request-id-triage/1.0.0",
+  "historical_commit": "9291e394407501b8e7ea9b600823c9e2177eec64",
+  "scan_run": 37235179400,
+  "finding_count": 13,
+  "exact_fingerprint_count": 3,
+  "classification": "Synthetic test request idempotency IDs; not authentication credentials",
+  "scope": "Exact historical commit, file, rule and line; historical capture bytes unchanged",
+  "entries": [
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/discovery-main-barrier-native.delivery20260924r1.wire.json",
+      "file_sha256": "8bcbd4ae19e083a285bde411e3e0e407e3b1b015e431320480207481438e38ca",
+      "start_byte": 141065,
+      "end_byte": 141113,
+      "match_sha256": "8bb2f0fb955a8fb4ebdbf84fa4a17bb1608c133f76facfa430ed395c9e92993d",
+      "request_key_prefix": "",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json",
+      "file_sha256": "a64d2d71bd58bd658558d94160d8dbbe7b813d00b5490dc0f3dee9605f73081e",
+      "start_byte": 5241,
+      "end_byte": 5313,
+      "match_sha256": "1922e42cc06d85cc9d7490baf0641e75ae1fd9f5a6e62c687b889a9328869288",
+      "request_key_prefix": "synthetic-participation-",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json",
+      "file_sha256": "a64d2d71bd58bd658558d94160d8dbbe7b813d00b5490dc0f3dee9605f73081e",
+      "start_byte": 8726,
+      "end_byte": 8798,
+      "match_sha256": "1922e42cc06d85cc9d7490baf0641e75ae1fd9f5a6e62c687b889a9328869288",
+      "request_key_prefix": "synthetic-participation-",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json",
+      "file_sha256": "a64d2d71bd58bd658558d94160d8dbbe7b813d00b5490dc0f3dee9605f73081e",
+      "start_byte": 16088,
+      "end_byte": 16160,
+      "match_sha256": "897815bdb161e6662ae077b4fab4146f8f92eda3d2f2b27f57d50206f8d604f4",
+      "request_key_prefix": "synthetic-participation-",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json",
+      "file_sha256": "a64d2d71bd58bd658558d94160d8dbbe7b813d00b5490dc0f3dee9605f73081e",
+      "start_byte": 19381,
+      "end_byte": 19453,
+      "match_sha256": "897815bdb161e6662ae077b4fab4146f8f92eda3d2f2b27f57d50206f8d604f4",
+      "request_key_prefix": "synthetic-participation-",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json",
+      "file_sha256": "a64d2d71bd58bd658558d94160d8dbbe7b813d00b5490dc0f3dee9605f73081e",
+      "start_byte": 151001,
+      "end_byte": 151073,
+      "match_sha256": "1912ac90f86dd7e541bf6b3e768ce4343fee96d968c3d468c7924616f0b727f3",
+      "request_key_prefix": "synthetic-participation-",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json",
+      "file_sha256": "a64d2d71bd58bd658558d94160d8dbbe7b813d00b5490dc0f3dee9605f73081e",
+      "start_byte": 154494,
+      "end_byte": 154566,
+      "match_sha256": "1912ac90f86dd7e541bf6b3e768ce4343fee96d968c3d468c7924616f0b727f3",
+      "request_key_prefix": "synthetic-participation-",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json",
+      "file_sha256": "c36eafee0437561a13e5cc1ad7c71584099acc37b71bed5b273fcbd49d7d6dc0",
+      "start_byte": 50599,
+      "end_byte": 50669,
+      "match_sha256": "c86d803ad0f1decde56ed1f559f14bbff4536a816b507956f45813c25c06d9c9",
+      "request_key_prefix": "synthetic-declaration-",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json",
+      "file_sha256": "c36eafee0437561a13e5cc1ad7c71584099acc37b71bed5b273fcbd49d7d6dc0",
+      "start_byte": 130925,
+      "end_byte": 130992,
+      "match_sha256": "5263994fbc9106d34aa9d049b1efb0f2682f1833b4b32aaf23396cdd1c65d8cd",
+      "request_key_prefix": "synthetic-withdraw-",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json",
+      "file_sha256": "c36eafee0437561a13e5cc1ad7c71584099acc37b71bed5b273fcbd49d7d6dc0",
+      "start_byte": 167599,
+      "end_byte": 167669,
+      "match_sha256": "ff088310c1144e815bdd05f74e05d709aeef24ebeb5d5f51f399c3d2d9a3d012",
+      "request_key_prefix": "synthetic-declaration-",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json",
+      "file_sha256": "c36eafee0437561a13e5cc1ad7c71584099acc37b71bed5b273fcbd49d7d6dc0",
+      "start_byte": 247924,
+      "end_byte": 247991,
+      "match_sha256": "e0eca782a7b2f627854dd8a3a22140a19ea0cc172423c2e95c7b9aace3df7a3d",
+      "request_key_prefix": "synthetic-withdraw-",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json",
+      "file_sha256": "c36eafee0437561a13e5cc1ad7c71584099acc37b71bed5b273fcbd49d7d6dc0",
+      "start_byte": 284591,
+      "end_byte": 284661,
+      "match_sha256": "79c66ff2c7e48a304d661c1430ba3df2de001f4cca64274e1e5da260d5a35f74",
+      "request_key_prefix": "synthetic-declaration-",
+      "generator": "uuid4().hex"
+    },
+    {
+      "fingerprint": "9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json:generic-api-key:1",
+      "file": "frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json",
+      "file_sha256": "c36eafee0437561a13e5cc1ad7c71584099acc37b71bed5b273fcbd49d7d6dc0",
+      "start_byte": 364915,
+      "end_byte": 364982,
+      "match_sha256": "04d41752aff1e4d4dd05d2be26a35acbdf23d248414fa40e4fed63effd881804",
+      "request_key_prefix": "synthetic-withdraw-",
+      "generator": "uuid4().hex"
+    }
+  ],
+  "generators": [
+    {
+      "file": "api/tests/test_discovery_main_barrier.py",
+      "sha256": "61e2334f02308b0f7ed181e428d00153410e6f2028a496a5aec9c12178eabd58",
+      "lines": [
+        {
+          "line": 436,
+          "text": "        \"request_key\": uuid4().hex,"
+        }
+      ]
+    },
+    {
+      "file": "api/tests/test_ml_pilot_registration.py",
+      "sha256": "95259b4993104841cbaaf24adc450981cc22b62f013e1ae7211d8682da9fc63f",
+      "lines": [
+        {
+          "line": 142,
+          "text": "        \"request_key\": \"synthetic-participation-\" + uuid4().hex,"
+        }
+      ]
+    },
+    {
+      "file": "api/tests/test_ml_pilot_attestations.py",
+      "sha256": "5a4aa6bb1ce4fedb55dc5813f2990c2fbdb2ce25fc47fb3227dca73bebc47ba7",
+      "lines": [
+        {
+          "line": 56,
+          "text": "        request_key=\"synthetic-declaration-\" + uuid4().hex,"
+        },
+        {
+          "line": 249,
+          "text": "            \"request_key\": \"synthetic-withdraw-\" + uuid4().hex,"
+        },
+        {
+          "line": 409,
+          "text": "        \"request_key\": \"synthetic-withdraw-\" + uuid4().hex,"
+        }
+      ]
+    }
+  ]
+}
