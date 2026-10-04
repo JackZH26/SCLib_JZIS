@@ -1,3 +1,8 @@
 # Captured scientific source bytes are hash-pinned; preserve provider line endings
 # and trailing spaces, including diffraction blocks and provenance comments.
 frontend/public/research-pilots/structure-cifs/*.cif -text -whitespace
+# Native QE fixture inputs, output and receipts are also pinned to exact bytes.
+frontend/tests/fixtures/qe-convergence/*.in -text
+frontend/tests/fixtures/qe-convergence/*.xml -text
+frontend/tests/fixtures/qe-convergence/*.json -text
+frontend/tests/fixtures/qe-convergence/*-pw.out -text -whitespace

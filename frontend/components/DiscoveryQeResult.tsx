@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { inspectQeResult, QE_RESULT_LIMITS, type QeResultReading } from "@/lib/discovery-qe-result";
 import { UPF_BYTE_LIMIT } from "@/lib/discovery-qe-input";
+import { DiscoveryQeConvergence } from "@/components/DiscoveryQeConvergence";
 
 const fileFields = [
   ["manifest", "Preparation manifest", ".json", "Original SCLib QE manifest, up to 1 MiB."],
@@ -118,5 +119,6 @@ export function DiscoveryQeResult() {
       {downloadStatus && <p role="status" className="text-sm text-sage-muted">{downloadStatus}</p>}
       <details className="min-w-0 text-sm"><summary className="w-fit cursor-pointer font-medium text-accent-deep">Full values and source record</summary><pre tabIndex={0} aria-label="Scrollable QE output reading" className="mt-3 max-h-96 overflow-auto rounded border border-sage-border bg-white p-3 text-xs">{result.json}</pre></details>
     </section>}
+    <DiscoveryQeConvergence current={result} />
   </div>;
 }
