@@ -1,0 +1,3785 @@
+{
+  "version": "materials-nbsctizr-annealing/1.0.0",
+  "prepared_on": "2026-10-04",
+  "status": "source_qualified_comparison",
+  "material_label": "NbScTiZr",
+  "authority": {
+    "canonical_updates": 0,
+    "scientific_acceptance": false,
+    "formal_human_review": false,
+    "ml_training_approved": false,
+    "calculation_executed": false,
+    "selected_result_sample_state_phase_association": "unestablished",
+    "cross_publication_physical_sample_equivalence": "unestablished"
+  },
+  "sources": [
+    {
+      "id": "2023",
+      "edition": "2311.00195v1",
+      "title": "Effect of annealing in eutectic high-entropy alloy superconductor NbScTiZr",
+      "source_url": "https://arxiv.org/pdf/2311.00195v1",
+      "pdf_sha256": "5ada9ca574ae87d4cb4f8004a77a1504ce483b26642fe93d941e2c5d28ebd257",
+      "pdf_bytes": 1131124,
+      "pdf_pages": 18,
+      "derived_text_sha256": "d571c998fe688f4c88c36cb648553e8ff7a696605ff15576c6ece7001e5f105e",
+      "text_derivation": "pdftotext -layout UTF-8; page separators retained",
+      "current_publication_status": "not_checked",
+      "publisher_and_retained_ingestion_edition_equivalence": "unestablished",
+      "supplement_checked": false
+    },
+    {
+      "id": "2024",
+      "edition": "2406.19553v1",
+      "title": "Superconducting properties of eutectic high-entropy alloy superconductor NbScTiZr",
+      "source_url": "https://arxiv.org/pdf/2406.19553v1",
+      "pdf_sha256": "2640697191af7398cbd39cd16cf5bf5b89514ccfbe56b40ce9c79103b5415119",
+      "pdf_bytes": 2448451,
+      "pdf_pages": 28,
+      "derived_text_sha256": "790b589c41e0333169e3f38def64a64fbf340f363fe945a0d3bfd68c313b6555",
+      "text_derivation": "pdftotext -layout UTF-8; page separators retained",
+      "current_publication_status": "not_checked",
+      "publisher_and_retained_ingestion_edition_equivalence": "unestablished",
+      "supplement_checked": false
+    }
+  ],
+  "samples": [
+    {
+      "id": "as-cast",
+      "label": "as-cast",
+      "processing_temperature_value": null,
+      "processing_temperature_unit": null,
+      "processing_temperature_role": "as_cast_state_no_annealing_temperature",
+      "processing_temperature_is_measurement_temperature": false,
+      "hold_duration_value": null,
+      "hold_duration_unit": null,
+      "sample_listed_2023": true,
+      "physical_sample_identity": "unestablished"
+    },
+    {
+      "id": "400-c",
+      "label": "400 °C",
+      "processing_temperature_value": "400",
+      "processing_temperature_unit": "°C",
+      "processing_temperature_role": "annealing_temperature",
+      "processing_temperature_is_measurement_temperature": false,
+      "hold_duration_value": "4",
+      "hold_duration_unit": "days",
+      "sample_listed_2023": true,
+      "physical_sample_identity": "unestablished"
+    },
+    {
+      "id": "600-c",
+      "label": "600 °C",
+      "processing_temperature_value": "600",
+      "processing_temperature_unit": "°C",
+      "processing_temperature_role": "annealing_temperature",
+      "processing_temperature_is_measurement_temperature": false,
+      "hold_duration_value": "4",
+      "hold_duration_unit": "days",
+      "sample_listed_2023": false,
+      "physical_sample_identity": "unestablished"
+    },
+    {
+      "id": "800-c",
+      "label": "800 °C",
+      "processing_temperature_value": "800",
+      "processing_temperature_unit": "°C",
+      "processing_temperature_role": "annealing_temperature",
+      "processing_temperature_is_measurement_temperature": false,
+      "hold_duration_value": "4",
+      "hold_duration_unit": "days",
+      "sample_listed_2023": true,
+      "physical_sample_identity": "unestablished"
+    },
+    {
+      "id": "1000-c",
+      "label": "1000 °C",
+      "processing_temperature_value": "1000",
+      "processing_temperature_unit": "°C",
+      "processing_temperature_role": "annealing_temperature",
+      "processing_temperature_is_measurement_temperature": false,
+      "hold_duration_value": "4",
+      "hold_duration_unit": "days",
+      "sample_listed_2023": true,
+      "physical_sample_identity": "unestablished"
+    }
+  ],
+  "methods": [
+    {
+      "id": "2023-preparation",
+      "source_id": "2023",
+      "summary": "Arc melting in argon on a water-cooled copper hearth; nominal Nb:Sc:Ti:Zr atomic ratio 1:1:1:1. Heat treatment at 400, 800 or 1000 °C for four days in an evacuated quartz tube.",
+      "locator_ids": [
+        "2023-preparation"
+      ]
+    },
+    {
+      "id": "2024-preparation",
+      "source_id": "2024",
+      "summary": "Arc melting in argon on a water-cooled copper hearth; nominal Nb:Sc:Ti:Zr atomic ratio 1:1:1:1. Annealing at 400, 600, 800 or 1000 °C for four days in an evacuated quartz tube.",
+      "locator_ids": [
+        "2024-preparation"
+      ]
+    },
+    {
+      "id": "2023-tc-definition",
+      "source_id": "2023",
+      "summary": "Figure 3(a) identifies Tc at ac-susceptibility diamagnetic onset. The ac setup uses 5 Oe at 800 Hz over 3–20 K. Resistivity zero is separately confirmed. The Table 1 values remain independent source expressions.",
+      "locator_ids": [
+        "2023-probes",
+        "2023-tc-onset"
+      ]
+    },
+    {
+      "id": "2024-structure",
+      "source_id": "2024",
+      "summary": "Cu-Kα XRD with least-squares lattice parameter evaluation. The source attributes chemical composition to EDX coupled with field-emission SEM and cites the preceding study. Table 1 prints composition coefficients without an explicit composition unit.",
+      "locator_ids": [
+        "2024-probes",
+        "2024-phase-edx",
+        "2024-table-1"
+      ]
+    },
+    {
+      "id": "2024-m-and-rho",
+      "source_id": "2024",
+      "summary": "The text describes refined Tc from upper-critical-field analysis and M(T) diamagnetic-onset datasets analyzed with WHH. Resistivity transition onset yields a separate WHH channel. Table 2 values retain that Hc2-analysis context without assigning calorimetric midpoint or a common criterion across all probes.",
+      "locator_ids": [
+        "2024-magnetic-onset",
+        "2024-whh",
+        "2024-refined-tc-analysis",
+        "2024-resistive-onset",
+        "2024-table-2"
+      ]
+    },
+    {
+      "id": "2024-gl-derived",
+      "source_id": "2024",
+      "summary": "The source extrapolates Hc1(0) with a Ginzburg–Landau model. Coherence length is calculated from Hc2(0); penetration depth uses Hc1(0) and the matching coherence-length channel; κ is their ratio. These are source-derived estimates, not direct length measurements or electron–phonon coupling.",
+      "locator_ids": [
+        "2024-lower-field-and-xi",
+        "2024-lambda-and-kappa",
+        "2024-table-2"
+      ]
+    },
+    {
+      "id": "2024-specific-heat",
+      "source_id": "2024",
+      "summary": "Normal-state C/T versus T² fitting yields γel and β with both bcc and hcp contributions. Four annealed specimens receive exponential electronic-specific-heat gap fits plus a residual γ term attributed by the authors to hcp. The normalized heat-jump analysis explicitly uses transition midpoint Tc; this does not assign midpoint to the whole Table 2 Tc row.",
+      "locator_ids": [
+        "2024-probes",
+        "2024-normal-state-specific-heat",
+        "2024-calorimetry",
+        "2024-gap-jump"
+      ]
+    },
+    {
+      "id": "2024-hardness",
+      "source_id": "2024",
+      "summary": "Vickers indentation is measured on polished surfaces with a 2.94 N load for ten seconds. Parentheses in source hardness and lattice values are preserved without interpreting uncertainties.",
+      "locator_ids": [
+        "2024-probes",
+        "2024-table-2"
+      ]
+    },
+    {
+      "id": "2023-phase-volume",
+      "source_id": "2023",
+      "summary": "The source obtains phase volume fractions from SEM images and phase compositions from EDX. Its Table 1 lists composition-derived valence electron concentration separately. These are source phase reports, not superconducting volume fractions or catalogued atomic models.",
+      "locator_ids": [
+        "2023-phase-volume",
+        "2023-table-1"
+      ]
+    }
+  ],
+  "source_windows": [
+    {
+      "id": "2024-table-1",
+      "source_id": "2024",
+      "pdf_page_one_based": 3,
+      "char_start": 7009,
+      "char_end": 8161,
+      "end_exclusive": true,
+      "window_sha256": "d42726faf99c23acc113ac551101c54f2f635b2dc199c49374b5a47ca7799e2d"
+    },
+    {
+      "id": "2024-table-2",
+      "source_id": "2024",
+      "pdf_page_one_based": 9,
+      "char_start": 18173,
+      "char_end": 20367,
+      "end_exclusive": true,
+      "window_sha256": "a72c368ef6e04d3473605ca71e069bccbd66b9df5f7b17925cce2eb1c92a1f93"
+    },
+    {
+      "id": "2023-table-1",
+      "source_id": "2023",
+      "pdf_page_one_based": 4,
+      "char_start": 13116,
+      "char_end": 14137,
+      "end_exclusive": true,
+      "window_sha256": "6eb2ec32b641bb7110d0d0aa46259d86f3581a912a45d50cacd88aa8c0448ec5"
+    },
+    {
+      "id": "2024-preparation",
+      "source_id": "2024",
+      "pdf_page_one_based": 4,
+      "char_start": 9659,
+      "char_end": 10201,
+      "end_exclusive": true,
+      "window_sha256": "52d60ff1af9763f178022f76a4b6ce6bd3a759c08c2c7a93107ca841710fe861"
+    },
+    {
+      "id": "2023-preparation",
+      "source_id": "2023",
+      "pdf_page_one_based": 3,
+      "char_start": 9788,
+      "char_end": 10382,
+      "end_exclusive": true,
+      "window_sha256": "e0de3222d9419ad72b20d968c2f6a1157f8208934a2bf639cb3eef6e0e6cb237"
+    },
+    {
+      "id": "2023-probes",
+      "source_id": "2023",
+      "pdf_page_one_based": 4,
+      "char_start": 11150,
+      "char_end": 12079,
+      "end_exclusive": true,
+      "window_sha256": "d622ff68dbf7090a4c300c89b1fbb658ebbd7d2d00c597b99316286bfa1fd2f5"
+    },
+    {
+      "id": "2023-tc-onset",
+      "source_id": "2023",
+      "pdf_page_one_based": 6,
+      "char_start": 17829,
+      "char_end": 18422,
+      "end_exclusive": true,
+      "window_sha256": "ee2ed15846b4e50548d770f9b08e4df43127db50d93e97e6948929f8858b4bce"
+    },
+    {
+      "id": "2023-phase-volume",
+      "source_id": "2023",
+      "pdf_page_one_based": 5,
+      "char_start": 15503,
+      "char_end": 16432,
+      "end_exclusive": true,
+      "window_sha256": "2d3e401fd10d734df37ad578e10d0d0c2a37423c389053bc53f8e1f7e9559c94"
+    },
+    {
+      "id": "2024-probes",
+      "source_id": "2024",
+      "pdf_page_one_based": 4,
+      "char_start": 10201,
+      "char_end": 11087,
+      "end_exclusive": true,
+      "window_sha256": "76b87bd59133825692b1469e52f57bf2c124b2c4ab146220c4f5dc7f37cc7984"
+    },
+    {
+      "id": "2024-phase-edx",
+      "source_id": "2024",
+      "pdf_page_one_based": 7,
+      "char_start": 13352,
+      "char_end": 13677,
+      "end_exclusive": true,
+      "window_sha256": "86aa7a3ad69ed0752ec2ecaf113e6f128ee8d63996cdc501e6e5ed483ad3874d"
+    },
+    {
+      "id": "2024-magnetic-onset",
+      "source_id": "2024",
+      "pdf_page_one_based": 7,
+      "char_start": 15254,
+      "char_end": 16205,
+      "end_exclusive": true,
+      "window_sha256": "86a5bcca75034f665438a1491e977b7bad00b39eb4a8d47f8f954fee29f6fafc"
+    },
+    {
+      "id": "2024-whh",
+      "source_id": "2024",
+      "pdf_page_one_based": 8,
+      "char_start": 16505,
+      "char_end": 18122,
+      "end_exclusive": true,
+      "window_sha256": "b5590ed2bbf5f322d2ca92787976e3217fdbd4a7de59be335a603fbcd2dbb215"
+    },
+    {
+      "id": "2024-resistive-onset",
+      "source_id": "2024",
+      "pdf_page_one_based": 9,
+      "char_start": 20712,
+      "char_end": 21610,
+      "end_exclusive": true,
+      "window_sha256": "36ab4b6bf4f941a4fe6a3703e038fae41da550f47685bc9e4f968ef039bab5b3"
+    },
+    {
+      "id": "2024-refined-tc-analysis",
+      "source_id": "2024",
+      "pdf_page_one_based": 9,
+      "char_start": 20370,
+      "char_end": 20712,
+      "end_exclusive": true,
+      "window_sha256": "79da506b12a39fc9c8c443ed81e35074c64af1df1174f4bdcb043043111a6b5e"
+    },
+    {
+      "id": "2024-lower-field-and-xi",
+      "source_id": "2024",
+      "pdf_page_one_based": 11,
+      "char_start": 23874,
+      "char_end": 25334,
+      "end_exclusive": true,
+      "window_sha256": "c44a2790b13a28f49a807942873ff40c1603466a5640fdca6ca0aa24d84b985b"
+    },
+    {
+      "id": "2024-lambda-and-kappa",
+      "source_id": "2024",
+      "pdf_page_one_based": 13,
+      "char_start": 25867,
+      "char_end": 26296,
+      "end_exclusive": true,
+      "window_sha256": "2f959730432e6f5129aad79b0826b8ccb694c633d12eef5fa5ef54890453ac5b"
+    },
+    {
+      "id": "2024-calorimetry",
+      "source_id": "2024",
+      "pdf_page_one_based": 17,
+      "char_start": 35259,
+      "char_end": 37148,
+      "end_exclusive": true,
+      "window_sha256": "9efa4b5762679307167a8113dbb7892392bf48bb7eb274a262d849054fbd04b9"
+    },
+    {
+      "id": "2024-normal-state-specific-heat",
+      "source_id": "2024",
+      "pdf_page_one_based": 17,
+      "char_start": 35014,
+      "char_end": 35259,
+      "end_exclusive": true,
+      "window_sha256": "ec39b4348b6ee23fa6dc85ed40da428829b7c061307b6e63f7baffe1c0ce9743"
+    },
+    {
+      "id": "2024-gap-jump",
+      "source_id": "2024",
+      "pdf_page_one_based": 17,
+      "char_start": 37148,
+      "char_end": 38136,
+      "end_exclusive": true,
+      "window_sha256": "570099b97c207ac5633531891af817e965d912b7098dbeec2c924c68938236db"
+    }
+  ],
+  "phase_table": {
+    "source_id": "2024",
+    "source_locator_id": "2024-table-1",
+    "label": "2024 Table 1: phase compositions and lattice parameters",
+    "composition_unit": "not_printed_in_table",
+    "composition_scope": "Original phase composition coefficients and parenthetical uncertainty notation; no stoichiometric conversion or catalogue sample equivalence.",
+    "composition_source_attribution": "The 2024 text attributes bcc compositions to preceding study [46]. Its table is a source report, not an independently repeated composition measurement; 600 °C is not listed in the captured 2023 v1 Table 1.",
+    "columns": [
+      "Nb",
+      "Sc",
+      "Ti",
+      "Zr",
+      "lattice_a",
+      "lattice_c"
+    ],
+    "rows": [
+      {
+        "sample_id": "as-cast",
+        "phase_label": "bcc",
+        "cells": {
+          "Nb": {
+            "raw_value": "26.6(4)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7210,
+              "char_end": 7217,
+              "end_exclusive": true,
+              "literal_sha256": "d8051c95bf8c43986ba2d21033b4786deab7de53a842b42392834bfcd74635e5"
+            }
+          },
+          "Sc": {
+            "raw_value": "22.3(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7220,
+              "char_end": 7227,
+              "end_exclusive": true,
+              "literal_sha256": "f457150d216d2f38c16db4da5ea1b693c57233663edf8faad88fc13198e9a320"
+            }
+          },
+          "Ti": {
+            "raw_value": "25.5(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7230,
+              "char_end": 7237,
+              "end_exclusive": true,
+              "literal_sha256": "4e5b03aba5765ec4d26fc81a848af3cb11110144a4e14622fd6b7f8b4114b0bc"
+            }
+          },
+          "Zr": {
+            "raw_value": "25.6(4)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7240,
+              "char_end": 7247,
+              "end_exclusive": true,
+              "literal_sha256": "640c3a92c10c884d74cbb911756b7155e0e8226a2639553991885f7dd2d5e64d"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.359(2)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7261,
+              "char_end": 7269,
+              "end_exclusive": true,
+              "literal_sha256": "99c19934e9016190685dce3d2b09d8ef7de6257c9915fb5453276fb29d89a17d"
+            }
+          },
+          "lattice_c": {
+            "raw_value": null,
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "not_listed_in_source_row",
+            "source_locator_id": "2024-table-1",
+            "literal": null
+          }
+        }
+      },
+      {
+        "sample_id": "as-cast",
+        "phase_label": "hcp",
+        "cells": {
+          "Nb": {
+            "raw_value": "21.3(4)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7289,
+              "char_end": 7296,
+              "end_exclusive": true,
+              "literal_sha256": "33aa22d3b619d14333f80b0dd6f35e05e1ac1bfdf7625cd7ff2c50dee0beeff2"
+            }
+          },
+          "Sc": {
+            "raw_value": "30(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7299,
+              "char_end": 7304,
+              "end_exclusive": true,
+              "literal_sha256": "586fb8e5e81b7da643a8997d65b5a057e71f50e059fe266b19bd130c7f5cfa41"
+            }
+          },
+          "Ti": {
+            "raw_value": "23.0(7)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7307,
+              "char_end": 7314,
+              "end_exclusive": true,
+              "literal_sha256": "13f460e831f2d7882795fba6bfabe8ab20364a57b36b58e06560fb75abf6ff85"
+            }
+          },
+          "Zr": {
+            "raw_value": "25.8(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7317,
+              "char_end": 7324,
+              "end_exclusive": true,
+              "literal_sha256": "66b155403270a3cbab1b8b64ae284aeda2d06faca6d9e8038e62e5eaede68ac0"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.262(3)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7333,
+              "char_end": 7341,
+              "end_exclusive": true,
+              "literal_sha256": "2d0b6a5973478fecb2b5c825dd504615ba328833f856916009a55c6cfe9108fd"
+            }
+          },
+          "lattice_c": {
+            "raw_value": "5.152(3)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7345,
+              "char_end": 7353,
+              "end_exclusive": true,
+              "literal_sha256": "8ea49a280e97a6bb4c4ded2270eb4078b2327fb6637d4a9630dc4a9c2fdb51a8"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "400-c",
+        "phase_label": "bcc",
+        "cells": {
+          "Nb": {
+            "raw_value": "27.9(3)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7371,
+              "char_end": 7378,
+              "end_exclusive": true,
+              "literal_sha256": "529cef1d5dc70f364d3d411ca3af700905a09dabc9616360014c0d605aed1403"
+            }
+          },
+          "Sc": {
+            "raw_value": "21.6(2)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7381,
+              "char_end": 7388,
+              "end_exclusive": true,
+              "literal_sha256": "d203409e4195bc4e374116461dd3d512b9a3610603680885ea0a277ccc7735db"
+            }
+          },
+          "Ti": {
+            "raw_value": "25.3(3)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7391,
+              "char_end": 7398,
+              "end_exclusive": true,
+              "literal_sha256": "250fb449d4a096824019e0889ccd7d64dd9f337744282166ce499ef1b18ff627"
+            }
+          },
+          "Zr": {
+            "raw_value": "25.2(2)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7401,
+              "char_end": 7408,
+              "end_exclusive": true,
+              "literal_sha256": "2621f56a878b40948f6415cf13ff2d328a4e776ee9082a438baca89e9072123b"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.308(2)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7490,
+              "char_end": 7498,
+              "end_exclusive": true,
+              "literal_sha256": "fd6f46d95e86ce95a1e90ad80e84ae33ae7fa578a9a8bd13c90dc616faf4c94b"
+            }
+          },
+          "lattice_c": {
+            "raw_value": null,
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "not_listed_in_source_row",
+            "source_locator_id": "2024-table-1",
+            "literal": null
+          }
+        }
+      },
+      {
+        "sample_id": "400-c",
+        "phase_label": "hcp",
+        "cells": {
+          "Nb": {
+            "raw_value": "22.1(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7518,
+              "char_end": 7525,
+              "end_exclusive": true,
+              "literal_sha256": "8f1c9c74efe35bdb4a9b041ded4be4359e761ba22ef847c84152292cbf931185"
+            }
+          },
+          "Sc": {
+            "raw_value": "32.3(9)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7528,
+              "char_end": 7535,
+              "end_exclusive": true,
+              "literal_sha256": "e2f691dcc42bf7a3ed5df13df203308036e3993a02d2e12d3f3cb90e5ad26d4b"
+            }
+          },
+          "Ti": {
+            "raw_value": "21.3(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7538,
+              "char_end": 7545,
+              "end_exclusive": true,
+              "literal_sha256": "c8cababf8d7c8238bae5aa858020751a5169e008a64e320aded017772bd572c8"
+            }
+          },
+          "Zr": {
+            "raw_value": "24.2(2)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7548,
+              "char_end": 7555,
+              "end_exclusive": true,
+              "literal_sha256": "1ef3a007137201ac53a24c26720c0184ce47714ae37b4a1045af697851a64aa5"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.252(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7562,
+              "char_end": 7570,
+              "end_exclusive": true,
+              "literal_sha256": "99c2f5b7e1cb49556e74da58cd58a72fbd157f6a4ca8ac0807536b0388831292"
+            }
+          },
+          "lattice_c": {
+            "raw_value": "5.131(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7574,
+              "char_end": 7582,
+              "end_exclusive": true,
+              "literal_sha256": "0a25d135ec84b3aebc9d3e7bc9f4d20c98426c8522ec1c47759b43852cf70b13"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "600-c",
+        "phase_label": "bcc",
+        "cells": {
+          "Nb": {
+            "raw_value": "29.1(6)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7625,
+              "char_end": 7632,
+              "end_exclusive": true,
+              "literal_sha256": "c6472f0524ca8f27833d3ea8965f7962cbeb30658d271c5f829fd234bc9a2d5f"
+            }
+          },
+          "Sc": {
+            "raw_value": "19.1(4)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7635,
+              "char_end": 7642,
+              "end_exclusive": true,
+              "literal_sha256": "b54a705ce3d0bf8151f16f1ddae9cf0e3bacf0ca635ebff2128aad474f4c19f9"
+            }
+          },
+          "Ti": {
+            "raw_value": "29.8(9)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7645,
+              "char_end": 7652,
+              "end_exclusive": true,
+              "literal_sha256": "d7caa431a1b8a9855a8acf6fa125b290424e610ec1fb3e9a94f29a1e68ae8f0b"
+            }
+          },
+          "Zr": {
+            "raw_value": "22(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7655,
+              "char_end": 7660,
+              "end_exclusive": true,
+              "literal_sha256": "6be0380aebff82b6c1860c3516b30ceae7de2142ddb1f6830f883fb44eca2b6b"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.314(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7675,
+              "char_end": 7683,
+              "end_exclusive": true,
+              "literal_sha256": "0840408bd47db797e12ffbac4f7caea988717b912efba908ac10ec644378ca9a"
+            }
+          },
+          "lattice_c": {
+            "raw_value": null,
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "not_listed_in_source_row",
+            "source_locator_id": "2024-table-1",
+            "literal": null
+          }
+        }
+      },
+      {
+        "sample_id": "600-c",
+        "phase_label": "hcp",
+        "cells": {
+          "Nb": {
+            "raw_value": "18.0(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7704,
+              "char_end": 7711,
+              "end_exclusive": true,
+              "literal_sha256": "6eebd4a18f073b668f1e83335698a4bd6c60d97bb6d094e4b051127feb0799a2"
+            }
+          },
+          "Sc": {
+            "raw_value": "32(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7714,
+              "char_end": 7719,
+              "end_exclusive": true,
+              "literal_sha256": "e39fb2f621ed462f3996448a0a08fc8118cf70a8f8e9f6479f09d2482a4f11ec"
+            }
+          },
+          "Ti": {
+            "raw_value": "19(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7722,
+              "char_end": 7727,
+              "end_exclusive": true,
+              "literal_sha256": "f83127a8e6d0718f64dcc4205b0bea5e3a61d0c43c41f0c19bfc0a8de77deeb3"
+            }
+          },
+          "Zr": {
+            "raw_value": "30.8(7)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7730,
+              "char_end": 7737,
+              "end_exclusive": true,
+              "literal_sha256": "7821ffb05f2f68ca72dfb6d8fcc77709fbe4343eda7e2b9368df7e92f3e96210"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.254(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7747,
+              "char_end": 7755,
+              "end_exclusive": true,
+              "literal_sha256": "7a66949970122f442169e7b1fffc32291680a07ead4bcb2f052fde476d3fd021"
+            }
+          },
+          "lattice_c": {
+            "raw_value": "5.133(2)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7759,
+              "char_end": 7767,
+              "end_exclusive": true,
+              "literal_sha256": "051ab60d742bde386293fdc8fff4101e4c4b9f1bf4528cc4d24f4f61cc2310f6"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "800-c",
+        "phase_label": "bcc",
+        "cells": {
+          "Nb": {
+            "raw_value": "33(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7790,
+              "char_end": 7795,
+              "end_exclusive": true,
+              "literal_sha256": "81eee87f414106096eb89581a96e2944c89194b34c90a8edb49682ed04f6fd40"
+            }
+          },
+          "Sc": {
+            "raw_value": "15(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7798,
+              "char_end": 7803,
+              "end_exclusive": true,
+              "literal_sha256": "2adbcca3f20bcd0d8898babcbd83ef1025c356333d22281aec4a015faca4ace8"
+            }
+          },
+          "Ti": {
+            "raw_value": "32(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7806,
+              "char_end": 7811,
+              "end_exclusive": true,
+              "literal_sha256": "e39fb2f621ed462f3996448a0a08fc8118cf70a8f8e9f6479f09d2482a4f11ec"
+            }
+          },
+          "Zr": {
+            "raw_value": "20(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7814,
+              "char_end": 7819,
+              "end_exclusive": true,
+              "literal_sha256": "2ef5b2a683ef9b8fc67549441d2392b2b5ea4f986a7735251e723172fe0a130c"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.325(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7838,
+              "char_end": 7846,
+              "end_exclusive": true,
+              "literal_sha256": "61a78108ddd66c790903d43769752025f36e7761447fd7b4501fc604608da51d"
+            }
+          },
+          "lattice_c": {
+            "raw_value": null,
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "not_listed_in_source_row",
+            "source_locator_id": "2024-table-1",
+            "literal": null
+          }
+        }
+      },
+      {
+        "sample_id": "800-c",
+        "phase_label": "hcp",
+        "cells": {
+          "Nb": {
+            "raw_value": "13(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7867,
+              "char_end": 7872,
+              "end_exclusive": true,
+              "literal_sha256": "304cc7fa8b157c686edf378caedbcac5b113ea7405f812ea7eca1467abd32719"
+            }
+          },
+          "Sc": {
+            "raw_value": "39.1(9)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7875,
+              "char_end": 7882,
+              "end_exclusive": true,
+              "literal_sha256": "d1f3cabc1e6338f15edff376425a54a2a8dd1e6c1f488fd1306ff185c2d3e88c"
+            }
+          },
+          "Ti": {
+            "raw_value": "15.1(4)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7885,
+              "char_end": 7892,
+              "end_exclusive": true,
+              "literal_sha256": "a6861039adaab2f1319f041e60b0698e264e5c79c5e4479b61f9aa1d05517da7"
+            }
+          },
+          "Zr": {
+            "raw_value": "32.6(6)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7895,
+              "char_end": 7902,
+              "end_exclusive": true,
+              "literal_sha256": "3f545672520785bc77c9a0c55ad8e9f4475bc4bbc3c47281f60fa2e4734e7e7c"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.252(2)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7910,
+              "char_end": 7918,
+              "end_exclusive": true,
+              "literal_sha256": "e11b7b20f314b027cf483b88c4cd5611efef47928fe00ad459ff919583f761e7"
+            }
+          },
+          "lattice_c": {
+            "raw_value": "5.138(3)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7922,
+              "char_end": 7930,
+              "end_exclusive": true,
+              "literal_sha256": "a7ef6a7124a9733c2ca5ca1502bca2d593e652c24f5893e2cd06c6c07f28e283"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "1000-c",
+        "phase_label": "bcc",
+        "cells": {
+          "Nb": {
+            "raw_value": "39.0(8)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7949,
+              "char_end": 7956,
+              "end_exclusive": true,
+              "literal_sha256": "c80081a51d990ed6ffe9e1a4a67c87ddf3ff22364fa718ed1cb1477681f2e8c7"
+            }
+          },
+          "Sc": {
+            "raw_value": "4.2(6)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7959,
+              "char_end": 7965,
+              "end_exclusive": true,
+              "literal_sha256": "81fe04cfde7a446a596137bd012a793493ac8538cd1e5c1b881f9f147cec5731"
+            }
+          },
+          "Ti": {
+            "raw_value": "38.0(6)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7968,
+              "char_end": 7975,
+              "end_exclusive": true,
+              "literal_sha256": "c81a1cc57cb7e6ba8893249224f5b6345f772225b1aa18e1f163d6b20402cffb"
+            }
+          },
+          "Zr": {
+            "raw_value": "18.9(8)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 7978,
+              "char_end": 7985,
+              "end_exclusive": true,
+              "literal_sha256": "d618920b6a3886a6dc36ec3ce5ea94b4824b4143ef77b78e422b47a0f674328d"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.360(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 8068,
+              "char_end": 8076,
+              "end_exclusive": true,
+              "literal_sha256": "fcad745081564fcb1bdfb787d434b3f679561d40fc14d9ed4ceecadb49ee7ab2"
+            }
+          },
+          "lattice_c": {
+            "raw_value": null,
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "not_listed_in_source_row",
+            "source_locator_id": "2024-table-1",
+            "literal": null
+          }
+        }
+      },
+      {
+        "sample_id": "1000-c",
+        "phase_label": "hcp",
+        "cells": {
+          "Nb": {
+            "raw_value": "2.6(7)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 8098,
+              "char_end": 8104,
+              "end_exclusive": true,
+              "literal_sha256": "e3eff9acaa19a797e4fff9731cfea8376b6e502f06eb2dad46efdb0f9304c717"
+            }
+          },
+          "Sc": {
+            "raw_value": "56(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 8107,
+              "char_end": 8112,
+              "end_exclusive": true,
+              "literal_sha256": "e1c7b7b22af621a9a4fdc78b6e78eed350abaf03eed93441fb16578701628c1a"
+            }
+          },
+          "Ti": {
+            "raw_value": "7.3(7)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 8115,
+              "char_end": 8121,
+              "end_exclusive": true,
+              "literal_sha256": "5e2eb37ae0bbadb4f2d00474e45672dd517eaa108ce3a0aa96f83eccedcbdf57"
+            }
+          },
+          "Zr": {
+            "raw_value": "34.1(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 8124,
+              "char_end": 8131,
+              "end_exclusive": true,
+              "literal_sha256": "6ecddb758dccba00da9cc05989b7e4caabbf7e2025ba3395b6285f4964f468ba"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.260(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 8140,
+              "char_end": 8148,
+              "end_exclusive": true,
+              "literal_sha256": "473a6449fecdf5a965a0e5a3062490eca624a68fe7120815f43a5780383daddc"
+            }
+          },
+          "lattice_c": {
+            "raw_value": "5.141(2)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2024-table-1",
+            "literal": {
+              "char_start": 8152,
+              "char_end": 8160,
+              "end_exclusive": true,
+              "literal_sha256": "d74b2fcb59daed6f45ec58056372ed6202763a09b25125493509c3ad90d9dbb8"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "phase_table_2023": {
+    "source_id": "2023",
+    "source_locator_id": "2023-table-1",
+    "label": "2023 Table 1: phase compositions, volume fractions and VEC",
+    "composition_unit": "not_printed_in_table",
+    "composition_scope": "Separate 2023 source rows; chemical coefficients, lattice parameters, SEM volume fractions and source-derived VEC are retained independently.",
+    "columns": [
+      "Nb",
+      "Sc",
+      "Ti",
+      "Zr",
+      "lattice_a",
+      "lattice_c",
+      "volume_percent",
+      "vec"
+    ],
+    "rows": [
+      {
+        "sample_id": "as-cast",
+        "phase_label": "bcc",
+        "cells": {
+          "Nb": {
+            "raw_value": "26.6(4)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13364,
+              "char_end": 13371,
+              "end_exclusive": true,
+              "literal_sha256": "d8051c95bf8c43986ba2d21033b4786deab7de53a842b42392834bfcd74635e5"
+            }
+          },
+          "Sc": {
+            "raw_value": "22.3(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13374,
+              "char_end": 13381,
+              "end_exclusive": true,
+              "literal_sha256": "f457150d216d2f38c16db4da5ea1b693c57233663edf8faad88fc13198e9a320"
+            }
+          },
+          "Ti": {
+            "raw_value": "25.5(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13384,
+              "char_end": 13391,
+              "end_exclusive": true,
+              "literal_sha256": "4e5b03aba5765ec4d26fc81a848af3cb11110144a4e14622fd6b7f8b4114b0bc"
+            }
+          },
+          "Zr": {
+            "raw_value": "25.6(4)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13394,
+              "char_end": 13401,
+              "end_exclusive": true,
+              "literal_sha256": "640c3a92c10c884d74cbb911756b7155e0e8226a2639553991885f7dd2d5e64d"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.359(2)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13414,
+              "char_end": 13422,
+              "end_exclusive": true,
+              "literal_sha256": "99c19934e9016190685dce3d2b09d8ef7de6257c9915fb5453276fb29d89a17d"
+            }
+          },
+          "lattice_c": {
+            "raw_value": null,
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "not_listed_in_source_row",
+            "source_locator_id": "2023-table-1",
+            "literal": null
+          },
+          "volume_percent": {
+            "raw_value": "57",
+            "raw_unit": "vol.%",
+            "normalized_value": null,
+            "role": "source_sem_phase_volume_fraction",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13404,
+              "char_end": 13406,
+              "end_exclusive": true,
+              "literal_sha256": "c837649cce43f2729138e72cc315207057ac82599a59be72765a477f22d14a54"
+            }
+          },
+          "vec": {
+            "raw_value": "4.04",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_derived_valence_electron_concentration",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13437,
+              "char_end": 13441,
+              "end_exclusive": true,
+              "literal_sha256": "d74586442881c00892adb2190aafaa58c4f8efa7a9425325c3835e452dc5a4b8"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "as-cast",
+        "phase_label": "hcp",
+        "cells": {
+          "Nb": {
+            "raw_value": "21.3(4)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13466,
+              "char_end": 13473,
+              "end_exclusive": true,
+              "literal_sha256": "33aa22d3b619d14333f80b0dd6f35e05e1ac1bfdf7625cd7ff2c50dee0beeff2"
+            }
+          },
+          "Sc": {
+            "raw_value": "30(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13476,
+              "char_end": 13481,
+              "end_exclusive": true,
+              "literal_sha256": "586fb8e5e81b7da643a8997d65b5a057e71f50e059fe266b19bd130c7f5cfa41"
+            }
+          },
+          "Ti": {
+            "raw_value": "23.0(7)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13484,
+              "char_end": 13491,
+              "end_exclusive": true,
+              "literal_sha256": "13f460e831f2d7882795fba6bfabe8ab20364a57b36b58e06560fb75abf6ff85"
+            }
+          },
+          "Zr": {
+            "raw_value": "25.8(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13494,
+              "char_end": 13501,
+              "end_exclusive": true,
+              "literal_sha256": "66b155403270a3cbab1b8b64ae284aeda2d06faca6d9e8038e62e5eaede68ac0"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.262(3)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13516,
+              "char_end": 13524,
+              "end_exclusive": true,
+              "literal_sha256": "2d0b6a5973478fecb2b5c825dd504615ba328833f856916009a55c6cfe9108fd"
+            }
+          },
+          "lattice_c": {
+            "raw_value": "5.152(3)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13528,
+              "char_end": 13536,
+              "end_exclusive": true,
+              "literal_sha256": "8ea49a280e97a6bb4c4ded2270eb4078b2327fb6637d4a9630dc4a9c2fdb51a8"
+            }
+          },
+          "volume_percent": {
+            "raw_value": "43",
+            "raw_unit": "vol.%",
+            "normalized_value": null,
+            "role": "source_sem_phase_volume_fraction",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13506,
+              "char_end": 13508,
+              "end_exclusive": true,
+              "literal_sha256": "44cb730c420480a0477b505ae68af508fb90f96cf0ec54c6ad16949dd427f13a"
+            }
+          },
+          "vec": {
+            "raw_value": "3.91",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_derived_valence_electron_concentration",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13539,
+              "char_end": 13543,
+              "end_exclusive": true,
+              "literal_sha256": "81f6a8bd7b04cfc499702103012991ebd808493c006e224b180b447f56d981aa"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "400-c",
+        "phase_label": "bcc",
+        "cells": {
+          "Nb": {
+            "raw_value": "27.9(3)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13562,
+              "char_end": 13569,
+              "end_exclusive": true,
+              "literal_sha256": "529cef1d5dc70f364d3d411ca3af700905a09dabc9616360014c0d605aed1403"
+            }
+          },
+          "Sc": {
+            "raw_value": "21.6(2)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13572,
+              "char_end": 13579,
+              "end_exclusive": true,
+              "literal_sha256": "d203409e4195bc4e374116461dd3d512b9a3610603680885ea0a277ccc7735db"
+            }
+          },
+          "Ti": {
+            "raw_value": "25.3(3)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13582,
+              "char_end": 13589,
+              "end_exclusive": true,
+              "literal_sha256": "250fb449d4a096824019e0889ccd7d64dd9f337744282166ce499ef1b18ff627"
+            }
+          },
+          "Zr": {
+            "raw_value": "25.2(2)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13592,
+              "char_end": 13599,
+              "end_exclusive": true,
+              "literal_sha256": "2621f56a878b40948f6415cf13ff2d328a4e776ee9082a438baca89e9072123b"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.308(2)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13612,
+              "char_end": 13620,
+              "end_exclusive": true,
+              "literal_sha256": "fd6f46d95e86ce95a1e90ad80e84ae33ae7fa578a9a8bd13c90dc616faf4c94b"
+            }
+          },
+          "lattice_c": {
+            "raw_value": null,
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "not_listed_in_source_row",
+            "source_locator_id": "2023-table-1",
+            "literal": null
+          },
+          "volume_percent": {
+            "raw_value": "57",
+            "raw_unit": "vol.%",
+            "normalized_value": null,
+            "role": "source_sem_phase_volume_fraction",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13602,
+              "char_end": 13604,
+              "end_exclusive": true,
+              "literal_sha256": "c837649cce43f2729138e72cc315207057ac82599a59be72765a477f22d14a54"
+            }
+          },
+          "vec": {
+            "raw_value": "4.06",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_derived_valence_electron_concentration",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13635,
+              "char_end": 13639,
+              "end_exclusive": true,
+              "literal_sha256": "4f121e31acb816cf54b3566736265dea5d1ce3f73c60ac6cd7bc359e4c3dbb99"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "400-c",
+        "phase_label": "hcp",
+        "cells": {
+          "Nb": {
+            "raw_value": "22.1(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13664,
+              "char_end": 13671,
+              "end_exclusive": true,
+              "literal_sha256": "8f1c9c74efe35bdb4a9b041ded4be4359e761ba22ef847c84152292cbf931185"
+            }
+          },
+          "Sc": {
+            "raw_value": "32.3(9)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13674,
+              "char_end": 13681,
+              "end_exclusive": true,
+              "literal_sha256": "e2f691dcc42bf7a3ed5df13df203308036e3993a02d2e12d3f3cb90e5ad26d4b"
+            }
+          },
+          "Ti": {
+            "raw_value": "21.3(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13684,
+              "char_end": 13691,
+              "end_exclusive": true,
+              "literal_sha256": "c8cababf8d7c8238bae5aa858020751a5169e008a64e320aded017772bd572c8"
+            }
+          },
+          "Zr": {
+            "raw_value": "24.2(2)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13694,
+              "char_end": 13701,
+              "end_exclusive": true,
+              "literal_sha256": "1ef3a007137201ac53a24c26720c0184ce47714ae37b4a1045af697851a64aa5"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.252(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13714,
+              "char_end": 13722,
+              "end_exclusive": true,
+              "literal_sha256": "99c2f5b7e1cb49556e74da58cd58a72fbd157f6a4ca8ac0807536b0388831292"
+            }
+          },
+          "lattice_c": {
+            "raw_value": "5.131(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13726,
+              "char_end": 13734,
+              "end_exclusive": true,
+              "literal_sha256": "0a25d135ec84b3aebc9d3e7bc9f4d20c98426c8522ec1c47759b43852cf70b13"
+            }
+          },
+          "volume_percent": {
+            "raw_value": "43",
+            "raw_unit": "vol.%",
+            "normalized_value": null,
+            "role": "source_sem_phase_volume_fraction",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13704,
+              "char_end": 13706,
+              "end_exclusive": true,
+              "literal_sha256": "44cb730c420480a0477b505ae68af508fb90f96cf0ec54c6ad16949dd427f13a"
+            }
+          },
+          "vec": {
+            "raw_value": "3.90",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_derived_valence_electron_concentration",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13737,
+              "char_end": 13741,
+              "end_exclusive": true,
+              "literal_sha256": "ec2bb902368079355b2fdba07ded8a6dc96aad06f621412d1e746bd9539ae889"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "800-c",
+        "phase_label": "bcc",
+        "cells": {
+          "Nb": {
+            "raw_value": "33(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13760,
+              "char_end": 13765,
+              "end_exclusive": true,
+              "literal_sha256": "81eee87f414106096eb89581a96e2944c89194b34c90a8edb49682ed04f6fd40"
+            }
+          },
+          "Sc": {
+            "raw_value": "15(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13768,
+              "char_end": 13773,
+              "end_exclusive": true,
+              "literal_sha256": "2adbcca3f20bcd0d8898babcbd83ef1025c356333d22281aec4a015faca4ace8"
+            }
+          },
+          "Ti": {
+            "raw_value": "32(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13776,
+              "char_end": 13781,
+              "end_exclusive": true,
+              "literal_sha256": "e39fb2f621ed462f3996448a0a08fc8118cf70a8f8e9f6479f09d2482a4f11ec"
+            }
+          },
+          "Zr": {
+            "raw_value": "20(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13784,
+              "char_end": 13789,
+              "end_exclusive": true,
+              "literal_sha256": "2ef5b2a683ef9b8fc67549441d2392b2b5ea4f986a7735251e723172fe0a130c"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.325(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13810,
+              "char_end": 13818,
+              "end_exclusive": true,
+              "literal_sha256": "61a78108ddd66c790903d43769752025f36e7761447fd7b4501fc604608da51d"
+            }
+          },
+          "lattice_c": {
+            "raw_value": null,
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "not_listed_in_source_row",
+            "source_locator_id": "2023-table-1",
+            "literal": null
+          },
+          "volume_percent": {
+            "raw_value": "50",
+            "raw_unit": "vol.%",
+            "normalized_value": null,
+            "role": "source_sem_phase_volume_fraction",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13800,
+              "char_end": 13802,
+              "end_exclusive": true,
+              "literal_sha256": "1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb"
+            }
+          },
+          "vec": {
+            "raw_value": "4.18",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_derived_valence_electron_concentration",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13833,
+              "char_end": 13837,
+              "end_exclusive": true,
+              "literal_sha256": "c0996957415530d5188d60ee58f48e0eb1888825429d362e702977f6f82b2889"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "800-c",
+        "phase_label": "hcp",
+        "cells": {
+          "Nb": {
+            "raw_value": "13(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13862,
+              "char_end": 13867,
+              "end_exclusive": true,
+              "literal_sha256": "304cc7fa8b157c686edf378caedbcac5b113ea7405f812ea7eca1467abd32719"
+            }
+          },
+          "Sc": {
+            "raw_value": "39.1(9)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13870,
+              "char_end": 13877,
+              "end_exclusive": true,
+              "literal_sha256": "d1f3cabc1e6338f15edff376425a54a2a8dd1e6c1f488fd1306ff185c2d3e88c"
+            }
+          },
+          "Ti": {
+            "raw_value": "15.1(4)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13880,
+              "char_end": 13887,
+              "end_exclusive": true,
+              "literal_sha256": "a6861039adaab2f1319f041e60b0698e264e5c79c5e4479b61f9aa1d05517da7"
+            }
+          },
+          "Zr": {
+            "raw_value": "32.6(6)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13890,
+              "char_end": 13897,
+              "end_exclusive": true,
+              "literal_sha256": "3f545672520785bc77c9a0c55ad8e9f4475bc4bbc3c47281f60fa2e4734e7e7c"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.252(2)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13912,
+              "char_end": 13920,
+              "end_exclusive": true,
+              "literal_sha256": "e11b7b20f314b027cf483b88c4cd5611efef47928fe00ad459ff919583f761e7"
+            }
+          },
+          "lattice_c": {
+            "raw_value": "5.138(3)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13924,
+              "char_end": 13932,
+              "end_exclusive": true,
+              "literal_sha256": "a7ef6a7124a9733c2ca5ca1502bca2d593e652c24f5893e2cd06c6c07f28e283"
+            }
+          },
+          "volume_percent": {
+            "raw_value": "50",
+            "raw_unit": "vol.%",
+            "normalized_value": null,
+            "role": "source_sem_phase_volume_fraction",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13902,
+              "char_end": 13904,
+              "end_exclusive": true,
+              "literal_sha256": "1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb"
+            }
+          },
+          "vec": {
+            "raw_value": "3.74",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_derived_valence_electron_concentration",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13935,
+              "char_end": 13939,
+              "end_exclusive": true,
+              "literal_sha256": "a088fac4d44900acecd167516201b06b424353b803a7898f67d88167c54946b3"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "1000-c",
+        "phase_label": "bcc",
+        "cells": {
+          "Nb": {
+            "raw_value": "39.0(8)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13958,
+              "char_end": 13965,
+              "end_exclusive": true,
+              "literal_sha256": "c80081a51d990ed6ffe9e1a4a67c87ddf3ff22364fa718ed1cb1477681f2e8c7"
+            }
+          },
+          "Sc": {
+            "raw_value": "4.2(6)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13968,
+              "char_end": 13974,
+              "end_exclusive": true,
+              "literal_sha256": "81fe04cfde7a446a596137bd012a793493ac8538cd1e5c1b881f9f147cec5731"
+            }
+          },
+          "Ti": {
+            "raw_value": "38.0(6)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13977,
+              "char_end": 13984,
+              "end_exclusive": true,
+              "literal_sha256": "c81a1cc57cb7e6ba8893249224f5b6345f772225b1aa18e1f163d6b20402cffb"
+            }
+          },
+          "Zr": {
+            "raw_value": "18.9(8)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13987,
+              "char_end": 13994,
+              "end_exclusive": true,
+              "literal_sha256": "d618920b6a3886a6dc36ec3ce5ea94b4824b4143ef77b78e422b47a0f674328d"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.360(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 14008,
+              "char_end": 14016,
+              "end_exclusive": true,
+              "literal_sha256": "fcad745081564fcb1bdfb787d434b3f679561d40fc14d9ed4ceecadb49ee7ab2"
+            }
+          },
+          "lattice_c": {
+            "raw_value": null,
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "not_listed_in_source_row",
+            "source_locator_id": "2023-table-1",
+            "literal": null
+          },
+          "volume_percent": {
+            "raw_value": "50",
+            "raw_unit": "vol.%",
+            "normalized_value": null,
+            "role": "source_sem_phase_volume_fraction",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13998,
+              "char_end": 14000,
+              "end_exclusive": true,
+              "literal_sha256": "1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb"
+            }
+          },
+          "vec": {
+            "raw_value": "4.35",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_derived_valence_electron_concentration",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 14031,
+              "char_end": 14035,
+              "end_exclusive": true,
+              "literal_sha256": "6d98ea24827f5a019110f671bdab1596d35800c5ee5557d5af709ed3eab75aea"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "1000-c",
+        "phase_label": "hcp",
+        "cells": {
+          "Nb": {
+            "raw_value": "2.6(7)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 14060,
+              "char_end": 14066,
+              "end_exclusive": true,
+              "literal_sha256": "e3eff9acaa19a797e4fff9731cfea8376b6e502f06eb2dad46efdb0f9304c717"
+            }
+          },
+          "Sc": {
+            "raw_value": "56(1)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 14069,
+              "char_end": 14074,
+              "end_exclusive": true,
+              "literal_sha256": "e1c7b7b22af621a9a4fdc78b6e78eed350abaf03eed93441fb16578701628c1a"
+            }
+          },
+          "Ti": {
+            "raw_value": "7.3(7)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 14077,
+              "char_end": 14083,
+              "end_exclusive": true,
+              "literal_sha256": "5e2eb37ae0bbadb4f2d00474e45672dd517eaa108ce3a0aa96f83eccedcbdf57"
+            }
+          },
+          "Zr": {
+            "raw_value": "34.1(5)",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_coefficient_with_printed_uncertainty",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 14086,
+              "char_end": 14093,
+              "end_exclusive": true,
+              "literal_sha256": "6ecddb758dccba00da9cc05989b7e4caabbf7e2025ba3395b6285f4964f468ba"
+            }
+          },
+          "lattice_a": {
+            "raw_value": "3.260(1)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 14110,
+              "char_end": 14118,
+              "end_exclusive": true,
+              "literal_sha256": "473a6449fecdf5a965a0e5a3062490eca624a68fe7120815f43a5780383daddc"
+            }
+          },
+          "lattice_c": {
+            "raw_value": "5.141(2)",
+            "raw_unit": "Å",
+            "normalized_value": null,
+            "role": "source_xrd_lattice_parameter",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 14122,
+              "char_end": 14130,
+              "end_exclusive": true,
+              "literal_sha256": "d74b2fcb59daed6f45ec58056372ed6202763a09b25125493509c3ad90d9dbb8"
+            }
+          },
+          "volume_percent": {
+            "raw_value": "50",
+            "raw_unit": "vol.%",
+            "normalized_value": null,
+            "role": "source_sem_phase_volume_fraction",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 14100,
+              "char_end": 14102,
+              "end_exclusive": true,
+              "literal_sha256": "1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb"
+            }
+          },
+          "vec": {
+            "raw_value": "3.47",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_composition_derived_valence_electron_concentration",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 14133,
+              "char_end": 14137,
+              "end_exclusive": true,
+              "literal_sha256": "9c56c14ca32db1092d366ae29f80dedcbd8960c037c56c85c237ca2f214ed88a"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "parameter_table": {
+    "source_id": "2024",
+    "source_locator_id": "2024-table-2",
+    "label": "2024 Table 2: superconducting parameters and hardness",
+    "columns": [
+      {
+        "field": "tc_k",
+        "label": "Tabulated Tc",
+        "raw_unit": "K",
+        "role": "tabulated_refined_transition_temperature_criterion_attribution_unresolved",
+        "unit_basis": "printed_table_header"
+      },
+      {
+        "field": "gamma_el",
+        "label": "γel",
+        "raw_unit": "mJ/mol·K2",
+        "role": "normal_state_specific_heat_fit_bcc_and_hcp_contributions",
+        "unit_basis": "printed_table_header"
+      },
+      {
+        "field": "beta",
+        "label": "β",
+        "raw_unit": "mJ/mol·K4",
+        "role": "normal_state_specific_heat_lattice_fit_bcc_and_hcp_contributions",
+        "unit_basis": "printed_table_header"
+      },
+      {
+        "field": "hc1_zero_mt",
+        "label": "μ0 Hc1(0)",
+        "raw_unit": "mT",
+        "role": "gl_fit_extrapolation_from_initial_magnetization",
+        "unit_basis": "printed_table_header"
+      },
+      {
+        "field": "hc2_m_zero_t",
+        "label": "μ0 Hc2ᴹ(0)",
+        "raw_unit": "T",
+        "role": "whh_fit_from_magnetization_transition_onset",
+        "unit_basis": "printed_table_header"
+      },
+      {
+        "field": "maki_m",
+        "label": "αMᴹ",
+        "raw_unit": null,
+        "role": "whh_fit_maki_parameter_from_magnetization",
+        "unit_basis": "source_parameter_symbol_without_printed_unit"
+      },
+      {
+        "field": "hc2_rho_zero_t",
+        "label": "μ0 Hc2ρ(0)",
+        "raw_unit": "T",
+        "role": "whh_fit_from_resistivity_transition_onset",
+        "unit_basis": "printed_table_header"
+      },
+      {
+        "field": "maki_rho",
+        "label": "αMρ",
+        "raw_unit": null,
+        "role": "whh_fit_maki_parameter_from_resistivity",
+        "unit_basis": "source_parameter_symbol_without_printed_unit"
+      },
+      {
+        "field": "xi_m_zero_nm",
+        "label": "ξGLᴹ(0)",
+        "raw_unit": "nm",
+        "role": "gl_coherence_length_derived_from_hc2_m",
+        "unit_basis": "printed_table_header"
+      },
+      {
+        "field": "lambda_m_zero_nm",
+        "label": "λGLᴹ(0)",
+        "raw_unit": "nm",
+        "role": "gl_penetration_depth_derived_from_hc1_and_xi_m",
+        "unit_basis": "printed_table_header"
+      },
+      {
+        "field": "kappa_m",
+        "label": "κGLᴹ",
+        "raw_unit": null,
+        "role": "gl_ratio_derived_from_lambda_m_and_xi_m",
+        "unit_basis": "source_parameter_symbol_without_printed_unit"
+      },
+      {
+        "field": "xi_rho_zero_nm",
+        "label": "ξGLρ(0)",
+        "raw_unit": "nm",
+        "role": "gl_coherence_length_derived_from_hc2_rho",
+        "unit_basis": "printed_table_header"
+      },
+      {
+        "field": "lambda_rho_zero_nm",
+        "label": "λGLρ(0)",
+        "raw_unit": "nm",
+        "role": "gl_penetration_depth_derived_from_hc1_and_xi_rho",
+        "unit_basis": "printed_table_header"
+      },
+      {
+        "field": "kappa_rho",
+        "label": "κGLρ",
+        "raw_unit": null,
+        "role": "gl_ratio_derived_from_lambda_rho_and_xi_rho",
+        "unit_basis": "source_parameter_symbol_without_printed_unit"
+      },
+      {
+        "field": "hardness_hv",
+        "label": "Vickers hardness",
+        "raw_unit": "HV",
+        "role": "indentation_measurement_2_94_n_for_10_s",
+        "unit_basis": "printed_table_header"
+      }
+    ],
+    "rows": [
+      {
+        "sample_id": "as-cast",
+        "cells": {
+          "tc_k": {
+            "raw_value": "8.11",
+            "raw_unit": "K",
+            "normalized_value": null,
+            "role": "tabulated_refined_transition_temperature_criterion_attribution_unresolved",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19161,
+              "char_end": 19165,
+              "end_exclusive": true,
+              "literal_sha256": "7e3f3dc553debd7eb597b8c8488d8f23da26e4d35eecc681b0e9d43b4d7bf70b"
+            }
+          },
+          "gamma_el": {
+            "raw_value": "6.47",
+            "raw_unit": "mJ/mol·K2",
+            "normalized_value": null,
+            "role": "normal_state_specific_heat_fit_bcc_and_hcp_contributions",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19234,
+              "char_end": 19238,
+              "end_exclusive": true,
+              "literal_sha256": "16eb21a9f8fbf2567126cb7cac160fd84b2fdc6a0b8cf901889fd508359d94a2"
+            }
+          },
+          "beta": {
+            "raw_value": "0.150",
+            "raw_unit": "mJ/mol·K4",
+            "normalized_value": null,
+            "role": "normal_state_specific_heat_lattice_fit_bcc_and_hcp_contributions",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19306,
+              "char_end": 19311,
+              "end_exclusive": true,
+              "literal_sha256": "1835a0a912dd6d9a4fcdf07b248d8cec881ea4f784fcc6af51dd36e5e0744ee5"
+            }
+          },
+          "hc1_zero_mt": {
+            "raw_value": "29.1",
+            "raw_unit": "mT",
+            "normalized_value": null,
+            "role": "gl_fit_extrapolation_from_initial_magnetization",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19380,
+              "char_end": 19384,
+              "end_exclusive": true,
+              "literal_sha256": "b182ecbd4641071bf74ba85feb2ae1935d0e96bb1d1fe557a61f0eae6f9ed9bb"
+            }
+          },
+          "hc2_m_zero_t": {
+            "raw_value": "13.1",
+            "raw_unit": "T",
+            "normalized_value": null,
+            "role": "whh_fit_from_magnetization_transition_onset",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19472,
+              "char_end": 19476,
+              "end_exclusive": true,
+              "literal_sha256": "2059b54a6dd3de9a703ec83a9df39125df5f9eb6ed19f609c6c7a7725ba9ecf8"
+            }
+          },
+          "maki_m": {
+            "raw_value": "1.7",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "whh_fit_maki_parameter_from_magnetization",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19570,
+              "char_end": 19573,
+              "end_exclusive": true,
+              "literal_sha256": "8f65223004a75f44404f485a1e84090699acef51f39de9411d6d9b377ae859a5"
+            }
+          },
+          "hc2_rho_zero_t": {
+            "raw_value": "12.8",
+            "raw_unit": "T",
+            "normalized_value": null,
+            "role": "whh_fit_from_resistivity_transition_onset",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19662,
+              "char_end": 19666,
+              "end_exclusive": true,
+              "literal_sha256": "1d377636299fcb9cf354e6ca7ca109bbbe5d121109a4af666eca82c2dfdff184"
+            }
+          },
+          "maki_rho": {
+            "raw_value": "1.7",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "whh_fit_maki_parameter_from_resistivity",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19736,
+              "char_end": 19739,
+              "end_exclusive": true,
+              "literal_sha256": "8f65223004a75f44404f485a1e84090699acef51f39de9411d6d9b377ae859a5"
+            }
+          },
+          "xi_m_zero_nm": {
+            "raw_value": "5.0",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_coherence_length_derived_from_hc2_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19825,
+              "char_end": 19828,
+              "end_exclusive": true,
+              "literal_sha256": "a19a1584344c1f3783bff51524a5a4b86f2cc09356c9dbfb6af9cd236e314362"
+            }
+          },
+          "lambda_m_zero_nm": {
+            "raw_value": "137",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_penetration_depth_derived_from_hc1_and_xi_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19913,
+              "char_end": 19916,
+              "end_exclusive": true,
+              "literal_sha256": "d80eae6e96d148b3b2abbbc6760077b66c4ea071f847dab573d507a32c4d99a5"
+            }
+          },
+          "kappa_m": {
+            "raw_value": "27",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "gl_ratio_derived_from_lambda_m_and_xi_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20008,
+              "char_end": 20010,
+              "end_exclusive": true,
+              "literal_sha256": "670671cd97404156226e507973f2ab8330d3022ca96e0c93bdbdb320c41adcaf"
+            }
+          },
+          "xi_rho_zero_nm": {
+            "raw_value": "5.1",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_coherence_length_derived_from_hc2_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20096,
+              "char_end": 20099,
+              "end_exclusive": true,
+              "literal_sha256": "77065cda8fe1551871ba934cfef4df0f9e8a5f7fb63909b25bf0ccebbe807e18"
+            }
+          },
+          "lambda_rho_zero_nm": {
+            "raw_value": "137",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_penetration_depth_derived_from_hc1_and_xi_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20168,
+              "char_end": 20171,
+              "end_exclusive": true,
+              "literal_sha256": "d80eae6e96d148b3b2abbbc6760077b66c4ea071f847dab573d507a32c4d99a5"
+            }
+          },
+          "kappa_rho": {
+            "raw_value": "27",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "gl_ratio_derived_from_lambda_rho_and_xi_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20263,
+              "char_end": 20265,
+              "end_exclusive": true,
+              "literal_sha256": "670671cd97404156226e507973f2ab8330d3022ca96e0c93bdbdb320c41adcaf"
+            }
+          },
+          "hardness_hv": {
+            "raw_value": "336(1)",
+            "raw_unit": "HV",
+            "normalized_value": null,
+            "role": "indentation_measurement_2_94_n_for_10_s",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20332,
+              "char_end": 20338,
+              "end_exclusive": true,
+              "literal_sha256": "0cd935dd6725223fec0d9060e8360a791958cd494d1da6c362b20ad19c07d294"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "400-c",
+        "cells": {
+          "tc_k": {
+            "raw_value": "8.71",
+            "raw_unit": "K",
+            "normalized_value": null,
+            "role": "tabulated_refined_transition_temperature_criterion_attribution_unresolved",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19168,
+              "char_end": 19172,
+              "end_exclusive": true,
+              "literal_sha256": "e3bd5e42d798e2791b549cbda52536076b6a87261ec69542ca39866afeefeb47"
+            }
+          },
+          "gamma_el": {
+            "raw_value": "6.79",
+            "raw_unit": "mJ/mol·K2",
+            "normalized_value": null,
+            "role": "normal_state_specific_heat_fit_bcc_and_hcp_contributions",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19241,
+              "char_end": 19245,
+              "end_exclusive": true,
+              "literal_sha256": "7c730065f11c16c622827efa7a7b0cf1da38312481685e659b6ff4c0c1dccadd"
+            }
+          },
+          "beta": {
+            "raw_value": "0.127",
+            "raw_unit": "mJ/mol·K4",
+            "normalized_value": null,
+            "role": "normal_state_specific_heat_lattice_fit_bcc_and_hcp_contributions",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19312,
+              "char_end": 19317,
+              "end_exclusive": true,
+              "literal_sha256": "c13097d9841efebb159b95aef88717813f7f0e0933aca1506c22aeebfb2df477"
+            }
+          },
+          "hc1_zero_mt": {
+            "raw_value": "32.9",
+            "raw_unit": "mT",
+            "normalized_value": null,
+            "role": "gl_fit_extrapolation_from_initial_magnetization",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19387,
+              "char_end": 19391,
+              "end_exclusive": true,
+              "literal_sha256": "83bcafb1853ce1c148c88f4655b887d96b778fa1ddb18ef9a8164bba03c6859d"
+            }
+          },
+          "hc2_m_zero_t": {
+            "raw_value": "14.1",
+            "raw_unit": "T",
+            "normalized_value": null,
+            "role": "whh_fit_from_magnetization_transition_onset",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19480,
+              "char_end": 19484,
+              "end_exclusive": true,
+              "literal_sha256": "fca61c35cab065b1582a6759a0e4f3177773c76586c38bc33a4da61b3599bea7"
+            }
+          },
+          "maki_m": {
+            "raw_value": "1.8",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "whh_fit_maki_parameter_from_magnetization",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19577,
+              "char_end": 19580,
+              "end_exclusive": true,
+              "literal_sha256": "a97b042d7bd59d92a46e8ab17f7dff7326067c74b938e6f6daabf1768932330d"
+            }
+          },
+          "hc2_rho_zero_t": {
+            "raw_value": "12.7",
+            "raw_unit": "T",
+            "normalized_value": null,
+            "role": "whh_fit_from_resistivity_transition_onset",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19669,
+              "char_end": 19673,
+              "end_exclusive": true,
+              "literal_sha256": "eda90e5b66a4d492e1140f856caae1b71e55f1cbb34e6fda5d2f5921e3925d8e"
+            }
+          },
+          "maki_rho": {
+            "raw_value": "1.9",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "whh_fit_maki_parameter_from_resistivity",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19743,
+              "char_end": 19746,
+              "end_exclusive": true,
+              "literal_sha256": "eca06fdd26e513a7b8510c86602285041a916de5491de13373d94fe0d7e04737"
+            }
+          },
+          "xi_m_zero_nm": {
+            "raw_value": "4.8",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_coherence_length_derived_from_hc2_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19832,
+              "char_end": 19835,
+              "end_exclusive": true,
+              "literal_sha256": "9c7f38a9ac4f5de592be486948ac944aff688f914e3b74e6917c7fe4715a561e"
+            }
+          },
+          "lambda_m_zero_nm": {
+            "raw_value": "128",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_penetration_depth_derived_from_hc1_and_xi_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19920,
+              "char_end": 19923,
+              "end_exclusive": true,
+              "literal_sha256": "2747b7c718564ba5f066f0523b03e17f6a496b06851333d2d59ab6d863225848"
+            }
+          },
+          "kappa_m": {
+            "raw_value": "27",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "gl_ratio_derived_from_lambda_m_and_xi_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20015,
+              "char_end": 20017,
+              "end_exclusive": true,
+              "literal_sha256": "670671cd97404156226e507973f2ab8330d3022ca96e0c93bdbdb320c41adcaf"
+            }
+          },
+          "xi_rho_zero_nm": {
+            "raw_value": "5.1",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_coherence_length_derived_from_hc2_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20103,
+              "char_end": 20106,
+              "end_exclusive": true,
+              "literal_sha256": "77065cda8fe1551871ba934cfef4df0f9e8a5f7fb63909b25bf0ccebbe807e18"
+            }
+          },
+          "lambda_rho_zero_nm": {
+            "raw_value": "127",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_penetration_depth_derived_from_hc1_and_xi_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20175,
+              "char_end": 20178,
+              "end_exclusive": true,
+              "literal_sha256": "922c7954216ccfe7a61def609305ce1dc7c67e225f873f256d30d7a8ee4f404c"
+            }
+          },
+          "kappa_rho": {
+            "raw_value": "25",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "gl_ratio_derived_from_lambda_rho_and_xi_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20270,
+              "char_end": 20272,
+              "end_exclusive": true,
+              "literal_sha256": "b7a56873cd771f2c446d369b649430b65a756ba278ff97ec81bb6f55b2e73569"
+            }
+          },
+          "hardness_hv": {
+            "raw_value": "345(4)",
+            "raw_unit": "HV",
+            "normalized_value": null,
+            "role": "indentation_measurement_2_94_n_for_10_s",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20339,
+              "char_end": 20345,
+              "end_exclusive": true,
+              "literal_sha256": "68d273b5adc3aac0abf29b511e4d6a53f997c29b3b696caeddd208af3cb8d75c"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "600-c",
+        "cells": {
+          "tc_k": {
+            "raw_value": "9.36",
+            "raw_unit": "K",
+            "normalized_value": null,
+            "role": "tabulated_refined_transition_temperature_criterion_attribution_unresolved",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19176,
+              "char_end": 19180,
+              "end_exclusive": true,
+              "literal_sha256": "b362c89d157c62b424cc66747e8f815282e9c5d3b851ae7db3dd19cfa3f65ef5"
+            }
+          },
+          "gamma_el": {
+            "raw_value": "5.77",
+            "raw_unit": "mJ/mol·K2",
+            "normalized_value": null,
+            "role": "normal_state_specific_heat_fit_bcc_and_hcp_contributions",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19250,
+              "char_end": 19254,
+              "end_exclusive": true,
+              "literal_sha256": "ad9380b77b69c91afa21f3ffe1942661cf3ea7fdb2987d6e27bb55bff3943225"
+            }
+          },
+          "beta": {
+            "raw_value": "0.127",
+            "raw_unit": "mJ/mol·K4",
+            "normalized_value": null,
+            "role": "normal_state_specific_heat_lattice_fit_bcc_and_hcp_contributions",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19322,
+              "char_end": 19327,
+              "end_exclusive": true,
+              "literal_sha256": "c13097d9841efebb159b95aef88717813f7f0e0933aca1506c22aeebfb2df477"
+            }
+          },
+          "hc1_zero_mt": {
+            "raw_value": "22.9",
+            "raw_unit": "mT",
+            "normalized_value": null,
+            "role": "gl_fit_extrapolation_from_initial_magnetization",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19396,
+              "char_end": 19400,
+              "end_exclusive": true,
+              "literal_sha256": "8ab4dab64f0173d7da9b27e0211d8646a0d1fa965cf852ef87e7387f0a28383c"
+            }
+          },
+          "hc2_m_zero_t": {
+            "raw_value": "14.6",
+            "raw_unit": "T",
+            "normalized_value": null,
+            "role": "whh_fit_from_magnetization_transition_onset",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19488,
+              "char_end": 19492,
+              "end_exclusive": true,
+              "literal_sha256": "d28f3edfe24e49c37c02bef18f385b1522d20550186f445a397d4a0a006c8b79"
+            }
+          },
+          "maki_m": {
+            "raw_value": "1.4",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "whh_fit_maki_parameter_from_magnetization",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19585,
+              "char_end": 19588,
+              "end_exclusive": true,
+              "literal_sha256": "1a948f1b4374f4e3f02501c7feb43784021718a93c1ed5f9f19adf357bb2d20e"
+            }
+          },
+          "hc2_rho_zero_t": {
+            "raw_value": "14.5",
+            "raw_unit": "T",
+            "normalized_value": null,
+            "role": "whh_fit_from_resistivity_transition_onset",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19678,
+              "char_end": 19682,
+              "end_exclusive": true,
+              "literal_sha256": "6978e2340a8503590a60b7d19aae46c4ea02a62986b91628d06ae0e35b011e0d"
+            }
+          },
+          "maki_rho": {
+            "raw_value": "1.4",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "whh_fit_maki_parameter_from_resistivity",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19751,
+              "char_end": 19754,
+              "end_exclusive": true,
+              "literal_sha256": "1a948f1b4374f4e3f02501c7feb43784021718a93c1ed5f9f19adf357bb2d20e"
+            }
+          },
+          "xi_m_zero_nm": {
+            "raw_value": "4.8",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_coherence_length_derived_from_hc2_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19841,
+              "char_end": 19844,
+              "end_exclusive": true,
+              "literal_sha256": "9c7f38a9ac4f5de592be486948ac944aff688f914e3b74e6917c7fe4715a561e"
+            }
+          },
+          "lambda_m_zero_nm": {
+            "raw_value": "159",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_penetration_depth_derived_from_hc1_and_xi_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19929,
+              "char_end": 19932,
+              "end_exclusive": true,
+              "literal_sha256": "ff2ccb6ba423d356bd549ed4bfb76e96976a0dcde05a09996a1cdb9f83422ec4"
+            }
+          },
+          "kappa_m": {
+            "raw_value": "33",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "gl_ratio_derived_from_lambda_m_and_xi_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20024,
+              "char_end": 20026,
+              "end_exclusive": true,
+              "literal_sha256": "c6f3ac57944a531490cd39902d0f777715fd005efac9a30622d5f5205e7f6894"
+            }
+          },
+          "xi_rho_zero_nm": {
+            "raw_value": "4.8",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_coherence_length_derived_from_hc2_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20112,
+              "char_end": 20115,
+              "end_exclusive": true,
+              "literal_sha256": "9c7f38a9ac4f5de592be486948ac944aff688f914e3b74e6917c7fe4715a561e"
+            }
+          },
+          "lambda_rho_zero_nm": {
+            "raw_value": "159",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_penetration_depth_derived_from_hc1_and_xi_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20184,
+              "char_end": 20187,
+              "end_exclusive": true,
+              "literal_sha256": "ff2ccb6ba423d356bd549ed4bfb76e96976a0dcde05a09996a1cdb9f83422ec4"
+            }
+          },
+          "kappa_rho": {
+            "raw_value": "33",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "gl_ratio_derived_from_lambda_rho_and_xi_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20279,
+              "char_end": 20281,
+              "end_exclusive": true,
+              "literal_sha256": "c6f3ac57944a531490cd39902d0f777715fd005efac9a30622d5f5205e7f6894"
+            }
+          },
+          "hardness_hv": {
+            "raw_value": "264(6)",
+            "raw_unit": "HV",
+            "normalized_value": null,
+            "role": "indentation_measurement_2_94_n_for_10_s",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20346,
+              "char_end": 20352,
+              "end_exclusive": true,
+              "literal_sha256": "35f461ff6d19ad2dd49d1cd67cab3f922a10dd04e2c7244c5cc631ab7a1e61a5"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "800-c",
+        "cells": {
+          "tc_k": {
+            "raw_value": "9.13",
+            "raw_unit": "K",
+            "normalized_value": null,
+            "role": "tabulated_refined_transition_temperature_criterion_attribution_unresolved",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19184,
+              "char_end": 19188,
+              "end_exclusive": true,
+              "literal_sha256": "8daf8f8b04da7a6d00ed5852b3790028b14825ebaa2bf2ddf4404c8fabcc4437"
+            }
+          },
+          "gamma_el": {
+            "raw_value": "5.46",
+            "raw_unit": "mJ/mol·K2",
+            "normalized_value": null,
+            "role": "normal_state_specific_heat_fit_bcc_and_hcp_contributions",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19257,
+              "char_end": 19261,
+              "end_exclusive": true,
+              "literal_sha256": "f2ae094336db6d7006ef9963a3a57f8a469653fe24d1d174bd233bca880d7027"
+            }
+          },
+          "beta": {
+            "raw_value": "0.129",
+            "raw_unit": "mJ/mol·K4",
+            "normalized_value": null,
+            "role": "normal_state_specific_heat_lattice_fit_bcc_and_hcp_contributions",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19330,
+              "char_end": 19335,
+              "end_exclusive": true,
+              "literal_sha256": "13edbf90d092d8a14968788cb27b833f85fb5bc2f18b7739bca2945d18e0390d"
+            }
+          },
+          "hc1_zero_mt": {
+            "raw_value": "22.2",
+            "raw_unit": "mT",
+            "normalized_value": null,
+            "role": "gl_fit_extrapolation_from_initial_magnetization",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19403,
+              "char_end": 19407,
+              "end_exclusive": true,
+              "literal_sha256": "32e91c1240d5f0df215a3d318b26dfb6755680982d5f6722a6aed0dae644c0b3"
+            }
+          },
+          "hc2_m_zero_t": {
+            "raw_value": "13.9",
+            "raw_unit": "T",
+            "normalized_value": null,
+            "role": "whh_fit_from_magnetization_transition_onset",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19496,
+              "char_end": 19500,
+              "end_exclusive": true,
+              "literal_sha256": "34bb7aff4d9162a3786c527c6494ebf518a7acea7366504be8d41879604f298a"
+            }
+          },
+          "maki_m": {
+            "raw_value": "1.3",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "whh_fit_maki_parameter_from_magnetization",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19593,
+              "char_end": 19596,
+              "end_exclusive": true,
+              "literal_sha256": "9c193c604ad7de942961af97b39ff541f2e611fdf0b93a3044e16dfbd808f41b"
+            }
+          },
+          "hc2_rho_zero_t": {
+            "raw_value": "15.0",
+            "raw_unit": "T",
+            "normalized_value": null,
+            "role": "whh_fit_from_resistivity_transition_onset",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19685,
+              "char_end": 19689,
+              "end_exclusive": true,
+              "literal_sha256": "c72ae9676454d7cc0014583a9d0a2e28553d5c62f087c7562b5307ebd1cc84c8"
+            }
+          },
+          "maki_rho": {
+            "raw_value": "1.3",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "whh_fit_maki_parameter_from_resistivity",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19759,
+              "char_end": 19762,
+              "end_exclusive": true,
+              "literal_sha256": "9c193c604ad7de942961af97b39ff541f2e611fdf0b93a3044e16dfbd808f41b"
+            }
+          },
+          "xi_m_zero_nm": {
+            "raw_value": "4.9",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_coherence_length_derived_from_hc2_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19848,
+              "char_end": 19851,
+              "end_exclusive": true,
+              "literal_sha256": "5ecf21708e12d2b3762b9341be022380e87c3a5cd570a424962c37d3391c90dd"
+            }
+          },
+          "lambda_m_zero_nm": {
+            "raw_value": "161",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_penetration_depth_derived_from_hc1_and_xi_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19937,
+              "char_end": 19940,
+              "end_exclusive": true,
+              "literal_sha256": "bb668ca95563216088b98a62557fa1e26802563f3919ac78ae30533bb9ed422c"
+            }
+          },
+          "kappa_m": {
+            "raw_value": "33",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "gl_ratio_derived_from_lambda_m_and_xi_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20031,
+              "char_end": 20033,
+              "end_exclusive": true,
+              "literal_sha256": "c6f3ac57944a531490cd39902d0f777715fd005efac9a30622d5f5205e7f6894"
+            }
+          },
+          "xi_rho_zero_nm": {
+            "raw_value": "4.7",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_coherence_length_derived_from_hc2_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20119,
+              "char_end": 20122,
+              "end_exclusive": true,
+              "literal_sha256": "db7dc8ce07623b4654a57d0ad29200bdcf4eff470334d40dae8a2675a165372a"
+            }
+          },
+          "lambda_rho_zero_nm": {
+            "raw_value": "162",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_penetration_depth_derived_from_hc1_and_xi_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20192,
+              "char_end": 20195,
+              "end_exclusive": true,
+              "literal_sha256": "79d6eaa2676189eb927f2e16a70091474078e2117c3fc607d35cdc6b591ef355"
+            }
+          },
+          "kappa_rho": {
+            "raw_value": "34",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "gl_ratio_derived_from_lambda_rho_and_xi_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20286,
+              "char_end": 20288,
+              "end_exclusive": true,
+              "literal_sha256": "86e50149658661312a9e0b35558d84f6c6d3da797f552a9657fe0558ca40cdef"
+            }
+          },
+          "hardness_hv": {
+            "raw_value": "239(2)",
+            "raw_unit": "HV",
+            "normalized_value": null,
+            "role": "indentation_measurement_2_94_n_for_10_s",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20353,
+              "char_end": 20359,
+              "end_exclusive": true,
+              "literal_sha256": "fd0f45cac425d1caa3af8a61ef641bf4cb9cf521fce45ec93d2ba6670326e142"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "1000-c",
+        "cells": {
+          "tc_k": {
+            "raw_value": "9.03",
+            "raw_unit": "K",
+            "normalized_value": null,
+            "role": "tabulated_refined_transition_temperature_criterion_attribution_unresolved",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19193,
+              "char_end": 19197,
+              "end_exclusive": true,
+              "literal_sha256": "d407614cd54fa931f11705a69ffd9d9c44a3d777fce29a43c62880f34fd6fec6"
+            }
+          },
+          "gamma_el": {
+            "raw_value": "6.62",
+            "raw_unit": "mJ/mol·K2",
+            "normalized_value": null,
+            "role": "normal_state_specific_heat_fit_bcc_and_hcp_contributions",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19266,
+              "char_end": 19270,
+              "end_exclusive": true,
+              "literal_sha256": "19511f64684f492d56c677f1f2625c21a413695c9efa2df0054276494b14ee79"
+            }
+          },
+          "beta": {
+            "raw_value": "0.145",
+            "raw_unit": "mJ/mol·K4",
+            "normalized_value": null,
+            "role": "normal_state_specific_heat_lattice_fit_bcc_and_hcp_contributions",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19338,
+              "char_end": 19343,
+              "end_exclusive": true,
+              "literal_sha256": "a8a9d3a5a4d7f0e21d15a6339499b2d276ba7bcd078dc545bd883fee461573d6"
+            }
+          },
+          "hc1_zero_mt": {
+            "raw_value": "4.46",
+            "raw_unit": "mT",
+            "normalized_value": null,
+            "role": "gl_fit_extrapolation_from_initial_magnetization",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19412,
+              "char_end": 19416,
+              "end_exclusive": true,
+              "literal_sha256": "50175d83567cad5f2b16644a37b05c997fc08b840595f71ff3547da24666c8c2"
+            }
+          },
+          "hc2_m_zero_t": {
+            "raw_value": "14.3",
+            "raw_unit": "T",
+            "normalized_value": null,
+            "role": "whh_fit_from_magnetization_transition_onset",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19505,
+              "char_end": 19509,
+              "end_exclusive": true,
+              "literal_sha256": "20859fc7798f69d4e4767e2f429bdeac01e15369144dd929b3a51f7663f75187"
+            }
+          },
+          "maki_m": {
+            "raw_value": "1.3",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "whh_fit_maki_parameter_from_magnetization",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19602,
+              "char_end": 19605,
+              "end_exclusive": true,
+              "literal_sha256": "9c193c604ad7de942961af97b39ff541f2e611fdf0b93a3044e16dfbd808f41b"
+            }
+          },
+          "hc2_rho_zero_t": {
+            "raw_value": "14.5",
+            "raw_unit": "T",
+            "normalized_value": null,
+            "role": "whh_fit_from_resistivity_transition_onset",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19694,
+              "char_end": 19698,
+              "end_exclusive": true,
+              "literal_sha256": "6978e2340a8503590a60b7d19aae46c4ea02a62986b91628d06ae0e35b011e0d"
+            }
+          },
+          "maki_rho": {
+            "raw_value": "1.3",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "whh_fit_maki_parameter_from_resistivity",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19768,
+              "char_end": 19771,
+              "end_exclusive": true,
+              "literal_sha256": "9c193c604ad7de942961af97b39ff541f2e611fdf0b93a3044e16dfbd808f41b"
+            }
+          },
+          "xi_m_zero_nm": {
+            "raw_value": "4.8",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_coherence_length_derived_from_hc2_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19857,
+              "char_end": 19860,
+              "end_exclusive": true,
+              "literal_sha256": "9c7f38a9ac4f5de592be486948ac944aff688f914e3b74e6917c7fe4715a561e"
+            }
+          },
+          "lambda_m_zero_nm": {
+            "raw_value": "405",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_penetration_depth_derived_from_hc1_and_xi_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 19945,
+              "char_end": 19948,
+              "end_exclusive": true,
+              "literal_sha256": "a73b320dc0d3a57c03f897eb28ca91e623c5ee635db59476ba3178c90b94019f"
+            }
+          },
+          "kappa_m": {
+            "raw_value": "84",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "gl_ratio_derived_from_lambda_m_and_xi_m",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20040,
+              "char_end": 20042,
+              "end_exclusive": true,
+              "literal_sha256": "44c8031cb036a7350d8b9b8603af662a4b9cdbd2f96e8d5de5af435c9c35da69"
+            }
+          },
+          "xi_rho_zero_nm": {
+            "raw_value": "4.8",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_coherence_length_derived_from_hc2_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20128,
+              "char_end": 20131,
+              "end_exclusive": true,
+              "literal_sha256": "9c7f38a9ac4f5de592be486948ac944aff688f914e3b74e6917c7fe4715a561e"
+            }
+          },
+          "lambda_rho_zero_nm": {
+            "raw_value": "405",
+            "raw_unit": "nm",
+            "normalized_value": null,
+            "role": "gl_penetration_depth_derived_from_hc1_and_xi_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20200,
+              "char_end": 20203,
+              "end_exclusive": true,
+              "literal_sha256": "a73b320dc0d3a57c03f897eb28ca91e623c5ee635db59476ba3178c90b94019f"
+            }
+          },
+          "kappa_rho": {
+            "raw_value": "84",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "gl_ratio_derived_from_lambda_rho_and_xi_rho",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20295,
+              "char_end": 20297,
+              "end_exclusive": true,
+              "literal_sha256": "44c8031cb036a7350d8b9b8603af662a4b9cdbd2f96e8d5de5af435c9c35da69"
+            }
+          },
+          "hardness_hv": {
+            "raw_value": "230(2)",
+            "raw_unit": "HV",
+            "normalized_value": null,
+            "role": "indentation_measurement_2_94_n_for_10_s",
+            "status": "reported",
+            "source_locator_id": "2024-table-2",
+            "literal": {
+              "char_start": 20360,
+              "char_end": 20366,
+              "end_exclusive": true,
+              "literal_sha256": "94ede2f93f32a924602aae1efa6be67db1af1dd7e4fba50d05ef165152fd75ca"
+            }
+          }
+        }
+      }
+    ],
+    "tc_criterion_attribution": "refined_hc2_analysis_context_without_calorimetric_midpoint_assignment",
+    "specific_heat_phase_scope": "Both bcc and hcp contribute to the normal-state γel and β fits.",
+    "source_zero_temperature_values": "Source model fits or derived estimates; no new calculation."
+  },
+  "gap_fits": {
+    "source_id": "2024",
+    "label": "2024 electronic specific-heat fits",
+    "columns": [
+      {
+        "field": "gap_zero_mev",
+        "label": "Δ(0)",
+        "raw_unit": "meV"
+      },
+      {
+        "field": "gamma_residual",
+        "label": "Residual γel′",
+        "raw_unit": "mJ/mol·K2"
+      },
+      {
+        "field": "gap_ratio",
+        "label": "2Δ(0)/(kB Tc)",
+        "raw_unit": null
+      },
+      {
+        "field": "normalized_jump",
+        "label": "ΔCel/[(γel−γel′)Tc]",
+        "raw_unit": null
+      }
+    ],
+    "rows": [
+      {
+        "sample_id": "400-c",
+        "cells": {
+          "gap_zero_mev": {
+            "raw_value": "1.16",
+            "raw_unit": "meV",
+            "normalized_value": null,
+            "role": "electronic_specific_heat_exponential_gap_fit",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36000,
+              "char_end": 36004,
+              "end_exclusive": true,
+              "literal_sha256": "16ffcff2eb9b46c0e9f4eca8c9725dd5bc64f18b39cc98a56dc7f35c5174954d"
+            }
+          },
+          "gamma_residual": {
+            "raw_value": "2.8",
+            "raw_unit": "mJ/mol·K2",
+            "normalized_value": null,
+            "role": "residual_specific_heat_fit_source_attributed_to_hcp_phase",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36006,
+              "char_end": 36009,
+              "end_exclusive": true,
+              "literal_sha256": "c020bad937ece011339d7447ee0ac9fa11686eea100845466c64863f161899f1"
+            }
+          },
+          "gap_ratio": {
+            "raw_value": "3.22",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_calculated_2_delta_zero_over_kb_tc_ratio",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36517,
+              "char_end": 36521,
+              "end_exclusive": true,
+              "literal_sha256": "70159003c3341c3776f60c4b5a50ba2e3b26295aa0f27a26ba248cb6fc7ef60d"
+            }
+          },
+          "normalized_jump": {
+            "raw_value": "1.63",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_estimated_normalized_specific_heat_jump_midpoint_tc",
+            "status": "reported",
+            "source_locator_id": "2024-gap-jump",
+            "literal": {
+              "char_start": 37894,
+              "char_end": 37898,
+              "end_exclusive": true,
+              "literal_sha256": "48c1f254d3399d2270446c1806a143e360020c32cde30f1ba92427eb615cafaf"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "600-c",
+        "cells": {
+          "gap_zero_mev": {
+            "raw_value": "1.73",
+            "raw_unit": "meV",
+            "normalized_value": null,
+            "role": "electronic_specific_heat_exponential_gap_fit",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36045,
+              "char_end": 36049,
+              "end_exclusive": true,
+              "literal_sha256": "00b0b4a5c2373d299e6248e6959f6af491eed4fca879657bfd9b7d7a52325e49"
+            }
+          },
+          "gamma_residual": {
+            "raw_value": "2.7",
+            "raw_unit": "mJ/mol·K2",
+            "normalized_value": null,
+            "role": "residual_specific_heat_fit_source_attributed_to_hcp_phase",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36071,
+              "char_end": 36074,
+              "end_exclusive": true,
+              "literal_sha256": "0faf54c7569cac28ec5462f872384f7c0de0d9d7c6290d53579c916e32f8e3d1"
+            }
+          },
+          "gap_ratio": {
+            "raw_value": "4.43",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_calculated_2_delta_zero_over_kb_tc_ratio",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36523,
+              "char_end": 36527,
+              "end_exclusive": true,
+              "literal_sha256": "d808f69684a949a2a4bc19c86c47c0261fedfd022737e11118bdf7409a0153c5"
+            }
+          },
+          "normalized_jump": {
+            "raw_value": "2.83",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_estimated_normalized_specific_heat_jump_midpoint_tc",
+            "status": "reported",
+            "source_locator_id": "2024-gap-jump",
+            "literal": {
+              "char_start": 37900,
+              "char_end": 37904,
+              "end_exclusive": true,
+              "literal_sha256": "164cb941812dafd93e36fae1c9dc44b1fac6c5874a739c4db8911230783338a6"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "800-c",
+        "cells": {
+          "gap_zero_mev": {
+            "raw_value": "1.84",
+            "raw_unit": "meV",
+            "normalized_value": null,
+            "role": "electronic_specific_heat_exponential_gap_fit",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36110,
+              "char_end": 36114,
+              "end_exclusive": true,
+              "literal_sha256": "92652390b02202b690c0b54355ceacff5475a507ed0145e21ba65b03a382ae91"
+            }
+          },
+          "gamma_residual": {
+            "raw_value": "2.8",
+            "raw_unit": "mJ/mol·K2",
+            "normalized_value": null,
+            "role": "residual_specific_heat_fit_source_attributed_to_hcp_phase",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36116,
+              "char_end": 36119,
+              "end_exclusive": true,
+              "literal_sha256": "c020bad937ece011339d7447ee0ac9fa11686eea100845466c64863f161899f1"
+            }
+          },
+          "gap_ratio": {
+            "raw_value": "4.85",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_calculated_2_delta_zero_over_kb_tc_ratio",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36529,
+              "char_end": 36533,
+              "end_exclusive": true,
+              "literal_sha256": "163fbb83a83d63055d19c596aa3c5f3abb65cc8b1516662297618b3e5c67c739"
+            }
+          },
+          "normalized_jump": {
+            "raw_value": "3.97",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_estimated_normalized_specific_heat_jump_midpoint_tc",
+            "status": "reported",
+            "source_locator_id": "2024-gap-jump",
+            "literal": {
+              "char_start": 37983,
+              "char_end": 37987,
+              "end_exclusive": true,
+              "literal_sha256": "0a61e757f6221e96f981e29c9b3336ba869a7ef1e97d3ab9231e7daba3b84073"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "1000-c",
+        "cells": {
+          "gap_zero_mev": {
+            "raw_value": "1.66",
+            "raw_unit": "meV",
+            "normalized_value": null,
+            "role": "electronic_specific_heat_exponential_gap_fit",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36159,
+              "char_end": 36163,
+              "end_exclusive": true,
+              "literal_sha256": "363a35aa53455c97d77bcfeeff69c80d55c72f7ebf20dea44ea56d85ffbec7dc"
+            }
+          },
+          "gamma_residual": {
+            "raw_value": "2.6",
+            "raw_unit": "mJ/mol·K2",
+            "normalized_value": null,
+            "role": "residual_specific_heat_fit_source_attributed_to_hcp_phase",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36165,
+              "char_end": 36168,
+              "end_exclusive": true,
+              "literal_sha256": "af3266e6d0f3bba206c2e954c21ff72182e440557702a3f79f4c6bdfb577fed5"
+            }
+          },
+          "gap_ratio": {
+            "raw_value": "4.56",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_calculated_2_delta_zero_over_kb_tc_ratio",
+            "status": "reported",
+            "source_locator_id": "2024-calorimetry",
+            "literal": {
+              "char_start": 36539,
+              "char_end": 36543,
+              "end_exclusive": true,
+              "literal_sha256": "8b08f387373618195545c4d4fd2e259ed42f79f294133af002f5c2d0d09103a5"
+            }
+          },
+          "normalized_jump": {
+            "raw_value": "2.68",
+            "raw_unit": null,
+            "normalized_value": null,
+            "role": "source_estimated_normalized_specific_heat_jump_midpoint_tc",
+            "status": "reported",
+            "source_locator_id": "2024-gap-jump",
+            "literal": {
+              "char_start": 37993,
+              "char_end": 37997,
+              "end_exclusive": true,
+              "literal_sha256": "9964c8ae509e89f6db0c25641d8dbc8e108dca8706b3a8506665b5b1304cfaf7"
+            }
+          }
+        }
+      }
+    ],
+    "as_cast_status": "not_established_in_source_analysis",
+    "as_cast_reason": "The paper excludes the as-cast sample from these superconducting specific-heat fits; transition broadening prevents evaluating its gap ratio.",
+    "interpretation_scope": "Source fit and model-ratio estimates. Author discussion of possible strong coupling does not establish a global pairing classification or electron–phonon λ."
+  },
+  "tc_2023": {
+    "source_id": "2023",
+    "source_locator_id": "2023-table-1",
+    "label": "2023 Table 1: original reported transition temperatures",
+    "columns": [
+      {
+        "field": "tc_k",
+        "label": "Tc",
+        "raw_unit": "K"
+      }
+    ],
+    "rows": [
+      {
+        "sample_id": "as-cast",
+        "cells": {
+          "tc_k": {
+            "raw_value": "7.9",
+            "raw_unit": "K",
+            "normalized_value": null,
+            "role": "source_table_transition_temperature",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13444,
+              "char_end": 13447,
+              "end_exclusive": true,
+              "literal_sha256": "1e81bf048f2b3ca9f5765fe41db004e94c25c22dfcd58a798d29f97833296d81"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "400-c",
+        "cells": {
+          "tc_k": {
+            "raw_value": "8.4",
+            "raw_unit": "K",
+            "normalized_value": null,
+            "role": "source_table_transition_temperature",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13642,
+              "char_end": 13645,
+              "end_exclusive": true,
+              "literal_sha256": "163c820d957641208e645d35d74837183b2638bba77e6e069f2fed1c41312dd7"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "800-c",
+        "cells": {
+          "tc_k": {
+            "raw_value": "9.0",
+            "raw_unit": "K",
+            "normalized_value": null,
+            "role": "source_table_transition_temperature",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 13840,
+              "char_end": 13843,
+              "end_exclusive": true,
+              "literal_sha256": "b7edbb1d306a68faf170673ebef76f1dfef2045c0c190bdc1bb37837e37504a4"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "1000-c",
+        "cells": {
+          "tc_k": {
+            "raw_value": "8.7",
+            "raw_unit": "K",
+            "normalized_value": null,
+            "role": "source_table_transition_temperature",
+            "status": "reported",
+            "source_locator_id": "2023-table-1",
+            "literal": {
+              "char_start": 14038,
+              "char_end": 14041,
+              "end_exclusive": true,
+              "literal_sha256": "8719c8b9d63c644df3a5b778698dbdaa3c3f1b746f3cbb41b28a5f79a8989229"
+            }
+          }
+        }
+      }
+    ],
+    "criterion_context_id": "2023-tc-definition",
+    "cross_publication_relation": "Distinct source reports; no automatic reconciliation with 2024 Table 2 values."
+  },
+  "limitations": [
+    "Source sample labels describe preparation groups, not typed catalogue sample or state IDs.",
+    "Annealing temperature and four-day hold are processing conditions, not superconducting measurement conditions. As-cast is not represented as a 0 °C anneal.",
+    "A formula match, a shared author group or a citation does not establish the same physical specimen across the papers.",
+    "Original PDF and full derived text remain private; metadata publishes source values, paraphrased context and hash-only locations.",
+    "No pressure value is supplied from missing source fields, and zero-temperature fitted values do not establish measurements at 0 K.",
+    "No scientific acceptance, human gold benchmark, canonical promotion, new DFT or ML permission is created."
+  ],
+  "counts": {
+    "sources": 2,
+    "source_sample_labels": 5,
+    "phase_rows_2024": 10,
+    "phase_rows_2023": 8,
+    "parameter_fields": 15,
+    "parameter_cells": 75,
+    "tc_cells_2023": 4,
+    "gap_fit_samples_2024": 4,
+    "gap_fit_cells_2024": 16,
+    "reported_value_cells": 210,
+    "source_blank_cells": 9,
+    "independent_experiment_count_established": false
+  }
+}

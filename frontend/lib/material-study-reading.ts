@@ -1,3 +1,5 @@
+import { nbsctizrAnnealingReading } from "@/lib/material-nbsctizr-annealing";
+
 /** Related paper readings for inspected result identities; no property overlay. */
 const readings = [
   {
@@ -91,9 +93,11 @@ const readings = [
   },
 ] as const;
 
-export type MaterialStudyReading = Omit<typeof readings[number], "href"> & { href: string; companion: { href: string; label: string } | null };
+export type MaterialStudyReading = { href: string; label: string; note: string; companion: { href: string; label: string } | null };
 
 export function materialStudyReading(materialId: string, selected: unknown): MaterialStudyReading | null {
+  const annealing = nbsctizrAnnealingReading(materialId, selected);
+  if (annealing) return { ...annealing, companion: null };
   if (!selected || typeof selected !== "object" || Array.isArray(selected)) return null;
   const result = selected as Record<string, unknown>;
   if (!result.source || typeof result.source !== "object" || Array.isArray(result.source)) return null;
