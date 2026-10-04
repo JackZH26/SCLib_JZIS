@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { structureReferences } from "@/lib/discovery-structures";
+import Link from "next/link";
+import { StructureReferenceOptions } from "@/components/StructureReferenceOptions";
+import { initialSupercellRepeats, occupancyDescription, structureHostContext, structureReferences } from "@/lib/discovery-structures";
 import { compositionLabel, compositionOf, coordinateSha256, supercellModel } from "@/lib/discovery-site-candidates";
 import { combinedPlan, generateCombinedCandidates, type CombinedBatch, type SiteChoices } from "@/lib/discovery-combined-candidates";
 import { DiscoveryQeInput } from "@/components/DiscoveryQeInput";
@@ -11,10 +13,10 @@ const fmt = (value: number) => value.toLocaleString("en-US", { maximumFractionDi
 const freshSite = (targetId = ""): SiteChoices => ({ targetId, replacements: "", vacancy: false, unchanged: false });
 type Generated = { batch: CombinedBatch; json: string; hash: string };
 
-export function DiscoveryCombinedCandidates() {
+export function DiscoveryCombinedCandidates({ initialReferenceId }: { initialReferenceId?: string }) {
   const [references] = useState(structureReferences);
-  const [referenceId, setReferenceId] = useState(references[0].id);
-  const [repeats, setRepeats] = useState(["2", "2", "2"]);
+  const [referenceId, setReferenceId] = useState(initialReferenceId ?? references[0].id);
+  const [repeats, setRepeats] = useState(() => initialSupercellRepeats(references.find(ref => ref.id === (initialReferenceId ?? references[0].id))!));
   const [sites, setSites] = useState<SiteChoices[]>([freshSite()]);
   const [strain, setStrain] = useState("0");
   const [result, setResult] = useState<Generated | null>(null);
@@ -64,9 +66,10 @@ export function DiscoveryCombinedCandidates() {
     <section className="min-w-0 space-y-4" aria-labelledby="combined-source-title">
       <h2 id="combined-source-title" className="text-xl font-semibold">Source and supercell</h2>
       <div className="grid min-w-0 items-end gap-5 md:grid-cols-2">
-        <label className="min-w-0 text-sm font-medium">Source structure<select className={control} value={referenceId} onChange={event => { invalidate(); setReferenceId(event.target.value); setSites([freshSite()]); }}>{references.map(ref => <option key={ref.id} value={ref.id}>{ref.formula} · COD {ref.id.slice(4)}</option>)}</select></label>
+        <label className="min-w-0 text-sm font-medium">Source structure<select className={control} value={referenceId} onChange={event => { invalidate(); setReferenceId(event.target.value); setRepeats(initialSupercellRepeats(references.find(ref => ref.id === event.target.value)!)); setSites([freshSite()]); }}><StructureReferenceOptions references={references} /></select></label>
         <fieldset className="min-w-0"><legend className="text-sm font-medium">Supercell repeats</legend><div className="grid grid-cols-3 gap-3">{["a", "b", "c"].map((axis, index) => <label className="min-w-0 text-xs text-sage-muted" key={axis}>Along {axis}<input className={control} type="number" min="1" max="4" step="1" value={repeats[index]} onChange={event => { invalidate(); setSites([freshSite()]); setRepeats(repeats.map((value, i) => index === i ? event.target.value : value)); }} /></label>)}</div></fieldset>
       </div>
+      <p className="text-xs leading-5 text-sage-muted">{structureHostContext(references.find(ref => ref.id === referenceId)!).phase}. {occupancyDescription(references.find(ref => ref.id === referenceId)!)} <Link className="site-text-link" href={`/discovery/structures?reference=${referenceId}`}>Inspect source and conditions</Link></p>
       {modelError ? <p role="alert" className="border-l-2 border-accent pl-3 text-sm">{modelError}</p> : <p className="text-sm text-sage-muted">{compositionLabel(compositionOf(model!.atoms))} · {model!.atoms.length} original sites. Choose up to three distinct sites below.</p>}
     </section>
 

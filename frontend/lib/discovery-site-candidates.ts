@@ -36,8 +36,13 @@ export function supercellModel(referenceId: string, repeats: number[]): Supercel
   if (repeats.length !== 3 || repeats.some(value => !Number.isInteger(value) || value < 1 || value > 4)) {
     throw new Error("Each repeat must be an integer from 1 to 4.");
   }
-  if (reference.sites.some(site => site.occupancy.value !== 1 || site.occupancy.raw !== "1")) {
+  if (reference.sites.some(site => site.occupancy.value !== 1 || (site.occupancy.raw === null
+    ? !("basis" in site.occupancy && site.occupancy.basis === "cif_dictionary_default")
+    : !/^1(?:\.0*)?$/.test(site.occupancy.raw)))) {
     throw new Error("This source has partial or uncertain occupancy. An explicit disorder model is required before making ordered site candidates.");
+  }
+  if ("host_context" in reference && reference.host_context?.coincident_site_pairs) {
+    throw new Error("This source has coincident sites. An explicit ordered model is required before making site candidates.");
   }
   const count = repeats.reduce((a, b) => a * b, 1) * reference.display_unit_cell_sites.length;
   if (count > SUPERCELL_ATOM_LIMIT) throw new Error(`This supercell has ${count} sites; the preview limit is ${SUPERCELL_ATOM_LIMIT}. Reduce the repeats.`);
