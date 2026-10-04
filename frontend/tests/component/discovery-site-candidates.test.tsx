@@ -126,6 +126,22 @@ describe("Site candidate workspace", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("disorder model");
   });
 
+  it("rejects injected source selections without retaining stale candidates or changing the source link", async () => {
+    render(<DiscoverySiteCandidates />); chooseMg();
+    fireEvent.click(screen.getByRole("button", { name: "Generate coordinate proposals" }));
+    await screen.findByRole("heading", { name: "3 unrelaxed coordinate proposals" });
+    const select = screen.getByRole("combobox", { name: "Source structure" });
+    for (const value of ["cod-1526507&reference=other", '<img src=x onerror="alert(1)">']) {
+      const option = document.createElement("option"); option.value = value; option.textContent = "Injected option"; select.append(option);
+      fireEvent.change(select, { target: { value } });
+      expect(screen.getByRole("alert")).toHaveTextContent("Choose a captured structure reference.");
+      expect(select).toHaveValue("cod-1526507");
+      expect(screen.getByRole("link", { name: "Inspect source and conditions" })).toHaveAttribute("href", "/discovery/structures?reference=cod-1526507");
+      expect(screen.queryByRole("heading", { name: "3 unrelaxed coordinate proposals" })).not.toBeInTheDocument();
+      option.remove();
+    }
+  });
+
   it("discards delayed preparation after a source edit and reports digest failures", async () => {
     let release: (value: ArrayBuffer) => void = () => {};
     const digest = vi.fn().mockImplementationOnce(() => new Promise<ArrayBuffer>(resolve => { release = resolve; }))

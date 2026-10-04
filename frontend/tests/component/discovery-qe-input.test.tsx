@@ -1,11 +1,12 @@
 import { createHash, webcrypto } from "node:crypto";
+import { runInNewContext } from "node:vm";
 import { act } from "react";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DiscoveryQeInput } from "@/components/DiscoveryQeInput";
 import { generateCombinedCandidates, type CombinedBatch } from "@/lib/discovery-combined-candidates";
 import { supercellModel } from "@/lib/discovery-site-candidates";
-import { inspectQeUpf, prepareQeInput, qeCellVectors, UPF_BYTE_LIMIT, type QeFile, type QeSettings } from "@/lib/discovery-qe-input";
+import { inspectQeUpf, prepareQeInput, qeCellVectors, qeFileSha256, UPF_BYTE_LIMIT, type QeFile, type QeSettings } from "@/lib/discovery-qe-input";
 
 beforeEach(() => vi.stubGlobal("crypto", webcrypto));
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
@@ -21,6 +22,18 @@ const batch = () => { const model = supercellModel("cod-1526507", [2, 2, 2]); re
 const co = (batch: CombinedBatch) => batch.candidates.find(item => item.composition.C)!;
 
 describe("Explicit Quantum ESPRESSO input preparation", () => {
+  it("hashes exact binary views across realms without including surrounding bytes or decoding text", async () => {
+    const files = [new Uint8Array(), Uint8Array.from({ length: 256 }, (_, i) => i),
+      new Uint8Array([99, 0, 255, 128, 13, 10, 77]).subarray(1, 6),
+      runInNewContext("new Uint8Array([99, 0, 255, 128, 13, 10, 77]).subarray(1, 6)") as Uint8Array];
+    for (const bytes of files) {
+      const before = Array.from(bytes);
+      expect(await qeFileSha256(bytes)).toBe(sha(Buffer.from(bytes)));
+      expect(Array.from(bytes)).toEqual(before);
+    }
+    expect(await qeFileSha256(files[3])).toBe("6171db06a1c89b1ff8ab77e479d5df976ccd88a7b63567b4b18f413649e12ff3");
+  });
+
   it("reconstructs the changed geometry and matches species order, valence, units and exact file hashes", async () => {
     const source = await batch(), candidate = co(source), config = settings();
     const result = await prepareQeInput(source, candidate.id, config, files());

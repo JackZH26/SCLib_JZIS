@@ -28,6 +28,14 @@ export function DiscoveryCombinedCandidates({ initialReferenceId }: { initialRef
   const sequence = useRef(0);
   useEffect(() => () => { sequence.current++; }, []);
   const invalidate = () => { sequence.current++; setResult(null); setBusy(false); setError(""); setDownloadStatus(""); setPage(0); setSelectedIndex(0); };
+  const chooseReference = (value: string) => {
+    invalidate();
+    const reference = references.find(item => item.id === value);
+    if (!reference) { setError("Choose a captured structure reference."); return; }
+    setReferenceId(reference.id);
+    setRepeats(initialSupercellRepeats(reference));
+    setSites([freshSite()]);
+  };
   let model: ReturnType<typeof supercellModel> | null = null, modelError = "";
   try { model = supercellModel(referenceId, repeats.map(Number)); } catch (issue) { modelError = issue instanceof Error ? issue.message : "Check the source structure and supercell."; }
   const chosenSites = sites.map(site => ({ ...site, targetId: site.targetId || model?.atoms[0]?.id || "" }));
@@ -66,10 +74,10 @@ export function DiscoveryCombinedCandidates({ initialReferenceId }: { initialRef
     <section className="min-w-0 space-y-4" aria-labelledby="combined-source-title">
       <h2 id="combined-source-title" className="text-xl font-semibold">Source and supercell</h2>
       <div className="grid min-w-0 items-end gap-5 md:grid-cols-2">
-        <label className="min-w-0 text-sm font-medium">Source structure<select className={control} value={referenceId} onChange={event => { invalidate(); setReferenceId(event.target.value); setRepeats(initialSupercellRepeats(references.find(ref => ref.id === event.target.value)!)); setSites([freshSite()]); }}><StructureReferenceOptions references={references} /></select></label>
+        <label className="min-w-0 text-sm font-medium">Source structure<select className={control} value={referenceId} onChange={event => chooseReference(event.target.value)}><StructureReferenceOptions references={references} /></select></label>
         <fieldset className="min-w-0"><legend className="text-sm font-medium">Supercell repeats</legend><div className="grid grid-cols-3 gap-3">{["a", "b", "c"].map((axis, index) => <label className="min-w-0 text-xs text-sage-muted" key={axis}>Along {axis}<input className={control} type="number" min="1" max="4" step="1" value={repeats[index]} onChange={event => { invalidate(); setSites([freshSite()]); setRepeats(repeats.map((value, i) => index === i ? event.target.value : value)); }} /></label>)}</div></fieldset>
       </div>
-      <p className="text-xs leading-5 text-sage-muted">{structureHostContext(references.find(ref => ref.id === referenceId)!).phase}. {occupancyDescription(references.find(ref => ref.id === referenceId)!)} <Link className="site-text-link" href={`/discovery/structures?reference=${referenceId}`}>Inspect source and conditions</Link></p>
+      <p className="text-xs leading-5 text-sage-muted">{structureHostContext(references.find(ref => ref.id === referenceId)!).phase}. {occupancyDescription(references.find(ref => ref.id === referenceId)!)} <Link className="site-text-link" href={`/discovery/structures?reference=${encodeURIComponent(referenceId)}`}>Inspect source and conditions</Link></p>
       {modelError ? <p role="alert" className="border-l-2 border-accent pl-3 text-sm">{modelError}</p> : <p className="text-sm text-sage-muted">{compositionLabel(compositionOf(model!.atoms))} · {model!.atoms.length} original sites. Choose up to three distinct sites below.</p>}
     </section>
 

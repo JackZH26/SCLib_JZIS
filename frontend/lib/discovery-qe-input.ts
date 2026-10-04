@@ -19,7 +19,8 @@ function finite(value: number, min: number, max: number, label: string, integer 
   return value;
 }
 const num = (value: number) => Object.is(value, -0) || Math.abs(value) < 1e-15 ? "0" : Number(value.toPrecision(15)).toString();
-export const qeFileSha256 = async (bytes: Uint8Array) => Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new Uint8Array(bytes).buffer))).map(value => value.toString(16).padStart(2, "0")).join("");
+// Pass an owned byte view: older WebCrypto runtimes reject cross-realm ArrayBuffers.
+export const qeFileSha256 = async (bytes: Uint8Array) => Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new Uint8Array(bytes)))).map(value => value.toString(16).padStart(2, "0")).join("");
 
 /** Inspect exact local UPF bytes. This is a format/scope check, not a pseudopotential validation. */
 export async function inspectQeUpf(file: QeFile) {

@@ -64,6 +64,21 @@ describe("Complete Organic source reference reader", () => {
     for (const search of ["q=a&q=b", "__proto__=x&__proto__=y", "field=bad"]) expect(GET(new Request(`https://example.test/export?${search}`)).status).toBe(400);
   });
 
+  it("rejects unknown export keys before accepting filters and preserves repeated-value rejection", async () => {
+    for (const key of ["__proto__", "constructor", "prototype", "toString", "extra", "q[0]"]) {
+      const response = GET(new Request(`https://example.test/export?structure=TMTSF&${encodeURIComponent(key)}=x`));
+      expect(response.status).toBe(400);
+      expect(await response.json()).toEqual({ error: "Invalid Organic source filters. Clear the filters and try again." });
+      expect(response.headers.get("Content-Disposition")).toBeNull();
+    }
+    for (const key of ["q", "structure", "field", "row", "page"]) {
+      expect(GET(new Request(`https://example.test/export?${key}=&${key}=`)).status).toBe(400);
+    }
+    const response = GET(new Request("https://example.test/export?q=&structure=TMTSF&field=tc&row=54&page=0"));
+    expect(response.status).toBe(200);
+    expect(await response.text()).toBe(organicExport({ q: "", structure: "TMTSF", field: "tc", row: "54", page: "0" }));
+  });
+
   it("renders useful source distinctions without adding K or GPa to unspecified units", () => {
     render(<OrganicReferenceBrowser params={{ row: "3" }} />);
     const table = screen.getByRole("table");
