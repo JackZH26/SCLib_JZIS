@@ -1,6 +1,7 @@
 """0079–0081 owned migration round trips and independent history guards."""
 
 from test_safety import validate_test_environment, verify_postgres_identity
+from migration_discovery_designs import TABLES as DISCOVERY_DESIGN_TABLES
 from migration_source_properties import TABLES as SOURCE_PROPERTY_TABLES
 from migration_source_properties import assert_empty as assert_empty_source_properties
 
@@ -30,7 +31,7 @@ def snapshot(connection, old_only=False):
         .scalars()
         .all()
         for name in inspect(connection).get_table_names(schema="public")
-        if name != "alembic_version" and (not old_only or name not in {*TABLES, *SOURCE_PROPERTY_TABLES})
+        if name != "alembic_version" and (not old_only or name not in {*TABLES, *SOURCE_PROPERTY_TABLES, *DISCOVERY_DESIGN_TABLES})
     }
 
 

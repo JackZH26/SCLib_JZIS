@@ -73,6 +73,32 @@ export function sourceExpressionOutcome(requestKey: string, requestSha: string, 
 }
 
 // Private field cases: reads are bounded; unknown writes recover with the original GET identity.
+export function discoveryDesignCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-designs/capabilities", { cache: "no-store", signal, responseByteLimit: 16384 });
+}
+export function discoveryDesignContext(kind: import("./discovery-designs").DesignBaseline["kind"], materialId: string, recordIndex: number | null, propertyId: string | null, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ kind });
+  if (materialId) query.set("material_id", materialId);
+  if (recordIndex !== null) query.set("record_index", String(recordIndex));
+  if (propertyId !== null) query.set("property_id", propertyId);
+  return request(`/research/discovery-designs/context?${query}`, { cache: "no-store", signal, responseByteLimit: 131072 });
+}
+export function discoveryDesignPreview(body: import("./discovery-designs").DesignRequest, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-designs/operations/preview", { method: "POST", body: JSON.stringify({ request: body }), cache: "no-store", signal, responseByteLimit: 256 * 1024 });
+}
+export function discoveryDesignCommit(body: import("./discovery-designs").DesignRequest, previewSha: string, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-designs/operations/commit", { method: "POST", body: JSON.stringify({ request: body, expected_preview_sha256: previewSha }), cache: "no-store", signal, responseByteLimit: 256 * 1024 });
+}
+export function discoveryDesignOutcome(requestKey: string, requestSha: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-designs/operations/outcome?${new URLSearchParams({ request_key: requestKey, expected_request_sha256: requestSha })}`, { cache: "no-store", signal, responseByteLimit: 256 * 1024 });
+}
+export function discoveryDesignPage(offset = 0, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-designs/designs?${new URLSearchParams({ offset: String(offset), limit: "8" })}`, { cache: "no-store", signal, responseByteLimit: 1024 * 1024 });
+}
+export function discoveryDesignDetail(designId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-designs/designs/${encodeURIComponent(designId)}`, { cache: "no-store", signal, responseByteLimit: 1024 * 1024 });
+}
+
 export function materialFieldCaseCapabilities(signal?: AbortSignal): Promise<unknown> {
   return request("/research/material-field-cases/capabilities", { cache: "no-store", signal, responseByteLimit: 16384 });
 }
@@ -1491,6 +1517,7 @@ export interface MaterialEnrichmentCoverage {
   fields: Array<{ field: string; status: string; retained_present: boolean; candidate_count: number; reason_codes: string[]; routes: string[]; classification_review_finding_count?: number }>;
 }
 export interface MaterialEnrichmentReport {
+  record_coverage?: MaterialRecordCoverage;
   extractor_version?: string;
   input_sha256?: string;
   report_sha256?: string;
@@ -1508,6 +1535,23 @@ export interface MaterialEnrichmentReport {
   counts: Record<string, unknown>;
   scientific_acceptance: false;
   database_changed: false;
+}
+export interface MaterialRecordCoverage {
+  version: "materials-record-field-coverage/1.0.0";
+  material_id: string;
+  records_total: number;
+  records_inspected: number;
+  records_unchecked: number;
+  records_limit: 32;
+  record_denominator: "current_eligible_retained_records";
+  records: Array<{ record_offset: number; result_id: string; record_sha256: string; paper_id: string | null; knowledge_origin: string; classification_status: string; fields: Array<{ field: string; status: "present" | "missing" | "not_applicable"; reason_codes: string[] }> }>;
+  fields: Array<{ field: string; counts: { present: number; missing: number; unchecked: number; not_applicable: number }; applicability_unknown: number }>;
+  limitations: string[];
+  scientific_acceptance: false;
+  database_changed: false;
+  ml_training_approved: false;
+  public_release: false;
+  coverage_sha256: string;
 }
 export function getMaterialEnrichment(id: string, signal?: AbortSignal) {
   return request<MaterialEnrichmentReport>(`/materials/${encodeURIComponent(id)}/enrichment`, { signal, cache: "no-store", responseByteLimit: 2 * 1024 * 1024 });

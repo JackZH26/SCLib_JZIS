@@ -13,7 +13,8 @@ from sqlalchemy import and_, func, or_, select
 from models.db import Chunk, Paper
 from services.claim_support import is_derived_source_hint
 from services.material_enrichment import (
-    EnrichmentError, bounded_source_rows, build_enrichment_report, digest, validate_source,
+    EnrichmentError, bounded_source_rows, build_enrichment_report, build_record_field_coverage,
+    digest, validate_source,
 )
 from services.rag_evidence import resolve_chunk_evidence
 
@@ -102,7 +103,7 @@ def _sample_records(records, *, indexed_paper_ids=None):
     return selected, source_ids, paper_ids, scope
 
 
-def _compile_recovery_report(payload, sources, coverage, scope):
+def _compile_recovery_report(payload, sources, coverage, scope, *, record_offsets=None):
     """All synchronous parsing, hashing and public projection run in a worker."""
     usable_sources = []
     for source in sources:
@@ -160,16 +161,26 @@ def _compile_recovery_report(payload, sources, coverage, scope):
                                  review_findings_omitted=len(findings) - len(report["classification_review_findings"]))
     report.pop("report_sha256", None)
     report["report_sha256"] = digest(report)
+    if record_offsets is not None:
+        # Add after sealing the existing report. The route removes this
+        # independent DTO while source seeds reseal their existing identities.
+        report["record_coverage"] = build_record_field_coverage(
+            payload["id"], payload["records"], records_total=scope["records_total"],
+            record_offsets=record_offsets,
+        )
     return report
 
 
-async def _bounded_compile(payload, sources, coverage, scope):
+async def _bounded_compile(payload, sources, coverage, scope, *, record_offsets=None):
     """A cancelled request cannot release a CPU slot before its thread finishes."""
     loop = asyncio.get_running_loop()
     semaphore = _WORKER_LIMITS.setdefault(loop, asyncio.Semaphore(MAX_CPU_WORKERS))
     await semaphore.acquire()
     try:
-        task = asyncio.create_task(asyncio.to_thread(_compile_recovery_report, payload, sources, coverage, scope))
+        options = {"record_offsets": record_offsets} if record_offsets is not None else {}
+        task = asyncio.create_task(asyncio.to_thread(
+            _compile_recovery_report, payload, sources, coverage, scope, **options,
+        ))
     except BaseException:
         semaphore.release()
         raise
@@ -203,7 +214,7 @@ def _chunk_quotas(paper_ids, available):
     return quotas
 
 
-async def read_material_enrichment(db, material) -> dict:
+async def read_material_enrichment(db, material, *, include_record_coverage=False) -> dict:
     records = material.current_records()
     # Source lifecycle partition precedes retrieval; an excluded occurrence
     # cannot supply facts through enrichment. Always use exact linked papers.
@@ -357,4 +368,12 @@ async def read_material_enrichment(db, material) -> dict:
             row["reason_codes"].extend(row["excluded_chunk_reasons"])
         scope.update(chunks_considered=sum(row["chunks_considered"] for row in coverage.values()),
                      chunks_inspected=len(selected), characters_inspected=sum(len(chunk.text) for chunk in selected))
-    return await _bounded_compile(payload, sources, coverage, scope)
+    record_offsets = None
+    if include_record_coverage:
+        # Sampling keeps original objects. Occurrence offsets distinguish even
+        # repeated identical records without hashing the omitted inventory.
+        positions = defaultdict(list)
+        for offset, record in enumerate(records):
+            positions[id(record)].append(offset)
+        record_offsets = [positions[id(record)].pop(0) for record in selected_records]
+    return await _bounded_compile(payload, sources, coverage, scope, record_offsets=record_offsets)

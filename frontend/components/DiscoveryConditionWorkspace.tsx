@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import Link from "@/components/AppLink";
 import { AVAILABILITY_LABELS, SCIENTIFIC_FIELDS, scientificQuantity, type ScientificMaterial, type ScientificReceipt } from "@/lib/discovery-scientific";
 import { CONDITION_STAGES, CONDITION_DESIGN_MAX_MODIFICATIONS, MODIFICATION_KINDS, PAIRING_ROUTES,
   conditionDesignPublication, createConditionDesignPlan, initialConditionDesign, type ConditionDesignInput, type ConditionDesignPlan, type ModificationKind, type PairingRoute } from "@/lib/discovery-condition-design";
@@ -73,6 +74,7 @@ function WorkspaceContent({ row: sourceRow = null, receipt: sourceReceipt = null
       <h2 id="condition-workspace-heading" className="text-xl font-semibold tracking-tight">Design superconducting conditions</h2>
       <p className="max-w-3xl text-sm leading-6 text-sage-muted">Study the host, electronic activation, pairing and coherence. Define a hypothesis and the next calculation or experiment.</p>
       <p className="text-sm font-medium text-accent">Host → Modification → State → Conditions</p>
+      <Link className="inline-block text-sm text-accent-deep underline underline-offset-4" href="/dashboard/research/discovery-designs">Open private research-design history</Link>
     </header>
     {row ? <div className="space-y-2 rounded-lg bg-sage-surface p-3 text-sm" role="note">
       <p><strong>Selected source:</strong> {row.assessment.formula} · {row.assessment.state_summary}</p>

@@ -1,4 +1,5 @@
 import type { MaterialEnrichmentReport, MaterialSourceCoverage } from "@/lib/api";
+import { projectRecordCoverage } from "./material-record-coverage";
 
 type ObjectRow = Record<string, unknown>;
 const object = (value: unknown): ObjectRow => value != null && typeof value === "object" && !Array.isArray(value) ? value as ObjectRow : {};
@@ -152,6 +153,7 @@ export function materialRecoveryMetadata(report: MaterialEnrichmentReport, mater
     classification_primary_source_seed: pick(object(report).classification_primary_source_seed, ["status", "seed_id", "seed_sha256", "candidate_facts_added"]),
     inspection_scope: pick(report.inspection_scope, ["version", "records_total", "records_inspected", "records_truncated", "records_limit", "raw_retained_records_total", "current_eligible_records_total", "papers_total", "papers_inspected", "papers_truncated", "papers_limit", "papers_with_bounded_indexed_chunks", "record_sampling", "paper_sampling", "chunks_considered", "chunks_inspected", "chunks_limit", "characters_inspected", "characters_limit", "chunk_sampling"]),
     source_coverage: projectSourceCoverage(coverage.source_coverage),
+    record_coverage: projectRecordCoverage(report.record_coverage, materialId),
     coverage: coverage.fields.map(row => ({ ...pick(row, ["field", "status", "retained_present", "candidate_count", "classification_review_finding_count"]), reason_codes: codes(row.reason_codes), routes: codes(row.routes) })),
     counts: pick(report.counts, COUNT_KEYS), classification_counts: pick(report.classification_counts, COUNT_KEYS),
     returned_window: { literal_received: report.candidates.length, literal_exported: literals.length, literal_truncated: report.candidates_truncated === true, classification_received: report.classification_candidates?.length ?? 0, classification_exported: statements.length, classification_truncated: report.classification_candidates_truncated === true, review_findings_truncated: report.classification_review_findings_truncated === true, rejected_candidate_count: report.candidates.length + (report.classification_candidates?.length ?? 0) - literals.length - statements.length },

@@ -1777,6 +1777,10 @@ from models.material_field_cases_v1 import register as _register_material_field_
 
 MATERIAL_FIELD_CASES = _register_material_field_cases(Base.metadata)
 
+from models.discovery_design_v1 import register as _register_discovery_designs  # noqa: E402
+
+DISCOVERY_DESIGNS = _register_discovery_designs(Base.metadata)
+
 from models.material_field_review_v1 import (  # noqa: E402
     register as _register_material_field_review,
 )

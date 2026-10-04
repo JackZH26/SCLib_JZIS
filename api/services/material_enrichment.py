@@ -20,6 +20,7 @@ from typing import Any
 
 from services.claim_support import is_derived_source_hint
 from services.property_evidence import legacy_result_id
+from services.result_semantics import classify_result
 from services.scientific_values import FIELD_UNITS, parse_scientific_value, record_quantity
 
 VERSION = "materials-enrichment/1.0.0"
@@ -28,6 +29,9 @@ MAX_MATERIALS = 1000
 MAX_SOURCES = 10000
 MAX_SOURCE_CHARS = 200000
 MAX_CANDIDATES = 20000
+RECORD_COVERAGE_VERSION = "materials-record-field-coverage/1.0.0"
+MAX_RECORD_COVERAGE_RECORDS = 32
+MAX_RECORD_COVERAGE_TOTAL = 1_000_000
 AUTHORITY = {"scientific_acceptance": False, "ml_training_approved": False,
              "public_release": False, "database_changed": False}
 SOURCE_KINDS = {"original_passage", "abstract", "table", "fulltext", "legacy_unknown"}
@@ -1023,6 +1027,82 @@ def _present(record, field):
     aliases = {"tc_criterion": ("tc_criterion", "tc_definition", "tc_type")}
     return any(raw.get(key) is not None and str(raw[key]).strip().lower() not in {"", "unknown", "none", "n/a", "not_reported"}
                for key in aliases.get(field, (field,)))
+
+
+def build_record_field_coverage(material_id, records, *, records_total=None, record_offsets=None):
+    """Describe retained values in an exact bounded subset, without source claims.
+
+    This independently hashed DTO is intentionally outside enrichment report
+    and candidate identities. Missing means no retained value, not absence in
+    a paper. Uninspected occurrences remain unchecked even if another record
+    supplies the same field. Opposite method roles are excluded only for a
+    missing value with an unambiguous, resolved result origin.
+    """
+    if not _identifier(material_id, 100) or "\x7f" in material_id:
+        raise EnrichmentError("record_coverage_material_id_invalid")
+    if (type(records) is not list or len(records) > MAX_RECORD_COVERAGE_RECORDS
+            or any(not isinstance(record, Mapping) for record in records)):
+        raise EnrichmentError("record_coverage_records_invalid")
+    total = len(records) if records_total is None else records_total
+    if type(total) is not int or not len(records) <= total <= MAX_RECORD_COVERAGE_TOTAL:
+        raise EnrichmentError("record_coverage_total_invalid")
+    offsets = list(range(len(records))) if record_offsets is None else record_offsets
+    if (type(offsets) is not list or len(offsets) != len(records)
+            or any(type(offset) is not int or not 0 <= offset < total for offset in offsets)
+            or len(set(offsets)) != len(offsets)):
+        raise EnrichmentError("record_coverage_offsets_invalid")
+    unchecked = total - len(records)
+    # The legacy route registry includes set-derived insertion order. Give the
+    # independent DTO a stable order without changing existing report hashes.
+    fields = tuple(sorted(FIELD_ROUTES))
+    field_counts = {field: {"present": 0, "missing": 0, "unchecked": unchecked,
+                            "not_applicable": 0} for field in fields}
+    unknown_applicability = dict.fromkeys(fields, 0)
+    rows = []
+    for offset, record in zip(offsets, records):
+        origin = classify_result(record)
+        resolved = origin.classification_status == "resolved" and origin.source_role != "conflicted"
+        values = []
+        for field in fields:
+            # Preserve actual retained role values before applying an exclusion.
+            if _present(record, field):
+                status = "present"
+                reasons = ["retained_value_not_independent_source_or_state_review"]
+            elif (resolved and ((field == "measurement_method" and origin.knowledge_origin == "Computed")
+                               or (field == "calculation_method" and origin.knowledge_origin == "Observed"))):
+                status = "not_applicable"
+                reasons = ["resolved_computed_result_has_no_retained_measurement_method"
+                           if field == "measurement_method" else
+                           "resolved_observed_result_has_no_retained_calculation_method"]
+            else:
+                status = "missing"
+                reasons = ["no_retained_value_in_inspected_record"]
+                if (field in {"measurement_method", "calculation_method"}
+                        and (not resolved or origin.knowledge_origin not in {"Observed", "Computed"})):
+                    unknown_applicability[field] += 1
+                    reasons.append("method_role_applicability_unresolved")
+            field_counts[field][status] += 1
+            values.append({"field": field, "status": status, "reason_codes": reasons})
+        paper_id = record.get("paper_id")
+        rows.append({"record_offset": offset, "result_id": legacy_result_id(record, scope_id=material_id),
+                     "record_sha256": digest(record),
+                     "paper_id": paper_id if _identifier(paper_id, 100) and "\x7f" not in paper_id else None,
+                     "knowledge_origin": origin.knowledge_origin,
+                     "classification_status": origin.classification_status,
+                     "fields": values})
+    result = {"version": RECORD_COVERAGE_VERSION, "material_id": material_id,
+              "record_denominator": "current_eligible_retained_records",
+              "records_total": total, "records_inspected": len(records),
+              "records_unchecked": unchecked, "records_limit": MAX_RECORD_COVERAGE_RECORDS,
+              "records": rows,
+              "fields": [{"field": field, "counts": field_counts[field],
+                          "applicability_unknown": unknown_applicability[field]} for field in fields],
+              "limitations": ["retained_value_presence_is_not_scientific_acceptance",
+                              "missing_retained_value_is_not_source_absence",
+                              "unchecked_records_have_no_field_or_applicability_assessment",
+                              "method_role_exclusions_do_not_assert_a_joint_sample_or_run"], **AUTHORITY}
+    result["coverage_sha256"] = digest(result)
+    return result
 
 
 def _deduplicate_source_facts(candidates):

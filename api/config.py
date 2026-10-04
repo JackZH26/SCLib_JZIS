@@ -38,6 +38,7 @@ class Settings(BaseSettings):
     mp_api_key: str = ""
     # Private, separately authorized pending source-expression ledger.
     source_property_pending_enabled: bool = False
+    discovery_designs_enabled: bool = False
 
     # === Auth ===
     jwt_secret: str = Field(..., min_length=32)
