@@ -100,6 +100,7 @@ export function propertyStatus(envelope: MaterialPropertyEvidence | undefined, f
   if (!hasPropertyContract(envelope)) return "Source unavailable";
   const status = envelope?.properties?.[field]?.status;
   if (envelope?.properties?.[field]?.warnings?.includes("anomaly_review_required")) return "Anomaly review required";
+  if (status === "untraceable") return "Selection unresolved";
   return status === "pending" ? "Selection pending" : status === "not_reported" ? "Not reported" : "Source unavailable";
 }
 

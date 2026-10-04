@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { AtomicEvidenceDetails, JointEpcNotice, PropertyEvidenceValue } from "@/components/PropertyEvidence";
 import { MaterialTable } from "@/components/MaterialTable";
 import type { MaterialSummary } from "@/lib/api";
-import { propertyJsonLd, propertyValue, selectedProperty, sourceHref, supportedPropertyDescription } from "@/lib/property-evidence";
+import { propertyJsonLd, propertyStatus, propertyValue, selectedProperty, sourceHref, supportedPropertyDescription } from "@/lib/property-evidence";
 import { atomicItem, propertyEnvelope } from "../fixtures/property-evidence";
 
 describe("atomic property evidence", () => {
@@ -80,6 +80,28 @@ describe("atomic property evidence", () => {
     expect(screen.getByText("Source unavailable")).toBeInTheDocument();
     expect(screen.getByText(item.result_id)).toBeInTheDocument();
     expect(screen.queryByText("20 K")).not.toBeInTheDocument();
+  });
+
+  it("distinguishes an unresolved selection from an unavailable source while retaining an unknown-origin result", () => {
+    const retained = atomicItem("tc_max", 11.9, {
+      result_id: "synthetic-result:unresolved-origin",
+      origin: { knowledge_origin: "Unknown", classification_status: "unknown", source_role: "primary" },
+    });
+    const envelope = propertyEnvelope(retained);
+    envelope.properties.tc_max = { ...envelope.properties.tc_max, status: "untraceable", selection: "none", selected: null,
+      evidence: [retained], warnings: ["legacy_origin_pool_untraceable", "legacy_summary_has_no_exact_source_support"] };
+    render(<PropertyEvidenceValue evidence={envelope} field="tc_max" />);
+    expect(propertyStatus(envelope, "tc_max")).toBe("Selection unresolved");
+    expect(screen.getByText("Selection unresolved")).toBeInTheDocument();
+    expect(screen.getByText("Retained result available; origin or selection remains unresolved.")).toBeInTheDocument();
+    expect(screen.getByText("Retained source results (1)")).toBeInTheDocument();
+    expect(screen.getByText("11.9 K · record origin: Unknown · not the headline selection")).toBeInTheDocument();
+    expect(screen.queryByText("Source unavailable")).not.toBeInTheDocument();
+    expect(screen.queryByText("Record: Observed")).not.toBeInTheDocument();
+    expect(selectedProperty(envelope, "tc_max")).toBeNull();
+    expect(propertyJsonLd(envelope, "tc_max")).toBeNull();
+    expect(supportedPropertyDescription(envelope, "tc_max")).toBeNull();
+    expect(retained.value).toBe(11.9);
   });
 
   it("shows only the selected lattice subset, with full same-result structure as context", () => {

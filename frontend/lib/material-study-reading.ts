@@ -1,4 +1,4 @@
-/** Related paper readings for three inspected result identities; no property overlay. */
+/** Related paper readings for inspected result identities; no property overlay. */
 const readings = [
   {
     materialId: "mat:bitecl",
@@ -23,6 +23,22 @@ const readings = [
     href: "/materials/source-observations/followup#study-context-pt-calorimetry-attribution",
     label: "Transition methods and XRD composition",
     note: "The paper caption attributes 23 K to resistivity and magnetic susceptibility. Its calorimetry feature is described separately, around 20 K and below 21 K.",
+  },
+  {
+    materialId: "mat:fe1te0.52se0.48",
+    resultId: "legacy-result:17c34bd20d1efd2f3d2cae898af035089b6e0e53a04489f96bfd6c10c000478a",
+    paperId: "arxiv:0911.4758",
+    href: "/materials/source-observations/paper-contexts#paper-context-fete",
+    label: "Composition, probes and unresolved pairing",
+    note: "The series includes x = 0.48. Its NMR-based pairing discussion concerns other compositions; the captured reading establishes no pairing assignment for the selected 12 K result.",
+  },
+  {
+    materialId: "mat:la4ni3o9.99",
+    resultId: "legacy-result:575b0f079349106ca62b042e5602c02142d387af0c99ff57d14fe40bc0530d9a",
+    paperId: "aps:10.1103/PhysRevB.109.144511",
+    href: "/materials/source-observations/paper-contexts#paper-context-nickelate",
+    label: "Resistance protocol and calculated model",
+    note: "The paper defines its resistance onset and pressure protocol. Its tetragonal structure and pairing predictions concern a separate stoichiometric model.",
   },
 ] as const;
 
