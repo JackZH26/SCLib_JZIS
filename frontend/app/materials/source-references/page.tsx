@@ -42,6 +42,7 @@ export default function MaterialsSourceReferencesPage() {
 
     <section aria-labelledby="cif-title" className="space-y-3">
       <h2 id="cif-title" className="text-xl font-semibold">Independent crystallographic references</h2>
+      <p className="text-sm"><Link className="site-text-link inline-flex min-h-11 items-center" href="/discovery/structures">Inspect atomic coordinates and try a lattice proposal</Link></p>
       <p className="max-w-3xl text-sm leading-6 text-sage-muted">Conditions below belong to each CIF. They do not supply the pressure or temperature of a superconducting transition, or establish that a catalogue result used this structure.</p>
       <p className="max-w-3xl text-xs leading-5 text-sage-muted">MgB₂ and FeSe were in the disputed or archive catalogue partition in the checked historical snapshot. These independent COD references do not establish catalogue associations or release held records.</p>
       <div className="divide-y divide-sage-border border-y border-sage-border">

@@ -54,6 +54,7 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
         <p className="max-w-3xl text-base leading-6">Design the conditions for superconductivity, then choose the next calculation or experiment.</p>
         <p className="text-sm text-sage-muted">Research target: approximately 300 K at 1 atm.</p>
         <nav aria-label="Discovery research workflow" className="flex flex-wrap gap-x-5 gap-y-3 text-sm">
+          <Link href="/discovery/structures" className="min-h-11 content-center text-accent underline underline-offset-4">Inspect structure coordinates</Link>
           <a href="#discovery-evidence" className="min-h-11 content-center text-accent underline underline-offset-4">Inspect state evidence</a>
           <a href="#discovery-source-comparisons" className="min-h-11 content-center text-accent underline underline-offset-4">Compare reported modifications</a>
           <a href="#discovery-pressure-response" className="min-h-11 content-center text-accent underline underline-offset-4">Compare pressure reports</a>
