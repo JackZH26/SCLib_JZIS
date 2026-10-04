@@ -86,12 +86,13 @@ export function PropertyEvidenceValue({ evidence, field, compact = false, includ
     </summary>
     {item ? <AtomicEvidenceDetails item={item} /> : <>
       <p className="mt-2 max-w-sm text-left text-xs font-normal text-slate-500">{propertyStatus(evidence, field)}. A legacy catalogue value is not substituted without its contributing result.</p>
+      {entry?.status === "untraceable" && candidates.length > 0 && <p className="mt-2 max-w-sm text-left text-xs font-normal text-slate-500">Retained result available; origin or selection remains unresolved.</p>}
       {entry?.selected?.property === field && <AtomicEvidenceDetails item={entry.selected} />}
     </>}
     {entry && <p className="mt-2 max-w-sm text-left text-xs font-normal text-slate-500">Selection: {entry.selection.replaceAll("_", " ")}{entry.statistic ? ` · ${entry.statistic.replaceAll("_", " ")}` : ""}. Catalogue property only, not a joint observation.</p>}
     {entry?.warnings?.length ? <p className="mt-2 max-w-sm text-left text-xs font-normal text-amber-800">Notes: {entry.warnings.map(code => code.replaceAll("_", " ")).join(" · ")}</p> : null}
     {candidates.length > 0 && <details className="mt-2 text-left text-xs font-normal">
-      <summary className="cursor-pointer text-slate-600">Other source results ({candidates.length})</summary>
+      <summary className="cursor-pointer text-slate-600">{item ? "Other source results" : "Retained source results"} ({candidates.length})</summary>
       <p className="mt-2 text-slate-500">These are retained proposals, not public-eligible headline selections. Some may require anomaly review; numerical display does not approve them for scientific use.</p>
       <ul className="mt-2 space-y-3">{candidates.map((candidate, index) => <li key={`${candidate.result_id}:${index}`} className="border-t border-slate-200 pt-2">
         <p className="font-medium">{propertyValue(candidate)} · record origin: {propertyOrigin(candidate)} · not the headline selection</p>
