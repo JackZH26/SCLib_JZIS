@@ -77,7 +77,8 @@ describe("Pressure and table researcher view", () => {
       expect(link).not.toHaveAttribute("target"); expect(link).not.toHaveAttribute("onclick");
     }
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
-    expect(document.querySelectorAll("a[download]")).toHaveLength(2);
+    expect(document.querySelectorAll("a[download]")).toHaveLength(4);
+    expect(screen.getByRole("link", { name: "Download study context (JSON)" })).toHaveAttribute("download");
   });
   it("shows an English unavailable state for an absent metadata batch", () => {
     render(<MaterialPressureTableSources batch={null} />);

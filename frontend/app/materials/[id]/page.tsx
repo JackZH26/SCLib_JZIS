@@ -40,6 +40,7 @@ import { ExternalStructureReferences } from "@/components/ExternalStructureRefer
 import { ExternalCalculationReferences } from "@/components/ExternalCalculationReferences";
 import { ExternalSuperconReferences } from "@/components/ExternalSuperconReferences";
 import { MaterialProviderAvailabilityProvider } from "@/components/MaterialProviderAvailability";
+import { materialStudyReading } from "@/lib/material-study-reading";
 
 export const dynamic = "force-dynamic";
 
@@ -203,6 +204,15 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
         <Fact label="Catalogue year" value={String(mat.arxiv_year ?? "—")} />
         <Fact label="Source links · not replications" value={materialSourceCountLabel(mat.material_semantics, mat.total_papers)} />
       </section>
+      {catalogueReadEligible && (() => {
+        const reading = materialStudyReading(mat.id, selectedProperty(mat.property_evidence, "tc_max"));
+        return reading ? <aside className="min-w-0 rounded-lg border border-sage-border bg-sage-surface p-4" aria-label="Related paper context">
+          <h2 className="text-sm font-semibold">Related paper context</h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6">{reading.note}</p>
+          <a href={reading.href} className="site-text-link mt-2 inline-block text-sm">{reading.label}</a>
+          <p className="mt-2 text-xs leading-5 text-sage-muted">Captured paper reading; selected catalogue values remain separate.</p>
+        </aside> : null;
+      })()}
       <details className="rounded-lg border border-sage-border bg-white p-4"><summary className="cursor-pointer text-sm font-medium">Reported classifications and mechanism evidence</summary><div className="mt-4"><MaterialSemanticsPanel semantics={mat.material_semantics} /></div></details>
       {(selectedProperty(mat.property_evidence, "tc_max_experimental") || selectedProperty(mat.property_evidence, "tc_max_theoretical")) && (
         <section className="-mt-2 grid grid-cols-2 gap-4 md:grid-cols-4">
