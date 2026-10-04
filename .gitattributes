@@ -1,0 +1,3 @@
+# Captured scientific source bytes are hash-pinned; preserve provider line endings
+# and trailing spaces, including diffraction blocks and provenance comments.
+frontend/public/research-pilots/structure-cifs/*.cif -text -whitespace

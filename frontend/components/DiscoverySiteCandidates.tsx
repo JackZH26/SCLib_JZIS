@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { fractionalToCartesian, latticeBasis, structureReferences, type Vector3 } from "@/lib/discovery-structures";
+import Link from "next/link";
+import { StructureReferenceOptions } from "@/components/StructureReferenceOptions";
+import { initialSupercellRepeats, occupancyDescription, structureHostContext, fractionalToCartesian, latticeBasis, structureReferences, type Vector3 } from "@/lib/discovery-structures";
 import { compositionLabel, compositionOf, coordinateSha256, generateSiteCandidates, siteOperations, supercellModel,
   type SiteCandidate, type SiteCandidateBatch } from "@/lib/discovery-site-candidates";
 
@@ -36,10 +38,10 @@ function SiteFigure({ batch, candidate }: { batch: SiteCandidateBatch; candidate
 
 type Generated = { batch: SiteCandidateBatch; json: string; sha256: string };
 
-export function DiscoverySiteCandidates() {
+export function DiscoverySiteCandidates({ initialReferenceId }: { initialReferenceId?: string }) {
   const [references] = useState(structureReferences);
-  const [referenceId, setReferenceId] = useState(references[0].id);
-  const [repeats, setRepeats] = useState(["2", "2", "2"]);
+  const [referenceId, setReferenceId] = useState(initialReferenceId ?? references[0].id);
+  const [repeats, setRepeats] = useState(() => initialSupercellRepeats(references.find(ref => ref.id === (initialReferenceId ?? references[0].id))!));
   const [targetId, setTargetId] = useState("");
   const [replacements, setReplacements] = useState("");
   const [vacancy, setVacancy] = useState(false);
@@ -89,9 +91,10 @@ export function DiscoverySiteCandidates() {
     <section aria-labelledby="candidate-input-title" className="min-w-0 space-y-5">
       <h2 id="candidate-input-title" className="text-xl font-semibold">Choose a source and one atomic site</h2>
       <div className="grid min-w-0 items-end gap-5 md:grid-cols-2">
-        <label className="min-w-0 text-sm font-medium">Source structure<select className={control} value={referenceId} onChange={event => { invalidate(); setReferenceId(event.target.value); setTargetId(""); }}>{references.map(ref => <option key={ref.id} value={ref.id}>{ref.formula} · COD {ref.id.slice(4)}</option>)}</select></label>
+        <label className="min-w-0 text-sm font-medium">Source structure<select className={control} value={referenceId} onChange={event => { invalidate(); setReferenceId(event.target.value); setRepeats(initialSupercellRepeats(references.find(ref => ref.id === event.target.value)!)); setTargetId(""); }}><StructureReferenceOptions references={references} /></select></label>
         <fieldset className="min-w-0"><legend className="text-sm font-medium">Supercell repeats</legend><div className="grid grid-cols-3 gap-3">{["a", "b", "c"].map((axis, index) => <label key={axis} className="text-xs text-sage-muted">Along {axis}<input className={control} type="number" min="1" max="4" step="1" value={repeats[index]} onChange={event => { invalidate(); setTargetId(""); setRepeats(repeats.map((value, i) => i === index ? event.target.value : value)); }} /></label>)}</div></fieldset>
       </div>
+      <p className="text-xs leading-5 text-sage-muted">{structureHostContext(references.find(ref => ref.id === referenceId)!).phase}. {occupancyDescription(references.find(ref => ref.id === referenceId)!)} <Link className="site-text-link" href={`/discovery/structures?reference=${referenceId}`}>Inspect source and conditions</Link></p>
       {modelError ? <p role="alert" className="border-l-2 border-accent pl-3 text-sm leading-6">{modelError}</p> : <>
         <p className="text-sm text-sage-muted">{model!.atoms.length} original atom sites · {compositionLabel(compositionOf(model!.atoms))} per supercell. Source sites use the captured 0.001 Å symmetry merge tolerance.</p>
         <label className="block text-sm font-medium">Atomic site to modify<select className={control} value={target?.id ?? ""} onChange={event => { invalidate(); setTargetId(event.target.value); }}>{model!.atoms.map(atom => <option key={atom.id} value={atom.id}>{atom.label}: {atom.element} · {atom.source_site_label} · cell [{atom.cell_translation.join(", ")}] · image {atom.source_expanded_index + 1}</option>)}</select></label>

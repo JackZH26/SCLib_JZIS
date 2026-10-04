@@ -31,14 +31,14 @@ describe("Source coordinate references and uniform lattice proposals", () => {
     expect(createHash("sha256").update(bytes).digest("hex")).toBe(structureCoordinatesSha256);
     expect(readFileSync(`public/research-pilots/${structureCoordinatesFilename}.sha256`, "utf8")).toBe(`${structureCoordinatesSha256}  ${structureCoordinatesFilename}\n`);
     const references = structureReferences();
-    expect(references.map(item => item.display_unit_cell_sites.length)).toEqual([3, 3, 4]);
-    expect(references.map(item => item.declared_symmetry_operations.length)).toEqual([24, 24, 16]);
+    expect(references.slice(0, 3).map(item => item.display_unit_cell_sites.length)).toEqual([3, 3, 4]);
+    expect(references.slice(0, 3).map(item => item.declared_symmetry_operations.length)).toEqual([24, 24, 16]);
     for (const reference of references) {
       const cif = readFileSync(`public/research-pilots/structure-cifs/${reference.original_cif_filename}`);
       expect(createHash("sha256").update(cif).digest("hex")).toBe(reference.source.file_sha256);
       expect(cif.length).toBe(reference.source.bytes);
       for (const site of reference.sites) {
-        expect(cif.toString()).toContain(site.fractional.map(coordinate => coordinate.raw).join(" "));
+        expect(cif.toString().replace(/\s+/g, " ")).toContain(site.fractional.map(coordinate => coordinate.raw).join(" "));
         const expanded = reference.display_unit_cell_sites.filter(point => point.source_site_label === site.label);
         expect(expanded.flatMap(point => point.equivalent_operation_indices).sort((a, b) => a - b)).toEqual(reference.declared_symmetry_operations.map((_, index) => index));
         expect(expanded.every(point => point.occupancy.raw === site.occupancy.raw)).toBe(true);
@@ -102,13 +102,13 @@ describe("Source coordinate references and uniform lattice proposals", () => {
     const fetch = vi.fn(); vi.stubGlobal("fetch", fetch);
     render(<DiscoveryStructureWorkspace />);
     const reference = screen.getByRole("combobox", { name: "Structure reference" });
-    expect(within(reference).getAllByRole("option")).toHaveLength(3);
+    expect(within(reference).getAllByRole("option")).toHaveLength(24);
     expect(screen.getByRole("img", { name: /CrB2.*3 symmetry-expanded sites/ })).toBeInTheDocument();
     fireEvent.change(screen.getByRole("textbox", { name: "Linear lattice change (%)" }), { target: { value: "2" } });
     expect(screen.getByText(/Volume change: 6.1208%/)).toBeInTheDocument();
     fireEvent.change(reference, { target: { value: "cod-4002152" } });
     expect(screen.getByRole("textbox", { name: "Linear lattice change (%)" })).toHaveValue("0");
-    expect(screen.getByText(/Cell temperature: 295 K/)).toBeInTheDocument();
+    expect(screen.getByText("Cell temperature:").parentElement).toHaveTextContent("Cell temperature: 295 K");
     expect(screen.getByText(/Fe occupancy is 0.996\(3\)/)).toHaveTextContent("choose a disorder model");
     expect(screen.getByRole("table", { name: "Original asymmetric-unit site tokens" })).toHaveTextContent("0.26526(14)");
     expect(screen.getByRole("link", { name: "Download captured source CIF" })).toHaveAttribute("href", expect.stringContaining("4002152-83a6bd28f07e.cif"));
