@@ -76,7 +76,7 @@ function Workspace({ capabilities: access, entry, disabled = false, invalidation
     const visibility = () => { if (document.visibilityState === "hidden") hide(); };
     const unsubscribe = onAuthChange(() => { pending.current = null; clear(); });
     window.addEventListener("pagehide", hide); document.addEventListener("visibilitychange", visibility);
-    return () => { releaseDownloads(); mounted.current = false; ++sequence.current; controller.current?.abort(); unsubscribe(); window.removeEventListener("pagehide", hide); document.removeEventListener("visibilitychange", visibility); };
+    return () => { releaseDownloads(); mounted.current = false; ++sequence.current; controller.current?.abort(); inFlight.current = false; unsubscribe(); window.removeEventListener("pagehide", hide); document.removeEventListener("visibilitychange", visibility); };
     // Identity changes remount this workspace; only the parent retains unknown-save hashes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

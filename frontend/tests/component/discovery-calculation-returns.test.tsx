@@ -14,7 +14,7 @@ vi.mock("@/lib/api", async original => ({ ...await original<typeof import("@/lib
 beforeEach(() => { vi.resetAllMocks(); vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 const clone = <T,>(v: T): T => structuredClone(v);
-async function setup() {
+async function setup(strict = false) {
   const capabilities = knownDesignCapabilities(wire.design_capabilities, wire.capabilities.actor_user_id)!;
   const entry = (await knownDesignDetail(wire.parent, capabilities, wire.parent.design_id))!.entries[0];
   vi.mocked(discoveryCalculationCapabilities).mockResolvedValue(clone(wire.capabilities));
@@ -23,10 +23,17 @@ async function setup() {
   vi.mocked(discoveryCalculationPreview).mockImplementation(body => syntheticCalculationPreview(body.request));
   vi.mocked(discoveryCalculationCommit).mockImplementation(body => syntheticCalculationSaved(body.request));
   const props = { capabilities, entry, onSaveDispatched: vi.fn(), onSaveResolved: vi.fn(), onScopeInvalid: vi.fn() };
-  const result = render(<DiscoveryCalculationReturns {...props} />);
+  const result = render(<DiscoveryCalculationReturns {...props} />, { reactStrictMode: strict });
   await screen.findByRole("form", { name: "Return original calculation files" });
   return { ...result, props };
 }
+it("loads calculation access after Strict Mode aborts and replays the first mount", async () => {
+  await setup(true);
+  expect(screen.getByRole("button", { name: "Load calculation history" })).toBeEnabled();
+  expect(discoveryCalculationCapabilities).toHaveBeenCalledTimes(2);
+  expect(vi.mocked(discoveryCalculationCapabilities).mock.calls[0][0]?.aborted).toBe(true);
+  expect(discoveryCalculationPreview).not.toHaveBeenCalled(); expect(discoveryCalculationCommit).not.toHaveBeenCalled();
+});
 function chooseFiles() {
   for (const [role, label] of [["input", "QE input (.in)"], ["xml", "QE XML output"], ["stdout", "QE stdout log"], ["upf", "Original UPF files (1–8)"]] as const) {
     const files = wire.upload.request.files.flatMap((f, i) => f.role === role ? [new NodeFile([Buffer.from(wire.upload.files_base64[i], "base64")], f.name)] : []);
