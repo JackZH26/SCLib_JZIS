@@ -1,0 +1,14 @@
+{
+  "engine_sha256": "83a90348f1872ef19432b27d462c025d4be6735772ff9b9c39dada049702073a",
+  "input_sha256": "9cf3d0d88116ac762906f46910597f42463b0f1e7ef60e63121a66e09b19eded",
+  "exit_code": 0,
+  "elapsed_seconds": 13.911717891693115,
+  "threads": 1,
+  "wall_timeout_seconds": 180,
+  "cpu_limit_seconds": 120,
+  "mesh": [
+    6,
+    6,
+    6
+  ]
+}

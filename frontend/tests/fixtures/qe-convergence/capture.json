@@ -1,0 +1,97 @@
+{
+  "source": "Actual bounded local PWSCF 7.5 runs, captured 2026-10-05",
+  "runs": 3,
+  "scientific_prediction_validated": false,
+  "files": [
+    {
+      "file": "k2-manifest.json",
+      "bytes": 16124,
+      "sha256": "21c52589a170ca11dbbf324b960036aa560ca22b75827715921b8dd009fee2f6"
+    },
+    {
+      "file": "k2-input.in",
+      "bytes": 1282,
+      "sha256": "8b8fd11f1f85ae8bfe6a2167b843ee9f3d212d6a5070bbd6cb55a773dbdb1ddf"
+    },
+    {
+      "file": "k2-data-file-schema.xml",
+      "bytes": 34238,
+      "sha256": "2484ea9bad7b3895d4eca426273d82829161f052a641b50c494bf32a0b4e355d"
+    },
+    {
+      "file": "k2-pw.out",
+      "bytes": 15479,
+      "sha256": "2a3e6884df2182a3b5c1d25bce9c033df0db2d1b79c905dddeb7a1c077240d64"
+    },
+    {
+      "file": "k2-reading.json",
+      "bytes": 14245,
+      "sha256": "b6b9e82604707241c6e37ea5698f0307de70da867e039b3fdb7f8e1dc6699428"
+    },
+    {
+      "file": "k2-execution-receipt.json",
+      "bytes": 346,
+      "sha256": "997f80a0e947dee3bdaa2e15216c479093870bc4bf5c1902386c0e931701cbb3"
+    },
+    {
+      "file": "k4-manifest.json",
+      "bytes": 16124,
+      "sha256": "2602ead1e2fb8dd483bf614e262f2e774a3affb7ade4f0e9353ede41f6e1f8a5"
+    },
+    {
+      "file": "k4-input.in",
+      "bytes": 1282,
+      "sha256": "09cb1a3b0a6d0e7eb0d867a92984b1b818df3499ba45982114a548da89d2bfe8"
+    },
+    {
+      "file": "k4-data-file-schema.xml",
+      "bytes": 45585,
+      "sha256": "b061c1375702d1c2d66acdd440f7b03a53d61b2c90958ddd55b7c7ac35543490"
+    },
+    {
+      "file": "k4-pw.out",
+      "bytes": 17369,
+      "sha256": "8ed9b0ebcbc8d64991c4e924d7bbd8bd14f5c42e4471f87d63bfb41b23cadab9"
+    },
+    {
+      "file": "k4-reading.json",
+      "bytes": 14201,
+      "sha256": "d2dfcdf416ed1396fc0de61012cf759b3a966d05bc9c28aae0c2f567b98dac37"
+    },
+    {
+      "file": "k4-execution-receipt.json",
+      "bytes": 347,
+      "sha256": "97958e403708fae79067d6e558f8fab44dbd2162d797b3cbbef0be8e895290f6"
+    },
+    {
+      "file": "k6-manifest.json",
+      "bytes": 16124,
+      "sha256": "79f8c112215f4e0edc997760fc857b219fd536b998ec5847618b9712b63913b9"
+    },
+    {
+      "file": "k6-input.in",
+      "bytes": 1282,
+      "sha256": "9cf3d0d88116ac762906f46910597f42463b0f1e7ef60e63121a66e09b19eded"
+    },
+    {
+      "file": "k6-data-file-schema.xml",
+      "bytes": 69056,
+      "sha256": "553a74ebde95bcaeb1759a7d11c8a1ec379dd0f888770e1250ae578f7d9b3b64"
+    },
+    {
+      "file": "k6-pw.out",
+      "bytes": 23461,
+      "sha256": "b0cf4e7d59fca6f9a8e4e66ae5b0f9fc634222d268a43f47aa866a0da5ebd7ed"
+    },
+    {
+      "file": "k6-reading.json",
+      "bytes": 14244,
+      "sha256": "47bcd2085d40b88166facbd04fb353f93c9fdf36872fe3a1cd089e05be4d4ce4"
+    },
+    {
+      "file": "k6-execution-receipt.json",
+      "bytes": 347,
+      "sha256": "aef75eb7103ca823840ffe4e96db38140674f60fd6096d989614f092396109ad"
+    }
+  ]
+}
