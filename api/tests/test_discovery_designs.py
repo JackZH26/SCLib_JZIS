@@ -126,9 +126,14 @@ async def test_retained_source_drift_suppresses_values_but_proofs_and_history_su
     assert fresh["projection_canonical_json"] is None
     revised = operation("revise", baseline=ctx["baseline"])
     revised["payload"].update(design_id=first["design_id"], predecessor={"id": first["receipt_id"], "record_sha256": first["receipt_sha256"]})
+    before_rejected_revision = await state(db_session)
     with pytest.raises(SourcePropertyConflict, match="source_pin_changed"):
         await service.operate(db_session, actor_user_id=actor["id"], request=revised)
-    assert await db_session.scalar(sa.select(sa.func.count()).select_from(service.table())) == 1
+    assert await state(db_session) == before_rejected_revision
+    # Other modules legitimately retain committed private histories in the
+    # session-wide database. Only this owner's original proposal belongs here.
+    assert await db_session.scalar(sa.select(sa.func.count()).select_from(service.table())
+                                   .where(service.table().c.actor_user_id == actor["id"])) == 1
 
 
 @pytest.mark.asyncio

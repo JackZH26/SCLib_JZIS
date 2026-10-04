@@ -12,7 +12,7 @@ vi.mock("@/lib/api", async original => ({ ...await original<typeof import("@/lib
 beforeEach(() => { vi.resetAllMocks(); vi.stubGlobal("crypto", webcrypto); });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 const clone = <T,>(value: T): T => structuredClone(value);
-async function setup(overrides: Partial<Parameters<typeof DiscoveryEvidenceFeedback>[0]> = {}, native = false) {
+async function setup(overrides: Partial<Parameters<typeof DiscoveryEvidenceFeedback>[0]> = {}, native = false, strict = false) {
   const wire = native ? nativeFeedbackWithChildDetail() : await syntheticFeedbackWire();
   vi.mocked(discoveryFeedbackCapabilities).mockResolvedValue(clone(wire.cap));
   vi.mocked(discoveryFeedbackContext).mockResolvedValue(clone(wire.context));
@@ -20,10 +20,17 @@ async function setup(overrides: Partial<Parameters<typeof DiscoveryEvidenceFeedb
   vi.mocked(discoveryFeedbackPreview).mockImplementation(request => syntheticFeedbackReceipt(request, wire.cap, wire.context.design, wire.context.projection_sha256));
   const onSaveDispatched = vi.fn(), onSaveResolved = vi.fn(), onStartLinkedProposal = vi.fn(), onOpenChild = vi.fn();
   const props = { capabilities: wire.designCapabilities, entry: wire.entry, onSaveDispatched, onSaveResolved, onStartLinkedProposal, onOpenChild, ...overrides };
-  const rendered = render(<DiscoveryEvidenceFeedback {...props} />);
+  const rendered = render(<DiscoveryEvidenceFeedback {...props} />, { reactStrictMode: strict });
   await screen.findByRole("region", { name: "Pinned research action" });
   return { wire, props, ...rendered, onSaveDispatched, onSaveResolved, onStartLinkedProposal, onOpenChild };
 }
+it("loads source-review access after Strict Mode aborts and replays the first mount", async () => {
+  await setup({}, false, true);
+  expect(screen.getByRole("button", { name: "Load exact evidence" })).toBeEnabled();
+  expect(discoveryFeedbackCapabilities).toHaveBeenCalledTimes(2);
+  expect(vi.mocked(discoveryFeedbackCapabilities).mock.calls[0][0]?.aborted).toBe(true);
+  expect(discoveryFeedbackPreview).not.toHaveBeenCalled(); expect(discoveryFeedbackCommit).not.toHaveBeenCalled();
+});
 async function loadEvidence() {
   fireEvent.change(screen.getByLabelText("Evidence material ID"), { target: { value: "synthetic-comparative-material" } });
   fireEvent.change(screen.getByLabelText("Evidence retained record index"), { target: { value: "2" } });

@@ -1,5 +1,13 @@
 # Exact fingerprints for reviewed non-secret documentation and synthetic data.
 # Do not replace these with path, commit, or rule-wide ignores.
+# Reviewed 2026-10-05: 13 request_key matches in the original 2026-09-24
+# disposable test captures. Values are uuid4().hex, synthetic-participation-,
+# synthetic-declaration-, or synthetic-withdraw- plus uuid4().hex. Generators:
+# test_discovery_main_barrier.py, test_ml_pilot_registration.py and
+# test_ml_pilot_attestations.py. They are idempotency IDs, not credentials.
+9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/discovery-main-barrier-native.delivery20260924r1.wire.json:generic-api-key:1
+9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-participant-native.delivery20260924r1.wire.json:generic-api-key:1
+9291e394407501b8e7ea9b600823c9e2177eec64:frontend/tests/fixtures/ml-pilot-attestations-native.delivery20260924r1.wire.json:generic-api-key:1
 d60f0db35de7e46d3f6e1a6907886b134feacef1:README.md:curl-auth-header:133
 7596ef2e5928c46e2b0da6bcfaf48ab6fabe3d35:api/tests/test_unified_auth.py:generic-api-key:319
 3477605e37393b8430068d38a822b758816bc025:PROJECT_SPEC.md:generic-api-key:892

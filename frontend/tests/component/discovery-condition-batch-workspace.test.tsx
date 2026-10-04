@@ -11,7 +11,7 @@ import { copy, syntheticBatch, TEST_UUID } from "./discovery-condition-batches.s
 vi.mock("@/lib/api", async original => ({ ...await original<typeof import("@/lib/api")>(), discoveryConditionBatchCapabilities: vi.fn(), discoveryConditionBatchPreview: vi.fn(), discoveryConditionBatchCommit: vi.fn(), discoveryConditionBatchOutcome: vi.fn(), discoveryConditionBatchPage: vi.fn(), discoveryConditionBatchDetail: vi.fn(), discoveryConditionBatchManifest: vi.fn() }));
 beforeEach(() => { vi.resetAllMocks(); vi.stubGlobal("crypto", { subtle: webcrypto.subtle, randomUUID: () => TEST_UUID }); });
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
-async function setup(generated = true) {
+async function setup(generated = true, strict = false) {
   const f = await syntheticBatch(), onOpenChild = vi.fn();
   vi.mocked(discoveryConditionBatchCapabilities).mockResolvedValue(copy(f.cap));
   vi.mocked(discoveryConditionBatchPreview).mockImplementation(request => Promise.resolve(copy(request.operation === "retain_batch" ? f.preview : f.childPreview)));
@@ -21,10 +21,17 @@ async function setup(generated = true) {
   vi.mocked(discoveryConditionBatchDetail).mockImplementation((_id, offset) => Promise.resolve(copy(f.detail(offset))));
   vi.mocked(discoveryConditionBatchManifest).mockResolvedValue(f.text);
   const onScopeInvalid = vi.fn(), onSaveDispatched = vi.fn(), onSaveResolved = vi.fn();
-  const props = { capabilities: f.design, generated: generated ? f.manifest : null, onOpenChild, onScopeInvalid, onSaveDispatched, onSaveResolved }, view = render(<DiscoveryConditionBatchWorkspace {...props} />);
+  const props = { capabilities: f.design, generated: generated ? f.manifest : null, onOpenChild, onScopeInvalid, onSaveDispatched, onSaveResolved }, view = render(<DiscoveryConditionBatchWorkspace {...props} />, { reactStrictMode: strict });
   await screen.findByRole("button", { name: "Load saved batches" });
   return { f, props, view, onOpenChild };
 }
+it("loads batch access after Strict Mode aborts and replays the first mount", async () => {
+  await setup(false, true);
+  expect(screen.getByRole("button", { name: "Load saved batches" })).toBeEnabled();
+  expect(discoveryConditionBatchCapabilities).toHaveBeenCalledTimes(2);
+  expect(vi.mocked(discoveryConditionBatchCapabilities).mock.calls[0][0]?.aborted).toBe(true);
+  expect(discoveryConditionBatchPreview).not.toHaveBeenCalled(); expect(discoveryConditionBatchCommit).not.toHaveBeenCalled();
+});
 async function inspect() { fireEvent.click(screen.getByRole("button", { name: "Load saved batches" })); fireEvent.click(await screen.findByRole("button", { name: "Inspect batch" })); await screen.findByRole("region", { name: "Retained batch scenarios" }); }
 it("requires separate explicit preview and retention clicks with exact request pins", async () => {
   const { f, props } = await setup();

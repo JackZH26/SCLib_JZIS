@@ -1789,6 +1789,10 @@ from models.discovery_feedback_v1 import register as _register_discovery_feedbac
 
 DISCOVERY_FEEDBACK = _register_discovery_feedback(Base.metadata)
 
+from models.discovery_calculation_v1 import register as _register_discovery_calculations  # noqa: E402
+
+DISCOVERY_CALCULATIONS = _register_discovery_calculations(Base.metadata)
+
 from models.material_field_review_v1 import (  # noqa: E402
     register as _register_material_field_review,
 )

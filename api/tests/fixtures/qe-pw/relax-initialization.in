@@ -1,0 +1,81 @@
+! SCLib prepared input. Numerical convergence and physical state are not established.
+! Candidate: combined-candidate:4e96d96e51f6aaa10bfe63120d5cc62890bd8e035b66e875c113c34a8d5670bd
+! Candidate CIF SHA-256: 40d9161eb532f2cc027f944b556293a7c075d9ae0186a53b1806e23c9c091c01
+! Input contract: discovery-qe-input/1.0.0
+! Settings and UPF metadata SHA-256: e654c482b1b3223bb5f0358d75b354b3aa84234747f0977e200acef1f9d8e2d0
+! Initialization check only: nstep=0. No SCF or relaxation result.
+&CONTROL
+ calculation = 'relax',
+ restart_mode = 'from_scratch',
+ prefix = 'sclib_e654c482b1b3223b_check',
+ pseudo_dir = './pseudo',
+ outdir = './out',
+ nstep = 0,
+ max_seconds = 600,
+ tprnfor = .true.,
+ tstress = .true.,
+ etot_conv_thr = 0.00001,
+ forc_conv_thr = 0.0001,
+/
+&SYSTEM
+ ibrav = 0,
+ nat = 23,
+ ntyp = 3,
+ ecutwfc = 60,
+ ecutrho = 480,
+ tot_charge = 0,
+ nspin = 2,
+ noncolin = .false.,
+ lspinorb = .false.,
+ starting_magnetization(1) = 0,
+ starting_magnetization(2) = 0,
+ starting_magnetization(3) = 0.1,
+ occupations = 'smearing',
+ smearing = 'mv',
+ degauss = 0.02,
+/
+&ELECTRONS
+ conv_thr = 1e-8,
+ electron_maxstep = 100,
+ mixing_beta = 0.3,
+ diagonalization = 'david',
+ startingpot = 'atomic',
+ startingwfc = 'atomic+random',
+/
+&IONS
+ ion_dynamics = 'bfgs',
+/
+ATOMIC_SPECIES
+Al 26.9815385 Al.pbe-n-kjpaw_psl.1.0.0.UPF
+B 10.81 B.pbe-n-kjpaw_psl.1.0.0.UPF
+Mg 24.305 Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF
+CELL_PARAMETERS angstrom
+6.287892 0 0
+-3.143946 5.44547420825294 0
+0 0 7.1698044
+ATOMIC_POSITIONS crystal
+Al 0 0 0
+B 0.3333 0.16665 0.25
+Mg 0 0 0.5
+B 0.16665 0.33335 0.75
+B 0.3333 0.16665 0.75
+Mg 0 0.5 0
+B 0.16665 0.83335 0.25
+B 0.3333 0.66665 0.25
+Mg 0 0.5 0.5
+B 0.16665 0.83335 0.75
+B 0.3333 0.66665 0.75
+Mg 0.5 0 0
+B 0.66665 0.33335 0.25
+B 0.8333 0.16665 0.25
+Mg 0.5 0 0.5
+B 0.66665 0.33335 0.75
+B 0.8333 0.16665 0.75
+Mg 0.5 0.5 0
+B 0.66665 0.83335 0.25
+B 0.8333 0.66665 0.25
+Mg 0.5 0.5 0.5
+B 0.66665 0.83335 0.75
+B 0.8333 0.66665 0.75
+K_POINTS automatic
+1 1 1 0 0 0

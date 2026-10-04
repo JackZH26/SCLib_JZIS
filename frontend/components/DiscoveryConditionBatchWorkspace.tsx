@@ -60,7 +60,7 @@ function Workspace({ capabilities: design, generated, disabled = false, invalida
     const visibility = () => { if (document.visibilityState === "hidden") hide(); };
     const unsubscribe = onAuthChange(() => { commitIdentity.current = null; clear(); setMessage("Session changed. Refresh batch access to continue."); });
     window.addEventListener("pagehide", hide); document.addEventListener("visibilitychange", visibility);
-    return () => { mounted.current = false; ++sequence.current; controller.current?.abort(); unsubscribe(); window.removeEventListener("pagehide", hide); document.removeEventListener("visibilitychange", visibility); };
+    return () => { mounted.current = false; ++sequence.current; controller.current?.abort(); inFlight.current = false; unsubscribe(); window.removeEventListener("pagehide", hide); document.removeEventListener("visibilitychange", visibility); };
     // The keyed parent owns the current actor and exact generation snapshot.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
