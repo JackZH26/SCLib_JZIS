@@ -62,6 +62,12 @@ focusable regions.
 
 ## Scientific limits and acceptance
 
+The selected candidate also exposes a separate
+[Quantum ESPRESSO preparation workflow](discovery_qe_input_preparation.md).
+It requires actual UPF files and explicit electronic settings, and exports
+independent input/initialization decks and a provenance manifest. It does not
+change the coordinate batch's unrelaxed status or claim executed results.
+
 Outputs are unrelaxed ordered coordinate proposals. Charge, magnetic state,
 target temperature and pressure remain unresolved. Concentrations refer to
 nominal changes in the original supercell, not measured doping or carrier

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { structureReferences } from "@/lib/discovery-structures";
 import { compositionLabel, compositionOf, coordinateSha256, supercellModel } from "@/lib/discovery-site-candidates";
 import { combinedPlan, generateCombinedCandidates, type CombinedBatch, type SiteChoices } from "@/lib/discovery-combined-candidates";
+import { DiscoveryQeInput } from "@/components/DiscoveryQeInput";
 
 const control = "mt-2 min-h-11 w-full min-w-0 rounded-md border border-sage-border bg-white px-3 py-2 text-sm";
 const fmt = (value: number) => value.toLocaleString("en-US", { maximumFractionDigits: 6 });
@@ -104,6 +105,7 @@ export function DiscoveryCombinedCandidates() {
         <div className="min-w-0 space-y-3"><h3 className="text-lg font-semibold">Unrelaxed coordinates</h3><p className="text-sm leading-6">The exported CIF contains every resulting atom in P1. Charge, magnetic state and target temperature/pressure remain to be chosen; energies and superconducting properties have not been calculated.</p><button className="btn-outline" onClick={() => download("cif")}>Download selected combined CIF</button><p className="text-xs leading-5 text-sage-muted">Choose electronic settings, relax the intended state and check size/numerical convergence before evaluating stability, pairing or coherence.</p></div>
       </div>
       <div className="flex flex-wrap gap-3"><button className="btn-outline" onClick={() => download("json")}>Download all candidates JSON</button><button className="btn-outline" onClick={() => download("sha256")}>Download JSON SHA-256</button></div><p role="status" className="text-xs text-sage-muted">{downloadStatus}</p>
+      <DiscoveryQeInput key={selected.id} batch={result.batch} candidateId={selected.id} />
       <details className="min-w-0 text-xs leading-5 text-sage-muted"><summary className="w-fit cursor-pointer font-medium text-accent-deep">Inspect coordinates and lineage</summary><div className="mt-3 min-w-0 space-y-3"><p>Parent: <code className="break-all">{result.batch.parent_id}</code></p><p>Candidate: <code className="break-all">{selected.id}</code></p><p>CIF SHA-256: <code className="break-all">{selected.cif_sha256}</code></p><p>The full JSON retains original source coordinates, cell, metadata, requested choices, discarded combinations and all candidate coordinates. No catalogue association, execution result or training permission is created.</p><div role="region" aria-label="Scrollable combined coordinates" tabIndex={0} className="overflow-x-auto"><table className="w-full min-w-[540px] text-left tabular-nums"><caption className="sr-only">Selected combination fractional coordinates</caption><thead><tr>{["Site", "Element", "x", "y", "z"].map(label => <th scope="col" key={label} className="p-2">{label}</th>)}</tr></thead><tbody>{selected.atoms.map(atom => <tr key={atom.id}><th scope="row" className="p-2">{atom.label}</th><td className="p-2">{atom.element}</td>{atom.fractional.map((value, i) => <td key={i} className="p-2">{fmt(value)}</td>)}</tr>)}</tbody></table></div></div></details>
     </section>}
   </div>;
