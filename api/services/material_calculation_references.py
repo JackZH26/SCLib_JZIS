@@ -14,6 +14,8 @@ import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from decimal import Decimal
+from fractions import Fraction
+from math import gcd, lcm
 from typing import Any
 from urllib.parse import urlsplit
 
@@ -115,7 +117,7 @@ def _base(formula: str, status: str, reason: str | None = None, *, query: str | 
 
 
 def hill_query_formula(formula: str) -> str | None:
-    """NOMAD indexes scalar Hill formulas; never substitute a parent composition."""
+    """Legacy query spelling, retained for reproducing earlier lookup audits."""
     parsed = enrich_formula(formula)
     if parsed["composition_status"] != "exact":
         return None
@@ -129,6 +131,25 @@ def hill_query_formula(formula: str) -> str | None:
         value = format(amount, "f").rstrip("0").rstrip(".") if amount % 1 else str(int(amount))
         parts.append(element + ("" if amount == 1 else value))
     return "".join(parts)
+
+
+def reduced_query_formula(formula: str) -> str | None:
+    """NOMAD's reduced field uses alphabetical, coprime integer proportions.
+
+    Its Hill field retains cell atom counts and cannot serve a composition
+    lookup. Integer scaling here is only query syntax; the retained formula,
+    fractional occupancies and formula-unit scale are not changed.
+    """
+    parsed = enrich_formula(formula)
+    if parsed["composition_status"] != "exact":
+        return None
+    amounts = {element: Fraction(str(amount))
+               for element, amount in parsed["element_amounts"].items()}
+    scale = lcm(*(amount.denominator for amount in amounts.values()))
+    integers = {element: int(amount * scale) for element, amount in amounts.items()}
+    divisor = gcd(*integers.values())
+    return "".join(element + (str(integers[element] // divisor) if integers[element] != divisor else "")
+                   for element in sorted(integers))
 
 
 def _source_references(row: dict) -> list[dict[str, str]]:
@@ -164,7 +185,7 @@ def _source_references(row: dict) -> list[dict[str, str]]:
 
 def project_calculation_references(formula: str, payload: Any, *, retrieved_at: str) -> dict:
     """Validate a bounded metadata response and project only public allowlisted fields."""
-    query = hill_query_formula(formula)
+    query = reduced_query_formula(formula)
     if query is None:
         return _base(formula, "not_applicable", "composition_requires_resolution")
     target = enrich_formula(formula)
@@ -307,7 +328,7 @@ def _valid_cache(value: Any, formula: str, query: str) -> bool:
 
 
 async def _provider_payload(query: str) -> Any:
-    body = {"owner": "public", "query": {"results.material.chemical_formula_hill": query},
+    body = {"owner": "public", "query": {"results.material.chemical_formula_reduced": query},
             "pagination": {"page_size": MAX_REFERENCES + 1, "order_by": "entry_id", "order": "asc"},
             "required": {"include": list(FIELDS)}}
     async with httpx.AsyncClient(timeout=httpx.Timeout(REQUEST_SECONDS, connect=4),
@@ -331,10 +352,11 @@ async def fetch_material_calculation_references(
     # This guard precedes even a cache read. A bulk cached match cannot validate
     # a newly retained isotope, interface, variable composition or dopant alias.
     fixed = external_query_formula(formula, current_records=current_records)
-    query = hill_query_formula(fixed) if fixed is not None else None
+    query = reduced_query_formula(fixed) if fixed is not None else None
     if query is None:
         return _base(formula, "not_applicable", "composition_requires_resolution")
-    key = "materials:nomad:2:" + hashlib.sha256(formula.encode()).hexdigest()
+    # Earlier Hill lookups can be incomplete even when query spelling matches.
+    key = "materials:nomad:3:" + hashlib.sha256(formula.encode()).hexdigest()
     if key not in _locks and len(_locks) >= MAX_LOCKS:
         return _base(formula, "unavailable", "reference_request_capacity", query=query)
     slot = _locks.setdefault(key, _LockSlot(asyncio.Lock()))

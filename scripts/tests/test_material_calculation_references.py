@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import sys
 from copy import deepcopy
@@ -40,9 +41,36 @@ def test_hill_query_preserves_exact_reduced_composition(formula, hill):
     assert nomad.hill_query_formula(formula) == hill
 
 
+@pytest.mark.parametrize(("formula", "query"), [
+    ("Al2O3", "Al2O3"), ("Al4O6", "Al2O3"), ("Nb2N2", "NNb"),
+    ("B2C", "B2C"), ("CHB", "BCH"), ("H2", "H"),
+    ("Fe0.5Se0.5", "FeSe"), ("La1.85Sr0.15CuO4", "Cu20La37O80Sr3"),
+    ("BaFe1.906Pt0.094As2", "As1000Ba500Fe953Pt47"),
+])
+def test_reduced_query_uses_alphabetical_integer_proportions(formula, query):
+    assert nomad.reduced_query_formula(formula) == query
+
+
 @pytest.mark.parametrize("formula", ["MgB2-x", "NbN₁₋ₓ", "¹¹B2Mg", "LaFeAsO1-xFx", "FeSe/SrTiO3", "NbN:Ti"])
 def test_unresolved_identity_never_becomes_parent_query(formula):
     assert nomad.hill_query_formula(formula) is None
+    assert nomad.reduced_query_formula(formula) is None
+
+
+def test_larger_cells_are_references_without_phase_or_sample_promotion():
+    first = row("cell_10", formula="Al4O6")
+    first["results"]["material"]["chemical_formula_reduced"] = "Al2O3"
+    second = row("cell_30", formula="Al12O18")
+    second["results"]["material"]["chemical_formula_reduced"] = "Al2O3"
+    conflicting = row("conflict", formula="Al4O6")
+    conflicting["results"]["material"]["chemical_formula_reduced"] = "AlO2"
+    result = project(payload([first, second, conflicting], total=387), formula="Al2O3")
+    assert result["query_formula"] == "Al2O3"
+    assert [ref["formula"] for ref in result["references"]] == ["Al4O6", "Al12O18"]
+    assert result["truncated"] and result["matches_total"] == 387
+    assert result["scientific_acceptance"] is False
+    assert all(ref["phase_identity_established"] is False and ref["sample_identity_established"] is False
+               for ref in result["references"])
 
 
 def test_multistructure_tasks_and_unknown_method_remain_distinct():
@@ -224,6 +252,45 @@ async def test_cache_hit_budget_and_24h_cache_for_success_only(monkeypatch):
     assert calls == ["B2Mg"]
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize(("formula", "legacy_query", "cell_formula"), [
+    ("B2C", "CB2", "C2B4"), ("Al2O3", "Al2O3", "Al4O6"),
+])
+async def test_reduced_lookup_does_not_reuse_old_hill_no_match_cache(monkeypatch, formula, legacy_query, cell_formula):
+    digest = hashlib.sha256(formula.encode()).hexdigest()
+    legacy_key, current_key = "materials:nomad:2:" + digest, "materials:nomad:3:" + digest
+    legacy = project(payload([], 0), formula=formula)
+    # Earlier lookups were incomplete even when the query spelling was identical.
+    legacy["query_formula"] = legacy_query
+    values = {legacy_key: json.dumps(legacy)}
+    reads = []
+
+    class KeyedCache(FakeRedis):
+        async def get(self, key):
+            reads.append(key)
+            return values.get(key)
+
+        async def set(self, key, value, ex):
+            assert ex == 86400
+            values[key] = value
+
+    cache, calls = KeyedCache(), []
+    monkeypatch.setattr(nomad, "get_redis", lambda: cache)
+
+    async def provider(query):
+        calls.append(query)
+        item = row(formula=cell_formula)
+        item["results"]["material"]["chemical_formula_reduced"] = formula
+        return payload([item])
+
+    monkeypatch.setattr(nomad, "_provider_payload", provider)
+    first = await nomad.fetch_material_calculation_references(formula, current_records=[{"formula_raw": cell_formula}])
+    assert first["status"] == "available" and first["query_formula"] == formula
+    assert await nomad.fetch_material_calculation_references(formula) == first
+    assert calls == [formula] and reads == [current_key, current_key]
+    assert json.loads(values[legacy_key]) == legacy
+
+
 @pytest.mark.parametrize("mutator", [
     lambda value: value.update(evidence_text="synthetic-private-text"),
     lambda value: value["references"][0].update(url="https://evil.example"),
@@ -321,7 +388,7 @@ async def test_leaf_query_is_public_and_http_422_is_not_absence(monkeypatch):
     with pytest.raises(nomad._ProviderFailure, match="provider_rejected_query"):
         await nomad._provider_payload("B2Mg")
     assert observed[0]["owner"] == "public" and observed[0]["pagination"]["page_size"] == 21
-    assert observed[0]["query"] == {"results.material.chemical_formula_hill": "B2Mg"}
+    assert observed[0]["query"] == {"results.material.chemical_formula_reduced": "B2Mg"}
     assert {"results.method.simulation.dft.xc_functional_names", "results.method.simulation.dft.xc_functional_type", "results.method.simulation.dft.spin_polarized"} <= set(observed[0]["required"]["include"])
     assert all(field not in {"results.material.symmetry", "results.method.simulation"} for field in observed[0]["required"]["include"])
 

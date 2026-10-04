@@ -408,6 +408,15 @@ Materials Project client callers retain their prior transport compatibility.
 - `GET /materials/{id}/external_calculations`: query public NOMAD metadata,
   inspect at most 21 entries and display at most 20. Preserve individual task,
   structure, parser, method/program and allowlisted repository/citation links.
+  Composition queries use `results.material.chemical_formula_reduced` with
+  alphabetically ordered, coprime integer proportions. NOMAD's Hill field
+  retains cell atom counts, so querying it for `Al2O3` misses cells labelled
+  `Al4O6` or `Al12O18`. Fractional fixed proportions are scaled only for the
+  provider query, without changing retained formula units or site occupancies.
+  Every returned Hill/reduced formula must still match the target composition.
+  Cache generation 3 excludes earlier, potentially incomplete Hill lookups;
+  historical source snapshots remain unchanged. Field definitions are in the
+  [NOMAD results schema](https://github.com/FAIRmat-NFDI/nomad/blob/2b16820bdf83f57437c906addae3faf955ca4acf/nomad/datamodel/results.py#L1148-L1171).
   Bounded DFT metadata preserves returned XC functional names/type and explicit
   spin-polarization settings. Missing metadata remains missing, and underlying
   DFT metadata is not presented as a complete method or convergence proof. Spin
