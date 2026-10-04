@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { DiscoveryConditionWorkspace } from "@/components/DiscoveryConditionWorkspace";
 import {
   AVAILABILITY_LABELS, SCIENTIFIC_DISCLAIMER, SCIENTIFIC_FAILURE, SCIENTIFIC_FIELDS, SCIENTIFIC_GROUPS,
   SCIENTIFIC_KEYS, getScientificCatalog, getScientificProjection, scientificNumber, scientificQuantity,
@@ -223,10 +224,13 @@ export function ScientificDiscoveryMatrix() {
     .join(" ").toLocaleLowerCase("en-US").includes(query.trim().toLocaleLowerCase("en-US")));
   const fields = SCIENTIFIC_KEYS.filter(k => group === "all" || SCIENTIFIC_FIELDS[k].group === group);
   const active = visible.find(r => r.material.row_id === expanded);
-  return <section aria-labelledby="scientific-matrix-heading" className="space-y-4 rounded-xl border border-sage-border bg-white p-4 sm:p-5">
+  return <><section id="discovery-evidence" aria-labelledby="scientific-matrix-heading" className="scroll-mt-24 space-y-4 rounded-xl border border-sage-border bg-white p-4 sm:p-5">
     <div><h2 id="scientific-matrix-heading" className="text-xl font-semibold">Scientific material matrix</h2>
-      <p className="mt-1 text-sm font-medium text-accent">{SCIENTIFIC_DISCLAIMER}</p>
-      <p className="mt-2 text-sm leading-6 text-sage-muted">One material per row, with an explicitly reviewed representative state and next action. RPS 1,000–10,000 is research priority, not superconductivity probability. Compare only within the same frozen campaign, budget, policy and release. <a href="https://github.com/JackZH26/SCLib_JZIS/issues/78" className="underline">Evaluation and calibration limits</a>.</p>
+      <p className="mt-1 text-sm leading-6 text-sage-muted">Inspect a selected state and its recorded results, then outline a research design.</p>
+      <p className="mt-2 text-sm font-medium text-accent">{SCIENTIFIC_DISCLAIMER}</p>
+      <details className="mt-2 text-sm"><summary className="cursor-pointer font-medium text-accent">Evidence and scoring scope</summary>
+        <p className="mt-2 text-sm leading-6 text-sage-muted">One material per row, with an explicitly reviewed representative state and next action. RPS 1,000–10,000 is research priority, not superconductivity probability. Compare only within the same frozen campaign, budget, policy and release. <a href="https://github.com/JackZH26/SCLib_JZIS/issues/78" className="underline">Evaluation and calibration limits</a>.</p>
+      </details>
     </div>
     <div className="flex flex-wrap items-end gap-3">
       <label className="min-w-0 flex-1 text-sm">Published scientific version
@@ -299,5 +303,5 @@ export function ScientificDiscoveryMatrix() {
       </div>}
       {active && <MaterialDetails key={active.material.row_id} row={active} close={() => { setExpanded(null); detailTrigger.current?.focus(); }} />}
     </>}
-  </section>;
+  </section><div id="discovery-condition-design" className="scroll-mt-24"><DiscoveryConditionWorkspace row={active ?? null} receipt={data ?? null} /></div></>;
 }

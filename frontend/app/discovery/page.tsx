@@ -14,9 +14,9 @@ import {
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Superconductivity research priorities",
+  title: "Design superconducting conditions",
   description:
-    "Explore evidence-based, action-specific superconductivity research priorities and historical candidate leads.",
+    "Explore host stability, electronic activation, pairing and coherence, then outline the next superconductivity calculation or experiment.",
   alternates: { canonical: absoluteUrl("/discovery") },
   openGraph: { url: absoluteUrl("/discovery") },
 };
@@ -46,14 +46,27 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
   }
   return (
     <main className="space-y-4">
-      <header className="flex flex-wrap items-baseline justify-between gap-2">
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Discovery
-          </h1>
-          <p className="text-sm text-sage-muted">Material priorities · not superconductivity probabilities</p>
+      <header className="space-y-3 pb-2">
+        <h1 className="text-3xl font-semibold tracking-tight">Discovery</h1>
+        <p className="max-w-3xl text-base leading-6">Design the conditions for superconductivity, then choose the next calculation or experiment.</p>
+        <p className="text-sm text-sage-muted">Research target: approximately 300 K at 1 atm.</p>
+        <nav aria-label="Discovery research workflow" className="flex flex-wrap gap-x-5 gap-y-3 text-sm">
+          <a href="#discovery-evidence" className="min-h-11 content-center text-accent underline underline-offset-4">Inspect state evidence</a>
+          <a href="#discovery-condition-design" className="min-h-11 content-center text-accent underline underline-offset-4">Design a research plan</a>
+          <a href="#discovery-methodology" className="min-h-11 content-center text-accent underline underline-offset-4">Methodology and scope</a>
+        </nav>
       </header>
 
       <ScientificDiscoveryMatrix />
+      <details id="discovery-methodology" className="scroll-mt-24 rounded-xl border border-sage-border p-4">
+        <summary className="cursor-pointer text-sm font-semibold">Methodology and scope</summary>
+        <div className="mt-3 max-w-3xl space-y-3 text-sm leading-6 text-sage-muted">
+          <p>Stable host → Electronic activation → Pairing → Coherence → Superconducting state is a conceptual research framework. Each stage requires evidence for its own structure, state, conditions and method.</p>
+          <p>Discovery studies how doping, substitution, vacancies, strain, interfaces, layer count, twist or pressure could change those conditions. A proposed modification is a hypothesis; reference results remain attached to their original state.</p>
+          <p>High-pressure results can motivate ambient-pressure research, but translation requires matched-state comparisons and independent stability checks. Different pairing channels need their own models and evidence.</p>
+          <p>RPS allocates research effort to an action within a fixed campaign and budget. It is not a superconductivity probability or a physical design-space coordinate.</p>
+        </div>
+      </details>
       <details className="rounded-xl border border-sage-border p-4">
         <summary className="cursor-pointer text-sm font-semibold">Original RPS assessment releases · action-level view</summary>
         <p className="my-3 text-sm text-sage-muted">This separate view retains the original assessment catalog. An assessment release is not a published scientific companion or a one-material matrix.</p>
