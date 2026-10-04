@@ -1,24 +1,28 @@
 """Owned native PostgreSQL ledger proof; scientific fixtures are synthetic."""
-from copy import deepcopy
 import importlib.util
 import json
+from copy import deepcopy
 from pathlib import Path
 from uuid import UUID, uuid4
 
 import pytest
 import sqlalchemy as sa
+from alembic.migration import MigrationContext
+from alembic.operations import Operations
+from alembic.script import ScriptDirectory
 from sqlalchemy.exc import DBAPIError
 
 from models.db import Base
-from services import discovery_designs as service
 from services import discovery_design_contract as contract
+from services import discovery_designs as service
 from services.research_access import ResearchAccessDenied
 from services.research_release_manifest import canonical, digest
 from services.source_property_pending import SourcePropertyConflict, SourcePropertyNotFound
 from tests.research_access_helpers import research_operator, research_user, revoke_research_grant
 from tests.test_discovery_design_contract import operation
 from tests.test_material_field_cases import retained
-from tests.test_research_freeze import db_session, add, seed, state
+from tests.test_research_freeze import add, seed, state
+from tests.test_research_freeze import db_session as db_session
 
 
 async def request(db, actor, *, kind="unanchored", material_id=None, record_index=None, property_id=None):
@@ -362,26 +366,33 @@ async def test_native_pending_is_not_approval_and_local_negative_event_holds_pro
 
 
 @pytest.mark.asyncio
-async def test_empty_migration_roundtrip_uses_actual_metadata_guards(db_session):
+async def test_empty_migration_roundtrip_uses_actual_metadata_guards(db_session, monkeypatch):
     # The repository fixture is session-wide. Never erase committed audit
     # history just to manufacture an empty downgrade; also run this case alone
     # against a fresh disposable harness to exercise the actual empty branch.
     if await db_session.scalar(sa.select(sa.func.count()).select_from(service.table())):
         pytest.skip("Empty migration roundtrip requires a fresh owned disposable database")
-    path = Path(__file__).resolve().parents[1] / "alembic/versions/0087_discovery_designs.py"
-    spec = importlib.util.spec_from_file_location("discovery_empty_migration_test", path)
-    migration = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(migration)
-    class SyncOps:
-        def __init__(self, connection): self.connection = connection
-        def get_bind(self): return self.connection
-        def execute(self, sql): return self.connection.execute(sa.text(sql))
+    scripts = ScriptDirectory(str(Path(__file__).resolve().parents[1] / "alembic"))
+    # The fixture creates current metadata. Newer revisions reference the design
+    # table, so exercise Alembic's dependency order rather than dropping 0087
+    # underneath them. Each real downgrade retains its history refusal guard.
+    revisions = list(scripts.walk_revisions(base="0087_discovery_designs", head="heads"))
+    assert revisions[-1].revision == "0087_discovery_designs"
     def roundtrip(connection):
         connection = connection.connection()
-        migration.op = SyncOps(connection)
-        migration.downgrade()
+        ops = Operations(MigrationContext.configure(connection))
+        for revision in revisions:
+            monkeypatch.setattr(revision.module, "op", ops)
+        foreign_keys = sa.text("SELECT conrelid::regclass::text, conname FROM pg_constraint "
+                               "WHERE contype='f' AND connamespace='public'::regnamespace "
+                               "ORDER BY 1, 2")
+        before = connection.execute(foreign_keys).all()
+        for revision in revisions:
+            revision.module.downgrade()
         assert connection.execute(sa.text("SELECT to_regclass('public.discovery_design_revisions_v1')")).scalar_one() is None
-        migration.upgrade()
+        for revision in reversed(revisions):
+            revision.module.upgrade()
         assert connection.execute(sa.text("SELECT to_regclass('public.discovery_design_revisions_v1')")).scalar_one()
         assert connection.execute(sa.text("SELECT count(*) FROM pg_trigger WHERE tgrelid='public.discovery_design_revisions_v1'::regclass AND NOT tgisinternal")).scalar_one() == 3
+        assert connection.execute(foreign_keys).all() == before
     await db_session.run_sync(roundtrip)
