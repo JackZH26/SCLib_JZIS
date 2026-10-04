@@ -8,7 +8,7 @@ export const LITERAL_PROFILE = "material-literal-field/1.0.0";
 export const LITERAL_PREPARE_VERSION = "material-literal-field-prepare/1.0.0";
 export const LITERAL_PACKAGE_VERSION = "source-expression-package/2.1.0";
 export const LITERAL_INTAKE_VERSION = "source-expression-intake/2.1.0";
-export const LITERAL_EXTRACTOR_VERSION = "materials-literal-extractor/1.1.0";
+export const LITERAL_EXTRACTOR_VERSION = "materials-literal-extractor/1.1.1";
 export const LITERAL_REGISTRY_SHA = "e473392adda8311bba2009a6c288ae46a9f94ed142bafb98585c12ce0ac3a901";
 export const LITERAL_ROLES: Record<string, string> = {
   hc1_source_value: "reported_property", gap_energy_source_value: "reported_property", gap_ratio_source_value: "reported_property",

@@ -23,7 +23,7 @@ from services.property_evidence import legacy_result_id
 from services.scientific_values import FIELD_UNITS, parse_scientific_value, record_quantity
 
 VERSION = "materials-enrichment/1.0.0"
-EXTRACTOR_VERSION = "materials-literal-extractor/1.1.0"
+EXTRACTOR_VERSION = "materials-literal-extractor/1.1.1"
 MAX_MATERIALS = 1000
 MAX_SOURCES = 10000
 MAX_SOURCE_CHARS = 200000
@@ -44,15 +44,18 @@ _CRITERIA = {
     "diamagnetic": re.compile(r"\bdiamagnetic (?:onset|transition)\b", re.I),
     "heat_capacity": re.compile(r"\bheat.capacity (?:anomaly|transition)\b", re.I),
 }
-_METHODS = {
-    "resistivity": re.compile(r"\bresistiv|\bresistance|four[ -]probe", re.I),
+_MEASUREMENT_METHODS = {
+    "resistivity": re.compile(r"\bresistiv\w*\b|\bresistance\b|four[ -]probe", re.I),
     "susceptibility": re.compile(r"\bsusceptibility\b", re.I),
     "specific_heat": re.compile(r"\b(?:specific heat|heat capacity)\b", re.I),
     "x_ray_diffraction": re.compile(r"\bx.ray.diffraction\b|\bXRD\b", re.I),
-    "eliashberg": re.compile(r"\bEliashberg\b", re.I),
-    "allen_dynes": re.compile(r"\bAllen[ -]Dynes\b", re.I),
-    "dft": re.compile(r"\bDFT\b|\bdensity.functional\b|\bfirst.principles\b", re.I),
 }
+_TC_CALCULATION_METHODS = {
+    "eliashberg": re.compile(r"\b(?:isotropic[ -])?(?:Migdal[ -])?Eliashberg\b", re.I),
+    "allen_dynes": re.compile(r"\bAllen[ -]Dynes\b", re.I),
+}
+_CALCULATION_HINTS = {**_TC_CALCULATION_METHODS,
+    "dft": re.compile(r"\bDFT\b|\bdensity.functional\b|\bfirst.principles\b", re.I)}
 _COMPUTED = re.compile(r"\b(?:calculated|computed|predicted|theoretical|DFT|DFPT|Eliashberg|Allen[ -]Dynes)\b", re.I)
 _OBSERVED = re.compile(r"\b(?:measured|observed|experimental|resistivity|resistance|susceptibility|specific heat)\b", re.I)
 _CAUTION = re.compile(r"\b(?:previous|earlier|prior|cited|according to|reported by|et al|not detected|no superconduct|not superconduct|hypothetical|possibly)\b|\[\s*\d+(?:\s*[,–-]\s*\d+)*\s*\]", re.I)
@@ -77,6 +80,7 @@ FIELD_ROUTES = {
     "pressure_gpa": ["source_fulltext_and_supplement"],
     "tc_criterion": ["source_fulltext_and_supplement", "supercon_source_lookup"],
     "measurement_method": ["source_fulltext_and_supplement", "supercon_source_lookup"],
+    "calculation_method": ["source_fulltext_and_supplement", "nomad_state_matched_calculation"],
     "sample_form": ["source_fulltext_and_supplement", "supercon_source_lookup"],
     "space_group": ["source_fulltext_and_supplement", "cod_structure_lookup", "mp_state_matched_structure", "new_structure_calculation"],
     "crystal_structure": ["source_fulltext_and_supplement", "cod_structure_lookup", "mp_state_matched_structure"],
@@ -561,6 +565,69 @@ def _label(text: str, patterns: Mapping[str, re.Pattern]) -> str | None:
     return labels[0] if len(labels) == 1 else None
 
 
+def _tc_calculation_match(text):
+    """Finite explicit Tc-to-solver relation, not paper-wide method inheritance.
+
+    DFT/DFPT may supply structure, bands or EPC inputs and are not Tc solvers.
+    Unrecognized, cross-clause, multi-subject and alternative-method relations
+    deliberately remain unresolved. A match is still a pending source reading.
+    """
+    anchors = list(_TC.finditer(text))
+    methods = [(key, match) for key, pattern in _TC_CALCULATION_METHODS.items()
+               for match in pattern.finditer(text)]
+    if len(anchors) != 1 or len(methods) != 1 or len({normalize_formula(m.group()) for m in _formulas(text)}) > 1:
+        return None
+    key, method = methods[0]
+    anchor = anchors[0]
+    prefix = text[max(0, min(method.start(), anchor.start()) - 80):min(method.start(), anchor.start())]
+    if re.search(r"\b(?:not|no|never|without|neither)\b", prefix, re.I):
+        return None
+    gap = text[anchor.end():method.start()] if anchor.end() <= method.start() else text[method.end():anchor.start()]
+    # This small vocabulary excludes negation, comparisons, alternatives and
+    # other named properties. A solver appearing elsewhere cannot fill Tc.
+    words = r"temperature|is|was|were|of|at|a|an|the|calculated|computed|estimated|predicted|obtained|evaluated|determined|using|used|from|via|with|by|to|calculate|compute|estimate|predict|evaluate|determine|solve|solving|equations?|formula|formalism|gives?|yields?|predicts?|calculates?|estimates?|K|kelvin|mK|GPa|MPa|kbar"
+    allowed = rf"(?:[\s=():,]|{_VALUE}|\b(?:{words})\b)*"
+    relation = r"\b(?:calculated|computed|estimated|predicted|obtained|evaluated|determined|using|from|via|with|by|calculate|compute|estimate|predict|evaluate|determine|solve|solving|gives?|yields?|predicts?|calculates?|estimates?)\b"
+    if not gap or len(gap) > 200 or re.fullmatch(allowed, gap, re.I) is None or re.search(relation, gap, re.I) is None:
+        return None
+    return key, method
+
+
+def _tc_measurement_match(text):
+    methods = [(key, match) for key, pattern in _MEASUREMENT_METHODS.items()
+               for match in pattern.finditer(text) if key != "x_ray_diffraction"]
+    anchors = list(_TC.finditer(text))
+    formulas = _formulas(text)
+    if len(methods) != 1 or len(anchors) != 1 or len({normalize_formula(m.group()) for m in formulas}) > 1:
+        return None
+    key, method = methods[0]
+    anchor = anchors[0]
+    start, end = (anchor.end(), method.start()) if anchor.end() <= method.start() else (method.end(), anchor.start())
+    gap = text[start:end]
+    # A directly named formula is permitted in e.g. "resistivity of NbN
+    # shows Tc". Arbitrary narrative, normal-state quantities and comparisons
+    # are excluded instead of inheriting the paper's measurement inventory.
+    for formula in formulas:
+        if start <= formula.start() and formula.end() <= end:
+            gap = gap.replace(formula.group(), " ")
+    prefix = text[max(0, min(method.start(), anchor.start()) - 80):min(method.start(), anchor.start())]
+    if re.search(r"\b(?:not|no|never|without|neither)\b", prefix, re.I):
+        return None
+    words = r"temperature|is|was|were|of|at|a|an|the|measured|measurement|measurements|observed|determined|detected|obtained|using|used|from|via|with|by|to|measure|shows?|gives?|yields?|confirms?|reveals?|indicates?|K|kelvin|mK|GPa|MPa|kbar"
+    allowed = rf"(?:[\s=():,]|{_VALUE}|\b(?:{words})\b)*"
+    relation = r"\b(?:measured|observed|determined|detected|obtained|using|from|via|with|by|measure|shows?|gives?|yields?|confirms?|reveals?|indicates?)\b"
+    if not gap or len(gap) > 200 or re.fullmatch(allowed, gap, re.I) is None or re.search(relation, gap, re.I) is None:
+        return None
+    return key
+
+
+def _tc_method_context(context, text=None):
+    # Generic source-method statements (notably diffraction) are not Tc
+    # measurements. A directly bound Tc solver has its own calculation role.
+    return {**context, "measurement_method": _tc_measurement_match(text)
+            if text and not context.get("calculation_method") else None}
+
+
 def _direct_quantity_binding(text, anchor, quantity):
     if anchor.end() > quantity.start():
         return False
@@ -584,9 +651,11 @@ def _context(text: str) -> dict[str, Any]:
         if len(set(found)) == 1:
             labels[key + "_label"] = found[0]
     computed, observed = bool(_COMPUTED.search(text)), bool(_OBSERVED.search(text))
+    calculation = _tc_calculation_match(text)
     return {"pressure_state": state, "pressure_quantity": pressure,
             "knowledge_origin": "Computed" if computed and not observed else "Observed" if observed and not computed else "Unknown",
-            "measurement_method": _label(text, _METHODS), **labels}
+            "measurement_method": _label(text, _MEASUREMENT_METHODS),
+            "calculation_method": calculation[0] if calculation else None, **labels}
 
 
 def _candidate(*, material, record, source, field, raw_value, quantity=None,
@@ -674,7 +743,7 @@ def extract_source_candidates(material: Mapping[str, Any], record: Mapping[str, 
                 raw = respective_pair[target_index+1].strip()
                 add("tc_kelvin", raw + " " + respective_pair[3], respective_pair,
                     _quantity(raw, "tc_kelvin", respective_pair[3]),
-                    {**context, "tc_criterion": "unknown", "respective_alignment": target_index},
+                    {**_tc_method_context(context, flat), "tc_criterion": "unknown", "respective_alignment": target_index},
                     extra=("explicit_respectively_alignment_requires_review",))
         for match in temperatures if not aligned and len(all_formulas) <= 1 else []:
             anchors = [(abs(match.start() - tc.end()), "unknown", tc) for tc in tc_matches if _direct_quantity_binding(flat, tc, match)]
@@ -694,7 +763,7 @@ def extract_source_candidates(material: Mapping[str, Any], record: Mapping[str, 
             quantity = _quantity(match[1], "tc_kelvin", match[2])
             if quantity["status"] == "parsed" and any(quantity.get(k) is not None and quantity[k] <= 0 for k in ("value", "lower", "upper")):
                 continue
-            local = {**context, "tc_criterion": criterion}
+            local = {**_tc_method_context(context, flat), "tc_criterion": criterion}
             add("tc_kelvin", match.group(), match, quantity, local)
             if criterion != "unknown":
                 add("tc_criterion", criterion, anchor, local_context=local)
@@ -798,7 +867,13 @@ def extract_source_candidates(material: Mapping[str, Any], record: Mapping[str, 
             proposed["candidate_id"] = "enrichment:" + digest({k: v for k, v in proposed.items() if k not in {"candidate_id", "evidence_text"}})
             candidates.append(proposed)
         if context["measurement_method"]:
-            add("measurement_method", context["measurement_method"])
+            add("measurement_method", context["measurement_method"],
+                _MEASUREMENT_METHODS[context["measurement_method"]].search(flat),
+                local_context={**context, "field_role": "source_measurement_method"})
+        calculation = _tc_calculation_match(flat)
+        if calculation:
+            add("calculation_method", calculation[0], calculation[1],
+                local_context={**_tc_method_context(context), "field_role": "tc_calculation_method"})
         # Multiple formula-like tokens require an explicit local noun-phrase
         # binding. They must not erase a directly named subject's own form or
         # allow another compound's form to transfer by mere cooccurrence.
@@ -906,7 +981,10 @@ def extract_retained_quantity_matches(material, record, source):
             if not near or min(distance for distance, _ in near) > 65 or re.search(r"\b(?:width|down to|measurement temperature)\b|ΔT", flat[max(0, match.start()-35):match.start()], re.I):
                 continue
             _, criterion = min(near, key=lambda item: (item[0], item[1] == "unknown"))
-            context = {**_context(flat), "tc_criterion": criterion}
+            # Equal retained values locate a source window, not the subject of
+            # that window. Its methods cannot fill this material's Tc method.
+            context = {**_tc_method_context(_context(flat)), "tc_criterion": criterion,
+                       "measurement_method": None, "calculation_method": None}
             reasons = ["retained_quantity_match_not_material_entailment", "material_identifier_not_local",
                        "exact_source_and_sample_association_requires_review"]
             if source["kind"] == "legacy_unknown":
@@ -929,8 +1007,20 @@ def _present(record, field):
             lattice = raw.get("lattice_params")
             return isinstance(lattice, Mapping) and lattice.get(axis) is not None or record_quantity(raw, field)["status"] == "parsed"
         return record_quantity(raw, field, *(("tc",) if field == "tc_kelvin" else ()))["status"] == "parsed"
-    aliases = {"tc_criterion": ("tc_criterion", "tc_definition", "tc_type"),
-               "measurement_method": ("measurement_method", "measurement", "method", "calculation_method")}
+    if field in {"measurement_method", "calculation_method"}:
+        keys = ("measurement_method", "measurement") if field == "measurement_method" else ("calculation_method",)
+        opposite = _CALCULATION_HINTS if field == "measurement_method" else _MEASUREMENT_METHODS
+        for key in keys:
+            value = raw.get(key)
+            if value is not None and str(value).strip().lower() not in {"", "unknown", "none", "n/a", "not_reported"}:
+                if not any(pattern.search(str(value).replace("_", " ")) for pattern in opposite.values()):
+                    return True
+        # Legacy generic method is usable only when its method role is explicit
+        # in the token itself. Unknown protocols must not fill both roles.
+        method = str(raw.get("method") or "").replace("_", " ")
+        patterns = _MEASUREMENT_METHODS if field == "measurement_method" else _CALCULATION_HINTS
+        return _label(method, patterns) is not None and not any(pattern.search(method) for pattern in opposite.values())
+    aliases = {"tc_criterion": ("tc_criterion", "tc_definition", "tc_type")}
     return any(raw.get(key) is not None and str(raw[key]).strip().lower() not in {"", "unknown", "none", "n/a", "not_reported"}
                for key in aliases.get(field, (field,)))
 
@@ -1149,6 +1239,7 @@ def pending_tc_records(candidates: Sequence[dict]) -> list[dict]:
                   "tc_kelvin": candidate["raw_value"], "tc_criterion": subject.get("tc_criterion", "unknown"),
                   "tc_definition": subject.get("tc_criterion", "unknown"),
                   "knowledge_origin": subject["knowledge_origin"], "measurement_method": subject["measurement_method"],
+                  "calculation_method": subject.get("calculation_method"),
                   "pressure_state": subject["pressure_state"], "validity_status": "pending",
                   "source_locator": {**source["locator"], "char_start": source["span"]["char_start"], "char_end": source["span"]["char_end"]},
                   "enrichment_candidate_id": candidate["candidate_id"],

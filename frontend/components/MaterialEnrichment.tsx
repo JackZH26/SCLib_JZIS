@@ -15,7 +15,7 @@ import { MATERIAL_PROVIDER_ANCHORS, MATERIAL_PROVIDER_LABELS } from "@/lib/mater
 import type { MaterialReferenceProvider } from "@/lib/material-provider-availability";
 import { LITERAL_CASE_FIELDS } from "@/lib/material-literal-fields";
 
-const labels: Record<string, string> = { tc_kelvin: "Tc", pressure_gpa: "Pressure", tc_criterion: "Tc criterion", measurement_method: "Method", space_group: "Space group", crystal_structure: "Structure label", lattice_a: "Lattice a", lattice_b: "Lattice b", lattice_c: "Lattice c", lambda_eph: "Electron–phonon coupling λ", omega_log_source_value: "Logarithmic phonon frequency", mu_star: "Coulomb pseudopotential μ*", hc2_tesla: "Upper critical field", atomic_sites: "Atomic sites", site_occupancies: "Site occupancies", composition_identity: "Composition identity", measurement_temperature_k: "Measurement temperature", calculation_method: "Calculation method" };
+const labels: Record<string, string> = { tc_kelvin: "Tc", pressure_gpa: "Pressure", tc_criterion: "Tc criterion", measurement_method: "Measurement method", space_group: "Space group", crystal_structure: "Structure label", lattice_a: "Lattice a", lattice_b: "Lattice b", lattice_c: "Lattice c", lambda_eph: "Electron–phonon coupling λ", omega_log_source_value: "Logarithmic phonon frequency", mu_star: "Coulomb pseudopotential μ*", hc2_tesla: "Upper critical field", atomic_sites: "Atomic sites", site_occupancies: "Site occupancies", composition_identity: "Composition identity", measurement_temperature_k: "Measurement temperature", calculation_method: "Calculation method" };
 const statuses: Record<string, string> = { retained_present: "Retained extraction", pending_review: "Candidate found · review needed", source_unavailable: "Source identity unavailable", not_extracted: "Not extracted", not_found_in_checked_sources: "No candidate in checked chunks", specialist_extraction_needed: "Specialist source extraction needed" };
 const routes: Record<string, string> = { source_fulltext_and_supplement: "Paper and supplement", source_table_and_supplement: "Source tables and supplement", supercon_source_lookup: "SuperCon source lookup", cod_structure_lookup: "COD structure match", mp_state_matched_structure: "MP structure match with state review", nomad_state_matched_calculation: "NOMAD run with state review", new_structure_calculation: "New structural calculation", new_electron_phonon_calculation: "New electron–phonon calculation" };
 const readable = (value: string) => value.replaceAll("_", " ");
@@ -75,6 +75,8 @@ function candidateContext(candidate: Record<string, unknown>): [string, string][
     measurement_limit: "Lowest measurement temperature; not a transition temperature",
     reported_order_transition: "Reported ordering transition; state association pending",
     reported_property: "Reported property; sample and state association pending",
+    source_measurement_method: "Source measurement description; association with Tc unresolved",
+    tc_calculation_method: "Tc calculation method; source and state association pending",
   };
   const role = evidenceText(sourceValue.role) ?? evidenceText(subject.field_role);
   if (role && roles[role]) entries.push(["Source role", roles[role]]);
@@ -95,7 +97,9 @@ function candidateContext(candidate: Record<string, unknown>): [string, string][
   const origin = evidenceText(subject.knowledge_origin);
   if (origin || field === "tc_kelvin") entries.push(["Source origin", origin && ["Observed", "Computed", "Inferred", "AI-Proposed"].includes(origin) ? `${origin} report` : "Unknown"]);
   const method = evidenceText(subject.measurement_method);
-  if (method) entries.push(["Method", readable(method)]);
+  if (method) entries.push(["Measurement method", readable(method)]);
+  const calculationMethod = evidenceText(subject.calculation_method);
+  if (calculationMethod) entries.push([field === "tc_kelvin" ? "Tc calculation method" : "Calculation method", readable(calculationMethod)]);
   for (const [key, label] of [["sample_label", "Sample"], ["state_label", "State"], ["phase_label", "Phase"], ["run_label", "Run"]]) {
     const value = evidenceText(subject[key]);
     if (value) entries.push([label, value]);
