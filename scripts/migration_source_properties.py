@@ -8,6 +8,7 @@ continue to include these tables; only old-head comparisons exclude them.
 from migration_discovery_designs import assert_empty as assert_empty_discovery_designs
 from migration_discovery_condition_batches import assert_empty as assert_empty_condition_batches
 from migration_discovery_feedback import assert_empty as assert_empty_feedback
+from migration_discovery_calculations import assert_empty as assert_empty_calculations
 
 V1_TABLES = (
     "source_property_import_receipts",
@@ -37,5 +38,6 @@ def assert_empty(connection):
     assert_empty_discovery_designs(connection)
     assert_empty_condition_batches(connection)
     assert_empty_feedback(connection)
+    assert_empty_calculations(connection)
     for name in TABLES:
         assert connection.execute(text(f'SELECT count(*) FROM public."{name}"')).scalar_one() == 0

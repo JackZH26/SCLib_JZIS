@@ -41,6 +41,7 @@ class Settings(BaseSettings):
     discovery_designs_enabled: bool = False
     discovery_condition_batches_enabled: bool = False
     discovery_feedback_enabled: bool = False
+    discovery_calculations_enabled: bool = False
 
     # === Auth ===
     jwt_secret: str = Field(..., min_length=32)

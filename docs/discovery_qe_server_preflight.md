@@ -85,13 +85,15 @@ the original manifest-pinned PS Library files. This replay checks parser
 consistency and file integrity; it does not repeat a solver execution or validate
 material stability or superconductivity.
 
-Persistent feedback still needs an owner-private file inventory, exact saved
-design/action association, preview/commit and uncertain-outcome recovery,
-authenticated retrieval, current-access checks, and browser replay from saved
-bytes. A future service must call this parser itself and compare its findings
-with the browser's reading. It must separately verify the source-coordinate
-construction and distinguish user-declared execution from authenticated runtime
-receipts. Formal scientific field review remains a separate operation.
+The [private calculation-return API](discovery_calculation_returns.md) now adds
+an owner-private original-file inventory, exact saved design/action association,
+preview/commit, uncertain-outcome recovery and authenticated retrieval. It calls
+this parser before saving and reconstructs reports from saved bytes on reads.
+The interface is disabled by default; browser integration and replay from saved
+bytes remain to be implemented. Source-coordinate construction must still be
+verified separately. User-linked files do not authenticate a solver execution
+or a candidate's physical association. Formal scientific field review remains
+a separate operation.
 
 ## Primary format references
 
