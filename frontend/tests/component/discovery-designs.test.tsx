@@ -119,6 +119,30 @@ it("loads saved history with explicit source scope and no automatic write", asyn
   expect(screen.getByRole("button", { name: "Preview private proposal" })).toBeDisabled();
   expect(screen.getByText(/This link does not establish material genealogy/)).toBeInTheDocument();
 });
+it("turns an explicitly selected condition scenario into a linked proposal only after fresh baseline loading", async () => {
+  defaults(); vi.mocked(discoveryDesignPreview).mockImplementation(request => mockPreview(request));
+  render(<DiscoveryDesignWorkbench />);
+  fireEvent.click(await screen.findByRole("button", { name: "Load saved designs" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Inspect history" }));
+  fireEvent.click(await screen.findByText("Plan a bounded condition sweep"));
+  fireEvent.change(screen.getByLabelText("Pressure choices (GPa, one per line)"), { target: { value: "10\n20" } });
+  fireEvent.change(screen.getByLabelText("Temperature choices (K, one per line)"), { target: { value: "300" } });
+  fireEvent.click(screen.getByRole("button", { name: "Estimate combinations" }));
+  fireEvent.click(screen.getByRole("button", { name: "Generate scenarios" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Use 20 GPa target · 300 K target" }));
+  expect(screen.getByLabelText("Requested pressure (GPa)")).toHaveValue("20");
+  expect(screen.getByLabelText("Requested temperature (K, optional)")).toHaveValue("300");
+  expect(screen.getByRole("button", { name: "Preview private proposal" })).toBeDisabled();
+  expect(discoveryDesignPreview).not.toHaveBeenCalled(); expect(discoveryDesignCommit).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "Load exact baseline" }));
+  await waitFor(() => expect(screen.getByRole("button", { name: "Preview private proposal" })).toBeEnabled());
+  fireEvent.click(screen.getByRole("button", { name: "Preview private proposal" }));
+  await screen.findByRole("region", { name: "Exact design preview" });
+  const request = vi.mocked(discoveryDesignPreview).mock.calls[0][0];
+  expect(request.operation).toBe("propose");
+  expect(request.payload).toMatchObject({ parent: { design_id: wire.commit.design_id, revision_id: wire.commit.receipt_id, record_sha256: wire.commit.receipt_sha256 }, design: { target_conditions: { pressure: { kind: "specified", raw_gpa: "20" }, temperature_k: "300" } } });
+  expect(discoveryDesignCommit).not.toHaveBeenCalled();
+});
 it("clears private source values, history, selector and draft on pagehide and ignores late reads", async () => {
   defaults(); let resolve!: (value: unknown) => void;
   vi.mocked(discoveryDesignPage).mockImplementation(() => new Promise(done => { resolve = done; }));
