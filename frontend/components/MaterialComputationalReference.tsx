@@ -4,6 +4,7 @@ import {
   type ArchiveReferenceField, type ComputationalReference, type NativeReferenceInput, type NativeTagDocumentationAnnotation,
 } from "@/lib/material-computational-reference";
 import { type ComputationalNativeOutput } from "@/lib/material-computational-native-output";
+import { type ComputationalInputContext } from "@/lib/material-computational-input-context";
 import { MaterialComputationalNativeOutput } from "@/components/MaterialComputationalNativeOutput";
 
 const sourceDate = (value: string) => new Date(value).toLocaleDateString("en-GB", { timeZone: "UTC", day: "numeric", month: "long", year: "numeric" });
@@ -154,7 +155,7 @@ function SourceProvenance({ data, completeSourceAvailable = false }: { data: Com
   </details>;
 }
 
-export function MaterialComputationalReference({ data, nativeOutput }: { data: ComputationalReference | null; nativeOutput?: ComputationalNativeOutput | null }) {
+export function MaterialComputationalReference({ data, nativeOutput, additionalInputContext }: { data: ComputationalReference | null; nativeOutput?: ComputationalNativeOutput | null; additionalInputContext?: ComputationalInputContext | null }) {
   if (!data) return <p role="status" className="text-sm text-sage-muted">Captured computational reference metadata is unavailable.</p>;
   return <article className="min-w-0 space-y-6 rounded-lg border border-sage-border bg-white p-4 sm:p-5" aria-labelledby="crb2-computed-heading">
     <div className="space-y-2">
@@ -162,7 +163,7 @@ export function MaterialComputationalReference({ data, nativeOutput }: { data: C
       <p className="max-w-4xl text-sm leading-6 text-sage-muted">NOMAD composition B2Cr. This is one independent computed entry, with no selected superconducting result, physical sample or material-state association.</p>
       <PublicSourceLink url={data.reference.entry_url}>Open NOMAD entry</PublicSourceLink>
     </div>
-    {nativeOutput !== undefined && <MaterialComputationalNativeOutput data={nativeOutput} />}
+    {nativeOutput !== undefined && <MaterialComputationalNativeOutput data={nativeOutput} additionalInputContext={additionalInputContext} />}
     <ArchiveSummary data={data} />
     {nativeOutput ? <details className="min-w-0 text-sm">
       <summary className="w-fit cursor-pointer text-accent-deep">Earlier prefix input snapshot</summary>
@@ -179,7 +180,7 @@ export function MaterialComputationalReference({ data, nativeOutput }: { data: C
     <details className="min-w-0 text-sm">
       <summary className="w-fit cursor-pointer text-accent-deep">{nativeOutput ? "Earlier reference metadata (JSON)" : "View computational reference metadata (JSON)"}</summary>
       <p className="mt-2 text-xs leading-5 text-sage-muted">Archive fields, native input settings and potential-label rows overlap. They are evidence groups for one entry, not counts of distinct properties or independent experiments. Raw coordinate arrays are unvalidated, unit-unresolved archive metadata.</p>
-      <pre className="mt-3 max-h-80 max-w-full overflow-auto whitespace-pre-wrap break-all rounded-md border border-sage-border bg-sage-surface p-3 text-xs leading-5" tabIndex={0} aria-label="Computational reference metadata JSON">{JSON.stringify(data, null, 2)}</pre>
+      <pre className="mt-3 max-h-80 max-w-full overflow-auto whitespace-pre-wrap break-all rounded-md border border-sage-border bg-sage-surface p-3 text-xs leading-5" tabIndex={0} role="region" aria-label="Computational reference metadata JSON">{JSON.stringify(data, null, 2)}</pre>
       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs">
         <a href={computationalReferenceMetadataPath} className="site-text-link">Static metadata JSON resource</a>
         <a href={`${computationalReferenceMetadataPath}.sha256`} className="site-text-link" download>Download SHA-256</a>
