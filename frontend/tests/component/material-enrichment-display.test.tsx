@@ -38,6 +38,23 @@ function ProviderProbe({ materialId }: { materialId: string }) {
 describe("Recovery candidate quantity and source presentation", () => {
   beforeEach(() => vi.resetAllMocks());
 
+  it("exposes field coverage as a named keyboard-focusable region after opening its disclosure", async () => {
+    const body = report([]);
+    body.coverage[0].fields = [{ field: "pressure_gpa", status: "not_extracted", retained_present: false, candidate_count: 0,
+      reason_codes: ["source_assertion_subject_or_scope_requires_review"], routes: ["source_fulltext_and_supplement"] }];
+    vi.mocked(getMaterialEnrichment).mockResolvedValue(body);
+    render(<MaterialEnrichment materialId="synthetic" />);
+    const summary = await screen.findByText("Inspect field coverage and recovery routes");
+    expect(summary.closest("details")).not.toHaveAttribute("open");
+    fireEvent.click(summary);
+    const region = screen.getByRole("region", { name: "Scrollable field coverage and recovery routes" });
+    region.focus();
+    expect(region).toHaveFocus();
+    expect(within(region).getByRole("table")).toHaveTextContent("Pressure");
+    expect(within(region).getByRole("table")).toHaveTextContent("Not extracted");
+    expect(within(region).getByRole("table")).toHaveTextContent("Paper and supplement");
+  });
+
   it("links a literal candidate to its private review scope without importing or selecting a result", async () => {
     const candidateId = `enrichment:${"a".repeat(64)}`;
     await renderCandidates([candidate("maximum_applied_pressure_source_value", "50.8 GPa", null, {
