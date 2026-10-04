@@ -24,7 +24,7 @@ from services.result_semantics import classify_result
 from services.scientific_values import FIELD_UNITS, parse_scientific_value, record_quantity
 
 VERSION = "materials-enrichment/1.0.0"
-EXTRACTOR_VERSION = "materials-literal-extractor/1.1.1"
+EXTRACTOR_VERSION = "materials-literal-extractor/1.2.0"
 MAX_MATERIALS = 1000
 MAX_SOURCES = 10000
 MAX_SOURCE_CHARS = 200000
@@ -154,7 +154,7 @@ def _source_field_pattern(field):
     # Unit-less quantities are admitted only for explicitly named ratios and
     # exponents. Other fields require the complete printed unit token.
     suffix = rf"[\s~]*(?P<unit>{unit})(?![A-Za-z0-9])" if unit else r"(?:\s*(?P<unit>dimensionless))?(?![\w(]|\.\d)(?!\s*(?:±|\+/-|to\b|–|—|-\s*\d|[×x]\s*10))"
-    return re.compile(rf"(?<!\w)(?P<cue>{cue})(?![A-Za-z]){_SOURCE_LINK}(?P<amount>{_SOURCE_AMOUNT}){suffix}", re.I)
+    return re.compile(rf"(?<!\w)(?P<cue>{cue})(?![A-Za-z])(?P<link>{_SOURCE_LINK})(?P<amount>{_SOURCE_AMOUNT}){suffix}", re.I)
 
 
 _SOURCE_FIELD_PATTERNS = {field: _source_field_pattern(field) for field in _SOURCE_FIELD_SPECS}
@@ -183,6 +183,11 @@ def _source_field_matches(text):
                 continue
             if field == "gap_energy_source_value" and re.match(r"(?:Δ|\\Delta)", cue) and not re.search(r"\b(?:gap(?: energy| size)?|energy gap)\s*[,(:]?\s*$", before, re.I):
                 continue
+            if (field == "gap_energy_source_value" and match.group("unit").lower() == "k"
+                    and match.group("link").strip().lower() not in {"=", ":", "of", "is", "was"}):
+                # A spectrum near the gap below/at 9 K describes a temperature
+                # condition. Kelvin-valued gaps need an explicit assignment.
+                continue
             if field == "isotope_effect_exponent" and not re.search(r"\bisotope(?:[ -]effect)? (?:exponent|coefficient)\b", text, re.I):
                 continue
             if field == "isotope_effect_exponent" and re.fullmatch(r"(?:α|\\alpha|alpha)", cue, re.I) and not re.search(r"\bisotope(?:[ -]effect)? (?:exponent|coefficient)\s*[,(:]?\s*$", before, re.I):
@@ -206,8 +211,7 @@ def _source_field_matches(text):
                     continue
                 if re.match(r"(?:γ|\\gamma|gamma)", cue, re.I) and not re.search(r"\b(?:electronic specific[ -]heat coefficient|Sommerf(?:eld|ield) (?:coefficient|constant))\s*[,(:]?\s*$", before, re.I):
                     continue
-                compact_unit = re.sub(r"[\s^(){}·⋅*]", "", unit).replace("−", "-")
-                if not re.fullmatch(r"(?:mJ|[µμ]J|uJ|J)(?:/(?:mol(?:-at\.)?)/?K2|(?:mol(?:-at\.)?)-1K-2|K-2(?:mol(?:-at\.)?)-1)", compact_unit):
+                if not _heat_coefficient_unit(unit):
                     continue
             if match.groupdict().get("unit") is not None and _SOURCE_UNIT_TAIL.match(text[match.end():]):
                 continue
@@ -217,6 +221,11 @@ def _source_field_matches(text):
             if field in {"gap_ratio_source_value", "isotope_effect_exponent"} and not _SOURCE_DIMENSIONLESS_END.match(text[match.end():]):
                 continue
             yield field, match
+
+
+def _heat_coefficient_unit(unit):
+    compact = re.sub(r"[\s^(){}·⋅*]", "", unit).replace("−", "-")
+    return re.fullmatch(r"(?:mJ|[µμ]J|uJ|J)(?:/(?:mol(?:-at\.)?)/?K2|(?:mol(?:-at\.)?)-1K-2|K-2(?:mol(?:-at\.)?)-1)", compact) is not None
 
 
 def _extent_pressure(text, match):
@@ -887,6 +896,119 @@ def extract_source_candidates(material: Mapping[str, Any], record: Mapping[str, 
     return list({row["candidate_id"]: row for row in candidates}.values())
 
 
+def _thermal_table_candidates(material, record, source, column):
+    """Two literal thermal rows, with separately captured value and row unit.
+
+    Old adapters without captured headers remain usable for their old fields.
+    They cannot supply the stronger column/label binding required here.
+    """
+    table, text = source["table"], source["text"]
+    headers, rows = table["headers"], table["rows"]
+    header_cells = table.get("header_cells")
+    if header_cells is None or _DIRECTIVE.search(text):
+        return []
+
+    def span(cell):
+        if type(cell) is not dict or set(cell) != {"text", "char_start", "char_end"}:
+            raise EnrichmentError("table_binding_capture_required")
+        start, end = cell["char_start"], cell["char_end"]
+        if (type(start) is not int or type(end) is not int or not 0 <= start < end <= len(text)
+                or type(cell["text"]) is not str or text[start:end] != cell["text"]):
+            raise EnrichmentError("table_binding_source_changed")
+        return {"char_start": start, "char_end": end, "text_sha256": text_digest(text[start:end])}
+
+    if type(header_cells) is not list or len(header_cells) != len(headers) or column == 0:
+        raise EnrichmentError("table_header_capture_invalid")
+    previous_end = 0
+    caption = table.get("caption")
+    caption_span = span(caption) if caption is not None else None
+    if caption_span:
+        previous_end = caption_span["char_end"]
+    for label, cell in zip(headers, header_cells):
+        pin = span(cell)
+        if label != cell["text"] or pin["char_start"] < previous_end:
+            raise EnrichmentError("table_header_binding_invalid")
+        previous_end = pin["char_end"]
+    # Validate every cell before accepting any value. This detects swapped,
+    # overlapping or stale column metadata, including comparison columns.
+    for row in rows:
+        if type(row) is not dict or type(row.get("cells")) is not list or len(row["cells"]) != len(headers):
+            raise EnrichmentError("table_row_shape_invalid")
+        for cell in row["cells"]:
+            pin = span(cell)
+            if pin["char_start"] < previous_end:
+                raise EnrichmentError("table_cell_order_invalid")
+            previous_end = pin["char_end"]
+        if row.get("label") != row["cells"][0]["text"]:
+            raise EnrichmentError("table_label_binding_invalid")
+
+    patterns = {
+        "debye_temperature_source_value": r"(?P<cue>Debye temperature|[Θθ]\s*D|\\(?:Theta|theta)\s*D)\s*\((?P<unit>mK|K|kelvin)\s*\)",
+        "electronic_specific_heat_coefficient_source_value": rf"(?P<cue>electronic specific[ -]heat coefficient|Sommerf(?:eld|ield) (?:coefficient|constant)|γ|\\gamma|gamma)\s*\((?P<unit>{_HEAT_UNIT})\s*\)",
+    }
+    candidates = []
+    for row_index, row in enumerate(rows):
+        label_cell, value_cell = row["cells"][0], row["cells"][column]
+        label, offsets = _flat(label_cell["text"])
+        value, _ = _flat(value_cell["text"])
+        if not re.fullmatch(_SOURCE_AMOUNT, value.strip(), re.I):
+            continue
+        for field, pattern in patterns.items():
+            match = re.fullmatch(pattern, label.strip(), re.I)
+            # Leading whitespace is not silently removed from offset mapping.
+            if match is None or label != label.strip():
+                continue
+            if field == "electronic_specific_heat_coefficient_source_value":
+                if not _heat_coefficient_unit(match["unit"]):
+                    continue
+                if (re.fullmatch(r"γ|\\gamma|gamma", match["cue"], re.I)
+                        and not (caption and re.search(r"\b(?:heat capacity|specific heat)\b", caption["text"], re.I))):
+                    continue
+
+            def label_span(group):
+                start = label_cell["char_start"] + offsets[match.start(group)]
+                end = label_cell["char_start"] + offsets[match.end(group)-1] + 1
+                depth = text[start:end].count("{") - text[start:end].count("}")
+                if 0 < depth <= 8 and text[end:end+depth] == "}" * depth:
+                    end += depth
+                return {"char_start": start, "char_end": end, "text_sha256": text_digest(text[start:end])}
+
+            value_span, unit_span, cue_span = span(value_cell), label_span("unit"), label_span("cue")
+            raw = value_cell["text"]
+            uncertainty = re.search(r"\(\d+\)|(?:±|\+/-)\s*[-+−]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?", raw)
+            reasons = ["column_bound_extraction_not_source_review", "table_state_association_requires_review",
+                       "raw_source_value_not_normalized", "printed_unit_in_table_row"]
+            if source.get("source_status", "unknown") != "active":
+                reasons.append("source_lifecycle_requires_review")
+            context = {"pressure_state": "not_reported", "pressure_quantity": None,
+                       "knowledge_origin": "Unknown", "measurement_method": None,
+                       "table_column_formula": headers[column], "table_column": column,
+                       "field_role": "reported_property"}
+            row_source = {**source, "locator": {**source["locator"], "row": row_index, "column": column}}
+            candidate = _candidate(material=material, record=record, source=row_source, field=field,
+                raw_value=raw, start=value_span["char_start"], end=value_span["char_end"],
+                sentence=text[label_cell["char_start"]:row["cells"][-1]["char_end"]],
+                context=context, identity_basis="exact_table_column_formula", reasons=reasons)
+            caption_text = caption["text"] if caption else ""
+            qualifiers = []
+            if _CAUTION.search(caption_text):
+                qualifiers.append("cited_negative_or_qualified_context")
+            if _COMPUTED.search(caption_text):
+                qualifiers.append("model_or_calculation_context")
+            if re.search(r"\b(?:fit|fitted|estimate|estimated|extrapolat)\w*\b", caption_text, re.I):
+                qualifiers.append("fit_or_estimate_context")
+            candidate["source_value"] = {"raw_value": raw, "raw_unit": text[unit_span["char_start"]:unit_span["char_end"]],
+                "raw_uncertainty": uncertainty.group() if uncertainty else None, "normalization": "none",
+                "role": "reported_property", "qualifiers": qualifiers, "field_cue": text[cue_span["char_start"]:cue_span["char_end"]],
+                "value_span": value_span, "unit_span": unit_span, "cue_span": cue_span, "unit_basis": "table_row_label"}
+            candidate["table_row_label"] = row["label"]
+            candidate["table_binding"] = {"version": "captured-table-binding/1.0.0",
+                "header_span": span(header_cells[column]), "label_span": span(label_cell), "caption_span": caption_span}
+            candidate["candidate_id"] = "enrichment:" + digest({k: v for k, v in candidate.items() if k not in {"candidate_id", "evidence_text"}})
+            candidates.append(candidate)
+    return candidates
+
+
 def extract_table_candidates(material, record, source):
     """Column-bound rectangular tables; comparison columns never cross-fill.
 
@@ -954,7 +1076,7 @@ def extract_table_candidates(material, record, source):
         # Table metadata is part of identity, never mutable annotation.
         candidate["candidate_id"] = "enrichment:" + digest({k: v for k, v in candidate.items() if k not in {"candidate_id", "evidence_text"}})
         result.append(candidate)
-    return result
+    return [*result, *_thermal_table_candidates(material, record, source, column)]
 
 
 def extract_retained_quantity_matches(material, record, source):

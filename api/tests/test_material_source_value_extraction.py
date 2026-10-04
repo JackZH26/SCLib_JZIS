@@ -50,7 +50,7 @@ def test_each_source_field_preserves_printed_value_unit_uncertainty_role_and_spa
     assert data["raw_uncertainty"] == uncertainty
     assert data["role"] == candidate["subject"]["field_role"] == role
     assert data["normalization"] == "none"
-    assert candidate["extractor_version"] == "materials-literal-extractor/1.1.1"
+    assert candidate["extractor_version"] == "materials-literal-extractor/1.2.0"
     for span in [candidate["source"]["span"], data["value_span"], data["cue_span"], data["unit_span"]]:
         if span is not None:
             retained = text[span["char_start"]:span["char_end"]]

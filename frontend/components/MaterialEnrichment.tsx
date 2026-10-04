@@ -16,6 +16,7 @@ import type { MaterialReferenceProvider } from "@/lib/material-provider-availabi
 import { LITERAL_CASE_FIELDS } from "@/lib/material-literal-fields";
 import { recordCoverageSummary, verifiedRecordCoverage } from "@/lib/material-record-coverage";
 import type { MaterialRecordCoverage } from "@/lib/api";
+import { MaterialRecordFieldCoverage } from "@/components/MaterialRecordFieldCoverage";
 
 const labels: Record<string, string> = { tc_kelvin: "Tc", pressure_gpa: "Pressure", tc_criterion: "Tc criterion", measurement_method: "Measurement method", space_group: "Space group", crystal_structure: "Structure label", lattice_a: "Lattice a", lattice_b: "Lattice b", lattice_c: "Lattice c", lambda_eph: "Electron–phonon coupling λ", omega_log_source_value: "Logarithmic phonon frequency", mu_star: "Coulomb pseudopotential μ*", hc2_tesla: "Upper critical field", atomic_sites: "Atomic sites", site_occupancies: "Site occupancies", composition_identity: "Composition identity", measurement_temperature_k: "Measurement temperature", calculation_method: "Calculation method" };
 const statuses: Record<string, string> = { retained_present: "Retained extraction", pending_review: "Candidate found · review needed", source_unavailable: "Source identity unavailable", not_extracted: "Not extracted", not_found_in_checked_sources: "No candidate in checked chunks", specialist_extraction_needed: "Specialist source extraction needed" };
@@ -40,6 +41,7 @@ function RecordFieldStatus({ coverage, field }: { coverage: MaterialRecordCovera
     <p>{row.counts.present}/{coverage.records_total} records with retained values</p>
     <p className="text-xs text-slate-500">{row.counts.missing} missing · {row.counts.unchecked} unchecked · {row.counts.not_applicable} not applicable</p>
     {row.applicability_unknown > 0 && <p className="text-xs text-slate-500">Applicability unresolved for {row.applicability_unknown} missing record{row.applicability_unknown === 1 ? "" : "s"}.</p>}
+    <MaterialRecordFieldCoverage coverage={coverage} field={field} label={labels[field] ?? readable(field)} />
   </div>;
 }
 
@@ -71,7 +73,11 @@ function quantityText(field: string, value: unknown, quantity: unknown): string 
 }
 function candidateValue(candidate: Record<string, unknown>): string | null {
   const sourceValue = objectValue(candidate.source_value);
-  if (sourceValue.normalization === "none") return evidenceText(sourceValue.raw_value) ?? evidenceText(candidate.raw_value);
+  if (sourceValue.normalization === "none") {
+    const raw = evidenceText(sourceValue.raw_value) ?? evidenceText(candidate.raw_value);
+    const rowUnit = sourceValue.unit_basis === "table_row_label" ? evidenceText(sourceValue.raw_unit) : null;
+    return raw && rowUnit ? `${raw} ${rowUnit}` : raw;
+  }
   const formatted = quantityText(evidenceText(candidate.field) ?? "candidate", candidate.value, candidate.quantity);
   if (formatted) return formatted;
   // Original tokens can already contain a unit. Preserve them verbatim instead
@@ -118,6 +124,7 @@ function candidateContext(candidate: Record<string, unknown>): [string, string][
   }
   const rowLabel = evidenceText(candidate.table_row_label);
   if (rowLabel) entries.push(["Source table row", rowLabel]);
+  if (sourceValue.unit_basis === "table_row_label") entries.push(["Unit source", "Printed in the table row label"]);
   const sourceFormula = evidenceText(subject.source_formula) ?? evidenceText(subject.table_column_formula);
   if (sourceFormula) entries.push(["Source formula", sourceFormula]);
   const identity = evidenceText(subject.identity_basis);
@@ -259,6 +266,8 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
           const literalFieldLink = LITERAL_CASE_FIELDS.some(item => item === field)
             && candidateId !== null && /^enrichment:[a-f0-9]{64}$/.test(candidateId)
             && sourceValue.normalization === "none" && candidate.quantity == null
+            && objectValue(candidate.subject).identity_basis !== "exact_table_column_formula"
+            && sourceValue.unit_basis !== "table_row_label"
             ? `/dashboard/research/material-literal-fields?${new URLSearchParams({ material: materialId, field, candidate: candidateId })}` : null;
           const structured = !value && Object.keys(objectValue(candidate.raw_value ?? candidate.value)).length > 0;
           return <li key={evidenceText(candidate.candidate_id) ?? index} className="py-3 text-sm">

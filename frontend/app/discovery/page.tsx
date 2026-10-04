@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Link from "next/link";
 import { DiscoveryFeed } from "@/components/DiscoveryFeed";
 import { ResearchPriorityBoard } from "@/components/ResearchPriorityBoard";
 import { ScientificDiscoveryMatrix } from "@/components/ScientificDiscoveryMatrix";
 import { DiscoveryFieldGuide } from "@/components/DiscoveryFieldGuide";
+import { DiscoverySourceComparison } from "@/components/DiscoverySourceComparison";
+import { DiscoveryPressureSeries } from "@/components/DiscoveryPressureSeries";
 import {
   getDiscoveryCandidates,
   getDiscoveryMetadata,
@@ -51,13 +54,20 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
         <p className="max-w-3xl text-base leading-6">Design the conditions for superconductivity, then choose the next calculation or experiment.</p>
         <p className="text-sm text-sage-muted">Research target: approximately 300 K at 1 atm.</p>
         <nav aria-label="Discovery research workflow" className="flex flex-wrap gap-x-5 gap-y-3 text-sm">
+          <Link href="/discovery/structures" className="min-h-11 content-center text-accent underline underline-offset-4">Inspect structure coordinates</Link>
+          <Link href="/discovery/calculations" className="min-h-11 content-center text-accent underline underline-offset-4">Read calculation output</Link>
           <a href="#discovery-evidence" className="min-h-11 content-center text-accent underline underline-offset-4">Inspect state evidence</a>
+          <a href="#discovery-source-comparisons" className="min-h-11 content-center text-accent underline underline-offset-4">Compare reported modifications</a>
+          <a href="#discovery-pressure-response" className="min-h-11 content-center text-accent underline underline-offset-4">Compare pressure reports</a>
           <a href="#discovery-condition-design" className="min-h-11 content-center text-accent underline underline-offset-4">Design a research plan</a>
           <a href="#discovery-methodology" className="min-h-11 content-center text-accent underline underline-offset-4">Methodology and scope</a>
         </nav>
       </header>
 
       <ScientificDiscoveryMatrix />
+      <DiscoveryPressureSeries />
+      <DiscoverySourceComparison />
+      <p className="max-w-3xl text-sm"><Link className="site-text-link inline-flex min-h-11 items-center" href="/materials/source-observations/nbsctizr-annealing">Compare reported annealing effects in NbScTiZr</Link>: an experimental preparation study with separate transition criteria and source-derived field parameters.</p>
       <details id="discovery-methodology" className="scroll-mt-24 rounded-xl border border-sage-border p-4">
         <summary className="cursor-pointer text-sm font-semibold">Methodology and scope</summary>
         <div className="mt-3 max-w-3xl space-y-3 text-sm leading-6 text-sage-muted">

@@ -277,7 +277,21 @@ def html_captures(payload: bytes, *, paper_id, source_url, source_revision):
                 header_index = next((i for i, row in enumerate(table_rows) if len(row) == width and any(re.search(r"[A-Z][a-z]?\d", cell) for cell in row)), None)
                 if header_index is not None:
                     headers = table_rows[header_index]
-                    text = " | ".join(headers) + "\n"
+                    # Header and caption spans support thermal rows whose unit
+                    # is printed in the row label, outside the value cell.
+                    text, caption_cell, header_cells = "", None, []
+                    captions = list(node.descendants({"caption"}))
+                    if len(captions) == 1 and _clean(captions[0].text()):
+                        caption_text = _clean(captions[0].text())
+                        text = caption_text + "\n"
+                        caption_cell = {"text": caption_text, "char_start": 0, "char_end": len(caption_text)}
+                    for i, header in enumerate(headers):
+                        if i:
+                            text += " | "
+                        start = len(text)
+                        text += header
+                        header_cells.append({"text": header, "char_start": start, "char_end": len(text)})
+                    text += "\n"
                     captured_rows = []
                     for cells in table_rows[header_index+1:]:
                         if len(cells) != width:
@@ -294,8 +308,15 @@ def html_captures(payload: bytes, *, paper_id, source_url, source_revision):
                             captured_cells.append({"text": cell, "char_start": start, "char_end": len(text)})
                         text += "\n"
                         captured_rows.append({"label": cells[0], "cells": captured_cells})
-                    source.update(text=text, content_sha256=text_digest(text),
-                                  table={"headers": headers, "rows": captured_rows})
+                    table = {"headers": headers, "rows": captured_rows}
+                    rectangular = all(len(row) == width for row in table_rows[header_index:])
+                    unspanned = all(cell.attrs.get("colspan", "1") == "1" and cell.attrs.get("rowspan", "1") == "1"
+                                   for cell in node.descendants({"th", "td"}))
+                    if rectangular and unspanned and all(headers) and not list(node.descendants({"table"})):
+                        table["header_cells"] = header_cells
+                        if caption_cell:
+                            table["caption"] = caption_cell
+                    source.update(text=text, content_sha256=text_digest(text), table=table)
                     source["locator"] = {"table": node_id}
         captures.append(source)
     return captures

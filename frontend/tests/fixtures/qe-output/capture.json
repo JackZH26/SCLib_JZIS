@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-05",
+  "engine": "PWSCF 7.5",
+  "cases": "One bounded SCF execution, one fixed-cell relaxation reporting convergence without a geometry step, and two initialization-only outputs. No convergence study or stability/superconductivity validation. UPF contents are not redistributed.",
+  "files": [
+    {
+      "fixture": "scf.xml",
+      "sha256": "23fef6e6565e743094bc4812b1c78a1dc1fc765941997cf29dda2b5c231338de",
+      "bytes": 45585
+    },
+    {
+      "fixture": "scf.json",
+      "sha256": "2602ead1e2fb8dd483bf614e262f2e774a3affb7ade4f0e9353ede41f6e1f8a5",
+      "bytes": 16124
+    },
+    {
+      "fixture": "scf.out",
+      "sha256": "18f25486e0f3fb5c312b55cf2e5c64e772d59b4013ead6a88a63aa9d6fc1ff7f",
+      "bytes": 17386
+    },
+    {
+      "fixture": "initialization.xml",
+      "sha256": "18692ed63f302271a966a5f71e46638755c4c922bef63b1cc613bbbbae078b3d",
+      "bytes": 24970
+    },
+    {
+      "fixture": "initialization.json",
+      "sha256": "c76d7c2f9c3c0f36ff4f8567aa62b4d409311bac0418ff907286836267ca3811",
+      "bytes": 26496
+    },
+    {
+      "fixture": "initialization.out",
+      "sha256": "2572c45cd745e27f85554b22cd28810a03535d4cf77367e5db9c5fc98d71e9ff",
+      "bytes": 8962
+    },
+    {
+      "fixture": "relax-initialization.xml",
+      "sha256": "91ecb7a09f6526117b02151a0a662ff859086cc0b9ac83a7a959a3ef49c4d762",
+      "bytes": 25442
+    },
+    {
+      "fixture": "relax-initialization.json",
+      "sha256": "bad592fedaa92268cc1ecfbbfbb6d5d45356caab88eb5216bd7b2e0f5714bd1f",
+      "bytes": 25398
+    },
+    {
+      "fixture": "relax-initialization.out",
+      "sha256": "ddc8c55b47ca559e51928a018d54465d9a1ff4d3d404376947d22eb8a9d310cf",
+      "bytes": 7990
+    },
+    {
+      "fixture": "relax.xml",
+      "sha256": "6556690736319daab98f99141c9a92f3f42a8a82c29232376e8ac1ca88c47e8c",
+      "bytes": 47993
+    },
+    {
+      "fixture": "relax.out",
+      "sha256": "1c6c02f4bf001bac37d52fb4b87cff962e6ad20e54433ea72b62338bbceb18e6",
+      "bytes": 18160
+    },
+    {
+      "fixture": "relax.json",
+      "sha256": "529f2c4424c604fb86ca5e60f9f5570974053dc22ac2b4d83c4a4a1a2870e679",
+      "bytes": 16126
+    }
+  ]
+}

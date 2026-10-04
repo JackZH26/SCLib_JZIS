@@ -20,7 +20,7 @@ from alembic import context
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from models.db import Base  # noqa: E402
-from services.schema_lifecycle import acquire_migration_lock  # noqa: E402
+from services.schema_lifecycle import migration_lock  # noqa: E402
 
 config = context.config
 if config.config_file_name is not None:
@@ -60,15 +60,16 @@ def run_migrations_online() -> None:
     connectable = engine_from_config(cfg, prefix="sqlalchemy.", poolclass=pool.NullPool)
     with connectable.connect() as connection:
         # Session-scoped: migration 0043's autocommit block must not release it.
-        # NullPool closes the physical session (and lock) on success/failure.
-        acquire_migration_lock(connection)
-        context.configure(
-            connection=connection,
-            target_metadata=target_metadata,
-            compare_type=True,
-        )
-        with context.begin_transaction():
-            context.run_migrations()
+        # Acknowledge release before a consecutive migration starts. NullPool
+        # physical close still releases the lock if the connection is lost.
+        with migration_lock(connection):
+            context.configure(
+                connection=connection,
+                target_metadata=target_metadata,
+                compare_type=True,
+            )
+            with context.begin_transaction():
+                context.run_migrations()
 
 
 if context.is_offline_mode():

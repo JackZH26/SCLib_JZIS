@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
+import Link from "next/link";
 import { getMaterialSuperconReferences } from "@/lib/api";
 import type { MaterialSuperconReferences, SuperconReferenceCode, SuperconReferenceQuantity } from "@/lib/api";
 import { useProviderAvailabilityPublisher } from "@/components/MaterialProviderAvailability";
@@ -144,6 +145,7 @@ export function ExternalSuperconReferences({ materialId }: { materialId: string 
         <span id={headingId} className="font-semibold">MDR SuperCon references</span><span className="ml-3 text-sm font-normal text-slate-600">{summary}</span>
       </summary>
       <div className="mt-3 space-y-3">
+        <p className="text-sm"><Link className="site-text-link" href="/materials/source-references/organic">Browse the separate Organic source table</Link></p>
         {expanded && !report && !failed && <p role="status" className="text-sm text-slate-600">Loading the versioned SuperCon snapshot…</p>}
         {(failed || report?.status === "unavailable") && <p className="text-sm text-slate-600">This snapshot could not be assessed. Source coverage cannot be determined.</p>}
         {report?.status === "not_applicable" && <p className="text-sm text-slate-600">Resolve the exact source composition, isotope or interface notation before matching SuperCon rows.</p>}

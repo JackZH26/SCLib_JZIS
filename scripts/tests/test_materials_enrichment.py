@@ -158,7 +158,7 @@ def test_explicit_physical_forms_keep_exact_spans_and_pending_authority(text, ex
     assert len(forms) == 1
     candidate = forms[0]
     assert candidate["value"] == expected
-    assert candidate["extractor_version"] == "materials-literal-extractor/1.1.1"
+    assert candidate["extractor_version"] == "materials-literal-extractor/1.2.0"
     span = candidate["source"]["span"]
     assert text[span["char_start"]:span["char_end"]] == raw_form
     assert enrich.text_digest(raw_form) == span["text_sha256"]

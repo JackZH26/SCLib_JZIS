@@ -1,0 +1,1421 @@
+{
+  "version": "discovery-ab2h24-source-table/1.0.0",
+  "prepared_on": "2026-10-04",
+  "status": "source_qualified_comparison",
+  "source_row_count": 21,
+  "counts_are_independent_experiments": false,
+  "source": {
+    "paper_id": "aps:10.1103/7lg7-l3x8",
+    "doi": "10.1103/7lg7-l3x8",
+    "title": "Underlying mechanism for high-temperature superconductivity in ternary hydride AB2H24",
+    "authors": [
+      "Bowen Jiang",
+      "Xin Zhong",
+      "Hanyu Liu"
+    ],
+    "journal": "Physical Review Research",
+    "volume": "7",
+    "article": "023296",
+    "year": 2025,
+    "published_date": "2025-06-23",
+    "source_url": "https://journals.aps.org/prresearch/pdf/10.1103/7lg7-l3x8",
+    "captured_edition": "APS published PDF, 23 June 2025",
+    "captured_at_utc": "2026-10-04T10:26:04.560697+00:00",
+    "pdf_pages": 7,
+    "pdf_bytes": 1750600,
+    "pdf_sha256": "d601beae68163ed8e423fca34cbf6513330a9a8b12cdff75b1d5f30d623d5a81",
+    "derived_text_sha256": "a31918c668f46c46f37683c1828bc3b64fce84b1de7d526918e38ca45cab63df",
+    "derived_text_basis": "pypdf page text joined in page order with LF, FF, LF; no text normalization",
+    "current_publication_status": "not_checked",
+    "retained_ingestion_byte_equivalence_established": false,
+    "license": {
+      "id": "CC-BY-4.0",
+      "source_basis": "Published PDF page 1 states the Creative Commons Attribution 4.0 International license.",
+      "attribution_required": true
+    }
+  },
+  "common_context": {
+    "knowledge_origin": "Computed",
+    "role": "published_prediction_table",
+    "pressure": {
+      "raw_value": "300",
+      "value": 300,
+      "unit": "GPa",
+      "locator_id": "table-I"
+    },
+    "tc_solver": {
+      "table_label": "isotropic Eliashberg equation",
+      "paper_method": "Direct solution of the isotropic Migdal-Eliashberg equation using Elk",
+      "scope": "paper_wide_method_not_retained_run_assignment",
+      "locator_ids": [
+        "table-I",
+        "computational-details"
+      ]
+    },
+    "mu_star": {
+      "raw_value": "0.1",
+      "value": 0.1,
+      "unit": "1",
+      "role": "assumed_model_parameter",
+      "locator_id": "table-I"
+    },
+    "prototype": {
+      "formula_label": "AB2H24",
+      "space_group_label": "P6/mmm",
+      "scope": "paper_reported_substitution_framework_not_coordinate_identity",
+      "locator_id": "computational-details"
+    },
+    "table_selection": "Compounds described by the authors as dynamically stable at 300 GPa.",
+    "table_selection_locator_id": "table-I",
+    "numeric_scope": "Source scalars are parsed for the lambda/Tc plot without unit conversion, inferred uncertainty or additional precision.",
+    "temperature_target_or_ambient_survival_established": false
+  },
+  "rows": [
+    {
+      "id": "ab2h24-table-I-row-01",
+      "source_data_row": 1,
+      "formula": "ThY2H24",
+      "a_element": "Th",
+      "b_element": "Y",
+      "electron_phonon_lambda": {
+        "raw_value": "2.39",
+        "value": 2.39,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1161",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "300",
+        "value": 300,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-01",
+        "label": "Table I data row 1",
+        "pdf_page_one_based": 3,
+        "char_start": 9900,
+        "char_end": 9921,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "bfa83c1047dbc3c38cdef10270271b03d50f5144d8eb8ca30aba0341d5eaa031"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 9900,
+          "char_end": 9907,
+          "token_sha256": "ef822954104e712415a302710c6010684ebca1c3986c2bb86948dbe6725683c3"
+        },
+        "omega_log": {
+          "char_start": 9908,
+          "char_end": 9912,
+          "token_sha256": "f1de64eac803d9604ccb03ec7734b0e0eedc75ffebb091a39bf9b9397c39edf8"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 9913,
+          "char_end": 9917,
+          "token_sha256": "cc2504c261f94795ae0fcb9c4eced78afe10a96f12f5dfe8c4cb21b7a9115d82"
+        },
+        "computed_tc": {
+          "char_start": 9918,
+          "char_end": 9921,
+          "token_sha256": "983bd614bb5afece5ab3b6023f71147cd7b6bc2314f9d27af7422541c6558389"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-02",
+      "source_data_row": 2,
+      "formula": "LaSc2H24",
+      "a_element": "La",
+      "b_element": "Sc",
+      "electron_phonon_lambda": {
+        "raw_value": "2.57",
+        "value": 2.57,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "839",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "286",
+        "value": 286,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-02",
+        "label": "Table I data row 2",
+        "pdf_page_one_based": 3,
+        "char_start": 9922,
+        "char_end": 9943,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "598fef70fc44951e1e359163fdab0327be445232176fb6957165df56605cf7f9"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 9922,
+          "char_end": 9930,
+          "token_sha256": "fcef8d382dd6221bfacb1bdecba25129c71304684d7f0ce4e42cc3a167f7cbf6"
+        },
+        "omega_log": {
+          "char_start": 9931,
+          "char_end": 9934,
+          "token_sha256": "7f3ee9fe1fbf452b0c242614e1cad18b6dce034e5bc80763dff6332e872ad2ff"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 9935,
+          "char_end": 9939,
+          "token_sha256": "e23b04fb2c449bc65f10f78ef43e4de9858ecb66d946787e8e7cae5abcffc26a"
+        },
+        "computed_tc": {
+          "char_start": 9940,
+          "char_end": 9943,
+          "token_sha256": "00328ce57bbc14b33bd6695bc8eb32cdf2fb5f3a7d89ec14a42825e15d39df60"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-03",
+      "source_data_row": 3,
+      "formula": "AcSc2H24",
+      "a_element": "Ac",
+      "b_element": "Sc",
+      "electron_phonon_lambda": {
+        "raw_value": "2.64",
+        "value": 2.64,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "983",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "276",
+        "value": 276,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-03",
+        "label": "Table I data row 3",
+        "pdf_page_one_based": 3,
+        "char_start": 9944,
+        "char_end": 9965,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "3b0672921fdb124ddeb73959bb0df856bb4b26898280700650e1337ae0d8acc7"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 9944,
+          "char_end": 9952,
+          "token_sha256": "7389bb414e917b3bb7b303afd9969eeae1cf6bb1a5175d06385be1b9ade9cabd"
+        },
+        "omega_log": {
+          "char_start": 9953,
+          "char_end": 9956,
+          "token_sha256": "fbe10beedf9d29cf53137ba38859ffd1dbe7642cedb7ef0a102a3ab109b47842"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 9957,
+          "char_end": 9961,
+          "token_sha256": "b9250d5347e2cf658aad236496ec102bb9decf58247c9916649c3917fa04f622"
+        },
+        "computed_tc": {
+          "char_start": 9962,
+          "char_end": 9965,
+          "token_sha256": "c76b405781134be1dab7fe45adfb8c32104805a01de7b863e1004b66d56edf9f"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-04",
+      "source_data_row": 4,
+      "formula": "ZrMg2H24",
+      "a_element": "Zr",
+      "b_element": "Mg",
+      "electron_phonon_lambda": {
+        "raw_value": "2.68",
+        "value": 2.68,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "783",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "267",
+        "value": 267,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-04",
+        "label": "Table I data row 4",
+        "pdf_page_one_based": 3,
+        "char_start": 9966,
+        "char_end": 9987,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "e4e4880cf45e13c0644ec08e858a7044a2ccf70bfe76c5e7e5a6eb3e78f6becc"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 9966,
+          "char_end": 9974,
+          "token_sha256": "50ca8c826953795373e970d669011812792791d5bd5263d515dc9dc6842da247"
+        },
+        "omega_log": {
+          "char_start": 9975,
+          "char_end": 9978,
+          "token_sha256": "5620e84be3e5141819e0d9e4ba10b782ba40e232e56352ed636dc0282161b543"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 9979,
+          "char_end": 9983,
+          "token_sha256": "9964c8ae509e89f6db0c25641d8dbc8e108dca8706b3a8506665b5b1304cfaf7"
+        },
+        "computed_tc": {
+          "char_start": 9984,
+          "char_end": 9987,
+          "token_sha256": "8acc23987b8960d83c44541f9f0eb46454cea080ea94d916f56fccf033db866f"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-05",
+      "source_data_row": 5,
+      "formula": "CaZr2H24",
+      "a_element": "Ca",
+      "b_element": "Zr",
+      "electron_phonon_lambda": {
+        "raw_value": "3.02",
+        "value": 3.02,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "586",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "262",
+        "value": 262,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-05",
+        "label": "Table I data row 5",
+        "pdf_page_one_based": 3,
+        "char_start": 9988,
+        "char_end": 10009,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "64bd6132d9e399b6404fe9aa2c3693e53b5414f46bdbb62402d51c591f3a9dac"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 9988,
+          "char_end": 9996,
+          "token_sha256": "f947e345925c1a2b8140f39a6ff2b580d4de03896b15589e9b219d471018c5d0"
+        },
+        "omega_log": {
+          "char_start": 9997,
+          "char_end": 10000,
+          "token_sha256": "219de1387a6743e583e805aad3bf0ffc69dc2107e6d233d43ee8ab62434729e9"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10001,
+          "char_end": 10005,
+          "token_sha256": "f8f688bffaffbc7c792eea1f0abead3980b4d08af0a9e61a1545835c96b73ca2"
+        },
+        "computed_tc": {
+          "char_start": 10006,
+          "char_end": 10009,
+          "token_sha256": "9e6a72557ada15d02001f024f43f06edc4a31437e0e1bb3eeac36ca2d0c4fda7"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-06",
+      "source_data_row": 6,
+      "formula": "ThCa2H24",
+      "a_element": "Th",
+      "b_element": "Ca",
+      "electron_phonon_lambda": {
+        "raw_value": "2.96",
+        "value": 2.96,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "530",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "250",
+        "value": 250,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-06",
+        "label": "Table I data row 6",
+        "pdf_page_one_based": 3,
+        "char_start": 10010,
+        "char_end": 10031,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "23af8363497292684f27ecc5ef8048bce4a1e1c29003a869529938e42da4df94"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10010,
+          "char_end": 10018,
+          "token_sha256": "6264e7df2f362d3f667a465e95e418b4037e0f9948075d779dadc420f43241dd"
+        },
+        "omega_log": {
+          "char_start": 10019,
+          "char_end": 10022,
+          "token_sha256": "87e29676d583c04a1682dbd5bc0d989f8311c888655ca66bc486b6f7f76d4702"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10023,
+          "char_end": 10027,
+          "token_sha256": "35dd0de5bffbe78caa2ff42cd861b1187e12634618c6d32cfef5aecac341b974"
+        },
+        "computed_tc": {
+          "char_start": 10028,
+          "char_end": 10031,
+          "token_sha256": "1e472b39b105d349bcd069c4a711b44a2fffb8e274714bb07ecfff69a9a7f67b"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-07",
+      "source_data_row": 7,
+      "formula": "KTi2H24",
+      "a_element": "K",
+      "b_element": "Ti",
+      "electron_phonon_lambda": {
+        "raw_value": "2.68",
+        "value": 2.68,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "595",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "215",
+        "value": 215,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-07",
+        "label": "Table I data row 7",
+        "pdf_page_one_based": 3,
+        "char_start": 10032,
+        "char_end": 10052,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "59b36fcf512c3aa2f3c0a48ec879c104f37a3ed2769cc0b7af6678d21dfec5ad"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10032,
+          "char_end": 10039,
+          "token_sha256": "934352b1bde94ff8c8bdb83dfdd6cb1bf9490246cbc3efecd7b3caf78dcb7860"
+        },
+        "omega_log": {
+          "char_start": 10040,
+          "char_end": 10043,
+          "token_sha256": "a3aaf5a0e9ad2901ab35ce73910be7fbbe1731a3ed1ff947a6ac395c5024a8b3"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10044,
+          "char_end": 10048,
+          "token_sha256": "9964c8ae509e89f6db0c25641d8dbc8e108dca8706b3a8506665b5b1304cfaf7"
+        },
+        "computed_tc": {
+          "char_start": 10049,
+          "char_end": 10052,
+          "token_sha256": "d86580a57f7bf542e85202283cb845953c9d28f80a8e651db08b2fc0b2d6a731"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-08",
+      "source_data_row": 8,
+      "formula": "CeCa2H24",
+      "a_element": "Ce",
+      "b_element": "Ca",
+      "electron_phonon_lambda": {
+        "raw_value": "1.97",
+        "value": 1.97,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "951",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "206",
+        "value": 206,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-08",
+        "label": "Table I data row 8",
+        "pdf_page_one_based": 3,
+        "char_start": 10053,
+        "char_end": 10074,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "d7a7ec3e7372e2badcc1bd55a7f555a0af4e756dd7744b731efcdb9e88d8e2d6"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10053,
+          "char_end": 10061,
+          "token_sha256": "082e9be471f7defb062eb964d7819caed132ff391972ac57cc0269298131ec10"
+        },
+        "omega_log": {
+          "char_start": 10062,
+          "char_end": 10065,
+          "token_sha256": "8a8b2d66735ed03d0841027e42d38806eedd8e5bd5da54270f958a55d509091f"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10066,
+          "char_end": 10070,
+          "token_sha256": "c558fa9c4a4a6ad4962c10fa6b220b5a9a7129ac62c2f17ab96ff96ff7c29024"
+        },
+        "computed_tc": {
+          "char_start": 10071,
+          "char_end": 10074,
+          "token_sha256": "5cf4e26bd3d87da5e03f80a43a64f1220a1f4ba9e1d6348caea83c06353c3f39"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-09",
+      "source_data_row": 9,
+      "formula": "CeMg2H24",
+      "a_element": "Ce",
+      "b_element": "Mg",
+      "electron_phonon_lambda": {
+        "raw_value": "1.66",
+        "value": 1.66,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "901",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "203",
+        "value": 203,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-09",
+        "label": "Table I data row 9",
+        "pdf_page_one_based": 3,
+        "char_start": 10075,
+        "char_end": 10096,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "caf29398fc408f4a3ffa6190f1d386a7d7403644082e5d5775986a10def3d48d"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10075,
+          "char_end": 10083,
+          "token_sha256": "f817b4aa43de65be67a18b3af1ef609430285ce25043809eb852166954fe3bb4"
+        },
+        "omega_log": {
+          "char_start": 10084,
+          "char_end": 10087,
+          "token_sha256": "fa88d374b9cf5e059fad4a2fe406feae4c49cbf4803083ec521d3c75ee22557c"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10088,
+          "char_end": 10092,
+          "token_sha256": "363a35aa53455c97d77bcfeeff69c80d55c72f7ebf20dea44ea56d85ffbec7dc"
+        },
+        "computed_tc": {
+          "char_start": 10093,
+          "char_end": 10096,
+          "token_sha256": "4621c1d55fa4e86ce0dae4288302641baac86dd53f76227c892df9d300682d41"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-10",
+      "source_data_row": 10,
+      "formula": "AcHf2H24",
+      "a_element": "Ac",
+      "b_element": "Hf",
+      "electron_phonon_lambda": {
+        "raw_value": "1.46",
+        "value": 1.46,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1326",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "198",
+        "value": 198,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-10",
+        "label": "Table I data row 10",
+        "pdf_page_one_based": 3,
+        "char_start": 10097,
+        "char_end": 10119,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "3128beb49be262d38b400bc8a2d34a327b653ebe782f40d5ad3e02bc4ae0ded3"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10097,
+          "char_end": 10105,
+          "token_sha256": "303e483a1fb61155a68801cb991ac45b93f721f7581ed047fb7093bfa6805bb0"
+        },
+        "omega_log": {
+          "char_start": 10106,
+          "char_end": 10110,
+          "token_sha256": "32718321fcedd1bcfbef86cac61aa50938668428fddd0e5810c97b3574f2e070"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10111,
+          "char_end": 10115,
+          "token_sha256": "bed0e86e606630a8af9e6ea9f4e423a0b733f7b919c444dc245da6e394c30c8e"
+        },
+        "computed_tc": {
+          "char_start": 10116,
+          "char_end": 10119,
+          "token_sha256": "a4e00d7e6aa82111575438c5e5d3e63269d4c475c718b2389f6d02932c47f8a6"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-11",
+      "source_data_row": 11,
+      "formula": "AcZr2H24",
+      "a_element": "Ac",
+      "b_element": "Zr",
+      "electron_phonon_lambda": {
+        "raw_value": "1.46",
+        "value": 1.46,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1333",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "197",
+        "value": 197,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-11",
+        "label": "Table I data row 11",
+        "pdf_page_one_based": 3,
+        "char_start": 10120,
+        "char_end": 10142,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "0a56c2867cfe25879c61345b9cb5cb3f446dae056dc8b98eb3ba22ff88161bfd"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10120,
+          "char_end": 10128,
+          "token_sha256": "0e5391f0f438ca8f8f92c684fe8640257e3ea0d94b114df11fccbb2ccf9ff799"
+        },
+        "omega_log": {
+          "char_start": 10129,
+          "char_end": 10133,
+          "token_sha256": "6fdd9b073bc00a5da50bbb71825e6461116845cf1fbb3c84cd22aed47a75fdc2"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10134,
+          "char_end": 10138,
+          "token_sha256": "bed0e86e606630a8af9e6ea9f4e423a0b733f7b919c444dc245da6e394c30c8e"
+        },
+        "computed_tc": {
+          "char_start": 10139,
+          "char_end": 10142,
+          "token_sha256": "8bcbb4c131df56f7c79066016241cc4bdf4e58db55c4f674e88b22365bd2e2ad"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-12",
+      "source_data_row": 12,
+      "formula": "LaZr2H24",
+      "a_element": "La",
+      "b_element": "Zr",
+      "electron_phonon_lambda": {
+        "raw_value": "1.41",
+        "value": 1.41,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1375",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "195",
+        "value": 195,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-12",
+        "label": "Table I data row 12",
+        "pdf_page_one_based": 3,
+        "char_start": 10143,
+        "char_end": 10165,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "250f7e0b4fd8ff5b66d95aafad65a48bc59630157bc63579f4e529d0065447c6"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10143,
+          "char_end": 10151,
+          "token_sha256": "c37ed7f30fba41e37b3df57d4d0226255db3dfe2ee5513ba9aebfa9cf8e0479a"
+        },
+        "omega_log": {
+          "char_start": 10152,
+          "char_end": 10156,
+          "token_sha256": "d818f221cbcb7016316f8a918c9a9967eb7d71ec54785211ec1d0a9ba7923dcd"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10157,
+          "char_end": 10161,
+          "token_sha256": "9909ad1ab3ddcc236b8a4850d5363b6ccae09ae0e6d4c8a1e53ae6b34f5a9cb0"
+        },
+        "computed_tc": {
+          "char_start": 10162,
+          "char_end": 10165,
+          "token_sha256": "1dfacb2ea5a03e0a915999e03b5a56196f1b1664d2f768d1b7eff60ac059789d"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-13",
+      "source_data_row": 13,
+      "formula": "ThSc2H24",
+      "a_element": "Th",
+      "b_element": "Sc",
+      "electron_phonon_lambda": {
+        "raw_value": "1.29",
+        "value": 1.29,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1584",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "194",
+        "value": 194,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-13",
+        "label": "Table I data row 13",
+        "pdf_page_one_based": 3,
+        "char_start": 10166,
+        "char_end": 10188,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "ef214e28730117ec0cfa96e7f7509a43cbac644014fd0580003f7a353a60a9c2"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10166,
+          "char_end": 10174,
+          "token_sha256": "5e30176a0a979f3bb30f0ac17c35340a39ea12d8d50ea23d8f9e3decbd2cdf2c"
+        },
+        "omega_log": {
+          "char_start": 10175,
+          "char_end": 10179,
+          "token_sha256": "9ea3f4147c0d763c96e161f83b7aac40c78468f26a382a16eb5b75af0d7ae4f0"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10180,
+          "char_end": 10184,
+          "token_sha256": "45c6114e7e9e0c4a525d62b262e591c21ce9fb87eb74d9fbb2e5c79ad105e3e1"
+        },
+        "computed_tc": {
+          "char_start": 10185,
+          "char_end": 10188,
+          "token_sha256": "7559ca4a957c8c82ba04781cd66a68d6022229fca0e8e88d8e487c96ee4446d0"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-14",
+      "source_data_row": 14,
+      "formula": "LaHf2H24",
+      "a_element": "La",
+      "b_element": "Hf",
+      "electron_phonon_lambda": {
+        "raw_value": "1.34",
+        "value": 1.34,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1374",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "187",
+        "value": 187,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-14",
+        "label": "Table I data row 14",
+        "pdf_page_one_based": 3,
+        "char_start": 10189,
+        "char_end": 10211,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "5900de4a655562458dff56cea27da051074eec827b753cf0391f73ce9baf4fc8"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10189,
+          "char_end": 10197,
+          "token_sha256": "c8238747b2daa448b68d179c4eefc349b868c4170eb985b4354f51b4ce08d9b2"
+        },
+        "omega_log": {
+          "char_start": 10198,
+          "char_end": 10202,
+          "token_sha256": "117019447c8cafa16c8c15c79e694a1b2e99bd3adc86a9121856b3fc810879f3"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10203,
+          "char_end": 10207,
+          "token_sha256": "a9e7e9637d9e0d0ee8a185eb82dd6362b7a1f19412480c8e752b85ce6a42e6e2"
+        },
+        "computed_tc": {
+          "char_start": 10208,
+          "char_end": 10211,
+          "token_sha256": "38b2d03f3256502b1e9db02b2d12aa27a46033ffe6d8c0ef0f2cf6b1530be9d8"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-15",
+      "source_data_row": 15,
+      "formula": "CeSc2H24",
+      "a_element": "Ce",
+      "b_element": "Sc",
+      "electron_phonon_lambda": {
+        "raw_value": "1.14",
+        "value": 1.14,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1572",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "164",
+        "value": 164,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-15",
+        "label": "Table I data row 15",
+        "pdf_page_one_based": 3,
+        "char_start": 10212,
+        "char_end": 10234,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "e3307b9b785f1c13a5db27cad2c1c08e63fda9da3972c8f0fc25e2198c645471"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10212,
+          "char_end": 10220,
+          "token_sha256": "5d8b89623d89d3363b1a3f5e352299b86a5edaeefe9a38e709bc1cf0c2a5f7a9"
+        },
+        "omega_log": {
+          "char_start": 10221,
+          "char_end": 10225,
+          "token_sha256": "9c05d48bbde0b1ecdc68706e9c4a536de566f35deb45d66ad6d8261689164dfc"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10226,
+          "char_end": 10230,
+          "token_sha256": "69828231cb667d045372606b0f30e6ba73e12649993b618487cff1813ef6f3ef"
+        },
+        "computed_tc": {
+          "char_start": 10231,
+          "char_end": 10234,
+          "token_sha256": "3f9807cb9ae9fb6c30942af6139909d27753a5e03fe5a5c6e93b014f5b17366f"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-16",
+      "source_data_row": 16,
+      "formula": "ThHf2H24",
+      "a_element": "Th",
+      "b_element": "Hf",
+      "electron_phonon_lambda": {
+        "raw_value": "1.06",
+        "value": 1.06,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1462",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "148",
+        "value": 148,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-16",
+        "label": "Table I data row 16",
+        "pdf_page_one_based": 3,
+        "char_start": 10235,
+        "char_end": 10257,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "6086adf125c9121ccf225cf16b2ef2516db02349de738966eb51ced5147379a1"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10235,
+          "char_end": 10243,
+          "token_sha256": "d5b625e7e94c768a893099f7ed0a798e91c8f405f765d474d7355efd1460c1e7"
+        },
+        "omega_log": {
+          "char_start": 10244,
+          "char_end": 10248,
+          "token_sha256": "3e6ce2279a7dc8bb898363593479217081596b07dafc8947fe7ca11ad723ce56"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10249,
+          "char_end": 10253,
+          "token_sha256": "89e0e9d0a617da9caa29fe12a267c23041bc2b92ffb0ca592ce4dfa4ca32b5da"
+        },
+        "computed_tc": {
+          "char_start": 10254,
+          "char_end": 10257,
+          "token_sha256": "ec2e990b934dde55cb87300629cedfc21b15cd28bbcf77d8bbdc55359d7689da"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-17",
+      "source_data_row": 17,
+      "formula": "LaTh2H24",
+      "a_element": "La",
+      "b_element": "Th",
+      "electron_phonon_lambda": {
+        "raw_value": "1.12",
+        "value": 1.12,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "953",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "113",
+        "value": 113,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-17",
+        "label": "Table I data row 17",
+        "pdf_page_one_based": 3,
+        "char_start": 10258,
+        "char_end": 10279,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "f4d2413f6f4bcf08cabd836971731c4e430dc3df3171a2e5053db1d21200f0cc"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10258,
+          "char_end": 10266,
+          "token_sha256": "b1a673f5c9f572bce7e9991c86e28aa26fe0613e49d8d272a3bf51f6367344cd"
+        },
+        "omega_log": {
+          "char_start": 10267,
+          "char_end": 10270,
+          "token_sha256": "6953c2a883537cc80135516935de542987c2cd76f94d8cbf2ad004d7bf4c6195"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10271,
+          "char_end": 10275,
+          "token_sha256": "d72c6e9cf20da8c31ac4f040ef135702d47c889b5a520bd14a54e911d13607c4"
+        },
+        "computed_tc": {
+          "char_start": 10276,
+          "char_end": 10279,
+          "token_sha256": "6c658ee83fb7e812482494f3e416a876f63f418a0b8a1f5e76d47ee4177035cb"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-18",
+      "source_data_row": 18,
+      "formula": "CeHf2H24",
+      "a_element": "Ce",
+      "b_element": "Hf",
+      "electron_phonon_lambda": {
+        "raw_value": "0.88",
+        "value": 0.88,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1428",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "108",
+        "value": 108,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-18",
+        "label": "Table I data row 18",
+        "pdf_page_one_based": 3,
+        "char_start": 10280,
+        "char_end": 10302,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "9554817418aeed8ca3a1410ec39c6e6b49e4035e7a40cbd5e2b26b5409cd0235"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10280,
+          "char_end": 10288,
+          "token_sha256": "fe9d5260ad10b881626aef92ded8b5806fa6e69a59c35a8245b2aa798537abd1"
+        },
+        "omega_log": {
+          "char_start": 10289,
+          "char_end": 10293,
+          "token_sha256": "da4bb298d82e8b0c1cde703b60549806e385df057824e9c9b032167c945b0fa8"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10294,
+          "char_end": 10298,
+          "token_sha256": "e2819fbe22224ae04f453ed6e908e2f66e42d761b045db7c5f8b213411e68f9f"
+        },
+        "computed_tc": {
+          "char_start": 10299,
+          "char_end": 10302,
+          "token_sha256": "9537f32ec7599e1ae953af6c9f929fe747ff9dadf79a9beff1f304c550173011"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-19",
+      "source_data_row": 19,
+      "formula": "CeZr2H24",
+      "a_element": "Ce",
+      "b_element": "Zr",
+      "electron_phonon_lambda": {
+        "raw_value": "0.85",
+        "value": 0.85,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1500",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "107",
+        "value": 107,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-19",
+        "label": "Table I data row 19",
+        "pdf_page_one_based": 3,
+        "char_start": 10303,
+        "char_end": 10325,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "115216c6f29b7322423cc8fe6ea4d9fc86b63f2e2e2567ceee127142ee3bce10"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10303,
+          "char_end": 10311,
+          "token_sha256": "709aad5cc17e63c8d5506d44271a559a5b22617d687a67832f1cc91b1dbc1ec7"
+        },
+        "omega_log": {
+          "char_start": 10312,
+          "char_end": 10316,
+          "token_sha256": "9f69998560dcfd8016442e0a32e959191df095817a164ce844c64ec5a8b0cc1b"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10317,
+          "char_end": 10321,
+          "token_sha256": "1e181f0934d441445f03ff51c972ef44275b830c10a80401e53b27bf5baf327a"
+        },
+        "computed_tc": {
+          "char_start": 10322,
+          "char_end": 10325,
+          "token_sha256": "3346f2bbf6c34bd2dbe28bd1bb657d0e9c37392a1d5ec9929e6a5df4763ddc2d"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-20",
+      "source_data_row": 20,
+      "formula": "CeTh2H24",
+      "a_element": "Ce",
+      "b_element": "Th",
+      "electron_phonon_lambda": {
+        "raw_value": "0.39",
+        "value": 0.39,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1132",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "4",
+        "value": 4,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-20",
+        "label": "Table I data row 20",
+        "pdf_page_one_based": 3,
+        "char_start": 10326,
+        "char_end": 10346,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "4d634a96255e6627a9b2875299fd09174ded580d85f434f61a9d14dc79908f59"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10326,
+          "char_end": 10334,
+          "token_sha256": "0a40422793f962bcc1b65ab6abba39b9f4660abe270a0009a7c95fbbc6492598"
+        },
+        "omega_log": {
+          "char_start": 10335,
+          "char_end": 10339,
+          "token_sha256": "e754478c35f2708c5d0bf28696b44f1bcf79832bf716a2bfba665212ba9b4f09"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10340,
+          "char_end": 10344,
+          "token_sha256": "b1188979876eef1d21d37d518c0805a03607abae10768863218cd66089c92e02"
+        },
+        "computed_tc": {
+          "char_start": 10345,
+          "char_end": 10346,
+          "token_sha256": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"
+        }
+      }
+    },
+    {
+      "id": "ab2h24-table-I-row-21",
+      "source_data_row": 21,
+      "formula": "ThCe2H24",
+      "a_element": "Th",
+      "b_element": "Ce",
+      "electron_phonon_lambda": {
+        "raw_value": "0.35",
+        "value": 0.35,
+        "unit": "1",
+        "unit_basis": "dimensionless_epc_lambda_definition",
+        "uncertainty": null
+      },
+      "omega_log": {
+        "raw_value": "1164",
+        "value": null,
+        "unit": null,
+        "unit_status": "not_printed_in_table"
+      },
+      "computed_tc": {
+        "raw_value": "2",
+        "value": 2,
+        "unit": "K",
+        "unit_basis": "printed_table_header",
+        "uncertainty": null
+      },
+      "row_locator": {
+        "id": "table-I-row-21",
+        "label": "Table I data row 21",
+        "pdf_page_one_based": 3,
+        "char_start": 10347,
+        "char_end": 10367,
+        "end_exclusive": true,
+        "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+        "window_sha256": "224288bc732d7858565c9443b4d45a5669b4bd10a1ed9db3214d335a2f44dd35"
+      },
+      "field_locators": {
+        "formula": {
+          "char_start": 10347,
+          "char_end": 10355,
+          "token_sha256": "d70fa22ca97b2d8fcb5a09843540d677725944f70d1a54937c6bc0c80dbb53de"
+        },
+        "omega_log": {
+          "char_start": 10356,
+          "char_end": 10360,
+          "token_sha256": "9e468662812f45d0558e113a4b263fe79a657a32ced55af2b02b50630e5533bc"
+        },
+        "electron_phonon_lambda": {
+          "char_start": 10361,
+          "char_end": 10365,
+          "token_sha256": "a976726b1d1bda3e1f271287f3aa7229ca3204ff8bf9cb2b581c610b9c811bef"
+        },
+        "computed_tc": {
+          "char_start": 10366,
+          "char_end": 10367,
+          "token_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
+        }
+      }
+    }
+  ],
+  "locators": [
+    {
+      "id": "table-I",
+      "label": "Table I: caption, column labels and all 21 source rows",
+      "pdf_page_one_based": 3,
+      "char_start": 9717,
+      "char_end": 10368,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+      "window_sha256": "23aa969de4a64f7ea3238167cf2a39c44ae0c9c47f2682be5ee1e925eccf0711"
+    },
+    {
+      "id": "computational-details",
+      "label": "Paper-wide prototype and computational methods",
+      "pdf_page_one_based": 2,
+      "char_start": 7577,
+      "char_end": 9005,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+      "window_sha256": "fef8beed70039b87c927b4a53a14daf15650d840c919092f9e3ab6775a39b1eb"
+    },
+    {
+      "id": "class-stability",
+      "label": "Class-level stability discussion",
+      "pdf_page_one_based": 3,
+      "char_start": 10548,
+      "char_end": 11073,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+      "window_sha256": "0b07f6b87c435caec4668b3f50752a68be44f0bdd969b63799d264a23cdfb140"
+    },
+    {
+      "id": "fitted-CS",
+      "label": "CS fitted using reported Tc",
+      "pdf_page_one_based": 4,
+      "char_start": 14857,
+      "char_end": 15629,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+      "window_sha256": "01387416165accff703764e517324b38625411ed5ffcd5d8b442f37de482fee1"
+    },
+    {
+      "id": "abstract-range",
+      "label": "Abstract temperature-range statement",
+      "pdf_page_one_based": 1,
+      "char_start": 1000,
+      "char_end": 1203,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen pypdf page text joined in page order with LF, FF, LF",
+      "window_sha256": "b8563aaa4c76f585bf7a0c2646e1a6d6462a76d109167fbff9af9a80734e33d8"
+    }
+  ],
+  "source_notes": [
+    {
+      "id": "metal-substitution-context",
+      "kind": "source_qualified_paraphrase",
+      "summary": "The paper studies metal substitutions within a P6/mmm-AB2H24 prototype framework. Shared prototype labels do not establish identical atomic coordinates or a retained calculation-run association.",
+      "locator_ids": [
+        "computational-details"
+      ]
+    },
+    {
+      "id": "class-stability-scope",
+      "kind": "source_qualified_paraphrase",
+      "summary": "The discussion says most of these compounds are not thermodynamically stable at 300 GPa and become dynamically unstable when pressure decreases to 250 GPa. This class-level statement is not assigned to individual table rows.",
+      "locator_ids": [
+        "class-stability"
+      ]
+    },
+    {
+      "id": "fitted-CS-scope",
+      "kind": "source_qualified_paraphrase",
+      "summary": "The paper fits its CS descriptor against Tc. These fitted descriptors are not applied to predict new compounds in this comparison.",
+      "locator_ids": [
+        "fitted-CS"
+      ]
+    },
+    {
+      "id": "abstract-table-range-difference",
+      "kind": "unresolved_internal_source_difference",
+      "summary": "The abstract gives a maximum Tc of 276 K, while Table I lists 300 K for ThY2H24. This comparison retains the Table I values; the internal source difference remains unresolved.",
+      "locator_ids": [
+        "abstract-range",
+        "table-I"
+      ]
+    }
+  ],
+  "scope": {
+    "comparison": "Different source compounds at one reported pressure, under the common table model assumption.",
+    "pressure_response_series_established": false,
+    "omega_log_unit_established": false,
+    "specific_coordinate_models_validated": false,
+    "source_row_catalogue_association": "unestablished",
+    "room_temperature_ambient_stable_host_status": "unestablished",
+    "raw_fulltext_or_PDF_included": false,
+    "independent_run_or_convergence_validation_performed": false
+  },
+  "authority": {
+    "canonical_field_updates": 0,
+    "scientific_acceptance": false,
+    "ml_training_approved": false,
+    "formal_human_review": false,
+    "formal_scientific_review": false,
+    "new_calculation_executed": false,
+    "native_result_association_established": false,
+    "stable_host_validated": false
+  }
+}

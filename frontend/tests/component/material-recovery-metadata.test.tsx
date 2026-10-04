@@ -102,6 +102,21 @@ describe("Current bounded recovery metadata and source scope", () => {
     expect(body.source_coverage["paper:unsampled"].omitted_chunks_total).toBeNull();
   });
 
+  it("retains table-unit location and separate header/label pins without caption text", () => {
+    const body = report(), row = body.candidates[0];
+    const pin = { char_start: 2, char_end: 5, text_sha256: "a".repeat(64) };
+    row.field = "debye_temperature_source_value";
+    row.raw_value = row.value = "501"; row.quantity = null;
+    row.source_value = { raw_value: "501", raw_unit: "K", normalization: "none", unit_basis: "table_row_label",
+      value_span: pin, unit_span: pin, cue_span: pin };
+    row.table_binding = { version: "captured-table-binding/1.0.0", header_span: pin, label_span: pin,
+      caption_span: { ...pin, private_notes: "PRIVATE_TABLE_SENTINEL" }, caption: "PRIVATE_TABLE_SENTINEL" };
+    const output = materialRecoveryMetadata(body, materialIds[0])!;
+    expect(output.candidates[0].source_value).toMatchObject({ raw_value: "501", raw_unit: "K", unit_basis: "table_row_label" });
+    expect(output.candidates[0].table_binding).toEqual({ version: "captured-table-binding/1.0.0", header_span: pin, label_span: pin, caption_span: pin });
+    expect(JSON.stringify(output)).not.toContain("PRIVATE_TABLE_SENTINEL");
+  });
+
   it("allowlists recursively rather than dumping private text from real structured quantities, bindings or record references", () => {
     const id = materialIds.find(id => literalRows.some(row => row.material_id === id && row.field === "composition_identity"))!;
     const body = report(id), tc = body.candidates.find(row => row.quantity)!;

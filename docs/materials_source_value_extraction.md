@@ -1,6 +1,6 @@
 # Bounded literal source values
 
-`materials-literal-extractor/1.1.0` adds a read-only, source-scoped path for
+`materials-literal-extractor/1.2.0` provides a read-only, source-scoped path for
 fourteen fields previously labelled `paper_field_extractor_not_implemented`.
 It returns useful printed source values for review. It does not accept a
 material-state association, modify a retained record, normalize a scientific
@@ -38,7 +38,8 @@ logic are reused. A source must belong to the retained record's paper. The
 target formula must occur in the same inspected segment. A foreign compound
 or an explicit single-element comparison can prevent assignment. A nearby
 formula, catalogue family, earlier paragraph or plausible alias is insufficient.
-The code does not add anaphora, table row/column binding or alias equivalence.
+The passage grammar does not add anaphora or alias equivalence. The separately
+captured thermal-table path below uses explicit column and row binding.
 
 `value` and `raw_value` are the exact original substring from the printed
 amount through its unit, including inequalities, ranges, parenthetical
@@ -97,8 +98,8 @@ Hc/lambda/gap values by formula.
 
 The scientific value parser, field-unit registry, source-intake grants,
 canonical material fields and historical packaged primary-source seed are
-unchanged. Historical candidates remain version 1.0.1 and keep their IDs;
-newly extracted candidates use 1.1.0 and include source-value metadata in their
+unchanged. Historical packaged candidates remain version 1.0.1 and keep their IDs;
+newly extracted candidates use 1.2.0 and include source-value metadata in their
 identity. Formal reviewed Tc field overlays remain a separate unfinished path.
 
 ## Validation and remaining limits
@@ -128,3 +129,56 @@ values remain pending with qualifiers; those qualifiers do not establish
 citation ownership or material-state scope. Further recall work needs
 source-specific subject/table binding and independently annotated examples,
 followed by separate material-state and lifecycle review before any promotion.
+
+## Thermal tables in 1.2.0
+
+The primary-HTML capture adapter now retains exact header-cell and caption
+spans in its captured text. Rectangular, unspanned tables may produce two new
+literal row types: Debye temperature with a printed K/mK/kelvin row unit, and
+the electronic specific-heat coefficient with a complete supported molar
+heat-capacity unit. A bare γ row additionally needs a captured heat-capacity or
+specific-heat caption. A named Sommerfeld/electronic coefficient supplies its
+own meaning. These rules do not cover arbitrary tables or infer a unit.
+
+All header and row-cell spans must match the capture and appear in order;
+the row label must equal the first captured cell. The selected formula must
+match exactly one full column header. Changed labels, reordered or overlapping
+cells, missing header captures, unsupported powers, footnote-suffixed numbers,
+ragged tables and spanning HTML cells cannot supply these thermal candidates.
+Comparison headers containing citations remain unmatched until a separate
+review resolves the reference and composition. Old adapters retain their
+existing supported structure fields but cannot supply the new thermal rows.
+
+For these candidates `raw_value` is the exact numerical **cell**, while
+`source_value.raw_unit` comes from the separately pinned row-label substring.
+`unit_basis: table_row_label` makes that separation explicit. `table_binding`
+retains header, label and optional caption pins. The UI displays amount and
+row unit together, explains the unit location and includes these pins in its
+redacted metadata download. It does not offer the passage-only literal-intake
+action for a table candidate. No existing append/intake contract is broadened.
+
+An offline replay of the captured arXiv:1603.02892 Table II (PDF page 5)
+recovers four previously missed candidates: γ/ΘD values 3.16/492 for
+Mo5P1.1B1.9 and 3.07/501 for Mo5PB2. The printed units remain mJ/mol-at./K²
+and K. The prose's 3.16(1)/492(2) values are not substituted for the table's
+unqualified printed numbers. Mo5P1.07B1.93 and its uncertainty-bearing refined
+formula remain unmatched; the two cited comparison columns remain unmatched.
+This is two source-study compositions, **not four completed catalogue fields**.
+The original PDF and text hashes and the replay are retained in the private
+audit directory; AI visual inspection does not establish independent human
+review, publication equivalence or selected-record association.
+
+The existing 19-material, 323-capture historical snapshot was also replayed:
+321 material/source pairs retained the same extracted content after excluding
+the same two generated sources; versioned IDs change on re-extraction. This
+is a bounded regression sample, not a new 200-material accuracy benchmark.
+
+The live chunk adapter does not fabricate table structure from plain prose.
+Tables need the explicit primary-source capture path and subsequent review.
+This change does not ingest these private captures, update production fields
+or resolve missingness for the full catalogue.
+
+The passage grammar also withholds Kelvin-valued gap wording such as
+“gap at 9 K” and “gap energy below 9 K” unless an explicit property assignment
+is present. A temperature condition near a gap is insufficient to identify an
+energy value; an explicit printed Kelvin assignment remains unconverted.

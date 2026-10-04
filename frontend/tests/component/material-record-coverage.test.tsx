@@ -1,16 +1,25 @@
 import { webcrypto } from "node:crypto";
+import type { ReactNode } from "react";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { MaterialEnrichment } from "@/components/MaterialEnrichment";
 import { getMaterialEnrichment, type MaterialEnrichmentReport, type MaterialRecordCoverage } from "@/lib/api";
-import { projectRecordCoverage, verifiedRecordCoverage } from "@/lib/material-record-coverage";
+import { projectRecordCoverage, recordCoverageFieldRows, recordCoverageReasonLabel, verifiedRecordCoverage } from "@/lib/material-record-coverage";
+import { MaterialRecordFieldCoverage } from "@/components/MaterialRecordFieldCoverage";
 import { materialRecoveryMetadata } from "@/lib/material-recovery-metadata";
 import { expressionCanonical, expressionSha } from "@/lib/source-expressions";
 import nativeCoverage from "../fixtures/material-record-coverage-native.synthetic.json";
 
+const linkDestinations = vi.hoisted(() => vi.fn());
+// Model the framework's configured route prefix so this test checks delegation
+// to AppLink/NextLink rather than a bare anchor. A built deployment owns routing.
+vi.mock("next/link", () => ({ default: ({ href, children, prefetch, className }: { href: string; children?: ReactNode; prefetch?: boolean; className?: string }) => {
+  linkDestinations(href, prefetch);
+  return <a href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${href}`} className={className}>{children}</a>;
+} }));
 vi.mock("@/lib/api", () => ({ getMaterialEnrichment: vi.fn() }));
-beforeEach(() => { vi.resetAllMocks(); vi.stubGlobal("crypto", webcrypto); });
-afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
+beforeEach(() => { vi.resetAllMocks(); vi.stubGlobal("crypto", webcrypto); vi.stubEnv("NEXT_PUBLIC_BASE_PATH", ""); });
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
 it("consumes the exact Python-generated coverage DTO, including its versioned limitations and zero pressure", async () => {
   const value = await verifiedRecordCoverage(nativeCoverage, "synthetic-native");
   expect(value).toEqual(nativeCoverage);
@@ -56,6 +65,7 @@ it("keeps old responses readable without claiming a record denominator", async (
   render(<MaterialEnrichment materialId="synthetic" />);
   expect(await screen.findByText(/an extraction in at least one inspected record/)).toBeInTheDocument();
   expect(screen.queryByText(/fields fully covered/)).not.toBeInTheDocument();
+  expect(screen.queryByText(/^Inspect .* records \(/)).not.toBeInTheDocument();
 });
 it("labels an empty retained inventory as unassessed", async () => {
   const r = await report(), c = r.record_coverage!;
@@ -115,4 +125,87 @@ it("suppresses an invalid denominator response while retaining the material page
   render(<MaterialEnrichment materialId="synthetic" />);
   expect(await screen.findByText(/Source recovery is unavailable/)).toBeInTheDocument();
   expect(screen.queryByText(/4\/5 records with retained values/)).not.toBeInTheDocument();
+  expect(screen.queryByText(/^Inspect .* records \(/)).not.toBeInTheDocument();
+});
+
+it("opens the verified per-record field view only on demand with named local scrolling", async () => {
+  vi.mocked(getMaterialEnrichment).mockResolvedValue(await report());
+  render(<MaterialEnrichment materialId="synthetic" />);
+  fireEvent.click(await screen.findByText("Inspect field coverage and recovery routes"));
+  const summary = screen.getByText("Inspect Measurement method records (5)", { selector: "summary" });
+  expect(summary.closest("details")).not.toHaveAttribute("open");
+  fireEvent.click(summary);
+  const region = screen.getByRole("region", { name: "Scrollable Measurement method record coverage" });
+  region.focus(); expect(region).toHaveFocus(); expect(region).toHaveAttribute("tabindex", "0");
+  const table = within(region);
+  expect(table.getAllByRole("row")).toHaveLength(6);
+  expect(table.getAllByText("Retained value")).toHaveLength(4);
+  expect(table.getByText("Not applicable")).toBeInTheDocument();
+  expect(table.getByRole("link", { name: "paper:0" })).toHaveAttribute("href", "/paper/paper%3A0");
+  expect(linkDestinations).toHaveBeenCalledWith("/paper/paper%3A0", false);
+  expect(table.getByText("legacy:0")).toBeInTheDocument();
+  expect(table.getByText("Computed")).toBeInTheDocument();
+  expect(table.getAllByText("No reason supplied in this snapshot.")).toHaveLength(5);
+});
+
+it("delegates encoded source IDs to the app router under a configured deployment prefix", async () => {
+  vi.stubEnv("NEXT_PUBLIC_BASE_PATH", "/sclib-preview");
+  const c = await coverage();
+  c.records[0].paper_id = "arxiv:cond-mat/0612431";
+  const { coverage_sha256: _, ...body } = c;
+  c.coverage_sha256 = await expressionSha(expressionCanonical(body));
+  render(<MaterialRecordFieldCoverage coverage={c} field="pressure_gpa" label="Pressure" />);
+  fireEvent.click(screen.getByText("Inspect Pressure records (5)", { selector: "summary" }));
+  expect(screen.getByRole("link", { name: "arxiv:cond-mat/0612431" })).toHaveAttribute("href", "/sclib-preview/paper/arxiv%3Acond-mat%2F0612431");
+  expect(linkDestinations).toHaveBeenCalledWith("/paper/arxiv%3Acond-mat%2F0612431", false);
+});
+
+it("uses eligible inventory positions without inventing unchecked rows or joining raw indices", async () => {
+  const c = await coverage();
+  c.records_total = 8; c.records_unchecked = 3;
+  c.records.forEach((record, index) => { record.record_offset = 7 - index; });
+  c.fields.forEach(field => { field.counts.unchecked = 3; });
+  c.records[0].fields.find(field => field.field === "pressure_gpa")!.reason_codes = ["no_retained_value_in_inspected_record", "future_scope_reason"];
+  const { coverage_sha256: _, ...body } = c;
+  c.coverage_sha256 = await expressionSha(expressionCanonical(body));
+  const original = expressionCanonical(c);
+  render(<MaterialRecordFieldCoverage coverage={c} field="pressure_gpa" label="Pressure" />);
+  fireEvent.click(screen.getByText("Inspect Pressure records (5)", { selector: "summary" }));
+  const table = within(screen.getByRole("region", { name: "Scrollable Pressure record coverage" }));
+  expect(table.getByText("Eligible record 8")).toBeInTheDocument();
+  expect(table.queryByText("Eligible record 1")).not.toBeInTheDocument();
+  expect(table.getAllByRole("row")).toHaveLength(6);
+  expect(table.getByText("This inspected record has no retained value.")).toBeInTheDocument();
+  expect(table.getByText("Unmapped reason code: future_scope_reason")).toBeInTheDocument();
+  expect(screen.getByText(/3 current eligible records are unchecked/)).toHaveTextContent("Their identities and field assessments are not supplied");
+  expect(expressionCanonical(c)).toBe(original);
+  expect(recordCoverageFieldRows(c, "unsupported_field")).toBeNull();
+  expect(recordCoverageReasonLabel("constructor")).toBe("Unmapped reason code: constructor");
+});
+
+it("retains source absence and unknown-origin distinctions without fabricating publication or approval", async () => {
+  const c = await coverage();
+  c.records[0].paper_id = null;
+  c.records[0].knowledge_origin = "Unknown"; c.records[0].classification_status = "unknown";
+  c.records[0].fields.find(field => field.field === "measurement_method")!.status = "missing";
+  c.fields.find(field => field.field === "measurement_method")!.counts = { present: 4, missing: 1, unchecked: 0, not_applicable: 0 };
+  c.records[0].fields.find(field => field.field === "pressure_gpa")!.reason_codes = ["no_retained_value_in_inspected_record"];
+  const { coverage_sha256: _, ...body } = c;
+  c.coverage_sha256 = await expressionSha(expressionCanonical(body));
+  render(<MaterialRecordFieldCoverage coverage={c} field="pressure_gpa" label="Pressure" />);
+  fireEvent.click(screen.getByText("Inspect Pressure records (5)", { selector: "summary" }));
+  const table = within(screen.getByRole("region", { name: "Scrollable Pressure record coverage" }));
+  expect(table.getByText("Source ID not supplied")).toBeInTheDocument();
+  expect(table.getByText("Unknown")).toBeInTheDocument();
+  expect(table.getByText("This inspected record has no retained value.")).toBeInTheDocument();
+  expect(table.queryByRole("link", { name: "paper:0" })).not.toBeInTheDocument();
+  expect(recordCoverageReasonLabel("method_role_applicability_unresolved")).toBe("The result origin does not establish method applicability.");
+});
+
+it("does not expose a forged over-budget inventory through the new record view", async () => {
+  const c = await coverage();
+  c.records_inspected = 33;
+  render(<MaterialRecordFieldCoverage coverage={c} field="pressure_gpa" label="Pressure" />);
+  expect(screen.queryByText(/^Inspect Pressure records/)).not.toBeInTheDocument();
+  expect(screen.queryByRole("table")).not.toBeInTheDocument();
 });

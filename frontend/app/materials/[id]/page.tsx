@@ -41,6 +41,8 @@ import { ExternalCalculationReferences } from "@/components/ExternalCalculationR
 import { ExternalSuperconReferences } from "@/components/ExternalSuperconReferences";
 import { MaterialProviderAvailabilityProvider } from "@/components/MaterialProviderAvailability";
 import { materialStudyReading } from "@/lib/material-study-reading";
+import { RetainedHc2, RetainedTcCriteria } from "@/components/RetainedRecordScientificFields";
+import { retainedHc2 } from "@/lib/material-retained-record";
 
 export const dynamic = "force-dynamic";
 
@@ -447,8 +449,9 @@ function RecordsTable({
 }) {
   // Preserve individual extracted results: equal Tc/pressure is not enough
   // to merge sample, method, origin, criterion or source-role evidence.
-  const rowsWithMethods = records.filter(record => !visibilityIsRestricted(record.visibility)).map<Record<string, unknown> & { _methods: Set<string> }>((record) => ({
+  const rowsWithMethods = records.map((record, rawIndex) => ({ record, rawIndex })).filter(({ record }) => !visibilityIsRestricted(record.visibility)).map<Record<string, unknown> & { _methods: Set<string>; _retainedIndex: number }>(({ record, rawIndex }) => ({
     ...record,
+    _retainedIndex: rawIndex,
     _methods: new Set(
       typeof record.measurement === "string" && record.measurement.toLowerCase() !== "unknown"
         ? [record.measurement] : [],
@@ -463,6 +466,7 @@ function RecordsTable({
     const yb = num(b.year ?? b.measurement_year) ?? 0;
     return yb - ya;
   });
+  const hasRetainedHc2 = rows.some(record => retainedHc2(record) !== null);
 
   return (
     <section>
@@ -472,6 +476,7 @@ function RecordsTable({
           {new Set(rows.map((r) => r.paper_id).filter(id => typeof id === "string" && id.trim())).size} linked bibliographic IDs)
         </h2>
         <p className="text-xs text-slate-500">Each row is a retained extraction with its own conditions and source.</p>
+        <p className="max-w-4xl text-xs leading-5 text-sage-muted">Tc type and lexical criterion remain separate retained fields.{hasRetainedHc2 && " Hc2 is a record field; sharing a row does not establish a joint measurement, its probe method or Hc2(0)."}</p>
         <details className="text-xs text-slate-500">
           <summary className="cursor-pointer">How to read these records</summary>
           <p className="mt-2 max-w-3xl">Retained values and catalogue eligibility do not establish scientific approval. Operational anomaly checks flag records for review; no findings is not scientific validation. Repeated reports are not independent replications. Open each row’s review details or the retained-record Archive to inspect the supplied policy metadata.</p>
@@ -487,6 +492,7 @@ function RecordsTable({
               <th className="px-3 py-3 text-right font-medium">P (GPa)</th>
               <th className="px-3 py-3 text-left font-medium">Sample</th>
               <th className="px-3 py-3 text-left font-medium">Method</th>
+              {hasRetainedHc2 && <th className="px-3 py-3 text-left font-medium">Retained Hc2</th>}
               <th className="px-3 py-3 text-left font-medium">Pairing</th>
               <th className="px-3 py-3 text-right font-medium">Year</th>
               <th className="px-3 py-3 text-center font-medium" title="Source tier is not experimental confirmation">Source tier</th>
@@ -494,7 +500,7 @@ function RecordsTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {rows.map((r, i) => {
+            {rows.map((r) => {
               const tc = num(r.tc_kelvin ?? r.tc);
               const classification = recordClassification(r);
               const year = num(r.year ?? r.measurement_year);
@@ -507,9 +513,10 @@ function RecordsTable({
               const pairing =
                 typeof r.pairing_symmetry === "string" ? r.pairing_symmetry : "";
               return (
-                <tr key={i} className="hover:bg-slate-50">
+                <tr key={r._retainedIndex} id={`retained-record-${r._retainedIndex}`} tabIndex={-1} aria-label={`Retained record index ${r._retainedIndex}`} className="scroll-mt-28 hover:bg-slate-50 target:bg-sage-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
                   <td className="px-3 py-2.5 text-right tabular-nums font-medium">
                     {tc != null ? scientificNumber(tc) : "—"}
+                    <RetainedTcCriteria record={r} />
                   </td>
                   <td className="px-3 py-2.5 text-xs text-slate-600" title={classification.version}>
                     <span className="block">{classification.status === "conflicted" ? "Classification conflict" : classification.origin}</span>
@@ -525,6 +532,7 @@ function RecordsTable({
                   <td className="px-3 py-2.5 text-slate-600">
                     {methods || "—"}
                   </td>
+                  {hasRetainedHc2 && <td className="px-3 py-2.5 text-slate-600"><RetainedHc2 record={r} /></td>}
                   <td className="px-3 py-2.5 text-slate-600">
                     {pairing || "—"}
                   </td>

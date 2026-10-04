@@ -114,6 +114,20 @@ describe("Recovery candidate quantity and source presentation", () => {
     expect(document.body.textContent).not.toContain("PRIVATE SOURCE");
   });
 
+  it("shows a separately captured table unit once and withholds the passage-only review action", async () => {
+    await renderCandidates([candidate("electronic_specific_heat_coefficient_source_value", "3.07", null, {
+      candidate_id: `enrichment:${"a".repeat(64)}`,
+      subject: { identity_basis: "exact_table_column_formula", table_column_formula: "Mo5PB2" },
+      table_row_label: "γ (mJ/mol-at./K2)",
+      source_value: { raw_value: "3.07", raw_unit: "mJ/mol-at./K2", normalization: "none", role: "reported_property", unit_basis: "table_row_label" },
+    })]);
+    const row = candidateRow("Electronic specific-heat coefficient:");
+    expect(row.querySelector("p")).toHaveTextContent("Electronic specific-heat coefficient: 3.07 mJ/mol-at./K2");
+    expect(row).toHaveTextContent("Unit source: Printed in the table row label");
+    expect(row).toHaveTextContent("Source formula: Mo5PB2");
+    expect(within(row).queryByRole("link", { name: "Review original field source" })).not.toBeInTheDocument();
+  });
+
   it("distinguishes study pressure and measurement limits from transition conditions", async () => {
     await renderCandidates([
       candidate("maximum_applied_pressure_source_value", "50.8 GPa", null, { source_value: { raw_value: "50.8 GPa", raw_unit: "GPa", normalization: "none", role: "study_extent" } }),
