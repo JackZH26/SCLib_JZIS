@@ -157,6 +157,7 @@ describe("Local calculation reading UI", () => {
     upload(await localFiles()); fireEvent.click(screen.getByRole("button", { name: "Read QE output" }));
     await screen.findByRole("heading", { name: "QE reports electronic convergence" });
     expect(screen.getByText("9 per cell")).toBeInTheDocument();
+    expect(screen.getByText("Prepare a follow-up calculation")).toBeInTheDocument();
     const blobs: Blob[] = []; vi.stubGlobal("URL", { createObjectURL: vi.fn((blob: Blob) => { blobs.push(blob); return "blob:output"; }), revokeObjectURL: vi.fn() });
     vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
     fireEvent.click(screen.getByRole("button", { name: "Download reading" }));
@@ -164,6 +165,7 @@ describe("Local calculation reading UI", () => {
     expect(blobs).toHaveLength(2);
     fireEvent.change(screen.getByLabelText("QE XML output"), { target: { files: [] } });
     expect(screen.queryByRole("button", { name: "Download reading" })).not.toBeInTheDocument();
+    expect(screen.queryByText("Prepare a follow-up calculation")).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Clear files" }));
     expect(screen.getByRole("button", { name: "Read QE output" })).toBeDisabled();
     expect(fetch).not.toHaveBeenCalled(); expect(view.container.textContent).not.toMatch(/[\u4e00-\u9fff]/);
