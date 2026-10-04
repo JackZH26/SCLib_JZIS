@@ -14,6 +14,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW_DIR = ROOT / ".github" / "workflows"
+# Public formula/numeric token hashes in the frozen AB2H24 paper table. Only
+# these introducing lines are excepted; the original scientific bytes stay pinned.
+AB2H24_DIGEST_COMMIT = "f3c7b9f01c7b174e96a55b425b1c9166f337e3cc"
+AB2H24_DIGEST_FILE = "frontend/public/research-pilots/discovery-ab2h24-source-table-2026-10-04.json"
+AB2H24_DIGEST_SHA = "e63ab6df2fd73daf92cb75f0c7efda804cfda595a302f63e8b99fb55eaa9f362"
+AB2H24_DIGEST_LINES = tuple(114 + row * 59 + field * 5 for row in range(21) for field in range(4))
+REVIEWED_AB2H24_DIGEST_FINGERPRINTS = {
+    f"{AB2H24_DIGEST_COMMIT}:{AB2H24_DIGEST_FILE}:generic-api-key:{line}"
+    for line in AB2H24_DIGEST_LINES
+}
 # These positions were independently checked against the captured public source
 # spans. Pin both the original commit and the full immutable file bytes: a new
 # source revision must receive its own review, rather than inherit an exception.
@@ -457,8 +467,37 @@ class SecurityWorkflowTests(unittest.TestCase):
                     "c499146b223562c5099ab971a149392067ca047e:"
                     "api/tests/test_session_security.py:generic-api-key:54"
                 ),
-            } | REVIEWED_FIXTURE_FINGERPRINTS | REVIEWED_SOURCE_DIGEST_FINGERPRINTS | REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS,
+            } | REVIEWED_FIXTURE_FINGERPRINTS | REVIEWED_SOURCE_DIGEST_FINGERPRINTS | REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS | REVIEWED_AB2H24_DIGEST_FINGERPRINTS,
         )
+
+    def test_ab2h24_exceptions_recompute_public_literal_hashes(self) -> None:
+        raw = (ROOT / AB2H24_DIGEST_FILE).read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(), AB2H24_DIGEST_SHA)
+        metadata = json.loads(raw)
+        source_lines = raw.decode().splitlines()
+        triage = json.loads((ROOT / "docs/reviews/2026-10-05/discovery-source-digests/secret-triage.json").read_text())
+        self.assertEqual(triage["commit"], AB2H24_DIGEST_COMMIT)
+        self.assertEqual(triage["file"], AB2H24_DIGEST_FILE)
+        self.assertEqual(triage["file_sha256"], AB2H24_DIGEST_SHA)
+        self.assertEqual(triage["source_text_sha256"], metadata["source"]["derived_text_sha256"])
+        self.assertEqual(triage["findings"], 84)
+        self.assertEqual(triage["source_tokens_recomputed"], 84)
+        self.assertEqual(len(triage["entries"]), 84)
+        self.assertEqual({entry["fingerprint"] for entry in triage["entries"]}, REVIEWED_AB2H24_DIGEST_FINGERPRINTS)
+        tokens = [(row, field, locator) for row in metadata["rows"] for field, locator in row["field_locators"].items()]
+        self.assertEqual(len(tokens), 84)
+        for line, (row, field, locator), entry in zip(AB2H24_DIGEST_LINES, tokens, triage["entries"]):
+            token = row["formula"] if field == "formula" else row[field]["raw_value"]
+            digest = hashlib.sha256(token.encode()).hexdigest()
+            self.assertEqual(locator["token_sha256"], digest)
+            self.assertEqual(locator["char_end"] - locator["char_start"], len(token))
+            self.assertEqual(entry, {
+                "fingerprint": f"{AB2H24_DIGEST_COMMIT}:{AB2H24_DIGEST_FILE}:generic-api-key:{line}",
+                "line": line, "row_id": row["id"], "field": field,
+                "char_start": locator["char_start"], "char_end": locator["char_end"], "literal_sha256": digest,
+            })
+            self.assertRegex(source_lines[line - 1], r'^\s*"token_sha256": "[0-9a-f]{64}"[,]?$')
+            self.assertIn(digest, source_lines[line - 1])
 
     def test_pressure_table_exceptions_bind_exact_expression_hash_lines(self) -> None:
         self.assertEqual(len(REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS), 36)
