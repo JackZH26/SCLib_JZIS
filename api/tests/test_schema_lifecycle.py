@@ -21,6 +21,7 @@ from services.schema_lifecycle import (
     check_application_schema,
     check_connection_schema,
     expected_heads,
+    migration_lock,
 )
 
 
@@ -104,6 +105,37 @@ async def test_failed_migration_body_releases_lock_on_connection_close(schema_en
     async with schema_engine.connect() as contender:
         await contender.run_sync(acquire_migration_lock)
         assert (await contender.execute(text("SELECT pg_advisory_unlock(:key)"), {"key": MIGRATION_LOCK_KEY})).scalar_one() is True
+
+
+@pytest.mark.parametrize("failed_body", [False, True])
+async def test_migration_scope_releases_before_owner_session_closes(schema_engine, failed_body):
+    from sqlalchemy.exc import DBAPIError
+
+    def scoped(connection):
+        with migration_lock(connection):
+            if failed_body:
+                connection.execute(text("SELECT 1 / 0"))
+            else:
+                connection.execute(text("SELECT 1"))
+                connection.commit()
+
+    # Keep the original physical session open: the next migration must not
+    # depend on disconnect processing or time-based sleeps to acquire its lock.
+    async with schema_engine.connect() as owner:
+        if failed_body:
+            with pytest.raises(DBAPIError):
+                await owner.run_sync(scoped)
+        else:
+            await owner.run_sync(scoped)
+        async with schema_engine.connect() as contender:
+            await contender.run_sync(scoped_success)
+        assert (await check_application_schema(schema_engine))["status"] == "compatible"
+
+
+def scoped_success(connection):
+    with migration_lock(connection):
+        connection.execute(text("SELECT 1"))
+        connection.commit()
 
 
 async def test_api_admission_cannot_reuse_a_caller_transaction(schema_engine):

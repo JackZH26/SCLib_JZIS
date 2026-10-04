@@ -99,6 +99,27 @@ export function discoveryDesignDetail(designId: string, signal?: AbortSignal): P
   return request(`/research/discovery-designs/designs/${encodeURIComponent(designId)}`, { cache: "no-store", signal, responseByteLimit: 1024 * 1024 });
 }
 
+// Private evidence associations. An uncertain POST is recovered only by its original GET identity.
+export function discoveryFeedbackCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-feedback/capabilities", { cache: "no-store", signal, responseByteLimit: 16384 });
+}
+export function discoveryFeedbackContext(design: import("./discovery-feedback").FeedbackDesignPin, materialId: string, recordIndex: number, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ design_id: design.design_id, revision_id: design.revision_id, record_sha256: design.record_sha256, material_id: materialId, record_index: String(recordIndex) });
+  return request(`/research/discovery-feedback/context?${query}`, { cache: "no-store", signal, responseByteLimit: 256 * 1024 });
+}
+export function discoveryFeedbackPreview(body: import("./discovery-feedback").FeedbackRequest, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-feedback/operations/preview", { method: "POST", body: JSON.stringify({ request: body }), cache: "no-store", signal, responseByteLimit: 512 * 1024 });
+}
+export function discoveryFeedbackCommit(body: import("./discovery-feedback").FeedbackRequest, previewSha: string, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/discovery-feedback/operations/commit", { method: "POST", body: JSON.stringify({ request: body, expected_preview_sha256: previewSha }), cache: "no-store", signal, responseByteLimit: 512 * 1024 });
+}
+export function discoveryFeedbackOutcome(requestKey: string, requestSha: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-feedback/operations/outcome?${new URLSearchParams({ request_key: requestKey, expected_request_sha256: requestSha })}`, { cache: "no-store", signal, responseByteLimit: 512 * 1024 });
+}
+export function discoveryFeedbackPage(designId: string, offset = 0, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/discovery-feedback/designs/${encodeURIComponent(designId)}/returns?${new URLSearchParams({ offset: String(offset), limit: "8" })}`, { cache: "no-store", signal, responseByteLimit: 4 * 1024 * 1024 });
+}
+
 // Private condition batches. Every write is explicit; uncertain saves use GET only.
 export function discoveryConditionBatchCapabilities(signal?: AbortSignal): Promise<unknown> {
   return request("/research/discovery-condition-batches/capabilities", { cache: "no-store", signal, responseByteLimit: 16384 });

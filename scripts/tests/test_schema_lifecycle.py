@@ -244,7 +244,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
                        "_assert_empty_ml_use_roles(connection)", "FUNCTION_SIGNATURES", "to_regprocedure"):
             self.assertIn(marker, block)
         self.assertEqual(block.count("assert snapshot(connection) == before"), 2)
-        self.assertIn('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES, _RESULT_PASSAGE_TABLE, *_LEGACY_CORPUS_TABLES, *_SOURCE_PROPERTY_TABLES, *_DISCOVERY_DESIGN_TABLES, *_DISCOVERY_CONDITION_BATCH_TABLES}', block)
+        self.assertIn('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES, _RESULT_PASSAGE_TABLE, *_LEGACY_CORPUS_TABLES, *_SOURCE_PROPERTY_TABLES, *_DISCOVERY_DESIGN_TABLES, *_DISCOVERY_CONDITION_BATCH_TABLES, *_DISCOVERY_FEEDBACK_TABLES}', block)
         self.assertIn('assert "exact revision" in str(exc)', block)
         for connection in block.split("with engine.connect() as connection:")[1:]:
             self.assertLess(connection.index("check_connection_schema(connection)"),
@@ -302,7 +302,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
     def test_main_barrier_roundtrip_retains_every_v1_byte_and_the_exact_frozen_function(self):
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         body = source.split("def _discovery_main_barrier_roundtrip", 1)[1].split("async def _discovery_projection_replays_on_migrated_schema", 1)[0]
-        for marker in ('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES, _RESULT_PASSAGE_TABLE, *_LEGACY_CORPUS_TABLES, *_SOURCE_PROPERTY_TABLES, *_DISCOVERY_DESIGN_TABLES, *_DISCOVERY_CONDITION_BATCH_TABLES}', "_assert_empty_discovery_projections(connection)",
+        for marker in ('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES, _RESULT_PASSAGE_TABLE, *_LEGACY_CORPUS_TABLES, *_SOURCE_PROPERTY_TABLES, *_DISCOVERY_DESIGN_TABLES, *_DISCOVERY_CONDITION_BATCH_TABLES, *_DISCOVERY_FEEDBACK_TABLES}', "_assert_empty_discovery_projections(connection)",
             'all(before[name] for name in _DISCOVERY_PROJECTION_TABLES)',
             'command.downgrade(config, "0069_discovery_projection")', 'assert "exact revision" in str(exc)',
             'frozen_insert_statement().split("AS $$", 1)', 'SELECT prosrc FROM pg_proc',
@@ -532,7 +532,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
         source = (ROOT / "api/main.py").read_text().split("async def lifespan", 1)[1]
         self.assertLess(source.index("await check_application_schema"), source.index("asyncio.create_task"))
         environment = (ROOT / "api/alembic/env.py").read_text().split("def run_migrations_online", 1)[1]
-        self.assertLess(environment.index("acquire_migration_lock"), environment.index("context.run_migrations"))
+        self.assertLess(environment.index("with migration_lock(connection)"), environment.index("context.run_migrations"))
         self.assertIn("pool.NullPool", environment)
 
     def test_populated_task_history_does_not_mask_independent_older_guards(self):

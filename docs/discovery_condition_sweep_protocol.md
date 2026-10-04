@@ -75,8 +75,10 @@ rechecks current sources, permissions and parent eligibility. The saved design
 retains its exact conditions and parent; it does not retain the generation batch.
 The JSON download preserves the local manifest for inspection.
 
-Server batch intake, durable manifest-to-design links and history readback remain
-required follow-up work. Atomic candidate generation additionally needs explicit
+This describes the initial local sweep stage. Server batch intake, durable
+manifest-to-design links and history readback have since been implemented in the
+[condition-batch protocol](discovery_condition_batch_protocol.md); deployed
+availability still requires release verification. Atomic candidate generation needs explicit
 structure revisions, sites, occupancies, species, charge/strain/interface definitions
 and domain constraints. Pressure-response analysis requires comparable actual
 results; these requested targets cannot serve as a measured pressure scan.

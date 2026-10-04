@@ -89,7 +89,9 @@ The root should run the focused suites and existing material property surfaces,
 then verify the detail table and opened coverage disclosure at desktop and
 320 px widths, keyboard focus, local scrolling and source navigation. These
 engineering checks do not establish human scientific review or formal-property
-completion; the 152-field approval remains a separate pending decision.
+completion. Additional formal fields need an explicit applicable registry,
+quantity definition, units, method/condition scope and review rules. No specific
+152-field registry or pending user approval was verified in this audit.
 
 ## Root execution and current public response
 
@@ -116,5 +118,5 @@ per-record coverage rows. New coverage rows, IDs, bounds, disclosure and routing
 have component-level verification; live browser acceptance against a deployed
 coverage response remains pending. The local build and screenshots do not
 establish deployment of this change. Scientific acceptance, native physical
-associations, formal-property completion and the 152-field decision remain
-separate work.
+associations, formal-property completion and contracts for additional quantities
+remain separate work. A remembered field count is not an approval requirement.
