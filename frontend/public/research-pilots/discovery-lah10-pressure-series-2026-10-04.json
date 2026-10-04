@@ -1,0 +1,1264 @@
+{
+  "version": "discovery-lah10-pressure-series/1.0.0",
+  "status": "source_qualified_computational_pressure_series",
+  "source_row_count": 7,
+  "counts_are_independent_experiments": false,
+  "source": {
+    "title": "Quantum Crystal Structure in the 250 K Superconducting Lanthanum Hydride",
+    "authors": [
+      "Ion Errea",
+      "Francesco Belli",
+      "Lorenzo Monacelli",
+      "Antonio Sanna",
+      "Takashi Koretsune",
+      "Terumasa Tadano",
+      "Raffaello Bianco",
+      "Matteo Calandra",
+      "Ryotaro Arita",
+      "Francesco Mauri",
+      "José A. Flores-Livas"
+    ],
+    "source_url": "https://arxiv.org/pdf/1907.11916v1",
+    "record_url": "https://arxiv.org/abs/1907.11916v1",
+    "source_edition": "arxiv_author_preprint_v1",
+    "arxiv_id": "1907.11916",
+    "arxiv_version": "v1",
+    "submission_date": "2019-07-27",
+    "pdf_printed_date": "2019-07-30",
+    "captured_at_utc": "2026-10-04T15:01:23.253210+00:00",
+    "pdf_pages": 20,
+    "pdf_bytes": 3667042,
+    "pdf_sha256": "5ec05581e7ea71074a80afee8b4c4dafdc524938e830b849143ec35e7726c07f",
+    "derived_text_sha256": "383697d172df6415084fe68491307c93308519d1b4047357e359e1e9e89007ef",
+    "text_derivation": "pdftotext -layout; UTF-8; page form feeds retained; no post-extraction normalization",
+    "offset_basis": "zero-based Python Unicode code points in captured derived text, end exclusive",
+    "related_version_of_record": {
+      "doi": "10.1038/s41586-020-1955-z",
+      "url": "https://www.nature.com/articles/s41586-020-1955-z",
+      "journal": "Nature",
+      "volume": "578",
+      "pages": "66–69",
+      "year": 2020,
+      "published_online": "2020-02-05",
+      "table_equivalence": "not_verified"
+    },
+    "current_publication_or_retraction_status": "not_assessed",
+    "table_label": "Extended Data Table I",
+    "table_pdf_page_one_based": 11,
+    "table_extent": "complete seven source data rows; LaH10 and LaD10 remain separate compound series",
+    "bibliographic_locator_ids": [
+      "source-title-authors-and-printed-date"
+    ]
+  },
+  "authority": {
+    "canonical_field_updates": 0,
+    "source_row_catalogue_association_verified": false,
+    "run_identity_established": false,
+    "coordinate_identity_established": false,
+    "convergence_independently_verified": false,
+    "stable_host_validated": false,
+    "scientific_acceptance": false,
+    "ml_training_approved": false,
+    "new_calculation_executed": false,
+    "new_prediction_issued": false,
+    "ambient_pressure_extrapolation_approved": false
+  },
+  "common_context": {
+    "knowledge_origin": "source_computed",
+    "study_series_role": "author_computational_study_series",
+    "pressure_definition": {
+      "unit": "GPa",
+      "axis_role": "quantum_energy_pressure",
+      "label": "Pressure calculated from quantum E(R)",
+      "scope": "The source assigns pressure from E(R), including quantum effects. The axis is not an external stress target or a room-temperature pressure calibration.",
+      "locator_ids": [
+        "quantum-pressure-and-phonon-caption"
+      ]
+    },
+    "structure": {
+      "phase_label_raw": "F m-3m",
+      "phase_family": "Fm-3m",
+      "scope": "Source-defined cubic phase family across the pressure study; no identical per-pressure coordinates or retained calculation runs are established.",
+      "coordinate_identity": "unestablished",
+      "retained_run_identity": "unestablished",
+      "locator_ids": [
+        "quantum-pressure-and-phonon-caption",
+        "table-quantity-and-solver-scope"
+      ]
+    },
+    "electronic_method": {
+      "functional": "PBE GGA",
+      "phonon_matrix_elements": "Density-functional perturbation theory with Quantum ESPRESSO",
+      "locator_ids": [
+        "pbe-dfpt-and-sscha-hessian",
+        "sscha-epc-method"
+      ]
+    },
+    "anharmonic_method": {
+      "name": "Stochastic self-consistent harmonic approximation (SSCHA)",
+      "phonon_input": "Frequencies and polarization vectors from the quantum E(R) Hessian combined with DFPT electron-phonon matrix elements",
+      "fourth_order_term": "Φ(4) = 0 in the reported superconductivity calculations",
+      "fm3m_hessian_supercell": "3 × 3 × 3",
+      "epc_q_grid": "6 × 6 × 6",
+      "epc_k_grid": "40 × 40 × 40",
+      "locator_ids": [
+        "pbe-dfpt-and-sscha-hessian",
+        "sscha-epc-method"
+      ]
+    },
+    "structural_calculation_temperature": {
+      "value": null,
+      "unit": null,
+      "status": "not_established_for_table_rows",
+      "scope": "A row-specific structural calculation temperature is not established by this table capture. Tc is a computed transition temperature, not a host-stability temperature."
+    },
+    "experimental_sample_identity": {
+      "value": null,
+      "status": "not_applicable_to_computational_source_rows"
+    }
+  },
+  "scope": {
+    "same_compound_pressure_comparison": "source_qualified_within_each_compound_and_quantity",
+    "cross_solver_connection_allowed": false,
+    "cross_isotope_connection_allowed": false,
+    "isotope_coefficient_derived": false,
+    "temperature_response_series_established": false,
+    "source_row_catalogue_association": "unestablished",
+    "stable_host_at_300K_and_1atm_established": false,
+    "physical_experiment_or_sample_association": "not_established",
+    "raw_fulltext_or_PDF_included": false,
+    "missing_value_policy": "null denotes a genuinely missing printed cell, never zero; this captured table has no missing numeric cells",
+    "new_fit_or_derivative_or_unit_conversion": false
+  },
+  "default_quantity": "tc_anisotropic_me",
+  "default_compound": "LaH10",
+  "compounds": [
+    "LaH10",
+    "LaD10"
+  ],
+  "quantities": [
+    {
+      "id": "tc_anisotropic_me",
+      "label": "Anisotropic Migdal–Éliashberg Tc",
+      "unit": "K",
+      "solver_id": "anisotropic_me",
+      "quantity_role": "computed_transition_temperature"
+    },
+    {
+      "id": "tc_isotropic_sc_dft",
+      "label": "Isotropic SCDFT Tc",
+      "unit": "K",
+      "solver_id": "isotropic_sc_dft",
+      "quantity_role": "computed_transition_temperature"
+    },
+    {
+      "id": "electron_phonon_lambda",
+      "label": "EPC λ",
+      "unit": "1",
+      "solver_id": null,
+      "quantity_role": "electron_phonon_coupling"
+    },
+    {
+      "id": "omega_log",
+      "label": "ωlog",
+      "unit": "meV",
+      "solver_id": null,
+      "quantity_role": "logarithmic_phonon_frequency_average"
+    },
+    {
+      "id": "tc_mcmillan",
+      "label": "McMillan Tc",
+      "unit": "K",
+      "solver_id": "mcmillan",
+      "quantity_role": "computed_transition_temperature"
+    },
+    {
+      "id": "tc_allen_dynes",
+      "label": "Allen–Dynes Tc",
+      "unit": "K",
+      "solver_id": "allen_dynes",
+      "quantity_role": "computed_transition_temperature"
+    }
+  ],
+  "solvers": [
+    {
+      "id": "mcmillan",
+      "quantity_id": "tc_mcmillan",
+      "table_label": "Tc Mc μ*=0.1",
+      "display_label": "McMillan equation",
+      "mu_star": {
+        "raw_value": "0.1",
+        "value": 0.1,
+        "role": "assumed_scalar_coulomb_pseudopotential"
+      },
+      "coulomb_treatment": "Assumed scalar Coulomb pseudopotential μ* = 0.1.",
+      "anisotropy": "not_established_as_an_anisotropic_solution",
+      "locator_ids": [
+        "table-column-headers",
+        "table-quantity-and-solver-scope"
+      ]
+    },
+    {
+      "id": "allen_dynes",
+      "quantity_id": "tc_allen_dynes",
+      "table_label": "Tc AD μ*=0.1",
+      "display_label": "Allen–Dynes modified McMillan equation",
+      "mu_star": {
+        "raw_value": "0.1",
+        "value": 0.1,
+        "role": "assumed_scalar_coulomb_pseudopotential"
+      },
+      "coulomb_treatment": "Assumed scalar Coulomb pseudopotential μ* = 0.1.",
+      "anisotropy": "not_established_as_an_anisotropic_solution",
+      "locator_ids": [
+        "table-column-headers",
+        "table-quantity-and-solver-scope"
+      ]
+    },
+    {
+      "id": "anisotropic_me",
+      "quantity_id": "tc_anisotropic_me",
+      "table_label": "Tc ME ani",
+      "display_label": "Anisotropic Migdal–Éliashberg equations",
+      "mu_star": {
+        "raw_value": null,
+        "value": null,
+        "role": "scalar_mu_star_not_specified_for_reported_rpa_treatment"
+      },
+      "coulomb_treatment": "k-averaged static screened Coulomb interaction in the random phase approximation; a scalar μ* = 0.1 is not assigned.",
+      "anisotropy": "electron_phonon_coupling_anisotropy_retained",
+      "locator_ids": [
+        "anisotropic-me-coulomb-scope",
+        "table-quantity-and-solver-scope"
+      ]
+    },
+    {
+      "id": "isotropic_sc_dft",
+      "quantity_id": "tc_isotropic_sc_dft",
+      "table_label": "Tc SCDFT",
+      "display_label": "Isotropic superconducting density functional theory",
+      "mu_star": {
+        "raw_value": null,
+        "value": null,
+        "role": "no_empirical_scalar_mu_star_parameter"
+      },
+      "coulomb_treatment": "RPA Coulomb matrix elements averaged over iso-energy surfaces, with energy-dependent DOS; no empirical μ* parameter.",
+      "anisotropy": "isotropic_electron_phonon_gap_approximation",
+      "locator_ids": [
+        "scdft-coulomb-scope",
+        "table-quantity-and-solver-scope"
+      ]
+    }
+  ],
+  "source_notes": [
+    {
+      "id": "author-reported-quantum-stability",
+      "summary": "The source reports anharmonic dynamic stabilization of Fm-3m in the experimental high-pressure range and a LaH10 quantum-energy minimum down to about 129 GPa. These are author model claims, not independent SCLib stability validation.",
+      "locator_ids": [
+        "quantum-pressure-and-phonon-caption",
+        "low-pressure-quantum-phase-scope"
+      ]
+    },
+    {
+      "id": "lower-pressure-and-isotope-boundaries",
+      "summary": "The source reports a LaD10 instability at 126 GPa and loss of LaH10 thermodynamic stability at lower pressure. No table value establishes survival at ambient pressure or a stable host at 300 K and 1 atm.",
+      "locator_ids": [
+        "quantum-pressure-and-phonon-caption",
+        "low-pressure-quantum-phase-scope"
+      ]
+    },
+    {
+      "id": "harmonic-anharmonic-distinction",
+      "summary": "Harmonic instabilities and quantum anharmonic stabilization are distinct treatments. The superconductivity calculations neglect the Φ(4) Hessian term; the authors report its effect as small, without independent verification here.",
+      "locator_ids": [
+        "quantum-pressure-and-phonon-caption",
+        "pbe-dfpt-and-sscha-hessian"
+      ]
+    },
+    {
+      "id": "solver-and-isotope-comparability",
+      "summary": "Each comparison selects one compound and one reported quantity. Solver assumptions remain separate; LaH10 and LaD10 pressure grids are different and are not paired to derive an isotope coefficient.",
+      "locator_ids": [
+        "extended-data-table-I",
+        "scdft-coulomb-scope",
+        "anisotropic-me-coulomb-scope"
+      ]
+    },
+    {
+      "id": "source-edition-boundary",
+      "summary": "Values are captured from arXiv v1, submitted 27 July 2019 and printed 30 July 2019. The related Nature version of record is identified for reading; table equivalence and current publication status were not verified.",
+      "locator_ids": [
+        "extended-data-table-I"
+      ]
+    }
+  ],
+  "locators": [
+    {
+      "id": "extended-data-table-I",
+      "pdf_page_one_based": 11,
+      "char_start": 64900,
+      "char_end": 66714,
+      "end_exclusive": true,
+      "window_sha256": "cb9d8e141eb008e11c67dcac3c0e33617df1b9a60575550756734a5df51d0469"
+    },
+    {
+      "id": "quantum-pressure-and-phonon-caption",
+      "pdf_page_one_based": 3,
+      "char_start": 16159,
+      "char_end": 17045,
+      "end_exclusive": true,
+      "window_sha256": "fbe6b05919c23debacdbc8ba2fdef8f9f98b8a0791a626c801b9083f6ddf735c"
+    },
+    {
+      "id": "low-pressure-quantum-phase-scope",
+      "pdf_page_one_based": 4,
+      "char_start": 20927,
+      "char_end": 22630,
+      "end_exclusive": true,
+      "window_sha256": "dad934e19f731f8bb27926c1b6dc994bed9813bc040b3cb7d4b59b73fe4f8f25"
+    },
+    {
+      "id": "pbe-dfpt-and-sscha-hessian",
+      "pdf_page_one_based": 6,
+      "char_start": 35472,
+      "char_end": 38016,
+      "end_exclusive": true,
+      "window_sha256": "34978671519e2a0457457935e1f455bd72da6a253ff0bda1d6a0a9781300f5f5"
+    },
+    {
+      "id": "sscha-epc-method",
+      "pdf_page_one_based": 7,
+      "char_start": 40307,
+      "char_end": 42291,
+      "end_exclusive": true,
+      "window_sha256": "e6938d7b85a554abc4fd6e384733dacc1aa04bad0b230757d6e052f4afeee26b"
+    },
+    {
+      "id": "scdft-coulomb-scope",
+      "pdf_page_one_based": 7,
+      "char_start": 42345,
+      "char_end": 44726,
+      "end_exclusive": true,
+      "window_sha256": "bb0f8e66fe35fe55329ef372027364d9354afe588419d97d7c4bb96894733369"
+    },
+    {
+      "id": "anisotropic-me-coulomb-scope",
+      "pdf_page_one_based": 8,
+      "char_start": 50054,
+      "char_end": 52036,
+      "end_exclusive": true,
+      "window_sha256": "b9ff368a79b6b523309226b6bad0acae98c726d679167540b02621892cdc3367"
+    },
+    {
+      "id": "table-quantity-and-solver-scope",
+      "pdf_page_one_based": 8,
+      "char_start": 51980,
+      "char_end": 53561,
+      "end_exclusive": true,
+      "window_sha256": "2b79d94287c4df32f4b23bdbd727f1099e5d8e6c60faf952c5addbc2561f5a4a"
+    },
+    {
+      "id": "table-column-headers",
+      "pdf_page_one_based": 11,
+      "char_start": 65563,
+      "char_end": 65937,
+      "end_exclusive": true,
+      "window_sha256": "33e2c74826b120899f6720f05a03a70ccef25e02b8e664d4c846b999c9187b2d"
+    },
+    {
+      "id": "source-title-authors-and-printed-date",
+      "pdf_page_one_based": 1,
+      "char_start": 0,
+      "char_end": 3332,
+      "end_exclusive": true,
+      "window_sha256": "86404050dd39347f99ec9be8a861189bd5a0ccde79ded401c1c94f2b3c35e0f0"
+    }
+  ],
+  "rows": [
+    {
+      "id": "lah10-table-I-row-01",
+      "source_data_row": 1,
+      "formula": "LaH10",
+      "isotope_label": "hydrogen",
+      "formula_locator": {
+        "char_start": 65965,
+        "char_end": 65970,
+        "end_exclusive": true,
+        "token_sha256": "1449fdc076eca7477db8b727505574dccb025acc9d425b562db230cf900fb192"
+      },
+      "row_locator": {
+        "id": "table-I-row-01",
+        "pdf_page_one_based": 11,
+        "char_start": 65937,
+        "char_end": 66047,
+        "end_exclusive": true,
+        "window_sha256": "3ea58cd2dadcc16de5f6b0060eef240074f9bbfaf963a27706d07f76c81900ba"
+      },
+      "pressure": {
+        "raw_value": "129",
+        "value": 129.0,
+        "unit": "GPa",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 65978,
+          "char_end": 65981,
+          "end_exclusive": true,
+          "token_sha256": "6566230e3a3ce3774c1bbc7c18b590ae0f457bbcd511e90e3e7dca2a02e7addc"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "electron_phonon_lambda": {
+        "raw_value": "3.62",
+        "value": 3.62,
+        "unit": "1",
+        "unit_status": "dimensionless_quantity_definition",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 65986,
+          "char_end": 65990,
+          "end_exclusive": true,
+          "token_sha256": "2b72cc3eea37b182aec9724b391811372bb5364d064d4e97f17bc21797adf507"
+        },
+        "unit_locator_id": "table-quantity-and-solver-scope"
+      },
+      "omega_log": {
+        "raw_value": "76.4",
+        "value": 76.4,
+        "unit": "meV",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 65993,
+          "char_end": 65997,
+          "end_exclusive": true,
+          "token_sha256": "6be7bb304fd9c1c4fe993f66232e02f331bebcdce7ec6ff657db0385418b7c1b"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_mcmillan": {
+        "raw_value": "171.8",
+        "value": 171.8,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66004,
+          "char_end": 66009,
+          "end_exclusive": true,
+          "token_sha256": "7521634f1a2dd1fa65d01225d9df8e250fc0eb96d848706d629fe758c791d932"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_allen_dynes": {
+        "raw_value": "252.6",
+        "value": 252.6,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66019,
+          "char_end": 66024,
+          "end_exclusive": true,
+          "token_sha256": "28853280ee84729ecf0ed7c19e245f8f1ae45a7127d2111c137df0302bbbce2e"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_anisotropic_me": {
+        "raw_value": "255.3",
+        "value": 255.3,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66032,
+          "char_end": 66037,
+          "end_exclusive": true,
+          "token_sha256": "801701e3c21fe0557a22e25fc1563e4bdd194c1ef6a115a30420e88d11b25081"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_isotropic_sc_dft": {
+        "raw_value": "230",
+        "value": 230.0,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66044,
+          "char_end": 66047,
+          "end_exclusive": true,
+          "token_sha256": "a0eaec5a55dc2f5b2ba523018adc485ff620b9d83509b9f37186a7716e438d21"
+        },
+        "unit_locator_id": "table-column-headers"
+      }
+    },
+    {
+      "id": "lah10-table-I-row-02",
+      "source_data_row": 2,
+      "formula": "LaH10",
+      "isotope_label": "hydrogen",
+      "formula_locator": {
+        "char_start": 66076,
+        "char_end": 66081,
+        "end_exclusive": true,
+        "token_sha256": "1449fdc076eca7477db8b727505574dccb025acc9d425b562db230cf900fb192"
+      },
+      "row_locator": {
+        "id": "table-I-row-02",
+        "pdf_page_one_based": 11,
+        "char_start": 66048,
+        "char_end": 66158,
+        "end_exclusive": true,
+        "window_sha256": "bdcb6d79517effab87bbf0f1e2522ca75194a9a35ea395b2287a973e75b5f3dd"
+      },
+      "pressure": {
+        "raw_value": "163",
+        "value": 163.0,
+        "unit": "GPa",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66089,
+          "char_end": 66092,
+          "end_exclusive": true,
+          "token_sha256": "3d3286f7cd19074f04e514b0c6c237e757513fb32820698b790e1dec801d947a"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "electron_phonon_lambda": {
+        "raw_value": "2.67",
+        "value": 2.67,
+        "unit": "1",
+        "unit_status": "dimensionless_quantity_definition",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66097,
+          "char_end": 66101,
+          "end_exclusive": true,
+          "token_sha256": "af6b7bab865b0c2c7f83c2a55f1c15e454862116466ef2fa978ec6ee93674957"
+        },
+        "unit_locator_id": "table-quantity-and-solver-scope"
+      },
+      "omega_log": {
+        "raw_value": "96.4",
+        "value": 96.4,
+        "unit": "meV",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66104,
+          "char_end": 66108,
+          "end_exclusive": true,
+          "token_sha256": "9ea5bbaee04924060fc89a7a004e37cf44e046f7d5a8bd1d245b8a170f4fe86f"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_mcmillan": {
+        "raw_value": "197.1",
+        "value": 197.1,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66115,
+          "char_end": 66120,
+          "end_exclusive": true,
+          "token_sha256": "824db5f53a24fdaf436b53895e5d7d4854414085693cb94038267faa6ff932c2"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_allen_dynes": {
+        "raw_value": "247.0",
+        "value": 247.0,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66130,
+          "char_end": 66135,
+          "end_exclusive": true,
+          "token_sha256": "f072e2c8003ee27e9aeceaf8b07644e823ad46401436156e49cb6fd4389535cd"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_anisotropic_me": {
+        "raw_value": "242.8",
+        "value": 242.8,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66143,
+          "char_end": 66148,
+          "end_exclusive": true,
+          "token_sha256": "63618e817561e72091f984346421c6d3fb4251a65ba46bf50683c1b05cc5a1c7"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_isotropic_sc_dft": {
+        "raw_value": "225",
+        "value": 225.0,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66155,
+          "char_end": 66158,
+          "end_exclusive": true,
+          "token_sha256": "0e6523810856a138a75dec70a9cf3778a5c70b83ac915f22c33f05db97cb3e68"
+        },
+        "unit_locator_id": "table-column-headers"
+      }
+    },
+    {
+      "id": "lah10-table-I-row-03",
+      "source_data_row": 3,
+      "formula": "LaH10",
+      "isotope_label": "hydrogen",
+      "formula_locator": {
+        "char_start": 66187,
+        "char_end": 66192,
+        "end_exclusive": true,
+        "token_sha256": "1449fdc076eca7477db8b727505574dccb025acc9d425b562db230cf900fb192"
+      },
+      "row_locator": {
+        "id": "table-I-row-03",
+        "pdf_page_one_based": 11,
+        "char_start": 66159,
+        "char_end": 66269,
+        "end_exclusive": true,
+        "window_sha256": "1b5dddea551b00f871671907d954a913e816a36f00e51f37804076d10e27a59f"
+      },
+      "pressure": {
+        "raw_value": "214",
+        "value": 214.0,
+        "unit": "GPa",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66200,
+          "char_end": 66203,
+          "end_exclusive": true,
+          "token_sha256": "802b906a18591ead8a6dd809b262ace4c65c16e89764c40ae326cfcff811e10c"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "electron_phonon_lambda": {
+        "raw_value": "2.06",
+        "value": 2.06,
+        "unit": "1",
+        "unit_status": "dimensionless_quantity_definition",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66208,
+          "char_end": 66212,
+          "end_exclusive": true,
+          "token_sha256": "daa2edbf9b6d4b1cb20e40bc1514856a9f102673c57867c506603021b92a627f"
+        },
+        "unit_locator_id": "table-quantity-and-solver-scope"
+      },
+      "omega_log": {
+        "raw_value": "115.5",
+        "value": 115.5,
+        "unit": "meV",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66214,
+          "char_end": 66219,
+          "end_exclusive": true,
+          "token_sha256": "00e73925feca47574565dda30d6e2efdedb6bccfac5ced1b21374461da01617c"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_mcmillan": {
+        "raw_value": "196.3",
+        "value": 196.3,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66226,
+          "char_end": 66231,
+          "end_exclusive": true,
+          "token_sha256": "edf1fc16fd46b71908f2ef4654f8def053b4375561b4edd13211edcb5edc33bb"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_allen_dynes": {
+        "raw_value": "235.9",
+        "value": 235.9,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66241,
+          "char_end": 66246,
+          "end_exclusive": true,
+          "token_sha256": "dae32181840e18f64877886bef973910e3af5e68175acbe851c10971422bc283"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_anisotropic_me": {
+        "raw_value": "237.9",
+        "value": 237.9,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66254,
+          "char_end": 66259,
+          "end_exclusive": true,
+          "token_sha256": "7057960851cc72b78054c0a29cd8af65f4006723085288ceb18ed79271e9c233"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_isotropic_sc_dft": {
+        "raw_value": "210",
+        "value": 210.0,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66266,
+          "char_end": 66269,
+          "end_exclusive": true,
+          "token_sha256": "d29d53701d3c859e29e1b90028eec1ca8e2f29439198b6e036c60951fb458aa1"
+        },
+        "unit_locator_id": "table-column-headers"
+      }
+    },
+    {
+      "id": "lah10-table-I-row-04",
+      "source_data_row": 4,
+      "formula": "LaH10",
+      "isotope_label": "hydrogen",
+      "formula_locator": {
+        "char_start": 66298,
+        "char_end": 66303,
+        "end_exclusive": true,
+        "token_sha256": "1449fdc076eca7477db8b727505574dccb025acc9d425b562db230cf900fb192"
+      },
+      "row_locator": {
+        "id": "table-I-row-04",
+        "pdf_page_one_based": 11,
+        "char_start": 66270,
+        "char_end": 66380,
+        "end_exclusive": true,
+        "window_sha256": "3c02eafb16649a9819f3a95687bdedb2c8d09472be438cd978b83263d29edef2"
+      },
+      "pressure": {
+        "raw_value": "264",
+        "value": 264.0,
+        "unit": "GPa",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66311,
+          "char_end": 66314,
+          "end_exclusive": true,
+          "token_sha256": "bba58959c32abe688d9cb5222b97de973002a67c412d6a8c8d2a79ac692f32b7"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "electron_phonon_lambda": {
+        "raw_value": "1.73",
+        "value": 1.73,
+        "unit": "1",
+        "unit_status": "dimensionless_quantity_definition",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66319,
+          "char_end": 66323,
+          "end_exclusive": true,
+          "token_sha256": "00b0b4a5c2373d299e6248e6959f6af491eed4fca879657bfd9b7d7a52325e49"
+        },
+        "unit_locator_id": "table-quantity-and-solver-scope"
+      },
+      "omega_log": {
+        "raw_value": "126.6",
+        "value": 126.6,
+        "unit": "meV",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66325,
+          "char_end": 66330,
+          "end_exclusive": true,
+          "token_sha256": "dccc7cd1fa31e0da97528045e450ca48b62de25199360fc9f25e061778a0184c"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_mcmillan": {
+        "raw_value": "189.5",
+        "value": 189.5,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66337,
+          "char_end": 66342,
+          "end_exclusive": true,
+          "token_sha256": "2328b11f4b8408acd0eb216a8c58c7f2a9cecc2beb04c23fc7db689ebe921ae3"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_allen_dynes": {
+        "raw_value": "219.2",
+        "value": 219.2,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66352,
+          "char_end": 66357,
+          "end_exclusive": true,
+          "token_sha256": "30dcf7c2e51d597f18945142dad6c411554642a5f9d256c8cfbbc360e0502d2a"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_anisotropic_me": {
+        "raw_value": "216.9",
+        "value": 216.9,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66365,
+          "char_end": 66370,
+          "end_exclusive": true,
+          "token_sha256": "bbe252da0398f5f0f675adc5f18416c2e48c7936112c161c39e26318e861d624"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_isotropic_sc_dft": {
+        "raw_value": "201",
+        "value": 201.0,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66377,
+          "char_end": 66380,
+          "end_exclusive": true,
+          "token_sha256": "43974ed74066b207c30ffd0fed5146762e6c60745ac977004bc14507c7c42b50"
+        },
+        "unit_locator_id": "table-column-headers"
+      }
+    },
+    {
+      "id": "lah10-table-I-row-05",
+      "source_data_row": 5,
+      "formula": "LaD10",
+      "isotope_label": "deuterium",
+      "formula_locator": {
+        "char_start": 66409,
+        "char_end": 66414,
+        "end_exclusive": true,
+        "token_sha256": "8716d95a1437691f7cad6210d9e0ddabb56da6ebf7512f716418f56b6be81e04"
+      },
+      "row_locator": {
+        "id": "table-I-row-05",
+        "pdf_page_one_based": 11,
+        "char_start": 66381,
+        "char_end": 66491,
+        "end_exclusive": true,
+        "window_sha256": "09792207c0723ba6ec6bfb84f2fa957bc337b61945eedc6fecfe155de704038d"
+      },
+      "pressure": {
+        "raw_value": "159",
+        "value": 159.0,
+        "unit": "GPa",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66422,
+          "char_end": 66425,
+          "end_exclusive": true,
+          "token_sha256": "ff2ccb6ba423d356bd549ed4bfb76e96976a0dcde05a09996a1cdb9f83422ec4"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "electron_phonon_lambda": {
+        "raw_value": "3.14",
+        "value": 3.14,
+        "unit": "1",
+        "unit_status": "dimensionless_quantity_definition",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66430,
+          "char_end": 66434,
+          "end_exclusive": true,
+          "token_sha256": "2efff1261c25d94dd6698ea1047f5c0a7107ca98b0a6c2427ee6614143500215"
+        },
+        "unit_locator_id": "table-quantity-and-solver-scope"
+      },
+      "omega_log": {
+        "raw_value": "63.5",
+        "value": 63.5,
+        "unit": "meV",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66437,
+          "char_end": 66441,
+          "end_exclusive": true,
+          "token_sha256": "3eef44034b8c8e3911a8f8ad08ec1ed989c54a6b49bc8e03a9663c5e02825cfb"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_mcmillan": {
+        "raw_value": "135.0",
+        "value": 135.0,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66448,
+          "char_end": 66453,
+          "end_exclusive": true,
+          "token_sha256": "e1b1b8a0c864da5bd09443c79f1de7b7fa7ce6e7a73b4a7f9572753931a36074"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_allen_dynes": {
+        "raw_value": "184.2",
+        "value": 184.2,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66463,
+          "char_end": 66468,
+          "end_exclusive": true,
+          "token_sha256": "9d133ee0568f22c90576c68deb714b389ab458267080b338ea2ba5936355f194"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_anisotropic_me": {
+        "raw_value": "180.4",
+        "value": 180.4,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66476,
+          "char_end": 66481,
+          "end_exclusive": true,
+          "token_sha256": "d4b9c7e0c04460c14f7e188a0a1d6dc4e5fef35bc1f1bd978bda54d48666e74c"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_isotropic_sc_dft": {
+        "raw_value": "171",
+        "value": 171.0,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66488,
+          "char_end": 66491,
+          "end_exclusive": true,
+          "token_sha256": "284de502c9847342318c17d474733ef468fbdbe252cddf6e4b4be0676706d9d0"
+        },
+        "unit_locator_id": "table-column-headers"
+      }
+    },
+    {
+      "id": "lah10-table-I-row-06",
+      "source_data_row": 6,
+      "formula": "LaD10",
+      "isotope_label": "deuterium",
+      "formula_locator": {
+        "char_start": 66520,
+        "char_end": 66525,
+        "end_exclusive": true,
+        "token_sha256": "8716d95a1437691f7cad6210d9e0ddabb56da6ebf7512f716418f56b6be81e04"
+      },
+      "row_locator": {
+        "id": "table-I-row-06",
+        "pdf_page_one_based": 11,
+        "char_start": 66492,
+        "char_end": 66602,
+        "end_exclusive": true,
+        "window_sha256": "4e2ac9ccc38d8bd12e277db0420bc52109df9dc67cc291dc4719558ab4f381a7"
+      },
+      "pressure": {
+        "raw_value": "210",
+        "value": 210.0,
+        "unit": "GPa",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66533,
+          "char_end": 66536,
+          "end_exclusive": true,
+          "token_sha256": "d29d53701d3c859e29e1b90028eec1ca8e2f29439198b6e036c60951fb458aa1"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "electron_phonon_lambda": {
+        "raw_value": "2.21",
+        "value": 2.21,
+        "unit": "1",
+        "unit_status": "dimensionless_quantity_definition",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66541,
+          "char_end": 66545,
+          "end_exclusive": true,
+          "token_sha256": "051bd07f4b9a168b811b5f7989debcedff940292cf96d59754b79c72fe98a9e0"
+        },
+        "unit_locator_id": "table-quantity-and-solver-scope"
+      },
+      "omega_log": {
+        "raw_value": "81.7",
+        "value": 81.7,
+        "unit": "meV",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66548,
+          "char_end": 66552,
+          "end_exclusive": true,
+          "token_sha256": "b475f6a7dd69dbbb0faac91aea4d6f0ac1ba348504c57e9dbe445af5e354c65c"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_mcmillan": {
+        "raw_value": "145.5",
+        "value": 145.5,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66559,
+          "char_end": 66564,
+          "end_exclusive": true,
+          "token_sha256": "94d8fff37186f0a08a9e4510e36b2474b6ad464ebb970fa31830cb20db76bea1"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_allen_dynes": {
+        "raw_value": "176.5",
+        "value": 176.5,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66574,
+          "char_end": 66579,
+          "end_exclusive": true,
+          "token_sha256": "4351f73e0db93bf0703844e3c27d9211cf81a61d698b7f229912fe401989e878"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_anisotropic_me": {
+        "raw_value": "172.9",
+        "value": 172.9,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66587,
+          "char_end": 66592,
+          "end_exclusive": true,
+          "token_sha256": "a2d51acb0a62cb770ec05de5ccfac473db0e97a9f23ac2b090e148fb241e0ff6"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_isotropic_sc_dft": {
+        "raw_value": "158",
+        "value": 158.0,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66599,
+          "char_end": 66602,
+          "end_exclusive": true,
+          "token_sha256": "7ed8f0f3b707956d9fb1e889e11153e0aa0a854983081d262fbe5eede32da7ca"
+        },
+        "unit_locator_id": "table-column-headers"
+      }
+    },
+    {
+      "id": "lah10-table-I-row-07",
+      "source_data_row": 7,
+      "formula": "LaD10",
+      "isotope_label": "deuterium",
+      "formula_locator": {
+        "char_start": 66631,
+        "char_end": 66636,
+        "end_exclusive": true,
+        "token_sha256": "8716d95a1437691f7cad6210d9e0ddabb56da6ebf7512f716418f56b6be81e04"
+      },
+      "row_locator": {
+        "id": "table-I-row-07",
+        "pdf_page_one_based": 11,
+        "char_start": 66603,
+        "char_end": 66713,
+        "end_exclusive": true,
+        "window_sha256": "cc5a254a314a4d55fd4da361b4a1fd394e589d5ef732956621c640be640e99e5"
+      },
+      "pressure": {
+        "raw_value": "260",
+        "value": 260.0,
+        "unit": "GPa",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66644,
+          "char_end": 66647,
+          "end_exclusive": true,
+          "token_sha256": "39bb88f40d3aa2b2fe9dea67be27c74765db0ebb3ff3cf8fb779af6319fa2045"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "electron_phonon_lambda": {
+        "raw_value": "1.80",
+        "value": 1.8,
+        "unit": "1",
+        "unit_status": "dimensionless_quantity_definition",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66652,
+          "char_end": 66656,
+          "end_exclusive": true,
+          "token_sha256": "3edff981bb75a81a377dbf446b9189dd591f8a9670a816553ae1eee984880b6a"
+        },
+        "unit_locator_id": "table-quantity-and-solver-scope"
+      },
+      "omega_log": {
+        "raw_value": "92.2",
+        "value": 92.2,
+        "unit": "meV",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66659,
+          "char_end": 66663,
+          "end_exclusive": true,
+          "token_sha256": "4119e8b0fe24cd2c1133e6fec6f3111dbf4f412fee93bc72971a494c5daec19d"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_mcmillan": {
+        "raw_value": "142.2",
+        "value": 142.2,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66670,
+          "char_end": 66675,
+          "end_exclusive": true,
+          "token_sha256": "de2562a73cac4a3a841e173e63615fe79807f62eb4453bf201c900dcc3c630e8"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_allen_dynes": {
+        "raw_value": "164.6",
+        "value": 164.6,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66685,
+          "char_end": 66690,
+          "end_exclusive": true,
+          "token_sha256": "b358d0e9c02e0545d4be66583f6f2ed45f745dcb824aa47d42b477e15aed09c5"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_anisotropic_me": {
+        "raw_value": "157.9",
+        "value": 157.9,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66698,
+          "char_end": 66703,
+          "end_exclusive": true,
+          "token_sha256": "6feb91d8fffaaf24ac866da096a8cfca1a62b456b88556033e58528ac4a3961e"
+        },
+        "unit_locator_id": "table-column-headers"
+      },
+      "tc_isotropic_sc_dft": {
+        "raw_value": "151",
+        "value": 151.0,
+        "unit": "K",
+        "unit_status": "printed_in_table_header",
+        "uncertainty": null,
+        "missing_reason": null,
+        "locator": {
+          "char_start": 66710,
+          "char_end": 66713,
+          "end_exclusive": true,
+          "token_sha256": "8e612bd1f5d132a339575b8dafb7842c64614e56bcf3d5ab65a0bc4b34329407"
+        },
+        "unit_locator_id": "table-column-headers"
+      }
+    }
+  ],
+  "source_field_order": [
+    "formula",
+    "pressure",
+    "electron_phonon_lambda",
+    "omega_log",
+    "tc_mcmillan",
+    "tc_allen_dynes",
+    "tc_anisotropic_me",
+    "tc_isotropic_sc_dft"
+  ]
+}

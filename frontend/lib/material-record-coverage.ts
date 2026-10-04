@@ -73,3 +73,25 @@ export function recordCoverageSummary(value: MaterialRecordCoverage) {
   const notApplicable = value.records_total > 0 ? value.fields.filter(row => row.counts.not_applicable === value.records_total).length : 0;
   return { complete, incomplete, notApplicable };
 }
+
+/** A view of the already verified DTO, never a join to detail raw/sorted rows. */
+export function recordCoverageFieldRows(value: MaterialRecordCoverage, fieldId: string) {
+  if (!projectRecordCoverage(value, value.material_id) || !value.fields.some(item => item.field === fieldId)) return null;
+  return value.records.map(record => {
+    const item = record.fields.find(entry => entry.field === fieldId)!;
+    return { recordOffset: record.record_offset, resultId: record.result_id, paperId: record.paper_id,
+      origin: record.knowledge_origin, classification: record.classification_status,
+      status: item.status, reasons: [...item.reason_codes] };
+  });
+}
+
+const coverageReasons: Record<string, string> = {
+  retained_value_not_independent_source_or_state_review: "A value is stored; source and state review remain separate.",
+  no_retained_value_in_inspected_record: "This inspected record has no retained value.",
+  resolved_computed_result_has_no_retained_measurement_method: "Measurement method does not apply to this resolved Computed result.",
+  resolved_observed_result_has_no_retained_calculation_method: "Calculation method does not apply to this resolved Observed result.",
+  method_role_applicability_unresolved: "The result origin does not establish method applicability.",
+};
+export function recordCoverageReasonLabel(reason: string): string {
+  return Object.hasOwn(coverageReasons, reason) ? coverageReasons[reason] : `Unmapped reason code: ${reason}`;
+}
