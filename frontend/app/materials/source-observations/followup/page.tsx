@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MaterialSourceFollowup } from "@/components/MaterialSourceFollowup";
 import { loadSourceFollowupBatch, sourceFollowupDownloadPath } from "@/lib/material-source-followup";
+import { StudyContextDownloads } from "@/components/MaterialStudyContext";
+import { StudyContextHashReveal } from "@/components/StudyContextHashReveal";
+import { loadStudyContextBatch } from "@/lib/material-study-context";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -11,6 +14,7 @@ export const metadata: Metadata = {
 };
 export default function MaterialSourceFollowupPage() {
   const batch=loadSourceFollowupBatch();
+  const studyContext=loadStudyContextBatch();
   return <main className="min-w-0 space-y-6">
     <header className="space-y-3">
       <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Materials source pages">
@@ -27,6 +31,8 @@ export default function MaterialSourceFollowupPage() {
         <a href={`${sourceFollowupDownloadPath}.sha256`} className="site-text-link" download>Download SHA-256</a>
       </div>
     </header>
-    <MaterialSourceFollowup batch={batch}/>
+    <MaterialSourceFollowup batch={batch} studyContext={studyContext}/>
+    <StudyContextDownloads batch={studyContext}/>
+    <StudyContextHashReveal/>
   </main>;
 }

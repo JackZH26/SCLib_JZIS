@@ -1,5 +1,7 @@
 import { loadPressureTableSubject, pressureTableSubjectPath, pressureTableSourceHref, pressureTableSubjectEntries,
   type PressureTableBatch, type PressureTableEntry, type PressureTableSource, type SourceQuantity } from "@/lib/material-pressure-table-sources";
+import { StudyCompositionLocator, StudyContextFields } from "@/components/MaterialStudyContext";
+import { loadStudyContextBatch, type StudyContextBatch } from "@/lib/material-study-context";
 
 const wording = (value: string) => value.replace(/\s+/g, " ").trim();
 // Spacing is presentation only. The raw source strings and unresolved numeric values remain unchanged in metadata.
@@ -49,7 +51,7 @@ function SubjectReference({ subjectId, label }: { subjectId: string; label: stri
   </details>
     : <p role="status" className="text-xs text-sage-muted">Source-subject metadata is unavailable.</p>;
 }
-function BiTeCl({ batch }: { batch: PressureTableBatch }) {
+function BiTeCl({ batch, studyContext }: { batch: PressureTableBatch; studyContext?: StudyContextBatch | null }) {
   const entries = pressureTableSubjectEntries(batch, "bitecl"), source = batch.sources[0];
   const [tc, pressure, sample, instrument, captionLow, captionHigh] = entries;
   return <section aria-labelledby="bitecl-heading" className="min-w-0 rounded-lg border border-sage-border bg-white p-4 sm:p-5">
@@ -75,22 +77,22 @@ function BiTeCl({ batch }: { batch: PressureTableBatch }) {
     </div>
     <details className="mt-4 text-sm"><summary className="w-fit cursor-pointer text-accent-deep">Sample and transport method</summary>
       <dl className="mt-3 space-y-3">{[sample, instrument].map(entry => <div key={entry.id} id={fieldId(entry)}><dt className="text-xs text-sage-muted">{entry.field_id === "sample_form_statement" ? "Reported sample form" : "Reported instrument and probes"}</dt><dd className="mt-1">{quantity(entry.value)}</dd><Locator entry={entry} source={source} /></div>)}</dl>
-      <p className="mt-3 text-xs leading-5 text-sage-muted">Room-temperature pressure calibration is separate from the superconducting measurement temperature.</p>
+      {studyContext ? <div className="mt-4 space-y-5"><StudyContextFields batch={studyContext} contextId="study-context:bi:transport" /><StudyContextFields batch={studyContext} contextId="study-context:bi:raman" /></div> : <p className="mt-3 text-xs leading-5 text-sage-muted">Room-temperature pressure calibration is separate from the superconducting measurement temperature.</p>}
     </details>
     <div className="mt-4"><SubjectReference subjectId="bitecl" label="View BiTeCl source subject (JSON)" /></div>
     <SourceSnapshot source={source} />
   </section>;
 }
-function MoTable({ batch }: { batch: PressureTableBatch }) {
+function MoTable({ batch, studyContext }: { batch: PressureTableBatch; studyContext?: StudyContextBatch | null }) {
   const left = pressureTableSubjectEntries(batch, "mo_nominal_column_2"), right = pressureTableSubjectEntries(batch, "mo_nominal_column_3"), source = batch.sources[1];
   const labels = ["Tc: zero resistivity", "Tc: χ′ diamagnetic onset", "Lattice a", "Lattice c", "Reported space group", "Reported sample form"];
   return <section aria-labelledby="mo-table-heading" className="min-w-0 rounded-lg border border-sage-border bg-white p-4 sm:p-5">
-    <h2 id="mo-table-heading" className="text-xl font-semibold">Mo borophosphide: two original table columns</h2>
+    <h2 id="mo-table-heading" className="scroll-mt-24 text-xl font-semibold">Mo borophosphide: two original table columns</h2>
     <p className="mt-2 max-w-3xl text-sm leading-6 text-sage-muted">The two nominal samples share a reported refined composition, while their Tc criteria and lattice values remain distinct.</p>
     <div className="mt-4 max-w-full overflow-x-auto rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep" role="region" tabIndex={0} aria-label="Mo Table I comparison, horizontally scrollable">
       <table className="w-full min-w-[40rem] text-left text-sm tabular-nums">
         <caption className="sr-only">Table I original columns 2 and 3, preserving separate nominal samples and source-reported uncertainty notation.</caption>
-        <thead><tr><th scope="col" className="w-[30%] py-3 pr-4 font-medium">Reported field</th>{[left, right].map((entries, index) => <th scope="col" className="w-[35%] py-3 pr-5 font-medium" key={index}><span className="block">Nominal {entries[0].subject.sample_label}</span><span className="mt-1 block text-xs font-normal text-sage-muted">Original Table I column {index + 2}</span><span className="mt-2 block text-xs font-normal">Refined {entries[0].subject.formula}</span></th>)}</tr></thead>
+        <thead><tr><th scope="col" className="w-[30%] py-3 pr-4 font-medium">Reported field</th>{[left, right].map((entries, index) => <th scope="col" className="w-[35%] py-3 pr-5 font-medium" key={index}><span className="block">Nominal {entries[0].subject.sample_label}</span><span className="mt-1 block text-xs font-normal text-sage-muted">Original Table I column {index + 2}</span><span className="mt-2 block text-xs font-normal">Refined {entries[0].subject.formula}</span>{studyContext && <StudyCompositionLocator batch={studyContext} column={index === 0 ? 2 : 3} />}</th>)}</tr></thead>
         <tbody>{labels.map((label, index) => <tr className="align-top" key={label}><th scope="row" className="py-4 pr-4 font-medium">{label}<span className="mt-1 block text-xs font-normal text-sage-muted">{index < 2 ? "Tc pressure not supplied" : index < 5 ? "Room-temperature powder XRD" : "Study-level preparation"}</span></th>{[left[index], right[index]].map(entry => <td id={fieldId(entry)} className="py-4 pr-5" key={entry.id}><span className="font-medium">{quantity(entry.value)}</span><Locator entry={entry} source={source} /></td>)}</tr>)}</tbody>
       </table>
     </div>
@@ -100,11 +102,12 @@ function MoTable({ batch }: { batch: PressureTableBatch }) {
     <SourceSnapshot source={source} />
   </section>;
 }
-export function MaterialPressureTableSources({ batch }: { batch: PressureTableBatch | null }) {
+export function MaterialPressureTableSources({ batch, studyContext }: { batch: PressureTableBatch | null; studyContext?: StudyContextBatch | null }) {
   if (!batch) return <p role="status" className="text-sm text-sage-muted">Captured pressure and table records are unavailable.</p>;
+  const checkedContext = studyContext ? loadStudyContextBatch(studyContext) : null;
   return <div className="min-w-0 space-y-5">
     <p className="max-w-4xl text-xs leading-5 text-sage-muted">These pending field expressions are source records, not a count of independent experiments. Catalogue result, sample and state associations remain unestablished. No scientific acceptance or ML training approval is granted.</p>
-    <BiTeCl batch={batch} />
-    <MoTable batch={batch} />
+    <BiTeCl batch={batch} studyContext={checkedContext} />
+    <MoTable batch={batch} studyContext={checkedContext} />
   </div>;
 }

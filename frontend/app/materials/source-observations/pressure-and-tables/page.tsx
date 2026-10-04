@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MaterialPressureTableSources } from "@/components/MaterialPressureTableSources";
 import { loadPressureTableBatch, pressureTableDownloadPath } from "@/lib/material-pressure-table-sources";
+import { StudyContextDownloads } from "@/components/MaterialStudyContext";
+import { StudyContextHashReveal } from "@/components/StudyContextHashReveal";
+import { loadStudyContextBatch } from "@/lib/material-study-context";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -11,6 +14,7 @@ export const metadata: Metadata = {
 };
 export default function MaterialPressureTableSourcesPage() {
   const batch = loadPressureTableBatch();
+  const studyContext = loadStudyContextBatch();
   return <main className="min-w-0 space-y-6">
     <header className="space-y-3">
       <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Materials source pages">
@@ -26,6 +30,8 @@ export default function MaterialPressureTableSourcesPage() {
         <a className="site-text-link" href={`${pressureTableDownloadPath}.sha256`} download>Download SHA-256</a>
       </div>
     </header>
-    <MaterialPressureTableSources batch={batch} />
+    <MaterialPressureTableSources batch={batch} studyContext={studyContext} />
+    <StudyContextDownloads batch={studyContext} />
+    <StudyContextHashReveal />
   </main>;
 }

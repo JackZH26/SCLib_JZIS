@@ -1,0 +1,617 @@
+{
+  "version": "materials-study-context/1.0.0",
+  "prepared_on": "2026-10-04",
+  "status": "independent_source_context_pending",
+  "scope": "Additive source context for three captured studies; existing numeric observations are referenced without replacement.",
+  "source_case_count": 3,
+  "source_scope_count": 6,
+  "field_projection_count": 19,
+  "counts_are_independent_experiments": false,
+  "source_reading_review": "AI-assisted exact-source-window inspection",
+  "sources": [
+    {
+      "source_url": "https://arxiv.org/pdf/1501.06203",
+      "pdf_bytes": 603991,
+      "pdf_sha256": "869767ddd980c07e2f2d86ce0eae94dd7e906b758e8be0b2dfcd5b2d9967b5d2",
+      "raw_text_sha256": "fc724806dbc74299c8b782b523ce5433ff07cae73efb84e945613f9501750451",
+      "layout_text_sha256": "9148859a3048b3fe0f1d2c3eb14a010af35d0c15dd7fcc43cb4f0a60d8f40cef",
+      "pages": 5,
+      "revision": "arXiv:1501.06203v1 (label observed in captured PDF)",
+      "capture_finished_at": "2026-10-02T04:01:00.130955+00:00",
+      "current_publication_status": "not_checked",
+      "publisher_revision_equivalence_verified": false
+    },
+    {
+      "source_url": "https://arxiv.org/pdf/1603.02892",
+      "pdf_bytes": 857385,
+      "pdf_sha256": "e132a511543478639f01bf06f43bd7f4d4d1ef4d29415e2024b1a5b1f8747c3e",
+      "raw_text_sha256": "cad135f61877a5c6ef43162ec5276992efd5c1df24e6455b7fa80a9990885122",
+      "layout_text_sha256": "94cbd929cc4ba806cbba1e4b445f1cf836106d258d8f3fae65b7859f6fd13b28",
+      "pages": 8,
+      "revision": "arXiv:1603.02892v1 (label observed in captured PDF)",
+      "capture_finished_at": "2026-10-02T04:01:01.451775+00:00",
+      "current_publication_status": "not_checked",
+      "publisher_revision_equivalence_verified": false
+    },
+    {
+      "source_url": "https://arxiv.org/html/0912.2752v2",
+      "revision": "arxiv:0912.2752v2",
+      "html_bytes": 127198,
+      "html_sha256": "f74c213adefb0dafe0dde174be506aeeceb00eb0faaaf252891bd2f65d452c9d",
+      "current_publication_status": "not_checked",
+      "publisher_revision_equivalence_verified": false,
+      "capture_finished_at": null,
+      "capture_time_basis": "not_retained_in_original_HTML_capture_metadata"
+    }
+  ],
+  "source_windows": {
+    "bi_methods": {
+      "kind": "PDF_derived_plain_text",
+      "source_pdf_sha256": "869767ddd980c07e2f2d86ce0eae94dd7e906b758e8be0b2dfcd5b2d9967b5d2",
+      "derived_text_sha256": "fc724806dbc74299c8b782b523ce5433ff07cae73efb84e945613f9501750451",
+      "locator": {
+        "page": 2,
+        "section": "Page 2 experimental methods"
+      },
+      "codepoint_start": 6609,
+      "codepoint_end": 7398,
+      "span_utf8_sha256": "d4592ea0ef3c42e52b1749ea25a156a01c0bd2489956e82598fae1b2353ebc6d",
+      "offset_basis": "Unicode codepoints in frozen pdftotext raw body; not positions in PDF bytes"
+    },
+    "mo_table": {
+      "kind": "PDF_derived_plain_text",
+      "source_pdf_sha256": "e132a511543478639f01bf06f43bd7f4d4d1ef4d29415e2024b1a5b1f8747c3e",
+      "derived_text_sha256": "cad135f61877a5c6ef43162ec5276992efd5c1df24e6455b7fa80a9990885122",
+      "locator": {
+        "page": 3,
+        "section": "Page 3 Table I columns 2,3,4"
+      },
+      "codepoint_start": 10602,
+      "codepoint_end": 11008,
+      "span_utf8_sha256": "c38fad78f18f40c671db4cb7e63e8762f2b7e6e1d7e5ed6a12ea04d6a265184b",
+      "offset_basis": "Unicode codepoints in frozen pdftotext raw body; not positions in PDF bytes"
+    },
+    "pt_refinement": {
+      "kind": "original_HTML_element",
+      "source_sha256": "f74c213adefb0dafe0dde174be506aeeceb00eb0faaaf252891bd2f65d452c9d",
+      "locator": "//*[@id='S3.SS1.p1.1']",
+      "codepoint_start": 33440,
+      "codepoint_end": 36842,
+      "element_utf8_sha256": "9d60f5309ad09d5188b226e5fd6be7e7b6d28153d39ecfa01029e7ff0521e060",
+      "derived_text_sha256": "84d42015730064c856ca8c2ee4b5f13aeeb990d089c92e8c8eaa4ff47c671025",
+      "derived_text_basis": "HTML text with math alttext and annotation/script/style omitted"
+    },
+    "pt_heat_caption": {
+      "kind": "original_HTML_element",
+      "source_sha256": "f74c213adefb0dafe0dde174be506aeeceb00eb0faaaf252891bd2f65d452c9d",
+      "locator": "//*[@id='S3.F4']/figcaption",
+      "codepoint_start": 80707,
+      "codepoint_end": 83136,
+      "element_utf8_sha256": "6d129ce0b8d39544ead795d2228ab8bf200b2fa6b665d038b2ffc99c1db1a843",
+      "derived_text_sha256": "b482931278645affe15785bf84bd7c3316887806f9cc9ca505f3fcc667155cec",
+      "derived_text_basis": "HTML text with math alttext"
+    },
+    "pt_specific_heat": {
+      "kind": "original_HTML_element",
+      "source_sha256": "f74c213adefb0dafe0dde174be506aeeceb00eb0faaaf252891bd2f65d452c9d",
+      "locator": "//*[@id='S3.SS4.p1.1']",
+      "codepoint_start": 83358,
+      "codepoint_end": 94220,
+      "element_utf8_sha256": "e162e03edfd190893856defafbca8b1cc9e206e8157ee94b64dc238a854d3e5d",
+      "derived_text_sha256": "4d20f4365f64ef619f87c8267adb22e8be6fe05db1c547eace66854ad40c2409",
+      "derived_text_basis": "HTML text with math alttext and annotation/script/style omitted"
+    }
+  },
+  "entries": [
+    {
+      "id": "study-context:bi:transport",
+      "case": "bitecl",
+      "label": "BiTeCl · transport preparation and pressure protocol",
+      "source_scope": "Study-level preparation and transport methods; no named sample/run connects this protocol to the selected catalogue Tc.",
+      "reading_relation": "Resistivity and Hall coefficient are reported with PPMS-9 in the existing source record.",
+      "fields": [
+        {
+          "field": "bi_growth",
+          "label": "Growth method",
+          "raw_value": "self-flux",
+          "display_value": "self-flux",
+          "normalized_value": null,
+          "source_role": "reported_study_method",
+          "locator": {
+            "source_window_id": "bi_methods",
+            "char_start": 6664,
+            "char_end": 6673,
+            "end_exclusive": true,
+            "literal_sha256": "c66780d69339ab828fc8b4008fdb9442fb82a4db712e540cc1e0ff9eb86a26bd",
+            "offset_basis": "Unicode codepoints in frozen pdftotext raw body",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        },
+        {
+          "field": "bi_transport_medium",
+          "label": "Transport pressure medium",
+          "raw_value": "Daphne oil 7373",
+          "display_value": "Daphne oil 7373",
+          "normalized_value": null,
+          "source_role": "reported_study_method",
+          "locator": {
+            "source_window_id": "bi_methods",
+            "char_start": 7005,
+            "char_end": 7020,
+            "end_exclusive": true,
+            "literal_sha256": "6cb26d28ea5e2f9758794041697c5b668e3b98f3b6f1cb92db5121924dc1f4b5",
+            "offset_basis": "Unicode codepoints in frozen pdftotext raw body",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        },
+        {
+          "field": "bi_pressure_calibration",
+          "label": "Pressure calibration · source wording",
+          "raw_value": "ruby fluoresce shift",
+          "display_value": "ruby fluoresce shift",
+          "normalized_value": null,
+          "source_role": "reported_study_method",
+          "locator": {
+            "source_window_id": "bi_methods",
+            "char_start": 7102,
+            "char_end": 7122,
+            "end_exclusive": true,
+            "literal_sha256": "6469e99c78117b3fe6227abcd8705e78940b2c0e310734ed02b9636a2d7487e2",
+            "offset_basis": "Unicode codepoints in frozen pdftotext raw body",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        },
+        {
+          "field": "bi_calibration_temperature",
+          "label": "Calibration temperature",
+          "raw_value": "room temperature",
+          "display_value": "room temperature",
+          "normalized_value": null,
+          "source_role": "pressure_calibration_condition",
+          "locator": {
+            "source_window_id": "bi_methods",
+            "char_start": 7126,
+            "char_end": 7142,
+            "end_exclusive": true,
+            "literal_sha256": "bbd142092f244c7a50c9b8de416b741d3a2c512dbb9f369f0fc925b6c9d2a009",
+            "offset_basis": "Unicode codepoints in frozen pdftotext raw body",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        }
+      ],
+      "existing_observation_links": [
+        {
+          "static_file": "materials-pressure-table-sources-2026-10-02.json",
+          "file_sha256": "788144f67d439d0a5051e3b5144c988311e5423ccfa56402beb5566744ebe284",
+          "record_ids": [
+            "source-record:bitecl:03",
+            "source-record:bitecl:04"
+          ]
+        }
+      ],
+      "display_note": "Room temperature describes pressure calibration; it does not supply the superconducting measurement temperature.",
+      "status": "pending_source_context",
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "study-context:bi:raman",
+      "case": "bitecl",
+      "label": "BiTeCl · Raman method",
+      "source_scope": "Separate high-pressure Raman measurements within the study.",
+      "reading_relation": "The Raman pressure medium is distinct from the transport medium.",
+      "fields": [
+        {
+          "field": "bi_raman_probe",
+          "label": "Probe",
+          "raw_value": "high-pressure Raman measurements",
+          "display_value": "high-pressure Raman measurements",
+          "normalized_value": null,
+          "source_role": "reported_study_method",
+          "locator": {
+            "source_window_id": "bi_methods",
+            "char_start": 7269,
+            "char_end": 7301,
+            "end_exclusive": true,
+            "literal_sha256": "40d0e97bf2e6b46fe36ad90d270a30ccbb16511e922e1cd8c4a5aab91fd64d15",
+            "offset_basis": "Unicode codepoints in frozen pdftotext raw body",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        },
+        {
+          "field": "bi_raman_medium",
+          "label": "Raman pressure medium",
+          "raw_value": "Neon",
+          "display_value": "Neon",
+          "normalized_value": null,
+          "source_role": "reported_study_method",
+          "locator": {
+            "source_window_id": "bi_methods",
+            "char_start": 7346,
+            "char_end": 7350,
+            "end_exclusive": true,
+            "literal_sha256": "618484e2c549451830e2b2c19b498d90b4fc8d206174f13c43ed058e6470ee2f",
+            "offset_basis": "Unicode codepoints in frozen pdftotext raw body",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        },
+        {
+          "field": "bi_raman_laser",
+          "label": "Incident wavelength",
+          "raw_value": "488 nm",
+          "display_value": "488 nm",
+          "normalized_value": null,
+          "source_role": "reported_raman_condition",
+          "locator": {
+            "source_window_id": "bi_methods",
+            "char_start": 7338,
+            "char_end": 7344,
+            "end_exclusive": true,
+            "literal_sha256": "1828cb6e0da954451c4d1cd1b2fc527386f395c9c18025b53a126d63c69b70c9",
+            "offset_basis": "Unicode codepoints in frozen pdftotext raw body",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        }
+      ],
+      "existing_observation_links": [],
+      "display_note": "This Raman context does not establish the structure of the 7 K / 15 GPa superconducting record.",
+      "status": "pending_source_context",
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "study-context:mo:table-I-column-2",
+      "case": "mo",
+      "label": "Mo borophosphide · original Table I column 2",
+      "source_scope": "Printed nominal/refined composition correspondence within one original table column; the column label is a source reading identifier.",
+      "reading_relation": "Columns 2 and 3 share a printed refined composition, but retain their distinct nominal preparations and Tc rows.",
+      "fields": [
+        {
+          "field": "mo_column_2_nominal",
+          "label": "Nominal preparation",
+          "raw_value": "Mo5P0.9B2.1",
+          "display_value": "Mo5P0.9B2.1",
+          "normalized_value": null,
+          "source_role": "printed_nominal_composition",
+          "locator": {
+            "source_window_id": "mo_table",
+            "char_start": 10616,
+            "char_end": 10627,
+            "end_exclusive": true,
+            "literal_sha256": "1b5fa0af9b2feb77204ac8a6509efdf42bd3b0c8483d3e9da6f34267ea391383",
+            "offset_basis": "Unicode codepoints in frozen pdftotext raw body",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": 1,
+            "original_table_column": 2
+          }
+        },
+        {
+          "field": "mo_column_2_refined",
+          "label": "Refined composition",
+          "raw_value": "Mo5P1.07(4)B1.93(4)",
+          "display_value": "Mo5P1.07(4)B1.93(4)",
+          "normalized_value": null,
+          "source_role": "printed_refined_composition",
+          "locator": {
+            "source_window_id": "mo_table",
+            "char_start": 10661,
+            "char_end": 10680,
+            "end_exclusive": true,
+            "literal_sha256": "5909431bb93561f669411926cfe65e5b84a12e948adb1dd4fb25ed8b3f906d33",
+            "offset_basis": "Unicode codepoints in frozen pdftotext raw body",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 2,
+            "original_table_row": 2,
+            "original_table_column": 2
+          }
+        }
+      ],
+      "existing_observation_links": [
+        {
+          "static_file": "materials-pressure-table-sources-2026-10-02.json",
+          "file_sha256": "788144f67d439d0a5051e3b5144c988311e5423ccfa56402beb5566744ebe284",
+          "record_ids": [
+            "source-record:mo:01",
+            "source-record:mo:02"
+          ]
+        }
+      ],
+      "display_note": "Parenthetical composition digits remain printed. This table correspondence does not establish a physical sample ID or select the catalogue result.",
+      "status": "pending_source_context",
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "study-context:mo:table-I-column-3",
+      "case": "mo",
+      "label": "Mo borophosphide · original Table I column 3",
+      "source_scope": "Printed nominal/refined composition correspondence within one original table column; the column label is a source reading identifier.",
+      "reading_relation": "Columns 2 and 3 share a printed refined composition, but retain their distinct nominal preparations and Tc rows.",
+      "fields": [
+        {
+          "field": "mo_column_3_nominal",
+          "label": "Nominal preparation",
+          "raw_value": "Mo5PB2",
+          "display_value": "Mo5PB2",
+          "normalized_value": null,
+          "source_role": "printed_nominal_composition",
+          "locator": {
+            "source_window_id": "mo_table",
+            "char_start": 10628,
+            "char_end": 10634,
+            "end_exclusive": true,
+            "literal_sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5",
+            "offset_basis": "Unicode codepoints in frozen pdftotext raw body",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": 1,
+            "original_table_column": 3
+          }
+        },
+        {
+          "field": "mo_column_3_refined",
+          "label": "Refined composition",
+          "raw_value": "Mo5P1.07(4)B1.93(4)",
+          "display_value": "Mo5P1.07(4)B1.93(4)",
+          "normalized_value": null,
+          "source_role": "printed_refined_composition",
+          "locator": {
+            "source_window_id": "mo_table",
+            "char_start": 10681,
+            "char_end": 10700,
+            "end_exclusive": true,
+            "literal_sha256": "5909431bb93561f669411926cfe65e5b84a12e948adb1dd4fb25ed8b3f906d33",
+            "offset_basis": "Unicode codepoints in frozen pdftotext raw body",
+            "occurrence_in_source_window": 2,
+            "literal_occurrences_in_source_window": 2,
+            "original_table_row": 2,
+            "original_table_column": 3
+          }
+        }
+      ],
+      "existing_observation_links": [
+        {
+          "static_file": "materials-pressure-table-sources-2026-10-02.json",
+          "file_sha256": "788144f67d439d0a5051e3b5144c988311e5423ccfa56402beb5566744ebe284",
+          "record_ids": [
+            "source-record:mo:07",
+            "source-record:mo:08"
+          ]
+        }
+      ],
+      "display_note": "Parenthetical composition digits remain printed. This table correspondence does not establish a physical sample ID or select the catalogue result.",
+      "status": "pending_source_context",
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "study-context:pt:xrd-correspondence",
+      "case": "pt",
+      "label": "Pt substituted BaFe₂As₂ · XRD composition correspondence",
+      "source_scope": "Composition correspondence stated within the crystallographic paragraph.",
+      "reading_relation": "The source explicitly relates its study composition to an XRD-refined composition.",
+      "fields": [
+        {
+          "field": "pt_study_composition",
+          "label": "Study composition",
+          "raw_value": "BaFe1.90Pt0.10As2",
+          "display_value": "BaFe1.90Pt0.10As2",
+          "normalized_value": null,
+          "source_role": "study_composition_label",
+          "locator": {
+            "source_window_id": "pt_refinement",
+            "char_start": 105,
+            "char_end": 122,
+            "end_exclusive": true,
+            "literal_sha256": "e9590b9ab259ce603f1de3cc23a729d8906690a144864b9c626f1f38ea5d977d",
+            "offset_basis": "Unicode codepoints in the hashed derived text of the named HTML element",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        },
+        {
+          "field": "pt_xrd_refined_composition",
+          "label": "XRD-refined composition",
+          "raw_value": "BaFe1.906(8)Pt0.094(8)As2",
+          "display_value": "BaFe1.906(8)Pt0.094(8)As2",
+          "normalized_value": null,
+          "source_role": "printed_refined_composition",
+          "locator": {
+            "source_window_id": "pt_refinement",
+            "char_start": 635,
+            "char_end": 660,
+            "end_exclusive": true,
+            "literal_sha256": "83ed09bdd73d30239e85d0ec97d100bd0fbf7126d7f7d453ef8e12efc44dfe89",
+            "offset_basis": "Unicode codepoints in the hashed derived text of the named HTML element",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        },
+        {
+          "field": "pt_xrd_method",
+          "label": "Refinement probe",
+          "raw_value": "single-crystal X-ray-diffraction",
+          "display_value": "single-crystal X-ray-diffraction",
+          "normalized_value": null,
+          "source_role": "reported_structure_method",
+          "locator": {
+            "source_window_id": "pt_refinement",
+            "char_start": 60,
+            "char_end": 92,
+            "end_exclusive": true,
+            "literal_sha256": "bdddaa92bb41bcfcfcc63e181bf969225287f070121cf4857fd917f0447a2cdf",
+            "offset_basis": "Unicode codepoints in the hashed derived text of the named HTML element",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        },
+        {
+          "field": "pt_xrd_temperature",
+          "label": "XRD measurement temperature",
+          "raw_value": "250 K",
+          "display_value": "250 K",
+          "normalized_value": null,
+          "source_role": "structure_measurement_temperature",
+          "locator": {
+            "source_window_id": "pt_refinement",
+            "char_start": 96,
+            "char_end": 101,
+            "end_exclusive": true,
+            "literal_sha256": "d8ad3337c6e1fb1ff5b23d9c7cb072206d96dd941a26fb07c3d3e3fbd588fe76",
+            "offset_basis": "Unicode codepoints in the hashed derived text of the named HTML element",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        }
+      ],
+      "existing_observation_links": [],
+      "display_note": "The printed uncertainties are retained. The XRD temperature is separate from Tc; common physical specimen identity across probes is unestablished.",
+      "status": "pending_source_context",
+      "selected_result_association": "unestablished"
+    },
+    {
+      "id": "study-context:pt:calorimetry-attribution",
+      "case": "pt",
+      "label": "Pt substituted BaFe₂As₂ · transition methods and calorimetry context",
+      "source_scope": "Figure 4 caption and the specific-heat discussion retain their respective roles.",
+      "reading_relation": "Figure 4 attributes 23 K to resistivity and magnetic susceptibility; its heat-capacity feature and isoentropic analysis remain separate.",
+      "fields": [
+        {
+          "field": "pt_caption_tc_expression",
+          "label": "Tc expression attributed by the caption",
+          "raw_value": "T_{c}=23 K",
+          "display_value": "T_{c}=23 K",
+          "normalized_value": null,
+          "source_role": "caption_cross_method_tc_attribution",
+          "locator": {
+            "source_window_id": "pt_heat_caption",
+            "char_start": 262,
+            "char_end": 272,
+            "end_exclusive": true,
+            "literal_sha256": "162a8f6b75e8ca470b898e84ce82f47f1ae1151576236135456d24606b972de8",
+            "offset_basis": "Unicode codepoints in the hashed derived text of the named HTML element",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        },
+        {
+          "field": "pt_caption_tc_methods",
+          "label": "Methods named for that Tc",
+          "raw_value": "resistivity and magnetic susceptibility\nmeasurements",
+          "display_value": "resistivity and magnetic susceptibility measurements",
+          "normalized_value": null,
+          "source_role": "explicit_caption_method_attribution",
+          "locator": {
+            "source_window_id": "pt_heat_caption",
+            "char_start": 289,
+            "char_end": 341,
+            "end_exclusive": true,
+            "literal_sha256": "5c0b619e594b44d73a3da64ddc8ef32ab81ab1824fd3a4b89955520bed6c4490",
+            "offset_basis": "Unicode codepoints in the hashed derived text of the named HTML element",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        },
+        {
+          "field": "pt_heat_feature_context",
+          "label": "Calorimetry feature · caption wording",
+          "raw_value": "\\sim 20 K",
+          "display_value": "\\sim 20 K",
+          "normalized_value": null,
+          "source_role": "calorimetry_feature_context_not_tc",
+          "locator": {
+            "source_window_id": "pt_heat_caption",
+            "char_start": 113,
+            "char_end": 122,
+            "end_exclusive": true,
+            "literal_sha256": "1f6b55d1787ca3aa8f5354162ab497fa5e89ff921d3acdd0dec5b4c07474ea5e",
+            "offset_basis": "Unicode codepoints in the hashed derived text of the named HTML element",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        },
+        {
+          "field": "pt_heat_anomaly_context",
+          "label": "Calorimetry discussion · temperature context",
+          "raw_value": "below 21 K",
+          "display_value": "below 21 K",
+          "normalized_value": null,
+          "source_role": "calorimetry_feature_context_not_tc",
+          "locator": {
+            "source_window_id": "pt_specific_heat",
+            "char_start": 292,
+            "char_end": 302,
+            "end_exclusive": true,
+            "literal_sha256": "e41f449af7551b4d6bba8f84d6a5eabb8cdac14c86476aa593f6d0734d498900",
+            "offset_basis": "Unicode codepoints in the hashed derived text of the named HTML element",
+            "occurrence_in_source_window": 1,
+            "literal_occurrences_in_source_window": 1,
+            "original_table_row": null,
+            "original_table_column": null
+          }
+        }
+      ],
+      "existing_observation_links": [
+        {
+          "static_file": "materials-source-followup-2026-10-02.json",
+          "file_sha256": "c4014251af24bb8618f718ecd65edd13cc6c4afa00f7b0f82fa9ea29f192c1f8",
+          "record_ids": [
+            "source-only-r2:pt_extra:source_preparation_and_specific_heat_method",
+            "source-only-r2:pt_extra:specific_heat_analysis_context"
+          ]
+        }
+      ],
+      "display_note": "The existing thermal-relaxation method and isoentropic construction remain available. Neither temperature description is converted into a new calorimetric Tc.",
+      "status": "pending_source_context",
+      "selected_result_association": "unestablished"
+    }
+  ],
+  "authority": {
+    "formal_human_review": false,
+    "formal_scientific_review": false,
+    "scientific_acceptance": false,
+    "ml_training_approved": false,
+    "selected_result_association": "unestablished",
+    "sample_identity_established": false,
+    "state_identity_established": false,
+    "canonical_promotions": 0,
+    "database_operations": 0,
+    "source_imports": 0,
+    "new_calculations": 0,
+    "current_target_verified": false,
+    "raw_fulltext_or_private_context_included": false,
+    "source_currentness_verified": false
+  }
+}
