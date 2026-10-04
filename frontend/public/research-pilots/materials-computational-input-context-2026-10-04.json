@@ -1,0 +1,423 @@
+{
+  "version": "materials-computational-input-context/1.0.0",
+  "prepared_on": "2026-10-04",
+  "status": "source_qualified_reference",
+  "reference": {
+    "entry_id": "0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq",
+    "formula": "B2Cr",
+    "knowledge_origin": "Computed",
+    "role": "one independent previously computed model; experimental sample/state association unresolved"
+  },
+  "native_source": {
+    "native_XML_url": "https://nomad-lab.eu/prod/v1/api/v1/entries/0dTJ0oCkwgt1xEV8EcXKIV8k9Zjq/raw/vasprun.xml",
+    "source_sha256": "09b0088b66057f364ae436c6e6d15621572408aede91e19ae0b5ce1594f99d5e",
+    "source_bytes": 3835451,
+    "program": "vasp",
+    "version": "5.3.2",
+    "capture_currentness": "Frozen 2 October 2026 XML capture; this task did not refetch the provider source"
+  },
+  "counts": {
+    "additional_tag_count": 8,
+    "additional_occurrence_count": 10,
+    "combined_tag_count": 25,
+    "combined_occurrence_count": 36,
+    "independent_computed_entry_count": 1,
+    "independent_experiment_count_established": false,
+    "formal_material_property_additions": 0
+  },
+  "native_inputs": [
+    {
+      "native_tag": "ICHARG",
+      "source_xpath": "./incar[1]/i[5][@name='ICHARG']",
+      "source_context": "./incar[1]",
+      "XML_element_tag": "i",
+      "actual_native_attributes": {
+        "type": "int",
+        "name": "ICHARG"
+      },
+      "declared_xml_type": "int",
+      "raw_text": "     1",
+      "raw_lexeme": "1",
+      "text_content_sha256": "fe56d3e6ef2c8239d116573fac4a146bfa069ceaf8e187e8f09fd85e5f61bfff",
+      "explicit_unit_attributes_in_element_or_ancestors": [],
+      "normalized_value": null,
+      "unit": null,
+      "role": "Electronic-startup input code; its two source contexts remain separate."
+    },
+    {
+      "native_tag": "ICHARG",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/separator[3][@name='electronic startup']/i[2][@name='ICHARG']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']/separator[3][@name='electronic startup']",
+      "XML_element_tag": "i",
+      "actual_native_attributes": {
+        "type": "int",
+        "name": "ICHARG"
+      },
+      "declared_xml_type": "int",
+      "raw_text": "     1",
+      "raw_lexeme": "1",
+      "text_content_sha256": "fe56d3e6ef2c8239d116573fac4a146bfa069ceaf8e187e8f09fd85e5f61bfff",
+      "explicit_unit_attributes_in_element_or_ancestors": [],
+      "normalized_value": null,
+      "unit": null,
+      "role": "Electronic-startup input code; its two source contexts remain separate."
+    },
+    {
+      "native_tag": "GGA",
+      "source_xpath": "./parameters[1]/separator[11][@name='electronic exchange-correlation']/i[1][@name='GGA']",
+      "source_context": "./parameters[1]/separator[11][@name='electronic exchange-correlation']",
+      "XML_element_tag": "i",
+      "actual_native_attributes": {
+        "type": "string",
+        "name": "GGA"
+      },
+      "declared_xml_type": "string",
+      "raw_text": "--",
+      "raw_lexeme": "--",
+      "text_content_sha256": "d8156bae0c4243d3742fc4e9774d8aceabe0410249d720c855f98afc88ff846c",
+      "explicit_unit_attributes_in_element_or_ancestors": [],
+      "normalized_value": null,
+      "unit": null,
+      "role": "Raw exchange-correlation input string; the double dash remains uninterpreted."
+    },
+    {
+      "native_tag": "LDAU",
+      "source_xpath": "./parameters[1]/i[4][@name='LDAU']",
+      "source_context": "./parameters[1]",
+      "XML_element_tag": "i",
+      "actual_native_attributes": {
+        "type": "logical",
+        "name": "LDAU"
+      },
+      "declared_xml_type": "logical",
+      "raw_text": " F  ",
+      "raw_lexeme": "F",
+      "text_content_sha256": "7c65699bf06c99bfac059012c0c61a2cf1258472021e6aa4c4d345d11d44d96a",
+      "explicit_unit_attributes_in_element_or_ancestors": [],
+      "normalized_value": null,
+      "unit": null,
+      "role": "Native logical control flag; retain raw F and XML type, without adding model conclusions."
+    },
+    {
+      "native_tag": "MAGMOM",
+      "source_xpath": "./incar[1]/v[1][@name='MAGMOM']",
+      "source_context": "./incar[1]",
+      "XML_element_tag": "v",
+      "actual_native_attributes": {
+        "name": "MAGMOM"
+      },
+      "declared_xml_type": null,
+      "raw_text": "      0.00000000      0.00000000      5.00000000",
+      "raw_lexeme": "0.00000000      0.00000000      5.00000000",
+      "text_content_sha256": "27277ae9a5aa6a2a665fb7a3f529972f5e4decac85af9ab68f5fdbeae0af9274",
+      "explicit_unit_attributes_in_element_or_ancestors": [],
+      "normalized_value": null,
+      "unit": null,
+      "role": "Reported spin input vector, conventionally used for initialization; actual restart-dependent role is unestablished. Not final or ordered moments."
+    },
+    {
+      "native_tag": "MAGMOM",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/separator[4][@name='electronic spin']/v[1][@name='MAGMOM']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']/separator[4][@name='electronic spin']",
+      "XML_element_tag": "v",
+      "actual_native_attributes": {
+        "name": "MAGMOM"
+      },
+      "declared_xml_type": null,
+      "raw_text": "      0.00000000      0.00000000      5.00000000",
+      "raw_lexeme": "0.00000000      0.00000000      5.00000000",
+      "text_content_sha256": "27277ae9a5aa6a2a665fb7a3f529972f5e4decac85af9ab68f5fdbeae0af9274",
+      "explicit_unit_attributes_in_element_or_ancestors": [],
+      "normalized_value": null,
+      "unit": null,
+      "role": "Reported spin input vector, conventionally used for initialization; actual restart-dependent role is unestablished. Not final or ordered moments."
+    },
+    {
+      "native_tag": "ISYM",
+      "source_xpath": "./parameters[1]/separator[6][@name='symmetry']/i[1][@name='ISYM']",
+      "source_context": "./parameters[1]/separator[6][@name='symmetry']",
+      "XML_element_tag": "i",
+      "actual_native_attributes": {
+        "type": "int",
+        "name": "ISYM"
+      },
+      "declared_xml_type": "int",
+      "raw_text": "     2",
+      "raw_lexeme": "2",
+      "text_content_sha256": "4d8286b0df46d6da582eb892e206a2f7c4667edd87f128d3d562e917b0ff0989",
+      "explicit_unit_attributes_in_element_or_ancestors": [],
+      "normalized_value": null,
+      "unit": null,
+      "role": "Native symmetry-control input code; not a space-group or phase result."
+    },
+    {
+      "native_tag": "NBANDS",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/i[7][@name='NBANDS']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']",
+      "XML_element_tag": "i",
+      "actual_native_attributes": {
+        "type": "int",
+        "name": "NBANDS"
+      },
+      "declared_xml_type": "int",
+      "raw_text": "    13",
+      "raw_lexeme": "13",
+      "text_content_sha256": "c2a216d7ec86fd0525b2f167aebbf3fccedd625a9b4a1df36320d4109b7a2c38",
+      "explicit_unit_attributes_in_element_or_ancestors": [],
+      "normalized_value": null,
+      "unit": null,
+      "role": "Native electronic input NBANDS; not an observed band structure or convergence result."
+    },
+    {
+      "native_tag": "NELECT",
+      "source_xpath": "./parameters[1]/separator[2][@name='electronic']/i[8][@name='NELECT']",
+      "source_context": "./parameters[1]/separator[2][@name='electronic']",
+      "XML_element_tag": "i",
+      "actual_native_attributes": {
+        "name": "NELECT"
+      },
+      "declared_xml_type": null,
+      "raw_text": "     12.00000000",
+      "raw_lexeme": "12.00000000",
+      "text_content_sha256": "867a5b757156e6aba6e7ac7c9b6e2d2b8c5e169e7d8908e512ae63719f43ca77",
+      "explicit_unit_attributes_in_element_or_ancestors": [],
+      "normalized_value": null,
+      "unit": null,
+      "role": "Native electronic input NELECT; not oxidation state, charge-state evidence or an experimental carrier density."
+    },
+    {
+      "native_tag": "NEDOS",
+      "source_xpath": "./parameters[1]/separator[7][@name='dos']/i[2][@name='NEDOS']",
+      "source_context": "./parameters[1]/separator[7][@name='dos']",
+      "XML_element_tag": "i",
+      "actual_native_attributes": {
+        "type": "int",
+        "name": "NEDOS"
+      },
+      "declared_xml_type": "int",
+      "raw_text": "   301",
+      "raw_lexeme": "301",
+      "text_content_sha256": "46574a4a07819f41f99fdc82b60166eeeefac2bda14d8af4e096ac978f757244",
+      "explicit_unit_attributes_in_element_or_ancestors": [],
+      "normalized_value": null,
+      "unit": null,
+      "role": "Native DOS input count; not a computed DOS property or convergence result."
+    }
+  ],
+  "spin_components": [
+    {
+      "zero_based_index": 0,
+      "source_element_label": "B",
+      "raw_input_lexeme": "0.00000000",
+      "unit": null,
+      "normalized_value": null,
+      "atom_label_source_xpath": "./atominfo[1]/array[1][@name='atoms']/set[1]/rc[1]/c[1]",
+      "role": "native spin input component; no final/ordered moment or physical sample association"
+    },
+    {
+      "zero_based_index": 1,
+      "source_element_label": "B",
+      "raw_input_lexeme": "0.00000000",
+      "unit": null,
+      "normalized_value": null,
+      "atom_label_source_xpath": "./atominfo[1]/array[1][@name='atoms']/set[1]/rc[2]/c[1]",
+      "role": "native spin input component; no final/ordered moment or physical sample association"
+    },
+    {
+      "zero_based_index": 2,
+      "source_element_label": "Cr",
+      "raw_input_lexeme": "5.00000000",
+      "unit": null,
+      "normalized_value": null,
+      "atom_label_source_xpath": "./atominfo[1]/array[1][@name='atoms']/set[1]/rc[3]/c[1]",
+      "role": "native spin input component; no final/ordered moment or physical sample association"
+    }
+  ],
+  "documentation_annotations": [
+    {
+      "native_tag": "ICHARG",
+      "documented_meaning": "Initial charge-density construction",
+      "limitation": "ICHARG = 1 refers to a charge-density restart input. The captured packet does not establish the identity of original restart files.",
+      "documented_unit": null,
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/ICHARG",
+        "revision_url": "https://vasp.at/wiki/index.php?title=ICHARG&oldid=37119",
+        "observed_revision_id": "37119",
+        "capture_kind": "web_tool_rendered_page_text",
+        "raw_HTML_response_hash_established": false,
+        "tool_result_capture_sha256": "1d1c6b794f7c0bbba53e5f8faebe2e6b1d6bd10e47633290b3d372e881c3d755",
+        "capture_scope": "Serialized web-tool rendered result for a page group; not original HTML bytes or a single-page byte hash",
+        "captured_on": "2026-10-04"
+      },
+      "interpretation_role": "current_manual_definition_annotation_not_native_runtime_proof"
+    },
+    {
+      "native_tag": "GGA",
+      "documented_meaning": "Exchange-correlation input selector",
+      "limitation": "The raw -- string is not resolved as a functional here. Archive method labels remain separate source reports.",
+      "documented_unit": null,
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/GGA",
+        "revision_url": "https://vasp.at/wiki/index.php?title=GGA&oldid=34546",
+        "observed_revision_id": "34546",
+        "capture_kind": "web_tool_rendered_page_text",
+        "raw_HTML_response_hash_established": false,
+        "tool_result_capture_sha256": "824b0b99253db81fe096bfd8b7733fd517c960535b4bae2795403c5370591884",
+        "capture_scope": "Serialized web-tool rendered result for a page group; not original HTML bytes or a single-page byte hash",
+        "captured_on": "2026-10-04"
+      },
+      "interpretation_role": "current_manual_definition_annotation_not_native_runtime_proof"
+    },
+    {
+      "native_tag": "LDAU",
+      "documented_meaning": "DFT+U control flag",
+      "limitation": "The native logical F is retained. No Hubbard interaction value or independently validated model conclusion is added.",
+      "documented_unit": null,
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/LDAU",
+        "revision_url": "https://vasp.at/wiki/index.php?title=LDAU&oldid=36499",
+        "observed_revision_id": "36499",
+        "capture_kind": "web_tool_rendered_page_text",
+        "raw_HTML_response_hash_established": false,
+        "tool_result_capture_sha256": "1d1c6b794f7c0bbba53e5f8faebe2e6b1d6bd10e47633290b3d372e881c3d755",
+        "capture_scope": "Serialized web-tool rendered result for a page group; not original HTML bytes or a single-page byte hash",
+        "captured_on": "2026-10-04"
+      },
+      "interpretation_role": "current_manual_definition_annotation_not_native_runtime_proof"
+    },
+    {
+      "native_tag": "MAGMOM",
+      "documented_meaning": "Spin initialization and symmetry input",
+      "limitation": "MAGMOM can initialize moments or affect symmetry during a restart. These input values do not establish final or ordered moments.",
+      "documented_unit": null,
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/MAGMOM",
+        "revision_url": "https://vasp.at/wiki/index.php?title=MAGMOM&oldid=36612",
+        "observed_revision_id": "36612",
+        "capture_kind": "web_tool_rendered_page_text",
+        "raw_HTML_response_hash_established": false,
+        "tool_result_capture_sha256": "1d1c6b794f7c0bbba53e5f8faebe2e6b1d6bd10e47633290b3d372e881c3d755",
+        "capture_scope": "Serialized web-tool rendered result for a page group; not original HTML bytes or a single-page byte hash",
+        "captured_on": "2026-10-04"
+      },
+      "interpretation_role": "current_manual_definition_annotation_not_native_runtime_proof"
+    },
+    {
+      "native_tag": "ISYM",
+      "documented_meaning": "Symmetry-treatment input code",
+      "limitation": "This code does not supply a measured space group or phase assignment.",
+      "documented_unit": null,
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/ISYM",
+        "revision_url": "https://vasp.at/wiki/index.php?title=ISYM&oldid=26986",
+        "observed_revision_id": "26986",
+        "capture_kind": "web_tool_rendered_page_text",
+        "raw_HTML_response_hash_established": false,
+        "tool_result_capture_sha256": "c7fdf3814aa358ac941eb707ad8e02dc65bf3f4d91257028393e6bd6fa514072",
+        "capture_scope": "Serialized web-tool rendered result for a page group; not original HTML bytes or a single-page byte hash",
+        "captured_on": "2026-10-04"
+      },
+      "interpretation_role": "current_manual_definition_annotation_not_native_runtime_proof"
+    },
+    {
+      "native_tag": "NBANDS",
+      "documented_meaning": "Number of calculation orbitals",
+      "limitation": "The input count does not establish a band structure or numerical convergence.",
+      "documented_unit": null,
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/NBANDS",
+        "revision_url": "https://vasp.at/wiki/index.php?title=NBANDS&oldid=31110",
+        "observed_revision_id": "31110",
+        "capture_kind": "web_tool_rendered_page_text",
+        "raw_HTML_response_hash_established": false,
+        "tool_result_capture_sha256": "824b0b99253db81fe096bfd8b7733fd517c960535b4bae2795403c5370591884",
+        "capture_scope": "Serialized web-tool rendered result for a page group; not original HTML bytes or a single-page byte hash",
+        "captured_on": "2026-10-04"
+      },
+      "interpretation_role": "current_manual_definition_annotation_not_native_runtime_proof"
+    },
+    {
+      "native_tag": "NELECT",
+      "documented_meaning": "Electron-number input",
+      "limitation": "The input does not establish oxidation state, experimental carrier density or validated charge-state assignment.",
+      "documented_unit": null,
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/NELECT",
+        "revision_url": "https://vasp.at/wiki/index.php?title=NELECT&oldid=32552",
+        "observed_revision_id": "32552",
+        "capture_kind": "web_tool_rendered_page_text",
+        "raw_HTML_response_hash_established": false,
+        "tool_result_capture_sha256": "824b0b99253db81fe096bfd8b7733fd517c960535b4bae2795403c5370591884",
+        "capture_scope": "Serialized web-tool rendered result for a page group; not original HTML bytes or a single-page byte hash",
+        "captured_on": "2026-10-04"
+      },
+      "interpretation_role": "current_manual_definition_annotation_not_native_runtime_proof"
+    },
+    {
+      "native_tag": "NEDOS",
+      "documented_meaning": "DOS and dielectric-function grid count",
+      "limitation": "The input count does not supply a DOS property or demonstrate resolution convergence.",
+      "documented_unit": null,
+      "source": {
+        "provider": "Official VASP Wiki",
+        "url": "https://vasp.at/wiki/index.php/NEDOS",
+        "revision_url": "https://vasp.at/wiki/index.php?title=NEDOS&oldid=27011",
+        "observed_revision_id": "27011",
+        "capture_kind": "web_tool_rendered_page_text",
+        "raw_HTML_response_hash_established": false,
+        "tool_result_capture_sha256": "c7fdf3814aa358ac941eb707ad8e02dc65bf3f4d91257028393e6bd6fa514072",
+        "capture_scope": "Serialized web-tool rendered result for a page group; not original HTML bytes or a single-page byte hash",
+        "captured_on": "2026-10-04"
+      },
+      "interpretation_role": "current_manual_definition_annotation_not_native_runtime_proof"
+    }
+  ],
+  "documentation_scope": "Current manual definitions clarify tag roles. They do not establish original VASP 5.3.2 documentation equivalence, native unit attributes, effective settings, restart-file identity or convergence.",
+  "source_limits": [
+    "ICHARG and MAGMOM repeats remain separate native contexts, not separate runs or experiments.",
+    "GGA raw double dash is retained; no PE/PBE/LDA/functional conclusion, missing-value conversion or default from POTCAR labels.",
+    "LDAU raw F retains native logical type; no HubbardU value or actual functional/model conclusion is normalized.",
+    "ISYM2 is not a measured space group; NBANDS/NELECT/NEDOS input codes/counts are not materials measurements or verified convergence.",
+    "MAGMOM is input metadata, not final/ordered/site-verified moments; unit absent remains null and restart-dependent role is unresolved.",
+    "Current documentation definitions are separate secondary notes; no originalVASP5.3.2 execution/units proof is added."
+  ],
+  "reproduction_limits": [
+    {
+      "id": "potential_identity",
+      "evidence": "Native labels PAW_PBE B06Sep2000 and Cr06Sep2000 are present; potential-file bytes/hashes were not established in the prior full-native review.",
+      "boundary": "No claim that provider or original run lacks POTCAR. Labels cannot replace original potential identity."
+    },
+    {
+      "id": "original_input_and_restart_context",
+      "evidence": "This task audits the captured output XML and existing safe projections, not a complete standalone original input/restart package. ISTART INCAR1 versus startup0 is already unresolved; ICHARG1 in two contexts does not resolve it.",
+      "boundary": "Original INCAR/POSCAR/KPOINTS and applicable restart file identities remain unrecovered/unreviewed in this packet; do not infer a specific missing file or its provider absence."
+    },
+    {
+      "id": "cutoff_and_version_units",
+      "evidence": "No ENCUT occurrence in the complete native XML; ENMAX remains a different preserved tag. Original VASP5.3.2 tag/format documentation correspondence remains unresolved.",
+      "boundary": "Do not invent a default cutoff, convert unitless native lexemes or treat current manuals as the original runtime edition."
+    },
+    {
+      "id": "convergence_and_result_mapping",
+      "evidence": "Three native calculation blocks/closed XML do not establish ionic/electronic convergence; existing ionic versus last-electronic e_0_energy mapping remains deferred.",
+      "boundary": "No converged-run, final-moment or model-quality claim."
+    }
+  ],
+  "authority": {
+    "formal_human_review": false,
+    "scientific_acceptance": false,
+    "ML_approval": false,
+    "material_sample_state_selected_result_association": null,
+    "canonical_promotions": 0,
+    "production_imports": 0,
+    "new_calculations": 0,
+    "execution_authorized": false
+  }
+}
