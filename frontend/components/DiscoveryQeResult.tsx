@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { inspectQeResult, QE_RESULT_LIMITS, type QeResultReading } from "@/lib/discovery-qe-result";
+import { inspectQeResultContext, QE_RESULT_LIMITS, type QeResultContext, type QeResultReading } from "@/lib/discovery-qe-result";
 import { UPF_BYTE_LIMIT } from "@/lib/discovery-qe-input";
+import { canPrepareQeFollowUp } from "@/lib/discovery-qe-follow-up";
+import { DiscoveryQeInput } from "@/components/DiscoveryQeInput";
 import { DiscoveryQeConvergence } from "@/components/DiscoveryQeConvergence";
 
 const fileFields = [
@@ -30,14 +32,15 @@ const control = "mt-2 block min-h-11 w-full min-w-0 rounded-md border border-sag
 export function DiscoveryQeResult() {
   const [files, setFiles] = useState(emptyFiles);
   const [pseudos, setPseudos] = useState<File[]>([]);
-  const [result, setResult] = useState<QeResultReading | null>(null);
+  const [context, setContext] = useState<QeResultContext | null>(null);
+  const result = context?.reading ?? null;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [downloadStatus, setDownloadStatus] = useState("");
   const [reset, setReset] = useState(0);
   const sequence = useRef(0);
   useEffect(() => () => { sequence.current++; }, []);
-  const invalidate = () => { sequence.current++; setResult(null); setError(""); setBusy(false); setDownloadStatus(""); };
+  const invalidate = () => { sequence.current++; setContext(null); setError(""); setBusy(false); setDownloadStatus(""); };
   const choose = (role: Role, file: File | null) => {
     invalidate();
     if (file && (!file.size || file.size > QE_RESULT_LIMITS[role])) {
@@ -54,8 +57,8 @@ export function DiscoveryQeResult() {
       const [manifest, input, xml, stdout, upfs] = await Promise.all([
         local(files.manifest!), local(files.input!), local(files.xml!), local(files.stdout!), Promise.all(pseudos.map(local)),
       ]);
-      const reading = await inspectQeResult({ manifest, input, xml, stdout, pseudos: upfs });
-      if (run === sequence.current) setResult(reading);
+      const reading = await inspectQeResultContext({ manifest, input, xml, stdout, pseudos: upfs });
+      if (run === sequence.current) setContext(reading);
     } catch (issue) { if (run === sequence.current) setError(issue instanceof Error ? issue.message : "The local output could not be read."); }
     finally { if (run === sequence.current) setBusy(false); }
   };
@@ -120,5 +123,7 @@ export function DiscoveryQeResult() {
       <details className="min-w-0 text-sm"><summary className="w-fit cursor-pointer font-medium text-accent-deep">Full values and source record</summary><pre tabIndex={0} aria-label="Scrollable QE output reading" className="mt-3 max-h-96 overflow-auto rounded border border-sage-border bg-white p-3 text-xs">{result.json}</pre></details>
     </section>}
     <DiscoveryQeConvergence current={result} />
+    {context && canPrepareQeFollowUp(context) && <DiscoveryQeInput key={context.reading.sha256} batch={context.preparation.batch} candidateId={context.reading.report.candidate_id} followUp={context} />}
+    {context && !canPrepareQeFollowUp(context) && <p className="text-sm text-sage-muted">Follow-up input preparation is available after a fixed-geometry SCF run. A relaxation needs an explicit final-coordinate model before preparing another run.</p>}
   </div>;
 }

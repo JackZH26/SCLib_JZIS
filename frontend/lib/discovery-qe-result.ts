@@ -175,7 +175,8 @@ export function readQeNativeOutput(prepared: PreparedQe, kind: "execution" | "in
       scientific_acceptance: false, ml_training_approved: false, database_write: false } };
 }
 
-export async function inspectQeResult(input: QeResultFiles) {
+/** Includes an in-memory preparation for an explicit follow-up; raw UPFs never enter the reading export. */
+export async function inspectQeResultContext(input: QeResultFiles) {
   const files = { manifest: copy(input.manifest, QE_RESULT_LIMITS.manifest, "manifest"), input: copy(input.input, QE_RESULT_LIMITS.input, "input"),
     xml: copy(input.xml, QE_RESULT_LIMITS.xml, "XML"), stdout: copy(input.stdout, QE_RESULT_LIMITS.stdout, "stdout") };
   if (!Array.isArray(input.pseudos) || !input.pseudos.length || input.pseudos.length > 8) fail("Select the original 1 to 8 UPF files.");
@@ -196,6 +197,12 @@ export async function inspectQeResult(input: QeResultFiles) {
     settings: prepared.manifest.settings, pseudopotentials: prepared.manifest.pseudopotentials, files: captured,
     ...reading, authority: "Local file consistency reading; no authenticated execution receipt or scientific approval." };
   const json = JSON.stringify(report, null, 2) + "\n", sha256 = await coordinateSha256(json);
-  return { report, json, sha256, filename: `sclib-qe-output-${sha256.slice(0, 16)}.json` };
+  return { reading: { report, json, sha256, filename: `sclib-qe-output-${sha256.slice(0, 16)}.json` },
+    preparation: { batch, prepared, pseudos } };
+}
+/** Retains the original reading and serialized v1 contract. */
+export async function inspectQeResult(input: QeResultFiles) {
+  return (await inspectQeResultContext(input)).reading;
 }
 export type QeResultReading = Awaited<ReturnType<typeof inspectQeResult>>;
+export type QeResultContext = Awaited<ReturnType<typeof inspectQeResultContext>>;
