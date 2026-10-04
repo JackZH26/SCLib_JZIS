@@ -1,0 +1,512 @@
+{
+  "version": "materials-source-sample-tables/1.0.0",
+  "status": "source_qualified_reference",
+  "source": {
+    "id": "fete",
+    "paper_id": "arxiv:0911.4758",
+    "edition": "0911.4758v1",
+    "source_url": "https://arxiv.org/pdf/0911.4758v1",
+    "derived_text_sha256": "22f18b59c63823a6d0b74b22cf74086eb8072c9b940d03ad0964f58d702b8fb3",
+    "retained_ingestion_and_publisher_edition_equivalence": "unestablished",
+    "pdf_sha256": "3648d27c3f7a152518c9160c95cf4fa21a2419bbb4f35dbd601c9f5a317937c4"
+  },
+  "composition_table": {
+    "label": "Table I: nominal preparation and EDX composition",
+    "source_locator_id": "fete:table-I-six-EDX-rows",
+    "columns": [
+      "nominal_x",
+      "EDX_Fe",
+      "EDX_Te",
+      "EDX_Se"
+    ],
+    "rows": [
+      {
+        "source_row": 1,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Fe": {
+            "raw_value": "1.12",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Te": {
+            "raw_value": "1",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Se": {
+            "raw_value": "0",
+            "display_state": "source_literal",
+            "normalized_value": null
+          }
+        }
+      },
+      {
+        "source_row": 2,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0.10",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Fe": {
+            "raw_value": "1.00",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Te": {
+            "raw_value": "0.95",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Se": {
+            "raw_value": "0.05",
+            "display_state": "source_literal",
+            "normalized_value": null
+          }
+        }
+      },
+      {
+        "source_row": 3,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0.20",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Fe": {
+            "raw_value": "1.01",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Te": {
+            "raw_value": "0.88",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Se": {
+            "raw_value": "0.12",
+            "display_state": "source_literal",
+            "normalized_value": null
+          }
+        }
+      },
+      {
+        "source_row": 4,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0.30",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Fe": {
+            "raw_value": "1.07",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Te": {
+            "raw_value": "0.80",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Se": {
+            "raw_value": "0.20",
+            "display_state": "source_literal",
+            "normalized_value": null
+          }
+        }
+      },
+      {
+        "source_row": 5,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0.40(I)",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Fe": {
+            "raw_value": "1.12",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Te": {
+            "raw_value": "0.72",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Se": {
+            "raw_value": "0.28",
+            "display_state": "source_literal",
+            "normalized_value": null
+          }
+        }
+      },
+      {
+        "source_row": 6,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0.40(II)",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Fe": {
+            "raw_value": "1.04",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Te": {
+            "raw_value": "0.67",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "EDX_Se": {
+            "raw_value": "0.33",
+            "display_state": "source_literal",
+            "normalized_value": null
+          }
+        }
+      }
+    ],
+    "role": "Nominal x and measured EDX coefficients remain separate; Fe excess delta is retained in the reported composition."
+  },
+  "fit_parameter_table": {
+    "label": "Table I: Curie–Weiss fit reference",
+    "source_locator_id": "fete:table-I-six-EDX-rows",
+    "columns": [
+      "nominal_x",
+      "C",
+      "theta",
+      "mu_eff",
+      "C_II",
+      "theta_II"
+    ],
+    "rows": [
+      {
+        "source_row": 1,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "C": {
+            "raw_value": "2.24",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "theta": {
+            "raw_value": "-319",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "mu_eff": {
+            "raw_value": "4.2",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "C_II": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "theta_II": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          }
+        }
+      },
+      {
+        "source_row": 2,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0.10",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "C": {
+            "raw_value": "1.6",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "theta": {
+            "raw_value": "-260",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "mu_eff": {
+            "raw_value": "3.7",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "C_II": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "theta_II": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          }
+        }
+      },
+      {
+        "source_row": 3,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0.20",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "C": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "theta": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "mu_eff": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "C_II": {
+            "raw_value": "0.10",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "theta_II": {
+            "raw_value": "-52",
+            "display_state": "source_literal",
+            "normalized_value": null
+          }
+        }
+      },
+      {
+        "source_row": 4,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0.30",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "C": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "theta": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "mu_eff": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "C_II": {
+            "raw_value": "0.02",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "theta_II": {
+            "raw_value": "-5",
+            "display_state": "source_literal",
+            "normalized_value": null
+          }
+        }
+      },
+      {
+        "source_row": 5,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0.40(I)",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "C": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "theta": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "mu_eff": {
+            "raw_value": null,
+            "display_state": "source_blank",
+            "normalized_value": null
+          },
+          "C_II": {
+            "raw_value": "0.12",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "theta_II": {
+            "raw_value": "-24",
+            "display_state": "source_literal",
+            "normalized_value": null
+          }
+        }
+      },
+      {
+        "source_row": 6,
+        "cells": {
+          "nominal_x": {
+            "raw_value": "0.40(II)",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "C": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "theta": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "mu_eff": {
+            "raw_value": "-",
+            "display_state": "source_dash",
+            "normalized_value": null
+          },
+          "C_II": {
+            "raw_value": "0.05",
+            "display_state": "source_literal",
+            "normalized_value": null
+          },
+          "theta_II": {
+            "raw_value": "-23",
+            "display_state": "source_literal",
+            "normalized_value": null
+          }
+        }
+      }
+    ],
+    "source_printed_units": {
+      "C": "emu K/mol",
+      "theta": "K",
+      "mu_eff": "µB",
+      "C_II": "emu K/mol",
+      "theta_II": "K"
+    },
+    "unit_conversion_applied": false
+  },
+  "fit_scopes": [
+    {
+      "id": "wide-temperature-fit",
+      "nominal_x_lexemes": [
+        "0",
+        "0.10"
+      ],
+      "reported_actual_x_lexemes": [
+        "0",
+        "0.05"
+      ],
+      "temperature_lower_lexeme": "100",
+      "temperature_upper_lexeme": "300",
+      "temperature_unit_lexeme": "K",
+      "bounds_inclusive_as_reported": true,
+      "parameter_columns": [
+        "C",
+        "theta",
+        "mu_eff"
+      ],
+      "source_locator_id": "fete:Eq1-wide-temperature-fit"
+    },
+    {
+      "id": "low-temperature-FeII-fit",
+      "nominal_x_lexemes": [
+        "0.20",
+        "0.30",
+        "0.40(I)",
+        "0.40(II)"
+      ],
+      "reported_actual_x_lexemes": [
+        "0.12",
+        "0.20",
+        "0.28",
+        "0.33"
+      ],
+      "temperature_lower_lexeme": "20",
+      "temperature_upper_lexeme": "50",
+      "temperature_unit_lexeme": "K",
+      "bounds_inclusive_as_reported": true,
+      "parameter_columns": [
+        "C_II",
+        "theta_II"
+      ],
+      "source_locator_id": "fete:Eq1-low-temperature-FeII-fit"
+    }
+  ],
+  "model_roles": {
+    "C": "Curie constant in a susceptibility fit.",
+    "theta": "Weiss temperature parameter; not an ordering or superconducting transition temperature.",
+    "mu_eff": "Fit-derived effective moment; not an ordered or final magnetic moment.",
+    "C_II_and_theta_II": "Parameters of a Curie–Weiss term attributed tentatively to Fe(II), used for approximate subtraction; no independently established microscopic-site assignment.",
+    "counts": "Six source rows, not six independent experiments or four material facts."
+  },
+  "cell_display_semantics": {
+    "source_literal": "A printed source lexeme; normalized_value stays null.",
+    "source_dash": "Printed dash retained as raw_value \"-\"; not zero or proof of absence.",
+    "source_blank": "Visibly blank source cell; raw_value and normalized_value are null, distinct from a printed dash."
+  },
+  "locators": [
+    {
+      "id": "fete:table-I-six-EDX-rows",
+      "page": 4,
+      "char_start": 17232,
+      "char_end": 17749,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "9ab6e53aa28d079eaa110bb8909e68e537d40e27c8e1093b7cc2840159de870d"
+    },
+    {
+      "id": "fete:Eq1-low-temperature-FeII-fit",
+      "page": 4,
+      "char_start": 16058,
+      "char_end": 16846,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "cf43898a54df0a023c9b059d463fc5e40809f9c495d20a132ca84660082c7e96"
+    },
+    {
+      "id": "fete:Eq1-wide-temperature-fit",
+      "page": 4,
+      "char_start": 16951,
+      "char_end": 17193,
+      "end_exclusive": true,
+      "offset_basis": "Unicode codepoints in frozen PDF-derived text",
+      "window_sha256": "d5afa2b480168498db2fa081989024aedce218f093b6b1c9ea0e6d1bbb5c629d"
+    }
+  ],
+  "authority": {
+    "canonical_updates": 0,
+    "material_sample_state_and_selected_result_association": "unestablished",
+    "formal_human_review": false,
+    "scientific_acceptance": false,
+    "ML_approval": false
+  },
+  "publication": "Source table reference; physical sample, state and selected-result associations remain unestablished.",
+  "prepared_on": "2026-10-04",
+  "counts": {
+    "original_table_rows": 6,
+    "original_table_columns": 9,
+    "original_table_cells": 54,
+    "displayed_table_cells": 60,
+    "independent_experiment_count_established": false
+  }
+}

@@ -31,6 +31,39 @@ const readings = [
     href: "/materials/source-observations/paper-contexts#paper-context-fete",
     label: "Composition, probes and unresolved pairing",
     note: "The series includes x = 0.48. Its NMR-based pairing discussion concerns other compositions; the captured reading establishes no pairing assignment for the selected 12 K result.",
+    companion: { href: "/materials/source-observations/fe-te-se-samples", label: "Inspect nominal and EDX sample tables" },
+  },
+  {
+    materialId: "mat:fe1te0.55se0.45",
+    resultId: "legacy-result:8f2a87e3d987f3548691ab68cda67db0ac43801e9b981b2c48c52dc3cf85816a",
+    paperId: "arxiv:0911.4758",
+    href: "/materials/source-observations/fe-te-se-samples",
+    label: "Nominal and EDX compositions with fit parameters",
+    note: "This paper's Table I compares nominal and EDX compositions for six source rows. It contains no EDX row for x = 0.45.",
+  },
+  {
+    materialId: "mat:fe1te0.80se0.20",
+    resultId: "legacy-result:6ad4ff3c6914d1dc724b1905868d086442177d551813b8d2232e3c6a9bcf3e61",
+    paperId: "arxiv:0911.4758",
+    href: "/materials/source-observations/fe-te-se-samples",
+    label: "Nominal and EDX compositions with fit parameters",
+    note: "Table I distinguishes nominal preparation from EDX composition, including excess Fe. Its Curie–Weiss fit temperatures have a separate role from the selected Tc record.",
+  },
+  {
+    materialId: "mat:fe1te0.88se0.12",
+    resultId: "legacy-result:2392dd3b85dc1ce9823448a57614d10e8c894d2e884314e480fc1f9b194e9287",
+    paperId: "arxiv:0911.4758",
+    href: "/materials/source-observations/fe-te-se-samples",
+    label: "Nominal and EDX compositions with fit parameters",
+    note: "Table I distinguishes nominal preparation from EDX composition, including excess Fe. Its Curie–Weiss fit temperatures have a separate role from the selected Tc record.",
+  },
+  {
+    materialId: "mat:fe1te0.95se0.05",
+    resultId: "legacy-result:20c35e5c252ac226b147a85e6b385f338658e77748e454680376a2cddcb81a93",
+    paperId: "arxiv:0911.4758",
+    href: "/materials/source-observations/fe-te-se-samples",
+    label: "Nominal and EDX compositions with fit parameters",
+    note: "Table I distinguishes nominal preparation from EDX composition, including excess Fe. Its Curie–Weiss fit temperatures have a separate role from the selected Tc record.",
   },
   {
     materialId: "mat:la4ni3o9.99",
@@ -42,7 +75,7 @@ const readings = [
   },
 ] as const;
 
-export type MaterialStudyReading = Omit<typeof readings[number], "href"> & { href: string };
+export type MaterialStudyReading = Omit<typeof readings[number], "href"> & { href: string; companion: { href: string; label: string } | null };
 
 export function materialStudyReading(materialId: string, selected: unknown): MaterialStudyReading | null {
   if (!selected || typeof selected !== "object" || Array.isArray(selected)) return null;
@@ -51,5 +84,7 @@ export function materialStudyReading(materialId: string, selected: unknown): Mat
   const paperId = (result.source as Record<string, unknown>).paper_id;
   const reading = readings.find(reading => reading.materialId === materialId
     && reading.resultId === result.result_id && reading.paperId === paperId);
-  return reading ? { ...reading, href: (process.env.NEXT_PUBLIC_BASE_PATH || "") + reading.href } : null;
+  if (!reading) return null;
+  const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  return { ...reading, href: base + reading.href, companion: "companion" in reading ? { ...reading.companion, href: base + reading.companion.href } : null };
 }

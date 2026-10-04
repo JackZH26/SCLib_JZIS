@@ -210,6 +210,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
           <h2 className="text-sm font-semibold">Related paper context</h2>
           <p className="mt-2 max-w-3xl text-sm leading-6">{reading.note}</p>
           <a href={reading.href} className="site-text-link mt-2 inline-block text-sm">{reading.label}</a>
+          {reading.companion && <a href={reading.companion.href} className="site-text-link mt-2 block w-fit text-sm">{reading.companion.label}</a>}
           <p className="mt-2 text-xs leading-5 text-sage-muted">Captured paper reading; selected catalogue values remain separate.</p>
         </aside> : null;
       })()}
