@@ -69,6 +69,42 @@ describe("scientific anomaly display", () => {
     expect(anomalyStatus({ ...review, version: "future" })).toBe("Review status unavailable");
   });
 
+  it("keeps clear table records concise while retaining the full policy disclosure", () => {
+    const review = atomicItem("tc_max", 20).anomaly_review!;
+    const { container } = render(<RecordAnomalyReview assessment={review} compact />);
+    expect(screen.getByText("Review details")).toBeVisible();
+    expect(screen.queryByText("No findings under this policy")).not.toBeInTheDocument();
+    const explanation = screen.getByText(/No findings is not scientific acceptance/);
+    expect(explanation).not.toBeVisible();
+    fireEvent.click(screen.getByText("Review details"));
+    expect(explanation).toBeVisible();
+    expect(container.querySelector("details")).toHaveAttribute("open");
+  });
+
+  it.each([
+    { result_id: "" }, { total_findings: 1 }, { total_findings: undefined },
+    { findings_truncated: true }, { findings_truncated: undefined },
+    { findings: undefined }, { review_required_properties: ["tc_max"] },
+    { review_required_properties: undefined },
+    { findings: anomalyAssessment().findings },
+  ])("does not quiet incomplete or contradictory clear metadata: %j", patch => {
+    const review = { ...atomicItem("tc_max", 20).anomaly_review!, ...patch };
+    render(<RecordAnomalyReview assessment={review} compact />);
+    expect(screen.getByText("Review metadata incomplete")).toBeVisible();
+    expect(screen.queryByText("Review details")).not.toBeInTheDocument();
+  });
+
+  it.each(["review_required", "format_invalid", "unknown"])("keeps a non-clear record status visible in compact tables: %s", status => {
+    render(<RecordAnomalyReview assessment={{ ...anomalyAssessment(), status }} compact />);
+    expect(screen.getByText(status === "review_required" ? "Anomaly review required" : status === "format_invalid" ? "Format or parser review required" : "Review status unavailable")).toBeVisible();
+    expect(screen.queryByText("Review details")).not.toBeInTheDocument();
+  });
+
+  it("does not quiet an unsupported policy in compact tables", () => {
+    render(<RecordAnomalyReview assessment={{ ...atomicItem("tc_max", 20).anomaly_review!, version: "future" }} compact />);
+    expect(screen.getByText("Review status unavailable")).toBeVisible();
+  });
+
   it("shows policy and counts without multiplying a material into several table rows", () => {
     const material = { id: "synthetic", formula: "TEST", anomaly_review: materialAnomalyReview(), total_papers: 1, variant_count: 0 } as MaterialSummary;
     render(<MaterialTable rows={[material]} />);

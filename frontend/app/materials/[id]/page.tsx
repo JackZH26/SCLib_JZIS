@@ -465,23 +465,24 @@ function RecordsTable({
 
   return (
     <section>
-      <div className="mb-3 flex items-baseline justify-between">
+      <div className="mb-3 space-y-2">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
           Evidence ({rows.length} record{rows.length === 1 ? "" : "s"} from{" "}
           {new Set(rows.map((r) => r.paper_id).filter(id => typeof id === "string" && id.trim())).size} linked bibliographic IDs)
         </h2>
-        <span className="text-xs text-slate-400">
-          retained extraction records, including proposals that may need review;
-          repeated reports are not independent replications
-        </span>
+        <p className="text-xs text-slate-500">Each row is a retained extraction with its own conditions and source.</p>
+        <details className="text-xs text-slate-500">
+          <summary className="cursor-pointer">How to read these records</summary>
+          <p className="mt-2 max-w-3xl">Retained values and catalogue eligibility do not establish scientific approval. Operational anomaly checks flag records for review; no findings is not scientific validation. Repeated reports are not independent replications. Open each row’s review details or the retained-record Archive to inspect the supplied policy metadata.</p>
+        </details>
       </div>
-      <div className="overflow-x-auto rounded-lg border border-sage-border bg-white">
-        <table className="w-full text-sm">
+      <div role="region" aria-label="Scrollable retained evidence" tabIndex={0} className="overflow-x-auto rounded-lg border border-sage-border bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+        <table className="w-full min-w-[56rem] text-sm">
           <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
             <tr>
               <th className="px-3 py-3 text-right font-medium">Retained Tc (K)</th>
               <th className="px-3 py-3 text-left font-medium">Record origin / role</th>
-              <th className="px-3 py-3 text-left font-medium">Review status</th>
+              <th className="px-3 py-3 text-left font-medium">Review</th>
               <th className="px-3 py-3 text-right font-medium">P (GPa)</th>
               <th className="px-3 py-3 text-left font-medium">Sample</th>
               <th className="px-3 py-3 text-left font-medium">Method</th>
@@ -508,13 +509,12 @@ function RecordsTable({
                 <tr key={i} className="hover:bg-slate-50">
                   <td className="px-3 py-2.5 text-right tabular-nums font-medium">
                     {tc != null ? scientificNumber(tc) : "—"}
-                    <span className="block text-[10px] font-normal text-slate-500">Stored extraction, not approval</span>
                   </td>
                   <td className="px-3 py-2.5 text-xs text-slate-600" title={classification.version}>
                     <span className="block">{classification.status === "conflicted" ? "Classification conflict" : classification.origin}</span>
                     <span className="text-slate-400">{classification.role} source role</span>
                   </td>
-                  <td className="px-3 py-2.5"><RecordAnomalyReview assessment={r.anomaly_review} /><MaterialVisibilityNotice visibility={r.visibility} compact scope={objectValue(r.visibility).material_link_status ? "source occurrence" : "material"} /></td>
+                  <td className="px-3 py-2.5"><RecordAnomalyReview assessment={r.anomaly_review} compact /><MaterialVisibilityNotice visibility={r.visibility} compact quietIfClear scope={objectValue(r.visibility).material_link_status ? "source occurrence" : "material"} /></td>
                   <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
                     {pressureLabel(r.pressure_semantics, p)}
                   </td>

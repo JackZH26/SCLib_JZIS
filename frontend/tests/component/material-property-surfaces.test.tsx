@@ -1,11 +1,11 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import MaterialDetailPage, { generateMetadata } from "@/app/materials/[id]/page";
 import { BookmarksPanel } from "@/components/dashboard/BookmarksPanel";
 import { ApiError, getMaterial, getMaterialCalculationReferences, getMaterialEnrichment, getMaterialExternalReferences, getMaterialHydrideParameters, getMaterialStructureReferences, getMaterialSuperconReferences, listMaterialBookmarks, listPaperBookmarks, type MaterialDetail } from "@/lib/api";
 import { atomicItem, propertyEnvelope } from "../fixtures/property-evidence";
 import { anomalyAssessment, materialAnomalyReview, rawArchive } from "../fixtures/scientific-anomalies";
-import { materialVisibility, sourceScopedMaterialVisibility } from "../fixtures/material-visibility";
+import { materialVisibility, occurrenceVisibility, sourceScopedMaterialVisibility } from "../fixtures/material-visibility";
 import { materialSemantics, semanticProperty, semanticReport } from "../fixtures/material-semantics";
 
 vi.mock("@/lib/api", async importOriginal => {
@@ -82,6 +82,37 @@ describe("atomic evidence across material surfaces", () => {
     const jsonld = JSON.parse(container.querySelector("#sclib-material-structured-data")!.textContent!);
     expect(jsonld.variableMeasured).toHaveLength(1);
     expect(jsonld.variableMeasured[0].value).toBe("≈ 0.001 ± 0.0001");
+  });
+
+  it("keeps retained evidence concise without hiding review holds or unlinked source occurrences", async () => {
+    const mat = material();
+    mat.visibility = materialVisibility();
+    mat.disputed = false;
+    mat.retracted = false;
+    mat.records = [
+      { tc_kelvin: 14, paper_id: "arxiv:synthetic-a", visibility: materialVisibility(), anomaly_review: atomicItem("tc_max", 14).anomaly_review },
+      { tc_kelvin: 13, paper_id: "arxiv:synthetic-b", visibility: materialVisibility("pending"), anomaly_review: anomalyAssessment("synthetic-held") },
+      { tc_kelvin: 12, paper_id: "arxiv:synthetic-c", visibility: occurrenceVisibility(), anomaly_review: undefined },
+    ];
+    vi.mocked(getMaterial).mockResolvedValue(mat);
+    render(await MaterialDetailPage({ params: Promise.resolve({ id: mat.id }) }));
+    const region = screen.getByRole("region", { name: "Scrollable retained evidence" });
+    expect(region).toHaveAttribute("tabindex", "0");
+    const table = within(region);
+    expect(table.getAllByRole("row")).toHaveLength(4);
+    expect(table.getByText("Review details")).toBeVisible();
+    expect(table.queryByText("No findings under this policy")).not.toBeInTheDocument();
+    expect(table.queryByText("Catalogue eligible — not scientific approval")).not.toBeInTheDocument();
+    expect(table.queryByText("Stored extraction, not approval")).not.toBeInTheDocument();
+    expect(table.getByText("Anomaly review required")).toBeVisible();
+    expect(table.getByLabelText("material visibility")).toHaveTextContent("review pending");
+    expect(table.getByText("Review status unavailable")).toBeVisible();
+    expect(table.getByText(/no material identity or catalogue acceptance/)).toBeVisible();
+    for (const value of ["14", "13", "12"]) expect(table.getByText(value)).toBeVisible();
+    const explanation = screen.getByText(/Repeated reports are not independent replications/);
+    expect(explanation).not.toBeVisible();
+    fireEvent.click(screen.getByText("How to read these records"));
+    expect(explanation).toBeVisible();
   });
 
   it.each(["active", "unknown", "mixed", "retracted", "corrected"] as const)("loads source-scoped recovery and hydride panels for aggregate %s without enabling scientific SEO", async source_status => {
@@ -163,7 +194,7 @@ describe("atomic evidence across material surfaces", () => {
     expect(metadata.description).not.toContain("60 K");
     const { container } = render(await MaterialDetailPage({ params: Promise.resolve({ id: mat.id }) }));
     expect(screen.getByText("Retained Tc (K)")).toBeInTheDocument();
-    expect(screen.getByText("Stored extraction, not approval")).toBeInTheDocument();
+    expect(screen.getByText(/Retained values and catalogue eligibility do not establish scientific approval/)).toBeInTheDocument();
     expect(screen.getByLabelText("Retained raw scientific fields for synthetic-result:tc_max")).toHaveTextContent("60 K");
     const jsonld = JSON.parse(container.querySelector("#sclib-material-structured-data")!.textContent!);
     expect(jsonld.variableMeasured).toEqual([]);
