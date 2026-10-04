@@ -100,6 +100,64 @@ export function materialFieldCaseOutcome(requestKey: string, requestSha: string,
   return request(`/research/material-field-cases/operations/outcome?${query}`, { cache: "no-store", signal, responseByteLimit: 512 * 1024 });
 }
 
+// Private field fidelity decisions. Recovery reads the original operation without retrying it.
+export function materialFieldReviewCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request("/research/material-field-review/capabilities", { cache: "no-store", signal, responseByteLimit: 16384 });
+}
+export function materialFieldReviewContext(selector: import("./material-field-review").ReviewSelector, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ target_id: selector.targetId, field_id: selector.fieldId, expression_revision_id: selector.expressionId, component_kind: selector.componentKind, component_index: String(selector.componentIndex) });
+  if (selector.associationId) query.set("association_id", selector.associationId);
+  if (selector.tcExpressionId) query.set("tc_expression_revision_id", selector.tcExpressionId);
+  return request(`/research/material-field-review/context?${query}`, { cache: "no-store", signal, responseByteLimit: 512 * 1024 });
+}
+export function materialFieldReviewPreview(body: import("./material-field-review").ReviewRequest, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/material-field-review/operations/preview", { method: "POST", body: JSON.stringify({ request: body }), cache: "no-store", signal, responseByteLimit: 512 * 1024 });
+}
+export function materialFieldReviewCommit(body: import("./material-field-review").ReviewRequest, previewSha: string, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/material-field-review/operations/commit", { method: "POST", body: JSON.stringify({ request: body, expected_preview_sha256: previewSha }), cache: "no-store", signal, responseByteLimit: 512 * 1024 });
+}
+export function materialFieldReviewOutcome(requestKey: string, requestSha: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ request_key: requestKey, expected_request_sha256: requestSha });
+  return request(`/research/material-field-review/operations/outcome?${query}`, { cache: "no-store", signal, responseByteLimit: 512 * 1024 });
+}
+export function materialFieldReviewEffective(targetId: string, fieldId: import("./material-field-review").ReviewField, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ field_id: fieldId });
+  return request(`/research/material-field-review/targets/${encodeURIComponent(targetId)}/effective?${query}`, { cache: "no-store", signal, responseByteLimit: 512 * 1024 });
+}
+
+// Explicit raw-field profile. Default numeric source and field-case calls keep their original contracts.
+const MATERIAL_LITERAL_PROFILE = "material-literal-field/1.0.0";
+export function materialLiteralFieldCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request("/research/material-literal-fields/capabilities", { cache: "no-store", signal, responseByteLimit: 32768 });
+}
+export function materialLiteralFieldPrepare(body: unknown, signal?: AbortSignal): Promise<unknown> {
+  return request("/research/material-literal-fields/prepare", { method: "POST", body: JSON.stringify(body), cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function sourceLiteralExpressionCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/source-expressions/capabilities?profile=${encodeURIComponent(MATERIAL_LITERAL_PROFILE)}`, { cache: "no-store", signal, responseByteLimit: 32768 });
+}
+export function sourceLiteralExpressionList(offset = 0, limit = 8, field?: string, sourceId?: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ profile: MATERIAL_LITERAL_PROFILE, offset: String(offset), limit: String(limit) });
+  if (field) query.set("field_id", field);
+  if (sourceId) query.set("source_id", sourceId);
+  return request(`/research/source-expressions/expressions?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function sourceLiteralExpressionDetail(id: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ profile: MATERIAL_LITERAL_PROFILE });
+  return request(`/research/source-expressions/expressions/${encodeURIComponent(id)}?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function materialLiteralFieldCaseCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/material-field-cases/capabilities?profile=${encodeURIComponent(MATERIAL_LITERAL_PROFILE)}`, { cache: "no-store", signal, responseByteLimit: 32768 });
+}
+export function materialLiteralFieldCaseMaterial(materialId: string, offset = 0, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ profile: MATERIAL_LITERAL_PROFILE, offset: String(offset), limit: "8" });
+  return request(`/research/material-field-cases/materials/${encodeURIComponent(materialId)}?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function materialLiteralFieldCaseDetail(id: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ profile: MATERIAL_LITERAL_PROFILE });
+  return request(`/research/material-field-cases/targets/${encodeURIComponent(id)}?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+
 // Authenticated pending source history. No write is retried automatically.
 export function sourcePropertyCapabilities(signal?: AbortSignal): Promise<unknown> {
   return request("/research/source-properties/capabilities", { cache: "no-store", signal, responseByteLimit: 8192 });

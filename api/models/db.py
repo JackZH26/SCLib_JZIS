@@ -1777,6 +1777,18 @@ from models.material_field_cases_v1 import register as _register_material_field_
 
 MATERIAL_FIELD_CASES = _register_material_field_cases(Base.metadata)
 
+from models.material_field_review_v1 import (  # noqa: E402
+    register as _register_material_field_review,
+)
+
+MATERIAL_FIELD_REVIEW = _register_material_field_review(Base.metadata)
+
+from models.material_literal_fields_v1 import (  # noqa: E402
+    register as _register_material_literal_fields,
+)
+
+_register_material_literal_fields(Base.metadata)
+
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.

@@ -30,6 +30,8 @@ const NAV_BASE = [
   { href: "/dashboard/research/source-properties", label: "Source properties" },
   { href: "/dashboard/research/source-expressions", label: "Source expressions" },
   { href: "/dashboard/research/material-field-cases", label: "Material field cases" },
+  { href: "/dashboard/research/material-literal-fields", label: "Literal material fields" },
+  { href: "/dashboard/research/material-field-review", label: "Field review" },
   { href: "/dashboard/research/distributions", label: "Distribution rights" },
   { href: "/dashboard/research/ml-rights", label: "ML source rights" },
   { href: "/dashboard/research/ml-runs", label: "ML run plans" },

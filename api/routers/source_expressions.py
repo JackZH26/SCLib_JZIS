@@ -14,9 +14,9 @@ router = APIRouter(
 
 
 @router.get("/capabilities")
-async def capabilities(request: Request):
+async def capabilities(request: Request, profile: str | None = None):
     async with _session(request) as (db, actor):
-        return _response(await service.capabilities(db, actor_user_id=actor))
+        return _response(await service.capabilities(db, actor_user_id=actor, profile=profile))
 
 
 @router.post("/imports/preview")
@@ -88,6 +88,7 @@ async def expressions(
     source_id: str | None = None,
     field_id: str | None = None,
     currentness: str | None = None,
+    profile: str | None = None,
 ):
     async with _session(request) as (db, actor):
         return _response(
@@ -99,11 +100,12 @@ async def expressions(
                 source_id=source_id,
                 field_id=field_id,
                 currentness=currentness,
+                profile=profile,
             )
         )
 
 
 @router.get("/expressions/{revision_id}")
-async def expression(request: Request, revision_id: str):
+async def expression(request: Request, revision_id: str, profile: str | None = None):
     async with _session(request) as (db, actor):
-        return _response(await service.expression(db, actor_user_id=actor, revision_id=revision_id))
+        return _response(await service.expression(db, actor_user_id=actor, revision_id=revision_id, profile=profile))
