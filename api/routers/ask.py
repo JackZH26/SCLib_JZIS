@@ -159,6 +159,9 @@ async def ask(
     settings = get_settings()
     vector_hits = []
     if pin is not None:
+        # The pin and history actor are detached primitives. Provider latency
+        # must not retain the connection used by identity and pin lookup.
+        await db.rollback()
         try:
             neighbors = await provider_resilience.run_blocking(
                 "vector_search", lambda: index_vector_adapter.query(pin, body.question,
