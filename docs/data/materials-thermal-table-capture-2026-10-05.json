@@ -1,0 +1,211 @@
+{
+  "id": "captured-pdf:1603.02892:table-II",
+  "paper_id": "arxiv:1603.02892",
+  "text": "TABLE II. Results of heat capacity analysis of superconducting 512-type materials.\nComposition Mo5P1.1B1.9 Mo5PB2 Mo5SiB2 [9] W5SiB2 [10]\nTc (K) 9.2 8.8 5.8 5.8\nγ (mJ/mol-at./K2\n) 3.16 3.07 2.12 1.60\nΘD (K) 492 501 515 470\n∆ce (mJ/mol-at./K) 43.2 35 17.1 13.8\n∆ce/(γTc) 1.49 1.30 1.39 1.49\n",
+  "content_sha256": "2138d37a234d510afdc05be03601afabf233585dfef9a66f04c4fb168b0ddc1c",
+  "source_revision": "retained arXiv PDF capture 2026-10-02; original publication association unverified",
+  "kind": "table",
+  "locator": {
+    "page": 5,
+    "table": "II",
+    "char_start": 18837,
+    "char_end": 19127
+  },
+  "source_url": "https://arxiv.org/pdf/1603.02892",
+  "source_status": "unknown",
+  "capture_sha256": "e132a511543478639f01bf06f43bd7f4d4d1ef4d29415e2024b1a5b1f8747c3e",
+  "publication_revision_verified": false,
+  "table": {
+    "headers": [
+      "Composition",
+      "Mo5P1.1B1.9",
+      "Mo5PB2",
+      "Mo5SiB2 [9]",
+      "W5SiB2 [10]"
+    ],
+    "header_cells": [
+      {
+        "text": "Composition",
+        "char_start": 83,
+        "char_end": 94
+      },
+      {
+        "text": "Mo5P1.1B1.9",
+        "char_start": 95,
+        "char_end": 106
+      },
+      {
+        "text": "Mo5PB2",
+        "char_start": 107,
+        "char_end": 113
+      },
+      {
+        "text": "Mo5SiB2 [9]",
+        "char_start": 114,
+        "char_end": 125
+      },
+      {
+        "text": "W5SiB2 [10]",
+        "char_start": 126,
+        "char_end": 137
+      }
+    ],
+    "caption": {
+      "text": "TABLE II. Results of heat capacity analysis of superconducting 512-type materials.",
+      "char_start": 0,
+      "char_end": 82
+    },
+    "rows": [
+      {
+        "label": "Tc (K)",
+        "cells": [
+          {
+            "text": "Tc (K)",
+            "char_start": 138,
+            "char_end": 144
+          },
+          {
+            "text": "9.2",
+            "char_start": 145,
+            "char_end": 148
+          },
+          {
+            "text": "8.8",
+            "char_start": 149,
+            "char_end": 152
+          },
+          {
+            "text": "5.8",
+            "char_start": 153,
+            "char_end": 156
+          },
+          {
+            "text": "5.8",
+            "char_start": 157,
+            "char_end": 160
+          }
+        ]
+      },
+      {
+        "label": "γ (mJ/mol-at./K2\n)",
+        "cells": [
+          {
+            "text": "γ (mJ/mol-at./K2\n)",
+            "char_start": 161,
+            "char_end": 179
+          },
+          {
+            "text": "3.16",
+            "char_start": 180,
+            "char_end": 184
+          },
+          {
+            "text": "3.07",
+            "char_start": 185,
+            "char_end": 189
+          },
+          {
+            "text": "2.12",
+            "char_start": 190,
+            "char_end": 194
+          },
+          {
+            "text": "1.60",
+            "char_start": 195,
+            "char_end": 199
+          }
+        ]
+      },
+      {
+        "label": "ΘD (K)",
+        "cells": [
+          {
+            "text": "ΘD (K)",
+            "char_start": 200,
+            "char_end": 206
+          },
+          {
+            "text": "492",
+            "char_start": 207,
+            "char_end": 210
+          },
+          {
+            "text": "501",
+            "char_start": 211,
+            "char_end": 214
+          },
+          {
+            "text": "515",
+            "char_start": 215,
+            "char_end": 218
+          },
+          {
+            "text": "470",
+            "char_start": 219,
+            "char_end": 222
+          }
+        ]
+      },
+      {
+        "label": "∆ce (mJ/mol-at./K)",
+        "cells": [
+          {
+            "text": "∆ce (mJ/mol-at./K)",
+            "char_start": 223,
+            "char_end": 241
+          },
+          {
+            "text": "43.2",
+            "char_start": 242,
+            "char_end": 246
+          },
+          {
+            "text": "35",
+            "char_start": 247,
+            "char_end": 249
+          },
+          {
+            "text": "17.1",
+            "char_start": 250,
+            "char_end": 254
+          },
+          {
+            "text": "13.8",
+            "char_start": 255,
+            "char_end": 259
+          }
+        ]
+      },
+      {
+        "label": "∆ce/(γTc)",
+        "cells": [
+          {
+            "text": "∆ce/(γTc)",
+            "char_start": 260,
+            "char_end": 269
+          },
+          {
+            "text": "1.49",
+            "char_start": 270,
+            "char_end": 274
+          },
+          {
+            "text": "1.30",
+            "char_start": 275,
+            "char_end": 279
+          },
+          {
+            "text": "1.39",
+            "char_start": 280,
+            "char_end": 284
+          },
+          {
+            "text": "1.49",
+            "char_start": 285,
+            "char_end": 289
+          }
+        ]
+      }
+    ]
+  }
+}

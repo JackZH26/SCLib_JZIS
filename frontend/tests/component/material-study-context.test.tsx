@@ -52,7 +52,7 @@ describe("Inspected study context", () => {
     expect(within(document.querySelector("#study-context-bi-transport > dl") as HTMLElement).getByText("Calibration temperature")).toBeInTheDocument();
     expect(document.querySelector("#study-context-bi-transport")!.closest("details")).not.toHaveAttribute("open");
     expect(bi.getByText(/The caption criterion is not assigned to the 7 K report/)).toBeInTheDocument();
-    const table = within(screen.getByRole("table"));
+    const table = within(screen.getByRole("table", { name: /^Table I original columns/ }));
     expect(screen.getByRole("heading", { name: "Mo borophosphide: two original table columns" })).toHaveClass("scroll-mt-24");
     expect(table.getByText(/original column 2 · row 2/)).toBeInTheDocument();
     expect(table.getByText(/original column 3 · row 2/)).toBeInTheDocument();

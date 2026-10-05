@@ -168,6 +168,38 @@ The original PDF and text hashes and the replay are retained in the private
 audit directory; AI visual inspection does not establish independent human
 review, publication equivalence or selected-record association.
 
+### Read-only Table II source view
+
+The pressure-and-tables source page now exposes these four readings separately
+from the frozen 18-expression pressure/Table I batch. Its Table II comparison
+uses the exact headers Mo5P1.1B1.9 and Mo5PB2, retaining γ = 3.16/3.07 in
+mJ/mol-at./K² and ΘD = 492/501 K. The displayed superscript is typographic;
+the JSON preserves the extracted `mJ/mol-at./K2` unit and its source span.
+No mol-atom to mol-formula conversion or uncertainty from prose is applied.
+
+The table capture in `docs/data/materials-thermal-table-capture-2026-10-05.json`
+contains the small factual table and exact cell offsets, not paper full text.
+`scripts/build_material_thermal_table.py` checks the original retained PDF and
+text hashes, checks the table against its full-text window, reruns the existing
+column-bound extractor, and emits only four source readings with their pins.
+Reproduce it offline with the retained original files:
+
+```bash
+python scripts/build_material_thermal_table.py \
+  --text /path/to/retained/1603.02892.raw.txt \
+  --pdf /path/to/retained/1603.02892.pdf \
+  --output-dir frontend/public/research-pilots
+```
+
+The public JSON and SHA-256 downloads carry value, unit, field-cue, composition,
+row-label and caption pins. Offsets are zero-based Unicode code points with
+an exclusive end; data rows exclude the header and columns include the label
+column. No private enrichment subject/result IDs are included. Publication
+equivalence, Table I sample correspondence and catalogue association remain
+unresolved. The original passage-only intake contract is unchanged; displaying
+these readings does not enter them into the scientific database or supply
+independent review or ML eligibility.
+
 The existing 19-material, 323-capture historical snapshot was also replayed:
 321 material/source pairs retained the same extracted content after excluding
 the same two generated sources; versioned IDs change on re-extraction. This
