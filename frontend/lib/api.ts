@@ -285,6 +285,33 @@ export function materialLiteralFieldCaseDetail(id: string, signal?: AbortSignal)
   return request(`/research/material-field-cases/targets/${encodeURIComponent(id)}?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
 }
 
+// Explicit table profile; old calls cannot return table records.
+const MATERIAL_TABLE_PROFILE = "material-table-field/1.0.0";
+export function sourceTableExpressionCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/source-expressions/capabilities?profile=${encodeURIComponent(MATERIAL_TABLE_PROFILE)}`, { cache: "no-store", signal, responseByteLimit: 32768 });
+}
+export function sourceTableExpressionList(offset = 0, limit = 8, field?: string, sourceId?: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ profile: MATERIAL_TABLE_PROFILE, offset: String(offset), limit: String(limit) });
+  if (field) query.set("field_id", field);
+  if (sourceId) query.set("source_id", sourceId);
+  return request(`/research/source-expressions/expressions?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function sourceTableExpressionDetail(id: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ profile: MATERIAL_TABLE_PROFILE });
+  return request(`/research/source-expressions/expressions/${encodeURIComponent(id)}?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function materialTableFieldCaseCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/material-field-cases/capabilities?profile=${encodeURIComponent(MATERIAL_TABLE_PROFILE)}`, { cache: "no-store", signal, responseByteLimit: 32768 });
+}
+export function materialTableFieldCaseMaterial(materialId: string, offset = 0, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ profile: MATERIAL_TABLE_PROFILE, offset: String(offset), limit: "8" });
+  return request(`/research/material-field-cases/materials/${encodeURIComponent(materialId)}?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+export function materialTableFieldCaseDetail(id: string, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ profile: MATERIAL_TABLE_PROFILE });
+  return request(`/research/material-field-cases/targets/${encodeURIComponent(id)}?${query}`, { cache: "no-store", signal, responseByteLimit: 2 * 1024 * 1024 });
+}
+
 // Authenticated pending source history. No write is retried automatically.
 export function sourcePropertyCapabilities(signal?: AbortSignal): Promise<unknown> {
   return request("/research/source-properties/capabilities", { cache: "no-store", signal, responseByteLimit: 8192 });

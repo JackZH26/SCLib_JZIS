@@ -1805,6 +1805,10 @@ from models.material_literal_fields_v1 import (  # noqa: E402
 
 _register_material_literal_fields(Base.metadata)
 
+from models.material_table_fields_v1 import register as _register_material_table_fields  # noqa: E402
+
+_register_material_table_fields(Base.metadata)
+
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.

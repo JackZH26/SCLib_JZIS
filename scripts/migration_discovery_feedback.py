@@ -21,7 +21,15 @@ def function_signatures():
 
 
 def empty_roundtrip(capability, engine, config):
+    from migration_revision_scope import at_revision
+
+    with at_revision(capability, engine, config, "0090_discovery_calculations"):
+        _roundtrip_at_0090(capability, engine, config)
+
+
+def _roundtrip_at_0090(capability, engine, config):
     from alembic import command
+    from migration_revision_scope import assert_revision
     from sqlalchemy import inspect, text
     from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
     from migration_source_expressions import public_objects
@@ -38,7 +46,7 @@ def empty_roundtrip(capability, engine, config):
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
         connection.rollback()
-        assert check_connection_schema(connection)["status"] == "compatible"
+        assert_revision(connection, "0090_discovery_calculations")
         assert_empty(connection)
         assert_empty_calculations(connection)
         before, definitions = snapshot(connection), public_objects(connection)
@@ -65,11 +73,11 @@ def empty_roundtrip(capability, engine, config):
         assert not {*TABLES, *CALCULATION_TABLES} & set(inspect(connection).get_table_names(schema="public"))
         assert snapshot(connection) == before and public_objects(connection) == earlier
     validate_test_environment()
-    command.upgrade(config, "head")
+    command.upgrade(config, "0090_discovery_calculations")
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
         connection.rollback()
-        assert check_connection_schema(connection)["status"] == "compatible"
+        assert_revision(connection, "0090_discovery_calculations")
         assert_empty(connection)
         assert_empty_calculations(connection)
         assert snapshot(connection) == before and public_objects(connection) == definitions

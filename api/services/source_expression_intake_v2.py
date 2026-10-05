@@ -12,6 +12,7 @@ from models.db import Base
 from models.source_expression_intake_v2 import LOCK_FUNCTION, TABLE_ORDER
 from services import source_expression_contract_v2 as contract
 from services import source_expression_contract_v2_1 as literal_contract
+from services import source_expression_contract_v2_2 as table_contract
 from services.research_release_manifest import canonical, digest
 from services.source_property_pending import (
     SourcePropertyConflict,
@@ -29,24 +30,28 @@ from services.source_property_pending import (
 
 VERSION = "source-expression-intake/2.0.0"
 LITERAL_VERSION = "source-expression-intake/2.1.0"
+TABLE_VERSION = "source-expression-intake/2.2.0"
 MAX_EXPRESSION_PAGE_SIZE = 8
 NAMESPACE = UUID("0a0e56cd-a9bf-4c29-b85a-85293a2fcb38")
 
 
 def profile_contract(profile=None):
-    require(profile is None or profile == literal_contract.PROFILE, "source_expression_profile_required")
-    return contract if profile is None else literal_contract
+    choices = {None: contract, literal_contract.PROFILE: literal_contract, table_contract.PROFILE: table_contract}
+    require(profile is None or type(profile) is str, "source_expression_profile_required")
+    require(profile in choices, "source_expression_profile_required")
+    return choices[profile]
 
 
 def package_contract(package):
     require(type(package) is dict, "source_expression_package_required")
     version = package.get("version")
-    require(type(version) is str and version in {contract.VERSION, literal_contract.VERSION}, "supported_package_version_required")
-    return contract if version == contract.VERSION else literal_contract
+    choices = {item.VERSION: item for item in (contract, literal_contract, table_contract)}
+    require(type(version) is str and version in choices, "supported_package_version_required")
+    return choices[version]
 
 
 def intake_version(selected):
-    return VERSION if selected is contract else LITERAL_VERSION
+    return {contract: VERSION, literal_contract: LITERAL_VERSION, table_contract: TABLE_VERSION}[selected]
 
 
 def _stable(*parts):
@@ -498,6 +503,7 @@ async def expressions(
     _bounds(offset, limit, maximum=MAX_EXPRESSION_PAGE_SIZE)
     table, older = _table(2), _table(2).alias("newer")
     filters = [table.c.field_id.in_(tuple(selected.FIELDS)),
+        sa.cast(table.c.projection_json, sa.JSON)["profile"].as_string().is_not_distinct_from(getattr(selected, "PROFILE", None)),
         ~sa.exists(
             sa.select(1).where(
                 older.c.expression_key == table.c.expression_key,
@@ -546,5 +552,7 @@ async def expression(db, *, actor_user_id, revision_id, profile=None):
     )
     if row is None:
         raise SourcePropertyNotFound("source_expression_revision_unavailable")
-    require(row["field_id"] in selected.FIELDS, "source_expression_profile_mismatch")
+    require(row["field_id"] in selected.FIELDS
+            and json.loads(row["projection_json"]).get("profile") == getattr(selected, "PROFILE", None),
+            "source_expression_profile_mismatch")
     return {"version": intake_version(selected), **await _expression_dto(db, row, include_receipt=True)}
