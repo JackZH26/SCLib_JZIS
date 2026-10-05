@@ -52,7 +52,6 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
     <main className="space-y-4">
       <header className="space-y-2 pb-2">
         <h1 className="text-3xl font-semibold tracking-tight">Discovery</h1>
-        <p className="max-w-3xl text-sm leading-6 text-sage-muted">Compare candidate materials by research priority, then inspect the evidence and next action.</p>
       </header>
 
       <ScientificDiscoveryMatrix />

@@ -243,20 +243,27 @@ export function ScientificDiscoveryMatrix() {
   const fields = SCIENTIFIC_KEYS.filter(k => group === "all" || SCIENTIFIC_FIELDS[k].group === group);
   const active = visible.find(r => r.material.row_id === expanded);
   const noPublishedRelease = unpublished || catalog?.status === "not_published" && catalog.unavailable_count === 0;
-  return <><section id="discovery-evidence" aria-labelledby="scientific-matrix-heading" className="scroll-mt-24 space-y-4 rounded-xl border border-sage-border bg-white p-4 sm:p-5">
-    <div><h2 id="scientific-matrix-heading" className="text-xl font-semibold">Candidate materials</h2>
-      <p className="mt-1 text-sm text-sage-muted">Higher RPS first. Expand a material for its state, evidence and research actions.</p>
-      <details className="mt-2 text-sm"><summary className="cursor-pointer font-medium text-accent">How ranking and evidence work</summary>
+  return <><section id="discovery-evidence" aria-labelledby="scientific-matrix-heading" className="scroll-mt-24 space-y-3 rounded-xl border border-sage-border bg-white p-4 sm:p-5">
+    <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2"><h2 id="scientific-matrix-heading" className="text-xl font-semibold">Candidate materials</h2>
+      <details className="text-sm open:order-last open:basis-full"><summary className="cursor-pointer font-medium text-accent">Ranking and evidence</summary>
         <p className="mt-2 text-sm leading-6 text-sage-muted">{SCIENTIFIC_DISCLAIMER}. RPS 1,000–10,000 is research priority, not superconductivity probability. Each row keeps the publication&apos;s explicitly selected representative state and action, even if an alternative action has a higher score. Display order uses that representative&apos;s published score, descending, within this campaign, budget, policy and release. Unranked materials follow scored materials; ties retain the publication order. Original assessment ranks, values and weights are unchanged. <a href="https://github.com/JackZH26/SCLib_JZIS/issues/78" className="underline">Evaluation and calibration limits</a>.</p>
       </details>
     </div>
-    <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+    <div role="group" aria-label="Candidate list controls" className={`grid items-end gap-3 ${data ? "sm:grid-cols-2 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_auto]" : "sm:grid-cols-[minmax(0,1fr)_auto]"}`}>
       <label className="min-w-0 text-sm">Published scientific version
         <select className={`${inputStyle} mt-1 block w-full`} value={selected} disabled={!catalog?.items.length} onChange={e => void select(e.target.value)}>
           <option value="">{noPublishedRelease ? "No published version" : "Choose a published version explicitly"}</option>
           {catalog?.items.map(p => <option key={p.package_id} value={p.package_id}>{p.package_id} · payload {short(p.payload_sha256)}</option>)}
         </select>
       </label>
+      {data && <>
+        <label className="min-w-0 text-sm">Search material, family or profile<input className={`${inputStyle} mt-1 block w-full`} value={query} onChange={e => { setQuery(e.target.value); setExpanded(null); }} placeholder="Formula, family or profile" /></label>
+        <label className="min-w-0 text-sm">Research role<select className={`${inputStyle} mt-1 block w-full`} value={role} onChange={e => { setRole(e.target.value as RoleGroup); setExpanded(null); }}>
+          <option value="discovery">Discovery candidates ({rows.filter(r => roleGroup(r) === "discovery").length})</option>
+          <option value="mechanism">Mechanism research ({rows.filter(r => roleGroup(r) === "mechanism").length})</option>
+          <option value="controls">Reference / control materials ({rows.filter(r => roleGroup(r) === "controls").length})</option>
+        </select></label>
+      </>}
       <button type="button" className={inputStyle} onClick={() => void refresh()}>Refresh catalog</button>
     </div>
     {busy && <p role="status" className="text-sm text-sage-muted">{selected ? "Checking the selected publication and exact scientific payload…" : "Loading scientific publication catalog…"}</p>}
@@ -273,8 +280,10 @@ export function ScientificDiscoveryMatrix() {
     {catalog && catalog.unavailable_count > 0 && <p role="status" className="text-sm text-sage-muted">{catalog.unavailable_count.toLocaleString("en-US")} configured publication(s) unavailable at this read point. They are not displayed.</p>}
     {catalog && catalog.items.length > 0 && !selected && <p className="text-sm text-sage-muted">Select a version to inspect its materials. No latest or highest-scoring version is selected automatically.</p>}
     {data && <>
-      <p className="break-words text-xs text-sage-muted">{data.payload.campaign.id} · version {data.payload.campaign.version} · release {data.payload.base.release_id} · {data.payload.rows[0]?.assessment.result.policy_version ?? "No assessed materials"}</p>
-      <details className="rounded-lg border border-sage-border p-3"><summary className="cursor-pointer text-sm">Publication context and field coverage</summary>
+      <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2">
+      <p className="text-xs text-sage-muted">{visible.length.toLocaleString("en-US")} of {rows.length.toLocaleString("en-US")} materials · descending RPS{data.payload.rows[0] && ` · ${data.payload.rows[0].assessment.result.policy_version}`}</p>
+      <details className="max-w-full text-sm open:order-last open:basis-full"><summary className="cursor-pointer text-accent">Publication and coverage</summary>
+        <p className="mt-3 break-words text-xs text-sage-muted">{data.payload.campaign.id} · version {data.payload.campaign.version} · release {data.payload.base.release_id}</p>
         <p className="mt-3 text-sm">{data.payload.campaign.objective}</p>
         <p className="mt-2 text-xs leading-5 text-sage-muted">The browser matched original payload, selection and campaign bytes to their pins. Server checks describe a read point, not permanent approval. Refresh to recheck; leaving this page clears the matrix. This publication does not approve ML training or all scientific results.</p>
         <div className="mt-3 space-y-3">
@@ -288,17 +297,7 @@ export function ScientificDiscoveryMatrix() {
       </details>
         </div>
       </details>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <label className="text-sm">Search material, family or profile<input className={`${inputStyle} mt-1 block w-full`} value={query} onChange={e => { setQuery(e.target.value); setExpanded(null); }} placeholder="Formula, family or profile" /></label>
-        <label className="text-sm">Research role<select className={`${inputStyle} mt-1 block w-full`} value={role} onChange={e => { setRole(e.target.value as RoleGroup); setExpanded(null); }}>
-          <option value="discovery">Discovery candidates ({rows.filter(r => roleGroup(r) === "discovery").length})</option>
-          <option value="mechanism">Mechanism research ({rows.filter(r => roleGroup(r) === "mechanism").length})</option>
-          <option value="controls">Reference / control materials ({rows.filter(r => roleGroup(r) === "controls").length})</option>
-        </select></label>
-      </div>
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <p className="py-2 text-xs text-sage-muted">{visible.length.toLocaleString("en-US")} of {rows.length.toLocaleString("en-US")} materials shown · descending RPS</p>
-        <details className="max-w-full text-sm"><summary className="min-h-9 cursor-pointer content-center text-accent">Compare scientific fields</summary>
+        <details className="max-w-full text-sm open:order-last open:basis-full"><summary className="cursor-pointer text-accent">Compare scientific fields</summary>
           <label className="mt-2 block">Scientific columns<select className={`${inputStyle} mt-1 block w-full`} value={group} onChange={e => setGroup(e.target.value)}>
             <option value="compact">Compact material list</option><option value="all">All eight native fields</option>{SCIENTIFIC_GROUPS.map(g => <option key={g} value={g}>{groupLabels[g]}{["geometry", "competing_order"].includes(g) ? " · planned" : ""}</option>)}
           </select></label>

@@ -25,6 +25,12 @@ remain available. Closing details restores focus to the material button.
 Optional scientific comparison columns preserve the eight existing native
 fields, their units and distinct availability states.
 
+The version selector, search, research role and refresh action share an aligned
+desktop control row and stack on narrower screens. Ranking and publication
+context are compact disclosures; full campaign and release identifiers remain
+inside publication context. This keeps the list close to the page heading
+without choosing a version automatically or changing any filter behavior.
+
 ## Progressive disclosure
 
 Research plans, host/structure/calculation tools, source studies, methodology,
