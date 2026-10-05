@@ -29,9 +29,10 @@ def function_signatures():
     from models.material_field_cases_v1 import FUNCTION_SIGNATURES as FIELD_FUNCTIONS
     from models.material_field_review_v1 import FUNCTION_SIGNATURES as REVIEW_FUNCTIONS
     from models.material_literal_fields_v1 import FUNCTION_SIGNATURES as LITERAL_FUNCTIONS
+    from models.material_table_fields_v1 import FUNCTION_SIGNATURES as TABLE_FUNCTIONS
     from models.source_expression_intake_v2 import FUNCTION_SIGNATURES as INTAKE_FUNCTIONS
 
-    return (*INTAKE_FUNCTIONS, *FIELD_FUNCTIONS, *REVIEW_FUNCTIONS, *LITERAL_FUNCTIONS)
+    return (*INTAKE_FUNCTIONS, *FIELD_FUNCTIONS, *REVIEW_FUNCTIONS, *LITERAL_FUNCTIONS, *TABLE_FUNCTIONS)
 
 
 def expected_triggers():
@@ -41,9 +42,9 @@ def expected_triggers():
         *((table, name) for table in INTAKE_V2_TABLES
           for name in ("se83_insert", "se83_immutable", "se83_truncate")),
         *((table, name) for table in INTAKE_V2_TABLES[1:]
-          for name in ("se83_complete", "aa86_profile", "se86_insert")),
+          for name in ("se83_complete", "aa91_profile", "se86_insert", "se91_insert")),
         *((table, name) for table in FIELD_CASE_TABLES
-          for name in ("fc84_insert", "fc84_immutable", "fc84_truncate", "aa86_profile", "fc86_insert")),
+          for name in ("fc84_insert", "fc84_immutable", "fc84_truncate", "aa91_profile", "fc86_insert", "fc91_insert")),
         *((table, name) for table in FIELD_REVIEW_TABLES
           for name in ("fr85_insert", "fr85_immutable", "fr85_truncate", "fr85_complete")),
     }

@@ -15,6 +15,7 @@ from tests.test_material_field_cases import expression, retained, target
 from tests.test_material_literal_field_bridge import _frozen_definitions
 from tests.test_material_literal_field_bridge import literal_bridge as _literal_bridge
 from tests.test_material_literal_field_contract import synthetic_literal_package
+from tests.test_material_table_field_migrations import migration91
 from tests.test_research_freeze import db_session as _owned_db_session
 from tests.test_research_freeze import state
 
@@ -50,11 +51,14 @@ async def test_0086_empty_literal_history_roundtrip_keeps_numeric_source_targets
     definitions = await literal_definitions(db_session)
     assert len(definitions) == len(literal_model.FUNCTION_SIGNATURES)
     connection = await db_session.connection()
+    # Reverse the later trigger dispatch before exercising the frozen 0086 DDL.
+    await connection.run_sync(lambda c: migration91(c, "downgrade"))
     await connection.run_sync(lambda c: migration86(c, "downgrade"))
     assert not await literal_definitions(db_session)
     assert await _frozen_definitions(db_session) == frozen
     assert await state(db_session) == before
     await connection.run_sync(lambda c: migration86(c, "upgrade"))
+    await connection.run_sync(lambda c: migration91(c, "upgrade"))
     assert await literal_definitions(db_session) == definitions
     assert await _frozen_definitions(db_session) == frozen
     assert await state(db_session) == before

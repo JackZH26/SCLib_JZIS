@@ -1,0 +1,1390 @@
+{
+  "package": {
+    "version": "source-expression-package/2.2.0",
+    "profile": "material-table-field/1.0.0",
+    "source": {
+      "source_id": "captured-pdf:1603.02892:table-II",
+      "url": "https://arxiv.org/pdf/1603.02892",
+      "kind": "primary_paper",
+      "content_kind": "plain_text",
+      "revision": null,
+      "revision_status": "unresolved",
+      "original_parent_sha256": "e132a511543478639f01bf06f43bd7f4d4d1ef4d29415e2024b1a5b1f8747c3e",
+      "parent_hash_status": "declared",
+      "rights_status": "unresolved",
+      "currentness": "unresolved",
+      "captured_at": "2026-10-02T00:00:00Z"
+    },
+    "source_content_sha256": "2138d37a234d510afdc05be03601afabf233585dfef9a66f04c4fb168b0ddc1c",
+    "source_text_base64": "VEFCTEUgSUkuIFJlc3VsdHMgb2YgaGVhdCBjYXBhY2l0eSBhbmFseXNpcyBvZiBzdXBlcmNvbmR1Y3RpbmcgNTEyLXR5cGUgbWF0ZXJpYWxzLgpDb21wb3NpdGlvbiBNbzVQMS4xQjEuOSBNbzVQQjIgTW81U2lCMiBbOV0gVzVTaUIyIFsxMF0KVGMgKEspIDkuMiA4LjggNS44IDUuOArOsyAobUovbW9sLWF0Li9LMgopIDMuMTYgMy4wNyAyLjEyIDEuNjAKzphEIChLKSA0OTIgNTAxIDUxNSA0NzAK4oiGY2UgKG1KL21vbC1hdC4vSykgNDMuMiAzNSAxNy4xIDEzLjgK4oiGY2UvKM6zVGMpIDEuNDkgMS4zMCAxLjM5IDEuNDkK",
+    "expressions": [
+      {
+        "field_id": "electronic_specific_heat_coefficient_source_value",
+        "profile": "material-table-field/1.0.0",
+        "field_role": "reported_property",
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 95,
+              "end": 106,
+              "sha256": "7e311b9666b0545237faefbb2063b23a8d8e1f6b19babd2d1de22213401740bc"
+            }
+          ],
+          "sample_label_spans": []
+        },
+        "window": {
+          "id": "captured-table:a5dfbba73faf2d212f8c3e6245fd8bcc99ffd0a3f72d6afaf37fc37a7dbeb90d",
+          "label_spans": [
+            {
+              "start": 0,
+              "end": 290,
+              "sha256": "2138d37a234d510afdc05be03601afabf233585dfef9a66f04c4fb168b0ddc1c"
+            }
+          ]
+        },
+        "source_role": "source_proposed",
+        "knowledge_origin": "unknown",
+        "origin_basis": {
+          "statement": "Original table cell capture; layout, publication revision and material state require inspection.",
+          "spans": []
+        },
+        "model_spans": [],
+        "value_spans": [
+          {
+            "start": 180,
+            "end": 184,
+            "sha256": "a2108a37a6605e337adae024a2134378f1a4e5854f1d2f023d413769518029e5"
+          }
+        ],
+        "unit_spans": [
+          {
+            "start": 164,
+            "end": 177,
+            "sha256": "f9895233df641cc3e1405899600a591da660837275928ddb0595117a28655257"
+          }
+        ],
+        "cue_spans": [
+          {
+            "start": 161,
+            "end": 162,
+            "sha256": "adbccba1f4f9f51c98fb2bcaff03870632d9d9999c82b2981a2d133e9d7e9cac"
+          }
+        ],
+        "uncertainty_spans": [],
+        "qualifiers": [],
+        "conditions": [],
+        "locator": {
+          "table": "II",
+          "column": 2,
+          "section": null,
+          "page": 5,
+          "slide": null,
+          "row": 2,
+          "member": "captured-pdf:1603.02892:table-II"
+        },
+        "predecessor": null,
+        "table_binding": {
+          "version": "source-table-grid/1.0.0",
+          "caption_spans": [
+            {
+              "start": 0,
+              "end": 82,
+              "sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+            }
+          ],
+          "header_spans": [
+            {
+              "start": 83,
+              "end": 94,
+              "sha256": "47fca483c89cad3593886ae858a87248c4c66b1dab6f8267972df3c9cd652f5d"
+            },
+            {
+              "start": 95,
+              "end": 106,
+              "sha256": "7e311b9666b0545237faefbb2063b23a8d8e1f6b19babd2d1de22213401740bc"
+            },
+            {
+              "start": 107,
+              "end": 113,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            },
+            {
+              "start": 114,
+              "end": 125,
+              "sha256": "2fd2095b0f4fcffab1c625fb1077f6a9578c992031154844e20ef04e0f718203"
+            },
+            {
+              "start": 126,
+              "end": 137,
+              "sha256": "290ccc475a43a4bbab2678b99ef72b92fa7b172442ec9b91d7235c8743b8eab1"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "start": 138,
+                "end": 144,
+                "sha256": "25997889c4da9810d2d6bf466ad35d0c759e79f22b63323e4bdc9e1119446c6c"
+              },
+              {
+                "start": 145,
+                "end": 148,
+                "sha256": "cbcc2089e2e9234a1b3800dd05d06511d356404e85a23a4a8b4bec2fc3d65a38"
+              },
+              {
+                "start": 149,
+                "end": 152,
+                "sha256": "01037eaa1fcec91500773550a3a47b59b2e19676af8702bce87db4aeebce7cb2"
+              },
+              {
+                "start": 153,
+                "end": 156,
+                "sha256": "7a99ec37dda618b4257f280e2f9c03c143ce4c36e1eb5c4d983e3feb1e5016f3"
+              },
+              {
+                "start": 157,
+                "end": 160,
+                "sha256": "7a99ec37dda618b4257f280e2f9c03c143ce4c36e1eb5c4d983e3feb1e5016f3"
+              }
+            ],
+            [
+              {
+                "start": 161,
+                "end": 179,
+                "sha256": "34d1224b465c88e7d91785a4e2f5355564089ad20c150f8f03ce71a8e7845dc6"
+              },
+              {
+                "start": 180,
+                "end": 184,
+                "sha256": "a2108a37a6605e337adae024a2134378f1a4e5854f1d2f023d413769518029e5"
+              },
+              {
+                "start": 185,
+                "end": 189,
+                "sha256": "5e46d273187893c0c9c570985bc4ffcfadb5e862dec056a5f42960d76901cd57"
+              },
+              {
+                "start": 190,
+                "end": 194,
+                "sha256": "f487eb5226f64295c10fa7fcd3aba777dd763d2a0d2e58d9e2e43cf5f3023d0c"
+              },
+              {
+                "start": 195,
+                "end": 199,
+                "sha256": "b3653a34f299dee703d1c28dd40e814f7c81671df9b00a0cf8b827900a556b08"
+              }
+            ],
+            [
+              {
+                "start": 200,
+                "end": 206,
+                "sha256": "8adcd3f2cd878382b40b60af17adcc06be5318469991a02d3f7d61d8b56d1e50"
+              },
+              {
+                "start": 207,
+                "end": 210,
+                "sha256": "23e8b0175874e1bb3b4799e13a6634a8eddb456c1b8675b871e07ec09abc0c07"
+              },
+              {
+                "start": 211,
+                "end": 214,
+                "sha256": "1158e7e12c5e7362318e5e3c2e1f2f1ab49578ab1d1691e9818a7c3f6b30b528"
+              },
+              {
+                "start": 215,
+                "end": 218,
+                "sha256": "d4b9aead1dd10a596542d1d8211a5021b9c3e894751d019ac64b15a55b9b69ba"
+              },
+              {
+                "start": 219,
+                "end": 222,
+                "sha256": "30eec89ddd9c342ef28a87f731d6e50ba977baf12d7caa7045a9d56b0e923f03"
+              }
+            ],
+            [
+              {
+                "start": 223,
+                "end": 241,
+                "sha256": "a658b0bacc69bd89cc29768331f93db69fc94f6996da79ee66cd371194a02f01"
+              },
+              {
+                "start": 242,
+                "end": 246,
+                "sha256": "6864b69ba90339a52980a415a4712a8b788d319cf49458b714e2e285f373adb1"
+              },
+              {
+                "start": 247,
+                "end": 249,
+                "sha256": "9f14025af0065b30e47e23ebb3b491d39ae8ed17d33739e5ff3827ffb3634953"
+              },
+              {
+                "start": 250,
+                "end": 254,
+                "sha256": "48f0954709a6c67a67281dc64a482f8793143a5f90b37653d5fe82bcbb697b5c"
+              },
+              {
+                "start": 255,
+                "end": 259,
+                "sha256": "e99956ed2f9a4cd97efac0501bbc1d5a84267079c6885c77f154aa1923e8b33a"
+              }
+            ],
+            [
+              {
+                "start": 260,
+                "end": 269,
+                "sha256": "88ea5dbf6a43540b4351a4f1dddf3f3e0a651ee4c91a4bc6fa5a0b42c305638d"
+              },
+              {
+                "start": 270,
+                "end": 274,
+                "sha256": "4fc31a85ae03af9bddd2c908c4d9bdd4571270c4511599f539ed738c31c9318c"
+              },
+              {
+                "start": 275,
+                "end": 279,
+                "sha256": "26fe8b1388e8d9d504557abdf8a4d62e1516a9231c665f80adee51947a2a4ca1"
+              },
+              {
+                "start": 280,
+                "end": 284,
+                "sha256": "93506f30839c7f68979b1b9366075b3e9709c650a81499babf37e64cfff23fb6"
+              },
+              {
+                "start": 285,
+                "end": 289,
+                "sha256": "4fc31a85ae03af9bddd2c908c4d9bdd4571270c4511599f539ed738c31c9318c"
+              }
+            ]
+          ],
+          "row_index": 1,
+          "column_index": 1
+        }
+      },
+      {
+        "field_id": "debye_temperature_source_value",
+        "profile": "material-table-field/1.0.0",
+        "field_role": "reported_property",
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 95,
+              "end": 106,
+              "sha256": "7e311b9666b0545237faefbb2063b23a8d8e1f6b19babd2d1de22213401740bc"
+            }
+          ],
+          "sample_label_spans": []
+        },
+        "window": {
+          "id": "captured-table:a5dfbba73faf2d212f8c3e6245fd8bcc99ffd0a3f72d6afaf37fc37a7dbeb90d",
+          "label_spans": [
+            {
+              "start": 0,
+              "end": 290,
+              "sha256": "2138d37a234d510afdc05be03601afabf233585dfef9a66f04c4fb168b0ddc1c"
+            }
+          ]
+        },
+        "source_role": "source_proposed",
+        "knowledge_origin": "unknown",
+        "origin_basis": {
+          "statement": "Original table cell capture; layout, publication revision and material state require inspection.",
+          "spans": []
+        },
+        "model_spans": [],
+        "value_spans": [
+          {
+            "start": 207,
+            "end": 210,
+            "sha256": "23e8b0175874e1bb3b4799e13a6634a8eddb456c1b8675b871e07ec09abc0c07"
+          }
+        ],
+        "unit_spans": [
+          {
+            "start": 204,
+            "end": 205,
+            "sha256": "86be9a55762d316a3026c2836d044f5fc76e34da10e1b45feee5f18be7edb177"
+          }
+        ],
+        "cue_spans": [
+          {
+            "start": 200,
+            "end": 202,
+            "sha256": "4e21fff8cf8e5bd6e00a3e7c045ad9f1cbd89409b600ebc486d3dd14c1e749d3"
+          }
+        ],
+        "uncertainty_spans": [],
+        "qualifiers": [],
+        "conditions": [],
+        "locator": {
+          "table": "II",
+          "column": 2,
+          "section": null,
+          "page": 5,
+          "slide": null,
+          "row": 3,
+          "member": "captured-pdf:1603.02892:table-II"
+        },
+        "predecessor": null,
+        "table_binding": {
+          "version": "source-table-grid/1.0.0",
+          "caption_spans": [
+            {
+              "start": 0,
+              "end": 82,
+              "sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+            }
+          ],
+          "header_spans": [
+            {
+              "start": 83,
+              "end": 94,
+              "sha256": "47fca483c89cad3593886ae858a87248c4c66b1dab6f8267972df3c9cd652f5d"
+            },
+            {
+              "start": 95,
+              "end": 106,
+              "sha256": "7e311b9666b0545237faefbb2063b23a8d8e1f6b19babd2d1de22213401740bc"
+            },
+            {
+              "start": 107,
+              "end": 113,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            },
+            {
+              "start": 114,
+              "end": 125,
+              "sha256": "2fd2095b0f4fcffab1c625fb1077f6a9578c992031154844e20ef04e0f718203"
+            },
+            {
+              "start": 126,
+              "end": 137,
+              "sha256": "290ccc475a43a4bbab2678b99ef72b92fa7b172442ec9b91d7235c8743b8eab1"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "start": 138,
+                "end": 144,
+                "sha256": "25997889c4da9810d2d6bf466ad35d0c759e79f22b63323e4bdc9e1119446c6c"
+              },
+              {
+                "start": 145,
+                "end": 148,
+                "sha256": "cbcc2089e2e9234a1b3800dd05d06511d356404e85a23a4a8b4bec2fc3d65a38"
+              },
+              {
+                "start": 149,
+                "end": 152,
+                "sha256": "01037eaa1fcec91500773550a3a47b59b2e19676af8702bce87db4aeebce7cb2"
+              },
+              {
+                "start": 153,
+                "end": 156,
+                "sha256": "7a99ec37dda618b4257f280e2f9c03c143ce4c36e1eb5c4d983e3feb1e5016f3"
+              },
+              {
+                "start": 157,
+                "end": 160,
+                "sha256": "7a99ec37dda618b4257f280e2f9c03c143ce4c36e1eb5c4d983e3feb1e5016f3"
+              }
+            ],
+            [
+              {
+                "start": 161,
+                "end": 179,
+                "sha256": "34d1224b465c88e7d91785a4e2f5355564089ad20c150f8f03ce71a8e7845dc6"
+              },
+              {
+                "start": 180,
+                "end": 184,
+                "sha256": "a2108a37a6605e337adae024a2134378f1a4e5854f1d2f023d413769518029e5"
+              },
+              {
+                "start": 185,
+                "end": 189,
+                "sha256": "5e46d273187893c0c9c570985bc4ffcfadb5e862dec056a5f42960d76901cd57"
+              },
+              {
+                "start": 190,
+                "end": 194,
+                "sha256": "f487eb5226f64295c10fa7fcd3aba777dd763d2a0d2e58d9e2e43cf5f3023d0c"
+              },
+              {
+                "start": 195,
+                "end": 199,
+                "sha256": "b3653a34f299dee703d1c28dd40e814f7c81671df9b00a0cf8b827900a556b08"
+              }
+            ],
+            [
+              {
+                "start": 200,
+                "end": 206,
+                "sha256": "8adcd3f2cd878382b40b60af17adcc06be5318469991a02d3f7d61d8b56d1e50"
+              },
+              {
+                "start": 207,
+                "end": 210,
+                "sha256": "23e8b0175874e1bb3b4799e13a6634a8eddb456c1b8675b871e07ec09abc0c07"
+              },
+              {
+                "start": 211,
+                "end": 214,
+                "sha256": "1158e7e12c5e7362318e5e3c2e1f2f1ab49578ab1d1691e9818a7c3f6b30b528"
+              },
+              {
+                "start": 215,
+                "end": 218,
+                "sha256": "d4b9aead1dd10a596542d1d8211a5021b9c3e894751d019ac64b15a55b9b69ba"
+              },
+              {
+                "start": 219,
+                "end": 222,
+                "sha256": "30eec89ddd9c342ef28a87f731d6e50ba977baf12d7caa7045a9d56b0e923f03"
+              }
+            ],
+            [
+              {
+                "start": 223,
+                "end": 241,
+                "sha256": "a658b0bacc69bd89cc29768331f93db69fc94f6996da79ee66cd371194a02f01"
+              },
+              {
+                "start": 242,
+                "end": 246,
+                "sha256": "6864b69ba90339a52980a415a4712a8b788d319cf49458b714e2e285f373adb1"
+              },
+              {
+                "start": 247,
+                "end": 249,
+                "sha256": "9f14025af0065b30e47e23ebb3b491d39ae8ed17d33739e5ff3827ffb3634953"
+              },
+              {
+                "start": 250,
+                "end": 254,
+                "sha256": "48f0954709a6c67a67281dc64a482f8793143a5f90b37653d5fe82bcbb697b5c"
+              },
+              {
+                "start": 255,
+                "end": 259,
+                "sha256": "e99956ed2f9a4cd97efac0501bbc1d5a84267079c6885c77f154aa1923e8b33a"
+              }
+            ],
+            [
+              {
+                "start": 260,
+                "end": 269,
+                "sha256": "88ea5dbf6a43540b4351a4f1dddf3f3e0a651ee4c91a4bc6fa5a0b42c305638d"
+              },
+              {
+                "start": 270,
+                "end": 274,
+                "sha256": "4fc31a85ae03af9bddd2c908c4d9bdd4571270c4511599f539ed738c31c9318c"
+              },
+              {
+                "start": 275,
+                "end": 279,
+                "sha256": "26fe8b1388e8d9d504557abdf8a4d62e1516a9231c665f80adee51947a2a4ca1"
+              },
+              {
+                "start": 280,
+                "end": 284,
+                "sha256": "93506f30839c7f68979b1b9366075b3e9709c650a81499babf37e64cfff23fb6"
+              },
+              {
+                "start": 285,
+                "end": 289,
+                "sha256": "4fc31a85ae03af9bddd2c908c4d9bdd4571270c4511599f539ed738c31c9318c"
+              }
+            ]
+          ],
+          "row_index": 2,
+          "column_index": 1
+        }
+      },
+      {
+        "field_id": "electronic_specific_heat_coefficient_source_value",
+        "profile": "material-table-field/1.0.0",
+        "field_role": "reported_property",
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 107,
+              "end": 113,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            }
+          ],
+          "sample_label_spans": []
+        },
+        "window": {
+          "id": "captured-table:a5dfbba73faf2d212f8c3e6245fd8bcc99ffd0a3f72d6afaf37fc37a7dbeb90d",
+          "label_spans": [
+            {
+              "start": 0,
+              "end": 290,
+              "sha256": "2138d37a234d510afdc05be03601afabf233585dfef9a66f04c4fb168b0ddc1c"
+            }
+          ]
+        },
+        "source_role": "source_proposed",
+        "knowledge_origin": "unknown",
+        "origin_basis": {
+          "statement": "Original table cell capture; layout, publication revision and material state require inspection.",
+          "spans": []
+        },
+        "model_spans": [],
+        "value_spans": [
+          {
+            "start": 185,
+            "end": 189,
+            "sha256": "5e46d273187893c0c9c570985bc4ffcfadb5e862dec056a5f42960d76901cd57"
+          }
+        ],
+        "unit_spans": [
+          {
+            "start": 164,
+            "end": 177,
+            "sha256": "f9895233df641cc3e1405899600a591da660837275928ddb0595117a28655257"
+          }
+        ],
+        "cue_spans": [
+          {
+            "start": 161,
+            "end": 162,
+            "sha256": "adbccba1f4f9f51c98fb2bcaff03870632d9d9999c82b2981a2d133e9d7e9cac"
+          }
+        ],
+        "uncertainty_spans": [],
+        "qualifiers": [],
+        "conditions": [],
+        "locator": {
+          "table": "II",
+          "column": 3,
+          "section": null,
+          "page": 5,
+          "slide": null,
+          "row": 2,
+          "member": "captured-pdf:1603.02892:table-II"
+        },
+        "predecessor": null,
+        "table_binding": {
+          "version": "source-table-grid/1.0.0",
+          "caption_spans": [
+            {
+              "start": 0,
+              "end": 82,
+              "sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+            }
+          ],
+          "header_spans": [
+            {
+              "start": 83,
+              "end": 94,
+              "sha256": "47fca483c89cad3593886ae858a87248c4c66b1dab6f8267972df3c9cd652f5d"
+            },
+            {
+              "start": 95,
+              "end": 106,
+              "sha256": "7e311b9666b0545237faefbb2063b23a8d8e1f6b19babd2d1de22213401740bc"
+            },
+            {
+              "start": 107,
+              "end": 113,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            },
+            {
+              "start": 114,
+              "end": 125,
+              "sha256": "2fd2095b0f4fcffab1c625fb1077f6a9578c992031154844e20ef04e0f718203"
+            },
+            {
+              "start": 126,
+              "end": 137,
+              "sha256": "290ccc475a43a4bbab2678b99ef72b92fa7b172442ec9b91d7235c8743b8eab1"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "start": 138,
+                "end": 144,
+                "sha256": "25997889c4da9810d2d6bf466ad35d0c759e79f22b63323e4bdc9e1119446c6c"
+              },
+              {
+                "start": 145,
+                "end": 148,
+                "sha256": "cbcc2089e2e9234a1b3800dd05d06511d356404e85a23a4a8b4bec2fc3d65a38"
+              },
+              {
+                "start": 149,
+                "end": 152,
+                "sha256": "01037eaa1fcec91500773550a3a47b59b2e19676af8702bce87db4aeebce7cb2"
+              },
+              {
+                "start": 153,
+                "end": 156,
+                "sha256": "7a99ec37dda618b4257f280e2f9c03c143ce4c36e1eb5c4d983e3feb1e5016f3"
+              },
+              {
+                "start": 157,
+                "end": 160,
+                "sha256": "7a99ec37dda618b4257f280e2f9c03c143ce4c36e1eb5c4d983e3feb1e5016f3"
+              }
+            ],
+            [
+              {
+                "start": 161,
+                "end": 179,
+                "sha256": "34d1224b465c88e7d91785a4e2f5355564089ad20c150f8f03ce71a8e7845dc6"
+              },
+              {
+                "start": 180,
+                "end": 184,
+                "sha256": "a2108a37a6605e337adae024a2134378f1a4e5854f1d2f023d413769518029e5"
+              },
+              {
+                "start": 185,
+                "end": 189,
+                "sha256": "5e46d273187893c0c9c570985bc4ffcfadb5e862dec056a5f42960d76901cd57"
+              },
+              {
+                "start": 190,
+                "end": 194,
+                "sha256": "f487eb5226f64295c10fa7fcd3aba777dd763d2a0d2e58d9e2e43cf5f3023d0c"
+              },
+              {
+                "start": 195,
+                "end": 199,
+                "sha256": "b3653a34f299dee703d1c28dd40e814f7c81671df9b00a0cf8b827900a556b08"
+              }
+            ],
+            [
+              {
+                "start": 200,
+                "end": 206,
+                "sha256": "8adcd3f2cd878382b40b60af17adcc06be5318469991a02d3f7d61d8b56d1e50"
+              },
+              {
+                "start": 207,
+                "end": 210,
+                "sha256": "23e8b0175874e1bb3b4799e13a6634a8eddb456c1b8675b871e07ec09abc0c07"
+              },
+              {
+                "start": 211,
+                "end": 214,
+                "sha256": "1158e7e12c5e7362318e5e3c2e1f2f1ab49578ab1d1691e9818a7c3f6b30b528"
+              },
+              {
+                "start": 215,
+                "end": 218,
+                "sha256": "d4b9aead1dd10a596542d1d8211a5021b9c3e894751d019ac64b15a55b9b69ba"
+              },
+              {
+                "start": 219,
+                "end": 222,
+                "sha256": "30eec89ddd9c342ef28a87f731d6e50ba977baf12d7caa7045a9d56b0e923f03"
+              }
+            ],
+            [
+              {
+                "start": 223,
+                "end": 241,
+                "sha256": "a658b0bacc69bd89cc29768331f93db69fc94f6996da79ee66cd371194a02f01"
+              },
+              {
+                "start": 242,
+                "end": 246,
+                "sha256": "6864b69ba90339a52980a415a4712a8b788d319cf49458b714e2e285f373adb1"
+              },
+              {
+                "start": 247,
+                "end": 249,
+                "sha256": "9f14025af0065b30e47e23ebb3b491d39ae8ed17d33739e5ff3827ffb3634953"
+              },
+              {
+                "start": 250,
+                "end": 254,
+                "sha256": "48f0954709a6c67a67281dc64a482f8793143a5f90b37653d5fe82bcbb697b5c"
+              },
+              {
+                "start": 255,
+                "end": 259,
+                "sha256": "e99956ed2f9a4cd97efac0501bbc1d5a84267079c6885c77f154aa1923e8b33a"
+              }
+            ],
+            [
+              {
+                "start": 260,
+                "end": 269,
+                "sha256": "88ea5dbf6a43540b4351a4f1dddf3f3e0a651ee4c91a4bc6fa5a0b42c305638d"
+              },
+              {
+                "start": 270,
+                "end": 274,
+                "sha256": "4fc31a85ae03af9bddd2c908c4d9bdd4571270c4511599f539ed738c31c9318c"
+              },
+              {
+                "start": 275,
+                "end": 279,
+                "sha256": "26fe8b1388e8d9d504557abdf8a4d62e1516a9231c665f80adee51947a2a4ca1"
+              },
+              {
+                "start": 280,
+                "end": 284,
+                "sha256": "93506f30839c7f68979b1b9366075b3e9709c650a81499babf37e64cfff23fb6"
+              },
+              {
+                "start": 285,
+                "end": 289,
+                "sha256": "4fc31a85ae03af9bddd2c908c4d9bdd4571270c4511599f539ed738c31c9318c"
+              }
+            ]
+          ],
+          "row_index": 1,
+          "column_index": 2
+        }
+      },
+      {
+        "field_id": "debye_temperature_source_value",
+        "profile": "material-table-field/1.0.0",
+        "field_role": "reported_property",
+        "subject": {
+          "formula_spans": [
+            {
+              "start": 107,
+              "end": 113,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            }
+          ],
+          "sample_label_spans": []
+        },
+        "window": {
+          "id": "captured-table:a5dfbba73faf2d212f8c3e6245fd8bcc99ffd0a3f72d6afaf37fc37a7dbeb90d",
+          "label_spans": [
+            {
+              "start": 0,
+              "end": 290,
+              "sha256": "2138d37a234d510afdc05be03601afabf233585dfef9a66f04c4fb168b0ddc1c"
+            }
+          ]
+        },
+        "source_role": "source_proposed",
+        "knowledge_origin": "unknown",
+        "origin_basis": {
+          "statement": "Original table cell capture; layout, publication revision and material state require inspection.",
+          "spans": []
+        },
+        "model_spans": [],
+        "value_spans": [
+          {
+            "start": 211,
+            "end": 214,
+            "sha256": "1158e7e12c5e7362318e5e3c2e1f2f1ab49578ab1d1691e9818a7c3f6b30b528"
+          }
+        ],
+        "unit_spans": [
+          {
+            "start": 204,
+            "end": 205,
+            "sha256": "86be9a55762d316a3026c2836d044f5fc76e34da10e1b45feee5f18be7edb177"
+          }
+        ],
+        "cue_spans": [
+          {
+            "start": 200,
+            "end": 202,
+            "sha256": "4e21fff8cf8e5bd6e00a3e7c045ad9f1cbd89409b600ebc486d3dd14c1e749d3"
+          }
+        ],
+        "uncertainty_spans": [],
+        "qualifiers": [],
+        "conditions": [],
+        "locator": {
+          "table": "II",
+          "column": 3,
+          "section": null,
+          "page": 5,
+          "slide": null,
+          "row": 3,
+          "member": "captured-pdf:1603.02892:table-II"
+        },
+        "predecessor": null,
+        "table_binding": {
+          "version": "source-table-grid/1.0.0",
+          "caption_spans": [
+            {
+              "start": 0,
+              "end": 82,
+              "sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+            }
+          ],
+          "header_spans": [
+            {
+              "start": 83,
+              "end": 94,
+              "sha256": "47fca483c89cad3593886ae858a87248c4c66b1dab6f8267972df3c9cd652f5d"
+            },
+            {
+              "start": 95,
+              "end": 106,
+              "sha256": "7e311b9666b0545237faefbb2063b23a8d8e1f6b19babd2d1de22213401740bc"
+            },
+            {
+              "start": 107,
+              "end": 113,
+              "sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+            },
+            {
+              "start": 114,
+              "end": 125,
+              "sha256": "2fd2095b0f4fcffab1c625fb1077f6a9578c992031154844e20ef04e0f718203"
+            },
+            {
+              "start": 126,
+              "end": 137,
+              "sha256": "290ccc475a43a4bbab2678b99ef72b92fa7b172442ec9b91d7235c8743b8eab1"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "start": 138,
+                "end": 144,
+                "sha256": "25997889c4da9810d2d6bf466ad35d0c759e79f22b63323e4bdc9e1119446c6c"
+              },
+              {
+                "start": 145,
+                "end": 148,
+                "sha256": "cbcc2089e2e9234a1b3800dd05d06511d356404e85a23a4a8b4bec2fc3d65a38"
+              },
+              {
+                "start": 149,
+                "end": 152,
+                "sha256": "01037eaa1fcec91500773550a3a47b59b2e19676af8702bce87db4aeebce7cb2"
+              },
+              {
+                "start": 153,
+                "end": 156,
+                "sha256": "7a99ec37dda618b4257f280e2f9c03c143ce4c36e1eb5c4d983e3feb1e5016f3"
+              },
+              {
+                "start": 157,
+                "end": 160,
+                "sha256": "7a99ec37dda618b4257f280e2f9c03c143ce4c36e1eb5c4d983e3feb1e5016f3"
+              }
+            ],
+            [
+              {
+                "start": 161,
+                "end": 179,
+                "sha256": "34d1224b465c88e7d91785a4e2f5355564089ad20c150f8f03ce71a8e7845dc6"
+              },
+              {
+                "start": 180,
+                "end": 184,
+                "sha256": "a2108a37a6605e337adae024a2134378f1a4e5854f1d2f023d413769518029e5"
+              },
+              {
+                "start": 185,
+                "end": 189,
+                "sha256": "5e46d273187893c0c9c570985bc4ffcfadb5e862dec056a5f42960d76901cd57"
+              },
+              {
+                "start": 190,
+                "end": 194,
+                "sha256": "f487eb5226f64295c10fa7fcd3aba777dd763d2a0d2e58d9e2e43cf5f3023d0c"
+              },
+              {
+                "start": 195,
+                "end": 199,
+                "sha256": "b3653a34f299dee703d1c28dd40e814f7c81671df9b00a0cf8b827900a556b08"
+              }
+            ],
+            [
+              {
+                "start": 200,
+                "end": 206,
+                "sha256": "8adcd3f2cd878382b40b60af17adcc06be5318469991a02d3f7d61d8b56d1e50"
+              },
+              {
+                "start": 207,
+                "end": 210,
+                "sha256": "23e8b0175874e1bb3b4799e13a6634a8eddb456c1b8675b871e07ec09abc0c07"
+              },
+              {
+                "start": 211,
+                "end": 214,
+                "sha256": "1158e7e12c5e7362318e5e3c2e1f2f1ab49578ab1d1691e9818a7c3f6b30b528"
+              },
+              {
+                "start": 215,
+                "end": 218,
+                "sha256": "d4b9aead1dd10a596542d1d8211a5021b9c3e894751d019ac64b15a55b9b69ba"
+              },
+              {
+                "start": 219,
+                "end": 222,
+                "sha256": "30eec89ddd9c342ef28a87f731d6e50ba977baf12d7caa7045a9d56b0e923f03"
+              }
+            ],
+            [
+              {
+                "start": 223,
+                "end": 241,
+                "sha256": "a658b0bacc69bd89cc29768331f93db69fc94f6996da79ee66cd371194a02f01"
+              },
+              {
+                "start": 242,
+                "end": 246,
+                "sha256": "6864b69ba90339a52980a415a4712a8b788d319cf49458b714e2e285f373adb1"
+              },
+              {
+                "start": 247,
+                "end": 249,
+                "sha256": "9f14025af0065b30e47e23ebb3b491d39ae8ed17d33739e5ff3827ffb3634953"
+              },
+              {
+                "start": 250,
+                "end": 254,
+                "sha256": "48f0954709a6c67a67281dc64a482f8793143a5f90b37653d5fe82bcbb697b5c"
+              },
+              {
+                "start": 255,
+                "end": 259,
+                "sha256": "e99956ed2f9a4cd97efac0501bbc1d5a84267079c6885c77f154aa1923e8b33a"
+              }
+            ],
+            [
+              {
+                "start": 260,
+                "end": 269,
+                "sha256": "88ea5dbf6a43540b4351a4f1dddf3f3e0a651ee4c91a4bc6fa5a0b42c305638d"
+              },
+              {
+                "start": 270,
+                "end": 274,
+                "sha256": "4fc31a85ae03af9bddd2c908c4d9bdd4571270c4511599f539ed738c31c9318c"
+              },
+              {
+                "start": 275,
+                "end": 279,
+                "sha256": "26fe8b1388e8d9d504557abdf8a4d62e1516a9231c665f80adee51947a2a4ca1"
+              },
+              {
+                "start": 280,
+                "end": 284,
+                "sha256": "93506f30839c7f68979b1b9366075b3e9709c650a81499babf37e64cfff23fb6"
+              },
+              {
+                "start": 285,
+                "end": 289,
+                "sha256": "4fc31a85ae03af9bddd2c908c4d9bdd4571270c4511599f539ed738c31c9318c"
+              }
+            ]
+          ],
+          "row_index": 2,
+          "column_index": 2
+        }
+      }
+    ]
+  },
+  "packageSha": "54f023df03360c1e5a7e83504c35849440a350265a1c43296ff5f4ba4e0b266e",
+  "projections": [
+    {
+      "source_id": "captured-pdf:1603.02892:table-II",
+      "field_id": "electronic_specific_heat_coefficient_source_value",
+      "profile": "material-table-field/1.0.0",
+      "field_role": "reported_property",
+      "subject": {
+        "formula": "Mo5P1.1B1.9",
+        "sample_label": null,
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "captured-table:a5dfbba73faf2d212f8c3e6245fd8bcc99ffd0a3f72d6afaf37fc37a7dbeb90d",
+        "raw_label": "TABLE II. Results of heat capacity analysis of superconducting 512-type materials.\nComposition Mo5P1.1B1.9 Mo5PB2 Mo5SiB2 [9] W5SiB2 [10]\nTc (K) 9.2 8.8 5.8 5.8\nγ (mJ/mol-at./K2\n) 3.16 3.07 2.12 1.60\nΘD (K) 492 501 515 470\n∆ce (mJ/mol-at./K) 43.2 35 17.1 13.8\n∆ce/(γTc) 1.49 1.30 1.39 1.49\n"
+      },
+      "source_role": "source_proposed",
+      "model": null,
+      "table_binding": {
+        "version": "source-table-grid/1.0.0",
+        "grid_sha256": "95cc848f2d3a7b95a31c33f4ab308454f1b76f6c59ced832e4aa4ff60808d378",
+        "verification": "retained_spans_checked_layout_declared",
+        "row_index_0_based": 1,
+        "column_index_0_based": 1,
+        "row_count": 5,
+        "column_count": 5,
+        "raw_caption": "TABLE II. Results of heat capacity analysis of superconducting 512-type materials.",
+        "raw_row_label": "γ (mJ/mol-at./K2\n)",
+        "header_span": {
+          "char_start": 95,
+          "char_end": 106,
+          "text_sha256": "7e311b9666b0545237faefbb2063b23a8d8e1f6b19babd2d1de22213401740bc"
+        },
+        "row_label_span": {
+          "char_start": 161,
+          "char_end": 179,
+          "text_sha256": "34d1224b465c88e7d91785a4e2f5355564089ad20c150f8f03ce71a8e7845dc6"
+        },
+        "caption_span": {
+          "char_start": 0,
+          "char_end": 82,
+          "text_sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+        }
+      },
+      "knowledge_origin": "unknown",
+      "origin_basis": {
+        "statement": "Original table cell capture; layout, publication revision and material state require inspection.",
+        "retained_text": null,
+        "verification": "declared_inspection_basis"
+      },
+      "value": {
+        "status": "raw_literal",
+        "raw_value": "3.16",
+        "raw_amount": "3.16",
+        "raw_unit": "mJ/mol-at./K2",
+        "raw_uncertainty": null,
+        "quantity": null,
+        "normalization": "none",
+        "unit_basis": "table_row_label",
+        "field_cue": "γ",
+        "role": "reported_property",
+        "qualifiers": [],
+        "value_span": {
+          "char_start": 180,
+          "char_end": 184,
+          "text_sha256": "a2108a37a6605e337adae024a2134378f1a4e5854f1d2f023d413769518029e5"
+        },
+        "unit_span": {
+          "char_start": 164,
+          "char_end": 177,
+          "text_sha256": "f9895233df641cc3e1405899600a591da660837275928ddb0595117a28655257"
+        },
+        "cue_span": {
+          "char_start": 161,
+          "char_end": 162,
+          "text_sha256": "adbccba1f4f9f51c98fb2bcaff03870632d9d9999c82b2981a2d133e9d7e9cac"
+        },
+        "uncertainty_span": null
+      },
+      "conditions": [],
+      "locator": {
+        "table": "II",
+        "column": 2,
+        "section": null,
+        "page": 5,
+        "slide": null,
+        "row": 2,
+        "member": "captured-pdf:1603.02892:table-II"
+      },
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "field_interpretation_reviewed": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "public_content_release": false,
+      "ml_training_approved": false,
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "expression_identity_digest": "9170bcbcaec4cea7bfd1624e4b15e883af221116a9f31cc1f4e28617fa320b34"
+    },
+    {
+      "source_id": "captured-pdf:1603.02892:table-II",
+      "field_id": "debye_temperature_source_value",
+      "profile": "material-table-field/1.0.0",
+      "field_role": "reported_property",
+      "subject": {
+        "formula": "Mo5P1.1B1.9",
+        "sample_label": null,
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "captured-table:a5dfbba73faf2d212f8c3e6245fd8bcc99ffd0a3f72d6afaf37fc37a7dbeb90d",
+        "raw_label": "TABLE II. Results of heat capacity analysis of superconducting 512-type materials.\nComposition Mo5P1.1B1.9 Mo5PB2 Mo5SiB2 [9] W5SiB2 [10]\nTc (K) 9.2 8.8 5.8 5.8\nγ (mJ/mol-at./K2\n) 3.16 3.07 2.12 1.60\nΘD (K) 492 501 515 470\n∆ce (mJ/mol-at./K) 43.2 35 17.1 13.8\n∆ce/(γTc) 1.49 1.30 1.39 1.49\n"
+      },
+      "source_role": "source_proposed",
+      "model": null,
+      "table_binding": {
+        "version": "source-table-grid/1.0.0",
+        "grid_sha256": "9ef23cd07879ed7edd8150eb58a74706e32320c51f068a4ef92b066c2e3e5b86",
+        "verification": "retained_spans_checked_layout_declared",
+        "row_index_0_based": 2,
+        "column_index_0_based": 1,
+        "row_count": 5,
+        "column_count": 5,
+        "raw_caption": "TABLE II. Results of heat capacity analysis of superconducting 512-type materials.",
+        "raw_row_label": "ΘD (K)",
+        "header_span": {
+          "char_start": 95,
+          "char_end": 106,
+          "text_sha256": "7e311b9666b0545237faefbb2063b23a8d8e1f6b19babd2d1de22213401740bc"
+        },
+        "row_label_span": {
+          "char_start": 200,
+          "char_end": 206,
+          "text_sha256": "8adcd3f2cd878382b40b60af17adcc06be5318469991a02d3f7d61d8b56d1e50"
+        },
+        "caption_span": {
+          "char_start": 0,
+          "char_end": 82,
+          "text_sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+        }
+      },
+      "knowledge_origin": "unknown",
+      "origin_basis": {
+        "statement": "Original table cell capture; layout, publication revision and material state require inspection.",
+        "retained_text": null,
+        "verification": "declared_inspection_basis"
+      },
+      "value": {
+        "status": "raw_literal",
+        "raw_value": "492",
+        "raw_amount": "492",
+        "raw_unit": "K",
+        "raw_uncertainty": null,
+        "quantity": null,
+        "normalization": "none",
+        "unit_basis": "table_row_label",
+        "field_cue": "ΘD",
+        "role": "reported_property",
+        "qualifiers": [],
+        "value_span": {
+          "char_start": 207,
+          "char_end": 210,
+          "text_sha256": "23e8b0175874e1bb3b4799e13a6634a8eddb456c1b8675b871e07ec09abc0c07"
+        },
+        "unit_span": {
+          "char_start": 204,
+          "char_end": 205,
+          "text_sha256": "86be9a55762d316a3026c2836d044f5fc76e34da10e1b45feee5f18be7edb177"
+        },
+        "cue_span": {
+          "char_start": 200,
+          "char_end": 202,
+          "text_sha256": "4e21fff8cf8e5bd6e00a3e7c045ad9f1cbd89409b600ebc486d3dd14c1e749d3"
+        },
+        "uncertainty_span": null
+      },
+      "conditions": [],
+      "locator": {
+        "table": "II",
+        "column": 2,
+        "section": null,
+        "page": 5,
+        "slide": null,
+        "row": 3,
+        "member": "captured-pdf:1603.02892:table-II"
+      },
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "field_interpretation_reviewed": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "public_content_release": false,
+      "ml_training_approved": false,
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "expression_identity_digest": "0e416b5869e3415edc989ad2bf6808a4de9e7ac73d974d13fd6839853fcfaa16"
+    },
+    {
+      "source_id": "captured-pdf:1603.02892:table-II",
+      "field_id": "electronic_specific_heat_coefficient_source_value",
+      "profile": "material-table-field/1.0.0",
+      "field_role": "reported_property",
+      "subject": {
+        "formula": "Mo5PB2",
+        "sample_label": null,
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "captured-table:a5dfbba73faf2d212f8c3e6245fd8bcc99ffd0a3f72d6afaf37fc37a7dbeb90d",
+        "raw_label": "TABLE II. Results of heat capacity analysis of superconducting 512-type materials.\nComposition Mo5P1.1B1.9 Mo5PB2 Mo5SiB2 [9] W5SiB2 [10]\nTc (K) 9.2 8.8 5.8 5.8\nγ (mJ/mol-at./K2\n) 3.16 3.07 2.12 1.60\nΘD (K) 492 501 515 470\n∆ce (mJ/mol-at./K) 43.2 35 17.1 13.8\n∆ce/(γTc) 1.49 1.30 1.39 1.49\n"
+      },
+      "source_role": "source_proposed",
+      "model": null,
+      "table_binding": {
+        "version": "source-table-grid/1.0.0",
+        "grid_sha256": "0b7cbde31ec714ff7a4d2bb4802d1223c5262744e7d446b689b7d73eb2a06aac",
+        "verification": "retained_spans_checked_layout_declared",
+        "row_index_0_based": 1,
+        "column_index_0_based": 2,
+        "row_count": 5,
+        "column_count": 5,
+        "raw_caption": "TABLE II. Results of heat capacity analysis of superconducting 512-type materials.",
+        "raw_row_label": "γ (mJ/mol-at./K2\n)",
+        "header_span": {
+          "char_start": 107,
+          "char_end": 113,
+          "text_sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+        },
+        "row_label_span": {
+          "char_start": 161,
+          "char_end": 179,
+          "text_sha256": "34d1224b465c88e7d91785a4e2f5355564089ad20c150f8f03ce71a8e7845dc6"
+        },
+        "caption_span": {
+          "char_start": 0,
+          "char_end": 82,
+          "text_sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+        }
+      },
+      "knowledge_origin": "unknown",
+      "origin_basis": {
+        "statement": "Original table cell capture; layout, publication revision and material state require inspection.",
+        "retained_text": null,
+        "verification": "declared_inspection_basis"
+      },
+      "value": {
+        "status": "raw_literal",
+        "raw_value": "3.07",
+        "raw_amount": "3.07",
+        "raw_unit": "mJ/mol-at./K2",
+        "raw_uncertainty": null,
+        "quantity": null,
+        "normalization": "none",
+        "unit_basis": "table_row_label",
+        "field_cue": "γ",
+        "role": "reported_property",
+        "qualifiers": [],
+        "value_span": {
+          "char_start": 185,
+          "char_end": 189,
+          "text_sha256": "5e46d273187893c0c9c570985bc4ffcfadb5e862dec056a5f42960d76901cd57"
+        },
+        "unit_span": {
+          "char_start": 164,
+          "char_end": 177,
+          "text_sha256": "f9895233df641cc3e1405899600a591da660837275928ddb0595117a28655257"
+        },
+        "cue_span": {
+          "char_start": 161,
+          "char_end": 162,
+          "text_sha256": "adbccba1f4f9f51c98fb2bcaff03870632d9d9999c82b2981a2d133e9d7e9cac"
+        },
+        "uncertainty_span": null
+      },
+      "conditions": [],
+      "locator": {
+        "table": "II",
+        "column": 3,
+        "section": null,
+        "page": 5,
+        "slide": null,
+        "row": 2,
+        "member": "captured-pdf:1603.02892:table-II"
+      },
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "field_interpretation_reviewed": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "public_content_release": false,
+      "ml_training_approved": false,
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "expression_identity_digest": "7f151fa56ad05f84111e75b28a9116f1c704e66e73f8750b23117ced70f5160b"
+    },
+    {
+      "source_id": "captured-pdf:1603.02892:table-II",
+      "field_id": "debye_temperature_source_value",
+      "profile": "material-table-field/1.0.0",
+      "field_role": "reported_property",
+      "subject": {
+        "formula": "Mo5PB2",
+        "sample_label": null,
+        "formula_scope": "retained_formula_span"
+      },
+      "window": {
+        "id": "captured-table:a5dfbba73faf2d212f8c3e6245fd8bcc99ffd0a3f72d6afaf37fc37a7dbeb90d",
+        "raw_label": "TABLE II. Results of heat capacity analysis of superconducting 512-type materials.\nComposition Mo5P1.1B1.9 Mo5PB2 Mo5SiB2 [9] W5SiB2 [10]\nTc (K) 9.2 8.8 5.8 5.8\nγ (mJ/mol-at./K2\n) 3.16 3.07 2.12 1.60\nΘD (K) 492 501 515 470\n∆ce (mJ/mol-at./K) 43.2 35 17.1 13.8\n∆ce/(γTc) 1.49 1.30 1.39 1.49\n"
+      },
+      "source_role": "source_proposed",
+      "model": null,
+      "table_binding": {
+        "version": "source-table-grid/1.0.0",
+        "grid_sha256": "545253ef5b1765a3910ae2a2dd9874ac26dc5bcb9eb2500e9c11d1a3b0aebad2",
+        "verification": "retained_spans_checked_layout_declared",
+        "row_index_0_based": 2,
+        "column_index_0_based": 2,
+        "row_count": 5,
+        "column_count": 5,
+        "raw_caption": "TABLE II. Results of heat capacity analysis of superconducting 512-type materials.",
+        "raw_row_label": "ΘD (K)",
+        "header_span": {
+          "char_start": 107,
+          "char_end": 113,
+          "text_sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+        },
+        "row_label_span": {
+          "char_start": 200,
+          "char_end": 206,
+          "text_sha256": "8adcd3f2cd878382b40b60af17adcc06be5318469991a02d3f7d61d8b56d1e50"
+        },
+        "caption_span": {
+          "char_start": 0,
+          "char_end": 82,
+          "text_sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+        }
+      },
+      "knowledge_origin": "unknown",
+      "origin_basis": {
+        "statement": "Original table cell capture; layout, publication revision and material state require inspection.",
+        "retained_text": null,
+        "verification": "declared_inspection_basis"
+      },
+      "value": {
+        "status": "raw_literal",
+        "raw_value": "501",
+        "raw_amount": "501",
+        "raw_unit": "K",
+        "raw_uncertainty": null,
+        "quantity": null,
+        "normalization": "none",
+        "unit_basis": "table_row_label",
+        "field_cue": "ΘD",
+        "role": "reported_property",
+        "qualifiers": [],
+        "value_span": {
+          "char_start": 211,
+          "char_end": 214,
+          "text_sha256": "1158e7e12c5e7362318e5e3c2e1f2f1ab49578ab1d1691e9818a7c3f6b30b528"
+        },
+        "unit_span": {
+          "char_start": 204,
+          "char_end": 205,
+          "text_sha256": "86be9a55762d316a3026c2836d044f5fc76e34da10e1b45feee5f18be7edb177"
+        },
+        "cue_span": {
+          "char_start": 200,
+          "char_end": 202,
+          "text_sha256": "4e21fff8cf8e5bd6e00a3e7c045ad9f1cbd89409b600ebc486d3dd14c1e749d3"
+        },
+        "uncertainty_span": null
+      },
+      "conditions": [],
+      "locator": {
+        "table": "II",
+        "column": 3,
+        "section": null,
+        "page": 5,
+        "slide": null,
+        "row": 3,
+        "member": "captured-pdf:1603.02892:table-II"
+      },
+      "status": "pending",
+      "selected_result_association": "unestablished",
+      "sample_identity_established": false,
+      "phase_identity_established": false,
+      "field_interpretation_reviewed": false,
+      "scientific_acceptance": false,
+      "canonical_promotions": 0,
+      "public_content_release": false,
+      "ml_training_approved": false,
+      "missingness_scope": "not_supplied_in_retained_expression_is_not_source_absence",
+      "expression_identity_digest": "8137610a20edd176701bc9e2a02ef0bbe414e27492e85b7912ee54c474cf7bc6"
+    }
+  ]
+}

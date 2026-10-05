@@ -20,13 +20,25 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
         self.assertLess(downgrade.index("raise RuntimeError"), downgrade.index("DROP TABLE"))
         helper = (ROOT / "scripts/migration_discovery_condition_batches.py").read_text()
         for marker in ('command.downgrade(config, "0087_discovery_designs")',
-                       'command.upgrade(config, "head")', 'assert any(before.values())',
+                       'with at_revision(capability, engine, config, "0090_discovery_calculations")',
+                       'command.upgrade(config, "0090_discovery_calculations")', 'assert any(before.values())',
                        'snapshot(connection) == before', 'public_objects(connection) == earlier',
                        'public_objects(connection) == definitions', 'assert_empty(connection)',
                        'verify_postgres_identity(connection, capability)', 'exact revision'):
             self.assertIn(marker, helper)
         for forbidden in ("TRUNCATE", "DISABLE TRIGGER", "DELETE FROM"):
             self.assertNotIn(forbidden, helper)
+        # The outer scope owns the current-head restoration and a complete
+        # snapshot; the inner rehearsal must return to its exact old revision.
+        scope = (ROOT / "scripts/migration_revision_scope.py").read_text()
+        for marker in ('check_connection_schema(connection)["status"] == "compatible"',
+                       'verify_postgres_identity(connection, capability)',
+                       'command.downgrade(config, revision)', 'finally:',
+                       'command.upgrade(config, "head")', 'assert complete_snapshot() == before',
+                       'if name != "alembic_version"', 'return rows, public_objects(connection)'):
+            self.assertIn(marker, scope)
+        for forbidden in ("TRUNCATE", "DISABLE TRIGGER", "DELETE FROM"):
+            self.assertNotIn(forbidden, scope)
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         main = source.split("def main()", 1)[1]
         self.assertLess(main.index("condition_batch_empty(capability, engine, config)"),

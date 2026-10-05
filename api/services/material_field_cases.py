@@ -12,6 +12,7 @@ from models.db import Base, Material
 from models.material_field_cases_v1 import TABLE_ORDER
 from services import material_field_case_contract as contract
 from services import material_field_case_contract_v1_1 as literal_contract
+from services import material_field_case_contract_v1_2 as table_contract
 from services import source_expression_intake_v2 as expressions
 from services.material_source_scope import current_visibility_allows_view
 from services.material_visibility import normalize_source_status
@@ -46,15 +47,18 @@ FIELD_MAP = {"measurement_method": "method_statement", "sample_form": "sample_fo
 
 
 def profile_contract(profile=None):
-    require(profile is None or profile == literal_contract.PROFILE, "field_case_profile_required")
-    return contract if profile is None else literal_contract
+    choices = {None: contract, literal_contract.PROFILE: literal_contract, table_contract.PROFILE: table_contract}
+    require(profile is None or type(profile) is str, "field_case_profile_required")
+    require(profile in choices, "field_case_profile_required")
+    return choices[profile]
 
 
 def request_contract(request):
     require(type(request) is dict, "field_case_closed_object_required")
     version = request.get("version")
-    require(type(version) is str and version in {contract.REQUEST_VERSION, literal_contract.REQUEST_VERSION}, "field_case_request_version")
-    return contract if version == contract.REQUEST_VERSION else literal_contract
+    choices = {item.REQUEST_VERSION: item for item in (contract, literal_contract, table_contract)}
+    require(type(version) is str and version in choices, "field_case_request_version")
+    return choices[version]
 
 
 def row_contract(row):
@@ -176,6 +180,11 @@ async def capabilities(db, *, actor_user_id, profile=None):
         result["expression_field_map"].update({field: field for field in literal_contract.FIELDS})
         result["field_request_versions"] = {field: contract.REQUEST_VERSION if field in contract.FIELDS else literal_contract.REQUEST_VERSION for field in literal_contract.ALL_FIELDS}
         result["profile"] = literal_contract.PROFILE
+    elif selected is table_contract:
+        result["read_hold_reason_codes"] = list(LITERAL_READ_HOLDS)
+        result["expression_field_map"] = {field: field for field in selected.FIELDS}
+        result["field_request_versions"] = {field: selected.REQUEST_VERSION for field in selected.FIELDS}
+        result["profile"] = selected.PROFILE
     return result
 
 @asynccontextmanager
@@ -243,7 +252,7 @@ async def operate(db, *, actor_user_id, request, dry_run=True, expected_preview_
                 previous_sha = p["predecessor"]["record_sha256"]
             if op == "association":
                 expression = await expressions.expression(db, actor_user_id=actor_user_id, revision_id=p["expression_revision_id"],
-                    profile=literal_contract.PROFILE if selected is literal_contract else None)
+                    profile=getattr(selected, "PROFILE", None))
                 if expression["record_sha256"] != p["expression_record_sha256"]:
                     raise SourcePropertyConflict("field_case_expression_pin_changed")
                 expression_id, expression_sha = identifier(expression["id"]), expression["record_sha256"]
@@ -338,7 +347,7 @@ async def entry(db, row, *, actor_user_id, include_expression=False, expression_
         capture_source = expression["capture"]["source"]
         if capture_source["rights_status"] == "restricted" or capture_source["currentness"] == "historical":
             reasons.append("source_lifecycle_held")
-        if row_contract(row) is literal_contract:
+        if row_contract(row) in (literal_contract, table_contract):
             reasons.extend(await literal_read_holds(db, row, expression_row, expression))
         result["eligibility"] = {"eligible": not reasons, "reason_codes": sorted(set(reasons))}
         permitted = include_expression and not reasons
@@ -364,7 +373,8 @@ async def targets(db, *, actor_user_id, offset=0, limit=8, material_id=None, fie
     _, session = await reader(db, actor_user_id)
     bounds(offset, limit)
     t = table("target")
-    filters = [t.c.field_id.in_(selected.FIELDS)]
+    filters = [t.c.field_id.in_(selected.FIELDS),
+               sa.cast(t.c.request_json, sa.JSON)["version"].as_string() == selected.REQUEST_VERSION]
     if material_id is not None:
         contract.bounded_text(material_id, 100)
         filters.append(t.c.payload["target"]["material_id"].astext == material_id)
