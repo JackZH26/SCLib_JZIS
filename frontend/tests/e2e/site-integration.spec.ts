@@ -218,6 +218,10 @@ test("Clear filters discards unsubmitted Materials edits even at the unfiltered 
     await page.getByRole("button", { name: "All families", exact: true }).click();
     await page.getByRole("checkbox", { name: "Hydride", exact: true }).check();
     await page.getByRole("checkbox", { name: "Hydride", exact: true }).press("Escape");
+    const family = page.getByRole("button", { name: "Hydride", exact: true });
+    await expect(family).toBeFocused();
+    await family.press("Tab");
+    await expect(page.getByLabel("Tc ≥ (K)", { exact: true })).toBeFocused();
     await page.locator("summary").filter({ hasText: "Advanced filters" }).click();
     await page.getByRole("combobox", { name: "Reported pairing", exact: true }).selectOption("d-wave");
     await page.getByLabel("Only APS data", { exact: true }).check();

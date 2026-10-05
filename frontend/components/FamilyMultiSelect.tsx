@@ -12,7 +12,7 @@
  * aggregator slugs in ingestion/.../nims.py::classify_family() and
  * the backend's SearchFilters.material_family[] shape.
  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { FAMILY_LABEL, FAMILY_OPTIONS } from "@/lib/families";
 
 export function FamilyMultiSelect({
@@ -24,6 +24,8 @@ export function FamilyMultiSelect({
 }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const panelId = useId();
 
   // Close when clicking anywhere outside the component.
   useEffect(() => {
@@ -32,14 +34,9 @@ export function FamilyMultiSelect({
       if (!rootRef.current) return;
       if (!rootRef.current.contains(e.target as Node)) setOpen(false);
     }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
-    }
     document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onKey);
     return () => {
       document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onKey);
     };
   }, [open]);
 
@@ -59,12 +56,27 @@ export function FamilyMultiSelect({
         : `${value.length} families`;
 
   return (
-    <div ref={rootRef} className="relative">
+    <div
+      ref={rootRef}
+      className="relative"
+      onBlur={event => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+      }}
+      onKeyDown={event => {
+        if (open && event.key === "Escape") {
+          event.preventDefault();
+          event.stopPropagation();
+          setOpen(false);
+          triggerRef.current?.focus();
+        }
+      }}
+    >
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((o) => !o)}
-        aria-haspopup="listbox"
         aria-expanded={open}
+        aria-controls={open ? panelId : undefined}
         className="flex w-44 items-center justify-between gap-2 rounded border border-slate-300 bg-white px-2 py-1 text-left text-sm"
       >
         <span className={value.length === 0 ? "text-slate-500" : "text-slate-900"}>
@@ -74,7 +86,9 @@ export function FamilyMultiSelect({
       </button>
       {open && (
         <div
-          role="listbox"
+          id={panelId}
+          role="group"
+          aria-label="Material families"
           className="absolute z-20 mt-1 w-56 rounded-md border border-sage-border bg-white p-2 shadow-sage-lg"
         >
           <ul className="max-h-64 overflow-y-auto">
@@ -98,7 +112,10 @@ export function FamilyMultiSelect({
           {value.length > 0 && (
             <button
               type="button"
-              onClick={() => onChange([])}
+              onClick={() => {
+                onChange([]);
+                triggerRef.current?.focus();
+              }}
               className="mt-1 w-full rounded-md border-t border-sage-border pt-2 text-xs text-sage-muted hover:text-accent-deep"
             >
               Clear ({value.length})
