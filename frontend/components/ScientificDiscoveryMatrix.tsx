@@ -239,8 +239,8 @@ export function ScientificDiscoveryMatrix() {
         <p className="mt-2 text-sm leading-6 text-sage-muted">One material per row, with an explicitly reviewed representative state and next action. RPS 1,000–10,000 is research priority, not superconductivity probability. Compare only within the same frozen campaign, budget, policy and release. <a href="https://github.com/JackZH26/SCLib_JZIS/issues/78" className="underline">Evaluation and calibration limits</a>.</p>
       </details>
     </div>
-    <div className="flex flex-wrap items-end gap-3">
-      <label className="min-w-0 flex-1 text-sm">Published scientific version
+    <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+      <label className="min-w-0 text-sm">Published scientific version
         <select className={`${inputStyle} mt-1 block w-full`} value={selected} disabled={!catalog?.items.length} onChange={e => void select(e.target.value)}>
           <option value="">{noPublishedRelease ? "No published version" : "Choose a published version explicitly"}</option>
           {catalog?.items.map(p => <option key={p.package_id} value={p.package_id}>{p.package_id} · payload {short(p.payload_sha256)}</option>)}
