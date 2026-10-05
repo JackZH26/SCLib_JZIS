@@ -24,7 +24,8 @@ export function MaterialsFilters({ query, pageSize }: { query: MaterialsQuery; p
         <label className="materials-field"><span>Tc ≥ (K)</span><input type="number" name="tc_min" min="0" step="any" defaultValue={query.tc_min ?? ""} placeholder="Any Tc" /></label>
         <label className="materials-field"><span>Pressure ≤ (GPa)</span><input type="number" name="pressure_max" min="0" step="any" defaultValue={query.pressure_max ?? ""} placeholder="Any pressure" /></label>
         <label className="materials-field" htmlFor="materials-origin"><span>Result origin</span><MaterialsOriginField key={`${query.knowledge_origin}:${query.experimental_only}`} initial={query.knowledge_origin} observedOnly={query.experimental_only === "true"} /></label>
-        <div className="materials-filter-actions"><button type="submit" className="btn-primary">Apply</button><Link href="/materials" className="materials-clear">Clear filters</Link></div>
+        {/* A full navigation also clears unsubmitted client/native fields when the URL is already /materials. */}
+        <div className="materials-filter-actions"><button type="submit" className="btn-primary">Apply</button><a href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/materials`} className="materials-clear">Clear filters</a></div>
       </div>
       <details className="materials-advanced">
         <summary>Advanced filters{advancedCount > 0 && <span className="materials-count">{advancedCount} active</span>}</summary>
