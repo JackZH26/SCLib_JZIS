@@ -18,11 +18,11 @@ describe("Pressure and table researcher view", () => {
     expect(bi.getAllByText("90% resistivity transition")).toHaveLength(2);
     expect(bi.getByRole("note", { name: "Unresolved Figure 2 pressure-label conflict" })).toHaveTextContent("50.1 GPa");
     expect(bi.getByText(/criterion is not assigned to the 7 K report at 15 GPa/)).toBeInTheDocument();
-    expect(screen.getByText("18 field expressions from 2 papers; 3 source subjects")).toBeInTheDocument();
+    expect(screen.getByText("Pressure and Table I: 18 source expressions. Table II: 4 thermal readings.")).toBeInTheDocument();
   });
   it("renders both original table columns and preserves uncertain values, units and missing conditions", () => {
     render(<Page />);
-    const table = within(screen.getByRole("table"));
+    const table = within(screen.getByRole("table", { name: /^Table I original columns/ }));
     expect(table.getByText("Nominal Mo5P0.9B2.1")).toBeInTheDocument(); expect(table.getByText("Nominal Mo5PB2")).toBeInTheDocument();
     expect(table.getAllByText("Refined Mo5P1.07(4)B1.93(4)")).toHaveLength(2);
     ["8.7(1) K", "8.9(1) K", "8.8(2) K", "8.7(2) K", "5.9726(1) A\u030a", "5.97303(7) A\u030a", "11.074(3) A\u030a", "11.076(1) A\u030a"].forEach(value => expect(table.getByText(value)).toBeInTheDocument());
@@ -77,7 +77,7 @@ describe("Pressure and table researcher view", () => {
       expect(link).not.toHaveAttribute("target"); expect(link).not.toHaveAttribute("onclick");
     }
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
-    expect(document.querySelectorAll("a[download]")).toHaveLength(4);
+    expect(document.querySelectorAll("a[download]")).toHaveLength(6);
     expect(screen.getByRole("link", { name: "Download study context (JSON)" })).toHaveAttribute("download");
   });
   it("shows an English unavailable state for an absent metadata batch", () => {
