@@ -219,7 +219,7 @@ test("Clear filters discards unsubmitted Materials edits even at the unfiltered 
     await page.getByRole("checkbox", { name: "Hydride", exact: true }).check();
     await page.getByRole("checkbox", { name: "Hydride", exact: true }).press("Escape");
     await page.locator("summary").filter({ hasText: "Advanced filters" }).click();
-    await page.getByLabel("Reported pairing", { exact: true }).selectOption("d-wave");
+    await page.getByRole("combobox", { name: "Reported pairing", exact: true }).selectOption("d-wave");
     await page.getByLabel("Only APS data", { exact: true }).check();
     await expect(page).toHaveURL(/\/materials$/);
 
@@ -229,7 +229,7 @@ test("Clear filters discards unsubmitted Materials edits even at the unfiltered 
     await expect(page.getByLabel("Tc ≥ (K)", { exact: true })).toHaveValue("");
     await expect(page.getByLabel("Pressure ≤ (GPa)", { exact: true })).toHaveValue("");
     await expect(page.getByRole("combobox", { name: "Result origin", exact: true })).toHaveValue("");
-    await expect(page.getByLabel("Reported pairing", { exact: true })).toHaveValue("");
+    await expect(page.locator('select[name="pairing_symmetry"]')).toHaveValue("");
     await expect(page.getByLabel("Only APS data", { exact: true })).not.toBeChecked();
     await expect(page.locator('[name="experimental_only"]')).toHaveCount(0);
     await expect(page).toHaveURL(/\/materials$/);
