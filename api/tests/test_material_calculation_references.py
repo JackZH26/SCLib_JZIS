@@ -17,7 +17,8 @@ def context():
 
 
 @pytest.mark.asyncio
-async def test_calculation_route_passes_only_current_source_records_and_is_no_store(monkeypatch):
+@pytest.mark.parametrize("band_gap_only", [False, True])
+async def test_calculation_route_passes_only_current_source_records_and_is_no_store(monkeypatch, band_gap_only):
     from routers import materials
 
     material = context()
@@ -32,7 +33,8 @@ async def test_calculation_route_passes_only_current_source_records_and_is_no_st
     async def revision(*args):
         return (1, 1)
 
-    async def fetch(formula, *, current_records):
+    async def fetch(formula, *, current_records, **options):
+        assert options == ({"band_gap_only": True} if band_gap_only else {})
         assert formula == "NbN" and current_records is material.current_records()
         assert nomad.external_query_formula(formula, current_records=current_records) == "NbN"
         assert nomad.external_query_formula(formula, current_records=material.records) is None
@@ -42,14 +44,15 @@ async def test_calculation_route_passes_only_current_source_records_and_is_no_st
     monkeypatch.setattr(materials, "_material_page_revision", revision)
     monkeypatch.setattr(materials, "visibility_allows_view", lambda value: True)
     monkeypatch.setattr(nomad, "fetch_material_calculation_references", fetch)
-    response = await materials.material_external_calculations("mat:synthetic", identity=None, db=Session())
+    response = await materials.material_external_calculations("mat:synthetic", band_gap_only=band_gap_only, identity=None, db=Session())
     assert json.loads(response.body)["status"] == "no_match"
     assert response.headers["cache-control"] == "private, no-store"
     assert response.headers["X-Materials-Cache"] == "CALCULATION_REFERENCE"
 
 
 @pytest.mark.asyncio
-async def test_calculation_route_does_not_publish_when_source_changes_midrequest(monkeypatch):
+@pytest.mark.parametrize("band_gap_only", [False, True])
+async def test_calculation_route_does_not_publish_when_source_changes_midrequest(monkeypatch, band_gap_only):
     from routers import materials
 
     material, epoch = context(), 1
@@ -74,7 +77,7 @@ async def test_calculation_route_does_not_publish_when_source_changes_midrequest
     monkeypatch.setattr(materials, "visibility_allows_view", lambda value: True)
     monkeypatch.setattr(nomad, "fetch_material_calculation_references", fetch)
     with pytest.raises(HTTPException) as error:
-        await materials.material_external_calculations("mat:synthetic", identity=None, db=Session())
+        await materials.material_external_calculations("mat:synthetic", band_gap_only=band_gap_only, identity=None, db=Session())
     assert error.value.status_code == 503 and error.value.headers["Cache-Control"] == "no-store"
 
 

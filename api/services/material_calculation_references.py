@@ -14,6 +14,8 @@ import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from decimal import Decimal
+from fractions import Fraction
+from math import gcd, lcm
 from typing import Any
 from urllib.parse import urlsplit
 
@@ -21,6 +23,11 @@ import httpx
 from redis.exceptions import RedisError
 
 from services._composition.formula_enrichment import enrich_formula
+from services.material_electronic_references import FIELDS as ELECTRONIC_FIELDS
+from services.material_electronic_references import (
+    project_electronic_references,
+    valid_electronic_references,
+)
 from services.material_external_references import external_query_formula
 from services.rate_limit import get_redis
 
@@ -42,7 +49,7 @@ FIELDS = (
     "results.method.simulation.dft.xc_functional_names",
     "results.method.simulation.dft.xc_functional_type",
     "results.method.simulation.dft.spin_polarized",
-)
+) + ELECTRONIC_FIELDS
 _IDENTIFIER = re.compile(r"[A-Za-z0-9_-]{1,64}")
 
 
@@ -100,10 +107,10 @@ def _dft_metadata(simulation: dict) -> dict:
             "dft_metadata_scope": "reported_underlying_dft_metadata_not_complete_method"}
 
 
-def _base(formula: str, status: str, reason: str | None = None, *, query: str | None = None) -> dict:
+def _base(formula: str, status: str, reason: str | None = None, *, query: str | None = None, query_scope: str = "all") -> dict:
     return {
         "version": VERSION, "provider": "NOMAD", "formula": formula,
-        "query_formula": query, "status": status, "reason": reason,
+        "query_formula": query, "query_scope": query_scope, "status": status, "reason": reason,
         "references": [], "matches_total": None, "inspected_entries": 0,
         "truncated": False, "retrieved_at": None,
         "scientific_acceptance": False, "sample_identity_established": False,
@@ -115,7 +122,7 @@ def _base(formula: str, status: str, reason: str | None = None, *, query: str | 
 
 
 def hill_query_formula(formula: str) -> str | None:
-    """NOMAD indexes scalar Hill formulas; never substitute a parent composition."""
+    """Legacy query spelling, retained for reproducing earlier lookup audits."""
     parsed = enrich_formula(formula)
     if parsed["composition_status"] != "exact":
         return None
@@ -129,6 +136,25 @@ def hill_query_formula(formula: str) -> str | None:
         value = format(amount, "f").rstrip("0").rstrip(".") if amount % 1 else str(int(amount))
         parts.append(element + ("" if amount == 1 else value))
     return "".join(parts)
+
+
+def reduced_query_formula(formula: str) -> str | None:
+    """NOMAD's reduced field uses alphabetical, coprime integer proportions.
+
+    Its Hill field retains cell atom counts and cannot serve a composition
+    lookup. Integer scaling here is only query syntax; the retained formula,
+    fractional occupancies and formula-unit scale are not changed.
+    """
+    parsed = enrich_formula(formula)
+    if parsed["composition_status"] != "exact":
+        return None
+    amounts = {element: Fraction(str(amount))
+               for element, amount in parsed["element_amounts"].items()}
+    scale = lcm(*(amount.denominator for amount in amounts.values()))
+    integers = {element: int(amount * scale) for element, amount in amounts.items()}
+    divisor = gcd(*integers.values())
+    return "".join(element + (str(integers[element] // divisor) if integers[element] != divisor else "")
+                   for element in sorted(integers))
 
 
 def _source_references(row: dict) -> list[dict[str, str]]:
@@ -162,13 +188,13 @@ def _source_references(row: dict) -> list[dict[str, str]]:
     return [{"provider": provider, "url": url} for provider, url in sorted(links)[:8]]
 
 
-def project_calculation_references(formula: str, payload: Any, *, retrieved_at: str) -> dict:
+def project_calculation_references(formula: str, payload: Any, *, retrieved_at: str, query_scope: str = "all") -> dict:
     """Validate a bounded metadata response and project only public allowlisted fields."""
-    query = hill_query_formula(formula)
+    query = reduced_query_formula(formula)
     if query is None:
-        return _base(formula, "not_applicable", "composition_requires_resolution")
+        return _base(formula, "not_applicable", "composition_requires_resolution", query_scope=query_scope)
     target = enrich_formula(formula)
-    result = _base(formula, "unavailable", "provider_response_requires_review", query=query)
+    result = _base(formula, "unavailable", "provider_response_requires_review", query=query, query_scope=query_scope)
     if type(payload) is not dict or type(payload.get("data")) is not list:
         return result
     pagination = payload.get("pagination")
@@ -181,7 +207,7 @@ def project_calculation_references(formula: str, payload: Any, *, retrieved_at: 
                   retrieved_at=retrieved_at)
     if not rows:
         if total == 0:
-            result.update(status="no_match", reason="no_fixed_composition_task_returned")
+            result.update(status="no_match", reason="no_electronic_band_gap_task_returned" if query_scope == "band_gap" else "no_fixed_composition_task_returned")
         return result
     references = []
     seen = set()
@@ -206,6 +232,11 @@ def project_calculation_references(formula: str, payload: Any, *, retrieved_at: 
         symmetry = material.get("symmetry") if type(material.get("symmetry")) is dict else {}
         method = results.get("method") if type(results.get("method")) is dict else {}
         simulation = method.get("simulation") if type(method.get("simulation")) is dict else {}
+        properties = results.get("properties")
+        electronic = properties.get("electronic") if type(properties) is dict else None if properties is None else False
+        electronic_report = project_electronic_references(electronic)
+        if query_scope == "band_gap" and electronic_report["status"] == "not_supplied":
+            continue
         method_name, program = _text(method.get("method_name")), _text(simulation.get("program_name"))
         space_group_number = symmetry.get("space_group_number")
         seen.add(entry)
@@ -218,6 +249,7 @@ def project_calculation_references(formula: str, payload: Any, *, retrieved_at: 
             "method_status": "reported" if method_name else "unresolved",
             "knowledge_origin": "Computed" if method_name and program else "Unresolved",
             **_dft_metadata(simulation),
+            "electronic": electronic_report,
             "structural_type": _text(material.get("structural_type")),
             "space_group": _text(symmetry.get("space_group_symbol")),
             "space_group_number": space_group_number if type(space_group_number) is int and 1 <= space_group_number <= 230 else None,
@@ -234,9 +266,10 @@ def project_calculation_references(formula: str, payload: Any, *, retrieved_at: 
     return result
 
 
-def _valid_cache(value: Any, formula: str, query: str) -> bool:
+def _valid_cache(value: Any, formula: str, query: str, query_scope: str = "all") -> bool:
     if (type(value) is not dict or value.get("version") != VERSION or value.get("provider") != "NOMAD"
             or value.get("formula") != formula or value.get("query_formula") != query
+            or value.get("query_scope") != query_scope or query_scope not in {"all", "band_gap"}
             or value.get("status") not in {"available", "no_match"}
             or any(value.get(key) is not False for key in ("scientific_acceptance", "sample_identity_established", "phase_identity_established"))
             or type(value.get("references")) is not list or len(value["references"]) > MAX_REFERENCES
@@ -250,7 +283,7 @@ def _valid_cache(value: Any, formula: str, query: str) -> bool:
         return False
     rows = value["references"]
     if value["status"] == "no_match":
-        return not rows and value.get("matches_total") == 0 and value.get("reason") == "no_fixed_composition_task_returned"
+        return not rows and value.get("matches_total") == 0 and value.get("reason") == ("no_electronic_band_gap_task_returned" if query_scope == "band_gap" else "no_fixed_composition_task_returned")
     if not rows:
         return False
     if value.get("reason") is not None:
@@ -269,7 +302,11 @@ def _valid_cache(value: Any, formula: str, query: str) -> bool:
                 or not re.fullmatch(r"[a-f0-9]{64}", str(row.get("source_snapshot_sha256", "")))):
             return False
         # The cache stores only a bounded public projection, never source text.
-        if set(row) - {"id", "url", "archive_url", "formula", "material_id", "upload_id", "method", "program", "parser", "method_status", "knowledge_origin", "xc_functional_names", "xc_functional_type", "spin_polarized", "dft_metadata_status", "dft_metadata_scope", "structural_type", "space_group", "space_group_number", "crystal_system", "source_references", "source_snapshot_sha256", "match_level", "conditions_status", "sample_identity_established", "phase_identity_established"}:
+        if set(row) - {"id", "url", "archive_url", "formula", "material_id", "upload_id", "method", "program", "parser", "method_status", "knowledge_origin", "xc_functional_names", "xc_functional_type", "spin_polarized", "dft_metadata_status", "dft_metadata_scope", "structural_type", "space_group", "space_group_number", "crystal_system", "source_references", "source_snapshot_sha256", "match_level", "conditions_status", "sample_identity_established", "phase_identity_established", "electronic"}:
+            return False
+        if not valid_electronic_references(row.get("electronic")):
+            return False
+        if query_scope == "band_gap" and row["electronic"]["status"] == "not_supplied":
             return False
         dft = _dft_metadata({"dft": {key: row.get(key) for key in ("xc_functional_names", "xc_functional_type", "spin_polarized")}})
         if any(key not in row or row[key] != item for key, item in dft.items() if key != "dft_metadata_status"):
@@ -306,8 +343,17 @@ def _valid_cache(value: Any, formula: str, query: str) -> bool:
     return True
 
 
-async def _provider_payload(query: str) -> Any:
-    body = {"owner": "public", "query": {"results.material.chemical_formula_hill": query},
+async def _provider_payload(query: str, *, band_gap_only: bool = False) -> Any:
+    conditions = {"results.material.chemical_formula_reduced": query}
+    if band_gap_only:
+        # NOMAD 1.4.3 permits numeric strings but rejects a numeric zero as an
+        # undefined Range boundary (truthiness check). Preserve inclusive zero;
+        # do not replace it with a positive physical threshold.
+        conditions = {"and": [conditions, {"or": [
+            {f"results.properties.electronic.{kind}.band_gap.value:gte": "0"}
+            for kind in ("dos_electronic", "band_structure_electronic")
+        ]}]}
+    body = {"owner": "public", "query": conditions,
             "pagination": {"page_size": MAX_REFERENCES + 1, "order_by": "entry_id", "order": "asc"},
             "required": {"include": list(FIELDS)}}
     async with httpx.AsyncClient(timeout=httpx.Timeout(REQUEST_SECONDS, connect=4),
@@ -326,17 +372,19 @@ async def _provider_payload(query: str) -> Any:
 
 
 async def fetch_material_calculation_references(
-    formula: str, *, current_records: list[dict[str, Any]] | None = None,
+    formula: str, *, current_records: list[dict[str, Any]] | None = None, band_gap_only: bool = False,
 ) -> dict:
     # This guard precedes even a cache read. A bulk cached match cannot validate
     # a newly retained isotope, interface, variable composition or dopant alias.
     fixed = external_query_formula(formula, current_records=current_records)
-    query = hill_query_formula(fixed) if fixed is not None else None
+    query = reduced_query_formula(fixed) if fixed is not None else None
+    query_scope = "band_gap" if band_gap_only else "all"
     if query is None:
-        return _base(formula, "not_applicable", "composition_requires_resolution")
-    key = "materials:nomad:2:" + hashlib.sha256(formula.encode()).hexdigest()
+        return _base(formula, "not_applicable", "composition_requires_resolution", query_scope=query_scope)
+    # Earlier lookups omit electronic fields, and Hill queries can miss cells.
+    key = "materials:nomad:4:" + ("band_gap:" if band_gap_only else "") + hashlib.sha256(formula.encode()).hexdigest()
     if key not in _locks and len(_locks) >= MAX_LOCKS:
-        return _base(formula, "unavailable", "reference_request_capacity", query=query)
+        return _base(formula, "unavailable", "reference_request_capacity", query=query, query_scope=query_scope)
     slot = _locks.setdefault(key, _LockSlot(asyncio.Lock()))
     slot.users += 1
     try:
@@ -349,7 +397,7 @@ async def fetch_material_calculation_references(
                         value = json.loads(cached)
                     except (ValueError, TypeError, RecursionError):
                         value = None
-                    if _valid_cache(value, formula, query):
+                    if _valid_cache(value, formula, query, query_scope):
                         return value
                 budget_key = f"materials:nomad:budget:{int(time.time())}"
                 async with redis.pipeline(transaction=True) as pipeline:
@@ -357,19 +405,19 @@ async def fetch_material_calculation_references(
                     pipeline.expire(budget_key, 3)
                     used, _ = await pipeline.execute()
                 if type(used) is not int or used > 5:
-                    return _base(formula, "unavailable", "provider_request_budget", query=query)
-                payload = await _provider_payload(query)
-                result = project_calculation_references(formula, payload, retrieved_at=datetime.now(UTC).isoformat())
+                    return _base(formula, "unavailable", "provider_request_budget", query=query, query_scope=query_scope)
+                payload = await _provider_payload(query, band_gap_only=True) if band_gap_only else await _provider_payload(query)
+                result = project_calculation_references(formula, payload, retrieved_at=datetime.now(UTC).isoformat(), query_scope=query_scope)
                 serialized = json.dumps(result, allow_nan=False, separators=(",", ":"))
                 if result["status"] in {"available", "no_match"} and len(serialized.encode()) <= MAX_BYTES:
                     await redis.set(key, serialized, ex=CACHE_TTL)
                 return result
     except _ProviderFailure as error:
-        return _base(formula, "unavailable", str(error), query=query)
+        return _base(formula, "unavailable", str(error), query=query, query_scope=query_scope)
     except TimeoutError:
-        return _base(formula, "unavailable", "provider_request_timeout", query=query)
+        return _base(formula, "unavailable", "provider_request_timeout", query=query, query_scope=query_scope)
     except (httpx.HTTPError, RedisError, ValueError, TypeError, KeyError, RecursionError):
-        return _base(formula, "unavailable", "provider_or_cache_unavailable", query=query)
+        return _base(formula, "unavailable", "provider_or_cache_unavailable", query=query, query_scope=query_scope)
     finally:
         slot.users -= 1
         if slot.users == 0 and _locks.get(key) is slot:

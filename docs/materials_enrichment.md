@@ -408,6 +408,42 @@ Materials Project client callers retain their prior transport compatibility.
 - `GET /materials/{id}/external_calculations`: query public NOMAD metadata,
   inspect at most 21 entries and display at most 20. Preserve individual task,
   structure, parser, method/program and allowlisted repository/citation links.
+  Composition queries use `results.material.chemical_formula_reduced` with
+  alphabetically ordered, coprime integer proportions. NOMAD's Hill field
+  retains cell atom counts, so querying it for `Al2O3` misses cells labelled
+  `Al4O6` or `Al12O18`. Fractional fixed proportions are scaled only for the
+  provider query, without changing retained formula units or site occupancies.
+  Every returned Hill/reduced formula must still match the target composition.
+  Cache generation 3 excludes earlier, potentially incomplete Hill lookups;
+  historical source snapshots remain unchanged. Field definitions are in the
+  [NOMAD results schema](https://github.com/FAIRmat-NFDI/nomad/blob/2b16820bdf83f57437c906addae3faf955ca4acf/nomad/datamodel/results.py#L1148-L1171).
+  Electronic band-gap references preserve DOS versus band-structure origin,
+  source group and spin-channel index, source spin flag and direct/indirect
+  type when supplied. The documented index quantities store joules; display
+  values use `1 eV = 1.602176634e-19 J`, retaining source numbers alongside them.
+  Zero is a reported value, never a missing-value fallback or measured-metallicity
+  classification. These electronic gaps do not fill superconducting energy-gap
+  or pairing fields. Each task retains its structure and method context;
+  unresolved calculation origin remains unresolved in field coverage.
+  The additive `nomad-electronic-references/1.0.0` field distinguishes reported,
+  not supplied and source review. Old API responses without this field remain
+  readable as uninspected. Cache generation 4 refreshes pre-electronic responses.
+  Optional `?band_gap_only=true` applies a provider-side DOS-or-band-structure
+  nonnegative-gap query before the 21-entry inspection / 20-reference limit.
+  `query_scope` distinguishes `all` from `band_gap`, with separate cache keys;
+  `matches_total` always describes the requested scope. Zero-valued gaps remain
+  included. NOMAD 1.4.3 rejects a numeric-zero range boundary via a truthiness
+  validator, so the request uses the supported numeric string `"0"` with the
+  `:gte` operator. The captured Al2O3 query returned 63 matching tasks and is
+  preserved with its request/hash receipt. Filtering is opt-in, aborts older
+  requests and clears old rows immediately; older backends without an explicit
+  filtered scope cannot silently supply an unfiltered result. No matching gap
+  task does not mean the composition has no other calculation tasks.
+  Per task, at most four DOS and four band-structure groups with two channel
+  readings per group are projected. Malformed or oversized fields require
+  source review without truncation; they do not discard valid task metadata.
+  See [NOMAD stored/display units](https://nomad-lab.eu/prod/v1/docs/howto/plugins/tools/units.html)
+  and the linked band-gap schema exposed beside the source quantities.
   Bounded DFT metadata preserves returned XC functional names/type and explicit
   spin-polarization settings. Missing metadata remains missing, and underlying
   DFT metadata is not presented as a complete method or convergence proof. Spin
