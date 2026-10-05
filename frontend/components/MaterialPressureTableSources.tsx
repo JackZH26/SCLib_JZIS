@@ -55,7 +55,7 @@ function BiTeCl({ batch, studyContext }: { batch: PressureTableBatch; studyConte
   const entries = pressureTableSubjectEntries(batch, "bitecl"), source = batch.sources[0];
   const [tc, pressure, sample, instrument, captionLow, captionHigh] = entries;
   return <section aria-labelledby="bitecl-heading" className="min-w-0 rounded-lg border border-sage-border bg-white p-4 sm:p-5">
-    <h2 id="bitecl-heading" className="text-xl font-semibold">BiTeCl: separate pressure windows</h2>
+    <h2 id="bitecl-heading" className="scroll-mt-24 text-xl font-semibold">BiTeCl: separate pressure windows</h2>
     <p className="mt-2 max-w-3xl text-sm leading-6 text-sage-muted">The main-text Tc report and the Figure 2 curve criteria have distinct source windows.</p>
     <div className="mt-4 grid gap-5 md:grid-cols-2">
       <div className="min-w-0">

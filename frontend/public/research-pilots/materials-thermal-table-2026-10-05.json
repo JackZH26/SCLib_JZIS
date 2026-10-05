@@ -1,0 +1,229 @@
+{
+  "version": "materials-thermal-table/1.0.0",
+  "prepared_on": "2026-10-05",
+  "reading_count": 4,
+  "source_composition_count": 2,
+  "source": {
+    "paper_id": "arxiv:1603.02892",
+    "source_url": "https://arxiv.org/pdf/1603.02892",
+    "captured_on": "2026-10-02",
+    "pdf_page_1_based": 5,
+    "table": "II",
+    "pdf_sha256": "e132a511543478639f01bf06f43bd7f4d4d1ef4d29415e2024b1a5b1f8747c3e",
+    "full_text_sha256": "cad135f61877a5c6ef43162ec5276992efd5c1df24e6455b7fa80a9990885122",
+    "table_text_sha256": "2138d37a234d510afdc05be03601afabf233585dfef9a66f04c4fb168b0ddc1c",
+    "table_span_in_full_text": {
+      "char_start": 18837,
+      "char_end": 19127
+    },
+    "character_indexing": "zero-based Unicode code points; end exclusive",
+    "row_indexing": "zero-based data rows, excluding the Composition header",
+    "column_indexing": "zero-based columns, including the row-label column",
+    "publication_revision_verified": false
+  },
+  "readings": [
+    {
+      "id": "mo-table-II-column-2-gamma",
+      "formula_as_printed": "Mo5P1.1B1.9",
+      "field_id": "electronic_specific_heat_coefficient_source_value",
+      "raw_value": "3.16",
+      "raw_unit": "mJ/mol-at./K2",
+      "raw_uncertainty": null,
+      "normalization": "none",
+      "unit_basis": "table_row_label",
+      "identity_basis": "exact_table_column_formula",
+      "row_index_0_based": 1,
+      "column_index_0_based": 1,
+      "field_cue": "γ",
+      "raw_row_label": "γ (mJ/mol-at./K2\n)",
+      "spans_in_table_text": {
+        "value": {
+          "char_start": 180,
+          "char_end": 184,
+          "text_sha256": "a2108a37a6605e337adae024a2134378f1a4e5854f1d2f023d413769518029e5"
+        },
+        "unit": {
+          "char_start": 164,
+          "char_end": 177,
+          "text_sha256": "f9895233df641cc3e1405899600a591da660837275928ddb0595117a28655257"
+        },
+        "cue": {
+          "char_start": 161,
+          "char_end": 162,
+          "text_sha256": "adbccba1f4f9f51c98fb2bcaff03870632d9d9999c82b2981a2d133e9d7e9cac"
+        },
+        "composition": {
+          "char_start": 95,
+          "char_end": 106,
+          "text_sha256": "7e311b9666b0545237faefbb2063b23a8d8e1f6b19babd2d1de22213401740bc"
+        },
+        "row_label": {
+          "char_start": 161,
+          "char_end": 179,
+          "text_sha256": "34d1224b465c88e7d91785a4e2f5355564089ad20c150f8f03ce71a8e7845dc6"
+        },
+        "caption": {
+          "char_start": 0,
+          "char_end": 82,
+          "text_sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+        }
+      }
+    },
+    {
+      "id": "mo-table-II-column-2-debye",
+      "formula_as_printed": "Mo5P1.1B1.9",
+      "field_id": "debye_temperature_source_value",
+      "raw_value": "492",
+      "raw_unit": "K",
+      "raw_uncertainty": null,
+      "normalization": "none",
+      "unit_basis": "table_row_label",
+      "identity_basis": "exact_table_column_formula",
+      "row_index_0_based": 2,
+      "column_index_0_based": 1,
+      "field_cue": "ΘD",
+      "raw_row_label": "ΘD (K)",
+      "spans_in_table_text": {
+        "value": {
+          "char_start": 207,
+          "char_end": 210,
+          "text_sha256": "23e8b0175874e1bb3b4799e13a6634a8eddb456c1b8675b871e07ec09abc0c07"
+        },
+        "unit": {
+          "char_start": 204,
+          "char_end": 205,
+          "text_sha256": "86be9a55762d316a3026c2836d044f5fc76e34da10e1b45feee5f18be7edb177"
+        },
+        "cue": {
+          "char_start": 200,
+          "char_end": 202,
+          "text_sha256": "4e21fff8cf8e5bd6e00a3e7c045ad9f1cbd89409b600ebc486d3dd14c1e749d3"
+        },
+        "composition": {
+          "char_start": 95,
+          "char_end": 106,
+          "text_sha256": "7e311b9666b0545237faefbb2063b23a8d8e1f6b19babd2d1de22213401740bc"
+        },
+        "row_label": {
+          "char_start": 200,
+          "char_end": 206,
+          "text_sha256": "8adcd3f2cd878382b40b60af17adcc06be5318469991a02d3f7d61d8b56d1e50"
+        },
+        "caption": {
+          "char_start": 0,
+          "char_end": 82,
+          "text_sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+        }
+      }
+    },
+    {
+      "id": "mo-table-II-column-3-gamma",
+      "formula_as_printed": "Mo5PB2",
+      "field_id": "electronic_specific_heat_coefficient_source_value",
+      "raw_value": "3.07",
+      "raw_unit": "mJ/mol-at./K2",
+      "raw_uncertainty": null,
+      "normalization": "none",
+      "unit_basis": "table_row_label",
+      "identity_basis": "exact_table_column_formula",
+      "row_index_0_based": 1,
+      "column_index_0_based": 2,
+      "field_cue": "γ",
+      "raw_row_label": "γ (mJ/mol-at./K2\n)",
+      "spans_in_table_text": {
+        "value": {
+          "char_start": 185,
+          "char_end": 189,
+          "text_sha256": "5e46d273187893c0c9c570985bc4ffcfadb5e862dec056a5f42960d76901cd57"
+        },
+        "unit": {
+          "char_start": 164,
+          "char_end": 177,
+          "text_sha256": "f9895233df641cc3e1405899600a591da660837275928ddb0595117a28655257"
+        },
+        "cue": {
+          "char_start": 161,
+          "char_end": 162,
+          "text_sha256": "adbccba1f4f9f51c98fb2bcaff03870632d9d9999c82b2981a2d133e9d7e9cac"
+        },
+        "composition": {
+          "char_start": 107,
+          "char_end": 113,
+          "text_sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+        },
+        "row_label": {
+          "char_start": 161,
+          "char_end": 179,
+          "text_sha256": "34d1224b465c88e7d91785a4e2f5355564089ad20c150f8f03ce71a8e7845dc6"
+        },
+        "caption": {
+          "char_start": 0,
+          "char_end": 82,
+          "text_sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+        }
+      }
+    },
+    {
+      "id": "mo-table-II-column-3-debye",
+      "formula_as_printed": "Mo5PB2",
+      "field_id": "debye_temperature_source_value",
+      "raw_value": "501",
+      "raw_unit": "K",
+      "raw_uncertainty": null,
+      "normalization": "none",
+      "unit_basis": "table_row_label",
+      "identity_basis": "exact_table_column_formula",
+      "row_index_0_based": 2,
+      "column_index_0_based": 2,
+      "field_cue": "ΘD",
+      "raw_row_label": "ΘD (K)",
+      "spans_in_table_text": {
+        "value": {
+          "char_start": 211,
+          "char_end": 214,
+          "text_sha256": "1158e7e12c5e7362318e5e3c2e1f2f1ab49578ab1d1691e9818a7c3f6b30b528"
+        },
+        "unit": {
+          "char_start": 204,
+          "char_end": 205,
+          "text_sha256": "86be9a55762d316a3026c2836d044f5fc76e34da10e1b45feee5f18be7edb177"
+        },
+        "cue": {
+          "char_start": 200,
+          "char_end": 202,
+          "text_sha256": "4e21fff8cf8e5bd6e00a3e7c045ad9f1cbd89409b600ebc486d3dd14c1e749d3"
+        },
+        "composition": {
+          "char_start": 107,
+          "char_end": 113,
+          "text_sha256": "d2fc63102114b4c4181381b564d110c3b9c6e3b040417651e4b759dc2e2349d5"
+        },
+        "row_label": {
+          "char_start": 200,
+          "char_end": 206,
+          "text_sha256": "8adcd3f2cd878382b40b60af17adcc06be5318469991a02d3f7d61d8b56d1e50"
+        },
+        "caption": {
+          "char_start": 0,
+          "char_end": 82,
+          "text_sha256": "2715a0b41cd8d82e746c2e0b01c22f67ac20091c36e028f1c9bbba7a978b7595"
+        }
+      }
+    }
+  ],
+  "scope": {
+    "catalogue_result_association": "unestablished",
+    "table_I_sample_association": "unestablished",
+    "pressure": "not_supplied_in_table",
+    "uncertainty": "not_supplied_in_selected_cells",
+    "comparison_columns_included": false,
+    "independent_experiment_count": null
+  },
+  "authority": {
+    "independent_human_review": false,
+    "scientific_acceptance": false,
+    "ml_training_approved": false,
+    "canonical_promotions": 0,
+    "database_changed": false
+  }
+}
