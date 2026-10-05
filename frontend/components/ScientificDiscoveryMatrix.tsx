@@ -1,11 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { DiscoveryConditionWorkspace } from "@/components/DiscoveryConditionWorkspace";
 import {
   AVAILABILITY_LABELS, SCIENTIFIC_DISCLAIMER, SCIENTIFIC_FAILURE, SCIENTIFIC_FIELDS, SCIENTIFIC_GROUPS,
   SCIENTIFIC_KEYS, getScientificCatalog, getScientificProjection, scientificNumber, scientificQuantity,
   MAIN_BARRIER_CATEGORIES, mainBarrierBasisKey,
+  ScientificCatalogNotPublished,
   type ScientificAssessment, type ScientificCatalog, type ScientificCell, type ScientificMaterial,
   type ScientificObservation, type ScientificReceipt,
 } from "@/lib/discovery-scientific";
@@ -182,6 +184,7 @@ export function ScientificDiscoveryMatrix() {
   const [data, setData] = useState<ScientificReceipt | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [unpublished, setUnpublished] = useState(false);
   const [query, setQuery] = useState("");
   const [role, setRole] = useState<RoleGroup>("discovery");
   const [group, setGroup] = useState<string>("stability");
@@ -191,13 +194,16 @@ export function ScientificDiscoveryMatrix() {
   const detailTrigger = useRef<HTMLButtonElement | null>(null);
   const begin = useCallback(() => {
     pending.current?.abort(); pending.current = new AbortController(); epoch.current++;
-    setData(null); setExpanded(null); setError("");
+    setData(null); setExpanded(null); setError(""); setUnpublished(false);
     return { generation: epoch.current, signal: pending.current.signal };
   }, []);
   const refresh = useCallback(async () => {
     const current = begin(); setSelected(""); setCatalog(null); setBusy(true);
     try { const next = await getScientificCatalog(current.signal); if (epoch.current === current.generation && !current.signal.aborted) setCatalog(next); }
-    catch { if (epoch.current === current.generation && !current.signal.aborted) setError(SCIENTIFIC_FAILURE); }
+    catch (issue) { if (epoch.current === current.generation && !current.signal.aborted) {
+      if (issue instanceof ScientificCatalogNotPublished) setUnpublished(true);
+      else setError(SCIENTIFIC_FAILURE);
+    } }
     finally { if (epoch.current === current.generation) setBusy(false); }
   }, [begin]);
   useEffect(() => {
@@ -224,6 +230,7 @@ export function ScientificDiscoveryMatrix() {
     .join(" ").toLocaleLowerCase("en-US").includes(query.trim().toLocaleLowerCase("en-US")));
   const fields = SCIENTIFIC_KEYS.filter(k => group === "all" || SCIENTIFIC_FIELDS[k].group === group);
   const active = visible.find(r => r.material.row_id === expanded);
+  const noPublishedRelease = unpublished || catalog?.status === "not_published" && catalog.unavailable_count === 0;
   return <><section id="discovery-evidence" aria-labelledby="scientific-matrix-heading" className="scroll-mt-24 space-y-4 rounded-xl border border-sage-border bg-white p-4 sm:p-5">
     <div><h2 id="scientific-matrix-heading" className="text-xl font-semibold">Scientific material matrix</h2>
       <p className="mt-1 text-sm leading-6 text-sage-muted">Inspect a selected state and its recorded results, then outline a research design.</p>
@@ -232,10 +239,10 @@ export function ScientificDiscoveryMatrix() {
         <p className="mt-2 text-sm leading-6 text-sage-muted">One material per row, with an explicitly reviewed representative state and next action. RPS 1,000–10,000 is research priority, not superconductivity probability. Compare only within the same frozen campaign, budget, policy and release. <a href="https://github.com/JackZH26/SCLib_JZIS/issues/78" className="underline">Evaluation and calibration limits</a>.</p>
       </details>
     </div>
-    <div className="flex flex-wrap items-end gap-3">
-      <label className="min-w-0 flex-1 text-sm">Published scientific version
+    <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+      <label className="min-w-0 text-sm">Published scientific version
         <select className={`${inputStyle} mt-1 block w-full`} value={selected} disabled={!catalog?.items.length} onChange={e => void select(e.target.value)}>
-          <option value="">Choose a published version explicitly</option>
+          <option value="">{noPublishedRelease ? "No published version" : "Choose a published version explicitly"}</option>
           {catalog?.items.map(p => <option key={p.package_id} value={p.package_id}>{p.package_id} · payload {short(p.payload_sha256)}</option>)}
         </select>
       </label>
@@ -243,7 +250,15 @@ export function ScientificDiscoveryMatrix() {
     </div>
     {busy && <p role="status" className="text-sm text-sage-muted">{selected ? "Checking the selected publication and exact scientific payload…" : "Loading scientific publication catalog…"}</p>}
     {error && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
-    {catalog?.status === "not_published" && <p role="status" className="rounded-lg bg-sage-surface p-4 text-sm">No scientific companion published yet. Native fields are supported, but no approved public version is available. No example materials or legacy scores have been substituted.</p>}
+    {noPublishedRelease && <div className="space-y-2 rounded-lg bg-sage-surface p-4 text-sm">
+      <p role="status" className="font-medium">No scientific release is currently published.</p>
+      <p className="text-sage-muted">You can explore source studies and structure references, or outline a research plan.</p>
+      <nav aria-label="Research paths before a scientific release" className="flex flex-wrap gap-x-5 gap-y-1">
+        <Link href="/materials/source-observations/paper-contexts" className="site-text-link inline-flex min-h-11 items-center">Browse source studies</Link>
+        <Link href="/discovery/structures" className="site-text-link inline-flex min-h-11 items-center">Inspect structure references</Link>
+        <a href="#discovery-condition-design" className="site-text-link inline-flex min-h-11 items-center">Prepare a research plan</a>
+      </nav>
+    </div>}
     {catalog && catalog.unavailable_count > 0 && <p role="status" className="text-sm text-sage-muted">{catalog.unavailable_count.toLocaleString("en-US")} configured publication(s) unavailable at this read point. They are not displayed.</p>}
     {catalog && catalog.items.length > 0 && !selected && <p className="text-sm text-sage-muted">Select a version to inspect its materials. No latest or highest-scoring version is selected automatically.</p>}
     {data && <>
