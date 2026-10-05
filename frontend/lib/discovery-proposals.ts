@@ -1,6 +1,6 @@
 // Server-side catalog loader. Client components import only these types and receive validated props.
 import { createHash } from "node:crypto";
-import catalog from "@/data/discovery-proposals/2026-10-06-mgb2-site-proposals-v1.json";
+import catalog from "@/lib/discovery-proposal-catalogues/2026-10-06-mgb2-site-proposals-v1.json";
 
 export const RESEARCH_PROPOSAL_VERSION = "2026-10-06-mgb2-site-proposals-v1";
 export const RESEARCH_PROPOSAL_MAX_BYTES = 1024 * 1024;
