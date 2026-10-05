@@ -1,8 +1,9 @@
-# Host energy and electronic references
+# Host physical references
 
 `/discovery/host-references` adds a source-qualified physical comparison to
 Discovery. It uses formation energy per atom and the OptB88vdW electronic band
-gap from the same JARVIS provider record. It is separate from the frozen native
+gap from the same JARVIS provider record. A separate table view adds published
+Voigt bulk/shear moduli and the original elastic tensor. It is separate from the frozen native
 scientific matrix and from the COD coordinate workspace.
 
 ## Captured source and selection
@@ -31,8 +32,9 @@ separators=(",", ":"))`; it is a byte identity, not a structure equivalence test
 
 The wrapper is valid JSON. One original object, JVASP-95531, contains non-standard
 `NaN` tokens in six elastic-tensor entries. They remain inside the preserved
-string; they are not coerced to zero, parsed by browser code or included in axes.
-All displayed energy/gap values are finite and keep their original tokens.
+string. Edition 1.1 also retains tensor tokens as strings in the derived snapshot,
+including six explicit `"NaN"` strings for source review. They never become browser
+numeric NaNs, zeros or axis values. All energy/gap values are finite and unchanged.
 
 ## Units and scientific scope
 
@@ -97,7 +99,12 @@ scientific review or convergence certificate.
 ## Interaction and verification
 
 The main Discovery page and coordinate workspace link to this separate view.
-Two native selects filter by family/formula. Fixed, linear physical axes retain
+Native selects filter by family/formula and elastic-data availability. A table
+property selector switches between energy/band gap and elastic properties while
+retaining the inspected JID and page. Availability filters count supplied
+properties, not physically accepted states, and reset the page and inspected
+record. Empty intersections show an explicit no-matches state with disabled page
+buttons. Fixed, linear physical axes retain
 all eligible filtered records across the 12-row table pages; zero values stay on
 the axis, and overlapping records are neither merged nor jittered. Inspecting a
 row exposes the source JID, original numbers, space group, both atom inventories
@@ -136,7 +143,7 @@ other relevant stability evidence, calculation/structure associations and
 domain-appropriate pairing/coherence data. Formation energy is not substituted
 for those requirements.
 
-Local acceptance: 10 Python tests, 30 related frontend tests including hydration
+Original edition 1.0 local acceptance: 10 Python tests, 30 related frontend tests including hydration
 of all three Discovery source plots, TypeScript checks and the 66-page production
 build passed. Full-archive extraction reproduced the committed subset and view
 metadata. Actual browser downloads matched the shipped 175,071-byte metadata and
@@ -147,3 +154,57 @@ source records and withheld the cell-review marker. The final production preview
 had no warning/error console entries after the hydration correction. These are
 local checks; upstream CI, scientific review and production release remain
 separate requirements.
+
+
+## Elastic reference edition 1.1 (5 October 2026)
+
+The pinned provider unit table labels `Kv` and `Gv` in GPa. The
+[provider elastic-method documentation](https://jarvis-materials-design.github.io/dbdocs/jarvisdft/#elastic-tensor)
+defines them as the Voigt bulk and shear modulus from finite-difference elastic
+calculations on conventional cells. The
+[pinned tensor parser](https://github.com/usnistgov/jarvis/blob/3b0c9d0f0c15759135de857dbc93e010db01eb29/jarvis/io/vasp/outputs.py#L779-L900)
+documents bulk tensor units as GPa and converts the VASP kBar quantities by
+division by ten. Its separate 2D/vacuum conversion is not applied to this
+bulk-only reference. These references establish field definitions, not the
+specific code revision or complete run provenance of every 2025 record.
+
+| Source content | Records |
+| --- | ---: |
+| Both published Voigt moduli | 126 |
+| Both moduli absent (`na`) | 58 |
+| Finite 6 × 6 tensor | 132 |
+| Tensor containing source NaN | 1 |
+| Tensor absent (`na`) | 51 |
+
+All 126 modulus pairs overlap the finite-tensor set. Six other records have finite
+tensors but no published moduli; the display does not calculate replacement
+moduli. The source's two negative bulk moduli and three negative shear moduli
+remain unchanged, with no automatic scientific rejection rule. Missing source
+values are labelled “Not supplied”; this describes this captured edition rather
+than every possible source or physical applicability.
+
+The matrix preserves every original numeric token (including signed zero and
+scientific notation) and the provider's original indices 1-6. Its mapping to
+Cartesian shear components and the crystal-axis convention has not been verified
+against individual runs. No matrix rotation, averaging, symmetrization,
+eigensystem or stability criterion is applied. Finite tensor entries or positive
+Voigt averages alone are not mechanical-stability certification. In particular,
+the anomalous JVASP-95531 tensor is inspectable with a local source-review note;
+its six NaNs are not repaired or hidden.
+
+The active derived artifact is
+`discovery-host-reference-elastic-2026-10-05.json`, schema
+`discovery-host-physical-reference/1.1.0`, SHA-256
+`e4c8c64940fb1bc91e8e2f0c714c4eb0b3f1b765850e9b57bb23dac34c29fdb4`.
+The original-record subset and edition 1.0 artifact/checksum remain byte-for-byte
+unchanged. All downloads still contain the complete 184-record subset regardless
+of filters; no new catalogue association, computation or scientific approval is
+created.
+
+Edition 1.1 local validation: 18 Python tests cover reconstruction, every retained
+tensor token, missing/negative/non-finite input behavior and unchanged edition 1.0
+records; 19 related frontend tests cover hydration, independent availability
+filters, stable selection across table switches and empty selections. The 46
+frontend source checks, Python lint and 67-page production build (including
+TypeScript/lint) passed. Native browser acceptance is performed during combined
+integration; no production deployment or scientific review is claimed here.
