@@ -79,3 +79,47 @@ keyboard. Changing the comparison axis removes the stale result and rejects
 incompatible settings. The actual 64,192-byte downloaded study exactly matches
 an independent native-file reconstruction and its SHA-256 sidecar. These are
 local acceptance results; current-head CI and production release remain separate.
+
+## Joint mesh–smearing study
+
+The same reading queue now offers **Mesh and smearing** mode. It lays out the
+cross-product of parameter values actually supplied, keeping uncalculated cells
+explicitly empty. Duplicate combinations are rejected. All remaining settings,
+including smearing method, offsets, cutoffs, charge, masses, SCF controls, engine,
+source candidate and UPF bytes must agree. Anisotropic meshes must form a
+componentwise refinement sequence.
+
+A joint assessment requires a complete observed grid with at least three meshes
+and three widths, within the existing 16-reading limit. The finite window uses
+the three finest supplied meshes and three smallest widths. Its energy envelope
+is `(max(etot) - min(etot)) / N` across those nine runs. The largest reported SCF
+error in that window must be below the user's tolerance before the envelope is
+compared. Separate row ranges and the smallest-three-width range at the finest
+mesh help distinguish mesh sensitivity from width sensitivity. Missing cells or
+insufficient axis coverage withhold the joint statistic, including when a missing
+cell lies outside the final window. No value is interpolated or replaced by zero.
+
+The quantity is native QE `etot` with its selected smearing contribution. No
+entropy correction, zero-width extrapolation, physical-temperature assignment,
+phase-stability assessment or Tc prediction is made. A sampled window within
+tolerance still does not establish the numerical limit. The original one-axis
+export remains unchanged; joint studies use independent
+`discovery-qe-mesh-smearing-study/1.0.0` JSON with all original reading reports,
+missing combinations, units, checksums and the exact finite-window calculation.
+
+Native acceptance added six bounded, one-thread QE 7.5 runs to the earlier three:
+2³/4³/6³ meshes at 0.04/0.02/0.01 Ry cold smearing, with every other prepared
+setting and the three-atom AlB₂ proposal fixed. All nine SCF cycles converged.
+The width range at the finest mesh is approximately 9.58717e-5 Hartree/atom,
+whereas the joint envelope is 0.016965894419036214 Hartree/atom, exceeding the
+example 1e-4 tolerance. This demonstrates why one small width range cannot stand
+in for a joint assessment; it is workflow validation, not a material prediction.
+New native inputs, manifests, XML, stdout, readings and bounded execution records
+are retained in `frontend/tests/fixtures/qe-joint-refinement`; original UPFs stay
+private. Regression tests re-read the native files and verify their hashes.
+
+Actual browser selection read all nine sets of native files. The eight-run view
+correctly withheld the joint assessment; adding the missing run produced the full
+grid. The downloaded 172,498-byte study matched an independent native-file
+reconstruction and its sidecar SHA-256:
+`f9ccc21eadd4cea09394df6b483bc840b1d7867d05ab3e13c8f420ed7ba4e74d`.
