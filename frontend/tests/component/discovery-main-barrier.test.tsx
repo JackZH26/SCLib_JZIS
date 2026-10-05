@@ -281,7 +281,7 @@ describe("v2 preparation and shared barrier presentation", () => {
     rerender(<MainBarrierSummary row={{ ...old, main_barrier: { status: "not_declared" } }} />);
     expect(screen.getByText("Not declared · explicit curator choice")).toBeInTheDocument();
   });
-  it("shows a declared barrier in the compact public material row, with rationale and basis available in details", async () => {
+  it("retains the declared barrier, rationale and basis inside the expanded material row", async () => {
     const x = v2(), receipt = await parseScientificReceipt(x.raw, x.selected);
     const catalog = parseScientificCatalog(JSON.stringify({ version: "discovery-scientific-catalog/1.0.0", status: "published", items: [x.selected],
       unavailable_count: 0, scientific_acceptance: false, ml_training_approved: false }));
@@ -290,11 +290,12 @@ describe("v2 preparation and shared barrier presentation", () => {
     await screen.findByRole("option", { name: new RegExp(x.selected.package_id) });
     fireEvent.change(screen.getByLabelText("Published scientific version"), { target: { value: x.selected.package_id } });
     const table = await screen.findByRole("table");
-    expect(within(table).getByText("A sampled soft mode warrants follow-up.")).toBeInTheDocument();
-    expect(within(table).getByText("Scientific hypothesis")).toBeInTheDocument();
-    expect(within(table).getByRole("columnheader", { name: "Curator-declared main barrier / constraints" })).toBeInTheDocument();
+    expect(within(table).queryByText("A sampled soft mode warrants follow-up.")).not.toBeInTheDocument();
+    expect(within(table).getAllByRole("columnheader")).toHaveLength(5);
     fireEvent.click(within(table).getByRole("button", { name: receipt.payload.rows[0].assessment.formula }));
     const detail = screen.getByRole("region", { name: "Curator-declared main barrier" });
+    expect(within(detail).getByText("A sampled soft mode warrants follow-up.")).toBeInTheDocument();
+    expect(within(detail).getByText("Scientific hypothesis")).toBeInTheDocument();
     expect(within(detail).getByText(/This sampled result does not establish/, { selector: "p" })).toBeInTheDocument();
     expect(within(detail).getByText(/Scientific cell · Sampled phonon minimum/)).toBeInTheDocument();
   });

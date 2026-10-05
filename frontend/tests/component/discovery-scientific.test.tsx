@@ -1,7 +1,7 @@
 import { createHash, webcrypto } from "node:crypto";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ScientificDiscoveryMatrix } from "@/components/ScientificDiscoveryMatrix";
+import { ScientificDiscoveryMatrix, sortScientificMaterialsByPriority } from "@/components/ScientificDiscoveryMatrix";
 import { PUBLIC_API_BASE } from "@/lib/api";
 import {
   SCIENTIFIC_DISCLAIMER, SCIENTIFIC_FAILURE, SCIENTIFIC_MAX_BYTES, getScientificCatalog, getScientificProjection,
@@ -289,7 +289,7 @@ describe("ScientificDiscoveryMatrix", () => {
     const c = catalog(); c.items = []; c.status = "not_published";
     vi.mocked(getScientificCatalog).mockResolvedValue(c); render(<ScientificDiscoveryMatrix />);
     expect(await screen.findByText("No scientific release is currently published.")).toBeVisible();
-    expect(screen.getByText(SCIENTIFIC_DISCLAIMER)).toBeVisible();
+    expect(screen.getByText(new RegExp(SCIENTIFIC_DISCLAIMER))).not.toBeVisible();
     expect(screen.queryByRole("table")).not.toBeInTheDocument(); expect(getScientificProjection).not.toHaveBeenCalled();
   });
   it("shows the actual HTTP unpublished status with working research paths and can refresh to a real catalog", async () => {
@@ -329,17 +329,22 @@ describe("ScientificDiscoveryMatrix", () => {
     expect(screen.getByLabelText("Published scientific version")).not.toBeDisabled();
     expect(screen.queryByText("No scientific release is currently published.")).not.toBeInTheDocument();
   });
-  it("shows exactly one material row, scientific units, scope limits, and all eight selectable fields", async () => {
+  it("starts with one compact material row and expands its unchanged scientific details in place", async () => {
     await show(); const table = screen.getByRole("table");
     expect(within(table).getAllByRole("row")).toHaveLength(2);
+    expect(within(table).getAllByRole("columnheader")).toHaveLength(5);
+    expect(within(table).getByRole("columnheader", { name: /Research priority/ })).toHaveAttribute("aria-sort", "descending");
     expect(within(table).getByText("7,100")).toBeVisible();
-    expect(within(table).getByText("Main barrier not separately declared")).toBeVisible();
+    expect(within(table).queryByText("Main barrier not separately declared")).not.toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Scientific columns"), { target: { value: "all" } });
     expect(within(table).getByRole("columnheader", { name: /DOS at Fermi level states\/eV\/formula_unit/ })).toBeVisible();
     expect(within(table).getByRole("columnheader", { name: /Superfluid stiffness K/ })).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: "TEST" }));
     expect(screen.getByRole("heading", { name: "TEST · scientific record" })).toHaveFocus();
     const details = screen.getByRole("region", { name: "TEST scientific details" });
+    expect(details.closest("td")).toHaveAttribute("colspan", "13");
+    expect(details.closest("tr")?.previousElementSibling).toContainElement(screen.getByRole("button", { name: "TEST" }));
+    expect(within(details).getByText("Main barrier not separately declared")).toBeVisible();
     expect(within(details).getAllByText(/Accepted · sampled phonon minimum only/).length).toBe(1);
     expect(within(details).getAllByText("Unreviewed scientific result")).toHaveLength(7);
     expect(within(details).getAllByText(/not establish full-zone dynamical stability/)).toHaveLength(8);
@@ -430,6 +435,39 @@ describe("ScientificDiscoveryMatrix", () => {
     expect(await screen.findByText(/No materials match this role/)).toBeVisible();
     fireEvent.change(screen.getByLabelText("Research role"), { target: { value: "controls" } });
     expect(await screen.findByRole("table")).toBeVisible();
-    expect(screen.getByText(/does not mean experimentally nonsuperconducting/)).toBeVisible();
+    expect(screen.getByText(/does not mean experimentally nonsuperconducting/)).toBeInTheDocument();
+  });
+  it("sorts only representative scores, retains nulls and ties, and never mutates publication order", () => {
+    const base = original().payload.rows[0];
+    // Layout-only copies deliberately do not claim additional published materials.
+    const row = (id: string, value: number | null) => ({ ...base, material: { ...base.material, row_id: id },
+      assessment: { ...base.assessment, result: { ...base.assessment.result, score_display: value } } });
+    const rows = [row("first-tie", 4400), row("unranked-one", null), row("highest", 7100), row("second-tie", 4400), row("unranked-two", null)];
+    const before = JSON.stringify(rows);
+    expect(sortScientificMaterialsByPriority(rows).map(item => item.material.row_id)).toEqual(["highest", "first-tie", "second-tie", "unranked-one", "unranked-two"]);
+    expect(JSON.stringify(rows)).toBe(before);
+    expect(sortScientificMaterialsByPriority(rows)[2]).toBe(rows[3]);
+  });
+  it("renders materials in descending representative score and keeps expanded context beside that material", async () => {
+    const c = catalog(), source = await parseScientificReceipt(fullWire, c.items[0]);
+    const first = source.payload.rows[0];
+    // Synthetic view-model copies exercise ordering; source parser tests remain independent.
+    const copy = (id: string, formula: string, value: number | null) => ({ ...first, material: { ...first.material, row_id: id },
+      assessment: { ...first.assessment, formula, result: { ...first.assessment.result, score_display: value } } });
+    const rows = [copy("null", "UNRANKED", null), copy("low", "LOW", 4400), copy("high", "HIGH", 7100)];
+    vi.mocked(getScientificCatalog).mockResolvedValue(c);
+    vi.mocked(getScientificProjection).mockResolvedValue({ ...source, payload: { ...source.payload, rows } });
+    render(<ScientificDiscoveryMatrix />);
+    await screen.findByRole("option", { name: new RegExp(c.items[0].package_id) });
+    fireEvent.change(screen.getByLabelText("Published scientific version"), { target: { value: c.items[0].package_id } });
+    const table = await screen.findByRole("table");
+    expect(within(table).getAllByRole("button").map(button => button.textContent?.replace("▸", ""))).toEqual(["HIGH", "LOW", "UNRANKED"]);
+    fireEvent.click(within(table).getByRole("button", { name: "LOW" }));
+    const detailRow = screen.getByRole("region", { name: "LOW scientific details" }).closest("tr")!;
+    expect(detailRow.previousElementSibling).toContainElement(screen.getByRole("button", { name: "LOW" }));
+    expect(detailRow.nextElementSibling).toContainElement(screen.getByRole("button", { name: "UNRANKED" }));
+    expect(screen.getByText("Research plan for LOW")).toBeVisible();
+    expect(screen.getByRole("region", { name: "Design superconducting conditions", hidden: true })).not.toBeVisible();
+    expect(rows.map(row => row.assessment.formula)).toEqual(["UNRANKED", "LOW", "HIGH"]);
   });
 });

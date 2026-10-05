@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { DiscoveryConditionWorkspace } from "@/components/DiscoveryConditionWorkspace";
+import { DiscoveryDisclosure } from "@/components/DiscoveryDisclosure";
 import {
   AVAILABILITY_LABELS, SCIENTIFIC_DISCLAIMER, SCIENTIFIC_FAILURE, SCIENTIFIC_FIELDS, SCIENTIFIC_GROUPS,
   SCIENTIFIC_KEYS, getScientificCatalog, getScientificProjection, scientificNumber, scientificQuantity,
@@ -21,6 +22,13 @@ type RoleGroup = "discovery" | "mechanism" | "controls";
 function roleGroup(row: ScientificMaterial): RoleGroup {
   if (["reference_anchor", "benchmark_control", "negative_control"].includes(row.assessment.role)) return "controls";
   return row.assessment.result.rank_group === "mechanism" || row.assessment.role === "mechanism_anchor" ? "mechanism" : "discovery";
+}
+/** Display order only. Never replace a representative with a higher-scoring alternative. */
+export function sortScientificMaterialsByPriority(rows: readonly ScientificMaterial[]): ScientificMaterial[] {
+  return rows.map((row, index) => ({ row, index })).sort((a, b) => {
+    const left = a.row.assessment.result.score_display, right = b.row.assessment.result.score_display;
+    return left === null && right === null ? a.index - b.index : left === null ? 1 : right === null ? -1 : right - left || a.index - b.index;
+  }).map(item => item.row);
 }
 function pressure(state: Pick<ScientificMaterial["state_context"], "pressure_status" | "pressure_gpa">) {
   return state.pressure_status === "explicit_ambient" ? "Explicit ambient · 0 GPa" : state.pressure_status === "reported"
@@ -139,6 +147,10 @@ export function MaterialDetails({ row: r, close, prepared = false }: { row: Scie
       <button type="button" onClick={close} className={inputStyle}>Close details</button>
     </div>
     <dl className="grid gap-3 text-sm sm:grid-cols-2">
+      <Term name="Selected state">{r.assessment.state_summary} · {pressure(r.state_context)}</Term>
+      <Term name="Recorded next action">{r.assessment.action_summary}</Term>
+      <Term name="Mechanism profiles">{Object.entries(r.profile_assignment.mix).map(([key, value]) => `${label(key)}: ${scientificNumber(value)}`).join(" · ")}</Term>
+      <Term name="Recorded scientific results">{r.cells.reduce((count, cell) => count + cell.observations.length, 0).toLocaleString("en-US")}</Term>
       <Term name="Actual material ID">{r.material.row_id}</Term>
       <Term name="RPS material descriptor">{r.assessment.material_id}</Term>
       <Term name="Selected state ID">{r.state.row_id}</Term>
@@ -187,7 +199,7 @@ export function ScientificDiscoveryMatrix() {
   const [unpublished, setUnpublished] = useState(false);
   const [query, setQuery] = useState("");
   const [role, setRole] = useState<RoleGroup>("discovery");
-  const [group, setGroup] = useState<string>("stability");
+  const [group, setGroup] = useState<string>("compact");
   const [expanded, setExpanded] = useState<string | null>(null);
   const epoch = useRef(0);
   const pending = useRef<AbortController | null>(null);
@@ -226,26 +238,32 @@ export function ScientificDiscoveryMatrix() {
     finally { if (epoch.current === current.generation) setBusy(false); }
   }
   const rows = data?.payload.rows ?? [];
-  const visible = rows.filter(r => roleGroup(r) === role && [r.assessment.formula, r.assessment.family, ...Object.keys(r.profile_assignment.mix)]
-    .join(" ").toLocaleLowerCase("en-US").includes(query.trim().toLocaleLowerCase("en-US")));
+  const visible = sortScientificMaterialsByPriority(rows.filter(r => roleGroup(r) === role && [r.assessment.formula, r.assessment.family, ...Object.keys(r.profile_assignment.mix)]
+    .join(" ").toLocaleLowerCase("en-US").includes(query.trim().toLocaleLowerCase("en-US"))));
   const fields = SCIENTIFIC_KEYS.filter(k => group === "all" || SCIENTIFIC_FIELDS[k].group === group);
   const active = visible.find(r => r.material.row_id === expanded);
   const noPublishedRelease = unpublished || catalog?.status === "not_published" && catalog.unavailable_count === 0;
-  return <><section id="discovery-evidence" aria-labelledby="scientific-matrix-heading" className="scroll-mt-24 space-y-4 rounded-xl border border-sage-border bg-white p-4 sm:p-5">
-    <div><h2 id="scientific-matrix-heading" className="text-xl font-semibold">Scientific material matrix</h2>
-      <p className="mt-1 text-sm leading-6 text-sage-muted">Inspect a selected state and its recorded results, then outline a research design.</p>
-      <p className="mt-2 text-sm font-medium text-accent">{SCIENTIFIC_DISCLAIMER}</p>
-      <details className="mt-2 text-sm"><summary className="cursor-pointer font-medium text-accent">Evidence and scoring scope</summary>
-        <p className="mt-2 text-sm leading-6 text-sage-muted">One material per row, with an explicitly reviewed representative state and next action. RPS 1,000–10,000 is research priority, not superconductivity probability. Compare only within the same frozen campaign, budget, policy and release. <a href="https://github.com/JackZH26/SCLib_JZIS/issues/78" className="underline">Evaluation and calibration limits</a>.</p>
+  return <><section id="discovery-evidence" aria-labelledby="scientific-matrix-heading" className="scroll-mt-24 space-y-3 rounded-xl border border-sage-border bg-white p-4 sm:p-5">
+    <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2"><h2 id="scientific-matrix-heading" className="text-xl font-semibold">Candidate materials</h2>
+      <details className="text-sm open:order-last open:basis-full"><summary className="cursor-pointer font-medium text-accent">Ranking and evidence</summary>
+        <p className="mt-2 text-sm leading-6 text-sage-muted">{SCIENTIFIC_DISCLAIMER}. RPS 1,000–10,000 is research priority, not superconductivity probability. Each row keeps the publication&apos;s explicitly selected representative state and action, even if an alternative action has a higher score. Display order uses that representative&apos;s published score, descending, within this campaign, budget, policy and release. Unranked materials follow scored materials; ties retain the publication order. Original assessment ranks, values and weights are unchanged. <a href="https://github.com/JackZH26/SCLib_JZIS/issues/78" className="underline">Evaluation and calibration limits</a>.</p>
       </details>
     </div>
-    <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+    <div role="group" aria-label="Candidate list controls" className={`grid items-end gap-3 ${data ? "sm:grid-cols-2 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_auto]" : "sm:grid-cols-[minmax(0,1fr)_auto]"}`}>
       <label className="min-w-0 text-sm">Published scientific version
         <select className={`${inputStyle} mt-1 block w-full`} value={selected} disabled={!catalog?.items.length} onChange={e => void select(e.target.value)}>
           <option value="">{noPublishedRelease ? "No published version" : "Choose a published version explicitly"}</option>
           {catalog?.items.map(p => <option key={p.package_id} value={p.package_id}>{p.package_id} · payload {short(p.payload_sha256)}</option>)}
         </select>
       </label>
+      {data && <>
+        <label className="min-w-0 text-sm">Search material, family or profile<input className={`${inputStyle} mt-1 block w-full`} value={query} onChange={e => { setQuery(e.target.value); setExpanded(null); }} placeholder="Formula, family or profile" /></label>
+        <label className="min-w-0 text-sm">Research role<select className={`${inputStyle} mt-1 block w-full`} value={role} onChange={e => { setRole(e.target.value as RoleGroup); setExpanded(null); }}>
+          <option value="discovery">Discovery candidates ({rows.filter(r => roleGroup(r) === "discovery").length})</option>
+          <option value="mechanism">Mechanism research ({rows.filter(r => roleGroup(r) === "mechanism").length})</option>
+          <option value="controls">Reference / control materials ({rows.filter(r => roleGroup(r) === "controls").length})</option>
+        </select></label>
+      </>}
       <button type="button" className={inputStyle} onClick={() => void refresh()}>Refresh catalog</button>
     </div>
     {busy && <p role="status" className="text-sm text-sage-muted">{selected ? "Checking the selected publication and exact scientific payload…" : "Loading scientific publication catalog…"}</p>}
@@ -262,11 +280,13 @@ export function ScientificDiscoveryMatrix() {
     {catalog && catalog.unavailable_count > 0 && <p role="status" className="text-sm text-sage-muted">{catalog.unavailable_count.toLocaleString("en-US")} configured publication(s) unavailable at this read point. They are not displayed.</p>}
     {catalog && catalog.items.length > 0 && !selected && <p className="text-sm text-sage-muted">Select a version to inspect its materials. No latest or highest-scoring version is selected automatically.</p>}
     {data && <>
-      <div className="rounded-lg bg-sage-surface p-4 text-sm">
-        <p className="font-medium">{data.payload.campaign.id} · version {data.payload.campaign.version} · release {data.payload.base.release_id}</p>
-        <p className="mt-1">{data.payload.campaign.objective}</p>
+      <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2">
+      <p className="text-xs text-sage-muted">{visible.length.toLocaleString("en-US")} of {rows.length.toLocaleString("en-US")} materials · descending RPS{data.payload.rows[0] && ` · ${data.payload.rows[0].assessment.result.policy_version}`}</p>
+      <details className="max-w-full text-sm open:order-last open:basis-full"><summary className="cursor-pointer text-accent">Publication and coverage</summary>
+        <p className="mt-3 break-words text-xs text-sage-muted">{data.payload.campaign.id} · version {data.payload.campaign.version} · release {data.payload.base.release_id}</p>
+        <p className="mt-3 text-sm">{data.payload.campaign.objective}</p>
         <p className="mt-2 text-xs leading-5 text-sage-muted">The browser matched original payload, selection and campaign bytes to their pins. Server checks describe a read point, not permanent approval. Refresh to recheck; leaving this page clears the matrix. This publication does not approve ML training or all scientific results.</p>
-      </div>
+        <div className="mt-3 space-y-3">
       <Pins title="Frozen campaign, budget, publication and release pins" value={{ campaign: data.payload.campaign, base: data.payload.base,
         package_id: data.package_id, payload_sha256: data.payload_sha256, selection_sha256: data.selection_sha256,
         publication_sha256: data.publication_sha256, review_sha256: data.review_sha256, campaign_sha256: data.payload.campaign_sha256, policy_sha256: data.payload.policy_sha256 }} />
@@ -275,48 +295,44 @@ export function ScientificDiscoveryMatrix() {
           {SCIENTIFIC_FIELDS[c.property_key].label} ({c.unit}): storage / quantity supported · {c.populated_observations.toLocaleString("en-US")} observations · {c.exact_scientific_review_supported ? "exact sampled-phonon review supported" : "scientific review profile not implemented"}
         </li>)}</ul><p className="mt-3 text-xs text-sage-muted">Geometry and competing order: planned scientific properties. Other draft dictionary fields are not implemented native database properties.</p>
       </details>
-      <div className="grid gap-3 sm:grid-cols-3">
-        <label className="text-sm">Search material, family or profile<input className={`${inputStyle} mt-1 block w-full`} value={query} onChange={e => { setQuery(e.target.value); setExpanded(null); }} placeholder="Formula, family or profile" /></label>
-        <label className="text-sm">Research role<select className={`${inputStyle} mt-1 block w-full`} value={role} onChange={e => { setRole(e.target.value as RoleGroup); setExpanded(null); }}>
-          <option value="discovery">Discovery candidates ({rows.filter(r => roleGroup(r) === "discovery").length})</option>
-          <option value="mechanism">Mechanism research ({rows.filter(r => roleGroup(r) === "mechanism").length})</option>
-          <option value="controls">Reference / control materials ({rows.filter(r => roleGroup(r) === "controls").length})</option>
-        </select></label>
-        <label className="text-sm">Scientific columns<select className={`${inputStyle} mt-1 block w-full`} value={group} onChange={e => setGroup(e.target.value)}>
-          <option value="all">All eight native fields</option>{SCIENTIFIC_GROUPS.map(g => <option key={g} value={g}>{groupLabels[g]}{["geometry", "competing_order"].includes(g) ? " · planned" : ""}</option>)}
-        </select></label>
+        </div>
+      </details>
+        <details className="max-w-full text-sm open:order-last open:basis-full"><summary className="cursor-pointer text-accent">Compare scientific fields</summary>
+          <label className="mt-2 block">Scientific columns<select className={`${inputStyle} mt-1 block w-full`} value={group} onChange={e => setGroup(e.target.value)}>
+            <option value="compact">Compact material list</option><option value="all">All eight native fields</option>{SCIENTIFIC_GROUPS.map(g => <option key={g} value={g}>{groupLabels[g]}{["geometry", "competing_order"].includes(g) ? " · planned" : ""}</option>)}
+          </select></label>
+          <p className="mt-2 max-w-sm text-xs text-sage-muted">Controls are separate; “negative control” does not mean experimentally nonsuperconducting. Filters and columns never change representatives, weights or scores.</p>
+        </details>
       </div>
-      <p className="text-xs text-sage-muted">{visible.length.toLocaleString("en-US")} of {rows.length.toLocaleString("en-US")} materials shown. Frozen material order, not a new ranking. Controls are separate; “negative control” does not mean experimentally nonsuperconducting. Filters never change representatives, weights or scores.</p>
       {["geometry", "competing_order"].includes(group) && <p role="status" className="text-sm">Planned group: no native scientific columns to display. Policy dimensions remain separate.</p>}
       {visible.length === 0 ? <p role="status" className="rounded-lg bg-sage-surface p-4 text-sm">No materials match this role and search. Other roles may contain materials.</p> : <div className="overflow-x-auto rounded-lg border border-sage-border focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent" tabIndex={0} role="region" aria-label="Scrollable scientific material matrix">
-        <table className="w-full min-w-[1400px] border-collapse text-left text-xs">
-          <caption className="sr-only">One material per row in the selected frozen scientific publication. Scroll horizontally for scientific columns and review context.</caption>
+        <table className={`w-full border-collapse text-left text-sm ${fields.length ? "min-w-[1400px]" : "min-w-[900px]"}`}>
+          <caption className="sr-only">One material per row, ordered by the selected representative&apos;s published research-priority score. Expand a material to read its evidence and alternative actions.</caption>
           <thead className="bg-sage-surface"><tr>
-            <th scope="col" className="sticky left-0 z-10 min-w-52 bg-sage-surface p-3">Material / family / profile</th>
-            <th scope="col" className="p-3">RPS</th><th scope="col" className="min-w-28 p-3">P / G / A</th>
-            <th scope="col" className="min-w-44 p-3">Selected state / pressure</th><th scope="col" className="min-w-44 p-3">Next action / role</th>
+            <th scope="col" className="sticky left-0 z-10 min-w-36 bg-sage-surface p-3">Material</th>
+            <th scope="col" aria-sort="descending" className="min-w-36 p-3">Research priority <span className="block font-normal text-sage-muted">RPS ↓</span></th>
+            <th scope="col" className="p-3">Family</th>
+            <th scope="col" className="min-w-48 p-3">Selected state / pressure</th><th scope="col" className="min-w-52 p-3">Next action</th>
             {fields.map(k => <th scope="col" key={k} className="min-w-40 p-3">{SCIENTIFIC_FIELDS[k].label}{" "}<span className="block font-normal text-sage-muted">{SCIENTIFIC_FIELDS[k].unit === "1" ? "dimensionless" : SCIENTIFIC_FIELDS[k].unit}</span></th>)}
-            <th scope="col" className="min-w-40 p-3">Evidence / review</th><th scope="col" className="min-w-52 p-3">Curator-declared main barrier / constraints</th>
           </tr></thead>
           <tbody>{visible.map(r => {
-            const a = r.assessment, s = a.result, observations = r.cells.flatMap(c => c.observations);
-            return <tr key={r.material.row_id} className="border-t border-sage-border align-top">
+            const a = r.assessment, s = a.result, isExpanded = active?.material.row_id === r.material.row_id;
+            return <Fragment key={r.material.row_id}><tr className="border-t border-sage-border align-top">
               <th scope="row" className="sticky left-0 z-10 bg-white p-3 font-normal">
-                <button type="button" aria-expanded={active?.material.row_id === r.material.row_id} aria-controls={active?.material.row_id === r.material.row_id ? "scientific-material-details" : undefined} className="min-h-11 text-left text-sm font-semibold text-accent underline underline-offset-4" onClick={event => { detailTrigger.current = event.currentTarget; setExpanded(expanded === r.material.row_id ? null : r.material.row_id); }}>{a.formula}</button>
-                <span className="block">{a.family}</span><span className="mt-1 block text-sage-muted">{Object.entries(r.profile_assignment.mix).map(([k, v]) => `${label(k)}: ${scientificNumber(v)}`).join(" · ")}</span>
+                <button type="button" aria-expanded={isExpanded} aria-controls={isExpanded ? "scientific-material-details" : undefined} className="min-h-11 max-w-40 break-words text-left text-sm font-semibold text-accent underline underline-offset-4 [overflow-wrap:anywhere]" onClick={event => { detailTrigger.current = event.currentTarget; setExpanded(expanded === r.material.row_id ? null : r.material.row_id); }}><span aria-hidden="true" className="mr-2">{isExpanded ? "▾" : "▸"}</span>{a.formula}</button>
               </th>
-              <td className="p-3"><strong className="text-base tabular-nums">{score(s.score_display)}</strong><span className="mt-1 block text-sage-muted">{label(s.eligibility)}</span></td>
-              <td className="p-3 tabular-nums">{scientificNumber(s.p_lower)} / {scientificNumber(s.g_lower)} / {scientificNumber(s.a_lower)}<span className="mt-1 block text-sage-muted">Lower policy bounds</span></td>
-              <td className="p-3">{a.state_summary}<span className="mt-1 block text-sage-muted">{pressure(r.state_context)}</span></td>
-              <td className="p-3">{a.action_summary}<span className="mt-1 block text-sage-muted">{label(a.role)}</span></td>
+              <td className="p-3"><strong className="text-base tabular-nums">{score(s.score_display)}</strong></td>
+              <td className="p-3">{a.family}</td>
+              <td className="p-3"><span className="block max-w-xs truncate" title={a.state_summary}>{a.state_summary}</span><span className="mt-1 block text-xs text-sage-muted">{pressure(r.state_context)}</span></td>
+              <td className="p-3"><span className="block max-w-xs truncate" title={a.action_summary}>{a.action_summary}</span></td>
               {fields.map(k => <td key={k} className="p-3"><CellValue cell={r.cells.find(c => c.property_key === k)!} /></td>)}
-              <td className="p-3">{observations.length.toLocaleString("en-US")} recorded results<span className="mt-1 block text-sage-muted">{observations.filter(o => o.scientific_scope_accepted).length.toLocaleString("en-US")} accepted sampled-phonon reviews</span></td>
-              <td className="min-w-52 max-w-sm p-3"><MainBarrierSummary row={r} /><span className="mt-1 block text-sage-muted">{s.execution_constraint_reasons.join(" · ") || "No execution constraints declared"}</span></td>
-            </tr>;
+            </tr>{isExpanded && <tr><td colSpan={5 + fields.length} className="p-3"><div className="sticky left-3 max-w-[calc(100vw-5rem)] lg:max-w-none">
+              <MaterialDetails row={r} close={() => { setExpanded(null); detailTrigger.current?.focus(); }} />
+              <a href="#discovery-condition-design" className="site-text-link inline-flex min-h-11 items-center text-sm">Design a research plan from this state</a>
+            </div></td></tr>}</Fragment>;
           })}</tbody>
         </table>
       </div>}
-      {active && <MaterialDetails key={active.material.row_id} row={active} close={() => { setExpanded(null); detailTrigger.current?.focus(); }} />}
     </>}
-  </section><div id="discovery-condition-design" className="scroll-mt-24"><DiscoveryConditionWorkspace row={active ?? null} receipt={data ?? null} /></div></>;
+  </section><DiscoveryDisclosure id="discovery-condition-design" summary={active ? `Research plan for ${active.assessment.formula}` : "Outline a research plan"}><DiscoveryConditionWorkspace row={active ?? null} receipt={data ?? null} /></DiscoveryDisclosure></>;
 }
