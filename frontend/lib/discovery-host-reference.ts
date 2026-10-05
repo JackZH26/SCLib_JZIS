@@ -1,9 +1,9 @@
-import snapshot from "@/public/research-pilots/discovery-host-reference-2026-10-05.json";
+import snapshot from "@/public/research-pilots/discovery-host-reference-elastic-2026-10-05.json";
 
 export type HostReference = typeof snapshot;
 export type HostReferenceRow = HostReference["rows"][number];
-export const hostReferenceFilename = "discovery-host-reference-2026-10-05.json";
-export const hostReferenceSha256 = "1d3ead91305af81948269ba975a920ce200fc51daf86a3e42c11c0241fd8b257";
+export const hostReferenceFilename = "discovery-host-reference-elastic-2026-10-05.json";
+export const hostReferenceSha256 = "e4c8c64940fb1bc91e8e2f0c714c4eb0b3f1b765850e9b57bb23dac34c29fdb4";
 export const HOST_REFERENCE_PAGE_SIZE = 12;
 
 function equalFinite(value: unknown, expected: unknown, depth = 0): boolean {
@@ -29,8 +29,14 @@ export function hostReferenceAsset(filename: string) {
   return `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/research-pilots/${filename}`;
 }
 
-export function filterHostReferences(reference: HostReference, family = "", formula = "") {
-  return reference.rows.filter(row => (!family || row.family === family) && (!formula || row.formula === formula));
+export type HostElasticFilter = "" | "moduli" | "tensor" | "review" | "missing";
+
+export function filterHostReferences(reference: HostReference, family = "", formula = "", elastic: HostElasticFilter = "") {
+  return reference.rows.filter(row => (!family || row.family === family) && (!formula || row.formula === formula)
+    && (!elastic || (elastic === "moduli" && row.bulk_modulus.status === "supplied" && row.shear_modulus.status === "supplied")
+      || (elastic === "tensor" && row.elastic_tensor.status === "finite")
+      || (elastic === "review" && row.elastic_tensor.status === "source_nonfinite")
+      || (elastic === "missing" && (row.bulk_modulus.status === "not_supplied" || row.shear_modulus.status === "not_supplied"))));
 }
 
 /** Fixed linear axes include every permitted source value; no score, jitter or imputation. */

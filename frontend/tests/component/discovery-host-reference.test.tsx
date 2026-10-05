@@ -40,13 +40,18 @@ describe("captured host physical references", () => {
     for (const row of reference.rows) {
       const entry = source.entries.find((item: { dataset_row_index: number }) => item.dataset_row_index === row.source.dataset_row_index);
       expect(createHash("sha256").update(entry.source_record_json).digest("hex")).toBe(row.source.record_sha256);
-      // Original strings retain upstream NaN in one unrelated elastic tensor.
-      // Check the exact displayed tokens without rewriting or parsing that field.
+      // Original strings retain upstream NaN in one tensor; only the finite
+      // derived metadata enters the browser parser.
       expect(entry.source_record_json).toContain(`"jid": "${row.id}"`);
       expect(entry.source_record_json).toContain(`"formula": "${row.formula}"`);
       expect(entry.source_record_json).toContain(`"func": "${row.method}"`);
       expect(entry.source_record_json).toContain(`"formation_energy_peratom": ${row.formation_energy.raw},`);
       expect(entry.source_record_json).toContain(`"optb88vdw_bandgap": ${row.band_gap.raw},`);
+      for (const modulus of [row.bulk_modulus, row.shear_modulus]) {
+        const token = modulus.status === "supplied" ? modulus.raw : '"na"';
+        expect(entry.source_record_json).toContain(`"${modulus.source_field}": ${token},`);
+        expect(modulus.unit).toBe("GPa");
+      }
       expect(row).not.toHaveProperty("ehull");
     }
   });
@@ -111,5 +116,67 @@ describe("captured host physical references", () => {
     render(<DiscoveryHostReference reference={{ rows: [] }} />);
     expect(screen.getByRole("status")).toHaveTextContent("The captured host reference is unavailable.");
     expect(screen.queryByRole("table")).not.toBeInTheDocument();
+  });
+
+  it("filters availability independently and retains negative modulus records", () => {
+    const reference = loadHostReference()!;
+    expect(filterHostReferences(reference, "", "", "moduli")).toHaveLength(126);
+    expect(filterHostReferences(reference, "", "", "tensor")).toHaveLength(132);
+    expect(filterHostReferences(reference, "", "", "missing")).toHaveLength(58);
+    expect(filterHostReferences(reference, "", "", "review").map(row => row.id)).toEqual(["JVASP-95531"]);
+    expect(filterHostReferences(reference, "", "MgO", "moduli").find(row => row.id === "JVASP-115228")?.bulk_modulus.raw).toBe("-1.23");
+    expect(filterHostReferences(reference, "", "MgB2", "tensor").find(row => row.id === "JVASP-135405")?.bulk_modulus.status).toBe("not_supplied");
+    const changed = loadHostReference()!;
+    changed.rows[0].elastic_tensor.raw[0][0] = "0";
+    expect(loadHostReference(changed)).toBeNull();
+  });
+
+  it("switches table properties without changing the selected provider record or plot axes", () => {
+    const { container } = render(<DiscoveryHostReference />);
+    fireEvent.click(screen.getByRole("button", { name: "Inspect JVASP-22644" }));
+    fireEvent.change(screen.getByLabelText("Table properties"), { target: { value: "elastic" } });
+    const panel = screen.getByRole("region", { name: "Inspected host reference" });
+    expect(within(panel).getByRole("heading")).toHaveTextContent("JVASP-22644");
+    expect(within(panel).getByText("213.29")).toBeInTheDocument();
+    expect(within(panel).getByText("190.65")).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: "Voigt bulk modulus GPa" })).toBeInTheDocument();
+    expect(container.querySelectorAll("circle[data-reference-id]")).toHaveLength(180);
+    expect(screen.getByRole("img", { name: /^OptB88vdW formation energy versus electronic band gap/ })).toBeInTheDocument();
+    fireEvent.click(within(panel).getByText("Elastic tensor (GPa): 36 finite entries"));
+    const matrix = within(panel).getByRole("table");
+    expect(within(matrix).getAllByRole("cell")).toHaveLength(36);
+    expect(within(matrix).getAllByText("-0.0").length).toBeGreaterThan(0);
+    expect(within(panel).getByText(/mapping to Cartesian shear components/)).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Elastic data"), { target: { value: "review" } });
+    expect(screen.queryByRole("region", { name: "Inspected host reference" })).not.toBeInTheDocument();
+    expect(screen.getByText("Page 1 of 1")).toBeInTheDocument();
+  });
+
+  it("exposes source NaN as text and preserves missing moduli without numeric imputation", () => {
+    render(<DiscoveryHostReference />);
+    fireEvent.change(screen.getByLabelText("Elastic data"), { target: { value: "review" } });
+    fireEvent.change(screen.getByLabelText("Table properties"), { target: { value: "elastic" } });
+    fireEvent.click(screen.getByRole("button", { name: "Inspect JVASP-95531" }));
+    const panel = screen.getByRole("region", { name: "Inspected host reference" });
+    expect(within(panel).getAllByText("Not supplied")).toHaveLength(2);
+    fireEvent.click(within(panel).getByText("Elastic tensor (GPa): 6 source NaN entries"));
+    expect(within(panel).getByRole("status")).toHaveTextContent("requires source review");
+    expect(within(panel).getAllByRole("cell", { name: "NaN", exact: true })).toHaveLength(6);
+    expect(within(panel).getAllByRole("cell", { name: "5e-324", exact: true }).length).toBeGreaterThan(0);
+  });
+
+  it("handles no matching elastic records and clears every filter without stale pages", () => {
+    render(<DiscoveryHostReference />);
+    fireEvent.click(screen.getByRole("button", { name: "Next", exact: true }));
+    fireEvent.change(screen.getByLabelText("Host formula"), { target: { value: "NbN" } });
+    fireEvent.change(screen.getByLabelText("Elastic data"), { target: { value: "review" } });
+    expect(screen.getByText("No matching pages")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Previous", exact: true })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Next", exact: true })).toBeDisabled();
+    expect(screen.getByRole("table")).toHaveTextContent("No records match these filters");
+    fireEvent.click(screen.getByRole("button", { name: "Clear filters" }));
+    expect(screen.getByText("Page 1 of 16")).toBeInTheDocument();
+    expect(screen.getByLabelText("Host formula")).toHaveValue("");
+    expect(screen.getByLabelText("Elastic data")).toHaveValue("");
   });
 });

@@ -15,7 +15,7 @@ from zipfile import ZipFile
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "frontend/public/research-pilots"
 SOURCE_NAME = "jarvis-host-records-2025-09-24.json"
-OUTPUT_NAME = "discovery-host-reference-2026-10-05.json"
+OUTPUT_NAME = "discovery-host-reference-elastic-2026-10-05.json"
 ZIP_SHA256 = "f9e0a3309f0000d5de1ec9e49c93963109ea45e63f451103f8f6595d2eabf7f5"
 MEMBER_SHA256 = "9dacb55ac8371c7c2bf0332933b55c98e9cca6201e92eb9d6fcd03aab0975907"
 FORMULAS = "Al2O3 MgO ZrO2 HfO2 Ga2O3 AlN BN GaN TiN NbN SiC TiC ZrC HfC NbC TiB2 ZrB2 MgB2 MgAl2O4 LaAlO3 SrTiO3 BaZrO3".split()
@@ -87,6 +87,40 @@ def scalar(raw: str, record: dict, field: str, unit: str) -> dict:
     return {"value": value, "raw": token[1], "unit": unit, "source_field": field, "uncertainty": None}
 
 
+def optional_modulus(raw: str, record: dict, field: str) -> dict:
+    """Only the provider's explicit na token is absence; malformed data fails closed."""
+    if record.get(field) == "na":
+        return {"value": None, "raw": "na", "unit": "GPa", "source_field": field,
+                "uncertainty": None, "status": "not_supplied"}
+    return {**scalar(raw, record, field, "GPa"), "status": "supplied"}
+
+
+def elastic_tensor(raw: str, record: dict) -> dict:
+    """Retain provider matrix order and numeric tokens, including signed zero/NaN.
+
+    Non-finite tokens are display strings, never JSON numbers or inferred zeros.
+    No symmetry repair, eigensystem, mechanical criterion or moduli are derived.
+    """
+    value = record.get("elastic_tensor")
+    result = {"source_field": "elastic_tensor", "unit": "GPa", "raw": [],
+              "status": "not_supplied", "nonfinite_count": 0}
+    if value == "na":
+        return result
+    if not isinstance(value, list) or len(value) != 6 or any(not isinstance(row, list) or len(row) != 6 for row in value):
+        raise ValueError("Invalid elastic tensor shape")
+    tokens = json.loads(raw, parse_int=str, parse_float=str, parse_constant=str)["elastic_tensor"]
+    for row, raw_row in zip(value, tokens, strict=True):
+        for number, token in zip(row, raw_row, strict=True):
+            if type(number) not in (int, float) or not re.fullmatch(r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|NaN", token):
+                raise ValueError("Invalid elastic tensor entry")
+            if not math.isfinite(number):
+                if token != "NaN":
+                    raise ValueError("Unexpected non-finite elastic tensor token")
+                result["nonfinite_count"] += 1
+    result.update(raw=tokens, status="source_nonfinite" if result["nonfinite_count"] else "finite")
+    return result
+
+
 def build(source_bytes: bytes) -> dict:
     if len(source_bytes) > 2_000_000:
         raise ValueError("Source subset exceeds the finite pilot bound")
@@ -128,6 +162,9 @@ def build(source_bytes: bytes) -> dict:
             "review_note": "" if inventory_matches else "Source nat differs from the supplied coordinate count. Cell association requires review; excluded from the plot.",
             "formation_energy": scalar(raw, record, "formation_energy_peratom", "eV/atom"),
             "band_gap": gap,
+            "bulk_modulus": optional_modulus(raw, record, "bulk_modulus_kv"),
+            "shear_modulus": optional_modulus(raw, record, "shear_modulus_gv"),
+            "elastic_tensor": elastic_tensor(raw, record),
             "source": {"dataset_row_index": index, "json_pointer": f"/{index}",
                        "record_sha256": digest(raw.encode()),
                        "atoms_sha256": digest(json.dumps(atoms, sort_keys=True, separators=(",", ":")).encode())},
@@ -135,7 +172,7 @@ def build(source_bytes: bytes) -> dict:
     if set(row["formula"] for row in rows) != set(FORMULAS):
         raise ValueError("Incomplete methodology formula coverage")
     return {
-        "version": "discovery-host-physical-reference/1.0.0",
+        "version": "discovery-host-physical-reference/1.1.0",
         "status": "external_computed_reference",
         "source": {"title": "JARVIS-DFT 3D dataset (jdft_3d.json)", "author": "Kamal Choudhary",
                    "doi": "10.6084/m9.figshare.6815699.v11", "license": "CC BY 4.0",
@@ -145,10 +182,17 @@ def build(source_bytes: bytes) -> dict:
                    "member_sha256": MEMBER_SHA256, "dataset_records": 93902,
                    "subset_filename": SOURCE_NAME, "subset_sha256": digest(source_bytes),
                    "unit_reference": "https://github.com/usnistgov/alignn/blob/f2366daa3413d28a825b46e34d001b5549b05a40/README.md#2-on-jarvis-dft-2021-dataset-regression",
+                   "elastic_method_reference": "https://jarvis-materials-design.github.io/dbdocs/jarvisdft/#elastic-tensor",
+                   "elastic_parser_reference": "https://github.com/usnistgov/jarvis/blob/3b0c9d0f0c15759135de857dbc93e010db01eb29/jarvis/io/vasp/outputs.py#L779-L900",
                    "changes": "Selected every matching record for the 22 named formulas; added locators and display metadata. Source object strings are unchanged."},
+        "elastic_coverage": {"both_moduli": sum(row["bulk_modulus"]["status"] == "supplied" and row["shear_modulus"]["status"] == "supplied" for row in rows),
+                             "finite_tensor": sum(row["elastic_tensor"]["status"] == "finite" for row in rows),
+                             "nonfinite_tensor": sum(row["elastic_tensor"]["status"] == "source_nonfinite" for row in rows),
+                             "missing_tensor": sum(row["elastic_tensor"]["status"] == "not_supplied" for row in rows)},
         "scope": {"formula_count": 22, "record_count": 184, "plotted_record_count": sum(row["plottable"] for row in rows), "formula_selection": FORMULAS,
                   "conditions": "Individual calculation temperature, pressure and convergence are not established by this metadata view.",
                   "association": "Provider JID only; no association with catalogue measurements or COD reference geometries.",
+                  "elasticity": "Bulk and shear moduli use the provider's Voigt definition in GPa. Finite tensor entries and positive moduli alone do not establish mechanical stability. No tensor symmetrization, coordinate rotation or stability test is applied.",
                   "ehull": "Excluded from axes: captured same-formula differences require normalization review. Original values remain in the source download.",
                   "inference": "Formation energy relative to elemental references is not convex-hull, phonon, chemical or finite-temperature stability. The band gap is an electronic descriptor, not a pairing or superconducting gap."},
         "authority": {"catalogue_updates": 0, "new_calculation_executed": False,
@@ -171,7 +215,7 @@ def main() -> None:
         else:
             (ASSETS / SOURCE_NAME).write_bytes(captured)
     result = build((ASSETS / SOURCE_NAME).read_bytes())
-    payload = (json.dumps(result, indent=2, ensure_ascii=False) + "\n").encode()
+    payload = (json.dumps(result, indent=2, ensure_ascii=False, allow_nan=False) + "\n").encode()
     target = ASSETS / OUTPUT_NAME
     checksum = f"{digest(payload)}  {OUTPUT_NAME}\n".encode()
     if args.check:
