@@ -24,8 +24,8 @@ function PressurePlot({ table, quantity, compound, id }: { table: PressureData; 
     <div role="region" aria-label="Source pressure plot, horizontally scrollable" tabIndex={0}
       className="max-w-full overflow-x-auto rounded-lg border border-sage-border focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-deep">
       <svg viewBox="0 0 560 326" className="block h-auto w-full min-w-[32rem]" role="img" aria-labelledby={`${id}-plot-title ${id}-plot-description`}>
-        <title id={`${id}-plot-title`}>{compound}: {descriptor.label} and quantum pressure</title>
-        <desc id={`${id}-plot-description`}>{points.length} source-computed points for one compound and one quantity. Pressure is in GPa; the vertical unit is {unitLabel(descriptor.unit)}. Markers show original table values, without an interpolated curve, derivative or ambient-pressure prediction. The table provides the same values.</desc>
+        <title id={`${id}-plot-title`}>{`${compound}: ${descriptor.label} and quantum pressure`}</title>
+        <desc id={`${id}-plot-description`}>{`${points.length} source-computed points for one compound and one quantity. Pressure is in GPa; the vertical unit is ${unitLabel(descriptor.unit)}. Markers show original table values, without an interpolated curve, derivative or ambient-pressure prediction. The table provides the same values.`}</desc>
         {ticks.map(tick => <g key={`y-${tick}`}>
           <line x1={66} x2={516} y1={y(tick)} y2={y(tick)} stroke="#d4e4d4" />
           <text x={56} y={y(tick) + 4} textAnchor="end" fill="#5a6b5a" fontSize={12}>{tick}</text>
@@ -40,7 +40,7 @@ function PressurePlot({ table, quantity, compound, id }: { table: PressureData; 
         <text transform="translate(18 149) rotate(-90)" textAnchor="middle" fill="#2d3b2d" fontSize={13}>{quantity === "electron_phonon_lambda" ? "EPC λ (dimensionless)" : quantity === "omega_log" ? "ωlog (meV)" : "Computed Tc (K)"}</text>
         {points.map(point => <circle key={point.row_id} data-source-row-id={point.row_id} data-pressure={point.pressure_raw} data-source-value={point.value_raw}
           cx={x(point.pressure)} cy={y(point.value)} r={5} fill="#ffffff" stroke="#24503A" strokeWidth={1.75}>
-          <title>{point.formula}: {point.pressure_raw} GPa; {descriptor.label} {point.value_raw} {unitLabel(point.unit)}; source row {point.source_data_row}</title>
+          <title>{`${point.formula}: ${point.pressure_raw} GPa; ${descriptor.label} ${point.value_raw} ${unitLabel(point.unit)}; source row ${point.source_data_row}`}</title>
         </circle>)}
       </svg>
     </div>
