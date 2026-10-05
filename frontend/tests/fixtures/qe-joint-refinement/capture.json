@@ -1,0 +1,186 @@
+{
+  "scope": "Actual bounded local PWSCF 7.5 runs on an unrelaxed three-atom AlB2 proposal; no phase or superconductivity validation. The 0.02 Ry column is retained in qe-convergence fixtures. Original UPFs remain private.",
+  "engine_sha256": "83a90348f1872ef19432b27d462c025d4be6735772ff9b9c39dada049702073a",
+  "files": [
+    {
+      "file": "k2-s0.04-manifest.json",
+      "bytes": 16124,
+      "sha256": "32f31cbf64ab65b82e61c2a2d79642f40d160fc40ace799444f85670d6f62e0c"
+    },
+    {
+      "file": "k2-s0.04-input.in",
+      "bytes": 1282,
+      "sha256": "a367e23c40d840781440f570c9d113b0994859e52d9dbbc688c94db0ea95bc14"
+    },
+    {
+      "file": "k2-s0.04-data-file-schema.xml",
+      "bytes": 34228,
+      "sha256": "8fc2efcb972be0c9aee1af434094dcfd95b86b5e6b2220688f93aa492582c7b4"
+    },
+    {
+      "file": "k2-s0.04-pw.out",
+      "bytes": 13666,
+      "sha256": "2eda84de9f1199e11a4c1bdbe8cc43930a9518bf0d0e16b7e0a75eb5b8c5468e"
+    },
+    {
+      "file": "k2-s0.04-execution-receipt.json",
+      "bytes": 589,
+      "sha256": "3bc4b6ea2bfe477d9c263734d3c13c785a35edcb286912bb4b1c78c904c1d5aa"
+    },
+    {
+      "file": "k2-s0.04-reading.json",
+      "bytes": 14218,
+      "sha256": "77eb075b06017b9aaedb16b88bfaf3c8192dd5563893391fd0055c5adc18fe93"
+    },
+    {
+      "file": "k2-s0.01-manifest.json",
+      "bytes": 16124,
+      "sha256": "b2ca899d0fdae70467a878c944df0f9c00d801bca059348dba6f2d14b5f15760"
+    },
+    {
+      "file": "k2-s0.01-input.in",
+      "bytes": 1282,
+      "sha256": "57bfaffe13e741688125edb655d478096e75c66956524632855facc3033a3dd0"
+    },
+    {
+      "file": "k2-s0.01-data-file-schema.xml",
+      "bytes": 34229,
+      "sha256": "f42efc5277bed51901fbfbc8e14c43ecfcf95ced248719813612f87f167dfefb"
+    },
+    {
+      "file": "k2-s0.01-pw.out",
+      "bytes": 13366,
+      "sha256": "bf320ecfbbfad21f54222c70f6e3715d2803a5442802199916d0f56f665c8adf"
+    },
+    {
+      "file": "k2-s0.01-execution-receipt.json",
+      "bytes": 590,
+      "sha256": "3d82a63dba714f13833cdc635f7fedd54a88098663874c97638d7fe986291978"
+    },
+    {
+      "file": "k2-s0.01-reading.json",
+      "bytes": 14201,
+      "sha256": "c9eec5346fb5ac3fd97501855535ecc52af92dec79caa43029a9313e92a6b42f"
+    },
+    {
+      "file": "k4-s0.04-manifest.json",
+      "bytes": 16124,
+      "sha256": "098afe6ad35ed7022ff11abb600e3ad06583b4a5234abf4bec2a2ee96818488e"
+    },
+    {
+      "file": "k4-s0.04-input.in",
+      "bytes": 1282,
+      "sha256": "cad1d1efcf14e710102334126f2d0ae81471db0e0ed82e8d4d8de0da2a73bc91"
+    },
+    {
+      "file": "k4-s0.04-data-file-schema.xml",
+      "bytes": 45584,
+      "sha256": "05622485d30a0ec96b5195430d6cb8b243699aa812e3f5871565c2f888273d73"
+    },
+    {
+      "file": "k4-s0.04-pw.out",
+      "bytes": 17086,
+      "sha256": "2c0e56bb2db01454a24dd93eff62bb7608955daf0b52d0b4932133511f4fdf09"
+    },
+    {
+      "file": "k4-s0.04-execution-receipt.json",
+      "bytes": 590,
+      "sha256": "e5617434088df1db8c19665c0b23f058a21ca5e8eb3f8ab4e455bc2f90be7469"
+    },
+    {
+      "file": "k4-s0.04-reading.json",
+      "bytes": 14221,
+      "sha256": "ad8fe47efb77cee9ef3cea14c23d65daf96f7ca315006275a5583421924e1cb9"
+    },
+    {
+      "file": "k4-s0.01-manifest.json",
+      "bytes": 16124,
+      "sha256": "c89532f2d03899512b8e159bb5c3429372575065c33d4658c6ebe9e62d32d064"
+    },
+    {
+      "file": "k4-s0.01-input.in",
+      "bytes": 1282,
+      "sha256": "01a74a609d80de135a365c9aa662eeeb49e1d3b456d86d69bdd6b47ceebaaa43"
+    },
+    {
+      "file": "k4-s0.01-data-file-schema.xml",
+      "bytes": 45584,
+      "sha256": "88caa662bf6cffa64b0168e22bf45e233782e5aeda2f50e8434b6b039687cb08"
+    },
+    {
+      "file": "k4-s0.01-pw.out",
+      "bytes": 17172,
+      "sha256": "a3c5de297a83848c4cb1b193841156b5f0fce3cd3ddcd3089b1abdc231a7923d"
+    },
+    {
+      "file": "k4-s0.01-execution-receipt.json",
+      "bytes": 591,
+      "sha256": "19147684a39b78e6030b3cf7ed3e9d102536ee3adffcd9fc203d3449d753c7c7"
+    },
+    {
+      "file": "k4-s0.01-reading.json",
+      "bytes": 14160,
+      "sha256": "bf271174a05c6454b57dc968c3b559bc235b5f180b5f5fe80998d219f2f195ca"
+    },
+    {
+      "file": "k6-s0.04-manifest.json",
+      "bytes": 16124,
+      "sha256": "c00ef402ca42d590fe85046770d22901240c6ab1a34cffb81708f313bbb540c2"
+    },
+    {
+      "file": "k6-s0.04-input.in",
+      "bytes": 1282,
+      "sha256": "6c3e31f6b23e971076f540da6510ea863a9b9ee846b6cef533e850f7e191bde4"
+    },
+    {
+      "file": "k6-s0.04-data-file-schema.xml",
+      "bytes": 69062,
+      "sha256": "2f325b5abce8154cae65f3114fe39b6536ec51c7ffb47580dff5f95ec1761b59"
+    },
+    {
+      "file": "k6-s0.04-pw.out",
+      "bytes": 23808,
+      "sha256": "d3b20d743c00e0d8a7ea59a5dc9a09f18a4154d69d7742a2608ff3838da9b20a"
+    },
+    {
+      "file": "k6-s0.04-execution-receipt.json",
+      "bytes": 591,
+      "sha256": "f98adef2f5593534043cdc736f1884632d7e8274066ca9fa69b91d045abd018a"
+    },
+    {
+      "file": "k6-s0.04-reading.json",
+      "bytes": 14200,
+      "sha256": "aa8950dffff0504707b3f1acf1bd622a281293e0dab700086d2a09addd835f3a"
+    },
+    {
+      "file": "k6-s0.01-manifest.json",
+      "bytes": 16124,
+      "sha256": "84739c158a034bb1d3ba1a6c9feabe93ed88006f9100aff8b3e4790106df75fd"
+    },
+    {
+      "file": "k6-s0.01-input.in",
+      "bytes": 1282,
+      "sha256": "f02146253dfef96e93b6ece1059b8422bb4da6cd9ba3d0e2adc897dcab3dfd4d"
+    },
+    {
+      "file": "k6-s0.01-data-file-schema.xml",
+      "bytes": 69056,
+      "sha256": "288ab82a82d7d9dbbc62ee0fa56fcafd7c205293ebf866bc180879978931e5f5"
+    },
+    {
+      "file": "k6-s0.01-pw.out",
+      "bytes": 23536,
+      "sha256": "eeadb2ae9738dcd6b10a080cfceb900cf006a3db1e5d6860b5e5ecf157adccad"
+    },
+    {
+      "file": "k6-s0.01-execution-receipt.json",
+      "bytes": 591,
+      "sha256": "8f3503430c80b2057eb5fdfb6565308290c87d86f22ae50934f5606fb1a8a27f"
+    },
+    {
+      "file": "k6-s0.01-reading.json",
+      "bytes": 14162,
+      "sha256": "d42a5d54fcaf9989edd39ba42c8c9c01344af659e56d4e09c8663cb64bb540fd"
+    }
+  ]
+}
