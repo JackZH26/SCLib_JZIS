@@ -127,6 +127,9 @@ jobs:
           docker pull redis:7-alpine
       - name: Upgrade and verify an owned disposable database
         run: .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite migrations --report "$RUNNER_TEMP/schema-rehearsal.json"
+      - name: Verify empty Discovery rollback independently of retained API history
+        timeout-minutes: 5
+        run: .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q tests/test_discovery_designs.py::test_empty_migration_roundtrip_uses_actual_metadata_guards
       - name: Upload actual owned migration rehearsal evidence
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
