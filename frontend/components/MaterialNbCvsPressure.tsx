@@ -3,7 +3,7 @@ import { loadNbCvsPressure, nbCvsPressureDownloadPath, type NbCvsPressure } from
 
 type Field = NbCvsPressure["fields"][number];
 function PressureTable({ data, fields, label }: { data: NbCvsPressure; fields: Field[]; label: string }) {
-  return <div className="mt-4 max-w-full overflow-x-auto rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep" role="region" tabIndex={0} aria-label={`${label}, horizontally scrollable`}>
+  return <div className="relative mt-4 max-w-full overflow-x-auto rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep" role="region" tabIndex={0} aria-label={`${label}, horizontally scrollable`}>
     <table className="w-full min-w-[35rem] table-fixed text-left text-sm tabular-nums">
       <caption className="sr-only">{label}</caption>
       <thead><tr><th className="w-[36%] py-3 pr-3 font-medium" scope="col">Parameter</th>{data.pressure_columns.map(pressure => <th className="w-[16%] py-3 pr-2 font-medium" scope="col" key={pressure.raw_value}>{pressure.raw_value} GPa</th>)}</tr></thead>
