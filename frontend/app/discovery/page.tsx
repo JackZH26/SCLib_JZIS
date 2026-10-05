@@ -7,6 +7,7 @@ import { ScientificDiscoveryMatrix } from "@/components/ScientificDiscoveryMatri
 import { DiscoveryFieldGuide } from "@/components/DiscoveryFieldGuide";
 import { DiscoverySourceComparison } from "@/components/DiscoverySourceComparison";
 import { DiscoveryPressureSeries } from "@/components/DiscoveryPressureSeries";
+import { DiscoveryDisclosure } from "@/components/DiscoveryDisclosure";
 import {
   getDiscoveryCandidates,
   getDiscoveryMetadata,
@@ -49,42 +50,40 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
   }
   return (
     <main className="space-y-4">
-      <header className="space-y-3 pb-2">
+      <header className="space-y-2 pb-2">
         <h1 className="text-3xl font-semibold tracking-tight">Discovery</h1>
-        <p className="max-w-3xl text-base leading-6">Design the conditions for superconductivity, then choose the next calculation or experiment.</p>
-        <p className="text-sm text-sage-muted">Research target: approximately 300 K at 1 atm.</p>
-        <nav aria-label="Discovery research workflow" className="flex flex-wrap gap-x-5 gap-y-3 text-sm">
-          <Link href="/discovery/host-references" className="min-h-11 content-center text-accent underline underline-offset-4">Compare host energy and band gaps</Link>
-          <Link href="/discovery/structures" className="min-h-11 content-center text-accent underline underline-offset-4">Inspect structure coordinates</Link>
-          <Link href="/discovery/calculations" className="min-h-11 content-center text-accent underline underline-offset-4">Read calculation output</Link>
-          <a href="#discovery-evidence" className="min-h-11 content-center text-accent underline underline-offset-4">Inspect state evidence</a>
-          <a href="#discovery-source-comparisons" className="min-h-11 content-center text-accent underline underline-offset-4">Compare reported modifications</a>
-          <a href="#discovery-pressure-response" className="min-h-11 content-center text-accent underline underline-offset-4">Compare pressure reports</a>
-          <a href="#discovery-condition-design" className="min-h-11 content-center text-accent underline underline-offset-4">Design a research plan</a>
-          <a href="#discovery-methodology" className="min-h-11 content-center text-accent underline underline-offset-4">Methodology and scope</a>
-        </nav>
+        <p className="max-w-3xl text-sm leading-6 text-sage-muted">Compare candidate materials by research priority, then inspect the evidence and next action.</p>
       </header>
 
       <ScientificDiscoveryMatrix />
+      <DiscoveryDisclosure id="discovery-tools" summary="Host references and calculation tools">
+        <nav aria-label="Discovery research workflow" className="grid gap-x-5 gap-y-1 text-sm sm:grid-cols-2">
+          <Link href="/discovery/host-references" className="site-text-link inline-flex min-h-11 items-center">Host physical references</Link>
+          <Link href="/discovery/structures" className="site-text-link inline-flex min-h-11 items-center">Inspect structure coordinates</Link>
+          <Link href="/discovery/calculations" className="site-text-link inline-flex min-h-11 items-center">Read calculation output</Link>
+          <Link href="/dashboard/research/discovery-designs" className="site-text-link inline-flex min-h-11 items-center">Continue a private research plan</Link>
+        </nav>
+      </DiscoveryDisclosure>
+      <DiscoveryDisclosure id="discovery-source-studies" summary="Source studies: pressure, composition and preparation">
       <DiscoveryPressureSeries />
       <DiscoverySourceComparison />
       <p className="max-w-3xl text-sm"><Link className="site-text-link inline-flex min-h-11 items-center" href="/materials/source-observations/nbsctizr-annealing">Compare reported annealing effects in NbScTiZr</Link>: an experimental preparation study with separate transition criteria and source-derived field parameters.</p>
-      <details id="discovery-methodology" className="scroll-mt-24 rounded-xl border border-sage-border p-4">
-        <summary className="cursor-pointer text-sm font-semibold">Methodology and scope</summary>
+      </DiscoveryDisclosure>
+      <DiscoveryDisclosure id="discovery-methodology" summary="Discovery methodology and field dictionary">
         <div className="mt-3 max-w-3xl space-y-3 text-sm leading-6 text-sage-muted">
+          <p>Research unit: Host + Modification + State + Conditions. The next action tests which physical conditions can be engineered. Approximately 300 K at 1 atm is a research target.</p>
           <p>Stable host → Electronic activation → Pairing → Coherence → Superconducting state is a conceptual research framework. Each stage requires evidence for its own structure, state, conditions and method.</p>
           <p>Discovery studies how doping, substitution, vacancies, strain, interfaces, layer count, twist or pressure could change those conditions. A proposed modification is a hypothesis; reference results remain attached to their original state.</p>
           <p>High-pressure results can motivate ambient-pressure research, but translation requires matched-state comparisons and independent stability checks. Different pairing channels need their own models and evidence.</p>
           <p>RPS allocates research effort to an action within a fixed campaign and budget. It is not a superconductivity probability or a physical design-space coordinate.</p>
         </div>
-      </details>
+        <DiscoveryFieldGuide />
+      </DiscoveryDisclosure>
       <details className="rounded-xl border border-sage-border p-4">
         <summary className="cursor-pointer text-sm font-semibold">Original RPS assessment releases · action-level view</summary>
         <p className="my-3 text-sm text-sage-muted">This separate view retains the original assessment catalog. An assessment release is not a published scientific companion or a one-material matrix.</p>
         <ResearchPriorityBoard />
       </details>
-      <DiscoveryFieldGuide />
-
       <Suspense fallback={<p className="text-sm text-sage-muted">Loading historical candidate leads…</p>}>
         <LegacyDiscovery />
       </Suspense>
