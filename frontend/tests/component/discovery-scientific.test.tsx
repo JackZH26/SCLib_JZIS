@@ -5,6 +5,7 @@ import { ScientificDiscoveryMatrix } from "@/components/ScientificDiscoveryMatri
 import { PUBLIC_API_BASE } from "@/lib/api";
 import {
   SCIENTIFIC_DISCLAIMER, SCIENTIFIC_FAILURE, SCIENTIFIC_MAX_BYTES, getScientificCatalog, getScientificProjection,
+  ScientificCatalogNotPublished,
   parseScientificCatalog, parseScientificReceipt, scientificNumber, scientificQuantity,
   type ScientificReceipt, type ScientificPublication, type ScientificCell,
 } from "@/lib/discovery-scientific";
@@ -216,6 +217,31 @@ describe("bounded public scientific client", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("private source reason", { status })));
     const c = await actualClient(); await expect(c.getScientificProjection(catalog().items[0])).rejects.toThrow(SCIENTIFIC_FAILURE);
   });
+  it("recognizes only the catalog's bounded explicit unpublished response", async () => {
+    const raw = JSON.stringify({ detail: "scientific_discovery_not_published", error_code: "not_found", request_id: "test-request" });
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(() => new Response(raw, { status: 404, headers: { "content-type": "application/json" } })));
+    const c = await actualClient();
+    await expect(c.getScientificCatalog()).rejects.toBeInstanceOf(c.ScientificCatalogNotPublished);
+    await expect(c.getScientificProjection(catalog().items[0])).rejects.toThrow(SCIENTIFIC_FAILURE);
+  });
+  it.each([
+    [404, '{"detail":"not_found"}'],
+    [503, '{"detail":"scientific_discovery_not_published"}'],
+    [200, '{"detail":"scientific_discovery_not_published"}'],
+    [404, '{"detail":"scientific_discovery_not_published","detail":"scientific_discovery_not_published"}'],
+    [404, '{"detail":"scientific_discovery_not_published","error_code":"forbidden"}'],
+    [404, '{"detail":"scientific_discovery_not_published","private_data":"CANARY"}'],
+    [404, JSON.stringify({ detail: "scientific_discovery_not_published", request_id: "x".repeat(1024) })],
+  ] as const)("keeps an unverified catalog failure generic (%s, %s)", async (status, raw) => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(raw, { status, headers: { "content-type": "application/json" } })));
+    const c = await actualClient(); await expect(c.getScientificCatalog()).rejects.toThrow(SCIENTIFIC_FAILURE);
+  });
+  it("bounds the declared unpublished body before reading it", async () => {
+    const getReader = vi.fn(); vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 404,
+      headers: new Headers({ "content-type": "application/json", "content-length": "1025" }), body: { getReader } }));
+    const c = await actualClient(); await expect(c.getScientificCatalog()).rejects.toThrow(SCIENTIFIC_FAILURE);
+    expect(getReader).not.toHaveBeenCalled();
+  });
   it("rejects oversized declared bodies before reading", async () => {
     const read = vi.fn(); vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true,
       headers: new Headers({ "content-type": "application/json", "content-length": String(SCIENTIFIC_MAX_BYTES + 1) }), body: { getReader: read } }));
@@ -262,9 +288,46 @@ describe("ScientificDiscoveryMatrix", () => {
   it("does not select a latest version or make up materials for an empty catalog", async () => {
     const c = catalog(); c.items = []; c.status = "not_published";
     vi.mocked(getScientificCatalog).mockResolvedValue(c); render(<ScientificDiscoveryMatrix />);
-    expect(await screen.findByText(/No scientific companion published yet/)).toBeVisible();
+    expect(await screen.findByText("No scientific release is currently published.")).toBeVisible();
     expect(screen.getByText(SCIENTIFIC_DISCLAIMER)).toBeVisible();
     expect(screen.queryByRole("table")).not.toBeInTheDocument(); expect(getScientificProjection).not.toHaveBeenCalled();
+  });
+  it("shows the actual HTTP unpublished status with working research paths and can refresh to a real catalog", async () => {
+    const actual = await vi.importActual<typeof import("@/lib/discovery-scientific")>("@/lib/discovery-scientific");
+    vi.mocked(getScientificCatalog).mockImplementation(actual.getScientificCatalog);
+    vi.stubGlobal("fetch", vi.fn()
+      .mockResolvedValueOnce(new Response('{"detail":"scientific_discovery_not_published","error_code":"not_found"}', { status: 404, headers: { "content-type": "application/json" } }))
+      .mockResolvedValueOnce(new Response(fullCatalogWire, { headers: { "content-type": "application/json" } })));
+    render(<ScientificDiscoveryMatrix />);
+    expect(await screen.findByText("No scientific release is currently published.")).toBeVisible();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(screen.getByLabelText("Published scientific version")).toBeDisabled();
+    expect(screen.getByRole("option", { name: "No published version" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Browse source studies" })).toHaveAttribute("href", "/materials/source-observations/paper-contexts");
+    expect(screen.getByRole("link", { name: "Inspect structure references" })).toHaveAttribute("href", "/discovery/structures");
+    expect(screen.getByRole("link", { name: "Prepare a research plan" })).toHaveAttribute("href", "#discovery-condition-design");
+    expect(document.querySelector("#discovery-condition-design")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Refresh catalog" }));
+    await screen.findByRole("option", { name: new RegExp(catalog().items[0].package_id) });
+    expect(screen.getByLabelText("Published scientific version")).toHaveValue("");
+    expect(screen.queryByText("No scientific release is currently published.")).not.toBeInTheDocument();
+    expect(screen.queryByRole("table")).not.toBeInTheDocument(); expect(getScientificProjection).not.toHaveBeenCalled();
+  });
+  it("does not call configured but unavailable publications unpublished", async () => {
+    const c = catalog(); c.items = []; c.status = "not_published"; c.unavailable_count = 1;
+    vi.mocked(getScientificCatalog).mockResolvedValue(c); render(<ScientificDiscoveryMatrix />);
+    expect(await screen.findByText(/1 configured publication\(s\) unavailable/)).toBeVisible();
+    expect(screen.queryByText("No scientific release is currently published.")).not.toBeInTheDocument();
+  });
+  it("ignores an unpublished response arriving after a newer catalog", async () => {
+    const old = deferred<ReturnType<typeof catalog>>();
+    vi.mocked(getScientificCatalog).mockReturnValueOnce(old.promise).mockResolvedValueOnce(catalog());
+    render(<ScientificDiscoveryMatrix />);
+    fireEvent.click(screen.getByRole("button", { name: "Refresh catalog" }));
+    await screen.findByRole("option", { name: new RegExp(catalog().items[0].package_id) });
+    await act(async () => old.reject(new ScientificCatalogNotPublished()));
+    expect(screen.getByLabelText("Published scientific version")).not.toBeDisabled();
+    expect(screen.queryByText("No scientific release is currently published.")).not.toBeInTheDocument();
   });
   it("shows exactly one material row, scientific units, scope limits, and all eight selectable fields", async () => {
     await show(); const table = screen.getByRole("table");

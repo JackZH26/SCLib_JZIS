@@ -16,6 +16,9 @@ export const SCIENTIFIC_KEYS = Object.keys(SCIENTIFIC_FIELDS) as ScientificKey[]
 export const SCIENTIFIC_GROUPS = ["stability", "electronic", "pairing", "coherence", "geometry", "competing_order"] as const;
 export const SCIENTIFIC_DISCLAIMER = "Policy-based research priority; empirical calibration pending";
 export const SCIENTIFIC_FAILURE = "Scientific publication could not be verified at this read point. Materials and scores are hidden. Refresh the catalog to try again.";
+export class ScientificCatalogNotPublished extends Error {
+  constructor() { super("No scientific release is currently published."); this.name = "ScientificCatalogNotPublished"; }
+}
 export const SCIENTIFIC_MAX_BYTES = 4 * 1024 * 1024 + 64 * 1024;
 const VERSION = "discovery-scientific-projection/1.0.0";
 const VERSION_V2 = "discovery-scientific-projection/2.0.0";
@@ -450,9 +453,13 @@ async function publicText(path: string, max: number, signal?: AbortSignal) {
       method: "GET", credentials: "omit", cache: "no-store", redirect: "error", signal: controller.signal,
       headers: { Accept: "application/json" },
     });
-    requireValue(response.ok && /^application\/json(?:\s*;|$)/i.test(response.headers.get("content-type") ?? "") && response.body);
+    // Only the catalog's explicit API response can establish unpublished status.
+    // A missing projection, generic 404, or unavailable server remains an error.
+    const missingCatalog = path === "" && response.status === 404;
+    const bodyLimit = missingCatalog ? 1024 : max;
+    requireValue((response.ok || missingCatalog) && /^application\/json(?:\s*;|$)/i.test(response.headers.get("content-type") ?? "") && response.body);
     const length = response.headers.get("content-length");
-    requireValue(length === null || /^\d+$/.test(length) && Number(length) <= max);
+    requireValue(length === null || /^\d+$/.test(length) && Number(length) <= bodyLimit);
     reader = response.body.getReader();
     const decoder = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
     let raw = "", size = 0, parts = 0;
@@ -460,11 +467,23 @@ async function publicText(path: string, max: number, signal?: AbortSignal) {
       const chunk = await reader.read();
       requireValue(!controller.signal.aborted);
       if (chunk.done) break;
-      size += chunk.value.byteLength; requireValue(size <= max && ++parts <= 4096);
+      size += chunk.value.byteLength; requireValue(size <= bodyLimit && ++parts <= 4096);
       raw += decoder.decode(chunk.value, { stream: true });
     }
-    return raw + decoder.decode();
-  } catch { throw new Error(SCIENTIFIC_FAILURE); }
+    raw += decoder.decode();
+    if (missingCatalog) {
+      const { value } = scan(raw, bodyLimit, [], 4, 16);
+      requireValue(record(value) && value.detail === "scientific_discovery_not_published"
+        && Object.keys(value).every(key => ["detail", "error_code", "request_id"].includes(key))
+        && (value.error_code === undefined || value.error_code === "not_found")
+        && (value.request_id === undefined || str(128)(value.request_id)));
+      throw new ScientificCatalogNotPublished();
+    }
+    return raw;
+  } catch (error) {
+    if (error instanceof ScientificCatalogNotPublished) throw error;
+    throw new Error(SCIENTIFIC_FAILURE);
+  }
   finally { controller.abort(); void reader?.cancel().catch(() => {}); clearTimeout(timer); signal?.removeEventListener("abort", abort); }
 }
 export async function getScientificCatalog(signal?: AbortSignal) {
