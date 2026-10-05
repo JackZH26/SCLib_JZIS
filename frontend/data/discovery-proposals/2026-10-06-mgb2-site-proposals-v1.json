@@ -1,0 +1,282 @@
+{
+  "schema_version": "research-proposal-catalog/1.0.0",
+  "version": "2026-10-06-mgb2-site-proposals-v1",
+  "formal_scientific_release": false,
+  "rps_release": false,
+  "human_scientific_review": null,
+  "source": {
+    "provider": "COD",
+    "record_id": "1526507",
+    "revision": 176429,
+    "cif_sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d",
+    "cif_url": "https://www.crystallography.net/cod/1526507.cif@176429",
+    "entry_url": "https://www.crystallography.net/cod/1526507.html",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "license_basis": "The captured COD entry links to CC0; the frozen CIF header states public domain. This records source evidence, not a new rights approval."
+  },
+  "reference": {
+    "formula": "MgB2",
+    "role": "reference",
+    "counts_as_proposal": false
+  },
+  "proposals": [
+    {
+      "id": "site-candidate:310b48ddd8059044786bf23eaf1579f6412563c0207878b91fd3a8d10f7723e7",
+      "formula": "Mg7AlB16",
+      "host_formula": "MgB2",
+      "operation": {
+        "kind": "substitution",
+        "element": "Al",
+        "target": {
+          "id": "image-0-cell-0-0-0",
+          "label": "S1",
+          "source_label": "Mg1",
+          "element": "Mg",
+          "fractional": [
+            0,
+            0,
+            0
+          ]
+        },
+        "repeats": [
+          2,
+          2,
+          2
+        ],
+        "changed_mg_sites": 1,
+        "host_mg_sites": 8,
+        "mg_site_fraction": 0.125
+      },
+      "structure": {
+        "atom_count": 24,
+        "composition": {
+          "Al": 1,
+          "B": 16,
+          "Mg": 7
+        },
+        "cell": {
+          "a": 6.1646,
+          "b": 6.1646,
+          "c": 7.02922,
+          "alpha": 90,
+          "beta": 90,
+          "gamma": 120
+        },
+        "cif_text": "data_sclib_site_candidate\n# Unrelaxed ordered coordinate proposal. No energy, stability or Tc calculation.\n# Source CIF SHA-256: 0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d\n# Source: https://www.crystallography.net/cod/1526507.cif@176429\n# Supercell repeats: 2 2 2\n# Target atom: image-0-cell-0-0-0; original element: Mg\n# Operation: substitution to Al\n# Charge and target temperature/pressure are unspecified. Choose an electronic/magnetic model before calculation.\n# Coordinates derive from source-declared symmetry expansion with 0.001 A periodic merge tolerance.\n# Original source uncertainties remain in the JSON manifest; proposal uncertainties are not estimated.\n_audit_creation_method 'SCLib ordered supercell with one explicit site modification; unrelaxed'\n_cell_length_a 6.1646\n_cell_length_b 6.1646\n_cell_length_c 7.02922\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 120\n_symmetry_space_group_name_H-M 'P 1'\n_symmetry_Int_Tables_number 1\nloop_\n_symmetry_equiv_pos_as_xyz\n'x,y,z'\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\n_atom_site_occupancy\nS1 Al 0 0 0 1\nS2 B 0.16665 0.33335 0.25 1\nS3 B 0.3333 0.16665 0.25 1\nS4 Mg 0 0 0.5 1\nS5 B 0.16665 0.33335 0.75 1\nS6 B 0.3333 0.16665 0.75 1\nS7 Mg 0 0.5 0 1\nS8 B 0.16665 0.83335 0.25 1\nS9 B 0.3333 0.66665 0.25 1\nS10 Mg 0 0.5 0.5 1\nS11 B 0.16665 0.83335 0.75 1\nS12 B 0.3333 0.66665 0.75 1\nS13 Mg 0.5 0 0 1\nS14 B 0.66665 0.33335 0.25 1\nS15 B 0.8333 0.16665 0.25 1\nS16 Mg 0.5 0 0.5 1\nS17 B 0.66665 0.33335 0.75 1\nS18 B 0.8333 0.16665 0.75 1\nS19 Mg 0.5 0.5 0 1\nS20 B 0.66665 0.83335 0.25 1\nS21 B 0.8333 0.66665 0.25 1\nS22 Mg 0.5 0.5 0.5 1\nS23 B 0.66665 0.83335 0.75 1\nS24 B 0.8333 0.66665 0.75 1\n",
+        "cif_sha256": "1317bd3658d1e779cb1284962b4a14d0e17e8f45811d28ff933b297afb5e4f9a"
+      },
+      "status": "unrelaxed",
+      "score": null,
+      "rank": null,
+      "conditions": {
+        "pressure_gpa": null,
+        "temperature_k": null,
+        "charge_state": null,
+        "magnetic_state": null
+      },
+      "formal_approval": null,
+      "physical_axes": {
+        "stability": {
+          "status": "unknown",
+          "value": null
+        },
+        "electronic": {
+          "status": "unknown",
+          "value": null
+        },
+        "pairing": {
+          "status": "unknown",
+          "value": null
+        },
+        "coherence": {
+          "status": "unknown",
+          "value": null
+        },
+        "geometry": {
+          "status": "unknown",
+          "value": null
+        },
+        "competing_order": {
+          "status": "unknown",
+          "value": null
+        }
+      },
+      "next_action": {
+        "kind": "state_method_input_review",
+        "summary": "Review the charge, magnetic state, pressure conditions and calculation methods; prepare a reproducible input before relaxation."
+      }
+    },
+    {
+      "id": "site-candidate:9931ecb3342d1e9ba59533285108ef5f29dfb936d2ee919ea139ae34db3a6138",
+      "formula": "Mg7CaB16",
+      "host_formula": "MgB2",
+      "operation": {
+        "kind": "substitution",
+        "element": "Ca",
+        "target": {
+          "id": "image-0-cell-0-0-0",
+          "label": "S1",
+          "source_label": "Mg1",
+          "element": "Mg",
+          "fractional": [
+            0,
+            0,
+            0
+          ]
+        },
+        "repeats": [
+          2,
+          2,
+          2
+        ],
+        "changed_mg_sites": 1,
+        "host_mg_sites": 8,
+        "mg_site_fraction": 0.125
+      },
+      "structure": {
+        "atom_count": 24,
+        "composition": {
+          "B": 16,
+          "Ca": 1,
+          "Mg": 7
+        },
+        "cell": {
+          "a": 6.1646,
+          "b": 6.1646,
+          "c": 7.02922,
+          "alpha": 90,
+          "beta": 90,
+          "gamma": 120
+        },
+        "cif_text": "data_sclib_site_candidate\n# Unrelaxed ordered coordinate proposal. No energy, stability or Tc calculation.\n# Source CIF SHA-256: 0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d\n# Source: https://www.crystallography.net/cod/1526507.cif@176429\n# Supercell repeats: 2 2 2\n# Target atom: image-0-cell-0-0-0; original element: Mg\n# Operation: substitution to Ca\n# Charge and target temperature/pressure are unspecified. Choose an electronic/magnetic model before calculation.\n# Coordinates derive from source-declared symmetry expansion with 0.001 A periodic merge tolerance.\n# Original source uncertainties remain in the JSON manifest; proposal uncertainties are not estimated.\n_audit_creation_method 'SCLib ordered supercell with one explicit site modification; unrelaxed'\n_cell_length_a 6.1646\n_cell_length_b 6.1646\n_cell_length_c 7.02922\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 120\n_symmetry_space_group_name_H-M 'P 1'\n_symmetry_Int_Tables_number 1\nloop_\n_symmetry_equiv_pos_as_xyz\n'x,y,z'\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\n_atom_site_occupancy\nS1 Ca 0 0 0 1\nS2 B 0.16665 0.33335 0.25 1\nS3 B 0.3333 0.16665 0.25 1\nS4 Mg 0 0 0.5 1\nS5 B 0.16665 0.33335 0.75 1\nS6 B 0.3333 0.16665 0.75 1\nS7 Mg 0 0.5 0 1\nS8 B 0.16665 0.83335 0.25 1\nS9 B 0.3333 0.66665 0.25 1\nS10 Mg 0 0.5 0.5 1\nS11 B 0.16665 0.83335 0.75 1\nS12 B 0.3333 0.66665 0.75 1\nS13 Mg 0.5 0 0 1\nS14 B 0.66665 0.33335 0.25 1\nS15 B 0.8333 0.16665 0.25 1\nS16 Mg 0.5 0 0.5 1\nS17 B 0.66665 0.33335 0.75 1\nS18 B 0.8333 0.16665 0.75 1\nS19 Mg 0.5 0.5 0 1\nS20 B 0.66665 0.83335 0.25 1\nS21 B 0.8333 0.66665 0.25 1\nS22 Mg 0.5 0.5 0.5 1\nS23 B 0.66665 0.83335 0.75 1\nS24 B 0.8333 0.66665 0.75 1\n",
+        "cif_sha256": "02fa239a5863c5ec5e7b59f3710410b6aa238dd358987a8cb8ff31584d1e14da"
+      },
+      "status": "unrelaxed",
+      "score": null,
+      "rank": null,
+      "conditions": {
+        "pressure_gpa": null,
+        "temperature_k": null,
+        "charge_state": null,
+        "magnetic_state": null
+      },
+      "formal_approval": null,
+      "physical_axes": {
+        "stability": {
+          "status": "unknown",
+          "value": null
+        },
+        "electronic": {
+          "status": "unknown",
+          "value": null
+        },
+        "pairing": {
+          "status": "unknown",
+          "value": null
+        },
+        "coherence": {
+          "status": "unknown",
+          "value": null
+        },
+        "geometry": {
+          "status": "unknown",
+          "value": null
+        },
+        "competing_order": {
+          "status": "unknown",
+          "value": null
+        }
+      },
+      "next_action": {
+        "kind": "state_method_input_review",
+        "summary": "Review the charge, magnetic state, pressure conditions and calculation methods; prepare a reproducible input before relaxation."
+      }
+    },
+    {
+      "id": "site-candidate:a24ef8381599e01b7564b07ceb37277c9fc6461b9fc1b6d4074fcd2801f9865e",
+      "formula": "Mg7B16",
+      "host_formula": "MgB2",
+      "operation": {
+        "kind": "vacancy",
+        "element": null,
+        "target": {
+          "id": "image-0-cell-0-0-0",
+          "label": "S1",
+          "source_label": "Mg1",
+          "element": "Mg",
+          "fractional": [
+            0,
+            0,
+            0
+          ]
+        },
+        "repeats": [
+          2,
+          2,
+          2
+        ],
+        "changed_mg_sites": 1,
+        "host_mg_sites": 8,
+        "mg_site_fraction": 0.125
+      },
+      "structure": {
+        "atom_count": 23,
+        "composition": {
+          "B": 16,
+          "Mg": 7
+        },
+        "cell": {
+          "a": 6.1646,
+          "b": 6.1646,
+          "c": 7.02922,
+          "alpha": 90,
+          "beta": 90,
+          "gamma": 120
+        },
+        "cif_text": "data_sclib_site_candidate\n# Unrelaxed ordered coordinate proposal. No energy, stability or Tc calculation.\n# Source CIF SHA-256: 0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d\n# Source: https://www.crystallography.net/cod/1526507.cif@176429\n# Supercell repeats: 2 2 2\n# Target atom: image-0-cell-0-0-0; original element: Mg\n# Operation: vacancy\n# Charge and target temperature/pressure are unspecified. Choose an electronic/magnetic model before calculation.\n# Coordinates derive from source-declared symmetry expansion with 0.001 A periodic merge tolerance.\n# Original source uncertainties remain in the JSON manifest; proposal uncertainties are not estimated.\n_audit_creation_method 'SCLib ordered supercell with one explicit site modification; unrelaxed'\n_cell_length_a 6.1646\n_cell_length_b 6.1646\n_cell_length_c 7.02922\n_cell_angle_alpha 90\n_cell_angle_beta 90\n_cell_angle_gamma 120\n_symmetry_space_group_name_H-M 'P 1'\n_symmetry_Int_Tables_number 1\nloop_\n_symmetry_equiv_pos_as_xyz\n'x,y,z'\nloop_\n_atom_site_label\n_atom_site_type_symbol\n_atom_site_fract_x\n_atom_site_fract_y\n_atom_site_fract_z\n_atom_site_occupancy\nS2 B 0.16665 0.33335 0.25 1\nS3 B 0.3333 0.16665 0.25 1\nS4 Mg 0 0 0.5 1\nS5 B 0.16665 0.33335 0.75 1\nS6 B 0.3333 0.16665 0.75 1\nS7 Mg 0 0.5 0 1\nS8 B 0.16665 0.83335 0.25 1\nS9 B 0.3333 0.66665 0.25 1\nS10 Mg 0 0.5 0.5 1\nS11 B 0.16665 0.83335 0.75 1\nS12 B 0.3333 0.66665 0.75 1\nS13 Mg 0.5 0 0 1\nS14 B 0.66665 0.33335 0.25 1\nS15 B 0.8333 0.16665 0.25 1\nS16 Mg 0.5 0 0.5 1\nS17 B 0.66665 0.33335 0.75 1\nS18 B 0.8333 0.16665 0.75 1\nS19 Mg 0.5 0.5 0 1\nS20 B 0.66665 0.83335 0.25 1\nS21 B 0.8333 0.66665 0.25 1\nS22 Mg 0.5 0.5 0.5 1\nS23 B 0.66665 0.83335 0.75 1\nS24 B 0.8333 0.66665 0.75 1\n",
+        "cif_sha256": "29cedc2e7b0a93ec1d09f818a8bc0d41dead3b94d0a08a774f938997781da4a0"
+      },
+      "status": "unrelaxed",
+      "score": null,
+      "rank": null,
+      "conditions": {
+        "pressure_gpa": null,
+        "temperature_k": null,
+        "charge_state": null,
+        "magnetic_state": null
+      },
+      "formal_approval": null,
+      "physical_axes": {
+        "stability": {
+          "status": "unknown",
+          "value": null
+        },
+        "electronic": {
+          "status": "unknown",
+          "value": null
+        },
+        "pairing": {
+          "status": "unknown",
+          "value": null
+        },
+        "coherence": {
+          "status": "unknown",
+          "value": null
+        },
+        "geometry": {
+          "status": "unknown",
+          "value": null
+        },
+        "competing_order": {
+          "status": "unknown",
+          "value": null
+        }
+      },
+      "next_action": {
+        "kind": "state_method_input_review",
+        "summary": "Review the charge, magnetic state, pressure conditions and calculation methods; prepare a reproducible input before relaxation."
+      }
+    }
+  ]
+}

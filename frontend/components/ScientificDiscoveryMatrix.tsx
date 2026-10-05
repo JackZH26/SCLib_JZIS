@@ -190,7 +190,7 @@ export function MaterialDetails({ row: r, close, prepared = false }: { row: Scie
   </section>;
 }
 
-export function ScientificDiscoveryMatrix() {
+export function ScientificDiscoveryMatrix({ folded = false }: { folded?: boolean }) {
   const [catalog, setCatalog] = useState<ScientificCatalog | null>(null);
   const [selected, setSelected] = useState("");
   const [data, setData] = useState<ScientificReceipt | null>(null);
@@ -243,7 +243,7 @@ export function ScientificDiscoveryMatrix() {
   const fields = SCIENTIFIC_KEYS.filter(k => group === "all" || SCIENTIFIC_FIELDS[k].group === group);
   const active = visible.find(r => r.material.row_id === expanded);
   const noPublishedRelease = unpublished || catalog?.status === "not_published" && catalog.unavailable_count === 0;
-  return <><section id="discovery-evidence" aria-labelledby="scientific-matrix-heading" className="scroll-mt-24 space-y-3 rounded-xl border border-sage-border bg-white p-4 sm:p-5">
+  const matrix = <section id="discovery-evidence" aria-labelledby="scientific-matrix-heading" className="scroll-mt-24 space-y-3 rounded-xl border border-sage-border bg-white p-4 sm:p-5">
     <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2"><h2 id="scientific-matrix-heading" className="text-xl font-semibold">Candidate materials</h2>
       <details className="text-sm open:order-last open:basis-full"><summary className="cursor-pointer font-medium text-accent">Ranking and evidence</summary>
         <p className="mt-2 text-sm leading-6 text-sage-muted">{SCIENTIFIC_DISCLAIMER}. RPS 1,000–10,000 is research priority, not superconductivity probability. Each row keeps the publication&apos;s explicitly selected representative state and action, even if an alternative action has a higher score. Display order uses that representative&apos;s published score, descending, within this campaign, budget, policy and release. Unranked materials follow scored materials; ties retain the publication order. Original assessment ranks, values and weights are unchanged. <a href="https://github.com/JackZH26/SCLib_JZIS/issues/78" className="underline">Evaluation and calibration limits</a>.</p>
@@ -334,5 +334,9 @@ export function ScientificDiscoveryMatrix() {
         </table>
       </div>}
     </>}
-  </section><DiscoveryDisclosure id="discovery-condition-design" summary={active ? `Research plan for ${active.assessment.formula}` : "Outline a research plan"}><DiscoveryConditionWorkspace row={active ?? null} receipt={data ?? null} /></DiscoveryDisclosure></>;
+  </section>;
+  return <>
+    {folded ? <DiscoveryDisclosure id="discovery-scientific-companions" summary="Scientific property companions">{matrix}</DiscoveryDisclosure> : matrix}
+    <DiscoveryDisclosure id="discovery-condition-design" summary={active ? `Research plan for ${active.assessment.formula}` : "Outline a research plan"}><DiscoveryConditionWorkspace row={active ?? null} receipt={data ?? null} /></DiscoveryDisclosure>
+  </>;
 }

@@ -178,7 +178,7 @@ export function ResearchPriorityBoard() {
               {PHYSICAL_DIMENSIONS.map(([key, label]) => <th key={key} scope="col" className="p-3">{label}</th>)}
               <th scope="col" className="p-3">Assessed weight</th>
             </tr></thead>
-            <tbody>{visible.map(row => <PriorityRow key={`${catalog!.catalog_revision}:${release!.manifest_sha256}:${group}:${row.id}`} row={row} release={release!} />)}</tbody>
+            <tbody>{visible.map(row => <ResearchPriorityRow key={`${catalog!.catalog_revision}:${release!.manifest_sha256}:${group}:${row.id}`} row={row} release={release!} />)}</tbody>
           </table>
         </div>
         {visible.length === 0 && <p className="text-sm text-sage-muted">No assessments in this group in this release.</p>}
@@ -190,7 +190,7 @@ export function ResearchPriorityBoard() {
   );
 }
 
-function PriorityRow({ row, release }: { row: RpsRow; release: RpsRelease }) {
+export function ResearchPriorityRow({ row, release }: { row: RpsRow; release: RpsRelease }) {
   const [open, setOpen] = useState(false);
   const [detail, setDetail] = useState<RpsDetail | null>(null);
   const [error, setError] = useState("");
