@@ -1,0 +1,798 @@
+{
+  "version": "materials-nb-cvs-pressure/1.0.0",
+  "prepared_on": "2026-10-05",
+  "source": {
+    "paper_id": "arxiv:2411.18744",
+    "edition": "v1",
+    "html_url": "https://arxiv.org/html/2411.18744v1",
+    "pdf_url": "https://arxiv.org/pdf/2411.18744v1",
+    "html_sha256": "b5f1bc07212429562d977e9def108dbbc075e86977ab6d54e5ea597cd3bacf53",
+    "pdf_sha256": "bddff2c5fbac870cbebdadec91d4fc14687081b97cc72aa10f80834eb2c94f99",
+    "captured_at_utc": "2026-10-05T09:35:45.606574+00:00",
+    "pdf_table_page_1_based": 8,
+    "html_table_label": "Table 1",
+    "pdf_table_label": "Table I",
+    "table_locator": {
+      "element_id": "S3.T1.2",
+      "html_char_start": 131390,
+      "html_char_end": 137549,
+      "sha256": "12d538849c533b5934030734c52f6c78ec51af69c5f5da9577f2378c97146dd2"
+    },
+    "caption_locator": {
+      "element_id": "S3.T1",
+      "html_char_start": 137550,
+      "html_char_end": 140041,
+      "sha256": "a2bed8286efd17329b4b5dd243946520c394000ca0b318143930e17a790f979a"
+    },
+    "character_indexing": "zero-based Unicode code points in original HTML; end exclusive",
+    "publisher_and_retained_ingestion_equivalence": "unestablished",
+    "current_publication_status": "not_checked"
+  },
+  "subject": {
+    "source_alias": "Nb0.07-CVS",
+    "source_formula": "Cs(V0.93Nb0.07)3Sb5",
+    "physical_sample_id": null,
+    "catalogue_result_association": "unestablished",
+    "sample_type_basis": "Paper-wide single-crystal default unless otherwise stated; no unique specimen identifier for Table 1.",
+    "composition_locator": {
+      "element_id": "S1.p3.1",
+      "html_char_start": 43573,
+      "html_char_end": 46924,
+      "sha256": "4f6f83e65ba83f67422b0b1152f5da5c81e60d19dcb38b17ca6e96c7970890c8"
+    },
+    "sample_type_locator": {
+      "element_id": "S2.p1.1",
+      "html_char_start": 50811,
+      "html_char_end": 53494,
+      "sha256": "a29c5a7063ef5d99bad5f92bad1cd6d119f83d186b620ea8f45e37c2afeb6140"
+    }
+  },
+  "method": {
+    "origin": "fit_of_experimental_data",
+    "probe": "Transverse-field μSR",
+    "applied_field": {
+      "raw_value": "10",
+      "raw_unit": "mT"
+    },
+    "tc_role": "Parameter in the superconducting gap-structure analysis; no resistive onset/midpoint/zero criterion assigned.",
+    "ac_comparison": "The separate AC susceptibility data were collected under zero-field conditions.",
+    "conditions_locator": {
+      "element_id": "S3.p4.1",
+      "html_char_start": 109625,
+      "html_char_end": 118640,
+      "sha256": "610bc5bd13ae8625bf68104cd05eaf3a81fc35a2c03898478e9fc8225866bb96"
+    },
+    "figure_locator": {
+      "element_id": "S3.F5",
+      "html_char_start": 106724,
+      "html_char_end": 109590,
+      "sha256": "abb5944b4117a8d43d5fb313fdc34c29de6ffe66d2f7e947ed7367f5565b45c1"
+    },
+    "temperature_domain": "Temperature-dependent fits; tabulated λ⁻² has T = 0 and λ retains the printed T > 0 label.",
+    "pressure_reference": "Printed applied hydrostatic pressure columns; no absolute/gauge or numerical ambient-pressure conversion supplied.",
+    "uncertainty_semantics": "Parenthetical notation retained without statistical reinterpretation or conversion."
+  },
+  "pressure_columns": [
+    {
+      "raw_value": "0",
+      "raw_unit": "GPa",
+      "unit_basis": "table_header",
+      "value_locator": {
+        "element_id": "S3.T1.2.1.2",
+        "html_char_start": 131726,
+        "html_char_end": 131727,
+        "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+      },
+      "unit_locator": {
+        "element_id": "S3.T1.2.1.1",
+        "html_char_start": 131543,
+        "html_char_end": 131659,
+        "sha256": "943195c4c388f4f35b7a63e7abeba0ed726dab45bd191e0f7f29bb51499f77c1"
+      },
+      "model": "Single nodeless s-wave",
+      "model_locator": {
+        "element_id": "S3.T1",
+        "html_char_start": 137550,
+        "html_char_end": 140041,
+        "sha256": "a2bed8286efd17329b4b5dd243946520c394000ca0b318143930e17a790f979a"
+      }
+    },
+    {
+      "raw_value": "0.4",
+      "raw_unit": "GPa",
+      "unit_basis": "table_header",
+      "value_locator": {
+        "element_id": "S3.T1.2.1.3",
+        "html_char_start": 131799,
+        "html_char_end": 131802,
+        "sha256": "f3e360d89952f40d3b79d0b07dd0b94f1cbf9017cba5d2a5f8128e4146d6e3c1"
+      },
+      "unit_locator": {
+        "element_id": "S3.T1.2.1.1",
+        "html_char_start": 131543,
+        "html_char_end": 131659,
+        "sha256": "943195c4c388f4f35b7a63e7abeba0ed726dab45bd191e0f7f29bb51499f77c1"
+      },
+      "model": "Single nodeless s-wave",
+      "model_locator": {
+        "element_id": "S3.T1",
+        "html_char_start": 137550,
+        "html_char_end": 140041,
+        "sha256": "a2bed8286efd17329b4b5dd243946520c394000ca0b318143930e17a790f979a"
+      }
+    },
+    {
+      "raw_value": "0.8",
+      "raw_unit": "GPa",
+      "unit_basis": "table_header",
+      "value_locator": {
+        "element_id": "S3.T1.2.1.4",
+        "html_char_start": 131874,
+        "html_char_end": 131877,
+        "sha256": "1e9d7c27c8bbc8ddf0055c93e064a62fa995d177fee28cc8fa949bc8a4db06f4"
+      },
+      "unit_locator": {
+        "element_id": "S3.T1.2.1.1",
+        "html_char_start": 131543,
+        "html_char_end": 131659,
+        "sha256": "943195c4c388f4f35b7a63e7abeba0ed726dab45bd191e0f7f29bb51499f77c1"
+      },
+      "model": "Double nodeless s-wave",
+      "model_locator": {
+        "element_id": "S3.T1",
+        "html_char_start": 137550,
+        "html_char_end": 140041,
+        "sha256": "a2bed8286efd17329b4b5dd243946520c394000ca0b318143930e17a790f979a"
+      }
+    },
+    {
+      "raw_value": "1.2",
+      "raw_unit": "GPa",
+      "unit_basis": "table_header",
+      "value_locator": {
+        "element_id": "S3.T1.2.1.5",
+        "html_char_start": 131949,
+        "html_char_end": 131952,
+        "sha256": "77ac319bfe1979e2d799d9e6987e65feb54f61511c03552ebae990826c208590"
+      },
+      "unit_locator": {
+        "element_id": "S3.T1.2.1.1",
+        "html_char_start": 131543,
+        "html_char_end": 131659,
+        "sha256": "943195c4c388f4f35b7a63e7abeba0ed726dab45bd191e0f7f29bb51499f77c1"
+      },
+      "model": "Single nodeless s-wave",
+      "model_locator": {
+        "element_id": "S3.T1",
+        "html_char_start": 137550,
+        "html_char_end": 140041,
+        "sha256": "a2bed8286efd17329b4b5dd243946520c394000ca0b318143930e17a790f979a"
+      }
+    }
+  ],
+  "fields": [
+    {
+      "id": "inverse_squared_penetration_depth",
+      "symbol": "λ⁻²(T = 0)",
+      "label": "Inverse squared London penetration depth",
+      "display_unit": "μm⁻²",
+      "unit_basis": "table_row_label",
+      "source_row_index_1_based": 1,
+      "row_label_locator": {
+        "element_id": "S3.T1.2.2.1",
+        "html_char_start": 131998,
+        "html_char_end": 132767,
+        "sha256": "b530090cb08a515f78aeee59b7948e4414cca4999a2552fb56c526eddcf8bb61"
+      },
+      "row_label_math_alt_text": [
+        "\\lambda^{-2}(T=0)(\\mu"
+      ],
+      "role": "source_reported_fit_parameter",
+      "cells": [
+        {
+          "pressure_column_index_0_based": 0,
+          "raw_value": "6.9(3)",
+          "raw_uncertainty": "(3)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.2.2",
+            "html_char_start": 132834,
+            "html_char_end": 132840,
+            "sha256": "587f8af34385de11a52788076e2296ab3d648031bdb11f8b2ff2a3df28d7516a"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 1,
+          "raw_value": "5.7(3)",
+          "raw_uncertainty": "(3)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.2.3",
+            "html_char_start": 132912,
+            "html_char_end": 132918,
+            "sha256": "026c0d981725983f106f34fad47c20ed00cf95ef21f0e2662e523d49fab8dadc"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 2,
+          "raw_value": "10.0(4)",
+          "raw_uncertainty": "(4)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.2.4",
+            "html_char_start": 132990,
+            "html_char_end": 132997,
+            "sha256": "4a06b373d2a3a9fe7f3b0ff203e3b7edde4f2bf59c3a0b59868b2a52db98e29e"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 3,
+          "raw_value": "12.5(1)",
+          "raw_uncertainty": "(1)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.2.5",
+            "html_char_start": 133069,
+            "html_char_end": 133076,
+            "sha256": "07fec4f55a7bf165b5a52e7e62b4f60b34412d76e13acb53bc4fce1545f52ef4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "london_penetration_depth",
+      "symbol": "λ(T > 0)",
+      "label": "London penetration depth",
+      "display_unit": "nm",
+      "unit_basis": "table_row_label",
+      "source_row_index_1_based": 2,
+      "row_label_locator": {
+        "element_id": "S3.T1.2.3.1",
+        "html_char_start": 133122,
+        "html_char_end": 133559,
+        "sha256": "b6fd15729396dcc20a4e0e1d4477b64fabaf5f5b2f94b493b3e5849c5fbde98c"
+      },
+      "row_label_math_alt_text": [
+        "\\lambda(T>0)"
+      ],
+      "role": "source_reported_fit_parameter",
+      "cells": [
+        {
+          "pressure_column_index_0_based": 0,
+          "raw_value": "381",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.3.2",
+            "html_char_start": 133613,
+            "html_char_end": 133616,
+            "sha256": "392a52e4f77c40bf3321dc2feac356fac2a906a80c961748170af4ce2bce1e6a"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 1,
+          "raw_value": "419",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.3.3",
+            "html_char_start": 133675,
+            "html_char_end": 133678,
+            "sha256": "cc6aed2709b80e146bebc151f1cf1dec5e323b58148535a433529155030e3a52"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 2,
+          "raw_value": "315",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.3.4",
+            "html_char_start": 133737,
+            "html_char_end": 133740,
+            "sha256": "377adeb4cd4096adc7ca64b533938cffc6294a9b3534f883b2336a26252cda9a"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 3,
+          "raw_value": "283",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.3.5",
+            "html_char_start": 133799,
+            "html_char_end": 133802,
+            "sha256": "e0850a775c17a87060c0cf6efad1020e0cbef5a44ba942bef6add5776598de53"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase_fraction",
+      "symbol": "ω",
+      "label": "Phase fraction in the gap fit",
+      "display_unit": null,
+      "unit_basis": "caption_definition_no_printed_unit",
+      "source_row_index_1_based": 3,
+      "row_label_locator": {
+        "element_id": "S3.T1.2.4.1",
+        "html_char_start": 133848,
+        "html_char_end": 134126,
+        "sha256": "f781d44fe1933e3e5a398f4495301d952cf5ce70d947add67a4ddd6f525ebfb3"
+      },
+      "row_label_math_alt_text": [
+        "\\omega"
+      ],
+      "role": "source_reported_fit_parameter",
+      "cells": [
+        {
+          "pressure_column_index_0_based": 0,
+          "raw_value": "1",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.4.2",
+            "html_char_start": 134180,
+            "html_char_end": 134181,
+            "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 1,
+          "raw_value": "1",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.4.3",
+            "html_char_start": 134240,
+            "html_char_end": 134241,
+            "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 2,
+          "raw_value": "0.73(4)",
+          "raw_uncertainty": "(4)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.4.4",
+            "html_char_start": 134300,
+            "html_char_end": 134307,
+            "sha256": "4d09fab077b1d4af57fe315e4bb28993f5ef198013bcb11f0b02e129648eb772"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 3,
+          "raw_value": "1",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.4.5",
+            "html_char_start": 134366,
+            "html_char_end": 134367,
+            "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fitted_tc",
+      "symbol": "Tc",
+      "label": "Transition temperature from gap-structure fit",
+      "display_unit": "K",
+      "unit_basis": "table_row_label",
+      "source_row_index_1_based": 4,
+      "row_label_locator": {
+        "element_id": "S3.T1.2.5.1",
+        "html_char_start": 134413,
+        "html_char_end": 134734,
+        "sha256": "2894cba12cdd90d44d6aec7b25fee9d62a9c39799d26b00730369077692306ae"
+      },
+      "row_label_math_alt_text": [
+        "T_{\\mathrm{C}}"
+      ],
+      "role": "source_reported_fit_parameter",
+      "cells": [
+        {
+          "pressure_column_index_0_based": 0,
+          "raw_value": "3.000(6)",
+          "raw_uncertainty": "(6)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.5.2",
+            "html_char_start": 134788,
+            "html_char_end": 134796,
+            "sha256": "155837d7464a459eadfdb475989bac67e65c9a4c167ef80d7bf1b4e6597b55e4"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 1,
+          "raw_value": "3.25(1)",
+          "raw_uncertainty": "(1)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.5.3",
+            "html_char_start": 134855,
+            "html_char_end": 134862,
+            "sha256": "a8db1eeb1274fe88a8a3f7496cac32f3b2fa7e7f269166ba1ebc15851e71fb77"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 2,
+          "raw_value": "6.67(7)",
+          "raw_uncertainty": "(7)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.5.4",
+            "html_char_start": 134921,
+            "html_char_end": 134928,
+            "sha256": "1e7bcf3cfefb28cde7fbd10dbd51d5ceab3654ed7e06c5ddcca3ffb8c773bd3e"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 3,
+          "raw_value": "6.94(2)",
+          "raw_uncertainty": "(2)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.5.5",
+            "html_char_start": 134987,
+            "html_char_end": 134994,
+            "sha256": "111515749ce699f51a25d4b3deeecb8356ab65b448be8acfefb309d74b8b3e36"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gap_1",
+      "symbol": "Δ₁",
+      "label": "First gap parameter",
+      "display_unit": "meV",
+      "unit_basis": "table_row_label",
+      "source_row_index_1_based": 5,
+      "row_label_locator": {
+        "element_id": "S3.T1.2.6.1",
+        "html_char_start": 135040,
+        "html_char_end": 135376,
+        "sha256": "63ba6307c4a6bb01d345c827fb30d6f6c1db3d965f9114ea022b16d89571152c"
+      },
+      "row_label_math_alt_text": [
+        "\\Delta_{1}"
+      ],
+      "role": "source_reported_fit_parameter",
+      "cells": [
+        {
+          "pressure_column_index_0_based": 0,
+          "raw_value": "0.54(9)",
+          "raw_uncertainty": "(9)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.6.2",
+            "html_char_start": 135430,
+            "html_char_end": 135437,
+            "sha256": "1bb18da910d1a11b4916d22b7044623f1834af9f80d23770e6f171197b2a9d50"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 1,
+          "raw_value": "0.47(7)",
+          "raw_uncertainty": "(7)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.6.3",
+            "html_char_start": 135496,
+            "html_char_end": 135503,
+            "sha256": "50b095da3e330a720e608116b8408f41020717e405635d29a516065fe6793232"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 2,
+          "raw_value": "0.65(5)",
+          "raw_uncertainty": "(5)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.6.4",
+            "html_char_start": 135562,
+            "html_char_end": 135569,
+            "sha256": "b5d0730341502079d3bc62af9036d1d7489d7025147d07aa78b2c01aa57e0b36"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 3,
+          "raw_value": "1.56(4)",
+          "raw_uncertainty": "(4)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.6.5",
+            "html_char_start": 135628,
+            "html_char_end": 135635,
+            "sha256": "c7acb0f7152db0f7a1f3fe3c732bc868ab873c0a77e9fc96aa18c838e9f8ed2d"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gap_2",
+      "symbol": "Δ₂",
+      "label": "Second gap parameter",
+      "display_unit": "meV",
+      "unit_basis": "table_row_label",
+      "source_row_index_1_based": 6,
+      "row_label_locator": {
+        "element_id": "S3.T1.2.7.1",
+        "html_char_start": 135681,
+        "html_char_end": 136017,
+        "sha256": "028d2a6fad45311ada939110fa68f4f5d74bab4363e0ceb35670ff8fbf680aa3"
+      },
+      "row_label_math_alt_text": [
+        "\\Delta_{2}"
+      ],
+      "role": "source_reported_fit_parameter",
+      "cells": [
+        {
+          "pressure_column_index_0_based": 0,
+          "raw_value": "-",
+          "raw_uncertainty": null,
+          "state": "source_dash",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.7.2",
+            "html_char_start": 136071,
+            "html_char_end": 136072,
+            "sha256": "3973e022e93220f9212c18d0d0c543ae7c309e46640da93a4a0314de999f5112"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 1,
+          "raw_value": "-",
+          "raw_uncertainty": null,
+          "state": "source_dash",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.7.3",
+            "html_char_start": 136131,
+            "html_char_end": 136132,
+            "sha256": "3973e022e93220f9212c18d0d0c543ae7c309e46640da93a4a0314de999f5112"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 2,
+          "raw_value": "3.5(9)",
+          "raw_uncertainty": "(9)",
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.7.4",
+            "html_char_start": 136191,
+            "html_char_end": 136197,
+            "sha256": "03ea756366913956f21fc694033e81dfca0e67b7062dbc9baaec90803db448aa"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 3,
+          "raw_value": "-",
+          "raw_uncertainty": null,
+          "state": "source_dash",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.7.5",
+            "html_char_start": 136256,
+            "html_char_end": 136257,
+            "sha256": "3973e022e93220f9212c18d0d0c543ae7c309e46640da93a4a0314de999f5112"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chi_squared",
+      "symbol": "χ²",
+      "label": "Fit statistic",
+      "display_unit": null,
+      "unit_basis": "caption_definition_no_printed_unit",
+      "source_row_index_1_based": 7,
+      "row_label_locator": {
+        "element_id": "S3.T1.2.8.1",
+        "html_char_start": 136303,
+        "html_char_end": 136608,
+        "sha256": "d3b6712f78dc9a3f8df589731134585414ff1febda385bd9ac2d58e2b54075cf"
+      },
+      "row_label_math_alt_text": [
+        "\\chi^{2}"
+      ],
+      "role": "source_reported_fit_statistic",
+      "cells": [
+        {
+          "pressure_column_index_0_based": 0,
+          "raw_value": "4.5",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.8.2",
+            "html_char_start": 136662,
+            "html_char_end": 136665,
+            "sha256": "32209ccbf8a8e509b9027698cc173343a2695e8ecdbe899bf5335a3100c956fc"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 1,
+          "raw_value": "2.6",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.8.3",
+            "html_char_start": 136724,
+            "html_char_end": 136727,
+            "sha256": "af3266e6d0f3bba206c2e954c21ff72182e440557702a3f79f4c6bdfb577fed5"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 2,
+          "raw_value": "15.4",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.8.4",
+            "html_char_start": 136786,
+            "html_char_end": 136790,
+            "sha256": "b0774e3a70a678d0f08ccf2ca4c3dcfc3ef576b938236bb4e7951682a80b3086"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 3,
+          "raw_value": "34.8",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.8.5",
+            "html_char_start": 136849,
+            "html_char_end": 136853,
+            "sha256": "7031a53b4500beb6f5bed5ca6087dcbb3940264c8ab9d4ad97f57b76053d95aa"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chi_squared_per_ndf",
+      "symbol": "χ²/NDF",
+      "label": "Fit statistic per degree of freedom",
+      "display_unit": null,
+      "unit_basis": "caption_definition_no_printed_unit",
+      "source_row_index_1_based": 8,
+      "row_label_locator": {
+        "element_id": "S3.T1.2.9.1",
+        "html_char_start": 136899,
+        "html_char_end": 137221,
+        "sha256": "970b50bd48b92686b1e4c05c01ee00f46aab1ef9f1a07abf9974fbecf1789daa"
+      },
+      "row_label_math_alt_text": [
+        "\\chi^{2}"
+      ],
+      "role": "source_reported_fit_statistic",
+      "cells": [
+        {
+          "pressure_column_index_0_based": 0,
+          "raw_value": "0.346",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.9.2",
+            "html_char_start": 137288,
+            "html_char_end": 137293,
+            "sha256": "042c72862ea4dc49ef12d99bd0f5bf2a40e438b69a0ff0c354ead3db498dd3a3"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 1,
+          "raw_value": "0.153",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.9.3",
+            "html_char_start": 137365,
+            "html_char_end": 137370,
+            "sha256": "e5bd4a5501988ec7780030f8f2bf7328c3ad14b8780fb2b5a65986c3fe29c9ae"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 2,
+          "raw_value": "1.1",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.9.4",
+            "html_char_start": 137442,
+            "html_char_end": 137445,
+            "sha256": "b05e244762b1e472be89a93800cc3ee326743cecb55984bf12813addb8de66d0"
+          }
+        },
+        {
+          "pressure_column_index_0_based": 3,
+          "raw_value": "1.74",
+          "raw_uncertainty": null,
+          "state": "source_literal",
+          "normalized_value": null,
+          "value_locator": {
+            "element_id": "S3.T1.2.9.5",
+            "html_char_start": 137517,
+            "html_char_end": 137521,
+            "sha256": "65d420e27a106fec4e7dca18bee58a829fd08be56202fdabe0514f7a0a80b8b6"
+          }
+        }
+      ]
+    }
+  ],
+  "comparison": {
+    "legacy_snapshot": "materials-source-observations-2026-10-02.json",
+    "already_displayed_cells": [
+      "S3.T1.2.3.2",
+      "S3.T1.2.5.2",
+      "S3.T1.2.6.2"
+    ],
+    "ambient_prose_locator": {
+      "element_id": "S3.p3.1",
+      "html_char_start": 99571,
+      "html_char_end": 106716,
+      "sha256": "30c1908cdcdb85a811e289c4cb13f638b29903fb19caf5544e0c64657b2e0ba6"
+    },
+    "ambient_prose_values": {
+      "tc": "4.70(3) K",
+      "lambda": "316(5) nm",
+      "gap": "0.590(5) meV"
+    },
+    "relationship_to_table": "Separate reported fits; physical sample/dataset correspondence remains unresolved."
+  },
+  "counts": {
+    "parameter_rows": 8,
+    "pressure_columns": 4,
+    "table_cells": 32,
+    "numeric_cells": 29,
+    "source_dashes": 3,
+    "property_parameter_numeric_cells": 21,
+    "fit_statistic_numeric_cells": 8,
+    "previously_displayed_numeric_cells": 3,
+    "additional_property_parameters": 18,
+    "additional_numeric_cells": 26,
+    "independent_experiments": null,
+    "formal_property_promotions": 0
+  },
+  "scope": {
+    "normalization": "none",
+    "lambda_is_epc_coupling": false,
+    "omega_is_superconducting_volume_fraction": false,
+    "dash_means_zero_or_measured_absence": false,
+    "fit_statistics_are_acceptance_scores": false
+  },
+  "authority": {
+    "independent_human_review": false,
+    "scientific_acceptance": false,
+    "ml_training_approved": false,
+    "database_changed": false
+  }
+}

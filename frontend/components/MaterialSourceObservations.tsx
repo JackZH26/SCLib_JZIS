@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import Link from "next/link";
 import {
   downloadSourceObservationWindow, groupSourceObservations, observationLabel, observationValue,
   sourceObservationUrl,
@@ -148,6 +149,7 @@ export function MaterialSourceObservations({ window, defaultExpanded = false }: 
         {groups.map(group => { const shared = sharedConditions(group.entries); return <section className="min-w-0 border-t border-sage-border pt-4" key={group.id} aria-labelledby={`${headingId}-${group.id}`}>
           <h3 id={`${headingId}-${group.id}`} className="text-base font-semibold">{group.label}</h3>
           <p className="mt-2 max-w-3xl text-xs leading-5 text-sage-muted">{groupScope(group.entries[0])}</p>
+          {record(group.entries[0].source_window).id === "pressure_series_table_zero_column" && <p className="mt-2 text-sm"><Link className="site-text-link" href="/materials/source-observations/nb-cvs-pressure">Compare all four pressure columns and fit statistics</Link></p>}
           <ConditionList entries={shared} />
           <GroupProvenance entry={group.entries[0]} />
           <ol className="mt-3 divide-y divide-sage-border">{group.entries.map(entry => <Observation key={entry.id} entry={entry} shared={shared} />)}</ol>

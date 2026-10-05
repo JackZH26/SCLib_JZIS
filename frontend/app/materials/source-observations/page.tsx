@@ -24,6 +24,7 @@ export default function MaterialsSourceObservationsPage() {
     <p className="max-w-3xl text-sm"><Link className="site-text-link" href="/materials/source-observations/paper-contexts">Paper contexts and open questions</Link>: sample-qualified methods and unresolved claims from additional captured studies.</p>
     <p className="max-w-3xl text-sm"><Link className="site-text-link" href="/materials/source-observations/yin3-transitions">YIn₃ transitions by sample and method</Link>: compare criterion-specific temperatures and the authors’ qualified interpretation.</p>
     <p className="max-w-3xl text-sm"><Link className="site-text-link" href="/materials/source-observations/nbsctizr-annealing">NbScTiZr annealing comparison</Link>: compare source-specific transition criteria, phase tables and fitted parameters.</p>
+    <p className="max-w-3xl text-sm"><Link className="site-text-link" href="/materials/source-observations/nb-cvs-pressure">Nb0.07-CVS pressure-series fits</Link>: compare all four pressure columns, gap parameters and fit statistics.</p>
     {window ? <MaterialSourceObservations window={window} defaultExpanded /> : <p className="text-sm text-sage-muted" role="status">Captured source observations are unavailable. The catalogue remains available.</p>}
   </main>;
 }
