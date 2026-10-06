@@ -460,6 +460,11 @@ class SecurityWorkflowTests(unittest.TestCase):
         self.assertEqual(
             set(fingerprints),
             {
+                # Reviewed literal API-key placeholder in the historical README.
+                (
+                    "f7cc41465ec17948652556111a7030c0cb8e7c95:"
+                    "README.md:curl-auth-header:221"
+                ),
                 (
                     "d60f0db35de7e46d3f6e1a6907886b134feacef1:"
                     "README.md:curl-auth-header:133"
