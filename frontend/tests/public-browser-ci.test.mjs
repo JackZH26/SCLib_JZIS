@@ -29,6 +29,14 @@ test("standalone trace destinations contain both copied source and real linked d
     }
     assert.deepEqual(readFileSync(path.join(original, "next.config.js")), originalBytes);
     assert.notEqual(path.join(isolated, ".next"), path.join(original, ".next"));
+    // Resolve the loader's actual catalogue import in the owned copy. A local
+    // build can succeed while the isolated production browser build lacks data.
+    const loader = readFileSync(path.join(isolated, "lib/discovery-proposals.ts"), "utf8");
+    const catalogueImport = loader.match(/^import catalog from "(@\/[^"\n]+\.json)";$/m);
+    assert.ok(catalogueImport, "The proposal loader must retain its static catalogue dependency");
+    const cataloguePath = catalogueImport[1].slice(2);
+    assert.deepEqual(readFileSync(path.join(isolated, cataloguePath)),
+      readFileSync(path.join(original, cataloguePath)), "The isolated build must retain exact public catalogue bytes");
     const project = ts.readConfigFile(path.join(original, "tsconfig.json"), ts.sys.readFile);
     assert.equal(project.error, undefined);
     const parsed = ts.parseJsonConfigFileContent(project.config, ts.sys, original);

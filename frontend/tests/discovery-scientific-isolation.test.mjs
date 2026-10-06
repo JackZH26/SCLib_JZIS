@@ -3,15 +3,22 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 const read = path => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
-test("scientific matrix is the ordinary primary surface, with separate original and legacy views", () => {
+test("published research candidates lead, with separate optional scientific and legacy views", () => {
   const page = read("app/discovery/page.tsx");
-  assert.ok(page.indexOf("<ScientificDiscoveryMatrix />") < page.indexOf("<ResearchPriorityBoard />"));
-  assert.match(page, /Original RPS assessment releases · action-level view/);
+  assert.match(page, /<DiscoveryTabs candidates=\{/);
+  const researchSlot = page.indexOf("research={");
+  assert.ok(page.indexOf("<ResearchCandidateBoard compactEmpty />") < researchSlot);
+  for (const content of ["<ScientificDiscoveryMatrix folded />", 'id="discovery-tools"', 'id="discovery-source-studies"', 'id="discovery-methodology"', "<LegacyDiscovery />"]) {
+    assert.ok(page.indexOf(content) > researchSlot, `${content} belongs to the research tab`);
+  }
+  assert.ok(page.indexOf("<ResearchCandidateBoard compactEmpty />") < page.indexOf("<ScientificDiscoveryMatrix folded />"));
+  assert.match(read("components/ScientificDiscoveryMatrix.tsx"), /id="discovery-scientific-companions" summary="Scientific property companions"/);
+  assert.doesNotMatch(page, /<ResearchPriorityBoard \/>/);
   assert.match(page, /<LegacyDiscovery \/>/);
   assert.match(page, /process\.env\.NODE_ENV === "development" && \(await searchParams\)\.preview === "layout"/);
 });
 test("the public matrix never imports fixture/demo data, admin mutations, draft units or a browser scorer", () => {
-  for (const path of ["components/ScientificDiscoveryMatrix.tsx", "lib/discovery-scientific.ts"]) {
+  for (const path of ["components/ResearchCandidateBoard.tsx", "components/ScientificDiscoveryMatrix.tsx", "lib/discovery-scientific.ts"]) {
     const source = read(path);
     assert.doesNotMatch(source, /from ["'][^"']*(?:fixture|discovery-layout-demo|discovery-field-registry|scientific-imports|distribution-rights)/);
     assert.doesNotMatch(source, /DISCOVERY_DEMO_ROWS|localStorage|sessionStorage|dangerouslySetInnerHTML|method: ["'](?:POST|PUT|PATCH|DELETE)/);

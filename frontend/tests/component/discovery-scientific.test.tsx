@@ -292,6 +292,45 @@ describe("ScientificDiscoveryMatrix", () => {
     expect(screen.getByText(new RegExp(SCIENTIFIC_DISCLAIMER))).not.toBeVisible();
     expect(screen.queryByRole("table")).not.toBeInTheDocument(); expect(getScientificProjection).not.toHaveBeenCalled();
   });
+  it("keeps the research plan accessible beside a folded scientific companion", async () => {
+    const c = catalog(); c.items = []; c.status = "not_published";
+    vi.mocked(getScientificCatalog).mockResolvedValue(c);
+    render(<ScientificDiscoveryMatrix folded />);
+    await screen.findByText("No scientific release is currently published.");
+    const companion = document.getElementById("discovery-scientific-companions")! as HTMLDetailsElement;
+    const plan = document.getElementById("discovery-condition-design")! as HTMLDetailsElement;
+    expect(companion.open).toBe(false);
+    expect(plan.parentElement).toBe(companion.parentElement);
+    expect(screen.getByText("Outline a research plan")).toBeVisible();
+    fireEvent.click(screen.getByText("Outline a research plan"));
+    fireEvent.click(screen.getByText("Outline a local research design"));
+    expect(screen.getByLabelText("Proposed host label")).toBeVisible();
+    expect(companion.open).toBe(false);
+    fireEvent.change(screen.getByLabelText("Proposed host label"), { target: { value: "Local host hypothesis" } });
+    fireEvent.click(screen.getByText("Scientific property companions"));
+    fireEvent.click(screen.getByText("Scientific property companions"));
+    expect(screen.getByLabelText("Proposed host label")).toHaveValue("Local host hypothesis");
+    expect(getScientificProjection).not.toHaveBeenCalled();
+  });
+  it("retains the selected representative for the sibling plan when the matrix is folded", async () => {
+    const c = parseScientificCatalog(lowerCatalogWire), r = await parseScientificReceipt(lowerWire, c.items[0]);
+    vi.mocked(getScientificCatalog).mockResolvedValue(c); vi.mocked(getScientificProjection).mockResolvedValue(r);
+    render(<ScientificDiscoveryMatrix folded />);
+    fireEvent.click(screen.getByText("Scientific property companions"));
+    await screen.findByRole("option", { name: new RegExp(c.items[0].package_id) });
+    fireEvent.change(screen.getByLabelText("Published scientific version"), { target: { value: c.items[0].package_id } });
+    await screen.findByRole("table");
+    expect(within(screen.getByRole("table")).getByText("4,400")).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "TEST" }));
+    fireEvent.click(screen.getByText("Scientific property companions"));
+    expect(screen.getByText("Research plan for TEST")).toBeVisible();
+    fireEvent.click(screen.getByText("Research plan for TEST"));
+    fireEvent.click(screen.getByText("Outline a local research design"));
+    expect(screen.getByLabelText("Proposed host label")).toBeVisible();
+    expect(screen.getByLabelText("Proposed host label")).toHaveValue("TEST");
+    expect(document.getElementById("discovery-scientific-companions")).not.toHaveAttribute("open");
+    expect(getScientificProjection).toHaveBeenCalledTimes(1);
+  });
   it("shows the actual HTTP unpublished status with working research paths and can refresh to a real catalog", async () => {
     const actual = await vi.importActual<typeof import("@/lib/discovery-scientific")>("@/lib/discovery-scientific");
     vi.mocked(getScientificCatalog).mockImplementation(actual.getScientificCatalog);

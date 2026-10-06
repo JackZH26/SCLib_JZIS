@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
 import { DiscoveryFeed } from "@/components/DiscoveryFeed";
-import { ResearchPriorityBoard } from "@/components/ResearchPriorityBoard";
+import { ResearchCandidateBoard } from "@/components/ResearchCandidateBoard";
+import { ResearchProposalBoard } from "@/components/ResearchProposalBoard";
+import { getResearchProposalCatalog } from "@/lib/discovery-proposals";
 import { ScientificDiscoveryMatrix } from "@/components/ScientificDiscoveryMatrix";
 import { DiscoveryFieldGuide } from "@/components/DiscoveryFieldGuide";
 import { DiscoverySourceComparison } from "@/components/DiscoverySourceComparison";
 import { DiscoveryPressureSeries } from "@/components/DiscoveryPressureSeries";
 import { DiscoveryDisclosure } from "@/components/DiscoveryDisclosure";
+import { DiscoveryTabs } from "@/components/DiscoveryTabs";
 import {
   getDiscoveryCandidates,
   getDiscoveryMetadata,
@@ -54,7 +57,11 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
         <h1 className="text-3xl font-semibold tracking-tight">Discovery</h1>
       </header>
 
-      <ScientificDiscoveryMatrix />
+      <DiscoveryTabs candidates={<>
+        <ResearchCandidateBoard compactEmpty />
+        <ResearchProposals />
+      </>} research={<>
+      <ScientificDiscoveryMatrix folded />
       <DiscoveryDisclosure id="discovery-tools" summary="Host references and calculation tools">
         <nav aria-label="Discovery research workflow" className="grid gap-x-5 gap-y-1 text-sm sm:grid-cols-2">
           <Link href="/discovery/host-references" className="site-text-link inline-flex min-h-11 items-center">Host physical references</Link>
@@ -78,16 +85,20 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
         </div>
         <DiscoveryFieldGuide />
       </DiscoveryDisclosure>
-      <details className="rounded-xl border border-sage-border p-4">
-        <summary className="cursor-pointer text-sm font-semibold">Original RPS assessment releases · action-level view</summary>
-        <p className="my-3 text-sm text-sage-muted">This separate view retains the original assessment catalog. An assessment release is not a published scientific companion or a one-material matrix.</p>
-        <ResearchPriorityBoard />
-      </details>
       <Suspense fallback={<p className="text-sm text-sage-muted">Loading historical candidate leads…</p>}>
         <LegacyDiscovery />
       </Suspense>
+      </>} />
     </main>
   );
+}
+
+function ResearchProposals() {
+  try {
+    return <ResearchProposalBoard catalog={getResearchProposalCatalog()} />;
+  } catch {
+    return <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">The structure proposal catalogue could not be verified. No proposal rows are shown.</p>;
+  }
 }
 
 async function LegacyDiscovery() {
