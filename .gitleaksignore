@@ -526,3 +526,7 @@ f3c7b9f01c7b174e96a55b425b1c9166f337e3cc:frontend/public/research-pilots/discove
 97c2d5f00c443f9a67f59d4ad15ec5c687d06406:frontend/public/research-pilots/discovery-lah10-pressure-series-2026-10-04.json:generic-api-key:1218
 97c2d5f00c443f9a67f59d4ad15ec5c687d06406:frontend/public/research-pilots/discovery-lah10-pressure-series-2026-10-04.json:generic-api-key:1233
 97c2d5f00c443f9a67f59d4ad15ec5c687d06406:frontend/public/research-pilots/discovery-lah10-pressure-series-2026-10-04.json:generic-api-key:1248
+
+# Discovery research cycle: one static React recipe identifier, not a credential.
+# Review: docs/operations/SECRET_TRIAGE_DISCOVERY_RESEARCH_CYCLE_2026-10-06.md.
+cf3e7ed06ee09d908dcb254a1f2e8aaba4080597:frontend/lib/discovery-research-cycle.ts:generic-api-key:382
