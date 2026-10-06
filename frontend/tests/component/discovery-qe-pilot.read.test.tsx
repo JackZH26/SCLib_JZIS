@@ -3,7 +3,8 @@
  */
 import { expect, test, vi } from "vitest";
 import { createHash, webcrypto } from "node:crypto";
-import { readFileSync, writeFileSync, mkdirSync, existsSync, mkdtempSync, renameSync, rmSync, chmodSync, lstatSync, realpathSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, mkdtempSync, renameSync, rmSync, chmodSync, lstatSync, realpathSync,
+  openSync, closeSync, fstatSync, readSync, constants } from "node:fs";
 import { basename, dirname, join, resolve, relative, sep } from "node:path";
 import { getResearchCatalogue } from "@/lib/discovery-research-catalogue";
 import { prepareResearchModel } from "@/lib/discovery-research-model";
@@ -31,11 +32,30 @@ const enabled = process.env.SCLIB_QE_PILOT_READ_INPUT;
 function local(base: string, path: string): Uint8Array {
   if (!/^[A-Za-z0-9_./-]+$/.test(path) || path.startsWith("/") || path.split("/").some(p => p === ".." || p === "")) throw new Error("Unsafe relative artifact path.");
   const target = resolve(base, path);
-  const rel = relative(base, realpathSync(target));
-  if (rel.startsWith(`..${sep}`) || rel === ".." || !lstatSync(target).isFile()) throw new Error("Artifact escaped its captured directory.");
-  for (let p = target; p !== base; p = dirname(p)) if (lstatSync(p).isSymbolicLink()) throw new Error("Symlink artifact is unsupported.");
-  if (lstatSync(target).size > 16 * 1024 * 1024) throw new Error("Artifact exceeds the local-reader limit.");
-  return new Uint8Array(readFileSync(target));
+  // O_NONBLOCK lets fstat reject a FIFO without waiting for a writer. All file
+  // checks and reads use this one O_NOFOLLOW handle, never a reopened pathname.
+  const fd = openSync(target, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
+  try {
+    const before = fstatSync(fd, { bigint: true });
+    if (!before.isFile()) throw new Error("Artifact must be a regular file.");
+    if (before.size > BigInt(16 * 1024 * 1024)) throw new Error("Artifact exceeds the local-reader limit.");
+    const rel = relative(base, realpathSync(target));
+    if (rel.startsWith(`..${sep}`) || rel === "..") throw new Error("Artifact escaped its captured directory.");
+    for (let p = dirname(target); p !== base; p = dirname(p)) if (lstatSync(p).isSymbolicLink()) throw new Error("Symlink artifact is unsupported.");
+    // One extra byte detects growth while keeping allocation and I/O bounded.
+    const size = Number(before.size), bytes = Buffer.alloc(size + 1);
+    let length = 0;
+    while (length < bytes.length) {
+      const count = readSync(fd, bytes, length, bytes.length - length, length);
+      if (count === 0) break;
+      length += count;
+    }
+    const after = fstatSync(fd, { bigint: true });
+    if (length !== size || after.size !== before.size || after.mtimeNs !== before.mtimeNs || after.ctimeNs !== before.ctimeNs) throw new Error("Artifact changed while being read.");
+    return new Uint8Array(bytes.subarray(0, length));
+  } finally {
+    closeSync(fd);
+  }
 }
 function pinned(base: string, pin: FilePin) {
   const bytes = local(base, pin.path);
