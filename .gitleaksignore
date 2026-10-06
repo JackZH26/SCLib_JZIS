@@ -1,5 +1,8 @@
 # Exact fingerprints for reviewed non-secret documentation and synthetic data.
 # Do not replace these with path, commit, or rule-wide ignores.
+# Reviewed 2026-10-06: README's literal scl_YOUR_KEY was a documentation
+# placeholder, not a credential. The current example uses SCLIB_API_KEY.
+f7cc41465ec17948652556111a7030c0cb8e7c95:README.md:curl-auth-header:221
 # Reviewed 2026-10-05: 13 request_key matches in the original 2026-09-24
 # disposable test captures. Values are uuid4().hex, synthetic-participation-,
 # synthetic-declaration-, or synthetic-withdraw- plus uuid4().hex. Generators:

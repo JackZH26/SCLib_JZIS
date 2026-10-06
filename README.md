@@ -217,10 +217,10 @@ curl -fsS -X POST https://api.jzis.org/sclib/v1/search \
   -d '{"query":"MgB2 multiband superconductivity","top_k":5}'
 
 # Reported, observed cuprate results with a supplied pressure limit
-# Replace the placeholder with an API key from your account dashboard.
+# Set SCLIB_API_KEY to an API key from your account dashboard.
 curl -fsS \
   'https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0' \
-  -H 'X-API-Key: scl_YOUR_KEY'
+  -H "X-API-Key: ${SCLIB_API_KEY}"
 ```
 
 Pagination uses **`limit`/`offset`**. Inspect response status and provenance
