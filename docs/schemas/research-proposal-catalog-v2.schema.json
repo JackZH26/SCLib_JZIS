@@ -1,0 +1,700 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "research-proposal-catalog-v2.schema.json",
+  "title": "Retained research coordinate proposals; no RPS or scientific approval",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "version",
+    "selection_basis",
+    "formal_scientific_release",
+    "rps_release",
+    "human_scientific_review",
+    "counts",
+    "sources",
+    "parents",
+    "states",
+    "groups",
+    "occurrences"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "research-proposal-catalog/2.0.0"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{1,100}$"
+    },
+    "selection_basis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "formal_scientific_release": {
+      "const": false
+    },
+    "rps_release": {
+      "const": false
+    },
+    "human_scientific_review": {
+      "type": "null"
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_entries",
+        "coordinate_states",
+        "composition_groups",
+        "duplicate_occurrences"
+      ],
+      "properties": {
+        "source_entries": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 200
+        },
+        "coordinate_states": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 200
+        },
+        "composition_groups": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 200
+        },
+        "duplicate_occurrences": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 200
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      },
+      "minItems": 1,
+      "maxItems": 100
+    },
+    "parents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/parent"
+      },
+      "minItems": 1,
+      "maxItems": 100
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/state"
+      },
+      "minItems": 1,
+      "maxItems": 100
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/group"
+      },
+      "minItems": 1,
+      "maxItems": 100
+    },
+    "occurrences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/occurrence"
+      },
+      "minItems": 1,
+      "maxItems": 200
+    }
+  },
+  "$defs": {
+    "cell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "a",
+        "b",
+        "c",
+        "alpha",
+        "beta",
+        "gamma"
+      ],
+      "properties": {
+        "a": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "b": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "c": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "alpha": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 180
+        },
+        "beta": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 180
+        },
+        "gamma": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 180
+        }
+      }
+    },
+    "composition": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 96,
+      "propertyNames": {
+        "pattern": "^[A-Z][a-z]?$"
+      },
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 96
+      }
+    },
+    "conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pressure_gpa",
+        "temperature_k",
+        "charge_state",
+        "magnetic_state"
+      ],
+      "properties": {
+        "pressure_gpa": {
+          "type": "null"
+        },
+        "temperature_k": {
+          "type": "null"
+        },
+        "charge_state": {
+          "type": "null"
+        },
+        "magnetic_state": {
+          "type": "null"
+        }
+      }
+    },
+    "atom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "element",
+        "fractional",
+        "occupancy",
+        "source_site_label"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "element": {
+          "type": "string",
+          "pattern": "^[A-Z][a-z]?$"
+        },
+        "fractional": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMaximum": 1
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "occupancy": {
+          "const": 1
+        },
+        "source_site_label": {
+          "type": "string"
+        }
+      }
+    },
+    "edit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_id",
+        "source_site_label",
+        "original_element",
+        "kind",
+        "element"
+      ],
+      "properties": {
+        "target_id": {
+          "type": "string"
+        },
+        "source_site_label": {
+          "type": "string"
+        },
+        "original_element": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "substitution",
+            "vacancy"
+          ]
+        },
+        "element": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "provider",
+        "record_id",
+        "revision",
+        "cif_sha256",
+        "cif_url",
+        "entry_url",
+        "formula",
+        "phase",
+        "license",
+        "license_url",
+        "license_basis",
+        "capture_kind"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^proposal-source:[a-f0-9]{64}$"
+        },
+        "provider": {
+          "const": "COD"
+        },
+        "record_id": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000000
+        },
+        "cif_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "cif_url": {
+          "type": "string"
+        },
+        "entry_url": {
+          "type": "string"
+        },
+        "formula": {
+          "type": "string"
+        },
+        "phase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "license": {
+          "type": "string"
+        },
+        "license_url": {
+          "type": "string"
+        },
+        "license_basis": {
+          "type": "string"
+        },
+        "capture_kind": {
+          "enum": [
+            "revision_url",
+            "mutable_current_file"
+          ]
+        }
+      }
+    },
+    "parent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source_id",
+        "reference_id",
+        "repeats",
+        "cell",
+        "atoms",
+        "legacy_parent_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^proposal-parent:[a-f0-9]{64}$"
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^proposal-source:[a-f0-9]{64}$"
+        },
+        "reference_id": {
+          "type": "string"
+        },
+        "repeats": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "cell": {
+          "$ref": "#/$defs/cell"
+        },
+        "atoms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/atom"
+          },
+          "minItems": 1,
+          "maxItems": 96
+        },
+        "legacy_parent_id": {
+          "type": "string",
+          "pattern": "^supercell:[a-f0-9]{64}$"
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "group_id",
+        "parent_id",
+        "formula",
+        "composition",
+        "cell",
+        "atoms",
+        "edits",
+        "strain_micro_percent",
+        "status",
+        "conditions",
+        "occurrence_ids",
+        "primary_occurrence_id",
+        "score",
+        "rank",
+        "formal_approval",
+        "physical_axes",
+        "next_action"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^proposal-state:[a-f0-9]{64}$"
+        },
+        "group_id": {
+          "type": "string",
+          "pattern": "^proposal-group:[a-f0-9]{64}$"
+        },
+        "parent_id": {
+          "type": "string",
+          "pattern": "^proposal-parent:[a-f0-9]{64}$"
+        },
+        "formula": {
+          "type": "string"
+        },
+        "composition": {
+          "$ref": "#/$defs/composition"
+        },
+        "cell": {
+          "$ref": "#/$defs/cell"
+        },
+        "atoms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/atom"
+          },
+          "minItems": 1,
+          "maxItems": 96
+        },
+        "edits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/edit"
+          },
+          "minItems": 0,
+          "maxItems": 3
+        },
+        "strain_micro_percent": {
+          "type": "integer",
+          "minimum": -10000000,
+          "maximum": 10000000
+        },
+        "status": {
+          "const": "unrelaxed"
+        },
+        "conditions": {
+          "$ref": "#/$defs/conditions"
+        },
+        "occurrence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^proposal-occurrence:[a-f0-9]{64}$"
+          },
+          "minItems": 1,
+          "maxItems": 200
+        },
+        "primary_occurrence_id": {
+          "type": "string",
+          "pattern": "^proposal-occurrence:[a-f0-9]{64}$"
+        },
+        "score": {
+          "type": "null"
+        },
+        "rank": {
+          "type": "null"
+        },
+        "formal_approval": {
+          "type": "null"
+        },
+        "physical_axes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "stability",
+            "electronic",
+            "pairing",
+            "coherence",
+            "geometry",
+            "competing_order"
+          ],
+          "properties": {
+            "stability": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "value"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unknown"
+                },
+                "value": {
+                  "type": "null"
+                }
+              }
+            },
+            "electronic": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "value"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unknown"
+                },
+                "value": {
+                  "type": "null"
+                }
+              }
+            },
+            "pairing": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "value"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unknown"
+                },
+                "value": {
+                  "type": "null"
+                }
+              }
+            },
+            "coherence": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "value"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unknown"
+                },
+                "value": {
+                  "type": "null"
+                }
+              }
+            },
+            "geometry": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "value"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unknown"
+                },
+                "value": {
+                  "type": "null"
+                }
+              }
+            },
+            "competing_order": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "value"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unknown"
+                },
+                "value": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        },
+        "next_action": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "summary"
+          ],
+          "properties": {
+            "kind": {
+              "const": "state_method_input_review"
+            },
+            "summary": {
+              "const": "Review the state, methods and reproducible inputs before relaxation."
+            }
+          }
+        }
+      }
+    },
+    "group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "formula",
+        "reduced_formula",
+        "composition",
+        "source_id",
+        "host_formula",
+        "state_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^proposal-group:[a-f0-9]{64}$"
+        },
+        "formula": {
+          "type": "string"
+        },
+        "reduced_formula": {
+          "type": "string"
+        },
+        "composition": {
+          "$ref": "#/$defs/composition"
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^proposal-source:[a-f0-9]{64}$"
+        },
+        "host_formula": {
+          "type": "string"
+        },
+        "state_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^proposal-state:[a-f0-9]{64}$"
+          },
+          "minItems": 1,
+          "maxItems": 100
+        }
+      }
+    },
+    "occurrence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "state_id",
+        "legacy_candidate_id",
+        "source_batch_sha256",
+        "source_locator",
+        "cif_text",
+        "cif_sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^proposal-occurrence:[a-f0-9]{64}$"
+        },
+        "state_id": {
+          "type": "string",
+          "pattern": "^proposal-state:[a-f0-9]{64}$"
+        },
+        "legacy_candidate_id": {
+          "type": "string",
+          "pattern": "^(site|combined)-candidate:[a-f0-9]{64}$"
+        },
+        "source_batch_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_locator": {
+          "type": "string",
+          "pattern": "^/candidates/(0|[1-9][0-9]*)$"
+        },
+        "cif_text": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "cif_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

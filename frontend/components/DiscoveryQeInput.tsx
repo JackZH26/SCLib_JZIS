@@ -13,7 +13,7 @@ type NumericKey = keyof typeof initial;
 const numericFields: Array<[NumericKey, string]> = [["ecutwfc", "Wavefunction cutoff (Ry)"], ["ecutrho", "Charge-density cutoff (Ry)"], ["charge", "Cell charge (electrons removed)"], ["degauss", "Smearing width (Ry)"], ["conv_thr", "Electronic threshold (Ry)"], ["electron_maxstep", "Electronic iteration limit"], ["mixing_beta", "Mixing beta"], ["max_seconds", "CPU time limit (s)"]];
 
 /** Remount on candidate identity change so settings and local files never silently follow another geometry. */
-export function DiscoveryQeInput({ batch, candidateId, followUp }: { batch: CombinedBatch; candidateId: string; followUp?: QeResultContext }) {
+export function DiscoveryQeInput({ batch, candidateId, followUp, onPrepared }: { batch: CombinedBatch; candidateId: string; followUp?: QeResultContext; onPrepared?: (value: PreparedQe | null) => void }) {
   const candidate = batch.candidates.find(item => item.id === candidateId)!;
   const elements = Object.keys(candidate.composition).sort();
   const previous = followUp?.preparation.prepared.manifest.settings;
@@ -36,7 +36,7 @@ export function DiscoveryQeInput({ batch, candidateId, followUp }: { batch: Comb
   const [status, setStatus] = useState("");
   const sequence = useRef(0);
   useEffect(() => () => { sequence.current++; }, []);
-  const invalidate = () => { sequence.current++; setResult(null); setLineage(null); setBusy(false); setReading(false); setError(""); setStatus(""); };
+  const invalidate = () => { sequence.current++; setResult(null); onPrepared?.(null); setLineage(null); setBusy(false); setReading(false); setError(""); setStatus(""); };
   const readFiles = async (chosen: File[]) => {
     invalidate(); setFiles([]); setPseudos([]);
     const run = sequence.current;
@@ -59,10 +59,10 @@ export function DiscoveryQeInput({ batch, candidateId, followUp }: { batch: Comb
         species: elements.map(element => ({ element, mass_amu: number(masses[element]), starting_magnetization: spin === 1 ? null : number(seeds[element]) })) };
       if (followUp) {
         const next = await prepareQeFollowUp(followUp, settings, rationale);
-        if (run === sequence.current) { setResult(next.prepared); setLineage(next.lineage); }
+        if (run === sequence.current) { setResult(next.prepared); onPrepared?.(next.prepared); setLineage(next.lineage); }
       } else {
         const prepared = await prepareQeInput(batch, candidateId, settings, files);
-        if (run === sequence.current) setResult(prepared);
+        if (run === sequence.current) { setResult(prepared); onPrepared?.(prepared); }
       }
     } catch (issue) { if (run === sequence.current) setError(issue instanceof Error ? issue.message : "Check the calculation settings."); }
     finally { if (run === sequence.current) setBusy(false); }

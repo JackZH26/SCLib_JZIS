@@ -1,0 +1,18 @@
+{
+  "schema_version": "research-proposal-build/1.0.0",
+  "version": "2026-10-06-retained-coordinate-proposals-v2",
+  "source_snapshot": {
+    "path": "frontend/public/research-pilots/discovery-structure-coordinates-2026-10-05.json",
+    "sha256": "f558d87c57dc125e023c9ecc274348a869890cbcc0429eb61daa7e2a16414f25"
+  },
+  "batches": [
+    {
+      "filename": "sclib-site-candidates-87e0ec0aaa37.json",
+      "sha256": "87e0ec0aaa3700419e035f804d3c750787846dd2c578e17b59583de63cfa68a6"
+    },
+    {
+      "filename": "sclib-combined-6e52be02d9dd.json",
+      "sha256": "6e52be02d9dd41ae58847a51a5e3f0ed38d6149ebdd4624dbba8c87f7ebb838c"
+    }
+  ]
+}
