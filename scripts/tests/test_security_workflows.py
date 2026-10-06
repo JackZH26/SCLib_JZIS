@@ -480,6 +480,11 @@ class SecurityWorkflowTests(unittest.TestCase):
                     "c499146b223562c5099ab971a149392067ca047e:"
                     "api/tests/test_session_security.py:generic-api-key:54"
                 ),
+                # Reviewed static React recipe identifier; see the 2026-10-06 triage.
+                (
+                    "cf3e7ed06ee09d908dcb254a1f2e8aaba4080597:"
+                    "frontend/lib/discovery-research-cycle.ts:generic-api-key:382"
+                ),
             } | REVIEWED_FIXTURE_FINGERPRINTS | REVIEWED_SOURCE_DIGEST_FINGERPRINTS | REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS | REVIEWED_AB2H24_DIGEST_FINGERPRINTS | REVIEWED_LAH10_DIGEST_FINGERPRINTS,
         )
 

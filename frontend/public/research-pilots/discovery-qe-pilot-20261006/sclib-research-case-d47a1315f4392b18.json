@@ -1,0 +1,172 @@
+{
+  "version": "discovery-research-cycle-export/1.0.0",
+  "payload_sha256": "5ce26652f5e3d542399c258f0d49794675879be37d4a7edc8189e32ea9067a37",
+  "record": {
+    "version": "discovery-research-cycle/1.0.0",
+    "target": {
+      "temperature_k": 300,
+      "pressure_gpa": 0.000101325,
+      "pressure_label": "1 atm",
+      "role": "research_target_not_observation"
+    },
+    "binding": {
+      "case_id": "research-case:3d101f50753276a1cd4efa5e55a08f46c37a09763e519d0a6f9dc72b09fa97d7",
+      "definition_sha256": "3d101f50753276a1cd4efa5e55a08f46c37a09763e519d0a6f9dc72b09fa97d7",
+      "state_sha256": "cf1c1a0c56b09bd61e06c92a7d54b19f61000eb306cafec08aa4312c2cdb975e",
+      "action_sha256": "20a0f72e906bf2fb74fd28289850ba5d90bb279cb20d1d14d834e5f4c53ac94e"
+    },
+    "definition": {
+      "title": "Mg7AlB16 minus02: next method review",
+      "strategy": "geometry_construction",
+      "state": {
+        "formula": "Mg7AlB16",
+        "host_formula": "MgB2",
+        "catalogue_reference": {
+          "catalogue_version": "2026-10-06-retained-coordinate-proposals-v2",
+          "catalog_group_id": "proposal-group:8270e719ad07e9dc60c540bc619b928f7d57727fbda278e79f4b02686d1ffdaa",
+          "catalog_state_id": "proposal-state:6b5103173ccc8bc8a0058e3dd5b2271f9aa82696f668df64bc9d142dc7a384e4"
+        },
+        "source_pins": [
+          {
+            "artifact_id": "proposal-source:3e2f698b2051b6a51fd3421504a101b3e95de4c7636230de43a346fe8191d880",
+            "version": "COD revision 176429",
+            "sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d"
+          }
+        ],
+        "structure": {
+          "artifact_id": "combined-candidate:7ee34437d2e98eb8de21c231518b2e5ea4c401247c4f890bdbd4638c3125e300",
+          "version": "discovery-combined-site-candidates/1.0.0",
+          "sha256": "309ae91a4d2de6a47409083702599877c93f82edabdb8030839066147538bc9f"
+        },
+        "modifications": [
+          {
+            "kind": "substitution",
+            "description": "Mg to Al at image-0-cell-0-0-0 (source site Mg1)."
+          },
+          {
+            "kind": "strain",
+            "description": "Uniform lattice-length change: -2%; fractional coordinates fixed; pressure is not assigned."
+          }
+        ],
+        "conditions": {
+          "pressure_gpa": null,
+          "temperature_k": null,
+          "charge_state": 0,
+          "magnetic_state": "nonmagnetic"
+        },
+        "relation_to_catalogue": "proposed_conditions"
+      },
+      "evidence": {
+        "stability": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "electronic": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "pairing": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "coherence": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "geometry": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "competing_order": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        }
+      },
+      "hypothesis": {
+        "statement": "Can a specified lattice, interface or dimensional modification change useful electronic or interaction features without losing stability or coherence?",
+        "competing_explanations": [
+          "The geometry change creates the intended electronic or interaction feature",
+          "Structural instability or reduced coherence prevents the intended benefit"
+        ],
+        "critical_unknown": "Full coordinates and boundary conditions; Defined geometry changes and reference state; Stability and coherence checks appropriate to the mechanism"
+      },
+      "action": {
+        "kind": "source_review",
+        "question": "Review the finite-window outcome and define a separately budgeted cutoff or smearing study before any new calculation.",
+        "input_artifacts": [
+          {
+            "artifact_id": "studies/minus02/retained-status.json",
+            "version": "discovery-qe-pilot-state-reading/1.0.0",
+            "sha256": "5ab3cf715a3e3066245372b3f53e157a8d6e1070f3f078fff3f7cb1add448754"
+          },
+          {
+            "artifact_id": "sclib-research-case-f755060bdc2c149a.json",
+            "version": "discovery-research-cycle-export/1.0.0",
+            "sha256": "f755060bdc2c149a1f58afa7dcfc01b9d73b6b7346d97d400d1d57827c75778d"
+          }
+        ],
+        "prerequisites": [
+          {
+            "description": "Resolve source applicability to the specific model and conditions.",
+            "status": "unknown"
+          }
+        ],
+        "resources": {
+          "access": "unconfirmed",
+          "cpu_hours": null,
+          "gpu_hours": null,
+          "memory_gib": null,
+          "storage_gib": null,
+          "human_hours": null
+        },
+        "branches": [
+          {
+            "id": "supported_comparison",
+            "observable": "Comparable source evidence supports a specific discriminating model or calculation.",
+            "decision": "continue",
+            "next_direction": "prepare_model"
+          },
+          {
+            "id": "contradictory_or_incompatible",
+            "observable": "Evidence contradicts the premise or belongs to an incompatible state.",
+            "decision": "redirect",
+            "next_direction": "review_sources"
+          },
+          {
+            "id": "unresolved",
+            "observable": "The checked sources cannot resolve the critical unknown.",
+            "decision": "stop",
+            "next_direction": "pause"
+          }
+        ],
+        "numerical_protocol": null,
+        "ml": null
+      }
+    },
+    "parent": {
+      "case_id": "research-case:2d409279357802991e774d4e8411bdb6fb39cac1b104d56193561feb04c6865a",
+      "definition_sha256": "2d409279357802991e774d4e8411bdb6fb39cac1b104d56193561feb04c6865a",
+      "decision_sha256": "090a2e90a763f618397a216d86be4a9e51bdb74d69602e22b37f571531ed05c2",
+      "relation": "research_follow_up",
+      "properties_inherited": false
+    },
+    "returns": [],
+    "decision": null,
+    "authority": {
+      "scientific_acceptance": false,
+      "execution_authenticated": false,
+      "database_write": false,
+      "public_release": false,
+      "rps_score": null,
+      "rank": null,
+      "native_material_id": null,
+      "native_state_id": null
+    }
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "version": "discovery-research-cycle-export/1.0.0",
+  "payload_sha256": "8f2a4248e4b4845a411151c7677773b951f34e25d51eab3e0add2ac2d02bd0fb",
+  "record": {
+    "version": "discovery-research-cycle/1.0.0",
+    "target": {
+      "temperature_k": 300,
+      "pressure_gpa": 0.000101325,
+      "pressure_label": "1 atm",
+      "role": "research_target_not_observation"
+    },
+    "binding": {
+      "case_id": "research-case:ae06f2e4fa58eff884820e5553911d48c0b925fb83ca3f2d48d8507e610cf004",
+      "definition_sha256": "ae06f2e4fa58eff884820e5553911d48c0b925fb83ca3f2d48d8507e610cf004",
+      "state_sha256": "4ba23f1d79bf2ad6fbcd8cbde7fb45a4c19d5b0e5c1a1ea9355e8dc8c1845129",
+      "action_sha256": "de00fdba0553187a2ae4657e8ad059ab57b8317793c7e3999825f9021ff5b4e4"
+    },
+    "definition": {
+      "title": "Mg7AlB16 zero: next method review",
+      "strategy": "geometry_construction",
+      "state": {
+        "formula": "Mg7AlB16",
+        "host_formula": "MgB2",
+        "catalogue_reference": {
+          "catalogue_version": "2026-10-06-retained-coordinate-proposals-v2",
+          "catalog_group_id": "proposal-group:8270e719ad07e9dc60c540bc619b928f7d57727fbda278e79f4b02686d1ffdaa",
+          "catalog_state_id": "proposal-state:3d2ea22b5632195ab2fa6a017ce81b0821b5ebb1cd97faed03ce03938623ba95"
+        },
+        "source_pins": [
+          {
+            "artifact_id": "proposal-source:3e2f698b2051b6a51fd3421504a101b3e95de4c7636230de43a346fe8191d880",
+            "version": "COD revision 176429",
+            "sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d"
+          }
+        ],
+        "structure": {
+          "artifact_id": "combined-candidate:f6ec70d35e822fa480a4c3c5f91d5cd47ce87449891f9cb46a5e2631529f0d8e",
+          "version": "discovery-combined-site-candidates/1.0.0",
+          "sha256": "ce2498bd1abbcaa55f584ce246762b58d228ced3a7bd7648205e2a4a52ca2f02"
+        },
+        "modifications": [
+          {
+            "kind": "substitution",
+            "description": "Mg to Al at image-0-cell-0-0-0 (source site Mg1)."
+          }
+        ],
+        "conditions": {
+          "pressure_gpa": null,
+          "temperature_k": null,
+          "charge_state": 0,
+          "magnetic_state": "nonmagnetic"
+        },
+        "relation_to_catalogue": "proposed_conditions"
+      },
+      "evidence": {
+        "stability": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "electronic": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "pairing": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "coherence": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "geometry": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "competing_order": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        }
+      },
+      "hypothesis": {
+        "statement": "Can a specified lattice, interface or dimensional modification change useful electronic or interaction features without losing stability or coherence?",
+        "competing_explanations": [
+          "The geometry change creates the intended electronic or interaction feature",
+          "Structural instability or reduced coherence prevents the intended benefit"
+        ],
+        "critical_unknown": "Full coordinates and boundary conditions; Defined geometry changes and reference state; Stability and coherence checks appropriate to the mechanism"
+      },
+      "action": {
+        "kind": "source_review",
+        "question": "Review the finite-window outcome and define a separately budgeted cutoff or smearing study before any new calculation.",
+        "input_artifacts": [
+          {
+            "artifact_id": "studies/zero/retained-status.json",
+            "version": "discovery-qe-pilot-state-reading/1.0.0",
+            "sha256": "6a0eb15a9a9146a0f3ba85d1a223b795ec4d07be9023cfdb3a9b6830b63642ae"
+          },
+          {
+            "artifact_id": "sclib-research-case-8144d6a829bb1906.json",
+            "version": "discovery-research-cycle-export/1.0.0",
+            "sha256": "8144d6a829bb19065c3221d3dc926b8e6e993482a2e03882a61b65991d93fc70"
+          }
+        ],
+        "prerequisites": [
+          {
+            "description": "Resolve source applicability to the specific model and conditions.",
+            "status": "unknown"
+          }
+        ],
+        "resources": {
+          "access": "unconfirmed",
+          "cpu_hours": null,
+          "gpu_hours": null,
+          "memory_gib": null,
+          "storage_gib": null,
+          "human_hours": null
+        },
+        "branches": [
+          {
+            "id": "supported_comparison",
+            "observable": "Comparable source evidence supports a specific discriminating model or calculation.",
+            "decision": "continue",
+            "next_direction": "prepare_model"
+          },
+          {
+            "id": "contradictory_or_incompatible",
+            "observable": "Evidence contradicts the premise or belongs to an incompatible state.",
+            "decision": "redirect",
+            "next_direction": "review_sources"
+          },
+          {
+            "id": "unresolved",
+            "observable": "The checked sources cannot resolve the critical unknown.",
+            "decision": "stop",
+            "next_direction": "pause"
+          }
+        ],
+        "numerical_protocol": null,
+        "ml": null
+      }
+    },
+    "parent": {
+      "case_id": "research-case:fa9cfce279f2c1c1ff8bf739e4177c8fa200ee1008d51e502f6c2ebf1217386f",
+      "definition_sha256": "fa9cfce279f2c1c1ff8bf739e4177c8fa200ee1008d51e502f6c2ebf1217386f",
+      "decision_sha256": "af47eee2d7ae8e5634df10005865344a3c1dc0c1014b4d8a5adf0c91bbd4dfe2",
+      "relation": "research_follow_up",
+      "properties_inherited": false
+    },
+    "returns": [],
+    "decision": null,
+    "authority": {
+      "scientific_acceptance": false,
+      "execution_authenticated": false,
+      "database_write": false,
+      "public_release": false,
+      "rps_score": null,
+      "rank": null,
+      "native_material_id": null,
+      "native_state_id": null
+    }
+  }
+}

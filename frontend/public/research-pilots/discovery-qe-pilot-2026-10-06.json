@@ -1,0 +1,505 @@
+{
+  "schema_version": "discovery-qe-pilot-compact-summary/1.0.0",
+  "pilot_id": "2026-10-06-mg7alb16-fixed-geometry-mesh-pilot",
+  "catalogue_version": "2026-10-06-retained-coordinate-proposals-v2",
+  "formula": "Mg7AlB16",
+  "host_formula": "MgB2",
+  "model_status": "unrelaxed",
+  "atom_count": 24,
+  "protocol": {
+    "plan_sha256": "1ea4ab79c7433d966f4ff393c4e8deda9adea6cc2cf7bcd42b6c65c0559da855",
+    "axis": "mesh",
+    "mesh_set": [
+      [
+        2,
+        2,
+        2
+      ],
+      [
+        4,
+        4,
+        4
+      ],
+      [
+        6,
+        6,
+        6
+      ]
+    ],
+    "tolerance_hartree_per_atom": 0.0001,
+    "spread_operator": "(max E - min E) / atom_count <= tolerance",
+    "scf_precision_operator": "max(SCF error / atom_count) < tolerance",
+    "required_points": 3,
+    "comparison_grouping": "exact same catalogue state and regenerated CIF",
+    "cutoffs_ry": {
+      "wavefunction": 60,
+      "density": 480
+    },
+    "smearing": {
+      "kind": "mv",
+      "width_ry": 0.02,
+      "physical_temperature_k": null
+    },
+    "conditions": {
+      "charge": 0,
+      "nspin": 1,
+      "pressure_gpa": null,
+      "temperature_k": null
+    },
+    "engine": "PWSCF 7.5",
+    "functional": "PBE",
+    "pseudopotential_type": "PAW"
+  },
+  "reader_summary_sha256": "e54e49e4cdcc7057cb0da1991fcfb4773e25c1bca54fcdb2d658aa9db2f1feeb",
+  "runtime_pw_sha256": "1d66c7856f5d6b3cd9c66b8578e01512b16bbe907b4360e54234890712ccd6a1",
+  "execution_finished_sha256": "dae6d9725d7ea29fc40ccf72a8108af121eb7856c49fdd33130d3d5913ae75c0",
+  "elapsed_wall_seconds": 1187.6823287969455,
+  "execution_capture_status": "execution_files_captured",
+  "pseudopotentials": [
+    {
+      "element": "Al",
+      "sha256": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a"
+    },
+    {
+      "element": "B",
+      "sha256": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135"
+    },
+    {
+      "element": "Mg",
+      "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a"
+    }
+  ],
+  "states": [
+    {
+      "catalogue_state_id": "proposal-state:6b5103173ccc8bc8a0058e3dd5b2271f9aa82696f668df64bc9d142dc7a384e4",
+      "catalogue_group_id": "proposal-group:8270e719ad07e9dc60c540bc619b928f7d57727fbda278e79f4b02686d1ffdaa",
+      "strain_percent": -2.0,
+      "source": {
+        "provider": "COD",
+        "record_id": "1526507",
+        "revision": "176429",
+        "cif_sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d",
+        "cif_url": "https://www.crystallography.net/cod/1526507.cif@176429"
+      },
+      "original_cif_sha256": [
+        "309ae91a4d2de6a47409083702599877c93f82edabdb8030839066147538bc9f"
+      ],
+      "generated_cif_sha256": "309ae91a4d2de6a47409083702599877c93f82edabdb8030839066147538bc9f",
+      "generated_candidate_id": "combined-candidate:7ee34437d2e98eb8de21c231518b2e5ea4c401247c4f890bdbd4638c3125e300",
+      "coordinate_model_equivalent": true,
+      "points": [
+        {
+          "mesh": [
+            2,
+            2,
+            2
+          ],
+          "status": "scf_reported_converged",
+          "comparison_eligible": true,
+          "initialization_status": "initialization_only",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_wall_seconds": {
+            "initialization": 1.7731145434081554,
+            "execution": 42.363757078535855
+          },
+          "energy_hartree_per_cell": -606.4018619934994,
+          "scf_error_hartree_per_cell": 4.909860788822048e-11,
+          "scf_iterations": 13,
+          "file_hashes": {
+            "input": "9821df39fb0b6b425b328faf9351978054cf1507fb9efa249aaef754e7cca537",
+            "preparation_manifest": "4e58812dba0457cd57c9ff8edf09b2906369f494c04f256216fb2652e6f19af9",
+            "xml": "9b362a9479fbd537af5bf2c051ca9b69815786d904a5fd8522a4d637bb8380c0",
+            "stdout": "f000425836fb49db726151d45f0c057111d73c132f1bfa284301d6767fedd090",
+            "initialization_xml": "524233de9d087ebc8b348e9a2a546869dfd3e468cb508c5d985f4656f52e5789",
+            "initialization_stdout": "cb6daf752bf212f7e625463b18585b968c259bff222a2a537ee64cbb44cbaba6",
+            "execution_receipt": "0ba7736e16c608dad6280761e393373121a8fdf42338617a356c2c8336f58ce4",
+            "reading": "48c70b795255da0713453155e76c44686afa292dd4b022dfd4a91d4e7c6162ae"
+          },
+          "failure_code": null
+        },
+        {
+          "mesh": [
+            4,
+            4,
+            4
+          ],
+          "status": "scf_reported_converged",
+          "comparison_eligible": true,
+          "initialization_status": "initialization_only",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_wall_seconds": {
+            "initialization": 1.773575379513204,
+            "execution": 108.21209043543786
+          },
+          "energy_hartree_per_cell": -606.4156776926495,
+          "scf_error_hartree_per_cell": 4.169023551455823e-12,
+          "scf_iterations": 14,
+          "file_hashes": {
+            "input": "db7f908c878301d451fb8dd14726da972a41f3627b109a1a3bd8efaae97284bc",
+            "preparation_manifest": "0aff4d3c75ab7499986d9656b20a05af68a9d98bb3d8b41d88781d45701607b5",
+            "xml": "3708c54fffd8244770e7b0a65d6d76f0960cd2b57e26898a8cc5dd0f2ddfcc03",
+            "stdout": "f266ca4dff549c15d592e2be5cfde9588f60d7a3f0218ed83d54ba434904e816",
+            "initialization_xml": "c7f2aca7458c8466975f9317bbf91d88fe9cdc29611083b598578deb521f9d6e",
+            "initialization_stdout": "3ae95b7b30cdb0b273e47b0150ef3c2e0210f91ac79bcdf778340929a4808380",
+            "execution_receipt": "711b1fba0d42b67aae94a7ed0aec9f6b79c7886d09c0e953a92b228289eaa122",
+            "reading": "4cb059e192ad446f91d6bfb1de74cac70fede74a1297dc88df5267e01a0d5818"
+          },
+          "failure_code": null
+        },
+        {
+          "mesh": [
+            6,
+            6,
+            6
+          ],
+          "status": "scf_reported_converged",
+          "comparison_eligible": true,
+          "initialization_status": "initialization_only",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_wall_seconds": {
+            "initialization": 1.7728867633268237,
+            "execution": 237.84574943501502
+          },
+          "energy_hartree_per_cell": -606.4170649676537,
+          "scf_error_hartree_per_cell": 4.153255446244578e-12,
+          "scf_iterations": 14,
+          "file_hashes": {
+            "input": "e5b7c11451ab31cd9444cdf60049f745dd61ef4bfd730d5f84a350d48684a75e",
+            "preparation_manifest": "171805897048d1c6bbf6b6ceb9aefb5aacd2cc174e67104b4d387984cfd7cda6",
+            "xml": "88b0a183f6735e62060ba8c618a10aa4add3adbf262331ae567af2f6b6cd3468",
+            "stdout": "9ee2bdabfc1e0a001688e066b7c9aee80926c69a220169ebe076ccfb454b5bc8",
+            "initialization_xml": "18ffcdaeec2dc0567a1274a7990e555ea445b2ee499ecbd4c6643715c74eca20",
+            "initialization_stdout": "a62f1db8b3d25bc2412f55741d7303ca77d1510aadf77ee830e68d868ee0f3ac",
+            "execution_receipt": "f4aa74135ce7da3107736f9eb0f90ff8835dd40b9dde5c5178f356f9712253ac",
+            "reading": "55356cd31f45d6a5b29473b8d2e76a4fdc5dcdb670747e02acdd823a68b5c48d"
+          },
+          "failure_code": null
+        }
+      ],
+      "assessment": "sampled_window_outside_tolerance",
+      "comparison_sha256": "d56977994f2d60217aa194e4479fa526663dadbb6a0f09c2a0a77d48b679eb84",
+      "energy_spread_hartree_per_atom": 0.0006334572564270502,
+      "maximum_scf_error_hartree_per_atom": 2.0457753286758532e-12,
+      "decision": {
+        "outcome": "redirect",
+        "next_direction": "refine_method",
+        "decision_sha256": "090a2e90a763f618397a216d86be4a9e51bdb74d69602e22b37f571531ed05c2",
+        "return_sha256": "76ae84bf9e56771387676bf80ca0c861b39c61bf18f6be6e73441c3b3bede623"
+      },
+      "case_exports": {
+        "prepared": {
+          "sha256": "e842ff0d2cf1c4b48cfc2e2c04b83ae5c2f8df09c93840e70eaac5a051047c4a",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-e842ff0d2cf1c4b4.json"
+        },
+        "returned": {
+          "sha256": "89a2588387d7c756690156a7558ff18c6e4848d7e1c888925946a18b8413a308",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-89a2588387d7c756.json"
+        },
+        "decided": {
+          "sha256": "f755060bdc2c149a1f58afa7dcfc01b9d73b6b7346d97d400d1d57827c75778d",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-f755060bdc2c149a.json"
+        },
+        "child": {
+          "sha256": "d47a1315f4392b18975391a9a9484a42fc910759dd5a1cdec1d6c25aad956c83",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-d47a1315f4392b18.json"
+        }
+      },
+      "elapsed_wall_seconds": 393.7411736352369,
+      "comparison_download_url": "/research-pilots/discovery-qe-pilot-20261006/mesh-comparison-minus02.json"
+    },
+    {
+      "catalogue_state_id": "proposal-state:3d2ea22b5632195ab2fa6a017ce81b0821b5ebb1cd97faed03ce03938623ba95",
+      "catalogue_group_id": "proposal-group:8270e719ad07e9dc60c540bc619b928f7d57727fbda278e79f4b02686d1ffdaa",
+      "strain_percent": 0.0,
+      "source": {
+        "provider": "COD",
+        "record_id": "1526507",
+        "revision": "176429",
+        "cif_sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d",
+        "cif_url": "https://www.crystallography.net/cod/1526507.cif@176429"
+      },
+      "original_cif_sha256": [
+        "1317bd3658d1e779cb1284962b4a14d0e17e8f45811d28ff933b297afb5e4f9a",
+        "ce2498bd1abbcaa55f584ce246762b58d228ced3a7bd7648205e2a4a52ca2f02"
+      ],
+      "generated_cif_sha256": "ce2498bd1abbcaa55f584ce246762b58d228ced3a7bd7648205e2a4a52ca2f02",
+      "generated_candidate_id": "combined-candidate:f6ec70d35e822fa480a4c3c5f91d5cd47ce87449891f9cb46a5e2631529f0d8e",
+      "coordinate_model_equivalent": true,
+      "points": [
+        {
+          "mesh": [
+            2,
+            2,
+            2
+          ],
+          "status": "scf_reported_converged",
+          "comparison_eligible": true,
+          "initialization_status": "initialization_only",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_wall_seconds": {
+            "initialization": 1.8233753191307187,
+            "execution": 46.056973580271006
+          },
+          "energy_hartree_per_cell": -606.4055726201324,
+          "scf_error_hartree_per_cell": 7.940331295740344e-12,
+          "scf_iterations": 15,
+          "file_hashes": {
+            "input": "a5999847fd3c1492c66755f3a22fd181e8d9df9d8c35e469e64580cf66b75976",
+            "preparation_manifest": "56849b51f15c20e9380112112a7d33d9e44ce10e77ca5a2ce09173db2f5103b9",
+            "xml": "22dae189a407d647d595b44d7120997b5388884c4111eb1032e0158b8e50211e",
+            "stdout": "153c0bdc6daa695f488abba8f14b1059e0370df5244e789939a54af25c0be424",
+            "initialization_xml": "d8b0e7df20120892e8e254be802ed212729d212e40bbec970bbad0531c70bcb9",
+            "initialization_stdout": "5f79c56bcf115c7fc93adeb47890cd6533d2b44d7ec0448e38543839f1b1136c",
+            "execution_receipt": "d0c4bddaaf127747078553c941e33d647022d29bfee58a25fb8e3efdf14717bb",
+            "reading": "fdfcf9b9fc813efa384d1cd24902d74e30b2008192eb23882ef946778981cf61"
+          },
+          "failure_code": null
+        },
+        {
+          "mesh": [
+            4,
+            4,
+            4
+          ],
+          "status": "scf_reported_converged",
+          "comparison_eligible": true,
+          "initialization_status": "initialization_only",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_wall_seconds": {
+            "initialization": 1.8225641995668411,
+            "execution": 105.5617026751861
+          },
+          "energy_hartree_per_cell": -606.422518026421,
+          "scf_error_hartree_per_cell": 1.037095584734651e-11,
+          "scf_iterations": 14,
+          "file_hashes": {
+            "input": "f4fc72c6daa9e4fa4675632ac88b778cf04aa36d19a3f8f83142018363b93c31",
+            "preparation_manifest": "5b4bb62669307109a10eaeb6242eb26e591033e08e512de02fcf501b221021db",
+            "xml": "a586e108b3988f66602cf8bc61944ea2e05e69d9bde945c139e8df30843e3cad",
+            "stdout": "74b215903c481eb42358c971a5ccfdbf51dd59a2f1fac0a0589bf35d1d42904d",
+            "initialization_xml": "70a7f2a33759a8844dc1093da273e2e2ca74c7d83e70b65a2ba6c8acb023a018",
+            "initialization_stdout": "07a22ed1cb3dda719bf5d68381aef653eee3ebd5ae087baea28b8fcfdc8c752f",
+            "execution_receipt": "804bde3a8757809f8ac1496628eeb60317a9cc4836281a6af7f3f634f79212da",
+            "reading": "ee80e8de29129d37dd142578d01006eed1ee379b7fdb1a3a7f0e4ecd8797e7e0"
+          },
+          "failure_code": null
+        },
+        {
+          "mesh": [
+            6,
+            6,
+            6
+          ],
+          "status": "scf_reported_converged",
+          "comparison_eligible": true,
+          "initialization_status": "initialization_only",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_wall_seconds": {
+            "initialization": 1.7224574461579323,
+            "execution": 234.88640614412725
+          },
+          "energy_hartree_per_cell": -606.4235583363741,
+          "scf_error_hartree_per_cell": 7.382812782296923e-12,
+          "scf_iterations": 14,
+          "file_hashes": {
+            "input": "8e9217f03a56aa691e58733dc0ef94a59e05948be93692f8a4a190180b81000f",
+            "preparation_manifest": "2d61ad89028ab7edd2d5bbea10ad50fab0b0b6b3d7286c493a15c7044d85ca43",
+            "xml": "5a5278e9dd43380473f0d7635cc70b5c05d0739cd1826af25150ad3b3045cf01",
+            "stdout": "ec751ec17790957e330b0825d88a47d15d5df4afc6d9b816e7319408adfddac5",
+            "initialization_xml": "f5c2917e8d67ba8581b4e4e81441cd942b901414a9b3d44b5fcc2cfb285aeeb8",
+            "initialization_stdout": "7095380d82bbf5aea8b49a986e27ebed124df1a8088d0c9cc25bdd1e99ccd916",
+            "execution_receipt": "54cf1f8ea28ab044e37e12a31e5da79e8d33823d1c4eb91a5f1c67b31b057cff",
+            "reading": "eff2d8da68c7bd7b080d015031214b0ad183b5a08ce55343984c9f010da4333c"
+          },
+          "failure_code": null
+        }
+      ],
+      "assessment": "sampled_window_outside_tolerance",
+      "comparison_sha256": "61fad653479e07542161460fc99d84c8b73e6527b3420a317fe7351ae34d0f2a",
+      "energy_spread_hartree_per_atom": 0.0007494048434040224,
+      "maximum_scf_error_hartree_per_atom": 4.3212316030610455e-13,
+      "decision": {
+        "outcome": "redirect",
+        "next_direction": "refine_method",
+        "decision_sha256": "af47eee2d7ae8e5634df10005865344a3c1dc0c1014b4d8a5adf0c91bbd4dfe2",
+        "return_sha256": "513b9e79e6a00c6e1c0c7741181b8fd5d91fd3268829143be9017962a0428c66"
+      },
+      "case_exports": {
+        "prepared": {
+          "sha256": "a568a44117f3b1f53d5ac65482483577e01b71d4159b127093f894f025b0f4f9",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-a568a44117f3b1f5.json"
+        },
+        "returned": {
+          "sha256": "538143908ec6d7837232b286b7422ea5e076b28d0397899257b7952256a6908b",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-538143908ec6d783.json"
+        },
+        "decided": {
+          "sha256": "8144d6a829bb19065c3221d3dc926b8e6e993482a2e03882a61b65991d93fc70",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-8144d6a829bb1906.json"
+        },
+        "child": {
+          "sha256": "ec8f6f5e9d3415c495b2a2f523d7983f0c9b7f67f0102413b1fd8e165d9f1498",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-ec8f6f5e9d3415c4.json"
+        }
+      },
+      "elapsed_wall_seconds": 391.87347936443985,
+      "comparison_download_url": "/research-pilots/discovery-qe-pilot-20261006/mesh-comparison-zero.json"
+    },
+    {
+      "catalogue_state_id": "proposal-state:98f8bd687cb5987f4a8f0a61a24007d946c1bec04849b635b5bd1d34f05806ef",
+      "catalogue_group_id": "proposal-group:8270e719ad07e9dc60c540bc619b928f7d57727fbda278e79f4b02686d1ffdaa",
+      "strain_percent": 2.0,
+      "source": {
+        "provider": "COD",
+        "record_id": "1526507",
+        "revision": "176429",
+        "cif_sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d",
+        "cif_url": "https://www.crystallography.net/cod/1526507.cif@176429"
+      },
+      "original_cif_sha256": [
+        "775e8061ed1cf88306e8bac034abcb0ca296943f911acb428f50b6bbcecc14f1"
+      ],
+      "generated_cif_sha256": "775e8061ed1cf88306e8bac034abcb0ca296943f911acb428f50b6bbcecc14f1",
+      "generated_candidate_id": "combined-candidate:f5ae2baaa2bf7c1c8433cf9204d4ad8adb7665fcb3dcf9aaa5aeadfb515bca5b",
+      "coordinate_model_equivalent": true,
+      "points": [
+        {
+          "mesh": [
+            2,
+            2,
+            2
+          ],
+          "status": "scf_reported_converged",
+          "comparison_eligible": true,
+          "initialization_status": "initialization_only",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_wall_seconds": {
+            "initialization": 1.8245475310832262,
+            "execution": 41.494507101364434
+          },
+          "energy_hartree_per_cell": -606.3808781898538,
+          "scf_error_hartree_per_cell": 3.961145296522394e-12,
+          "scf_iterations": 14,
+          "file_hashes": {
+            "input": "09027dc744f23c09869f5bd829625ec4229099e35e2db5b423759a57c562a30c",
+            "preparation_manifest": "ba04809fa52a21d64186f87b2077c202d83cf76df134f881a506f0329da1007a",
+            "xml": "0023e1b0069fcb1a63cbb620d405631ea3984f74f10436cd062d3013d4e29fc1",
+            "stdout": "beb58ebbb8834d619a926f0114e641d109709d22ee2f40c3efa413f963510216",
+            "initialization_xml": "fe9e47a2e102373d89802b56d19522f03689c196babbba1ec9483a0f1d102479",
+            "initialization_stdout": "db7d1b1e74a5737d32f7ac53212059a8d12a06bf4e6701bfbc347fa0b8297bd8",
+            "execution_receipt": "786ca761104b479a04913057eaaa10617a6f903ede061ba3b03e99fa48d0958b",
+            "reading": "5f27c219a5cbb0c6cd5329d0e630f874ae701caa82260e5420b71a994c918e83"
+          },
+          "failure_code": null
+        },
+        {
+          "mesh": [
+            4,
+            4,
+            4
+          ],
+          "status": "scf_reported_converged",
+          "comparison_eligible": true,
+          "initialization_status": "initialization_only",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_wall_seconds": {
+            "initialization": 1.771063138730824,
+            "execution": 107.35538069531322
+          },
+          "energy_hartree_per_cell": -606.4007868426477,
+          "scf_error_hartree_per_cell": 9.930951154504696e-12,
+          "scf_iterations": 14,
+          "file_hashes": {
+            "input": "b08f71113f88dd8fb1f624f8d098e1f78d2c355a33f22d5a6b12a04369567551",
+            "preparation_manifest": "6fbb82bfbd13011821c3b633ffc09775d1275119dc96c4f0c34682e2c18e4552",
+            "xml": "d84a1ff01b123727536be507da65b992e7946a2bb5193f9172826bcd249a74fa",
+            "stdout": "245d0f82df5566cbe5bf22ae4a9517a753ca0c09cddd1d1358c5af310619c7f2",
+            "initialization_xml": "edb54d41022e400573429b7e4e7a667b313b19c9c31526a043c342f249cdc781",
+            "initialization_stdout": "5fa8fe5954e68ca9d3bf32a0fcd08713c994ece3b12ce28447f119f294464357",
+            "execution_receipt": "f19cd164ffd58d636e756b1148eb6a6135017fd444e1d788617737a2f5abe30d",
+            "reading": "b65a17f910f514ee4dd1dea3b664c8eccc92804fbc436769ca7a097731b2e3ba"
+          },
+          "failure_code": null
+        },
+        {
+          "mesh": [
+            6,
+            6,
+            6
+          ],
+          "status": "scf_reported_converged",
+          "comparison_eligible": true,
+          "initialization_status": "initialization_only",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_wall_seconds": {
+            "initialization": 1.7730248756706715,
+            "execution": 247.73776367958635
+          },
+          "energy_hartree_per_cell": -606.4014885351237,
+          "scf_error_hartree_per_cell": 1.629732033455174e-11,
+          "scf_iterations": 14,
+          "file_hashes": {
+            "input": "b3605a335681e64e5b1aba31e2b28197ad31c34e21aa60601478ef1a15dfd7d9",
+            "preparation_manifest": "f63176919e78bcc8cab9bfd65ed481b79f40e4c42afffda1640e5cbbcb45fced",
+            "xml": "422f05d9a195dd88533fbb7b048951e885bab5f9e4cd741d9d85bf04e2649791",
+            "stdout": "22ddb84000f0887a240d07633d2b1d80c829f11fa29b89592ee6cba00a4ed075",
+            "initialization_xml": "3d380dff9c02a1e50a950eeedec5440ff0a784bd4aba578a48944f434119b82e",
+            "initialization_stdout": "086a1ecf7cc8f52840ac7cf9b19207de55d51aebca5a02433bc4ed28cd0dae8b",
+            "execution_receipt": "67be4040fe42af5d1a52f84296864eb319e0b6d37c5c6efd4943cc39099062e8",
+            "reading": "d8bf2c4e5304a0919861cfc888333aed238a4091b51cc1c00d3b4f281dedaec0"
+          },
+          "failure_code": null
+        }
+      ],
+      "assessment": "sampled_window_outside_tolerance",
+      "comparison_sha256": "82fb6d8a953f5f0ba55ae5ff0ff9aff34e0d86779fff3ed570737bdba9398f6b",
+      "energy_spread_hartree_per_atom": 0.0008587643862464726,
+      "maximum_scf_error_hartree_per_atom": 6.790550139396558e-13,
+      "decision": {
+        "outcome": "redirect",
+        "next_direction": "refine_method",
+        "decision_sha256": "58f800c54b714bea4a6232ae30d196b5c519a57b599d1805ecba109ad24caeb1",
+        "return_sha256": "be9d332f131cacf53d3b4ec3f1550e65301423de2ce1f9cd9809e649c8ac9307"
+      },
+      "case_exports": {
+        "prepared": {
+          "sha256": "c58dc15496f2bf12fe2221f489129f50f858c7992a839600c1ca8ce2a275555e",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-c58dc15496f2bf12.json"
+        },
+        "returned": {
+          "sha256": "76ca3ccd63a6efae7c2fec71c15c727fc8e7f8837fd26c51049a5c8762868164",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-76ca3ccd63a6efae.json"
+        },
+        "decided": {
+          "sha256": "e63852b9281876b8be1160998f355468b1d83a3e958c927c3e0ee990aa0c36b2",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-e63852b9281876b8.json"
+        },
+        "child": {
+          "sha256": "f8b7b031296c59a97d3c362dc1691657556dbf499c1abba08a2e9d463d042ea1",
+          "download_url": "/research-pilots/discovery-qe-pilot-20261006/sclib-research-case-f8b7b031296c59a9.json"
+        }
+      },
+      "elapsed_wall_seconds": 401.9562870217487,
+      "comparison_download_url": "/research-pilots/discovery-qe-pilot-20261006/mesh-comparison-plus02.json"
+    }
+  ],
+  "interpretation": "QE etot includes numerical smearing in the engine convention (F = E - TS). It is not measured thermodynamic free energy, a formation/hull energy, pressure, Tc or a cross-state ranking.",
+  "authority": {
+    "formal_scientific_approval": false,
+    "human_scientific_review": null,
+    "rps_release": false,
+    "rps_score": null,
+    "rank": null,
+    "public_release": false,
+    "properties_inherited": false
+  }
+}

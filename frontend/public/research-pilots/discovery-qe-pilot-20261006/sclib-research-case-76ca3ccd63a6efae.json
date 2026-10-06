@@ -1,0 +1,244 @@
+{
+  "version": "discovery-research-cycle-export/1.0.0",
+  "payload_sha256": "60516a9d768b477a0e6dcffb242d7143e3749321a609934b5e0809a7d017bd04",
+  "record": {
+    "version": "discovery-research-cycle/1.0.0",
+    "target": {
+      "temperature_k": 300,
+      "pressure_gpa": 0.000101325,
+      "pressure_label": "1 atm",
+      "role": "research_target_not_observation"
+    },
+    "binding": {
+      "case_id": "research-case:7ba7dc1cac707e79f89ef50f5bacd666e8f56d964562767f29917544576193ec",
+      "definition_sha256": "7ba7dc1cac707e79f89ef50f5bacd666e8f56d964562767f29917544576193ec",
+      "state_sha256": "e9c1841937b9695cfec7e19537a6145b07b31c38ceaace4ab537d7c34156d3f2",
+      "action_sha256": "04f3f9154a50de8bf93d5293e41e98caa0129330300d0f6ee91f0f5679852484"
+    },
+    "definition": {
+      "title": "Mg7AlB16 plus02: retained finite mesh review",
+      "strategy": "geometry_construction",
+      "state": {
+        "formula": "Mg7AlB16",
+        "host_formula": "MgB2",
+        "catalogue_reference": {
+          "catalogue_version": "2026-10-06-retained-coordinate-proposals-v2",
+          "catalog_group_id": "proposal-group:8270e719ad07e9dc60c540bc619b928f7d57727fbda278e79f4b02686d1ffdaa",
+          "catalog_state_id": "proposal-state:98f8bd687cb5987f4a8f0a61a24007d946c1bec04849b635b5bd1d34f05806ef"
+        },
+        "source_pins": [
+          {
+            "artifact_id": "proposal-source:3e2f698b2051b6a51fd3421504a101b3e95de4c7636230de43a346fe8191d880",
+            "version": "COD revision 176429",
+            "sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d"
+          }
+        ],
+        "structure": {
+          "artifact_id": "combined-candidate:f5ae2baaa2bf7c1c8433cf9204d4ad8adb7665fcb3dcf9aaa5aeadfb515bca5b",
+          "version": "discovery-combined-site-candidates/1.0.0",
+          "sha256": "775e8061ed1cf88306e8bac034abcb0ca296943f911acb428f50b6bbcecc14f1"
+        },
+        "modifications": [
+          {
+            "kind": "substitution",
+            "description": "Mg to Al at image-0-cell-0-0-0 (source site Mg1)."
+          },
+          {
+            "kind": "strain",
+            "description": "Uniform lattice-length change: 2%; fractional coordinates fixed; pressure is not assigned."
+          }
+        ],
+        "conditions": {
+          "pressure_gpa": null,
+          "temperature_k": null,
+          "charge_state": 0,
+          "magnetic_state": "nonmagnetic"
+        },
+        "relation_to_catalogue": "proposed_conditions"
+      },
+      "evidence": {
+        "stability": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "electronic": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "pairing": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "coherence": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "geometry": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        },
+        "competing_order": {
+          "status": "unknown",
+          "readings": [],
+          "limitation": "No state-specific evidence has been assigned."
+        }
+      },
+      "hypothesis": {
+        "statement": "This fixed, unrelaxed coordinate model may permit a resolved finite mesh sensitivity window before further method assessment.",
+        "competing_explanations": [
+          "The retained mesh points resolve the declared finite window.",
+          "Numerical sensitivity or an incomplete SCF prevents that interpretation."
+        ],
+        "critical_unknown": "Finite mesh sensitivity does not establish cutoff, smearing or physical convergence."
+      },
+      "action": {
+        "kind": "computational_review",
+        "question": "Apply the pre-execution pilot plan to the retained outputs of this one coordinate state.",
+        "input_artifacts": [
+          {
+            "artifact_id": "custody/pilot-plan.json",
+            "version": "discovery-qe-pilot-plan/1.0.0",
+            "sha256": "1ea4ab79c7433d966f4ff393c4e8deda9adea6cc2cf7bcd42b6c65c0559da855"
+          },
+          {
+            "artifact_id": "custody/execution-started.json",
+            "version": "discovery-qe-pilot-execution/1.0.0",
+            "sha256": "9b112baa393675c61651c4324be60618d6ab18a557b8e4089e41a3ffffe8d12c"
+          },
+          {
+            "artifact_id": "custody/execution-finished.json",
+            "version": "discovery-qe-pilot-execution/1.0.0",
+            "sha256": "dae6d9725d7ea29fc40ccf72a8108af121eb7856c49fdd33130d3d5913ae75c0"
+          },
+          {
+            "artifact_id": "studies/plus02/model-lineage.json",
+            "version": "discovery-research-model-lineage/1.0.0",
+            "sha256": "0f28d9f5eef769eb8e65c6555bf16904252509405cc6659bf3a012a8dd688b16"
+          },
+          {
+            "artifact_id": "proposal-occurrence:a905f4a899310f4113bb47377492e4bc102311132c156064f6e0044e83653038",
+            "version": "2026-10-06-retained-coordinate-proposals-v2",
+            "sha256": "775e8061ed1cf88306e8bac034abcb0ca296943f911acb428f50b6bbcecc14f1"
+          },
+          {
+            "artifact_id": "custody/mgb2-al-plus02-k2-execution-receipt.json",
+            "version": "discovery-qe-pilot-execution/1.0.0",
+            "sha256": "786ca761104b479a04913057eaaa10617a6f903ede061ba3b03e99fa48d0958b"
+          },
+          {
+            "artifact_id": "custody/mgb2-al-plus02-k4-execution-receipt.json",
+            "version": "discovery-qe-pilot-execution/1.0.0",
+            "sha256": "f19cd164ffd58d636e756b1148eb6a6135017fd444e1d788617737a2f5abe30d"
+          },
+          {
+            "artifact_id": "custody/mgb2-al-plus02-k6-execution-receipt.json",
+            "version": "discovery-qe-pilot-execution/1.0.0",
+            "sha256": "67be4040fe42af5d1a52f84296864eb319e0b6d37c5c6efd4943cc39099062e8"
+          },
+          {
+            "artifact_id": "sclib-qe-output-5f27c219a5cbb0c6.json",
+            "version": "discovery-qe-output-reading/1.0.0",
+            "sha256": "5f27c219a5cbb0c6cd5329d0e630f874ae701caa82260e5420b71a994c918e83"
+          },
+          {
+            "artifact_id": "sclib-qe-output-b65a17f910f514ee.json",
+            "version": "discovery-qe-output-reading/1.0.0",
+            "sha256": "b65a17f910f514ee4dd1dea3b664c8eccc92804fbc436769ca7a097731b2e3ba"
+          },
+          {
+            "artifact_id": "sclib-qe-output-d8bf2c4e5304a091.json",
+            "version": "discovery-qe-output-reading/1.0.0",
+            "sha256": "d8bf2c4e5304a0919861cfc888333aed238a4091b51cc1c00d3b4f281dedaec0"
+          }
+        ],
+        "prerequisites": [
+          {
+            "description": "Frozen input bytes, coordinator receipt pins and local coordinate replay agree.",
+            "status": "met"
+          },
+          {
+            "description": "All three same-state SCF readings are complete and electronically converged.",
+            "status": "met"
+          }
+        ],
+        "resources": {
+          "access": "unconfirmed",
+          "cpu_hours": null,
+          "gpu_hours": null,
+          "memory_gib": null,
+          "storage_gib": null,
+          "human_hours": null
+        },
+        "branches": [
+          {
+            "id": "sampled_window",
+            "observable": "All three eligible points satisfy the declared finite-window tolerance.",
+            "decision": "continue",
+            "next_direction": "refine_method"
+          },
+          {
+            "id": "unresolved_window",
+            "observable": "A completed finite window exceeds tolerance or lacks SCF precision.",
+            "decision": "redirect",
+            "next_direction": "refine_method"
+          },
+          {
+            "id": "incomplete_native",
+            "observable": "A missing, failed, rejected or unconverged point prevents a three-point comparison.",
+            "decision": "redirect",
+            "next_direction": "refine_method"
+          }
+        ],
+        "numerical_protocol": {
+          "kind": "mesh",
+          "tolerance_hartree_per_atom": 0.0001
+        },
+        "ml": null
+      }
+    },
+    "parent": null,
+    "returns": [
+      {
+        "binding": {
+          "case_id": "research-case:7ba7dc1cac707e79f89ef50f5bacd666e8f56d964562767f29917544576193ec",
+          "definition_sha256": "7ba7dc1cac707e79f89ef50f5bacd666e8f56d964562767f29917544576193ec",
+          "state_sha256": "e9c1841937b9695cfec7e19537a6145b07b31c38ceaace4ab537d7c34156d3f2",
+          "action_sha256": "04f3f9154a50de8bf93d5293e41e98caa0129330300d0f6ee91f0f5679852484"
+        },
+        "kind": "qe_sampled_study",
+        "artifacts": [
+          {
+            "artifact_id": "sclib-qe-convergence-82fb6d8a953f5f0b.json",
+            "version": "discovery-qe-sampled-convergence/1.0.0",
+            "sha256": "82fb6d8a953f5f0ba55ae5ff0ff9aff34e0d86779fff3ed570737bdba9398f6b"
+          }
+        ],
+        "model_cif_sha256": "775e8061ed1cf88306e8bac034abcb0ca296943f911acb428f50b6bbcecc14f1",
+        "findings": "Post-run review of retained native files using the separately frozen pre-execution pilot plan; this case itself is not execution preregistration. QE etot includes the selected numerical smearing contribution (F = E - TS in the engine convention); it is not a measured thermodynamic free energy, hull energy or Tc. No cross-state energy ranking or scientific approval.",
+        "remaining_unknowns": [
+          "A finite numerical sensitivity window does not establish a numerical limit.",
+          "Physical stability, pairing and Tc are not established by this study."
+        ],
+        "numerical_assessment": "sampled_window_outside_tolerance",
+        "association": "researcher_linked_unverified",
+        "return_sha256": "be9d332f131cacf53d3b4ec3f1550e65301423de2ce1f9cd9809e649c8ac9307"
+      }
+    ],
+    "decision": null,
+    "authority": {
+      "scientific_acceptance": false,
+      "execution_authenticated": false,
+      "database_write": false,
+      "public_release": false,
+      "rps_score": null,
+      "rank": null,
+      "native_material_id": null,
+      "native_state_id": null
+    }
+  }
+}

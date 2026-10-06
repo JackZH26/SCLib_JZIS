@@ -1,0 +1,319 @@
+{
+  "adapter_sha256": "45d7f3aa6ad4987f8ef6d455ee63af76620e237e3013ab50c0e880e1629c46d7",
+  "authority": {
+    "canonical_properties_modified": false,
+    "ml_training_approved": false,
+    "observed_origin_promoted": false,
+    "scientific_acceptance": false,
+    "source_use_permission_granted": false,
+    "training_executed": false
+  },
+  "channels": {
+    "organic:tc": {
+      "criterion": "tc_at_pcrit_or_atmospheric_criterion_unspecified",
+      "expression_role": "reported_tc_expression",
+      "expressions": 517,
+      "not_reported_rows": 51,
+      "positive_kelvin_and_recognized_method_code": 0,
+      "positive_numeric_lexemes": 516,
+      "positive_with_explicit_kelvin": 0,
+      "reason_counts": {
+        "magnetic_field_and_measurement_window_not_bound": 517,
+        "measurement_method_not_supplied": 478,
+        "pressure_not_bound_unknown_not_ambient": 37,
+        "pressure_source_state_association_unreviewed": 480,
+        "primary_experimental_origin_not_adjudicated": 517,
+        "primary_source_revision_and_occurrence_review_missing": 517,
+        "sample_state_and_work_identity_unreviewed": 517,
+        "scientific_label_admission_not_supplied": 517,
+        "source_publication_currentness_not_checked": 517,
+        "source_use_permission_decision_not_supplied": 517,
+        "tc_criterion_not_resolved_by_source_column": 517,
+        "tc_expression_nonpoint_or_nonpositive_not_negative_label": 1,
+        "temperature_unit_not_supplied": 517
+      },
+      "recognized_method_code_expressions": 39,
+      "source_field": "tc",
+      "source_rows": 568,
+      "source_table": "organic"
+    },
+    "organic:tcmax": {
+      "criterion": "maximum_tc_under_pressure_criterion_unspecified",
+      "expression_role": "reported_tc_expression",
+      "expressions": 83,
+      "not_reported_rows": 485,
+      "positive_kelvin_and_recognized_method_code": 0,
+      "positive_numeric_lexemes": 83,
+      "positive_with_explicit_kelvin": 0,
+      "reason_counts": {
+        "magnetic_field_and_measurement_window_not_bound": 83,
+        "measurement_method_not_supplied": 78,
+        "pressure_not_bound_unknown_not_ambient": 11,
+        "pressure_source_state_association_unreviewed": 72,
+        "pressure_unit_not_supplied": 72,
+        "primary_experimental_origin_not_adjudicated": 83,
+        "primary_source_revision_and_occurrence_review_missing": 83,
+        "sample_state_and_work_identity_unreviewed": 83,
+        "scientific_label_admission_not_supplied": 83,
+        "source_publication_currentness_not_checked": 83,
+        "source_use_permission_decision_not_supplied": 83,
+        "tc_criterion_not_resolved_by_source_column": 83,
+        "temperature_unit_not_supplied": 83
+      },
+      "recognized_method_code_expressions": 5,
+      "source_field": "tcmax",
+      "source_rows": 568,
+      "source_table": "organic"
+    },
+    "organic:tcn": {
+      "criterion": "nontransition_measurement_lower_temperature",
+      "expression_role": "measurement_lower_temperature_not_tc",
+      "expressions": 23,
+      "not_reported_rows": 545,
+      "positive_kelvin_and_recognized_method_code": 0,
+      "positive_numeric_lexemes": 16,
+      "positive_with_explicit_kelvin": 0,
+      "reason_counts": {
+        "magnetic_field_and_measurement_window_not_bound": 23,
+        "measurement_method_not_supplied": 23,
+        "nontransition_temperature_limit_not_tc_or_zero_label": 23,
+        "pressure_not_bound_unknown_not_ambient": 23,
+        "primary_experimental_origin_not_adjudicated": 23,
+        "primary_source_revision_and_occurrence_review_missing": 23,
+        "sample_state_and_work_identity_unreviewed": 23,
+        "scientific_label_admission_not_supplied": 23,
+        "source_publication_currentness_not_checked": 23,
+        "source_use_permission_decision_not_supplied": 23,
+        "tc_expression_nonpoint_or_nonpositive_not_negative_label": 7,
+        "temperature_unit_not_supplied": 23
+      },
+      "recognized_method_code_expressions": 0,
+      "source_field": "tcn",
+      "source_rows": 568,
+      "source_table": "organic"
+    },
+    "oxide_metallic:t1": {
+      "criterion": "zero_resistance",
+      "expression_role": "reported_tc_expression",
+      "expressions": 4051,
+      "not_reported_rows": 29407,
+      "positive_kelvin_and_recognized_method_code": 30,
+      "positive_numeric_lexemes": 4034,
+      "positive_with_explicit_kelvin": 2316,
+      "reason_counts": {
+        "magnetic_field_and_measurement_window_not_bound": 4051,
+        "maximum_applied_pressure_is_not_tc_pressure": 2,
+        "measurement_method_code_requires_review": 16,
+        "measurement_method_not_supplied": 3990,
+        "pressure_not_bound_unknown_not_ambient": 4051,
+        "primary_experimental_origin_not_adjudicated": 4051,
+        "primary_source_revision_and_occurrence_review_missing": 4051,
+        "sample_state_and_work_identity_unreviewed": 4051,
+        "scientific_label_admission_not_supplied": 4051,
+        "source_publication_currentness_not_checked": 4051,
+        "source_use_permission_decision_not_supplied": 4051,
+        "tc_expression_nonpoint_or_nonpositive_not_negative_label": 17,
+        "temperature_unit_not_supplied": 1717,
+        "temperature_unit_requires_review": 1
+      },
+      "recognized_method_code_expressions": 45,
+      "source_field": "t1",
+      "source_rows": 33458,
+      "source_table": "oxide_metallic"
+    },
+    "oxide_metallic:t2": {
+      "criterion": "resistive_midpoint",
+      "expression_role": "reported_tc_expression",
+      "expressions": 17117,
+      "not_reported_rows": 16341,
+      "positive_kelvin_and_recognized_method_code": 112,
+      "positive_numeric_lexemes": 17077,
+      "positive_with_explicit_kelvin": 13122,
+      "reason_counts": {
+        "magnetic_field_and_measurement_window_not_bound": 17117,
+        "maximum_applied_pressure_is_not_tc_pressure": 1,
+        "measurement_method_code_requires_review": 55,
+        "measurement_method_not_supplied": 16879,
+        "pressure_not_bound_unknown_not_ambient": 17117,
+        "primary_experimental_origin_not_adjudicated": 17117,
+        "primary_source_revision_and_occurrence_review_missing": 17117,
+        "sample_state_and_work_identity_unreviewed": 17117,
+        "scientific_label_admission_not_supplied": 17117,
+        "source_publication_currentness_not_checked": 17117,
+        "source_use_permission_decision_not_supplied": 17117,
+        "tc_expression_nonpoint_or_nonpositive_not_negative_label": 40,
+        "temperature_unit_not_supplied": 3957
+      },
+      "recognized_method_code_expressions": 183,
+      "source_field": "t2",
+      "source_rows": 33458,
+      "source_table": "oxide_metallic"
+    },
+    "oxide_metallic:t3": {
+      "criterion": "resistive_r100",
+      "expression_role": "reported_tc_expression",
+      "expressions": 4606,
+      "not_reported_rows": 28852,
+      "positive_kelvin_and_recognized_method_code": 54,
+      "positive_numeric_lexemes": 4587,
+      "positive_with_explicit_kelvin": 3175,
+      "reason_counts": {
+        "magnetic_field_and_measurement_window_not_bound": 4606,
+        "maximum_applied_pressure_is_not_tc_pressure": 9,
+        "measurement_method_code_requires_review": 122,
+        "measurement_method_not_supplied": 4366,
+        "pressure_not_bound_unknown_not_ambient": 4606,
+        "primary_experimental_origin_not_adjudicated": 4606,
+        "primary_source_revision_and_occurrence_review_missing": 4606,
+        "sample_state_and_work_identity_unreviewed": 4606,
+        "scientific_label_admission_not_supplied": 4606,
+        "source_publication_currentness_not_checked": 4606,
+        "source_use_permission_decision_not_supplied": 4606,
+        "tc_expression_nonpoint_or_nonpositive_not_negative_label": 19,
+        "temperature_unit_not_supplied": 1412
+      },
+      "recognized_method_code_expressions": 118,
+      "source_field": "t3",
+      "source_rows": 33458,
+      "source_table": "oxide_metallic"
+    },
+    "oxide_metallic:tc": {
+      "criterion": "recommended_tc_criterion_unspecified",
+      "expression_role": "reported_tc_expression",
+      "expressions": 26358,
+      "not_reported_rows": 7100,
+      "positive_kelvin_and_recognized_method_code": 333,
+      "positive_numeric_lexemes": 26268,
+      "positive_with_explicit_kelvin": 19925,
+      "reason_counts": {
+        "magnetic_field_and_measurement_window_not_bound": 26358,
+        "maximum_applied_pressure_is_not_tc_pressure": 13,
+        "measurement_method_code_requires_review": 208,
+        "measurement_method_not_supplied": 25660,
+        "pressure_not_bound_unknown_not_ambient": 26358,
+        "primary_experimental_origin_not_adjudicated": 26358,
+        "primary_source_revision_and_occurrence_review_missing": 26358,
+        "sample_state_and_work_identity_unreviewed": 26358,
+        "scientific_label_admission_not_supplied": 26358,
+        "source_publication_currentness_not_checked": 26358,
+        "source_use_permission_decision_not_supplied": 26358,
+        "tc_criterion_not_resolved_by_source_column": 26358,
+        "tc_expression_nonpoint_or_nonpositive_not_negative_label": 90,
+        "temperature_unit_not_supplied": 6347,
+        "temperature_unit_requires_review": 1
+      },
+      "recognized_method_code_expressions": 490,
+      "source_field": "tc",
+      "source_rows": 33458,
+      "source_table": "oxide_metallic"
+    },
+    "oxide_metallic:tcn": {
+      "criterion": "nontransition_measurement_lower_temperature",
+      "expression_role": "measurement_lower_temperature_not_tc",
+      "expressions": 4641,
+      "not_reported_rows": 28817,
+      "positive_kelvin_and_recognized_method_code": 6,
+      "positive_numeric_lexemes": 4158,
+      "positive_with_explicit_kelvin": 3439,
+      "reason_counts": {
+        "magnetic_field_and_measurement_window_not_bound": 4641,
+        "maximum_applied_pressure_is_not_tc_pressure": 1,
+        "measurement_method_not_supplied": 4623,
+        "nontransition_temperature_limit_not_tc_or_zero_label": 4641,
+        "pressure_not_bound_unknown_not_ambient": 4641,
+        "primary_experimental_origin_not_adjudicated": 4641,
+        "primary_source_revision_and_occurrence_review_missing": 4641,
+        "sample_state_and_work_identity_unreviewed": 4641,
+        "scientific_label_admission_not_supplied": 4641,
+        "source_publication_currentness_not_checked": 4641,
+        "source_use_permission_decision_not_supplied": 4641,
+        "tc_expression_nonpoint_or_nonpositive_not_negative_label": 483,
+        "temperature_unit_not_supplied": 720
+      },
+      "recognized_method_code_expressions": 18,
+      "source_field": "tcn",
+      "source_rows": 33458,
+      "source_table": "oxide_metallic"
+    },
+    "oxide_metallic:tcsus": {
+      "criterion": "susceptibility_criterion_unspecified",
+      "expression_role": "reported_tc_expression",
+      "expressions": 5624,
+      "not_reported_rows": 27834,
+      "positive_kelvin_and_recognized_method_code": 63,
+      "positive_numeric_lexemes": 5599,
+      "positive_with_explicit_kelvin": 4542,
+      "reason_counts": {
+        "magnetic_field_and_measurement_window_not_bound": 5624,
+        "maximum_applied_pressure_is_not_tc_pressure": 1,
+        "measurement_method_code_requires_review": 42,
+        "measurement_method_not_supplied": 5505,
+        "pressure_not_bound_unknown_not_ambient": 5624,
+        "primary_experimental_origin_not_adjudicated": 5624,
+        "primary_source_revision_and_occurrence_review_missing": 5624,
+        "sample_state_and_work_identity_unreviewed": 5624,
+        "scientific_label_admission_not_supplied": 5624,
+        "source_publication_currentness_not_checked": 5624,
+        "source_use_permission_decision_not_supplied": 5624,
+        "tc_criterion_not_resolved_by_source_column": 5624,
+        "tc_expression_nonpoint_or_nonpositive_not_negative_label": 25,
+        "temperature_unit_not_supplied": 1059
+      },
+      "recognized_method_code_expressions": 77,
+      "source_field": "tcsus",
+      "source_rows": 33458,
+      "source_table": "oxide_metallic"
+    }
+  },
+  "counting_scope": "Source expressions partitioned by table and field; row cohorts overlap across channels. Counts are not independent experiments or admitted labels.",
+  "dataset_version": "240322",
+  "independent_experiment_count": null,
+  "input_pins": {
+    "manifest": {
+      "path": "api/services/resources/supercon_mdr_240322_manifest.json",
+      "sha256": "32a418e39916952c5731ff5f1a9839bd7f7977d183eb242c0c5e213111e1645d"
+    },
+    "organic": {
+      "path": "frontend/public/research-pilots/materials-mdr-organic-240322.json",
+      "sha256": "5da57e0959d1ea0c081460dbf24a62b2eacfcb0d179ad1bfcbc272bdfd2ea3bd"
+    },
+    "organic_source": {
+      "path": "frontend/public/research-pilots/240322_MDR_Organic.txt",
+      "sha256": "d116848a90d01e48356ed6cf0bb69035fa863a3a559deac1ef188025bdb3b423"
+    },
+    "oxide": {
+      "path": "api/services/resources/supercon_mdr_240322_oxide_metadata.json.gz",
+      "sha256": "d1fce28506d68732744858570f6e4ee2a8dfef94630c8b3b48d703b95443707c"
+    }
+  },
+  "model_score": null,
+  "model_uncertainty": null,
+  "next_actions": [
+    "Review exact source versions, expression locators, sample/state identity and publication status.",
+    "Choose one Tc criterion and retain explicit pressure, field and measurement-window evidence.",
+    "Review source-use permissions and scientific labels through the existing admission workflow.",
+    "Freeze work/sample/structure groups and family holdouts before preprocessing or fitting."
+  ],
+  "readiness": "source_review_required",
+  "resource_budget": null,
+  "source_families_reviewed": false,
+  "source_inventory": {
+    "organic": {
+      "distinct_nonempty_reference_codes": 335,
+      "rows": 568
+    },
+    "oxide_metallic": {
+      "distinct_nonempty_reference_codes": 7254,
+      "rows": 33458
+    }
+  },
+  "source_license": {
+    "attribution": "MDR SuperCon Datasheet Ver.240322, National Institute for Materials Science (NIMS)",
+    "dataset_doi": "https://doi.org/10.48505/nims.4487",
+    "project_ml_use_permission_decision": "not_supplied",
+    "recorded_license": "CC BY 4.0"
+  },
+  "training_eligible_label_count": null,
+  "training_eligible_labels_established": false,
+  "version": "discovery-experimental-readiness/1.0.0"
+}

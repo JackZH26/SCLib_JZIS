@@ -1,0 +1,3213 @@
+{
+  "version": "discovery-qe-sampled-convergence/1.0.0",
+  "axis": "mesh",
+  "parameter_label": "k-point mesh",
+  "candidate_id": "combined-candidate:7ee34437d2e98eb8de21c231518b2e5ea4c401247c4f890bdbd4638c3125e300",
+  "candidate_cif_sha256": "309ae91a4d2de6a47409083702599877c93f82edabdb8030839066147538bc9f",
+  "source_reference": {
+    "id": "cod-1526507",
+    "formula": "MgB2",
+    "declared_formula": "B2 Mg",
+    "space_group": "P 6/m m m",
+    "space_group_number": 191,
+    "lattice": {
+      "a": {
+        "raw": "3.0823",
+        "value": 3.0823,
+        "unit": "Å",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_length_a",
+        "CIF_line_1_based": 38
+      },
+      "b": {
+        "raw": "3.0823",
+        "value": 3.0823,
+        "unit": "Å",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_length_b",
+        "CIF_line_1_based": 39
+      },
+      "c": {
+        "raw": "3.51461",
+        "value": 3.51461,
+        "unit": "Å",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_length_c",
+        "CIF_line_1_based": 40
+      },
+      "alpha": {
+        "raw": "90",
+        "value": 90,
+        "unit": "degrees",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_angle_alpha",
+        "CIF_line_1_based": 34
+      },
+      "beta": {
+        "raw": "90",
+        "value": 90,
+        "unit": "degrees",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_angle_beta",
+        "CIF_line_1_based": 35
+      },
+      "gamma": {
+        "raw": "120",
+        "value": 120,
+        "unit": "degrees",
+        "standard_uncertainty": null,
+        "uncertainty_status": "not_reported",
+        "CIF_tag": "_cell_angle_gamma",
+        "CIF_line_1_based": 36
+      }
+    },
+    "structure_conditions": {
+      "celltemp": {
+        "raw": null,
+        "value": null,
+        "standard_uncertainty": null,
+        "unit": "K",
+        "status": "not_supplied",
+        "source_tag": "_cell_measurement_temperature",
+        "source_line": null
+      },
+      "diffrtemp": {
+        "raw": null,
+        "value": null,
+        "standard_uncertainty": null,
+        "unit": "K",
+        "status": "not_supplied",
+        "source_tag": "_diffrn_ambient_temperature",
+        "source_line": null
+      },
+      "cellpressure": {
+        "raw": null,
+        "value": null,
+        "standard_uncertainty": null,
+        "unit": "kPa",
+        "status": "not_supplied",
+        "source_tag": "_cell_measurement_pressure",
+        "source_line": null
+      },
+      "diffrpressure": {
+        "raw": null,
+        "value": null,
+        "standard_uncertainty": null,
+        "unit": "kPa",
+        "status": "not_supplied",
+        "source_tag": "_diffrn_ambient_pressure",
+        "source_line": null
+      }
+    },
+    "source": {
+      "entry_url": "https://www.crystallography.net/cod/1526507.html",
+      "cif_url": "https://www.crystallography.net/cod/1526507.cif@176429",
+      "captured_revision": 176429,
+      "version_url_succeeded_at_capture": true,
+      "file_sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d",
+      "bytes": 2105,
+      "year": 2001,
+      "doi": null,
+      "bibliography": {
+        "authors": "Jorgensen, J.D.; Hinks, D.G.; Short, S.",
+        "title": "Lattice properties of Mg B2 versus temperature and pressure",
+        "journal": "Physical Review, Serie 3. B - Condensed Matter (18,1978-)",
+        "year": "2001",
+        "volume": "63",
+        "firstpage": "2245221",
+        "lastpage": "2245225",
+        "doi": null,
+        "CIF_doi": null,
+        "COD_method": null,
+        "CIF_radiation_probe": null
+      },
+      "captured_at_utc": "2026-10-01T20:39:12.139577+00:00",
+      "captured_HTTP_status": 200,
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_basis": "Each already-captured official COD entry links to CC0 /publicdomain/zero/1.0/; the CIF header states public domain.",
+      "download_is_mutable_current_file": false,
+      "publication_revision_verified": false
+    },
+    "original_cif_filename": "1526507-0eb4eaf60989.cif",
+    "sites": [
+      {
+        "label": "Mg1",
+        "element": "Mg",
+        "fractional": [
+          {
+            "raw": "0",
+            "value": 0
+          },
+          {
+            "raw": "0",
+            "value": 0
+          },
+          {
+            "raw": "0",
+            "value": 0
+          }
+        ],
+        "occupancy": {
+          "raw": "1",
+          "value": 1
+        }
+      },
+      {
+        "label": "B1",
+        "element": "B",
+        "fractional": [
+          {
+            "raw": "0.3333",
+            "value": 0.3333
+          },
+          {
+            "raw": "0.6667",
+            "value": 0.6667
+          },
+          {
+            "raw": "0.5",
+            "value": 0.5
+          }
+        ],
+        "occupancy": {
+          "raw": "1",
+          "value": 1
+        }
+      }
+    ],
+    "declared_symmetry_operations": [
+      "x,y,z",
+      "x-y,x,z",
+      "-y,x-y,z",
+      "-x,-y,z",
+      "-x+y,-x,z",
+      "y,-x+y,z",
+      "-y,-x,-z",
+      "x-y,-y,-z",
+      "x,x-y,-z",
+      "y,x,-z",
+      "-x+y,y,-z",
+      "-x,-x+y,-z",
+      "-x,-y,-z",
+      "-x+y,-x,-z",
+      "y,-x+y,-z",
+      "x,y,-z",
+      "x-y,x,-z",
+      "-y,x-y,-z",
+      "y,x,z",
+      "-x+y,y,z",
+      "-x,-x+y,z",
+      "-y,-x,z",
+      "x-y,-y,z",
+      "x,x-y,z"
+    ],
+    "display_unit_cell_sites": [
+      {
+        "source_site_label": "Mg1",
+        "element": "Mg",
+        "fractional": [
+          0,
+          0,
+          0
+        ],
+        "occupancy": {
+          "raw": "1",
+          "value": 1
+        },
+        "representative_operation_index": 0,
+        "equivalent_operation_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ]
+      },
+      {
+        "source_site_label": "B1",
+        "element": "B",
+        "fractional": [
+          0.3333,
+          0.6667,
+          0.5
+        ],
+        "occupancy": {
+          "raw": "1",
+          "value": 1
+        },
+        "representative_operation_index": 0,
+        "equivalent_operation_indices": [
+          0,
+          2,
+          4,
+          6,
+          8,
+          10,
+          13,
+          15,
+          17,
+          19,
+          21,
+          23
+        ]
+      },
+      {
+        "source_site_label": "B1",
+        "element": "B",
+        "fractional": [
+          0.6666000000000001,
+          0.3333,
+          0.5
+        ],
+        "occupancy": {
+          "raw": "1",
+          "value": 1
+        },
+        "representative_operation_index": 1,
+        "equivalent_operation_indices": [
+          1,
+          3,
+          5,
+          7,
+          9,
+          11,
+          12,
+          14,
+          16,
+          18,
+          20,
+          22
+        ]
+      }
+    ],
+    "limitations": [
+      "Physical sample, phase and catalogue result matching remain pending.",
+      "Pressure is not supplied in this CIF.",
+      "Temperature is not supplied in this CIF."
+    ],
+    "rounding_notes": [
+      "Rounded boron coordinates produce precision-sensitive symmetry-equivalent near-images. The 0.001 Å deduplication check agrees with B2; original coordinates were not changed."
+    ]
+  },
+  "atom_count": 24,
+  "tolerance": {
+    "value": 0.0001,
+    "unit": "Hartree/atom",
+    "origin": "user_requested"
+  },
+  "ordering": "componentwise nondecreasing mesh",
+  "reference_reading_sha256": "55356cd31f45d6a5b29473b8d2e76a4fdc5dcdb670747e02acdd823a68b5c48d",
+  "points": [
+    {
+      "reading_sha256": "48c70b795255da0713453155e76c44686afa292dd4b022dfd4a91d4e7c6162ae",
+      "preparation_id": "qe-input:1869ca9f00f6fdd6e44bd32ef6f4ee1712c2466dd49fb34698aa1425b9fa2f7f",
+      "parameter": [
+        2,
+        2,
+        2
+      ],
+      "energy_hartree_per_cell": -606.4018619934994,
+      "difference_from_last_hartree_per_atom": 0.0006334572564270502,
+      "scf_error_hartree_per_atom": 2.0457753286758532e-12,
+      "maximum_force_hartree_per_bohr": 0.006630079609622612
+    },
+    {
+      "reading_sha256": "4cb059e192ad446f91d6bfb1de74cac70fede74a1297dc88df5267e01a0d5818",
+      "preparation_id": "qe-input:85111b6510ec103b7bbf41e32271ba29c7d6ef5884692f83616a9b8222a68f87",
+      "parameter": [
+        4,
+        4,
+        4
+      ],
+      "energy_hartree_per_cell": -606.4156776926495,
+      "difference_from_last_hartree_per_atom": 0.0000578031251734501,
+      "scf_error_hartree_per_atom": 1.7370931464399263e-13,
+      "maximum_force_hartree_per_bohr": 0.005424196253263044
+    },
+    {
+      "reading_sha256": "55356cd31f45d6a5b29473b8d2e76a4fdc5dcdb670747e02acdd823a68b5c48d",
+      "preparation_id": "qe-input:c2bc7b9decd60249d17aa6ebd8d7bd75d8f27dbab10e42fd8b18f8cfe48b1b85",
+      "parameter": [
+        6,
+        6,
+        6
+      ],
+      "energy_hartree_per_cell": -606.4170649676537,
+      "difference_from_last_hartree_per_atom": 0,
+      "scf_error_hartree_per_atom": 1.7305231026019074e-13,
+      "maximum_force_hartree_per_bohr": 0.005233500229190769
+    }
+  ],
+  "sampled_window": {
+    "point_count": 3,
+    "reading_sha256s": [
+      "48c70b795255da0713453155e76c44686afa292dd4b022dfd4a91d4e7c6162ae",
+      "4cb059e192ad446f91d6bfb1de74cac70fede74a1297dc88df5267e01a0d5818",
+      "55356cd31f45d6a5b29473b8d2e76a4fdc5dcdb670747e02acdd823a68b5c48d"
+    ],
+    "energy_spread_hartree_per_atom": 0.0006334572564270502,
+    "maximum_reported_scf_error_hartree_per_atom": 2.0457753286758532e-12,
+    "assessment": "sampled_window_outside_tolerance"
+  },
+  "scope": {
+    "claim": "Observed energy sensitivity over the last three supplied refinement points at fixed remaining settings.",
+    "limit_established": false,
+    "joint_numerical_convergence_established": false,
+    "force_or_stress_convergence_assessed": false,
+    "execution_authenticated": false,
+    "stable_host_validated": false,
+    "tc_calculated": false,
+    "scientific_acceptance": false,
+    "database_write": false,
+    "caveats": [
+      "A finite sampled plateau is not a proof of an infinite-cutoff, dense-mesh or zero-smearing limit.",
+      "Mesh and smearing need joint examination; numerical broadening is not experimental temperature.",
+      "SCF error is an engine estimate, not a rigorous bound on total-energy accuracy.",
+      "Absolute total energies cannot rank different compositions, geometries or pseudopotentials."
+    ]
+  },
+  "readings": [
+    {
+      "sha256": "48c70b795255da0713453155e76c44686afa292dd4b022dfd4a91d4e7c6162ae",
+      "filename": "sclib-qe-output-48c70b795255da07.json",
+      "report": {
+        "version": "discovery-qe-output-reading/1.0.0",
+        "input_kind": "execution",
+        "preparation_id": "qe-input:1869ca9f00f6fdd6e44bd32ef6f4ee1712c2466dd49fb34698aa1425b9fa2f7f",
+        "candidate_id": "combined-candidate:7ee34437d2e98eb8de21c231518b2e5ea4c401247c4f890bdbd4638c3125e300",
+        "candidate_cif_sha256": "309ae91a4d2de6a47409083702599877c93f82edabdb8030839066147538bc9f",
+        "parent_id": "supercell:9ebd97739a4c539e3a64540963d2b9183791fe129bd66f28ed9178fd3e1fe590",
+        "composition": {
+          "Al": 1,
+          "B": 16,
+          "Mg": 7
+        },
+        "source_reference": {
+          "id": "cod-1526507",
+          "formula": "MgB2",
+          "declared_formula": "B2 Mg",
+          "space_group": "P 6/m m m",
+          "space_group_number": 191,
+          "lattice": {
+            "a": {
+              "raw": "3.0823",
+              "value": 3.0823,
+              "unit": "Å",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_length_a",
+              "CIF_line_1_based": 38
+            },
+            "b": {
+              "raw": "3.0823",
+              "value": 3.0823,
+              "unit": "Å",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_length_b",
+              "CIF_line_1_based": 39
+            },
+            "c": {
+              "raw": "3.51461",
+              "value": 3.51461,
+              "unit": "Å",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_length_c",
+              "CIF_line_1_based": 40
+            },
+            "alpha": {
+              "raw": "90",
+              "value": 90,
+              "unit": "degrees",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_angle_alpha",
+              "CIF_line_1_based": 34
+            },
+            "beta": {
+              "raw": "90",
+              "value": 90,
+              "unit": "degrees",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_angle_beta",
+              "CIF_line_1_based": 35
+            },
+            "gamma": {
+              "raw": "120",
+              "value": 120,
+              "unit": "degrees",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_angle_gamma",
+              "CIF_line_1_based": 36
+            }
+          },
+          "structure_conditions": {
+            "celltemp": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "K",
+              "status": "not_supplied",
+              "source_tag": "_cell_measurement_temperature",
+              "source_line": null
+            },
+            "diffrtemp": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "K",
+              "status": "not_supplied",
+              "source_tag": "_diffrn_ambient_temperature",
+              "source_line": null
+            },
+            "cellpressure": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "kPa",
+              "status": "not_supplied",
+              "source_tag": "_cell_measurement_pressure",
+              "source_line": null
+            },
+            "diffrpressure": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "kPa",
+              "status": "not_supplied",
+              "source_tag": "_diffrn_ambient_pressure",
+              "source_line": null
+            }
+          },
+          "source": {
+            "entry_url": "https://www.crystallography.net/cod/1526507.html",
+            "cif_url": "https://www.crystallography.net/cod/1526507.cif@176429",
+            "captured_revision": 176429,
+            "version_url_succeeded_at_capture": true,
+            "file_sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d",
+            "bytes": 2105,
+            "year": 2001,
+            "doi": null,
+            "bibliography": {
+              "authors": "Jorgensen, J.D.; Hinks, D.G.; Short, S.",
+              "title": "Lattice properties of Mg B2 versus temperature and pressure",
+              "journal": "Physical Review, Serie 3. B - Condensed Matter (18,1978-)",
+              "year": "2001",
+              "volume": "63",
+              "firstpage": "2245221",
+              "lastpage": "2245225",
+              "doi": null,
+              "CIF_doi": null,
+              "COD_method": null,
+              "CIF_radiation_probe": null
+            },
+            "captured_at_utc": "2026-10-01T20:39:12.139577+00:00",
+            "captured_HTTP_status": 200,
+            "license": "CC0-1.0",
+            "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "license_basis": "Each already-captured official COD entry links to CC0 /publicdomain/zero/1.0/; the CIF header states public domain.",
+            "download_is_mutable_current_file": false,
+            "publication_revision_verified": false
+          },
+          "original_cif_filename": "1526507-0eb4eaf60989.cif",
+          "sites": [
+            {
+              "label": "Mg1",
+              "element": "Mg",
+              "fractional": [
+                {
+                  "raw": "0",
+                  "value": 0
+                },
+                {
+                  "raw": "0",
+                  "value": 0
+                },
+                {
+                  "raw": "0",
+                  "value": 0
+                }
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              }
+            },
+            {
+              "label": "B1",
+              "element": "B",
+              "fractional": [
+                {
+                  "raw": "0.3333",
+                  "value": 0.3333
+                },
+                {
+                  "raw": "0.6667",
+                  "value": 0.6667
+                },
+                {
+                  "raw": "0.5",
+                  "value": 0.5
+                }
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              }
+            }
+          ],
+          "declared_symmetry_operations": [
+            "x,y,z",
+            "x-y,x,z",
+            "-y,x-y,z",
+            "-x,-y,z",
+            "-x+y,-x,z",
+            "y,-x+y,z",
+            "-y,-x,-z",
+            "x-y,-y,-z",
+            "x,x-y,-z",
+            "y,x,-z",
+            "-x+y,y,-z",
+            "-x,-x+y,-z",
+            "-x,-y,-z",
+            "-x+y,-x,-z",
+            "y,-x+y,-z",
+            "x,y,-z",
+            "x-y,x,-z",
+            "-y,x-y,-z",
+            "y,x,z",
+            "-x+y,y,z",
+            "-x,-x+y,z",
+            "-y,-x,z",
+            "x-y,-y,z",
+            "x,x-y,z"
+          ],
+          "display_unit_cell_sites": [
+            {
+              "source_site_label": "Mg1",
+              "element": "Mg",
+              "fractional": [
+                0,
+                0,
+                0
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              },
+              "representative_operation_index": 0,
+              "equivalent_operation_indices": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23
+              ]
+            },
+            {
+              "source_site_label": "B1",
+              "element": "B",
+              "fractional": [
+                0.3333,
+                0.6667,
+                0.5
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              },
+              "representative_operation_index": 0,
+              "equivalent_operation_indices": [
+                0,
+                2,
+                4,
+                6,
+                8,
+                10,
+                13,
+                15,
+                17,
+                19,
+                21,
+                23
+              ]
+            },
+            {
+              "source_site_label": "B1",
+              "element": "B",
+              "fractional": [
+                0.6666000000000001,
+                0.3333,
+                0.5
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              },
+              "representative_operation_index": 1,
+              "equivalent_operation_indices": [
+                1,
+                3,
+                5,
+                7,
+                9,
+                11,
+                12,
+                14,
+                16,
+                18,
+                20,
+                22
+              ]
+            }
+          ],
+          "limitations": [
+            "Physical sample, phase and catalogue result matching remain pending.",
+            "Pressure is not supplied in this CIF.",
+            "Temperature is not supplied in this CIF."
+          ],
+          "rounding_notes": [
+            "Rounded boron coordinates produce precision-sensitive symmetry-equivalent near-images. The 0.001 Å deduplication check agrees with B2; original coordinates were not changed."
+          ]
+        },
+        "settings": {
+          "calculation": "scf",
+          "ecutwfc": 60,
+          "ecutrho": 480,
+          "mesh": [
+            2,
+            2,
+            2
+          ],
+          "shifts": [
+            0,
+            0,
+            0
+          ],
+          "charge": 0,
+          "nspin": 1,
+          "smearing": "mv",
+          "degauss": 0.02,
+          "conv_thr": 1e-10,
+          "electron_maxstep": 100,
+          "mixing_beta": 0.3,
+          "max_seconds": 300,
+          "ionic_steps": 100,
+          "etot_conv_thr": 0.0001,
+          "forc_conv_thr": 0.001,
+          "species": [
+            {
+              "element": "Al",
+              "mass_amu": 26.9815385,
+              "starting_magnetization": null
+            },
+            {
+              "element": "B",
+              "mass_amu": 10.81,
+              "starting_magnetization": null
+            },
+            {
+              "element": "Mg",
+              "mass_amu": 24.305,
+              "starting_magnetization": null
+            }
+          ]
+        },
+        "pseudopotentials": [
+          {
+            "filename": "Al.pbe-n-kjpaw_psl.1.0.0.UPF",
+            "sha256": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a",
+            "byte_length": 1678298,
+            "element": "Al",
+            "functional": "PBE",
+            "raw_functional": "SLA  PW   PBX  PBC",
+            "relativistic": "scalar",
+            "pseudo_type": "PAW",
+            "valence_electrons": 3,
+            "header_cutoffs_ry": {
+              "wavefunction": 29.49430269848,
+              "charge_density": 143.4836801931
+            },
+            "provenance": "User-selected local bytes; provider and license are not independently established."
+          },
+          {
+            "filename": "B.pbe-n-kjpaw_psl.1.0.0.UPF",
+            "sha256": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135",
+            "byte_length": 848121,
+            "element": "B",
+            "functional": "PBE",
+            "raw_functional": "SLA  PW   PBX  PBC",
+            "relativistic": "scalar",
+            "pseudo_type": "PAW",
+            "valence_electrons": 3,
+            "header_cutoffs_ry": {
+              "wavefunction": 42.58873786381,
+              "charge_density": 324.5670417417
+            },
+            "provenance": "User-selected local bytes; provider and license are not independently established."
+          },
+          {
+            "filename": "Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+            "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+            "byte_length": 958554,
+            "element": "Mg",
+            "functional": "PBE",
+            "raw_functional": "SLA  PW   PBX  PBC",
+            "relativistic": "scalar",
+            "pseudo_type": "PAW",
+            "valence_electrons": 10,
+            "header_cutoffs_ry": {
+              "wavefunction": 58.12090792647,
+              "charge_density": 385.1152484009
+            },
+            "provenance": "User-selected local bytes; provider and license are not independently established."
+          }
+        ],
+        "files": [
+          {
+            "role": "manifest",
+            "filename": "sclib_1869ca9f00f6fdd6.json",
+            "bytes": 24946,
+            "sha256": "4e58812dba0457cd57c9ff8edf09b2906369f494c04f256216fb2652e6f19af9"
+          },
+          {
+            "role": "input",
+            "filename": "sclib_1869ca9f00f6fdd6.in",
+            "bytes": 1733,
+            "sha256": "9821df39fb0b6b425b328faf9351978054cf1507fb9efa249aaef754e7cca537"
+          },
+          {
+            "role": "xml",
+            "filename": "execution.xml",
+            "bytes": 61515,
+            "sha256": "9b362a9479fbd537af5bf2c051ca9b69815786d904a5fd8522a4d637bb8380c0"
+          },
+          {
+            "role": "stdout",
+            "filename": "pw.out",
+            "bytes": 22461,
+            "sha256": "f000425836fb49db726151d45f0c057111d73c132f1bfa284301d6767fedd090"
+          }
+        ],
+        "status": "scf_reported_converged",
+        "engine": {
+          "name": "PWSCF",
+          "version": "7.5",
+          "xml_format": "QEXSD 25.05.21",
+          "xml_units": "Hartree atomic units",
+          "reported_exit_status": 0,
+          "created_date": " 6Oct2026",
+          "created_time": " 3:40:22",
+          "nprocs": 4,
+          "nthreads": 1
+        },
+        "convergence": {
+          "electronic_reported": true,
+          "scf_steps": 13,
+          "scf_error_hartree": 4.909860788822048e-11,
+          "electronic_threshold_hartree": 5e-11,
+          "ionic_reported": null,
+          "ionic_steps": null,
+          "basis_sampling_convergence_established": false
+        },
+        "observations": {
+          "total_energy": {
+            "raw": "-6.064018619934994E+002",
+            "value": -606.4018619934994,
+            "unit": "Hartree/cell",
+            "xml_path": "output/total_energy/etot"
+          },
+          "fermi_energy": {
+            "raw": "3.646376476251905E-001",
+            "value": 0.3646376476251905,
+            "unit": "Hartree",
+            "xml_path": "output/band_structure/fermi_energy"
+          },
+          "valence_electrons": {
+            "raw": "1.210000000000000E+002",
+            "value": 121,
+            "unit": "electrons/cell",
+            "xml_path": "output/band_structure/nelec"
+          },
+          "forces": {
+            "values": [
+              -0.000009477570951006758,
+              8.470329472543003e-22,
+              0,
+              0.000007723497788061294,
+              -0.004940859244090364,
+              -0.004421063888658728,
+              -0.004254130018702548,
+              -0.0024371827685594,
+              -0.004423564012591745,
+              -0.00001627626721411362,
+              0,
+              0,
+              0.000007723497788061294,
+              -0.004940859244090364,
+              0.004421063888658727,
+              -0.004254130018702548,
+              -0.0024371827685594,
+              0.004423564012591745,
+              -0.00001587790458714426,
+              1.348765427952284e-8,
+              0,
+              -0.004254130018702549,
+              0.0024371827685594,
+              -0.004423564012591745,
+              0.000008576754867150198,
+              0.00002349826465380635,
+              -0.001198209357998222,
+              -0.00001615682275217617,
+              -2.567908962553277e-7,
+              0,
+              -0.004254130018702548,
+              0.002437182768559401,
+              0.004423564012591745,
+              0.000008576754867150198,
+              0.00002349826465380635,
+              0.001198209357998222,
+              -0.00001620386591692151,
+              0,
+              0,
+              0.000008576754867150198,
+              -0.00002349826465380634,
+              -0.001198209357998222,
+              0.00426830453953189,
+              -0.002436439991603443,
+              -0.00441996349473212,
+              -0.00001587193517752457,
+              0,
+              0,
+              0.000008576754867150198,
+              -0.00002349826465380635,
+              0.001198209357998222,
+              0.00426830453953189,
+              -0.002436439991603443,
+              0.00441996349473212,
+              -0.00001587790458714426,
+              -1.348765427952623e-8,
+              0,
+              0.00426830453953189,
+              0.002436439991603443,
+              -0.00441996349473212,
+              0.000007723497788061294,
+              0.004940859244090364,
+              -0.004421063888658727,
+              -0.00001615682275217617,
+              2.567908962553277e-7,
+              0,
+              0.00426830453953189,
+              0.002436439991603443,
+              0.00441996349473212,
+              0.000007723497788061294,
+              0.004940859244090365,
+              0.004421063888658727
+            ],
+            "unit": "Hartree/bohr",
+            "layout": "atom-major xyz",
+            "maximum_atom_norm": 0.006630079609622612
+          },
+          "stress": {
+            "values": [
+              0.0001856408635067391,
+              0,
+              0,
+              0,
+              0.0001859119619591759,
+              4.875819596539582e-35,
+              0,
+              0,
+              0.0002344093903800734
+            ],
+            "unit": "Hartree/bohr^3",
+            "layout": "3 by 3 native tensor"
+          },
+          "final_atoms": [
+            {
+              "source_atom_id": "image-0-cell-0-0-0",
+              "element": "Al",
+              "fractional": [
+                0,
+                0,
+                0
+              ],
+              "cartesian_bohr": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-0-0",
+              "element": "B",
+              "fractional": [
+                0.16665,
+                0.3333499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                3.295800655932656,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-0-0",
+              "element": "B",
+              "fractional": [
+                0.33330000000000004,
+                0.16665000000000002,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                2.853818978188803,
+                1.647653155275768,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-0-0-1",
+              "element": "Mg",
+              "fractional": [
+                0,
+                0,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                0,
+                0,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-0-1",
+              "element": "B",
+              "fractional": [
+                0.16665,
+                0.3333499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                3.295800655932656,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-0-1",
+              "element": "B",
+              "fractional": [
+                0.33330000000000004,
+                0.16665000000000002,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                2.853818978188803,
+                1.647653155275768,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-0-1-0",
+              "element": "Mg",
+              "fractional": [
+                -3.889917373200857e-17,
+                0.5,
+                0
+              ],
+              "cartesian_bohr": [
+                -2.854104388627666,
+                4.943453811208425,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-1-0",
+              "element": "B",
+              "fractional": [
+                0.16664999999999996,
+                0.83335,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                -2.854389799066529,
+                8.239254467141082,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-1-0",
+              "element": "B",
+              "fractional": [
+                0.3333,
+                0.6666499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                6.591106966484191,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-0-1-1",
+              "element": "Mg",
+              "fractional": [
+                -3.889917373200857e-17,
+                0.5,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                -2.854104388627666,
+                4.943453811208425,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-1-1",
+              "element": "B",
+              "fractional": [
+                0.16664999999999996,
+                0.83335,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                -2.854389799066529,
+                8.239254467141082,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-1-1",
+              "element": "B",
+              "fractional": [
+                0.3333,
+                0.6666499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                6.591106966484191,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-0-0",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0,
+                0
+              ],
+              "cartesian_bohr": [
+                5.708208777255331,
+                0,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-0-0",
+              "element": "B",
+              "fractional": [
+                0.6666500000000001,
+                0.3333499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                5.707923366816468,
+                3.295800655932656,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-0-0",
+              "element": "B",
+              "fractional": [
+                0.8333000000000002,
+                0.16665000000000002,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                8.562027755444134,
+                1.647653155275768,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-0-1",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                5.708208777255331,
+                0,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-0-1",
+              "element": "B",
+              "fractional": [
+                0.6666500000000001,
+                0.3333499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                5.707923366816468,
+                3.295800655932656,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-0-1",
+              "element": "B",
+              "fractional": [
+                0.8333000000000002,
+                0.16665000000000002,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                8.562027755444134,
+                1.647653155275768,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-1-0",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0.5,
+                0
+              ],
+              "cartesian_bohr": [
+                2.854104388627666,
+                4.943453811208425,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-1-0",
+              "element": "B",
+              "fractional": [
+                0.66665,
+                0.83335,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                2.853818978188802,
+                8.239254467141082,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-1-0",
+              "element": "B",
+              "fractional": [
+                0.8333,
+                0.6666499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                5.707923366816469,
+                6.591106966484191,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-1-1",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0.5,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                2.854104388627666,
+                4.943453811208425,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-1-1",
+              "element": "B",
+              "fractional": [
+                0.66665,
+                0.83335,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                2.853818978188802,
+                8.239254467141082,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-1-1",
+              "element": "B",
+              "fractional": [
+                0.8333,
+                0.6666499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                5.707923366816469,
+                6.591106966484191,
+                9.763225992260338
+              ]
+            }
+          ]
+        },
+        "interpretation": "QE etot is a computational-cell energy with the selected smearing contribution. It is not formation energy, energy above hull or a measured thermodynamic free energy.",
+        "consistency": {
+          "prepared_geometry_checked": true,
+          "method_subset_checked": true,
+          "species_filenames_checked": true,
+          "stdout_energy_checked": true,
+          "pseudopotential_execution_bytes_attested": false,
+          "execution_authenticated": false
+        },
+        "scientific_scope": {
+          "target_temperature_k": null,
+          "target_pressure_gpa": null,
+          "stable_host_validated": false,
+          "phonons_calculated": false,
+          "tc_calculated": false,
+          "scientific_acceptance": false,
+          "ml_training_approved": false,
+          "database_write": false
+        },
+        "authority": "Local file consistency reading; no authenticated execution receipt or scientific approval."
+      }
+    },
+    {
+      "sha256": "4cb059e192ad446f91d6bfb1de74cac70fede74a1297dc88df5267e01a0d5818",
+      "filename": "sclib-qe-output-4cb059e192ad446f.json",
+      "report": {
+        "version": "discovery-qe-output-reading/1.0.0",
+        "input_kind": "execution",
+        "preparation_id": "qe-input:85111b6510ec103b7bbf41e32271ba29c7d6ef5884692f83616a9b8222a68f87",
+        "candidate_id": "combined-candidate:7ee34437d2e98eb8de21c231518b2e5ea4c401247c4f890bdbd4638c3125e300",
+        "candidate_cif_sha256": "309ae91a4d2de6a47409083702599877c93f82edabdb8030839066147538bc9f",
+        "parent_id": "supercell:9ebd97739a4c539e3a64540963d2b9183791fe129bd66f28ed9178fd3e1fe590",
+        "composition": {
+          "Al": 1,
+          "B": 16,
+          "Mg": 7
+        },
+        "source_reference": {
+          "id": "cod-1526507",
+          "formula": "MgB2",
+          "declared_formula": "B2 Mg",
+          "space_group": "P 6/m m m",
+          "space_group_number": 191,
+          "lattice": {
+            "a": {
+              "raw": "3.0823",
+              "value": 3.0823,
+              "unit": "Å",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_length_a",
+              "CIF_line_1_based": 38
+            },
+            "b": {
+              "raw": "3.0823",
+              "value": 3.0823,
+              "unit": "Å",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_length_b",
+              "CIF_line_1_based": 39
+            },
+            "c": {
+              "raw": "3.51461",
+              "value": 3.51461,
+              "unit": "Å",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_length_c",
+              "CIF_line_1_based": 40
+            },
+            "alpha": {
+              "raw": "90",
+              "value": 90,
+              "unit": "degrees",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_angle_alpha",
+              "CIF_line_1_based": 34
+            },
+            "beta": {
+              "raw": "90",
+              "value": 90,
+              "unit": "degrees",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_angle_beta",
+              "CIF_line_1_based": 35
+            },
+            "gamma": {
+              "raw": "120",
+              "value": 120,
+              "unit": "degrees",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_angle_gamma",
+              "CIF_line_1_based": 36
+            }
+          },
+          "structure_conditions": {
+            "celltemp": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "K",
+              "status": "not_supplied",
+              "source_tag": "_cell_measurement_temperature",
+              "source_line": null
+            },
+            "diffrtemp": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "K",
+              "status": "not_supplied",
+              "source_tag": "_diffrn_ambient_temperature",
+              "source_line": null
+            },
+            "cellpressure": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "kPa",
+              "status": "not_supplied",
+              "source_tag": "_cell_measurement_pressure",
+              "source_line": null
+            },
+            "diffrpressure": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "kPa",
+              "status": "not_supplied",
+              "source_tag": "_diffrn_ambient_pressure",
+              "source_line": null
+            }
+          },
+          "source": {
+            "entry_url": "https://www.crystallography.net/cod/1526507.html",
+            "cif_url": "https://www.crystallography.net/cod/1526507.cif@176429",
+            "captured_revision": 176429,
+            "version_url_succeeded_at_capture": true,
+            "file_sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d",
+            "bytes": 2105,
+            "year": 2001,
+            "doi": null,
+            "bibliography": {
+              "authors": "Jorgensen, J.D.; Hinks, D.G.; Short, S.",
+              "title": "Lattice properties of Mg B2 versus temperature and pressure",
+              "journal": "Physical Review, Serie 3. B - Condensed Matter (18,1978-)",
+              "year": "2001",
+              "volume": "63",
+              "firstpage": "2245221",
+              "lastpage": "2245225",
+              "doi": null,
+              "CIF_doi": null,
+              "COD_method": null,
+              "CIF_radiation_probe": null
+            },
+            "captured_at_utc": "2026-10-01T20:39:12.139577+00:00",
+            "captured_HTTP_status": 200,
+            "license": "CC0-1.0",
+            "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "license_basis": "Each already-captured official COD entry links to CC0 /publicdomain/zero/1.0/; the CIF header states public domain.",
+            "download_is_mutable_current_file": false,
+            "publication_revision_verified": false
+          },
+          "original_cif_filename": "1526507-0eb4eaf60989.cif",
+          "sites": [
+            {
+              "label": "Mg1",
+              "element": "Mg",
+              "fractional": [
+                {
+                  "raw": "0",
+                  "value": 0
+                },
+                {
+                  "raw": "0",
+                  "value": 0
+                },
+                {
+                  "raw": "0",
+                  "value": 0
+                }
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              }
+            },
+            {
+              "label": "B1",
+              "element": "B",
+              "fractional": [
+                {
+                  "raw": "0.3333",
+                  "value": 0.3333
+                },
+                {
+                  "raw": "0.6667",
+                  "value": 0.6667
+                },
+                {
+                  "raw": "0.5",
+                  "value": 0.5
+                }
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              }
+            }
+          ],
+          "declared_symmetry_operations": [
+            "x,y,z",
+            "x-y,x,z",
+            "-y,x-y,z",
+            "-x,-y,z",
+            "-x+y,-x,z",
+            "y,-x+y,z",
+            "-y,-x,-z",
+            "x-y,-y,-z",
+            "x,x-y,-z",
+            "y,x,-z",
+            "-x+y,y,-z",
+            "-x,-x+y,-z",
+            "-x,-y,-z",
+            "-x+y,-x,-z",
+            "y,-x+y,-z",
+            "x,y,-z",
+            "x-y,x,-z",
+            "-y,x-y,-z",
+            "y,x,z",
+            "-x+y,y,z",
+            "-x,-x+y,z",
+            "-y,-x,z",
+            "x-y,-y,z",
+            "x,x-y,z"
+          ],
+          "display_unit_cell_sites": [
+            {
+              "source_site_label": "Mg1",
+              "element": "Mg",
+              "fractional": [
+                0,
+                0,
+                0
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              },
+              "representative_operation_index": 0,
+              "equivalent_operation_indices": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23
+              ]
+            },
+            {
+              "source_site_label": "B1",
+              "element": "B",
+              "fractional": [
+                0.3333,
+                0.6667,
+                0.5
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              },
+              "representative_operation_index": 0,
+              "equivalent_operation_indices": [
+                0,
+                2,
+                4,
+                6,
+                8,
+                10,
+                13,
+                15,
+                17,
+                19,
+                21,
+                23
+              ]
+            },
+            {
+              "source_site_label": "B1",
+              "element": "B",
+              "fractional": [
+                0.6666000000000001,
+                0.3333,
+                0.5
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              },
+              "representative_operation_index": 1,
+              "equivalent_operation_indices": [
+                1,
+                3,
+                5,
+                7,
+                9,
+                11,
+                12,
+                14,
+                16,
+                18,
+                20,
+                22
+              ]
+            }
+          ],
+          "limitations": [
+            "Physical sample, phase and catalogue result matching remain pending.",
+            "Pressure is not supplied in this CIF.",
+            "Temperature is not supplied in this CIF."
+          ],
+          "rounding_notes": [
+            "Rounded boron coordinates produce precision-sensitive symmetry-equivalent near-images. The 0.001 Å deduplication check agrees with B2; original coordinates were not changed."
+          ]
+        },
+        "settings": {
+          "calculation": "scf",
+          "ecutwfc": 60,
+          "ecutrho": 480,
+          "mesh": [
+            4,
+            4,
+            4
+          ],
+          "shifts": [
+            0,
+            0,
+            0
+          ],
+          "charge": 0,
+          "nspin": 1,
+          "smearing": "mv",
+          "degauss": 0.02,
+          "conv_thr": 1e-10,
+          "electron_maxstep": 100,
+          "mixing_beta": 0.3,
+          "max_seconds": 300,
+          "ionic_steps": 100,
+          "etot_conv_thr": 0.0001,
+          "forc_conv_thr": 0.001,
+          "species": [
+            {
+              "element": "Al",
+              "mass_amu": 26.9815385,
+              "starting_magnetization": null
+            },
+            {
+              "element": "B",
+              "mass_amu": 10.81,
+              "starting_magnetization": null
+            },
+            {
+              "element": "Mg",
+              "mass_amu": 24.305,
+              "starting_magnetization": null
+            }
+          ]
+        },
+        "pseudopotentials": [
+          {
+            "filename": "Al.pbe-n-kjpaw_psl.1.0.0.UPF",
+            "sha256": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a",
+            "byte_length": 1678298,
+            "element": "Al",
+            "functional": "PBE",
+            "raw_functional": "SLA  PW   PBX  PBC",
+            "relativistic": "scalar",
+            "pseudo_type": "PAW",
+            "valence_electrons": 3,
+            "header_cutoffs_ry": {
+              "wavefunction": 29.49430269848,
+              "charge_density": 143.4836801931
+            },
+            "provenance": "User-selected local bytes; provider and license are not independently established."
+          },
+          {
+            "filename": "B.pbe-n-kjpaw_psl.1.0.0.UPF",
+            "sha256": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135",
+            "byte_length": 848121,
+            "element": "B",
+            "functional": "PBE",
+            "raw_functional": "SLA  PW   PBX  PBC",
+            "relativistic": "scalar",
+            "pseudo_type": "PAW",
+            "valence_electrons": 3,
+            "header_cutoffs_ry": {
+              "wavefunction": 42.58873786381,
+              "charge_density": 324.5670417417
+            },
+            "provenance": "User-selected local bytes; provider and license are not independently established."
+          },
+          {
+            "filename": "Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+            "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+            "byte_length": 958554,
+            "element": "Mg",
+            "functional": "PBE",
+            "raw_functional": "SLA  PW   PBX  PBC",
+            "relativistic": "scalar",
+            "pseudo_type": "PAW",
+            "valence_electrons": 10,
+            "header_cutoffs_ry": {
+              "wavefunction": 58.12090792647,
+              "charge_density": 385.1152484009
+            },
+            "provenance": "User-selected local bytes; provider and license are not independently established."
+          }
+        ],
+        "files": [
+          {
+            "role": "manifest",
+            "filename": "sclib_85111b6510ec103b.json",
+            "bytes": 24946,
+            "sha256": "0aff4d3c75ab7499986d9656b20a05af68a9d98bb3d8b41d88781d45701607b5"
+          },
+          {
+            "role": "input",
+            "filename": "sclib_85111b6510ec103b.in",
+            "bytes": 1733,
+            "sha256": "db7f908c878301d451fb8dd14726da972a41f3627b109a1a3bd8efaae97284bc"
+          },
+          {
+            "role": "xml",
+            "filename": "execution.xml",
+            "bytes": 119751,
+            "sha256": "3708c54fffd8244770e7b0a65d6d76f0960cd2b57e26898a8cc5dd0f2ddfcc03"
+          },
+          {
+            "role": "stdout",
+            "filename": "pw.out",
+            "bytes": 35182,
+            "sha256": "f266ca4dff549c15d592e2be5cfde9588f60d7a3f0218ed83d54ba434904e816"
+          }
+        ],
+        "status": "scf_reported_converged",
+        "engine": {
+          "name": "PWSCF",
+          "version": "7.5",
+          "xml_format": "QEXSD 25.05.21",
+          "xml_units": "Hartree atomic units",
+          "reported_exit_status": 0,
+          "created_date": " 6Oct2026",
+          "created_time": " 3:42:12",
+          "nprocs": 4,
+          "nthreads": 1
+        },
+        "convergence": {
+          "electronic_reported": true,
+          "scf_steps": 14,
+          "scf_error_hartree": 4.169023551455823e-12,
+          "electronic_threshold_hartree": 5e-11,
+          "ionic_reported": null,
+          "ionic_steps": null,
+          "basis_sampling_convergence_established": false
+        },
+        "observations": {
+          "total_energy": {
+            "raw": "-6.064156776926495E+002",
+            "value": -606.4156776926495,
+            "unit": "Hartree/cell",
+            "xml_path": "output/total_energy/etot"
+          },
+          "fermi_energy": {
+            "raw": "3.598476230496961E-001",
+            "value": 0.3598476230496961,
+            "unit": "Hartree",
+            "xml_path": "output/band_structure/fermi_energy"
+          },
+          "valence_electrons": {
+            "raw": "1.210000000000000E+002",
+            "value": 121,
+            "unit": "electrons/cell",
+            "xml_path": "output/band_structure/nelec"
+          },
+          "forces": {
+            "values": [
+              -0.000009221328313890314,
+              0,
+              0,
+              0.000007738200118671242,
+              -0.003612781730747825,
+              -0.004045942817211646,
+              -0.003096933068904247,
+              -0.001761696954729907,
+              -0.004048612925686733,
+              -0.00001653042499510766,
+              0,
+              0,
+              0.000007738200118671242,
+              -0.003612781730747825,
+              0.004045942817211646,
+              -0.003096933068904247,
+              -0.001761696954729907,
+              0.004048612925686732,
+              -0.00001595970302936403,
+              -1.274422442414656e-7,
+              0,
+              -0.003096933068904247,
+              0.001761696954729908,
+              -0.004048612925686733,
+              0.000008785262621427668,
+              0.00003038291952619623,
+              -0.003774177618618232,
+              -0.00001622785239956661,
+              -4.471409500531522e-7,
+              0,
+              -0.003096933068904247,
+              0.001761696954729907,
+              0.004048612925686734,
+              0.000008785262621427668,
+              0.00003038291952619623,
+              0.003774177618618233,
+              -0.00001574456932754683,
+              0,
+              0,
+              0.000008785262621427668,
+              -0.00003038291952619623,
+              -0.003774177618618232,
+              0.003110743993170136,
+              -0.001760733507189557,
+              -0.004044981780970628,
+              -0.00001546611452954517,
+              0,
+              0,
+              0.000008785262621427668,
+              -0.00003038291952619623,
+              0.003774177618618233,
+              0.003110743993170136,
+              -0.001760733507189557,
+              0.004044981780970628,
+              -0.00001595970302936403,
+              1.274422442414622e-7,
+              0,
+              0.003110743993170136,
+              0.001760733507189558,
+              -0.004044981780970628,
+              0.000007738200118671242,
+              0.003612781730747826,
+              -0.004045942817211646,
+              -0.00001622785239956661,
+              4.471409500531573e-7,
+              0,
+              0.003110743993170136,
+              0.001760733507189558,
+              0.004044981780970628,
+              0.000007738200118671244,
+              0.003612781730747825,
+              0.004045942817211646
+            ],
+            "unit": "Hartree/bohr",
+            "layout": "atom-major xyz",
+            "maximum_atom_norm": 0.005424196253263044
+          },
+          "stress": {
+            "values": [
+              0.0003181763912957422,
+              0,
+              0,
+              0,
+              0.0003184656708398182,
+              0,
+              0,
+              0,
+              0.0000778208419867435
+            ],
+            "unit": "Hartree/bohr^3",
+            "layout": "3 by 3 native tensor"
+          },
+          "final_atoms": [
+            {
+              "source_atom_id": "image-0-cell-0-0-0",
+              "element": "Al",
+              "fractional": [
+                0,
+                0,
+                0
+              ],
+              "cartesian_bohr": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-0-0",
+              "element": "B",
+              "fractional": [
+                0.16665,
+                0.3333499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                3.295800655932656,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-0-0",
+              "element": "B",
+              "fractional": [
+                0.33330000000000004,
+                0.16665000000000002,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                2.853818978188803,
+                1.647653155275768,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-0-0-1",
+              "element": "Mg",
+              "fractional": [
+                0,
+                0,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                0,
+                0,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-0-1",
+              "element": "B",
+              "fractional": [
+                0.16665,
+                0.3333499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                3.295800655932656,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-0-1",
+              "element": "B",
+              "fractional": [
+                0.33330000000000004,
+                0.16665000000000002,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                2.853818978188803,
+                1.647653155275768,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-0-1-0",
+              "element": "Mg",
+              "fractional": [
+                -3.889917373200857e-17,
+                0.5,
+                0
+              ],
+              "cartesian_bohr": [
+                -2.854104388627666,
+                4.943453811208425,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-1-0",
+              "element": "B",
+              "fractional": [
+                0.16664999999999996,
+                0.83335,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                -2.854389799066529,
+                8.239254467141082,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-1-0",
+              "element": "B",
+              "fractional": [
+                0.3333,
+                0.6666499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                6.591106966484191,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-0-1-1",
+              "element": "Mg",
+              "fractional": [
+                -3.889917373200857e-17,
+                0.5,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                -2.854104388627666,
+                4.943453811208425,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-1-1",
+              "element": "B",
+              "fractional": [
+                0.16664999999999996,
+                0.83335,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                -2.854389799066529,
+                8.239254467141082,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-1-1",
+              "element": "B",
+              "fractional": [
+                0.3333,
+                0.6666499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                6.591106966484191,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-0-0",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0,
+                0
+              ],
+              "cartesian_bohr": [
+                5.708208777255331,
+                0,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-0-0",
+              "element": "B",
+              "fractional": [
+                0.6666500000000001,
+                0.3333499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                5.707923366816468,
+                3.295800655932656,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-0-0",
+              "element": "B",
+              "fractional": [
+                0.8333000000000002,
+                0.16665000000000002,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                8.562027755444134,
+                1.647653155275768,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-0-1",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                5.708208777255331,
+                0,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-0-1",
+              "element": "B",
+              "fractional": [
+                0.6666500000000001,
+                0.3333499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                5.707923366816468,
+                3.295800655932656,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-0-1",
+              "element": "B",
+              "fractional": [
+                0.8333000000000002,
+                0.16665000000000002,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                8.562027755444134,
+                1.647653155275768,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-1-0",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0.5,
+                0
+              ],
+              "cartesian_bohr": [
+                2.854104388627666,
+                4.943453811208425,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-1-0",
+              "element": "B",
+              "fractional": [
+                0.66665,
+                0.83335,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                2.853818978188802,
+                8.239254467141082,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-1-0",
+              "element": "B",
+              "fractional": [
+                0.8333,
+                0.6666499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                5.707923366816469,
+                6.591106966484191,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-1-1",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0.5,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                2.854104388627666,
+                4.943453811208425,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-1-1",
+              "element": "B",
+              "fractional": [
+                0.66665,
+                0.83335,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                2.853818978188802,
+                8.239254467141082,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-1-1",
+              "element": "B",
+              "fractional": [
+                0.8333,
+                0.6666499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                5.707923366816469,
+                6.591106966484191,
+                9.763225992260338
+              ]
+            }
+          ]
+        },
+        "interpretation": "QE etot is a computational-cell energy with the selected smearing contribution. It is not formation energy, energy above hull or a measured thermodynamic free energy.",
+        "consistency": {
+          "prepared_geometry_checked": true,
+          "method_subset_checked": true,
+          "species_filenames_checked": true,
+          "stdout_energy_checked": true,
+          "pseudopotential_execution_bytes_attested": false,
+          "execution_authenticated": false
+        },
+        "scientific_scope": {
+          "target_temperature_k": null,
+          "target_pressure_gpa": null,
+          "stable_host_validated": false,
+          "phonons_calculated": false,
+          "tc_calculated": false,
+          "scientific_acceptance": false,
+          "ml_training_approved": false,
+          "database_write": false
+        },
+        "authority": "Local file consistency reading; no authenticated execution receipt or scientific approval."
+      }
+    },
+    {
+      "sha256": "55356cd31f45d6a5b29473b8d2e76a4fdc5dcdb670747e02acdd823a68b5c48d",
+      "filename": "sclib-qe-output-55356cd31f45d6a5.json",
+      "report": {
+        "version": "discovery-qe-output-reading/1.0.0",
+        "input_kind": "execution",
+        "preparation_id": "qe-input:c2bc7b9decd60249d17aa6ebd8d7bd75d8f27dbab10e42fd8b18f8cfe48b1b85",
+        "candidate_id": "combined-candidate:7ee34437d2e98eb8de21c231518b2e5ea4c401247c4f890bdbd4638c3125e300",
+        "candidate_cif_sha256": "309ae91a4d2de6a47409083702599877c93f82edabdb8030839066147538bc9f",
+        "parent_id": "supercell:9ebd97739a4c539e3a64540963d2b9183791fe129bd66f28ed9178fd3e1fe590",
+        "composition": {
+          "Al": 1,
+          "B": 16,
+          "Mg": 7
+        },
+        "source_reference": {
+          "id": "cod-1526507",
+          "formula": "MgB2",
+          "declared_formula": "B2 Mg",
+          "space_group": "P 6/m m m",
+          "space_group_number": 191,
+          "lattice": {
+            "a": {
+              "raw": "3.0823",
+              "value": 3.0823,
+              "unit": "Å",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_length_a",
+              "CIF_line_1_based": 38
+            },
+            "b": {
+              "raw": "3.0823",
+              "value": 3.0823,
+              "unit": "Å",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_length_b",
+              "CIF_line_1_based": 39
+            },
+            "c": {
+              "raw": "3.51461",
+              "value": 3.51461,
+              "unit": "Å",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_length_c",
+              "CIF_line_1_based": 40
+            },
+            "alpha": {
+              "raw": "90",
+              "value": 90,
+              "unit": "degrees",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_angle_alpha",
+              "CIF_line_1_based": 34
+            },
+            "beta": {
+              "raw": "90",
+              "value": 90,
+              "unit": "degrees",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_angle_beta",
+              "CIF_line_1_based": 35
+            },
+            "gamma": {
+              "raw": "120",
+              "value": 120,
+              "unit": "degrees",
+              "standard_uncertainty": null,
+              "uncertainty_status": "not_reported",
+              "CIF_tag": "_cell_angle_gamma",
+              "CIF_line_1_based": 36
+            }
+          },
+          "structure_conditions": {
+            "celltemp": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "K",
+              "status": "not_supplied",
+              "source_tag": "_cell_measurement_temperature",
+              "source_line": null
+            },
+            "diffrtemp": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "K",
+              "status": "not_supplied",
+              "source_tag": "_diffrn_ambient_temperature",
+              "source_line": null
+            },
+            "cellpressure": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "kPa",
+              "status": "not_supplied",
+              "source_tag": "_cell_measurement_pressure",
+              "source_line": null
+            },
+            "diffrpressure": {
+              "raw": null,
+              "value": null,
+              "standard_uncertainty": null,
+              "unit": "kPa",
+              "status": "not_supplied",
+              "source_tag": "_diffrn_ambient_pressure",
+              "source_line": null
+            }
+          },
+          "source": {
+            "entry_url": "https://www.crystallography.net/cod/1526507.html",
+            "cif_url": "https://www.crystallography.net/cod/1526507.cif@176429",
+            "captured_revision": 176429,
+            "version_url_succeeded_at_capture": true,
+            "file_sha256": "0eb4eaf6098974db2698bf97a0cd443ffff9a2fc3f6ba8ca31afbebd06c5363d",
+            "bytes": 2105,
+            "year": 2001,
+            "doi": null,
+            "bibliography": {
+              "authors": "Jorgensen, J.D.; Hinks, D.G.; Short, S.",
+              "title": "Lattice properties of Mg B2 versus temperature and pressure",
+              "journal": "Physical Review, Serie 3. B - Condensed Matter (18,1978-)",
+              "year": "2001",
+              "volume": "63",
+              "firstpage": "2245221",
+              "lastpage": "2245225",
+              "doi": null,
+              "CIF_doi": null,
+              "COD_method": null,
+              "CIF_radiation_probe": null
+            },
+            "captured_at_utc": "2026-10-01T20:39:12.139577+00:00",
+            "captured_HTTP_status": 200,
+            "license": "CC0-1.0",
+            "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "license_basis": "Each already-captured official COD entry links to CC0 /publicdomain/zero/1.0/; the CIF header states public domain.",
+            "download_is_mutable_current_file": false,
+            "publication_revision_verified": false
+          },
+          "original_cif_filename": "1526507-0eb4eaf60989.cif",
+          "sites": [
+            {
+              "label": "Mg1",
+              "element": "Mg",
+              "fractional": [
+                {
+                  "raw": "0",
+                  "value": 0
+                },
+                {
+                  "raw": "0",
+                  "value": 0
+                },
+                {
+                  "raw": "0",
+                  "value": 0
+                }
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              }
+            },
+            {
+              "label": "B1",
+              "element": "B",
+              "fractional": [
+                {
+                  "raw": "0.3333",
+                  "value": 0.3333
+                },
+                {
+                  "raw": "0.6667",
+                  "value": 0.6667
+                },
+                {
+                  "raw": "0.5",
+                  "value": 0.5
+                }
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              }
+            }
+          ],
+          "declared_symmetry_operations": [
+            "x,y,z",
+            "x-y,x,z",
+            "-y,x-y,z",
+            "-x,-y,z",
+            "-x+y,-x,z",
+            "y,-x+y,z",
+            "-y,-x,-z",
+            "x-y,-y,-z",
+            "x,x-y,-z",
+            "y,x,-z",
+            "-x+y,y,-z",
+            "-x,-x+y,-z",
+            "-x,-y,-z",
+            "-x+y,-x,-z",
+            "y,-x+y,-z",
+            "x,y,-z",
+            "x-y,x,-z",
+            "-y,x-y,-z",
+            "y,x,z",
+            "-x+y,y,z",
+            "-x,-x+y,z",
+            "-y,-x,z",
+            "x-y,-y,z",
+            "x,x-y,z"
+          ],
+          "display_unit_cell_sites": [
+            {
+              "source_site_label": "Mg1",
+              "element": "Mg",
+              "fractional": [
+                0,
+                0,
+                0
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              },
+              "representative_operation_index": 0,
+              "equivalent_operation_indices": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23
+              ]
+            },
+            {
+              "source_site_label": "B1",
+              "element": "B",
+              "fractional": [
+                0.3333,
+                0.6667,
+                0.5
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              },
+              "representative_operation_index": 0,
+              "equivalent_operation_indices": [
+                0,
+                2,
+                4,
+                6,
+                8,
+                10,
+                13,
+                15,
+                17,
+                19,
+                21,
+                23
+              ]
+            },
+            {
+              "source_site_label": "B1",
+              "element": "B",
+              "fractional": [
+                0.6666000000000001,
+                0.3333,
+                0.5
+              ],
+              "occupancy": {
+                "raw": "1",
+                "value": 1
+              },
+              "representative_operation_index": 1,
+              "equivalent_operation_indices": [
+                1,
+                3,
+                5,
+                7,
+                9,
+                11,
+                12,
+                14,
+                16,
+                18,
+                20,
+                22
+              ]
+            }
+          ],
+          "limitations": [
+            "Physical sample, phase and catalogue result matching remain pending.",
+            "Pressure is not supplied in this CIF.",
+            "Temperature is not supplied in this CIF."
+          ],
+          "rounding_notes": [
+            "Rounded boron coordinates produce precision-sensitive symmetry-equivalent near-images. The 0.001 Å deduplication check agrees with B2; original coordinates were not changed."
+          ]
+        },
+        "settings": {
+          "calculation": "scf",
+          "ecutwfc": 60,
+          "ecutrho": 480,
+          "mesh": [
+            6,
+            6,
+            6
+          ],
+          "shifts": [
+            0,
+            0,
+            0
+          ],
+          "charge": 0,
+          "nspin": 1,
+          "smearing": "mv",
+          "degauss": 0.02,
+          "conv_thr": 1e-10,
+          "electron_maxstep": 100,
+          "mixing_beta": 0.3,
+          "max_seconds": 300,
+          "ionic_steps": 100,
+          "etot_conv_thr": 0.0001,
+          "forc_conv_thr": 0.001,
+          "species": [
+            {
+              "element": "Al",
+              "mass_amu": 26.9815385,
+              "starting_magnetization": null
+            },
+            {
+              "element": "B",
+              "mass_amu": 10.81,
+              "starting_magnetization": null
+            },
+            {
+              "element": "Mg",
+              "mass_amu": 24.305,
+              "starting_magnetization": null
+            }
+          ]
+        },
+        "pseudopotentials": [
+          {
+            "filename": "Al.pbe-n-kjpaw_psl.1.0.0.UPF",
+            "sha256": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a",
+            "byte_length": 1678298,
+            "element": "Al",
+            "functional": "PBE",
+            "raw_functional": "SLA  PW   PBX  PBC",
+            "relativistic": "scalar",
+            "pseudo_type": "PAW",
+            "valence_electrons": 3,
+            "header_cutoffs_ry": {
+              "wavefunction": 29.49430269848,
+              "charge_density": 143.4836801931
+            },
+            "provenance": "User-selected local bytes; provider and license are not independently established."
+          },
+          {
+            "filename": "B.pbe-n-kjpaw_psl.1.0.0.UPF",
+            "sha256": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135",
+            "byte_length": 848121,
+            "element": "B",
+            "functional": "PBE",
+            "raw_functional": "SLA  PW   PBX  PBC",
+            "relativistic": "scalar",
+            "pseudo_type": "PAW",
+            "valence_electrons": 3,
+            "header_cutoffs_ry": {
+              "wavefunction": 42.58873786381,
+              "charge_density": 324.5670417417
+            },
+            "provenance": "User-selected local bytes; provider and license are not independently established."
+          },
+          {
+            "filename": "Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+            "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+            "byte_length": 958554,
+            "element": "Mg",
+            "functional": "PBE",
+            "raw_functional": "SLA  PW   PBX  PBC",
+            "relativistic": "scalar",
+            "pseudo_type": "PAW",
+            "valence_electrons": 10,
+            "header_cutoffs_ry": {
+              "wavefunction": 58.12090792647,
+              "charge_density": 385.1152484009
+            },
+            "provenance": "User-selected local bytes; provider and license are not independently established."
+          }
+        ],
+        "files": [
+          {
+            "role": "manifest",
+            "filename": "sclib_c2bc7b9decd60249.json",
+            "bytes": 24946,
+            "sha256": "171805897048d1c6bbf6b6ceb9aefb5aacd2cc174e67104b4d387984cfd7cda6"
+          },
+          {
+            "role": "input",
+            "filename": "sclib_c2bc7b9decd60249.in",
+            "bytes": 1733,
+            "sha256": "e5b7c11451ab31cd9444cdf60049f745dd61ef4bfd730d5f84a350d48684a75e"
+          },
+          {
+            "role": "xml",
+            "filename": "execution.xml",
+            "bytes": 240099,
+            "sha256": "88b0a183f6735e62060ba8c618a10aa4add3adbf262331ae567af2f6b6cd3468"
+          },
+          {
+            "role": "stdout",
+            "filename": "pw.out",
+            "bytes": 60819,
+            "sha256": "9ee2bdabfc1e0a001688e066b7c9aee80926c69a220169ebe076ccfb454b5bc8"
+          }
+        ],
+        "status": "scf_reported_converged",
+        "engine": {
+          "name": "PWSCF",
+          "version": "7.5",
+          "xml_format": "QEXSD 25.05.21",
+          "xml_units": "Hartree atomic units",
+          "reported_exit_status": 0,
+          "created_date": " 6Oct2026",
+          "created_time": " 3:46:11",
+          "nprocs": 4,
+          "nthreads": 1
+        },
+        "convergence": {
+          "electronic_reported": true,
+          "scf_steps": 14,
+          "scf_error_hartree": 4.153255446244578e-12,
+          "electronic_threshold_hartree": 5e-11,
+          "ionic_reported": null,
+          "ionic_steps": null,
+          "basis_sampling_convergence_established": false
+        },
+        "observations": {
+          "total_energy": {
+            "raw": "-6.064170649676537E+002",
+            "value": -606.4170649676537,
+            "unit": "Hartree/cell",
+            "xml_path": "output/total_energy/etot"
+          },
+          "fermi_energy": {
+            "raw": "3.592245932098329E-001",
+            "value": 0.3592245932098329,
+            "unit": "Hartree",
+            "xml_path": "output/band_structure/fermi_energy"
+          },
+          "valence_electrons": {
+            "raw": "1.210000000000000E+002",
+            "value": 121,
+            "unit": "electrons/cell",
+            "xml_path": "output/band_structure/nelec"
+          },
+          "forces": {
+            "values": [
+              -0.000009329195024648017,
+              0,
+              0,
+              0.000007781008645769036,
+              -0.003490247197964424,
+              -0.003899697244908349,
+              -0.002992782606264674,
+              -0.001703032077953709,
+              -0.003902330087857621,
+              -0.00001652404826260999,
+              0,
+              0,
+              0.000007781008645769036,
+              -0.003490247197964424,
+              0.003899697244908349,
+              -0.002992782606264674,
+              -0.001703032077953709,
+              0.003902330087857621,
+              -0.00001599613709442683,
+              -8.447380981246973e-8,
+              0,
+              -0.002992782606264674,
+              0.001703032077953708,
+              -0.003902330087857621,
+              0.000008834188157601621,
+              0.00002852099253356828,
+              -0.003898479061751386,
+              -0.00001628556898265005,
+              -3.280175450857906e-7,
+              0,
+              -0.002992782606264674,
+              0.001703032077953708,
+              0.003902330087857621,
+              0.000008834188157601621,
+              0.00002852099253356827,
+              0.003898479061751386,
+              -0.00001595825905370795,
+              0,
+              0,
+              0.000008834188157601621,
+              -0.00002852099253356827,
+              -0.003898479061751387,
+              0.003006690830658113,
+              -0.001702077657061687,
+              -0.00389862250898684,
+              -0.00001571877029211922,
+              1.694065894508601e-21,
+              0,
+              0.000008834188157601621,
+              -0.00002852099253356827,
+              0.003898479061751386,
+              0.003006690830658113,
+              -0.001702077657061687,
+              0.00389862250898684,
+              -0.00001599613709442683,
+              8.447380981246973e-8,
+              0,
+              0.003006690830658113,
+              0.001702077657061687,
+              -0.00389862250898684,
+              0.000007781008645769036,
+              0.003490247197964425,
+              -0.003899697244908349,
+              -0.00001628556898265005,
+              3.280175450857939e-7,
+              0,
+              0.003006690830658113,
+              0.001702077657061687,
+              0.00389862250898684,
+              0.000007781008645769036,
+              0.003490247197964425,
+              0.003899697244908349
+            ],
+            "unit": "Hartree/bohr",
+            "layout": "atom-major xyz",
+            "maximum_atom_norm": 0.005233500229190769
+          },
+          "stress": {
+            "values": [
+              0.0003005372764336989,
+              0,
+              0,
+              0,
+              0.0003008902433935604,
+              0,
+              0,
+              0,
+              0.0001008613877285097
+            ],
+            "unit": "Hartree/bohr^3",
+            "layout": "3 by 3 native tensor"
+          },
+          "final_atoms": [
+            {
+              "source_atom_id": "image-0-cell-0-0-0",
+              "element": "Al",
+              "fractional": [
+                0,
+                0,
+                0
+              ],
+              "cartesian_bohr": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-0-0",
+              "element": "B",
+              "fractional": [
+                0.16665,
+                0.3333499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                3.295800655932656,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-0-0",
+              "element": "B",
+              "fractional": [
+                0.33330000000000004,
+                0.16665000000000002,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                2.853818978188803,
+                1.647653155275768,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-0-0-1",
+              "element": "Mg",
+              "fractional": [
+                0,
+                0,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                0,
+                0,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-0-1",
+              "element": "B",
+              "fractional": [
+                0.16665,
+                0.3333499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                3.295800655932656,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-0-1",
+              "element": "B",
+              "fractional": [
+                0.33330000000000004,
+                0.16665000000000002,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                2.853818978188803,
+                1.647653155275768,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-0-1-0",
+              "element": "Mg",
+              "fractional": [
+                -3.889917373200857e-17,
+                0.5,
+                0
+              ],
+              "cartesian_bohr": [
+                -2.854104388627666,
+                4.943453811208425,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-1-0",
+              "element": "B",
+              "fractional": [
+                0.16664999999999996,
+                0.83335,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                -2.854389799066529,
+                8.239254467141082,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-1-0",
+              "element": "B",
+              "fractional": [
+                0.3333,
+                0.6666499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                6.591106966484191,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-0-1-1",
+              "element": "Mg",
+              "fractional": [
+                -3.889917373200857e-17,
+                0.5,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                -2.854104388627666,
+                4.943453811208425,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-0-1-1",
+              "element": "B",
+              "fractional": [
+                0.16664999999999996,
+                0.83335,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                -2.854389799066529,
+                8.239254467141082,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-0-1-1",
+              "element": "B",
+              "fractional": [
+                0.3333,
+                0.6666499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                -0.0002854104388627351,
+                6.591106966484191,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-0-0",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0,
+                0
+              ],
+              "cartesian_bohr": [
+                5.708208777255331,
+                0,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-0-0",
+              "element": "B",
+              "fractional": [
+                0.6666500000000001,
+                0.3333499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                5.707923366816468,
+                3.295800655932656,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-0-0",
+              "element": "B",
+              "fractional": [
+                0.8333000000000002,
+                0.16665000000000002,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                8.562027755444134,
+                1.647653155275768,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-0-1",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                5.708208777255331,
+                0,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-0-1",
+              "element": "B",
+              "fractional": [
+                0.6666500000000001,
+                0.3333499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                5.707923366816468,
+                3.295800655932656,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-0-1",
+              "element": "B",
+              "fractional": [
+                0.8333000000000002,
+                0.16665000000000002,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                8.562027755444134,
+                1.647653155275768,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-1-0",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0.5,
+                0
+              ],
+              "cartesian_bohr": [
+                2.854104388627666,
+                4.943453811208425,
+                0
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-1-0",
+              "element": "B",
+              "fractional": [
+                0.66665,
+                0.83335,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                2.853818978188802,
+                8.239254467141082,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-1-0",
+              "element": "B",
+              "fractional": [
+                0.8333,
+                0.6666499999999999,
+                0.24999999999999994
+              ],
+              "cartesian_bohr": [
+                5.707923366816469,
+                6.591106966484191,
+                3.254408664086779
+              ]
+            },
+            {
+              "source_atom_id": "image-0-cell-1-1-1",
+              "element": "Mg",
+              "fractional": [
+                0.5000000000000001,
+                0.5,
+                0.4999999999999999
+              ],
+              "cartesian_bohr": [
+                2.854104388627666,
+                4.943453811208425,
+                6.508817328173558
+              ]
+            },
+            {
+              "source_atom_id": "image-1-cell-1-1-1",
+              "element": "B",
+              "fractional": [
+                0.66665,
+                0.83335,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                2.853818978188802,
+                8.239254467141082,
+                9.763225992260338
+              ]
+            },
+            {
+              "source_atom_id": "image-2-cell-1-1-1",
+              "element": "B",
+              "fractional": [
+                0.8333,
+                0.6666499999999999,
+                0.7499999999999999
+              ],
+              "cartesian_bohr": [
+                5.707923366816469,
+                6.591106966484191,
+                9.763225992260338
+              ]
+            }
+          ]
+        },
+        "interpretation": "QE etot is a computational-cell energy with the selected smearing contribution. It is not formation energy, energy above hull or a measured thermodynamic free energy.",
+        "consistency": {
+          "prepared_geometry_checked": true,
+          "method_subset_checked": true,
+          "species_filenames_checked": true,
+          "stdout_energy_checked": true,
+          "pseudopotential_execution_bytes_attested": false,
+          "execution_authenticated": false
+        },
+        "scientific_scope": {
+          "target_temperature_k": null,
+          "target_pressure_gpa": null,
+          "stable_host_validated": false,
+          "phonons_calculated": false,
+          "tc_calculated": false,
+          "scientific_acceptance": false,
+          "ml_training_approved": false,
+          "database_write": false
+        },
+        "authority": "Local file consistency reading; no authenticated execution receipt or scientific approval."
+      }
+    }
+  ]
+}

@@ -3,8 +3,13 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { DiscoveryFeed } from "@/components/DiscoveryFeed";
 import { ResearchCandidateBoard } from "@/components/ResearchCandidateBoard";
-import { ResearchProposalBoard } from "@/components/ResearchProposalBoard";
-import { getResearchProposalCatalog } from "@/lib/discovery-proposals";
+import { ResearchCatalogueBoard } from "@/components/ResearchCatalogueBoard";
+import { DiscoveryResearchCycle } from "@/components/DiscoveryResearchCycle";
+import { DiscoveryExperimentalQueue } from "@/components/DiscoveryExperimentalQueue";
+import { DiscoveryNumericalPilot } from "@/components/DiscoveryNumericalPilot";
+import { getDiscoveryNumericalPilot } from "@/lib/discovery-numerical-pilot-loader";
+import type { DiscoveryNumericalPilotSummary } from "@/lib/discovery-numerical-pilot";
+import { getResearchCatalogue, type ResearchCatalogue } from "@/lib/discovery-research-catalogue";
 import { ScientificDiscoveryMatrix } from "@/components/ScientificDiscoveryMatrix";
 import { DiscoveryFieldGuide } from "@/components/DiscoveryFieldGuide";
 import { DiscoverySourceComparison } from "@/components/DiscoverySourceComparison";
@@ -51,6 +56,12 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
     const { DiscoveryLayoutPreview } = await import("@/components/DiscoveryLayoutPreview");
     return <DiscoveryLayoutPreview />;
   }
+  let researchCatalogue: ResearchCatalogue | null = null;
+  try { researchCatalogue = getResearchCatalogue(); } catch { /* Integrity failure displays no proposal data. */ }
+  let numericalPilot: DiscoveryNumericalPilotSummary | null = null;
+  if (researchCatalogue) {
+    try { numericalPilot = await getDiscoveryNumericalPilot(researchCatalogue); } catch { /* No numerical observations from unverifiable assets. */ }
+  }
   return (
     <main className="space-y-4">
       <header className="space-y-2 pb-2">
@@ -59,8 +70,15 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
 
       <DiscoveryTabs candidates={<>
         <ResearchCandidateBoard compactEmpty />
-        <ResearchProposals />
+        <ResearchProposals catalog={researchCatalogue} pilot={numericalPilot} />
       </>} research={<>
+      <DiscoveryDisclosure id="discovery-cycle-tools" summary="Research cycle: bandwidth, carriers and geometry">
+        {researchCatalogue ? <DiscoveryResearchCycle catalog={researchCatalogue} /> : <p role="alert" className="text-sm text-red-800">The research catalogue could not be verified. Research cases are unavailable.</p>}
+      </DiscoveryDisclosure>
+      {numericalPilot ? <DiscoveryNumericalPilot summary={numericalPilot} /> : <p role="alert" className="text-sm text-red-800">The retained numerical pilot could not be verified. Numerical observations are unavailable.</p>}
+      <DiscoveryDisclosure id="discovery-experimental-queue" summary="Experimental data and ML readiness">
+        <DiscoveryExperimentalQueue />
+      </DiscoveryDisclosure>
       <ScientificDiscoveryMatrix folded />
       <DiscoveryDisclosure id="discovery-tools" summary="Host references and calculation tools">
         <nav aria-label="Discovery research workflow" className="grid gap-x-5 gap-y-1 text-sm sm:grid-cols-2">
@@ -93,12 +111,8 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
   );
 }
 
-function ResearchProposals() {
-  try {
-    return <ResearchProposalBoard catalog={getResearchProposalCatalog()} />;
-  } catch {
-    return <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">The structure proposal catalogue could not be verified. No proposal rows are shown.</p>;
-  }
+function ResearchProposals({ catalog, pilot }: { catalog: ResearchCatalogue | null; pilot: DiscoveryNumericalPilotSummary | null }) {
+  return catalog ? <ResearchCatalogueBoard catalog={catalog} pilot={pilot} /> : <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">The structure proposal catalogue could not be verified. No proposal rows are shown.</p>;
 }
 
 async function LegacyDiscovery() {

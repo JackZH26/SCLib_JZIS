@@ -29,7 +29,7 @@ const readable = (value: number) => value.toLocaleString("en-US", {
 });
 const control = "mt-2 block min-h-11 w-full min-w-0 rounded-md border border-sage-border bg-white p-2 text-sm";
 
-export function DiscoveryQeResult() {
+export function DiscoveryQeResult({ onContext }: { onContext?: (value: QeResultContext | null) => void } = {}) {
   const [files, setFiles] = useState(emptyFiles);
   const [pseudos, setPseudos] = useState<File[]>([]);
   const [context, setContext] = useState<QeResultContext | null>(null);
@@ -40,7 +40,7 @@ export function DiscoveryQeResult() {
   const [reset, setReset] = useState(0);
   const sequence = useRef(0);
   useEffect(() => () => { sequence.current++; }, []);
-  const invalidate = () => { sequence.current++; setContext(null); setError(""); setBusy(false); setDownloadStatus(""); };
+  const invalidate = () => { sequence.current++; setContext(null); onContext?.(null); setError(""); setBusy(false); setDownloadStatus(""); };
   const choose = (role: Role, file: File | null) => {
     invalidate();
     if (file && (!file.size || file.size > QE_RESULT_LIMITS[role])) {
@@ -58,7 +58,7 @@ export function DiscoveryQeResult() {
         local(files.manifest!), local(files.input!), local(files.xml!), local(files.stdout!), Promise.all(pseudos.map(local)),
       ]);
       const reading = await inspectQeResultContext({ manifest, input, xml, stdout, pseudos: upfs });
-      if (run === sequence.current) setContext(reading);
+      if (run === sequence.current) { setContext(reading); onContext?.(reading); }
     } catch (issue) { if (run === sequence.current) setError(issue instanceof Error ? issue.message : "The local output could not be read."); }
     finally { if (run === sequence.current) setBusy(false); }
   };
