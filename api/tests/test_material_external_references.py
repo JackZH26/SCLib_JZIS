@@ -66,6 +66,28 @@ def test_missing_original_formula_and_equal_fixed_composition_allow_catalogue_lo
     assert references.external_query_formula("MgB2", current_records=[{"formula_raw": "B2Mg"}]) == "MgB2"
 
 
+@pytest.mark.parametrize("formula, reordered", [
+    ("CaO2Zr", "ZrCaO2"), ("TcTi2Zn", "ZnTi2Tc"), ("HfO2Y", "YHfO2"),
+    ("V", "V1"), ("C", "C1"), ("Y", "Y1"),
+])
+def test_fixed_element_tokens_allow_composition_only_references(formula, reordered):
+    assert references.external_query_formula(formula, current_records=[{"formula_raw": reordered}]) == formula
+    result = references.project_external_references(formula, [row(formula=reordered)], retrieved_at="now")
+    assert len(result["candidates"]) == 1
+    assert result["sample_identity_established"] is False
+    assert result["scientific_acceptance"] is False
+    assert result["candidates"][0]["phase_identity_established"] is False
+
+
+@pytest.mark.parametrize("formula, raw", [
+    ("Y", "Y1-x"), ("C", "13C"), ("V", "V/Nb"),
+    ("HfO2Y", "HfO2Yy"), ("CaO2Zr", "CaO2Zrz"),
+    ("YBa2Cu3O7", "YBa2Cu3O7-X"), ("La2CuO4", "La2CuO4-Y"),
+])
+def test_fixed_alias_does_not_override_unresolved_original_state(formula, raw):
+    assert references.external_query_formula(formula, current_records=[{"formula_raw": raw}]) is None
+
+
 @pytest.mark.asyncio
 async def test_isotope_identity_is_checked_before_cache_or_provider(monkeypatch):
     def unexpected(*_args, **_kwargs):

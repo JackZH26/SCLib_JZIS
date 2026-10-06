@@ -175,12 +175,84 @@ def test_material_shorthand_is_never_parsed_as_false_exact(shorthand: str):
     _assert_has_no_exact_descriptors(result)
 
 
-@pytest.mark.parametrize("element", ["Bi", "Hg", "Tl", "Nb", "Tc"])
+@pytest.mark.parametrize("element", ["Bi", "Hg", "Tl", "Nb", "Tc", "V", "C", "Y", "H"])
 def test_real_element_symbol_remains_exact(element: str):
     result = enrich_formula(element)
 
     assert result["composition_status"] == "exact"
     assert result["formula_reduced"] == element
+    assert result["element_amounts"] == {element: 1}
+
+
+@pytest.mark.parametrize("formula, amounts", [
+    ("CaO2Zr", {"Ca": 1, "O": 2, "Zr": 1}),
+    ("TcTi2Zn", {"Tc": 1, "Ti": 2, "Zn": 1}),
+    ("HfO2Y", {"Hf": 1, "O": 2, "Y": 1}),
+    ("Y2O3", {"Y": 2, "O": 3}),
+    ("YCuO", {"Y": 1, "Cu": 1, "O": 1}),
+    ("YBa2Cu3O7", {"Y": 1, "Ba": 2, "Cu": 3, "O": 7}),
+    ("Ca(Y)2", {"Ca": 1, "Y": 2}),
+    ("MgB2Y", {"Mg": 1, "B": 2, "Y": 1}),
+])
+def test_real_element_tokens_are_not_variable_suffixes(formula, amounts):
+    result = enrich_formula(formula)
+    assert result["composition_status"] == "exact"
+    assert result["variable_symbols"] == []
+    assert result["element_amounts"] == amounts
+
+
+@pytest.mark.parametrize("symbol", ["x", "y", "z"])
+@pytest.mark.parametrize("template", ["Mg1-{v}Al{v}B2", "MgB2{v}", "La2-{v}Sr{v}CuO4"])
+def test_lowercase_stoichiometric_variables_stay_unresolved(symbol, template):
+    result = enrich_formula(template.format(v=symbol))
+    assert result["composition_status"] == "variable"
+    assert result["variable_symbols"] == [symbol]
+    _assert_has_no_exact_descriptors(result)
+
+
+@pytest.mark.parametrize("formula, symbol", [
+    ("Ba0.2La1.8Cu1O4-Y", "y"), ("Y1Ba2Cu3O7-Z", "z"),
+    ("YBa2Cu3O7-X", "x"), ("Mg1-XAlXB2", "x"),
+    ("MgB2X", "x"), ("MgB2Z", "z"),
+    ("Y0.4Ba0.6Cu1OX", "x"), ("Y1Ba2Cu3OX", "x"),
+    ("Er0.5Ba0.5Cu1OX", "x"),
+])
+def test_explicit_uppercase_mdr_variables_keep_uncertainty(formula, symbol):
+    result = enrich_formula(formula)
+    assert result["composition_status"] == "variable"
+    assert result["variable_symbols"] == [symbol]
+    _assert_has_no_exact_descriptors(result)
+
+
+@pytest.mark.parametrize("formula", ["MgB2X", "MgB2Z", "Mg1-XAlXB2", "X", "Z", "v", "c", "y"])
+def test_unsupported_uppercase_variables_and_lowercase_symbols_are_not_exact(formula):
+    result = enrich_formula(formula)
+    assert result["composition_status"] != "exact"
+    _assert_has_no_exact_descriptors(result)
+
+
+@pytest.mark.parametrize("formula", [
+    "Hg0.49Cr0.51Sr2Ca0.44Yo0.56Cu2O7.28",  # Unrecognized source token Yo.
+    "Li0.16M1Zr1N1Cl1",  # M is an unspecified species, not molybdenum.
+    "La2Sr0Cu1Zn0O4",  # Zero occupancy is not silently dropped by this grammar.
+])
+def test_resolving_element_tokens_does_not_repair_ambiguous_source_rows(formula):
+    result = enrich_formula(formula)
+    assert result["composition_status"] == "invalid"
+    _assert_has_no_exact_descriptors(result)
+
+
+@pytest.mark.parametrize("element", ["V", "C", "Y"])
+def test_element_composition_does_not_change_catalogue_admission(element):
+    from ingestion.extract.formula_validator import SINGLE_ELEMENT, validate_formula
+
+    assert validate_formula(element) == (False, SINGLE_ELEMENT)
+    assert enrich_formula(element)["composition_status"] == "exact"
+
+
+def test_pre_fix_cached_variable_descriptor_requires_recomputation():
+    cached = {**enrich_formula("CaO2Zr"), "parser_version": "1.1.0", "composition_status": "variable"}
+    assert not composition_cache_is_current("CaO2Zr", cached)
 
 
 def test_mixed_case_real_formula_does_not_collide_with_uppercase_shorthand():
