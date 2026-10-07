@@ -4,6 +4,8 @@ on:
   workflow_run:
     workflows: [Test]
     types: [completed]
+  # Operator-authorized, fixed-payload release; no arbitrary revision input.
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,23 +16,77 @@ permissions:
   security-events: write
 
 concurrency:
-  group: release-images-${{ github.event.workflow_run.head_sha }}
+  group: release-images-${{ github.event_name == 'workflow_dispatch' && 'bcf2d8549348646ca0908a6ee8144fec59ab3ce7' || github.event.workflow_run.head_sha }}
   cancel-in-progress: false
 
 jobs:
   verify-security:
     name: Require matching Security success
     if: >-
-      github.repository == 'JackZH26/SCLib_JZIS' &&
-      github.event.workflow_run.head_repository.full_name == github.repository &&
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main'
+      github.repository == 'JackZH26/SCLib_JZIS' && (
+        (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || (
+          github.event_name == 'workflow_run' &&
+          github.event.workflow_run.head_repository.full_name == github.repository &&
+          github.event.workflow_run.conclusion == 'success' &&
+          github.event.workflow_run.event == 'push' &&
+          github.event.workflow_run.head_branch == 'main' &&
+          github.event.workflow_run.head_sha != 'bcf2d8549348646ca0908a6ee8144fec59ab3ce7'
+        )
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
+      TARGET_SHA: ${{ github.event_name == 'workflow_dispatch' && 'bcf2d8549348646ca0908a6ee8144fec59ab3ce7' || github.event.workflow_run.head_sha }}
     steps:
+      - name: Verify the fixed one-time API regression waiver
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CONTROL_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$TARGET_SHA" == bcf2d8549348646ca0908a6ee8144fec59ab3ce7 ]]
+          gh api 'repos/JackZH26/SCLib_JZIS/actions/workflows/release-images.yml/runs?event=workflow_dispatch&branch=main&per_page=100' > "$RUNNER_TEMP/waiver-dispatch-runs.json"
+          jq --exit-status --argjson current "$GITHUB_RUN_ID" '
+            .total_count <= 100 and
+            all(.workflow_runs[] | select(.id != $current); .conclusion != "success")
+          ' "$RUNNER_TEMP/waiver-dispatch-runs.json" >/dev/null
+          gh api repos/JackZH26/SCLib_JZIS/actions/runs/37592295851 > "$RUNNER_TEMP/waiver-test-run.json"
+          gh api 'repos/JackZH26/SCLib_JZIS/actions/runs/37592295851/attempts/1/jobs?per_page=100' > "$RUNNER_TEMP/waiver-test-jobs.json"
+          jq --exit-status --arg sha "$TARGET_SHA" '
+            .id == 37592295851 and .run_attempt == 1 and .head_sha == $sha and
+            .head_branch == "main" and .event == "push" and .path == ".github/workflows/test.yml" and
+            .repository.full_name == "JackZH26/SCLib_JZIS" and .head_repository.full_name == "JackZH26/SCLib_JZIS" and
+            (.status == "in_progress" or (.status == "completed" and .conclusion == "success"))
+          ' "$RUNNER_TEMP/waiver-test-run.json" >/dev/null
+          jq --exit-status '
+            .total_count == 6 and (.jobs | length) == 6 and
+            ([.jobs[] | select(.name != "API (pytest)")] | length) == 5 and
+            all(.jobs[] | select(.name != "API (pytest)"); .status == "completed" and .conclusion == "success") and
+            ([.jobs[] | select(.name == "API (pytest)")] | length) == 1 and
+            all(.jobs[] | select(.name == "API (pytest)");
+              (.status == "in_progress" or (.status == "completed" and .conclusion == "success")) and
+              any(.steps[]; .name == "Verify all offline script contracts in the locked API runtime (no services)" and .conclusion == "success") and
+              any(.steps[]; .name == "Compare built API release image with the locked test runtime" and .conclusion == "success"))
+          ' "$RUNNER_TEMP/waiver-test-jobs.json" >/dev/null
+          jq --null-input --arg target "$TARGET_SHA" --arg control "$CONTROL_SHA"             --arg actor "$GITHUB_ACTOR" --arg run "$GITHUB_RUN_ID"             '{schema:"sclib-one-time-api-regression-waiver/1.0.0", payload_sha:$target,
+              control_sha:$control, actor:$actor, release_run_id:$run,
+              user_authorization:"不用等 API 回归，开始部署发布正式环境",
+              test_run_id:37592295851, test_run_attempt:1, api_regression_success_claimed:false,
+              api_regression_waived_for_this_payload:true, other_five_test_jobs_success:true,
+              public_api_availability_target:0.99, normal_future_release_gate_unchanged:true}'             > "$RUNNER_TEMP/one-time-api-regression-waiver.json"
+      - name: Retain actual waiver and partial-test evidence
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: one-time-api-regression-waiver
+          path: |
+            ${{ runner.temp }}/one-time-api-regression-waiver.json
+            ${{ runner.temp }}/waiver-test-run.json
+            ${{ runner.temp }}/waiver-test-jobs.json
+            ${{ runner.temp }}/waiver-dispatch-runs.json
+          if-no-files-found: error
       - name: Wait for Security workflow on the tested revision
         env:
           GH_TOKEN: ${{ github.token }}
@@ -67,11 +123,16 @@ jobs:
     name: Publish ${{ matrix.component }}
     needs: verify-security
     if: >-
-      github.repository == 'JackZH26/SCLib_JZIS' &&
-      github.event.workflow_run.head_repository.full_name == github.repository &&
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main'
+      github.repository == 'JackZH26/SCLib_JZIS' && (
+        (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || (
+          github.event_name == 'workflow_run' &&
+          github.event.workflow_run.head_repository.full_name == github.repository &&
+          github.event.workflow_run.conclusion == 'success' &&
+          github.event.workflow_run.event == 'push' &&
+          github.event.workflow_run.head_branch == 'main' &&
+          github.event.workflow_run.head_sha != 'bcf2d8549348646ca0908a6ee8144fec59ab3ce7'
+        )
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
@@ -79,7 +140,7 @@ jobs:
       matrix:
         component: [frontend, api, ingestion]
     env:
-      TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
+      TARGET_SHA: ${{ github.event_name == 'workflow_dispatch' && 'bcf2d8549348646ca0908a6ee8144fec59ab3ce7' || github.event.workflow_run.head_sha }}
     steps:
       - name: Resolve immutable release identity
         id: release
@@ -88,6 +149,19 @@ jobs:
           set -euo pipefail
           echo "short_sha=${TARGET_SHA:0:7}" >> "$GITHUB_OUTPUT"
           echo "image=ghcr.io/jackzh26/sclib-${{ matrix.component }}" >> "$GITHUB_OUTPUT"
+      - name: Check out one-time control source
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Retain one-time runtime helper outside the payload checkout
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp scripts/verify_one_time_release_runtime.py "$RUNNER_TEMP/verify_one_time_release_runtime.py"
+          sha256sum "$RUNNER_TEMP/verify_one_time_release_runtime.py"
       - name: Check out tested revision
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
@@ -128,7 +202,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Verify final digest against the exact triggering Test inventories
-        if: ${{ matrix.component == 'api' || matrix.component == 'ingestion' }}
+        if: ${{ github.event_name == 'workflow_run' && (matrix.component == 'api' || matrix.component == 'ingestion') }}
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_PROJECT: ${{ matrix.component }}
@@ -142,6 +216,18 @@ jobs:
             --project "$RELEASE_PROJECT" --image-digest "$RELEASE_DIGEST" \
             --test-run-id "$TEST_RUN_ID" --test-run-attempt "$TEST_RUN_ATTEMPT" \
             --revision "$TARGET_SHA" --output "$RUNNER_TEMP/release-runtime-$RELEASE_PROJECT"
+      - name: Verify final digest against a fresh exact locked runtime
+        if: ${{ github.event_name == 'workflow_dispatch' && (matrix.component == 'api' || matrix.component == 'ingestion') }}
+        env:
+          RELEASE_PROJECT: ${{ matrix.component }}
+          RELEASE_DIGEST: ${{ steps.build.outputs.digest }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check uv==0.11.16
+          uv sync --project "$RELEASE_PROJECT" --locked --extra dev --python 3.11
+          "$RELEASE_PROJECT/.venv/bin/python" scripts/runtime_inventory.py             --lock "$RELEASE_PROJECT/uv.lock" --pyproject "$RELEASE_PROJECT/pyproject.toml"             --revision "$TARGET_SHA" > "$RUNNER_TEMP/manual-locked-runtime-$RELEASE_PROJECT.json"
+          python "$RUNNER_TEMP/verify_one_time_release_runtime.py"             --project "$RELEASE_PROJECT" --image-digest "$RELEASE_DIGEST"             --locked-inventory "$RUNNER_TEMP/manual-locked-runtime-$RELEASE_PROJECT.json"             --output "$RUNNER_TEMP/release-runtime-$RELEASE_PROJECT"
       - name: Retain final-digest runtime evidence
         if: ${{ !cancelled() && (matrix.component == 'api' || matrix.component == 'ingestion') }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
