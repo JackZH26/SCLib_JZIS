@@ -53,7 +53,7 @@ jobs:
             all(.workflow_runs[] | select(.id != $current); .conclusion != "success")
           ' "$RUNNER_TEMP/waiver-dispatch-runs.json" >/dev/null
           gh api repos/JackZH26/SCLib_JZIS/actions/runs/37592295851 > "$RUNNER_TEMP/waiver-test-run.json"
-          gh api repos/JackZH26/SCLib_JZIS/actions/runs/37592295851/jobs?per_page=100 > "$RUNNER_TEMP/waiver-test-jobs.json"
+          gh api 'repos/JackZH26/SCLib_JZIS/actions/runs/37592295851/attempts/1/jobs?per_page=100' > "$RUNNER_TEMP/waiver-test-jobs.json"
           jq --exit-status --arg sha "$TARGET_SHA" '
             .id == 37592295851 and .run_attempt == 1 and .head_sha == $sha and
             .head_branch == "main" and .event == "push" and .path == ".github/workflows/test.yml" and

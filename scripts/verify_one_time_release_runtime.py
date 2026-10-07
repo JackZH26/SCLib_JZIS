@@ -231,7 +231,7 @@ def check(*, project, image_digest, locked_inventory, output):
                   "matches": not failures, "reason_codes": [] if not failures else ["runtime_inventory_mismatch"],
                   "mismatch_count": len(failures), "scope": SCOPE,
                   "inventory_source": "fresh_uv_locked_dev_venv_not_Test_artifacts",
-                  "api_regression": "pending_waived_for_this_one_release_not_verified_here",
+                  "api_regression": "waived_for_this_one_release_not_verified_here",
                   "claims_Test_success": False, "claims_application_execution": False,
                   "Security_scan_signing_provenance_and_Deploy_gates": "separate_workflow_requirements_not_verified_here"}
         save(root, "release-runtime.json", runtime_body)

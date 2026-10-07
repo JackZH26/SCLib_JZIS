@@ -91,7 +91,7 @@ class OneTimeRuntimeTests(unittest.TestCase):
         self.assertEqual(report["scope"], gate.SCOPE)
         self.assertFalse(report["claims_Test_success"])
         self.assertFalse(report["claims_application_execution"])
-        self.assertIn("pending_waived", report["api_regression"])
+        self.assertIn("waived_for_this_one_release_not_verified_here", report["api_regression"])
         self.assertEqual(report["inventory_source"], "fresh_uv_locked_dev_venv_not_Test_artifacts")
         self.assertEqual(len([c for c, _ in self.calls if c[3] == "pull"]), 1)
         self.assertEqual(len([c for c, _ in self.calls if c[3] == "run"]), 1)
