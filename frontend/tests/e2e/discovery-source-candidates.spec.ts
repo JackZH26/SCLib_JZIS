@@ -64,6 +64,58 @@ for (const viewport of [{ name: "desktop", width: 1440, height: 1000 }, { name: 
   });
 }
 
+test("320px: horizontally scrolled Details keeps verified source evidence in view", async ({ page }, info) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  await page.route("https://api.jzis.org/**", route => route.abort("blockedbyclient"));
+  await page.goto("/discovery");
+  await page.getByRole("button", { name: "Reject all", exact: true }).click();
+  const directory = page.locator("#discovery-source-candidates");
+  await expect(directory.locator("tr[data-source-candidate]")).toHaveCount(24);
+  await expect(directory.locator(".discovery-source-detail-row")).toHaveCount(0);
+  expect(await directory.locator("tr[data-source-candidate] button").evaluateAll(buttons =>
+    buttons.every(button => button.getAttribute("aria-expanded") === "false"))).toBe(true);
+
+  await directory.getByRole("searchbox", { name: "Find a source candidate" }).fill("Ti3Ge");
+  await expect(directory.locator("tr[data-source-candidate]")).toHaveCount(1);
+  const tableScroll = directory.locator(".discovery-source-table-scroll");
+  expect(await tableScroll.evaluate(element => element.scrollLeft)).toBe(0);
+  // Clicking the offscreen last-column button must itself scroll the real table.
+  // Do not scroll the detail into view: that would hide the horizontal-scroll bug.
+  await directory.getByRole("button", { name: "Show details for Ti3Ge" }).click();
+  const scrolledLeft = await tableScroll.evaluate(element => element.scrollLeft);
+  expect(scrolledLeft).toBeGreaterThan(0);
+  const detail = directory.locator(".discovery-source-detail");
+  const evidenceHeading = detail.getByRole("heading", { name: "Source calculation and selected control" });
+  await expect(evidenceHeading).toBeVisible();
+  await expect(directory.locator(".discovery-source-detail-row")).toHaveCount(1);
+  const detailBox = (await detail.boundingBox())!;
+  expect(detailBox.width).toBeGreaterThan(0);
+  expect(detailBox.x).toBeGreaterThanOrEqual(0);
+  expect(detailBox.x + detailBox.width).toBeLessThanOrEqual(320);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
+
+  // Vertical document movement leaves the table's horizontal position intact.
+  await evidenceHeading.evaluate(element => window.scrollBy({ top: element.getBoundingClientRect().top - 120, behavior: "instant" }));
+  await expect(evidenceHeading).toBeInViewport({ ratio: 1 });
+  const sourceValues = detail.getByText("16.928 / 13.176 K · Δ +3.752 K", { exact: true });
+  await expect(sourceValues).toBeVisible();
+  await expect(sourceValues).toBeInViewport({ ratio: 1 });
+  const evidenceBox = (await sourceValues.boundingBox())!;
+  expect(evidenceBox.x).toBeGreaterThanOrEqual(0);
+  expect(evidenceBox.x + evidenceBox.width).toBeLessThanOrEqual(320);
+  expect(await tableScroll.evaluate(element => element.scrollLeft)).toBe(scrolledLeft);
+  const folder = process.env.SCLIB_DISCOVERY_SCREENSHOT_DIR || info.outputDir;
+  mkdirSync(folder, { recursive: true });
+  await page.screenshot({ path: path.join(folder, "mobile-320-scrolled-Ti3Ge-evidence.png") });
+
+  await detail.getByRole("button", { name: "Close details for Ti3Ge" }).click();
+  await expect(directory.locator(".discovery-source-detail-row")).toHaveCount(0);
+  await expect(directory.getByRole("button", { name: "Show details for Ti3Ge" })).toHaveAttribute("aria-expanded", "false");
+  await directory.getByRole("button", { name: "Clear filters" }).click();
+  await expect(directory.locator("tr[data-source-candidate]")).toHaveCount(24);
+  await expect(directory.locator(".discovery-source-detail-row")).toHaveCount(0);
+});
+
 test("specific source-state phase captions retain formula and source identity", async ({ page }, info) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.route("https://api.jzis.org/**", route => route.abort("blockedbyclient"));

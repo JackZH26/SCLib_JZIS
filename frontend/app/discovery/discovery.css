@@ -46,7 +46,7 @@
 .discovery-source-tag { display: inline-block; padding: .12rem .35rem; border: 1px solid var(--discovery-line); border-radius: .2rem; background: var(--discovery-soft); color: var(--discovery-muted); font-size: .7rem; font-weight: 400; line-height: 1.4; }
 .discovery-source-more-tags { font-size: .7rem; color: var(--discovery-muted); align-self: center; }
 .discovery-source-table .discovery-source-detail-row { background: var(--discovery-soft); }
-.discovery-source-detail { display: grid; gap: 1rem; min-width: 0; max-width: min(100%, calc(100vw - 4rem)); padding: .35rem 0; font-size: .85rem; line-height: 1.6; }
+.discovery-source-detail { position: sticky; left: 0; display: grid; gap: 1rem; min-width: 0; max-width: min(100%, calc(100vw - 4rem)); padding: .35rem 0; font-size: .85rem; line-height: 1.6; }
 .discovery-source-detail > header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
 .discovery-source-detail h3 { font-size: 1rem; font-weight: 600; }
 .discovery-source-detail h4 { margin-bottom: .35rem; font-size: .85rem; font-weight: 600; }
