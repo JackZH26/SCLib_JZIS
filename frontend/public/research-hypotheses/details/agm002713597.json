@@ -1,0 +1,219 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm002713597",
+    "formula": "NbMoTc2",
+    "reduced_formula": "NbMoTc2",
+    "composition": {
+      "Mo": 1,
+      "Nb": 1,
+      "Tc": 2
+    },
+    "canonical_composition_key": "Mo:1|Nb:1|Tc:2",
+    "elements": [
+      "Mo",
+      "Nb",
+      "Tc"
+    ],
+    "source_state": "agm002713597",
+    "control_state": "agm001397716",
+    "source_directory": "batch-a/NbMoTc2_agm002713597",
+    "control_directory": "batch-a/NbMoTcRe_agm001397716",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Exact source geometry association retained; no named prototype is assigned here.",
+    "prototype_evidence": {
+      "CIF_source_record": 12641,
+      "CIF_payload_pin": {
+        "bytes": 591661,
+        "sha256": "93c3ce21c362fc36392db6d13f4555d76cce96122769d1212414bbc770f81541"
+      },
+      "SCF_coarse_source_record": 12657,
+      "Gamma_source_pin": {
+        "directory_key": "batch-a/NbMoTc2_agm002713597",
+        "bytes": 8994,
+        "sha256": "8bafa63e66e359717db2fd161b82b32169fb58c48551cf46f9d64a6d25267b54"
+      },
+      "source_input_volume_difference_relative": 7.756595366004149e-11,
+      "occupancy_model_all1": true,
+      "bounded_signed_axis_and_translation_mapping": {
+        "signed_axis_U_CIF_fractional_to_SCF": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "determinant": 1,
+        "origin_shift_fractional": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species_bijection_CIF_to_SCF": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "maximum_site_distance_A": 0,
+        "relative_Gram_residual": 1.6393642563380358e-09,
+        "proper_signed_axis_solution": true
+      },
+      "attempts": 1,
+      "general_GL3_or_chiral_equivalence_asserted": false,
+      "CIF_site_precision_A_tolerance": 1e-05,
+      "physical_model": "source finite neutral scalar EPC; no SOC transfer certificate"
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 13.542,
+      "control_K": 12.171,
+      "delta_K": 1.3710000000000004,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.0017999999999999128,
+        0.022499999999999964,
+        0.030299999999999994,
+        0.037699999999999956,
+        0.041200000000000014,
+        0.04090000000000005,
+        0.03959999999999997,
+        0.039000000000000035,
+        0.03939999999999999,
+        0.04080000000000006
+      ],
+      "range": [
+        0.0017999999999999128,
+        0.041200000000000014
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Target source lambda gain is small at one token but positive at all ten, and separate isotropic Tc increases by 1.371 K. The effect mixes mass, orbital chemistry and charge redistribution; actual mobile n and orbital bandwidth are unknown. Tc availability/radioactivity is a follow-up cost risk only. All target forces zero, finite source q and Gamma evidence positive.",
+    "ambient_scope": "Source coarse force 0.0 eV/Å, pressure 0.002 GPa; fine force 0.0 eV/Å, pressure 0.036 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "route_response": "Re-to-Tc minority role replacement in Nb-Mo-Tc ordered SG225. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "next_action": "Compare saved orbital/mode and Coulomb-sensitive source evidence for Re/Tc neighbors. Favorable: the fixed-phase response survives physically matched model checks; adverse: the small EPC change reverses and Tc benefit is solely assumed mu; ambiguous: only nominal electrons available.",
+    "seven_criteria": {
+      "identity": "Exact source CIF/SCF/Γ state association; CIF source record 12641. Experimental occupancy/P/T and physical magnetic ground state remain unknown; source scalar model only.",
+      "quantitative_route_response": "Re-to-Tc minority role replacement in Nb-Mo-Tc ordered SG225. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+      "pairing_relevance": "direct published source EPC and independent source isotropic Eliashberg result. 1 favorable comparator(s); bounded source model, not experiment.",
+      "ambient_feasibility": "Source coarse force 0.0 eV/Å, pressure 0.002 GPa; fine force 0.0 eV/Å, pressure 0.036 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+      "competition_and_coherence": "Target source lambda gain is small at one token but positive at all ten, and separate isotropic Tc increases by 1.371 K. The effect mixes mass, orbital chemistry and charge redistribution; actual mobile n and orbital bandwidth are unknown. Tc availability/radioactivity is a follow-up cost risk only. All target forces zero, finite source q and Gamma evidence positive.",
+      "novelty": "Exact NbMoTc2 query found no primary experimental exact ordered phase. Closest retrieved primary Tc alloy study examines binary phases and unknown experimental Tc chemistry, not this ternary source SG225 object. No independent experimental validation or global novelty is implied.",
+      "decision": "Compare saved orbital/mode and Coulomb-sensitive source evidence for Re/Tc neighbors. Favorable: the fixed-phase response survives physically matched model checks; adverse: the small EPC change reverses and Tc benefit is solely assumed mu; ambiguous: only nominal electrons available."
+    },
+    "risk_tags": [
+      "residual_force_stress",
+      "technetium"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index": 227,
+        "control": "batch-a/NbMoTcRe_agm001397716",
+        "target": "batch-a/NbMoTc2_agm002713597",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          0.0017999999999999128,
+          0.041200000000000014
+        ],
+        "lambda_pct_range": [
+          0.20118475466635885,
+          5.4025423728813635
+        ],
+        "Tc_target_K": 13.542,
+        "Tc_control_K": 12.171,
+        "independent_source_Eli_Tc_delta_K": 1.3710000000000004,
+        "all10_lambda_and_Tc_favorable": true,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 0.9918315518209998,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.5429028962323255e-06,
+        "geometry_only_causality": null,
+        "lambda_target_minus_other_range": [
+          0.0017999999999999128,
+          0.041200000000000014
+        ]
+      }
+    ],
+    "physical_summary": null,
+    "evidence_pins": [
+      {
+        "artifact": "tranche-01-ten-specific-scientific-recommendations.json",
+        "bytes": 381754,
+        "sha256": "5d05478212c4d22080ab1b7bf22d92b784de6c0f8a99590d0758f9cdbfdafb32",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-remaining-transition-owned-review-cache-v1.json",
+        "bytes": 5381838,
+        "sha256": "62f4910578c7b65392d26619cf81b31afd6142f38aa49834a70bb147e7ab222d",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

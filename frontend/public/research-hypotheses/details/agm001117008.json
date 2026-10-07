@@ -1,0 +1,132 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm001117008",
+    "formula": "HfTiZr2",
+    "reduced_formula": "HfTiZr2",
+    "composition": {
+      "Hf": 1,
+      "Ti": 1,
+      "Zr": 2
+    },
+    "canonical_composition_key": "Hf:1|Ti:1|Zr:2",
+    "elements": [
+      "Hf",
+      "Ti",
+      "Zr"
+    ],
+    "source_state": "agm001117008",
+    "control_state": "agm001229341",
+    "source_directory": "batch-a/TiZr2Hf_agm001117008",
+    "control_directory": null,
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "ordered layered tetragonal four-site source model versus near-cubic ordered same-composition control",
+    "prototype_evidence": {
+      "motif": "ordered layered tetragonal four-site source model versus near-cubic ordered same-composition control",
+      "space_group_not_assigned_from_P1": true,
+      "largest_colored_nearest_distance_contrast_A": 1.24918306
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 17.936,
+      "control_K": 14.171,
+      "delta_K": 3.7650000000000006,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": null,
+      "range": [
+        0.5230000000000001,
+        0.7524
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "reviewed: softeromega, residualforce/stress, differingk/q, ordered/disordered competition, SOC/magnetic/synthesis/hull unknown retained",
+    "ambient_scope": "supported as local/finite-grid evidence: Gamma optical positivity beyond printing bound, retained path no negative, converged fineSCF and bounded signed pressure/fullstress/forces; not global stability",
+    "route_response": "supported within explicit finite sampling: colored-network geometry difference and same-composition all-ten-width source EPC contrast",
+    "next_action": "concrete matched reciprocal-resolution/broadening and competing-phase falsification; not mandatory prerequisite newDFPT for allsource candidates",
+    "seven_criteria": {
+      "identity": "supported: exact pinned ordered source states; CIF/finalgeo/SCFinput/Gamma association passes",
+      "quantitative_route_response": "supported within explicit finite sampling: colored-network geometry difference and same-composition all-ten-width source EPC contrast",
+      "pairing_relevance": "supported: source conventional direct EPC plus separate reported McMillan/AllenDynes/Eliashberg mu0.1 models; no inheritance or new prediction",
+      "ambient_feasibility": "supported as local/finite-grid evidence: Gamma optical positivity beyond printing bound, retained path no negative, converged fineSCF and bounded signed pressure/fullstress/forces; not global stability",
+      "competition_and_coherence": "reviewed: softeromega, residualforce/stress, differingk/q, ordered/disordered competition, SOC/magnetic/synthesis/hull unknown retained",
+      "novelty": "bounded exact-composition/ordered-hypothesis new-to-reviewed-private-catalogue supported by dated ROOT primary query note, retaining MaterialsCloud2023 source prior and known equiatomic HfTiZr; no firstdiscovery/global absence",
+      "decision": "concrete matched reciprocal-resolution/broadening and competing-phase falsification; not mandatory prerequisite newDFPT for allsource candidates"
+    },
+    "risk_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "sampling_method"
+    ],
+    "countercontrols": [],
+    "physical_summary": null,
+    "evidence_pins": [
+      {
+        "artifact": "receipt.json",
+        "bytes": 12520,
+        "sha256": "bca59ab1e7336161904224857272545b0e9bcfb7f3d4cc10e1f8599650af7436",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "result.json",
+        "bytes": 81549,
+        "sha256": "37f815ac8e41e2fcb1e36fd9bd6e9f3cbe4d8c5211e8ceee5975c6df996e8667",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "root-bounded-three-priority-ordered-phase-prior-notes-v1.json",
+        "bytes": 2872,
+        "sha256": "03671a17aea54ebe3121d374f3d8b5acc6ac8888c154717a8cc73fb0712bae3d",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "criteria.json",
+        "bytes": 16426,
+        "sha256": "e1df615f98f5ed472465daf157d70f7935e7279c33ef767396d144d3b53d2a93",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "new-to-reviewed-catalogue exact ordered geometry hypothesis; published2023 EPC source retained, not first discovery",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

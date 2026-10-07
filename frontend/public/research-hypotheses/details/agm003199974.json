@@ -1,0 +1,457 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm003199974",
+    "formula": "YZrRe4",
+    "reduced_formula": "YZrRe4",
+    "composition": {
+      "Re": 4,
+      "Y": 1,
+      "Zr": 1
+    },
+    "canonical_composition_key": "Re:4|Y:1|Zr:1",
+    "elements": [
+      "Re",
+      "Y",
+      "Zr"
+    ],
+    "source_state": "agm003199974",
+    "control_state": "agm001177738",
+    "source_directory": "batch-a/YZrRe4_agm003199974",
+    "control_directory": "batch-a/ZrLuRe4_agm001177738",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Exact source geometry association retained; no named prototype is assigned here.",
+    "prototype_evidence": {
+      "CIF_source_record": 14613,
+      "CIF_payload_pin": {
+        "bytes": 591661,
+        "sha256": "93c3ce21c362fc36392db6d13f4555d76cce96122769d1212414bbc770f81541"
+      },
+      "SCF_coarse_source_record": 14625,
+      "Gamma_source_pin": {
+        "directory_key": "batch-a/YZrRe4_agm003199974",
+        "bytes": 18614,
+        "sha256": "6eebebc138716e6bf53e2d342e8f12e4383a12dd36e584320c64b67e564514ee"
+      },
+      "source_input_volume_difference_relative": 3.793587666223175e-11,
+      "occupancy_model_all1": true,
+      "bounded_signed_axis_and_translation_mapping": {
+        "signed_axis_U_CIF_fractional_to_SCF": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "determinant": 1,
+        "origin_shift_fractional": [
+          -0.25,
+          -0.25,
+          -0.24999998999999995
+        ],
+        "species_bijection_CIF_to_SCF": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "maximum_site_distance_A": 9.197487471757374e-08,
+        "relative_Gram_residual": 3.7851695993430635e-10,
+        "proper_signed_axis_solution": true
+      },
+      "attempts": 1,
+      "general_GL3_or_chiral_equivalence_asserted": false,
+      "CIF_site_precision_A_tolerance": 1e-05,
+      "physical_model": "source finite neutral scalar EPC; no SOC transfer certificate"
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 12.616,
+      "control_K": 11.953,
+      "delta_K": 0.6630000000000003,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.19940000000000002,
+        0.15139999999999998,
+        0.1279999999999999,
+        0.11440000000000006,
+        0.10549999999999993,
+        0.09899999999999998,
+        0.09400000000000008,
+        0.08999999999999997,
+        0.08699999999999997,
+        0.08450000000000002
+      ],
+      "range": [
+        0.08450000000000002,
+        0.19940000000000002
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "ZrLuRe4→YZrRe4 has coherent +.0845…+.1994 lambda and Tc+.663 K; Hf ternary lambda crosses and binaryZrRe2 is better. Path0/Gammaopt+, fine force .00371 and stress .001 GPa support local source scope. Re-heavy scalar/SOC and C14/C15/disorder phase alternatives remain bounded risks.",
+    "ambient_scope": "Source coarse force 1.8258454867342465e-05 eV/Å, pressure 0.003 GPa; fine force 0.0037131462605829637 eV/Å, pressure 0.001 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "route_response": "Lu-to-Y mixed-site ordering in YZrRe4. coupled chemistry/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "next_action": "Resolve Y/Lu mixed-site EPC and exact source branch versus binary/phase alternatives. Favorable: local role gain persists; adverse: relevant SOC or phase conversion erases it; ambiguous: no comparable role/phase information.",
+    "seven_criteria": {
+      "identity": "Exact source CIF/SCF/Γ state association; CIF source record 14613. Experimental occupancy/P/T and physical magnetic ground state remain unknown; source scalar model only.",
+      "quantitative_route_response": "Lu-to-Y mixed-site ordering in YZrRe4. coupled chemistry/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+      "pairing_relevance": "direct published source EPC plus independent source isotropic Eliashberg result.  favorable comparator(s); bounded source model, not experiment.",
+      "ambient_feasibility": "Source coarse force 1.8258454867342465e-05 eV/Å, pressure 0.003 GPa; fine force 0.0037131462605829637 eV/Å, pressure 0.001 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+      "competition_and_coherence": "ZrLuRe4→YZrRe4 has coherent +.0845…+.1994 lambda and Tc+.663 K; Hf ternary lambda crosses and binaryZrRe2 is better. Path0/Gammaopt+, fine force .00371 and stress .001 GPa support local source scope. Re-heavy scalar/SOC and C14/C15/disorder phase alternatives remain bounded risks.",
+      "novelty": "Exact YZrRe4 phase not retrieved. ExperimentalC14ZrRe2 and Re7X3 are different composition/phase and do not establish this ordered SG216 ternary.",
+      "decision": "Resolve Y/Lu mixed-site EPC and exact source branch versus binary/phase alternatives. Favorable: local role gain persists; adverse: relevant SOC or phase conversion erases it; ambiguous: no comparable role/phase information."
+    },
+    "risk_tags": [
+      "metastable_phase",
+      "residual_force_stress"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index": 370,
+        "control": "batch-a/ZrHfRe4_agm001177717",
+        "target": "batch-a/YZrRe4_agm003199974",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          -0.15429999999999988,
+          0.035600000000000076
+        ],
+        "lambda_pct_range": [
+          -11.51285227624652,
+          2.3417971319563264
+        ],
+        "Tc_target_K": 12.616,
+        "Tc_control_K": 15.587,
+        "independent_source_Eli_Tc_delta_K": -2.971,
+        "all10_lambda_and_Tc_favorable": false,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 1.0402615891709976,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.0906309020278317e-06,
+        "geometry_only_causality": null,
+        "control_raw_path_minimum_and_negatives": {
+          "negative_printed_values": 0,
+          "minimum_printed_mode": {
+            "value": -0.0,
+            "column_index_zero_based": 1
+          },
+          "frequency_unit_header": null,
+          "state_link_verified": null
+        },
+        "control_q_status_summary": {
+          "source_ID": "agm001177717",
+          "dyn0_source_record": 6665,
+          "configured_q_mesh": [
+            3.0,
+            3.0,
+            3.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 1,
+              "source_record": 6672,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 6673,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 6674,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 6675,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          -0.15429999999999988,
+          0.035600000000000076
+        ]
+      },
+      {
+        "frozen_contrast_index": 371,
+        "control": "batch-a/ZrLuRe4_agm001177738",
+        "target": "batch-a/YZrRe4_agm003199974",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          0.08450000000000002,
+          0.19940000000000002
+        ],
+        "lambda_pct_range": [
+          10.027736291871143,
+          14.700678265998231
+        ],
+        "Tc_target_K": 12.616,
+        "Tc_control_K": 11.953,
+        "independent_source_Eli_Tc_delta_K": 0.6630000000000003,
+        "all10_lambda_and_Tc_favorable": true,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 1.0176399922851613,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.3105080034423595e-06,
+        "geometry_only_causality": null,
+        "control_raw_path_minimum_and_negatives": {
+          "negative_printed_values": 0,
+          "minimum_printed_mode": {
+            "value": -0.0,
+            "column_index_zero_based": 1
+          },
+          "frequency_unit_header": null,
+          "state_link_verified": null
+        },
+        "control_q_status_summary": {
+          "source_ID": "agm001177738",
+          "dyn0_source_record": 17173,
+          "configured_q_mesh": [
+            3.0,
+            3.0,
+            3.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 1,
+              "source_record": 17180,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 17181,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 17182,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 17183,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          0.08450000000000002,
+          0.19940000000000002
+        ]
+      },
+      {
+        "frozen_contrast_index": 372,
+        "control": "batch-a/ZrRe2_agm003200022",
+        "target": "batch-a/YZrRe4_agm003199974",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          -0.23009999999999997,
+          -0.11120000000000008
+        ],
+        "lambda_pct_range": [
+          -15.46449229911492,
+          -7.304575786463288
+        ],
+        "Tc_target_K": 12.616,
+        "Tc_control_K": 16.476,
+        "independent_source_Eli_Tc_delta_K": -3.8599999999999994,
+        "all10_lambda_and_Tc_favorable": false,
+        "all10_lambda_and_Tc_adverse": true,
+        "three_tol_graph": false,
+        "target_volume_ratio_over_control": 1.0332890217732973,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.0535056350827616e-06,
+        "geometry_only_causality": null,
+        "control_raw_path_minimum_and_negatives": {
+          "negative_printed_values": 0,
+          "minimum_printed_mode": {
+            "value": -0.0,
+            "column_index_zero_based": 1
+          },
+          "frequency_unit_header": null,
+          "state_link_verified": null
+        },
+        "control_q_status_summary": {
+          "source_ID": "agm003200022",
+          "dyn0_source_record": 5453,
+          "configured_q_mesh": [
+            3.0,
+            3.0,
+            3.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 1,
+              "source_record": 5460,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 5461,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 5462,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 5463,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          -0.23009999999999997,
+          -0.11120000000000008
+        ]
+      }
+    ],
+    "physical_summary": null,
+    "evidence_pins": [
+      {
+        "artifact": "tranche-02-eleven-specific-source-finite-cases.json",
+        "bytes": 1219201,
+        "sha256": "ee658cb8e6309178e268b736f8aeb6429c030a92019c068963e2d64ca51cbb17",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-03-fifteen-specific-source-finite-cases.json",
+        "bytes": 1347056,
+        "sha256": "1be9342cb74006b2542e9351fc2de310967f1a31a5ee9f1909ae730b9a11476a",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-remaining-transition-owned-review-cache-v1.json",
+        "bytes": 5381838,
+        "sha256": "62f4910578c7b65392d26619cf81b31afd6142f38aa49834a70bb147e7ab222d",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

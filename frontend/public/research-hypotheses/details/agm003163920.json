@@ -1,0 +1,746 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm003163920",
+    "formula": "CrTc",
+    "reduced_formula": "CrTc",
+    "composition": {
+      "Cr": 1,
+      "Tc": 1
+    },
+    "canonical_composition_key": "Cr:1|Tc:1",
+    "elements": [
+      "Cr",
+      "Tc"
+    ],
+    "source_state": "agm003163920",
+    "control_state": "agm003163891",
+    "source_directory": "batch-a/CrTc_agm003163920",
+    "control_directory": "batch-a/CrRe_agm003163891",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Source symmetry observation: space group 129. Ordered-site evidence is retained; space group alone is not a prototype certificate.",
+    "prototype_evidence": {
+      "symprec_A": 0.0001,
+      "mode": "color_aware",
+      "status": "completed",
+      "SG_number": 129,
+      "hall_number": 408,
+      "input_wyckoff_letters": [
+        "c",
+        "c",
+        "c",
+        "c"
+      ],
+      "input_crystallographic_orbits": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 17.431,
+      "control_K": 11.969,
+      "delta_K": 5.4620000000000015,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.3567,
+        0.28979999999999995,
+        0.24120000000000008,
+        0.21209999999999996,
+        0.1936,
+        0.18159999999999998,
+        0.17369999999999997,
+        0.16849999999999998,
+        0.1652,
+        0.1632
+      ],
+      "range": [
+        0.1632,
+        0.3567
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Tetragonal Cr-Tc vs Cr-Re is an exact colored-site substitution with matched cutoff and coarse/fine grids. No exact magnetic contradiction found; source prior excluded magnetic entries. Short Cr-Cr2.3857A is descriptive, not a universal SDW threshold.",
+    "ambient_scope": "Source coarse/fine pressure/fullstress/force andpositiveopticalGamma plus finite-path/q evidence; exacttested domain only. No laboratory P/T/hull/globalstability inheritance.",
+    "route_response": "Colored-site substitution/ordered network plus computed volume/nearest-distance response andEPCagainst frozen geometriccontrols; chemistry/masses co-change. No W/mobile n claim.",
+    "next_action": "Same-cell NM/FM/one commensurate AF seed: stable appreciable Cr moments and lower energy would reverse the nonmag EPC interpretation; otherwise retain and test finer sampling.",
+    "seven_criteria": {
+      "identity": "CIF lattice/sites to both SCFinputs andGamma atomicheader via speciesbijection/wholetranslation; 1e-6A observationaltolerance, not physicaluncertainty",
+      "novelty": "Bounded exact formula/prototype primary search; published source calculations not claimed as first discovery. New-to-reviewed exact ordered hypothesis only. Literature-wide novelty unproved.",
+      "quantitative_route_response": "Colored-site substitution/ordered network plus computed volume/nearest-distance response andEPCagainst frozen geometriccontrols; chemistry/masses co-change. No W/mobile n claim.",
+      "pairing_relevance": "All ten raw printed lambda values andseparate mu*=.1 sourceEliashberg/McMillan products retained; representative common-sigma response isnotrenamed Tc_uncertainty. Spinfluctuations/anisotropy omitted.",
+      "ambient_feasibility": "Source coarse/fine pressure/fullstress/force andpositiveopticalGamma plus finite-path/q evidence; exacttested domain only. No laboratory P/T/hull/globalstability inheritance.",
+      "competition_and_coherence": "Tetragonal Cr-Tc vs Cr-Re is an exact colored-site substitution with matched cutoff and coarse/fine grids. No exact magnetic contradiction found; source prior excluded magnetic entries. Short Cr-Cr2.3857A is descriptive, not a universal SDW threshold.",
+      "decision": "Same-cell NM/FM/one commensurate AF seed: stable appreciable Cr moments and lower energy would reverse the nonmag EPC interpretation; otherwise retain and test finer sampling."
+    },
+    "risk_tags": [
+      "magnetic_model",
+      "sampling_method",
+      "technetium"
+    ],
+    "countercontrols": [
+      {
+        "unordered_pair_key": [
+          "batch-a/CrRe_agm003163891",
+          "batch-a/CrTc_agm003163920"
+        ],
+        "fixed_A": "batch-a/CrRe_agm003163891",
+        "fixed_B": "batch-a/CrTc_agm003163920",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "same_sigma_tokens": true,
+        "sigma_units": null,
+        "lambda_B_minus_A_all_common_tokens": [
+          0.3567,
+          0.28979999999999995,
+          0.24120000000000008,
+          0.21209999999999996,
+          0.1936,
+          0.18159999999999998,
+          0.17369999999999997,
+          0.16849999999999998,
+          0.1652,
+          0.1632
+        ],
+        "lambda_B_minus_A_range": [
+          0.1632,
+          0.3567
+        ],
+        "all10_higher_lambda_direction": "B",
+        "source_Eliashberg_mu0p1_A_B": [
+          [
+            0.1,
+            11.969
+          ],
+          [
+            0.1,
+            17.431
+          ]
+        ],
+        "source_Eliashberg_delta_B_minus_A_K": 5.4620000000000015,
+        "same_direction_lambda_and_separate_Tc": "B",
+        "independent_Tc_to_sigma_association": null,
+        "geometry_only_causality": null,
+        "high_W_or_mobile_n_response": null,
+        "zero_based_row": 101
+      }
+    ],
+    "physical_summary": {
+      "coarse": {
+        "source_record": 4145,
+        "explicit_program_start_headers": [
+          {
+            "value": "Program PWSCF v.7.1 starts on 12May2023 at 17: 0:24"
+          }
+        ],
+        "last_printed_convergence_event": {
+          "value": true,
+          "role": "printed electronic/linear-response convergence event; context not assumed SCF"
+        },
+        "JOB_DONE_seen": true,
+        "routine_error_count": 0,
+        "warning_patterns": {
+          "pattern_selected_count": 6,
+          "pattern_scope_not_all_warnings": true,
+          "BFGS": {
+            "count": 1,
+            "last": {
+              "value": "Warning: card   CELL_DYNAMICS = 'BFGS', ignored"
+            }
+          },
+          "negative_charge": {
+            "count": 0,
+            "last": null
+          },
+          "eigen_text": {
+            "count": 0,
+            "last": null
+          },
+          "failure_text": {
+            "count": 0,
+            "last": null
+          },
+          "SCF_correction_text": {
+            "count": 2,
+            "last": {
+              "value": "SCF correction compared to forces is large: reduce conv_thr to get better values"
+            }
+          }
+        },
+        "last_force": {
+          "header": {
+            "value": "Forces acting on atoms (cartesian axes, Ry/au):"
+          },
+          "reported_unit": "Ry/bohr",
+          "printed_site_rows": 4,
+          "ordered_atom_indices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "reported_max_abs_component": {
+            "value": 8.2e-07,
+            "unit": "Ry/bohr",
+            "derivation": "all components in this printed force block"
+          },
+          "recomputed_max_component_Ry_bohr": 8.2e-07,
+          "recomputed_max_atom_norm_Ry_bohr": 8.2e-07,
+          "max_component_eV_A": 2.1083047665293612e-05,
+          "max_atom_norm_eV_A": 2.1083047665293612e-05,
+          "Ry_bohr_to_eV_A_factor": 25.711033738162943,
+          "conversion_constants": {
+            "Ry_eV": 13.605693122994,
+            "bohr_A": 0.529177210903
+          },
+          "unit_conversion_valid": true,
+          "max_norm_site": {
+            "value": [
+              0.0,
+              0.0,
+              -8.2e-07
+            ],
+            "atom_index": 1,
+            "type_index": 1
+          },
+          "reported_component_agrees": true
+        },
+        "last_stress": {
+          "last_pressure_print": {
+            "value": -0.01,
+            "unit": "kbar",
+            "raw_value": "-0.01",
+            "GPa": -0.001
+          },
+          "last_stress_block": {
+            "header": {
+              "value": "total   stress  (Ry/bohr**3)                   (kbar)     P=       -0.01"
+            },
+            "complete_3x6": true,
+            "first_tensor_unit": "Ry/bohr^3",
+            "last_tensor_unit": "kbar",
+            "rows": [
+              {
+                "value": [
+                  -8e-08,
+                  0.0,
+                  0.0,
+                  -0.01,
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "value": [
+                  0.0,
+                  -8e-08,
+                  0.0,
+                  0.0,
+                  -0.01,
+                  0.0
+                ]
+              },
+              {
+                "value": [
+                  0.0,
+                  0.0,
+                  -7e-08,
+                  0.0,
+                  0.0,
+                  -0.01
+                ]
+              }
+            ],
+            "full_last_tensor_GPa": [
+              [
+                -0.001,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -0.001,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                -0.001
+              ]
+            ],
+            "trace_mean_kbar": -0.01,
+            "max_abs_stress_GPa": 0.001,
+            "hydrostatic_pressure_not_full_stress": true
+          }
+        },
+        "last_total_energy_print": {
+          "value": -703.33056339,
+          "unit": "Ry",
+          "raw_value": "-703.33056339"
+        },
+        "last_signed_minus_TS_print": {
+          "value": -0.00019674,
+          "unit": "Ry",
+          "raw_value": "-0.00019674"
+        },
+        "derived_E_from_F_minus_signed_minus_TS_Ry": -703.33036665
+      },
+      "fine": {
+        "source_record": 4146,
+        "explicit_program_start_headers": [
+          {
+            "value": "Program PWSCF v.7.1 starts on 12May2023 at 16:51: 9"
+          }
+        ],
+        "last_printed_convergence_event": {
+          "value": true,
+          "role": "printed electronic/linear-response convergence event; context not assumed SCF"
+        },
+        "JOB_DONE_seen": true,
+        "routine_error_count": 0,
+        "warning_patterns": {
+          "pattern_selected_count": 5,
+          "pattern_scope_not_all_warnings": true,
+          "BFGS": {
+            "count": 1,
+            "last": {
+              "value": "Warning: card   CELL_DYNAMICS = 'BFGS', ignored"
+            }
+          },
+          "negative_charge": {
+            "count": 0,
+            "last": null
+          },
+          "eigen_text": {
+            "count": 0,
+            "last": null
+          },
+          "failure_text": {
+            "count": 0,
+            "last": null
+          },
+          "SCF_correction_text": {
+            "count": 1,
+            "last": {
+              "value": "Total force =     0.002668     Total SCF correction =     0.000004"
+            }
+          }
+        },
+        "last_force": {
+          "header": {
+            "value": "Forces acting on atoms (cartesian axes, Ry/au):"
+          },
+          "reported_unit": "Ry/bohr",
+          "printed_site_rows": 4,
+          "ordered_atom_indices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "reported_max_abs_component": {
+            "value": 0.00135131,
+            "unit": "Ry/bohr",
+            "derivation": "all components in this printed force block"
+          },
+          "recomputed_max_component_Ry_bohr": 0.00135131,
+          "recomputed_max_atom_norm_Ry_bohr": 0.00135131,
+          "max_component_eV_A": 0.034743577000716966,
+          "max_atom_norm_eV_A": 0.034743577000716966,
+          "Ry_bohr_to_eV_A_factor": 25.711033738162943,
+          "conversion_constants": {
+            "Ry_eV": 13.605693122994,
+            "bohr_A": 0.529177210903
+          },
+          "unit_conversion_valid": true,
+          "max_norm_site": {
+            "value": [
+              0.0,
+              0.0,
+              -0.00135131
+            ],
+            "atom_index": 1,
+            "type_index": 1
+          },
+          "reported_component_agrees": true
+        },
+        "last_stress": {
+          "last_pressure_print": {
+            "value": -1.34,
+            "unit": "kbar",
+            "raw_value": "-1.34",
+            "GPa": -0.134
+          },
+          "last_stress_block": {
+            "header": {
+              "value": "total   stress  (Ry/bohr**3)                   (kbar)     P=       -1.34"
+            },
+            "complete_3x6": true,
+            "first_tensor_unit": "Ry/bohr^3",
+            "last_tensor_unit": "kbar",
+            "rows": [
+              {
+                "value": [
+                  -3.19e-06,
+                  0.0,
+                  0.0,
+                  -0.47,
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "value": [
+                  0.0,
+                  -3.19e-06,
+                  0.0,
+                  0.0,
+                  -0.47,
+                  0.0
+                ]
+              },
+              {
+                "value": [
+                  0.0,
+                  0.0,
+                  -2.101e-05,
+                  0.0,
+                  0.0,
+                  -3.09
+                ]
+              }
+            ],
+            "full_last_tensor_GPa": [
+              [
+                -0.047,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -0.047,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                -0.309
+              ]
+            ],
+            "trace_mean_kbar": -1.343333333333333,
+            "max_abs_stress_GPa": 0.309,
+            "hydrostatic_pressure_not_full_stress": true
+          }
+        },
+        "last_total_energy_print": {
+          "value": -703.33055861,
+          "unit": "Ry",
+          "raw_value": "-703.33055861"
+        },
+        "last_signed_minus_TS_print": {
+          "value": -0.0001394,
+          "unit": "Ry",
+          "raw_value": "-0.00013940"
+        },
+        "derived_E_from_F_minus_signed_minus_TS_Ry": -703.3304192100001
+      },
+      "Gamma": {
+        "Gamma_optical_sign": "positive_beyond_printing_bound",
+        "Gamma_optical_minimum": 1.185126877943133e-06,
+        "Gamma_printing_bound": 1.3702167384646535e-12,
+        "Gamma_native_signed_modes": [
+          {
+            "number": 1,
+            "THz": -0.376297,
+            "cm_inverse": -12.551915,
+            "line": 85
+          },
+          {
+            "number": 2,
+            "THz": -0.376297,
+            "cm_inverse": -12.551915,
+            "line": 90
+          },
+          {
+            "number": 3,
+            "THz": -0.273088,
+            "cm_inverse": -9.109249,
+            "line": 95
+          },
+          {
+            "number": 4,
+            "THz": 3.581438,
+            "cm_inverse": 119.463915,
+            "line": 100
+          },
+          {
+            "number": 5,
+            "THz": 4.489389,
+            "cm_inverse": 149.749898,
+            "line": 105
+          },
+          {
+            "number": 6,
+            "THz": 4.489389,
+            "cm_inverse": 149.749898,
+            "line": 110
+          },
+          {
+            "number": 7,
+            "THz": 5.309756,
+            "cm_inverse": 177.114408,
+            "line": 115
+          },
+          {
+            "number": 8,
+            "THz": 5.309756,
+            "cm_inverse": 177.114408,
+            "line": 120
+          },
+          {
+            "number": 9,
+            "THz": 5.483525,
+            "cm_inverse": 182.910721,
+            "line": 125
+          },
+          {
+            "number": 10,
+            "THz": 5.483525,
+            "cm_inverse": 182.910721,
+            "line": 130
+          },
+          {
+            "number": 11,
+            "THz": 7.786635,
+            "cm_inverse": 259.734184,
+            "line": 135
+          },
+          {
+            "number": 12,
+            "THz": 8.824394,
+            "cm_inverse": 294.350094,
+            "line": 140
+          }
+        ],
+        "Gamma_ASR_relative": 0.002212007529889663,
+        "Gamma_source_pin": {
+          "directory_key": "batch-a/CrTc_agm003163920",
+          "bytes": 8948,
+          "sha256": "8cbbc7ca668157da7c57e21172d67f1faef58e068b0ca85aeffa5d23e349a56d"
+        }
+      },
+      "finite_path": {
+        "raw_header_lines": [],
+        "negative_printed_values": 0,
+        "minimum_printed_mode": {
+          "value": 0.0,
+          "column_index_zero_based": 1
+        },
+        "frequency_unit_header": null,
+        "fullBZ_coverage": null,
+        "dynamical_stability": null,
+        "state_link_verified": null
+      },
+      "q_sampling": {
+        "source_ID": "agm003163920",
+        "dyn0_source_record": 4125,
+        "raw_first_two_dyn0_rows": [
+          {
+            "value": [
+              5.0,
+              5.0,
+              2.0
+            ],
+            "missing_tokens": [
+              false,
+              false,
+              false
+            ],
+            "printed_zero": [
+              false,
+              false,
+              false
+            ]
+          },
+          {
+            "value": [
+              12.0
+            ],
+            "missing_tokens": [
+              false
+            ],
+            "printed_zero": [
+              false
+            ]
+          }
+        ],
+        "observed_q_index_records": [
+          {
+            "q_index": 10,
+            "source_record": 4132,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 11,
+            "source_record": 4133,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 12,
+            "source_record": 4134,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 1,
+            "source_record": 4135,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 2,
+            "source_record": 4136,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 3,
+            "source_record": 4137,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 4,
+            "source_record": 4138,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 5,
+            "source_record": 4139,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 6,
+            "source_record": 4140,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 7,
+            "source_record": 4141,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 8,
+            "source_record": 4142,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 9,
+            "source_record": 4143,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          }
+        ],
+        "source_PH_input_record_count": 12,
+        "source_PH_input_bound_mismatch_count": 0,
+        "all_irreps_complete": null,
+        "native_exit_status": null,
+        "full_BZ_stability": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "composition-assessments.json",
+        "bytes": 1863044,
+        "sha256": "5fc901f5f4a90b41e807722d92f39d81714b70091a189cdb5eba13367624350b",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "numeric-review.json",
+        "bytes": 4542684,
+        "sha256": "c4fae01d3d67f774429114902a6b39f5b133de48ea81d3d9773ba40ff4419ce2",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-two-PH-actual-complete-response-products-readback-v1.json",
+        "bytes": 77119,
+        "sha256": "434c5fe7a590607adbc104dd75d126497457317bc20f37973b5013491e9fdce2",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "Published source predictions already known; exact matched mechanism new to reviewed catalogue only, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

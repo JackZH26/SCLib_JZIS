@@ -1,0 +1,268 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm002290660",
+    "formula": "LuTaN2",
+    "reduced_formula": "LuTaN2",
+    "composition": {
+      "Lu": 1,
+      "N": 2,
+      "Ta": 1
+    },
+    "canonical_composition_key": "Lu:1|N:2|Ta:1",
+    "elements": [
+      "Lu",
+      "N",
+      "Ta"
+    ],
+    "source_state": "agm002290660",
+    "control_state": "agm002291033",
+    "source_directory": "batch-a/N2LuTa_agm002290660",
+    "control_directory": "batch-a/N2YTa_agm002291033",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "R-3m four-site layered Lu-Ta-N2 ordered phase; two N sites form a common orbit, Lu and Ta occupy distinct cation sheets",
+    "prototype_evidence": "R-3m four-site layered Lu-Ta-N2 ordered phase; two N sites form a common orbit, Lu and Ta occupy distinct cation sheets",
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 15.539,
+      "control_K": 12.416,
+      "delta_K": 3.1229999999999993,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.37950000000000006,
+        0.3985000000000001,
+        0.3992999999999999,
+        0.3973000000000001,
+        0.397,
+        0.3985000000000001,
+        0.39980000000000004,
+        0.4005000000000001,
+        0.40060000000000007,
+        0.4001999999999999
+      ],
+      "range": [
+        0.37950000000000006,
+        0.40060000000000007
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Ta SOC and Lu electronic-shell treatment, cation order versus competing nitrides, and layered shear are case-specific risks. Full fine stress reaches .242 GPa and fine force .01729 eV/A; coarse force 2.19e-5 eV/A/P=.001 GPa and the nonnegative finite path/positive Gamma optical subspace support a bounded near-ambient local phase. No claim of global hull or experimentally realized phase.",
+    "ambient_scope": "Coarse/fine SCF both converge; complete source forces/stress, positive Gamma optical compression and no signed negative finite-path value support this model near ambient. All listed q outputs end JOBDONE/response convergence with zero routine errors. This is finite-grid local/metastable evidence, not exhaustive thermodynamic or all-irrep certification.",
+    "route_response": "Replace Y by Lu in the frozen YTaN2 analogue. Volume decreases 4.316116%; Lu-N versus Y-N nearest distance decreases .0744086 A while Ta-N increases .00273149 A. Same ecut/smearing/degauss/pseudo-family directory and 4x4x4/13-q grid give all-ten lambda gains 45.878–51.321%, separate Eli mu=.1 12.416→15.539 K. The opposite changes in cation-N and Ta-N distances distinguish local reconstruction from a uniform-volume description.",
+    "next_action": "Compare YTaN2/LuTaN2 at a common volume and with a consistent SOC treatment or one matched layer-shear/metal-N mode. Favorable: the 45–51% source advantage survives and the layer branch stays positive; adverse: SOC/order changes remove the advantage or a competing nitride path destabilizes the phase.",
+    "seven_criteria": {
+      "identity": "Raw CIF, literal coarse/fine crystal input and Gamma header agree by complete ordered species/site periodic association; exact natural-isotope discrete computational occupancy is export convention, experimental occupancy/P/T unknown. Source model configured neutral scalar spin1/noSOC by exact-version defaults plus literal omission; magnetic ground state and binary build not certified.",
+      "quantitative_route_response": "Replace Y by Lu in the frozen YTaN2 analogue. Volume decreases 4.316116%; Lu-N versus Y-N nearest distance decreases .0744086 A while Ta-N increases .00273149 A. Same ecut/smearing/degauss/pseudo-family directory and 4x4x4/13-q grid give all-ten lambda gains 45.878–51.321%, separate Eli mu=.1 12.416→15.539 K. The opposite changes in cation-N and Ta-N distances distinguish local reconstruction from a uniform-volume description.",
+      "pairing_relevance": "Direct exact-source lambda has the favorable sign at all ten matched sigma tokens, independently accompanied by the separate mu=.1 Eli table. Finite-grid broadening sensitivity is preserved; differing PP/cutoff/version are model confounds where shown. Sigma units, physical error bar, fullBZ convergence and experimental Tc remain unknown.",
+      "ambient_feasibility": "Coarse/fine SCF both converge; complete source forces/stress, positive Gamma optical compression and no signed negative finite-path value support this model near ambient. All listed q outputs end JOBDONE/response convergence with zero routine errors. This is finite-grid local/metastable evidence, not exhaustive thermodynamic or all-irrep certification.",
+      "competition_and_coherence": "Ta SOC and Lu electronic-shell treatment, cation order versus competing nitrides, and layered shear are case-specific risks. Full fine stress reaches .242 GPa and fine force .01729 eV/A; coarse force 2.19e-5 eV/A/P=.001 GPa and the nonnegative finite path/positive Gamma optical subspace support a bounded near-ambient local phase. No claim of global hull or experimentally realized phase.",
+      "novelty": "2026-10-07 LuTaN2/TaLuN2 exact search found no experimental SC benchmark. Related CaM N2 layered nitrides have known superconducting phases, but they are different cations/chemistry and do not make this exact Lu/Ta ordered phase a benchmark. MC2023 source prediction remains prior.",
+      "decision": "Compare YTaN2/LuTaN2 at a common volume and with a consistent SOC treatment or one matched layer-shear/metal-N mode. Favorable: the 45–51% source advantage survives and the layer branch stays positive; adverse: SOC/order changes remove the advantage or a competing nitride path destabilizes the phase."
+    },
+    "risk_tags": [
+      "metastable_phase",
+      "residual_force_stress"
+    ],
+    "countercontrols": [],
+    "physical_summary": {
+      "nat": 4,
+      "lambda10": [
+        1.2067,
+        1.1988,
+        1.2003,
+        1.2009,
+        1.1997,
+        1.1973,
+        1.1936,
+        1.1891,
+        1.1845,
+        1.18
+      ],
+      "omega10_K": [
+        162.1414,
+        157.1441,
+        156.1658,
+        156.3511,
+        156.9199,
+        157.6384,
+        158.4122,
+        159.1731,
+        159.8683,
+        160.4685
+      ],
+      "Eli_mu01": [
+        0.1,
+        15.539
+      ],
+      "McM_mu01": [
+        0.1,
+        14.147,
+        15.648
+      ],
+      "coarse_fine": [
+        {
+          "record": 4509,
+          "version": [
+            "Program PWSCF v.7.1 starts on 13May2023 at 13:46:36"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 2.18543786774385e-05,
+          "P_GPa": 0.001,
+          "maxstress_GPa": 0.001,
+          "fulltensor": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              -0.0,
+              0.0,
+              0.0
+            ],
+            [
+              -0.0,
+              0.0,
+              0.001
+            ]
+          ],
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          }
+        },
+        {
+          "record": 4510,
+          "version": [
+            "Program PWSCF v.7.1 starts on 13May2023 at 13: 3:20"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.01729067018891458,
+          "P_GPa": -0.061,
+          "maxstress_GPa": 0.242,
+          "fulltensor": [
+            [
+              -0.21200000000000002,
+              -0.0,
+              0.0
+            ],
+            [
+              -0.0,
+              -0.21200000000000002,
+              -0.0
+            ],
+            [
+              -0.0,
+              -0.0,
+              0.242
+            ]
+          ],
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          }
+        }
+      ],
+      "Gamma": {
+        "nat": 4,
+        "ibrav": 5,
+        "q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species": [
+          "Lu",
+          "N",
+          "Ta"
+        ],
+        "optical": "positive_beyond_printing_bound",
+        "minopt": 1.0584606787687853e-06,
+        "printingbound": 3.5849510897001415e-12,
+        "negative_native_modes": [
+          1
+        ],
+        "negativeoutside3": [],
+        "min_low3_translation": 0.9996066081219963,
+        "sourcepin": {
+          "directory_key": "batch-a/N2LuTa_agm002290660",
+          "bytes": 8994,
+          "sha256": "e16d0789558755bb9569faddf074897453dbfeea77326a84f7a2dd820a9948e9"
+        }
+      },
+      "path": {
+        "rows": 158,
+        "negatives": 0,
+        "minimum": -0.0,
+        "unit": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "tranche-1-compact-scientific-recommendations.json",
+        "bytes": 34933,
+        "sha256": "c27b3f0105c6f12aa51f2d0801a476adfacdc6cac93b8dd5b60cd485d18cd4f2",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-four-tranche-eight-source-states-independent-review-cache-v1.json",
+        "bytes": 267678,
+        "sha256": "857ce54f337154bb41cfa9e21370ab305f2bd35f31ab86c37fcd0ba8de21a391",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

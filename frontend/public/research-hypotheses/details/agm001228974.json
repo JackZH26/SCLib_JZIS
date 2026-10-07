@@ -1,0 +1,136 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm001228974",
+    "formula": "TiNb2Mo",
+    "reduced_formula": "TiNb2Mo",
+    "composition": {
+      "Mo": 1,
+      "Nb": 2,
+      "Ti": 1
+    },
+    "canonical_composition_key": "Mo:1|Nb:2|Ti:1",
+    "elements": [
+      "Mo",
+      "Nb",
+      "Ti"
+    ],
+    "source_state": "agm001228974",
+    "control_state": "agm002322068",
+    "source_directory": "batch-a/TiNb2Mo_agm001228974",
+    "control_directory": null,
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "ordered tetragonal P4/mmm-compatible four-site motif",
+    "prototype_evidence": {
+      "motif": "ordered tetragonal P4/mmm-compatible four-site motif",
+      "raw_geometry_basis": "a=b=4.54338183547 A,c=3.20085899551 A; Ti(0,0,1/2),Mo(1/2,1/2,1/2),Nb(0,1/2,0),(1/2,0,0),with source literal coordinate deviations retained",
+      "role": "A, stronger EPC member versus ordered cubic B",
+      "known_prior_scope": "different from known disordered BCC Im-3m Nb2TiMo experiment; not yet claimed an unreported phase globally"
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 15.378,
+      "control_K": 14.888,
+      "delta_K": 0.4900000000000002,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.1875,
+        0.16770000000000018,
+        0.1502000000000001,
+        0.13159999999999994,
+        0.11399999999999988,
+        0.0988,
+        0.08630000000000004,
+        0.07679999999999987,
+        0.06999999999999995,
+        0.06500000000000006
+      ],
+      "range": [
+        0.06500000000000006,
+        0.1875
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "NegativeGamma modes are predominantly translational, and the independently checked optical form is positive beyond raw printing bounds. Magnetism/SOC/disorder and full-BZ/finite-temperature stability remain beyond this nonmagnetic source approximation.",
+    "ambient_scope": "Zero-pressure-target optimized models and completed sampled non-Gamma/ASR-path phonons plus positive Gamma optical compression support local near-ambient harmonic feasibility within the declared source model.",
+    "route_response": "Non-isometric species-resolved network differences accompany the same-composition source EPC contrast at ten common widths; different reciprocal grids remain an explicit numerical confound.",
+    "next_action": "Matched reciprocal-resolution refinement must preserve A>B and optical positivity; reversal or adverse structural/magnetic evidence revises this screen. Source association or inconclusive refinement leaves the research hypothesis unresolved.",
+    "seven_criteria": {
+      "identity": "Exact ordered source sites, canonical SCF input, neutral spin1/noSOC model and SCF/PH/dyn association are linked. Experimental conditions remain unknown.",
+      "quantitative_route_response": "Non-isometric species-resolved network differences accompany the same-composition source EPC contrast at ten common widths; different reciprocal grids remain an explicit numerical confound.",
+      "pairing_relevance": "Direct conventional source EPC gives A>B at every retained width in both the directory and raw-q aggregation; this is a bounded source-protocol benefit.",
+      "ambient_feasibility": "Zero-pressure-target optimized models and completed sampled non-Gamma/ASR-path phonons plus positive Gamma optical compression support local near-ambient harmonic feasibility within the declared source model.",
+      "competition_and_coherence": "NegativeGamma modes are predominantly translational, and the independently checked optical form is positive beyond raw printing bounds. Magnetism/SOC/disorder and full-BZ/finite-temperature stability remain beyond this nonmagnetic source approximation.",
+      "novelty": "New to the reviewed catalogue as an exact ordered geometry-route hypothesis; known experimental disorderedBCC Nb2TiMo is a distinct object. Published source predictions are acknowledged and worldwide first discovery is not claimed.",
+      "decision": "Matched reciprocal-resolution refinement must preserve A>B and optical positivity; reversal or adverse structural/magnetic evidence revises this screen. Source association or inconclusive refinement leaves the research hypothesis unresolved."
+    },
+    "risk_tags": [
+      "metastable_phase"
+    ],
+    "countercontrols": [],
+    "physical_summary": null,
+    "evidence_pins": [
+      {
+        "artifact": "minimum-cases.json",
+        "bytes": 44905,
+        "sha256": "0ae09a6f4264f3bc4105f653d324dc9416fa98bf72aec5438435554c5d2cfd2e",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "four-Gamma-mode-diagnostic-owned-workingview-root-v1.json",
+        "bytes": 145994,
+        "sha256": "204728005269006f08ed40019b950e63f5e73ffe068d92d0a5ae1e716b90d723",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "receipt.json",
+        "bytes": 12340,
+        "sha256": "e205f3f041eaa43b16263049bc11b3c42169e37dd4efa136e962dd65c3539515",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "new-to-reviewed-catalogue ordered geometry hypothesis; literature-derived, not first discovery",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

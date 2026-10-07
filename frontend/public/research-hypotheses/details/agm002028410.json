@@ -1,0 +1,581 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm002028410",
+    "formula": "Ti",
+    "reduced_formula": "Ti",
+    "composition": {
+      "Ti": 1
+    },
+    "canonical_composition_key": "Ti:1",
+    "elements": [
+      "Ti"
+    ],
+    "source_state": "agm002028410",
+    "control_state": "agm003283597",
+    "source_directory": "batch-a/Ti_agm002028410",
+    "control_directory": "batch-a/Zr_agm003283597",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Fm-3m one-site FCC Ti primitive source phase; distinct from equilibrium two-site hcp alpha-Ti and bcc beta-Ti",
+    "prototype_evidence": "Fm-3m one-site FCC Ti primitive source phase; distinct from equilibrium two-site hcp alpha-Ti and bcc beta-Ti",
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 19.962,
+      "control_K": 13.386,
+      "delta_K": 6.5760000000000005,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.052100000000000035,
+        0.08889999999999998,
+        0.0844999999999998,
+        0.07499999999999996,
+        0.06390000000000007,
+        0.05360000000000009,
+        0.04500000000000015,
+        0.03770000000000007,
+        0.03179999999999983,
+        0.026799999999999935
+      ],
+      "range": [
+        0.026799999999999935,
+        0.08889999999999998
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "FCC Ti is metastable rather than equilibrium ambient hcp Ti. Primary DFT phonon work and experimental rolling/film/interface observations provide credible metastability priors without establishing superconductivity in clean bulk FCC Ti. Potential contamination, interface stabilization, hcp/Bain conversion and small lambda effect under changed cutoff/PP are substantive risks. The exact source has zero force, 0.019 GPa fine stress and no negative sampled path; nat1 has no optical subspace, so no nonexistent optical stability claim is made. Magnetic Mn and La tradeoff controls are retained.",
+    "ambient_scope": "The one-site FCC source SCFs converge with zero forces and fine full stress 0.019 GPa, and the sampled finite-q path has no signed negative value. Nat1 has no optical subspace; its Gamma translation result is not an optical certificate. Primary DFT and experimental metastable FCC-Ti observations support a bounded ambient metastability route, not equilibrium bulk retention or full-BZ proof.",
+    "route_response": "The frozen one-site FCC control replaces Zr by Ti with the periodic neighbor topology retained. Volume contracts 24.703%, and nearest Ti-Ti versus Zr-Zr falls 0.284535 A. All ten lambda values rise 2.493–7.937% and separate Eli mu=.1 rises 13.386 to 19.962 K; omega and coupling remain separately reported. This is a phase-scoped coupled elemental/metal-network response, not generic Ti chemistry novelty or a measured hopping bandwidth.",
+    "next_action": "Compare the source FCC and same-composition hcp/Bain competitors and evaluate phase retention under a stated interface/strain or bulk metastable domain; confirm the small paired lambda advantage with common source method. A retained FCC local basin and response support this phase hypothesis; rapid hcp conversion or loss of the common-method advantage opposes it.",
+    "seven_criteria": {
+      "identity": "Complete ordered CIF/literal coarse-fine input/Gamma periodic species-site association is numerically supported; source input geometry and full tensor/forces are retained. Export occupancy is a discrete computational convention; source experimental P/T/occupancy and actual compiled unit constant are unknown. Exact-version input defaults scope the configured neutral scalar spin1/noSOC model, not magnetic ground state.",
+      "quantitative_route_response": "The frozen one-site FCC control replaces Zr by Ti with the periodic neighbor topology retained. Volume contracts 24.703%, and nearest Ti-Ti versus Zr-Zr falls 0.284535 A. All ten lambda values rise 2.493–7.937% and separate Eli mu=.1 rises 13.386 to 19.962 K; omega and coupling remain separately reported. This is a phase-scoped coupled elemental/metal-network response, not generic Ti chemistry novelty or a measured hopping bandwidth.",
+      "pairing_relevance": "Exact target and mapped control direct source lambda arrays have the same favorable sign at all ten common broadening tokens; omega_ln has explicit K units and separate Eli/McM mu=.1 tables remain independent. Same underlying q mesh is observed. The sensitivity range is not a physical error bound; sigma units, full-BZ convergence, experimental Tc and pure-geometry causality remain unknown. Literal method differences are declared confounds.",
+      "ambient_feasibility": "The one-site FCC source SCFs converge with zero forces and fine full stress 0.019 GPa, and the sampled finite-q path has no signed negative value. Nat1 has no optical subspace; its Gamma translation result is not an optical certificate. Primary DFT and experimental metastable FCC-Ti observations support a bounded ambient metastability route, not equilibrium bulk retention or full-BZ proof.",
+      "competition_and_coherence": "FCC Ti is metastable rather than equilibrium ambient hcp Ti. Primary DFT phonon work and experimental rolling/film/interface observations provide credible metastability priors without establishing superconductivity in clean bulk FCC Ti. Potential contamination, interface stabilization, hcp/Bain conversion and small lambda effect under changed cutoff/PP are substantive risks. The exact source has zero force, 0.019 GPa fine stress and no negative sampled path; nat1 has no optical subspace, so no nonexistent optical stability claim is made. Magnetic Mn and La tradeoff controls are retained.",
+      "novelty": "Elemental hcp Ti superconductivity and metastable FCC Ti structures are known. Dated 2026-10-07 FCC-Ti superconductivity searches found no experimental superconducting exact FCC source benchmark. The proposed reviewed-catalogue hypothesis is the FCC source-phase and Zr-to-Ti metal-network construction, not discovery of titanium superconductivity.",
+      "decision": "Compare the source FCC and same-composition hcp/Bain competitors and evaluate phase retention under a stated interface/strain or bulk metastable domain; confirm the small paired lambda advantage with common source method. A retained FCC local basin and response support this phase hypothesis; rapid hcp conversion or loss of the common-method advantage opposes it."
+    },
+    "risk_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "sampling_method"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index_zero_based": 135,
+        "control_directory": "batch-a/La_agm002156005",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "La",
+          "to": "Ti",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 0.49571020480748756,
+        "target_relative_lambda_gain_percent_all10": [
+          -54.38218923933209,
+          -52.99377916018663,
+          -51.244897959183675,
+          -48.87633179484967,
+          -46.62724584944281,
+          -44.78814165197083,
+          -43.33052234733864,
+          -42.14362712386428,
+          -41.08465608465608,
+          -40.05550416281221
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          -54.38218923933209,
+          -40.05550416281221
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            19.962
+          ],
+          [
+            0.1,
+            13.092
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            16.842,
+            18.124
+          ],
+          [
+            0.1,
+            10.138,
+            11.884
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            6.0,
+            6.0,
+            6.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            16.0
+          ],
+          [
+            16.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 168,
+        "control_directory": "batch-a/Mn_agm003273519",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Mn",
+          "to": "Ti",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 1.6110778361206688,
+        "target_relative_lambda_gain_percent_all10": [
+          22.976893067920376,
+          26.226769680517865,
+          24.530859049207653,
+          23.176054874246514,
+          21.734619773835462,
+          19.92959933740554,
+          17.882571458053878,
+          15.77812018489984,
+          13.79662749105773,
+          11.996746644977621
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          11.996746644977621,
+          26.226769680517865
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            19.962
+          ],
+          [
+            0.1,
+            20.429
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            16.842,
+            18.124
+          ],
+          [
+            0.1,
+            17.491,
+            18.454
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            6.0,
+            6.0,
+            6.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            16.0
+          ],
+          [
+            16.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 359,
+        "control_directory": "batch-a/Zr_agm003283597",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Ti",
+          "to": "Zr",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 0.752966803638494,
+        "target_relative_lambda_gain_percent_all10": [
+          4.425380107024551,
+          7.936791357914469,
+          7.612612612612593,
+          6.755539542424784,
+          5.759351059035608,
+          4.851556842867496,
+          4.10060142154184,
+          3.4606205250596727,
+          2.9398169547933644,
+          2.4934871604019295
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          2.4934871604019295,
+          7.936791357914469
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            19.962
+          ],
+          [
+            0.1,
+            13.386
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            16.842,
+            18.124
+          ],
+          [
+            0.1,
+            11.339,
+            12.171
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            6.0,
+            6.0,
+            6.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            16.0
+          ],
+          [
+            16.0
+          ]
+        ]
+      }
+    ],
+    "physical_summary": {
+      "nat": 1,
+      "lambda10": [
+        1.2294,
+        1.209,
+        1.1945,
+        1.1852,
+        1.1734,
+        1.1584,
+        1.1424,
+        1.1271,
+        1.1135,
+        1.1016
+      ],
+      "omega10_K": [
+        195.9419,
+        195.4413,
+        196.0944,
+        196.6126,
+        196.825,
+        196.8118,
+        196.5935,
+        196.1811,
+        195.6066,
+        194.9123
+      ],
+      "Eli_mu01": [
+        0.1,
+        19.962
+      ],
+      "McM_mu01": [
+        0.1,
+        16.842,
+        18.124
+      ],
+      "coarse_fine": [
+        {
+          "record": 2471,
+          "version": [
+            "Program PWSCF v.7.1 starts on 15Mar2023 at 14: 7:44"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": -0.001,
+          "maxstress_GPa": 0.001,
+          "fulltensor": [
+            [
+              -0.001,
+              -0.0,
+              -0.0
+            ],
+            [
+              -0.0,
+              -0.001,
+              0.0
+            ],
+            [
+              -0.0,
+              0.0,
+              -0.001
+            ]
+          ],
+          "F_Ry": -118.59714519,
+          "E_Ry": -118.59700254,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        },
+        {
+          "record": 2472,
+          "version": [
+            "Program PWSCF v.7.1 starts on 15Mar2023 at 14: 5:27"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": 0.019,
+          "maxstress_GPa": 0.019,
+          "fulltensor": [
+            [
+              0.019,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.019,
+              -0.0
+            ],
+            [
+              0.0,
+              -0.0,
+              0.019
+            ]
+          ],
+          "F_Ry": -118.59717478,
+          "E_Ry": -118.59716610000001,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        }
+      ],
+      "inputs": [
+        {
+          "record": 2449,
+          "ecutwfc": [
+            92.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "[private custody location omitted]"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            2.0
+          ],
+          "nat": [
+            1.0
+          ],
+          "grid": [
+            "12 12 12 0 0 0"
+          ]
+        },
+        {
+          "record": 2450,
+          "ecutwfc": [
+            92.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "[private custody location omitted]"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            2.0
+          ],
+          "nat": [
+            1.0
+          ],
+          "grid": [
+            "48 48 48 0 0 0"
+          ]
+        }
+      ],
+      "Gamma": {
+        "nat": 1,
+        "ibrav": 2,
+        "q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species": [
+          "Ti"
+        ],
+        "optical": "not_applicable_nat1",
+        "minopt": null,
+        "printingbound": 4.862279738391104e-13,
+        "negative_native_modes": [
+          1,
+          2,
+          3
+        ],
+        "negativeoutside3": [],
+        "min_low3_translation": 1.0,
+        "sourcepin": {
+          "directory_key": "batch-a/Ti_agm002028410",
+          "bytes": 1297,
+          "sha256": "fb2e91cbafc018ba19ed207376d5a63df49029255360e5ec0d793ada938ea280"
+        }
+      },
+      "path": {
+        "rows": 202,
+        "negatives": 0,
+        "minimum": -0.0,
+        "unit": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "tranche-2-compact-scientific-recommendations.json",
+        "bytes": 84096,
+        "sha256": "d8ca53bafc5ee0879de647e050127d8e0d20c0e3da10de9602ab2de44bf77532",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-3-five-scientific-recommendations.json",
+        "bytes": 110335,
+        "sha256": "861dd76c8368cca687ca20c8468e464badefb533a318ed41c4f8d62dccb6ed50",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-4-three-phase-scientific-recommendations.json",
+        "bytes": 64369,
+        "sha256": "56076a077e591b9bdef8ada45d78f224f417a4af8d2e722e332f639eedfafaf7",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all64-light-Nb-rich-owned-review-cache-v2.json",
+        "bytes": 4566542,
+        "sha256": "f27e8c84c10c4d8de44022f6bd160e7e8aee8b2d562db5fd6003af68d5e35756",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

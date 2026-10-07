@@ -1,0 +1,796 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm003165652",
+    "formula": "TcRe",
+    "reduced_formula": "TcRe",
+    "composition": {
+      "Re": 1,
+      "Tc": 1
+    },
+    "canonical_composition_key": "Re:1|Tc:1",
+    "elements": [
+      "Re",
+      "Tc"
+    ],
+    "source_state": "agm003165652",
+    "control_state": "agm001281037",
+    "source_directory": "batch-a/TcRe_agm003165652",
+    "control_directory": "batch-a/TcRe3_agm001281037",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Exact source geometry association retained; no named prototype is assigned here.",
+    "prototype_evidence": {
+      "CIF_source_record": 9205,
+      "CIF_payload_pin": {
+        "bytes": 591661,
+        "sha256": "93c3ce21c362fc36392db6d13f4555d76cce96122769d1212414bbc770f81541"
+      },
+      "SCF_coarse_source_record": 9226,
+      "Gamma_source_pin": {
+        "directory_key": "batch-a/TcRe_agm003165652",
+        "bytes": 8948,
+        "sha256": "497811ad3da7b22655dc1f5d69f89978461b86ec0240c839e4cde1d4befc16d3"
+      },
+      "source_input_volume_difference_relative": -7.061018436615996e-12,
+      "occupancy_model_all1": true,
+      "bounded_signed_axis_and_translation_mapping": {
+        "signed_axis_U_CIF_fractional_to_SCF": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "determinant": 1,
+        "origin_shift_fractional": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species_bijection_CIF_to_SCF": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "maximum_site_distance_A": 5.241413118631527e-16,
+        "relative_Gram_residual": 1.5220169639113339e-09,
+        "proper_signed_axis_solution": true
+      },
+      "attempts": 1,
+      "general_GL3_or_chiral_equivalence_asserted": false,
+      "CIF_site_precision_A_tolerance": 1e-05,
+      "physical_model": "source finite neutral scalar EPC; no SOC transfer certificate"
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 14.527,
+      "control_K": 12.351,
+      "delta_K": 2.1759999999999984,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.09949999999999992,
+        0.08409999999999995,
+        0.0746,
+        0.07190000000000007,
+        0.07220000000000004,
+        0.07289999999999996,
+        0.07350000000000001,
+        0.07389999999999997,
+        0.0746,
+        0.07520000000000004
+      ],
+      "range": [
+        0.07190000000000007,
+        0.09949999999999992
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "All-token gain +.0719…+.0995 and source Tc+2.176 K accompanies path0, force0 and stress .173 GPa. Tc3Re and other ternary neighbors outperform or cross. Primary Tc-Re equilibrium phase-separation/opposing ordered predictions limit present object to a metastable local research phase.",
+    "ambient_scope": "Source coarse force 0.0 eV/Å, pressure -0.0 GPa; fine force 0.0 eV/Å, pressure -0.09 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "route_response": "Re-to-Tc ordered role construction in TcRe relative to TcRe3. coupled chemistry/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "next_action": "Compare exact SG141 retained geometry and EPC to closest already saved Tc-Re ordered competitors. Favorable: distinct local phase and source response remain plausible; adverse: direct competing phase or channel suppression wins; ambiguous: no compatible formation/retention evidence.",
+    "seven_criteria": {
+      "identity": "Exact source CIF/SCF/Γ state association; CIF source record 9205. Experimental occupancy/P/T and physical magnetic ground state remain unknown; source scalar model only.",
+      "quantitative_route_response": "Re-to-Tc ordered role construction in TcRe relative to TcRe3. coupled chemistry/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+      "pairing_relevance": "direct published source EPC plus independent source isotropic Eliashberg result.  favorable comparator(s); bounded source model, not experiment.",
+      "ambient_feasibility": "Source coarse force 0.0 eV/Å, pressure -0.0 GPa; fine force 0.0 eV/Å, pressure -0.09 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+      "competition_and_coherence": "All-token gain +.0719…+.0995 and source Tc+2.176 K accompanies path0, force0 and stress .173 GPa. Tc3Re and other ternary neighbors outperform or cross. Primary Tc-Re equilibrium phase-separation/opposing ordered predictions limit present object to a metastable local research phase.",
+      "novelty": "Known computed ReTc source high-precision table is SG187 two-site; current SG141 four-site object is distinct. Binary ReTc3 D011 prediction is also a different phase. No formation/Tc transfer or first chemistry claim.",
+      "decision": "Compare exact SG141 retained geometry and EPC to closest already saved Tc-Re ordered competitors. Favorable: distinct local phase and source response remain plausible; adverse: direct competing phase or channel suppression wins; ambiguous: no compatible formation/retention evidence."
+    },
+    "risk_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "technetium"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index": 284,
+        "control": "batch-a/Tc2RuRe_agm003184277",
+        "target": "batch-a/TcRe_agm003165652",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          -0.021399999999999975,
+          0.05169999999999997
+        ],
+        "lambda_pct_range": [
+          -2.2210690192008276,
+          5.538890079280048
+        ],
+        "Tc_target_K": 14.527,
+        "Tc_control_K": 15.798,
+        "independent_source_Eli_Tc_delta_K": -1.2710000000000008,
+        "all10_lambda_and_Tc_favorable": false,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": false,
+        "target_volume_ratio_over_control": 1.0231985433188229,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 9.313651535794205e-07,
+        "geometry_only_causality": null,
+        "control_raw_path_minimum_and_negatives": {
+          "negative_printed_values": 0,
+          "minimum_printed_mode": {
+            "value": -0.0,
+            "column_index_zero_based": 1
+          },
+          "frequency_unit_header": null,
+          "state_link_verified": null
+        },
+        "control_q_status_summary": {
+          "source_ID": "agm003184277",
+          "dyn0_source_record": 7004,
+          "configured_q_mesh": [
+            4.0,
+            4.0,
+            4.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 10,
+              "source_record": 7011,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 11,
+              "source_record": 7012,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 12,
+              "source_record": 7013,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 13,
+              "source_record": 7014,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 1,
+              "source_record": 7015,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 7016,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 7017,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 7018,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 5,
+              "source_record": 7019,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 6,
+              "source_record": 7020,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 7,
+              "source_record": 7021,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 8,
+              "source_record": 7022,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 9,
+              "source_record": 7023,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          -0.021399999999999975,
+          0.05169999999999997
+        ]
+      },
+      {
+        "frozen_contrast_index": 286,
+        "control": "batch-a/Tc3Re_agm003187522",
+        "target": "batch-a/TcRe_agm003165652",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          -0.08689999999999998,
+          -0.06769999999999998
+        ],
+        "lambda_pct_range": [
+          -8.498777506112468,
+          -6.430471124620059
+        ],
+        "Tc_target_K": 14.527,
+        "Tc_control_K": 16.887,
+        "independent_source_Eli_Tc_delta_K": -2.360000000000001,
+        "all10_lambda_and_Tc_favorable": false,
+        "all10_lambda_and_Tc_adverse": true,
+        "three_tol_graph": false,
+        "target_volume_ratio_over_control": 1.009606693017707,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.4416949535813618e-06,
+        "geometry_only_causality": null,
+        "control_raw_path_minimum_and_negatives": {
+          "negative_printed_values": 0,
+          "minimum_printed_mode": {
+            "value": -0.0,
+            "column_index_zero_based": 1
+          },
+          "frequency_unit_header": null,
+          "state_link_verified": null
+        },
+        "control_q_status_summary": {
+          "source_ID": "agm003187522",
+          "dyn0_source_record": 5334,
+          "configured_q_mesh": [
+            4.0,
+            4.0,
+            4.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 10,
+              "source_record": 5341,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 11,
+              "source_record": 5342,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 12,
+              "source_record": 5343,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 13,
+              "source_record": 5344,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 1,
+              "source_record": 5345,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 5346,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 5347,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 5348,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 5,
+              "source_record": 5349,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 6,
+              "source_record": 5350,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 7,
+              "source_record": 5351,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 8,
+              "source_record": 5352,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 9,
+              "source_record": 5353,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          -0.08689999999999998,
+          -0.06769999999999998
+        ]
+      },
+      {
+        "frozen_contrast_index": 290,
+        "control": "batch-a/TcRe3_agm001281037",
+        "target": "batch-a/TcRe_agm003165652",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          0.07190000000000007,
+          0.09949999999999992
+        ],
+        "lambda_pct_range": [
+          8.299804575238538,
+          11.23532068654019
+        ],
+        "Tc_target_K": 14.527,
+        "Tc_control_K": 12.351,
+        "independent_source_Eli_Tc_delta_K": 2.1759999999999984,
+        "all10_lambda_and_Tc_favorable": true,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 0.9909279930481182,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.2760868891104772e-06,
+        "geometry_only_causality": null,
+        "control_raw_path_minimum_and_negatives": {
+          "negative_printed_values": 0,
+          "minimum_printed_mode": {
+            "value": -0.0,
+            "column_index_zero_based": 1
+          },
+          "frequency_unit_header": null,
+          "state_link_verified": null
+        },
+        "control_q_status_summary": {
+          "source_ID": "agm001281037",
+          "dyn0_source_record": 16316,
+          "configured_q_mesh": [
+            4.0,
+            4.0,
+            4.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 10,
+              "source_record": 16323,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 11,
+              "source_record": 16324,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 12,
+              "source_record": 16325,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 13,
+              "source_record": 16326,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 1,
+              "source_record": 16327,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 16328,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 16329,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 16330,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 5,
+              "source_record": 16331,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 6,
+              "source_record": 16332,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 7,
+              "source_record": 16333,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 8,
+              "source_record": 16334,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 9,
+              "source_record": 16335,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          0.07190000000000007,
+          0.09949999999999992
+        ]
+      },
+      {
+        "frozen_contrast_index": 295,
+        "control": "batch-a/TcRuRe2_agm003184283",
+        "target": "batch-a/TcRe_agm003165652",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          0.08440000000000003,
+          0.135
+        ],
+        "lambda_pct_range": [
+          9.840270490847619,
+          15.88048464886484
+        ],
+        "Tc_target_K": 14.527,
+        "Tc_control_K": 13.031,
+        "independent_source_Eli_Tc_delta_K": 1.4959999999999987,
+        "all10_lambda_and_Tc_favorable": true,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": false,
+        "target_volume_ratio_over_control": 1.0135727405891566,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.0123249986974428e-06,
+        "geometry_only_causality": null,
+        "control_raw_path_minimum_and_negatives": {
+          "negative_printed_values": 0,
+          "minimum_printed_mode": {
+            "value": -0.0,
+            "column_index_zero_based": 1
+          },
+          "frequency_unit_header": null,
+          "state_link_verified": null
+        },
+        "control_q_status_summary": {
+          "source_ID": "agm003184283",
+          "dyn0_source_record": 14250,
+          "configured_q_mesh": [
+            4.0,
+            4.0,
+            4.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 10,
+              "source_record": 14257,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 11,
+              "source_record": 14258,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 12,
+              "source_record": 14259,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 13,
+              "source_record": 14260,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 1,
+              "source_record": 14261,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 14262,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 14263,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 14264,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 5,
+              "source_record": 14265,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 6,
+              "source_record": 14266,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 7,
+              "source_record": 14267,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 8,
+              "source_record": 14268,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 9,
+              "source_record": 14269,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          0.08440000000000003,
+          0.135
+        ]
+      }
+    ],
+    "physical_summary": null,
+    "evidence_pins": [
+      {
+        "artifact": "tranche-02-eleven-specific-source-finite-cases.json",
+        "bytes": 1219201,
+        "sha256": "ee658cb8e6309178e268b736f8aeb6429c030a92019c068963e2d64ca51cbb17",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-03-fifteen-specific-source-finite-cases.json",
+        "bytes": 1347056,
+        "sha256": "1be9342cb74006b2542e9351fc2de310967f1a31a5ee9f1909ae730b9a11476a",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-remaining-transition-owned-review-cache-v1.json",
+        "bytes": 5381838,
+        "sha256": "62f4910578c7b65392d26619cf81b31afd6142f38aa49834a70bb147e7ab222d",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

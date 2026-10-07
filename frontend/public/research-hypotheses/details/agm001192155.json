@@ -1,0 +1,583 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm001192155",
+    "formula": "MoH",
+    "reduced_formula": "MoH",
+    "composition": {
+      "H": 1,
+      "Mo": 1
+    },
+    "canonical_composition_key": "H:1|Mo:1",
+    "elements": [
+      "H",
+      "Mo"
+    ],
+    "source_state": "agm001192155",
+    "control_state": "agm001192164",
+    "source_directory": "batch-a/HMo_agm001192155",
+    "control_directory": "batch-a/HCr_agm001192164",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Fm-3m B1/rock-salt MoH primitive two-site source with octahedral H, not the known P63/mmc NiAs MoH phase",
+    "prototype_evidence": "Fm-3m B1/rock-salt MoH primitive two-site source with octahedral H, not the known P63/mmc NiAs MoH phase",
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 17.312,
+      "control_K": 15.56,
+      "delta_K": 1.7520000000000007,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.29889999999999994,
+        0.22710000000000008,
+        0.18730000000000002,
+        0.17110000000000003,
+        0.1664,
+        0.16649999999999998,
+        0.16809999999999992,
+        0.16979999999999995,
+        0.17059999999999997,
+        0.1703
+      ],
+      "range": [
+        0.1664,
+        0.29889999999999994
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "The known competing MoH phase is hexagonal NiAs/P63mmc, with high-pressure synthesis and ambient recovered measurements; known superconductivity in that phase is not this B1 source phase. FCC gamma MoH exists as a pressure/temperature phase prior, while source B1 is locally stable at Gamma and sampled path. H loss, competing hcp/metal+H2, anharmonicity and the omitted magnetic competition of Cr/Mn controls are substantive falsifiers. The source paper reports a near-hull B1 phase in a separate calculation, not an exact-state thermodynamic certificate. PdH is a retained higher-lambda control and experimental benchmark, not omitted.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=-0.319 GPa, full max stress=0.319 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "route_response": "Mo replaces Cr in the same rock-salt metal/H site motif; source cell volume rises 31.870%, Mo-H versus Cr-H rises 0.180451 A and the metal self-neighbor distance rises 0.255196 A. Direct lambda is 21.448–41.624% larger at all ten sigma values and separate Eli mu=.1 rises 15.560 to 17.312 K. This bounded configured-scalar coupled metal/network contrast does not prove real magnetic CrH is a weaker superconductor.",
+    "next_action": "Compare B1 MoH with the same-composition NiAs competitor and an H-loss reaction at a common functional, while separately testing magnetic CrH/MnH and common sampling for the source paired response. Retained B1 local stability and coupling gain support the bounded source hypothesis; easy phase conversion, H loss or magnetic/method reversal opposes it.",
+    "seven_criteria": {
+      "identity": "Complete ordered CIF/literal coarse-fine input/Gamma periodic species-site association is numerically supported; source input geometry and full tensor/forces are retained. Export occupancy is a discrete computational convention; source experimental P/T/occupancy and actual compiled unit constant are unknown. Exact-version input defaults scope the configured neutral scalar spin1/noSOC model, not magnetic ground state.",
+      "quantitative_route_response": "Mo replaces Cr in the same rock-salt metal/H site motif; source cell volume rises 31.870%, Mo-H versus Cr-H rises 0.180451 A and the metal self-neighbor distance rises 0.255196 A. Direct lambda is 21.448–41.624% larger at all ten sigma values and separate Eli mu=.1 rises 15.560 to 17.312 K. This bounded configured-scalar coupled metal/network contrast does not prove real magnetic CrH is a weaker superconductor.",
+      "pairing_relevance": "Exact target and mapped control direct source lambda arrays have the same favorable sign at all ten common broadening tokens; omega_ln has explicit K units and separate Eli/McM mu=.1 tables remain independent. Same underlying q mesh is observed. The sensitivity range is not a physical error bound; sigma units, full-BZ convergence, experimental Tc and pure-geometry causality remain unknown. Literal method differences are declared confounds.",
+      "ambient_feasibility": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=-0.319 GPa, full max stress=0.319 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+      "competition_and_coherence": "The known competing MoH phase is hexagonal NiAs/P63mmc, with high-pressure synthesis and ambient recovered measurements; known superconductivity in that phase is not this B1 source phase. FCC gamma MoH exists as a pressure/temperature phase prior, while source B1 is locally stable at Gamma and sampled path. H loss, competing hcp/metal+H2, anharmonicity and the omitted magnetic competition of Cr/Mn controls are substantive falsifiers. The source paper reports a near-hull B1 phase in a separate calculation, not an exact-state thermodynamic certificate. PdH is a retained higher-lambda control and experimental benchmark, not omitted.",
+      "novelty": "MoH chemistry and P63/mmc superconductivity are known. Dated 2026-10-07 B1/FCC MoH searches found phase/structure predictions and FCC gamma phase prior, but no experimental superconducting exact B1 source state. The object is an ordered B1 source-phase and matched metal substitution hypothesis new to the reviewed catalogue, not first discovery of MoH or inherited NiAs Tc.",
+      "decision": "Compare B1 MoH with the same-composition NiAs competitor and an H-loss reaction at a common functional, while separately testing magnetic CrH/MnH and common sampling for the source paired response. Retained B1 local stability and coupling gain support the bounded source hypothesis; easy phase conversion, H loss or magnetic/method reversal opposes it."
+    },
+    "risk_tags": [
+      "hydrogen_anharmonicity",
+      "metastable_phase"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index_zero_based": 118,
+        "control_directory": "batch-a/HCr_agm001192164",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Cr",
+          "to": "Mo",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 1.3187034214434448,
+        "target_relative_lambda_gain_percent_all10": [
+          41.623729285614814,
+          31.709019826864015,
+          25.23578550255996,
+          22.424639580602886,
+          21.51538660460305,
+          21.447893855468244,
+          21.69872208596875,
+          22.026203139187956,
+          22.25120646928394,
+          22.325642370215
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          21.447893855468244,
+          41.623729285614814
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            17.312
+          ],
+          [
+            0.1,
+            15.56
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            15.415,
+            16.53
+          ],
+          [
+            0.1,
+            13.517,
+            14.179
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            5.0,
+            5.0,
+            5.0
+          ],
+          [
+            5.0,
+            5.0,
+            5.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            10.0
+          ],
+          [
+            10.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 120,
+        "control_directory": "batch-a/HMn_agm001192157",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Mn",
+          "to": "Mo",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 1.4174986029010364,
+        "target_relative_lambda_gain_percent_all10": [
+          44.9750534568781,
+          33.68764172335601,
+          31.769208959455618,
+          31.212248911363965,
+          31.147083449623214,
+          31.419013102871467,
+          31.823266219239375,
+          32.306610407876235,
+          32.818478106844275,
+          33.35715306559955
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          31.147083449623214,
+          44.9750534568781
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            17.312
+          ],
+          [
+            0.1,
+            11.63
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            15.415,
+            16.53
+          ],
+          [
+            0.1,
+            10.26,
+            10.718
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            5.0,
+            5.0,
+            5.0
+          ],
+          [
+            5.0,
+            5.0,
+            5.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            10.0
+          ],
+          [
+            10.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 123,
+        "control_directory": "batch-a/HPd_agm003157455",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Mo",
+          "to": "Pd",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 1.0216258883422131,
+        "target_relative_lambda_gain_percent_all10": [
+          -36.603914723849904,
+          -40.98104235750485,
+          -40.11339475549256,
+          -38.71539168088177,
+          -37.296503869762475,
+          -35.80280539289119,
+          -34.54141498298966,
+          -33.72084830550271,
+          -33.37361387546204,
+          -33.416583416583414
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          -40.98104235750485,
+          -33.37361387546204
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            17.312
+          ],
+          [
+            0.1,
+            41.75
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            15.415,
+            16.53
+          ],
+          [
+            0.1,
+            34.676,
+            39.07
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            5.0,
+            5.0,
+            5.0
+          ],
+          [
+            5.0,
+            5.0,
+            5.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            10.0
+          ],
+          [
+            10.0
+          ]
+        ]
+      }
+    ],
+    "physical_summary": {
+      "nat": 2,
+      "lambda10": [
+        1.017,
+        0.9433,
+        0.9295,
+        0.9341,
+        0.9398,
+        0.9428,
+        0.9428,
+        0.9407,
+        0.9373,
+        0.9331
+      ],
+      "omega10_K": [
+        240.2067,
+        239.0803,
+        238.3686,
+        237.8886,
+        237.3932,
+        236.9082,
+        236.4611,
+        236.0772,
+        235.7848,
+        235.6085
+      ],
+      "Eli_mu01": [
+        0.1,
+        17.312
+      ],
+      "McM_mu01": [
+        0.1,
+        15.415,
+        16.53
+      ],
+      "coarse_fine": [
+        {
+          "record": 3483,
+          "version": [
+            "Program PWSCF v.7.1 starts on 28Sep2022 at 14: 0:22"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": 0.002,
+          "maxstress_GPa": 0.002,
+          "fulltensor": [
+            [
+              0.002,
+              0.0,
+              0.0
+            ],
+            [
+              -0.0,
+              0.002,
+              0.0
+            ],
+            [
+              -0.0,
+              0.0,
+              0.002
+            ]
+          ],
+          "F_Ry": -141.70763762,
+          "E_Ry": -141.7073009,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        },
+        {
+          "record": 3484,
+          "version": [
+            "Program PWSCF v.7.1 starts on 28Sep2022 at 13:58:50"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": -0.319,
+          "maxstress_GPa": 0.319,
+          "fulltensor": [
+            [
+              -0.319,
+              -0.0,
+              -0.0
+            ],
+            [
+              0.0,
+              -0.319,
+              -0.0
+            ],
+            [
+              -0.0,
+              0.0,
+              -0.319
+            ]
+          ],
+          "F_Ry": -141.70762591,
+          "E_Ry": -141.70767709,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        }
+      ],
+      "inputs": [
+        {
+          "record": 3467,
+          "ecutwfc": [
+            92.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "[private custody location omitted]"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            2.0
+          ],
+          "nat": [
+            2.0
+          ],
+          "grid": [
+            "10 10 10 0 0 0"
+          ]
+        },
+        {
+          "record": 3468,
+          "ecutwfc": [
+            92.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "[private custody location omitted]"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            2.0
+          ],
+          "nat": [
+            2.0
+          ],
+          "grid": [
+            "40 40 40 0 0 0"
+          ]
+        }
+      ],
+      "Gamma": {
+        "nat": 2,
+        "ibrav": 2,
+        "q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species": [
+          "H",
+          "Mo"
+        ],
+        "optical": "positive_beyond_printing_bound",
+        "minopt": 7.194352928936132e-05,
+        "printingbound": 2.333444081916256e-11,
+        "negative_native_modes": [
+          1,
+          2,
+          3
+        ],
+        "negativeoutside3": [],
+        "min_low3_translation": 0.9999999929054028,
+        "sourcepin": {
+          "directory_key": "batch-a/HMo_agm001192155",
+          "bytes": 2968,
+          "sha256": "4c2647430b428cbe17b367e956f2628d093ef92a9c00229be08eb354aa6afff4"
+        }
+      },
+      "path": {
+        "rows": 202,
+        "negatives": 0,
+        "minimum": -0.0,
+        "unit": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "tranche-2-compact-scientific-recommendations.json",
+        "bytes": 84096,
+        "sha256": "d8ca53bafc5ee0879de647e050127d8e0d20c0e3da10de9602ab2de44bf77532",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-3-five-scientific-recommendations.json",
+        "bytes": 110335,
+        "sha256": "861dd76c8368cca687ca20c8468e464badefb533a318ed41c4f8d62dccb6ed50",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-4-three-phase-scientific-recommendations.json",
+        "bytes": 64369,
+        "sha256": "56076a077e591b9bdef8ada45d78f224f417a4af8d2e722e332f639eedfafaf7",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all64-light-Nb-rich-owned-review-cache-v2.json",
+        "bytes": 4566542,
+        "sha256": "f27e8c84c10c4d8de44022f6bd160e7e8aee8b2d562db5fd6003af68d5e35756",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

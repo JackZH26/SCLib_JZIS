@@ -1,0 +1,869 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm002664904",
+    "formula": "Cr2MoTc",
+    "reduced_formula": "Cr2MoTc",
+    "composition": {
+      "Cr": 2,
+      "Mo": 1,
+      "Tc": 1
+    },
+    "canonical_composition_key": "Cr:2|Mo:1|Tc:1",
+    "elements": [
+      "Cr",
+      "Mo",
+      "Tc"
+    ],
+    "source_state": "agm002664904",
+    "control_state": "agm002145097",
+    "source_directory": "batch-a/Cr2MoTc_agm002664904",
+    "control_directory": "batch-a/Cr2MoRe_agm002145097",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Source symmetry observation: space group 225. Ordered-site evidence is retained; space group alone is not a prototype certificate.",
+    "prototype_evidence": {
+      "symprec_A": 0.0001,
+      "mode": "color_aware",
+      "status": "completed",
+      "SG_number": 225,
+      "hall_number": 523,
+      "input_wyckoff_letters": [
+        "c",
+        "c",
+        "b",
+        "a"
+      ],
+      "input_crystallographic_orbits": [
+        0,
+        0,
+        2,
+        3
+      ]
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 18.783,
+      "control_K": 14.195,
+      "delta_K": 4.588000000000001,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.2175999999999999,
+        0.20489999999999997,
+        0.18730000000000002,
+        0.17220000000000002,
+        0.15959999999999996,
+        0.1492,
+        0.14049999999999996,
+        0.13319999999999999,
+        0.12739999999999996,
+        0.12260000000000004
+      ],
+      "range": [
+        0.12260000000000004,
+        0.2175999999999999
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "L21-style Cr2(Mo)(Tc) colored occupancy vs Re substitution has matched grids/cutoff and ten-sign-consistent EPC gain. Cr-Cr network2.9614A differs from dense Laves Cr networks; no experimental magnetic label is inherited.",
+    "ambient_scope": "Source coarse/fine pressure/fullstress/force andpositiveopticalGamma plus finite-path/q evidence; exacttested domain only. No laboratory P/T/hull/globalstability inheritance.",
+    "route_response": "Colored-site substitution/ordered network plus computed volume/nearest-distance response andEPCagainst frozen geometriccontrols; chemistry/masses co-change. No W/mobile n claim.",
+    "next_action": "Spin susceptibility/site moments under two seeds and common-grid orbital response; lowered magnetic branch or disappearance of common-sigma benefit reverses.",
+    "seven_criteria": {
+      "identity": "CIF lattice/sites to both SCFinputs andGamma atomicheader via speciesbijection/wholetranslation; 1e-6A observationaltolerance, not physicaluncertainty",
+      "novelty": "Bounded exact formula/prototype primary search; published source calculations not claimed as first discovery. New-to-reviewed exact ordered hypothesis only. Literature-wide novelty unproved.",
+      "quantitative_route_response": "Colored-site substitution/ordered network plus computed volume/nearest-distance response andEPCagainst frozen geometriccontrols; chemistry/masses co-change. No W/mobile n claim.",
+      "pairing_relevance": "All ten raw printed lambda values andseparate mu*=.1 sourceEliashberg/McMillan products retained; representative common-sigma response isnotrenamed Tc_uncertainty. Spinfluctuations/anisotropy omitted.",
+      "ambient_feasibility": "Source coarse/fine pressure/fullstress/force andpositiveopticalGamma plus finite-path/q evidence; exacttested domain only. No laboratory P/T/hull/globalstability inheritance.",
+      "competition_and_coherence": "L21-style Cr2(Mo)(Tc) colored occupancy vs Re substitution has matched grids/cutoff and ten-sign-consistent EPC gain. Cr-Cr network2.9614A differs from dense Laves Cr networks; no experimental magnetic label is inherited.",
+      "decision": "Spin susceptibility/site moments under two seeds and common-grid orbital response; lowered magnetic branch or disappearance of common-sigma benefit reverses."
+    },
+    "risk_tags": [
+      "magnetic_model",
+      "sampling_method",
+      "technetium"
+    ],
+    "countercontrols": [
+      {
+        "unordered_pair_key": [
+          "batch-a/Cr2MoRe_agm002145097",
+          "batch-a/Cr2MoTc_agm002664904"
+        ],
+        "fixed_A": "batch-a/Cr2MoRe_agm002145097",
+        "fixed_B": "batch-a/Cr2MoTc_agm002664904",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "same_sigma_tokens": true,
+        "sigma_units": null,
+        "lambda_B_minus_A_all_common_tokens": [
+          0.2175999999999999,
+          0.20489999999999997,
+          0.18730000000000002,
+          0.17220000000000002,
+          0.15959999999999996,
+          0.1492,
+          0.14049999999999996,
+          0.13319999999999999,
+          0.12739999999999996,
+          0.12260000000000004
+        ],
+        "lambda_B_minus_A_range": [
+          0.12260000000000004,
+          0.2175999999999999
+        ],
+        "all10_higher_lambda_direction": "B",
+        "source_Eliashberg_mu0p1_A_B": [
+          [
+            0.1,
+            14.195
+          ],
+          [
+            0.1,
+            18.783
+          ]
+        ],
+        "source_Eliashberg_delta_B_minus_A_K": 4.588000000000001,
+        "same_direction_lambda_and_separate_Tc": "B",
+        "independent_Tc_to_sigma_association": null,
+        "geometry_only_causality": null,
+        "high_W_or_mobile_n_response": null,
+        "zero_based_row": 16
+      },
+      {
+        "unordered_pair_key": [
+          "batch-a/Cr2MoTc_agm002664904",
+          "batch-a/Cr2TcW_agm002665225"
+        ],
+        "fixed_A": "batch-a/Cr2MoTc_agm002664904",
+        "fixed_B": "batch-a/Cr2TcW_agm002665225",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "same_sigma_tokens": true,
+        "sigma_units": null,
+        "lambda_B_minus_A_all_common_tokens": [
+          -0.1614,
+          -0.1591999999999999,
+          -0.13849999999999996,
+          -0.12460000000000004,
+          -0.11639999999999995,
+          -0.11170000000000002,
+          -0.1089,
+          -0.10739999999999994,
+          -0.10660000000000003,
+          -0.10599999999999998
+        ],
+        "lambda_B_minus_A_range": [
+          -0.1614,
+          -0.10599999999999998
+        ],
+        "all10_higher_lambda_direction": "A",
+        "source_Eliashberg_mu0p1_A_B": [
+          [
+            0.1,
+            18.783
+          ],
+          [
+            0.1,
+            15.24
+          ]
+        ],
+        "source_Eliashberg_delta_B_minus_A_K": -3.543000000000001,
+        "same_direction_lambda_and_separate_Tc": "A",
+        "independent_Tc_to_sigma_association": null,
+        "geometry_only_causality": null,
+        "high_W_or_mobile_n_response": null,
+        "zero_based_row": 18
+      },
+      {
+        "unordered_pair_key": [
+          "batch-a/Cr2MoTc_agm002664904",
+          "batch-a/Cr3Tc_agm002145239"
+        ],
+        "fixed_A": "batch-a/Cr2MoTc_agm002664904",
+        "fixed_B": "batch-a/Cr3Tc_agm002145239",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "same_sigma_tokens": true,
+        "sigma_units": null,
+        "lambda_B_minus_A_all_common_tokens": [
+          -0.2550999999999999,
+          -0.2025999999999999,
+          -0.18079999999999996,
+          -0.16769999999999996,
+          -0.15649999999999997,
+          -0.1472,
+          -0.1402,
+          -0.13480000000000003,
+          -0.13049999999999995,
+          -0.12649999999999995
+        ],
+        "lambda_B_minus_A_range": [
+          -0.2550999999999999,
+          -0.12649999999999995
+        ],
+        "all10_higher_lambda_direction": "A",
+        "source_Eliashberg_mu0p1_A_B": [
+          [
+            0.1,
+            18.783
+          ],
+          [
+            0.1,
+            15.804
+          ]
+        ],
+        "source_Eliashberg_delta_B_minus_A_K": -2.979000000000001,
+        "same_direction_lambda_and_separate_Tc": "A",
+        "independent_Tc_to_sigma_association": null,
+        "geometry_only_causality": null,
+        "high_W_or_mobile_n_response": null,
+        "zero_based_row": 19
+      },
+      {
+        "unordered_pair_key": [
+          "batch-a/Cr2MoTc_agm002664904",
+          "batch-a/Mo3Tc_agm003165329"
+        ],
+        "fixed_A": "batch-a/Cr2MoTc_agm002664904",
+        "fixed_B": "batch-a/Mo3Tc_agm003165329",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "same_sigma_tokens": true,
+        "sigma_units": null,
+        "lambda_B_minus_A_all_common_tokens": [
+          0.12630000000000008,
+          0.08309999999999995,
+          0.05669999999999997,
+          0.04200000000000004,
+          0.03660000000000008,
+          0.03539999999999999,
+          0.035700000000000065,
+          0.03639999999999999,
+          0.036599999999999966,
+          0.03600000000000003
+        ],
+        "lambda_B_minus_A_range": [
+          0.03539999999999999,
+          0.12630000000000008
+        ],
+        "all10_higher_lambda_direction": "B",
+        "source_Eliashberg_mu0p1_A_B": [
+          [
+            0.1,
+            18.783
+          ],
+          [
+            0.1,
+            17.722
+          ]
+        ],
+        "source_Eliashberg_delta_B_minus_A_K": -1.061,
+        "same_direction_lambda_and_separate_Tc": null,
+        "independent_Tc_to_sigma_association": null,
+        "geometry_only_causality": null,
+        "high_W_or_mobile_n_response": null,
+        "zero_based_row": 20
+      }
+    ],
+    "physical_summary": {
+      "coarse": {
+        "source_record": 3231,
+        "explicit_program_start_headers": [
+          {
+            "value": "Program PWSCF v.7.1 starts on 12May2023 at 17:53:48"
+          }
+        ],
+        "last_printed_convergence_event": {
+          "value": true,
+          "role": "printed electronic/linear-response convergence event; context not assumed SCF"
+        },
+        "JOB_DONE_seen": true,
+        "routine_error_count": 0,
+        "warning_patterns": {
+          "pattern_selected_count": 5,
+          "pattern_scope_not_all_warnings": true,
+          "BFGS": {
+            "count": 1,
+            "last": {
+              "value": "Warning: card   CELL_DYNAMICS = 'BFGS', ignored"
+            }
+          },
+          "negative_charge": {
+            "count": 0,
+            "last": null
+          },
+          "eigen_text": {
+            "count": 0,
+            "last": null
+          },
+          "failure_text": {
+            "count": 0,
+            "last": null
+          },
+          "SCF_correction_text": {
+            "count": 1,
+            "last": {
+              "value": "Total force =     0.000000     Total SCF correction =     0.000000"
+            }
+          }
+        },
+        "last_force": {
+          "header": {
+            "value": "Forces acting on atoms (cartesian axes, Ry/au):"
+          },
+          "reported_unit": "Ry/bohr",
+          "printed_site_rows": 4,
+          "ordered_atom_indices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "reported_max_abs_component": {
+            "value": 0.0,
+            "unit": "Ry/bohr",
+            "derivation": "all components in this printed force block"
+          },
+          "recomputed_max_component_Ry_bohr": 0.0,
+          "recomputed_max_atom_norm_Ry_bohr": 0.0,
+          "max_component_eV_A": 0.0,
+          "max_atom_norm_eV_A": 0.0,
+          "Ry_bohr_to_eV_A_factor": 25.711033738162943,
+          "conversion_constants": {
+            "Ry_eV": 13.605693122994,
+            "bohr_A": 0.529177210903
+          },
+          "unit_conversion_valid": true,
+          "max_norm_site": {
+            "value": [
+              0.0,
+              -0.0,
+              0.0
+            ],
+            "atom_index": 1,
+            "type_index": 1
+          },
+          "reported_component_agrees": true
+        },
+        "last_stress": {
+          "last_pressure_print": {
+            "value": 0.05,
+            "unit": "kbar",
+            "raw_value": "0.05",
+            "GPa": 0.005
+          },
+          "last_stress_block": {
+            "header": {
+              "value": "total   stress  (Ry/bohr**3)                   (kbar)     P=        0.05"
+            },
+            "complete_3x6": true,
+            "first_tensor_unit": "Ry/bohr^3",
+            "last_tensor_unit": "kbar",
+            "rows": [
+              {
+                "value": [
+                  3.2e-07,
+                  0.0,
+                  0.0,
+                  0.05,
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "value": [
+                  0.0,
+                  3.2e-07,
+                  -0.0,
+                  0.0,
+                  0.05,
+                  -0.0
+                ]
+              },
+              {
+                "value": [
+                  0.0,
+                  -0.0,
+                  3.2e-07,
+                  0.0,
+                  -0.0,
+                  0.05
+                ]
+              }
+            ],
+            "full_last_tensor_GPa": [
+              [
+                0.005,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.005,
+                -0.0
+              ],
+              [
+                0.0,
+                -0.0,
+                0.005
+              ]
+            ],
+            "trace_mean_kbar": 0.05000000000000001,
+            "max_abs_stress_GPa": 0.005,
+            "hydrostatic_pressure_not_full_stress": true
+          }
+        },
+        "last_total_energy_print": {
+          "value": -674.23765839,
+          "unit": "Ry",
+          "raw_value": "-674.23765839"
+        },
+        "last_signed_minus_TS_print": {
+          "value": 1.814e-05,
+          "unit": "Ry",
+          "raw_value": "0.00001814"
+        },
+        "derived_E_from_F_minus_signed_minus_TS_Ry": -674.2376765299999
+      },
+      "fine": {
+        "source_record": 3232,
+        "explicit_program_start_headers": [
+          {
+            "value": "Program PWSCF v.7.1 starts on 12May2023 at 17:46: 8"
+          }
+        ],
+        "last_printed_convergence_event": {
+          "value": true,
+          "role": "printed electronic/linear-response convergence event; context not assumed SCF"
+        },
+        "JOB_DONE_seen": true,
+        "routine_error_count": 0,
+        "warning_patterns": {
+          "pattern_selected_count": 7,
+          "pattern_scope_not_all_warnings": true,
+          "BFGS": {
+            "count": 1,
+            "last": {
+              "value": "Warning: card   CELL_DYNAMICS = 'BFGS', ignored"
+            }
+          },
+          "negative_charge": {
+            "count": 0,
+            "last": null
+          },
+          "eigen_text": {
+            "count": 2,
+            "last": {
+              "value": "c_bands:  1 eigenvalues not converged"
+            }
+          },
+          "failure_text": {
+            "count": 0,
+            "last": null
+          },
+          "SCF_correction_text": {
+            "count": 1,
+            "last": {
+              "value": "Total force =     0.000000     Total SCF correction =     0.000000"
+            }
+          }
+        },
+        "last_force": {
+          "header": {
+            "value": "Forces acting on atoms (cartesian axes, Ry/au):"
+          },
+          "reported_unit": "Ry/bohr",
+          "printed_site_rows": 4,
+          "ordered_atom_indices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "reported_max_abs_component": {
+            "value": 0.0,
+            "unit": "Ry/bohr",
+            "derivation": "all components in this printed force block"
+          },
+          "recomputed_max_component_Ry_bohr": 0.0,
+          "recomputed_max_atom_norm_Ry_bohr": 0.0,
+          "max_component_eV_A": 0.0,
+          "max_atom_norm_eV_A": 0.0,
+          "Ry_bohr_to_eV_A_factor": 25.711033738162943,
+          "conversion_constants": {
+            "Ry_eV": 13.605693122994,
+            "bohr_A": 0.529177210903
+          },
+          "unit_conversion_valid": true,
+          "max_norm_site": {
+            "value": [
+              0.0,
+              0.0,
+              -0.0
+            ],
+            "atom_index": 1,
+            "type_index": 1
+          },
+          "reported_component_agrees": true
+        },
+        "last_stress": {
+          "last_pressure_print": {
+            "value": 0.6,
+            "unit": "kbar",
+            "raw_value": "0.60",
+            "GPa": 0.06
+          },
+          "last_stress_block": {
+            "header": {
+              "value": "total   stress  (Ry/bohr**3)                   (kbar)     P=        0.60"
+            },
+            "complete_3x6": true,
+            "first_tensor_unit": "Ry/bohr^3",
+            "last_tensor_unit": "kbar",
+            "rows": [
+              {
+                "value": [
+                  4.07e-06,
+                  -0.0,
+                  0.0,
+                  0.6,
+                  -0.0,
+                  0.0
+                ]
+              },
+              {
+                "value": [
+                  -0.0,
+                  4.07e-06,
+                  0.0,
+                  -0.0,
+                  0.6,
+                  0.0
+                ]
+              },
+              {
+                "value": [
+                  0.0,
+                  0.0,
+                  4.07e-06,
+                  0.0,
+                  0.0,
+                  0.6
+                ]
+              }
+            ],
+            "full_last_tensor_GPa": [
+              [
+                0.06,
+                -0.0,
+                0.0
+              ],
+              [
+                -0.0,
+                0.06,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.06
+              ]
+            ],
+            "trace_mean_kbar": 0.6,
+            "max_abs_stress_GPa": 0.06,
+            "hydrostatic_pressure_not_full_stress": true
+          }
+        },
+        "last_total_energy_print": {
+          "value": -674.23713164,
+          "unit": "Ry",
+          "raw_value": "-674.23713164"
+        },
+        "last_signed_minus_TS_print": {
+          "value": -0.00018776,
+          "unit": "Ry",
+          "raw_value": "-0.00018776"
+        },
+        "derived_E_from_F_minus_signed_minus_TS_Ry": -674.23694388
+      },
+      "Gamma": {
+        "Gamma_optical_sign": "positive_beyond_printing_bound",
+        "Gamma_optical_minimum": 7.743678394179404e-07,
+        "Gamma_printing_bound": 1.3753161217936882e-12,
+        "Gamma_native_signed_modes": [
+          {
+            "number": 1,
+            "THz": -0.748666,
+            "cm_inverse": -24.972796,
+            "line": 86
+          },
+          {
+            "number": 2,
+            "THz": -0.748666,
+            "cm_inverse": -24.972796,
+            "line": 91
+          },
+          {
+            "number": 3,
+            "THz": -0.748666,
+            "cm_inverse": -24.972796,
+            "line": 96
+          },
+          {
+            "number": 4,
+            "THz": 2.897371,
+            "cm_inverse": 96.645902,
+            "line": 101
+          },
+          {
+            "number": 5,
+            "THz": 2.897371,
+            "cm_inverse": 96.645902,
+            "line": 106
+          },
+          {
+            "number": 6,
+            "THz": 2.897371,
+            "cm_inverse": 96.645902,
+            "line": 111
+          },
+          {
+            "number": 7,
+            "THz": 6.916008,
+            "cm_inverse": 230.693188,
+            "line": 116
+          },
+          {
+            "number": 8,
+            "THz": 6.916008,
+            "cm_inverse": 230.693188,
+            "line": 121
+          },
+          {
+            "number": 9,
+            "THz": 6.916008,
+            "cm_inverse": 230.693188,
+            "line": 126
+          },
+          {
+            "number": 10,
+            "THz": 7.876864,
+            "cm_inverse": 262.743908,
+            "line": 131
+          },
+          {
+            "number": 11,
+            "THz": 7.876864,
+            "cm_inverse": 262.743908,
+            "line": 136
+          },
+          {
+            "number": 12,
+            "THz": 7.876864,
+            "cm_inverse": 262.743908,
+            "line": 141
+          }
+        ],
+        "Gamma_ASR_relative": 0.007560324171147499,
+        "Gamma_source_pin": {
+          "directory_key": "batch-a/Cr2MoTc_agm002664904",
+          "bytes": 8994,
+          "sha256": "327005f147415cc1721008d3b6cd045f7b151e89af7709fe4a82cce181487b53"
+        }
+      },
+      "finite_path": {
+        "raw_header_lines": [],
+        "negative_printed_values": 0,
+        "minimum_printed_mode": {
+          "value": -0.0,
+          "column_index_zero_based": 1
+        },
+        "frequency_unit_header": null,
+        "fullBZ_coverage": null,
+        "dynamical_stability": null,
+        "state_link_verified": null
+      },
+      "q_sampling": {
+        "source_ID": "agm002664904",
+        "dyn0_source_record": 3215,
+        "raw_first_two_dyn0_rows": [
+          {
+            "value": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "missing_tokens": [
+              false,
+              false,
+              false
+            ],
+            "printed_zero": [
+              false,
+              false,
+              false
+            ]
+          },
+          {
+            "value": [
+              8.0
+            ],
+            "missing_tokens": [
+              false
+            ],
+            "printed_zero": [
+              false
+            ]
+          }
+        ],
+        "observed_q_index_records": [
+          {
+            "q_index": 1,
+            "source_record": 3222,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 2,
+            "source_record": 3223,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 3,
+            "source_record": 3224,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 4,
+            "source_record": 3225,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 5,
+            "source_record": 3226,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 6,
+            "source_record": 3227,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 7,
+            "source_record": 3228,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 8,
+            "source_record": 3229,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          }
+        ],
+        "source_PH_input_record_count": 8,
+        "source_PH_input_bound_mismatch_count": 0,
+        "all_irreps_complete": null,
+        "native_exit_status": null,
+        "full_BZ_stability": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "composition-assessments.json",
+        "bytes": 1863044,
+        "sha256": "5fc901f5f4a90b41e807722d92f39d81714b70091a189cdb5eba13367624350b",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "numeric-review.json",
+        "bytes": 4542684,
+        "sha256": "c4fae01d3d67f774429114902a6b39f5b133de48ea81d3d9773ba40ff4419ce2",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-two-PH-actual-complete-response-products-readback-v1.json",
+        "bytes": 77119,
+        "sha256": "434c5fe7a590607adbc104dd75d126497457317bc20f37973b5013491e9fdce2",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "Published source predictions already known; exact matched mechanism new to reviewed catalogue only, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}
