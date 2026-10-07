@@ -1,0 +1,509 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm001106125",
+    "formula": "HfRu3H",
+    "reduced_formula": "HfRu3H",
+    "composition": {
+      "H": 1,
+      "Hf": 1,
+      "Ru": 3
+    },
+    "canonical_composition_key": "H:1|Hf:1|Ru:3",
+    "elements": [
+      "H",
+      "Hf",
+      "Ru"
+    ],
+    "source_state": "agm001106125",
+    "control_state": "agm001106365",
+    "source_directory": "batch-a/HRu3Hf_agm001106125",
+    "control_directory": "batch-a/HVRu3_agm001106365",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Pm-3m five-site ordered hydrogen intermetallic cage: H 1a, Hf 1b, Ru three edge-center sites",
+    "prototype_evidence": "Pm-3m five-site ordered hydrogen intermetallic cage: H 1a, Hf 1b, Ru three edge-center sites",
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 14.498,
+      "control_K": 13.564,
+      "delta_K": 0.9339999999999993,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.2986,
+        0.277,
+        0.29070000000000007,
+        0.28770000000000007,
+        0.27270000000000005,
+        0.24959999999999993,
+        0.22050000000000014,
+        0.18689999999999984,
+        0.1509999999999999,
+        0.11499999999999999
+      ],
+      "range": [
+        0.11499999999999999,
+        0.2986
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Hydrogen zero-point/anharmonic and vacancy/decomposition energetics, ordering entropy and Hf/Ru SOC may alter the prediction. The actual target has no signed negative finite-path value and positive Gamma optical compression. Ti3HfH is better at all ten lambda values and remains a retained negative control for the claim of globally optimal chemistry; it does not contradict the narrower Hf-for-V hypothesis.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=-0.056 GPa, full max stress=0.056 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "route_response": "Hf replaces V on the unique cage-corner cation site with the three Ru and one H roles retained. Cell volume rises 10.763%, H-Ru distance rises 0.0660796 A and Hf-Ru versus V-Ru rises 0.0934507 A. This coupled cation/network construction increases source lambda across all ten sigma values; it is not an expansion-only causal attribution.",
+    "next_action": "Compare HfRu3H and VRu3H at a common cage volume, identical PP/cutoff and q/k sampling, and include H vacancy/decomposition or anharmonic stability evidence. Persistence of the lambda gain supports the coupled construction; collapse of the gain or a nontranslation soft branch opposes it.",
+    "seven_criteria": {
+      "identity": "Complete ordered CIF/literal coarse-fine input/Gamma periodic species-site association is numerically supported; source input geometry and full tensor/forces are retained. Export occupancy is a discrete computational convention; source experimental P/T/occupancy and actual compiled unit constant are unknown. Exact-version input defaults scope the configured neutral scalar spin1/noSOC model, not magnetic ground state.",
+      "quantitative_route_response": "Hf replaces V on the unique cage-corner cation site with the three Ru and one H roles retained. Cell volume rises 10.763%, H-Ru distance rises 0.0660796 A and Hf-Ru versus V-Ru rises 0.0934507 A. This coupled cation/network construction increases source lambda across all ten sigma values; it is not an expansion-only causal attribution.",
+      "pairing_relevance": "Exact target and mapped control direct source lambda arrays have the same favorable sign at all ten common broadening tokens; omega_ln has explicit K units and separate Eli/McM mu=.1 tables remain independent. Same underlying q mesh is observed. The sensitivity range is not a physical error bound; sigma units, full-BZ convergence, experimental Tc and pure-geometry causality remain unknown. Literal method differences are declared confounds.",
+      "ambient_feasibility": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=-0.056 GPa, full max stress=0.056 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+      "competition_and_coherence": "Hydrogen zero-point/anharmonic and vacancy/decomposition energetics, ordering entropy and Hf/Ru SOC may alter the prediction. The actual target has no signed negative finite-path value and positive Gamma optical compression. Ti3HfH is better at all ten lambda values and remains a retained negative control for the claim of globally optimal chemistry; it does not contradict the narrower Hf-for-V hypothesis.",
+      "novelty": "Exact HfRu3H/HRu3Hf superconductivity queries on 2026-10-07 identified no experimental superconducting exact ordered phase. The MC2023 published prediction is acknowledged prior, and only the matched Hf-for-V source hypothesis is proposed as new to this reviewed catalogue.",
+      "decision": "Compare HfRu3H and VRu3H at a common cage volume, identical PP/cutoff and q/k sampling, and include H vacancy/decomposition or anharmonic stability evidence. Persistence of the lambda gain supports the coupled construction; collapse of the gain or a nontranslation soft branch opposes it."
+    },
+    "risk_tags": [
+      "hydrogen_anharmonicity",
+      "metastable_phase"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index_zero_based": 127,
+        "control_directory": "batch-a/HTi3Hf_agm002488868",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Ru",
+          "to": "Ti",
+          "count": 3,
+          "kind": "whole_element_substitution"
+        },
+        "volume_target_over_control": 0.845176649562835,
+        "target_relative_lambda_gain_percent_all10": [
+          -12.961484120646224,
+          -27.37190837950533,
+          -31.70731707317073,
+          -33.27355265370173,
+          -34.133073751717816,
+          -34.84492481203007,
+          -35.48640009649598,
+          -36.084132384781945,
+          -36.66582246422692,
+          -37.23335488041371
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          -37.23335488041371,
+          -12.961484120646224
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            14.498
+          ],
+          [
+            0.1,
+            22.108
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            12.645,
+            13.809
+          ],
+          [
+            0.1,
+            17.125,
+            20.133
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": true,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 128,
+        "control_directory": "batch-a/HVRu3_agm001106365",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Hf",
+          "to": "V",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 1.107627860937794,
+        "target_relative_lambda_gain_percent_all10": [
+          26.70124295806134,
+          27.853192559074913,
+          30.974960042621213,
+          31.863993797762767,
+          31.07338195077485,
+          29.03676128431828,
+          25.965614696184662,
+          22.08436724565755,
+          17.77934769810431,
+          13.434579439252337
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          13.434579439252337,
+          31.863993797762767
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            14.498
+          ],
+          [
+            0.1,
+            13.564
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            12.645,
+            13.809
+          ],
+          [
+            0.1,
+            11.74,
+            12.425
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      }
+    ],
+    "physical_summary": {
+      "nat": 5,
+      "lambda10": [
+        1.4169,
+        1.2715,
+        1.2292,
+        1.1906,
+        1.1503,
+        1.1092,
+        1.0697,
+        1.0332,
+        1.0003,
+        0.971
+      ],
+      "omega10_K": [
+        156.3525,
+        157.2329,
+        157.0518,
+        156.6105,
+        156.1813,
+        155.8404,
+        155.5951,
+        155.4384,
+        155.3602,
+        155.3489
+      ],
+      "Eli_mu01": [
+        0.1,
+        14.498
+      ],
+      "McM_mu01": [
+        0.1,
+        12.645,
+        13.809
+      ],
+      "coarse_fine": [
+        {
+          "record": 7463,
+          "version": [
+            "Program PWSCF v.7.1 starts on 14May2023 at 22: 5:22"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": -0.002,
+          "maxstress_GPa": 0.002,
+          "fulltensor": [
+            [
+              -0.002,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              -0.002,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              -0.002
+            ]
+          ],
+          "F_Ry": -1175.51563514,
+          "E_Ry": -1175.51471027,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        },
+        {
+          "record": 7464,
+          "version": [
+            "Program PWSCF v.7.1 starts on 14May2023 at 22: 0:14"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": -0.05600000000000001,
+          "maxstress_GPa": 0.05600000000000001,
+          "fulltensor": [
+            [
+              -0.05600000000000001,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              -0.05600000000000001,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              -0.05600000000000001
+            ]
+          ],
+          "F_Ry": -1175.51698699,
+          "E_Ry": -1175.5167780900001,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        }
+      ],
+      "inputs": [
+        {
+          "record": 7453,
+          "ecutwfc": [
+            144.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "/dss/dsshome1/07/di29xud3/software/progs/qe/pp/nc-sr-04_pbesol_stringent_upf/"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            1.0
+          ],
+          "nat": [
+            5.0
+          ],
+          "grid": [
+            "6 6 6 0 0 0"
+          ]
+        },
+        {
+          "record": 7454,
+          "ecutwfc": [
+            144.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "/dss/dsshome1/07/di29xud3/software/progs/qe/pp/nc-sr-04_pbesol_stringent_upf/"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            1.0
+          ],
+          "nat": [
+            5.0
+          ],
+          "grid": [
+            "24 24 24 0 0 0"
+          ]
+        }
+      ],
+      "Gamma": {
+        "nat": 5,
+        "ibrav": 1,
+        "q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species": [
+          "H",
+          "Hf",
+          "Ru"
+        ],
+        "optical": "positive_beyond_printing_bound",
+        "minopt": 8.118120016713509e-07,
+        "printingbound": 2.3913080512637623e-11,
+        "negative_native_modes": [
+          1,
+          2,
+          3
+        ],
+        "negativeoutside3": [],
+        "min_low3_translation": 0.9999070909012002,
+        "sourcepin": {
+          "directory_key": "batch-a/HRu3Hf_agm001106125",
+          "bytes": 13349,
+          "sha256": "7e5632224485fd7b22abb8f037cdbc508831fda9b13dc18b2855de8f6c6b00a3"
+        }
+      },
+      "path": {
+        "rows": 124,
+        "negatives": 0,
+        "minimum": -0.0,
+        "unit": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "tranche-2-compact-scientific-recommendations.json",
+        "bytes": 84096,
+        "sha256": "d8ca53bafc5ee0879de647e050127d8e0d20c0e3da10de9602ab2de44bf77532",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-3-five-scientific-recommendations.json",
+        "bytes": 110335,
+        "sha256": "861dd76c8368cca687ca20c8468e464badefb533a318ed41c4f8d62dccb6ed50",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-4-three-phase-scientific-recommendations.json",
+        "bytes": 64369,
+        "sha256": "56076a077e591b9bdef8ada45d78f224f417a4af8d2e722e332f639eedfafaf7",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all64-light-Nb-rich-owned-review-cache-v2.json",
+        "bytes": 4566542,
+        "sha256": "f27e8c84c10c4d8de44022f6bd160e7e8aee8b2d562db5fd6003af68d5e35756",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

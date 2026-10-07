@@ -1,0 +1,220 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm003159857",
+    "formula": "MoTcW",
+    "reduced_formula": "MoTcW",
+    "composition": {
+      "Mo": 1,
+      "Tc": 1,
+      "W": 1
+    },
+    "canonical_composition_key": "Mo:1|Tc:1|W:1",
+    "elements": [
+      "Mo",
+      "Tc",
+      "W"
+    ],
+    "source_state": "agm003159857",
+    "control_state": "agm003160457",
+    "source_directory": "batch-a/MoTcW_agm003159857",
+    "control_directory": "batch-a/MoWRe_agm003160457",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Exact source geometry association retained; no named prototype is assigned here.",
+    "prototype_evidence": {
+      "CIF_source_record": 3161,
+      "CIF_payload_pin": {
+        "bytes": 591661,
+        "sha256": "93c3ce21c362fc36392db6d13f4555d76cce96122769d1212414bbc770f81541"
+      },
+      "SCF_coarse_source_record": 3180,
+      "Gamma_source_pin": {
+        "directory_key": "batch-a/MoTcW_agm003159857",
+        "bytes": 5555,
+        "sha256": "8f1805562e727da0db230c28ad2a15eb8609f9419db84793908c04b1e842b280"
+      },
+      "source_input_volume_difference_relative": 2.0595258831690444e-10,
+      "occupancy_model_all1": true,
+      "bounded_signed_axis_and_translation_mapping": {
+        "signed_axis_U_CIF_fractional_to_SCF": [
+          [
+            -1,
+            0,
+            0
+          ],
+          [
+            0,
+            -1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "determinant": 1,
+        "origin_shift_fractional": [
+          0.66666667,
+          0.33333333,
+          9.999999994736442e-09
+        ],
+        "species_bijection_CIF_to_SCF": [
+          0,
+          1,
+          2
+        ],
+        "maximum_site_distance_A": 8.061906464565582e-08,
+        "relative_Gram_residual": 2.3588889609874264e-09,
+        "proper_signed_axis_solution": true
+      },
+      "attempts": 2,
+      "general_GL3_or_chiral_equivalence_asserted": false,
+      "CIF_site_precision_A_tolerance": 1e-05,
+      "physical_model": "source finite neutral scalar EPC; no SOC transfer certificate"
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 18.404,
+      "control_K": 13.541,
+      "delta_K": 4.8629999999999995,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.36980000000000013,
+        0.34120000000000006,
+        0.34230000000000005,
+        0.33919999999999995,
+        0.33340000000000003,
+        0.3266,
+        0.31889999999999996,
+        0.3101999999999999,
+        0.30110000000000003,
+        0.29200000000000004
+      ],
+      "range": [
+        0.29200000000000004,
+        0.36980000000000013
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Large all-token paired gain is supported, but fine-grid stress reaches 0.364 GPa and residual force 0.02598 eV/A on coarse-relaxed coordinates. Source pressure-zero relaxation and local phonon minimum justify only a finite coarse-grid metastable hypothesis. Tc/W/Re chemistry and SOC/mass are coupled; no pure high-W or carrier causal statement.",
+    "ambient_scope": "Source coarse force 0.00016352217457471632 eV/Å, pressure -0.0 GPa; fine force 0.025977914268365074 eV/Å, pressure -0.34700000000000003 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "route_response": "Re-to-Tc construction on the Mo-W trigonal role network. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "next_action": "Inspect existing exact target/control mode/orbital evidence and stress/phase competition. Favorable: local near-zero-pressure role construction retains pairing advantage under matched refinement; adverse: cell strain or competing phase removes favorable branch; ambiguous: conditional internal-force scale cannot answer strain stability.",
+    "seven_criteria": {
+      "identity": "Exact source CIF/SCF/Γ state association; CIF source record 3161. Experimental occupancy/P/T and physical magnetic ground state remain unknown; source scalar model only.",
+      "quantitative_route_response": "Re-to-Tc construction on the Mo-W trigonal role network. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+      "pairing_relevance": "direct published source EPC and independent source isotropic Eliashberg result. 1 favorable comparator(s); bounded source model, not experiment.",
+      "ambient_feasibility": "Source coarse force 0.00016352217457471632 eV/Å, pressure -0.0 GPa; fine force 0.025977914268365074 eV/Å, pressure -0.34700000000000003 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+      "competition_and_coherence": "Large all-token paired gain is supported, but fine-grid stress reaches 0.364 GPa and residual force 0.02598 eV/A on coarse-relaxed coordinates. Source pressure-zero relaxation and local phonon minimum justify only a finite coarse-grid metastable hypothesis. Tc/W/Re chemistry and SOC/mass are coupled; no pure high-W or carrier causal statement.",
+      "novelty": "Exact MoTcW query found no primary exact experimental superconducting phase. Closest Tc binary primary literature finds sigma/phase-separated Mo-Tc and W-Tc competitors; neither establishes decomposition of this exact ternary phase nor removes its local source minimum. Source proposed geometry is already published.",
+      "decision": "Inspect existing exact target/control mode/orbital evidence and stress/phase competition. Favorable: local near-zero-pressure role construction retains pairing advantage under matched refinement; adverse: cell strain or competing phase removes favorable branch; ambiguous: conditional internal-force scale cannot answer strain stability."
+    },
+    "risk_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "sampling_method",
+      "technetium"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index": 190,
+        "control": "batch-a/MoWRe_agm003160457",
+        "target": "batch-a/MoTcW_agm003159857",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          0.29200000000000004,
+          0.36980000000000013
+        ],
+        "lambda_pct_range": [
+          33.382874128272555,
+          35.208636080548054
+        ],
+        "Tc_target_K": 18.404,
+        "Tc_control_K": 13.541,
+        "independent_source_Eli_Tc_delta_K": 4.8629999999999995,
+        "all10_lambda_and_Tc_favorable": true,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 0.9906812329273262,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.5695090932680408e-06,
+        "geometry_only_causality": null,
+        "lambda_target_minus_other_range": [
+          0.29200000000000004,
+          0.36980000000000013
+        ]
+      }
+    ],
+    "physical_summary": null,
+    "evidence_pins": [
+      {
+        "artifact": "tranche-01-ten-specific-scientific-recommendations.json",
+        "bytes": 381754,
+        "sha256": "5d05478212c4d22080ab1b7bf22d92b784de6c0f8a99590d0758f9cdbfdafb32",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-remaining-transition-owned-review-cache-v1.json",
+        "bytes": 5381838,
+        "sha256": "62f4910578c7b65392d26619cf81b31afd6142f38aa49834a70bb147e7ab222d",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

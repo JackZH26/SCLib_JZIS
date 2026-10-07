@@ -1,0 +1,429 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm002339932",
+    "formula": "MgIrH3",
+    "reduced_formula": "MgIrH3",
+    "composition": {
+      "H": 3,
+      "Ir": 1,
+      "Mg": 1
+    },
+    "canonical_composition_key": "H:3|Ir:1|Mg:1",
+    "elements": [
+      "H",
+      "Ir",
+      "Mg"
+    ],
+    "source_state": "agm002339932",
+    "control_state": "agm002153282",
+    "source_directory": "batch-a/H3MgIr_agm002339932",
+    "control_directory": "batch-a/H3MgRh_agm002153282",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Pm-3m five-site perovskite hydride: Mg 1a, Ir 1b, H on the three face-center sites (origin/basis equivalent to ABH3)",
+    "prototype_evidence": "Pm-3m five-site perovskite hydride: Mg 1a, Ir 1b, H on the three face-center sites (origin/basis equivalent to ABH3)",
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 11.862,
+      "control_K": 11.198,
+      "delta_K": 0.6639999999999997,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.7844,
+        0.4872000000000001,
+        0.3256,
+        0.2952,
+        0.30359999999999987,
+        0.3173,
+        0.3286,
+        0.33519999999999994,
+        0.3360000000000001,
+        0.3318
+      ],
+      "range": [
+        0.2952,
+        0.7844
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Hydrogen stoichiometry, anharmonicity and competing complex hydrides are the important physical risks. Hansen et al. observed a minor Pm-3m MgIrHx phase but could not establish x, potentially even zero; their Mg2IrH5 synthesis and proposed Mg2IrH6 superconductivity are different stoichiometries/prototypes. These priors neither establish MgIrH3 superconductivity nor invalidate the exact locally stable model. Neglected Ir SOC and different PP/cutoff between Rh and Ir remain matched-method falsifiers.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=0.108 GPa, full max stress=0.108 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "route_response": "Ir replaces Rh on the single transition-metal site while the Mg and three H roles remain mapped. The volume rises 3.573%, with the actual H-metal and H-H distances retained below. Lambda improves at all ten sigma values, whereas the separate Eli mu=.1 change is modest, 11.198 to 11.862 K; this distinction avoids ranking solely by coupling.",
+    "next_action": "At the same ordered MgIrH3/MgRhH3 geometry roles, separate common-volume chemical substitution from expansion and test H stoichiometry/anharmonic modes. A persistent direct coupling advantage without an unstable H/order branch supports screening; a stable hydrogen-deficient insulating phase or erased coupling advantage opposes it.",
+    "seven_criteria": {
+      "identity": "Complete ordered CIF/literal coarse-fine input/Gamma periodic species-site association is numerically supported; source input geometry and full tensor/forces are retained. Export occupancy is a discrete computational convention; source experimental P/T/occupancy and actual compiled unit constant are unknown. Exact-version input defaults scope the configured neutral scalar spin1/noSOC model, not magnetic ground state.",
+      "quantitative_route_response": "Ir replaces Rh on the single transition-metal site while the Mg and three H roles remain mapped. The volume rises 3.573%, with the actual H-metal and H-H distances retained below. Lambda improves at all ten sigma values, whereas the separate Eli mu=.1 change is modest, 11.198 to 11.862 K; this distinction avoids ranking solely by coupling.",
+      "pairing_relevance": "Exact target and mapped control direct source lambda arrays have the same favorable sign at all ten common broadening tokens; omega_ln has explicit K units and separate Eli/McM mu=.1 tables remain independent. Same underlying q mesh is observed. The sensitivity range is not a physical error bound; sigma units, full-BZ convergence, experimental Tc and pure-geometry causality remain unknown. Literal method differences are declared confounds.",
+      "ambient_feasibility": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=0.108 GPa, full max stress=0.108 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+      "competition_and_coherence": "Hydrogen stoichiometry, anharmonicity and competing complex hydrides are the important physical risks. Hansen et al. observed a minor Pm-3m MgIrHx phase but could not establish x, potentially even zero; their Mg2IrH5 synthesis and proposed Mg2IrH6 superconductivity are different stoichiometries/prototypes. These priors neither establish MgIrH3 superconductivity nor invalidate the exact locally stable model. Neglected Ir SOC and different PP/cutoff between Rh and Ir remain matched-method falsifiers.",
+      "novelty": "The 2026-10-07 bounded MgIrH3/IrMgH3 search found a related experimentally observed Pm-3m MgIrHx phase with unknown hydrogen content, not an exact experimental superconducting MgIrH3 benchmark. The new-to-reviewed-catalogue object is the fully ordered H3 occupancy and matched Ir-for-Rh hypothesis; no first-composition claim.",
+      "decision": "At the same ordered MgIrH3/MgRhH3 geometry roles, separate common-volume chemical substitution from expansion and test H stoichiometry/anharmonic modes. A persistent direct coupling advantage without an unstable H/order branch supports screening; a stable hydrogen-deficient insulating phase or erased coupling advantage opposes it."
+    },
+    "risk_tags": [
+      "hydrogen_anharmonicity",
+      "metastable_phase",
+      "sampling_method"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index_zero_based": 114,
+        "control_directory": "batch-a/H3MgRh_agm002153282",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Ir",
+          "to": "Rh",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 1.0357258440065038,
+        "target_relative_lambda_gain_percent_all10": [
+          104.55878432418022,
+          60.86196127420364,
+          42.012903225806454,
+          40.28384279475983,
+          43.54561101549051,
+          47.021339656194435,
+          49.32452716901831,
+          50.07469375560203,
+          49.31024361608454,
+          47.4813966800229
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          40.28384279475983,
+          104.55878432418022
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            11.862
+          ],
+          [
+            0.1,
+            11.198
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            10.217,
+            10.918
+          ],
+          [
+            0.1,
+            10.56,
+            11.02
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      }
+    ],
+    "physical_summary": {
+      "nat": 5,
+      "lambda10": [
+        1.5346,
+        1.2877,
+        1.1006,
+        1.028,
+        1.0008,
+        0.9921,
+        0.9948,
+        1.0046,
+        1.0174,
+        1.0306
+      ],
+      "omega10_K": [
+        140.424,
+        136.265,
+        135.747,
+        137.8171,
+        140.6125,
+        143.2232,
+        145.7284,
+        148.0545,
+        150.0245,
+        151.5446
+      ],
+      "Eli_mu01": [
+        0.1,
+        11.862
+      ],
+      "McM_mu01": [
+        0.1,
+        10.217,
+        10.918
+      ],
+      "coarse_fine": [
+        {
+          "record": 16221,
+          "version": [
+            "Program PWSCF v.6.8 starts on 12May2023 at 12:24:20"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": -0.001,
+          "maxstress_GPa": 0.001,
+          "fulltensor": [
+            [
+              -0.001,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              -0.001,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              -0.001
+            ]
+          ],
+          "F_Ry": -352.40617104,
+          "E_Ry": -352.4061112,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        },
+        {
+          "record": 16222,
+          "version": [
+            "Program PWSCF v.6.8 starts on 12May2023 at 12:23:11"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": 0.10800000000000001,
+          "maxstress_GPa": 0.10800000000000001,
+          "fulltensor": [
+            [
+              0.10800000000000001,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.10800000000000001,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.10800000000000001
+            ]
+          ],
+          "F_Ry": -352.41005291,
+          "E_Ry": -352.40996828,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        }
+      ],
+      "inputs": [
+        {
+          "record": 16211,
+          "ecutwfc": [
+            96.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "/pc2/users/e/e2dm2/software/progs/qe/pp/nc-sr-04_pbesol_stringent_upf/"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            1.0
+          ],
+          "nat": [
+            5.0
+          ],
+          "grid": [
+            "6 6 6 0 0 0"
+          ]
+        },
+        {
+          "record": 16212,
+          "ecutwfc": [
+            96.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "/pc2/users/e/e2dm2/software/progs/qe/pp/nc-sr-04_pbesol_stringent_upf/"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            1.0
+          ],
+          "nat": [
+            5.0
+          ],
+          "grid": [
+            "24 24 24 0 0 0"
+          ]
+        }
+      ],
+      "Gamma": {
+        "nat": 5,
+        "ibrav": 1,
+        "q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species": [
+          "H",
+          "Ir",
+          "Mg"
+        ],
+        "optical": "positive_beyond_printing_bound",
+        "minopt": 8.68108668585955e-07,
+        "printingbound": 7.035422181988358e-11,
+        "negative_native_modes": [],
+        "negativeoutside3": [],
+        "min_low3_translation": 0.999707078778001,
+        "sourcepin": {
+          "directory_key": "batch-a/H3MgIr_agm002339932",
+          "bytes": 13355,
+          "sha256": "28bb8cdea897f34cd764cd4689b68662195f6396b042997592413cd8012dc5a9"
+        }
+      },
+      "path": {
+        "rows": 139,
+        "negatives": 0,
+        "minimum": -0.0,
+        "unit": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "tranche-2-compact-scientific-recommendations.json",
+        "bytes": 84096,
+        "sha256": "d8ca53bafc5ee0879de647e050127d8e0d20c0e3da10de9602ab2de44bf77532",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-3-five-scientific-recommendations.json",
+        "bytes": 110335,
+        "sha256": "861dd76c8368cca687ca20c8468e464badefb533a318ed41c4f8d62dccb6ed50",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-4-three-phase-scientific-recommendations.json",
+        "bytes": 64369,
+        "sha256": "56076a077e591b9bdef8ada45d78f224f417a4af8d2e722e332f639eedfafaf7",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all64-light-Nb-rich-owned-review-cache-v2.json",
+        "bytes": 4566542,
+        "sha256": "f27e8c84c10c4d8de44022f6bd160e7e8aee8b2d562db5fd6003af68d5e35756",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

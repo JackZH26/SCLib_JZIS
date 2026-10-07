@@ -1,0 +1,160 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm003559755",
+    "formula": "YZr3N4",
+    "reduced_formula": "YZr3N4",
+    "composition": {
+      "N": 4,
+      "Y": 1,
+      "Zr": 3
+    },
+    "canonical_composition_key": "N:4|Y:1|Zr:3",
+    "elements": [
+      "N",
+      "Y",
+      "Zr"
+    ],
+    "source_state": "agm003559755",
+    "control_state": "agm003557884",
+    "source_directory": "batch-a/N4YZr3_agm003559755",
+    "control_directory": null,
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "SG221 ordered NaCl-derived8-site sixfold minority-cation substitution, source ideal occupancy",
+    "prototype_evidence": {
+      "motif": "SG221 ordered NaCl-derived8-site sixfold minority-cation substitution, source ideal occupancy",
+      "new_topology_claim": false,
+      "geometry_only_causal_mediation_tested": false
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 21.437,
+      "control_K": 16.568,
+      "delta_K": 4.869,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.8982999999999999,
+        0.6923,
+        0.6156,
+        0.5653,
+        0.5301000000000001,
+        0.5028999999999999,
+        0.47950000000000015,
+        0.4584999999999999,
+        0.4393,
+        0.42189999999999994
+      ],
+      "range": [
+        0.42189999999999994,
+        0.8982999999999999
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Explicitly assessed softening, competing nitrides/disorder, code-model spin/SOC assumptions, mixed mass/potential/volume causes and coarse/fine residual-stress sensitivity. No observed critical sign contradiction reverses this bounded source coupled-intervention inference. Whole-BZ stability, disorder coherence, magnetic ground state and fixed-chemistry causal mediation remain unknown; the smaller/partially capacity-limited electronic envelopes are not claimed as W gains.",
+    "ambient_scope": "Bounded near-ambient source feasibility: coarse pressure0 GPa, fine residual isotropic stress-0.178 GPa and printed-zero forces, finite q3^3/4irreducible response;21 Gamma optical-compression eigenvalues positive beyond printing bound and path no signed-negative values. Earlier PBE/PAW phase hull35 meV/atom is a metastability prior, not current NC exact hull or synthesis evidence.",
+    "route_response": "Supported for the coupled minority-cation construction Sc->Y on a fixed sixfold network: lattice +1.92551688%, volume +5.888493%, first-shell M-N +0.04363518 A, together with favorable direct EPC. Atomic potential/mass and expansion are a coupled intervention; no isolated geometry-volume cause, topology change, high-W or mobile-n benefit is claimed.",
+    "next_action": "Candidate grade3 is justified only for the declared source-model coupled atomic-construction/pairing domain. A fixed-chemistry cross-volume response and named finite-q stationarity check are the next falsifiers; independent numerical/causal strengthening needed for grade4. Formal research-action RPS/publication remains separate.",
+    "seven_criteria": {
+      "identity": "Exact ideal ordered8-site source input is pinned; actual cubic-coordinate arithmetic links SCF coarse/fine, species, source Gamma tau and periodic CIF sites. Exact input/run QE7.0 model defaults are resolved from official tag source. Physical sample spin/occupancy/T remains unknown.",
+      "quantitative_route_response": "Supported for the coupled minority-cation construction Sc->Y on a fixed sixfold network: lattice +1.92551688%, volume +5.888493%, first-shell M-N +0.04363518 A, together with favorable direct EPC. Atomic potential/mass and expansion are a coupled intervention; no isolated geometry-volume cause, topology change, high-W or mobile-n benefit is claimed.",
+      "pairing_relevance": "All10 matched printed source-width EPC responses favor Y with lambda +57.052–81.045%; phonon frequency softening is preserved. Independent source Eliashberg mu*=0.1 estimates21.437 versus16.568 K support the source-model pairing contrast; neither a new child calculation nor experiment. Sigma table and Eliashberg estimator are not silently merged.",
+      "ambient_feasibility": "Bounded near-ambient source feasibility: coarse pressure0 GPa, fine residual isotropic stress-0.178 GPa and printed-zero forces, finite q3^3/4irreducible response;21 Gamma optical-compression eigenvalues positive beyond printing bound and path no signed-negative values. Earlier PBE/PAW phase hull35 meV/atom is a metastability prior, not current NC exact hull or synthesis evidence.",
+      "competition_and_coherence": "Explicitly assessed softening, competing nitrides/disorder, code-model spin/SOC assumptions, mixed mass/potential/volume causes and coarse/fine residual-stress sensitivity. No observed critical sign contradiction reverses this bounded source coupled-intervention inference. Whole-BZ stability, disorder coherence, magnetic ground state and fixed-chemistry causal mediation remain unknown; the smaller/partially capacity-limited electronic envelopes are not claimed as W gains.",
+      "novelty": "Exact composition/phase hypothesis not among current5 reviewed groups. The2023 published prediction of SG221 YZr3N4 is explicitly retained; bounded primary search does not establish an experimental superconducting benchmark for this state. Count only one new-to-reviewed-catalogue Y composition hypothesis, not parentSc/reference, first discovery, a new composition in literature or a trivial cell alias.",
+      "decision": "Candidate grade3 is justified only for the declared source-model coupled atomic-construction/pairing domain. A fixed-chemistry cross-volume response and named finite-q stationarity check are the next falsifiers; independent numerical/causal strengthening needed for grade4. Formal research-action RPS/publication remains separate."
+    },
+    "risk_tags": [
+      "metastable_phase",
+      "residual_force_stress"
+    ],
+    "countercontrols": [],
+    "physical_summary": null,
+    "evidence_pins": [
+      {
+        "artifact": "receipt.json",
+        "bytes": 12148,
+        "sha256": "b6cc81917e12c2e2f9f342440407440bb801f7dbb19c65d2d57250aef6539abe",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "observables.json",
+        "bytes": 76234,
+        "sha256": "38280444b9ba0d3a8d5283cc6560264c71642663321196651b242541b155f72d",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "primary-prior.json",
+        "bytes": 1715,
+        "sha256": "7e61ae596cfdb53bb4f74190819c3afb501f63f3305122caa0230616d3b65c78",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ScY-Zr3N4-root-owned-cubic-coordinate-association-v1.json",
+        "bytes": 8468,
+        "sha256": "830d43a5412a960da288df72d61021b5b306662d0541ec4927b544a24e645030",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ScY-Zr3N4-root-exact-QE70-model-default-binding-v1.json",
+        "bytes": 3973,
+        "sha256": "ff0352383b1e5a2018fd594b7573e36cd259d34ab25b04f057b3abb332fa6e51",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-named22-actual-energy-collection-analysis-v1.json",
+        "bytes": 1070121,
+        "sha256": "0a86b1b7dd6f7253c45cc1e03d9aa95f327f7ca97870c8834d0aa922087772e4",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "criteria.json",
+        "bytes": 16426,
+        "sha256": "e1df615f98f5ed472465daf157d70f7935e7279c33ef767396d144d3b53d2a93",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "new-to-reviewed-catalogue source-derived coupled cation/geometry hypothesis;2023 prior prediction retained, no first discovery claim",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

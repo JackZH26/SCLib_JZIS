@@ -1,0 +1,270 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm002489249",
+    "formula": "NaAuH3",
+    "reduced_formula": "NaAuH3",
+    "composition": {
+      "Au": 1,
+      "H": 3,
+      "Na": 1
+    },
+    "canonical_composition_key": "Au:1|H:3|Na:1",
+    "elements": [
+      "Au",
+      "H",
+      "Na"
+    ],
+    "source_state": "agm002489249",
+    "control_state": "agm002486518",
+    "source_directory": "batch-a/H3NaAu_agm002489249",
+    "control_directory": "batch-a/H3NaPt_agm002486518",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "cubic Pm-3m 5-site perovskite hydride: Au 1a, Na 1b, H on three edge centers",
+    "prototype_evidence": "cubic Pm-3m 5-site perovskite hydride: Au 1a, Na 1b, H on three edge centers",
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 23.838,
+      "control_K": 13.298,
+      "delta_K": 10.540000000000001,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.9058000000000002,
+        0.5152,
+        0.3148,
+        0.22890000000000005,
+        0.18080000000000002,
+        0.15610000000000002,
+        0.1476,
+        0.14939999999999998,
+        0.15700000000000003,
+        0.16739999999999994
+      ],
+      "range": [
+        0.1476,
+        0.9058000000000002
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Hydrogen anharmonicity and zero-point/decomposition pathways, Au charge redistribution and neglected SOC can change the magnitude. They are unmeasured here, but there is no actual negative path or optical mode in this exact source model. The PdH anharmonic counterexample prohibits treating harmonic Tc as experimental.",
+    "ambient_scope": "Coarse/fine SCF both converge; complete source forces/stress, positive Gamma optical compression and no signed negative finite-path value support this model near ambient. All listed q outputs end JOBDONE/response convergence with zero routine errors. This is finite-grid local/metastable evidence, not exhaustive thermodynamic or all-irrep certification.",
+    "route_response": "Replace the Pt site of NaPtH3 by Au with all ordered roles retained; the source cell expands 10.911%, Au-H minus Pt-H = +0.0631033 A and H-H = +0.0892416 A. The coupled chemistry/bond-network intervention gives all-ten lambda gains 31.525–282.005% and separate Eli mu=.1 13.298→23.838 K. This is not proof that expansion alone causes the gain.",
+    "next_action": "Hold the composition/ordered sites fixed and compare Au/Pt source structures at a common cell volume and common converged sampling. Favorable: the lambda advantage persists without a nontranslation soft branch; adverse: it vanishes under common sampling or an anharmonic/decomposition instability appears.",
+    "seven_criteria": {
+      "identity": "Raw CIF, literal coarse/fine crystal input and Gamma header agree by complete ordered species/site periodic association; exact natural-isotope discrete computational occupancy is export convention, experimental occupancy/P/T unknown. Source model configured neutral scalar spin1/noSOC by exact-version defaults plus literal omission; magnetic ground state and binary build not certified.",
+      "quantitative_route_response": "Replace the Pt site of NaPtH3 by Au with all ordered roles retained; the source cell expands 10.911%, Au-H minus Pt-H = +0.0631033 A and H-H = +0.0892416 A. The coupled chemistry/bond-network intervention gives all-ten lambda gains 31.525–282.005% and separate Eli mu=.1 13.298→23.838 K. This is not proof that expansion alone causes the gain.",
+      "pairing_relevance": "Direct exact-source lambda has the favorable sign at all ten matched sigma tokens, independently accompanied by the separate mu=.1 Eli table. Finite-grid broadening sensitivity is preserved; differing PP/cutoff/version are model confounds where shown. Sigma units, physical error bar, fullBZ convergence and experimental Tc remain unknown.",
+      "ambient_feasibility": "Coarse/fine SCF both converge; complete source forces/stress, positive Gamma optical compression and no signed negative finite-path value support this model near ambient. All listed q outputs end JOBDONE/response convergence with zero routine errors. This is finite-grid local/metastable evidence, not exhaustive thermodynamic or all-irrep certification.",
+      "competition_and_coherence": "Hydrogen anharmonicity and zero-point/decomposition pathways, Au charge redistribution and neglected SOC can change the magnitude. They are unmeasured here, but there is no actual negative path or optical mode in this exact source model. The PdH anharmonic counterexample prohibits treating harmonic Tc as experimental.",
+      "novelty": "2026-10-07 exact NaAuH3/AuNaH3 search identified no experimental superconducting exact phase. The published MC2023 ordered source itself is prior prediction; proposed novelty is new-to-reviewed-catalogue matched Au-for-Pt construction hypothesis, not first composition discovery.",
+      "decision": "Hold the composition/ordered sites fixed and compare Au/Pt source structures at a common cell volume and common converged sampling. Favorable: the lambda advantage persists without a nontranslation soft branch; adverse: it vanishes under common sampling or an anharmonic/decomposition instability appears."
+    },
+    "risk_tags": [
+      "hydrogen_anharmonicity",
+      "metastable_phase"
+    ],
+    "countercontrols": [],
+    "physical_summary": {
+      "nat": 5,
+      "lambda10": [
+        1.227,
+        0.9609,
+        0.7742,
+        0.6862,
+        0.6449,
+        0.6257,
+        0.6158,
+        0.6101,
+        0.6066,
+        0.6043
+      ],
+      "omega10_K": [
+        990.6985,
+        941.2136,
+        902.2223,
+        865.8444,
+        838.2735,
+        821.0684,
+        811.65,
+        806.7062,
+        803.8696,
+        801.8099
+      ],
+      "Eli_mu01": [
+        0.1,
+        23.838
+      ],
+      "McM_mu01": [
+        0.1,
+        21.273,
+        21.972
+      ],
+      "coarse_fine": [
+        {
+          "record": 1085,
+          "version": [
+            "Program PWSCF v.6.8 starts on 20Apr2023 at 14:32:45"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": 0.001,
+          "maxstress_GPa": 0.001,
+          "fulltensor": [
+            [
+              0.001,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.001,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.001
+            ]
+          ],
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          }
+        },
+        {
+          "record": 1086,
+          "version": [
+            "Program PWSCF v.6.8 starts on 20Apr2023 at 14:17: 8"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": 0.019,
+          "maxstress_GPa": 0.019,
+          "fulltensor": [
+            [
+              0.019,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.019,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.019
+            ]
+          ],
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          }
+        }
+      ],
+      "Gamma": {
+        "nat": 5,
+        "ibrav": 1,
+        "q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species": [
+          "Au",
+          "H",
+          "Na"
+        ],
+        "optical": "positive_beyond_printing_bound",
+        "minopt": 1.2560752393128044e-06,
+        "printingbound": 7.040608399040303e-11,
+        "negative_native_modes": [
+          1,
+          2,
+          3
+        ],
+        "negativeoutside3": [],
+        "min_low3_translation": 0.997789892670841,
+        "sourcepin": {
+          "directory_key": "batch-a/H3NaAu_agm002489249",
+          "bytes": 13349,
+          "sha256": "15f9c7747dca345c8df2e515bfe0e8b8508ee18adbee3c1b142de47943b4106b"
+        }
+      },
+      "path": {
+        "rows": 131,
+        "negatives": 0,
+        "minimum": -0.0,
+        "unit": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "tranche-1-compact-scientific-recommendations.json",
+        "bytes": 34933,
+        "sha256": "c27b3f0105c6f12aa51f2d0801a476adfacdc6cac93b8dd5b60cd485d18cd4f2",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-four-tranche-eight-source-states-independent-review-cache-v1.json",
+        "bytes": 267678,
+        "sha256": "857ce54f337154bb41cfa9e21370ab305f2bd35f31ab86c37fcd0ba8de21a391",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

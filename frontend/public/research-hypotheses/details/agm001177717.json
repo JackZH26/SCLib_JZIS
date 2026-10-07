@@ -1,0 +1,380 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm001177717",
+    "formula": "ZrHfRe4",
+    "reduced_formula": "ZrHfRe4",
+    "composition": {
+      "Hf": 1,
+      "Re": 4,
+      "Zr": 1
+    },
+    "canonical_composition_key": "Hf:1|Re:4|Zr:1",
+    "elements": [
+      "Hf",
+      "Re",
+      "Zr"
+    ],
+    "source_state": "agm001177717",
+    "control_state": "agm001631258",
+    "source_directory": "batch-a/ZrHfRe4_agm001177717",
+    "control_directory": "batch-a/HfRe2_agm001631258",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Exact source geometry association retained; no named prototype is assigned here.",
+    "prototype_evidence": {
+      "CIF_source_record": 6655,
+      "CIF_payload_pin": {
+        "bytes": 591661,
+        "sha256": "93c3ce21c362fc36392db6d13f4555d76cce96122769d1212414bbc770f81541"
+      },
+      "SCF_coarse_source_record": 6667,
+      "Gamma_source_pin": {
+        "directory_key": "batch-a/ZrHfRe4_agm001177717",
+        "bytes": 18614,
+        "sha256": "c71f81333325a09ab21db78a17b41e9bb67fa9c6c999e54f16c6ec6906e04438"
+      },
+      "source_input_volume_difference_relative": -1.982392028310187e-11,
+      "occupancy_model_all1": true,
+      "bounded_signed_axis_and_translation_mapping": {
+        "signed_axis_U_CIF_fractional_to_SCF": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "determinant": 1,
+        "origin_shift_fractional": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species_bijection_CIF_to_SCF": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "maximum_site_distance_A": 9.077265004189281e-08,
+        "relative_Gram_residual": 1.361346035818779e-09,
+        "proper_signed_axis_solution": true
+      },
+      "attempts": 1,
+      "general_GL3_or_chiral_equivalence_asserted": false,
+      "CIF_site_precision_A_tolerance": 1e-05,
+      "physical_model": "source finite neutral scalar EPC; no SOC transfer certificate"
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 15.587,
+      "control_K": 14.183,
+      "delta_K": 1.404,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.19710000000000005,
+        0.18769999999999998,
+        0.16749999999999998,
+        0.14619999999999989,
+        0.1291,
+        0.11599999999999988,
+        0.1056999999999999,
+        0.09770000000000012,
+        0.09150000000000003,
+        0.08649999999999991
+      ],
+      "range": [
+        0.08649999999999991,
+        0.19710000000000005
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "The Hf-for-Lu frozen contrast is favorable throughout all ten integration tokens and has an independent Tc gain. Other frozen routes are not all favorable: ZrRe2 and ZrTc4Hf outperform target, while Y→Hf lambda crosses sign. Keep this local role hypothesis, not an elemental ranking. Heavy Re/SOC, ordered-vs-disordered phase and C14/C15 competition remain model limitations.",
+    "ambient_scope": "Source coarse force 1.2914516857388574e-05 eV/Å, pressure 0.0 GPa; fine force 0.00599099983732581 eV/Å, pressure 0.002 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "route_response": "Lu-to-Hf ordered C15-related site construction. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "next_action": "Use saved Re-site modes and occupation/orbital data for Lu/Hf neighbors. Favorable: the role-specific gain survives matched screening and local phase checks; adverse: C14/decomposition or SOC changes the favorable branch; ambiguous: no mode/source-state association.",
+    "seven_criteria": {
+      "identity": "Exact source CIF/SCF/Γ state association; CIF source record 6655. Experimental occupancy/P/T and physical magnetic ground state remain unknown; source scalar model only.",
+      "quantitative_route_response": "Lu-to-Hf ordered C15-related site construction. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+      "pairing_relevance": "direct published source EPC and independent source isotropic Eliashberg result. 2 favorable comparator(s); bounded source model, not experiment.",
+      "ambient_feasibility": "Source coarse force 1.2914516857388574e-05 eV/Å, pressure 0.0 GPa; fine force 0.00599099983732581 eV/Å, pressure 0.002 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+      "competition_and_coherence": "The Hf-for-Lu frozen contrast is favorable throughout all ten integration tokens and has an independent Tc gain. Other frozen routes are not all favorable: ZrRe2 and ZrTc4Hf outperform target, while Y→Hf lambda crosses sign. Keep this local role hypothesis, not an elemental ranking. Heavy Re/SOC, ordered-vs-disordered phase and C14/C15 competition remain model limitations.",
+      "novelty": "Exact ZrHfRe4 query found no primary experimental exact phase. Closest experimental Re systems retrieved are Re7X3 binary alloys (different stoichiometries/structures) and C14 ZrRe2; source SG216 ternary ordering is distinct. This is not a new-worldwide composition claim.",
+      "decision": "Use saved Re-site modes and occupation/orbital data for Lu/Hf neighbors. Favorable: the role-specific gain survives matched screening and local phase checks; adverse: C14/decomposition or SOC changes the favorable branch; ambiguous: no mode/source-state association."
+    },
+    "risk_tags": [
+      "metastable_phase"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index": 132,
+        "control": "batch-a/HfRe2_agm001631258",
+        "target": "batch-a/ZrHfRe4_agm001177717",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          0.08649999999999991,
+          0.19710000000000005
+        ],
+        "lambda_pct_range": [
+          9.43910955914447,
+          14.896833194769863
+        ],
+        "Tc_target_K": 15.587,
+        "Tc_control_K": 14.183,
+        "independent_source_Eli_Tc_delta_K": 1.404,
+        "all10_lambda_and_Tc_favorable": true,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": false,
+        "target_volume_ratio_over_control": 1.0068009700468366,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.1326546678821608e-06,
+        "geometry_only_causality": null,
+        "lambda_target_minus_other_range": [
+          0.08649999999999991,
+          0.19710000000000005
+        ]
+      },
+      {
+        "frozen_contrast_index": 370,
+        "control": "batch-a/YZrRe4_agm003199974",
+        "target": "batch-a/ZrHfRe4_agm001177717",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          -0.035600000000000076,
+          0.15429999999999988
+        ],
+        "lambda_pct_range": [
+          -2.2882118524231956,
+          13.010762096421388
+        ],
+        "Tc_target_K": 15.587,
+        "Tc_control_K": 12.616,
+        "independent_source_Eli_Tc_delta_K": 2.971,
+        "all10_lambda_and_Tc_favorable": false,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 0.9612966684628981,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.3157873852535568e-06,
+        "geometry_only_causality": null,
+        "lambda_target_minus_other_range": [
+          -0.035600000000000076,
+          0.15429999999999988
+        ]
+      },
+      {
+        "frozen_contrast_index": 382,
+        "control": "batch-a/ZrLuRe4_agm001177738",
+        "target": "batch-a/ZrHfRe4_agm001177717",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          0.16379999999999995,
+          0.26869999999999994
+        ],
+        "lambda_pct_range": [
+          12.076083751105864,
+          24.50356660882976
+        ],
+        "Tc_target_K": 15.587,
+        "Tc_control_K": 11.953,
+        "independent_source_Eli_Tc_delta_K": 3.6340000000000003,
+        "all10_lambda_and_Tc_favorable": true,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 0.9782539342783347,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.3105080034423595e-06,
+        "geometry_only_causality": null,
+        "lambda_target_minus_other_range": [
+          0.16379999999999995,
+          0.26869999999999994
+        ]
+      },
+      {
+        "frozen_contrast_index": 383,
+        "control": "batch-a/ZrRe2_agm003200022",
+        "target": "batch-a/ZrHfRe4_agm001177717",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          -0.1581999999999999,
+          -0.026900000000000146
+        ],
+        "lambda_pct_range": [
+          -9.425643469971396,
+          -2.6121577005243877
+        ],
+        "Tc_target_K": 15.587,
+        "Tc_control_K": 16.476,
+        "independent_source_Eli_Tc_delta_K": -0.8889999999999993,
+        "all10_lambda_and_Tc_favorable": false,
+        "all10_lambda_and_Tc_adverse": true,
+        "three_tol_graph": false,
+        "target_volume_ratio_over_control": 0.9932972941899576,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.0535056350827616e-06,
+        "geometry_only_causality": null,
+        "lambda_target_minus_other_range": [
+          -0.1581999999999999,
+          -0.026900000000000146
+        ]
+      },
+      {
+        "frozen_contrast_index": 384,
+        "control": "batch-a/ZrTc4Hf_agm001177851",
+        "target": "batch-a/ZrHfRe4_agm001177717",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          -0.15690000000000004,
+          -0.10870000000000002
+        ],
+        "lambda_pct_range": [
+          -13.528194516295917,
+          -6.796723566560371
+        ],
+        "Tc_target_K": 15.587,
+        "Tc_control_K": 18.96,
+        "independent_source_Eli_Tc_delta_K": -3.373000000000001,
+        "all10_lambda_and_Tc_favorable": false,
+        "all10_lambda_and_Tc_adverse": true,
+        "three_tol_graph": false,
+        "target_volume_ratio_over_control": 1.0238230439533347,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.1274324923852392e-06,
+        "geometry_only_causality": null,
+        "lambda_target_minus_other_range": [
+          -0.15690000000000004,
+          -0.10870000000000002
+        ]
+      }
+    ],
+    "physical_summary": null,
+    "evidence_pins": [
+      {
+        "artifact": "tranche-01-ten-specific-scientific-recommendations.json",
+        "bytes": 381754,
+        "sha256": "5d05478212c4d22080ab1b7bf22d92b784de6c0f8a99590d0758f9cdbfdafb32",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-remaining-transition-owned-review-cache-v1.json",
+        "bytes": 5381838,
+        "sha256": "62f4910578c7b65392d26619cf81b31afd6142f38aa49834a70bb147e7ab222d",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

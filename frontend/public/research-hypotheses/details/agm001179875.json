@@ -1,0 +1,423 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm001179875",
+    "formula": "Mn4NbRe",
+    "reduced_formula": "Mn4NbRe",
+    "composition": {
+      "Mn": 4,
+      "Nb": 1,
+      "Re": 1
+    },
+    "canonical_composition_key": "Mn:4|Nb:1|Re:1",
+    "elements": [
+      "Mn",
+      "Nb",
+      "Re"
+    ],
+    "source_state": "agm001179875",
+    "control_state": "agm003204489",
+    "source_directory": "batch-a/Mn4NbRe_agm001179875",
+    "control_directory": "batch-a/Mn4TaRe_agm003204489",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Source symmetry observation: space group 216. Ordered-site evidence is retained; space group alone is not a prototype certificate.",
+    "prototype_evidence": {
+      "symprec_A": 0.0001,
+      "mode": "color_aware",
+      "status": "completed",
+      "SG_number": 216,
+      "hall_number": 512,
+      "input_wyckoff_letters": [
+        "e",
+        "e",
+        "e",
+        "e",
+        "c",
+        "b"
+      ],
+      "input_crystallographic_orbits": [
+        0,
+        0,
+        0,
+        0,
+        4,
+        5
+      ]
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 12.782,
+      "control_K": 11.832,
+      "delta_K": 0.9499999999999993,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.04689999999999994,
+        0.02969999999999995,
+        0.02179999999999993,
+        0.020100000000000007,
+        0.02079999999999993,
+        0.021499999999999964,
+        0.02190000000000003,
+        0.02189999999999992,
+        0.02179999999999993,
+        0.021599999999999953
+      ],
+      "range": [
+        0.020100000000000007,
+        0.04689999999999994
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Actual saved q2 all12 representations converge with18 positive nonzero-q frequencies and ten×18 mode EPC. This resolves the specific text-gap concern; C15-derived Mn magnetic competition, scalar/SOC and small .950K paired response remain research risks. Native exit and fullBZ unknown.",
+    "ambient_scope": "Source coarse/fine pressure/fullstress/force andpositiveopticalGamma plus finite-path/q evidence; exacttested domain only. No laboratory P/T/hull/globalstability inheritance.",
+    "route_response": "Colored-site substitution/ordered network plus computed volume/nearest-distance response andEPCagainst frozen geometriccontrols; chemistry/masses co-change. No W/mobile n claim.",
+    "next_action": "Now resolve exact ordered NM/FM/commensurateAF branch and matched Ta/Re control sensitivity. A lower magnetic or unstable branch or reversal of the small gain would demote this bounded source-model hypothesis.",
+    "seven_criteria": {
+      "identity": "CIF lattice/sites to both SCFinputs andGamma atomicheader via speciesbijection/wholetranslation; 1e-6A observationaltolerance, not physicaluncertainty",
+      "novelty": "Bounded exact formula/prototype primary search; published source calculations not claimed as first discovery. New-to-reviewed exact ordered hypothesis only. Literature-wide novelty unproved.",
+      "quantitative_route_response": "Colored-site substitution/ordered network plus computed volume/nearest-distance response andEPCagainst frozen geometriccontrols; chemistry/masses co-change. No W/mobile n claim.",
+      "pairing_relevance": "All ten raw printed lambda values andseparate mu*=.1 sourceEliashberg/McMillan products retained; representative common-sigma response isnotrenamed Tc_uncertainty. Spinfluctuations/anisotropy omitted.",
+      "ambient_feasibility": "Source coarse/fine pressure/fullstress/force andpositiveopticalGamma plus finite-path/q evidence; exacttested domain only. No laboratory P/T/hull/globalstability inheritance.",
+      "competition_and_coherence": "Actual saved q2 all12 representations converge with18 positive nonzero-q frequencies and ten×18 mode EPC. This resolves the specific text-gap concern; C15-derived Mn magnetic competition, scalar/SOC and small .950K paired response remain research risks. Native exit and fullBZ unknown.",
+      "decision": "Now resolve exact ordered NM/FM/commensurateAF branch and matched Ta/Re control sensitivity. A lower magnetic or unstable branch or reversal of the small gain would demote this bounded source-model hypothesis."
+    },
+    "risk_tags": [
+      "magnetic_model",
+      "metastable_phase"
+    ],
+    "countercontrols": [
+      {
+        "unordered_pair_key": [
+          "batch-a/Cr4NbRe_agm001173527",
+          "batch-a/Mn4NbRe_agm001179875"
+        ],
+        "fixed_A": "batch-a/Cr4NbRe_agm001173527",
+        "fixed_B": "batch-a/Mn4NbRe_agm001179875",
+        "three_symprec_supported": false,
+        "supported_symprec_A": [
+          0.0001,
+          0.001
+        ],
+        "same_sigma_tokens": true,
+        "sigma_units": null,
+        "lambda_B_minus_A_all_common_tokens": [
+          -2.4518000000000004,
+          -2.2086,
+          -1.9200000000000002,
+          -1.6761,
+          -1.4761,
+          -1.3099999999999998,
+          -1.1723,
+          -1.0598,
+          -0.9699000000000001,
+          -0.9001000000000001
+        ],
+        "lambda_B_minus_A_range": [
+          -2.4518000000000004,
+          -0.9001000000000001
+        ],
+        "all10_higher_lambda_direction": "A",
+        "source_Eliashberg_mu0p1_A_B": [
+          [
+            0.1,
+            27.745
+          ],
+          [
+            0.1,
+            12.782
+          ]
+        ],
+        "source_Eliashberg_delta_B_minus_A_K": -14.963000000000001,
+        "same_direction_lambda_and_separate_Tc": "A",
+        "independent_Tc_to_sigma_association": null,
+        "geometry_only_causality": null,
+        "high_W_or_mobile_n_response": null,
+        "zero_based_row": 72
+      },
+      {
+        "unordered_pair_key": [
+          "batch-a/Mn4NbMo_agm001179868",
+          "batch-a/Mn4NbRe_agm001179875"
+        ],
+        "fixed_A": "batch-a/Mn4NbMo_agm001179868",
+        "fixed_B": "batch-a/Mn4NbRe_agm001179875",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "same_sigma_tokens": true,
+        "sigma_units": null,
+        "lambda_B_minus_A_all_common_tokens": [
+          -0.6381000000000001,
+          -0.48450000000000004,
+          -0.3843000000000001,
+          -0.3135999999999999,
+          -0.2682,
+          -0.23649999999999993,
+          -0.21189999999999998,
+          -0.19210000000000005,
+          -0.1765,
+          -0.16460000000000008
+        ],
+        "lambda_B_minus_A_range": [
+          -0.6381000000000001,
+          -0.16460000000000008
+        ],
+        "all10_higher_lambda_direction": "A",
+        "source_Eliashberg_mu0p1_A_B": [
+          [
+            0.1,
+            19.063
+          ],
+          [
+            0.1,
+            12.782
+          ]
+        ],
+        "source_Eliashberg_delta_B_minus_A_K": -6.280999999999999,
+        "same_direction_lambda_and_separate_Tc": "A",
+        "independent_Tc_to_sigma_association": null,
+        "geometry_only_causality": null,
+        "high_W_or_mobile_n_response": null,
+        "zero_based_row": 150
+      },
+      {
+        "unordered_pair_key": [
+          "batch-a/Mn4NbRe_agm001179875",
+          "batch-a/Mn4NbTc_agm001179882"
+        ],
+        "fixed_A": "batch-a/Mn4NbRe_agm001179875",
+        "fixed_B": "batch-a/Mn4NbTc_agm001179882",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "same_sigma_tokens": true,
+        "sigma_units": null,
+        "lambda_B_minus_A_all_common_tokens": [
+          0.10240000000000005,
+          0.10250000000000004,
+          0.07650000000000001,
+          0.058499999999999996,
+          0.04970000000000008,
+          0.045600000000000085,
+          0.04349999999999998,
+          0.042300000000000004,
+          0.0413,
+          0.04050000000000009
+        ],
+        "lambda_B_minus_A_range": [
+          0.04050000000000009,
+          0.10250000000000004
+        ],
+        "all10_higher_lambda_direction": "B",
+        "source_Eliashberg_mu0p1_A_B": [
+          [
+            0.1,
+            12.782
+          ],
+          [
+            0.1,
+            14.574
+          ]
+        ],
+        "source_Eliashberg_delta_B_minus_A_K": 1.7919999999999998,
+        "same_direction_lambda_and_separate_Tc": "B",
+        "independent_Tc_to_sigma_association": null,
+        "geometry_only_causality": null,
+        "high_W_or_mobile_n_response": null,
+        "zero_based_row": 153
+      },
+      {
+        "unordered_pair_key": [
+          "batch-a/Mn4NbRe_agm001179875",
+          "batch-a/Mn4TaRe_agm003204489"
+        ],
+        "fixed_A": "batch-a/Mn4NbRe_agm001179875",
+        "fixed_B": "batch-a/Mn4TaRe_agm003204489",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "same_sigma_tokens": true,
+        "sigma_units": null,
+        "lambda_B_minus_A_all_common_tokens": [
+          -0.04689999999999994,
+          -0.02969999999999995,
+          -0.02179999999999993,
+          -0.020100000000000007,
+          -0.02079999999999993,
+          -0.021499999999999964,
+          -0.02190000000000003,
+          -0.02189999999999992,
+          -0.02179999999999993,
+          -0.021599999999999953
+        ],
+        "lambda_B_minus_A_range": [
+          -0.04689999999999994,
+          -0.020100000000000007
+        ],
+        "all10_higher_lambda_direction": "A",
+        "source_Eliashberg_mu0p1_A_B": [
+          [
+            0.1,
+            12.782
+          ],
+          [
+            0.1,
+            11.832
+          ]
+        ],
+        "source_Eliashberg_delta_B_minus_A_K": -0.9499999999999993,
+        "same_direction_lambda_and_separate_Tc": "A",
+        "independent_Tc_to_sigma_association": null,
+        "geometry_only_causality": null,
+        "high_W_or_mobile_n_response": null,
+        "zero_based_row": 154
+      },
+      {
+        "unordered_pair_key": [
+          "batch-a/Mn4NbRe_agm001179875",
+          "batch-a/TiMn4Re_agm001186283"
+        ],
+        "fixed_A": "batch-a/Mn4NbRe_agm001179875",
+        "fixed_B": "batch-a/TiMn4Re_agm001186283",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "same_sigma_tokens": true,
+        "sigma_units": null,
+        "lambda_B_minus_A_all_common_tokens": [
+          0.3857999999999999,
+          0.2096,
+          0.1382,
+          0.10980000000000001,
+          0.09600000000000009,
+          0.08520000000000005,
+          0.07499999999999996,
+          0.0655,
+          0.05730000000000002,
+          0.05070000000000008
+        ],
+        "lambda_B_minus_A_range": [
+          0.05070000000000008,
+          0.3857999999999999
+        ],
+        "all10_higher_lambda_direction": "B",
+        "source_Eliashberg_mu0p1_A_B": [
+          [
+            0.1,
+            12.782
+          ],
+          [
+            0.1,
+            15.197
+          ]
+        ],
+        "source_Eliashberg_delta_B_minus_A_K": 2.414999999999999,
+        "same_direction_lambda_and_separate_Tc": "B",
+        "independent_Tc_to_sigma_association": null,
+        "geometry_only_causality": null,
+        "high_W_or_mobile_n_response": null,
+        "zero_based_row": 155
+      }
+    ],
+    "physical_summary": null,
+    "evidence_pins": [
+      {
+        "artifact": "tranche-01-ten-specific-scientific-recommendations.json",
+        "bytes": 381754,
+        "sha256": "5d05478212c4d22080ab1b7bf22d92b784de6c0f8a99590d0758f9cdbfdafb32",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-remaining-transition-owned-review-cache-v1.json",
+        "bytes": 5381838,
+        "sha256": "62f4910578c7b65392d26619cf81b31afd6142f38aa49834a70bb147e7ab222d",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "composition-assessments.json",
+        "bytes": 1863044,
+        "sha256": "5fc901f5f4a90b41e807722d92f39d81714b70091a189cdb5eba13367624350b",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "numeric-review.json",
+        "bytes": 4542684,
+        "sha256": "c4fae01d3d67f774429114902a6b39f5b133de48ea81d3d9773ba40ff4419ce2",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-two-PH-actual-complete-response-products-readback-v1.json",
+        "bytes": 77119,
+        "sha256": "434c5fe7a590607adbc104dd75d126497457317bc20f37973b5013491e9fdce2",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "receipt.json",
+        "bytes": 14112,
+        "sha256": "1f156c1df5e254b2b234b38948e599c99f87983de7f6fbc24663e88726dfe2fb",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "Previously published source model; new to reviewed exact-state mechanism catalogue, not first composition or SC discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

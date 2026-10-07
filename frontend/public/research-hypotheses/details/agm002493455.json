@@ -1,0 +1,660 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm002493455",
+    "formula": "LiPtH3",
+    "reduced_formula": "LiPtH3",
+    "composition": {
+      "H": 3,
+      "Li": 1,
+      "Pt": 1
+    },
+    "canonical_composition_key": "H:3|Li:1|Pt:1",
+    "elements": [
+      "H",
+      "Li",
+      "Pt"
+    ],
+    "source_state": "agm002493455",
+    "control_state": "agm002486518",
+    "source_directory": "batch-a/H3LiPt_agm002493455",
+    "control_directory": "batch-a/H3NaPt_agm002486518",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Pm-3m five-site ordered perovskite hydride: Pt 1a, Li 1b, H three edge-center sites",
+    "prototype_evidence": "Pm-3m five-site ordered perovskite hydride: Pt 1a, Li 1b, H three edge-center sites",
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 17.461,
+      "control_K": 13.298,
+      "delta_K": 4.1629999999999985,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        1.0056,
+        0.5058,
+        0.3201,
+        0.22759999999999997,
+        0.16850000000000004,
+        0.13639999999999997,
+        0.1235,
+        0.12139999999999995,
+        0.12429999999999997,
+        0.12899999999999995
+      ],
+      "range": [
+        0.12139999999999995,
+        1.0056
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Hydrogen desorption, zero-point/anharmonic response and decomposition compete with superconductivity. The exact source path is nonnegative and Gamma optical compression positive; force is zero by symmetry but fine pressure remains 0.288 GPa. The retained LaPtH3 control has larger lambda but lower separate Eli Tc, showing an omega/coupling tradeoff; AgPtH3 and LiPdH3 have still larger lambda with actual negative source paths, so they are not silently discarded or treated as stable superior cases.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=0.288 GPa, full max stress=0.288 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "route_response": "Li replaces Na on the alkali site with the Pt-H network and ordered sites retained. Source cell volume decreases 7.661%, changing the actual Pt-H/H-H distances. All ten lambda values and the independent Eli mu=.1 result improve versus NaPtH3. This is a coupled cation/bond-network construction, not an inferred mobile-carrier density or volume-only mechanism.",
+    "next_action": "Use the frozen Li/Na roles to compare at common volume and common sampling, retaining lambda and omega separately, then address H loss or anharmonicity. Stable positive paired response supports the stated source domain; desorption/decomposition or disappearance under common method reverses it.",
+    "seven_criteria": {
+      "identity": "Complete ordered CIF/literal coarse-fine input/Gamma periodic species-site association is numerically supported; source input geometry and full tensor/forces are retained. Export occupancy is a discrete computational convention; source experimental P/T/occupancy and actual compiled unit constant are unknown. Exact-version input defaults scope the configured neutral scalar spin1/noSOC model, not magnetic ground state.",
+      "quantitative_route_response": "Li replaces Na on the alkali site with the Pt-H network and ordered sites retained. Source cell volume decreases 7.661%, changing the actual Pt-H/H-H distances. All ten lambda values and the independent Eli mu=.1 result improve versus NaPtH3. This is a coupled cation/bond-network construction, not an inferred mobile-carrier density or volume-only mechanism.",
+      "pairing_relevance": "Exact target and mapped control direct source lambda arrays have the same favorable sign at all ten common broadening tokens; omega_ln has explicit K units and separate Eli/McM mu=.1 tables remain independent. Same underlying q mesh is observed. The sensitivity range is not a physical error bound; sigma units, full-BZ convergence, experimental Tc and pure-geometry causality remain unknown. Literal method differences are declared confounds.",
+      "ambient_feasibility": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=0.288 GPa, full max stress=0.288 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+      "competition_and_coherence": "Hydrogen desorption, zero-point/anharmonic response and decomposition compete with superconductivity. The exact source path is nonnegative and Gamma optical compression positive; force is zero by symmetry but fine pressure remains 0.288 GPa. The retained LaPtH3 control has larger lambda but lower separate Eli Tc, showing an omega/coupling tradeoff; AgPtH3 and LiPdH3 have still larger lambda with actual negative source paths, so they are not silently discarded or treated as stable superior cases.",
+      "novelty": "Published DFT studies of LiPtH3/NaPtH3 hydrogen storage and metallic/mechanical/phonon properties are acknowledged. A 2026-10-07 exact-phase search found no experimental superconducting LiPtH3 benchmark. Novelty is the bounded matched Li-for-Na pairing-construction hypothesis in the reviewed catalogue, not first synthesis/composition.",
+      "decision": "Use the frozen Li/Na roles to compare at common volume and common sampling, retaining lambda and omega separately, then address H loss or anharmonicity. Stable positive paired response supports the stated source domain; desorption/decomposition or disappearance under common method reverses it."
+    },
+    "risk_tags": [
+      "hydrogen_anharmonicity",
+      "metastable_phase",
+      "residual_force_stress"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index_zero_based": 107,
+        "control_directory": "batch-a/H3AgPt_agm002491760",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Ag",
+          "to": "Li",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 0.9574690712351873,
+        "target_relative_lambda_gain_percent_all10": [
+          -53.824737245075525,
+          -51.59238909238909,
+          -55.39597161821928,
+          -58.671252715423606,
+          -60.65186290974683,
+          -61.55310239817282,
+          -62.02669747144141,
+          -62.52253412310069,
+          -63.22096898231223,
+          -64.13133041769665
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          -64.13133041769665,
+          -51.59238909238909
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            17.461
+          ],
+          [
+            0.1,
+            18.386
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            17.069,
+            17.677
+          ],
+          [
+            0.1,
+            14.983,
+            16.397
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": true
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 109,
+        "control_directory": "batch-a/H3LaPt_agm002486449",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "La",
+          "to": "Li",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 0.7776178719797753,
+        "target_relative_lambda_gain_percent_all10": [
+          -12.876748309147018,
+          -27.615062761506277,
+          -35.578512396694215,
+          -40.46936114732726,
+          -42.94218454045278,
+          -43.62266257326263,
+          -43.49694423223834,
+          -43.13208284486128,
+          -42.71883421499152,
+          -42.26688430932463
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          -43.62266257326263,
+          -12.876748309147018
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            17.461
+          ],
+          [
+            0.1,
+            11.642
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            17.069,
+            17.677
+          ],
+          [
+            0.1,
+            11.258,
+            12.179
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 111,
+        "control_directory": "batch-a/H3LiPd_agm001105243",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Pd",
+          "to": "Pt",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 1.0328092894324439,
+        "target_relative_lambda_gain_percent_all10": [
+          -67.71226242912418,
+          -68.79714042106644,
+          -67.3494177766608,
+          -66.05877397294218,
+          -64.67895030709101,
+          -63.412425285274395,
+          -62.60034131850073,
+          -62.340687067348135,
+          -62.548942834768994,
+          -63.102301623524816
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          -68.79714042106644,
+          -62.340687067348135
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            17.461
+          ],
+          [
+            0.1,
+            25.83
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            17.069,
+            17.677
+          ],
+          [
+            0.1,
+            22.112,
+            23.693
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": true,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 113,
+        "control_directory": "batch-a/H3NaPt_agm002486518",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Li",
+          "to": "Na",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 0.9233864852333025,
+        "target_relative_lambda_gain_percent_all10": [
+          313.07596513075964,
+          113.48440655149203,
+          69.67784066173269,
+          49.770391427946635,
+          36.306830424477496,
+          29.045996592844965,
+          26.377616403246474,
+          26.351204688517466,
+          27.646797153024906,
+          29.526207370107567
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          26.351204688517466,
+          313.07596513075964
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            17.461
+          ],
+          [
+            0.1,
+            13.298
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            17.069,
+            17.677
+          ],
+          [
+            0.1,
+            11.519,
+            11.748
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": true
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      }
+    ],
+    "physical_summary": {
+      "nat": 5,
+      "lambda10": [
+        1.3268,
+        0.9515,
+        0.7795,
+        0.6849,
+        0.6326,
+        0.606,
+        0.5917,
+        0.5821,
+        0.5739,
+        0.5659
+      ],
+      "omega10_K": [
+        629.526,
+        638.3858,
+        652.1379,
+        666.4524,
+        679.1847,
+        687.6085,
+        691.8244,
+        693.6825,
+        694.8525,
+        696.326
+      ],
+      "Eli_mu01": [
+        0.1,
+        17.461
+      ],
+      "McM_mu01": [
+        0.1,
+        17.069,
+        17.677
+      ],
+      "coarse_fine": [
+        {
+          "record": 2645,
+          "version": [
+            "Program PWSCF v.6.8 starts on 20Apr2023 at 12:46:28"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": -0.003,
+          "maxstress_GPa": 0.003,
+          "fulltensor": [
+            [
+              -0.003,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              -0.003,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              -0.003
+            ]
+          ],
+          "F_Ry": -279.19945297,
+          "E_Ry": -279.19946837,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        },
+        {
+          "record": 2646,
+          "version": [
+            "Program PWSCF v.6.8 starts on 20Apr2023 at 12:43:22"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": 0.288,
+          "maxstress_GPa": 0.288,
+          "fulltensor": [
+            [
+              0.288,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.288,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.288
+            ]
+          ],
+          "F_Ry": -279.2054762,
+          "E_Ry": -279.20543129000004,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        }
+      ],
+      "inputs": [
+        {
+          "record": 2635,
+          "ecutwfc": [
+            104.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "[private custody location omitted]"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            1.0
+          ],
+          "nat": [
+            5.0
+          ],
+          "grid": [
+            "6 6 6 0 0 0"
+          ]
+        },
+        {
+          "record": 2636,
+          "ecutwfc": [
+            104.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "[private custody location omitted]"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            1.0
+          ],
+          "nat": [
+            5.0
+          ],
+          "grid": [
+            "24 24 24 0 0 0"
+          ]
+        }
+      ],
+      "Gamma": {
+        "nat": 5,
+        "ibrav": 1,
+        "q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species": [
+          "H",
+          "Li",
+          "Pt"
+        ],
+        "optical": "positive_beyond_printing_bound",
+        "minopt": 1.7806831738979924e-06,
+        "printingbound": 7.274800903313775e-11,
+        "negative_native_modes": [],
+        "negativeoutside3": [],
+        "min_low3_translation": 0.9999725961710253,
+        "sourcepin": {
+          "directory_key": "batch-a/H3LiPt_agm002493455",
+          "bytes": 13349,
+          "sha256": "b2ca638c7026895b2881a7e7290f0a2396b84336fefb5f3f076e7f8309d3dc38"
+        }
+      },
+      "path": {
+        "rows": 140,
+        "negatives": 0,
+        "minimum": -0.0,
+        "unit": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "tranche-2-compact-scientific-recommendations.json",
+        "bytes": 84096,
+        "sha256": "d8ca53bafc5ee0879de647e050127d8e0d20c0e3da10de9602ab2de44bf77532",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-3-five-scientific-recommendations.json",
+        "bytes": 110335,
+        "sha256": "861dd76c8368cca687ca20c8468e464badefb533a318ed41c4f8d62dccb6ed50",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-4-three-phase-scientific-recommendations.json",
+        "bytes": 64369,
+        "sha256": "56076a077e591b9bdef8ada45d78f224f417a4af8d2e722e332f639eedfafaf7",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all64-light-Nb-rich-owned-review-cache-v2.json",
+        "bytes": 4566542,
+        "sha256": "f27e8c84c10c4d8de44022f6bd160e7e8aee8b2d562db5fd6003af68d5e35756",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

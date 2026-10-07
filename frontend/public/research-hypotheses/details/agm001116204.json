@@ -1,0 +1,186 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm001116204",
+    "formula": "TiMoTa2",
+    "reduced_formula": "TiMoTa2",
+    "composition": {
+      "Mo": 1,
+      "Ta": 2,
+      "Ti": 1
+    },
+    "canonical_composition_key": "Mo:1|Ta:2|Ti:1",
+    "elements": [
+      "Mo",
+      "Ta",
+      "Ti"
+    ],
+    "source_state": "agm001116204",
+    "control_state": "agm002191224",
+    "source_directory": "batch-a/TiMoTa2_agm001116204",
+    "control_directory": null,
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "ordered tetragonal four-site network versus equal60-degree primitive cation order",
+    "prototype_evidence": {
+      "motif": "ordered tetragonal four-site network versus equal60-degree primitive cation order",
+      "verified_space_group": null,
+      "role": "A versus samecomposition B",
+      "known_prior_scope": "Known Ti-Mo-Ta bcc diffusion and theoretical source studies are acknowledged; exact orderedTi25Mo25Ta50 experimental SC benchmark not identified in bounded primary search."
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 12.132,
+      "control_K": 11.632,
+      "delta_K": 0.5,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.04180000000000006,
+        0.04620000000000002,
+        0.04920000000000002,
+        0.0494,
+        0.04479999999999995,
+        0.0381999999999999,
+        0.03169999999999995,
+        0.0263000000000001,
+        0.02189999999999992,
+        0.018300000000000094
+      ],
+      "range": [
+        0.018300000000000094,
+        0.0494
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Small source Eli Tc gain12.132 versus11.632K, q5x5x2 versus4^3. Target fine force0.0248561eV/A and maxstress0.371GPa are geometry/grid sensitivity, whereas source finite-grid target energy is8.488meV/atom lower. No uniform force threshold or global-ground-state requirement is used. Evaluated risks define a falsifiable bounded hypothesis, not an established bulk ground state or experimental coherence proof.",
+    "ambient_scope": "Source nearambient fullstress/pressure and coarse-relaxed geometry, positive raw-Gamma optical compression beyond printing bounds, and no negative printed finite-path values support preliminary local feasibility only within the declared source approximation. WholeBZ/global hull/synthesis remain unknown.",
+    "route_response": "Unique Ti/Mo periodic distance3.20425449 versus4.54011919A and Ti-Mo nearest3.24879784 versus3.21034907A; non-alias ordering with0.80722% lower control volume. Computed source EPC response is associated with construction; pure geometry-only causality and converged numerical uplift are unproved.",
+    "next_action": "Check target stationarity on matched fine sampling and preserve ordering; only add response calculation that resolves the existing EPC ordering if necessary.",
+    "seven_criteria": {
+      "identity": "Exact reduced composition and non-alias decorated ordered network linked to canonical SCF input and source PH/Gamma/model evidence; source positions bind Gamma within printing/operational tolerances. Nb same-species permutation and Zr scalar parity reflection are explicit. Experimental phase/state remains unknown.",
+      "quantitative_route_response": "Unique Ti/Mo periodic distance3.20425449 versus4.54011919A and Ti-Mo nearest3.24879784 versus3.21034907A; non-alias ordering with0.80722% lower control volume. Computed source EPC response is associated with construction; pure geometry-only causality and converged numerical uplift are unproved.",
+      "pairing_relevance": "Direct source lambda at ten common printed width tokens and independently retained mu*=0.1 Eliashberg Tc rows provide state-specific pairing relevance. Width units and Tc-to-width link remain unknown; no parent-property transfer or300K claim.",
+      "ambient_feasibility": "Source nearambient fullstress/pressure and coarse-relaxed geometry, positive raw-Gamma optical compression beyond printing bounds, and no negative printed finite-path values support preliminary local feasibility only within the declared source approximation. WholeBZ/global hull/synthesis remain unknown.",
+      "competition_and_coherence": "Small source Eli Tc gain12.132 versus11.632K, q5x5x2 versus4^3. Target fine force0.0248561eV/A and maxstress0.371GPa are geometry/grid sensitivity, whereas source finite-grid target energy is8.488meV/atom lower. No uniform force threshold or global-ground-state requirement is used. Evaluated risks define a falsifiable bounded hypothesis, not an established bulk ground state or experimental coherence proof.",
+      "novelty": "Known Ti-Mo-Ta bcc diffusion and theoretical source studies are acknowledged; exact orderedTi25Mo25Ta50 experimental SC benchmark not identified in bounded primary search. Default one exact-composition group, with all source/control variants underneath.",
+      "decision": "Check target stationarity on matched fine sampling and preserve ordering; only add response calculation that resolves the existing EPC ordering if necessary. All seven minima support grade3 preliminary source-model screening; retained model-dependent uncertainty prevents grade4/formal publication."
+    },
+    "risk_tags": [
+      "residual_force_stress",
+      "sampling_method"
+    ],
+    "countercontrols": [],
+    "physical_summary": {
+      "target": {
+        "directory_key": "batch-a/TiMoTa2_agm001116204",
+        "site_composition_matches_name": true,
+        "site_count": 4,
+        "volume_per_site_A3": 16.67810467288479,
+        "source_fine_pressure_GPa": -0.096,
+        "source_fine_maxstress_GPa": 0.371,
+        "source_fine_maxforce_eV_A": 0.024856141866369027,
+        "fine_JOB_DONE": true,
+        "fine_convergence": true,
+        "path_min_signed_printed_value": -0.0,
+        "path_units_not_inferred": null,
+        "path_signed_negative_printed_count": 0,
+        "full_BZ_stability": null
+      },
+      "control": {
+        "directory_key": "batch-a/TiMoTa2_agm002191224",
+        "site_composition_matches_name": true,
+        "site_count": 4,
+        "volume_per_site_A3": 16.54347631312946,
+        "source_fine_pressure_GPa": 0.03,
+        "source_fine_maxstress_GPa": 0.03,
+        "source_fine_maxforce_eV_A": 0.0,
+        "fine_JOB_DONE": true,
+        "fine_convergence": true,
+        "path_min_signed_printed_value": -0.0,
+        "path_units_not_inferred": null,
+        "path_signed_negative_printed_count": 0,
+        "full_BZ_stability": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "ROOT-owned-five-pairs-scientific-workingview.json",
+        "bytes": 933925,
+        "sha256": "0a5d3b507b305b8991218157264276e898799837932a8050942ecf74ee389034",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-captured-five-pairs-method-slices.json",
+        "bytes": 1387111,
+        "sha256": "d84758cc1e54d79e08e01fe3b08b96dfa071953b16a488b0aef3a867ff30c147",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "CASE.md",
+        "bytes": 12162,
+        "sha256": "b8b3a4d931a852d21b4343c2fa718235137d41d3218d5ab2e5251c38f428cd1c",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "receipt.json",
+        "bytes": 4813,
+        "sha256": "f00c9787a8f7af8c076d8dcdac1f23f36fc8e4339b697329a37143ca618bc11a",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "SMEARING-CORRECTION.json",
+        "bytes": 8933,
+        "sha256": "137158d36dfd25524acf4bcd7df583f59bfdcbb477172a790e49788eeb232b13",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-NbTa3-TiMoTa2-existing-source-coordinate-association-v1.json",
+        "bytes": 28460,
+        "sha256": "6d6e76e4b325dc2579db1d707675a68ba3cea1e9b3eb4bb0800d081d31d0883b",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "new-to-reviewed-catalogue ordered source-model route hypothesis; literature-derived, not first discovery",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

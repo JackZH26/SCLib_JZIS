@@ -1,0 +1,506 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm003766932",
+    "formula": "Nb6GaRh",
+    "reduced_formula": "Nb6GaRh",
+    "composition": {
+      "Ga": 1,
+      "Nb": 6,
+      "Rh": 1
+    },
+    "canonical_composition_key": "Ga:1|Nb:6|Rh:1",
+    "elements": [
+      "Ga",
+      "Nb",
+      "Rh"
+    ],
+    "source_state": "agm003766932",
+    "control_state": "agm003768532",
+    "source_directory": "batch-a/GaNb6Rh_agm003766932",
+    "control_directory": "batch-a/AlNb6Rh_agm003768532",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Pm-3 ordered A15-derived eight-site network: six Nb in one chain-site orbit, unique Ga and Rh corner/body-center roles",
+    "prototype_evidence": "Pm-3 ordered A15-derived eight-site network: six Nb in one chain-site orbit, unique Ga and Rh corner/body-center roles",
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 14.014,
+      "control_K": 13.213,
+      "delta_K": 0.8010000000000002,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.1967000000000001,
+        0.13729999999999998,
+        0.0996999999999999,
+        0.07550000000000012,
+        0.05989999999999995,
+        0.04910000000000003,
+        0.04159999999999997,
+        0.036599999999999966,
+        0.033299999999999996,
+        0.031100000000000017
+      ],
+      "range": [
+        0.031100000000000017,
+        0.1967000000000001
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "The exact target has no signed negative sampled-path values or negative optical compression. Order/disorder, competing A15 compositions and a martensitic/CDW branch remain the relevant risks; the fine force 0.033558 eV/A and early eigen warnings are preserved. GaNb6Sb is better at all sigma values and remains a retained opposite control. The small minimum effect and changed ecutwfc require a common-cutoff falsifier, rather than an asserted numerical significance bound.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0.033558041 eV/A, P=0.062 GPa, full max stress=0.062 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "route_response": "Ga replaces Al at the unique Al/Ga site while all six Nb-chain and Rh roles remain mapped. Cell volume contracts 0.5193% and nearest Nb-Nb falls 0.0158926 A. The coupled ordered-site/chain construction gives a modest but same-sign 3.796–18.373% lambda improvement and separate Eli mu=.1 13.213 to 14.014 K. It is not proof of pure compression or higher mobile carrier density.",
+    "next_action": "Compare the retained Ga/Al site roles at common cutoff/PP family and volume, quantify Nb-chain response and test order/CDW stability. A stable persistent gain supports this narrow hypothesis; disappearance within common sampling or a chain instability opposes it.",
+    "seven_criteria": {
+      "identity": "Complete ordered CIF/literal coarse-fine input/Gamma periodic species-site association is numerically supported; source input geometry and full tensor/forces are retained. Export occupancy is a discrete computational convention; source experimental P/T/occupancy and actual compiled unit constant are unknown. Exact-version input defaults scope the configured neutral scalar spin1/noSOC model, not magnetic ground state.",
+      "quantitative_route_response": "Ga replaces Al at the unique Al/Ga site while all six Nb-chain and Rh roles remain mapped. Cell volume contracts 0.5193% and nearest Nb-Nb falls 0.0158926 A. The coupled ordered-site/chain construction gives a modest but same-sign 3.796–18.373% lambda improvement and separate Eli mu=.1 13.213 to 14.014 K. It is not proof of pure compression or higher mobile carrier density.",
+      "pairing_relevance": "Exact target and mapped control direct source lambda arrays have the same favorable sign at all ten common broadening tokens; omega_ln has explicit K units and separate Eli/McM mu=.1 tables remain independent. Same underlying q mesh is observed. The sensitivity range is not a physical error bound; sigma units, full-BZ convergence, experimental Tc and pure-geometry causality remain unknown. Literal method differences are declared confounds.",
+      "ambient_feasibility": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0.033558041 eV/A, P=0.062 GPa, full max stress=0.062 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+      "competition_and_coherence": "The exact target has no signed negative sampled-path values or negative optical compression. Order/disorder, competing A15 compositions and a martensitic/CDW branch remain the relevant risks; the fine force 0.033558 eV/A and early eigen warnings are preserved. GaNb6Sb is better at all sigma values and remains a retained opposite control. The small minimum effect and changed ecutwfc require a common-cutoff falsifier, rather than an asserted numerical significance bound.",
+      "novelty": "Known Nb3Ga and mixed A15 B-site superconductors establish the family prior, not this fully ordered Pm-3 Nb6GaRh state. Dated 2026-10-07 exact Nb6GaRh/Nb6GaSb/Nb6PdPt queries found no exact experimental superconducting match. Novelty is the single Ga-for-Al ordered-source construction hypothesis, not discovery of superconductivity in Nb-rich alloys.",
+      "decision": "Compare the retained Ga/Al site roles at common cutoff/PP family and volume, quantify Nb-chain response and test order/CDW stability. A stable persistent gain supports this narrow hypothesis; disappearance within common sampling or a chain instability opposes it."
+    },
+    "risk_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "sampling_method"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index_zero_based": 4,
+        "control_directory": "batch-a/AlNb6Rh_agm003768532",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Al",
+          "to": "Ga",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 0.9948066520470835,
+        "target_relative_lambda_gain_percent_all10": [
+          18.3728750233514,
+          12.803058560238714,
+          9.715455076983034,
+          7.71746907901463,
+          6.396155899626263,
+          5.44708231639672,
+          4.765177548682701,
+          4.3028450505525475,
+          3.997119193374145,
+          3.795923349200539
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          3.795923349200539,
+          18.3728750233514
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            14.014
+          ],
+          [
+            0.1,
+            13.213
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            11.93,
+            12.606
+          ],
+          [
+            0.1,
+            11.219,
+            11.807
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": true
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 103,
+        "control_directory": "batch-a/GaNb6Sb_agm003262771",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Rh",
+          "to": "Sb",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 0.9580125938261984,
+        "target_relative_lambda_gain_percent_all10": [
+          -34.54028925619834,
+          -28.58913813459268,
+          -25.18936877076412,
+          -22.268938555727658,
+          -20.000000000000007,
+          -18.44002059378754,
+          -17.29812822135818,
+          -16.32556823540508,
+          -15.415405642878067,
+          -14.541252135463766
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          -34.54028925619834,
+          -14.541252135463766
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            14.014
+          ],
+          [
+            0.1,
+            17.221
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            11.93,
+            12.606
+          ],
+          [
+            0.1,
+            14.457,
+            15.605
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": true,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      }
+    ],
+    "physical_summary": {
+      "nat": 8,
+      "lambda10": [
+        1.2673,
+        1.2097,
+        1.1259,
+        1.0538,
+        0.9964,
+        0.9505,
+        0.9146,
+        0.8872,
+        0.8664,
+        0.8504
+      ],
+      "omega10_K": [
+        190.8899,
+        186.7369,
+        185.774,
+        185.5391,
+        185.5191,
+        185.5889,
+        185.6966,
+        185.8097,
+        185.9065,
+        185.9736
+      ],
+      "Eli_mu01": [
+        0.1,
+        14.014
+      ],
+      "McM_mu01": [
+        0.1,
+        11.93,
+        12.606
+      ],
+      "coarse_fine": [
+        {
+          "record": 10317,
+          "version": [
+            "Program PWSCF v.7.1 starts on 24Sep2022 at 22:18:47"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 1.0284413495265177e-05,
+          "P_GPa": -0.0,
+          "maxstress_GPa": 0.0,
+          "fulltensor": [
+            [
+              -0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              -0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              -0.0
+            ]
+          ],
+          "F_Ry": -1477.54084599,
+          "E_Ry": -1477.54083403,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        },
+        {
+          "record": 10318,
+          "version": [
+            "Program PWSCF v.7.1 starts on 24Sep2022 at 21:25:38"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.033558041235050275,
+          "P_GPa": 0.062,
+          "maxstress_GPa": 0.062,
+          "fulltensor": [
+            [
+              0.062,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.062,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.062
+            ]
+          ],
+          "F_Ry": -1477.53913321,
+          "E_Ry": -1477.5384199300001,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 10,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        }
+      ],
+      "inputs": [
+        {
+          "record": 10307,
+          "ecutwfc": [
+            122.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "[private custody location omitted]"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            1.0
+          ],
+          "nat": [
+            8.0
+          ],
+          "grid": [
+            "6 6 6 0 0 0"
+          ]
+        },
+        {
+          "record": 10308,
+          "ecutwfc": [
+            122.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "[private custody location omitted]"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            1.0
+          ],
+          "nat": [
+            8.0
+          ],
+          "grid": [
+            "24 24 24 0 0 0"
+          ]
+        }
+      ],
+      "Gamma": {
+        "nat": 8,
+        "ibrav": 1,
+        "q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species": [
+          "Ga",
+          "Nb",
+          "Rh"
+        ],
+        "optical": "positive_beyond_printing_bound",
+        "minopt": 1.2982831630852998e-06,
+        "printingbound": 2.0630607768179983e-12,
+        "negative_native_modes": [],
+        "negativeoutside3": [],
+        "min_low3_translation": 0.9998716536021373,
+        "sourcepin": {
+          "directory_key": "batch-a/GaNb6Rh_agm003766932",
+          "bytes": 31874,
+          "sha256": "d084087b8d7581b78b5bd010a292ac357cb85645192c317ea2ad2dcb7a4cf225"
+        }
+      },
+      "path": {
+        "rows": 99,
+        "negatives": 0,
+        "minimum": -0.0,
+        "unit": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "tranche-2-compact-scientific-recommendations.json",
+        "bytes": 84096,
+        "sha256": "d8ca53bafc5ee0879de647e050127d8e0d20c0e3da10de9602ab2de44bf77532",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-3-five-scientific-recommendations.json",
+        "bytes": 110335,
+        "sha256": "861dd76c8368cca687ca20c8468e464badefb533a318ed41c4f8d62dccb6ed50",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-4-three-phase-scientific-recommendations.json",
+        "bytes": 64369,
+        "sha256": "56076a077e591b9bdef8ada45d78f224f417a4af8d2e722e332f639eedfafaf7",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all64-light-Nb-rich-owned-review-cache-v2.json",
+        "bytes": 4566542,
+        "sha256": "f27e8c84c10c4d8de44022f6bd160e7e8aee8b2d562db5fd6003af68d5e35756",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm002190757",
+    "formula": "Ti3Hf",
+    "reduced_formula": "Ti3Hf",
+    "composition": {
+      "Hf": 1,
+      "Ti": 3
+    },
+    "canonical_composition_key": "Hf:1|Ti:3",
+    "elements": [
+      "Hf",
+      "Ti"
+    ],
+    "source_state": "agm002190757",
+    "control_state": "agm001229341",
+    "source_directory": "batch-a/Ti3Hf_agm002190757",
+    "control_directory": "batch-a/TiZr2Hf_agm001229341",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Exact source geometry association retained; no named prototype is assigned here.",
+    "prototype_evidence": {
+      "CIF_source_record": 2945,
+      "CIF_payload_pin": {
+        "bytes": 591661,
+        "sha256": "93c3ce21c362fc36392db6d13f4555d76cce96122769d1212414bbc770f81541"
+      },
+      "SCF_coarse_source_record": 2963,
+      "Gamma_source_pin": {
+        "directory_key": "batch-a/Ti3Hf_agm002190757",
+        "bytes": 8948,
+        "sha256": "903599df9e62cef388489ba919cee07dead1edd676fe6b55e58b657c95e8f5d8"
+      },
+      "source_input_volume_difference_relative": 5.263567359747867e-12,
+      "occupancy_model_all1": true,
+      "bounded_signed_axis_and_translation_mapping": {
+        "signed_axis_U_CIF_fractional_to_SCF": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "determinant": 1,
+        "origin_shift_fractional": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species_bijection_CIF_to_SCF": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "maximum_site_distance_A": 3.3396409723832607e-16,
+        "relative_Gram_residual": 1.4767967251134099e-09,
+        "proper_signed_axis_solution": true
+      },
+      "attempts": 1,
+      "general_GL3_or_chiral_equivalence_asserted": false,
+      "CIF_site_precision_A_tolerance": 1e-05,
+      "physical_model": "source finite neutral scalar EPC; no SOC transfer certificate"
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 18.802,
+      "control_K": 14.171,
+      "delta_K": 4.631,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.21389999999999998,
+        0.20140000000000002,
+        0.19489999999999985,
+        0.17409999999999992,
+        0.15369999999999995,
+        0.13790000000000013,
+        0.1258999999999999,
+        0.11609999999999987,
+        0.10759999999999992,
+        0.0999000000000001
+      ],
+      "range": [
+        0.0999000000000001,
+        0.21389999999999998
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "The matched all-Ti role substitution improves source pairing strongly, while Ti3Zr is a mixed-sign lambda control with only 0.05 K Tc change. Thus role/chemistry and 23% original graph volume change must be retained together; not an isolated geometry or mass cause. Target SCF forces are zero. Finite cubic local minimum does not prove thermodynamic ordering.",
+    "ambient_scope": "Source coarse force 0.0 eV/Å, pressure -0.002 GPa; fine force 0.0 eV/Å, pressure 0.118 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "route_response": "Zr-to-Ti role replacement in cubic Ti3Hf/Zr3Hf framework. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "next_action": "Use existing same-prototype electronic/mode data to separate Ti/Hf role response from volume, then phase-ordering evidence. Favorable: direct paired gain persists on the exact ordered branch; adverse: disorder or another phase destroys the relevant active network; ambiguous: nominal count/shorter bonds alone.",
+    "seven_criteria": {
+      "identity": "Exact source CIF/SCF/Γ state association; CIF source record 2945. Experimental occupancy/P/T and physical magnetic ground state remain unknown; source scalar model only.",
+      "quantitative_route_response": "Zr-to-Ti role replacement in cubic Ti3Hf/Zr3Hf framework. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+      "pairing_relevance": "direct published source EPC and independent source isotropic Eliashberg result. 2 favorable comparator(s); bounded source model, not experiment.",
+      "ambient_feasibility": "Source coarse force 0.0 eV/Å, pressure -0.002 GPa; fine force 0.0 eV/Å, pressure 0.118 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+      "competition_and_coherence": "The matched all-Ti role substitution improves source pairing strongly, while Ti3Zr is a mixed-sign lambda control with only 0.05 K Tc change. Thus role/chemistry and 23% original graph volume change must be retained together; not an isolated geometry or mass cause. Target SCF forces are zero. Finite cubic local minimum does not prove thermodynamic ordering.",
+      "novelty": "Exact Ti3Hf/HfTi3 ordered-phase query found no primary exact superconducting phase. Closest identified literature concerns ordinary refractory solid-solution chemistry; current SG221 ordered source object is distinct from hcp/bcc disordered alloys. Worldwide novelty remains unproved.",
+      "decision": "Use existing same-prototype electronic/mode data to separate Ti/Hf role response from volume, then phase-ordering evidence. Favorable: direct paired gain persists on the exact ordered branch; adverse: disorder or another phase destroys the relevant active network; ambiguous: nominal count/shorter bonds alone."
+    },
+    "risk_tags": [
+      "metastable_phase",
+      "residual_force_stress"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index": 309,
+        "control": "batch-a/Ti3Zr_agm002190827",
+        "target": "batch-a/Ti3Hf_agm002190757",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          -0.013800000000000034,
+          0.02839999999999998
+        ],
+        "lambda_pct_range": [
+          -1.1709800593975421,
+          2.1459876076771938
+        ],
+        "Tc_target_K": 18.802,
+        "Tc_control_K": 18.752,
+        "independent_source_Eli_Tc_delta_K": 0.05000000000000071,
+        "all10_lambda_and_Tc_favorable": false,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 0.9918918036079947,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.3575505487995628e-06,
+        "geometry_only_causality": null,
+        "lambda_target_minus_other_range": [
+          -0.013800000000000034,
+          0.02839999999999998
+        ]
+      },
+      {
+        "frozen_contrast_index": 310,
+        "control": "batch-a/TiZr2Hf_agm001229341",
+        "target": "batch-a/Ti3Hf_agm002190757",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          0.0999000000000001,
+          0.21389999999999998
+        ],
+        "lambda_pct_range": [
+          9.38204357625846,
+          17.805710480312992
+        ],
+        "Tc_target_K": 18.802,
+        "Tc_control_K": 14.171,
+        "independent_source_Eli_Tc_delta_K": 4.631,
+        "all10_lambda_and_Tc_favorable": true,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": false,
+        "target_volume_ratio_over_control": 0.8651881606932853,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 8.399491635131153e-07,
+        "geometry_only_causality": null,
+        "lambda_target_minus_other_range": [
+          0.0999000000000001,
+          0.21389999999999998
+        ]
+      },
+      {
+        "frozen_contrast_index": 311,
+        "control": "batch-a/Zr3Hf_agm001190885",
+        "target": "batch-a/Ti3Hf_agm002190757",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          0.15400000000000014,
+          0.3356000000000001
+        ],
+        "lambda_pct_range": [
+          15.236964480063335,
+          31.08558725453873
+        ],
+        "Tc_target_K": 18.802,
+        "Tc_control_K": 12.514,
+        "independent_source_Eli_Tc_delta_K": 6.288,
+        "all10_lambda_and_Tc_favorable": true,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 0.8112083629284785,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 8.296086237767607e-07,
+        "geometry_only_causality": null,
+        "lambda_target_minus_other_range": [
+          0.15400000000000014,
+          0.3356000000000001
+        ]
+      }
+    ],
+    "physical_summary": null,
+    "evidence_pins": [
+      {
+        "artifact": "tranche-01-ten-specific-scientific-recommendations.json",
+        "bytes": 381754,
+        "sha256": "5d05478212c4d22080ab1b7bf22d92b784de6c0f8a99590d0758f9cdbfdafb32",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-remaining-transition-owned-review-cache-v1.json",
+        "bytes": 5381838,
+        "sha256": "62f4910578c7b65392d26619cf81b31afd6142f38aa49834a70bb147e7ab222d",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

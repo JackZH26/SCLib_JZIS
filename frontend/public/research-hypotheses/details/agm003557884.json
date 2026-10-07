@@ -1,0 +1,586 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm003557884",
+    "formula": "ScZr3N4",
+    "reduced_formula": "ScZr3N4",
+    "composition": {
+      "N": 4,
+      "Sc": 1,
+      "Zr": 3
+    },
+    "canonical_composition_key": "N:4|Sc:1|Zr:3",
+    "elements": [
+      "N",
+      "Sc",
+      "Zr"
+    ],
+    "source_state": "agm003557884",
+    "control_state": "agm003558452",
+    "source_directory": "batch-a/N4ScZr3_agm003557884",
+    "control_directory": "batch-a/N4Zr3Hf_agm003558452",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Pm-3m ordered rock-salt-derived eight-site ScZr3N4: Sc corner, three Zr face centers, N three edge centers plus body center",
+    "prototype_evidence": "Pm-3m ordered rock-salt-derived eight-site ScZr3N4: Sc corner, three Zr face centers, N three edge centers plus body center",
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 16.568,
+      "control_K": 14.993,
+      "delta_K": 1.575000000000001,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.24420000000000008,
+        0.13659999999999994,
+        0.11219999999999997,
+        0.10649999999999993,
+        0.09660000000000002,
+        0.0847,
+        0.07329999999999992,
+        0.06299999999999994,
+        0.054200000000000026,
+        0.046700000000000075
+      ],
+      "range": [
+        0.046700000000000075,
+        0.24420000000000008
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Source Gamma optical compression and sampled path are stable at the stated scalar approximation. Fine pressure is -0.205 GPa despite zero symmetry-constrained forces. ScHf3N4 has larger lambda but lower separate Eli Tc, and already accepted YZr3N4 has substantially larger lambda; both controls are retained. Nitrogen vacancies, ordered-cation disorder, charge redistribution and alternate nitrides are appropriate falsifiers. No pure volume-only causal claim or inherited YZr3N4 qualification is used.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=-0.205 GPa, full max stress=0.205 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "route_response": "Sc replaces Hf on the single cation corner site while three Zr and all four N sites remain mapped. The volume contracts 0.5685%, Sc-N versus Hf-N falls 0.0043104 A and Zr-N also falls 0.0043104 A. All ten lambda values improve 6.741–28.257% and separate Eli mu=.1 rises 14.993 to 16.568 K. This is a coupled cation/network intervention; the valence change is not converted to mobile n.",
+    "next_action": "Cross the Sc/Hf unique-site substitution with a fixed-volume comparison and test the lowest N-vacancy/order competitor. A stable coupling gain at common source method supports screening; a missing metallic channel, unfavorable ordering basin or reversed paired response opposes it.",
+    "seven_criteria": {
+      "identity": "Complete ordered CIF/literal coarse-fine input/Gamma periodic species-site association is numerically supported; source input geometry and full tensor/forces are retained. Export occupancy is a discrete computational convention; source experimental P/T/occupancy and actual compiled unit constant are unknown. Exact-version input defaults scope the configured neutral scalar spin1/noSOC model, not magnetic ground state.",
+      "quantitative_route_response": "Sc replaces Hf on the single cation corner site while three Zr and all four N sites remain mapped. The volume contracts 0.5685%, Sc-N versus Hf-N falls 0.0043104 A and Zr-N also falls 0.0043104 A. All ten lambda values improve 6.741–28.257% and separate Eli mu=.1 rises 14.993 to 16.568 K. This is a coupled cation/network intervention; the valence change is not converted to mobile n.",
+      "pairing_relevance": "Exact target and mapped control direct source lambda arrays have the same favorable sign at all ten common broadening tokens; omega_ln has explicit K units and separate Eli/McM mu=.1 tables remain independent. Same underlying q mesh is observed. The sensitivity range is not a physical error bound; sigma units, full-BZ convergence, experimental Tc and pure-geometry causality remain unknown. Literal method differences are declared confounds.",
+      "ambient_feasibility": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=-0.205 GPa, full max stress=0.205 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+      "competition_and_coherence": "Source Gamma optical compression and sampled path are stable at the stated scalar approximation. Fine pressure is -0.205 GPa despite zero symmetry-constrained forces. ScHf3N4 has larger lambda but lower separate Eli Tc, and already accepted YZr3N4 has substantially larger lambda; both controls are retained. Nitrogen vacancies, ordered-cation disorder, charge redistribution and alternate nitrides are appropriate falsifiers. No pure volume-only causal claim or inherited YZr3N4 qualification is used.",
+      "novelty": "ScZr3N4 is a published computational prediction in the 2023 primary screening study, with SG221 and separate hull/coupling model data. It is not first predicted here. The 2026-10-07 bounded exact-phase review found no experimental superconducting ScZr3N4 benchmark. Novelty is the matched Sc-for-Hf corner-site source construction in this reviewed catalogue.",
+      "decision": "Cross the Sc/Hf unique-site substitution with a fixed-volume comparison and test the lowest N-vacancy/order competitor. A stable coupling gain at common source method supports screening; a missing metallic channel, unfavorable ordering basin or reversed paired response opposes it."
+    },
+    "risk_tags": [
+      "metastable_phase",
+      "residual_force_stress"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index_zero_based": 196,
+        "control_directory": "batch-a/N4ScHf3_agm003557883",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Hf",
+          "to": "Zr",
+          "count": 3,
+          "kind": "whole_element_substitution"
+        },
+        "volume_target_over_control": 1.0296135777144353,
+        "target_relative_lambda_gain_percent_all10": [
+          -6.747433955914525,
+          -1.8441273326015406,
+          -0.11644154634373556,
+          -0.37767024666589066,
+          -0.9713394891473794,
+          -1.4544121241750207,
+          -1.8197681665212586,
+          -2.1219822109275794,
+          -2.3433454168824452,
+          -2.50494396835859
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          -6.747433955914525,
+          -0.11644154634373556
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            16.568
+          ],
+          [
+            0.1,
+            13.482
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            14.826,
+            15.585
+          ],
+          [
+            0.1,
+            12.466,
+            13.167
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 198,
+        "control_directory": "batch-a/N4YZr3_agm003559755",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Sc",
+          "to": "Y",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 0.9443896797863038,
+        "target_relative_lambda_gain_percent_all10": [
+          -44.765037125629135,
+          -43.63693665300977,
+          -41.78091489072892,
+          -40.109266354477086,
+          -39.095803525333736,
+          -38.41277115795905,
+          -37.83933080808082,
+          -37.31282552083333,
+          -36.80462466487936,
+          -36.32684690890304
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          -44.765037125629135,
+          -36.32684690890304
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            16.568
+          ],
+          [
+            0.1,
+            21.437
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            14.826,
+            15.585
+          ],
+          [
+            0.1,
+            17.905,
+            19.975
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": true,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": true
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 199,
+        "control_directory": "batch-a/N4Zr3Hf_agm003558452",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Sc",
+          "to": "Hf",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 0.9943153589645417,
+        "target_relative_lambda_gain_percent_all10": [
+          28.257347836149048,
+          18.03062302006335,
+          15.04828326180257,
+          14.438720173535783,
+          13.247394404827212,
+          11.73780487804878,
+          10.260358342665162,
+          8.907111550968464,
+          7.741751178403089,
+          6.740762124711328
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          6.740762124711328,
+          28.257347836149048
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            16.568
+          ],
+          [
+            0.1,
+            14.993
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            14.826,
+            15.585
+          ],
+          [
+            0.1,
+            13.316,
+            13.879
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0,
+            3.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            4.0
+          ],
+          [
+            4.0
+          ]
+        ]
+      }
+    ],
+    "physical_summary": {
+      "nat": 8,
+      "lambda10": [
+        1.1084,
+        0.8942,
+        0.8578,
+        0.8441,
+        0.8258,
+        0.8063,
+        0.7877,
+        0.7703,
+        0.7543,
+        0.7395
+      ],
+      "omega10_K": [
+        284.2425,
+        295.68,
+        302.7148,
+        306.3358,
+        308.8772,
+        311.069,
+        313.1276,
+        315.112,
+        317.0266,
+        318.8586
+      ],
+      "Eli_mu01": [
+        0.1,
+        16.568
+      ],
+      "McM_mu01": [
+        0.1,
+        14.826,
+        15.585
+      ],
+      "coarse_fine": [
+        {
+          "record": 4561,
+          "version": [
+            "Program PWSCF v.7.0 starts on  3Jul2022 at  8:37: 2"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": 0.001,
+          "maxstress_GPa": 0.001,
+          "fulltensor": [
+            [
+              0.001,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.001,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.001
+            ]
+          ],
+          "F_Ry": -484.09164343,
+          "E_Ry": -484.09128181999995,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 1,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        },
+        {
+          "record": 4562,
+          "version": [
+            "Program PWSCF v.7.0 starts on  3Jul2022 at  7:45: 2"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": -0.205,
+          "maxstress_GPa": 0.205,
+          "fulltensor": [
+            [
+              -0.205,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              -0.205,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              -0.205
+            ]
+          ],
+          "F_Ry": -484.09965421,
+          "E_Ry": -484.09973385999996,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 5,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        }
+      ],
+      "inputs": [
+        {
+          "record": 4551,
+          "ecutwfc": [
+            98.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "/espresso/runs/nc-sr-04_pbesol_stringent_upf/"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            1.0
+          ],
+          "nat": [
+            8.0
+          ],
+          "grid": [
+            "6 6 6 0 0 0"
+          ]
+        },
+        {
+          "record": 4552,
+          "ecutwfc": [
+            98.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "/espresso/runs/nc-sr-04_pbesol_stringent_upf/"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            1.0
+          ],
+          "nat": [
+            8.0
+          ],
+          "grid": [
+            "24 24 24 0 0 0"
+          ]
+        }
+      ],
+      "Gamma": {
+        "nat": 8,
+        "ibrav": 1,
+        "q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species": [
+          "N",
+          "Sc",
+          "Zr"
+        ],
+        "optical": "positive_beyond_printing_bound",
+        "minopt": 3.4675523338838122e-06,
+        "printingbound": 7.929724982890149e-12,
+        "negative_native_modes": [
+          1,
+          2,
+          3
+        ],
+        "negativeoutside3": [],
+        "min_low3_translation": 0.9999787020299221,
+        "sourcepin": {
+          "directory_key": "batch-a/N4ScZr3_agm003557884",
+          "bytes": 31880,
+          "sha256": "685f7e2a4f79569a6a0598ec611a3a1b640b0af195c3d568c034f94522ed1338"
+        }
+      },
+      "path": {
+        "rows": 94,
+        "negatives": 0,
+        "minimum": -0.0,
+        "unit": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "tranche-2-compact-scientific-recommendations.json",
+        "bytes": 84096,
+        "sha256": "d8ca53bafc5ee0879de647e050127d8e0d20c0e3da10de9602ab2de44bf77532",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-3-five-scientific-recommendations.json",
+        "bytes": 110335,
+        "sha256": "861dd76c8368cca687ca20c8468e464badefb533a318ed41c4f8d62dccb6ed50",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-4-three-phase-scientific-recommendations.json",
+        "bytes": 64369,
+        "sha256": "56076a077e591b9bdef8ada45d78f224f417a4af8d2e722e332f639eedfafaf7",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all64-light-Nb-rich-owned-review-cache-v2.json",
+        "bytes": 4566542,
+        "sha256": "f27e8c84c10c4d8de44022f6bd160e7e8aee8b2d562db5fd6003af68d5e35756",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

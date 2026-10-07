@@ -1,0 +1,661 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm001827673",
+    "formula": "TiNb3",
+    "reduced_formula": "TiNb3",
+    "composition": {
+      "Nb": 3,
+      "Ti": 1
+    },
+    "canonical_composition_key": "Nb:3|Ti:1",
+    "elements": [
+      "Nb",
+      "Ti"
+    ],
+    "source_state": "agm001827673",
+    "control_state": "agm001827667",
+    "source_directory": "batch-a/TiNb3_agm001827673",
+    "control_directory": "batch-a/TiTa3_agm001827667",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "P4/mmm four-site ordered tetragonal fcc-derived Nb3Ti source phase, one Ti and three Nb sites; not A15 Nb3X or disordered bcc Nb-Ti",
+    "prototype_evidence": "P4/mmm four-site ordered tetragonal fcc-derived Nb3Ti source phase, one Ti and three Nb sites; not A15 Nb3X or disordered bcc Nb-Ti",
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 22.733,
+      "control_K": 17.938,
+      "delta_K": 4.795000000000002,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.1875,
+        0.23829999999999996,
+        0.27790000000000004,
+        0.29520000000000013,
+        0.2929999999999999,
+        0.27970000000000006,
+        0.2628999999999999,
+        0.24639999999999995,
+        0.23230000000000017,
+        0.22089999999999987
+      ],
+      "range": [
+        0.1875,
+        0.29520000000000013
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "The exact ordered source has positive Gamma optical compression and no signed negative sampled-path value; fine full max stress is 0.142 GPa. The central competition is known disordered bcc Nb-Ti versus this ordered tetragonal/fcc-derived phase, not an assumption that the experimental alloy validates this ordering. Antisite/phase conversion, SOC and fine residual stress can change the result. Current source local stability is positive finite-grid evidence, not a bulk equilibrium certificate.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=0.096 GPa, full max stress=0.142 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "route_response": "Nb replaces the three Ta sites as a whole-element construction with complete ordered role mapping across all three symmetry tolerances. Volume contracts 0.5332%, Nb-Nb versus Ta-Ta falls 0.0050234 A; all ten lambda values rise 11.164–18.705% and separate Eli mu=.1 rises 17.938 to 22.733 K. Retained single-site Mo/W controls have larger gains, while the Ta single edit has mixed signs; no global ranking or all-three-route conjunction is claimed.",
+    "next_action": "Compare the source ordered tetragonal basin with a same-composition disordered/bcc competitor at matched method and a controlled ordering or distortion path. Retained positive pairing response and local stability support the source-phase screen; barrierless conversion or erased response oppose it.",
+    "seven_criteria": {
+      "identity": "Complete ordered CIF/literal coarse-fine input/Gamma periodic species-site association is numerically supported; source input geometry and full tensor/forces are retained. Export occupancy is a discrete computational convention; source experimental P/T/occupancy and actual compiled unit constant are unknown. Exact-version input defaults scope the configured neutral scalar spin1/noSOC model, not magnetic ground state.",
+      "quantitative_route_response": "Nb replaces the three Ta sites as a whole-element construction with complete ordered role mapping across all three symmetry tolerances. Volume contracts 0.5332%, Nb-Nb versus Ta-Ta falls 0.0050234 A; all ten lambda values rise 11.164–18.705% and separate Eli mu=.1 rises 17.938 to 22.733 K. Retained single-site Mo/W controls have larger gains, while the Ta single edit has mixed signs; no global ranking or all-three-route conjunction is claimed.",
+      "pairing_relevance": "Exact target and mapped control direct source lambda arrays have the same favorable sign at all ten common broadening tokens; omega_ln has explicit K units and separate Eli/McM mu=.1 tables remain independent. Same underlying q mesh is observed. The sensitivity range is not a physical error bound; sigma units, full-BZ convergence, experimental Tc and pure-geometry causality remain unknown. Literal method differences are declared confounds.",
+      "ambient_feasibility": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=0.096 GPa, full max stress=0.142 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+      "competition_and_coherence": "The exact ordered source has positive Gamma optical compression and no signed negative sampled-path value; fine full max stress is 0.142 GPa. The central competition is known disordered bcc Nb-Ti versus this ordered tetragonal/fcc-derived phase, not an assumption that the experimental alloy validates this ordering. Antisite/phase conversion, SOC and fine residual stress can change the result. Current source local stability is positive finite-grid evidence, not a bulk equilibrium certificate.",
+      "novelty": "Commercial superconducting Nb-Ti is well known, and ordered NbTi/Nb3Ti calculations are also prior. Dated exact P4/mmm Nb3Ti queries did not find an experimental superconducting exact ordered phase. The hypothesis is this source ordering and matched Nb-for-Ta construction at finite-grid scalar approximation, not new Nb-Ti chemistry or inherited bcc alloy Tc.",
+      "decision": "Compare the source ordered tetragonal basin with a same-composition disordered/bcc competitor at matched method and a controlled ordering or distortion path. Retained positive pairing response and local stability support the source-phase screen; barrierless conversion or erased response oppose it."
+    },
+    "risk_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "sampling_method"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index_zero_based": 330,
+        "control_directory": "batch-a/TiNb2Mo_agm001228974",
+        "mapping_scope": "bounded geometric site-edit control; changed chemical symmetry retained",
+        "all_three_symprec_support": false,
+        "composition_edit": {
+          "from": "Mo",
+          "to": "Nb",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 1.0406236966000662,
+        "target_relative_lambda_gain_percent_all10": [
+          46.17914187284686,
+          55.47651766227466,
+          61.015397419891805,
+          64.6794927098611,
+          66.64276752106113,
+          67.40768300623199,
+          67.52408477842002,
+          67.26368159203983,
+          66.78275120352353,
+          66.16920651602732
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          46.17914187284686,
+          67.52408477842002
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            22.733
+          ],
+          [
+            0.1,
+            15.378
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            17.23,
+            20.216
+          ],
+          [
+            0.1,
+            12.814,
+            13.787
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": true,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            5.0
+          ],
+          [
+            3.0,
+            3.0,
+            5.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            9.0
+          ],
+          [
+            9.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 334,
+        "control_directory": "batch-a/TiNb2Ta_agm001228986",
+        "mapping_scope": "bounded geometric site-edit control; changed chemical symmetry retained",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Ta",
+          "to": "Nb",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 0.9965060490217874,
+        "target_relative_lambda_gain_percent_all10": [
+          -3.002909393183711,
+          -0.46059100553743765,
+          0.3579395134097696,
+          0.9947089947090028,
+          1.3573180703188839,
+          1.4886658396300878,
+          1.5356767488029892,
+          1.5525886546245429,
+          1.5909658098327975,
+          1.64577306332368
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          -3.002909393183711,
+          1.64577306332368
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            22.733
+          ],
+          [
+            0.1,
+            22.196
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            17.23,
+            20.216
+          ],
+          [
+            0.1,
+            17.294,
+            20.106
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            5.0
+          ],
+          [
+            3.0,
+            3.0,
+            5.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            9.0
+          ],
+          [
+            9.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 337,
+        "control_directory": "batch-a/TiNb2W_agm001228989",
+        "mapping_scope": "bounded geometric site-edit control; changed chemical symmetry retained",
+        "all_three_symprec_support": false,
+        "composition_edit": {
+          "from": "W",
+          "to": "Nb",
+          "count": 1,
+          "kind": "single_site_substitution"
+        },
+        "volume_target_over_control": 1.0340529725727876,
+        "target_relative_lambda_gain_percent_all10": [
+          65.83762657665662,
+          77.36997417926965,
+          84.10734678340313,
+          87.83703995276521,
+          89.50264981655116,
+          89.89238235914752,
+          89.62922573609595,
+          89.00382280188892,
+          88.28630897317299,
+          87.48962409581405
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          65.83762657665662,
+          89.89238235914752
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            22.733
+          ],
+          [
+            0.1,
+            13.736
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            17.23,
+            20.216
+          ],
+          [
+            0.1,
+            11.615,
+            12.307
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": true,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            5.0
+          ],
+          [
+            3.0,
+            3.0,
+            5.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            9.0
+          ],
+          [
+            9.0
+          ]
+        ]
+      },
+      {
+        "frozen_contrast_index_zero_based": 341,
+        "control_directory": "batch-a/TiTa3_agm001827667",
+        "mapping_scope": "bounded ordered isostructural analogue",
+        "all_three_symprec_support": true,
+        "composition_edit": {
+          "from": "Nb",
+          "to": "Ta",
+          "count": 3,
+          "kind": "whole_element_substitution"
+        },
+        "volume_target_over_control": 0.9946681273650183,
+        "target_relative_lambda_gain_percent_all10": [
+          11.164036915748735,
+          14.14159397068423,
+          16.774310376048774,
+          18.294496777392176,
+          18.70531154239019,
+          18.400105256233147,
+          17.811653116531158,
+          17.17551930851805,
+          16.64040114613182,
+          16.240258785472715
+        ],
+        "target_relative_lambda_gain_percent_range": [
+          11.164036915748735,
+          18.70531154239019
+        ],
+        "separate_source_Eli_mu01_target_control": [
+          [
+            0.1,
+            22.733
+          ],
+          [
+            0.1,
+            17.938
+          ]
+        ],
+        "separate_source_McM_mu01_target_control": [
+          [
+            0.1,
+            17.23,
+            20.216
+          ],
+          [
+            0.1,
+            14.731,
+            16.625
+          ]
+        ],
+        "literal_method_same_fields": {
+          "ecutwfc": false,
+          "smear": true,
+          "degauss": true,
+          "pseudo_dir": false
+        },
+        "qmesh_target_control": [
+          [
+            3.0,
+            3.0,
+            5.0
+          ],
+          [
+            3.0,
+            3.0,
+            5.0
+          ]
+        ],
+        "irreducible_qcount_target_control": [
+          [
+            9.0
+          ],
+          [
+            9.0
+          ]
+        ]
+      }
+    ],
+    "physical_summary": {
+      "nat": 4,
+      "lambda10": [
+        1.867,
+        1.9234,
+        1.9346,
+        1.9088,
+        1.8594,
+        1.7998,
+        1.7389,
+        1.681,
+        1.6283,
+        1.5811
+      ],
+      "omega10_K": [
+        131.4612,
+        130.2453,
+        129.4357,
+        129.0066,
+        128.8345,
+        128.8368,
+        128.9424,
+        129.0973,
+        129.2673,
+        129.4336
+      ],
+      "Eli_mu01": [
+        0.1,
+        22.733
+      ],
+      "McM_mu01": [
+        0.1,
+        17.23,
+        20.216
+      ],
+      "coarse_fine": [
+        {
+          "record": 1477,
+          "version": [
+            "Program PWSCF v.7.1 starts on  8Oct2022 at  7:21: 5"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": 0.0,
+          "maxstress_GPa": 0.005,
+          "fulltensor": [
+            [
+              -0.002,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              -0.002,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.005
+            ]
+          ],
+          "F_Ry": -492.10347413,
+          "E_Ry": -492.10269979,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 0,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        },
+        {
+          "record": 1478,
+          "version": [
+            "Program PWSCF v.7.1 starts on  8Oct2022 at  7:12:35"
+          ],
+          "converged": true,
+          "JOBDONE": true,
+          "errors": 0,
+          "Fmax_eVA": 0.0,
+          "P_GPa": 0.096,
+          "maxstress_GPa": 0.142,
+          "fulltensor": [
+            [
+              0.142,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.142,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.005
+            ]
+          ],
+          "F_Ry": -492.1041288,
+          "E_Ry": -492.10406474,
+          "pattern_selected_warning_counts": {
+            "BFGS": 1,
+            "negative_charge": 0,
+            "eigen_text": 9,
+            "failure_text": 0,
+            "SCF_correction_text": 1
+          },
+          "warning_scope": "pattern-selected contexts; informational SCF correction and ignored cell card are not optimization failure; no whole-file warning-free claim"
+        }
+      ],
+      "inputs": [
+        {
+          "record": 1462,
+          "ecutwfc": [
+            98.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "/hppfs/work/pn49qo/di29xud3/software/progs/qe/pp/nc-sr-04_pbesol_stringent_upf/"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            6.0
+          ],
+          "nat": [
+            4.0
+          ],
+          "grid": [
+            "6 6 10 0 0 0"
+          ]
+        },
+        {
+          "record": 1463,
+          "ecutwfc": [
+            98.0
+          ],
+          "ecutrho": null,
+          "pseudo_dir": [
+            "/hppfs/work/pn49qo/di29xud3/software/progs/qe/pp/nc-sr-04_pbesol_stringent_upf/"
+          ],
+          "spin": null,
+          "noncol": null,
+          "SOC": null,
+          "charge": null,
+          "smear": [
+            "mp"
+          ],
+          "degauss": [
+            0.014699728870262
+          ],
+          "ibrav": [
+            6.0
+          ],
+          "nat": [
+            4.0
+          ],
+          "grid": [
+            "24 24 40 0 0 0"
+          ]
+        }
+      ],
+      "Gamma": {
+        "nat": 4,
+        "ibrav": 6,
+        "q": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species": [
+          "Nb",
+          "Ti"
+        ],
+        "optical": "positive_beyond_printing_bound",
+        "minopt": 8.637269409717946e-07,
+        "printingbound": 1.2377674101522938e-12,
+        "negative_native_modes": [
+          1,
+          2,
+          3
+        ],
+        "negativeoutside3": [],
+        "min_low3_translation": 0.9999725355900968,
+        "sourcepin": {
+          "directory_key": "batch-a/TiNb3_agm001827673",
+          "bytes": 8948,
+          "sha256": "21a773baf742a8c8a74731df69235883ce1339c8d0107c12ae663d3656e3203a"
+        }
+      },
+      "path": {
+        "rows": 159,
+        "negatives": 0,
+        "minimum": -0.0,
+        "unit": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "tranche-2-compact-scientific-recommendations.json",
+        "bytes": 84096,
+        "sha256": "d8ca53bafc5ee0879de647e050127d8e0d20c0e3da10de9602ab2de44bf77532",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-3-five-scientific-recommendations.json",
+        "bytes": 110335,
+        "sha256": "861dd76c8368cca687ca20c8468e464badefb533a318ed41c4f8d62dccb6ed50",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-4-three-phase-scientific-recommendations.json",
+        "bytes": 64369,
+        "sha256": "56076a077e591b9bdef8ada45d78f224f417a4af8d2e722e332f639eedfafaf7",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all64-light-Nb-rich-owned-review-cache-v2.json",
+        "bytes": 4566542,
+        "sha256": "f27e8c84c10c4d8de44022f6bd160e7e8aee8b2d562db5fd6003af68d5e35756",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

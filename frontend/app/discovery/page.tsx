@@ -16,6 +16,9 @@ import { DiscoverySourceComparison } from "@/components/DiscoverySourceCompariso
 import { DiscoveryPressureSeries } from "@/components/DiscoveryPressureSeries";
 import { DiscoveryDisclosure } from "@/components/DiscoveryDisclosure";
 import { DiscoveryTabs } from "@/components/DiscoveryTabs";
+import { DiscoverySourceCandidates } from "@/components/DiscoverySourceCandidates";
+import { getSourceHypothesisBrowseCatalogue, type SourceHypothesisBrowseCatalogue } from "@/lib/discovery-source-hypotheses";
+import "./discovery.css";
 import {
   getDiscoveryCandidates,
   getDiscoveryMetadata,
@@ -26,9 +29,9 @@ import {
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Design superconducting conditions",
+  title: "Discovery candidate materials",
   description:
-    "Explore host stability, electronic activation, pairing and coherence, then outline the next superconductivity calculation or experiment.",
+    "Browse unscored source-computed superconductivity research hypotheses, source comparisons, limitations and next research actions.",
   alternates: { canonical: absoluteUrl("/discovery") },
   openGraph: { url: absoluteUrl("/discovery") },
 };
@@ -58,6 +61,8 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
   }
   let researchCatalogue: ResearchCatalogue | null = null;
   try { researchCatalogue = getResearchCatalogue(); } catch { /* Integrity failure displays no proposal data. */ }
+  let sourceCatalogue: SourceHypothesisBrowseCatalogue | null = null;
+  try { sourceCatalogue = getSourceHypothesisBrowseCatalogue(); } catch { /* No source hypotheses from an unverifiable catalogue. */ }
   let numericalPilot: DiscoveryNumericalPilotSummary | null = null;
   if (researchCatalogue) {
     try { numericalPilot = await getDiscoveryNumericalPilot(researchCatalogue); } catch { /* No numerical observations from unverifiable assets. */ }
@@ -69,9 +74,16 @@ export default async function DiscoveryPage({ searchParams }: { searchParams: Pr
       </header>
 
       <DiscoveryTabs candidates={<>
-        <ResearchCandidateBoard compactEmpty />
-        <ResearchProposals catalog={researchCatalogue} pilot={numericalPilot} />
+        {sourceCatalogue ? <DiscoverySourceCandidates catalogue={sourceCatalogue} /> : <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">The source-computed research catalogue could not be verified. No hypothesis rows are shown.</p>}
       </>} research={<>
+      <DiscoveryDisclosure id="discovery-formal-assessments" summary="Published research-priority assessments (RPS)">
+        <p className="text-sm text-sage-muted">Formal campaign scores are separate from the unscored source-computed catalogue. Their published material and action counts are not added to its total.</p>
+        <ResearchCandidateBoard />
+      </DiscoveryDisclosure>
+      <DiscoveryDisclosure id="discovery-coordinate-proposals" summary="Unrelaxed COD coordinate proposals">
+        <p className="text-sm text-sage-muted">These coordinate modifications form a separate catalogue. They are not source-computed superconducting candidates and are not counted in the main list.</p>
+        <ResearchProposals catalog={researchCatalogue} pilot={numericalPilot} />
+      </DiscoveryDisclosure>
       <DiscoveryDisclosure id="discovery-cycle-tools" summary="Research cycle: bandwidth, carriers and geometry">
         {researchCatalogue ? <DiscoveryResearchCycle catalog={researchCatalogue} /> : <p role="alert" className="text-sm text-red-800">The research catalogue could not be verified. Research cases are unavailable.</p>}
       </DiscoveryDisclosure>

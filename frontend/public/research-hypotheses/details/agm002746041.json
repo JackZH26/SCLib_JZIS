@@ -1,0 +1,538 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm002746041",
+    "formula": "TiNb2W",
+    "reduced_formula": "TiNb2W",
+    "composition": {
+      "Nb": 2,
+      "Ti": 1,
+      "W": 1
+    },
+    "canonical_composition_key": "Nb:2|Ti:1|W:1",
+    "elements": [
+      "Nb",
+      "Ti",
+      "W"
+    ],
+    "source_state": "agm002746041",
+    "control_state": "agm001293942",
+    "source_directory": "batch-a/TiNb2W_agm002746041",
+    "control_directory": "batch-a/TiNbTaW_agm001293942",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": null,
+    "prototype": "Exact source geometry association retained; no named prototype is assigned here.",
+    "prototype_evidence": {
+      "CIF_source_record": 11271,
+      "CIF_payload_pin": {
+        "bytes": 591661,
+        "sha256": "93c3ce21c362fc36392db6d13f4555d76cce96122769d1212414bbc770f81541"
+      },
+      "SCF_coarse_source_record": 11287,
+      "Gamma_source_pin": {
+        "directory_key": "batch-a/TiNb2W_agm002746041",
+        "bytes": 8994,
+        "sha256": "3b72e6ec198934e0507c1f3ec00acbd1ad75950d51595f12e2437bb5d4de47f2"
+      },
+      "source_input_volume_difference_relative": 4.908518036472742e-11,
+      "occupancy_model_all1": true,
+      "bounded_signed_axis_and_translation_mapping": {
+        "signed_axis_U_CIF_fractional_to_SCF": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "determinant": 1,
+        "origin_shift_fractional": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "species_bijection_CIF_to_SCF": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "maximum_site_distance_A": 5.313984010946286e-08,
+        "relative_Gram_residual": 1.4118239969911126e-09,
+        "proper_signed_axis_solution": true
+      },
+      "attempts": 1,
+      "general_GL3_or_chiral_equivalence_asserted": false,
+      "CIF_site_precision_A_tolerance": 1e-05,
+      "physical_model": "source finite neutral scalar EPC; no SOC transfer certificate"
+    },
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 13.641,
+      "control_K": 12.118,
+      "delta_K": 1.5229999999999997,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        0.02429999999999999,
+        0.04360000000000008,
+        0.05080000000000007,
+        0.05249999999999999,
+        0.051000000000000045,
+        0.0484,
+        0.04610000000000003,
+        0.04420000000000002,
+        0.04269999999999996,
+        0.04169999999999996
+      ],
+      "range": [
+        0.02429999999999999,
+        0.05249999999999999
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": null,
+    "risk_summary": "Ta-to-Nb contrast yields +.0243…+.0525 lambda and Tc+1.523 K with path0, force0 and .130 GPa stress. Mo-to-W alternative is an actual contrary case: TiNb2Mo has larger lambda and Tc; TiV2W also better. This candidate uses the former controlled route and never rewrites the failed general W enhancement hypothesis.",
+    "ambient_scope": "Source coarse force 0.0 eV/Å, pressure 0.002 GPa; fine force 0.0 eV/Å, pressure -0.13 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "route_response": "Ta-to-Nb role construction in TiNb2W against TiNbTaW. coupled chemistry/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "next_action": "Use existing Nb/Ta minority-role mode/orbital evidence. Favorable: specific Ta-to-Nb paired gain survives; adverse: its channel competition reverses; ambiguous: only wider finite band envelope or nominal electrons are available. Retain failed Mo-to-W edge.",
+    "seven_criteria": {
+      "identity": "Exact source CIF/SCF/Γ state association; CIF source record 11271. Experimental occupancy/P/T and physical magnetic ground state remain unknown; source scalar model only.",
+      "quantitative_route_response": "Ta-to-Nb role construction in TiNb2W against TiNbTaW. coupled chemistry/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+      "pairing_relevance": "direct published source EPC plus independent source isotropic Eliashberg result.  favorable comparator(s); bounded source model, not experiment.",
+      "ambient_feasibility": "Source coarse force 0.0 eV/Å, pressure 0.002 GPa; fine force 0.0 eV/Å, pressure -0.13 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+      "competition_and_coherence": "Ta-to-Nb contrast yields +.0243…+.0525 lambda and Tc+1.523 K with path0, force0 and .130 GPa stress. Mo-to-W alternative is an actual contrary case: TiNb2Mo has larger lambda and Tc; TiV2W also better. This candidate uses the former controlled route and never rewrites the failed general W enhancement hypothesis.",
+      "novelty": "No exact experimental ordered TiNb2W SG225 phase retrieved. Refractory alloy studies are different disordered states, not exact phase identity.",
+      "decision": "Use existing Nb/Ta minority-role mode/orbital evidence. Favorable: specific Ta-to-Nb paired gain survives; adverse: its channel competition reverses; ambiguous: only wider finite band envelope or nominal electrons are available. Retain failed Mo-to-W edge."
+    },
+    "risk_tags": [
+      "residual_force_stress"
+    ],
+    "countercontrols": [
+      {
+        "frozen_contrast_index": 331,
+        "control": "batch-a/TiNb2Mo_agm002322068",
+        "target": "batch-a/TiNb2W_agm002746041",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          -0.04859999999999998,
+          -0.03939999999999988
+        ],
+        "lambda_pct_range": [
+          -4.895657078398195,
+          -3.712362072189999
+        ],
+        "Tc_target_K": 13.641,
+        "Tc_control_K": 14.888,
+        "independent_source_Eli_Tc_delta_K": -1.2469999999999999,
+        "all10_lambda_and_Tc_favorable": false,
+        "all10_lambda_and_Tc_adverse": true,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 1.0067737679779265,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 2.050791258399247e-06,
+        "geometry_only_causality": null,
+        "control_raw_path_minimum_and_negatives": {
+          "negative_printed_values": 0,
+          "minimum_printed_mode": {
+            "value": -0.0,
+            "column_index_zero_based": 1
+          },
+          "frequency_unit_header": null,
+          "state_link_verified": null
+        },
+        "control_q_status_summary": {
+          "source_ID": "agm002322068",
+          "dyn0_source_record": 8157,
+          "configured_q_mesh": [
+            4.0,
+            4.0,
+            4.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 1,
+              "source_record": 8164,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 8165,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 8166,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 8167,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 5,
+              "source_record": 8168,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 6,
+              "source_record": 8169,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 7,
+              "source_record": 8170,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 8,
+              "source_record": 8171,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          -0.04859999999999998,
+          -0.03939999999999988
+        ]
+      },
+      {
+        "frozen_contrast_index": 339,
+        "control": "batch-a/TiNbTaW_agm001293942",
+        "target": "batch-a/TiNb2W_agm002746041",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          0.02429999999999999,
+          0.05249999999999999
+        ],
+        "lambda_pct_range": [
+          2.389850511408339,
+          5.612572161642078
+        ],
+        "Tc_target_K": 13.641,
+        "Tc_control_K": 12.118,
+        "independent_source_Eli_Tc_delta_K": 1.5229999999999997,
+        "all10_lambda_and_Tc_favorable": true,
+        "all10_lambda_and_Tc_adverse": false,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 0.9991346615769874,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 1.552549127284534e-06,
+        "geometry_only_causality": null,
+        "control_raw_path_minimum_and_negatives": {
+          "negative_printed_values": 0,
+          "minimum_printed_mode": {
+            "value": -0.0,
+            "column_index_zero_based": 1
+          },
+          "frequency_unit_header": null,
+          "state_link_verified": null
+        },
+        "control_q_status_summary": {
+          "source_ID": "agm001293942",
+          "dyn0_source_record": 16639,
+          "configured_q_mesh": [
+            4.0,
+            4.0,
+            4.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 1,
+              "source_record": 16646,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 16647,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 16648,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 16649,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 5,
+              "source_record": 16650,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 6,
+              "source_record": 16651,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 7,
+              "source_record": 16652,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 8,
+              "source_record": 16653,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          0.02429999999999999,
+          0.05249999999999999
+        ]
+      },
+      {
+        "frozen_contrast_index": 340,
+        "control": "batch-a/TiV2W_agm001099873",
+        "target": "batch-a/TiNb2W_agm002746041",
+        "sigma_tokens": [
+          "0.0050",
+          "0.0100",
+          "0.0150",
+          "0.0200",
+          "0.0250",
+          "0.0300",
+          "0.0350",
+          "0.0400",
+          "0.0450",
+          "0.0500"
+        ],
+        "sigma_unit": null,
+        "lambda_delta_range": [
+          -0.13070000000000004,
+          -0.015300000000000091
+        ],
+        "lambda_pct_range": [
+          -11.153780508619223,
+          -1.7823858341099825
+        ],
+        "Tc_target_K": 13.641,
+        "Tc_control_K": 17.103,
+        "independent_source_Eli_Tc_delta_K": -3.4620000000000015,
+        "all10_lambda_and_Tc_favorable": false,
+        "all10_lambda_and_Tc_adverse": true,
+        "three_tol_graph": true,
+        "target_volume_ratio_over_control": 1.1610911697688042,
+        "control_path_negatives": 0,
+        "control_Gamma_optical_min": 2.6653405017030005e-06,
+        "geometry_only_causality": null,
+        "control_raw_path_minimum_and_negatives": {
+          "negative_printed_values": 0,
+          "minimum_printed_mode": {
+            "value": -0.0,
+            "column_index_zero_based": 1
+          },
+          "frequency_unit_header": null,
+          "state_link_verified": null
+        },
+        "control_q_status_summary": {
+          "source_ID": "agm001099873",
+          "dyn0_source_record": 4681,
+          "configured_q_mesh": [
+            4.0,
+            4.0,
+            4.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 1,
+              "source_record": 4688,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 4689,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 4690,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 4691,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 5,
+              "source_record": 4692,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 6,
+              "source_record": 4693,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 7,
+              "source_record": 4694,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 8,
+              "source_record": 4695,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          -0.13070000000000004,
+          -0.015300000000000091
+        ]
+      }
+    ],
+    "physical_summary": null,
+    "evidence_pins": [
+      {
+        "artifact": "tranche-02-eleven-specific-source-finite-cases.json",
+        "bytes": 1219201,
+        "sha256": "ee658cb8e6309178e268b736f8aeb6429c030a92019c068963e2d64ca51cbb17",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "tranche-03-fifteen-specific-source-finite-cases.json",
+        "bytes": 1347056,
+        "sha256": "1be9342cb74006b2542e9351fc2de310967f1a31a5ee9f1909ae730b9a11476a",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-remaining-transition-owned-review-cache-v1.json",
+        "bytes": 5381838,
+        "sha256": "62f4910578c7b65392d26619cf81b31afd6142f38aa49834a70bb147e7ab222d",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}

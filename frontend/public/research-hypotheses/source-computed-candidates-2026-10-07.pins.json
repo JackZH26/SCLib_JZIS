@@ -1,0 +1,12 @@
+{
+  "schema_version": "source-computed-hypothesis-public-pins/1.0.0",
+  "data_file": "source-computed-candidates-2026-10-07.json",
+  "bytes": 2273528,
+  "sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_index_sha256": "591c01a4b3b91a808698a07ef6cb1436749467483dfd2e33a0b3f4b4e8b0829b",
+  "frozen_catalogue_sha256": "851ee6814b5201cb337ef566c3f00acde928849a1298908d1b1c680cba3ceae1",
+  "publication_eligibility_sha256": "0e3a11c37594feafc6d9cdab398112c8980955777257ccb049779a6ccb526f3a",
+  "detail_manifest_file": "source-computed-candidates-2026-10-07.details.json",
+  "detail_manifest_bytes": 25464,
+  "detail_manifest_sha256": "ff226d5627e5a54451e5a62754b3b6bfabd9af33931a37ae6ccdb2fb030c2e43"
+}

@@ -1,0 +1,1030 @@
+{
+  "schema_version": "source-computed-hypothesis-detail/1.0.0",
+  "catalogue_version": "2026-10-07-source103-v1",
+  "dataset_source": {
+    "title": "Sampling the materials space for conventional superconducting compounds",
+    "version": "Materials Cloud 2023.163 v1",
+    "authors": [
+      "Tiago F. T. Cerqueira",
+      "Antonio Sanna",
+      "Miguel A. L. Marques"
+    ],
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "doi": "10.24435/materialscloud:qv-bq",
+    "license": "CC BY 4.0",
+    "license_basis": "metadata.rights from primary record API",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+  },
+  "scope": "Previously private source-model screening is now published as unscored source-computed material-design hypotheses. Historical private-screening wording is retained as context. These predictions are new to this reviewed catalogue only; experimental confirmation, worldwide first discovery, formal RPS and human scientific review are not claimed.",
+  "source_tc_scope": "Source isotropic Eliashberg Tc in K at mu*=0.1 is a model result, not experimental Tc. It is a separate source product and is not associated with an individual Gaussian width or a numerical uncertainty interval.",
+  "pairing_response_scope": "Retained ten-width lambda contrasts and independent source Tc products support bounded source-model comparisons. Chemical, mass, volume, sampling, spin and SOC effects can co-change; no universal causal or error-bound interpretation is assigned.",
+  "risk_tag_scope": "Attention labels support browsing. Element labels are not measured magnetic ground states, rejection criteria or calibrated potential scores; no label does not mean no risk.",
+  "candidate": {
+    "id": "source-hypothesis:agm002190814",
+    "formula": "Ti3Te",
+    "reduced_formula": "Ti3Te",
+    "composition": {
+      "Te": 1,
+      "Ti": 3
+    },
+    "canonical_composition_key": "Te:1|Ti:3",
+    "elements": [
+      "Te",
+      "Ti"
+    ],
+    "source_state": "agm002190814",
+    "control_state": "agm002190808",
+    "source_directory": "batch-a/Ti3Te_agm002190814",
+    "control_directory": "batch-a/Ti3Sn_agm002190808",
+    "status": "unscored_research_hypothesis",
+    "route": "geometry_construction",
+    "route_submechanism": "weighted_phonon_log_moment_net_pairing",
+    "prototype": "Source symmetry observation: space group 223. Ordered-site evidence is retained; space group alone is not a prototype certificate.",
+    "prototype_evidence": [
+      {
+        "symprec_A": 0.0001,
+        "mode": "color_aware",
+        "status": "completed",
+        "SG_number": 223,
+        "hall_number": 520,
+        "input_wyckoff_letters": [
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "a",
+          "a"
+        ],
+        "input_crystallographic_orbits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          6,
+          6
+        ]
+      },
+      {
+        "symprec_A": 0.0001,
+        "mode": "color_blind",
+        "status": "completed",
+        "SG_number": 223,
+        "hall_number": 520,
+        "input_wyckoff_letters": [
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "a",
+          "a"
+        ],
+        "input_crystallographic_orbits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          6,
+          6
+        ]
+      },
+      {
+        "symprec_A": 0.001,
+        "mode": "color_aware",
+        "status": "completed",
+        "SG_number": 223,
+        "hall_number": 520,
+        "input_wyckoff_letters": [
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "a",
+          "a"
+        ],
+        "input_crystallographic_orbits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          6,
+          6
+        ]
+      },
+      {
+        "symprec_A": 0.001,
+        "mode": "color_blind",
+        "status": "completed",
+        "SG_number": 223,
+        "hall_number": 520,
+        "input_wyckoff_letters": [
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "a",
+          "a"
+        ],
+        "input_crystallographic_orbits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          6,
+          6
+        ]
+      },
+      {
+        "symprec_A": 0.01,
+        "mode": "color_aware",
+        "status": "completed",
+        "SG_number": 223,
+        "hall_number": 520,
+        "input_wyckoff_letters": [
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "a",
+          "a"
+        ],
+        "input_crystallographic_orbits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          6,
+          6
+        ]
+      },
+      {
+        "symprec_A": 0.01,
+        "mode": "color_blind",
+        "status": "completed",
+        "SG_number": 223,
+        "hall_number": 520,
+        "input_wyckoff_letters": [
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "c",
+          "a",
+          "a"
+        ],
+        "input_crystallographic_orbits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          6,
+          6
+        ]
+      }
+    ],
+    "support_grade": 3,
+    "support_scale_max": 4,
+    "support_meaning": "Preliminary screened support within the stated source model. This ordinal level is not a probability, formal RPS score or human scientific review.",
+    "source_tc": {
+      "target_K": 15.902,
+      "control_K": 13.176,
+      "delta_K": 2.725999999999999,
+      "unit": "K",
+      "method": "Eliashberg",
+      "mu_star": 0.1,
+      "experimental": false,
+      "sigma_binding": null
+    },
+    "lambda_difference": {
+      "all10": [
+        -0.03069999999999995,
+        -0.03869999999999996,
+        -0.007200000000000095,
+        0.00770000000000004,
+        0.0043999999999999595,
+        -0.006699999999999928,
+        -0.018200000000000105,
+        -0.026999999999999913,
+        -0.03269999999999995,
+        -0.03579999999999994
+      ],
+      "range": [
+        -0.03869999999999996,
+        0.00770000000000004
+      ],
+      "convention": "target_minus_control",
+      "unit": "dimensionless"
+    },
+    "omega_log_ratio_all10": [
+      1.2329407055713115,
+      1.2424313030534417,
+      1.2421402986147438,
+      1.235912773459094,
+      1.2279432313321899,
+      1.2211770637176131,
+      1.2162266826837458,
+      1.2125613671485818,
+      1.2095731574286777,
+      1.2069138968213997
+    ],
+    "risk_summary": "Ti3Ge has a still higher source response and is retained as the reverse comparison. Ti3Ni is also retained. Source McMillan, Allen–Dynes and Eli outputs all favor Te versus Sn, and the separate-header proxy is positive at the three declared μ sensitivities.",
+    "ambient_scope": "The exact source neutral zero-applied-pressure model has positive Γ optical compression intervals and no negative retained sampled path value for target and selected control. Coarse/fine force and full stress, relaxation warnings and every q record are retained. These finite observations do not prove full-BZ or thermodynamic hull stability.",
+    "route_response": "Te-for-Sn on the A15 B role raises weighted ωlog by 20.69–24.24% with a mixed λ change −.0387…+.0077. A heavier element raises the coupled weighted moment here, showing that bare mass alone does not explain the response.",
+    "next_action": "Use exact-state saved mode weights or α²F to determine whether the log-moment gain comes from altered coupling weights rather than bare phonon stiffening; preserve the omission of explicit SOC in the bounded scalar model.",
+    "seven_criteria": {
+      "identity": "Exact agm002190814 ordered coordinates, species and metric are linked through source CIF→coarse/fine input→Γ header; actual bounded association residuals and original record IDs are retained below. This is not an experimental structure certificate.",
+      "quantitative_route_response": "Te-for-Sn on the A15 B role raises weighted ωlog by 20.69–24.24% with a mixed λ change −.0387…+.0077. A heavier element raises the coupled weighted moment here, showing that bare mass alone does not explain the response.",
+      "pairing_relevance": "Separate source Eli gain 2.726 K is retained with source McMillan/AD. Actual source-header descriptor reproduces the first McMillan column to printed precision. Header-to-ten-σ and Eli-to-σ association remains null, and ωlog is α²F weighted rather than an assertion that all bare modes harden.",
+      "ambient_feasibility": "The exact source neutral zero-applied-pressure model has positive Γ optical compression intervals and no negative retained sampled path value for target and selected control. Coarse/fine force and full stress, relaxation warnings and every q record are retained. These finite observations do not prove full-BZ or thermodynamic hull stability.",
+      "competition_and_coherence": "Ti3Ge has a still higher source response and is retained as the reverse comparison. Ti3Ni is also retained. Source McMillan, Allen–Dynes and Eli outputs all favor Te versus Sn, and the separate-header proxy is positive at the three declared μ sensitivities.",
+      "novelty": "The A15 Ti3Te hypothesis is a known published computational proposal. No world-first or experimental-validation claim is made; the catalogue object is the exact retained source state.",
+      "decision": "Supported as a private finite-source hypothesis at the printed μ*=.1 under the neutral scalar NC/PBEsol approximation; no calibrated physical probability or public score."
+    },
+    "risk_tags": [],
+    "countercontrols": [
+      {
+        "frozen_contrast_index": 308,
+        "fixed_A": "batch-a/Ti3Ge_agm002190754",
+        "fixed_B": "batch-a/Ti3Te_agm002190814",
+        "other_state": "batch-a/Ti3Ge_agm002190754",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "source_Eli_gain_target_minus_other_K": -1.0260000000000016,
+        "other_printed_path_negative_values": 0,
+        "other_q_sampling_summary": {
+          "source_ID": "agm002190754",
+          "dyn0_source_record": 4995,
+          "configured_q_mesh": [
+            3.0,
+            3.0,
+            3.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 1,
+              "source_record": 5002,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 5003,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 5004,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 5005,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          -0.007199999999999984,
+          0.09870000000000001
+        ]
+      },
+      {
+        "frozen_contrast_index": 313,
+        "fixed_A": "batch-a/Ti3Ni_agm002190774",
+        "fixed_B": "batch-a/Ti3Te_agm002190814",
+        "other_state": "batch-a/Ti3Ni_agm002190774",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "source_Eli_gain_target_minus_other_K": 1.936,
+        "other_printed_path_negative_values": 0,
+        "other_q_sampling_summary": {
+          "source_ID": "agm002190774",
+          "dyn0_source_record": 9763,
+          "configured_q_mesh": [
+            3.0,
+            3.0,
+            3.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 1,
+              "source_record": 9770,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 9771,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 9772,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 9773,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          -0.14,
+          0.06820000000000004
+        ]
+      },
+      {
+        "frozen_contrast_index": 314,
+        "fixed_A": "batch-a/Ti3Sn_agm002190808",
+        "fixed_B": "batch-a/Ti3Te_agm002190814",
+        "other_state": "batch-a/Ti3Sn_agm002190808",
+        "three_symprec_supported": true,
+        "supported_symprec_A": [
+          0.0001,
+          0.001,
+          0.01
+        ],
+        "source_Eli_gain_target_minus_other_K": 2.725999999999999,
+        "other_printed_path_negative_values": 0,
+        "other_q_sampling_summary": {
+          "source_ID": "agm002190808",
+          "dyn0_source_record": 12015,
+          "configured_q_mesh": [
+            3.0,
+            3.0,
+            3.0
+          ],
+          "observed_q_index_records": [
+            {
+              "q_index": 1,
+              "source_record": 12022,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 2,
+              "source_record": 12023,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 3,
+              "source_record": 12024,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            },
+            {
+              "q_index": 4,
+              "source_record": 12025,
+              "JOB_DONE_seen": true,
+              "routine_error_count": 0,
+              "last_printed_convergence_value": true
+            }
+          ],
+          "full_BZ_stability": null,
+          "native_exit_status": null
+        },
+        "lambda_target_minus_other_range": [
+          -0.03869999999999996,
+          0.00770000000000004
+        ]
+      }
+    ],
+    "physical_summary": {
+      "directory_key": "batch-a/Ti3Te_agm002190814",
+      "source_ID": "agm002190814",
+      "composition": {
+        "Te": 1,
+        "Ti": 3
+      },
+      "listed_sites": 8,
+      "CIF_source_record": 6331,
+      "source_McMillan_and_AD_mu0p1": {
+        "value": [
+          0.1,
+          13.527,
+          14.459
+        ],
+        "missing_tokens": [
+          false,
+          false,
+          false
+        ],
+        "printed_zero": [
+          false,
+          false,
+          false
+        ]
+      },
+      "source_Eli_mu0p1": {
+        "value": [
+          0.1,
+          15.902
+        ],
+        "missing_tokens": [
+          false,
+          false
+        ],
+        "printed_zero": [
+          false,
+          false
+        ]
+      },
+      "SCF_coarse": {
+        "source_record": 6353,
+        "explicit_program_start_headers": [
+          {
+            "value": "Program PWSCF v.7.1 starts on 12Mar2023 at 10:47:28"
+          }
+        ],
+        "last_printed_convergence_event": {
+          "value": true,
+          "role": "printed electronic/linear-response convergence event; context not assumed SCF"
+        },
+        "JOB_DONE_seen": true,
+        "routine_error_count": 0,
+        "warning_patterns": {
+          "pattern_selected_count": 5,
+          "pattern_scope_not_all_warnings": true,
+          "BFGS": {
+            "count": 1,
+            "last": {
+              "value": "Warning: card   CELL_DYNAMICS = 'BFGS', ignored"
+            }
+          },
+          "negative_charge": {
+            "count": 0,
+            "last": null
+          },
+          "eigen_text": {
+            "count": 0,
+            "last": null
+          },
+          "failure_text": {
+            "count": 0,
+            "last": null
+          },
+          "SCF_correction_text": {
+            "count": 1,
+            "last": {
+              "value": "Total force =     0.000000     Total SCF correction =     0.000000"
+            }
+          }
+        },
+        "last_force": {
+          "header": {
+            "value": "Forces acting on atoms (cartesian axes, Ry/au):"
+          },
+          "reported_unit": "Ry/bohr",
+          "printed_site_rows": 8,
+          "ordered_atom_indices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "reported_max_abs_component": {
+            "value": 0.0,
+            "unit": "Ry/bohr",
+            "derivation": "all components in this printed force block"
+          },
+          "recomputed_max_component_Ry_bohr": 0.0,
+          "recomputed_max_atom_norm_Ry_bohr": 0.0,
+          "max_component_eV_A": 0.0,
+          "max_atom_norm_eV_A": 0.0,
+          "Ry_bohr_to_eV_A_factor": 25.711033738162943,
+          "conversion_constants": {
+            "Ry_eV": 13.605693122994,
+            "bohr_A": 0.529177210903
+          },
+          "unit_conversion_valid": true,
+          "max_norm_site": {
+            "value": [
+              0.0,
+              -0.0,
+              0.0
+            ],
+            "atom_index": 1,
+            "type_index": 2
+          },
+          "reported_component_agrees": true
+        },
+        "last_stress": {
+          "last_pressure_print": {
+            "value": -0.0,
+            "unit": "kbar",
+            "raw_value": "-0.00",
+            "GPa": -0.0
+          },
+          "last_stress_block": {
+            "header": {
+              "value": "total   stress  (Ry/bohr**3)                   (kbar)     P=       -0.00"
+            },
+            "complete_3x6": true,
+            "first_tensor_unit": "Ry/bohr^3",
+            "last_tensor_unit": "kbar",
+            "rows": [
+              {
+                "value": [
+                  -1e-08,
+                  0.0,
+                  0.0,
+                  -0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "value": [
+                  0.0,
+                  -1e-08,
+                  0.0,
+                  0.0,
+                  -0.0,
+                  0.0
+                ]
+              },
+              {
+                "value": [
+                  0.0,
+                  0.0,
+                  -1e-08,
+                  0.0,
+                  0.0,
+                  -0.0
+                ]
+              }
+            ],
+            "full_last_tensor_GPa": [
+              [
+                -0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                -0.0
+              ]
+            ],
+            "trace_mean_kbar": 0.0,
+            "max_abs_stress_GPa": 0.0,
+            "hydrostatic_pressure_not_full_stress": true
+          }
+        },
+        "ionic_convergence_certificate": null,
+        "native_exit_status": null
+      },
+      "SCF_fine": {
+        "source_record": 6354,
+        "explicit_program_start_headers": [
+          {
+            "value": "Program PWSCF v.7.1 starts on 12Mar2023 at 10: 9: 9"
+          }
+        ],
+        "last_printed_convergence_event": {
+          "value": true,
+          "role": "printed electronic/linear-response convergence event; context not assumed SCF"
+        },
+        "JOB_DONE_seen": true,
+        "routine_error_count": 0,
+        "warning_patterns": {
+          "pattern_selected_count": 63,
+          "pattern_scope_not_all_warnings": true,
+          "BFGS": {
+            "count": 1,
+            "last": {
+              "value": "Warning: card   CELL_DYNAMICS = 'BFGS', ignored"
+            }
+          },
+          "negative_charge": {
+            "count": 0,
+            "last": null
+          },
+          "eigen_text": {
+            "count": 58,
+            "last": {
+              "value": "c_bands:  1 eigenvalues not converged"
+            }
+          },
+          "failure_text": {
+            "count": 0,
+            "last": null
+          },
+          "SCF_correction_text": {
+            "count": 1,
+            "last": {
+              "value": "Total force =     0.000000     Total SCF correction =     0.000000"
+            }
+          }
+        },
+        "last_force": {
+          "header": {
+            "value": "Forces acting on atoms (cartesian axes, Ry/au):"
+          },
+          "reported_unit": "Ry/bohr",
+          "printed_site_rows": 8,
+          "ordered_atom_indices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "reported_max_abs_component": {
+            "value": 0.0,
+            "unit": "Ry/bohr",
+            "derivation": "all components in this printed force block"
+          },
+          "recomputed_max_component_Ry_bohr": 0.0,
+          "recomputed_max_atom_norm_Ry_bohr": 0.0,
+          "max_component_eV_A": 0.0,
+          "max_atom_norm_eV_A": 0.0,
+          "Ry_bohr_to_eV_A_factor": 25.711033738162943,
+          "conversion_constants": {
+            "Ry_eV": 13.605693122994,
+            "bohr_A": 0.529177210903
+          },
+          "unit_conversion_valid": true,
+          "max_norm_site": {
+            "value": [
+              0.0,
+              -0.0,
+              0.0
+            ],
+            "atom_index": 1,
+            "type_index": 2
+          },
+          "reported_component_agrees": true
+        },
+        "last_stress": {
+          "last_pressure_print": {
+            "value": 0.2,
+            "unit": "kbar",
+            "raw_value": "0.20",
+            "GPa": 0.02
+          },
+          "last_stress_block": {
+            "header": {
+              "value": "total   stress  (Ry/bohr**3)                   (kbar)     P=        0.20"
+            },
+            "complete_3x6": true,
+            "first_tensor_unit": "Ry/bohr^3",
+            "last_tensor_unit": "kbar",
+            "rows": [
+              {
+                "value": [
+                  1.39e-06,
+                  0.0,
+                  0.0,
+                  0.2,
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "value": [
+                  0.0,
+                  1.39e-06,
+                  0.0,
+                  0.0,
+                  0.2,
+                  0.0
+                ]
+              },
+              {
+                "value": [
+                  0.0,
+                  0.0,
+                  1.39e-06,
+                  0.0,
+                  0.0,
+                  0.2
+                ]
+              }
+            ],
+            "full_last_tensor_GPa": [
+              [
+                0.02,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.02,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.02
+              ]
+            ],
+            "trace_mean_kbar": 0.20000000000000004,
+            "max_abs_stress_GPa": 0.02,
+            "hydrostatic_pressure_not_full_stress": true
+          }
+        },
+        "ionic_convergence_certificate": null,
+        "native_exit_status": null
+      },
+      "Gamma": {
+        "source_pin": {
+          "directory_key": "batch-a/Ti3Te_agm002190814",
+          "bytes": 31828,
+          "sha256": "0d6b7b4eee63a6707dbe2343942fdcfa95f27c5a5e0eb5be7445b574311d69b4"
+        },
+        "raw_optical_minimum": 8.283230273374323e-07,
+        "raw_optical_printing_intervals": [
+          [
+            8.283197451690436e-07,
+            8.28326309505821e-07
+          ],
+          [
+            8.283197451690438e-07,
+            8.283263095058212e-07
+          ],
+          [
+            8.283197451690448e-07,
+            8.283263095058223e-07
+          ],
+          [
+            2.38022405359962e-06,
+            2.3802306179363976e-06
+          ],
+          [
+            2.38022405359962e-06,
+            2.3802306179363976e-06
+          ],
+          [
+            2.3802240535996214e-06,
+            2.380230617936399e-06
+          ],
+          [
+            2.4287637408986313e-06,
+            2.4287703052354088e-06
+          ],
+          [
+            2.4287637408986313e-06,
+            2.4287703052354088e-06
+          ],
+          [
+            2.4287637408986318e-06,
+            2.428770305235409e-06
+          ],
+          [
+            2.456956248638793e-06,
+            2.4569628129755703e-06
+          ],
+          [
+            2.456956248638794e-06,
+            2.4569628129755716e-06
+          ],
+          [
+            2.456956248638794e-06,
+            2.4569628129755716e-06
+          ],
+          [
+            3.4544072517227076e-06,
+            3.454413816059485e-06
+          ],
+          [
+            3.4544072517227085e-06,
+            3.454413816059486e-06
+          ],
+          [
+            3.454407251722709e-06,
+            3.4544138160594863e-06
+          ],
+          [
+            3.84829381497095e-06,
+            3.848300379307727e-06
+          ],
+          [
+            3.848293814970951e-06,
+            3.848300379307728e-06
+          ],
+          [
+            3.848293814970951e-06,
+            3.848300379307728e-06
+          ],
+          [
+            5.751913507329434e-06,
+            5.7519200716662105e-06
+          ],
+          [
+            5.7519135073294364e-06,
+            5.751920071666213e-06
+          ],
+          [
+            6.351240983202477e-06,
+            6.3512475475392534e-06
+          ]
+        ],
+        "unit": "squared source-Ry frequency convention",
+        "native_negative_mode_numbers": [
+          1,
+          2,
+          3
+        ],
+        "physical_error_bar": null,
+        "full_BZ": null
+      },
+      "retained_path": {
+        "kind": "qe_freq_gp_source_path_table",
+        "raw_header_lines": [],
+        "path_rows": 99,
+        "column_width_counts": {
+          "25": 99
+        },
+        "mode_column_values": 2376,
+        "negative_printed_values": 0,
+        "minimum_printed_mode": {
+          "value": -0.0,
+          "column_index_zero_based": 1
+        },
+        "frequency_unit_header": null,
+        "column_roles_conditional_on_file_schema": true,
+        "fullBZ_coverage": null,
+        "dynamical_stability": null,
+        "state_link_verified": null
+      },
+      "q_sampling": {
+        "source_ID": "agm002190814",
+        "dyn0_source_record": 6341,
+        "raw_first_two_dyn0_rows": [
+          {
+            "value": [
+              3.0,
+              3.0,
+              3.0
+            ],
+            "missing_tokens": [
+              false,
+              false,
+              false
+            ],
+            "printed_zero": [
+              false,
+              false,
+              false
+            ]
+          },
+          {
+            "value": [
+              4.0
+            ],
+            "missing_tokens": [
+              false
+            ],
+            "printed_zero": [
+              false
+            ]
+          }
+        ],
+        "observed_q_index_records": [
+          {
+            "q_index": 1,
+            "source_record": 6348,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 2,
+            "source_record": 6349,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 3,
+            "source_record": 6350,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          },
+          {
+            "q_index": 4,
+            "source_record": 6351,
+            "JOB_DONE_seen": true,
+            "routine_error_count": 0,
+            "last_printed_convergence_value": true
+          }
+        ],
+        "source_PH_input_record_count": 4,
+        "source_PH_input_bound_mismatch_count": 0,
+        "all_irreps_complete": null,
+        "native_exit_status": null,
+        "full_BZ_stability": null
+      },
+      "unknowns": {
+        "physical_mobile_carrier_density": null,
+        "active_orbital_bandwidth": null,
+        "public_RPS": null
+      }
+    },
+    "evidence_pins": [
+      {
+        "artifact": "tranche-01-eight-actual-omega-net-pairing-cases.json",
+        "bytes": 1213076,
+        "sha256": "ae6bc2be8e022ea5308483e2f63d28dfc4565f2cfa13948c036a16368c5f6201",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all62-net-pairing-owned-source-review-cache-v1.json",
+        "bytes": 4086409,
+        "sha256": "bced95fc8c75035eb57c3afbae73d98e099c3e732ef1e07a1836df54a1d60e15",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+        "bytes": 852876,
+        "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175",
+        "availability": "digest_reference"
+      },
+      {
+        "artifact": "ROOT-owned-62-source-observations-for-Tc-header-readback-v1.json",
+        "bytes": 10632536,
+        "sha256": "35c5bfdd77eb7194ebebc41802600580a842c5526c8727c40a427c8869890d90",
+        "availability": "digest_reference"
+      }
+    ],
+    "newness_scope": "Published source predictions already known; specific matched mechanism new to reviewed catalogue, not first discovery.",
+    "formal_RPS": null,
+    "rank": null,
+    "success_probability": null,
+    "human_scientific_review": null,
+    "experimental_superconductivity": null,
+    "room_temperature_support": null,
+    "quantified_physical_bandwidth": null,
+    "quantified_mobile_carrier_density": null,
+    "whole_BZ_stability": null,
+    "global_thermodynamic_stability": null
+  }
+}
