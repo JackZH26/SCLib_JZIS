@@ -122,7 +122,7 @@ def run_checks(args: argparse.Namespace) -> list[CheckResult]:
         if marker.is_symlink() or not marker.is_file() or marker.stat().st_size == 0:
             raise ValueError("Intentional ingestion pause requires an existing nonempty regular marker")
     for name, routes, target, minimum in (
-        ("public-api", PUBLIC_ROUTES, 0.999, 100),
+        ("public-api", PUBLIC_ROUTES, 0.99, 100),
         ("ai-api", AI_ROUTES, 0.995, 20),
     ):
         total = prometheus_scalar(

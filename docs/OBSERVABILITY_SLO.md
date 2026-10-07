@@ -34,7 +34,7 @@ explicitly returns 404 for the public `/sclib/metrics` path.
 
 | SLO | Indicator | 30-day target | Monthly error budget |
 |---|---|---:|---:|
-| Public read API | Non-5xx responses on stats, version, materials, paper detail, timeline, and discovery | 99.9% | 43m 12s |
+| Public read API | Non-5xx responses on stats, version, materials, paper detail, timeline, and discovery | 99% | 7h 12m |
 | Search and Ask API | Non-5xx responses on search, Ask, and similar-paper routes | 99.5% | 3h 36m |
 | Public API latency | p95 request duration for non-generation public routes | < 750 ms | monitored, not a release blocker |
 | Search latency | p95 search duration | < 2 s | monitored, not a release blocker |
@@ -48,6 +48,12 @@ response remains available but is tracked separately by provider and RAG
 metrics. Planned maintenance is not automatically excluded.
 
 ## Release gate
+
+Effective 2026-10-07, the operator-approved public read API release threshold is
+99% over the trailing 30 days. Availability at or above 99% passes this check;
+a release may proceed normally when the other applicable checks also pass.
+This replaces the previous 99.9% threshold and does not require a per-release
+availability exception.
 
 Before a production release, run on VPS2:
 
@@ -96,6 +102,11 @@ Record the destination and actual delivery test date in the operations log.
 ## Alert runbooks
 
 ### API error-budget alert
+
+The public API's short-window alert remains a 5-minute 5xx ratio above 1.44%
+for 5 minutes. This early warning is independent of the 30-day release gate
+and corresponds to a 1.44-times burn rate against the current 1% public error
+budget. Search/Ask alert thresholds remain unchanged.
 
 1. Open the request-rate, error-ratio, and latency panels and isolate the route.
 2. Correlate the alert start with the deployed `site_version` from `/v1/version`.

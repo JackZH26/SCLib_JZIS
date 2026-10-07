@@ -24,13 +24,13 @@ class ErrorBudgetEvaluationTests(unittest.TestCase):
         result = evaluate_availability(
             "public-api",
             total=10_000,
-            errors=10,
-            target=0.999,
+            errors=100,
+            target=0.99,
             minimum_requests=100,
             allow_no_data=False,
         )
         self.assertTrue(result.passed)
-        self.assertAlmostEqual(result.observed or 0, 0.999)
+        self.assertAlmostEqual(result.observed or 0, 0.99)
 
     def test_availability_fails_when_budget_is_exhausted(self) -> None:
         result = evaluate_availability(
@@ -48,7 +48,7 @@ class ErrorBudgetEvaluationTests(unittest.TestCase):
             "public-api",
             total=None,
             errors=None,
-            target=0.999,
+            target=0.99,
             minimum_requests=100,
             allow_no_data=False,
         )
@@ -60,7 +60,7 @@ class ErrorBudgetEvaluationTests(unittest.TestCase):
             "public-api",
             total=2,
             errors=0,
-            target=0.999,
+            target=0.99,
             minimum_requests=100,
             allow_no_data=True,
         )
@@ -71,7 +71,7 @@ class ErrorBudgetEvaluationTests(unittest.TestCase):
             "public-api",
             total=250,
             errors=None,
-            target=0.999,
+            target=0.99,
             minimum_requests=100,
             allow_no_data=False,
         )
@@ -114,6 +114,37 @@ class ErrorBudgetEvaluationTests(unittest.TestCase):
         self.assertIn('route=~"/paper/[{]paper_id:path[}]"', query)
         self.assertIn('status=~"5.."', query)
 
+    def test_default_release_gate_accepts_public_availability_at_or_above_99_percent(self) -> None:
+        for errors in (100.0, 30.0):
+            with self.subTest(errors=errors), patch(
+                "scripts.check_error_budget.prometheus_scalar",
+                side_effect=[10_000.0, errors, 1_000.0, 5.0, 60.0],
+            ), contextlib.redirect_stdout(io.StringIO()) as output:
+                self.assertEqual(main(["--json"]), 0)
+                checks = json.loads(output.getvalue())
+                self.assertEqual(checks[0]["target"], 0.99)
+                self.assertAlmostEqual(checks[0]["observed"], 1 - errors / 10_000)
+                self.assertTrue(checks[0]["passed"])
+                self.assertEqual(checks[1]["target"], 0.995)
+
+    def test_default_release_gate_rejects_public_availability_below_99_percent(self) -> None:
+        with patch(
+            "scripts.check_error_budget.prometheus_scalar",
+            side_effect=[10_000.0, 101.0, 1_000.0, 5.0, 60.0],
+        ), contextlib.redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(main(["--json"]), 1)
+        checks = json.loads(output.getvalue())
+        self.assertFalse(checks[0]["passed"])
+        self.assertAlmostEqual(checks[0]["observed"], 0.9899)
+
+    def test_public_99_percent_policy_does_not_waive_ai_or_freshness_failure(self) -> None:
+        for ai_errors, age in ((6.0, 60.0), (5.0, 86_401.0)):
+            with self.subTest(ai_errors=ai_errors, age=age), patch(
+                "scripts.check_error_budget.prometheus_scalar",
+                side_effect=[10_000.0, 30.0, 1_000.0, ai_errors, age],
+            ), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(main(["--json"]), 1)
+
     def test_invalid_window_is_rejected(self) -> None:
         with self.assertRaises(argparse.ArgumentTypeError):
             _valid_window("30 days")
@@ -134,7 +165,7 @@ class ErrorBudgetEvaluationTests(unittest.TestCase):
         self.assertTrue(all(check["passed"] for check in checks[:2]))
 
     def test_intentional_pause_does_not_waive_failed_or_missing_availability(self) -> None:
-        for traffic in ([100.0, 1.0, 20.0, 0.0, None], [100.0, 0.0, 2.0, None, None]):
+        for traffic in ([100.0, 2.0, 20.0, 0.0, None], [100.0, 0.0, 2.0, None, None]):
             with self.subTest(traffic=traffic), tempfile.TemporaryDirectory() as root:
                 marker = Path(root) / "paused"
                 marker.write_text("paused")
