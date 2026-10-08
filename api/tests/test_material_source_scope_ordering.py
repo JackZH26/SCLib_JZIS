@@ -358,9 +358,9 @@ async def test_new_pages_reuse_ranking_and_hydrate_only_the_page(client, db_sess
         calls.append(material.id)
         return original_sort(material, field)
 
-    async def prepared(db, materials):
+    async def prepared(db, materials, **kwargs):
         hydrated.extend(row.id for row in materials)
-        return await original_prepare(db, materials)
+        return await original_prepare(db, materials, **kwargs)
 
     monkeypatch.setattr(routes, "_current_sort_value", counted)
     monkeypatch.setattr(routes, "prepare_material_views", prepared)
