@@ -1,0 +1,1199 @@
+{
+  "schema_version": "discovery-batch12-prepared-inputs/1.0.0",
+  "plan": {
+    "path": "factorial-plan.json",
+    "sha256": "64ce7ed436168f58d28d451cf0171125e16dfeb40d63650e55b5a94c3dc2c4cb",
+    "bytes": 218899
+  },
+  "studies": [
+    {
+      "id": "mgb2-al-paired",
+      "question": "What changes under one ordered Mg-site Al substitution at matched lattice and numerical settings?",
+      "roles": [
+        "parent",
+        "al_only"
+      ],
+      "nominal_composition": "Mg3AlB8",
+      "sublattice_fraction": "1/4 Mg sites replaced",
+      "prior": "Al substitution in MgB2 is known and can suppress Tc. Extra nominal electrons are not a carrier-density or Tc gain.",
+      "prior_url": "https://doi.org/10.1103/PhysRevB.71.144512",
+      "state_ids": [
+        "combined-candidate:0ffb72f436dc93cafb015b2a1ebfc5af25b32bc0185dd0a807f751df37673236",
+        "combined-candidate:a234f92378fc28b04070df0c3f6313ac0c4c636d815b7c27dbef625836851393",
+        "combined-candidate:965b2c8ab35a6cd68335afaba281fbf105f3db5e407860123cb4b99ccffb0367",
+        "combined-candidate:55b18774cde7e9c6805abaa89f981b52483ce5294b397bf4db1d9858109f7559",
+        "reference-control:supercell:3e7b6416dccf8a84904856faa1737f85d02304b98af8ca16ed8e44b0db2e5dcc",
+        "combined-candidate:94ca4db7656cd1f708bd6b9cbca99d94fa21d24b4180025e9eafde81720d4a5f"
+      ],
+      "execution_status": "prepared_not_run",
+      "novelty_credit": false,
+      "superconductivity_claim": false,
+      "stop_rule": "Retain failed or incomplete calculations. Do not rank an observable until its own matched-state convergence test passes."
+    },
+    {
+      "id": "mgb2-c-paired",
+      "question": "What changes under one ordered B-site C substitution at matched lattice and numerical settings?",
+      "roles": [
+        "parent",
+        "c_only"
+      ],
+      "nominal_composition": "Mg4B7C",
+      "sublattice_fraction": "1/8 B sites replaced",
+      "prior": "C substitution is known; alloy disorder, strain and nominal electron count are coupled. This ordered cell does not model a disordered experimental sample.",
+      "prior_url": "https://doi.org/10.1103/PhysRevB.64.134513",
+      "state_ids": [
+        "combined-candidate:70aae73af891639689fb6421d7769b2317fabc8eeb08c181e2f930e3e8f847a2",
+        "combined-candidate:2e73d6521f09f8ceee2c7c62c8b19ff0db923ff49bb677a44bc51bfa2ad4cca2",
+        "combined-candidate:ff79baecbc30b3098983cbdf0393034d7cde4f8dc74844b908955b79982b3076",
+        "combined-candidate:55b18774cde7e9c6805abaa89f981b52483ce5294b397bf4db1d9858109f7559",
+        "reference-control:supercell:3e7b6416dccf8a84904856faa1737f85d02304b98af8ca16ed8e44b0db2e5dcc",
+        "combined-candidate:94ca4db7656cd1f708bd6b9cbca99d94fa21d24b4180025e9eafde81720d4a5f"
+      ],
+      "execution_status": "prepared_not_run",
+      "novelty_credit": false,
+      "superconductivity_claim": false,
+      "stop_rule": "Retain failed or incomplete calculations. Do not rank an observable until its own matched-state convergence test passes."
+    },
+    {
+      "id": "mgb2-al-c-factorial",
+      "question": "Is the joint response nonadditive after matching geometry and comparing both single substitutions?",
+      "roles": [
+        "parent",
+        "al_only",
+        "c_only",
+        "al_c"
+      ],
+      "nominal_composition": "Mg3AlB7C",
+      "sublattice_fraction": "1/4 Mg and 1/8 B sites replaced",
+      "prior": "Al/C codoping is known. The exact ordered model is a controlled research input, with novelty unresolved until structure-aware prior-art review.",
+      "prior_url": "https://doi.org/10.1016/j.physc.2025.1354776",
+      "state_ids": [
+        "combined-candidate:384da55bb8d507263d22247af5543d3de1bab9be33ac1cc2c03a110b31aa09b5",
+        "combined-candidate:a81c2df2c1450981584b9a2acbfddbe0314a9437e7687980adac307ec390f998",
+        "combined-candidate:74107556ce495869d92ea342189732ff9dcb54a69fb5be4a4c3ee6326548d0fa",
+        "combined-candidate:0ffb72f436dc93cafb015b2a1ebfc5af25b32bc0185dd0a807f751df37673236",
+        "combined-candidate:a234f92378fc28b04070df0c3f6313ac0c4c636d815b7c27dbef625836851393",
+        "combined-candidate:965b2c8ab35a6cd68335afaba281fbf105f3db5e407860123cb4b99ccffb0367",
+        "combined-candidate:70aae73af891639689fb6421d7769b2317fabc8eeb08c181e2f930e3e8f847a2",
+        "combined-candidate:2e73d6521f09f8ceee2c7c62c8b19ff0db923ff49bb677a44bc51bfa2ad4cca2",
+        "combined-candidate:ff79baecbc30b3098983cbdf0393034d7cde4f8dc74844b908955b79982b3076",
+        "combined-candidate:55b18774cde7e9c6805abaa89f981b52483ce5294b397bf4db1d9858109f7559",
+        "reference-control:supercell:3e7b6416dccf8a84904856faa1737f85d02304b98af8ca16ed8e44b0db2e5dcc",
+        "combined-candidate:94ca4db7656cd1f708bd6b9cbca99d94fa21d24b4180025e9eafde81720d4a5f"
+      ],
+      "execution_status": "prepared_not_run",
+      "novelty_credit": false,
+      "superconductivity_claim": false,
+      "stop_rule": "Retain failed or incomplete calculations. Do not rank an observable until its own matched-state convergence test passes."
+    }
+  ],
+  "scope": {
+    "source": "COD 1526507 pinned coordinates",
+    "construction": "Explicit ordered 12-atom cells; no symmetry-unique or dilute-defect claim",
+    "charge": 0,
+    "nspin": 1,
+    "spin_orbit": false,
+    "assigned_pressure_gpa": null,
+    "assigned_temperature_k": null,
+    "strain": "Uniform linear lattice perturbation, not a measured pressure or equilibrium volume",
+    "geometry_route": "Constructed perturbations; causal benefit untested",
+    "bandwidth_route": "Active-orbital bandwidth unmeasured",
+    "carrier_route": "Mobile carrier density unmeasured; UPF valence count is bookkeeping only",
+    "source_phase_experiment_association": "unestablished",
+    "new_material_discovery": false,
+    "formal_RPS": null
+  },
+  "protocol": {
+    "stage": "fixed-geometry numerical calibration before relaxation or physics interpretation",
+    "meshes": [
+      [
+        4,
+        4,
+        6
+      ],
+      [
+        6,
+        6,
+        10
+      ],
+      [
+        8,
+        8,
+        12
+      ]
+    ],
+    "ecutwfc_ry": 60,
+    "ecutrho_ry": 480,
+    "degauss_ry": 0.02,
+    "sampled_energy_tolerance_ha_per_atom": 0.0001,
+    "pass_rule": "For each identical state: all three SCFs converge, max SCF error/atom < 1e-4 Ha and (max E - min E)/12 <= 1e-4 Ha. Finite sampled mesh sensitivity only; cutoff/smearing convergence remains separate.",
+    "comparison": "Never rank absolute total energies across different compositions. Later use matched observables or a mass-balanced reaction with declared chemical potentials.",
+    "factorial": "For a common converged observable Y at a matched strain, interaction = Y(Al+C) - Y(Al) - Y(C) + Y(parent). Record numerical uncertainty before interpretation.",
+    "subsequent_stages": [
+      "cutoff and smearing sensitivity for the declared observable",
+      "fixed-cell relaxation with force and stress readback",
+      "explicit active-orbital model and band/DOS sampling before bandwidth claims",
+      "Fermi-surface or transport model with units before carrier claims",
+      "competing structures, magnetism and phonons before stability/pairing follow-up"
+    ],
+    "execution_budget": null,
+    "auto_enqueue": false,
+    "machine_readiness_required": true
+  },
+  "upf_sha256": {
+    "Mg": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+    "Al": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a",
+    "B": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135",
+    "C": "8a25fbf64c4fa257c68c01dc9a96e5b23c6a5ac0b09f45f271e1c946a65ed657"
+  },
+  "jobs": [
+    {
+      "directory": "jobs/al_c-minus2-k4x4x6",
+      "state_id": "combined-candidate:384da55bb8d507263d22247af5543d3de1bab9be33ac1cc2c03a110b31aa09b5",
+      "role": "al_c",
+      "strain_percent": -2,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 7,
+        "C": 1,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_c-minus2-k4x4x6/sclib_e44f91d33782c03a.in",
+        "sha256": "583b3efcfc48387a57d5b38790579f73c318e1d19a8427d800ef1b5e65eac517",
+        "bytes": 1530
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_c-minus2-k4x4x6/sclib_e44f91d33782c03a.json",
+        "sha256": "84263f63c0c39530ed4f4be97e0a31f1189ae3d5a94db63df79b6cb767fd7d0c",
+        "bytes": 21820
+      },
+      "expected_valence_electrons": 58,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_c-minus2-k6x6x10",
+      "state_id": "combined-candidate:384da55bb8d507263d22247af5543d3de1bab9be33ac1cc2c03a110b31aa09b5",
+      "role": "al_c",
+      "strain_percent": -2,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 7,
+        "C": 1,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_c-minus2-k6x6x10/sclib_9bac5f659ff08e29.in",
+        "sha256": "bf7f972a11e9b1c2918f4d7300a890a988ba23a92382adf5589a3f18e0ee7815",
+        "bytes": 1531
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_c-minus2-k6x6x10/sclib_9bac5f659ff08e29.json",
+        "sha256": "b54ac7b0825afbbcfbfa88f76f2073a8cebb302e642f771d997989fe8cba1a88",
+        "bytes": 21821
+      },
+      "expected_valence_electrons": 58,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_c-minus2-k8x8x12",
+      "state_id": "combined-candidate:384da55bb8d507263d22247af5543d3de1bab9be33ac1cc2c03a110b31aa09b5",
+      "role": "al_c",
+      "strain_percent": -2,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 7,
+        "C": 1,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_c-minus2-k8x8x12/sclib_82ee353e586817cb.in",
+        "sha256": "194d106264a3588d409647a9bf8d2090e5ed09201f486a05e9c3e8f78d945923",
+        "bytes": 1531
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_c-minus2-k8x8x12/sclib_82ee353e586817cb.json",
+        "sha256": "bd6b37379010149413716babad6044631aac3fbb991c820cfb4463d1570ae8ae",
+        "bytes": 21821
+      },
+      "expected_valence_electrons": 58,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_c-plus0-k4x4x6",
+      "state_id": "combined-candidate:a81c2df2c1450981584b9a2acbfddbe0314a9437e7687980adac307ec390f998",
+      "role": "al_c",
+      "strain_percent": 0,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 7,
+        "C": 1,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_c-plus0-k4x4x6/sclib_4fe7844c071dd125.in",
+        "sha256": "d683c318c6f3a0c48b31b69bb4bb283d3017daebca3a2557ebf9c08f9d092836",
+        "bytes": 1524
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_c-plus0-k4x4x6/sclib_4fe7844c071dd125.json",
+        "sha256": "a6653d853197b19e196e51e4efe3079d07ebc423daa0debc55a458a76fdd73ae",
+        "bytes": 21786
+      },
+      "expected_valence_electrons": 58,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_c-plus0-k6x6x10",
+      "state_id": "combined-candidate:a81c2df2c1450981584b9a2acbfddbe0314a9437e7687980adac307ec390f998",
+      "role": "al_c",
+      "strain_percent": 0,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 7,
+        "C": 1,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_c-plus0-k6x6x10/sclib_3bab612c44ecf3e9.in",
+        "sha256": "1ddc67afcbdf8c7959b485e3f01cabe31271fac284c57b4f301e4d658927fe90",
+        "bytes": 1525
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_c-plus0-k6x6x10/sclib_3bab612c44ecf3e9.json",
+        "sha256": "ce6ab27fbe7392036e0b6842c3277f3fd0d7994f6f4bd49b38a964bbf1799529",
+        "bytes": 21787
+      },
+      "expected_valence_electrons": 58,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_c-plus0-k8x8x12",
+      "state_id": "combined-candidate:a81c2df2c1450981584b9a2acbfddbe0314a9437e7687980adac307ec390f998",
+      "role": "al_c",
+      "strain_percent": 0,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 7,
+        "C": 1,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_c-plus0-k8x8x12/sclib_c18beffb2d3607cf.in",
+        "sha256": "37b448485fe6a7f87119eb97ebd664affb1804b308c8c26a0688b7c18339d308",
+        "bytes": 1525
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_c-plus0-k8x8x12/sclib_c18beffb2d3607cf.json",
+        "sha256": "522c62d2c77eb1bc07cf946b951551215de28bcdb14d139035c5fcc3cb1b9625",
+        "bytes": 21787
+      },
+      "expected_valence_electrons": 58,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_c-plus2-k4x4x6",
+      "state_id": "combined-candidate:74107556ce495869d92ea342189732ff9dcb54a69fb5be4a4c3ee6326548d0fa",
+      "role": "al_c",
+      "strain_percent": 2,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 7,
+        "C": 1,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_c-plus2-k4x4x6/sclib_8a4557db30766862.in",
+        "sha256": "49eb59806aabaad1813e57b2bcef1ce91128896b2864752c506419c08c88bc5c",
+        "bytes": 1530
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_c-plus2-k4x4x6/sclib_8a4557db30766862.json",
+        "sha256": "aabad9729108a815651a6d07e734a9dffc034fbc72bcd5c32d2d580e67d69f53",
+        "bytes": 21836
+      },
+      "expected_valence_electrons": 58,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_c-plus2-k6x6x10",
+      "state_id": "combined-candidate:74107556ce495869d92ea342189732ff9dcb54a69fb5be4a4c3ee6326548d0fa",
+      "role": "al_c",
+      "strain_percent": 2,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 7,
+        "C": 1,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_c-plus2-k6x6x10/sclib_962f99267343cc5c.in",
+        "sha256": "4b7c280043c8646a155c0d21ef63ac3be5d34fc37ec62ac486a8d56422625730",
+        "bytes": 1531
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_c-plus2-k6x6x10/sclib_962f99267343cc5c.json",
+        "sha256": "6b90ab1bf25b47cd3d526246509c34d9ede9dd2ed04d4494fa0bffbab302112e",
+        "bytes": 21837
+      },
+      "expected_valence_electrons": 58,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_c-plus2-k8x8x12",
+      "state_id": "combined-candidate:74107556ce495869d92ea342189732ff9dcb54a69fb5be4a4c3ee6326548d0fa",
+      "role": "al_c",
+      "strain_percent": 2,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 7,
+        "C": 1,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_c-plus2-k8x8x12/sclib_0d0d81787153d6a0.in",
+        "sha256": "d8e5bd4072ff7c08cb87622bda65334d2099c60cc207e77f3731c72919f98b95",
+        "bytes": 1531
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_c-plus2-k8x8x12/sclib_0d0d81787153d6a0.json",
+        "sha256": "f26b9f900f91979d3618d4bf99789a61df69f914410ca6417d1f5f3e0ad2cfd7",
+        "bytes": 21837
+      },
+      "expected_valence_electrons": 58,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_only-minus2-k4x4x6",
+      "state_id": "combined-candidate:0ffb72f436dc93cafb015b2a1ebfc5af25b32bc0185dd0a807f751df37673236",
+      "role": "al_only",
+      "strain_percent": -2,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 8,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_only-minus2-k4x4x6/sclib_a49db3b7d8c79433.in",
+        "sha256": "98b5157378831cb76cc284ffa347757c58bd3af20ab3780ee8ccf69883cc76c1",
+        "bytes": 1493
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_only-minus2-k4x4x6/sclib_a49db3b7d8c79433.json",
+        "sha256": "236302b5dbb2e3b313ab3012ed27b6b63e3a7d235eec881768dfb177ffd683a2",
+        "bytes": 20426
+      },
+      "expected_valence_electrons": 57,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_only-minus2-k6x6x10",
+      "state_id": "combined-candidate:0ffb72f436dc93cafb015b2a1ebfc5af25b32bc0185dd0a807f751df37673236",
+      "role": "al_only",
+      "strain_percent": -2,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 8,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_only-minus2-k6x6x10/sclib_93857d9a26ce38a4.in",
+        "sha256": "c9263947cccd40e684887716270bff2f4d7f74b776c178315a17e94f5b7f927d",
+        "bytes": 1494
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_only-minus2-k6x6x10/sclib_93857d9a26ce38a4.json",
+        "sha256": "f4ba2e5918b3ede9a56482bf0d2f0746a88b0e3c0515b0533de3cdb00ccb99ee",
+        "bytes": 20427
+      },
+      "expected_valence_electrons": 57,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_only-minus2-k8x8x12",
+      "state_id": "combined-candidate:0ffb72f436dc93cafb015b2a1ebfc5af25b32bc0185dd0a807f751df37673236",
+      "role": "al_only",
+      "strain_percent": -2,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 8,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_only-minus2-k8x8x12/sclib_669835f174f8fe59.in",
+        "sha256": "d252f80586099fabab08b2281cfbc7174d6dc632904753e1bc22764493795d25",
+        "bytes": 1494
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_only-minus2-k8x8x12/sclib_669835f174f8fe59.json",
+        "sha256": "196de75118f99defa34849d3c84ee99d57a15462cf1665565458922dbd955df0",
+        "bytes": 20427
+      },
+      "expected_valence_electrons": 57,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_only-plus0-k4x4x6",
+      "state_id": "combined-candidate:a234f92378fc28b04070df0c3f6313ac0c4c636d815b7c27dbef625836851393",
+      "role": "al_only",
+      "strain_percent": 0,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 8,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_only-plus0-k4x4x6/sclib_fe5556a36f455641.in",
+        "sha256": "616db611a56492490a4eff93e0a185e6d8895d8fe09ba7e89241947ca930a5a9",
+        "bytes": 1487
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_only-plus0-k4x4x6/sclib_fe5556a36f455641.json",
+        "sha256": "db32a2a7b644b5c23129d97688dcadb6fda2f86cb301b88dac87920c2adee996",
+        "bytes": 20392
+      },
+      "expected_valence_electrons": 57,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_only-plus0-k6x6x10",
+      "state_id": "combined-candidate:a234f92378fc28b04070df0c3f6313ac0c4c636d815b7c27dbef625836851393",
+      "role": "al_only",
+      "strain_percent": 0,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 8,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_only-plus0-k6x6x10/sclib_07bfe02643747275.in",
+        "sha256": "f45565cca4b0cfafa7d6a48497ae20a046e4d9395b53228f394c3ffbbbf4ad29",
+        "bytes": 1488
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_only-plus0-k6x6x10/sclib_07bfe02643747275.json",
+        "sha256": "f2ec68c0526edca88dc74594f6da37ffbb9cd1c74342c526d6b405e01bc9ba42",
+        "bytes": 20393
+      },
+      "expected_valence_electrons": 57,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_only-plus0-k8x8x12",
+      "state_id": "combined-candidate:a234f92378fc28b04070df0c3f6313ac0c4c636d815b7c27dbef625836851393",
+      "role": "al_only",
+      "strain_percent": 0,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 8,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_only-plus0-k8x8x12/sclib_5ca17caf8559685d.in",
+        "sha256": "54e0e34d8c6c1e0be3414de6de83b92ed5d88fbebe654a5e656ca511ff273d89",
+        "bytes": 1488
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_only-plus0-k8x8x12/sclib_5ca17caf8559685d.json",
+        "sha256": "473d02979a60a1a6d633a5bda47f33e9bb8e8490b00a8f631c5c37080a60004e",
+        "bytes": 20393
+      },
+      "expected_valence_electrons": 57,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_only-plus2-k4x4x6",
+      "state_id": "combined-candidate:965b2c8ab35a6cd68335afaba281fbf105f3db5e407860123cb4b99ccffb0367",
+      "role": "al_only",
+      "strain_percent": 2,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 8,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_only-plus2-k4x4x6/sclib_8eebea1fbf79defe.in",
+        "sha256": "883859e8028d156808f9b0828dc8bd0e964d6ca8cf52fb262574d01f1a1d1bd5",
+        "bytes": 1493
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_only-plus2-k4x4x6/sclib_8eebea1fbf79defe.json",
+        "sha256": "15d31cc03b462e112a5d5852079bf2560c5ab6e7116965296aa49fc0d46f2497",
+        "bytes": 20442
+      },
+      "expected_valence_electrons": 57,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_only-plus2-k6x6x10",
+      "state_id": "combined-candidate:965b2c8ab35a6cd68335afaba281fbf105f3db5e407860123cb4b99ccffb0367",
+      "role": "al_only",
+      "strain_percent": 2,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 8,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_only-plus2-k6x6x10/sclib_c0e909729d67af70.in",
+        "sha256": "6bf6ee9a00574bb6fc4fd215c84a374dfc849a658d7ea0e86f87377b933f9413",
+        "bytes": 1494
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_only-plus2-k6x6x10/sclib_c0e909729d67af70.json",
+        "sha256": "64d58e380ae03a5c00bdbea4d6bfe6fc436edb02db5667febab25f2b1e1d8ca0",
+        "bytes": 20443
+      },
+      "expected_valence_electrons": 57,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/al_only-plus2-k8x8x12",
+      "state_id": "combined-candidate:965b2c8ab35a6cd68335afaba281fbf105f3db5e407860123cb4b99ccffb0367",
+      "role": "al_only",
+      "strain_percent": 2,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "Al": 1,
+        "B": 8,
+        "Mg": 3
+      },
+      "execution_input": {
+        "path": "jobs/al_only-plus2-k8x8x12/sclib_184e0a94c9780150.in",
+        "sha256": "6a1733d5724d941cb49929ba8db70866fb581a900f489a971112987fa9dbf751",
+        "bytes": 1494
+      },
+      "preparation_manifest": {
+        "path": "jobs/al_only-plus2-k8x8x12/sclib_184e0a94c9780150.json",
+        "sha256": "5e5bb98ec1b073a8d387073d1a9c7173e78d2b6aa9ba85d541312c0e35a03d05",
+        "bytes": 20443
+      },
+      "expected_valence_electrons": 57,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/c_only-minus2-k4x4x6",
+      "state_id": "combined-candidate:70aae73af891639689fb6421d7769b2317fabc8eeb08c181e2f930e3e8f847a2",
+      "role": "c_only",
+      "strain_percent": -2,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "B": 7,
+        "C": 1,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/c_only-minus2-k4x4x6/sclib_d0f72e5d86dab63f.in",
+        "sha256": "43040fd583fd87c340783f5e9fab4a49fc813860292885392c4e36168129d1b8",
+        "bytes": 1487
+      },
+      "preparation_manifest": {
+        "path": "jobs/c_only-minus2-k4x4x6/sclib_d0f72e5d86dab63f.json",
+        "sha256": "5d209150831428be659f86a9a3755f57a24a333ab05fe7da93eae9334c236830",
+        "bytes": 20425
+      },
+      "expected_valence_electrons": 65,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/c_only-minus2-k6x6x10",
+      "state_id": "combined-candidate:70aae73af891639689fb6421d7769b2317fabc8eeb08c181e2f930e3e8f847a2",
+      "role": "c_only",
+      "strain_percent": -2,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "B": 7,
+        "C": 1,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/c_only-minus2-k6x6x10/sclib_1a2cfb9cf472fda8.in",
+        "sha256": "8bf9500480aa0605650de43ccc2cecbb89c18dd98ec4bbb25d7b1777d182d47c",
+        "bytes": 1488
+      },
+      "preparation_manifest": {
+        "path": "jobs/c_only-minus2-k6x6x10/sclib_1a2cfb9cf472fda8.json",
+        "sha256": "2c262a14568469e658778cc60e9029f4a0baf5f94ea8e7b4c465758932539892",
+        "bytes": 20426
+      },
+      "expected_valence_electrons": 65,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/c_only-minus2-k8x8x12",
+      "state_id": "combined-candidate:70aae73af891639689fb6421d7769b2317fabc8eeb08c181e2f930e3e8f847a2",
+      "role": "c_only",
+      "strain_percent": -2,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "B": 7,
+        "C": 1,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/c_only-minus2-k8x8x12/sclib_9c933ed016d68b4f.in",
+        "sha256": "b60fdae6086abebe035e9c10036d3cf6de700ccc182a32fce2307a741c21335c",
+        "bytes": 1488
+      },
+      "preparation_manifest": {
+        "path": "jobs/c_only-minus2-k8x8x12/sclib_9c933ed016d68b4f.json",
+        "sha256": "d60a5b608c25c77f78406738c4af1310e6f8d69a0f417ba47c6789c19372b7a4",
+        "bytes": 20426
+      },
+      "expected_valence_electrons": 65,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/c_only-plus0-k4x4x6",
+      "state_id": "combined-candidate:2e73d6521f09f8ceee2c7c62c8b19ff0db923ff49bb677a44bc51bfa2ad4cca2",
+      "role": "c_only",
+      "strain_percent": 0,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "B": 7,
+        "C": 1,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/c_only-plus0-k4x4x6/sclib_ce66811a5e25ab6c.in",
+        "sha256": "df9b3bbbf51803b2c886de9d2c9c6d49dba49cfc17fcc9cb1428a98d9067e988",
+        "bytes": 1481
+      },
+      "preparation_manifest": {
+        "path": "jobs/c_only-plus0-k4x4x6/sclib_ce66811a5e25ab6c.json",
+        "sha256": "5ccd631a5c197dd90fa945ace7e4853c22d561d710f3945569fd3cd4942094b0",
+        "bytes": 20391
+      },
+      "expected_valence_electrons": 65,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/c_only-plus0-k6x6x10",
+      "state_id": "combined-candidate:2e73d6521f09f8ceee2c7c62c8b19ff0db923ff49bb677a44bc51bfa2ad4cca2",
+      "role": "c_only",
+      "strain_percent": 0,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "B": 7,
+        "C": 1,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/c_only-plus0-k6x6x10/sclib_c90b972bc0b9a333.in",
+        "sha256": "39149bce687206c60d6c1bb538ad318beea410b4798cca344e142df383347694",
+        "bytes": 1482
+      },
+      "preparation_manifest": {
+        "path": "jobs/c_only-plus0-k6x6x10/sclib_c90b972bc0b9a333.json",
+        "sha256": "4c21acfa0dd49eff22e24014b83c988936b5013047ca3c74adff7392f5443fbd",
+        "bytes": 20392
+      },
+      "expected_valence_electrons": 65,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/c_only-plus0-k8x8x12",
+      "state_id": "combined-candidate:2e73d6521f09f8ceee2c7c62c8b19ff0db923ff49bb677a44bc51bfa2ad4cca2",
+      "role": "c_only",
+      "strain_percent": 0,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "B": 7,
+        "C": 1,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/c_only-plus0-k8x8x12/sclib_98ab9878f5806403.in",
+        "sha256": "c6dbaa42ed4525bbd7e945ba8398e10040edc551473fc57ea1aafb45233a5738",
+        "bytes": 1482
+      },
+      "preparation_manifest": {
+        "path": "jobs/c_only-plus0-k8x8x12/sclib_98ab9878f5806403.json",
+        "sha256": "17c28bc51e7ba29c3fc845e1ca9e162280e5475bbce1f3b1e0af13450d378c18",
+        "bytes": 20392
+      },
+      "expected_valence_electrons": 65,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/c_only-plus2-k4x4x6",
+      "state_id": "combined-candidate:ff79baecbc30b3098983cbdf0393034d7cde4f8dc74844b908955b79982b3076",
+      "role": "c_only",
+      "strain_percent": 2,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "B": 7,
+        "C": 1,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/c_only-plus2-k4x4x6/sclib_7078b89fffffea36.in",
+        "sha256": "3153be57258466f088ca64ee9cd33b47369efae138d9d5da33d39797998c8724",
+        "bytes": 1487
+      },
+      "preparation_manifest": {
+        "path": "jobs/c_only-plus2-k4x4x6/sclib_7078b89fffffea36.json",
+        "sha256": "af5d9077ff18347cb0e5ca391a96638c99fb37bcaf1499052a8ef8a06871a8a5",
+        "bytes": 20441
+      },
+      "expected_valence_electrons": 65,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/c_only-plus2-k6x6x10",
+      "state_id": "combined-candidate:ff79baecbc30b3098983cbdf0393034d7cde4f8dc74844b908955b79982b3076",
+      "role": "c_only",
+      "strain_percent": 2,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "B": 7,
+        "C": 1,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/c_only-plus2-k6x6x10/sclib_a7760bd7f4fd5258.in",
+        "sha256": "f62bb209c05852619dcec6bce4b72e320331226d5d329e160e8a7369fd04c449",
+        "bytes": 1488
+      },
+      "preparation_manifest": {
+        "path": "jobs/c_only-plus2-k6x6x10/sclib_a7760bd7f4fd5258.json",
+        "sha256": "c0a40270b51b38b52b710bf72771b3419ab08a2b41a577b334a0765bf4fdb38d",
+        "bytes": 20442
+      },
+      "expected_valence_electrons": 65,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/c_only-plus2-k8x8x12",
+      "state_id": "combined-candidate:ff79baecbc30b3098983cbdf0393034d7cde4f8dc74844b908955b79982b3076",
+      "role": "c_only",
+      "strain_percent": 2,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "B": 7,
+        "C": 1,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/c_only-plus2-k8x8x12/sclib_5b623bf9d8ccebc3.in",
+        "sha256": "6350ec75e1bb2dd18eb43d74f94f0bbac2562f574fc26aac1aae2092bab17bdb",
+        "bytes": 1488
+      },
+      "preparation_manifest": {
+        "path": "jobs/c_only-plus2-k8x8x12/sclib_5b623bf9d8ccebc3.json",
+        "sha256": "3d6fe809c7ab42c927a6d372000b928fb25acdf307fe1038693f22e2ee2bdb0c",
+        "bytes": 20442
+      },
+      "expected_valence_electrons": 65,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/parent-minus2-k4x4x6",
+      "state_id": "combined-candidate:55b18774cde7e9c6805abaa89f981b52483ce5294b397bf4db1d9858109f7559",
+      "role": "parent",
+      "strain_percent": -2,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "B": 8,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/parent-minus2-k4x4x6/sclib_17f001090370c0e6.in",
+        "sha256": "36beabda55050277c5067275c1fab73984fc24346ba4467073b9c663da72216f",
+        "bytes": 1450
+      },
+      "preparation_manifest": {
+        "path": "jobs/parent-minus2-k4x4x6/sclib_17f001090370c0e6.json",
+        "sha256": "01ac48e4c5d13c4409c4b8d8b1e86e0d025afe37339618284f65f29e24b4f6cb",
+        "bytes": 19003
+      },
+      "expected_valence_electrons": 64,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/parent-minus2-k6x6x10",
+      "state_id": "combined-candidate:55b18774cde7e9c6805abaa89f981b52483ce5294b397bf4db1d9858109f7559",
+      "role": "parent",
+      "strain_percent": -2,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "B": 8,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/parent-minus2-k6x6x10/sclib_58a8ff2235c32a08.in",
+        "sha256": "3d4e2be64a1f9d8fd06c38e82649dfca34bcb00e4821e1b6570bf6b2c0dffacd",
+        "bytes": 1451
+      },
+      "preparation_manifest": {
+        "path": "jobs/parent-minus2-k6x6x10/sclib_58a8ff2235c32a08.json",
+        "sha256": "885a8bbbf3402b6484b772c3ffe8d6edbbb8bbed2ae26e6ee1d21d012193186a",
+        "bytes": 19004
+      },
+      "expected_valence_electrons": 64,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/parent-minus2-k8x8x12",
+      "state_id": "combined-candidate:55b18774cde7e9c6805abaa89f981b52483ce5294b397bf4db1d9858109f7559",
+      "role": "parent",
+      "strain_percent": -2,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "B": 8,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/parent-minus2-k8x8x12/sclib_117d5d1ec8712e2a.in",
+        "sha256": "cc044fd75fd5f04efd9470ff9dfce221904fd73f6bf8f3476149acc7a320b9c6",
+        "bytes": 1451
+      },
+      "preparation_manifest": {
+        "path": "jobs/parent-minus2-k8x8x12/sclib_117d5d1ec8712e2a.json",
+        "sha256": "1e96b8fcd1c419c89376ca6067e88e616414e2fee991cc6791a91f1a37ad1d43",
+        "bytes": 19004
+      },
+      "expected_valence_electrons": 64,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/parent-plus0-k4x4x6",
+      "state_id": "reference-control:supercell:3e7b6416dccf8a84904856faa1737f85d02304b98af8ca16ed8e44b0db2e5dcc",
+      "role": "parent",
+      "strain_percent": 0,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "B": 8,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/parent-plus0-k4x4x6/sclib_96f06122cbb38b09.in",
+        "sha256": "3f1bebeda26ff3bde30e66e51c47a6fb781fdb7f616e1f60e73fca528faca8d4",
+        "bytes": 1453
+      },
+      "preparation_manifest": {
+        "path": "jobs/parent-plus0-k4x4x6/sclib_96f06122cbb38b09.json",
+        "sha256": "f701a8ea7bff17378d730f0f73a1988e088464eaf5a7d78838d0991e8b032119",
+        "bytes": 18943
+      },
+      "expected_valence_electrons": 64,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/parent-plus0-k6x6x10",
+      "state_id": "reference-control:supercell:3e7b6416dccf8a84904856faa1737f85d02304b98af8ca16ed8e44b0db2e5dcc",
+      "role": "parent",
+      "strain_percent": 0,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "B": 8,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/parent-plus0-k6x6x10/sclib_933f81a65c0a5d6d.in",
+        "sha256": "3e48ddb0e0ab87a6b01cb7f9abf26004c0fd824be1a61f34d16da7ad74830b63",
+        "bytes": 1454
+      },
+      "preparation_manifest": {
+        "path": "jobs/parent-plus0-k6x6x10/sclib_933f81a65c0a5d6d.json",
+        "sha256": "7bb6f8002dd6849f241edce645a6422714982940a706b6da5b6354f8808970d9",
+        "bytes": 18944
+      },
+      "expected_valence_electrons": 64,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/parent-plus0-k8x8x12",
+      "state_id": "reference-control:supercell:3e7b6416dccf8a84904856faa1737f85d02304b98af8ca16ed8e44b0db2e5dcc",
+      "role": "parent",
+      "strain_percent": 0,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "B": 8,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/parent-plus0-k8x8x12/sclib_259e90bba720ba33.in",
+        "sha256": "51ca2526c022126ab1451463942bac85518792c7f8840ebba894f01d9ab1f801",
+        "bytes": 1454
+      },
+      "preparation_manifest": {
+        "path": "jobs/parent-plus0-k8x8x12/sclib_259e90bba720ba33.json",
+        "sha256": "3254d2a004c55a3cdae05c36a9b0a1dbd7924496a605a6a9c580994d4c510af3",
+        "bytes": 18944
+      },
+      "expected_valence_electrons": 64,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/parent-plus2-k4x4x6",
+      "state_id": "combined-candidate:94ca4db7656cd1f708bd6b9cbca99d94fa21d24b4180025e9eafde81720d4a5f",
+      "role": "parent",
+      "strain_percent": 2,
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "composition": {
+        "B": 8,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/parent-plus2-k4x4x6/sclib_16195ea703806bf5.in",
+        "sha256": "46c67f96fa5e92ad8966a67527e988d4a83504f8e665c0abbb4e447ec68734c4",
+        "bytes": 1450
+      },
+      "preparation_manifest": {
+        "path": "jobs/parent-plus2-k4x4x6/sclib_16195ea703806bf5.json",
+        "sha256": "9ad4d2f495228867b29e953906a9f1efca450281729bf2edbc1c39851b929841",
+        "bytes": 19019
+      },
+      "expected_valence_electrons": 64,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/parent-plus2-k6x6x10",
+      "state_id": "combined-candidate:94ca4db7656cd1f708bd6b9cbca99d94fa21d24b4180025e9eafde81720d4a5f",
+      "role": "parent",
+      "strain_percent": 2,
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "composition": {
+        "B": 8,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/parent-plus2-k6x6x10/sclib_336276cd1524df87.in",
+        "sha256": "222040bc3b0f3fcb01918492bd3c6f32fc5ae4f7cf3d3fc0ed26c91b6eb3588d",
+        "bytes": 1451
+      },
+      "preparation_manifest": {
+        "path": "jobs/parent-plus2-k6x6x10/sclib_336276cd1524df87.json",
+        "sha256": "52ca86486b2672c69b81a1c27cca29a9eecda37c1aabb44a156864df50e0190c",
+        "bytes": 19020
+      },
+      "expected_valence_electrons": 64,
+      "status": "prepared_not_run",
+      "result": null
+    },
+    {
+      "directory": "jobs/parent-plus2-k8x8x12",
+      "state_id": "combined-candidate:94ca4db7656cd1f708bd6b9cbca99d94fa21d24b4180025e9eafde81720d4a5f",
+      "role": "parent",
+      "strain_percent": 2,
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "composition": {
+        "B": 8,
+        "Mg": 4
+      },
+      "execution_input": {
+        "path": "jobs/parent-plus2-k8x8x12/sclib_b9c2deb55b9b2663.in",
+        "sha256": "ec98d4effb06bc13d553c75f4b2a15d69d1929343305c6f3ae3b5d9cf27adcb5",
+        "bytes": 1451
+      },
+      "preparation_manifest": {
+        "path": "jobs/parent-plus2-k8x8x12/sclib_b9c2deb55b9b2663.json",
+        "sha256": "1e879dd3065d5dc4cb88c91303e981e2005bcb513f6c714e5eba450b82cd2d4b",
+        "bytes": 19020
+      },
+      "expected_valence_electrons": 64,
+      "status": "prepared_not_run",
+      "result": null
+    }
+  ],
+  "calculation_executed": false,
+  "queueable": false,
+  "queue_blocker": "M4 acceptance and explicit per-job/campaign resource bounds remain unassigned.",
+  "bundle_manifest_sha256": "af978e9f847a77913a32b19f09910b67d42c8d185943b25c5e1f8ffd9277f838"
+}

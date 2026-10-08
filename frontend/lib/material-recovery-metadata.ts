@@ -1,3 +1,4 @@
+import { verifiedRecoveryBatch } from "./material-recovery-batch";
 import type { MaterialEnrichmentReport, MaterialSourceCoverage } from "@/lib/api";
 import { projectRecordCoverage } from "./material-record-coverage";
 
@@ -155,6 +156,7 @@ export function materialRecoveryMetadata(report: MaterialEnrichmentReport, mater
     report_identity: pick(report, ["version", "extractor_version", "classification_extractor_version", "input_sha256", "report_sha256"]),
     scientific_acceptance: false, database_changed: false, ml_training_approved: false, public_release: false, disposition: "pending", source_content_checked: false, material_state_reviewed: false,
     primary_source_seed: pick(object(report).primary_source_seed, ["status", "seed_id", "seed_sha256", "candidate_facts_added"]),
+    source_recovery_batch: verifiedRecoveryBatch(report, materialId),
     classification_primary_source_seed: pick(object(report).classification_primary_source_seed, ["status", "seed_id", "seed_sha256", "candidate_facts_added"]),
     inspection_scope: pick(report.inspection_scope, ["version", "records_total", "records_inspected", "records_truncated", "records_limit", "raw_retained_records_total", "current_eligible_records_total", "papers_total", "papers_inspected", "papers_truncated", "papers_limit", "papers_with_bounded_indexed_chunks", "record_sampling", "paper_sampling", "chunks_considered", "chunks_inspected", "chunks_limit", "characters_inspected", "characters_limit", "chunk_sampling"]),
     source_coverage: projectSourceCoverage(coverage.source_coverage),

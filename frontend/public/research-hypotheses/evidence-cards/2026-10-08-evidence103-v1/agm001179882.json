@@ -1,0 +1,126 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm001179882",
+  "source_state": "agm001179882",
+  "formula": "Mn4NbTc",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "166dfb4baebeb3bd4974de201387cd08cca59373e6d58f9940652c81204035e4",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "Published source predictions already known; exact matched mechanism new to reviewed catalogue only, not first discovery.",
+    "case_context": "Bounded exact formula/prototype primary search; published source calculations not claimed as first discovery. New-to-reviewed exact ordered hypothesis only. Literature-wide novelty unproved.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Tc-for-Re onNb-bearing network yields all-sigma gain with same138Ry/grids. The representative lower-response Re control has a q2 tail gap; candidate itself4q reports complete, and other frozen controls are retained rather than declaring full control convergence.",
+    "ambient_scope": "Source coarse/fine pressure/fullstress/force andpositiveopticalGamma plus finite-path/q evidence; exacttested domain only. No laboratory P/T/hull/globalstability inheritance.",
+    "attention_tags": [
+      "magnetic_model",
+      "sampling_method",
+      "technetium"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/Mn4NbMo_agm001179868",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.5357000000000001,
+          -0.12409999999999999
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -4.488999999999999,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 3,
+        "control_reference": "batch-a/TiMn4Tc_agm001186290",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.4537,
+          -0.07909999999999995
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -3.136000000000001,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Colored-site substitution/ordered network plus computed volume/nearest-distance response andEPCagainst frozen geometriccontrols; chemistry/masses co-change. No W/mobile n claim.",
+    "target_state": "agm001179882",
+    "selected_control": "agm001179875",
+    "next_action": "Resolve comparator q2 tail and exact-cell magnetic seed; if comparator corrected EPC flips direction, demote the response hypothesis.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/Mn4NbMo_agm001179868",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.5357000000000001,
+          -0.12409999999999999
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -4.488999999999999,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 3,
+        "control_reference": "batch-a/TiMn4Tc_agm001186290",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.4537,
+          -0.07909999999999995
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -3.136000000000001,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

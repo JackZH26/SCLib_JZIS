@@ -1,0 +1,67 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm003204399",
+  "source_state": "agm003204399",
+  "formula": "Be4ZrRh",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "cb5588da2cd4fd9070405ab20721d01a1f8e94006471165627f6125bc5f86b8c",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "case_context": "Exact Be4ZrRh/Be4RhZr queries found no primary experimental exact phase. Closest named computed SG216 reference is Be4NbRh in the primary source paper high-precision table; Hf and Ir neighbors are actual independent source states. No worldwide first-discovery claim.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "All three frozen neighbors retained. More nominal electrons is already opposed by Nb comparison: Zr state pairs more strongly. ROOT finite native envelope is also lower for Zr than Nb; physical W/mobile n is not claimed. Versions differ across neighbors and fine force is 0.02809 eV/A; this is source finite scalar pairing support, not independent method certification.",
+    "ambient_scope": "Source coarse force 0.00022400006825056733 eV/Å, pressure 0.0 GPa; fine force 0.02809263679016012 eV/Å, pressure 0.020999999999999998 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "attention_tags": [
+      "residual_force_stress",
+      "sampling_method"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "coupled Hf-to-Zr or Ir-to-Rh role construction in Be4XRh. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "target_state": "agm003204399",
+    "selected_control": "agm001171196",
+    "next_action": "Read existing Be/Rh/X mode/orbital-resolved evidence to distinguish the large Ir→Rh and Nb→Zr pairing changes. Favorable: coupling gain persists on matched NC/scalar conditions; adverse: a relevant spin/SOC or numerical control reverses it; ambiguous: band envelope alone or missing projections cannot identify cause.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

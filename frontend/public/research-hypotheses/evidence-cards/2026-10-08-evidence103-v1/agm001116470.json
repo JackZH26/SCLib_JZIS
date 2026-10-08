@@ -1,0 +1,67 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm001116470",
+  "source_state": "agm001116470",
+  "formula": "Ti2NbTc",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "189f1b9bad730d6cece930f59eb1cfc89385cab430159b2c240c561ddb8e0a84",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "case_context": "No exact experimental Ti2NbTc SG123 phase retrieved. Nb-Ti-Ta wire chemistry and Re-alloy superconductivity do not identify this phase.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Small coherent gain +.0301…+.0688 lambda and Tc+.403 K is not a calibrated physical significance claim. Path0/Gammaopt+, low coarse residual and fine force .0375/stress .364 GPa support only finite-source local basin. Geoopt BFGS failure is retained. Tc radioactivity, heavy-Re scalar/SOC differential and weak benefit are material-specific refinement risks.",
+    "ambient_scope": "Source coarse force 6.81342394061318e-05 eV/Å, pressure 0.0 GPa; fine force 0.037504684913858284 eV/Å, pressure -0.191 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "attention_tags": [
+      "residual_force_stress",
+      "technetium"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Re-to-Tc ordered role change in Ti2NbX. coupled chemistry/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "target_state": "agm001116470",
+    "selected_control": "agm001116458",
+    "next_action": "Resolve Tc/Re site mode and Coulomb/SOC sensitivity. Favorable: small paired role gain remains under justified corrections; adverse: sign reversal; ambiguous: uncertainty exceeds response. Do not award high n from electron counting.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

@@ -1,0 +1,30 @@
+[Unit]
+Description=SCLib isolated dummy compute staging coordinator
+After=network.target
+
+[Service]
+Type=simple
+User=sclib-compute
+Group=sclib-compute
+WorkingDirectory=/opt/sclib-compute/current
+ExecStart=/opt/sclib-compute/venv/bin/python /opt/sclib-compute/current/scripts/sclib_compute_service.py --config /etc/sclib-compute/config.json --data-dir /var/lib/sclib-compute --port 8092
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/sclib-compute
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryMax=256M
+TasksMax=32
+CPUQuota=50%
+LimitNOFILE=128
+Environment=PYTHONDONTWRITEBYTECODE=1
+
+[Install]
+WantedBy=multi-user.target

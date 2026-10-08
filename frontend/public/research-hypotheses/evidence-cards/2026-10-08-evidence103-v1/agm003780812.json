@@ -1,0 +1,96 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm003780812",
+  "source_state": "agm003780812",
+  "formula": "TcRuRe2",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "4ab81b785e68f2249e475d4f4d7a08c4965d0c935f063ef69dfd6d324ac56d8a",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "Exact ordered-state mechanism new to reviewed catalogue only; source predictions/known chemistry acknowledged, not first discovery.",
+    "case_context": "One exact reduced composition/ordered phase-design group, new to the frozen reviewed cohort. Published computed source is acknowledged, known experimental chemistry remains a comparator. Bounded primary phase search has not tied the exact target order to an established SC sample; no global absence claim.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "The A Eliashberg benefit is only 0.058 K (McMillan and Allen–Dynes +0.051 K), not a demonstrated robust improvement; the A fine F is 16.80 meV/atom higher. The support grade is for the bounded phase/network hypothesis with explicit opposite λ, not a significant global potential ranking.",
+    "ambient_scope": "Exact model force/full stress, converged electronic outputs, reported finite-q workflow and raw Γ optical evidence provide a bounded near-ambient source-model screen. Source residual stress/metastable alternatives remain explicit; this is not proof of synthesizeability, full BZ or global equilibrium.",
+    "attention_tags": [
+      "technetium"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "selected_source_control",
+        "countercontrol_index": null,
+        "control_reference": "batch-a/TcRuRe2_agm003184282",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -0.051000000000000045,
+          -0.0029000000000000137
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": 0.05799999999999983,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against the selected source control; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Both ordered tetragonal phases have strongly different Ru/Tc like-species separations (about 2.71258 versus 3.83478 Å). λ favors B in all ten rows, whereas ω and all three separate Tc products favor A. This is a geometry/pairing tradeoff vector, not monotonic λ optimization. Complete species-channel geometry differences and computed all-σ pairing response are saved against the frozen controls. Cell/grid/method sensitivity prevents a pure geometry-only causal claim; no bandwidth/carrier quantity is substituted.",
+    "target_state": "agm003780812",
+    "selected_control": "agm003184282",
+    "next_action": "Freeze A/B identity and test the tradeoff at matched grids and common product definitions. If all Tc benefits vanish or change sign while B keeps greater λ, downgrade the claim of A benefit; no maximum-σ or outcome-based comparator substitution.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "selected_source_control",
+        "countercontrol_index": null,
+        "control_reference": "batch-a/TcRuRe2_agm003184282",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -0.051000000000000045,
+          -0.0029000000000000137
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": 0.05799999999999983,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against the selected source control; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

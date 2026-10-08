@@ -9,27 +9,33 @@ import { DiscoverySourceCandidates, readSourceHypothesisDetail } from "@/compone
 import { DiscoveryTabs } from "@/components/DiscoveryTabs";
 import { DiscoveryDisclosure } from "@/components/DiscoveryDisclosure";
 import { getSourceHypothesisBrowseCatalogue } from "@/lib/discovery-source-hypotheses";
+import { compareResearchPriority } from "@/lib/discovery-evidence-policy";
 
 const catalogue = getSourceHypothesisBrowseCatalogue();
 const order = new Intl.Collator("en-US", { numeric: true, sensitivity: "base" });
-const sorted = [...catalogue.candidates].sort((a, b) => order.compare(a.formula, b.formula) || order.compare(a.source_state, b.source_state));
+const sorted = [...catalogue.candidates].sort((a, b) => compareResearchPriority(a, b, "source_pairing"));
 const rows = () => [...document.querySelectorAll<HTMLTableRowElement>("tr[data-source-candidate]")];
 const rowIds = () => rows().map(row => row.dataset.sourceCandidate);
-const allRows = () => fireEvent.change(screen.getByRole("combobox", { name: "Rows per page" }), { target: { value: String(catalogue.candidates.length) } });
+const allRows = () => {
+  const options = document.querySelector<HTMLDetailsElement>(".discovery-source-secondary-filters")!;
+  options.open = true;
+  fireEvent.change(screen.getByRole("combobox", { name: "Rows per page" }), { target: { value: String(catalogue.candidates.length) } });
+};
 
 const sourceBytes = (candidate: typeof sorted[number]) => readFileSync(join(process.cwd(), "public", candidate.detail.url));
 const response = (body: Uint8Array) => new Response(body, { status: 200, headers: { "content-type": "application/json" } });
+const staticResponse = (url: string) => response(readFileSync(join(process.cwd(), "public", url)));
 beforeEach(() => vi.stubGlobal("crypto", webcrypto));
 afterEach(() => { window.history.replaceState(null, "", "/"); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
 describe("Public unscored source-computed Discovery directory", () => {
-  it("uses the real 103 composition-distinct candidates, formula order and closed evidence rows", () => {
+  it("uses the real 103 composition-distinct candidates, provisional groups and closed evidence rows", () => {
     const fetch = vi.fn(); vi.stubGlobal("fetch", fetch);
     const { container } = render(<DiscoverySourceCandidates catalogue={catalogue} />);
     expect(catalogue.candidates).toHaveLength(103);
     expect(catalogue.candidates.every(candidate => !Object.hasOwn(candidate, "physical_summary") && !Object.hasOwn(candidate, "countercontrols") && !Object.hasOwn(candidate, "seven_criteria"))).toBe(true);
     expect(rowIds()).toEqual(sorted.slice(0, 24).map(candidate => candidate.id));
-    expect(screen.getByRole("status")).toHaveTextContent("103 / 103 materials · Showing 1–24 · Formula A–Z");
+    expect(screen.getByRole("status")).toHaveTextContent("103 / 103 materials · Showing 1 to 24 · Provisional groups");
     expect(screen.getByText("Page 1 of 5")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Previous materials" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "Clear filters" })).toBeDisabled();
@@ -37,9 +43,10 @@ describe("Public unscored source-computed Discovery directory", () => {
     for (const button of screen.getAllByRole("button", { name: /^Show details for / })) expect(button).toHaveAttribute("aria-expanded", "false");
     expect(container.querySelectorAll(".discovery-source-detail-row")).toHaveLength(0);
     expect(container.querySelector(".discovery-source-scope")).not.toHaveAttribute("open");
+    expect(container.querySelector(".discovery-source-secondary-filters")).not.toHaveAttribute("open");
     expect(document.getElementById("discovery-source-tc-scope")).toHaveTextContent("μ* = 0.1");
-    expect(document.getElementById("discovery-source-tc-scope")).toHaveTextContent("experimental and room-temperature superconductivity are unknown");
-    expect(screen.getByRole("columnheader", { name: "Material" })).toHaveAttribute("aria-sort", "ascending");
+    expect(document.getElementById("discovery-source-tc-scope")).toHaveTextContent("Experimental and room-temperature superconductivity are unknown");
+    expect(screen.getByRole("columnheader", { name: "Material" })).not.toHaveAttribute("aria-sort");
     expect(screen.getByRole("link", { name: "Download catalogue JSON" })).toHaveAttribute("href", catalogue.download_url);
     expect(container.textContent).not.toMatch(/[\u3400-\u9fff]/);
     expect(fetch).not.toHaveBeenCalled();
@@ -60,7 +67,10 @@ describe("Public unscored source-computed Discovery directory", () => {
     fireEvent.change(screen.getByRole("combobox", { name: "Go to page" }), { target: { value: "2" } });
     expect(rowIds()).toEqual(sorted.slice(24, 48).map(candidate => candidate.id));
     allRows(); expect(rowIds()).toEqual(sorted.map(candidate => candidate.id));
-    expect(screen.queryByRole("combobox", { name: /Sort|Potential|RPS/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Browse order" })).toHaveValue("priority");
+    fireEvent.change(screen.getByRole("combobox", { name: "Browse order" }), { target: { value: "formula" } });
+    expect(rowIds()).toEqual([...catalogue.candidates].sort((a, b) => order.compare(a.formula, b.formula)).map(candidate => candidate.id));
+    expect(screen.getByRole("columnheader", { name: "Material" })).toHaveAttribute("aria-sort", "ascending");
   });
 
   it("identifies the three particular source phases without assigning them to every related composition", () => {
@@ -81,6 +91,14 @@ describe("Public unscored source-computed Discovery directory", () => {
     expect(otherTi.querySelector(".discovery-source-phase")).toBeNull();
   });
 
+  it("changes the research target without treating source Tc as support for room-temperature superconductivity", () => {
+    render(<DiscoverySourceCandidates catalogue={catalogue} />); allRows();
+    fireEvent.change(screen.getByRole("combobox", { name: "Research target" }), { target: { value: "ambient_300K" } });
+    expect(rowIds()).toEqual([...catalogue.candidates].sort((a, b) => order.compare(a.formula, b.formula)).map(candidate => candidate.id));
+    expect(screen.getAllByText("No direct target support")).toHaveLength(103);
+    expect(document.querySelectorAll(".discovery-source-detail-row")).toHaveLength(0);
+  });
+
   it("filters composition concerns against real tags, preserving Tc values and formula order", () => {
     render(<DiscoverySourceCandidates catalogue={catalogue} />);
     const concerned = sorted.filter(candidate => candidate.risk_tags.includes("technetium"));
@@ -92,7 +110,7 @@ describe("Public unscored source-computed Discovery directory", () => {
     for (const row of rows()) {
       const candidate = concerned.find(item => item.id === row.dataset.sourceCandidate)!;
       expect(within(row).getByText(candidate.source_tc.target_K.toLocaleString("en-US", { maximumFractionDigits: 3 }))).toBeInTheDocument();
-      expect(within(row).getByText("Unscored")).toBeInTheDocument();
+      expect(within(row).getByText("C · E1")).toBeInTheDocument();
     }
     fireEvent.click(screen.getByRole("button", { name: "Clear filters" }));
     expect(rows()).toHaveLength(103);
@@ -117,7 +135,7 @@ describe("Public unscored source-computed Discovery directory", () => {
     const { container } = render(<DiscoverySourceCandidates catalogue={catalogue} />);
     const candidate = sorted[0];
     const bytes = sourceBytes(candidate), full = JSON.parse(bytes.toString("utf8")).candidate;
-    const fetch = vi.fn().mockResolvedValue(response(bytes)); vi.stubGlobal("fetch", fetch);
+    const fetch = vi.fn().mockImplementation((url: string) => Promise.resolve(staticResponse(url))); vi.stubGlobal("fetch", fetch);
     const trigger = screen.getByRole("button", { name: `Show details for ${candidate.formula}` });
     fireEvent.click(trigger);
     expect(trigger).toHaveAttribute("aria-expanded", "true");
@@ -129,7 +147,7 @@ describe("Public unscored source-computed Discovery directory", () => {
     expect(detail).toHaveTextContent(full.next_action);
     expect(detail).toHaveTextContent(full.risk_summary);
     expect(container.querySelectorAll(".discovery-source-detail-row")).toHaveLength(1);
-    expect(detail.querySelectorAll("details")).toHaveLength(2);
+    expect(detail.querySelectorAll("details")).toHaveLength(3);
     for (const disclosure of detail.querySelectorAll("details")) expect(disclosure).not.toHaveAttribute("open");
     const evidence = JSON.parse(detail.querySelector("pre")!.textContent!);
     expect(evidence).toEqual(full);
@@ -138,26 +156,42 @@ describe("Public unscored source-computed Discovery directory", () => {
     expect(trigger).toHaveFocus(); expect(trigger).toHaveAttribute("aria-expanded", "false");
     expect(container.querySelectorAll(".discovery-source-detail-row")).toHaveLength(0);
     fireEvent.click(trigger); await screen.findByText("Source calculation and selected control");
-    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(2);
     expect(fetch).toHaveBeenCalledWith(candidate.detail.url, expect.objectContaining({ credentials: "omit", cache: "no-store", redirect: "error" }));
   });
 
   it("shows a local error for a corrupted detail and succeeds only after explicit retry", async () => {
     const candidate = sorted[0], bytes = sourceBytes(candidate), corrupt = new Uint8Array(bytes); corrupt[0] ^= 1;
-    const fetch = vi.fn().mockResolvedValueOnce(response(corrupt)).mockResolvedValueOnce(response(bytes)); vi.stubGlobal("fetch", fetch);
+    let corruptRead = true;
+    const fetch = vi.fn().mockImplementation((url: string) => {
+      if (url === candidate.detail.url && corruptRead) { corruptRead = false; return Promise.resolve(response(corrupt)); }
+      return Promise.resolve(staticResponse(url));
+    }); vi.stubGlobal("fetch", fetch);
     const { container } = render(<DiscoverySourceCandidates catalogue={catalogue} />);
     fireEvent.click(screen.getByRole("button", { name: `Show details for ${candidate.formula}` }));
     expect(await screen.findByRole("alert")).toHaveTextContent("could not be verified");
     expect(container.querySelector(".discovery-source-detail pre")).toBeNull();
-    expect(rows()).toHaveLength(24); expect(fetch).toHaveBeenCalledTimes(1);
+    expect(rows()).toHaveLength(24); expect(fetch).toHaveBeenCalledTimes(2);
     fireEvent.click(screen.getByRole("button", { name: "Retry source evidence" }));
-    await screen.findByText("Source calculation and selected control"); expect(fetch).toHaveBeenCalledTimes(2);
+    await screen.findByText("Source calculation and selected control"); expect(fetch).toHaveBeenCalledTimes(4);
+  });
+
+  it("labels relative percent coupling separately from an absolute lambda difference", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockImplementation((url: string) => Promise.resolve(staticResponse(url))));
+    render(<DiscoverySourceCandidates catalogue={catalogue} />);
+    fireEvent.change(screen.getByRole("searchbox", { name: "Find a source candidate" }), { target: { value: "Nb6GaRh" } });
+    fireEvent.click(screen.getByRole("button", { name: "Show details for Nb6GaRh" }));
+    await screen.findByText("Decision bottleneck");
+    const controls = document.querySelector(".discovery-source-counterevidence")!;
+    expect(controls).toHaveTextContent("Relative λ change (target vs control): -34.54 to -14.541 %");
+    expect(controls).not.toHaveTextContent("λ target minus control:");
   });
 
   it("cancels a pending detail when its row closes and does not show stale evidence", async () => {
     const candidate = sorted[0];
     let release: (value: Response) => void = () => {};
-    const fetch = vi.fn().mockImplementation(() => new Promise<Response>(resolve => { release = resolve; })); vi.stubGlobal("fetch", fetch);
+    const fetch = vi.fn().mockImplementation((url: string) => url === candidate.detail.url
+      ? new Promise<Response>(resolve => { release = resolve; }) : Promise.resolve(staticResponse(url))); vi.stubGlobal("fetch", fetch);
     const { container } = render(<DiscoverySourceCandidates catalogue={catalogue} />);
     fireEvent.click(screen.getByRole("button", { name: `Show details for ${candidate.formula}` }));
     const signal = fetch.mock.calls[0][1].signal as AbortSignal;

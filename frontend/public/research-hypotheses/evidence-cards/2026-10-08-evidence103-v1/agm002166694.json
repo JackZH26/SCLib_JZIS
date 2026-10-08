@@ -1,0 +1,98 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm002166694",
+  "source_state": "agm002166694",
+  "formula": "Nb2TcRu",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "2e8700af53353f7a1a994dd1bbc98b8768a65be247c3eebfa87b931c2cd34961",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "case_context": "Exact Nb2TcRu ordered phase was not found in bounded retrieval. Tc-Ru binary competing phases and Mo-Re-Ru HCP alloy superconductivity are not exact SG225 identity.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "All-token gain +.1615…+.2538 lambda and source Tc+3.022 K versus NbTcRuTa accompanies path0, force0 and fine stress .051 GPa. MnNb2Ru is better but its scalar magnetic matching is not certified; retained as contrary source observation, not erased. Tc radioactivity and Ru/Tc channel competition remain risks.",
+    "ambient_scope": "Source coarse force 0.0 eV/Å, pressure -0.001 GPa; fine force 0.0 eV/Å, pressure 0.051000000000000004 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "attention_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "technetium"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/MnNb2Ru_agm002701848",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.2583,
+          -0.08129999999999993
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.866999999999999,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Ta-to-Nb role replacement in cubic Nb2TcRu. coupled chemistry/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "target_state": "agm002166694",
+    "selected_control": "agm001312766",
+    "next_action": "Bind Nb/Ta site EPC/orbital evidence on same frozen geometry roles. Favorable: Ta-to-Nb paired gain remains with valid channel matching; adverse: relevant competition cancels it; ambiguous: only electron counts or unmatched Mn control available.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/MnNb2Ru_agm002701848",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.2583,
+          -0.08129999999999993
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.866999999999999,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

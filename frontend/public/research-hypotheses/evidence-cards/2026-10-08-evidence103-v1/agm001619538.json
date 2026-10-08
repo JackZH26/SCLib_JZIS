@@ -1,0 +1,98 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm001619538",
+  "source_state": "agm001619538",
+  "formula": "HTcRu2Ta",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "aa4ab549c9a70887e26706d2595d7a407afe7be33ca35da49ad7c6afa8741782",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "Published source predictions already known; specific matched mechanism new to reviewed catalogue, not first discovery.",
+    "case_context": "No exact ordered HTcRu2Ta experimental superconducting phase was returned by the bounded formula search. Tc handling makes experimental follow-up demanding but does not invalidate a finite source-computational hypothesis.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "All six target and control q records have positive printed convergence, no routine error and DONE. Fine full stress reaches .750 GPa despite only −.075 GPa mean pressure; Tc radioactivity, hydrogen retention/anharmonicity and relativistic/magnetic model sensitivity are concrete counterrisks.",
+    "ambient_scope": "The exact source neutral zero-applied-pressure model has positive Γ optical compression intervals and no negative retained sampled path value for target and selected control. Coarse/fine force and full stress, relaxation warnings and every q record are retained. These finite observations do not prove full-BZ or thermodynamic hull stability.",
+    "attention_tags": [
+      "hydrogen_anharmonicity",
+      "residual_force_stress",
+      "technetium"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/HNbTcRu2_agm001616455",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.06610000000000005,
+          -0.03080000000000005
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.5050000000000008,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Re→Tc on the frozen hydride metal role raises weighted ωlog by 7.89–9.43% with mixed λ −.0170…+.0769. The hydrogen content and matched roles are retained, but metal chemistry, isotope mass and equilibrium metric are coupled.",
+    "target_state": "agm001619538",
+    "selected_control": "agm001619536",
+    "next_action": "Inspect the saved H-versus-metal-resolved spectral contribution and exact source PP role metadata, then resolve the fine anisotropic strain sensitivity. If the log-moment advantage comes from an anharmonic unstable H branch, the route interpretation is falsified.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/HNbTcRu2_agm001616455",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.06610000000000005,
+          -0.03080000000000005
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.5050000000000008,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+name: Compute Staging Contract
+
+on:
+  pull_request:
+    paths:
+      - scripts/sclib_compute/**
+      - scripts/sclib_compute_*.py
+      - scripts/sclib_compute_requirements.txt
+      - scripts/sclib_compute_deploy/**
+      - tests/test_sclib_compute_staging.py
+      - .github/workflows/sclib-compute-staging.yml
+  push:
+    branches: [main]
+    paths:
+      - scripts/sclib_compute/**
+      - scripts/sclib_compute_*.py
+      - scripts/sclib_compute_requirements.txt
+      - tests/test_sclib_compute_staging.py
+      - .github/workflows/sclib-compute-staging.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transport-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/sclib_compute_requirements.txt
+      - name: Install isolated compute dependencies
+        run: python -m pip install -r scripts/sclib_compute_requirements.txt pytest==8.4.2 ruff==0.16.10
+      - name: Check dependency consistency
+        run: python -m pip check
+      - name: Lint isolated namespace
+        run: python -m ruff check scripts/sclib_compute scripts/sclib_compute_service.py scripts/sclib_compute_dummy_worker.py scripts/sclib_compute_probe.py tests/test_sclib_compute_staging.py
+      - name: Exercise persistent transport faults
+        run: python -m pytest tests/test_sclib_compute_staging.py -q

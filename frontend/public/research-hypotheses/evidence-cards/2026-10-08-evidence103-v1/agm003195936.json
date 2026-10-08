@@ -1,0 +1,67 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm003195936",
+  "source_state": "agm003195936",
+  "formula": "Be4AlRe",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "419c6c7521875277e40c1c32442ef4c7843756febe3ff91e3b4013345d9db286",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "case_context": "Exact Be4AlRe/AlBe4Re query found no primary experimental exact phase. Closest retrieved Be experimental study contains ReBe2 and WBe13, different compositions/prototypes; current object is an already published computed SG216 source state, new only to this reviewed catalogue.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Light Be framework with Re/Tc mass, chemistry and scalar-SOC approximation coupled; source gain is not a universal 5d or bandwidth effect. Fine residual force is 0.01375 eV/A, so fine-grid equilibrium and any SOC shift remain refinement uncertainties.",
+    "ambient_scope": "Source coarse force 6.32365997844544e-05 eV/Å, pressure -0.0 GPa; fine force 0.013753515124951335 eV/Å, pressure -0.134 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "attention_tags": [
+      "residual_force_stress",
+      "sampling_method"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Re-for-Tc Be4Al role substitution. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "target_state": "agm003195936",
+    "selected_control": "agm003202332",
+    "next_action": "At the same source SG216 Be geometry, resolve saved orbital-resolved EPC and Re/Tc mode contributions. Favorable: the observed gain survives method-matched active modes; adverse: it reverses under independently justified integration/Coulomb treatment; ambiguous: mode/orbital association unavailable.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

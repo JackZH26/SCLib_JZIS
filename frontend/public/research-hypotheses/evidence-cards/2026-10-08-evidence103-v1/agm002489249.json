@@ -1,0 +1,67 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm002489249",
+  "source_state": "agm002489249",
+  "formula": "NaAuH3",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "278f88e4cf4fb0b95d7ed496a2be4ff8b3f35f455e79e42b1f75407d55b28273",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "case_context": "2026-10-07 exact NaAuH3/AuNaH3 search identified no experimental superconducting exact phase. The published MC2023 ordered source itself is prior prediction; proposed novelty is new-to-reviewed-catalogue matched Au-for-Pt construction hypothesis, not first composition discovery.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Hydrogen anharmonicity and zero-point/decomposition pathways, Au charge redistribution and neglected SOC can change the magnitude. They are unmeasured here, but there is no actual negative path or optical mode in this exact source model. The PdH anharmonic counterexample prohibits treating harmonic Tc as experimental.",
+    "ambient_scope": "Coarse/fine SCF both converge; complete source forces/stress, positive Gamma optical compression and no signed negative finite-path value support this model near ambient. All listed q outputs end JOBDONE/response convergence with zero routine errors. This is finite-grid local/metastable evidence, not exhaustive thermodynamic or all-irrep certification.",
+    "attention_tags": [
+      "hydrogen_anharmonicity",
+      "metastable_phase"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Replace the Pt site of NaPtH3 by Au with all ordered roles retained; the source cell expands 10.911%, Au-H minus Pt-H = +0.0631033 A and H-H = +0.0892416 A. The coupled chemistry/bond-network intervention gives all-ten lambda gains 31.525–282.005% and separate Eli mu=.1 13.298→23.838 K. This is not proof that expansion alone causes the gain.",
+    "target_state": "agm002489249",
+    "selected_control": "agm002486518",
+    "next_action": "Hold the composition/ordered sites fixed and compare Au/Pt source structures at a common cell volume and common converged sampling. Favorable: the lambda advantage persists without a nontranslation soft branch; adverse: it vanishes under common sampling or an anharmonic/decomposition instability appears.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

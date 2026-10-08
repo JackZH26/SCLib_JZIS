@@ -1645,6 +1645,7 @@ export interface MaterialEnrichmentCoverage {
   fields: Array<{ field: string; status: string; retained_present: boolean; candidate_count: number; reason_codes: string[]; routes: string[]; classification_review_finding_count?: number }>;
 }
 export interface MaterialEnrichmentReport {
+  source_recovery_batch?: unknown;
   record_coverage?: MaterialRecordCoverage;
   extractor_version?: string;
   input_sha256?: string;

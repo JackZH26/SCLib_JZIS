@@ -3,6 +3,8 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { loadDiscoveryEvidenceSummaries } from "./discovery-evidence-cards";
+import type { ResearchEvidenceSummary } from "./discovery-evidence-policy";
 
 export type PublicEvidenceValue = null | boolean | number | string | PublicEvidenceValue[] | { [key: string]: PublicEvidenceValue };
 export type PublicEvidenceObject = { [key: string]: PublicEvidenceValue };
@@ -77,6 +79,7 @@ export type SourceHypothesisBrowseCandidate = Pick<SourceHypothesis,
   next_action_preview: string;
   countercontrol_count: number;
   detail: { url: string; bytes: number; sha256: string };
+  research_evidence: ResearchEvidenceSummary;
 };
 export type SourceHypothesisBrowseCatalogue = Omit<SourceHypothesisCatalogue, "schema_version" | "candidates"> & {
   schema_version: "source-computed-hypothesis-browse/1.0.0";
@@ -256,12 +259,14 @@ function excerpt(value: string, maximum: number): string {
 /** Only short list/filter fields cross the initial server-to-client boundary. */
 export function getSourceHypothesisBrowseCatalogue(): SourceHypothesisBrowseCatalogue {
   const { catalogue, details } = loadPublished();
+  const evidence = loadDiscoveryEvidenceSummaries(catalogue.candidates, details);
   const candidates = catalogue.candidates.map(row => ({
     id: row.id, formula: row.formula, reduced_formula: row.reduced_formula, composition: row.composition, elements: row.elements,
     source_state: row.source_state, control_state: row.control_state, status: row.status, route: row.route, support_grade: row.support_grade,
     prototype: excerpt(row.prototype, 180), source_tc: row.source_tc, risk_tags: row.risk_tags,
     lambda_difference_range: row.lambda_difference.range, risk_preview: excerpt(row.risk_summary, 240),
     next_action_preview: excerpt(row.next_action, 180), countercontrol_count: row.countercontrols.length, detail: details.get(row.id)!,
+    research_evidence: evidence.get(row.id)!,
   }));
   const browse: SourceHypothesisBrowseCatalogue = { ...catalogue, schema_version: "source-computed-hypothesis-browse/1.0.0", candidates };
   check(Buffer.byteLength(JSON.stringify(browse), "utf8") <= 300 * 1024);

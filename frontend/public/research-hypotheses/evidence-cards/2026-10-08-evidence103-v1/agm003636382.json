@@ -1,0 +1,68 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm003636382",
+  "source_state": "agm003636382",
+  "formula": "ScMoC2",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "7cf2d12cb668259c0e6221cce409ec225467d13a8414f2c0b68fa7064dd929a7",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "case_context": "ScMoC2 was already predicted in the 2023 institutional primary paper (SG166); no first-discovery claim. A dated exact ScMoC2 superconductivity search found that prediction, not an experimental SC benchmark. The exact source phase and new matched W→Mo mechanism define the reviewed-catalogue candidate. The old paper hull/elastic calculation is separate-method supporting prior and is not silently assigned as a new exact-state measurement.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "The original 2023 primary study associates appreciable coupling with an acoustic softening along Gamma-X and places predicted ScMoC2 49 meV/atom above its hull. This is a metastable research route, not equilibrium synthesis certification. Its later exact-source path has no signed negative printed modes and Gamma optical compression is positive; fine force .00823 eV/A and anisotropic stress .363 GPa remain finite-grid stationarity limits.",
+    "ambient_scope": "Coarse/fine SCF both converge; complete source forces/stress, positive Gamma optical compression and no signed negative finite-path value support this model near ambient. All listed q outputs end JOBDONE/response convergence with zero routine errors. This is finite-grid local/metastable evidence, not exhaustive thermodynamic or all-irrep certification.",
+    "attention_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "sampling_method"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Replace W by Mo in the frozen ScWC2 analogue. Volume changes −0.342810%, Sc-C nearest distance −0.00476510 A and C-C +0.00726968 A. The same 4x4x4 PH grid with 13 q representatives yields all-ten lambda gains 10.495–13.659%; separate Eli mu=.1 increases 11.083→15.678 K. Tiny geometry changes accompany a chemically different metal response, so this is a coupled cation-construction hypothesis, not a geometry-only strain mechanism.",
+    "target_state": "agm003636382",
+    "selected_control": "agm003636380",
+    "next_action": "Test one common-grid acoustic Gamma-X/q-mode response in ScWC2 and ScMoC2, or an equal-volume composition cross-control. Favorable: the bounded Mo advantage persists with finite positive curvature; adverse: stronger softening turns the branch unstable or a competing decomposition route reverses near-ambient feasibility.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

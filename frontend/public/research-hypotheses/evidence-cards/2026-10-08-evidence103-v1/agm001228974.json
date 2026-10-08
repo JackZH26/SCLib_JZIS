@@ -1,0 +1,66 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm001228974",
+  "source_state": "agm001228974",
+  "formula": "TiNb2Mo",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "827073b6b5663e962d99a0e435fe2f3d31a74126d0158380bd4da8dc6805f541",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "new-to-reviewed-catalogue ordered geometry hypothesis; literature-derived, not first discovery",
+    "case_context": "New to the reviewed catalogue as an exact ordered geometry-route hypothesis; known experimental disorderedBCC Nb2TiMo is a distinct object. Published source predictions are acknowledged and worldwide first discovery is not claimed.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "NegativeGamma modes are predominantly translational, and the independently checked optical form is positive beyond raw printing bounds. Magnetism/SOC/disorder and full-BZ/finite-temperature stability remain beyond this nonmagnetic source approximation.",
+    "ambient_scope": "Zero-pressure-target optimized models and completed sampled non-Gamma/ASR-path phonons plus positive Gamma optical compression support local near-ambient harmonic feasibility within the declared source model.",
+    "attention_tags": [
+      "metastable_phase"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Non-isometric species-resolved network differences accompany the same-composition source EPC contrast at ten common widths; different reciprocal grids remain an explicit numerical confound.",
+    "target_state": "agm001228974",
+    "selected_control": "agm002322068",
+    "next_action": "Matched reciprocal-resolution refinement must preserve A>B and optical positivity; reversal or adverse structural/magnetic evidence revises this screen. Source association or inconclusive refinement leaves the research hypothesis unresolved.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

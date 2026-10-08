@@ -1,0 +1,129 @@
+{
+  "schema_version": "discovery-model-negative-review/1.0.0",
+  "reviewed_on": "2026-10-08",
+  "sources": [
+    {
+      "filename": "fixed80-v3-root-final-saved-acceptance-v1.json",
+      "sha256": "b9afe3284c0120cd20247123c8008b62c0895ca14c356f085a9ff918d7a4c840",
+      "bytes": 2510
+    },
+    {
+      "filename": "fixed80-v3-root-saved-numeric-review-v2.json",
+      "sha256": "96ba47839c9a7481c331371ec423e24566a0c92eed9ef67491fac7ab3bff7d9f",
+      "bytes": 42155
+    },
+    {
+      "filename": "model124-root-final-saved-acceptance-v1.json",
+      "sha256": "f901d746745be7b8c0fe797593950ebab3b3a6c931bb3c5840c93be8594ff7de",
+      "bytes": 1262
+    },
+    {
+      "filename": "fixed80-v3-root-saved-numeric-review-v2.py",
+      "sha256": "0dc04f3279fc17b5094356ec8e5aef8535fff78f99a97c8165d93b35d0c10176",
+      "bytes": 11165
+    }
+  ],
+  "metrics": [
+    {
+      "model": "main-chem7-lambda_dimensionless",
+      "raw_mae": 0.17407062300032075,
+      "train_median_baseline_raw_mae": 0.16903207547169813,
+      "relative_raw_mae_improvement": -0.02980823322770033,
+      "unit": "dimensionless",
+      "previously_seen_split": true,
+      "prospective_validation": false
+    },
+    {
+      "model": "main-chem7-omega_log_K",
+      "raw_mae": 83.0965549902494,
+      "train_median_baseline_raw_mae": 94.67038867924528,
+      "relative_raw_mae_improvement": 0.12225399990919467,
+      "unit": "K",
+      "previously_seen_split": true,
+      "prospective_validation": false
+    },
+    {
+      "model": "main-full24-lambda_dimensionless",
+      "raw_mae": 0.259580512702241,
+      "train_median_baseline_raw_mae": 0.16903207547169813,
+      "relative_raw_mae_improvement": -0.5356878981569614,
+      "unit": "dimensionless",
+      "previously_seen_split": true,
+      "prospective_validation": false
+    },
+    {
+      "model": "main-full24-omega_log_K",
+      "raw_mae": 74.48292300521118,
+      "train_median_baseline_raw_mae": 94.67038867924528,
+      "relative_raw_mae_improvement": 0.2132394928939362,
+      "unit": "K",
+      "previously_seen_split": true,
+      "prospective_validation": false
+    }
+  ],
+  "findings": [
+    "Both lambda models have worse raw MAE than the training-median baseline on the saved split.",
+    "Both omega-log models improve raw MAE on that split; this does not validate calibration, child-state transfer or joint pairing utility.",
+    "The numerical defect was repaired, but all four principal results are unchanged relative to v2.",
+    "The mapping between source atoms and final EPC QE state remains unknown.",
+    "Previously seen splits cannot acquire new prospective-holdout credit by rerunning evaluation.",
+    "124 converged descriptor states out of 135 are retained; 11 failures remain exclusions, not negative-superconductor labels."
+  ],
+  "descriptor_readback": {
+    "source_states": 135,
+    "converged_model_states_encoded": 124,
+    "not_converged_retained_exclusions": 11,
+    "encoded_retained_sites": 4036,
+    "finite_feature_values": 2976
+  },
+  "unproven_failure_explanations": [
+    "domain shift",
+    "label/state mismatch",
+    "small effective independent sample",
+    "model class or descriptor inadequacy"
+  ],
+  "next_protocol": {
+    "target": "Predict a declared, matched-state response or follow-up utility before attempting absolute room-temperature Tc.",
+    "row_unit": "One explicit physical state, observable, method and source association; no composition-only joins.",
+    "minimum_row_fields": [
+      "state_id",
+      "parent_group",
+      "structure_group",
+      "composition_key",
+      "source_family",
+      "method",
+      "pressure",
+      "geometry_hash",
+      "label_value",
+      "label_unit",
+      "censoring",
+      "label_source_hash",
+      "extraction_status"
+    ],
+    "labels": "Unknown is null, not zero. Experimental and computed targets stay separate; failures and censored outcomes remain explicit.",
+    "splits": "Freeze connected host/structure/source groups before fitting. Use outer leave-family or time splits when sufficient independent groups exist; otherwise abstain from generalization claims.",
+    "preprocessing": "Fit imputers, scaling, feature selection, hyperparameters and calibration inside each training fold only.",
+    "baselines": [
+      "training median",
+      "composition-only",
+      "simple physics",
+      "current descriptor model"
+    ],
+    "evaluation": [
+      "group-level MAE with units",
+      "group bootstrap uncertainty",
+      "interval coverage and width",
+      "out-of-domain abstention",
+      "paired response direction",
+      "incremental utility per actual cost"
+    ],
+    "go_no_go": "Prospective evaluation must beat declared baselines with adequate independent-group uncertainty and target-domain coverage. No universal numerical improvement threshold is invented after observing results.",
+    "thresholds_and_budget": null,
+    "new_fit_status": "not_run; identity repair and preregistered split manifest required"
+  },
+  "proxy_validated": false,
+  "child_transfer_validated": false,
+  "new_training": false,
+  "candidate_score_written": false,
+  "formal_RPS": null
+}

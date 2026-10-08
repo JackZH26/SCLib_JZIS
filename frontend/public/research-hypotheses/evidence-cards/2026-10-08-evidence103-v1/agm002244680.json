@@ -1,0 +1,96 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm002244680",
+  "source_state": "agm002244680",
+  "formula": "Ti2Re",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "45613a36b6d7fa28b667d2027d551ce7d584adb274e478c27940e25852a231fc",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "case_context": "Experimental Re7Ti3 and other Re-Ti stoichiometries are known superconductors, not Ti2Re SG139. Exact current experimental phase not retrieved.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "All-token lambda gain +.0606…+.1324 and Tc+.808 K accompanies path0/Gammaopt+. Geoopt BFGS failure has small final printed force2.75e-5; fine force .02614/stress .126 GPa are explicit. Ti2W is better source response but has negative path and is not hidden. Heavy Re/SOC may change small benefit.",
+    "ambient_scope": "Source coarse force 2.5968144075544575e-05 eV/Å, pressure 0.0 GPa; fine force 0.026138094008553832 eV/Å, pressure 0.05600000000000001 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "attention_tags": [
+      "residual_force_stress"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 1,
+        "control_reference": "batch-a/Ti2W_agm001850171",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.9544999999999999,
+          -0.7479
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -6.579999999999998,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Tc-to-Re role modification in Ti2X. coupled chemistry/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "target_state": "agm002244680",
+    "selected_control": "agm001850181",
+    "next_action": "Resolve Ti/Re/Tc EPC modes and differential SOC/Coulomb sensitivity. Favorable: small coherent source gain remains; adverse: relevant correction reverses sign or unstable branch is required; ambiguous: no matched mode evidence.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 1,
+        "control_reference": "batch-a/Ti2W_agm001850171",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.9544999999999999,
+          -0.7479
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -6.579999999999998,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

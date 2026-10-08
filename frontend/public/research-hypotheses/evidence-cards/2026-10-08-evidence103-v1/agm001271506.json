@@ -1,0 +1,68 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm001271506",
+  "source_state": "agm001271506",
+  "formula": "HfNbTa",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "7a0c2cbd0160bb029fc45506f24855f41469f4ee4b84a14c39ba294f906fac08",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "new-to-reviewed-catalogue ordered geometry hypothesis; literature-derived, not first discovery",
+    "case_context": "Dated catalogue/primary review distinguishes exact ordered hexagonal source phase from experimental disordered bcc HfNbTa prior. New-to-reviewed-catalogue material-design hypothesis only; published2023 source calculation and known chemistry intentionally retained, not first discovery.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Explicit softening, q/k sampling, residual force/stress, harmonic scalar/noSOC approximation and ordered/disordered competitors assessed. No retained dominant contradiction reverses the bounded preliminary inference; magnetic/SOC/thermodynamic/coherence tests remain falsifiable follow-ups.",
+    "ambient_scope": "Near-zero signed source pressure−0.067GPa, converged fine SCF, positive Gamma optical compression beyond source-printing bound and no signed negative retained interpolation-path modes support bounded local/finite-grid feasibility. Residual maxstress0.502GPa/force0.02436eV-A and no global hull/synthesis proof remain stated.",
+    "attention_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "sampling_method"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Against same-composition AGM001839729, species-colored nearest-distance network differs by0.384473576A and source lambda A−B=0.1099–0.1339 across all ten common widths. Different geometry-adapted reciprocal grids remain explicit confounding; response supported at source sampling approximation, not a geometry-only causal theorem.",
+    "target_state": "agm001271506",
+    "selected_control": "agm001839729",
+    "next_action": "Matched reciprocal-resolution and competing-order tests will distinguish stable geometry/EPC benefit from sampling/softening. Maintain only if paired benefit and feasible modes survive; reduce support if gain vanishes or an instability/competing state dominates; ambiguous results retain hypothesis rather than forced acceptance.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

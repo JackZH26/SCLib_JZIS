@@ -1,0 +1,94 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm001146455",
+  "source_state": "agm001146455",
+  "formula": "ZrNbTa2",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "3b21dfd68efd49b53e20067d7df601273957bd314a8c825e153e6da8b330b5e4",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "Published source predictions already known; specific matched mechanism new to reviewed catalogue, not first discovery.",
+    "case_context": "Exact ordered SG123 ZrNbTa2 superconductivity was not returned in the bounded exact-formula search. Known refractory Nb/Ta/Zr alloy chemistry would not identify this ordered four-site state. This is new-to-reviewed-catalogue support, not a first-synthesis claim.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "The Hf analogue is the admission comparator. ZrTa3 has three negative printed path values and is retained as an adverse auxiliary edge, not used to establish stable controlled benefit.",
+    "ambient_scope": "The exact source neutral zero-applied-pressure model has positive Γ optical compression intervals and no negative retained sampled path value for target and selected control. Coarse/fine force and full stress, relaxation warnings and every q record are retained. These finite observations do not prove full-BZ or thermodynamic hull stability.",
+    "attention_tags": [],
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 1,
+        "control_reference": "batch-a/ZrTa3_agm003165876",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -0.0815999999999999,
+          -0.0665
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": 0.16799999999999926,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Hf→Zr on the frozen ordered metal role raises the weighted EPC log-frequency while λ crosses; chemistry, mass and the relaxed metric change together.",
+    "target_state": "agm001146455",
+    "selected_control": "agm001146452",
+    "next_action": "Read the existing α²F or mode-resolved coupling associated with the exact source header, then test whether the Zr-bearing role increases the weighted log moment without a low-frequency divergence; keep fine residual force/strain as convergence sensitivity.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 1,
+        "control_reference": "batch-a/ZrTa3_agm003165876",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -0.0815999999999999,
+          -0.0665
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": 0.16799999999999926,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

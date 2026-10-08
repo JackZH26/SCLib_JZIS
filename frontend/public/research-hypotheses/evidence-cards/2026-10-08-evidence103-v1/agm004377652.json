@@ -1,0 +1,68 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm004377652",
+  "source_state": "agm004377652",
+  "formula": "Tc2RuRh",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "1843adca1e82e64595007770e9f7cf706e33191ed4461d1a6f1bc2a4cbb4b297",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "case_context": "No exact Tc2RuRh experimental orderedSG123 phase retrieved. PrimarybinaryTc phase competitors are different objects.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Three-tolerance all-token +.0444…+.1146 lambda and sourceTc+1.591 K versusTc2RhOs occur on path0/Gammaopt+ target. Fine force .01652/stress .649 GPa remain numerical/strain limitations. Ru4d vsOs5d changes mass, potential and SOC jointly; not highW or nominal-n proof.",
+    "ambient_scope": "Source coarse force 2.0054606315767095e-05 eV/Å, pressure 0.001 GPa; fine force 0.016516510963058492 eV/Å, pressure -0.1 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "attention_tags": [
+      "residual_force_stress",
+      "sampling_method",
+      "technetium"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Os-to-Ru role substitution in ordered Tc2RhX. coupled chemistry/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "target_state": "agm004377652",
+    "selected_control": "agm004274320",
+    "next_action": "Resolve Ru/Os role EPC and fine stress direction. Favorable: paired source response survives bounded correction; adverse: SOC/strain reverses gain; ambiguous: only formal valence or source Tc remains.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

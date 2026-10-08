@@ -1,0 +1,20 @@
+{
+  "auth": {
+    "mode": "mtls_proxy",
+    "proxy_token_sha256": "REPLACE_WITH_SHA256_OF_PRIVATE_PROXY_SECRET",
+    "certificate_sha256_principals": {
+      "REPLACE_WITH_OPERATOR_CERT_DER_SHA256": { "role": "operator" },
+      "REPLACE_WITH_NODE_CERT_DER_SHA256": {
+        "role": "node", "node_id": "dummy-probe-node", "runtime_id": "dummy-v1", "capabilities": ["dummy"]
+      }
+    }
+  },
+  "enabled_job_kinds": ["dummy"],
+  "limits": {
+    "lease_seconds": 180, "retry_grace_seconds": 60,
+    "max_cpu_cores": 2, "max_wall_seconds": 300, "max_memory_bytes": 2147483648,
+    "max_artifact_bytes": 1048576, "max_input_bytes": 4194304, "max_output_bytes": 4194304,
+    "total_cpu_core_seconds": 7200, "total_artifact_bytes": 268435456,
+    "min_free_bytes": 67108864, "max_jobs": 1000, "max_claim_requests": 10000
+  }
+}
