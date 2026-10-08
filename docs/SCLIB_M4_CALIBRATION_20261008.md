@@ -2,6 +2,8 @@
 
 本方案冻结已经准备好的 MgB₂ 母体 2×2×1 坐标模型，先打通真实任务回传，再测 MPI 并行和有限 k 网格敏感性。它不生成新候选、不预测 Tc，也不把测试通过写成科学批准。冻结状态及文件摘要见 [m4-calibration-v1.json](data/discovery-batches-20261008/m4-calibration-v1.json)。实际执行与验收需要另存记录；此摘要始终表示 `prepared_not_run`。
 
+2026-10-08 的实际初始化与 1/2/4-rank SCF 结果另见 [首轮观测记录](SCLIB_M4_CALIBRATION_OBSERVED_20261008.md)。该记录不改变本冻结方案或 prepared snapshot。
+
 ## 固定科学输入
 
 母体 `Mg4B8`，12 个原子，来源 COD 1526507 固定坐标，均匀线性应变 0%。完整源包 manifest SHA-256 为 `af978e9f847a77913a32b19f09910b67d42c8d185943b25c5e1f8ffd9277f838`。64 个 UPF 价电子是计算记账，不是自由载流子数量。
