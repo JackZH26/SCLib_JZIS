@@ -1,0 +1,156 @@
+{
+  "schema": "materials-recovery-public-binding-fixture/1",
+  "scope": "Public retained values and identity pins only; no source passages; not scientific validation.",
+  "materials": [
+    {
+      "id": "mat:nb4c3o2",
+      "formula": "Nb4C3O2",
+      "records": [
+        {
+          "ambient_sc": true,
+          "confidence": 0.9,
+          "credibility_tier": "T1",
+          "evidence_type": "primary_theoretical",
+          "family": "conventional",
+          "formula": "Nb4C3O2",
+          "measurement": "unknown",
+          "omega_log_k": 2820.8935,
+          "paper_id": "arxiv:2403.06380",
+          "paper_type": "computational",
+          "tc_kelvin": 23.0,
+          "tc_regime": "unknown",
+          "tc_type": "unknown",
+          "year": 2024
+        }
+      ],
+      "snapshot": {
+        "captured_on": "2026-10-08",
+        "detail_url": "https://api.jzis.org/sclib/v1/materials/mat%3Anb4c3o2",
+        "enrichment_url": "https://api.jzis.org/sclib/v1/materials/mat%3Anb4c3o2/enrichment",
+        "detail_file_sha256": "1e6426b7917f28b43a6d5bf696a0fe63d6ff9f58609826395bd7a73a043bbd05",
+        "enrichment_file_sha256": "ac87a25c1e55beffd0f494728d3a1c76d235fb97d4a7138133e362dcd87a181a"
+      },
+      "coverage_sha256": "e03a480415cbc5055aefe89528aba0a9cf632aa8b5d28ecf37a60e51c6063c04",
+      "coverage_pins": [
+        {
+          "record_offset": 0,
+          "paper_id": "arxiv:2403.06380",
+          "result_id": "legacy-result:720fc6dfd68ce54587f5dccc966f894b7270d26570737f38285244e0f69fce64",
+          "record_sha256": "60f9e3ac0a02b4e8826edab2a78866798e88682e3251034a67c7b08407bc639d"
+        }
+      ]
+    },
+    {
+      "id": "mat:ba3rh4ge16",
+      "formula": "Ba3Rh4Ge16",
+      "records": [
+        {
+          "ambient_sc": true,
+          "confidence": 1.0,
+          "credibility_tier": "T1",
+          "evidence_type": "primary_experimental",
+          "family": "conventional",
+          "formula": "Ba3Rh4Ge16",
+          "hc2_tesla": 2.5,
+          "lambda_eph": 0.8,
+          "measurement": "resistivity",
+          "pairing_symmetry": "s-wave",
+          "paper_id": "arxiv:2112.00644",
+          "paper_type": "experimental",
+          "tc_kelvin": 7.0,
+          "tc_regime": "bulk_equilibrium",
+          "tc_type": "unknown",
+          "year": 2021
+        },
+        {
+          "ambient_sc": true,
+          "confidence": 1.0,
+          "credibility_tier": "T1",
+          "evidence_type": "primary_experimental",
+          "family": "conventional",
+          "formula": "Ba3Rh4Ge16",
+          "hc2_tesla": 2.5,
+          "lambda_eph": 0.8,
+          "measurement": "susceptibility",
+          "pairing_symmetry": "s-wave",
+          "paper_id": "arxiv:2112.00644",
+          "paper_type": "experimental",
+          "tc_kelvin": 7.0,
+          "tc_regime": "bulk_equilibrium",
+          "tc_type": "unknown",
+          "year": 2021
+        },
+        {
+          "ambient_sc": true,
+          "confidence": 1.0,
+          "credibility_tier": "T1",
+          "evidence_type": "primary_experimental",
+          "family": "conventional",
+          "formula": "Ba3Rh4Ge16",
+          "hc2_tesla": 2.5,
+          "lambda_eph": 0.8,
+          "measurement": "specific_heat",
+          "pairing_symmetry": "s-wave",
+          "paper_id": "arxiv:2112.00644",
+          "paper_type": "experimental",
+          "tc_kelvin": 7.0,
+          "tc_regime": "bulk_equilibrium",
+          "tc_type": "unknown",
+          "year": 2021
+        },
+        {
+          "ambient_sc": true,
+          "confidence": 1.0,
+          "credibility_tier": "T1",
+          "evidence_type": "primary_experimental",
+          "family": "conventional",
+          "formula": "Ba3Rh4Ge16",
+          "hc2_tesla": 2.5,
+          "lambda_eph": 0.8,
+          "measurement": "muSR",
+          "pairing_symmetry": "s-wave",
+          "paper_id": "arxiv:2112.00644",
+          "paper_type": "experimental",
+          "tc_kelvin": 7.0,
+          "tc_regime": "bulk_equilibrium",
+          "tc_type": "unknown",
+          "year": 2021
+        }
+      ],
+      "snapshot": {
+        "captured_on": "2026-10-08",
+        "detail_url": "https://api.jzis.org/sclib/v1/materials/mat%3Aba3rh4ge16",
+        "enrichment_url": "https://api.jzis.org/sclib/v1/materials/mat%3Aba3rh4ge16/enrichment",
+        "detail_file_sha256": "e6c7ce5b8bf0ce55430ccd2dc2d812b9d5c6b4b21f8221f410e75b46fdc85a9d",
+        "enrichment_file_sha256": "3106bcceaed87ff141c3ac4fbfa886fffde11e6918d328414d22e535ceff774a"
+      },
+      "coverage_sha256": "75bb18e52b1cf16afab294cef2c34172f8491cc27ae56aa7e6081bb8150c09cd",
+      "coverage_pins": [
+        {
+          "record_offset": 0,
+          "paper_id": "arxiv:2112.00644",
+          "result_id": "legacy-result:b90fa33c68d03023a4d4e68a35293c71d1ddd559130ca79756d1240c20a5c6d2",
+          "record_sha256": "920643c9caaa8dc920ea12a23a61b6fb07632bd8436a0ee52906fe15a4b868bf"
+        },
+        {
+          "record_offset": 1,
+          "paper_id": "arxiv:2112.00644",
+          "result_id": "legacy-result:e7b962e06577406c660f82d542fd12c02a348293e071bd6cc860a3adb0dd6402",
+          "record_sha256": "55f94f837d1399c4e58c30edaba450adf0e27f1d7549b420f6ec0626636b8ffd"
+        },
+        {
+          "record_offset": 2,
+          "paper_id": "arxiv:2112.00644",
+          "result_id": "legacy-result:5358e93867dcf0c694b6a235e5dbf7a480eafcaeea567f8466cae5d41e8a070f",
+          "record_sha256": "ed53222c40610b971353408e93ace86da04bef9dcb1517080c929da424fb1a59"
+        },
+        {
+          "record_offset": 3,
+          "paper_id": "arxiv:2112.00644",
+          "result_id": "legacy-result:316245ee1bf4a83126473530ea73fa1eed7e48692e9e8c5b41388ebe931c18b7",
+          "record_sha256": "eef9c5459d8e43325956aece9be1c97b724b92a7782cc5ed6f4a91b20a53be7f"
+        }
+      ]
+    }
+  ]
+}
