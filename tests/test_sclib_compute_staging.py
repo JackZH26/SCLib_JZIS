@@ -137,6 +137,34 @@ def test_t02_checksum_and_frozen_job_binding(env):
         store.enqueue(missing)
 
 
+@pytest.mark.parametrize("change", ["deadline", "limits"])
+def test_t02_lost_enqueue_ack_replays_after_restart_without_new_admission(env, change):
+    store, clock, _ = env
+    spec = spec_for(store, clock)
+    first = store.enqueue(spec)
+    limits = store.limits
+    if change == "deadline":
+        clock.advance(1001)
+    else:
+        limits = replace(limits, max_wall_seconds=29, max_memory_bytes=1,
+                         max_artifact_bytes=1, max_input_bytes=1, max_output_bytes=1)
+    restarted = Store(store.root, limits, clock)
+    if change == "deadline":
+        restarted.reconcile()
+        first = {**first, "status": "failed"}
+    before = restarted.status(), restarted.events(None, 0)
+    assert restarted.enqueue(spec) == first
+    # A retry cannot alter the original payload, resurrect an expired job,
+    # consume budget, or bypass the limits for a genuinely new job.
+    with pytest.raises(ComputeError, match="job_id_content_changed"):
+        restarted.enqueue(spec.model_copy(update={"state_ref": "changed-state"}))
+    reason = "job_deadline_elapsed" if change == "deadline" else "job_resource_limit"
+    with pytest.raises(ComputeError, match=reason):
+        restarted.enqueue(spec.model_copy(update={"job_id": "new-job"}))
+    assert (restarted.status(), restarted.events(None, 0)) == before
+    assert restarted.status()["reserved_cpu_core_seconds"] == 0
+
+
 def test_t03_lost_claim_ack_durable_before_and_after_expiry(env):
     store, clock, _ = env
     spec, first = start(store, clock)

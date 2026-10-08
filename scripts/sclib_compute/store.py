@@ -206,16 +206,6 @@ class Store:
         return {"node_id": node, "status": "registered_staging", "scientific_authority": False}
 
     def enqueue(self, spec: JobSpec):
-        if (spec.resources.cpu_cores > self.limits.max_cpu_cores
-                or spec.resources.wall_seconds > self.limits.max_wall_seconds
-                or spec.resources.memory_bytes > self.limits.max_memory_bytes
-                or spec.resources.output_bytes > self.limits.max_output_bytes
-                or any(rule.max_bytes > self.limits.max_artifact_bytes for rule in spec.output_rules)
-                or any(pin.bytes > self.limits.max_artifact_bytes for pin in spec.input_artifacts)
-                or sum(pin.bytes for pin in spec.input_artifacts) > self.limits.max_input_bytes):
-            raise ComputeError("job_resource_limit", 422)
-        if spec.deadline_unix <= self.clock():
-            raise ComputeError("job_deadline_elapsed", 422)
         payload = spec.model_dump(mode="json")
         sha = digest(payload)
         with self.transaction() as db:
@@ -224,6 +214,18 @@ class Store:
                 if old["spec_sha"] != sha:
                     raise ComputeError("job_id_content_changed", 409)
                 return self.job_view(old)
+            # Replaying an admitted job is a read of its current state. New
+            # admission limits must not hide it after a lost response/restart.
+            if (spec.resources.cpu_cores > self.limits.max_cpu_cores
+                    or spec.resources.wall_seconds > self.limits.max_wall_seconds
+                    or spec.resources.memory_bytes > self.limits.max_memory_bytes
+                    or spec.resources.output_bytes > self.limits.max_output_bytes
+                    or any(rule.max_bytes > self.limits.max_artifact_bytes for rule in spec.output_rules)
+                    or any(pin.bytes > self.limits.max_artifact_bytes for pin in spec.input_artifacts)
+                    or sum(pin.bytes for pin in spec.input_artifacts) > self.limits.max_input_bytes):
+                raise ComputeError("job_resource_limit", 422)
+            if spec.deadline_unix <= self.clock():
+                raise ComputeError("job_deadline_elapsed", 422)
             if db.execute("SELECT COUNT(*) FROM jobs").fetchone()[0] >= self.limits.max_jobs:
                 raise ComputeError("campaign_job_limit", 409)
             for pin in spec.input_artifacts:
