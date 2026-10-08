@@ -11,6 +11,9 @@ on:
       - tests/test_sclib_compute_native.py
       - scripts/tests/test_build_sclib_m4_calibration.py
       - scripts/build_sclib_m4_calibration.py
+      - scripts/build_sclib_pbesol_preparation.py
+      - scripts/tests/test_build_sclib_pbesol_preparation.py
+      - docs/data/discovery-batches-20261008/pbesol-*.json
       - .github/workflows/sclib-compute-staging.yml
   push:
     branches: [main]
@@ -22,6 +25,9 @@ on:
       - tests/test_sclib_compute_native.py
       - scripts/tests/test_build_sclib_m4_calibration.py
       - scripts/build_sclib_m4_calibration.py
+      - scripts/build_sclib_pbesol_preparation.py
+      - scripts/tests/test_build_sclib_pbesol_preparation.py
+      - docs/data/discovery-batches-20261008/pbesol-*.json
       - .github/workflows/sclib-compute-staging.yml
   workflow_dispatch:
 
@@ -44,6 +50,6 @@ jobs:
       - name: Check dependency consistency
         run: python -m pip check
       - name: Lint isolated namespace
-        run: python -m ruff check scripts/sclib_compute scripts/sclib_compute_service.py scripts/sclib_compute_dummy_worker.py scripts/sclib_compute_probe.py scripts/sclib_compute_node_probe.py scripts/sclib_compute_native_worker.py tests/test_sclib_compute_staging.py tests/test_sclib_compute_native.py scripts/build_sclib_m4_calibration.py scripts/tests/test_build_sclib_m4_calibration.py
-      - name: Exercise persistent transport faults
-        run: python -m pytest tests/test_sclib_compute_staging.py tests/test_sclib_compute_native.py scripts/tests/test_build_sclib_m4_calibration.py -q
+        run: python -m ruff check scripts/sclib_compute scripts/sclib_compute_service.py scripts/sclib_compute_dummy_worker.py scripts/sclib_compute_probe.py scripts/sclib_compute_node_probe.py scripts/sclib_compute_native_worker.py tests/test_sclib_compute_staging.py tests/test_sclib_compute_native.py scripts/build_sclib_m4_calibration.py scripts/tests/test_build_sclib_m4_calibration.py scripts/build_sclib_pbesol_preparation.py scripts/tests/test_build_sclib_pbesol_preparation.py
+      - name: Exercise transport, native execution and input preparation contracts
+        run: python -m pytest tests/test_sclib_compute_staging.py tests/test_sclib_compute_native.py scripts/tests/test_build_sclib_m4_calibration.py scripts/tests/test_build_sclib_pbesol_preparation.py -q
