@@ -1,0 +1,64 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm001828806",
+  "source_state": "agm001828806",
+  "formula": "NbTa3",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "8a893dcb410e3d8e0f38a13dfc90052fa72cdcc42a4098d6e3d0975e6ea9ccb3",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "new-to-reviewed-catalogue ordered source-model route hypothesis; literature-derived, not first discovery",
+    "case_context": "Primary Nb-rich Nb-Ta superconducting alloys and published theoretical source states are known; no exact ordered25Nb75Ta experimental benchmark identified by the bounded primary query. Default one exact-composition group, with all source/control variants underneath.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Small source Eli Tc gain12.871 versus12.235K; all ten lambda contrasts positive but q3x3x5 versus4^3. Coarse/fine phase-energy preference flips at sub-meV fine scale; assess as near-degenerate phase response, not global ground state. Evaluated risks define a falsifiable bounded hypothesis, not an established bulk ground state or experimental coherence proof.",
+    "ambient_scope": "Source nearambient fullstress/pressure and coarse-relaxed geometry, positive raw-Gamma optical compression beyond printing bounds, and no negative printed finite-path values support preliminary local feasibility only within the declared source approximation. WholeBZ/global hull/synthesis remain unknown.",
+    "attention_tags": [],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Unique Nb periodic distance3.28156452 versus4.63614381A, while volumes differ only0.02134%; this is a colored ordering contrast, not a basis alias. Computed source EPC response is associated with construction; pure geometry-only causality and converged numerical uplift are unproved.",
+    "target_state": "agm001828806",
+    "selected_control": "agm001416090",
+    "next_action": "Match reciprocal-grid density/code and test whether the phase/EPC ordering survives; retain all ten source sigma points and competing phase.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

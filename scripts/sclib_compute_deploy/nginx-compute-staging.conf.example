@@ -1,0 +1,43 @@
+# Merge ONLY into a separate staging vhost, after reviewing existing nginx config.
+# This example is not installed automatically and contains NO credentials.
+# Substitute a real DNS/server certificate. Client CA is dedicated to staging.
+server {
+    listen 443 ssl;
+    server_name compute-staging.example.invalid;
+    ssl_certificate /etc/sclib-compute/tls/server.crt;
+    ssl_certificate_key /etc/sclib-compute/tls/server.key;
+    ssl_client_certificate /etc/sclib-compute/tls/client-ca.crt;
+    ssl_verify_client on;
+    ssl_verify_depth 1;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    # Configure a CRL when node/operator certificates are revoked.
+    # ssl_crl /etc/sclib-compute/tls/client-ca.crl;
+    client_max_body_size 1m;
+    access_log off;
+    error_log /var/log/nginx/sclib-compute-staging-error.log warn;
+
+    location /compute/v1/ {
+        limit_except GET POST PUT { deny all; }
+        proxy_pass http://127.0.0.1:8092;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 30s;
+        proxy_request_buffering on;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For "";
+        proxy_set_header Forwarded "";
+        proxy_set_header Authorization "";
+        proxy_set_header X-SCLib-Client-Verify $ssl_client_verify;
+        # Verified actual certificate bytes, not caller-supplied subject/ID or
+        # nginx's built-in SHA-1 fingerprint. App computes SHA-256 from the DER.
+        proxy_set_header X-SCLib-Client-Certificate $ssl_client_escaped_cert;
+        proxy_set_header X-SCLib-Cert-Fingerprint "";
+        proxy_set_header X-SCLib-Client-Subject "";
+        # Private root-only include containing ONLY:
+        # proxy_set_header X-SCLib-Proxy-Token "<generated-local-secret>";
+        include /etc/sclib-compute/nginx-proxy-secret.conf;
+    }
+    location = /health {
+        proxy_pass http://127.0.0.1:8092;
+    }
+    location / { return 404; }
+}

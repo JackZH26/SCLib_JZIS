@@ -1,0 +1,3845 @@
+{
+  "schema_version": "discovery-evidence-card-index/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "rubric_version": "discovery-provisional-support/1.0.0",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "scope": "Provisional research support and dossiers. No new calculation, independent review, experimental confirmation, formal RPS assessment, or global novelty claim.",
+  "candidates": [
+    {
+      "id": "source-hypothesis:agm003195936",
+      "source_state": "agm003195936",
+      "formula": "Be4AlRe",
+      "source_detail_sha256": "419c6c7521875277e40c1c32442ef4c7843756febe3ff91e3b4013345d9db286",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003195936.json",
+        "bytes": 4264,
+        "sha256": "db0362e2408e07c8da0891ef673b2afe2771d3907bbdf78ecb976632515be752"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003204399",
+      "source_state": "agm003204399",
+      "formula": "Be4ZrRh",
+      "source_detail_sha256": "cb5588da2cd4fd9070405ab20721d01a1f8e94006471165627f6125bc5f86b8c",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003204399.json",
+        "bytes": 4430,
+        "sha256": "1fb94a76dd42eba8e84e9ac51374b4edca1da7c08b06b7347a2104bed668ef5b"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002664904",
+      "source_state": "agm002664904",
+      "formula": "Cr2MoTc",
+      "source_detail_sha256": "9d4f63ad79e38df94026214a7b68bbebd6fd97f7ae1df977e979c054a0a3f61c",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 3,
+            "control_reference": "batch-a/Mo3Tc_agm003165329",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.12630000000000008,
+              -0.03539999999999999
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 1.061,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002664904.json",
+        "bytes": 5239,
+        "sha256": "505aed930ded41b2e80423dbee946ad242e86cd9958eb3557eaa3b8378191e96"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003203668",
+      "source_state": "agm003203668",
+      "formula": "Cr2Re",
+      "source_detail_sha256": "a9858e829a349f393efab74df2b9532be9166a1c1e3f104a45bcbc99ecd73dc8",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003203668.json",
+        "bytes": 4647,
+        "sha256": "01087561739f06f72a155461139a6dfff67653097f257b774666c0e3a3b27dcc"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003197109",
+      "source_state": "agm003197109",
+      "formula": "Cr2Tc",
+      "source_detail_sha256": "d396ef3af16e6b10ec8c8bb2b2b5b88fb61fa567a7057c6caba4f00b41b2a1cc",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Cr2Mo_agm003197051",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -1.8767999999999998,
+              -0.8926000000000001
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -5.916,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003197109.json",
+        "bytes": 5275,
+        "sha256": "f0f18fb0890f245aac3d653e6d92d27b6e43c5ec751c5d403c164305a603d955"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003199657",
+      "source_state": "agm003199657",
+      "formula": "Cr4MoOs",
+      "source_detail_sha256": "64cb711302e1d96540eeff7196feccb348867a2a815255b7df0c10a7c5dd33ca",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Cr4MoRe_agm003199659",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -1.1323,
+              -0.5401000000000001
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -6.833000000000002,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Cr4MoRu_agm003199662",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.05469999999999997,
+              -0.013700000000000045
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -0.15000000000000213,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/Cr4MoTc_agm003199664",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.9674,
+              -0.4234000000000001
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -7.184000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 3,
+            "control_reference": "batch-a/Cr4NbOs_agm001173524",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.9707999999999999,
+              -0.36330000000000007
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.432000000000002,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 5,
+            "control_reference": "batch-a/Cr4TaOs_agm003199670",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.8817999999999999,
+              -0.3367000000000001
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -3.0429999999999993,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199657.json",
+        "bytes": 10371,
+        "sha256": "5bb1ffef3c81e02dd047e316fecaab5329d86f107d0da91a12a2f32526ded71f"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003199662",
+      "source_state": "agm003199662",
+      "formula": "Cr4MoRu",
+      "source_detail_sha256": "25df634c7ab5e0d16515a41aa4ed49bd15da416ea98ca7860c67346cf15604d8",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Cr4MoRe_agm003199659",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -1.1145,
+              -0.5201000000000001
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -6.683,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/Cr4MoTc_agm003199664",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.9496000000000001,
+              -0.4034000000000001
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -7.033999999999999,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199662.json",
+        "bytes": 6453,
+        "sha256": "bf3eeceb88a3797fe86f0d8dc46f763788889a081df4ea77a46e0f43d33b0df5"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003199664",
+      "source_state": "agm003199664",
+      "formula": "Cr4MoTc",
+      "source_detail_sha256": "ea5736850c4c47528b15b80756c42c5185ee4905eef3ff019a2c9cc708d0580a",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Cr4MoRe_agm003199659",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.18240000000000012,
+              -0.11670000000000003
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 0.3509999999999991,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199664.json",
+        "bytes": 5151,
+        "sha256": "785e8836d19164ecfffcfd8bbd5c2582d0af9dc3c9b53e3a63e414a93c8070c1"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001173524",
+      "source_state": "agm001173524",
+      "formula": "Cr4NbOs",
+      "source_detail_sha256": "07a269e778e9760f3ac9870739a023401025b35e7b169264570148036a874905",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Cr4NbRe_agm001173527",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -1.2554000000000003,
+              -0.39470000000000005
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -2.7699999999999996,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001173524.json",
+        "bytes": 5200,
+        "sha256": "4d956079b8e3b0bdaa327a91dd7effb8a292028234821b43158756476f394d26"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001173527",
+      "source_state": "agm001173527",
+      "formula": "Cr4NbRe",
+      "source_detail_sha256": "971cf0870e6b9cb24753da1084276b1f5ec41687661f190689c138231e58ac51",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001173527.json",
+        "bytes": 3914,
+        "sha256": "24bd0b7afbd7607961a3234b5590bf38b0bc0d6e80d6148b2e353ebb12be5752"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003199670",
+      "source_state": "agm003199670",
+      "formula": "Cr4TaOs",
+      "source_detail_sha256": "ed7ca3d1a617f0f57c51fd790d6235a5c526a5076881bfbe36d0f69898e898bb",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Cr4NbOs_agm001173524",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.11230000000000007,
+              -0.026599999999999957
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.389000000000003,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199670.json",
+        "bytes": 5228,
+        "sha256": "06c7d9d9af113c2b73eee23c33ebd8851f0eed682fe4404583e65646e705b061"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003204438",
+      "source_state": "agm003204438",
+      "formula": "Cr4TcRe",
+      "source_detail_sha256": "21c441f948337a0ac14249d277dd8095ba6f4450558c35e972db2b5257199c3b",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Cr4MoRe_agm003199659",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.9706000000000001,
+              -0.4474
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.819000000000003,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Cr4MoTc_agm003199664",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.8057000000000001,
+              -0.3307
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -5.170000000000002,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/Cr4NbRe_agm001173527",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -2.0645000000000002,
+              -0.6653
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -5.188000000000002,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 5,
+            "control_reference": "batch-a/Cr4TcW_agm003199690",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.7388000000000001,
+              -0.3166
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.376000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 6,
+            "control_reference": "batch-a/Cr4WRe_agm003199681",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.8557000000000001,
+              -0.4142999999999999
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.116,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003204438.json",
+        "bytes": 10289,
+        "sha256": "01f6700da494085f37d986c1d6f2496931c95154e860a48cbb9a50cde79e0ec6"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003199690",
+      "source_state": "agm003199690",
+      "formula": "Cr4TcW",
+      "source_detail_sha256": "ca16079e7ee77d8ac14d891fc30880999c9d7038c4843686b5be30b43e77a24a",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Cr4MoTc_agm003199664",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.06689999999999996,
+              -0.0033000000000000806
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -0.7940000000000005,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 5,
+            "control_reference": "batch-a/Cr4WRe_agm003199681",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.14160000000000017,
+              -0.0976999999999999
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 0.26000000000000156,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199690.json",
+        "bytes": 6473,
+        "sha256": "1427c62f0cce5f9d205dc2cbee3d3e2da42ef77e5a54bfa314f853eeb2befa5c"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003199681",
+      "source_state": "agm003199681",
+      "formula": "Cr4WRe",
+      "source_detail_sha256": "3359399e85923877c22e9ae8e8bfd820f922500b66ec9b8066e9740af6e4ca10",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Cr4MoRe_agm003199659",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.1149,
+              -0.032200000000000006
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -0.703000000000003,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Cr4NbRe_agm001173527",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -1.2088,
+              -0.2510000000000001
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.0720000000000027,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 6,
+            "control_reference": "batch-a/Cr4TcW_agm003199690",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              0.0976999999999999,
+              0.14160000000000017
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -0.26000000000000156,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199681.json",
+        "bytes": 7766,
+        "sha256": "9fba4e0c53adcda1d8cc684f54ac64f45fa2be1d5f847525dd87b93b70aa58b7"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003159377",
+      "source_state": "agm003159377",
+      "formula": "CrMoRe",
+      "source_detail_sha256": "1c05e11749115f6f524b0c4bc5b5b8a707c207c2786043fd79ce55bf2f7f5a92",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003159377.json",
+        "bytes": 4527,
+        "sha256": "47615f6dafb511f8108a7c74c85e8f9ca63d9d54b7dbb5f2d0ad15925dc0ef09"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003163920",
+      "source_state": "agm003163920",
+      "formula": "CrTc",
+      "source_detail_sha256": "db2b8c67c23cab0838b928a17754d7a28db95d6b680fc3f499c580562bdf7bbe",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003163920.json",
+        "bytes": 4038,
+        "sha256": "b700c993a42394cf971b5c6e4b35cd36aebe7e458ff4f72b8179749fae3a34b7"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001619538",
+      "source_state": "agm001619538",
+      "formula": "HTcRu2Ta",
+      "source_detail_sha256": "aa4ab549c9a70887e26706d2595d7a407afe7be33ca35da49ad7c6afa8741782",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/HNbTcRu2_agm001616455",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.06610000000000005,
+              -0.03080000000000005
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.5050000000000008,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001619538.json",
+        "bytes": 5756,
+        "sha256": "2525bd849877c55e7ea27e3fffe4b7f167898daf7350cf63aa2cf67074e88500"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001117007",
+      "source_state": "agm001117007",
+      "formula": "Hf2TiZr",
+      "source_detail_sha256": "4446b21ba3712636b8a6d0da28ddbf76420b9f19028da90368340e00394917d1",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001117007.json",
+        "bytes": 3921,
+        "sha256": "fa16aa35423846dd38e34e15fe38afa6f5b50b4a0e0a53d901a8a851631905f1"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001271506",
+      "source_state": "agm001271506",
+      "formula": "HfNbTa",
+      "source_detail_sha256": "7a0c2cbd0160bb029fc45506f24855f41469f4ee4b84a14c39ba294f906fac08",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001271506.json",
+        "bytes": 4624,
+        "sha256": "01cea37c5dbc027355c15ae4cd911e2f2cea7d7fe65c6a7a6ef05e0cfce88746"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001106125",
+      "source_state": "agm001106125",
+      "formula": "HfRu3H",
+      "source_detail_sha256": "1aed10b78eab8c6529bef9dbfc84961da9fd63a99dd5a706e9df7bc8698e6d09",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/HTi3Hf_agm002488868",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -37.23335488041371,
+              -12.961484120646224
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": -7.610000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001106125.json",
+        "bytes": 6100,
+        "sha256": "8fbcb1ddce1642cdcc9ac34e7608ec62f4471db83f8e2e95202f980b57d0221c"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001631318",
+      "source_state": "agm001631318",
+      "formula": "HfTc2",
+      "source_detail_sha256": "d4d1d65d458b029ae94742823e4073ad227e2fe040c06701006371967df26c62",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/ScTc4Hf_agm001184600",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.10410000000000008,
+              -0.040000000000000036
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 0.24399999999999977,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 3,
+            "control_reference": "batch-a/Tc2Lu_agm001631328",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.8879000000000001,
+              -0.7399
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 1.5380000000000003,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 4,
+            "control_reference": "batch-a/YTc4Hf_agm001187527",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -1.9167,
+              -1.0817
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.8810000000000002,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 5,
+            "control_reference": "batch-a/ZrTc2_agm003203155",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.4991000000000001,
+              -0.2761
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -3.6080000000000005,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 6,
+            "control_reference": "batch-a/ZrTc4Hf_agm001177851",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.21960000000000002,
+              -0.12209999999999988
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.9920000000000009,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001631318.json",
+        "bytes": 11075,
+        "sha256": "9f9b487adbfbdedccf57df8cf03fed9b9092ffaa2b704041b699ece0960fcad0"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002488868",
+      "source_state": "agm002488868",
+      "formula": "HfTi3H",
+      "source_detail_sha256": "354c6e853477ccedf677f47c4b1355cafaeef75db5b8108e3106a6b158be8131",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002488868.json",
+        "bytes": 4853,
+        "sha256": "cb9ad47497fd6fb349899df2c33bfee47c8f0f062a170114e26c29e0e7a2fee6"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001117008",
+      "source_state": "agm001117008",
+      "formula": "HfTiZr2",
+      "source_detail_sha256": "0e17d550914c92d714c441cd093b565271cb5bf36335bfbc56f120173b4f64c5",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001117008.json",
+        "bytes": 3921,
+        "sha256": "39489e46842926e18799c2a2d723f198f60c18466b4f3d14265784e4de64a1df"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002493455",
+      "source_state": "agm002493455",
+      "formula": "LiPtH3",
+      "source_detail_sha256": "dae67860ed67d8a037bd0eaae7d9b5796a074166ee7a9c8864dbfe0053168a93",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/H3AgPt_agm002491760",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -64.13133041769665,
+              -51.59238909238909
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": -0.9250000000000007,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/H3LaPt_agm002486449",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -43.62266257326263,
+              -12.876748309147018
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": 5.818999999999999,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/H3LiPd_agm001105243",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -68.79714042106644,
+              -62.340687067348135
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": -8.369,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002493455.json",
+        "bytes": 8817,
+        "sha256": "f3dcc42ae76d3d4e625652db8d2c36fcf8f24cc51f53272cd182df0ce098ebdc"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002290660",
+      "source_state": "agm002290660",
+      "formula": "LuTaN2",
+      "source_detail_sha256": "9fc0ca86d4fcfc703376f5753219d410a889395b379048b497bfb66cbe59f7b8",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002290660.json",
+        "bytes": 4815,
+        "sha256": "882a4b803800a3b5929056b84c80865f6fe213d150ffb6bdfc9b00b4b19c904f"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002339932",
+      "source_state": "agm002339932",
+      "formula": "MgIrH3",
+      "source_detail_sha256": "ccba71292e205b39fba1ef9996df4072a7e50b4c5cd5563ad4023d1b587aeea6",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002339932.json",
+        "bytes": 5030,
+        "sha256": "1aed2deed2d8455d0f613dc50c9fb3a1faf109c4e2fac3f2c2fc612ae918f8af"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003203150",
+      "source_state": "agm003203150",
+      "formula": "Mn2Mo",
+      "source_detail_sha256": "f28684848c648ba5b301064b71b692d4d83efe1c12c76110ca59e656cce9b391",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Cr2Mo_agm003197051",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -2.2529,
+              -1.0757
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -14.126,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003203150.json",
+        "bytes": 5270,
+        "sha256": "67fe442ab2cfe889d470c8b1cbc664eec57a3c5ddebf43d078aed060c08fca65"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003195946",
+      "source_state": "agm003195946",
+      "formula": "Mn4MoTa",
+      "source_detail_sha256": "52bc5523898c324bea888afea82727673a7be8e8fb9cd4e29b7673ae25760a48",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Mn4NbMo_agm001179868",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.13030000000000008,
+              -0.05290000000000006
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.7629999999999981,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 6,
+            "control_reference": "batch-a/VMn4Mo_agm001186980",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.14670000000000005,
+              -0.043300000000000005
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -2.125,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003195946.json",
+        "bytes": 6459,
+        "sha256": "02dd48f6575b6a193e168f7d48418224da9d88a79a79209368a3aa65907aa36e"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001179868",
+      "source_state": "agm001179868",
+      "formula": "Mn4NbMo",
+      "source_detail_sha256": "9c6f42ece1f0b686775284b2a2fffe0e286c5f0bb999868136367bfed4bc22bd",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001179868.json",
+        "bytes": 3935,
+        "sha256": "27b8171c29e42ec9ece0c696a1cc2f65794f10c89c52a8a4641cf722759ee245"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001179875",
+      "source_state": "agm001179875",
+      "formula": "Mn4NbRe",
+      "source_detail_sha256": "93c43787b051e98b30aec985ddd2cbd344e3cb56f0bb06241c57a348d6ab0827",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Cr4NbRe_agm001173527",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -2.4518000000000004,
+              -0.9001000000000001
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -14.963000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Mn4NbMo_agm001179868",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.6381000000000001,
+              -0.16460000000000008
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -6.280999999999999,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/Mn4NbTc_agm001179882",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.10250000000000004,
+              -0.04050000000000009
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.7919999999999998,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 4,
+            "control_reference": "batch-a/TiMn4Re_agm001186283",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.3857999999999999,
+              -0.05070000000000008
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -2.414999999999999,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001179875.json",
+        "bytes": 9305,
+        "sha256": "1ec890f7b7e3b3650fc86b11ce0d828b04077f6c4bc0d719ec6c60bf8bc7acca"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001179882",
+      "source_state": "agm001179882",
+      "formula": "Mn4NbTc",
+      "source_detail_sha256": "166dfb4baebeb3bd4974de201387cd08cca59373e6d58f9940652c81204035e4",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Mn4NbMo_agm001179868",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.5357000000000001,
+              -0.12409999999999999
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.488999999999999,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 3,
+            "control_reference": "batch-a/TiMn4Tc_agm001186290",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.4537,
+              -0.07909999999999995
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -3.136000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001179882.json",
+        "bytes": 6594,
+        "sha256": "9adb66499ccdb3ba3c3f5f5228e815e496be497e23949069d0e3b4218e151087"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003195951",
+      "source_state": "agm003195951",
+      "formula": "Mn4TaW",
+      "source_detail_sha256": "024bb034516358f4f17b8c1eb773035457d3ad885782c3f85e6a6e2319ee2728",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Cr4TaW_agm003199689",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.41270000000000007,
+              -0.07490000000000008
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.183,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Mn4MoTa_agm003195946",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.1520999999999999,
+              -0.06240000000000001
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -2.34,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 6,
+            "control_reference": "batch-a/TiMn4W_agm001186294",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.2860999999999999,
+              -0.0605
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.074999999999999,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003195951.json",
+        "bytes": 7664,
+        "sha256": "6046019effafaad1b303b10ea672c2afaf5df6b76bd7d3c8e95fdbc5dc19e521"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003199931",
+      "source_state": "agm003199931",
+      "formula": "Mn4TcTa",
+      "source_detail_sha256": "80d71d02f5748331643b96db2b81ff596367d2a6d2bf1be70c61af0cc2ba3854",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Mn4MoTa_agm003195946",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.4777,
+              -0.09550000000000003
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.191000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Mn4NbTc_agm001179882",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.07180000000000009,
+              -0.0243000000000001
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.4649999999999999,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 4,
+            "control_reference": "batch-a/Mn4TaW_agm003195951",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.3256000000000001,
+              -0.03310000000000002
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.8510000000000009,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 5,
+            "control_reference": "batch-a/TiMn4Tc_agm001186290",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.5255000000000001,
+              -0.10340000000000005
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.601000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199931.json",
+        "bytes": 9077,
+        "sha256": "8351a2283ac9bd089f35726c2167cb0d8064e99323cf3d13272b6f7461a0d336"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003273573",
+      "source_state": "agm003273573",
+      "formula": "Mo2Tc",
+      "source_detail_sha256": "b83832d27312e25142f876aaf07e308e24ce3408a0443e8ff8eb8a1bde5185aa",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003273573.json",
+        "bytes": 4428,
+        "sha256": "da7b73b9233cc19bc42f2655a65844d257e5b90d804047b5e9717d260ae49c70"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002702984",
+      "source_state": "agm002702984",
+      "formula": "Mo2TcW",
+      "source_detail_sha256": "794a3a9c0fcc30848eb9e379dd8f28e559e88d8408f67cba7b94e5baf37396af",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 3,
+            "control_reference": "batch-a/Mo3Tc_agm003165329",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.04830000000000001,
+              -0.015800000000000036
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.333000000000002,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002702984.json",
+        "bytes": 5571,
+        "sha256": "be69fc3f2fe8d26a2badc6eb42b72fadf523a27e8c75cb8ebc988cec6907067a"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003165292",
+      "source_state": "agm003165292",
+      "formula": "Mo3Re",
+      "source_detail_sha256": "353dab6dd25d646c0c38c737295c7f8b3ba713772b11223dd572f30e280aa62f",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Cr2MoRe_agm002145097",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              0.03720000000000001,
+              0.0695
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -0.2010000000000005,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 3,
+            "control_reference": "batch-a/Mo3Tc_agm003165329",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.2983,
+              -0.12140000000000006
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -3.7280000000000015,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165292.json",
+        "bytes": 6688,
+        "sha256": "7efcd7673c8641a1cffdd3a300b07a35d609b0e3d0bfc8c88028baa6b03648a2"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003165329",
+      "source_state": "agm003165329",
+      "formula": "Mo3Tc",
+      "source_detail_sha256": "4e37dfec4ab0db13573a9eb7f87563e5e66c18f5dd2a9fcb16192bfd677d3123",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Cr2MoTc_agm002664904",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              0.03539999999999999,
+              0.12630000000000008
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.061,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165329.json",
+        "bytes": 5578,
+        "sha256": "73270c6880a42862e9b72c1283e185f6885534358f29530d723215a33165cf37"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001192155",
+      "source_state": "agm001192155",
+      "formula": "MoH",
+      "source_detail_sha256": "ca85fc25a9e64fc809de9ae001f9a7b8c50af389a8a55cf4df415d001cb96043",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/HPd_agm003157455",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -40.98104235750485,
+              -33.37361387546204
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": -24.438,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001192155.json",
+        "bytes": 6540,
+        "sha256": "ebc09c6e34838de70052b5cb4d13b0d68da6aaf27225019750a6c26face4a496"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001637483",
+      "source_state": "agm001637483",
+      "formula": "MoTc2RuH",
+      "source_detail_sha256": "510c5608e6cec6028e3938258060c574b09d0f128a382110fbcd993a0524f379",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001637483.json",
+        "bytes": 5020,
+        "sha256": "56b59ab7b06241a7a150747a858e24f788c3f2f5c661109233449f4b865a206b"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm004326783",
+      "source_state": "agm004326783",
+      "formula": "MoTcRu2",
+      "source_detail_sha256": "5bf3f9875faae4d6871e4658df5151136d3bad1dd4631f82f603228fdfddb929",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm004326783.json",
+        "bytes": 4503,
+        "sha256": "373ce190341b28146c32df6c37541bd38c9a8aaa8ede4c0be6acf23a65da80de"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003159857",
+      "source_state": "agm003159857",
+      "formula": "MoTcW",
+      "source_detail_sha256": "45f2b10b73c600f54163e0dd68e7b086e8a8a40fcab5cef03ac39d09a2b31913",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003159857.json",
+        "bytes": 4517,
+        "sha256": "1a0e1332cd06cf414a21e33567fc22d7ee72eae098fee1650a2494912368d241"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003183396",
+      "source_state": "agm003183396",
+      "formula": "MoTcW2",
+      "source_detail_sha256": "5f1afdd9a1b22e1628ba384335ebdad3920e1441af303ee7409a391f9262c14c",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Mo2TcW_agm002702984",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.20889999999999986,
+              -0.0746
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -2.209999999999999,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/Mo3Tc_agm003165329",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.2571999999999999,
+              -0.09889999999999999
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -3.543000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003183396.json",
+        "bytes": 6717,
+        "sha256": "28dd946e9e4b64f045c3459f9a4be7a866290e36da85919d4b2e40530cdccd59"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002346313",
+      "source_state": "agm002346313",
+      "formula": "N2TiZr",
+      "source_detail_sha256": "7052e046eeb7909338c7ea4297372f2373425c3740f83d3823a934c2c8f96608",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/N2ZrHf_agm002291077",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.02290000000000003,
+              -0.017100000000000004
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 0.8800000000000008,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002346313.json",
+        "bytes": 5712,
+        "sha256": "d3f7bf004f7740add710dddb0c95fadd110f3dbcfb23815584e858952bc6c7b9"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002489249",
+      "source_state": "agm002489249",
+      "formula": "NaAuH3",
+      "source_detail_sha256": "278f88e4cf4fb0b95d7ed496a2be4ff8b3f35f455e79e42b1f75407d55b28273",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002489249.json",
+        "bytes": 4659,
+        "sha256": "92d9fd25399319cd570be6b939d2a4c970e0f5c1dcf3b0f3872b94acaf2a964a"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001216814",
+      "source_state": "agm001216814",
+      "formula": "Nb2HfTa",
+      "source_detail_sha256": "c647f28f0bc1ad4e9213e2b24e6921b1245192fbceeda8befcfc4fe2e53d944f",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001216814.json",
+        "bytes": 4152,
+        "sha256": "3244f04068b61b7cf59f46c24f1338d7d1cb4262a257cc227114bf8f3a3fb07b"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002166694",
+      "source_state": "agm002166694",
+      "formula": "Nb2TcRu",
+      "source_detail_sha256": "2e8700af53353f7a1a994dd1bbc98b8768a65be247c3eebfa87b931c2cd34961",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/MnNb2Ru_agm002701848",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.2583,
+              -0.08129999999999993
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.866999999999999,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002166694.json",
+        "bytes": 5453,
+        "sha256": "e9aac127eaa8142b3c84ca52aca66546f287ea4603a305dfbc86300939660f47"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003766932",
+      "source_state": "agm003766932",
+      "formula": "Nb6GaRh",
+      "source_detail_sha256": "1fcde039383d188d3d0a7ed5a8a37ed5a5587e86d243d9ff829ccb49ef31cb46",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/GaNb6Sb_agm003262771",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -34.54028925619834,
+              -14.541252135463766
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": -3.2070000000000007,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003766932.json",
+        "bytes": 6297,
+        "sha256": "c6f171b7d03cb03800977599dbd8779bfe86ce1b4d4cddef45746698e017ee24"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003262771",
+      "source_state": "agm003262771",
+      "formula": "Nb6GaSb",
+      "source_detail_sha256": "cde5c9f32967b2d67f2ab57f95e57962e167d2a215897e45df8dcb5173541845",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/AlNb6Sb_agm003262532",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -24.501813360371248,
+              -10.857296425692025
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": -1.0169999999999995,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003262771.json",
+        "bytes": 6315,
+        "sha256": "4e42d659bd5195143dd3563c16ab7bb66403b0b47f1a3bba0b9eb3deec917500"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003260934",
+      "source_state": "agm003260934",
+      "formula": "Nb6PdPt",
+      "source_detail_sha256": "fb2be53165f16e362c11642186f89e10d7619f54868be7f7ec449ead47c7cc1b",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Nb6PtAu_agm003273866",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -63.13777191825972,
+              -41.30530004380201
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": -0.9390000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003260934.json",
+        "bytes": 6211,
+        "sha256": "c2d51eef84f16eec72fc3ebd99bfab64a3afc1e80df7797794d193e284826f58"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002713597",
+      "source_state": "agm002713597",
+      "formula": "NbMoTc2",
+      "source_detail_sha256": "e3773293a353a259161e8f7a529edda3eca9e5227212f407a9651018fee22d1a",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002713597.json",
+        "bytes": 4358,
+        "sha256": "27decb89f3ca9f97897eef5e0305a78e9eb5291b1d945d6fa7d5477f41ea91a0"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001828806",
+      "source_state": "agm001828806",
+      "formula": "NbTa3",
+      "source_detail_sha256": "8a893dcb410e3d8e0f38a13dfc90052fa72cdcc42a4098d6e3d0975e6ea9ccb3",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001828806.json",
+        "bytes": 4336,
+        "sha256": "d84eb9d19121145292a6f7cd2d0fd59ef1018bb2d4055095e0918dbcb8aa1d3b"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003636382",
+      "source_state": "agm003636382",
+      "formula": "ScMoC2",
+      "source_detail_sha256": "7cf2d12cb668259c0e6221cce409ec225467d13a8414f2c0b68fa7064dd929a7",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003636382.json",
+        "bytes": 5076,
+        "sha256": "375101b0c86c39feacee9984faca1f5c8835963e6269c4e1d7ddd82c45923a42"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003198926",
+      "source_state": "agm003198926",
+      "formula": "ScTc2",
+      "source_detail_sha256": "9f662e7ecdda89390f0e8620d4db83a83936e03141e30540c57be2470e942467",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/ScTc4Hf_agm001184600",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.26890000000000014,
+              -0.04390000000000005
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -2.434000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/ScTc4Lu_agm001184602",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.18359999999999999,
+              -0.12339999999999995
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -0.11700000000000088,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 3,
+            "control_reference": "batch-a/ScYTc4_agm003199982",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -1.5043,
+              -1.0241
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -2.603999999999999,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 4,
+            "control_reference": "batch-a/ScZrTc4_agm003195954",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.8726,
+              -0.3575999999999999
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.125,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 5,
+            "control_reference": "batch-a/Tc2Hf_agm001631318",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.16660000000000008,
+              -0.0039000000000000146
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -2.678000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 6,
+            "control_reference": "batch-a/Tc2Lu_agm001631328",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -1.0545000000000002,
+              -0.7438
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.1400000000000006,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 7,
+            "control_reference": "batch-a/ZrTc2_agm003203155",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.6544000000000001,
+              -0.28
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -6.286000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003198926.json",
+        "bytes": 13066,
+        "sha256": "1217181ebb5a49b7213d17d8c7017e65bd57b36fe0edf418b7baea42a089b07e"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003158378",
+      "source_state": "agm003158378",
+      "formula": "ScZr2",
+      "source_detail_sha256": "c2379a4e3749817a735d065de2a37c7d99a6e3d1f576f8cc401f1f773b8588ef",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "selected_source_control",
+            "countercontrol_index": null,
+            "control_reference": "batch-a/ScZr2_agm003158379",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.15250000000000008,
+              -0.07319999999999993
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 0.4659999999999993,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against the selected source control; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003158378.json",
+        "bytes": 6019,
+        "sha256": "ea39f210b6f8a353f35c82ee010ca1c899ec14e7a50d1e966155766777eca625"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003187563",
+      "source_state": "agm003187563",
+      "formula": "ScZr3",
+      "source_detail_sha256": "72d1fc92cd571d3aa1465bf54ca44d8f94a8f4bddce5e47a5a3a62339e888369",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003187563.json",
+        "bytes": 4579,
+        "sha256": "6c929c0d6653392bd38d6ab1b6625b04f8e8ff1d20365fbf66cb48d02ea5b797"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003557884",
+      "source_state": "agm003557884",
+      "formula": "ScZr3N4",
+      "source_detail_sha256": "36c247af056ac96ca9d216cbde28bc4dfe0bac75fb06ff34cc1208420e07ee2b",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/N4ScHf3_agm003557883",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -6.747433955914525,
+              -0.11644154634373556
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": 3.086000000000002,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/N4YZr3_agm003559755",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -44.765037125629135,
+              -36.32684690890304
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": -4.869,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003557884.json",
+        "bytes": 7548,
+        "sha256": "dc5b1aa86dadbbfaabd149961402f2be76315a054f7378f54a359828d7d0a3b8"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003184276",
+      "source_state": "agm003184276",
+      "formula": "Tc2RuRe",
+      "source_detail_sha256": "6d5fb76e59288245430102bc7431740016e7be6f61522cda90345b7c72c1dac3",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Tc2RuW_agm003184452",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.1835,
+              -0.0030000000000000027
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 1.2129999999999992,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Tc3Re_agm003187512",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.1612,
+              -0.042300000000000115
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -0.7609999999999992,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003184276.json",
+        "bytes": 6688,
+        "sha256": "be8161fea054f3800bb15c06123a8c4affd3e12951d121f7f00ff4a8659a0c7d"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm004377652",
+      "source_state": "agm004377652",
+      "formula": "Tc2RuRh",
+      "source_detail_sha256": "1843adca1e82e64595007770e9f7cf706e33191ed4461d1a6f1bc2a4cbb4b297",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm004377652.json",
+        "bytes": 4056,
+        "sha256": "670773c6e8419af6a9f88e4f287409376668e2b0551e08bec66adafe908ee093"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003187522",
+      "source_state": "agm003187522",
+      "formula": "Tc3Re",
+      "source_detail_sha256": "59da33eb818e18bb8f5e862826e012daa0a22ba7d2e283bbea29f25832e7b4e3",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003187522.json",
+        "bytes": 4207,
+        "sha256": "124c60bb8c4b93a37d463edc1885b61bb5de3ffe632161329b14ab038ee547eb"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003267205",
+      "source_state": "agm003267205",
+      "formula": "Tc8Os",
+      "source_detail_sha256": "f03d78ad231c280fa09f36a5f5eb10d0aef3ba6f916000db738889fcd060d7b8",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Tc8Ru_agm003267242",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.04180000000000006,
+              -0.007300000000000084
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -0.3539999999999992,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003267205.json",
+        "bytes": 5551,
+        "sha256": "1b329bc963bdc938efd7ec5aba0a59b0f0e7a3333864a60a864f5ad46dbe61db"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003267242",
+      "source_state": "agm003267242",
+      "formula": "Tc8Ru",
+      "source_detail_sha256": "8bbd3ed99742bf3cae7fff43b8016c03f603ba1ab50194deda926741b97bc44c",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003267242.json",
+        "bytes": 4121,
+        "sha256": "b7de4382874501c7b5f6037768d3a50f3c8a5f6ed03def68b0d2503998f402b8"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003165652",
+      "source_state": "agm003165652",
+      "formula": "TcRe",
+      "source_detail_sha256": "94f1b6924e6cf083f73e8f908b9a240c3d3d496b6b448836d155b8402a4d2d65",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Tc3Re_agm003187522",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.08689999999999998,
+              -0.06769999999999998
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -2.360000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165652.json",
+        "bytes": 5539,
+        "sha256": "7845be74f17401bd1eb7ed6aef0c6ff3e53e2fc134ef9d8dea83febd8b888f17"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003158344",
+      "source_state": "agm003158344",
+      "formula": "TcRe2",
+      "source_detail_sha256": "ea8795541066722b25b6758eb02d14d453d3befdcaec82651f93e18cbb1a7674",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003158344.json",
+        "bytes": 4529,
+        "sha256": "bc2100f427d9ed77c41cc6a05c919a74fa2fca52bb057384d5381fdc5a68b7aa"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003165657",
+      "source_state": "agm003165657",
+      "formula": "TcRe3",
+      "source_detail_sha256": "16a228ac06d08746452625cb6042b409a7ba76cae72c1e28024ba2e388289261",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165657.json",
+        "bytes": 4546,
+        "sha256": "6d5c43c8119962a44c51a1302c36c25b116ec41ad659d9e2a86cd59509bbb9de"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003780812",
+      "source_state": "agm003780812",
+      "formula": "TcRuRe2",
+      "source_detail_sha256": "4ab81b785e68f2249e475d4f4d7a08c4965d0c935f063ef69dfd6d324ac56d8a",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "selected_source_control",
+            "countercontrol_index": null,
+            "control_reference": "batch-a/TcRuRe2_agm003184282",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.051000000000000045,
+              -0.0029000000000000137
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 0.05799999999999983,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against the selected source control; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003780812.json",
+        "bytes": 6016,
+        "sha256": "86bec33643c983cad950d9f779ea626334fb80d6f87c8a0fd98c95d3a1b535a8"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002028410",
+      "source_state": "agm002028410",
+      "formula": "Ti",
+      "source_detail_sha256": "6a615dba068bb6bd48ad3e8b330d54178e391f36faa8a761597e2763f13986ca",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/La_agm002156005",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -54.38218923933209,
+              -40.05550416281221
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": 6.869999999999999,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Mn_agm003273519",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              11.996746644977621,
+              26.226769680517865
+            ],
+            "lambda_unit": "percent",
+            "source_tc_target_minus_control_K": -0.46699999999999875,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002028410.json",
+        "bytes": 7698,
+        "sha256": "7f4d096c36fd9ad3dbd256f18cbc050ecea7ccf086e4f923ccd767212008d22f"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001116470",
+      "source_state": "agm001116470",
+      "formula": "Ti2NbTc",
+      "source_detail_sha256": "189f1b9bad730d6cece930f59eb1cfc89385cab430159b2c240c561ddb8e0a84",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116470.json",
+        "bytes": 4164,
+        "sha256": "98bb6ebaa21c74dfb2b67c9d57f6050f34f35dbb5f6b15ff9abb69a509361ebe"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002244680",
+      "source_state": "agm002244680",
+      "formula": "Ti2Re",
+      "source_detail_sha256": "45613a36b6d7fa28b667d2027d551ce7d584adb274e478c27940e25852a231fc",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Ti2W_agm001850171",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.9544999999999999,
+              -0.7479
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -6.579999999999998,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002244680.json",
+        "bytes": 5369,
+        "sha256": "4eb9ec2b3307d2849d85ab896ac9e3c93f25d25a50046331216ebc6e967935a8"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001116173",
+      "source_state": "agm001116173",
+      "formula": "Ti2ZrW",
+      "source_detail_sha256": "4e369d157b5079349d804e6cb15af1bc5ec4c8d5ed4d4c4b6efadf903517b22f",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116173.json",
+        "bytes": 4100,
+        "sha256": "53bc457a647de35beda3bb398f35a978d71a9cda97bffca2b9d4108f5b29ebee"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002190754",
+      "source_state": "agm002190754",
+      "formula": "Ti3Ge",
+      "source_detail_sha256": "381882d4fd07c2ec12e4243bff0b75ecbf65be0ae88bbf9ae8f2602089200512",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Ti3Ni_agm002190774",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.13929999999999998,
+              -0.021499999999999853
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 2.9620000000000015,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/Ti3Sn_agm002190808",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.12939999999999996,
+              -0.02859999999999996
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 3.7520000000000007,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190754.json",
+        "bytes": 6756,
+        "sha256": "db414c58599a26748b7abef0c8755dff11a6979c450652f9e16ddcbdf9f8b20b"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002190757",
+      "source_state": "agm002190757",
+      "formula": "Ti3Hf",
+      "source_detail_sha256": "c180655e478fe24b7814e72b8b9f24041a41b06c130a3ecbb8110983ea557e0f",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190757.json",
+        "bytes": 4379,
+        "sha256": "1bffbeecb7b6f984d10f1d8e280fa4c8164a3e93e6ad452aac448da66d0130de"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002190814",
+      "source_state": "agm002190814",
+      "formula": "Ti3Te",
+      "source_detail_sha256": "1b17fdbd476d0a87cfe00a2f2561d836b61c71d25e6c8f2bca0fff43157bc35e",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190814.json",
+        "bytes": 4234,
+        "sha256": "0530d093cc18c9d1c54d4709767860da173b633c5d0e9b92f99099e5345c6f2e"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002190827",
+      "source_state": "agm002190827",
+      "formula": "Ti3Zr",
+      "source_detail_sha256": "23b58d3fcf5147a8c92da455d262b958e748939d557472815399ec98e97712ed",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190827.json",
+        "bytes": 4571,
+        "sha256": "aa9dcee33e6ce7d7cae2b863b8b0333068de83dd660b921176519b078a7df5f4"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001186283",
+      "source_state": "agm001186283",
+      "formula": "TiMn4Re",
+      "source_detail_sha256": "1560ad6ac2465997c57b7205a5a5885cd763b07473afb76be8eeb82f2b8cdc69",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/TiMn4Tc_agm001186290",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.17030000000000012,
+              -0.06889999999999996
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -2.5130000000000017,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 3,
+            "control_reference": "batch-a/TiMn4W_agm001186294",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.3155,
+              -0.05909999999999993
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -3.838000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186283.json",
+        "bytes": 6508,
+        "sha256": "efc1f3b3bbfdd4078398d3f8a9fc07d4df164b6e219ba841ecd7d426b630342f"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001186290",
+      "source_state": "agm001186290",
+      "formula": "TiMn4Tc",
+      "source_detail_sha256": "2caf9e3963197413d472a972cdf7834cecb584cd40d6e8efdd7ae42536fb3af6",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186290.json",
+        "bytes": 3885,
+        "sha256": "7f2936b624ee2fdc4ba3c1102702324d5d0a38ba734446b0deb0e2f5c8010a35"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001186294",
+      "source_state": "agm001186294",
+      "formula": "TiMn4W",
+      "source_detail_sha256": "6b2ac5f91035c60fac71ea0144b8197c9bb62622647269352c6e2094b93809f7",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186294.json",
+        "bytes": 3921,
+        "sha256": "b5c91334d0fafb3651820a10f906fd28b11179dd500bb44c0af84b8d3b618b9a"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001116204",
+      "source_state": "agm001116204",
+      "formula": "TiMoTa2",
+      "source_detail_sha256": "7fbc3242ec6776a42e01feb5d274307ec547d870b01c6d773a2f1b08698cd610",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116204.json",
+        "bytes": 4463,
+        "sha256": "475ee46f0eab5289a53a46942f68434bcd86b03aa3b326c8a87931fa26b43f07"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001228974",
+      "source_state": "agm001228974",
+      "formula": "TiNb2Mo",
+      "source_detail_sha256": "827073b6b5663e962d99a0e435fe2f3d31a74126d0158380bd4da8dc6805f541",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001228974.json",
+        "bytes": 4126,
+        "sha256": "3adcbcab58061fd518b87e856eb75dc79d96986ed459db04f2c32335a6162f10"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001228986",
+      "source_state": "agm001228986",
+      "formula": "TiNb2Ta",
+      "source_detail_sha256": "48dd2c01d689ebcd6a1f84ed3103abf80a00aa2c37c65f4b3828d72a2d50d12e",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/Nb2HfTa_agm001216814",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.25029999999999997,
+              -0.15549999999999997
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 1.4470000000000027,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 5,
+            "control_reference": "batch-a/ZrNb2Ta_agm001233891",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.8124,
+              -0.43189999999999995
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -0.36799999999999855,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001228986.json",
+        "bytes": 6634,
+        "sha256": "17831dbd3ecc9d7ee499e4e4ae4a7c151c76621a35c89cd0f4c66a3228349f39"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002746041",
+      "source_state": "agm002746041",
+      "formula": "TiNb2W",
+      "source_detail_sha256": "bf2122867489bf63febe8d0e9412f48711ac238d5dff6573e02bf007fa16745c",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/TiNb2Mo_agm002322068",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.04859999999999998,
+              -0.03939999999999988
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.2469999999999999,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/TiV2W_agm001099873",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.13070000000000004,
+              -0.015300000000000091
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -3.4620000000000015,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002746041.json",
+        "bytes": 6725,
+        "sha256": "fe635c72d96463c4e413c873ca07d32bcc6ac291e7d294c6b2ff3a3f1b058ed0"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001827673",
+      "source_state": "agm001827673",
+      "formula": "TiNb3",
+      "source_detail_sha256": "e878a61ad5e98c07df1f4a9d73d156a0d78a721e6d4c28938090638ada299edd",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001827673.json",
+        "bytes": 5129,
+        "sha256": "ec9739c9749e89bf849abd0cf31ce6cdf83c71a5cd200040bf4c003a60e5a345"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001294071",
+      "source_state": "agm001294071",
+      "formula": "TiNbMoTa",
+      "source_detail_sha256": "add4ca280fc10c7361378ec4a6fd65296d9acedc83fe5a2e3066baebc83c4551",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/TiNb2Mo_agm002322068",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.05740000000000001,
+              -0.045399999999999885
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -1.8569999999999993,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001294071.json",
+        "bytes": 5685,
+        "sha256": "ed8a6d4b64e666a58ab5ccd77b9d120ed79d81fd616ea217f0d0840339460235"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003603739",
+      "source_state": "agm003603739",
+      "formula": "TiNbTa",
+      "source_detail_sha256": "695adb39843d750beded763e74b5a1123b62689ed5e6cf23e00c0fac1f9ec89c",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003603739.json",
+        "bytes": 4579,
+        "sha256": "ed8498e8b2fb43e4d3fcb7bbd6417ff9c4c28b41fd0dfecfbd1e4171cfb54829"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001116200",
+      "source_state": "agm001116200",
+      "formula": "TiNbTa2",
+      "source_detail_sha256": "b268edc5460b638f278eaec3eae866cf6adccee554770897fb79283fb4d10d91",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116200.json",
+        "bytes": 4251,
+        "sha256": "20db619a5af58f7d8edeb7956b6df3407fd4c603726377b9672ce80a6421d56f"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001116139",
+      "source_state": "agm001116139",
+      "formula": "TiTa2W",
+      "source_detail_sha256": "910580b4ef3562ca069e0049ba73131afac08de9ca12f75bc6c15cddb201e170",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/TiNbTa2_agm001116200",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.5296000000000001,
+              -0.4405999999999999
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -5.218000000000002,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116139.json",
+        "bytes": 5311,
+        "sha256": "1111448a96784646f8a8657cda8f721a3528e0a4028bdcad5d9796bbbba65cac"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001827667",
+      "source_state": "agm001827667",
+      "formula": "TiTa3",
+      "source_detail_sha256": "1f5c28a7ce52ecbffb1a638c397e558910c9b679c5ffa5b5cc41b768c7e80eab",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/TiNb2Ta_agm001228986",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.2764,
+              -0.19530000000000003
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.258000000000003,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 3,
+            "control_reference": "batch-a/TiNb3_agm001827673",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.29520000000000013,
+              -0.1875
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -4.795000000000002,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001827667.json",
+        "bytes": 6634,
+        "sha256": "5a497126ee878a4475e4d2f08d28e2f78b994a8ec914c8b3cd9daee5192aeda1"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001099873",
+      "source_state": "agm001099873",
+      "formula": "TiV2W",
+      "source_detail_sha256": "28e897ab7441a24fcc71687f7e8ad10cbb308b90a83814805f378c9711c29002",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001099873.json",
+        "bytes": 4570,
+        "sha256": "8cfa31a49fa47aec87b40b07659a59036c88ef827ef4075f47ff6be649096223"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003157370",
+      "source_state": "agm003157370",
+      "formula": "TiZr",
+      "source_detail_sha256": "689fa67d17b577bd8c29d33a058dd201662e83bdc2ee16bce24aaf5b4195bed4",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003157370.json",
+        "bytes": 4448,
+        "sha256": "deeeefa39ccd7527b2f85b5d11c1e19de1b25b738b3808661fddde0dd7f3fc00"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001190274",
+      "source_state": "agm001190274",
+      "formula": "TiZr3",
+      "source_detail_sha256": "5e63cb58e33f278ed937f7aa6dad33b61259ee703945360d4ce1538aeef8876e",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 5,
+            "control_reference": "batch-a/Zr3Lu_agm001190945",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.32530000000000014,
+              -0.046499999999999986
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 0.6080000000000005,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001190274.json",
+        "bytes": 5483,
+        "sha256": "553966e57d0f0e4f0e867b2fe0c39a6de86103eb2d0c0a7c34e9e35a5268c384"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001186980",
+      "source_state": "agm001186980",
+      "formula": "VMn4Mo",
+      "source_detail_sha256": "e5ded1de3656c4efb852b236e88b249895dec911ae848a7f8533a2a1deca6a55",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186980.json",
+        "bytes": 3880,
+        "sha256": "85168db439b1803c519bae75bd461347fdb50cb5e3df5ea98e819073f0c3f3f9"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001190846",
+      "source_state": "agm001190846",
+      "formula": "VOs3",
+      "source_detail_sha256": "31cb8bbac9b8e715d43af0fae7019ff67fe1da363cba3d9cefa3d5ebc75cbe02",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001190846.json",
+        "bytes": 4519,
+        "sha256": "ecf53303f31d28a2f859273c8fea2cd99fb13019d9f6f99b2bb011d1cc0d8c4f"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001230427",
+      "source_state": "agm001230427",
+      "formula": "VRu2Os",
+      "source_detail_sha256": "95bbcb649615c2c5fb56a16ac6840de3edb1eb88e7d8e3d8fc1d2cb8bf97a599",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 0,
+            "control_reference": "batch-a/VOs3_agm001190846",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.09179999999999999,
+              -0.03599999999999992
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 0.15600000000000058,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/VRuOs2_agm001230443",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.028299999999999992,
+              -0.0045999999999999375
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 0.4060000000000006,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001230427.json",
+        "bytes": 6816,
+        "sha256": "20a081df6ba6e4f2f7e99ae1562198a6eaf01187bcb8849e2dfe70be644a5e06"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001280579",
+      "source_state": "agm001280579",
+      "formula": "VRu3",
+      "source_detail_sha256": "3fa109029f5e2601aad2b2b66ee8f00671d287aada7a778d598a9211da6fdfe2",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001280579.json",
+        "bytes": 4305,
+        "sha256": "286098e93f647040e976df794ac93df565ebfa944aa8bb1abaae8c0c41b028b1"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm002291027",
+      "source_state": "agm002291027",
+      "formula": "YNbN2",
+      "source_detail_sha256": "afc877821e0c880020adb8f89cd6c450abb42768986e1c3ec49f284b67f78953",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002291027.json",
+        "bytes": 5146,
+        "sha256": "58956deed9c5f399876c973aaa2d75f04720058fb30edeba25c3b48498f16d44"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003559755",
+      "source_state": "agm003559755",
+      "formula": "YZr3N4",
+      "source_detail_sha256": "df2904667b9824ffa08b6f8a4f8678cfdcd77da2820a8551fb989b6dd1722d7d",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003559755.json",
+        "bytes": 5017,
+        "sha256": "dd1e073e8643c667ff0b1aa7b34f2f7d330952f905b8efe69585b6f1e0f60945"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003199974",
+      "source_state": "agm003199974",
+      "formula": "YZrRe4",
+      "source_detail_sha256": "d527c3eb36abb45f50c1f5be53de430b44eb63f3306f551b874c2005aebef37b",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 2,
+            "control_reference": "batch-a/ZrRe2_agm003200022",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.23009999999999997,
+              -0.11120000000000008
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -3.8599999999999994,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199974.json",
+        "bytes": 5407,
+        "sha256": "c814ddee9f7109325179966eb8a68372f4733e825224f034de556d2f21580db4"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001281126",
+      "source_state": "agm001281126",
+      "formula": "Zr3Hf",
+      "source_detail_sha256": "4ade3c49a8098bc2036549417b50c3930c805c705ee6ef3fdbc3c129df16a9f3",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001281126.json",
+        "bytes": 4606,
+        "sha256": "6295d1039a87a11613f0dba89a15dea664e76978968f6aa8e19f7b3c1a888573"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001190945",
+      "source_state": "agm001190945",
+      "formula": "Zr3Lu",
+      "source_detail_sha256": "b1464935718bd2a0cd1a642029af3fea1a2dd5605e8d22af1e2e6067be955f72",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/TiZr3_agm001190274",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              0.046499999999999986,
+              0.32530000000000014
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -0.6080000000000005,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001190945.json",
+        "bytes": 5523,
+        "sha256": "43832b29dd381f9f3665043580f9d6f91c312bc1efb34a80d2cc5ea8046d6142"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001177717",
+      "source_state": "agm001177717",
+      "formula": "ZrHfRe4",
+      "source_detail_sha256": "0313eb63bc5612a461b5a92f22faa2420345afe264e5c0e197e3582677a940c2",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 3,
+            "control_reference": "batch-a/ZrRe2_agm003200022",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.1581999999999999,
+              -0.026900000000000146
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -0.8889999999999993,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 4,
+            "control_reference": "batch-a/ZrTc4Hf_agm001177851",
+            "direction": "joint_adverse",
+            "lambda_target_minus_control_range": [
+              -0.15690000000000004,
+              -0.10870000000000002
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": -3.373000000000001,
+            "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001177717.json",
+        "bytes": 6944,
+        "sha256": "168d204623b200506793157f082866d799f194af1df19f886ae6f486f2ceb946"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001146456",
+      "source_state": "agm001146456",
+      "formula": "ZrNb2Ta",
+      "source_detail_sha256": "3a55a01fb0bdfaa04972c4fc977a99479ab75bf696b041e1cce190aa00164f60",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001146456.json",
+        "bytes": 4190,
+        "sha256": "0c08262ee9387eefd77a35f9a395f735f54a26ab5e9f9ee8f003064699789708"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001277510",
+      "source_state": "agm001277510",
+      "formula": "ZrNbTa",
+      "source_detail_sha256": "b20fe4853afbb7a050fdeee8d379060ba0b4ab735c0f000ea5d389f3b2bf5323",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": []
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001277510.json",
+        "bytes": 4791,
+        "sha256": "e649de8e7439e9c706d9b44111252bbbfe7af3014309e0c408e1468f81b5bc26"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm001146455",
+      "source_state": "agm001146455",
+      "formula": "ZrNbTa2",
+      "source_detail_sha256": "3b21dfd68efd49b53e20067d7df601273957bd314a8c825e153e6da8b330b5e4",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/ZrTa3_agm003165876",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.0815999999999999,
+              -0.0665
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 0.16799999999999926,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001146455.json",
+        "bytes": 5444,
+        "sha256": "08f174d0587b49c30611a51ff5af0bba2c9dcfdb10e4daa0abe198558aea45cf"
+      }
+    },
+    {
+      "id": "source-hypothesis:agm003203155",
+      "source_state": "agm003203155",
+      "formula": "ZrTc2",
+      "source_detail_sha256": "1aaa34378b4d12d1ef561a112cd6f19bac85aad7b9c33f766a272bef69943277",
+      "observations": {
+        "source_pairing_quantified": true,
+        "geometry_causality_quantified": false,
+        "bandwidth_quantified": false,
+        "carrier_density_quantified": false,
+        "stability_for_target_quantified": false,
+        "coherence_quantified": false,
+        "competition_quantified": false,
+        "ambient_300K_direct_support": null,
+        "evidence_level": "E1",
+        "counterevidence": [
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 1,
+            "control_reference": "batch-a/ScZrTc4_agm003195954",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.21819999999999995,
+              -0.07759999999999989
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 2.1610000000000014,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 3,
+            "control_reference": "batch-a/Tc2Lu_agm001631328",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.4638,
+              -0.3756999999999997
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 5.146000000000001,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          },
+          {
+            "comparison_origin": "frozen_countercontrol",
+            "countercontrol_index": 6,
+            "control_reference": "batch-a/ZrTc4Lu_agm001177853",
+            "direction": "discordant",
+            "lambda_target_minus_control_range": [
+              -0.2014999999999998,
+              -0.06359999999999988
+            ],
+            "lambda_unit": "dimensionless",
+            "source_tc_target_minus_control_K": 2.696999999999999,
+            "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+            "causal_geometry_effect": null
+          }
+        ]
+      },
+      "detail": {
+        "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003203155.json",
+        "bytes": 7990,
+        "sha256": "681dae0233830551d376e8af408761e657eb458bc4ceac7415ab61c565f67471"
+      }
+    }
+  ]
+}

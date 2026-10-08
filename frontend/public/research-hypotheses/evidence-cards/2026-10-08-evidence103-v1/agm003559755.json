@@ -1,0 +1,67 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm003559755",
+  "source_state": "agm003559755",
+  "formula": "YZr3N4",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "df2904667b9824ffa08b6f8a4f8678cfdcd77da2820a8551fb989b6dd1722d7d",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "new-to-reviewed-catalogue source-derived coupled cation/geometry hypothesis;2023 prior prediction retained, no first discovery claim",
+    "case_context": "Exact composition/phase hypothesis not among current5 reviewed groups. The2023 published prediction of SG221 YZr3N4 is explicitly retained; bounded primary search does not establish an experimental superconducting benchmark for this state. Count only one new-to-reviewed-catalogue Y composition hypothesis, not parentSc/reference, first discovery, a new composition in literature or a trivial cell alias.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Explicitly assessed softening, competing nitrides/disorder, code-model spin/SOC assumptions, mixed mass/potential/volume causes and coarse/fine residual-stress sensitivity. No observed critical sign contradiction reverses this bounded source coupled-intervention inference. Whole-BZ stability, disorder coherence, magnetic ground state and fixed-chemistry causal mediation remain unknown; the smaller/partially capacity-limited electronic envelopes are not claimed as W gains.",
+    "ambient_scope": "Bounded near-ambient source feasibility: coarse pressure0 GPa, fine residual isotropic stress-0.178 GPa and printed-zero forces, finite q3^3/4irreducible response;21 Gamma optical-compression eigenvalues positive beyond printing bound and path no signed-negative values. Earlier PBE/PAW phase hull35 meV/atom is a metastability prior, not current NC exact hull or synthesis evidence.",
+    "attention_tags": [
+      "metastable_phase",
+      "residual_force_stress"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Supported for the coupled minority-cation construction Sc->Y on a fixed sixfold network: lattice +1.92551688%, volume +5.888493%, first-shell M-N +0.04363518 A, together with favorable direct EPC. Atomic potential/mass and expansion are a coupled intervention; no isolated geometry-volume cause, topology change, high-W or mobile-n benefit is claimed.",
+    "target_state": "agm003559755",
+    "selected_control": "agm003557884",
+    "next_action": "Candidate grade3 is justified only for the declared source-model coupled atomic-construction/pairing domain. A fixed-chemistry cross-volume response and named finite-q stationarity check are the next falsifiers; independent numerical/causal strengthening needed for grade4. Formal research-action RPS/publication remains separate.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "base_url": "https://compute-staging.example.invalid",
+  "ca_certificate": "/absolute/private/path/server-ca-or-bundle.crt",
+  "client_certificate": "/absolute/private/path/client.crt",
+  "client_key": "/absolute/private/path/client.key",
+  "runtime_id": "dummy-v1",
+  "platform": "dummy_test"
+}

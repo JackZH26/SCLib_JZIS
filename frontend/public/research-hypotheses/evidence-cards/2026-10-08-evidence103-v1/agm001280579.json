@@ -1,0 +1,66 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm001280579",
+  "source_state": "agm001280579",
+  "formula": "VRu3",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "3fa109029f5e2601aad2b2b66ee8f00671d287aada7a778d598a9211da6fdfe2",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "Published source predictions already known; specific matched mechanism new to reviewed catalogue, not first discovery.",
+    "case_context": "VRu3 chemistry has published computational precedents. The retrieved closest 2023 proposal is cubic, so it does not establish an experimental SG139 superconducting benchmark or certify the present phase.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Both tetragonal VRuOs2 and VOs3 neighbors have positive retained finite paths and remain in the record. The V fraction is equal, but this does not prove spin-fluctuation cancellation: V orbital character can change with the Ru/Os environment.",
+    "ambient_scope": "The exact source neutral zero-applied-pressure model has positive Γ optical compression intervals and no negative retained sampled path value for target and selected control. Coarse/fine force and full stress, relaxation warnings and every q record are retained. These finite observations do not prove full-BZ or thermodynamic hull stability.",
+    "attention_tags": [
+      "magnetic_model"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Frozen tetragonal VRuOs2→VRu3 retains the V quarter-site fraction and raises weighted ωlog by 8.69–8.88% while λ crosses. Role occupancy, Ru/Os electronic potential, mass and volume remain coupled.",
+    "target_state": "agm001280579",
+    "selected_control": "agm003625152",
+    "next_action": "Inspect saved V-projected near-EF spectral weight and α²F coupling weights for the exact tetragonal controls. Reject a high-potential interpretation if a differential magnetic/spin-fluctuation scale offsets the source pairing benefit; no mobile-carrier or physical-W quantity is inferred.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

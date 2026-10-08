@@ -1,0 +1,68 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm002339932",
+  "source_state": "agm002339932",
+  "formula": "MgIrH3",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "ccba71292e205b39fba1ef9996df4072a7e50b4c5cd5563ad4023d1b587aeea6",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "case_context": "The 2026-10-07 bounded MgIrH3/IrMgH3 search found a related experimentally observed Pm-3m MgIrHx phase with unknown hydrogen content, not an exact experimental superconducting MgIrH3 benchmark. The new-to-reviewed-catalogue object is the fully ordered H3 occupancy and matched Ir-for-Rh hypothesis; no first-composition claim.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Hydrogen stoichiometry, anharmonicity and competing complex hydrides are the important physical risks. Hansen et al. observed a minor Pm-3m MgIrHx phase but could not establish x, potentially even zero; their Mg2IrH5 synthesis and proposed Mg2IrH6 superconductivity are different stoichiometries/prototypes. These priors neither establish MgIrH3 superconductivity nor invalidate the exact locally stable model. Neglected Ir SOC and different PP/cutoff between Rh and Ir remain matched-method falsifiers.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=0.108 GPa, full max stress=0.108 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "attention_tags": [
+      "hydrogen_anharmonicity",
+      "metastable_phase",
+      "sampling_method"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Ir replaces Rh on the single transition-metal site while the Mg and three H roles remain mapped. The volume rises 3.573%, with the actual H-metal and H-H distances retained below. Lambda improves at all ten sigma values, whereas the separate Eli mu=.1 change is modest, 11.198 to 11.862 K; this distinction avoids ranking solely by coupling.",
+    "target_state": "agm002339932",
+    "selected_control": "agm002153282",
+    "next_action": "At the same ordered MgIrH3/MgRhH3 geometry roles, separate common-volume chemical substitution from expansion and test H stoichiometry/anharmonic modes. A persistent direct coupling advantage without an unstable H/order branch supports screening; a stable hydrogen-deficient insulating phase or erased coupling advantage opposes it.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

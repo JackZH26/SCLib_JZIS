@@ -1,0 +1,97 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm003262771",
+  "source_state": "agm003262771",
+  "formula": "Nb6GaSb",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "cde5c9f32967b2d67f2ab57f95e57962e167d2a215897e45df8dcb5173541845",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "case_context": "1973 primary Nb3Ga experiments included partial Ga replacement by Sb, so Nb-Ga-Sb superconducting chemistry is prior art. They do not establish this exact 1a/1b ordering and relaxed Pm-3 chain structure. Dated exact-formula/ordered-phase searches found no matching experimental superconducting source state; the candidate hypothesis is phase/ordering scoped and new to the reviewed catalogue.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "The source target path has no signed negative values and Gamma optical compression is positive. Ordered-site entropy, antisite disorder, chain/CDW distortion and Sb SOC are physical competing effects. The target loses to AlNb6Sb at all ten lambda values; that opposite control and its small negative-path risk remain explicit. Different PP paths/code versions across the Rh/Sb comparison are not concealed and the response is not geometry-only causal.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0.022252643 eV/A, P=0.051 GPa, full max stress=0.051 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "attention_tags": [
+      "metastable_phase",
+      "sampling_method"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/AlNb6Sb_agm003262532",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -24.501813360371248,
+          -10.857296425692025
+        ],
+        "lambda_unit": "percent",
+        "source_tc_target_minus_control_K": -1.0169999999999995,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Sb replaces Rh on its unique ordered site. Volume expands 4.3828%, nearest Nb-Nb grows 0.0758951 A and the Nb-to-replaced-site bond grows 0.0531240 A. Direct source lambda rises at all ten sigma values by 17.016–52.766% and separate Eli mu=.1 rises 14.014 to 17.221 K. This coupled chain/site construction is measured, not inferred from an A15 name.",
+    "target_state": "agm003262771",
+    "selected_control": "agm003766932",
+    "next_action": "At the frozen ordered Ga/(Rh or Sb) roles compare a common source method and common volume, then test an antisite/disordered or symmetry-breaking chain competitor. Persistent favorable lambda with stable order supports the bounded candidate; loss under the matched method or a lower unstable ordered branch opposes it.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/AlNb6Sb_agm003262532",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -24.501813360371248,
+          -10.857296425692025
+        ],
+        "lambda_unit": "percent",
+        "source_tc_target_minus_control_K": -1.0169999999999995,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

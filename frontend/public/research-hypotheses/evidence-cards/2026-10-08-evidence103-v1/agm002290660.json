@@ -1,0 +1,67 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm002290660",
+  "source_state": "agm002290660",
+  "formula": "LuTaN2",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "9fc0ca86d4fcfc703376f5753219d410a889395b379048b497bfb66cbe59f7b8",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "case_context": "2026-10-07 LuTaN2/TaLuN2 exact search found no experimental SC benchmark. Related CaM N2 layered nitrides have known superconducting phases, but they are different cations/chemistry and do not make this exact Lu/Ta ordered phase a benchmark. MC2023 source prediction remains prior.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Ta SOC and Lu electronic-shell treatment, cation order versus competing nitrides, and layered shear are case-specific risks. Full fine stress reaches .242 GPa and fine force .01729 eV/A; coarse force 2.19e-5 eV/A/P=.001 GPa and the nonnegative finite path/positive Gamma optical subspace support a bounded near-ambient local phase. No claim of global hull or experimentally realized phase.",
+    "ambient_scope": "Coarse/fine SCF both converge; complete source forces/stress, positive Gamma optical compression and no signed negative finite-path value support this model near ambient. All listed q outputs end JOBDONE/response convergence with zero routine errors. This is finite-grid local/metastable evidence, not exhaustive thermodynamic or all-irrep certification.",
+    "attention_tags": [
+      "metastable_phase",
+      "residual_force_stress"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Replace Y by Lu in the frozen YTaN2 analogue. Volume decreases 4.316116%; Lu-N versus Y-N nearest distance decreases .0744086 A while Ta-N increases .00273149 A. Same ecut/smearing/degauss/pseudo-family directory and 4x4x4/13-q grid give all-ten lambda gains 45.878–51.321%, separate Eli mu=.1 12.416→15.539 K. The opposite changes in cation-N and Ta-N distances distinguish local reconstruction from a uniform-volume description.",
+    "target_state": "agm002290660",
+    "selected_control": "agm002291033",
+    "next_action": "Compare YTaN2/LuTaN2 at a common volume and with a consistent SOC treatment or one matched layer-shear/metal-N mode. Favorable: the 45–51% source advantage survives and the layer branch stays positive; adverse: SOC/order changes remove the advantage or a competing nitride path destabilizes the phase.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

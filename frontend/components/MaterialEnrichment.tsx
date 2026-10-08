@@ -6,6 +6,7 @@ import type { MaterialEnrichmentReport, PropertyEvidenceItem } from "@/lib/api";
 import Link from "@/components/AppLink";
 import { evidenceText, objectValue, propertyValue, sourceHref } from "@/lib/property-evidence";
 import { MaterialClassificationCandidates } from "@/components/MaterialClassificationCandidates";
+import { MaterialRecoveryBatch } from "@/components/MaterialRecoveryBatch";
 import { MaterialSourceObservations } from "@/components/MaterialSourceObservations";
 import { sourceObservationsForRecovery } from "@/lib/material-source-observations";
 import { useMaterialProviderAvailability } from "@/components/MaterialProviderAvailability";
@@ -247,6 +248,7 @@ export function MaterialEnrichment({ materialId }: { materialId: string }) {
         catch { setDownloadFailure(materialId); }
       }}>Download recovery metadata (JSON)</button><p className="mt-1 text-slate-500">Returned candidates, sources and record references. This is a bounded snapshot for review.</p>{downloadFailure === materialId && <p className="mt-1 text-slate-600" role="status">Metadata download is unavailable for this request.</p>}</div>
       <SourceInspectionScope sources={sourceCoverage} />
+      <MaterialRecoveryBatch report={report} materialId={materialId} />
       <details className="mt-3 rounded-lg border border-sage-border bg-white p-4">
         <summary className="cursor-pointer text-sm font-medium">Inspect field coverage and recovery routes</summary>
         <p className="mt-3 text-xs text-slate-500">This bounded check covers linked chunks, not every full paper or supplement. A missing candidate does not establish that the paper omitted the property. Retained and candidate values still need sample, state and source review.</p>

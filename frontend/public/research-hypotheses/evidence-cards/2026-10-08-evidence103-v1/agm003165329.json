@@ -1,0 +1,98 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm003165329",
+  "source_state": "agm003165329",
+  "formula": "Mo3Tc",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "4e37dfec4ab0db13573a9eb7f87563e5e66c18f5dd2a9fcb16192bfd677d3123",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "case_context": "Known Mo-Tc A15/sigma compositions differ from exact source SG225 ordered3:1 phase. Already published calculated proposal, new to reviewed catalogue only.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Use AGM003165329 SG225 as group candidate: no printed path negatives, force0 and .052 GPa fine stress. SG166 sibling has only tiny first-row x0 acoustic negatives but BFGS failure; SG123 sibling has fine force .0506 and .793 GPa stress. Both remain separate source variants, not extra candidate counts. Binary primary Mo-Tc ground-state opposition limits claim to local metastable research phase.",
+    "ambient_scope": "Source coarse force 0.0 eV/Å, pressure 0.002 GPa; fine force 0.0 eV/Å, pressure -0.052000000000000005 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "attention_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "technetium"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/Cr2MoTc_agm002664904",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          0.03539999999999999,
+          0.12630000000000008
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.061,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Re-to-Tc and W-to-Mo ordered role construction in Mo3Tc. coupled chemistry/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "target_state": "agm003165329",
+    "selected_control": "agm002145239",
+    "next_action": "Compare retained exact SG225 Mo3Tc and Mo3Re orbital/mode evidence, then bounded phase competition. Favorable: local source pairing advantage and plausible metastable phase remain; adverse: decomposition/ordering competition eliminates object; ambiguous: no formation relation. Do not select a sibling merely by its Tc.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/Cr2MoTc_agm002664904",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          0.03539999999999999,
+          0.12630000000000008
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.061,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

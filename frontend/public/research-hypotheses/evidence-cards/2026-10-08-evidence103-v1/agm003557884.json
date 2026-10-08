@@ -1,0 +1,125 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm003557884",
+  "source_state": "agm003557884",
+  "formula": "ScZr3N4",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "36c247af056ac96ca9d216cbde28bc4dfe0bac75fb06ff34cc1208420e07ee2b",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "case_context": "ScZr3N4 is a published computational prediction in the 2023 primary screening study, with SG221 and separate hull/coupling model data. It is not first predicted here. The 2026-10-07 bounded exact-phase review found no experimental superconducting ScZr3N4 benchmark. Novelty is the matched Sc-for-Hf corner-site source construction in this reviewed catalogue.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Source Gamma optical compression and sampled path are stable at the stated scalar approximation. Fine pressure is -0.205 GPa despite zero symmetry-constrained forces. ScHf3N4 has larger lambda but lower separate Eli Tc, and already accepted YZr3N4 has substantially larger lambda; both controls are retained. Nitrogen vacancies, ordered-cation disorder, charge redistribution and alternate nitrides are appropriate falsifiers. No pure volume-only causal claim or inherited YZr3N4 qualification is used.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=-0.205 GPa, full max stress=0.205 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "attention_tags": [
+      "metastable_phase",
+      "residual_force_stress"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/N4ScHf3_agm003557883",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -6.747433955914525,
+          -0.11644154634373556
+        ],
+        "lambda_unit": "percent",
+        "source_tc_target_minus_control_K": 3.086000000000002,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 1,
+        "control_reference": "batch-a/N4YZr3_agm003559755",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -44.765037125629135,
+          -36.32684690890304
+        ],
+        "lambda_unit": "percent",
+        "source_tc_target_minus_control_K": -4.869,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Sc replaces Hf on the single cation corner site while three Zr and all four N sites remain mapped. The volume contracts 0.5685%, Sc-N versus Hf-N falls 0.0043104 A and Zr-N also falls 0.0043104 A. All ten lambda values improve 6.741–28.257% and separate Eli mu=.1 rises 14.993 to 16.568 K. This is a coupled cation/network intervention; the valence change is not converted to mobile n.",
+    "target_state": "agm003557884",
+    "selected_control": "agm003558452",
+    "next_action": "Cross the Sc/Hf unique-site substitution with a fixed-volume comparison and test the lowest N-vacancy/order competitor. A stable coupling gain at common source method supports screening; a missing metallic channel, unfavorable ordering basin or reversed paired response opposes it.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/N4ScHf3_agm003557883",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -6.747433955914525,
+          -0.11644154634373556
+        ],
+        "lambda_unit": "percent",
+        "source_tc_target_minus_control_K": 3.086000000000002,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 1,
+        "control_reference": "batch-a/N4YZr3_agm003559755",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -44.765037125629135,
+          -36.32684690890304
+        ],
+        "lambda_unit": "percent",
+        "source_tc_target_minus_control_K": -4.869,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

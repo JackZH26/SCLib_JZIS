@@ -1,0 +1,126 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm002028410",
+  "source_state": "agm002028410",
+  "formula": "Ti",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "6a615dba068bb6bd48ad3e8b330d54178e391f36faa8a761597e2763f13986ca",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "case_context": "Elemental hcp Ti superconductivity and metastable FCC Ti structures are known. Dated 2026-10-07 FCC-Ti superconductivity searches found no experimental superconducting exact FCC source benchmark. The proposed reviewed-catalogue hypothesis is the FCC source-phase and Zr-to-Ti metal-network construction, not discovery of titanium superconductivity.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "FCC Ti is metastable rather than equilibrium ambient hcp Ti. Primary DFT phonon work and experimental rolling/film/interface observations provide credible metastability priors without establishing superconductivity in clean bulk FCC Ti. Potential contamination, interface stabilization, hcp/Bain conversion and small lambda effect under changed cutoff/PP are substantive risks. The exact source has zero force, 0.019 GPa fine stress and no negative sampled path; nat1 has no optical subspace, so no nonexistent optical stability claim is made. Magnetic Mn and La tradeoff controls are retained.",
+    "ambient_scope": "The one-site FCC source SCFs converge with zero forces and fine full stress 0.019 GPa, and the sampled finite-q path has no signed negative value. Nat1 has no optical subspace; its Gamma translation result is not an optical certificate. Primary DFT and experimental metastable FCC-Ti observations support a bounded ambient metastability route, not equilibrium bulk retention or full-BZ proof.",
+    "attention_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "sampling_method"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/La_agm002156005",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -54.38218923933209,
+          -40.05550416281221
+        ],
+        "lambda_unit": "percent",
+        "source_tc_target_minus_control_K": 6.869999999999999,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 1,
+        "control_reference": "batch-a/Mn_agm003273519",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          11.996746644977621,
+          26.226769680517865
+        ],
+        "lambda_unit": "percent",
+        "source_tc_target_minus_control_K": -0.46699999999999875,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "The frozen one-site FCC control replaces Zr by Ti with the periodic neighbor topology retained. Volume contracts 24.703%, and nearest Ti-Ti versus Zr-Zr falls 0.284535 A. All ten lambda values rise 2.493–7.937% and separate Eli mu=.1 rises 13.386 to 19.962 K; omega and coupling remain separately reported. This is a phase-scoped coupled elemental/metal-network response, not generic Ti chemistry novelty or a measured hopping bandwidth.",
+    "target_state": "agm002028410",
+    "selected_control": "agm003283597",
+    "next_action": "Compare the source FCC and same-composition hcp/Bain competitors and evaluate phase retention under a stated interface/strain or bulk metastable domain; confirm the small paired lambda advantage with common source method. A retained FCC local basin and response support this phase hypothesis; rapid hcp conversion or loss of the common-method advantage opposes it.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/La_agm002156005",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -54.38218923933209,
+          -40.05550416281221
+        ],
+        "lambda_unit": "percent",
+        "source_tc_target_minus_control_K": 6.869999999999999,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 1,
+        "control_reference": "batch-a/Mn_agm003273519",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          11.996746644977621,
+          26.226769680517865
+        ],
+        "lambda_unit": "percent",
+        "source_tc_target_minus_control_K": -0.46699999999999875,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

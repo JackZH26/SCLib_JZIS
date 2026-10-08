@@ -1,4 +1,4 @@
-import { generateCombinedCandidates, type CombinedBatch, type CombinedCandidate } from "@/lib/discovery-combined-candidates";
+import { generateCombinedCandidates, prepareCombinedReferenceControl, type CombinedBatch, type CombinedCandidate } from "@/lib/discovery-combined-candidates";
 import { coordinateSha256 } from "@/lib/discovery-site-candidates";
 
 export const QE_INPUT_VERSION = "discovery-qe-input/1.0.0";
@@ -102,7 +102,9 @@ export async function prepareQeInput(batch: CombinedBatch, candidateId: string, 
   const originals = files.map(file => ({ name: file.name, bytes: new Uint8Array(file.bytes) }));
   const verified = await generateCombinedCandidates(saved.requested);
   if (JSON.stringify(saved) !== JSON.stringify(verified)) fail("The candidate batch differs from its reproducible source construction. Generate it again.");
-  const candidate = verified.candidates.find(item => item.id === candidateId);
+  const candidate = candidateId === `reference-control:${verified.parent_id}`
+    ? await prepareCombinedReferenceControl(verified)
+    : verified.candidates.find(item => item.id === candidateId);
   if (!candidate) return fail("Choose a candidate from the current batch.");
   const pseudos = await Promise.all(originals.map(inspectQeUpf));
   pseudos.sort((a, b) => a.element.localeCompare(b.element, "en"));

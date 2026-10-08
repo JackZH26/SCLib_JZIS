@@ -119,3 +119,17 @@ export async function generateCombinedCandidates(input: CombinedInput) {
 }
 export type CombinedBatch = Awaited<ReturnType<typeof generateCombinedCandidates>>;
 export type CombinedCandidate = CombinedBatch["candidates"][number];
+
+/** Exact unmodified parent for paired calculations. Never counted as a new candidate. */
+export async function prepareCombinedReferenceControl(batch: CombinedBatch): Promise<CombinedCandidate> {
+  const saved = structuredClone(batch);
+  const verified = await generateCombinedCandidates(saved.requested);
+  if (JSON.stringify(saved) !== JSON.stringify(verified)) throw new Error("The control batch differs from its reproducible source construction.");
+  const model = supercellModel(verified.requested.referenceId, verified.requested.repeats);
+  const geometry: Geometry = { atoms: model.atoms, cell: model.cell, edits: [], strain_percent: 0 };
+  const cif = combinedCif(model, geometry);
+  return { ...geometry, id: `reference-control:${verified.parent_id}`, parent_id: verified.parent_id,
+    composition: compositionOf(model.atoms), cif, cif_sha256: await coordinateSha256(cif),
+    nominal_change: { changed_sites: 0, original_total_sites: model.atoms.length, original_total_site_fraction: 0,
+      by_original_species: [], basis: "Unmodified source-derived reference control; not a new material candidate." }, volume_ratio: 1 };
+}

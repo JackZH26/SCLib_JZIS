@@ -1,0 +1,176 @@
+{
+  "schema_version": "sclib-staging-acceptance/1",
+  "deployment": {
+    "status": "deployed_private_dummy_staging",
+    "service": "sclib-compute-staging",
+    "release": "/opt/sclib-compute-staging/releases/20261008-v1",
+    "loopback": {
+      "status": "ok",
+      "protocol": "sclib-compute/1",
+      "mode": "private_staging",
+      "scientific_publication_authority": false
+    },
+    "nginx_before_sha256": "7aec034aa4c5c6a699f7cb16571cbb57583d35091307c94996c7ef237b241dd2",
+    "nginx_after_sha256": "33f697f4fb5162824f0df43fa4838b8fb69c042f4d13b7e3a4dcedd679f8c271",
+    "public_scientific_write": false,
+    "m4_connected": false,
+    "credential_values_logged": false,
+    "rollback": "Restore nginx-before.conf, nginx -t, reload nginx, disable --now sclib-compute-staging.service; preserve data directory."
+  },
+  "https_dummy_probe": {
+    "adapter": "dummy",
+    "complete_replay_identical": true,
+    "https_mtls_roundtrip": true,
+    "job_id": "dummy-probe-922333b03de04d089e126d53861c8521",
+    "lost_claim_ack_recovered": true,
+    "lost_complete_ack_recovered": true,
+    "m4_node_acceptance": false,
+    "measured_at_unix": 1791454449,
+    "node_operator_route_denied": true,
+    "production_database_access": false,
+    "receipt": {
+      "attempt_id": "attempt-557bc969d1fb4c6580a1e5dd80b0c9e8",
+      "completion_sha256": "df52947423082e5e395e33648550be1dc315304ebe9d0fcccbbc6116c35f8e91",
+      "fencing_token": 1,
+      "input_manifest_sha256": "3d334c7c818cfb323a302ccd79a40e04243833118de7542db1789c259914e7c4",
+      "job_id": "dummy-probe-922333b03de04d089e126d53861c8521",
+      "manifest_sha256": "77ca7a90a50dbc3c5fe0f7a03266c31bf997849accd66d2ab7c8d23acf58fa36",
+      "node_id": "root-dummy-20261008",
+      "production_database_access": false,
+      "reason": null,
+      "received_at_unix": 1791454449.2897363,
+      "schema_version": "sclib-compute-receipt/1",
+      "scientific_publication_authority": false,
+      "scientific_status": "not_assessed",
+      "solver_outcome": "clean_checkpoint",
+      "status": "returned"
+    },
+    "reserved_cpu_core_seconds": 60,
+    "schema_version": "sclib-compute-deployment-probe/1",
+    "scientific_calculation": false,
+    "soak_24h": false
+  },
+  "https_boundary_checks": {
+    "verified_server_tls": true,
+    "checks": [
+      {
+        "case": "anonymous",
+        "status": 403
+      },
+      {
+        "case": "spoofed_proxy",
+        "status": 403
+      },
+      {
+        "case": "/healthz",
+        "status": 200,
+        "sha256": "0383d44152a0d2b3864bffaffeb7cbb28d7b06a18541b7bbf4dd2f82adab466c",
+        "unchanged": true
+      },
+      {
+        "case": "/discovery-meta.json",
+        "status": 200,
+        "sha256": "66bd7ab5e005a4f3ecd048708a6230ec3ef2aec32bf98e96a6dd80ec09ff703a",
+        "unchanged": true
+      },
+      {
+        "case": "/discovery-feed.json",
+        "status": 200,
+        "sha256": "6d64062d4cbbb51378b31f5720dd4fdea94b61b3fae78a532560ccc38d2221cd",
+        "unchanged": true
+      },
+      {
+        "case": "handoff/SCLIB_M4_Agent_Setup_Instructions_2026-10-08.md",
+        "status": 200,
+        "sha256": "fb0d60578a015c199570bdcea0ff2173ee0927b6659353f6b5152a6b7f58139a",
+        "unchanged": true
+      },
+      {
+        "case": "handoff/SCLIB_M4_Compute_Collaboration_Plan_2026-10-08.md",
+        "status": 200,
+        "sha256": "f8a6c28fdd7db23e60c7f4888089814db0b805ac6291082a2ae243eef3d554c4",
+        "unchanged": true
+      },
+      {
+        "case": "handoff/SHA256SUMS",
+        "status": 200,
+        "sha256": "0cff667e7834df23b1dd41189a195a37f1485a1c8b1dac424a66ad828cb14a72",
+        "unchanged": true
+      },
+      {
+        "case": "handoff/manifest.json",
+        "status": 200,
+        "sha256": "34d09f2586256155b3f17dcbdb293b15ff56f022f78fec5e485a8fc807e472a3",
+        "unchanged": true
+      },
+      {
+        "case": "certificate_unknown",
+        "status": 403
+      },
+      {
+        "case": "certificate_dummy",
+        "status": 403
+      },
+      {
+        "case": "certificate_operator",
+        "status": 200
+      }
+    ],
+    "m4_connected": false,
+    "science_computed": false
+  },
+  "source_file_pins": [
+    {
+      "path": "scripts/sclib_compute_service.py",
+      "sha256": "830d6e4da1b4895c37af33bfab427867768e424464a024cebf481a835ba96989"
+    },
+    {
+      "path": "scripts/sclib_compute_requirements.txt",
+      "sha256": "dccce6228522186a0028f8223b0b48d0d02dcf9c23db5404fe84321c18abde44"
+    },
+    {
+      "path": "scripts/sclib_compute/worker.py",
+      "sha256": "0d6eb05b3503ab4e5c100b186b05d493e60b9fe0829f40a5d666a9023385b7ec"
+    },
+    {
+      "path": "scripts/sclib_compute/store.py",
+      "sha256": "4ad25c8890d9f34d7c37c44c6060890fc7d773aa660a12d214d55ee28dbd2bbb"
+    },
+    {
+      "path": "scripts/sclib_compute/__init__.py",
+      "sha256": "ce8854d2e28b785137dd0e0eb6c615d3e684c085186c1f6113e6d1e9813d84c9"
+    },
+    {
+      "path": "scripts/sclib_compute/api.py",
+      "sha256": "948e0d86fbcc013d1ad6294aba2e5766a2411e6fa56bdc4d8a3668ade178253e"
+    },
+    {
+      "path": "scripts/sclib_compute/contracts.py",
+      "sha256": "1ffd30dc559ab684ca56d62a0a2b9c7f39a2ac817e9fc9b03db0f12e4d307a29"
+    }
+  ],
+  "m4_node_ready": false,
+  "soak_24h": false,
+  "science_calculation_run": false,
+  "scope": "Actual research VPS deployment and dummy-only transport acceptance. Production Materials/Discovery frontend is a separate release.",
+  "service_restart_check": {
+    "server_restart_receipt_identical": true,
+    "actual_complete": {
+      "attempt_id": "attempt-557bc969d1fb4c6580a1e5dd80b0c9e8",
+      "completion_sha256": "df52947423082e5e395e33648550be1dc315304ebe9d0fcccbbc6116c35f8e91",
+      "fencing_token": 1,
+      "input_manifest_sha256": "3d334c7c818cfb323a302ccd79a40e04243833118de7542db1789c259914e7c4",
+      "job_id": "dummy-probe-922333b03de04d089e126d53861c8521",
+      "manifest_sha256": "77ca7a90a50dbc3c5fe0f7a03266c31bf997849accd66d2ab7c8d23acf58fa36",
+      "node_id": "root-dummy-20261008",
+      "production_database_access": false,
+      "reason": null,
+      "received_at_unix": 1791454449.2897363,
+      "schema_version": "sclib-compute-receipt/1",
+      "scientific_publication_authority": false,
+      "scientific_status": "not_assessed",
+      "solver_outcome": "clean_checkpoint",
+      "status": "returned"
+    }
+  }
+}

@@ -1,0 +1,630 @@
+{
+  "schema_version": "discovery-benchmark-suite/1.0.0",
+  "version": "2026-10-08-v1",
+  "status": "prepared_retrospective_checks_not_executed_replications",
+  "source": {
+    "path": "frontend/public/research-hypotheses/source-computed-candidates-2026-10-07.json",
+    "sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+    "catalogue_version": "2026-10-07-source103-v1",
+    "dataset": {
+      "title": "Sampling the materials space for conventional superconducting compounds",
+      "version": "Materials Cloud 2023.163 v1",
+      "authors": [
+        "Tiago F. T. Cerqueira",
+        "Antonio Sanna",
+        "Miguel A. L. Marques"
+      ],
+      "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+      "doi": "10.24435/materialscloud:qv-bq",
+      "license": "CC BY 4.0",
+      "license_basis": "metadata.rights from primary record API",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Source data: Tiago F. T. Cerqueira, Antonio Sanna and Miguel A. L. Marques, Sampling the materials space for conventional superconducting compounds, Materials Cloud 2023.163 v1, DOI 10.24435/materialscloud:qv-bq, CC BY 4.0. This catalogue is a derived projection with additional source-state screening commentary."
+    }
+  },
+  "counts": {
+    "cases": 12,
+    "source_pairs": 9,
+    "experimental_identity_anchors": 3,
+    "new_calculations": 0,
+    "new_material_discoveries": 0
+  },
+  "selection": {
+    "method": "purposeful failure-mode coverage",
+    "outcomes_known_at_selection": true,
+    "representative_of_all_superconductors": false,
+    "prospective_holdout_credit": false
+  },
+  "prospective_protocol": {
+    "freeze_before_results": [
+      "host/action groups",
+      "exact target/control inputs",
+      "observables and scope",
+      "tolerances",
+      "baselines",
+      "resource envelope",
+      "success/falsification decisions"
+    ],
+    "baselines": [
+      "random within same eligible pool",
+      "source-Tc heuristic",
+      "simple-physics heuristic",
+      "proposed policy"
+    ],
+    "metrics": [
+      "independently supported states per actual cost",
+      "top-k follow-up success with explicit denominator",
+      "response-direction accuracy",
+      "cost to falsification",
+      "out-of-domain abstention"
+    ],
+    "failure_handling": "Keep failed, unselected, unconverged and censored cases; unknown Tc is never zero."
+  },
+  "cases": [
+    {
+      "id": "source-check:agm001228974",
+      "kind": "retrospective_source_pair",
+      "formula": "TiNb2Mo",
+      "target_state": "agm001228974",
+      "control_state": "agm002322068",
+      "source_pointer": "/candidates/77",
+      "source_record_sha256": "d1cf4989b2f2142a76640760546e2d83b5261340e293e8a6888c783879d44e57",
+      "purpose": "ordered_vs_experimental_alloy",
+      "research_question": "Matched reciprocal-resolution refinement must preserve A>B and optical positivity; reversal or adverse structural/magnetic evidence revises this screen. Source association or inconclusive refinement leaves the research hypothesis unresolved.",
+      "known_source_tc": {
+        "target_K": 15.378,
+        "control_K": 14.888,
+        "delta_K": 0.4900000000000002,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "known_lambda_difference": {
+        "all10": [
+          0.1875,
+          0.16770000000000018,
+          0.1502000000000001,
+          0.13159999999999994,
+          0.11399999999999988,
+          0.0988,
+          0.08630000000000004,
+          0.07679999999999987,
+          0.06999999999999995,
+          0.06500000000000006
+        ],
+        "range": [
+          0.06500000000000006,
+          0.1875
+        ],
+        "convention": "target_minus_control",
+        "unit": "dimensionless"
+      },
+      "countercontrols_count": 0,
+      "countercontrols_pointer": "/candidates/77/countercontrols",
+      "risk_summary": "NegativeGamma modes are predominantly translational, and the independently checked optical form is positive beyond raw printing bounds. Magnetism/SOC/disorder and full-BZ/finite-temperature stability remain beyond this nonmagnetic source approximation.",
+      "ambient_scope": "Zero-pressure-target optimized models and completed sampled non-Gamma/ASR-path phonons plus positive Gamma optical compression support local near-ambient harmonic feasibility within the declared source model.",
+      "acceptance_rule": "Compare exact ordered source identity with the BCC experimental alloy; never transfer its measured Tc.",
+      "evaluation_type": "identity_and_inference_regression",
+      "future_replication": {
+        "status": "not_run",
+        "numerical_tolerance": null,
+        "prerequisites": [
+          "exact source input/UPF/runtime association",
+          "freeze observable-specific tolerance and resource envelope before execution"
+        ]
+      },
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    },
+    {
+      "id": "source-check:agm001271506",
+      "kind": "retrospective_source_pair",
+      "formula": "HfNbTa",
+      "target_state": "agm001271506",
+      "control_state": "agm001839729",
+      "source_pointer": "/candidates/18",
+      "source_record_sha256": "22aed38f3a019cf1f1ad286f9d024f1b4d8e523ea332de26a37c8f01f040b6cd",
+      "purpose": "phase_and_disorder",
+      "research_question": "Matched reciprocal-resolution and competing-order tests will distinguish stable geometry/EPC benefit from sampling/softening. Maintain only if paired benefit and feasible modes survive; reduce support if gain vanishes or an instability/competing state dominates; ambiguous results retain hypothesis rather than forced acceptance.",
+      "known_source_tc": {
+        "target_K": 14.176,
+        "control_K": 13.408,
+        "delta_K": 0.7680000000000007,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "known_lambda_difference": {
+        "all10": null,
+        "range": [
+          0.10989999999999989,
+          0.1338999999999999
+        ],
+        "convention": "target_minus_control",
+        "unit": "dimensionless"
+      },
+      "countercontrols_count": 0,
+      "countercontrols_pointer": "/candidates/18/countercontrols",
+      "risk_summary": "Explicit softening, q/k sampling, residual force/stress, harmonic scalar/noSOC approximation and ordered/disordered competitors assessed. No retained dominant contradiction reverses the bounded preliminary inference; magnetic/SOC/thermodynamic/coherence tests remain falsifiable follow-ups.",
+      "ambient_scope": "Near-zero signed source pressure−0.067GPa, converged fine SCF, positive Gamma optical compression beyond source-printing bound and no signed negative retained interpolation-path modes support bounded local/finite-grid feasibility. Residual maxstress0.502GPa/force0.02436eV-A and no global hull/synthesis proof remain stated.",
+      "acceptance_rule": "Keep the ordered hexagonal source and the experimental BCC alloy as separate states.",
+      "evaluation_type": "identity_and_inference_regression",
+      "future_replication": {
+        "status": "not_run",
+        "numerical_tolerance": null,
+        "prerequisites": [
+          "exact source input/UPF/runtime association",
+          "freeze observable-specific tolerance and resource envelope before execution"
+        ]
+      },
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    },
+    {
+      "id": "source-check:agm003157370",
+      "kind": "retrospective_source_pair",
+      "formula": "TiZr",
+      "target_state": "agm003157370",
+      "control_state": "agm002028544",
+      "source_pointer": "/candidates/87",
+      "source_record_sha256": "71986a92ab32cf76c9a2ecb07dc507508ab633c19566d142ca64094eb90faf34",
+      "purpose": "energy_and_sampling_tradeoff",
+      "research_question": "Test exact tetragonal phase persistence against the known hexagonal/order-disorder reference and match physical k/q sampling. Reversion to the established alloy phase or loss of the pairing response is adverse.",
+      "known_source_tc": {
+        "target_K": 18.892,
+        "control_K": 13.173,
+        "delta_K": 5.718999999999999,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "known_lambda_difference": {
+        "all10": [
+          0.40490000000000004,
+          0.391,
+          0.4113,
+          0.41559999999999997,
+          0.4041000000000001,
+          0.38670000000000004,
+          0.3678000000000001,
+          0.3500000000000001,
+          0.33440000000000003,
+          0.32199999999999984
+        ],
+        "range": [
+          0.32199999999999984,
+          0.41559999999999997
+        ],
+        "convention": "target_minus_control",
+        "unit": "dimensionless"
+      },
+      "countercontrols_count": 1,
+      "countercontrols_pointer": "/candidates/87/countercontrols",
+      "risk_summary": "A fine F is 23.25 meV/atom higher. Known hexagonal Ti–Zr alloy superconductivity and pressure-induced bcc behavior cannot be assigned to these ordered near-zero-pressure tetragonal source states.",
+      "ambient_scope": "Exact model force/full stress, converged electronic outputs, reported finite-q workflow and raw Γ optical evidence provide a bounded near-ambient source-model screen. Source residual stress/metastable alternatives remain explicit; this is not proof of synthesizeability, full BZ or global equilibrium.",
+      "acceptance_rule": "Retain the printed fine-energy disadvantage and unequal q meshes even when risk_tags is empty.",
+      "evaluation_type": "identity_and_inference_regression",
+      "future_replication": {
+        "status": "not_run",
+        "numerical_tolerance": null,
+        "prerequisites": [
+          "exact source input/UPF/runtime association",
+          "freeze observable-specific tolerance and resource envelope before execution"
+        ]
+      },
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    },
+    {
+      "id": "source-check:agm002489249",
+      "kind": "retrospective_source_pair",
+      "formula": "NaAuH3",
+      "target_state": "agm002489249",
+      "control_state": "agm002486518",
+      "source_pointer": "/candidates/43",
+      "source_record_sha256": "997c001d99dbbecaa4d73d2686dd1220305d0fb7256ca2af59c804f4ec16c450",
+      "purpose": "harmonic_to_anharmonic_transfer",
+      "research_question": "Hold the composition/ordered sites fixed and compare Au/Pt source structures at a common cell volume and common converged sampling. Favorable: the lambda advantage persists without a nontranslation soft branch; adverse: it vanishes under common sampling or an anharmonic/decomposition instability appears.",
+      "known_source_tc": {
+        "target_K": 23.838,
+        "control_K": 13.298,
+        "delta_K": 10.540000000000001,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "known_lambda_difference": {
+        "all10": [
+          0.9058000000000002,
+          0.5152,
+          0.3148,
+          0.22890000000000005,
+          0.18080000000000002,
+          0.15610000000000002,
+          0.1476,
+          0.14939999999999998,
+          0.15700000000000003,
+          0.16739999999999994
+        ],
+        "range": [
+          0.1476,
+          0.9058000000000002
+        ],
+        "convention": "target_minus_control",
+        "unit": "dimensionless"
+      },
+      "countercontrols_count": 0,
+      "countercontrols_pointer": "/candidates/43/countercontrols",
+      "risk_summary": "Hydrogen anharmonicity and zero-point/decomposition pathways, Au charge redistribution and neglected SOC can change the magnitude. They are unmeasured here, but there is no actual negative path or optical mode in this exact source model. The PdH anharmonic counterexample prohibits treating harmonic Tc as experimental.",
+      "ambient_scope": "Coarse/fine SCF both converge; complete source forces/stress, positive Gamma optical compression and no signed negative finite-path value support this model near ambient. All listed q outputs end JOBDONE/response convergence with zero routine errors. This is finite-grid local/metastable evidence, not exhaustive thermodynamic or all-irrep certification.",
+      "acceptance_rule": "Test whether the harmonic scalar-model benefit survives justified anharmonic/SOC follow-up; presently unresolved.",
+      "evaluation_type": "identity_and_inference_regression",
+      "future_replication": {
+        "status": "not_run",
+        "numerical_tolerance": null,
+        "prerequisites": [
+          "exact source input/UPF/runtime association",
+          "freeze observable-specific tolerance and resource envelope before execution"
+        ]
+      },
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    },
+    {
+      "id": "source-check:agm003203668",
+      "kind": "retrospective_source_pair",
+      "formula": "Cr2Re",
+      "target_state": "agm003203668",
+      "control_state": "agm003295867",
+      "source_pointer": "/candidates/3",
+      "source_record_sha256": "d69c44371bfe43b825c3ad6f4b27594cea20305bbf12d708beba9e631594dbb9",
+      "purpose": "magnetism_and_competing_phase",
+      "research_question": "Use C15 exact-state spin seeds and the closest σ ordering as the discriminating competitor, keeping the same phase-specific EPC control. A magnetic C15 phase that suppresses the benefit reverses the present nonmagnetic hypothesis.",
+      "known_source_tc": {
+        "target_K": 22.142,
+        "control_K": 14.726,
+        "delta_K": 7.415999999999999,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "known_lambda_difference": {
+        "all10": [
+          0.11769999999999992,
+          0.21909999999999996,
+          0.2824,
+          0.3134,
+          0.3186,
+          0.30580000000000007,
+          0.2844,
+          0.2619999999999999,
+          0.2427999999999999,
+          0.22819999999999996
+        ],
+        "range": [
+          0.11769999999999992,
+          0.3186
+        ],
+        "convention": "target_minus_control",
+        "unit": "dimensionless"
+      },
+      "countercontrols_count": 1,
+      "countercontrols_pointer": "/candidates/3/countercontrols",
+      "risk_summary": "Known Cr–Re σ competition and a PBE study finding no ordered stable binary compound are contrary priors, not a transfer of their phase energetics to this NC/PBEsol C15 state. Exact C15 magnetism and the experimental realization of this ordered composition remain unknown.",
+      "ambient_scope": "Exact model force/full stress, converged electronic outputs, reported finite-q workflow and raw Γ optical evidence provide a bounded near-ambient source-model screen. Source residual stress/metastable alternatives remain explicit; this is not proof of synthesizeability, full BZ or global equilibrium.",
+      "acceptance_rule": "Separate actual contrary phase priors from an unmeasured magnetic ground state; do not reject from Cr content alone.",
+      "evaluation_type": "identity_and_inference_regression",
+      "future_replication": {
+        "status": "not_run",
+        "numerical_tolerance": null,
+        "prerequisites": [
+          "exact source input/UPF/runtime association",
+          "freeze observable-specific tolerance and resource envelope before execution"
+        ]
+      },
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    },
+    {
+      "id": "source-check:agm002346313",
+      "kind": "retrospective_source_pair",
+      "formula": "N2TiZr",
+      "target_state": "agm002346313",
+      "control_state": "agm002291077",
+      "source_pointer": "/candidates/42",
+      "source_record_sha256": "846378d409bce81fcfe23cb8caf2d66240b9c3152241d1fc338e86e46e6de473",
+      "purpose": "relaxation_history_and_stress",
+      "research_question": "Discriminate the ordered SG166 phase from the known rocksalt nanophase, and read saved α²F weights plus fine-strain response. A realistic μ or strain correction can reverse the net benefit; do not extrapolate the source μ=.1 result to high physical probability.",
+      "known_source_tc": {
+        "target_K": 12.845,
+        "control_K": 11.965,
+        "delta_K": 0.8800000000000008,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "known_lambda_difference": {
+        "all10": [
+          -0.02290000000000003,
+          -0.01749999999999996,
+          -0.017800000000000038,
+          -0.01970000000000005,
+          -0.01990000000000003,
+          -0.019299999999999984,
+          -0.018900000000000028,
+          -0.018400000000000083,
+          -0.017800000000000038,
+          -0.017100000000000004
+        ],
+        "range": [
+          -0.02290000000000003,
+          -0.017100000000000004
+        ],
+        "convention": "target_minus_control",
+        "unit": "dimensionless"
+      },
+      "countercontrols_count": 1,
+      "countercontrols_pointer": "/candidates/42/countercontrols",
+      "risk_summary": "Geoopt0 prints BFGS failure, but geoopt1 prints later positive convergence/no failure and low force. Coarse source stress is near zero; fine stress is anisotropic (−.567,−.567,+.861 GPa). This is finite basin support, not proof of a thermodynamic ambient ground state.",
+      "ambient_scope": "The exact source neutral zero-applied-pressure model has positive Γ optical compression intervals and no negative retained sampled path value for target and selected control. Coarse/fine force and full stress, relaxation warnings and every q record are retained. These finite observations do not prove full-BZ or thermodynamic hull stability.",
+      "acceptance_rule": "Retain both the earlier failed and later converged optimization and the fine anisotropic stress.",
+      "evaluation_type": "identity_and_inference_regression",
+      "future_replication": {
+        "status": "not_run",
+        "numerical_tolerance": null,
+        "prerequisites": [
+          "exact source input/UPF/runtime association",
+          "freeze observable-specific tolerance and resource envelope before execution"
+        ]
+      },
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    },
+    {
+      "id": "source-check:agm003204399",
+      "kind": "retrospective_source_pair",
+      "formula": "Be4ZrRh",
+      "target_state": "agm003204399",
+      "control_state": "agm001171196",
+      "source_pointer": "/candidates/1",
+      "source_record_sha256": "29a1fc79076f67ed71ccd4f762dabd490454ad79798ba595bfa6b763767a55b1",
+      "purpose": "nonmonotonic_electron_count",
+      "research_question": "Read existing Be/Rh/X mode/orbital-resolved evidence to distinguish the large Ir→Rh and Nb→Zr pairing changes. Favorable: coupling gain persists on matched NC/scalar conditions; adverse: a relevant spin/SOC or numerical control reverses it; ambiguous: band envelope alone or missing projections cannot identify cause.",
+      "known_source_tc": {
+        "target_K": 21.779,
+        "control_K": 13.859,
+        "delta_K": 7.92,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "known_lambda_difference": {
+        "all10": [
+          0.2804,
+          0.2882,
+          0.3369,
+          0.3576999999999999,
+          0.34030000000000005,
+          0.30099999999999993,
+          0.2551,
+          0.21089999999999998,
+          0.17189999999999994,
+          0.1391
+        ],
+        "range": [
+          0.1391,
+          0.3576999999999999
+        ],
+        "convention": "target_minus_control",
+        "unit": "dimensionless"
+      },
+      "countercontrols_count": 3,
+      "countercontrols_pointer": "/candidates/1/countercontrols",
+      "risk_summary": "All three frozen neighbors retained. More nominal electrons is already opposed by Nb comparison: Zr state pairs more strongly. ROOT finite native envelope is also lower for Zr than Nb; physical W/mobile n is not claimed. Versions differ across neighbors and fine force is 0.02809 eV/A; this is source finite scalar pairing support, not independent method certification.",
+      "ambient_scope": "Source coarse force 0.00022400006825056733 eV/Å, pressure 0.0 GPa; fine force 0.02809263679016012 eV/Å, pressure 0.020999999999999998 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+      "acceptance_rule": "Do not convert nominal electron count or a finite electronic envelope into mobile carriers or active-orbital bandwidth.",
+      "evaluation_type": "identity_and_inference_regression",
+      "future_replication": {
+        "status": "not_run",
+        "numerical_tolerance": null,
+        "prerequisites": [
+          "exact source input/UPF/runtime association",
+          "freeze observable-specific tolerance and resource envelope before execution"
+        ]
+      },
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    },
+    {
+      "id": "source-check:agm003262771",
+      "kind": "retrospective_source_pair",
+      "formula": "Nb6GaSb",
+      "target_state": "agm003262771",
+      "control_state": "agm003766932",
+      "source_pointer": "/candidates/47",
+      "source_record_sha256": "cce57631c0e2acabd47267ec3162ee583c0845541f9d3097c04113bdd846c493",
+      "purpose": "opposite_comparator",
+      "research_question": "At the frozen ordered Ga/(Rh or Sb) roles compare a common source method and common volume, then test an antisite/disordered or symmetry-breaking chain competitor. Persistent favorable lambda with stable order supports the bounded candidate; loss under the matched method or a lower unstable ordered branch opposes it.",
+      "known_source_tc": {
+        "target_K": 17.221,
+        "control_K": 14.014,
+        "delta_K": 3.2070000000000007,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "known_lambda_difference": {
+        "all10": [
+          0.6686999999999999,
+          0.48429999999999995,
+          0.3791,
+          0.30189999999999984,
+          0.2491000000000001,
+          0.21489999999999998,
+          0.19130000000000014,
+          0.17310000000000003,
+          0.15790000000000004,
+          0.14469999999999994
+        ],
+        "range": [
+          0.14469999999999994,
+          0.6686999999999999
+        ],
+        "convention": "target_minus_control",
+        "unit": "dimensionless"
+      },
+      "countercontrols_count": 2,
+      "countercontrols_pointer": "/candidates/47/countercontrols",
+      "risk_summary": "The source target path has no signed negative values and Gamma optical compression is positive. Ordered-site entropy, antisite disorder, chain/CDW distortion and Sb SOC are physical competing effects. The target loses to AlNb6Sb at all ten lambda values; that opposite control and its small negative-path risk remain explicit. Different PP paths/code versions across the Rh/Sb comparison are not concealed and the response is not geometry-only causal.",
+      "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0.022252643 eV/A, P=0.051 GPa, full max stress=0.051 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+      "acceptance_rule": "Retain loss against AlNb6Sb alongside benefit against GaNb6Rh; one favorable comparison is not universal superiority.",
+      "evaluation_type": "identity_and_inference_regression",
+      "future_replication": {
+        "status": "not_run",
+        "numerical_tolerance": null,
+        "prerequisites": [
+          "exact source input/UPF/runtime association",
+          "freeze observable-specific tolerance and resource envelope before execution"
+        ]
+      },
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    },
+    {
+      "id": "source-check:agm003559755",
+      "kind": "retrospective_source_pair",
+      "formula": "YZr3N4",
+      "target_state": "agm003559755",
+      "control_state": "agm003557884",
+      "source_pointer": "/candidates/94",
+      "source_record_sha256": "bec0ca743bd65ff3dfa6579f897d9f13f0b5fbc1e52827049b0b4df8db8974a8",
+      "purpose": "coupled_chemical_geometry",
+      "research_question": "Candidate grade3 is justified only for the declared source-model coupled atomic-construction/pairing domain. A fixed-chemistry cross-volume response and named finite-q stationarity check are the next falsifiers; independent numerical/causal strengthening needed for grade4. Formal research-action RPS/publication remains separate.",
+      "known_source_tc": {
+        "target_K": 21.437,
+        "control_K": 16.568,
+        "delta_K": 4.869,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "known_lambda_difference": {
+        "all10": [
+          0.8982999999999999,
+          0.6923,
+          0.6156,
+          0.5653,
+          0.5301000000000001,
+          0.5028999999999999,
+          0.47950000000000015,
+          0.4584999999999999,
+          0.4393,
+          0.42189999999999994
+        ],
+        "range": [
+          0.42189999999999994,
+          0.8982999999999999
+        ],
+        "convention": "target_minus_control",
+        "unit": "dimensionless"
+      },
+      "countercontrols_count": 0,
+      "countercontrols_pointer": "/candidates/94/countercontrols",
+      "risk_summary": "Explicitly assessed softening, competing nitrides/disorder, code-model spin/SOC assumptions, mixed mass/potential/volume causes and coarse/fine residual-stress sensitivity. No observed critical sign contradiction reverses this bounded source coupled-intervention inference. Whole-BZ stability, disorder coherence, magnetic ground state and fixed-chemistry causal mediation remain unknown; the smaller/partially capacity-limited electronic envelopes are not claimed as W gains.",
+      "ambient_scope": "Bounded near-ambient source feasibility: coarse pressure0 GPa, fine residual isotropic stress-0.178 GPa and printed-zero forces, finite q3^3/4irreducible response;21 Gamma optical-compression eigenvalues positive beyond printing bound and path no signed-negative values. Earlier PBE/PAW phase hull35 meV/atom is a metastability prior, not current NC exact hull or synthesis evidence.",
+      "acceptance_rule": "Keep chemical, mass, volume and model effects coupled; a source gain does not isolate geometric causality.",
+      "evaluation_type": "identity_and_inference_regression",
+      "future_replication": {
+        "status": "not_run",
+        "numerical_tolerance": null,
+        "prerequisites": [
+          "exact source input/UPF/runtime association",
+          "freeze observable-specific tolerance and resource envelope before execution"
+        ]
+      },
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    },
+    {
+      "id": "anchor:nb2timo-bcc",
+      "formula": "Nb2TiMo",
+      "related_source_state": "agm001228974",
+      "url": "https://arxiv.org/abs/2412.08361v1",
+      "locator": "Abstract",
+      "reviewed_scope": "primary_abstract",
+      "phase": "experimental BCC alloy",
+      "reported_tc_k": 3.22,
+      "reported_tc_relation": "approximately",
+      "measurement_methods": [
+        "resistivity",
+        "magnetization",
+        "specific heat"
+      ],
+      "acceptance_rule": "Same reduced composition does not establish the same ordered structure or sample; source theoretical Tc remains separate.",
+      "kind": "experimental_identity_anchor",
+      "reviewed_on": "2026-10-08",
+      "evaluation_type": "source_identity_and_counterexample",
+      "sample_to_simulation_association": "unestablished",
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    },
+    {
+      "id": "anchor:hfnbta-bcc",
+      "formula": "HfNbTa",
+      "related_source_state": "agm001271506",
+      "url": "https://arxiv.org/abs/2602.19376v1",
+      "locator": "Abstract",
+      "reviewed_scope": "primary_abstract",
+      "phase": "experimental BCC alloy",
+      "reported_tc_k": null,
+      "reported_tc_relation": "not_extracted_from_this_scope",
+      "measurement_methods": [],
+      "acceptance_rule": "Preserve the BCC experimental prior; the abstract does not supply an extracted numeric Tc and does not identify the ordered hexagonal source state.",
+      "kind": "experimental_identity_anchor",
+      "reviewed_on": "2026-10-08",
+      "evaluation_type": "source_identity_and_counterexample",
+      "sample_to_simulation_association": "unestablished",
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    },
+    {
+      "id": "anchor:mgb2-al-c",
+      "formula": "MgB2 with Al or C substitution",
+      "related_source_state": null,
+      "url": "https://doi.org/10.1103/PhysRevB.71.144512",
+      "locator": "Abstract",
+      "reviewed_scope": "primary_abstract",
+      "phase": "partially substituted polycrystalline samples",
+      "reported_tc_k": null,
+      "reported_tc_relation": "qualitative_suppression",
+      "measurement_methods": [
+        "temperature-dependent upper critical field"
+      ],
+      "acceptance_rule": "Al and C substitution both suppress Tc in the reported samples while Hc2 responses differ; more nominal electrons is not a positive Tc label. Exact ordered simulation states remain unlinked.",
+      "kind": "experimental_identity_anchor",
+      "reviewed_on": "2026-10-08",
+      "evaluation_type": "source_identity_and_counterexample",
+      "sample_to_simulation_association": "unestablished",
+      "eligible_as_unseen_test": false,
+      "promote_evidence_level": false
+    }
+  ]
+}

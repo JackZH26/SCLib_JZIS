@@ -1,0 +1,96 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm003158378",
+  "source_state": "agm003158378",
+  "formula": "ScZr2",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "c2379a4e3749817a735d065de2a37c7d99a6e3d1f576f8cc401f1f773b8588ef",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "Exact ordered-state mechanism new to reviewed catalogue only; source predictions/known chemistry acknowledged, not first discovery.",
+    "case_context": "One exact reduced composition/ordered phase-design group, new to the frozen reviewed cohort. Published computed source is acknowledged, known experimental chemistry remains a comparator. Bounded primary phase search has not tied the exact target order to an established SC sample; no global absence claim.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "The fine target force norm is 0.04820 eV/Å, full stress 0.307 GPa, and fine F is 2.316 meV/atom above B. Hexagonal Zr–Sc alloys were experimentally nonsuperconducting in 1.1–4.2 K; that is a genuine contrary benchmark, not proof about these distinct ordered states.",
+    "ambient_scope": "Exact model force/full stress, converged electronic outputs, reported finite-q workflow and raw Γ optical evidence provide a bounded near-ambient source-model screen. Source residual stress/metastable alternatives remain explicit; this is not proof of synthesizeability, full BZ or global equilibrium.",
+    "attention_tags": [
+      "residual_force_stress"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "selected_source_control",
+        "countercontrol_index": null,
+        "control_reference": "batch-a/ScZr2_agm003158379",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -0.15250000000000008,
+          -0.07319999999999993
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": 0.4659999999999993,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against the selected source control; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Layered hexagonal A has LOWER λ in every row than tetragonal B, but its ω_log is larger in all rows and every separate fixed-μ Tc product favors A: Eliashberg +0.466 K, McMillan +0.598 K, Allen–Dynes +0.537 K. This supports a phonon-frequency/coherence tradeoff hypothesis. Complete species-channel geometry differences and computed all-σ pairing response are saved against the frozen controls. Cell/grid/method sensitivity prevents a pure geometry-only causal claim; no bandwidth/carrier quantity is substituted.",
+    "target_state": "agm003158378",
+    "selected_control": "agm003158379",
+    "next_action": "Compare the ordered layered versus tetragonal geometry at converged exact cells, then test order/disorder and the known hexagonal alloy reference. If the ω advantage is a residual-force artifact or the exact ordered phase behaves like the reference, the benefit is adverse.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "selected_source_control",
+        "countercontrol_index": null,
+        "control_reference": "batch-a/ScZr2_agm003158379",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -0.15250000000000008,
+          -0.07319999999999993
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": 0.4659999999999993,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against the selected source control; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

@@ -705,10 +705,12 @@ async def material_enrichment(
     from services.material_classification_seed import merge_primary_classification_seed
     from services.material_enrichment_read import read_material_enrichment
     from services.material_enrichment_seed import merge_primary_seed
+    from services.material_recovery_batch_seed import merge_recovery_batch
     report = await read_material_enrichment(db, material, include_record_coverage=True)
     record_coverage = report.pop("record_coverage")
     report = merge_primary_seed(report, material)
     report = merge_primary_classification_seed(report, material)
+    report = merge_recovery_batch(report, material)
     # Retained record coverage has its own version/hash, outside existing
     # source candidate and report identity contracts.
     report["record_coverage"] = record_coverage

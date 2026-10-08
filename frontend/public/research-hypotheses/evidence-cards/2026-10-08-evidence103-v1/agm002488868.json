@@ -1,0 +1,68 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm002488868",
+  "source_state": "agm002488868",
+  "formula": "HfTi3H",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "354c6e853477ccedf677f47c4b1355cafaeef75db5b8108e3106a6b158be8131",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "case_context": "2026-10-07 exact Ti3HfH/HfTi3H/HfRu3H search did not locate an experimental superconducting exact ordered phase. MC2023 prediction is already known and is retained as the primary prior; this is a new-to-reviewed-catalogue Hf-centered cage construction hypothesis.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Hydrogen desorption, competing binary metal hydrides/alloys and anharmonicity are the primary metastability risks; source no-SOC scalar metal model does not resolve all magnetic states. No actual instability has been found in the source path or Gamma optical subspace. Fine stress .090 GPa and exactly symmetry-zero printed forces support the specified near-ambient approximation, not an experimental sample.",
+    "ambient_scope": "Coarse/fine SCF both converge; complete source forces/stress, positive Gamma optical compression and no signed negative finite-path value support this model near ambient. All listed q outputs end JOBDONE/response convergence with zero routine errors. This is finite-grid local/metastable evidence, not exhaustive thermodynamic or all-irrep certification.",
+    "attention_tags": [
+      "hydrogen_anharmonicity",
+      "metastable_phase",
+      "residual_force_stress"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Replace all three symmetry-equivalent Ru sites in HfRu3H by Ti. Ordered cage roles/bijection are retained at three symprec scales. Cell volume rises 18.31846%; H-cage-metal distance rises .1137601 A and cage-metal nearest separation .1608810 A. All-ten lambda rises 14.892–59.320%, with separate Eli mu=.1 14.498→22.108 K. This directly tests a coupled cage reconstruction with cation chemistry, not high mobile n or active bandwidth.",
+    "target_state": "agm002488868",
+    "selected_control": "agm001106125",
+    "next_action": "Use a fixed-composition volume/cage control and one matched H-metal cage response, preserving the ordered H site. Favorable: Ti cage pairing response remains stronger at common sampling and anharmonic displacement is bounded; adverse: H loss/decomposition or an unstable cage branch removes the response.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm003199681",
+  "source_state": "agm003199681",
+  "formula": "Cr4WRe",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "3359399e85923877c22e9ae8e8bfd820f922500b66ec9b8066e9740af6e4ca10",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "Published source predictions already known; exact matched mechanism new to reviewed catalogue only, not first discovery.",
+    "case_context": "Bounded exact formula/prototype primary search; published source calculations not claimed as first discovery. New-to-reviewed exact ordered hypothesis only. Literature-wide novelty unproved.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "W-for-Os on Re network gives large source response; lower omega is retained. Tc/W competitor trades a slightly smaller lambda for higher Eliashberg Tc. Heavy-element SOC absent is a model sensitivity, not falsely inherited source absence.",
+    "ambient_scope": "Source coarse/fine pressure/fullstress/force andpositiveopticalGamma plus finite-path/q evidence; exacttested domain only. No laboratory P/T/hull/globalstability inheritance.",
+    "attention_tags": [
+      "magnetic_model",
+      "metastable_phase"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/Cr4MoRe_agm003199659",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.1149,
+          -0.032200000000000006
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -0.703000000000003,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 1,
+        "control_reference": "batch-a/Cr4NbRe_agm001173527",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -1.2088,
+          -0.2510000000000001
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.0720000000000027,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 6,
+        "control_reference": "batch-a/Cr4TcW_agm003199690",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          0.0976999999999999,
+          0.14160000000000017
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -0.26000000000000156,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Colored-site substitution/ordered network plus computed volume/nearest-distance response andEPCagainst frozen geometriccontrols; chemistry/masses co-change. No W/mobile n claim.",
+    "target_state": "agm003199681",
+    "selected_control": "agm003199669",
+    "next_action": "SOC/moment fixed-cell electronic check and common-sigma mode analysis; adverse outcome removes the benefit.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 0,
+        "control_reference": "batch-a/Cr4MoRe_agm003199659",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.1149,
+          -0.032200000000000006
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -0.703000000000003,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 1,
+        "control_reference": "batch-a/Cr4NbRe_agm001173527",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -1.2088,
+          -0.2510000000000001
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.0720000000000027,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 6,
+        "control_reference": "batch-a/Cr4TcW_agm003199690",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          0.0976999999999999,
+          0.14160000000000017
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -0.26000000000000156,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

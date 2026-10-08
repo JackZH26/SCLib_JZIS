@@ -1,0 +1,68 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm001827673",
+  "source_state": "agm001827673",
+  "formula": "TiNb3",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "e878a61ad5e98c07df1f4a9d73d156a0d78a721e6d4c28938090638ada299edd",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "case_context": "Commercial superconducting Nb-Ti is well known, and ordered NbTi/Nb3Ti calculations are also prior. Dated exact P4/mmm Nb3Ti queries did not find an experimental superconducting exact ordered phase. The hypothesis is this source ordering and matched Nb-for-Ta construction at finite-grid scalar approximation, not new Nb-Ti chemistry or inherited bcc alloy Tc.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "The exact ordered source has positive Gamma optical compression and no signed negative sampled-path value; fine full max stress is 0.142 GPa. The central competition is known disordered bcc Nb-Ti versus this ordered tetragonal/fcc-derived phase, not an assumption that the experimental alloy validates this ordering. Antisite/phase conversion, SOC and fine residual stress can change the result. Current source local stability is positive finite-grid evidence, not a bulk equilibrium certificate.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0 eV/A, P=0.096 GPa, full max stress=0.142 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "attention_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "sampling_method"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Nb replaces the three Ta sites as a whole-element construction with complete ordered role mapping across all three symmetry tolerances. Volume contracts 0.5332%, Nb-Nb versus Ta-Ta falls 0.0050234 A; all ten lambda values rise 11.164–18.705% and separate Eli mu=.1 rises 17.938 to 22.733 K. Retained single-site Mo/W controls have larger gains, while the Ta single edit has mixed signs; no global ranking or all-three-route conjunction is claimed.",
+    "target_state": "agm001827673",
+    "selected_control": "agm001827667",
+    "next_action": "Compare the source ordered tetragonal basin with a same-composition disordered/bcc competitor at matched method and a controlled ordering or distortion path. Retained positive pairing response and local stability support the source-phase screen; barrierless conversion or erased response oppose it.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": "sclib-batch12-local-acceptance/1",
+  "date": "2026-10-08",
+  "frontend": {
+    "source_tests_passed": 46,
+    "unit_tests_passed": 3179,
+    "unit_files_passed": 157,
+    "opt_in_tests_skipped": 3,
+    "production_build": "passed",
+    "latest_targeted_tests_passed": 33,
+    "latest_targeted_files_passed": 5,
+    "typescript": "passed"
+  },
+  "browser": {
+    "recorded_on": "2026-10-08T18:18:19.181433+08:00",
+    "browser_command": "pnpm exec playwright test tests/e2e/discovery-source-candidates.spec.ts --workers=1",
+    "browser_result": "5 passed (54.3s)",
+    "browser_runtime": "production Next build in owned copy; loopback3102; server exited after suite",
+    "browser_scope": [
+      "1440px desktop closed rows and lazy evidence",
+      "390px mobile closed rows and lazy evidence",
+      "320px horizontally scrolled source details",
+      "exact source-state phase captions",
+      "selected-control discordance and target switching"
+    ],
+    "browser_build_precedes_percent_label_copy_fix": true,
+    "post_copy_fix_component_result": "25 tests passed in3files",
+    "source_isolation_performance_result": "8tests passed",
+    "typescript_result": "passed",
+    "source_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+    "frozen_files_byte_identical_to_HEAD": 106,
+    "frozen_detail_pin_count": 103,
+    "screenshots": [
+      {
+        "file": "mobile-320-scrolled-Ti3Ge-evidence.png",
+        "sha256": "a9c9cca2961a935d29b3706498ecd66779954d6faa59439c558a7161ef6d84a5"
+      },
+      {
+        "file": "TiZr-source-phase-caption.png",
+        "sha256": "29f38acaf307ed767e734c252f64d826a725998013d0d0f7af6e43e323485073"
+      },
+      {
+        "file": "mobile-default.png",
+        "sha256": "e35acf9942d42d88aa3b30a732611bfadebb603f6d59803d6e7223f30757524d"
+      },
+      {
+        "file": "mobile-expanded-Ti3Ge.png",
+        "sha256": "44515340b9127c675a331a3953e2ae56d693213d801f2430e974fa7d788796f5"
+      },
+      {
+        "file": "desktop-default.png",
+        "sha256": "a3de6dd8f6389ccff37659991a0c41501d5fe4db04aff5c1d1d5da329d06ee7c"
+      },
+      {
+        "file": "expanded-Ti3Ge.png",
+        "sha256": "0cfd4b0f940588463bdc12d76b722fac19d9beec256b9ba4a05315c0942ab9fc"
+      }
+    ]
+  },
+  "offline_python": {
+    "compute_contract_passed": 20,
+    "benchmark_contract_passed": 2,
+    "materials_seed_latest_root_passed": 17,
+    "runtime_scope": "Compute local3.9.6 and deployed3.12.3; Materials tests3.12.14, CI/release target3.11 remains separate"
+  },
+  "source_recovery_final": {
+    "file_sha256": "c0edc63260ed88688bc62ed58d4f6a8dedcf95366a5c7965cfaa37ca6d47dc1b",
+    "counts": {
+      "approved_facts": 0,
+      "available_materials": 16,
+      "canonical_facts_changed": 0,
+      "checked_materials": 16,
+      "pending_candidate_facts": 34,
+      "source_observations": 55
+    }
+  },
+  "calculation_preparation": {
+    "study_packs": 3,
+    "states": 12,
+    "scf_decks": 36,
+    "bundle_files_independently_hash_verified": 237,
+    "solver_executed": false
+  },
+  "release_state": {
+    "compute_dummy_staging_deployed": true,
+    "website_production_deployed": false,
+    "m4_connected": false,
+    "native_qe_adapter_enabled": false,
+    "soak24h_completed": false
+  },
+  "limitations": [
+    "Full service-backed API regression is delegated to the existing exact-revision CI; only targeted offline API source contracts ran locally.",
+    "The existing Materials router retains its pre-existing B008 lint findings; the new seed loader and compute namespace pass their targeted lint.",
+    "Three skipped frontend cases are opt-in input-preparation harnesses; the new 36-deck real-UPF preparation ran separately and passed."
+  ]
+}

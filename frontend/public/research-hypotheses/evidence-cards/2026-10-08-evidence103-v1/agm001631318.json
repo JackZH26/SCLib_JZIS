@@ -1,0 +1,210 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm001631318",
+  "source_state": "agm001631318",
+  "formula": "HfTc2",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "d4d1d65d458b029ae94742823e4073ad227e2fe040c06701006371967df26c62",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "Previously published source model; new to reviewed exact-state mechanism catalogue, not first composition or SC discovery.",
+    "case_context": "Primary binary Tc study Table1 lists experimental HfTc2 as C14, while present source target is C15 SG227. Older calculated HfX2 paper confirms composition already investigated but exact source geometry is not transferred. Count only a reviewed distinct C15 hypothesis, never HfTc2 chemistry as new.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Target is not universally superior: ZrTc2 and several ternary children have larger source responses; Lu increases lambda but lowers Tc. Tc radioactivity limits practical follow-up, not this computation. Scalar NC treatment and C14 competitor are explicit. Zero SCF forces and positive sampled phonon evidence support a near-zero-pressure local source minimum, not bulk ground-state synthesis. Saved q2 all12 representations converge, all18 nonzero-q frequencies positive, and ten Ry Gaussian widths contain all18 lambda/gamma modes. No native exit inferred. C14 competition, SOC, radioactivity and metaphase retention remain bounded risks.",
+    "ambient_scope": "Source coarse force 0.0 eV/Å, pressure -0.002 GPa; fine force 0.0 eV/Å, pressure -0.22999999999999998 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "attention_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "technetium"
+    ],
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 2,
+        "control_reference": "batch-a/ScTc4Hf_agm001184600",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -0.10410000000000008,
+          -0.040000000000000036
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": 0.24399999999999977,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 3,
+        "control_reference": "batch-a/Tc2Lu_agm001631328",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -0.8879000000000001,
+          -0.7399
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": 1.5380000000000003,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 4,
+        "control_reference": "batch-a/YTc4Hf_agm001187527",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -1.9167,
+          -1.0817
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.8810000000000002,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 5,
+        "control_reference": "batch-a/ZrTc2_agm003203155",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.4991000000000001,
+          -0.2761
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -3.6080000000000005,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 6,
+        "control_reference": "batch-a/ZrTc4Hf_agm001177851",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.21960000000000002,
+          -0.12209999999999988
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.9920000000000009,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Re-to-Tc replacement in the C15 HfX2 network. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "target_state": "agm001631318",
+    "selected_control": "agm001631258",
+    "next_action": "Compare the existing C15 branch with published C14 phase and source-controlled Re→Tc EPC. Favorable: C15 retains local stability and pairing advantage as a viable metastable branch; adverse: exact-known C15 alias or phase competition removes distinct useful state; ambiguous: phase-level literature cannot settle exact association.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": [
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 2,
+        "control_reference": "batch-a/ScTc4Hf_agm001184600",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -0.10410000000000008,
+          -0.040000000000000036
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": 0.24399999999999977,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 3,
+        "control_reference": "batch-a/Tc2Lu_agm001631328",
+        "direction": "discordant",
+        "lambda_target_minus_control_range": [
+          -0.8879000000000001,
+          -0.7399
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": 1.5380000000000003,
+        "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 4,
+        "control_reference": "batch-a/YTc4Hf_agm001187527",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -1.9167,
+          -1.0817
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.8810000000000002,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 5,
+        "control_reference": "batch-a/ZrTc2_agm003203155",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.4991000000000001,
+          -0.2761
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -3.6080000000000005,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      },
+      {
+        "comparison_origin": "frozen_countercontrol",
+        "countercontrol_index": 6,
+        "control_reference": "batch-a/ZrTc4Hf_agm001177851",
+        "direction": "joint_adverse",
+        "lambda_target_minus_control_range": [
+          -0.21960000000000002,
+          -0.12209999999999988
+        ],
+        "lambda_unit": "dimensionless",
+        "source_tc_target_minus_control_K": -1.9920000000000009,
+        "scope": "This frozen alternative has both higher coupling and higher source-model Tc than the target; the selected-control advantage does not extend to every alternative.",
+        "causal_geometry_effect": null
+      }
+    ]
+  }
+}

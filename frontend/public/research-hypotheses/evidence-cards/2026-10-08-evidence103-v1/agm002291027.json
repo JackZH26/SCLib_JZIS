@@ -1,0 +1,66 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm002291027",
+  "source_state": "agm002291027",
+  "formula": "YNbN2",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "afc877821e0c880020adb8f89cd6c450abb42768986e1c3ec49f284b67f78953",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to this reviewed candidate catalogue and mechanism contrast; MC2023 prediction is prior, not first discovery.",
+    "case_context": "2019 primary work explicitly treats hypothetical distorted YNbN2, so the composition is not newly predicted here. The dated YNbN2/YTaN2 search found no exact experimental superconducting R-3m YNbN2 benchmark. The proposed novel object is the matched Nb-for-Ta source-state hypothesis at stated scalar finite-grid approximation.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "A concrete competing structure exists: Pilemalm et al. predict a distorted YNbN2 relative to the binaries, while their YTaN2 is unfavorable. Those different relaxed metrics/DFT methods are not the exact R-3m source state and are not imported as its hull energy. The source state is locally stable at Gamma and sampled path, so the prior supplies a falsifiable distortion/decomposition risk rather than automatic rejection. Nitrogen defects/order and suppressed magnetism remain possible; a reported ScMN2 semiconductor result is not assumed to be the exact YNbN2 metallic EPC phase.",
+    "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0.023729741 eV/A, P=-0.003 GPa, full max stress=0.103 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+    "attention_tags": [
+      "metastable_phase"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Nb replaces Ta on the unique transition-metal layer, retaining the Y and two N roles. The actual volume rises 0.6563% and nearest Y-N, Nb-N and N-N responses are retained. The favorable lambda sign persists across all ten sigma values, with a favorable separate Eli mu=.1 comparison retained below. This is a coupled layer-chemistry/construction response, not a valence-to-mobile-n inference.",
+    "target_state": "agm002291027",
+    "selected_control": "agm002291033",
+    "next_action": "Compare the actual R-3m source to the published distorted YNbN2 ordering with identical composition/functional and test the lowest distortion channel; preserve the Nb/Ta matched pairing contrast. A stable local R-3m basin with persistent coupling gain supports screening; a barrierless symmetry-breaking distortion or vanished metallic pairing response opposes it.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}

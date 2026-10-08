@@ -1,0 +1,69 @@
+{
+  "schema_version": "discovery-evidence-card/1.0.0",
+  "version": "2026-10-08-evidence103-v1",
+  "id": "source-hypothesis:agm003159857",
+  "source_state": "agm003159857",
+  "formula": "MoTcW",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "source_detail_sha256": "45f2b10b73c600f54163e0dd68e7b086e8a8a40fcab5cef03ac39d09a2b31913",
+  "evidence_level": "E1",
+  "evidence_basis": "Published source theory. Source auditing and comparisons are not independent recalculation or experimental validation.",
+  "prior": {
+    "category": "published_theoretical_proposal",
+    "exact_experimental_status": "unresolved",
+    "search_completeness": "unknown",
+    "summary": "New to the reviewed candidate mechanism catalogue, source prediction already published; not first discovery.",
+    "case_context": "Exact MoTcW query found no primary exact experimental superconducting phase. Closest Tc binary primary literature finds sigma/phase-separated Mo-Tc and W-Tc competitors; neither establishes decomposition of this exact ternary phase nor removes its local source minimum. Source proposed geometry is already published.",
+    "sources": [
+      {
+        "title": "Sampling the materials space for conventional superconducting compounds",
+        "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+        "doi": "10.24435/materialscloud:qv-bq"
+      },
+      {
+        "title": "Primary source study: conventional superconducting compounds",
+        "url": "https://arxiv.org/html/2307.10728v1"
+      }
+    ],
+    "claim_boundary": "Every listed state already has a published source prediction. Related compositions or phases are not experimental confirmation of this exact state. This dossier does not establish global novelty or an exhaustive literature search."
+  },
+  "bottleneck": {
+    "summary": "Large all-token paired gain is supported, but fine-grid stress reaches 0.364 GPa and residual force 0.02598 eV/A on coarse-relaxed coordinates. Source pressure-zero relaxation and local phonon minimum justify only a finite coarse-grid metastable hypothesis. Tc/W/Re chemistry and SOC/mass are coupled; no pure high-W or carrier causal statement.",
+    "ambient_scope": "Source coarse force 0.00016352217457471632 eV/Å, pressure -0.0 GPa; fine force 0.025977914268365074 eV/Å, pressure -0.34700000000000003 GPa. Actual full stress, Γ interval, finite path and q observations are retained in the complete review; no whole-BZ/global-stability claim.",
+    "attention_tags": [
+      "metastable_phase",
+      "residual_force_stress",
+      "sampling_method",
+      "technetium"
+    ],
+    "counterevidence": [],
+    "unknowns": [
+      "Independent reproduction",
+      "Global phase competition",
+      "Coherence under the intended conditions",
+      "Experimental superconductivity in this exact state",
+      "Direct support for approximately 300 K at ambient pressure"
+    ]
+  },
+  "proposed_contribution": {
+    "status": "proposed_not_completed",
+    "intervention": "Re-to-Tc construction on the Mo-W trigonal role network. coupled chemical/site-role/volume/mass construction, not isolated geometry or inferred W/n",
+    "target_state": "agm003159857",
+    "selected_control": "agm003160457",
+    "next_action": "Inspect existing exact target/control mode/orbital evidence and stress/phase competition. Favorable: local near-zero-pressure role construction retains pairing advantage under matched refinement; adverse: cell strain or competing phase removes favorable branch; ambiguous: conditional internal-force scale cannot answer strain stability.",
+    "falsifier": "Reproduce the stated target and control with matched pseudopotential family, functional, cutoff, sampling and relevant spin/SOC treatment. Loss or reversal of the claimed response, instability of the target, or an unresolved competing phase changes the decision; ambiguous outcomes remain unresolved.",
+    "new_state_inheritance": "A child structure or modification needs its own calculation and identity. It does not inherit source Tc or experimental status."
+  },
+  "support_observations": {
+    "source_pairing_quantified": true,
+    "geometry_causality_quantified": false,
+    "bandwidth_quantified": false,
+    "carrier_density_quantified": false,
+    "stability_for_target_quantified": false,
+    "coherence_quantified": false,
+    "competition_quantified": false,
+    "ambient_300K_direct_support": null,
+    "evidence_level": "E1",
+    "counterevidence": []
+  }
+}
