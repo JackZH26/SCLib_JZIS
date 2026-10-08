@@ -15,7 +15,7 @@ import re
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 
-from sclib_compute.pbesol_profile import validate_input_binding, BUNDLE_SHA256
+from sclib_compute.pbesol_profile import BUNDLE_SHA256, validate_input_binding
 
 QES_NS = "http://www.quantum-espresso.org/ns/qes/qes-1.0"
 FLOAT = r"[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eEdD][+-]?\d+)?"
@@ -342,14 +342,14 @@ STOP_OR_FATAL = re.compile(
     r"|signal(?:\s+[0-9]+)?\s+(?:received|caught|trapped)|(?:caught|received|trapped|terminated by)\s+signal"
     r"|\bSIG(?:TERM|INT|KILL|SEGV|ABRT)\b|stop(?:ping|ped)?\s+(?:requested|by\s+user)"
     r"|user\s+requested\s+stop",
-    re.I,
+    re.IGNORECASE,
 )
 ELECTRONIC_EXECUTION = re.compile(
     r"iteration\s*#|convergence\s+(?:NOT\s+achieved|has\s+(?:NOT\s+)?been\s+achieved)"
     r"|\btotal\s+energy\b|\bestimated\s+scf\s+accuracy\b"
     r"|\bFermi\s+energy\b|\btotal\s+force\b|\btotal\s+stress\b"
     r"|\bSelf-consistent\s+Calculation\b",
-    re.I,
+    re.IGNORECASE,
 )
 FORBIDDEN_INIT_OUTPUT = {
     "total_energy",
@@ -381,7 +381,7 @@ def _bounded_bytes(raw, maximum, code, *, allow_empty=False):
 
 
 def _xml(raw):
-    require(not re.search(rb"<!\s*(DOCTYPE|ENTITY)", raw, re.I), "XML_UNSAFE", "declarations forbidden")
+    require(not re.search(rb"<!\s*(DOCTYPE|ENTITY)", raw, re.IGNORECASE), "XML_UNSAFE", "declarations forbidden")
     try:
         root = ET.fromstring(raw.decode("utf-8"))
     except (ET.ParseError, UnicodeError) as error:
@@ -447,7 +447,7 @@ def _stdout(context, stdout_raw, stderr_raw):
     except UnicodeError as error:
         raise Rejected("STDOUT_ENCODING", "UTF-8 stdout/stderr required") from error
     require("\x00" not in stdout and "\x00" not in stderr, "STDOUT_ENCODING", "NUL output is unsupported")
-    banners = [line for line in stdout.splitlines() if re.search(r"\bProgram\s+PWSCF\b", line, re.I)]
+    banners = [line for line in stdout.splitlines() if re.search(r"\bProgram\s+PWSCF\b", line, re.IGNORECASE)]
     done = [line for line in stdout.splitlines() if "JOB DONE." in line]
     require(
         len(banners) == len(done) == 1
@@ -459,7 +459,7 @@ def _stdout(context, stdout_raw, stderr_raw):
     combined = stdout + "\n" + stderr
     require(not STOP_OR_FATAL.search(combined), "EXECUTION_CONTRADICTION", "fatal or interrupted execution marker")
     require(not ELECTRONIC_EXECUTION.search(combined), "INITIALIZATION_CONFLICT", "electronic execution marker")
-    stop_rows = [line for line in combined.splitlines() if re.match(r"^[ \t]*STOP\b", line, re.I)]
+    stop_rows = [line for line in combined.splitlines() if re.match(r"^[ \t]*STOP\b", line, re.IGNORECASE)]
     require(
         len(stop_rows) <= 1 and all(re.fullmatch(r"[ \t]*STOP[ \t]+(?:0|255)[ \t]*", line) for line in stop_rows),
         "EXECUTION_CONTRADICTION",

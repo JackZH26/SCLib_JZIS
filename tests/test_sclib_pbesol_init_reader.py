@@ -4,27 +4,27 @@ Neither path executes QE, creates JobSpecs or establishes result custody.
 """
 
 import copy
-import os
-import sys
-
-import pytest
 import json
-from pathlib import Path
+import os
 import socket
 import subprocess
+import sys
 import unittest
-from unittest.mock import patch
 import xml.etree.ElementTree as ET
+from pathlib import Path
+from unittest.mock import patch
+
+import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts/tests"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts/sclib_compute"))
 
+import pbesol_init_reader as reader
 import test_sclib_pbesol_profile as binding_tests
 from pbesol_init_fixtures import initialization_outputs
 from sclib_compute import pbesol_profile as profile
 from sclib_compute.contracts import canonical
-import pbesol_init_reader as reader
 
 synthetic = binding_tests.synthetic
 
@@ -49,7 +49,7 @@ class InitializationReadingTests(unittest.TestCase):
 
     def read(self, sid="agm001228974", **changes):
         context = self.contexts[sid]
-        values = dict(xml=context["xml"], stdout=context["stdout"], stderr=b"", process_exit_code=0)
+        values = {"xml": context["xml"], "stdout": context["stdout"], "stderr": b"", "process_exit_code": 0}
         values.update(changes)
         return reader.read_initialization(context["binding"], context["files"], **values)
 
