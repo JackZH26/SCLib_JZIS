@@ -26,7 +26,27 @@ FAILURE_STAGES = frozenset({
     "inputs", "provenance", "docker_context", "build", "image_validation",
     "capture", "cleanup", "comparison", "artifacts",
 })
-MAX_DIAGNOSTIC_STDERR = 16_384
+MAX_DIAGNOSTIC_STREAM = 16_384
+# Observations only: these fixed failure phrases do not identify a registry or
+# establish a root cause. Never include arbitrary matched text in the report.
+BUILD_SIGNALS = {
+    "source_metadata_resolution_failed": ("failed to resolve source metadata", "failed to load metadata"),
+    "http_429": ("429 too many requests", "status code: 429", "status code 429"),
+    "registry_pull_quota": ("toomanyrequests", "pull rate limit"),
+    "manifest_missing": ("manifest unknown", "no matching manifest", "manifest not found"),
+    "registry_auth_denied": ("pull access denied", "unauthorized: authentication required", "no basic auth credentials"),
+    "dns_resolution_failed": ("temporary failure in name resolution", "no such host", "could not resolve host", "name or service not known"),
+    "tls_verification_failed": ("certificate verify failed", "x509: certificate"),
+    "transport_timeout": ("i/o timeout", "connection timed out", "context deadline exceeded", "tls handshake timeout"),
+    "disk_full": ("no space left on device",),
+    "dependency_resolution_failed": ("no solution found when resolving dependencies", "resolutionimpossible", "no matching distribution found", "could not find a version that satisfies the requirement"),
+    "dependency_fetch_failed": ("failed to download", "could not fetch url"),
+    "apt_failed": ("e: failed to fetch", "e: unable to fetch some archives", "e: unable to locate package", "dpkg: error"),
+    "home_unset": ("$home is not defined", "home is not set", "home environment variable is not set"),
+    "buildx_missing": ("buildx component is missing or broken", "buildx is not a docker command", "docker: 'buildx' is not a docker command"),
+    "docker_daemon_unavailable": ("cannot connect to the docker daemon", "is the docker daemon running"),
+    "unsupported_flag": ("unknown flag:", "unknown shorthand flag:"),
+}
 
 
 @contextmanager
@@ -43,28 +63,51 @@ def failure_stage(stage: str):
         raise
 
 
+def diagnostic_suffix(value) -> str:
+    """Bound each stream before decoding/case-folding; never render it."""
+    if type(value) is bytes:
+        return value[-MAX_DIAGNOSTIC_STREAM:].decode("ascii", errors="ignore").lower()
+    if type(value) is str:
+        return value[-MAX_DIAGNOSTIC_STREAM:].lower()
+    return ""
+
+
 def failure_report(project: str, error: Exception) -> dict:
     stage = getattr(error, "_runtime_parity_stage", None)
     if type(stage) is not str or stage not in FAILURE_STAGES:
         stage = "unknown"
     cause = "unknown"
-    if stage == "build" and isinstance(error, subprocess.CalledProcessError):
-        stderr = error.stderr
-        # Inspect only a bounded suffix, never serialize any original bytes.
-        if type(stderr) is bytes:
-            stderr = stderr[-MAX_DIAGNOSTIC_STDERR:].decode("ascii", errors="ignore")
-        elif type(stderr) is str:
-            stderr = stderr[-MAX_DIAGNOSTIC_STDERR:]
-        else:
-            stderr = ""
-        if any(marker in stderr.lower() for marker in (
-            "toomanyrequests", "pull rate limit",
-        )):
+    exit_code = None
+    signals = []
+    if isinstance(error, subprocess.CalledProcessError):
+        error_kind = "called_process_error"
+        if type(error.returncode) is int and -(2**31) <= error.returncode < 2**31:
+            exit_code = error.returncode
+    elif isinstance(error, subprocess.TimeoutExpired):
+        error_kind = "timeout"
+    elif isinstance(error, (ValueError, KeyError, TypeError)):
+        error_kind = "validation"
+    elif isinstance(error, OSError):
+        error_kind = "io"
+    else:
+        error_kind = "unknown"
+    if stage == "build" and isinstance(error, (subprocess.CalledProcessError, subprocess.TimeoutExpired)):
+        stdout, stderr = diagnostic_suffix(error.stdout), diagnostic_suffix(error.stderr)
+        # Preserve v1 cause semantics; stdout observations are additional
+        # evidence rather than a newly inferred cause.
+        if isinstance(error, subprocess.CalledProcessError) and any(
+            marker in stderr for marker in BUILD_SIGNALS["registry_pull_quota"]
+        ):
             cause = "registry_pull_rate_limit"
+        signals = sorted(
+            signal for signal, markers in BUILD_SIGNALS.items()
+            if any(marker in stream for marker in markers for stream in (stdout, stderr))
+        )
     return {
-        "schema": "sclib-runtime-parity-failure/v1", "matches": False,
+        "schema": "sclib-runtime-parity-failure/v2", "matches": False,
         "project": project if type(project) is str and project in {"api", "ingestion"} else "unknown",
-        "stage": stage, "cause": cause,
+        "stage": stage, "cause": cause, "error_kind": error_kind,
+        "subprocess_exit_code": exit_code, "observed_build_signals": signals,
     }
 
 

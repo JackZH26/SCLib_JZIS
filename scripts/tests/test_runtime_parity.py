@@ -193,7 +193,9 @@ class RuntimeParityTests(unittest.TestCase):
         text = stdout.getvalue()
         self.assertNotIn("PRIVATE", text)
         report = json.loads(text)
-        self.assertEqual(set(report), {"schema", "matches", "project", "stage", "cause"})
+        self.assertEqual(set(report), {"schema", "matches", "project", "stage", "cause",
+                                      "error_kind", "subprocess_exit_code", "observed_build_signals"})
+        self.assertEqual(report["schema"], "sclib-runtime-parity-failure/v2")
         self.assertFalse(report["matches"])
         self.assertEqual(json.loads((output / "failure-report.json").read_text()), report)
         self.assertNotIn("PRIVATE", (output / "failure-report.json").read_text())
@@ -263,7 +265,7 @@ class RuntimeParityTests(unittest.TestCase):
         self.assertEqual((report["stage"], report["cause"]), ("comparison", "unknown"))
 
     def test_classification_is_bounded_and_does_not_infer_from_other_streams(self):
-        bound = parity.MAX_DIAGNOSTIC_STDERR
+        bound = parity.MAX_DIAGNOSTIC_STREAM
         cases = [
             ("toomanyrequests PRIVATE", "registry_pull_rate_limit"),
             (b"PRIVATE You have reached your unauthenticated pull rate limit", "registry_pull_rate_limit"),
@@ -307,6 +309,89 @@ class RuntimeParityTests(unittest.TestCase):
             report = parity.check("api", self.tests_path, self.root / "artifacts")
             self.assertEqual(report["matches"], expected)
             self.assertFalse((self.root / "artifacts/failure-report.json").exists())
+
+    def test_build_stdout_and_stderr_observations_are_fixed_ids_without_private_text(self):
+        error = subprocess.CalledProcessError(
+            17, ["PRIVATE_CMD", "PRIVATE_ENV"],
+            output="PRIVATE_DSN $HOME is not defined\nCannot connect to the Docker daemon PRIVATE_HOST\n",
+            stderr=b"PRIVATE_TOKEN failed to resolve source metadata\n429 Too Many Requests PRIVATE_URL",
+        )
+        error._runtime_parity_stage = "build"
+        report = parity.failure_report("api", error)
+        self.assertEqual(report["error_kind"], "called_process_error")
+        self.assertEqual(report["subprocess_exit_code"], 17)
+        self.assertEqual(report["cause"], "unknown")
+        self.assertEqual(report["observed_build_signals"], [
+            "docker_daemon_unavailable", "home_unset", "http_429", "source_metadata_resolution_failed",
+        ])
+        self.assertNotIn("PRIVATE", json.dumps(report))
+        def build_failure(command, **kwargs):
+            if command[3:4] == ["build"]:
+                raise error
+            return self.fake_run(command, **kwargs)
+        with patch.object(parity, "run", side_effect=build_failure):
+            self.assertEqual(self.cli_failure(), report)
+
+    def test_signal_markers_are_bounded_per_stream_and_never_read_command_or_exception_text(self):
+        bound = parity.MAX_DIAGNOSTIC_STREAM
+        error = subprocess.CalledProcessError(
+            1, ["no space left on device", "PRIVATE_COMMAND"],
+            output="$HOME is not defined" + "x" * bound,
+            stderr=b"toomanyrequests" + b"x" * bound,
+        )
+        error._runtime_parity_stage = "build"
+        report = parity.failure_report("api", error)
+        self.assertEqual(report["observed_build_signals"], [])
+        self.assertEqual(report["cause"], "unknown")
+        error.output, error.stderr = "toomany", "requests"
+        self.assertEqual(parity.failure_report("api", error)["observed_build_signals"], [])
+        error.output, error.stderr = "toomanyrequests PRIVATE", "unrelated PRIVATE"
+        report = parity.failure_report("api", error)
+        self.assertEqual(report["observed_build_signals"], ["registry_pull_quota"])
+        self.assertEqual(report["cause"], "unknown")
+        error._runtime_parity_stage = "capture"
+        self.assertEqual(parity.failure_report("api", error)["observed_build_signals"], [])
+
+    def test_concrete_build_signals_do_not_infer_from_command_names(self):
+        cases = [
+            ("manifest unknown", ["manifest_missing"]),
+            ("pull access denied", ["registry_auth_denied"]),
+            ("Temporary failure in name resolution", ["dns_resolution_failed"]),
+            ("certificate verify failed", ["tls_verification_failed"]),
+            ("i/o timeout", ["transport_timeout"]),
+            ("No space left on device", ["disk_full"]),
+            ("No solution found when resolving dependencies", ["dependency_resolution_failed"]),
+            ("Failed to download package", ["dependency_fetch_failed"]),
+            ("E: Unable to locate package", ["apt_failed"]),
+            ("buildx component is missing or broken", ["buildx_missing"]),
+            ("unknown flag: --PRIVATE", ["unsupported_flag"]),
+            ("apt-get uv pip buildx Dockerfile PRIVATE", []),
+        ]
+        for text, signals in cases:
+            with self.subTest(signals=signals):
+                error = subprocess.CalledProcessError(1, ["PRIVATE"], output=text + " PRIVATE", stderr="")
+                error._runtime_parity_stage = "build"
+                report = parity.failure_report("api", error)
+                self.assertEqual(report["observed_build_signals"], signals)
+                self.assertEqual(report["cause"], "unknown")
+                self.assertNotIn("PRIVATE", json.dumps(report))
+
+    def test_error_kinds_and_exit_codes_are_allowlisted_even_for_malformed_exceptions(self):
+        for code in (True, "PRIVATE", None, 2**80):
+            error = subprocess.CalledProcessError(code, "PRIVATE")
+            self.assertIsNone(parity.failure_report("api", error)["subprocess_exit_code"])
+        for error, kind in (
+            (subprocess.TimeoutExpired("PRIVATE", 1, output=b"i/o timeout PRIVATE"), "timeout"),
+            (ValueError("PRIVATE"), "validation"),
+            (OSError("PRIVATE"), "io"),
+            (RuntimeError("PRIVATE"), "unknown"),
+        ):
+            error._runtime_parity_stage = "build"
+            report = parity.failure_report("api", error)
+            self.assertEqual(report["error_kind"], kind)
+            self.assertIsNone(report["subprocess_exit_code"])
+            self.assertEqual(report["cause"], "unknown")
+            self.assertNotIn("PRIVATE", json.dumps(report))
 
 
 if __name__ == "__main__":
