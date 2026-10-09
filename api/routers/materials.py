@@ -14,7 +14,6 @@ import json
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from functools import wraps
-from time import perf_counter
 from typing import Annotated, Literal
 from weakref import WeakValueDictionary
 
@@ -50,6 +49,11 @@ from services.material_formula_text import (
     formula_text_contains,
     formula_text_pattern,
 )
+from services.material_list_timing import (
+    material_list_path,
+    material_list_request,
+    material_list_stage,
+)
 from services.material_property_projection import project_material_semantics
 from services.material_scoped_properties import scoped_property_evidence
 from services.material_source_scope import current_visibility_allows_view as visibility_allows_view
@@ -65,7 +69,6 @@ from services.material_visibility_adapter import (
     material_view,
     prepare_material_views,
 )
-from services.metrics import MATERIAL_LIST_STAGE_DURATION
 from services.pressure_semantics import classify_pressure
 from services.property_evidence import build_property_evidence
 from services.scientific_filters import ResultFilters, matching_result_references
@@ -83,7 +86,8 @@ _material_build_locks = WeakValueDictionary()
 
 
 async def _material_page_revision(db):
-    return await catalogue_revision(db, year=datetime.now(UTC).year)
+    with material_list_stage("revision"):
+        return await catalogue_revision(db, year=datetime.now(UTC).year)
 
 
 def _material_cache_parameters(arguments):
@@ -119,8 +123,7 @@ def _material_response(body, cache_status):
 def _cache_material_pages(function):
     signature = inspect.signature(function)
 
-    @wraps(function)
-    async def cached(*args, **kwargs):
+    async def execute(*args, **kwargs):
         arguments = signature.bind(*args, **kwargs)
         arguments.apply_defaults()
         # Reject ambiguous raw input before a warm cache can replay the scalar
@@ -145,25 +148,41 @@ def _cache_material_pages(function):
             # material input to its scientific projection validators. Replaying
             # them cannot mutate the cache or reclassify an already scoped DTO.
             # Identity/quota middleware still runs on each request.
+            material_list_path("page_hit")
             return _material_response(body, "HIT")
         # Concurrent cold pages with the same filters share the first scan.
         # Weak references release locks when no builders/waiters retain them.
         lock_key = _material_cache_key(before, parameters, ranking=True)
         lock = _material_build_locks.setdefault(lock_key, asyncio.Lock())
-        async with lock:
+        with material_list_stage("lock_wait"):
+            await lock.acquire()
+        try:
             before = await _material_page_revision(db)
             if before is None:
                 return await function(*args, **kwargs)
             key = _material_cache_key(before, parameters)
             if (body := _material_pages.get(key)) is not None:
+                material_list_path("waited_hit")
                 return _material_response(body, "HIT")
             result = await function(*args, **kwargs)
             await _check_material_revision(db, before)
-            started = perf_counter()
-            body = result.model_dump_json().encode()
-            MATERIAL_LIST_STAGE_DURATION.labels("serialization").observe(perf_counter() - started)
+            with material_list_stage("serialization"):
+                body = result.model_dump_json().encode()
             _material_pages.put(key, body)
             return _material_response(body, "MISS")
+        finally:
+            lock.release()
+
+    @wraps(function)
+    async def cached(*args, **kwargs):
+        with material_list_request() as timing:
+            with material_list_stage("total"):
+                result = await execute(*args, **kwargs)
+            if isinstance(result, Response):
+                # The cache owns body bytes only: a HIT reports this request's
+                # revision lookup, not the original builder's expensive scan.
+                result.headers["Server-Timing"] = timing.header()
+            return result
 
     return cached
 
@@ -364,10 +383,10 @@ async def list_materials(
     revision = await _material_page_revision(db) if parameters is not None else None
     ranking_key = _material_cache_key(revision, parameters, ranking=True) if revision else None
     if ranking_key is not None and (ranking := _material_rankings.get(ranking_key)) is not None:
-        started = perf_counter()
-        result = await _page_from_material_ranking(db, json.loads(ranking), scientific_filters,
-                                                  offset=offset, limit=limit)
-        MATERIAL_LIST_STAGE_DURATION.labels("ranking_page").observe(perf_counter() - started)
+        material_list_path("ranking")
+        with material_list_stage("ranking_page"):
+            result = await _page_from_material_ranking(db, json.loads(ranking), scientific_filters,
+                                                      offset=offset, limit=limit)
         await _check_material_revision(db, revision)
         return result
     stmt = select(Material)
@@ -432,7 +451,9 @@ async def list_materials(
 
     # Count after the SAME live visibility/record policy used for returned rows.
     # SQL is only a necessary prefilter; stale aggregate holds cannot approve a row.
-    stream = await db.stream_scalars(stmt.execution_options(yield_per=128))
+    material_list_path("scan")
+    with material_list_stage("scan_fetch"):
+        stream = await db.stream_scalars(stmt.execution_options(yield_per=128))
     page_size = offset + limit
     candidates: list[_MaterialPageCandidate] = []
     ranking_items = [] if ranking_key is not None else None
@@ -442,62 +463,69 @@ async def list_materials(
     # still rejects any intervening source/Work/map/parent/material change.
     lifecycle_memo = LifecycleReadMemo(db) if revision is not None else None
     try:
-        async for batch in stream.partitions(128):
-            started = perf_counter()
-            views = await prepare_material_views(db, batch, lifecycle_memo=lifecycle_memo)
-            MATERIAL_LIST_STAGE_DURATION.labels("scope").observe(perf_counter() - started)
-            started = perf_counter()
-            for material in views:
-                if not visibility_allows_view(material.visibility, include_archive=include_pending):
-                    continue
-                source_count = (material.visibility["source_scope"]["eligible_source_count"]
-                                if material.source_scope is not None else material.total_papers)
-                if not include_skeletons and source_count <= 0:
-                    continue
-                if min_papers is not None and source_count < min_papers:
-                    continue
-                if classification_filters:
-                    semantics = project_material_semantics(material)
-                    if any(
-                        semantics["properties"][field]["status"] != "reported"
-                        or type(semantics["properties"][field]["value"]) is not type(expected)
-                        or semantics["properties"][field]["value"] != expected
-                        for field, expected in classification_filters.items()
-                    ):
+        partitions = stream.partitions(128).__aiter__()
+        while True:
+            # Async iteration waits for SQL/driver row delivery outside `scope`.
+            # Time each fetch separately so that this cost cannot disappear.
+            with material_list_stage("scan_fetch"):
+                try:
+                    batch = await anext(partitions)
+                except StopAsyncIteration:
+                    break
+            with material_list_stage("scope"):
+                views = await prepare_material_views(db, batch, lifecycle_memo=lifecycle_memo)
+            with material_list_stage("selection"):
+                for material in views:
+                    if not visibility_allows_view(material.visibility, include_archive=include_pending):
                         continue
-                matching = _matching_material_results(material, scientific_filters)
-                if scientific_filters.active and not matching:
-                    continue
-                candidate = _MaterialPageCandidate(material, _current_sort_value(material, sort), matching)
-                if ranking_items is not None:
-                    ranking_bytes += len(json.dumps(material.id).encode()) + 1
-                    if len(ranking_items) >= _MAX_RANKED_MATERIALS or ranking_bytes > _MAX_RANKING_BYTES:
-                        ranking_items = None  # Oversized scans retain the bounded page-heap path.
-                    else:
-                        ranking_items.append((material.id, candidate.sort_value))
-                if len(candidates) < page_size or candidates[0] < candidate:
-                    if len(candidates) < page_size:
-                        heapq.heappush(candidates, candidate)
-                    else:
-                        heapq.heapreplace(candidates, candidate)
-                total += 1
-            MATERIAL_LIST_STAGE_DURATION.labels("selection").observe(perf_counter() - started)
+                    source_count = (material.visibility["source_scope"]["eligible_source_count"]
+                                    if material.source_scope is not None else material.total_papers)
+                    if not include_skeletons and source_count <= 0:
+                        continue
+                    if min_papers is not None and source_count < min_papers:
+                        continue
+                    if classification_filters:
+                        semantics = project_material_semantics(material)
+                        if any(
+                            semantics["properties"][field]["status"] != "reported"
+                            or type(semantics["properties"][field]["value"]) is not type(expected)
+                            or semantics["properties"][field]["value"] != expected
+                            for field, expected in classification_filters.items()
+                        ):
+                            continue
+                    matching = _matching_material_results(material, scientific_filters)
+                    if scientific_filters.active and not matching:
+                        continue
+                    candidate = _MaterialPageCandidate(material, _current_sort_value(material, sort), matching)
+                    if ranking_items is not None:
+                        ranking_bytes += len(json.dumps(material.id).encode()) + 1
+                        if len(ranking_items) >= _MAX_RANKED_MATERIALS or ranking_bytes > _MAX_RANKING_BYTES:
+                            ranking_items = None  # Oversized scans retain the bounded page-heap path.
+                        else:
+                            ranking_items.append((material.id, candidate.sort_value))
+                    if len(candidates) < page_size or candidates[0] < candidate:
+                        if len(candidates) < page_size:
+                            heapq.heappush(candidates, candidate)
+                        else:
+                            heapq.heapreplace(candidates, candidate)
+                    total += 1
     finally:
-        if lifecycle_memo is not None:
-            lifecycle_memo.close()
-        await stream.close()
-    started = perf_counter()
-    selected = []
-    for item in sorted(candidates, reverse=True)[offset:offset + limit]:
-        summary = MaterialSummary.model_validate(item.material)
-        summary.matching_results = _public_matching_results(item.material, item.matching)
-        selected.append(summary)
-    result = MaterialListResponse(total=total, results=selected, limit=limit, offset=offset)
-    MATERIAL_LIST_STAGE_DURATION.labels("projection").observe(perf_counter() - started)
+        with material_list_stage("scan_close"):
+            if lifecycle_memo is not None:
+                lifecycle_memo.close()
+            await stream.close()
+    with material_list_stage("projection"):
+        selected = []
+        for item in sorted(candidates, reverse=True)[offset:offset + limit]:
+            summary = MaterialSummary.model_validate(item.material)
+            summary.matching_results = _public_matching_results(item.material, item.matching)
+            selected.append(summary)
+        result = MaterialListResponse(total=total, results=selected, limit=limit, offset=offset)
     await _check_material_revision(db, revision)
     if ranking_items is not None:
-        ranking_items.sort(key=lambda item: (item[1] is None, -item[1] if item[1] is not None else 0, item[0]))
-        _material_rankings.put(ranking_key, json.dumps([item[0] for item in ranking_items], separators=(",", ":")).encode())
+        with material_list_stage("ranking_publish"):
+            ranking_items.sort(key=lambda item: (item[1] is None, -item[1] if item[1] is not None else 0, item[0]))
+            _material_rankings.put(ranking_key, json.dumps([item[0] for item in ranking_items], separators=(",", ":")).encode())
     return result
 
 
