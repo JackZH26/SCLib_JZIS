@@ -1,0 +1,1398 @@
+{
+  "schema_version": "sclib-public-acceptance/1.0.0",
+  "started_at": "2026-10-09T07:08:11.147361+00:00",
+  "scientific_acceptance": false,
+  "ml_training_approved": false,
+  "requests": [
+    {
+      "url": "https://api.jzis.org/sclib/v1/version",
+      "started_at": "2026-10-09T07:08:11.147768+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "ebf10545d8e54b2582ab954c927fd0df",
+        "x-api-version": "1"
+      },
+      "bytes": 76,
+      "sha256": "5406ece54bf4dcbe17e7eba3f186a49ed968c1f63ae4d8a1661d5eb4feba086f",
+      "elapsed_seconds": 0.810314
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/stats",
+      "started_at": "2026-10-09T07:08:11.958180+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "c654bd2cbadd4a32901a0dc936547566",
+        "x-api-version": "1"
+      },
+      "bytes": 1826,
+      "sha256": "946c4fb3343ca57cecd1099d90443faa3472a6900be52c3573fe04d9d7a8f268",
+      "elapsed_seconds": 0.441797
+    },
+    {
+      "url": "https://jzis.org/",
+      "started_at": "2026-10-09T07:08:12.400188+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 38826,
+      "sha256": "c9f2ab7b9b0f75608f365a29d4e33319c333c5862e6fe74cf994d527e5cdc834",
+      "elapsed_seconds": 1.024195
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/source-computed-candidates-2026-10-07.json",
+      "started_at": "2026-10-09T07:08:13.427366+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 2273528,
+      "sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+      "elapsed_seconds": 1.294142
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/source-computed-candidates-2026-10-07.details.json",
+      "started_at": "2026-10-09T07:08:14.749409+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 25464,
+      "sha256": "ff226d5627e5a54451e5a62754b3b6bfabd9af33931a37ae6ccdb2fb030c2e43",
+      "elapsed_seconds": 0.515574
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/2026-10-08-evidence103-v1.json",
+      "started_at": "2026-10-09T07:08:15.266602+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 163645,
+      "sha256": "34b064e217455ac5d4c454f6ad867a856aede7d34b5e6067bb95730143b9d43e",
+      "elapsed_seconds": 0.703242
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003195936.json",
+      "started_at": "2026-10-09T07:08:15.977316+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 10460,
+      "sha256": "419c6c7521875277e40c1c32442ef4c7843756febe3ff91e3b4013345d9db286",
+      "elapsed_seconds": 0.395042
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003204399.json",
+      "started_at": "2026-10-09T07:08:15.977660+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 13016,
+      "sha256": "cb5588da2cd4fd9070405ab20721d01a1f8e94006471165627f6125bc5f86b8c",
+      "elapsed_seconds": 0.517208
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002664904.json",
+      "started_at": "2026-10-09T07:08:15.994086+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 27827,
+      "sha256": "9d4f63ad79e38df94026214a7b68bbebd6fd97f7ae1df977e979c054a0a3f61c",
+      "elapsed_seconds": 0.502651
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003195936.json",
+      "started_at": "2026-10-09T07:08:15.994513+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4264,
+      "sha256": "db0362e2408e07c8da0891ef673b2afe2771d3907bbdf78ecb976632515be752",
+      "elapsed_seconds": 0.368812
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003204399.json",
+      "started_at": "2026-10-09T07:08:16.363471+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4430,
+      "sha256": "1fb94a76dd42eba8e84e9ac51374b4edca1da7c08b06b7347a2104bed668ef5b",
+      "elapsed_seconds": 0.390162
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002664904.json",
+      "started_at": "2026-10-09T07:08:16.372475+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5239,
+      "sha256": "505aed930ded41b2e80423dbee946ad242e86cd9958eb3557eaa3b8378191e96",
+      "elapsed_seconds": 0.380253
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Alayh6/enrichment",
+      "started_at": "2026-10-09T07:08:16.757503+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "1acfc846c73746f69e5fccbadbca7e31",
+        "x-api-version": "1"
+      },
+      "bytes": 43814,
+      "sha256": "8ece4d119954cb072b2a987977ee7cdf95c586986fa31777f4e99ebf3780d668",
+      "elapsed_seconds": 0.628322
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Anb4c3o2/enrichment",
+      "started_at": "2026-10-09T07:08:17.386906+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "7eb81dd25d8840348b10e399f8f3e58f",
+        "x-api-version": "1"
+      },
+      "bytes": 39987,
+      "sha256": "f7e03b33a7f07e1c951e9874d179325ea528bedb9b6b13827794024c0d2002e4",
+      "elapsed_seconds": 0.761064
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Amgh26/enrichment",
+      "started_at": "2026-10-09T07:08:18.149126+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "89f42be898474979bf4f846d6c9fdaab",
+        "x-api-version": "1"
+      },
+      "bytes": 52028,
+      "sha256": "aeebf970966b045cf2d05576e1165194c4b23e68d62d2969665220cacf45a864",
+      "elapsed_seconds": 0.753882
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Acafe0.93co0.07ash/enrichment",
+      "started_at": "2026-10-09T07:08:18.904557+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "d8b5ce7ced024749be43faca107590e1",
+        "x-api-version": "1"
+      },
+      "bytes": 33882,
+      "sha256": "df2d5cc53deb2ea8f37df50132b64c82a1e25e34a30061bc8542f9e5c68fda0f",
+      "elapsed_seconds": 0.502271
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Acafe0.95ni0.05asf/enrichment",
+      "started_at": "2026-10-09T07:08:19.407575+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "8a40fbe6a82c436db25479a41956a070",
+        "x-api-version": "1"
+      },
+      "bytes": 33674,
+      "sha256": "2c0c56f44584030b1a44fe9ad2a05a7adf53cb08df9de146e443cf15dd6cdf02",
+      "elapsed_seconds": 0.596791
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Are6se8cl2/enrichment",
+      "started_at": "2026-10-09T07:08:20.005003+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "cc4cb10a5dac4e8f93ec8df8cad2cb67",
+        "x-api-version": "1"
+      },
+      "bytes": 43490,
+      "sha256": "416ae84ff89ccbbe23e8d320928d2ff9c0f48938b1024d2e9d1046d49ea76689",
+      "elapsed_seconds": 0.685691
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Aba3rh4ge16/enrichment",
+      "started_at": "2026-10-09T07:08:20.691732+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "e3b7816b70414e928e90e812a15a2f00",
+        "x-api-version": "1"
+      },
+      "bytes": 65031,
+      "sha256": "ad79a8f64e501511eb79605210d6da5103f5d833ae65f5776d9d8970e173f4ea",
+      "elapsed_seconds": 0.601309
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Acrb2/enrichment",
+      "started_at": "2026-10-09T07:08:21.294392+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "25be247904584fc480638933613ca6ad",
+        "x-api-version": "1"
+      },
+      "bytes": 77479,
+      "sha256": "ae036690b74b12fb0d1bf637194c79e03e88ebe40b77c82a8de44abe00a4ddc2",
+      "elapsed_seconds": 0.674008
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3A%28mo0.96ti0.04%290.8b2/enrichment",
+      "started_at": "2026-10-09T07:08:21.969061+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "8a32e177023148589795e726881febc8",
+        "x-api-version": "1"
+      },
+      "bytes": 48882,
+      "sha256": "c84f00409b620e294eee943604cc4fda91f4f50ebf4d786014b5dfc2156ca303",
+      "elapsed_seconds": 0.644108
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Anb2p5/enrichment",
+      "started_at": "2026-10-09T07:08:22.614512+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "ab2fea5910ba4ca08cf49d58860e9b3d",
+        "x-api-version": "1"
+      },
+      "bytes": 64536,
+      "sha256": "404bfae71c6ebd97fe359e3dfdf67a1b05a1c7e9e27ad2b8b5c4b8a4aaa975b7",
+      "elapsed_seconds": 0.621884
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Abe0.024al0.976/enrichment",
+      "started_at": "2026-10-09T07:08:23.238002+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "ffafe95e8a794cf99a8dba13e7daf1e8",
+        "x-api-version": "1"
+      },
+      "bytes": 37596,
+      "sha256": "102dbb3cfc8cf9120b8b3b85df76754f090bcf9ac9df93137be4e51c2d2f3365",
+      "elapsed_seconds": 0.653479
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Anb4cu0.2sisb2/enrichment",
+      "started_at": "2026-10-09T07:08:23.891861+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "9bbc572b04a541e9997931bb8620b17c",
+        "x-api-version": "1"
+      },
+      "bytes": 44260,
+      "sha256": "87d6b972e3f50f91756d02822a819c24b19c7150585eba5a490ed817909a05f7",
+      "elapsed_seconds": 0.790977
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Anbsctizr/enrichment",
+      "started_at": "2026-10-09T07:08:24.683586+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "241de210b5cc40448dd1bb5a59efe954",
+        "x-api-version": "1"
+      },
+      "bytes": 128251,
+      "sha256": "c374a5a0ad0d6a4262d74009094db23150bfe476d1b00d01a14ff3997c197ebf",
+      "elapsed_seconds": 1.638874
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Are7ta3/enrichment",
+      "started_at": "2026-10-09T07:08:26.327754+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "c653e4c941554f0f8098bf1c051e9a8d",
+        "x-api-version": "1"
+      },
+      "bytes": 54820,
+      "sha256": "af312d720f458c35efe4c9a72f530f2d4a79672c1ed4a67e5d77f822367ac67e",
+      "elapsed_seconds": 0.871278
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Ata2pdse5/enrichment",
+      "started_at": "2026-10-09T07:08:27.200005+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "21c3e54eceb84438b62f9d370b72e438",
+        "x-api-version": "1"
+      },
+      "bytes": 118195,
+      "sha256": "ac4d61d30af0ab5099fab815ebb69d9949a0afd0a26c08bc57b574aad235738a",
+      "elapsed_seconds": 1.045968
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Asmfe0.80co0.20aso/enrichment",
+      "started_at": "2026-10-09T07:08:28.247779+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "RECOVERY",
+        "x-request-id": "9f72a4e2faab40eab7fbb924936c98a6",
+        "x-api-version": "1"
+      },
+      "bytes": 46621,
+      "sha256": "29c2444fd6d14bab1037ca62fae49fbce73eae658deb036604323ee241dbf567",
+      "elapsed_seconds": 0.65054
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:28.898637+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "0449874df2f742d19183f451c5122e61",
+        "x-api-version": "1"
+      },
+      "bytes": 505619,
+      "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+      "elapsed_seconds": 0.847593,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:29.755892+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "a9fca0a724054d39b442f1bd9505c3b1",
+        "x-api-version": "1"
+      },
+      "bytes": 505619,
+      "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+      "elapsed_seconds": 0.84013,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:30.607066+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "c16adaefc72d4e208eccd330eca68905",
+        "x-api-version": "1"
+      },
+      "bytes": 505619,
+      "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+      "elapsed_seconds": 3.135342,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:33.752152+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "b19d3d88e4e144f5b9c13076bb445543",
+        "x-api-version": "1"
+      },
+      "bytes": 505619,
+      "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+      "elapsed_seconds": 0.872517,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:34.634492+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "25310a7564264f2a857726ec3e7cd43e",
+        "x-api-version": "1"
+      },
+      "bytes": 505619,
+      "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+      "elapsed_seconds": 0.881327,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:35.525601+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "b14098a060d04ac69d78c7f5ff51bf3e",
+        "x-api-version": "1"
+      },
+      "bytes": 336659,
+      "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+      "elapsed_seconds": 0.827816,
+      "total": 41,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:36.363199+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "f4b8127c7fa543f9af5e50b306566c74",
+        "x-api-version": "1"
+      },
+      "bytes": 336659,
+      "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+      "elapsed_seconds": 0.72483,
+      "total": 41,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:37.094484+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "3053633d0305408d98acdb2fb28870c2",
+        "x-api-version": "1"
+      },
+      "bytes": 336659,
+      "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+      "elapsed_seconds": 0.845779,
+      "total": 41,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:37.944303+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "cbd2d4f740334d00a0a34fa8c97966c8",
+        "x-api-version": "1"
+      },
+      "bytes": 336659,
+      "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+      "elapsed_seconds": 0.791177,
+      "total": 41,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:38.743041+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "758e9685350e4fd89fe91f62414efa49",
+        "x-api-version": "1"
+      },
+      "bytes": 336659,
+      "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+      "elapsed_seconds": 0.765928,
+      "total": 41,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "started_at": "2026-10-09T07:08:39.516500+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "0c1e4d75e7e442bba2ff148f8f7fab35",
+        "x-api-version": "1"
+      },
+      "bytes": 216930,
+      "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+      "elapsed_seconds": 0.79097,
+      "total": 4,
+      "rows": 4,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "started_at": "2026-10-09T07:08:40.312134+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "dc681ecfb4f74d779fec0cf0e98cb264",
+        "x-api-version": "1"
+      },
+      "bytes": 216930,
+      "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+      "elapsed_seconds": 0.78791,
+      "total": 4,
+      "rows": 4,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "started_at": "2026-10-09T07:08:41.103970+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "8c421324cf7b45c6b2ead85307eed55f",
+        "x-api-version": "1"
+      },
+      "bytes": 216930,
+      "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+      "elapsed_seconds": 0.775327,
+      "total": 4,
+      "rows": 4,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "started_at": "2026-10-09T07:08:41.883529+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "c3aadc12f45641dabab2ba594f42f703",
+        "x-api-version": "1"
+      },
+      "bytes": 216930,
+      "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+      "elapsed_seconds": 0.763768,
+      "total": 4,
+      "rows": 4,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "started_at": "2026-10-09T07:08:42.652045+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "ae366096882b48d8b3530b360f4f6771",
+        "x-api-version": "1"
+      },
+      "bytes": 216930,
+      "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+      "elapsed_seconds": 0.803137,
+      "total": 4,
+      "rows": 4,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:43.460822+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "ae69e9f567004d8c9a9093a7a4a6a2cf",
+        "x-api-version": "1"
+      },
+      "bytes": 2557859,
+      "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+      "elapsed_seconds": 1.238737,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:44.741091+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "d182970c3a414f8abc611b10ab20e4ef",
+        "x-api-version": "1"
+      },
+      "bytes": 2557859,
+      "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+      "elapsed_seconds": 1.26575,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:46.042952+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "febde2ff29eb42618157efc0c60a13f4",
+        "x-api-version": "1"
+      },
+      "bytes": 2557859,
+      "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+      "elapsed_seconds": 2.217627,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:48.299084+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "0d46a1635a5744eb8bfbef45727b3f36",
+        "x-api-version": "1"
+      },
+      "bytes": 2557859,
+      "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+      "elapsed_seconds": 1.531606,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+      "started_at": "2026-10-09T07:08:49.865486+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "b05e0586fc864cb1b65f72aab6a53aa8",
+        "x-api-version": "1"
+      },
+      "bytes": 2557859,
+      "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+      "elapsed_seconds": 1.480129,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/version",
+      "started_at": "2026-10-09T07:08:51.397367+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "0824eb4753544464b350218496f93242",
+        "x-api-version": "1"
+      },
+      "bytes": 76,
+      "sha256": "5406ece54bf4dcbe17e7eba3f186a49ed968c1f63ae4d8a1661d5eb4feba086f",
+      "elapsed_seconds": 0.370947
+    }
+  ],
+  "checks": [
+    {
+      "name": "coverage_counts_present",
+      "passed": true
+    },
+    {
+      "name": "paper_provider_sum",
+      "passed": true
+    },
+    {
+      "name": "frontend_api_version_matches",
+      "passed": true
+    },
+    {
+      "name": "source_catalogue_bytes_match_checkout_pin",
+      "passed": true
+    },
+    {
+      "name": "source_detail_manifest_bytes_match_checkout_pin",
+      "passed": true
+    },
+    {
+      "name": "evidence_index_bytes_match_checkout_pin",
+      "passed": true
+    },
+    {
+      "name": "discovery_counts_and_identity",
+      "passed": true
+    },
+    {
+      "name": "requested_detail_pins",
+      "passed": true
+    },
+    {
+      "name": "all_16_recovery_windows_match_checkout",
+      "passed": true
+    },
+    {
+      "name": "materials_request_default",
+      "passed": true
+    },
+    {
+      "name": "materials_request_formula",
+      "passed": true
+    },
+    {
+      "name": "materials_request_observed_cuprate",
+      "passed": true
+    },
+    {
+      "name": "materials_request_source_count",
+      "passed": true
+    },
+    {
+      "name": "version_stable_across_capture",
+      "passed": true
+    },
+    {
+      "name": "stats_dataset_matches_version",
+      "passed": true
+    },
+    {
+      "name": "all_http_requests_succeeded",
+      "passed": true
+    }
+  ],
+  "latency": {
+    "default": {
+      "request_path": "/materials?limit=25&offset=0",
+      "samples": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:28.898637+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "0449874df2f742d19183f451c5122e61",
+            "x-api-version": "1"
+          },
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 0.847593,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:29.755892+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "a9fca0a724054d39b442f1bd9505c3b1",
+            "x-api-version": "1"
+          },
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 0.84013,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:30.607066+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "c16adaefc72d4e208eccd330eca68905",
+            "x-api-version": "1"
+          },
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 3.135342,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:33.752152+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "b19d3d88e4e144f5b9c13076bb445543",
+            "x-api-version": "1"
+          },
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 0.872517,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:34.634492+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "25310a7564264f2a857726ec3e7cd43e",
+            "x-api-version": "1"
+          },
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 0.881327,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        }
+      ],
+      "attempts": 5,
+      "successful": 5,
+      "failures": 0,
+      "median_seconds": 0.872517,
+      "p95_seconds": 3.135342,
+      "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+      "first_request_seconds": 0.847593,
+      "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+      "reported_application_cache_states": {
+        "HIT": 5
+      },
+      "slo_acceptance": null
+    },
+    "formula": {
+      "request_path": "/materials?q=MgB2&limit=25&offset=0",
+      "samples": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:35.525601+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "b14098a060d04ac69d78c7f5ff51bf3e",
+            "x-api-version": "1"
+          },
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.827816,
+          "total": 41,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:36.363199+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "f4b8127c7fa543f9af5e50b306566c74",
+            "x-api-version": "1"
+          },
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.72483,
+          "total": 41,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:37.094484+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "3053633d0305408d98acdb2fb28870c2",
+            "x-api-version": "1"
+          },
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.845779,
+          "total": 41,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:37.944303+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "cbd2d4f740334d00a0a34fa8c97966c8",
+            "x-api-version": "1"
+          },
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.791177,
+          "total": 41,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:38.743041+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "758e9685350e4fd89fe91f62414efa49",
+            "x-api-version": "1"
+          },
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.765928,
+          "total": 41,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        }
+      ],
+      "attempts": 5,
+      "successful": 5,
+      "failures": 0,
+      "median_seconds": 0.791177,
+      "p95_seconds": 0.845779,
+      "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+      "first_request_seconds": 0.827816,
+      "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+      "reported_application_cache_states": {
+        "HIT": 5
+      },
+      "slo_acceptance": null
+    },
+    "observed_cuprate": {
+      "request_path": "/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "samples": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T07:08:39.516500+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "0c1e4d75e7e442bba2ff148f8f7fab35",
+            "x-api-version": "1"
+          },
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.79097,
+          "total": 4,
+          "rows": 4,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T07:08:40.312134+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "dc681ecfb4f74d779fec0cf0e98cb264",
+            "x-api-version": "1"
+          },
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.78791,
+          "total": 4,
+          "rows": 4,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T07:08:41.103970+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "8c421324cf7b45c6b2ead85307eed55f",
+            "x-api-version": "1"
+          },
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.775327,
+          "total": 4,
+          "rows": 4,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T07:08:41.883529+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "c3aadc12f45641dabab2ba594f42f703",
+            "x-api-version": "1"
+          },
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.763768,
+          "total": 4,
+          "rows": 4,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T07:08:42.652045+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "ae366096882b48d8b3530b360f4f6771",
+            "x-api-version": "1"
+          },
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.803137,
+          "total": 4,
+          "rows": 4,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        }
+      ],
+      "attempts": 5,
+      "successful": 5,
+      "failures": 0,
+      "median_seconds": 0.78791,
+      "p95_seconds": 0.803137,
+      "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+      "first_request_seconds": 0.79097,
+      "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+      "reported_application_cache_states": {
+        "HIT": 5
+      },
+      "slo_acceptance": null
+    },
+    "source_count": {
+      "request_path": "/materials?sort=total_papers&limit=25&offset=0",
+      "samples": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:43.460822+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "ae69e9f567004d8c9a9093a7a4a6a2cf",
+            "x-api-version": "1"
+          },
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 1.238737,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:44.741091+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "d182970c3a414f8abc611b10ab20e4ef",
+            "x-api-version": "1"
+          },
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 1.26575,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:46.042952+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "febde2ff29eb42618157efc0c60a13f4",
+            "x-api-version": "1"
+          },
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 2.217627,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:48.299084+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "0d46a1635a5744eb8bfbef45727b3f36",
+            "x-api-version": "1"
+          },
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 1.531606,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T07:08:49.865486+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-materials-cache": "HIT",
+            "x-request-id": "b05e0586fc864cb1b65f72aab6a53aa8",
+            "x-api-version": "1"
+          },
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 1.480129,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        }
+      ],
+      "attempts": 5,
+      "successful": 5,
+      "failures": 0,
+      "median_seconds": 1.480129,
+      "p95_seconds": 2.217627,
+      "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+      "first_request_seconds": 1.238737,
+      "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+      "reported_application_cache_states": {
+        "HIT": 5
+      },
+      "slo_acceptance": null
+    }
+  },
+  "recovery": [
+    {
+      "material_id": "mat:layh6",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "bd1b7c67a00f7e1c7bbf2e0486996682bea0e37c6081f82264c6c8670bcfab39"
+    },
+    {
+      "material_id": "mat:nb4c3o2",
+      "matched": true,
+      "observations": 4,
+      "record_coverage_sha256": "e03a480415cbc5055aefe89528aba0a9cf632aa8b5d28ecf37a60e51c6063c04"
+    },
+    {
+      "material_id": "mat:mgh26",
+      "matched": true,
+      "observations": 5,
+      "record_coverage_sha256": "8200e5150e8756a5eccd8958fb5e15c300623ccf46848c4fd43e28a7bb06015f"
+    },
+    {
+      "material_id": "mat:cafe0.93co0.07ash",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "bc0ccf9c332e7fef494de3c44540e78695f25c01d42aedfa1054b526e718e17e"
+    },
+    {
+      "material_id": "mat:cafe0.95ni0.05asf",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "f9b9f63e24becb2666594fee8de58580bb44003b098f3fde627b8c7152f12cec"
+    },
+    {
+      "material_id": "mat:re6se8cl2",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "d8a07ba6c2e4124595b2cbb2a36b812c4e2f40d92b961da2624c898856d91fe0"
+    },
+    {
+      "material_id": "mat:ba3rh4ge16",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "75bb18e52b1cf16afab294cef2c34172f8491cc27ae56aa7e6081bb8150c09cd"
+    },
+    {
+      "material_id": "mat:crb2",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "8c5424943011f620bf7368649339e11981f181c5615582a6ea5dc325b371ee38"
+    },
+    {
+      "material_id": "mat:(mo0.96ti0.04)0.8b2",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "fafa97ccfa3bb4dc695205a61749d0855e4af58f568f56c4638b4b86464898e8"
+    },
+    {
+      "material_id": "mat:nb2p5",
+      "matched": true,
+      "observations": 4,
+      "record_coverage_sha256": "e839930d5c5d09ba1d7c855a636f998c451761fde52eccd87680f418fda07011"
+    },
+    {
+      "material_id": "mat:be0.024al0.976",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "6994e8cd5b41519ed7978f6fcc6cc203e58d1ab57a9b6ed6926627275c32cd8a"
+    },
+    {
+      "material_id": "mat:nb4cu0.2sisb2",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "fdb5aab7dbf04628fe66caca5174686340618bb6e8c4baf36f7952797bddd2e2"
+    },
+    {
+      "material_id": "mat:nbsctizr",
+      "matched": true,
+      "observations": 4,
+      "record_coverage_sha256": "57ec8e55a605f424fb778301044e3c309cd59dafd98b1948430cd435060e1471"
+    },
+    {
+      "material_id": "mat:re7ta3",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "9781f6ba0978d4a9be4e4201c7aca5b4f98d07d04aeb280c4678ac2f8718d213"
+    },
+    {
+      "material_id": "mat:ta2pdse5",
+      "matched": true,
+      "observations": 4,
+      "record_coverage_sha256": "7c1e41c94831e9078c78eb31045dcb217751f17f479c083a70d086b8a50a0396"
+    },
+    {
+      "material_id": "mat:smfe0.80co0.20aso",
+      "matched": true,
+      "observations": 4,
+      "record_coverage_sha256": "57ca0ffdf685478f7e7140320b04ca6f166321bee8187067ad28319d58cbd84c"
+    }
+  ],
+  "catalogue_transaction_snapshot": false,
+  "capture_scope": "Software/dataset versions fenced; each GET has its own serving checks, not one database transaction.",
+  "version_before": {
+    "site_version": "67b790e",
+    "dataset_version": "v2026.09.03",
+    "api_version": "1"
+  },
+  "coverage": {
+    "total_papers": 75202,
+    "total_materials": 11463,
+    "total_chunks": 1117982,
+    "last_ingest_at": "2026-09-03T10:30:54.970754+00:00",
+    "stats_refreshed_at": "2026-10-09T07:00:21.163840+00:00",
+    "dataset_version": "v2026.09.03",
+    "arxiv_papers": 46895,
+    "aps_papers": 28307
+  },
+  "frontend_commits": [
+    "67b790e"
+  ],
+  "discovery": {
+    "version": "2026-10-07-source103-v1",
+    "counts": {
+      "composition_groups": 103,
+      "formal_RPS_scored": 0,
+      "human_reviewed": 0,
+      "experimental_confirmed": 0,
+      "room_temperature_supported": 0
+    }
+  },
+  "detail_checks": [
+    {
+      "url": "/research-hypotheses/details/agm003195936.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003204399.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002664904.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003195936.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003204399.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002664904.json",
+      "passed": true
+    }
+  ],
+  "detail_scope": {
+    "checked": 6,
+    "available": 206,
+    "complete": false
+  },
+  "public_materials": {
+    "total": 10507,
+    "sort_basis": "current_projected_catalogue",
+    "scientific_display_policy": "atomic_property_evidence"
+  },
+  "version_after": {
+    "site_version": "67b790e",
+    "dataset_version": "v2026.09.03",
+    "api_version": "1"
+  },
+  "finished_at": "2026-10-09T07:08:51.768344+00:00",
+  "operational_acceptance": true
+}

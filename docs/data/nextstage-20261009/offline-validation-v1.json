@@ -1,0 +1,22 @@
+{
+  "schema_version": "sclib-nextstage-offline-validation/1",
+  "python": "3.12.14",
+  "suites": [
+    {
+      "name": "pytest",
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "timestamp": "2026-10-09T15:25:29.505610+08:00",
+      "time_seconds": 1.096
+    }
+  ],
+  "source_junit_sha256": "7d2a67adbb66e8adae2d0d8a20827714f3e1c2a382c500a4ae532d4a340a58c7",
+  "test_scope": [
+    "scripts/tests/test_nextstage_acceptance.py",
+    "tests/test_sclib_compute_staging.py"
+  ],
+  "services": "owned temporary SQLite/synthetic transport only; no website API SQL/Redis or provider calls",
+  "scientific_acceptance": false
+}
