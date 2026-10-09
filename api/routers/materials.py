@@ -55,7 +55,7 @@ from services.material_list_timing import (
     material_list_stage,
 )
 from services.material_property_projection import project_material_semantics
-from services.material_scoped_properties import scoped_property_evidence
+from services.material_scoped_properties import scoped_tc_selection
 from services.material_source_scope import current_visibility_allows_view as visibility_allows_view
 from services.material_source_scope import legacy_parent_visibility
 from services.material_visibility import (
@@ -70,7 +70,7 @@ from services.material_visibility_adapter import (
     prepare_material_views,
 )
 from services.pressure_semantics import classify_pressure
-from services.property_evidence import build_property_evidence
+from services.property_evidence import build_property_evidence, build_tc_selection
 from services.scientific_filters import ResultFilters, matching_result_references
 from services.scientific_values import record_quantity
 
@@ -214,15 +214,13 @@ def _current_sort_value(material: MaterialReadContext, field: str) -> float | in
         return None if scoped else material.arxiv_year
     if field not in {"tc_max", "tc_ambient"}:
         raise ValueError("Unsupported material sort field")
-    options = dict(scope_id=material.id, property_fields=[field],
-                   include_joint_epc=False, anomaly_context=review_context(material))
+    options = dict(scope_id=material.id, field=field, anomaly_context=review_context(material))
     if scoped:
-        envelope = scoped_property_evidence(material.current_records(), **options)
+        binding = scoped_tc_selection(material.current_records(), **options)
     else:
         hints = {name: getattr(material, name) for name in
                  (field, "family", "tc_max_experimental", "tc_max_theoretical")}
-        envelope = build_property_evidence(material.records, legacy_summary=hints, **options)
-    binding = envelope["properties"][field]
+        binding = build_tc_selection(material.records, legacy_summary=hints, **options)
     return (binding["selected"]["value"]
             if binding["status"] == "supported" and binding["selected"] else None)
 
