@@ -43,7 +43,7 @@ def test_fixed_118_element_vocabulary_and_composition_only_values():
     assert result["reason_codes"] == []
     assert result["feature_names"] == list(FEATURE_NAMES)
     assert len(result["values"]) == 121
-    values = dict(zip(result["feature_names"], result["values"]))
+    values = dict(zip(result["feature_names"], result["values"], strict=True))
     assert values["atomic_fraction_Mg"] == pytest.approx(1 / 3)
     assert values["atomic_fraction_B"] == pytest.approx(2 / 3)
     assert values["atomic_fraction_Nb"] == 0
@@ -56,12 +56,13 @@ def test_fixed_118_element_vocabulary_and_composition_only_values():
 @pytest.mark.parametrize("formula", [
     "MgB2", "LaH10", "Nb", "Tc", "Ca(OH)2", "CuSO4·5H2O", "MgB₂",
     "La1.85Sr0.15CuO4", "DyB2", "TaB2", "YbCo", "K4[Fe(CN)6]", "Mg2B4",
+    "CaO2Zr", "TcTi2Zn", "HfO2Y", "Y2O3", "V", "C", "Y", "H",
 ])
 def test_features_exactly_follow_audited_parser(formula):
     expected = parser.enrich_formula(formula)
     actual = composition_features({"formula": formula})
     assert expected["composition_status"] == actual["composition_status"] == "exact"
-    values = dict(zip(actual["feature_names"], actual["values"]))
+    values = dict(zip(actual["feature_names"], actual["values"], strict=True))
     for element in ELEMENTS:
         assert values["atomic_fraction_" + element] == expected["atomic_fractions"].get(element, 0)
     assert values["n_elements"] == expected["n_elements"]
@@ -73,7 +74,8 @@ def test_features_exactly_follow_audited_parser(formula):
     "La2-xSrxCuO4", "YBa2Cu3O7-δ", "Bi2Sr2CaCu2O8+delta", "La₂₋ₓSrₓCuO₄",
     "Ag-Au", "(La,Sc)H12", "FeSe/SrTiO3", "CuSO4.5H2O", "T_c", "T_{c}",
     "Tᶜ", "La₂Cu¹⁸O₄", "^{18}O", "[18O]2", "D2O", "LaD10", "O²⁻",
-    "Al47-", "H", "C", "hydrogen", "not-a-formula", "", "unknown", "YBa2Cu3O7-",
+    "Al47-", "hydrogen", "not-a-formula", "", "unknown", "YBa2Cu3O7-",
+    "Mg1-yCayB2", "Mg1-zCazB2", "MgB2X", "MgB2Z", "v", "c", "y",
     *parser._AUDITED_FORMULA_SHORTHANDS,
 ])
 def test_unresolved_never_becomes_absent_element_zeroes(formula):

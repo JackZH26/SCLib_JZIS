@@ -48,7 +48,7 @@ from services._composition import formula_validator
 CompositionStatus = Literal["exact", "variable", "interface", "mixture", "invalid"]
 
 PARSER_NAME = "sclib_formula_enrichment"
-PARSER_VERSION = "1.1.0"
+PARSER_VERSION = "1.1.1"
 
 # Phase 1 recognizes isotope notation but deliberately does not emit exact
 # isotope compositions: occupancy and isotope masses need a reviewed grammar
@@ -332,9 +332,13 @@ _LATEX_BRACED_SCRIPT = re.compile(r"_\{([^{}]*)\}")
 _LATEX_PLAIN_SUBSCRIPT = re.compile(r"_(\d+(?:\.\d+)?)")
 _VARIABLE_WORD = re.compile(r"delta", re.IGNORECASE)
 _VARIABLE_DELTA_D = re.compile(r"[+\-±]d(?=$|[A-Z(\[])")
-_VARIABLE_AFTER_OPERATOR = re.compile(r"(?:^|[+\-±(,])\s*([xyz])(?=$|[^a-z])", re.IGNORECASE)
-_VARIABLE_AFTER_ELEMENT = re.compile(r"[A-Z][a-z]?([xyz])(?=$|[A-Z(\[+\-])")
-_VARIABLE_SUFFIX = re.compile(r"\d([xyz])(?=$|[A-Z(\[+\-])", re.IGNORECASE)
+_VARIABLE_AFTER_OPERATOR = re.compile(r"(?:^|[+\-±(,])\s*([xyz])(?=$|[^a-z])")
+_UPPERCASE_VARIABLE_AFTER_OPERATOR = re.compile(r"[+\-±]\s*([XYZ])(?=$|[A-Z(\[+\-])")
+_VARIABLE_AFTER_ELEMENT = re.compile(r"[A-Z][a-z]?([xyzXZ])(?=$|[A-Z(\[+\-])")
+# Y is an element unless an explicit stoichiometric operator precedes it.
+# X/Z can be variable tokens, but Zn/Zr cannot: the boundary stays case
+# sensitive. This preserves MDR's O7-X/Y/Z without corrupting HfO2Y/CaO2Zr.
+_VARIABLE_SUFFIX = re.compile(r"\d([xyzXZ])(?=$|[A-Z(\[+\-])")
 _ELEMENT_SYSTEM = re.compile(r"^[A-Z][a-z]?(?:-[A-Z][a-z]?)+$")
 
 
@@ -466,7 +470,12 @@ def enrich_formula(raw: str) -> dict[str, Any]:
         return result
 
     valid, reason = formula_validator.validate_formula(formula)
-    if not valid:
+    # NER's catalogue-admission validator deliberately rejects bare capital
+    # letters. In this composition-only parser a known element such as V/C/Y
+    # has an exact atomic composition; it supplies no phase or sample identity.
+    # Leave the ingestion/admission rule itself and every other guard intact.
+    exact_element = reason == formula_validator.SINGLE_ELEMENT and formula in _ELEMENTS
+    if not valid and not exact_element:
         return _invalid(result, f"validator:{reason}")
 
     variables = _variable_symbols(formula)
@@ -631,6 +640,7 @@ def _variable_symbols(formula: str) -> list[str]:
     ):
         symbols.add("delta")
     symbols.update(match.group(1).lower() for match in _VARIABLE_AFTER_OPERATOR.finditer(formula))
+    symbols.update(match.group(1).lower() for match in _UPPERCASE_VARIABLE_AFTER_OPERATOR.finditer(formula))
     # Regex backtracking must not reinterpret the valid element Dy as D+y.
     symbols.update(
         match.group(1).lower()

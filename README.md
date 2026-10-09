@@ -191,6 +191,29 @@ permission to train. The [documentation index](docs/README.md) groups these
 contracts and their operational boundaries without conflating them with the
 public browsing features above.
 
+### Source-bound high-throughput research tools
+
+The high-throughput research tools now prepare source-bound ordered structures
+for three explicit hypotheses: bandwidth, carrier density and geometry. The
+original batch contains 98 proposal compositions and controls; the JARVIS
+expansion adds 33 distinct joint-modification proposals, 72 single-axis controls
+and 12 parent references. These are structure hypotheses, not 131 scientifically
+qualified or worldwide-new superconductors. Parent study properties stay in a
+separate source index and are never assigned to a modified structure.
+`scripts/run_discovery_chgnet_batch.py` runs bounded CPU single-point geometry
+screens; `scripts/run_discovery_chgnet_relax.py` records native optimizer status,
+trajectories and new child structures. `scripts/run_discovery_chgnet_relax_screen.py`
+adds actual atom/cell optimizer-coordinate diagnostics for both reviewed batches;
+these diagnostics do not replace the native convergence flag or Cartesian checks.
+`scripts/prepare_discovery_qe_screen.py`
+prepares exact source/CIF/UPF-bound fixed-cell inputs, while
+`scripts/run_discovery_qe_screen.py` captures explicitly requested QE runs.
+All execution is opt-in, limited externally by named services, and retains
+failures without automatic retries. Native file capture, geometry optimization,
+electronic convergence, physical stability and superconducting qualification
+remain different findings. None of these tools grants a score, scientific
+approval, training permission or publication authority.
+
 ## Accounts and API
 
 Sign in with [Google or email/password](https://jzis.org/login), or
