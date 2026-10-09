@@ -195,11 +195,15 @@ def _view_applies(field: str, pressure: Any, origin: Any) -> bool:
     return field != "tc_ambient" or pressure.pressure_state == "explicit_ambient"
 
 
-def _quantity_channels(record: Mapping[str, Any], field: str) -> list[tuple[str, dict[str, Any]]]:
+def _quantity_channels(
+    record: Mapping[str, Any], field: str, *, primary: dict[str, Any] | None = None,
+) -> list[tuple[str, dict[str, Any]]]:
     """Independent aliases/groups, not cached normalized proposal values.
 
     A typed raw proposal supersedes its own compatibility flat scalar. An
     additional alias/nested channel is not silently shadowed by that precedence.
+    A primary supplied by this assessment is read-only; aliases and nested
+    channels are still parsed independently. Omitting it preserves direct calls.
     """
     aliases = {"tc_kelvin": ("tc",), "pressure_gpa": ("pressure",)}.get(field, ())
     if not aliases and field not in _LATTICE:
@@ -209,7 +213,7 @@ def _quantity_channels(record: Mapping[str, Any], field: str) -> list[tuple[str,
     typed = isinstance(proposals, Mapping) and field in proposals
     if typed or record.get(field) is not None:
         channels.append(("scientific_values." + field + ".raw_value" if typed else field,
-                         record_property_quantity(record, field)))
+                         primary if primary is not None else record_property_quantity(record, field)))
     for alias in aliases:
         if record.get(alias) is not None:
             channels.append((alias, parse_scientific_value(
@@ -272,9 +276,15 @@ def assess_record_anomalies(
         return field in _LATTICE and isinstance(nested, Mapping) and field.removeprefix("lattice_") in nested
 
     quantities = {field: record_property_quantity(record, field) for field in _RAW_FIELDS if supplied(field)}
+    # Only exact flat built-ins exclude custom Mapping/value access callbacks.
+    # Structured proposals retain their original independent parsing path.
+    reuse_primary = type(record) is dict and all(
+        type(key) is str and type(value) in (type(None), bool, int, float, str)
+        for key, value in record.items()
+    )
     findings = []
     for field, proposal in quantities.items():
-        channels = _quantity_channels(record, field)
+        channels = _quantity_channels(record, field, primary=proposal if reuse_primary else None)
         if len(channels) > 1 and any(not _quantities_equivalent(channels[0][1], item[1]) for item in channels[1:]):
             findings.append(_finding(result_id, "raw_quantity_conflict", field,
                 "coexisting_original_quantity_channels_unresolved", quantity=proposal,
