@@ -5,9 +5,10 @@ It records completed engineering and acquisition work; scientific decisions,
 permissions and execution gates remain separate.
 
 The later [source and compute preparation record](NEXTSTAGE_SOURCE_AND_COMPUTE_PREPARATION_2026_10_09.md)
-adds three more retained source candidates, the complete first-sixteen access
-denominator, pending-review ZIP v5, a read-only replay of sixteen retained compute
-outputs and a finite mesh-budget proposal. Its proposal is not execution approval.
+adds the complete first-sixteen access denominator, source-navigation questions,
+pending-review ZIP v6 and an organic-superconductor archive candidate. It also
+records a fresh parse of four retained compute XML outputs and a finite
+mesh-budget proposal. Its proposal is not execution approval.
 
 ## Completed local API regression
 
@@ -239,3 +240,86 @@ separate. Existing retained budget is 6,780/7,200 core-seconds, leaving 420;
 therefore require a new explicit finite protocol/budget, authenticated resources,
 runtime custody and exclusive worker handoff. No extra worker, soak acceptance,
 SCF/DFPT/Tc campaign or model training was started for these acquisition files.
+
+
+## Later source preparation and completed local integration
+
+The [source and compute follow-up](NEXTSTAGE_SOURCE_AND_COMPUTE_PREPARATION_2026_10_09.md)
+now indexes eight retained material candidates with thirty review questions and
+thirty page/span locators. Eight remaining publisher PDF requests all returned
+401; exact-DOI repository-index observations supplied no full-text address.
+Those failures stay in the denominator. Four of the six retrieval-gap cases now
+have privately retained full-text candidates, including the HAL version-one
+archive of the original organic-superconductor report. The Lu-H-N original and
+notice pair remains incomplete. Additional source questions are navigation aids;
+the seventy-two retrieval drafts and 16/184 complete-inspection partition remain
+unchanged, with no approved rights, gold, reviewer identities or scientific data.
+
+[Review ZIP v6](data/nextstage-20261009/pending-review-materials-v6-receipt.json)
+contains 44 metadata/template files and preserves every byte of all 34 v5 members.
+The original archives and three independent eight-row blanks remain intact.
+A [compute replay](data/nextstage-20261009/compute-readiness-v3.json) freshly parses
+four retained raw XML exports through the pinned existing reader. All four new
+canonical JSON outputs match the prior readings byte for byte. No solver, node
+connection, new worker or additional budget reservation was used.
+
+The [completed integration result](data/nextstage-20261009/material-integration-validation-v1.json)
+replaces only the earlier focused rehearsal's full-regression pending scope:
+**8,543 passed, 9 skipped, zero failures/errors, 8,552 cases and 269 modules**, eight independently replayed JUnit
+batches at local revision `8a91067f254ee9c2f1cfaafb36d5011023aa74bb`, lasting
+3,614.272 seconds. All assigned modules reported cases,
+all runners exited zero, owned-service cleanup completed, and HEAD plus the
+941-file API/scripts inventory stayed clean and unchanged. Capacity is separate.
+Skipped cases remain explicitly listed in the receipt.
+
+At 12:01 UTC, #167's observed head became
+`8dd638051f04bf31ab125fe150d47196b25b032b`, parented on main `4c56af1`.
+Its [GitHub commit tree](data/nextstage-20261009/pr167-integration-tree-identity-v1.json)
+matches the tested local integration tree exactly. The execution record retains
+its actual local revision; the observed PR's Linux CI was still running and
+remains a separate gate. Publication, naturally captured request timing and
+production performance acceptance are not supplied by this local result.
+
+The main `4c56af1` [Test run](https://github.com/JackZH26/SCLib_JZIS/actions/runs/37917133614)
+subsequently completed successfully at 12:01 UTC. Its new
+[Linux receipt](data/nextstage-20261009/main-4c56af1-linux-validation-v1.json)
+independently replays all eight batches: 8,500 passed, nine skipped, zero
+failures/errors, 8,509 cases and 268 modules. The 940 enumerated API/scripts
+inputs stayed clean and unchanged; the whole-worktree dirty flag remains true
+and unspecified other dirty paths are not inferred. The
+[release replay](data/nextstage-20261009/release-after-4c56af1-v1.json) binds three
+component image digests and three successful package-inventory comparisons to
+this exact Test run and original artifact IDs. Release run `37927409318` succeeded
+at 12:05 UTC. Deployment `37927770900` was in progress, and the 12:10 public
+version observation still returned `7efe186`. New-version deployment and public
+acceptance therefore remain pending in this checkpoint.
+
+
+## Completed 4c56af1 publication and diagnostic scans
+
+Deployment `37927770900` completed successfully at 12:34 UTC. The
+[deployment receipt](data/nextstage-20261009/deployment-after-4c56af1-v1.json)
+binds the completed job log to Release `37927409318` and observed public version
+`4c56af1`, dataset `v2026.09.03`, API `1`. First, the
+[strict profile](data/nextstage-20261009/material-profile-4c56af1-v1.json) captured
+25 successful fixed-query gzip requests with valid timing headers: one natural
+scan and four page hits for each of five queries. The subsequent
+[complete public capture](data/nextstage-20261009/public-after-4c56af1-v1.json)
+passed all twenty checks, all 206 static byte pins and all sixteen recovery
+windows across 253 retained requests. Software/footer/dataset and before/after
+version fences agreed. Earlier pending observations above remain historical.
+
+The [diagnostic baseline](data/nextstage-20261009/material-performance-baseline-4c56af1-v1.json)
+records a 22.998-second default client scan and 22.582-second server total, with
+10.293 seconds in selection and 10.783 in scope. The existing Tc-selection
+experiment addresses an observed major cost; scope includes SQL and needs its
+own diagnosis. The fifteen-second first-request goal is not demonstrated.
+One scan per query is neither statistical p95 nor production before/after
+performance acceptance; page-hit latencies are kept separate.
+
+The [v2 request plan](data/nextstage-20261009/material-performance-observation-plan-v2.json)
+makes complete-acceptance accounting explicit. Actual Materials calls were
+25 profile list GETs, 24 acceptance list GETs and sixteen enrichment GETs,
+65 total against a maximum 90 per code arm. No second capture was necessary.
+Source review, rights, gold, training, node handoff and the new finite budget
+still require their real authorization and admission.

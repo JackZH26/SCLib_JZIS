@@ -1,0 +1,76 @@
+{
+  "schema_version": "sclib-source-preparation-validation/1.0.0",
+  "recorded_at": "2026-10-09T11:50:29.288407+00:00",
+  "public_file_pins": [
+    {
+      "file": "compute-readiness-v3.json",
+      "bytes": 21294,
+      "sha256": "e6da4b83571365096fce2ac69de484f507b75c1534c106963f58c1ddfa0233a7"
+    },
+    {
+      "file": "material-correction-source-notice-v1.json",
+      "bytes": 2040,
+      "sha256": "c53a3c467315762bc8c8cf0bd33e113904b29e5818c499ae48f67b3a6c1a1dab"
+    },
+    {
+      "file": "material-publisher-pdf-access-v1.json",
+      "bytes": 19059,
+      "sha256": "d4f05f2788b1d4217450a7c725399d8d826d4c756b6e53eb371cee11056820e0"
+    },
+    {
+      "file": "material-review-entry-index-v1.json",
+      "bytes": 12542,
+      "sha256": "8e1176159e02759d1588b517bbe4c3c1a56049fc08b8eb9e3c710a8921299c1c"
+    },
+    {
+      "file": "material-source-acquisition-queue-v4.json",
+      "bytes": 287937,
+      "sha256": "61a8840e7fb2c281387100e451acdb0accb74da6987ef8cc99e4898183f07a1b"
+    },
+    {
+      "file": "material-source-navigation-questions-v1.json",
+      "bytes": 35570,
+      "sha256": "159024f47d8187ee8dd8cd8d17a0d9ab36690e0a92dee7a6554364d12694e8ec"
+    },
+    {
+      "file": "retrieval-gap-acquisition-v4.json",
+      "bytes": 38329,
+      "sha256": "07add74b43b6a4ec6708b4100380afb98d348cf908e7aa8ea533fea9a2559843"
+    },
+    {
+      "file": "retrieval-source-navigation-v1.json",
+      "bytes": 13335,
+      "sha256": "bcdc8deeca1741587a935383fa54419f2bc67b084699cd257079ad1602368739"
+    },
+    {
+      "file": "source-version-link-candidates-v1.json",
+      "bytes": 5015,
+      "sha256": "6402ede3edb098bb7eef06c0c75f5d342927f014488f796e77c08b2ca2ac7f7c"
+    }
+  ],
+  "validation": {
+    "metadata_JSON_files": 9,
+    "historical_material_rows": 200,
+    "complete_pilot_inspected": 16,
+    "complete_pilot_pending": 184,
+    "retained_material_candidates_indexed": 8,
+    "material_questions_indexed": 30,
+    "material_locators_indexed": 30,
+    "new_material_spans_replayed": 20,
+    "organic_spans_replayed": 5,
+    "other_retrieval_spans_replayed": 15,
+    "ZIP_v5_three_roles_exact_source_identity": true,
+    "retrieval_gap_case_questions_preserved": 12,
+    "gap_cases_with_fulltext_candidates": 4,
+    "unaccepted_source_version_edges": 5,
+    "raw_compute_XMLs_reparsed": 4,
+    "all_compute_canonical_bytes_match": true,
+    "finite_budget_proposal_sha256_unchanged": "7304e37417a54ac4a26d8bddc95b12d02a2622cf779a93370905548386b82d7a"
+  },
+  "scope": "Offline metadata, byte/hash and locator/form correspondence checks against retained originals; no scientific entailment, authenticated human review, source-use approval or new execution.",
+  "scientific_acceptance": false,
+  "human_reviews_added": 0,
+  "database_writes": 0,
+  "new_retrieval_prompts": 0,
+  "new_scientific_jobs": 0
+}
