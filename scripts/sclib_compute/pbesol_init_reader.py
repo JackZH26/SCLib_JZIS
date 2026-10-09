@@ -380,11 +380,44 @@ def _bounded_bytes(raw, maximum, code, *, allow_empty=False):
     )
 
 
-def _xml(raw):
-    require(not re.search(rb"<!\s*(DOCTYPE|ENTITY)", raw, re.IGNORECASE), "XML_UNSAFE", "declarations forbidden")
+def decode_supported_xml(raw: bytes) -> str:
+    """Validate the bounded UTF-8 domain before any XML parser sees the text.
+
+    Decoding alone is insufficient: BOM-less UTF-16/32 can decode as UTF-8 with
+    NULs, which ElementTree may reinterpret. Keep original bytes and pins intact.
+    """
+    _bounded_bytes(raw, MAX_XML, "XML_SIZE", allow_empty=True)
     try:
-        root = ET.fromstring(raw.decode("utf-8"))
-    except (ET.ParseError, UnicodeError) as error:
+        text = raw.decode("utf-8")
+    except UnicodeError as error:
+        raise Rejected("XML_ENCODING", "UTF-8 XML bytes required") from error
+    require("\x00" not in text, "XML_ENCODING", "NUL and UTF-16/32 XML are unsupported")
+    require(
+        not re.search(r"<!\s*(DOCTYPE|ENTITY)\b", text, re.IGNORECASE), "XML_UNSAFE", "declarations forbidden"
+    )
+    offset = text.find("<?xml")
+    while offset >= 0:
+        end = text.find("?>", offset + 5)
+        stop = len(text) if end < 0 else end + 2
+        if text[offset + 5 : offset + 6].isspace():
+            require(stop - offset <= 1024, "XML_ENCODING", "bounded XML declaration required")
+            encodings = re.finditer(r"\bencoding\s*=\s*(['\"])([^'\"]*)\1", text[offset:stop], re.IGNORECASE)
+            require(
+                all(encoding[2].lower() == "utf-8" for encoding in encodings),
+                "XML_ENCODING",
+                "declared encoding must be UTF-8",
+            )
+        if end < 0:
+            break
+        offset = text.find("<?xml", end + 2)
+    return text
+
+
+def _xml(raw):
+    text = decode_supported_xml(raw)
+    try:
+        root = ET.fromstring(text)
+    except ET.ParseError as error:
         raise Rejected("XML_PARSE", "complete UTF-8 XML required") from error
     stack = [(root, 0, False)]
     count = 0

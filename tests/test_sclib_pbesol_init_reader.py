@@ -334,6 +334,56 @@ class InitializationReadingTests(unittest.TestCase):
         ET.SubElement(root.find("output"), "{http://untrusted.example}etot").text = "0"
         self.rejected(xml=ET.tostring(root))
 
+    def test_unsupported_xml_never_reaches_elementtree(self):
+        small = (
+            '<?xml version="1.0" encoding="UTF-16"?>'
+            '<!DOCTYPE espresso [<!ENTITY probe "safe-small-entity">]><espresso>&probe;</espresso>'
+        )
+        samples = [
+            small.encode(encoding)
+            for encoding in ("utf-16", "utf-16-le", "utf-16-be", "utf-32", "utf-32-le", "utf-32-be")
+        ]
+        samples.extend([
+            small.encode("utf-8"),
+            b'<?xml version="1.0" encoding="UTF-16"?><espresso/>',
+            b'<?xml version="1.0" encoding="ISO-8859-1"?><espresso/>',
+            b'<?xml version="1.0" encoding="UTF-8" encoding="UTF-16"?><espresso/>',
+            b"<?xml version='1.0' encoding = 'US-ASCII'?><espresso/>",
+            b'<?xml version="1.0" ' + b' ' * 1024 + b'encoding="UTF-16"?><espresso/>',
+            b'<!DOCTYPE espresso [<!ENTITY probe "safe-small-entity">]><espresso>&probe;</espresso>',
+            b'<espresso>\x00</espresso>',
+            b'<espresso>\xff</espresso>',
+        ])
+        for raw in samples:
+            with self.subTest(raw_prefix=raw[:20]):
+                with (
+                    patch.object(reader.ET, "fromstring", side_effect=AssertionError("unsafe XML reached parser")),
+                    self.assertRaises(reader.Rejected),
+                ):
+                    reader._xml(raw)
+                report = self.rejected(xml=raw)
+                self.assertIn(report["rejection"]["code"], {"XML_ENCODING", "XML_UNSAFE"})
+                self.assertEqual(report["output_pins"]["xml"]["sha256"], reader.sha(raw))
+        for raw in (bytearray(b"<x/>"), b"x" * (reader.MAX_XML + 1)):
+            with self.assertRaises(reader.Rejected):
+                reader.decode_supported_xml(raw)
+
+    def test_supported_utf8_xml_declarations_preserve_original_pins(self):
+        original = self.contexts["agm001228974"]["xml"]
+        for prefix in (
+            b"",
+            b"\xef\xbb\xbf",
+            b'<?xml version="1.0" encoding="UTF-8"?>',
+            b'\xef\xbb\xbf<?xml version="1.0" encoding="uTf-8"?>',
+            b"<?xml version='1.0' encoding = 'utf-8'?>",
+            b'<?xml version="1.0"?>',
+        ):
+            raw = prefix + original
+            with self.subTest(prefix=prefix):
+                report = self.read(xml=raw)
+                self.assertEqual(report["semantic_reading_status"], "initialization_only")
+                self.assertEqual(report["output_pins"]["xml"]["sha256"], reader.sha(raw))
+
     def test_bounded_bytes_and_no_process_or_network_calls(self):
         for args in (
             {"xml": bytearray(b"x")},
