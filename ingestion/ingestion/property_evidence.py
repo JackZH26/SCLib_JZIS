@@ -19,10 +19,10 @@ from .result_semantics import classify_result
 # Both deployment packages vendor the same bytes but have independent layouts.
 if __package__ == "ingestion":
     from .claims.outcomes import outcome_conflicts_with_positive
-    from .extract.scientific_values import record_quantity
+    from .extract.scientific_values import FIELD_UNITS, record_quantity
 else:
     from .claim_outcomes import outcome_conflicts_with_positive
-    from .scientific_values import record_quantity
+    from .scientific_values import FIELD_UNITS, record_quantity
 
 PROPERTY_EVIDENCE_VERSION = "property-evidence/1.1.0"
 ATOMIC_SELECTION_POLICY = "atomic-anomaly-aggregation/1.0.0"
@@ -191,6 +191,82 @@ def _base(record: Mapping[str, Any], scope_id: str) -> dict[str, Any]:
         },
         "origin": classify_result(record).as_dict(),
         "structure": _structure(record),
+    }
+
+
+def _tc_selection_inputs(records, scope_id, legacy_summary, anomaly_context) -> bool:
+    """Conservative flat JSON subset; uncertain inputs use the full projector.
+
+    This is an optimization boundary, never scientific eligibility. In
+    particular, the original anomaly assessor still evaluates every supplied
+    quantity. Structured proposals, notation/units and unusual metadata retain
+    the full path, including its errors, rather than being normalized here.
+    """
+    if type(records) is not list or len(records) > 5000 or type(scope_id) is not str:
+        return False
+    context = anomaly_context if anomaly_context is not None else {}
+    if type(context) is not dict:
+        return False
+    if context.get("family") is not None and type(context["family"]) is not str:
+        return False
+    if context.get("selection_policy") is not None and type(context["selection_policy"]) is not str:
+        return False
+    year = context.get("current_year")
+    if year is not None and (type(year) is not int or not 1900 <= year <= 9998):
+        return False
+    thresholds = context.get("compound_thresholds", ())
+    if type(thresholds) not in (list, tuple) or thresholds:
+        return False
+    if legacy_summary is not None:
+        if type(legacy_summary) is not dict:
+            return False
+        for key, value in legacy_summary.items():
+            if key == "family":
+                if value is not None and type(value) is not str:
+                    return False
+            elif value is not None and (type(value) not in (int, float) or not _finite(value)):
+                return False
+    text_fields = (*_CONDITION_TEXT, "paper_id", "doi", "arxiv_id", "state_id", "structure_id")
+    for record in records:
+        if type(record) is not dict or len(record) > 128:
+            return False
+        for key, value in record.items():
+            if type(key) is not str:
+                return False
+            kind = type(value)
+            if value is not None and kind not in (str, int, float, bool):
+                return False
+            if kind in (int, float) and (not _finite(value) or kind is int and value.bit_length() > 256):
+                return False
+            if kind is str and len(value) > 4096:
+                return False
+            try:
+                key.encode("utf-8")
+                if kind is str:
+                    value.encode("utf-8")
+            except UnicodeError:
+                return False
+            if (key in FIELD_UNITS or key == "tc") and value is not None and kind not in (int, float):
+                return False
+            if (key.endswith("_unit") or key in {"scientific_values", "lattice_params", "source_locator"}) and value is not None:
+                return False
+            if key in text_fields and value is not None and kind is not str:
+                return False
+    return True
+
+
+def _tc_selection_base(record, scope_id):
+    """Only existing Tc candidate dependencies; no display-only quantities."""
+    return {
+        "result_id": legacy_result_id(record, scope_id=scope_id),
+        "conditions": {key: _text(record.get(key)) for key in
+                       ("method", "measurement", "measurement_method", "calculation_method")},
+        "state": {
+            **{key: _text(record.get(key), 160) for key in ("state_id", "structure_id")},
+            "pressure_semantics": _pressure(record),
+        },
+        "source": {key: _text(record.get(key), 200) for key in ("paper_id", "doi", "arxiv_id")},
+        "origin": classify_result(record).as_dict(),
     }
 
 
@@ -539,22 +615,12 @@ def _joint_epc(
     }
 
 
-def build_property_evidence(
-    records: Any, *, scope_id: str, legacy_summary: Mapping[str, Any] | None = None,
-    reviewed_epc_matches: Sequence[Any] = (),
-    include_joint_epc: bool = True, property_fields: Sequence[str] | None = None,
-    anomaly_context: Mapping[str, Any] | None = None,
-) -> dict[str, Any]:
-    """Project bounded atomic evidence; never mutate records or perform I/O.
-
-    reviewed_epc_matches must come from trusted, revisioned review storage, never
-    from NER assertions or a client request. Default callers provide none.
-    """
-    from .anomaly_review import (
-        ANOMALY_POLICY_VERSION,
-        assess_record_anomalies,
-        eligible_for_property,
-    )
+def _property_candidates(
+    records, *, scope_id, legacy_summary, include_joint_epc, property_fields,
+    anomaly_context, selection_only=False,
+):
+    """One authoritative candidate loop for full evidence and narrow Tc reads."""
+    from .anomaly_review import assess_record_anomalies, eligible_for_property
 
     context = anomaly_context or {}
     family = context.get("family", legacy_summary.get("family") if legacy_summary is not None else None)
@@ -567,7 +633,7 @@ def build_property_evidence(
     for record in records if isinstance(records, (list, tuple)) else []:
         if not isinstance(record, Mapping):
             continue
-        base = _base(record, scope_id)
+        base = _tc_selection_base(record, scope_id) if selection_only else _base(record, scope_id)
         if base["result_id"] in seen:
             continue
         seen.add(base["result_id"])
@@ -578,7 +644,7 @@ def build_property_evidence(
         )
         # A fallback crystal/space-group selection must not smuggle an
         # ineligible lattice group back into a flat structural projection.
-        if not eligible_for_property(assessment, "lattice_params"):
+        if not selection_only and not eligible_for_property(assessment, "lattice_params"):
             base = {**base, "structure": {**base["structure"], "lattice_params": None}}
         for field in candidate_fields:
             value = _candidate(record, base, field)
@@ -587,11 +653,32 @@ def build_property_evidence(
                 if not eligible_for_property(assessment, field):
                     value["warnings"].append("anomaly_review_required")
                 candidates[field].append(value)
+    return candidates, fields
+
+
+def build_property_evidence(
+    records: Any, *, scope_id: str, legacy_summary: Mapping[str, Any] | None = None,
+    reviewed_epc_matches: Sequence[Any] = (),
+    include_joint_epc: bool = True, property_fields: Sequence[str] | None = None,
+    anomaly_context: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Project bounded atomic evidence; never mutate records or perform I/O.
+
+    reviewed_epc_matches must come from trusted, revisioned review storage, never
+    from NER assertions or a client request. Default callers provide none.
+    """
+    from .anomaly_review import ANOMALY_POLICY_VERSION
+
+    candidates, fields = _property_candidates(
+        records, scope_id=scope_id, legacy_summary=legacy_summary,
+        include_joint_epc=include_joint_epc, property_fields=property_fields,
+        anomaly_context=anomaly_context,
+    )
     return {
         "version": PROPERTY_EVIDENCE_VERSION, "not_joint_observation": True,
         "anomaly_policy_version": ANOMALY_POLICY_VERSION,
         "properties": {
-            field: _property(field, candidates[field], legacy_summary, context.get("selection_policy"))
+            field: _property(field, candidates[field], legacy_summary, (anomaly_context or {}).get("selection_policy"))
             for field in fields
         },
         "joint_epc": _joint_epc(candidates, reviewed_epc_matches, legacy_summary) if include_joint_epc else {
@@ -605,7 +692,35 @@ def build_property_evidence(
     }
 
 
+def build_tc_selection(
+    records, *, scope_id, field, legacy_summary=None, anomaly_context=None,
+):
+    """Internal scalar selection, never a replacement for public evidence DTOs.
+
+    Status and selected identity/value use the same candidate and _property
+    selector as full evidence. No alternate Tc rules or source assumptions.
+    """
+    if field not in {"tc_max", "tc_ambient"}:
+        raise ValueError("Tc selection supports tc_max and tc_ambient only")
+    if not _tc_selection_inputs(records, scope_id, legacy_summary, anomaly_context):
+        binding = build_property_evidence(
+            records, scope_id=scope_id, legacy_summary=legacy_summary,
+            property_fields=[field], include_joint_epc=False, anomaly_context=anomaly_context,
+        )["properties"][field]
+    else:
+        candidates, _ = _property_candidates(
+            records, scope_id=scope_id, legacy_summary=legacy_summary,
+            include_joint_epc=False, property_fields=[field],
+            anomaly_context=anomaly_context, selection_only=True,
+        )
+        binding = _property(field, candidates[field], legacy_summary,
+                            (anomaly_context or {}).get("selection_policy"))
+    selected = binding["selected"]
+    return {"status": binding["status"], "has_evidence": bool(binding["total_evidence_count"]),
+            "selected": {key: selected[key] for key in ("result_id", "value")} if selected else None}
+
+
 __all__ = [
     "ATOMIC_SELECTION_POLICY", "CATEGORICAL_PROPERTIES", "EPC_COMPARISON_BUDGET", "EVIDENCE_LIMIT", "NUMERIC_PROPERTIES",
-    "PROPERTY_EVIDENCE_VERSION", "PROPERTY_FIELDS", "build_property_evidence", "legacy_result_id",
+    "PROPERTY_EVIDENCE_VERSION", "PROPERTY_FIELDS", "build_property_evidence", "build_tc_selection", "legacy_result_id",
 ]
