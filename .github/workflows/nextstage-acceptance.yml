@@ -1,0 +1,43 @@
+name: Public Acceptance Tools
+
+on:
+  pull_request:
+    paths:
+      - scripts/verify_public_snapshot.py
+      - scripts/build_nextstage_review_package.py
+      - scripts/tests/test_nextstage_acceptance.py
+      - docs/data/nextstage-20261009/**
+      - .github/workflows/nextstage-acceptance.yml
+  push:
+    branches: [main]
+    paths:
+      - scripts/verify_public_snapshot.py
+      - scripts/build_nextstage_review_package.py
+      - scripts/tests/test_nextstage_acceptance.py
+      - docs/data/nextstage-20261009/**
+      - .github/workflows/nextstage-acceptance.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+      - name: Install offline test tools
+        run: python -m pip install pytest==8.4.2 ruff==0.16.10
+      - name: Lint and verify rejection boundaries without services
+        run: |
+          python -m ruff check scripts/verify_public_snapshot.py scripts/build_nextstage_review_package.py scripts/tests/test_nextstage_acceptance.py
+          python -m pytest scripts/tests/test_nextstage_acceptance.py -q
+      - name: Rebuild the pending review package exactly without network access
+        run: |
+          python scripts/build_nextstage_review_package.py --output "$RUNNER_TEMP/review-preparation-v1.json" --markdown-output "$RUNNER_TEMP/review-queue-v1.md"
+          cmp "$RUNNER_TEMP/review-preparation-v1.json" docs/data/nextstage-20261009/review-preparation-v1.json
+          cmp "$RUNNER_TEMP/review-queue-v1.md" docs/data/nextstage-20261009/review-queue-v1.md
