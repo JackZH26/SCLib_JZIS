@@ -6,6 +6,8 @@ import type { SourceHypothesis, SourceHypothesisBrowseCatalogue } from "@/lib/di
 import { verifySourceHypothesisDetail } from "@/lib/discovery-source-hypothesis-detail";
 import { compareResearchPriority, sourceSupport, verifyDiscoveryEvidenceCard } from "@/lib/discovery-evidence-policy";
 import type { DiscoveryEvidenceCard, ResearchGoal } from "@/lib/discovery-evidence-policy";
+import { readReadableEvidence, readableFieldLabels } from "@/lib/discovery-readable-evidence";
+import type { ReadableEvidenceCopy, ReadableEvidenceField } from "@/lib/discovery-readable-evidence";
 
 type Candidate = SourceHypothesisBrowseCatalogue["candidates"][number];
 const normalize = (value: string) => value.toLowerCase().replace(/[₀₁₂₃₄₅₆₇₈₉]/g, digit => String("₀₁₂₃₄₅₆₇₈₉".indexOf(digit))).trim();
@@ -176,6 +178,7 @@ function CandidateRow({ candidate, riskLabels, goal }: { candidate: Candidate; r
   const [open, setOpen] = useState(false);
   const [detail, setDetail] = useState<SourceHypothesis | null>(null);
   const [card, setCard] = useState<DiscoveryEvidenceCard | null>(null);
+  const [readerCopy, setReaderCopy] = useState<ReadableEvidenceCopy>({});
   const [status, setStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
   const trigger = useRef<HTMLButtonElement>(null);
   const request = useRef<AbortController | null>(null);
@@ -190,16 +193,21 @@ function CandidateRow({ candidate, riskLabels, goal }: { candidate: Candidate; r
     try {
       const [result, dossier] = await Promise.all([readSourceHypothesisDetail(candidate, controller.signal), readResearchEvidenceCard(candidate, controller.signal)]);
       if (current !== generation.current) return;
-      setDetail(result); setCard(dossier); setStatus("ready");
+      if (controller.signal.aborted) throw new Error("Cancelled source evidence read");
+      const copy = await readReadableEvidence(candidate, result, dossier);
+      if (current !== generation.current) return;
+      if (controller.signal.aborted) throw new Error("Cancelled source evidence read");
+      setDetail(result); setCard(dossier); setReaderCopy(copy); setStatus("ready");
     } catch {
       controller.abort();
-      if (current === generation.current) { setDetail(null); setCard(null); setStatus("error"); }
+      if (current === generation.current) { setDetail(null); setCard(null); setReaderCopy({}); setStatus("error"); }
     } finally { clearTimeout(timeout); }
   };
   const close = () => { generation.current++; request.current?.abort(); setOpen(false); if (!detail) setStatus("idle"); trigger.current?.focus(); };
   const toggle = () => { if (open) close(); else { setOpen(true); if (!detail) void load(); } };
   const concerns = candidate.risk_tags.slice(0, 2);
   const assessment = sourceSupport(candidate.research_evidence, goal);
+  const copyText = (field: ReadableEvidenceField, original: string) => readerCopy[field]?.text ?? original;
   return <>
     <tr data-source-candidate={candidate.id} data-formula={candidate.formula}>
       <th scope="row" className="discovery-source-formula"><FormulaDisplay formula={candidate.formula} />
@@ -230,13 +238,14 @@ function CandidateRow({ candidate, riskLabels, goal }: { candidate: Candidate; r
           <p>{goal === "ambient_300K" ? "No direct support for approximately 300 K at ambient pressure. This is an evidence gap, not a claim of physical impossibility." : "All current materials share overlapping C support bounds. Alternative controls limit specific source-response claims; they do not reject an entire composition."}</p>
           <details><summary>Six axes, anchors and unknowns</summary><dl>{Object.entries(assessment.axes).map(([axis, evidence]) => <div key={axis}><dt>{label(axis)} · {label(evidence.anchor)} · {evidence.quantified_for_goal ? "Quantified for target" : "Unquantified for target"}</dt><dd>{evidence.scope}</dd></div>)}</dl></details>
         </section>
+        {Object.keys(readerCopy).length > 0 && <p className="discovery-source-reader-label"><strong>Reader’s summary</strong></p>}
         <div className="discovery-source-dossier">
-          <section><h4>Prior work and novelty boundary</h4><p>{card.prior.case_context}</p><p>{card.prior.claim_boundary}</p>
+          <section><h4>Prior work and novelty boundary</h4><p>{copyText("prior.case_context", card.prior.case_context)}</p><p>{card.prior.claim_boundary}</p>
             <p>{card.prior.sources.map((source, index) => <span key={source.url}>{index > 0 && " · "}<a href={source.url}>{source.title}</a></span>)}</p></section>
-          <section><h4>Decision bottleneck</h4><p>{card.bottleneck.summary}</p>
+          <section><h4>Decision bottleneck</h4><p>{copyText("bottleneck.summary", card.bottleneck.summary)}</p>
             {card.bottleneck.counterevidence.length > 0 && <ul className="discovery-source-counterevidence">{card.bottleneck.counterevidence.map(item => <li key={`${item.comparison_origin}:${item.countercontrol_index}`}><strong>{item.direction === "joint_adverse" ? "Adverse alternative" : "Discordant response"}: {item.control_reference}</strong><p>{item.lambda_unit === "percent" ? "Relative λ change (target vs control)" : "λ target minus control"}: {difference(item.lambda_target_minus_control_range[0])} to {difference(item.lambda_target_minus_control_range[1])} {item.lambda_unit === "percent" ? "%" : ""}; separate source ΔT<sub>c</sub> {difference(item.source_tc_target_minus_control_K)} K.</p><p>{item.scope}</p></li>)}</ul>}
           </section>
-          <section><h4>Proposed contribution and next action</h4><p>{card.proposed_contribution.intervention}</p><p><strong>Next action:</strong> {card.proposed_contribution.next_action}</p><p><strong>Decision rule:</strong> {card.proposed_contribution.falsifier}</p><p>{card.proposed_contribution.new_state_inheritance}</p></section>
+          <section><h4>Proposed contribution and next action</h4><p>{copyText("proposed_contribution.intervention", card.proposed_contribution.intervention)}</p><p><strong>Next action:</strong> {copyText("proposed_contribution.next_action", card.proposed_contribution.next_action)}</p><p><strong>Decision rule:</strong> {card.proposed_contribution.falsifier}</p><p>{card.proposed_contribution.new_state_inheritance}</p></section>
         </div>
         <div className="discovery-source-tags">{detail.risk_tags.map(tag => <span key={tag} className="discovery-source-tag">{riskLabels[tag] ?? label(tag)}</span>)}</div>
         <div className="discovery-source-detail-grid">
@@ -244,9 +253,12 @@ function CandidateRow({ candidate, riskLabels, goal }: { candidate: Candidate; r
             <div><dt>Target / control T<sub>c</sub> · Eliashberg, μ* = 0.1</dt><dd>{number(detail.source_tc.target_K)} / {number(detail.source_tc.control_K)} K · Δ {difference(detail.source_tc.delta_K)} K</dd></div>
             <div><dt>λ difference across ten source smearing rows · target minus control</dt><dd>{detail.lambda_difference.range ? `${difference(detail.lambda_difference.range[0])} to ${difference(detail.lambda_difference.range[1])}` : "Unknown"}</dd></div>
             <div><dt>Source phase / prototype context</dt><dd>{detail.prototype || "Unknown"}</dd></div>
-            <div><dt>Ambient-pressure scope</dt><dd>{detail.ambient_scope}</dd></div>
+            <div><dt>Ambient-pressure scope</dt><dd>{copyText("bottleneck.ambient_scope", detail.ambient_scope)}</dd></div>
           </dl></section>
         </div>
+        {Object.keys(readerCopy).length > 0 && <details className="discovery-source-original-notes"><summary>Original source notes</summary>
+          <dl>{(Object.keys(readerCopy) as ReadableEvidenceField[]).map(field => <div key={field}><dt>{readableFieldLabels[field]}</dt><dd>{readerCopy[field]!.original}</dd></div>)}</dl>
+        </details>}
         <details><summary>Seven criteria and case-specific reasoning</summary><dl className="discovery-source-criteria">
           {Object.entries(detail.seven_criteria).map(([key, text]) => <div key={key}><dt>{label(key)}</dt><dd>{text}</dd></div>)}
         </dl></details>
