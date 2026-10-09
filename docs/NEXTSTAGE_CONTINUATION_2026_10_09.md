@@ -4,6 +4,11 @@ This checkpoint continues the task handoff without replacing earlier receipts.
 It records completed engineering and acquisition work; scientific decisions,
 permissions and execution gates remain separate.
 
+The later [source and compute preparation record](NEXTSTAGE_SOURCE_AND_COMPUTE_PREPARATION_2026_10_09.md)
+adds three more retained source candidates, the complete first-sixteen access
+denominator, pending-review ZIP v5, a read-only replay of sixteen retained compute
+outputs and a finite mesh-budget proposal. Its proposal is not execution approval.
+
 ## Completed local API regression
 
 [Validation v2](data/nextstage-20261009/material-timing-validation-v2.json)

@@ -1,0 +1,443 @@
+{
+  "schema_version": "sclib-finite-mesh-budget-proposal/1.0.0",
+  "proposal_id": "m4-mgb2-mesh-proposal-20261009-v1",
+  "recorded_at": "2026-10-09T10:56:38.815779+00:00",
+  "status": "prepared_pending_explicit_new_budget_and_runtime_admission",
+  "protocol_source_pin": {
+    "file": "calibration-plan.json",
+    "sha256": "f5c36327e95b395f550e6fee1efafde8224accf8f558dad4c9dfa77702f4126c",
+    "bytes": 15943
+  },
+  "state_id": "reference-control:supercell:3e7b6416dccf8a84904856faa1737f85d02304b98af8ca16ed8e44b0db2e5dcc",
+  "material": "Mg4B8",
+  "method": "PBE PAW, fixed geometry; separate from PBEsol initialization",
+  "runtime_id_expected": "qe-7.5-770a0b2-arm64",
+  "scientific_settings": {
+    "ecutwfc_ry": 60,
+    "ecutrho_ry": 480,
+    "smearing": "mv",
+    "degauss_ry": 0.02,
+    "conv_thr_ry": 1e-10,
+    "electron_maxstep": 100,
+    "mixing_beta": 0.3,
+    "engine_max_seconds": 600,
+    "charge": 0,
+    "nspin": 1,
+    "spin_orbit": false,
+    "restart_mode": "from_scratch",
+    "geometry": "fixed"
+  },
+  "mesh_comparison": {
+    "all_three_native_scf_converged_required": true,
+    "energy_window_tolerance_hartree_per_atom": 0.0001,
+    "max_scf_error_strictly_below_hartree_per_atom": 0.0001,
+    "formula": "(max(E_Hartree_per_cell) - min(E_Hartree_per_cell)) / 12",
+    "scope": "Finite sampled energy sensitivity only. Cutoff, smearing, target-observable convergence and the infinite-mesh limit remain unestablished."
+  },
+  "payloads": [
+    {
+      "payload_id": "k4x4x6-initialize",
+      "kind": "qe_initialize",
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "input_artifacts": [
+        {
+          "name": "native.json",
+          "sha256": "c0e74fbc7369839afe871fc83d6654bbe39456e0f5e122570d33ec3b2c848d1f",
+          "bytes": 294
+        },
+        {
+          "name": "sclib_96f06122cbb38b09-check.in",
+          "sha256": "fcce36f4e0ee3d8243f57805894e94b716f5bafc3d591f69ce2a1086fbd64902",
+          "bytes": 1526
+        },
+        {
+          "name": "sclib_96f06122cbb38b09.json",
+          "sha256": "f701a8ea7bff17378d730f0f73a1988e088464eaf5a7d78838d0991e8b032119",
+          "bytes": 18943
+        },
+        {
+          "name": "B.pbe-n-kjpaw_psl.1.0.0.UPF",
+          "sha256": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135",
+          "bytes": 848121
+        },
+        {
+          "name": "Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+          "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+          "bytes": 958554
+        }
+      ],
+      "output_rules": [
+        {
+          "name": "stdout.txt",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "stderr.txt",
+          "max_bytes": 1048576
+        },
+        {
+          "name": "data-file-schema.xml",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "execution.json",
+          "max_bytes": 131072
+        }
+      ],
+      "mpi_ranks": 2,
+      "wall_limit_seconds": 180,
+      "reservation_core_seconds": 360,
+      "max_attempts": 1,
+      "admitted": false,
+      "execution_status": "not_submitted"
+    },
+    {
+      "payload_id": "k4x4x6-scf",
+      "kind": "qe_scf",
+      "mesh": [
+        4,
+        4,
+        6
+      ],
+      "input_artifacts": [
+        {
+          "name": "native.json",
+          "sha256": "9d1814017406e04c8296d6c85edb2d90bf3033fa9ca7f176f04cbcd045fe40ce",
+          "bytes": 282
+        },
+        {
+          "name": "sclib_96f06122cbb38b09.in",
+          "sha256": "3f1bebeda26ff3bde30e66e51c47a6fb781fdb7f616e1f60e73fca528faca8d4",
+          "bytes": 1453
+        },
+        {
+          "name": "sclib_96f06122cbb38b09.json",
+          "sha256": "f701a8ea7bff17378d730f0f73a1988e088464eaf5a7d78838d0991e8b032119",
+          "bytes": 18943
+        },
+        {
+          "name": "B.pbe-n-kjpaw_psl.1.0.0.UPF",
+          "sha256": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135",
+          "bytes": 848121
+        },
+        {
+          "name": "Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+          "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+          "bytes": 958554
+        }
+      ],
+      "output_rules": [
+        {
+          "name": "stdout.txt",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "stderr.txt",
+          "max_bytes": 1048576
+        },
+        {
+          "name": "data-file-schema.xml",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "execution.json",
+          "max_bytes": 131072
+        }
+      ],
+      "mpi_ranks": 2,
+      "wall_limit_seconds": 900,
+      "reservation_core_seconds": 1800,
+      "max_attempts": 1,
+      "admitted": false,
+      "execution_status": "not_submitted"
+    },
+    {
+      "payload_id": "k6x6x10-initialize",
+      "kind": "qe_initialize",
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "input_artifacts": [
+        {
+          "name": "native.json",
+          "sha256": "63c4055ddce2b46b1c1fe467c6e2bf45f083944187dac26556bad4f1b32a49a0",
+          "bytes": 294
+        },
+        {
+          "name": "sclib_933f81a65c0a5d6d-check.in",
+          "sha256": "50cde81aa837207ecefe2ec9005ba99f2ddc767c264bea3d14cd7a7d7852e576",
+          "bytes": 1527
+        },
+        {
+          "name": "sclib_933f81a65c0a5d6d.json",
+          "sha256": "7bb6f8002dd6849f241edce645a6422714982940a706b6da5b6354f8808970d9",
+          "bytes": 18944
+        },
+        {
+          "name": "B.pbe-n-kjpaw_psl.1.0.0.UPF",
+          "sha256": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135",
+          "bytes": 848121
+        },
+        {
+          "name": "Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+          "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+          "bytes": 958554
+        }
+      ],
+      "output_rules": [
+        {
+          "name": "stdout.txt",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "stderr.txt",
+          "max_bytes": 1048576
+        },
+        {
+          "name": "data-file-schema.xml",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "execution.json",
+          "max_bytes": 131072
+        }
+      ],
+      "mpi_ranks": 2,
+      "wall_limit_seconds": 180,
+      "reservation_core_seconds": 360,
+      "max_attempts": 1,
+      "admitted": false,
+      "execution_status": "not_submitted"
+    },
+    {
+      "payload_id": "k6x6x10-scf",
+      "kind": "qe_scf",
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "input_artifacts": [
+        {
+          "name": "native.json",
+          "sha256": "4e3042db02c978e19efe5223b8841a5d2198cad3cba6f89400d005290226d57e",
+          "bytes": 282
+        },
+        {
+          "name": "sclib_933f81a65c0a5d6d.in",
+          "sha256": "3e48ddb0e0ab87a6b01cb7f9abf26004c0fd824be1a61f34d16da7ad74830b63",
+          "bytes": 1454
+        },
+        {
+          "name": "sclib_933f81a65c0a5d6d.json",
+          "sha256": "7bb6f8002dd6849f241edce645a6422714982940a706b6da5b6354f8808970d9",
+          "bytes": 18944
+        },
+        {
+          "name": "B.pbe-n-kjpaw_psl.1.0.0.UPF",
+          "sha256": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135",
+          "bytes": 848121
+        },
+        {
+          "name": "Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+          "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+          "bytes": 958554
+        }
+      ],
+      "output_rules": [
+        {
+          "name": "stdout.txt",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "stderr.txt",
+          "max_bytes": 1048576
+        },
+        {
+          "name": "data-file-schema.xml",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "execution.json",
+          "max_bytes": 131072
+        }
+      ],
+      "mpi_ranks": 2,
+      "wall_limit_seconds": 900,
+      "reservation_core_seconds": 1800,
+      "max_attempts": 1,
+      "admitted": false,
+      "execution_status": "not_submitted"
+    },
+    {
+      "payload_id": "k8x8x12-initialize",
+      "kind": "qe_initialize",
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "input_artifacts": [
+        {
+          "name": "native.json",
+          "sha256": "203aca1734d108d6bf5270c049e3114e2d761b8ab685063597e3edb160188546",
+          "bytes": 294
+        },
+        {
+          "name": "sclib_259e90bba720ba33-check.in",
+          "sha256": "c34ad7f29709000ddda6604951b8a8f58000cde7ab3e45de083f3c7d5a581122",
+          "bytes": 1527
+        },
+        {
+          "name": "sclib_259e90bba720ba33.json",
+          "sha256": "3254d2a004c55a3cdae05c36a9b0a1dbd7924496a605a6a9c580994d4c510af3",
+          "bytes": 18944
+        },
+        {
+          "name": "B.pbe-n-kjpaw_psl.1.0.0.UPF",
+          "sha256": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135",
+          "bytes": 848121
+        },
+        {
+          "name": "Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+          "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+          "bytes": 958554
+        }
+      ],
+      "output_rules": [
+        {
+          "name": "stdout.txt",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "stderr.txt",
+          "max_bytes": 1048576
+        },
+        {
+          "name": "data-file-schema.xml",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "execution.json",
+          "max_bytes": 131072
+        }
+      ],
+      "mpi_ranks": 2,
+      "wall_limit_seconds": 180,
+      "reservation_core_seconds": 360,
+      "max_attempts": 1,
+      "admitted": false,
+      "execution_status": "not_submitted"
+    },
+    {
+      "payload_id": "k8x8x12-scf",
+      "kind": "qe_scf",
+      "mesh": [
+        8,
+        8,
+        12
+      ],
+      "input_artifacts": [
+        {
+          "name": "native.json",
+          "sha256": "174bb61073f11931ed76fd26dfddf286b9eb4bf76fd55a58c9f3a5428730e74c",
+          "bytes": 282
+        },
+        {
+          "name": "sclib_259e90bba720ba33.in",
+          "sha256": "51ca2526c022126ab1451463942bac85518792c7f8840ebba894f01d9ab1f801",
+          "bytes": 1454
+        },
+        {
+          "name": "sclib_259e90bba720ba33.json",
+          "sha256": "3254d2a004c55a3cdae05c36a9b0a1dbd7924496a605a6a9c580994d4c510af3",
+          "bytes": 18944
+        },
+        {
+          "name": "B.pbe-n-kjpaw_psl.1.0.0.UPF",
+          "sha256": "4a41b06dfc361efde113fc033a06b9103e6d09df58f6f167c44b47e5ed082135",
+          "bytes": 848121
+        },
+        {
+          "name": "Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+          "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+          "bytes": 958554
+        }
+      ],
+      "output_rules": [
+        {
+          "name": "stdout.txt",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "stderr.txt",
+          "max_bytes": 1048576
+        },
+        {
+          "name": "data-file-schema.xml",
+          "max_bytes": 8388608
+        },
+        {
+          "name": "execution.json",
+          "max_bytes": 131072
+        }
+      ],
+      "mpi_ranks": 2,
+      "wall_limit_seconds": 900,
+      "reservation_core_seconds": 1800,
+      "max_attempts": 1,
+      "admitted": false,
+      "execution_status": "not_submitted"
+    }
+  ],
+  "max_concurrent_heavy_jobs": 1,
+  "thread_controls": "One thread per MPI rank and BLAS runtime; sampled process-tree resource watchdog, not kernel CPU/memory isolation",
+  "reservation_scope": "Worst-case MPI ranks multiplied by complete per-job wall limits; no credit from shorter historical runs",
+  "proposed_new_campaign_cap_core_seconds": 6480,
+  "proposed_new_campaign_cap_core_hours": 1.8,
+  "existing_campaign": {
+    "cap_core_seconds": 7200,
+    "reserved_core_seconds": 6780,
+    "remaining_core_seconds": 420,
+    "unchanged": true,
+    "additional_reservations_in_this_task": 0
+  },
+  "existing_coarse_result_reuse": "May be considered after exact input/runtime/source identity review; all six reservations remain in this conservative proposed cap. No new execution claimed for reused results.",
+  "stop_rules": [
+    "Initialize and inspect actual resources before each dependent SCF",
+    "No automatic solver retry or budget replenishment",
+    "Stop on missing identities, failed initialization, resources, convergence, capture or cleanup",
+    "Original engine max_seconds stays fixed; any change requires a new reviewed input/protocol version",
+    "No job after campaign cap or node capability expires"
+  ],
+  "pending_gates": [
+    "explicit_new_finite_budget",
+    "old_worker_drain_and_stop_with_normal_admin_authentication",
+    "all_old_attempts_and_outputs_reconciled",
+    "no_owned_MPI_processes_and_exclusive_worker_handoff",
+    "actual_installation_runtime_identity_and_current_node_grants",
+    "fresh_available_memory_disk_and_job_resource_envelopes",
+    "authenticated_per_job_admission_and_result_custody"
+  ],
+  "budget_approved": false,
+  "runtime_grant_verified": false,
+  "jobs_submitted": 0,
+  "solver_started": false,
+  "scientific_acceptance": false,
+  "tc_calculated": false,
+  "model_training_started": false,
+  "proposed_resource_envelope": {
+    "cpu_cores_per_job": 2,
+    "memory_bytes_per_job": 12884901888,
+    "minimum_available_memory_bytes_before_launch": 25769803776,
+    "max_scratch_bytes": 4294967296,
+    "minimum_free_disk_bytes_before_launch": 149199387648,
+    "scope": "Proposal retains the higher prior node disk floor; fresh node grant and actual readings remain required."
+  }
+}

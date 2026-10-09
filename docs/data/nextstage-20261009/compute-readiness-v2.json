@@ -1,0 +1,382 @@
+{
+  "schema_version": "sclib-nextstage-compute-readiness/2.0.0",
+  "recorded_at": "2026-10-09T10:59:45.665604+00:00",
+  "supersedes": "compute-readiness-v1.json",
+  "input_pins": [
+    {
+      "file": "compute-custody-exports-replay-20261009T105700Z.json",
+      "bytes": 20943,
+      "sha256": "e79e0edbba5cc6a011012d54143e0b1c032608eacf6747ba5cd35a9e96dfae24"
+    },
+    {
+      "file": "compute-custody-rank-replay-20261009T105700Z.json",
+      "bytes": 55063,
+      "sha256": "c9fbddac632a5725188c74ab15de7bc2bb2a854819f6bd8fcbdb4c9aa9c356bf"
+    },
+    {
+      "file": "compute-chain-refresh-20261009T104952Z.json",
+      "bytes": 11039,
+      "sha256": "eea2378c51efa8c5b51226978adbb1e7499e88cc3a5b5de840feb30666d5476b"
+    }
+  ],
+  "retained_export_replay": {
+    "jobs": 4,
+    "output_artifacts": 16,
+    "initializations": 1,
+    "SCFs": 3,
+    "complete_capture": true,
+    "source_revision": "cce30e7d6ed5e14acb8cf0cb7ef07c8425b36873",
+    "harness_sha256": "d107c95e798df7ca3c9f175f33f4774950f1bb96e4915e6b8c50e2fabc586788",
+    "rows": [
+      {
+        "job_id": "m4-mgb2-parent-k4-init-20261008-v1",
+        "kind": "qe_initialize",
+        "runtime_id": "qe-7.5-770a0b2-arm64",
+        "export_file_sha256": "b7d542acbe37466bb64a22dd77a95f577e6ddff9343076347cd3fe12962bf3b2",
+        "runtime_config_file_sha256": "97beacd94e6a2aa3ae62dffe33f9f56cf6ea36e0c29398c0076b5250c3530018",
+        "job_spec_sha256": "9e95b615c1d4fb3298651677deb748d957db2e9218343909be00a98d2df50af4",
+        "input_manifest_sha256": "670b353353fa66c5df0ba97c9656145e44c571dcb50ef8b84a317cd4182a0852",
+        "receipt_sha256": "b424be8d695e10ea1cb76e20ba9a0d4df5d05a78187f135c3a21079eac65b8c6",
+        "exported_outputs": [
+          {
+            "name": "data-file-schema.xml",
+            "sha256": "8be944bb31e194b2de704b4c2c6742ec08d47e70376e4cafe2c982f524f393e6",
+            "bytes": 22157
+          },
+          {
+            "name": "execution.json",
+            "sha256": "6651555cd35f4b0195dcc5480230c738033a2fb3d0add3b716eee940cabf059d",
+            "bytes": 3478
+          },
+          {
+            "name": "stderr.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0
+          },
+          {
+            "name": "stdout.txt",
+            "sha256": "66c7971fa5e22119e28640e91a3c784a3225e368ac9c4df463cce28754879198",
+            "bytes": 8798
+          }
+        ]
+      },
+      {
+        "job_id": "m4-mgb2-parent-k4-scf-r1-20261008-v1",
+        "kind": "qe_scf",
+        "runtime_id": "qe-7.5-770a0b2-arm64",
+        "export_file_sha256": "9485162f58e84a2ff58e24f3af4ee250053d7065668d56c8d9b44ad535fda220",
+        "runtime_config_file_sha256": "97beacd94e6a2aa3ae62dffe33f9f56cf6ea36e0c29398c0076b5250c3530018",
+        "job_spec_sha256": "47e026b9caf2e671b9f61821eb4aab42a2d70cb747b3a92ded210fd2bbda5fd0",
+        "input_manifest_sha256": "a1f7992bbf9740521f64bd168ba66751ce0dcfd73522785313a3da2027622729",
+        "receipt_sha256": "cdc14cfefed734b835bbff0a06f82f02db51e2fb6e564714e0e26f79824c920c",
+        "exported_outputs": [
+          {
+            "name": "data-file-schema.xml",
+            "sha256": "3a6a141427332e82e5b15a1a19f79df23bc9b890ab5f8bf8c37c4fe0dddfb396",
+            "bytes": 94023
+          },
+          {
+            "name": "execution.json",
+            "sha256": "0e51a41145458fd7d374149030ab773230e30cec57e6e4c36ef23476eb56f933",
+            "bytes": 3469
+          },
+          {
+            "name": "stderr.txt",
+            "sha256": "c216ca0be5ee6f7b99289b48d4330351868078bfb4a548973030a4ffff5a8f25",
+            "bytes": 120
+          },
+          {
+            "name": "stdout.txt",
+            "sha256": "d8f66f4b7855a4fd43d462b420d5d398ab55234c26537f6dcb35c06348827d9c",
+            "bytes": 29090
+          }
+        ]
+      },
+      {
+        "job_id": "m4-mgb2-parent-k4-scf-r2-20261008-v1",
+        "kind": "qe_scf",
+        "runtime_id": "qe-7.5-770a0b2-arm64",
+        "export_file_sha256": "760d276604b721681a25734d298c26a4a5cdad5b17c5a95a65feab0f6975a47a",
+        "runtime_config_file_sha256": "97beacd94e6a2aa3ae62dffe33f9f56cf6ea36e0c29398c0076b5250c3530018",
+        "job_spec_sha256": "c9786e64b8d44d388a93b57379ed139b6b356a274ea7e8a65802b8e972a33504",
+        "input_manifest_sha256": "a1f7992bbf9740521f64bd168ba66751ce0dcfd73522785313a3da2027622729",
+        "receipt_sha256": "9f65bafc57ee95b4e8ec628b84642adca6087e36e9abfb4508e467b07fcfd1dc",
+        "exported_outputs": [
+          {
+            "name": "data-file-schema.xml",
+            "sha256": "f0fb525b5035515a1e6a6eacc8052f8e95a7bd5db3fc2ba8d6c80a6e732a41fd",
+            "bytes": 94168
+          },
+          {
+            "name": "execution.json",
+            "sha256": "c96189598e97c29b1410db110bc7493b908833236e68a3c03d8bfbe5a9b15024",
+            "bytes": 3470
+          },
+          {
+            "name": "stderr.txt",
+            "sha256": "02c7db9b8642b27ae958dd3e05bb35357248e1b2c051c89f06e602f927fdfece",
+            "bytes": 202
+          },
+          {
+            "name": "stdout.txt",
+            "sha256": "7d58cd3c0777247a09b2d18307202de6384720d6d1804d14222b6efe41c0ee4e",
+            "bytes": 28722
+          }
+        ]
+      },
+      {
+        "job_id": "m4-mgb2-parent-k4-scf-r4-20261008-v1",
+        "kind": "qe_scf",
+        "runtime_id": "qe-7.5-770a0b2-arm64",
+        "export_file_sha256": "04fcd40b251643907e92045e7546fa3616edef41b8ee37566da6e1b429a4557f",
+        "runtime_config_file_sha256": "97beacd94e6a2aa3ae62dffe33f9f56cf6ea36e0c29398c0076b5250c3530018",
+        "job_spec_sha256": "6cc035303270d496eee68e247b8973324abd903b27c0f9375ab8031bd39ff1ed",
+        "input_manifest_sha256": "a1f7992bbf9740521f64bd168ba66751ce0dcfd73522785313a3da2027622729",
+        "receipt_sha256": "67fa3de996bb8dc75ccff89d194d69944969c8a65298b530145987b07471a2ca",
+        "exported_outputs": [
+          {
+            "name": "data-file-schema.xml",
+            "sha256": "42e118d84bacff2eba90295a17a379a01d2ab733961874bcdcefa26eb684b5a6",
+            "bytes": 94168
+          },
+          {
+            "name": "execution.json",
+            "sha256": "2d4a1d53bfe27533440a76fdf67ec8ee3c085b03f54d821f3014634dec65a73f",
+            "bytes": 3470
+          },
+          {
+            "name": "stderr.txt",
+            "sha256": "8a1765b579b5dcbeaa4310905c30c86fb5855facc1eed9e4da6da46e71fb7093",
+            "bytes": 366
+          },
+          {
+            "name": "stdout.txt",
+            "sha256": "990234bb810b7dfb036b475b7c66e6c06bc69bacf0f6cd15aec4d5a2cbc678b5",
+            "bytes": 29352
+          }
+        ]
+      }
+    ]
+  },
+  "canonical_reading_replay": {
+    "status": "predeclared_checks_passed",
+    "metrics": {
+      "energy_window_hartree_per_atom": 3.941143707682689e-12,
+      "energy_window_within_tolerance": true,
+      "force_max_abs_component_difference": 2.4914198309862027e-07,
+      "force_within_tolerance": true,
+      "max_scf_error_hartree_per_atom": 7.957364286940383e-13,
+      "scf_error_strictly_below_tolerance": true,
+      "stress_max_abs_component_difference": 2.3194743181690405e-08,
+      "stress_within_tolerance": true
+    },
+    "thresholds": {
+      "mesh": {
+        "all_three_native_scf_converged_required": true,
+        "energy_window_tolerance_hartree_per_atom": 0.0001,
+        "formula": "(max(E_Hartree_per_cell) - min(E_Hartree_per_cell)) / 12",
+        "max_scf_error_strictly_below_hartree_per_atom": 0.0001,
+        "scope": "Finite sampled energy sensitivity only. Cutoff, smearing, target-observable convergence and the infinite-mesh limit remain unestablished."
+      },
+      "ranks": {
+        "all_native_scf_converged_required": true,
+        "energy_range_tolerance_hartree_per_atom": 1e-07,
+        "force_stress_scope": "Reproducibility across rank counts only; not geometry or force/stress convergence.",
+        "max_scf_error_strictly_below_hartree_per_atom": 1e-07,
+        "maximum_force_component_difference_hartree_per_bohr": 1e-05,
+        "maximum_stress_component_difference_hartree_per_bohr3": 1e-06,
+        "missing_nonfinite_or_unmatched_output": "incomplete; never pass",
+        "performance_measurement": "One observation per rank count; report elapsed time, core-seconds, RSS sampling and limits. A noisy timing result is not a reliable speedup claim.",
+        "ranks": [
+          1,
+          2,
+          4
+        ],
+        "reference_ranks": 2,
+        "same_input_upf_runtime_required": true,
+        "selection": "Among passing configurations prefer measured lower wall time within the agreed core-second and memory envelope; if timing differences are ambiguous prefer 2 ranks, not an invented speedup."
+      }
+    },
+    "raw_XML_reparsed_in_this_task": false
+  },
+  "chain": [
+    {
+      "number": 155,
+      "head_revision": "d19e452e26c1bdda341d71be789f22a1f2fcd22e",
+      "base": "main",
+      "state": "OPEN",
+      "draft": false,
+      "checks": [
+        {
+          "name": "transport-contract",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "CodeQL (javascript-typescript)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "API (pytest)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "CodeQL (python)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Secret history scan",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Migration (empty database to head)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Locked dependency audit",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Ingestion (pytest, no production ingest)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Vulnerability and configuration scan",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Frontend (test + pnpm build)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Frontend (Playwright mobile E2E)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "Operations (SLO and monitoring config)",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "name": "CodeQL",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    {
+      "number": 156,
+      "head_revision": "bffd29ad0a79c3ea0f8f2b09ca97d32dc30d188d",
+      "base": "codex/sclib-mini-integration-20261008",
+      "state": "OPEN",
+      "draft": true,
+      "checks": [
+        {
+          "name": "transport-contract",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    {
+      "number": 160,
+      "head_revision": "7f9d5eaeb9c5e2bfdda623a8af14fa64f8a53515",
+      "base": "codex/sclib-pbesol-preparation-20261008",
+      "state": "OPEN",
+      "draft": true,
+      "checks": [
+        {
+          "name": "transport-contract",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    {
+      "number": 161,
+      "head_revision": "9e93242a4d29306493edf3db5daad2e828dc7361",
+      "base": "codex/sclib-pbesol-input-binding-20261009",
+      "state": "OPEN",
+      "draft": true,
+      "checks": [
+        {
+          "name": "transport-contract",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    {
+      "number": 162,
+      "head_revision": "84c1f4104854eb7be568512f09524eb987a52311",
+      "base": "codex/sclib-pbesol-job-envelope-20261009",
+      "state": "OPEN",
+      "draft": true,
+      "checks": [
+        {
+          "name": "transport-contract",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    {
+      "number": 163,
+      "head_revision": "2141fae2a122b496c20fe8caadf62fab17e3e29e",
+      "base": "codex/sclib-pbesol-init-reader-20261009",
+      "state": "OPEN",
+      "draft": true,
+      "checks": [
+        {
+          "name": "transport-contract",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    {
+      "number": 164,
+      "head_revision": "cce30e7d6ed5e14acb8cf0cb7ef07c8425b36873",
+      "base": "codex/sclib-pbesol-result-custody-20261009",
+      "state": "OPEN",
+      "draft": true,
+      "checks": [
+        {
+          "name": "transport-contract",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS"
+        }
+      ]
+    }
+  ],
+  "node_state_scope": "Read-only retained 10:00 UTC process/status capture and completed remote-task report; not a live authenticated node query.",
+  "last_retained_node_observation_utc": "2026-10-09T10:00:46.149618+00:00",
+  "old_worker_running_in_retained_capture": true,
+  "old_worker_stop_verified": false,
+  "normal_admin_authentication_pending_in_remote_task": true,
+  "new_worker_started_in_this_task": false,
+  "runtime_installation_attested": false,
+  "exclusive_runtime_grant_verified": false,
+  "existing_budget": {
+    "cap_core_seconds": 7200,
+    "reserved_core_seconds": 6780,
+    "remaining_core_seconds": 420,
+    "unchanged": true
+  },
+  "new_budget_proposal": "finite-mesh-budget-proposal-v1.json",
+  "new_scientific_jobs_submitted": 0,
+  "soak24h_accepted": false,
+  "scientific_acceptance": false,
+  "tc_calculated": false,
+  "scope": "Previously retained coordinator export/canonical-reading consistency only; no cryptographic runtime attestation, live grant, new execution or scientific approval."
+}

@@ -1,0 +1,873 @@
+{
+  "schema_version": "sclib-material-source-acquisition/2.0.0",
+  "recorded_at": "2026-10-09T10:59:45.665604+00:00",
+  "input_pins": [
+    {
+      "file": "source-acquisition-v1.json",
+      "bytes": 82709,
+      "sha256": "a8229d3afb022c02293478013a90801d582d8ce193e46764884e2001e70e792f",
+      "archive_id": "material-source-acquisition-second-20261009T104746Z"
+    },
+    {
+      "file": "source-acquisition-v1.json",
+      "bytes": 39791,
+      "sha256": "49697d0d1f2ba7cf505a4bd540f9ef3e82e745c1076a68ea6f1af7c915fd35bc",
+      "archive_id": "material-publisher-access-20261009T104852Z"
+    },
+    {
+      "file": "material-source-acquisition-v1.json",
+      "bytes": 38775,
+      "sha256": "f09c11d5d6a45a2b8fd3a673b50bff18af7d9b0c874d8c365da58036d8eec685"
+    },
+    {
+      "file": "material-source-acquisition-queue-v3.json",
+      "bytes": 284124,
+      "sha256": "da62f934f29d52fd25cf1dc75d83f79a7cd7005de577a74c3fabae7c35d222c5"
+    }
+  ],
+  "prior_receipt": "material-source-acquisition-v1.json",
+  "newly_retained_rows": [
+    {
+      "case_id": "material-source-006",
+      "material_id": "mat:la4ni3o9.99",
+      "formula": "La4Ni3O9.99",
+      "source_revision": "2309.09462v4",
+      "pdf_bytes": 12297652,
+      "pdf_sha256": "4f45c314ec6617bd85507451f5936debfb1599abd1a41dd1330ca260198b93bb",
+      "pdf_pages": 10,
+      "metadata": {
+        "citation_title": "Theoretical analysis on the possibility of superconductivity in a trilayer Ruddlesden-Popper nickelate La$_4$Ni$_3$O$_{10}$ under pressure and its experimental examination: comparison with La$_3$Ni$_2$O$_7$",
+        "citation_doi": "10.1103/PhysRevB.109.144511",
+        "citation_date": "2023/09/18",
+        "citation_online_date": "2024/02/29",
+        "citation_pdf_url": "https://arxiv.org/pdf/2309.09462",
+        "citation_arxiv_id": "2309.09462"
+      },
+      "license_uris": [
+        "http://creativecommons.org/licenses/by-nc-nd/4.0/"
+      ],
+      "related_doi_matches": true,
+      "current_arxiv_identity_matches": true,
+      "fixed_arxiv_identity_matches": true,
+      "current_metadata_receipt": {
+        "url": "https://arxiv.org/abs/2309.09462",
+        "captured_at": "2026-10-09T10:47:46.979519+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/2309.09462",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 49664,
+        "sha256": "5d215be21c089368c0ed10aa5403a719d1d48c1d9d9d5acdb28fa7c579bb0747",
+        "elapsed_seconds": 0.429559167008847
+      },
+      "fixed_metadata_receipt": {
+        "url": "https://arxiv.org/abs/2309.09462v4",
+        "captured_at": "2026-10-09T10:47:50.425081+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/2309.09462v4",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 49676,
+        "sha256": "627741b008bb48603ed89d078ff47c5405dbad88e03c9e6345f72f0ea7dc3434",
+        "elapsed_seconds": 0.5762817499926314
+      },
+      "pdf_receipt": {
+        "url": "https://arxiv.org/pdf/2309.09462v4",
+        "captured_at": "2026-10-09T10:47:54.017560+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/pdf/2309.09462v4",
+        "content_type": "application/pdf",
+        "bytes": 12297652,
+        "sha256": "4f45c314ec6617bd85507451f5936debfb1599abd1a41dd1330ca260198b93bb",
+        "elapsed_seconds": 7.136918749893084
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 5088,
+          "text_sha256": "f0f48e20e936849a408191047c72f5cab35d6f6efdb73faeaabcfe28085a325f"
+        },
+        {
+          "page": 2,
+          "text_bytes": 6192,
+          "text_sha256": "8179fd5ae1d473b93412c35a90fc6cbd4020249a262689361569f926427d728c"
+        },
+        {
+          "page": 3,
+          "text_bytes": 5713,
+          "text_sha256": "ef3d786833704192a23aaeea72ef89c3641986150a91cca28c3ce6f2355c9064"
+        },
+        {
+          "page": 4,
+          "text_bytes": 4182,
+          "text_sha256": "876f3a009a19430d1b80e53c176084a98969b359291a6f165f1cd1accf88569e"
+        },
+        {
+          "page": 5,
+          "text_bytes": 1878,
+          "text_sha256": "bebd7477e2ea4b0ce3a89c05113dd096c5d6b7d5a07e6cd3700548015714c7ae"
+        },
+        {
+          "page": 6,
+          "text_bytes": 4788,
+          "text_sha256": "5091959bcbdb8bbb129ce037e25fd9bc5a74334196d3b83cd36a2a47f911e9ec"
+        },
+        {
+          "page": 7,
+          "text_bytes": 2745,
+          "text_sha256": "b4098128e754f797da1faa91e6bc885c9508c7c3b8dfcd6808a1ac428a4a77ab"
+        },
+        {
+          "page": 8,
+          "text_bytes": 4816,
+          "text_sha256": "48dbe9b07173c90d75154ed93e4b797359106f4147cd17e94fb8d0ccf6cd0801"
+        },
+        {
+          "page": 9,
+          "text_bytes": 5482,
+          "text_sha256": "100e25693e9c8c2a7b3ac59a3fa62fc9e4f629d18449ecb48b2d8e5c01feaab4"
+        },
+        {
+          "page": 10,
+          "text_bytes": 1272,
+          "text_sha256": "08905bd8d937546a034ffef8360b406e3ee412a1c073ea550cf53b0e415c4a4c"
+        }
+      ],
+      "fulltext_retained": true,
+      "title_page_visual_check": "AI identity/navigation only",
+      "original_source_inspected_in_this_task": false,
+      "material_Result_association": null,
+      "accepted_Work_root_binding": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevB.109.144511",
+      "historical_selected_result_id": "legacy-result:575b0f079349106ca62b042e5602c02142d387af0c99ff57d14fe40bc0530d9a",
+      "historical_public_response_pin": {
+        "file": "006-3bf2ecc3e480.json",
+        "bytes": 93252,
+        "sha256": "40447330c937cff6578db220af0dc8b51c917ce87a0eebb863b854927762c335"
+      }
+    },
+    {
+      "case_id": "material-source-014",
+      "material_id": "mat:nb0.8b0.2",
+      "formula": "Nb0.8B0.2",
+      "source_revision": "1708.08570v1",
+      "pdf_bytes": 1479894,
+      "pdf_sha256": "fde840c950bef4282553ca6009d249a0edcff5e82f374184225f43b5dda5a445",
+      "pdf_pages": 7,
+      "metadata": {
+        "citation_title": "Absence of superconductivity in NbB",
+        "citation_date": "2017/08/29",
+        "citation_online_date": "2017/08/29",
+        "citation_pdf_url": "https://arxiv.org/pdf/1708.08570",
+        "citation_arxiv_id": "1708.08570"
+      },
+      "license_uris": [
+        "http://arxiv.org/licenses/nonexclusive-distrib/1.0/"
+      ],
+      "related_doi_matches": null,
+      "current_arxiv_identity_matches": true,
+      "fixed_arxiv_identity_matches": true,
+      "current_metadata_receipt": {
+        "url": "https://arxiv.org/abs/1708.08570",
+        "captured_at": "2026-10-09T10:48:27.350052+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/1708.08570",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 43266,
+        "sha256": "4a57f4c91a5c98945948030ebd03ae5cbc357258d4269758a0c7fb2d9540e179",
+        "elapsed_seconds": 0.6465942920185626
+      },
+      "fixed_metadata_receipt": {
+        "url": "https://arxiv.org/abs/1708.08570v1",
+        "captured_at": "2026-10-09T10:48:31.013437+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/1708.08570v1",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 43278,
+        "sha256": "b83b6e40fd9afe28bb64fa623b2446dcf7a22bd342d4e9e2a06ed92d3787eac5",
+        "elapsed_seconds": 0.5262431249720976
+      },
+      "pdf_receipt": {
+        "url": "https://arxiv.org/pdf/1708.08570v1",
+        "captured_at": "2026-10-09T10:48:34.551933+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/pdf/1708.08570v1",
+        "content_type": "application/pdf",
+        "bytes": 1479894,
+        "sha256": "fde840c950bef4282553ca6009d249a0edcff5e82f374184225f43b5dda5a445",
+        "elapsed_seconds": 2.1580364169785753
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 5300,
+          "text_sha256": "c2460b58d98ca1c3b3d3276f191c1b9bd43268d6337e887d7bbb22708ea235a4"
+        },
+        {
+          "page": 2,
+          "text_bytes": 4994,
+          "text_sha256": "bbc9c2ee34279a15f186f8669a40b6cedcb668cacb31b6a4feaf880c39057117"
+        },
+        {
+          "page": 3,
+          "text_bytes": 4328,
+          "text_sha256": "6dc4e4f76d1b7e3aa6c5178d2094b6cdf067685df2cbb4ff27841a02a5999d4b"
+        },
+        {
+          "page": 4,
+          "text_bytes": 3003,
+          "text_sha256": "9b2b1445d69b3b0d041a512a145e6d71e40b5b903c1c7338ec532a07e64d90fb"
+        },
+        {
+          "page": 5,
+          "text_bytes": 4871,
+          "text_sha256": "2dcd6fa4686be19779b25aa91258fb29e062c8e5745df29c5317e1cf976e558f"
+        },
+        {
+          "page": 6,
+          "text_bytes": 5103,
+          "text_sha256": "514810c7390a4c55df3010118c63eebeace7495535bc796ab37bee76f816357a"
+        },
+        {
+          "page": 7,
+          "text_bytes": 3329,
+          "text_sha256": "d2164120e85c02cc3fba8d6ffcf66c931cce761e79c1d1ab6dc5a738c1605739"
+        }
+      ],
+      "fulltext_retained": true,
+      "title_page_visual_check": "AI identity/navigation only",
+      "original_source_inspected_in_this_task": false,
+      "material_Result_association": null,
+      "accepted_Work_root_binding": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevMaterials.1.044803",
+      "historical_selected_result_id": "legacy-result:55b8d7a5b8107c6eded9af506d26e3b36e3bf1d2942dd0c04360ba041f62d568",
+      "historical_public_response_pin": {
+        "file": "014-bb5abc87b296.json",
+        "bytes": 36059,
+        "sha256": "5ddbcd309f8b9a4b8e2460b5d317d20b3856fbd4c67e90dbea329d7364fc3e70"
+      }
+    },
+    {
+      "material_id": "mat:bswnt",
+      "source_revision": "author-copy:pdf-sha256:ce75e1bbd3e05a336f55f1ae7a2ce391c5030163f0bef550775d765cf7679a94",
+      "expected_doi": "10.1103/PhysRevLett.101.027002",
+      "pdf_sha256": "ce75e1bbd3e05a336f55f1ae7a2ce391c5030163f0bef550775d765cf7679a94",
+      "pdf_bytes": 1122170,
+      "pdf_pages": 4,
+      "pdf_receipt": {
+        "url": "https://www.ee.aoyama.ac.jp/haru-lab/paper/Superconductivity%20in%20Thin%20Films%20of%20Boron-Doped%20Carbon%20Nanotubes.pdf",
+        "captured_at": "2026-10-09T10:49:39.918536+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://www.ee.aoyama.ac.jp/haru-lab/paper/Superconductivity%20in%20Thin%20Films%20of%20Boron-Doped%20Carbon%20Nanotubes.pdf",
+        "bytes": 1122170,
+        "sha256": "ce75e1bbd3e05a336f55f1ae7a2ce391c5030163f0bef550775d765cf7679a94",
+        "content_type": "application/pdf",
+        "elapsed_seconds": 3.7267388330074027
+      },
+      "expected_doi_literal_on_title_page": true,
+      "case_id": "material-source-007",
+      "formula": "B-SWNT",
+      "license_uris": [],
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 5356,
+          "text_sha256": "6e39bd973c53749eaff36c86959c2f9ca79db1d460cdf4116ae6974005a80b53"
+        },
+        {
+          "page": 2,
+          "text_bytes": 4241,
+          "text_sha256": "2fd4aaddf1f86494245ad7ee0ae48725e5c9bf7dc789e82182b0e500d9e7970f"
+        },
+        {
+          "page": 3,
+          "text_bytes": 3281,
+          "text_sha256": "3c23741f7bfe0bcbae95c21af3e6c41a67cc8ac645f82b0eb9c523430b029a9b"
+        },
+        {
+          "page": 4,
+          "text_bytes": 4623,
+          "text_sha256": "20e38683a945d95ab886052c0dd5ce02167a7d90df3285e93b4d0ab7578af078"
+        }
+      ],
+      "version_basis": "Publisher version markers and literal DOI observed in public author-hosted PDF; no related-arXiv or rights inference",
+      "fulltext_retained": true,
+      "title_page_visual_check": "AI identity/navigation only",
+      "original_source_inspected_in_this_task": false,
+      "material_Result_association": null,
+      "accepted_Work_root_binding": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevLett.101.027002",
+      "historical_selected_result_id": "legacy-result:3c5e978bcebdfbc8bd246d2f6eb01f9767890a6a3cab16b4188595f8ad2134ff",
+      "historical_public_response_pin": {
+        "file": "007-dd211473ff29.json",
+        "bytes": 45194,
+        "sha256": "6cc3bcb52c13da768ec9672dfff100f1ffe047d39d07f53f17d2c36e242ac3c2"
+      }
+    }
+  ],
+  "new_source_review_questions": [
+    {
+      "material_id": "mat:la4ni3o9.99",
+      "status": "review_question_only",
+      "questions": [
+        "Separate the experimental oxygen-specific samples and onset criterion from the calculated idealized structural model.",
+        "Verify whether the inherited structure and lattice descriptors belong to the same pressure/sample state as the inherited experimental Tc.",
+        "Bind the exact preprint v4 versus journal publication revision before accepting a Result association."
+      ],
+      "navigation": [
+        {
+          "page": 3,
+          "page_text_sha256": "ef3d786833704192a23aaeea72ef89c3641986150a91cca28c3ce6f2355c9064",
+          "char_start": 93,
+          "char_end": 103,
+          "span_text_sha256": "13fb3824a781767c3df1a629cba964ddb8de35e95738cda48f6ad73ae09cf8a3",
+          "purpose": "calculated pressure/structure context",
+          "scope": "Extracted-text navigation only; inspect full PDF context; no approved scientific entailment"
+        },
+        {
+          "page": 6,
+          "page_text_sha256": "5091959bcbdb8bbb129ce037e25fd9bc5a74334196d3b83cd36a2a47f911e9ec",
+          "char_start": 30,
+          "char_end": 50,
+          "span_text_sha256": "c4ccb8fc4dce47ff66301618245701beb39ea36263161dcfc440a82bfeb9ac95",
+          "purpose": "experimental section context",
+          "scope": "Extracted-text navigation only; inspect full PDF context; no approved scientific entailment"
+        },
+        {
+          "page": 7,
+          "page_text_sha256": "b4098128e754f797da1faa91e6bc885c9508c7c3b8dfcd6808a1ac428a4a77ab",
+          "char_start": 803,
+          "char_end": 811,
+          "span_text_sha256": "cea67a9a908c1a452d759ee1674faf27ee88ea945107957d1d88bc65bfeb49fe",
+          "purpose": "pressure and figure-caption context",
+          "scope": "Extracted-text navigation only; inspect full PDF context; no approved scientific entailment"
+        }
+      ],
+      "scientific_acceptance": false,
+      "canonical_changes": 0,
+      "reviewers": [],
+      "decision": null
+    },
+    {
+      "material_id": "mat:nb0.8b0.2",
+      "status": "review_question_only",
+      "questions": [
+        "Bind the nominal Nb0.8B0.2, Nb-B-20 as-cast sample and Table I onset criterion to the inherited Result.",
+        "Distinguish nominal sample composition from identified mixed phases and the phase responsible for the superconducting signal.",
+        "Verify sample-specific phase fractions; the minority-phase statement for NbB samples cannot silently be assigned to every Nb-rich sample.",
+        "The arXiv metadata declares no related DOI; review the preprint/journal identity rather than treating matching titles as accepted Work binding."
+      ],
+      "navigation": [
+        {
+          "page": 3,
+          "page_text_sha256": "6dc4e4f76d1b7e3aa6c5178d2094b6cdf067685df2cbb4ff27841a02a5999d4b",
+          "char_start": 924,
+          "char_end": 933,
+          "span_text_sha256": "9090e4fc0af2f69a8428d05df3b616458feb9c87041ac84596e307b5c33a4c1e",
+          "purpose": "nominal composition/sample table row",
+          "scope": "Extracted-text navigation only; inspect full PDF context; no approved scientific entailment"
+        },
+        {
+          "page": 3,
+          "page_text_sha256": "6dc4e4f76d1b7e3aa6c5178d2094b6cdf067685df2cbb4ff27841a02a5999d4b",
+          "char_start": 1064,
+          "char_end": 1081,
+          "span_text_sha256": "0ae2faa5ed59b34850c64866da59d304c3662091b1febececa006b662696d55a",
+          "purpose": "table measurement-criterion footnote",
+          "scope": "Extracted-text navigation only; inspect full PDF context; no approved scientific entailment"
+        },
+        {
+          "page": 6,
+          "page_text_sha256": "514810c7390a4c55df3010118c63eebeace7495535bc796ab37bee76f816357a",
+          "char_start": 1495,
+          "char_end": 1503,
+          "span_text_sha256": "3e48590cc1d30a5602ce809dd3c8a5f8a9133bba3f02a2fc2fc995574facac66",
+          "purpose": "phase attribution and conclusions context",
+          "scope": "Extracted-text navigation only; inspect full PDF context; no approved scientific entailment"
+        }
+      ],
+      "scientific_acceptance": false,
+      "canonical_changes": 0,
+      "reviewers": [],
+      "decision": null
+    },
+    {
+      "material_id": "mat:bswnt",
+      "status": "review_question_only",
+      "questions": [
+        "Bind the film ensemble, dopant concentration, homogeneity and magnetization protocol to the inherited Result.",
+        "Distinguish ZFC/FC observations and samples from theoretical single-tube electronic-structure calculations.",
+        "Public author hosting and DOI identity do not establish task-specific evaluation, redistribution or training permission."
+      ],
+      "navigation": [
+        {
+          "page": 1,
+          "page_text_sha256": "6e39bd973c53749eaff36c86959c2f9ca79db1d460cdf4116ae6974005a80b53",
+          "char_start": 1060,
+          "char_end": 1076,
+          "span_text_sha256": "87f4247c288fceb66ac992729785c6a15f8e8cc6d27db7107b558928187b3132",
+          "purpose": "sample/ensemble identity",
+          "scope": "Extracted-text navigation only; inspect full PDF context; no approved scientific entailment"
+        },
+        {
+          "page": 2,
+          "page_text_sha256": "2fd4aaddf1f86494245ad7ee0ae48725e5c9bf7dc789e82182b0e500d9e7970f",
+          "char_start": 132,
+          "char_end": 135,
+          "span_text_sha256": "aec5a695c96fe6eb156f260f71d90ce9428529d7b4fd7691cebff247134029ab",
+          "purpose": "magnetization/transition context",
+          "scope": "Extracted-text navigation only; inspect full PDF context; no approved scientific entailment"
+        }
+      ],
+      "scientific_acceptance": false,
+      "canonical_changes": 0,
+      "reviewers": [],
+      "decision": null
+    }
+  ],
+  "first_batch_status": [
+    {
+      "material_id": "mat:mosr2eu1.5ce0.5cu2o10",
+      "legacy_rank": 3,
+      "historical_selected_paper_id": "arxiv:cond-mat/0304552",
+      "fulltext_candidate_retained": true,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "source_revision_retained": "cond-mat/0304552v1"
+    },
+    {
+      "material_id": "mat:la4ni3o9.99",
+      "legacy_rank": 6,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevB.109.144511",
+      "fulltext_candidate_retained": true,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "source_revision_retained": "2309.09462v4",
+      "publisher_access": {
+        "expected_doi": "10.1103/PhysRevB.109.144511",
+        "publisher_receipt": {
+          "url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.144511",
+          "captured_at": "2026-10-09T10:48:52.447247+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.144511",
+          "bytes": 114232,
+          "sha256": "ef2ff2d6ee1d48ec344be99fa7ffab743324c9268cc567cd4f19613cbcd8051c",
+          "content_type": "text/html;charset=utf-8",
+          "elapsed_seconds": 1.5580714999232441
+        },
+        "declared_doi_matches": true,
+        "authorization_required_text_observed": true,
+        "access_options_text_observed": false
+      },
+      "publisher_pdf_retained": false
+    },
+    {
+      "material_id": "mat:bswnt",
+      "legacy_rank": 7,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevLett.101.027002",
+      "fulltext_candidate_retained": true,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "source_revision_retained": "author-copy:pdf-sha256:ce75e1bbd3e05a336f55f1ae7a2ce391c5030163f0bef550775d765cf7679a94",
+      "publisher_access": {
+        "expected_doi": "10.1103/PhysRevLett.101.027002",
+        "publisher_receipt": {
+          "url": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.027002",
+          "captured_at": "2026-10-09T10:48:57.033923+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.027002",
+          "bytes": 86929,
+          "sha256": "7c213f70133f0cd58c10302dcd34b894fa7526d4a1247f80f70cd84dfcb4136b",
+          "content_type": "text/html;charset=utf-8",
+          "elapsed_seconds": 1.6949094580486417
+        },
+        "declared_doi_matches": true,
+        "authorization_required_text_observed": true,
+        "access_options_text_observed": false
+      },
+      "publisher_pdf_retained": false
+    },
+    {
+      "material_id": "mat:bi2sr2-xsmxcuo6",
+      "legacy_rank": 8,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevB.43.12994",
+      "fulltext_candidate_retained": false,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "publisher_access": {
+        "expected_doi": "10.1103/PhysRevB.43.12994",
+        "publisher_receipt": {
+          "url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.43.12994",
+          "captured_at": "2026-10-09T10:49:01.767518+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.43.12994",
+          "bytes": 97475,
+          "sha256": "17e3dc81503cc35d8077ffb12281f6c120cdf2b3bb5da072bb85903b09f7a606",
+          "content_type": "text/html;charset=utf-8",
+          "elapsed_seconds": 1.6262410829076543
+        },
+        "declared_doi_matches": true,
+        "authorization_required_text_observed": true,
+        "access_options_text_observed": false
+      },
+      "publisher_pdf_retained": false
+    },
+    {
+      "material_id": "mat:c70kx",
+      "legacy_rank": 9,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevB.48.16877",
+      "fulltext_candidate_retained": false,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "publisher_access": {
+        "expected_doi": "10.1103/PhysRevB.48.16877",
+        "publisher_receipt": {
+          "url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.48.16877",
+          "captured_at": "2026-10-09T10:49:06.411638+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.48.16877",
+          "bytes": 82606,
+          "sha256": "1db539db3bdfbeee8c96a3a3f0071b1a5c436fefa2972185e288d209fb8a90c6",
+          "content_type": "text/html;charset=utf-8",
+          "elapsed_seconds": 0.7077985829673707
+        },
+        "declared_doi_matches": true,
+        "authorization_required_text_observed": true,
+        "access_options_text_observed": false
+      },
+      "publisher_pdf_retained": false
+    },
+    {
+      "material_id": "mat:nbbc",
+      "legacy_rank": 11,
+      "historical_selected_paper_id": "aps:10.1103/nx9x-nqyj",
+      "fulltext_candidate_retained": false,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "publisher_access": {
+        "expected_doi": "10.1103/nx9x-nqyj",
+        "publisher_receipt": {
+          "url": "https://journals.aps.org/prb/abstract/10.1103/nx9x-nqyj",
+          "captured_at": "2026-10-09T10:49:10.141593+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://journals.aps.org/prb/abstract/10.1103/nx9x-nqyj",
+          "bytes": 107361,
+          "sha256": "7cbd8ef16c236feabb144fe3dea0e5b7416c2aaf23e74ddf0349fd94cbf72c4a",
+          "content_type": "text/html;charset=utf-8",
+          "elapsed_seconds": 2.1799402500037104
+        },
+        "declared_doi_matches": true,
+        "authorization_required_text_observed": true,
+        "access_options_text_observed": false
+      },
+      "publisher_pdf_retained": false
+    },
+    {
+      "material_id": "mat:y0.9tb0.1ni2b2c",
+      "legacy_rank": 12,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevB.63.144528",
+      "fulltext_candidate_retained": false,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "publisher_access": {
+        "expected_doi": "10.1103/PhysRevB.63.144528",
+        "publisher_receipt": {
+          "url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.63.144528",
+          "captured_at": "2026-10-09T10:49:15.346373+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.63.144528",
+          "bytes": 88594,
+          "sha256": "5309a1820c57ce09fbff94a68e173ce61fada95a561a48fb750500d9091561cf",
+          "content_type": "text/html;charset=utf-8",
+          "elapsed_seconds": 0.7651182500412688
+        },
+        "declared_doi_matches": true,
+        "authorization_required_text_observed": true,
+        "access_options_text_observed": false
+      },
+      "publisher_pdf_retained": false
+    },
+    {
+      "material_id": "mat:nb0.8b0.2",
+      "legacy_rank": 14,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevMaterials.1.044803",
+      "fulltext_candidate_retained": true,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "source_revision_retained": "1708.08570v1",
+      "publisher_access": {
+        "expected_doi": "10.1103/PhysRevMaterials.1.044803",
+        "publisher_receipt": {
+          "url": "https://journals.aps.org/prmaterials/abstract/10.1103/PhysRevMaterials.1.044803",
+          "captured_at": "2026-10-09T10:49:19.136229+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://journals.aps.org/prmaterials/abstract/10.1103/PhysRevMaterials.1.044803",
+          "bytes": 88049,
+          "sha256": "2aeef7808c76dd0c731e0c585b1bd9be7e2f19e09185afd8768963afec76804c",
+          "content_type": "text/html;charset=utf-8",
+          "elapsed_seconds": 0.7196497910190374
+        },
+        "declared_doi_matches": true,
+        "authorization_required_text_observed": true,
+        "access_options_text_observed": false
+      },
+      "publisher_pdf_retained": false
+    },
+    {
+      "material_id": "mat:nd1.85ce0.15cu1-xznxo4",
+      "legacy_rank": 15,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevB.43.10489",
+      "fulltext_candidate_retained": false,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "publisher_access": {
+        "expected_doi": "10.1103/PhysRevB.43.10489",
+        "publisher_receipt": {
+          "url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.43.10489",
+          "captured_at": "2026-10-09T10:49:22.874719+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.43.10489",
+          "bytes": 91473,
+          "sha256": "bba5d47b120306100690295315a55a5e45c7b3ab65a780034f967b43a97aae00",
+          "content_type": "text/html;charset=utf-8",
+          "elapsed_seconds": 1.5979216659907252
+        },
+        "declared_doi_matches": true,
+        "authorization_required_text_observed": true,
+        "access_options_text_observed": false
+      },
+      "publisher_pdf_retained": false
+    },
+    {
+      "material_id": "mat:purhga5",
+      "legacy_rank": 16,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevB.75.184501",
+      "fulltext_candidate_retained": false,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "publisher_access": {
+        "expected_doi": "10.1103/PhysRevB.75.184501",
+        "publisher_receipt": {
+          "url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.75.184501",
+          "captured_at": "2026-10-09T10:49:27.496107+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.75.184501",
+          "bytes": 94619,
+          "sha256": "30dedf9b417f16e6fc43819cfd9a97b201d9e6f1989ef73106d43f314361243c",
+          "content_type": "text/html;charset=utf-8",
+          "elapsed_seconds": 0.8328599999658763
+        },
+        "declared_doi_matches": true,
+        "authorization_required_text_observed": true,
+        "access_options_text_observed": false
+      },
+      "publisher_pdf_retained": false
+    },
+    {
+      "material_id": "mat:r8ni7oy",
+      "legacy_rank": 18,
+      "historical_selected_paper_id": "arxiv:2603.22662",
+      "fulltext_candidate_retained": true,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "source_revision_retained": "2603.22662v1"
+    },
+    {
+      "material_id": "mat:κ(bedtttf)2cu(ncs)2",
+      "legacy_rank": 19,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevLett.66.655",
+      "fulltext_candidate_retained": false,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "publisher_access": {
+        "expected_doi": "10.1103/PhysRevLett.66.655",
+        "publisher_receipt": {
+          "url": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.66.655",
+          "captured_at": "2026-10-09T10:49:31.351349+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.66.655",
+          "bytes": 82812,
+          "sha256": "2fbcdaf95b8b77f7bd7014953f2709b46697c74ecf6717c6ee8d099a47be38d2",
+          "content_type": "text/html;charset=utf-8",
+          "elapsed_seconds": 0.8388948750216514
+        },
+        "declared_doi_matches": true,
+        "authorization_required_text_observed": true,
+        "access_options_text_observed": false
+      },
+      "publisher_pdf_retained": false
+    },
+    {
+      "material_id": "mat:la0.4sm0.6o0.5f0.5bis2",
+      "legacy_rank": 21,
+      "historical_selected_paper_id": "arxiv:1507.03172",
+      "fulltext_candidate_retained": true,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "source_revision_retained": "1507.03172v1"
+    },
+    {
+      "material_id": "mat:bapb0.72bi0.28o3",
+      "legacy_rank": 22,
+      "historical_selected_paper_id": "arxiv:1706.06999",
+      "fulltext_candidate_retained": true,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "source_revision_retained": "1706.06999v2"
+    },
+    {
+      "material_id": "mat:bi2tei",
+      "legacy_rank": 23,
+      "historical_selected_paper_id": "arxiv:2209.02688",
+      "fulltext_candidate_retained": true,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "source_revision_retained": "2209.02688v1"
+    },
+    {
+      "material_id": "mat:bi2+xsr2-ycuo6",
+      "legacy_rank": 25,
+      "historical_selected_paper_id": "aps:10.1103/PhysRevB.41.4805",
+      "fulltext_candidate_retained": false,
+      "original_source_inspected_in_this_task": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "scientific_acceptance": false,
+      "human_reviewers": [],
+      "publisher_access": {
+        "expected_doi": "10.1103/PhysRevB.41.4805",
+        "publisher_receipt": {
+          "url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.41.4805",
+          "captured_at": "2026-10-09T10:49:35.215514+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.41.4805",
+          "bytes": 87576,
+          "sha256": "33e28bbceae03cd12ade7d8576e55af900fe8693210f0a86db81b51696290252",
+          "content_type": "text/html;charset=utf-8",
+          "elapsed_seconds": 1.6764797499636188
+        },
+        "declared_doi_matches": true,
+        "authorization_required_text_observed": true,
+        "access_options_text_observed": false
+      },
+      "publisher_pdf_retained": false
+    }
+  ],
+  "counts": {
+    "new_selected_pointer_fulltext_candidates": 3,
+    "first_batch_materials": 16,
+    "first_batch_fulltext_candidates_retained": 8,
+    "first_batch_missing_fulltext": 8,
+    "publisher_HTML_attempts": 11,
+    "publisher_HTML_200": 11,
+    "publisher_original_PDFs_retained": 0,
+    "pilot_full_inspections_added": 0,
+    "independent_human_reviews": 0
+  },
+  "additional_repository_lookup": {
+    "material_id": "mat:purhga5",
+    "repository_receipt": {
+      "url": "https://publications.jrc.ec.europa.eu/repository/handle/JRC37764",
+      "captured_at": "2026-10-09T10:49:46.921957+00:00",
+      "status": 200,
+      "error": null,
+      "final_url": "https://publications.jrc.ec.europa.eu/repository/handle/JRC37764",
+      "bytes": 48295,
+      "sha256": "fbee574463e50add972f27b5ed367f20579ce4fdd6a42bbfcc3a7eaa73170bbd",
+      "content_type": "text/html;charset=UTF-8",
+      "elapsed_seconds": 1.4840635829605162
+    },
+    "fulltext_retained": false,
+    "task_specific_rights_decision": null,
+    "public_pdf_links_observed": [
+      "/repository/assets/JPR_privacy_statement.pdf"
+    ]
+  },
+  "scope": "First proposed 16-source batch custody and unresolved review questions; no original full text, excerpts or images distributed.",
+  "full_pilot_inspection_boundary": {
+    "previous_inspected": 16,
+    "without_complete_this_task_inspection": 184
+  },
+  "scientific_acceptance": false,
+  "ml_training_approved": false,
+  "database_writes": 0
+}
