@@ -72,12 +72,14 @@ Linux/amd64, with no additional OS/ABI or scientific execution claim.
 At 10:20 UTC, #166's complete [Linux Test](https://github.com/JackZH26/SCLib_JZIS/actions/runs/37903095507)
 finished successfully. Independent replay of all eight JUnit reports verified
 8,500 passed, 9 skipped, zero failures/errors, 8,509 cases and 268 modules.
-The [v2 identity receipt](data/nextstage-20261009/pr166-linux-validation-v2.json)
+The [v3 identity receipt](data/nextstage-20261009/pr166-linux-validation-v3.json)
 distinguishes PR head `1b54e0e` from CI's synthetic merge checkout `844e0e5`.
 GitHub commit objects show that both, and the final merge `4c56af1`, share the
 identical tracked tree `9558861ce0ad8428376bb3fa9b8d314a15b4b38b`.
-Tracked source stayed clean and unchanged; the plan's dirty-worktree flag
-records untracked execution artifacts. The ordinary regression took 7,625.136
+The executed API/scripts source inventory stayed clean and unchanged. The
+overall worktree was dirty; the plan does not enumerate unrelated dirty paths.
+The retained v3 corrects v2's overly specific attribution of that flag to
+untracked execution artifacts. The ordinary regression took 7,625.136
 seconds. Its independent capacity check completed in the successful API job
 and remains outside the ordinary-regression denominator.
 
