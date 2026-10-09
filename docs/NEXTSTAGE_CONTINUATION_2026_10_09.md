@@ -69,6 +69,29 @@ their retained test inventories using the repository comparator; every inventory
 hash matched its report. This is locked Python package-version parity on
 Linux/amd64, with no additional OS/ABI or scientific execution claim.
 
+At 10:20 UTC, #166's complete [Linux Test](https://github.com/JackZH26/SCLib_JZIS/actions/runs/37903095507)
+finished successfully. Independent replay of all eight JUnit reports verified
+8,500 passed, 9 skipped, zero failures/errors, 8,509 cases and 268 modules.
+The [v2 identity receipt](data/nextstage-20261009/pr166-linux-validation-v2.json)
+distinguishes PR head `1b54e0e` from CI's synthetic merge checkout `844e0e5`.
+GitHub commit objects show that both, and the final merge `4c56af1`, share the
+identical tracked tree `9558861ce0ad8428376bb3fa9b8d314a15b4b38b`.
+Tracked source stayed clean and unchanged; the plan's dirty-worktree flag
+records untracked execution artifacts. The ordinary regression took 7,625.136
+seconds. Its independent capacity check completed in the successful API job
+and remains outside the ordinary-regression denominator.
+
+After checking the original head, every actual Test/Security/offline result,
+mergeability and review state, #166 was normally merged at 10:21:49 UTC
+(18:21 Singapore time), with commit
+`4c56af1693510d148a1642bc035910b064141819`. Its main release/deployment remains
+pending; the accepted public release is still the observed `7efe186` above.
+#167's API CI also completed successfully by the subsequent refresh. Keep the
+optimization pending until #166's actual publication and natural instrumented
+scan establish the baseline. The local 73-test compatibility rehearsal does
+not replace that production observation. The documentation follow-up #168
+is now based on main and remains a draft while this release sequence proceeds.
+
 ## Material acquisition queue
 
 [The 200-row queue](data/nextstage-20261009/material-source-acquisition-queue-v2.json)
