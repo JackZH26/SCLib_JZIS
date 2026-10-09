@@ -12,6 +12,7 @@ on:
       - tests/test_sclib_pbesol_native_contract.py
       - tests/test_sclib_pbesol_init_reader.py
       - tests/test_sclib_pbesol_result_custody.py
+      - tests/test_sclib_pbesol_execution.py
       - tests/pbesol_init_fixtures.py
       - scripts/tests/test_build_sclib_m4_calibration.py
       - scripts/build_sclib_m4_calibration.py
@@ -23,6 +24,7 @@ on:
       - docs/sclib_pbesol_job_envelope.md
       - docs/sclib_pbesol_initialization_readback.md
       - docs/sclib_pbesol_result_custody.md
+      - docs/sclib_pbesol_native_execution.md
       - .github/workflows/sclib-compute-staging.yml
   push:
     branches: [main]
@@ -35,6 +37,7 @@ on:
       - tests/test_sclib_pbesol_native_contract.py
       - tests/test_sclib_pbesol_init_reader.py
       - tests/test_sclib_pbesol_result_custody.py
+      - tests/test_sclib_pbesol_execution.py
       - tests/pbesol_init_fixtures.py
       - scripts/tests/test_build_sclib_m4_calibration.py
       - scripts/build_sclib_m4_calibration.py
@@ -46,6 +49,7 @@ on:
       - docs/sclib_pbesol_job_envelope.md
       - docs/sclib_pbesol_initialization_readback.md
       - docs/sclib_pbesol_result_custody.md
+      - docs/sclib_pbesol_native_execution.md
       - .github/workflows/sclib-compute-staging.yml
   workflow_dispatch:
 
@@ -68,6 +72,6 @@ jobs:
       - name: Check dependency consistency
         run: python -m pip check
       - name: Lint isolated namespace
-        run: python -m ruff check scripts/sclib_compute scripts/sclib_compute_service.py scripts/sclib_compute_dummy_worker.py scripts/sclib_compute_probe.py scripts/sclib_compute_node_probe.py scripts/sclib_compute_native_worker.py tests/test_sclib_compute_staging.py tests/test_sclib_compute_native.py tests/test_sclib_pbesol_native_contract.py tests/test_sclib_pbesol_init_reader.py tests/test_sclib_pbesol_result_custody.py tests/pbesol_init_fixtures.py scripts/build_sclib_m4_calibration.py scripts/tests/test_build_sclib_m4_calibration.py scripts/build_sclib_pbesol_preparation.py scripts/tests/test_build_sclib_pbesol_preparation.py scripts/tests/test_sclib_pbesol_profile.py
+        run: python -m ruff check scripts/sclib_compute scripts/sclib_compute_service.py scripts/sclib_compute_dummy_worker.py scripts/sclib_compute_probe.py scripts/sclib_compute_node_probe.py scripts/sclib_compute_native_worker.py scripts/sclib_compute_pbesol_worker.py tests/test_sclib_compute_staging.py tests/test_sclib_compute_native.py tests/test_sclib_pbesol_native_contract.py tests/test_sclib_pbesol_init_reader.py tests/test_sclib_pbesol_result_custody.py tests/test_sclib_pbesol_execution.py tests/pbesol_init_fixtures.py scripts/build_sclib_m4_calibration.py scripts/tests/test_build_sclib_m4_calibration.py scripts/build_sclib_pbesol_preparation.py scripts/tests/test_build_sclib_pbesol_preparation.py scripts/tests/test_sclib_pbesol_profile.py
       - name: Exercise transport, native execution and input preparation contracts
-        run: python -m pytest tests/test_sclib_compute_staging.py tests/test_sclib_compute_native.py tests/test_sclib_pbesol_native_contract.py tests/test_sclib_pbesol_init_reader.py tests/test_sclib_pbesol_result_custody.py scripts/tests/test_build_sclib_m4_calibration.py scripts/tests/test_build_sclib_pbesol_preparation.py scripts/tests/test_sclib_pbesol_profile.py -q
+        run: python -m pytest tests/test_sclib_compute_staging.py tests/test_sclib_compute_native.py tests/test_sclib_pbesol_native_contract.py tests/test_sclib_pbesol_init_reader.py tests/test_sclib_pbesol_result_custody.py tests/test_sclib_pbesol_execution.py scripts/tests/test_build_sclib_m4_calibration.py scripts/tests/test_build_sclib_pbesol_preparation.py scripts/tests/test_sclib_pbesol_profile.py -q

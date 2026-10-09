@@ -108,10 +108,11 @@ def scratch_size(path):
     return total
 
 
-def supervise(request, parent_fd):
+def supervise(request, parent_fd, *, descriptor=None, before_launch=None):
     runtime = NativeRuntime.model_validate(request["runtime"])
     spec = JobSpec.model_validate(request["spec"])
-    descriptor = NativeInput.model_validate(request["descriptor"])
+    if descriptor is None:
+        descriptor = NativeInput.model_validate(request["descriptor"])
     runtime.validate_job(spec)
     work = Path(request["work"])
     control = work.parent
@@ -160,6 +161,9 @@ def supervise(request, parent_fd):
             (work / "stdout.txt").open("xb") as stdout,
             (work / "stderr.txt").open("xb") as stderr,
         ):
+            if before_launch is not None:
+                # A fixed installed profile supplies this callback, never queue data.
+                before_launch()
             process = subprocess.Popen(
                 argv,
                 cwd=work,

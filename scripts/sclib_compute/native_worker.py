@@ -55,6 +55,9 @@ def directory(path: Path):
 
 
 class NativeWorker(DummyWorker):
+    capabilities = ("qe_initialize", "qe_scf")
+    guardian_module = "sclib_compute.native_supervisor"
+
     def __init__(self, client, root: Path, runtime: NativeRuntime):
         super().__init__(
             client,
@@ -64,6 +67,47 @@ class NativeWorker(DummyWorker):
         )
         self.runtime = runtime
         self.stop_requested = False
+
+    def validate_input(self, spec, files):
+        return validate_inputs(spec, files)
+
+    def descriptor_data(self, descriptor):
+        return descriptor.model_dump(mode="json")
+
+    def retain_inputs(self, spec, files, attempt_dir):
+        """Default native-v1 keeps its existing staging layout."""
+
+    def execution_context(self):
+        return {"runtime": self.runtime.model_dump(mode="json")}
+
+    def validate_recovery(self, state, spec, attempt_dir):
+        """Default native-v1 recovery retains its existing contract."""
+
+    def read_descriptor(self, spec, attempt_dir):
+        return json.loads(read_regular(attempt_dir / "descriptor.json", 8192))
+
+    def guardian_args(self):
+        return []
+
+    def guardian_request(self, request):
+        return request
+
+    @staticmethod
+    def xml_parseable(xml):
+        try:
+            # Preserve native-v1 parsing; other fixed profiles override this.
+            if b"<!DOCTYPE" in xml.upper() or b"<!ENTITY" in xml.upper():
+                raise ValueError("XML declaration")
+            ET.fromstring(xml)
+            return True
+        except (ET.ParseError, ValueError):
+            return False
+
+    def execution_metadata(self, execution, descriptor):
+        return execution
+
+    def validate_frozen_execution(self, frozen, current):
+        """Default native-v1 keeps its existing immutable-final replay."""
 
     def heartbeat(self, claim, phase, elapsed, memory=0):
         attempt = claim["attempt"]
@@ -87,7 +131,7 @@ class NativeWorker(DummyWorker):
             "/nodes/register",
             json={
                 "runtime_id": self.runtime_id,
-                "capabilities": ["qe_initialize", "qe_scf"],
+                "capabilities": list(self.capabilities),
                 "platform": self.platform,
             },
         )
@@ -137,6 +181,7 @@ class NativeWorker(DummyWorker):
             raise WorkerStopped("invalid native attempt ID")
         attempt_dir = self.root / attempt["attempt_id"]
         directory(attempt_dir)
+        self.validate_recovery(state, spec, attempt_dir)
         if "outbox" not in state:
             current = self.request("GET", f"/attempts/{attempt['attempt_id']}").json()
             if current.get("receipt"):
@@ -194,7 +239,8 @@ class NativeWorker(DummyWorker):
                     ):
                         raise WorkerStopped("native download checksum mismatch")
                     self.heartbeat(claim, "preparing", self.elapsed(claim))
-                descriptor = validate_inputs(spec, files)
+                descriptor = self.validate_input(spec, files)
+                self.retain_inputs(spec, files, attempt_dir)
                 work = attempt_dir / "work"
                 # Interrupted preparation is safe to repeat only before durable
                 # execution_started. No solver has run and the exact pins are read again.
@@ -213,7 +259,7 @@ class NativeWorker(DummyWorker):
                         data,
                     )
                 atomic_json(
-                    attempt_dir / "descriptor.json", descriptor.model_dump(mode="json")
+                    attempt_dir / "descriptor.json", self.descriptor_data(descriptor)
                 )
                 remaining = min(
                     spec.resources.wall_seconds - self.elapsed(claim),
@@ -223,17 +269,17 @@ class NativeWorker(DummyWorker):
                     raise WorkerStopped("native envelope expired during preparation")
                 atomic_json(
                     attempt_dir / "request.json",
-                    {
+                    self.guardian_request({
                         "runtime": self.runtime.model_dump(mode="json"),
                         "spec": spec.model_dump(mode="json"),
-                        "descriptor": descriptor.model_dump(mode="json"),
+                        "descriptor": self.descriptor_data(descriptor),
                         "work": str(work),
                         "remaining_wall_seconds": remaining,
-                    },
+                    }),
                 )
                 state["execution_started"] = {
                     "at_unix": time.time(),
-                    "runtime": self.runtime.model_dump(mode="json"),
+                    **self.execution_context(),
                 }
                 self.persist(state)  # durable BEFORE launching any native process
                 self.run_guardian(state, spec, attempt_dir)
@@ -265,11 +311,12 @@ class NativeWorker(DummyWorker):
                     [
                         sys.executable,
                         "-m",
-                        "sclib_compute.native_supervisor",
+                        self.guardian_module,
                         "--request",
                         str(attempt_dir / "request.json"),
                         "--parent-fd",
                         str(read_fd),
+                        *self.guardian_args(),
                     ],
                     pass_fds=(read_fd,),
                     env=env,
@@ -348,7 +395,7 @@ class NativeWorker(DummyWorker):
 
     def prepare_outbox(self, state, spec, attempt_dir):
         work = attempt_dir / "work"
-        descriptor = json.loads(read_regular(attempt_dir / "descriptor.json", 8192))
+        descriptor = self.read_descriptor(spec, attempt_dir)
         process = json.loads(read_regular(attempt_dir / "solver-result.json", 32768))
         rules = {rule.name: rule.max_bytes for rule in spec.output_rules}
         capture, files = {}, {}
@@ -391,16 +438,7 @@ class NativeWorker(DummyWorker):
             files["data-file-schema.xml"]
             and not capture["data-file-schema.xml"]["truncated"]
         ):
-            try:
-                # QE emits no DTD. Reject declarations instead of permitting
-                # entity expansion in a result supplied by an external binary.
-                xml = files["data-file-schema.xml"]
-                if b"<!DOCTYPE" in xml.upper() or b"<!ENTITY" in xml.upper():
-                    raise ValueError("XML declaration")
-                ET.fromstring(xml)
-                xml_parseable = True
-            except (ET.ParseError, ValueError):
-                pass
+            xml_parseable = self.xml_parseable(files["data-file-schema.xml"])
         version_seen = bool(re.search(r"Program\s+PWSCF\s+v\.7\.5(?:\s|\b)", stdout))
         job_done = "JOB DONE." in stdout
         scf_converged = bool(
@@ -479,11 +517,14 @@ class NativeWorker(DummyWorker):
                 "Interrupted outputs are retained as failed evidence and must not be imported as complete scientific results.",
             ],
         }
+        execution = self.execution_metadata(execution, descriptor)
         final_path = attempt_dir / "execution-final.json"
         if final_path.exists():
             # Freeze elapsed time and exact metadata before any partial outbox
             # write; a crash while writing files must replay identical bytes.
-            execution = json.loads(read_regular(final_path, rules["execution.json"]))
+            frozen = json.loads(read_regular(final_path, rules["execution.json"]))
+            self.validate_frozen_execution(frozen, execution)
+            execution = frozen
             elapsed = execution["elapsed_seconds"]
             outcome = execution["solver_outcome"]
         else:
