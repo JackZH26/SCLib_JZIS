@@ -6,6 +6,8 @@ bounded parent ancestry to original material data before scientific projection.
 from __future__ import annotations
 
 import hashlib
+import json
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any
 
@@ -21,10 +23,70 @@ from services.material_source_scope import (
     validate_scoped_visibility,
 )
 from services.material_visibility import MATERIAL_VISIBILITY_VERSION, normalize_source_status
+from services.metrics import MATERIAL_LIFECYCLE_IDS
 from services.source_lifecycle import resolve_paper_lifecycle
 
 MAX_PARENT_DEPTH = 32
 _SQL_BATCH_SIZE = 1000
+
+
+class LifecycleReadMemo:
+    """Bounded, detached source results owned by one fenced ranking scan.
+
+    The caller must retain its final catalogue/source revision fence and close
+    this memo on every exit. This is not a shared cache or source authority.
+    Only the complete trusted resolver value is retained, including Work holds
+    and an explicit None for missing IDs. Parent/ORM contexts are never cached.
+    """
+
+    def __init__(self, session, *, max_entries=20_000, max_bytes=8 * 1024 * 1024):
+        if session is None or any(type(value) is not int or value < 0 for value in (max_entries, max_bytes)):
+            raise ValueError("Lifecycle memo requires an owner and nonnegative integer bounds")
+        self._session = session
+        self._entries = {}
+        self.max_entries = max_entries
+        self.max_bytes = max_bytes
+        self.size = 0  # Logical encoded key/value bytes, not Python heap usage.
+
+    async def resolve(self, session, identifiers):
+        if self._session is None or session is not self._session:
+            raise ValueError("Lifecycle memo is outside its owning scan")
+        result, missing = {}, []
+        for identifier in identifiers:
+            if identifier in self._entries:
+                result[identifier] = deepcopy(self._entries[identifier])
+            else:
+                missing.append(identifier)
+        MATERIAL_LIFECYCLE_IDS.labels("memo_hit").inc(len(result))
+        for start in range(0, len(missing), _SQL_BATCH_SIZE):
+            batch = missing[start:start + _SQL_BATCH_SIZE]
+            resolved = await resolve_paper_lifecycle(session, batch)
+            MATERIAL_LIFECYCLE_IDS.labels("resolved").inc(len(batch))
+            not_retained = 0
+            # Store only after the entire resolver call succeeds. No exception
+            # is changed into a negative or successful cached source result.
+            for identifier in batch:
+                value = resolved.get(identifier)
+                result[identifier] = value
+                try:
+                    weight = len(identifier.encode()) + len(json.dumps(
+                        value, ensure_ascii=True, allow_nan=False, separators=(",", ":"),
+                    ).encode())
+                except (TypeError, ValueError):
+                    not_retained += 1
+                    continue  # Preserve original resolver behavior on a cache miss.
+                if len(self._entries) < self.max_entries and self.size + weight <= self.max_bytes:
+                    self._entries[identifier] = deepcopy(value)
+                    self.size += weight
+                else:
+                    not_retained += 1
+            MATERIAL_LIFECYCLE_IDS.labels("not_retained").inc(not_retained)
+        return result
+
+    def close(self):
+        self._entries.clear()
+        self.size = 0
+        self._session = None
 
 
 def _lookup_paper_id(record):
@@ -110,7 +172,9 @@ def material_prefilter(*, include_archive=False):
     return clauses
 
 
-async def prepare_material_views(session: AsyncSession, materials) -> list[MaterialReadContext]:
+async def prepare_material_views(
+    session: AsyncSession, materials, *, lifecycle_memo: LifecycleReadMemo | None = None,
+) -> list[MaterialReadContext]:
     """Preserve order; batch-load source membership and inherited parent holds.
 
     Missing/cyclic/depth-exhausted parents cannot confer public Archive access.
@@ -140,8 +204,13 @@ async def prepare_material_views(session: AsyncSession, materials) -> list[Mater
     }
     statuses = {}
     identifiers = sorted(paper_ids)
-    for start in range(0, len(identifiers), _SQL_BATCH_SIZE):
-        statuses.update(await resolve_paper_lifecycle(session, identifiers[start:start + _SQL_BATCH_SIZE]))
+    if lifecycle_memo is not None:
+        statuses = await lifecycle_memo.resolve(session, identifiers)
+    else:
+        for start in range(0, len(identifiers), _SQL_BATCH_SIZE):
+            batch = identifiers[start:start + _SQL_BATCH_SIZE]
+            statuses.update(await resolve_paper_lifecycle(session, batch))
+            MATERIAL_LIFECYCLE_IDS.labels("resolved").inc(len(batch))
     own_sources = {
         material.id: {
             identifier: statuses.get(identifier)

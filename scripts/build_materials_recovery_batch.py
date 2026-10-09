@@ -16,13 +16,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "api"))
 from services.material_enrichment import (  # noqa: E402
-    AUTHORITY, EXTRACTOR_VERSION, build_enrichment_report, canonical, digest,
-    text_digest, validate_candidate_identity,
+    AUTHORITY, EXTRACTOR_VERSION, MAX_RECORD_COVERAGE_RECORDS, RECORD_COVERAGE_VERSION,
+    build_enrichment_report, canonical, digest, text_digest, validate_candidate_identity,
 )
 from services.property_evidence import legacy_result_id  # noqa: E402
 
 VERSION = "materials-recovery-batch-seed/1.0.0"
 MAX_INPUT = 16 * 1024 * 1024
+_SHA = re.compile(r"[0-9a-f]{64}\Z")
 
 
 def read(path, jsonl=False):
@@ -35,6 +36,49 @@ def read(path, jsonl=False):
             if jsonl else json.loads(body))
 
 
+def retained_bindings(material, request):
+    """Bind complete records to a separately reviewed public coverage snapshot.
+
+    raw_archive.records[].raw is a lossy display allowlist, not the retained
+    record. Never manufacture runtime IDs or hashes from that projection.
+    Coverage is independently versioned/hashed by the API using the same
+    current eligible records as the unchanged runtime merge guard.
+    """
+    coverage = material.get("record_coverage")
+    expected = request.get("record_coverage_sha256")
+    records = material.get("records")
+    if (not isinstance(coverage, dict) or not isinstance(expected, str)
+            or not _SHA.fullmatch(expected)
+            or coverage.get("version") != RECORD_COVERAGE_VERSION
+            or coverage.get("material_id") != material["id"]
+            or coverage.get("record_denominator") != "current_eligible_retained_records"
+            or any(coverage.get(key) is not False for key in AUTHORITY)
+            or coverage.get("coverage_sha256") != expected
+            or digest({k: v for k, v in coverage.items() if k != "coverage_sha256"}) != expected):
+        raise ValueError("reviewed_record_coverage_required")
+    rows = coverage.get("records")
+    if (type(records) is not list or not 1 <= len(records) <= MAX_RECORD_COVERAGE_RECORDS
+            or any(type(record) is not dict for record in records)
+            or type(rows) is not list or len(rows) != len(records)
+            or any(type(coverage.get(key)) is not int or coverage[key] != len(records)
+                   for key in ("records_total", "records_inspected"))
+            or type(coverage.get("records_unchecked")) is not int or coverage["records_unchecked"] != 0):
+        raise ValueError("complete_record_coverage_required")
+    by_offset = {}
+    for row in rows:
+        offset = row.get("record_offset") if isinstance(row, dict) else None
+        if type(offset) is not int or not 0 <= offset < len(records) or offset in by_offset:
+            raise ValueError("record_coverage_offset_mismatch")
+        record = records[offset]
+        if (not isinstance(row.get("paper_id"), str) or not row["paper_id"]
+                or row["paper_id"] != record.get("paper_id")
+                or row.get("result_id") != legacy_result_id(record, scope_id=material["id"])
+                or row.get("record_sha256") != digest(record)):
+            raise ValueError("retained_record_coverage_mismatch")
+        by_offset[offset] = {key: row[key] for key in ("paper_id", "result_id", "record_sha256")}
+    return by_offset
+
+
 def build(materials, sources, spec):
     if len(materials) > 20 or len(spec["rows"]) != len(materials):
         raise ValueError("review_batch_material_scope")
@@ -44,6 +88,7 @@ def build(materials, sources, spec):
         raise ValueError("duplicate_source")
     for request in spec["rows"]:
         material = next(m for m in materials if m["id"] == request["material_id"])
+        bindings = retained_bindings(material, request)
         own = [s for s in sources if s["paper_id"] in {r.get("paper_id") for r in material["records"]}]
         report = build_enrichment_report([material], own, include_evidence_text=False)
         rules = request["candidate_rules"]
@@ -92,13 +137,13 @@ def build(materials, sources, spec):
                     "locator": source["locator"], "span": {"char_start": match.start(), "char_end": match.end(),
                     "text_sha256": text_digest(match.group())}, "source_status": source.get("source_status", "unknown")}})
         paper_ids = {o["source"]["paper_id"] for o in observations}
-        refs = [{"paper_id": r["paper_id"], "result_id": legacy_result_id(r, scope_id=material["id"]), "record_sha256": digest(r)}
-                for r in material["records"] if r.get("paper_id") in paper_ids]
+        refs = [dict(bindings[index]) for index, record in enumerate(material["records"])
+                if record.get("paper_id") in paper_ids]
         rows.append({"material_id": material["id"], "formula": material["formula"], "status": "checked",
             "source_available": True, "summary": request["summary"], "unknowns": request["unknowns"],
             "retained_result_refs": refs, "observations": observations, "pending_candidates": len(chosen),
             "scientific_acceptance": False, "human_reviewed": False, "database_changed": False})
-    seed = {"version": VERSION, "seed_id": "materials-primary16-2026-10-08-v1", "extractor_version": EXTRACTOR_VERSION,
+    seed = {"version": VERSION, "seed_id": "materials-primary16-2026-10-09-v2", "extractor_version": EXTRACTOR_VERSION,
             "inspection_scope": "AI-assisted original-source inspection; sample/state and scientific approval remain pending",
             "source_text_included": False, "human_reviewed": False, "reports": reports, "rows": rows,
             "counts": {"checked_materials": len(rows), "available_materials": sum(r["source_available"] for r in rows),

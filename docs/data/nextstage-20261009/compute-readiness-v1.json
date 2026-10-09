@@ -1,0 +1,78 @@
+{
+  "schema_version": "sclib-nextstage-compute-readiness/1",
+  "checked_on": "2026-10-09",
+  "source_scope": "Existing unmerged PR155 evidence; no new node contact, solver execution or raw-output authentication in this task.",
+  "source_pr": "https://github.com/JackZH26/SCLib_JZIS/pull/155",
+  "dependency_chain": [
+    155,
+    156,
+    160,
+    161,
+    162,
+    163,
+    164
+  ],
+  "source_pin": {
+    "path": "docs/data/discovery-batches-20261008/m4-calibration-observed-v1.json",
+    "git_revision": "cce30e7",
+    "sha256": "39abc97eb69404cab76be19ad0321a9f95f3231a5e1d5cba78c44ccbecd54512"
+  },
+  "reported_actual_scf_runs": 3,
+  "mpi_ranks": [
+    1,
+    2,
+    4
+  ],
+  "recomputed_from_summary": {
+    "energy_window_hartree_per_atom": 3.941143707682689e-12,
+    "max_scf_error_hartree_per_atom": 7.957364286940383e-13,
+    "same_input_manifest": true
+  },
+  "reported_mpi_repeatability": {
+    "status": "predeclared_checks_passed",
+    "metrics": {
+      "energy_window_hartree_per_atom": 3.941143707682689e-12,
+      "energy_window_within_tolerance": true,
+      "force_max_abs_component_difference": 2.4914198309862027e-07,
+      "force_within_tolerance": true,
+      "max_scf_error_hartree_per_atom": 7.957364286940383e-13,
+      "scf_error_strictly_below_tolerance": true,
+      "stress_max_abs_component_difference": 2.3194743181690405e-08,
+      "stress_within_tolerance": true
+    },
+    "thresholds": {
+      "energy_window_hartree_per_atom_max": 1e-07,
+      "scf_error_hartree_per_atom_strict_max": 1e-07,
+      "force_component_difference_hartree_bohr_max": 1e-05,
+      "stress_component_difference_hartree_bohr3_max": 1e-06
+    }
+  },
+  "queue_reservation": {
+    "campaign_limit_core_seconds": 7200,
+    "reserved_including_prior_transport_core_seconds": 6780,
+    "remaining_core_seconds": 420,
+    "new_scf_batch_admitted": false
+  },
+  "next_2_rank_600_second_scf_reservation_core_seconds": 1200,
+  "fits_existing_remaining_budget": false,
+  "main_has_native_adapter": false,
+  "pbesol_initialization_real_execution_established": false,
+  "soak24h_accepted": false,
+  "new_calculations_in_this_task": 0,
+  "pending": [
+    "denser k-mesh initialization and feasible budget",
+    "finite k-mesh convergence",
+    "cross-machine comparison of the identical case",
+    "complete fault and lifecycle acceptance",
+    "continuous 24-hour observation"
+  ],
+  "next_actions": [
+    "Review/merge the existing stacked native contracts without replacing their source or execution custody.",
+    "Verify current node/runtime, exclusive worker ownership and fresh resources.",
+    "Perform denser-mesh initialization within a newly declared finite protocol and campaign budget before SCF admission.",
+    "Observe actual node recovery and 24 hours of bounded operation; retain failures and original receipts."
+  ],
+  "scientific_acceptance": false,
+  "tc_calculated": false,
+  "candidate_grade_changed": false
+}

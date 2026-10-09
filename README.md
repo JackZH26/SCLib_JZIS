@@ -16,7 +16,7 @@ at **[jzis.org](https://jzis.org/)**.
 
 ## Current coverage and versions
 
-Checked **6 October 2026 (UTC)** against the public API and website. Counts describe
+Checked **9 October 2026 (UTC)** against the public API and website. Counts describe
 the retained library and its current public projections, not independently
 validated experiments or complete coverage of superconductivity research.
 
@@ -28,8 +28,8 @@ validated experiments or complete coverage of superconductivity research.
 | Retained literature chunks | **1,117,982**; not a count of verified active vector-index members |
 | Data version | **`v2026.09.03`** |
 | Latest paper ingest | 3 September 2026, 10:30 UTC |
-| Statistics refreshed | 6 October 2026, 03:00 UTC |
-| Deployed software checked | [`d080cd5`](https://github.com/JackZH26/SCLib_JZIS/commit/d080cd5be5b7ddd8f10b3bd008935684868331d5) |
+| Statistics refreshed | 9 October 2026, 07:00 UTC |
+| Deployed software checked | [`67b790e`](https://github.com/JackZH26/SCLib_JZIS/commit/67b790e30f136bacc0408b86d3be13bfbf2ee6f4) |
 | Public API version | **`v1`**, at `https://api.jzis.org/sclib/v1` |
 
 Statistics refresh, literature ingest, source-reference updates and software
@@ -40,7 +40,7 @@ timestamp does not mean new papers were ingested that day.
 
 Use [Library statistics](https://jzis.org/stats), [`GET /stats`](https://api.jzis.org/sclib/v1/stats)
 and [`GET /version`](https://api.jzis.org/sclib/v1/version) for current values.
-The [verification record](docs/README_SNAPSHOT_2026_10_06.md) explains the snapshot
+The [verification record](docs/README_SNAPSHOT_2026_10_09.md) explains the snapshot
 and its scope. Research-v2 contracts and the package metadata version are separate
 from the deployed commit, API version and dataset date.
 
@@ -83,6 +83,13 @@ Source recovery adds bounded, pending candidates for literal values, methods,
 sample descriptions, classifications and table fields. Its checked source
 window and exclusions are exposed; an unsuccessful search is not proof that
 the complete paper omitted a property.
+
+The current primary-source recovery batch exposes **55 source observations and
+34 pending literal candidates across 16 materials**. These sets can overlap;
+they are not 89 independently accepted facts. Sample/state associations remain
+pending, with no canonical property correction or human scientific approval.
+The [batch record](docs/MATERIALS_SOURCE_RECOVERY_BATCH_20261008.md) and
+[review preparation](docs/NEXTSTAGE_EXECUTION_2026_10_09.md) retain the unresolved conditions.
 
 See [material semantics](docs/MATERIAL_SEMANTICS_CONTRACT.md),
 [pressure semantics](docs/PRESSURE_SEMANTICS.md) and
@@ -127,11 +134,19 @@ records, not a certified world-record ranking or a discovery-history chronology.
 
 [Discovery](https://jzis.org/discovery) now has **Candidates** and **Research & tools** tabs.
 
-The candidate view separates published Research Priority Score (RPS) assessments
-from a website structure-proposal catalogue. Its current proposal batch contains
-**Mg₇AlB₁₆, Mg₇CaB₁₆ and Mg₇B₁₆**, derived from a pinned MgB₂ supercell by one-site
-substitution or vacancy. They are **unrelaxed and unranked**, with no established
-Tc or recorded human scientific review. MgB₂ is the parent reference.
+The candidate view now provides **103 composition-distinct source-computed
+research hypotheses**, derived from Materials Cloud 2023.163 v1 under CC BY 4.0.
+Each retains its source state, controls, method limitations and evidence dossier.
+Displayed Tc is a source Eliashberg model result at **μ* = 0.1**, with no binding
+to an individual Gaussian-smearing row. All 103 remain **C (exploratory), E1
+(published source theory)**. No experimental confirmation, room-temperature
+support, formal RPS score or recorded human scientific review is established.
+
+Published RPS assessments and the **unrelaxed COD coordinate catalogue** remain
+separate. The latter contains **eight composition groups and 19 coordinate
+states**, including the earlier Mg₇AlB₁₆, Mg₇CaB₁₆ and Mg₇B₁₆ proposals and host
+strain references. Coordinate states are not separate new compounds; these
+counts are not added to the 103 source-computed materials.
 
 Research tools support an explicit **host → modification → state → conditions**
 workflow: source/physical-reference inspection, local research-design drafts,
@@ -142,13 +157,23 @@ native QE outputs against their preparation inputs and supports sampled
 numerical-refinement comparisons. Browser preparation and reading do not submit
 or execute a calculation; file consistency does not attest an actual execution.
 
+The repository also retains **12 retrospective benchmark cases** and **36
+prepared SCF inputs across 12 MgB₂/Al/C/joint-substitution states**. Those inputs
+are not executed results or a prospective held-out benchmark. The earlier
+nine-run VPS SCF pilot completed, but its sampled energy windows failed the
+declared tolerance and require method refinement. An isolated dummy compute
+coordinator has separate transport acceptance; it does not enable browser
+submission, native QE execution or scientific acceptance.
+
 RPS-v1.2 scores span **1,000-10,000** and prioritize a **material-state-action**
 within a defined campaign, evidence policy and resource budget. They are not
 superconductivity probabilities, predicted Tc values or universal cross-campaign
 rankings. Scientific companions and historical candidate feeds have their own
 publication and availability states.
 
-See the [candidate catalogue](docs/discovery_candidate_catalogue_2026_10_06.md),
+See the [source-computed catalogue](docs/DISCOVERY_EVIDENCE_CARDS_20261008.md),
+[coordinate catalogue](docs/discovery_research_catalogue_v2.md),
+[batch preparation](docs/SCLIB_BATCHES_1_2_20261008.md),
 [research-design protocol](docs/discovery_research_design_protocol.md),
 [QE preparation](docs/discovery_qe_input_preparation.md) and
 [scientific evaluation protocol](docs/SCIENTIFIC_EVALUATION_PROTOCOL.md).
@@ -190,6 +215,18 @@ hash or conditional plan approval does not establish scientific acceptance or
 permission to train. The [documentation index](docs/README.md) groups these
 contracts and their operational boundaries without conflating them with the
 public browsing features above.
+
+The [current execution record](docs/NEXTSTAGE_EXECUTION_2026_10_09.md) separates
+online acceptance, measured latency, pending material review, a 60-question
+retrieval acquisition draft and compute/ML prerequisites. The draft is not an
+adjudicated gold set or permission to train. Recheck public versions and scoped
+counts with the credential-free acceptance tool:
+
+```bash
+python3 scripts/verify_public_snapshot.py --samples 3 --output /tmp/sclib-public-snapshot.json
+# Optional: also verify all 206 static source-detail and evidence-card files.
+# Add --all-details; use a new output path for each capture.
+```
 
 ## Accounts and API
 

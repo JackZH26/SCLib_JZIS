@@ -1,0 +1,4128 @@
+{
+  "schema_version": "sclib-public-acceptance/1.0.0",
+  "started_at": "2026-10-09T07:05:05.823405+00:00",
+  "scientific_acceptance": false,
+  "ml_training_approved": false,
+  "requests": [
+    {
+      "url": "https://api.jzis.org/sclib/v1/version",
+      "started_at": "2026-10-09T07:05:05.823903+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "e6eb3775e0d740f18cf02ad77df0c5f1",
+        "x-api-version": "1"
+      },
+      "bytes": 76,
+      "sha256": "5406ece54bf4dcbe17e7eba3f186a49ed968c1f63ae4d8a1661d5eb4feba086f",
+      "elapsed_seconds": 0.408957
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/stats",
+      "started_at": "2026-10-09T07:05:06.232922+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "6dc802967c504fefa93dfab3debff5ce",
+        "x-api-version": "1"
+      },
+      "bytes": 1826,
+      "sha256": "946c4fb3343ca57cecd1099d90443faa3472a6900be52c3573fe04d9d7a8f268",
+      "elapsed_seconds": 0.44404
+    },
+    {
+      "url": "https://jzis.org/",
+      "started_at": "2026-10-09T07:05:06.677023+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 38740,
+      "sha256": "04af57e997acc39ab7f8a2467db04be4d05cf943c8c841ba22547242472ca04d",
+      "elapsed_seconds": 0.587008
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/source-computed-candidates-2026-10-07.json",
+      "started_at": "2026-10-09T07:05:07.266101+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 2273528,
+      "sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+      "elapsed_seconds": 1.215341
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/source-computed-candidates-2026-10-07.details.json",
+      "started_at": "2026-10-09T07:05:08.510610+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 25464,
+      "sha256": "ff226d5627e5a54451e5a62754b3b6bfabd9af33931a37ae6ccdb2fb030c2e43",
+      "elapsed_seconds": 0.494169
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/2026-10-08-evidence103-v1.json",
+      "started_at": "2026-10-09T07:05:09.006036+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 163645,
+      "sha256": "34b064e217455ac5d4c454f6ad867a856aede7d34b5e6067bb95730143b9d43e",
+      "elapsed_seconds": 0.717468
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003195936.json",
+      "started_at": "2026-10-09T07:05:09.732100+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 10460,
+      "sha256": "419c6c7521875277e40c1c32442ef4c7843756febe3ff91e3b4013345d9db286",
+      "elapsed_seconds": 0.360004
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003204399.json",
+      "started_at": "2026-10-09T07:05:09.740942+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 13016,
+      "sha256": "cb5588da2cd4fd9070405ab20721d01a1f8e94006471165627f6125bc5f86b8c",
+      "elapsed_seconds": 0.508624
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002664904.json",
+      "started_at": "2026-10-09T07:05:09.748145+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 27827,
+      "sha256": "9d4f63ad79e38df94026214a7b68bbebd6fd97f7ae1df977e979c054a0a3f61c",
+      "elapsed_seconds": 0.514241
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003203668.json",
+      "started_at": "2026-10-09T07:05:09.748578+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 34993,
+      "sha256": "a9858e829a349f393efab74df2b9532be9166a1c1e3f104a45bcbc99ecd73dc8",
+      "elapsed_seconds": 0.512575
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003197109.json",
+      "started_at": "2026-10-09T07:05:10.092315+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 27882,
+      "sha256": "d396ef3af16e6b10ec8c8bb2b2b5b88fb61fa567a7057c6caba4f00b41b2a1cc",
+      "elapsed_seconds": 0.493737
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003199657.json",
+      "started_at": "2026-10-09T07:05:10.250052+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 32085,
+      "sha256": "64cb711302e1d96540eeff7196feccb348867a2a815255b7df0c10a7c5dd33ca",
+      "elapsed_seconds": 0.523184
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003199662.json",
+      "started_at": "2026-10-09T07:05:10.262244+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 26506,
+      "sha256": "25df634c7ab5e0d16515a41aa4ed49bd15da416ea98ca7860c67346cf15604d8",
+      "elapsed_seconds": 0.523545
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003199664.json",
+      "started_at": "2026-10-09T07:05:10.269760+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 30605,
+      "sha256": "ea5736850c4c47528b15b80756c42c5185ee4905eef3ff019a2c9cc708d0580a",
+      "elapsed_seconds": 0.516081
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001173524.json",
+      "started_at": "2026-10-09T07:05:10.586435+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 30596,
+      "sha256": "07a269e778e9760f3ac9870739a023401025b35e7b169264570148036a874905",
+      "elapsed_seconds": 0.522758
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001173527.json",
+      "started_at": "2026-10-09T07:05:10.773805+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 33183,
+      "sha256": "971cf0870e6b9cb24753da1084276b1f5ec41687661f190689c138231e58ac51",
+      "elapsed_seconds": 0.527614
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003199670.json",
+      "started_at": "2026-10-09T07:05:10.785994+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 29240,
+      "sha256": "ed7ca3d1a617f0f57c51fd790d6235a5c526a5076881bfbe36d0f69898e898bb",
+      "elapsed_seconds": 0.532244
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003204438.json",
+      "started_at": "2026-10-09T07:05:10.786221+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 31919,
+      "sha256": "21c441f948337a0ac14249d277dd8095ba6f4450558c35e972db2b5257199c3b",
+      "elapsed_seconds": 0.515131
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003199690.json",
+      "started_at": "2026-10-09T07:05:11.109480+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 30538,
+      "sha256": "ca16079e7ee77d8ac14d891fc30880999c9d7038c4843686b5be30b43e77a24a",
+      "elapsed_seconds": 1.313071
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003199681.json",
+      "started_at": "2026-10-09T07:05:11.301620+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 31937,
+      "sha256": "3359399e85923877c22e9ae8e8bfd820f922500b66ec9b8066e9740af6e4ca10",
+      "elapsed_seconds": 0.525705
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003159377.json",
+      "started_at": "2026-10-09T07:05:11.301859+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 34103,
+      "sha256": "1c05e11749115f6f524b0c4bc5b5b8a707c207c2786043fd79ce55bf2f7f5a92",
+      "elapsed_seconds": 0.60085
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003163920.json",
+      "started_at": "2026-10-09T07:05:11.318364+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 24443,
+      "sha256": "db2b8c67c23cab0838b928a17754d7a28db95d6b680fc3f499c580562bdf7bbe",
+      "elapsed_seconds": 0.508903
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001619538.json",
+      "started_at": "2026-10-09T07:05:11.827599+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 29902,
+      "sha256": "aa4ab549c9a70887e26706d2595d7a407afe7be33ca35da49ad7c6afa8741782",
+      "elapsed_seconds": 0.517892
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001117007.json",
+      "started_at": "2026-10-09T07:05:11.828066+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 7317,
+      "sha256": "4446b21ba3712636b8a6d0da28ddbf76420b9f19028da90368340e00394917d1",
+      "elapsed_seconds": 0.416501
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001271506.json",
+      "started_at": "2026-10-09T07:05:11.903024+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 8935,
+      "sha256": "7a0c2cbd0160bb029fc45506f24855f41469f4ee4b84a14c39ba294f906fac08",
+      "elapsed_seconds": 0.452804
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001106125.json",
+      "started_at": "2026-10-09T07:05:12.244783+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 18798,
+      "sha256": "1aed10b78eab8c6529bef9dbfc84961da9fd63a99dd5a706e9df7bc8698e6d09",
+      "elapsed_seconds": 0.515229
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001631318.json",
+      "started_at": "2026-10-09T07:05:12.345764+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 19551,
+      "sha256": "d4d1d65d458b029ae94742823e4073ad227e2fe040c06701006371967df26c62",
+      "elapsed_seconds": 0.533276
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002488868.json",
+      "started_at": "2026-10-09T07:05:12.355957+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 12517,
+      "sha256": "354c6e853477ccedf677f47c4b1355cafaeef75db5b8108e3106a6b158be8131",
+      "elapsed_seconds": 0.521548
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001117008.json",
+      "started_at": "2026-10-09T07:05:12.422744+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 7322,
+      "sha256": "0e17d550914c92d714c441cd093b565271cb5bf36335bfbc56f120173b4f64c5",
+      "elapsed_seconds": 0.444497
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002493455.json",
+      "started_at": "2026-10-09T07:05:12.760285+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 22568,
+      "sha256": "dae67860ed67d8a037bd0eaae7d9b5796a074166ee7a9c8864dbfe0053168a93",
+      "elapsed_seconds": 0.648658
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002290660.json",
+      "started_at": "2026-10-09T07:05:12.867454+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 12531,
+      "sha256": "9fc0ca86d4fcfc703376f5753219d410a889395b379048b497bfb66cbe59f7b8",
+      "elapsed_seconds": 0.52998
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002339932.json",
+      "started_at": "2026-10-09T07:05:12.878876+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 17218,
+      "sha256": "ccba71292e205b39fba1ef9996df4072a7e50b4c5cd5563ad4023d1b587aeea6",
+      "elapsed_seconds": 0.530495
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003203150.json",
+      "started_at": "2026-10-09T07:05:12.885665+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 25075,
+      "sha256": "f28684848c648ba5b301064b71b692d4d83efe1c12c76110ca59e656cce9b391",
+      "elapsed_seconds": 0.584329
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003195946.json",
+      "started_at": "2026-10-09T07:05:13.397725+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 32020,
+      "sha256": "52bc5523898c324bea888afea82727673a7be8e8fb9cd4e29b7673ae25760a48",
+      "elapsed_seconds": 0.518314
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001179868.json",
+      "started_at": "2026-10-09T07:05:13.409110+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 29487,
+      "sha256": "9c6f42ece1f0b686775284b2a2fffe0e286c5f0bb999868136367bfed4bc22bd",
+      "elapsed_seconds": 0.51848
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001179875.json",
+      "started_at": "2026-10-09T07:05:13.416257+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 16140,
+      "sha256": "93c43787b051e98b30aec985ddd2cbd344e3cb56f0bb06241c57a348d6ab0827",
+      "elapsed_seconds": 0.511405
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001179882.json",
+      "started_at": "2026-10-09T07:05:13.470158+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 28276,
+      "sha256": "166dfb4baebeb3bd4974de201387cd08cca59373e6d58f9940652c81204035e4",
+      "elapsed_seconds": 0.473755
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003195951.json",
+      "started_at": "2026-10-09T07:05:13.916328+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 31848,
+      "sha256": "024bb034516358f4f17b8c1eb773035457d3ad885782c3f85e6a6e2319ee2728",
+      "elapsed_seconds": 0.525857
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003199931.json",
+      "started_at": "2026-10-09T07:05:13.927821+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 30716,
+      "sha256": "80d71d02f5748331643b96db2b81ff596367d2a6d2bf1be70c61af0cc2ba3854",
+      "elapsed_seconds": 0.525096
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003273573.json",
+      "started_at": "2026-10-09T07:05:13.928053+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 14571,
+      "sha256": "b83832d27312e25142f876aaf07e308e24ce3408a0443e8ff8eb8a1bde5185aa",
+      "elapsed_seconds": 0.534508
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002702984.json",
+      "started_at": "2026-10-09T07:05:13.944067+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 27668,
+      "sha256": "794a3a9c0fcc30848eb9e379dd8f28e559e88d8408f67cba7b94e5baf37396af",
+      "elapsed_seconds": 0.518541
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003165292.json",
+      "started_at": "2026-10-09T07:05:14.442452+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 23897,
+      "sha256": "353dab6dd25d646c0c38c737295c7f8b3ba713772b11223dd572f30e280aa62f",
+      "elapsed_seconds": 0.52445
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003165329.json",
+      "started_at": "2026-10-09T07:05:14.453382+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 34988,
+      "sha256": "4e37dfec4ab0db13573a9eb7f87563e5e66c18f5dd2a9fcb16192bfd677d3123",
+      "elapsed_seconds": 0.586283
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001192155.json",
+      "started_at": "2026-10-09T07:05:14.462732+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 21265,
+      "sha256": "ca85fc25a9e64fc809de9ae001f9a7b8c50af389a8a55cf4df415d001cb96043",
+      "elapsed_seconds": 0.522728
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001637483.json",
+      "started_at": "2026-10-09T07:05:14.462917+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 17408,
+      "sha256": "510c5608e6cec6028e3938258060c574b09d0f128a382110fbcd993a0524f379",
+      "elapsed_seconds": 0.501034
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm004326783.json",
+      "started_at": "2026-10-09T07:05:14.964340+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 33909,
+      "sha256": "5bf3f9875faae4d6871e4658df5151136d3bad1dd4631f82f603228fdfddb929",
+      "elapsed_seconds": 0.530283
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003159857.json",
+      "started_at": "2026-10-09T07:05:14.967049+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 10851,
+      "sha256": "45f2b10b73c600f54163e0dd68e7b086e8a8a40fcab5cef03ac39d09a2b31913",
+      "elapsed_seconds": 0.372022
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003183396.json",
+      "started_at": "2026-10-09T07:05:14.985585+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 20297,
+      "sha256": "5f1afdd9a1b22e1628ba384335ebdad3920e1441af303ee7409a391f9262c14c",
+      "elapsed_seconds": 0.519665
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002346313.json",
+      "started_at": "2026-10-09T07:05:15.039823+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 30391,
+      "sha256": "7052e046eeb7909338c7ea4297372f2373425c3740f83d3823a934c2c8f96608",
+      "elapsed_seconds": 0.532455
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002489249.json",
+      "started_at": "2026-10-09T07:05:15.339242+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 12058,
+      "sha256": "278f88e4cf4fb0b95d7ed496a2be4ff8b3f35f455e79e42b1f75407d55b28273",
+      "elapsed_seconds": 0.504661
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001216814.json",
+      "started_at": "2026-10-09T07:05:15.495095+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 8042,
+      "sha256": "c647f28f0bc1ad4e9213e2b24e6921b1245192fbceeda8befcfc4fe2e53d944f",
+      "elapsed_seconds": 0.36679
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002166694.json",
+      "started_at": "2026-10-09T07:05:15.505408+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 16546,
+      "sha256": "2e8700af53353f7a1a994dd1bbc98b8768a65be247c3eebfa87b931c2cd34961",
+      "elapsed_seconds": 0.507747
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003766932.json",
+      "started_at": "2026-10-09T07:05:15.572657+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 18999,
+      "sha256": "1fcde039383d188d3d0a7ed5a8a37ed5a5587e86d243d9ff829ccb49ef31cb46",
+      "elapsed_seconds": 0.522396
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003262771.json",
+      "started_at": "2026-10-09T07:05:15.844177+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 19035,
+      "sha256": "cde5c9f32967b2d67f2ab57f95e57962e167d2a215897e45df8dcb5173541845",
+      "elapsed_seconds": 0.514797
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003260934.json",
+      "started_at": "2026-10-09T07:05:15.862039+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 18857,
+      "sha256": "fb2be53165f16e362c11642186f89e10d7619f54868be7f7ec449ead47c7cc1b",
+      "elapsed_seconds": 0.499115
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002713597.json",
+      "started_at": "2026-10-09T07:05:16.013414+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 10627,
+      "sha256": "e3773293a353a259161e8f7a529edda3eca9e5227212f407a9651018fee22d1a",
+      "elapsed_seconds": 0.365943
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001828806.json",
+      "started_at": "2026-10-09T07:05:16.095293+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 10989,
+      "sha256": "8a893dcb410e3d8e0f38a13dfc90052fa72cdcc42a4098d6e3d0975e6ea9ccb3",
+      "elapsed_seconds": 0.450605
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003636382.json",
+      "started_at": "2026-10-09T07:05:16.360895+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 12831,
+      "sha256": "7cf2d12cb668259c0e6221cce409ec225467d13a8414f2c0b68fa7064dd929a7",
+      "elapsed_seconds": 0.534685
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003198926.json",
+      "started_at": "2026-10-09T07:05:16.371019+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 30965,
+      "sha256": "9f662e7ecdda89390f0e8620d4db83a83936e03141e30540c57be2470e942467",
+      "elapsed_seconds": 0.535486
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003158378.json",
+      "started_at": "2026-10-09T07:05:16.379456+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 31962,
+      "sha256": "c2379a4e3749817a735d065de2a37c7d99a6e3d1f576f8cc401f1f773b8588ef",
+      "elapsed_seconds": 0.682662
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003187563.json",
+      "started_at": "2026-10-09T07:05:16.546158+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 10892,
+      "sha256": "72d1fc92cd571d3aa1465bf54ca44d8f94a8f4bddce5e47a5a3a62339e888369",
+      "elapsed_seconds": 0.36965
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003557884.json",
+      "started_at": "2026-10-09T07:05:16.895842+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 20968,
+      "sha256": "36c247af056ac96ca9d216cbde28bc4dfe0bac75fb06ff34cc1208420e07ee2b",
+      "elapsed_seconds": 0.513276
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003184276.json",
+      "started_at": "2026-10-09T07:05:16.907365+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 25149,
+      "sha256": "6d5fb76e59288245430102bc7431740016e7be6f61522cda90345b7c72c1dac3",
+      "elapsed_seconds": 0.519105
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm004377652.json",
+      "started_at": "2026-10-09T07:05:16.915913+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 13763,
+      "sha256": "1843adca1e82e64595007770e9f7cf706e33191ed4461d1a6f1bc2a4cbb4b297",
+      "elapsed_seconds": 0.49301
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003187522.json",
+      "started_at": "2026-10-09T07:05:17.062648+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 18841,
+      "sha256": "59da33eb818e18bb8f5e862826e012daa0a22ba7d2e283bbea29f25832e7b4e3",
+      "elapsed_seconds": 0.5259
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003267205.json",
+      "started_at": "2026-10-09T07:05:17.409305+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 15964,
+      "sha256": "f03d78ad231c280fa09f36a5f5eb10d0aef3ba6f916000db738889fcd060d7b8",
+      "elapsed_seconds": 0.533723
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003267242.json",
+      "started_at": "2026-10-09T07:05:17.409605+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 15780,
+      "sha256": "8bbd3ed99742bf3cae7fff43b8016c03f603ba1ab50194deda926741b97bc44c",
+      "elapsed_seconds": 0.533368
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003165652.json",
+      "started_at": "2026-10-09T07:05:17.427198+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 28426,
+      "sha256": "94f1b6924e6cf083f73e8f908b9a240c3d3d496b6b448836d155b8402a4d2d65",
+      "elapsed_seconds": 0.534058
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003158344.json",
+      "started_at": "2026-10-09T07:05:17.588945+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 33526,
+      "sha256": "ea8795541066722b25b6758eb02d14d453d3befdcaec82651f93e18cbb1a7674",
+      "elapsed_seconds": 0.606957
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003165657.json",
+      "started_at": "2026-10-09T07:05:17.943266+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 34243,
+      "sha256": "16a228ac06d08746452625cb6042b409a7ba76cae72c1e28024ba2e388289261",
+      "elapsed_seconds": 0.529968
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003780812.json",
+      "started_at": "2026-10-09T07:05:17.943783+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 36752,
+      "sha256": "4ab81b785e68f2249e475d4f4d7a08c4965d0c935f063ef69dfd6d324ac56d8a",
+      "elapsed_seconds": 0.598295
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002028410.json",
+      "started_at": "2026-10-09T07:05:17.961393+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 21104,
+      "sha256": "6a615dba068bb6bd48ad3e8b330d54178e391f36faa8a761597e2763f13986ca",
+      "elapsed_seconds": 0.500568
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001116470.json",
+      "started_at": "2026-10-09T07:05:18.196168+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 14006,
+      "sha256": "189f1b9bad730d6cece930f59eb1cfc89385cab430159b2c240c561ddb8e0a84",
+      "elapsed_seconds": 0.518815
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002244680.json",
+      "started_at": "2026-10-09T07:05:18.462226+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 18805,
+      "sha256": "45613a36b6d7fa28b667d2027d551ce7d584adb274e478c27940e25852a231fc",
+      "elapsed_seconds": 0.524266
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001116173.json",
+      "started_at": "2026-10-09T07:05:18.473431+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 13789,
+      "sha256": "4e369d157b5079349d804e6cb15af1bc5ec4c8d5ed4d4c4b6efadf903517b22f",
+      "elapsed_seconds": 0.500708
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002190754.json",
+      "started_at": "2026-10-09T07:05:18.542293+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 31495,
+      "sha256": "381882d4fd07c2ec12e4243bff0b75ecbf65be0ae88bbf9ae8f2602089200512",
+      "elapsed_seconds": 0.512147
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002190757.json",
+      "started_at": "2026-10-09T07:05:18.715544+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 12963,
+      "sha256": "c180655e478fe24b7814e72b8b9f24041a41b06c130a3ecbb8110983ea557e0f",
+      "elapsed_seconds": 0.462632
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002190814.json",
+      "started_at": "2026-10-09T07:05:18.974323+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 31454,
+      "sha256": "1b17fdbd476d0a87cfe00a2f2561d836b61c71d25e6c8f2bca0fff43157bc35e",
+      "elapsed_seconds": 0.457314
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002190827.json",
+      "started_at": "2026-10-09T07:05:18.986638+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 34430,
+      "sha256": "23b58d3fcf5147a8c92da455d262b958e748939d557472815399ec98e97712ed",
+      "elapsed_seconds": 0.545819
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001186283.json",
+      "started_at": "2026-10-09T07:05:19.054875+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 28141,
+      "sha256": "1560ad6ac2465997c57b7205a5a5885cd763b07473afb76be8eeb82f2b8cdc69",
+      "elapsed_seconds": 0.46162
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001186290.json",
+      "started_at": "2026-10-09T07:05:19.178511+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 27992,
+      "sha256": "2caf9e3963197413d472a972cdf7834cecb584cd40d6e8efdd7ae42536fb3af6",
+      "elapsed_seconds": 0.517601
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001186294.json",
+      "started_at": "2026-10-09T07:05:19.431869+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 28077,
+      "sha256": "6b2ac5f91035c60fac71ea0144b8197c9bb62622647269352c6e2094b93809f7",
+      "elapsed_seconds": 0.55081
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001116204.json",
+      "started_at": "2026-10-09T07:05:19.516791+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 10929,
+      "sha256": "7fbc3242ec6776a42e01feb5d274307ec547d870b01c6d773a2f1b08698cd610",
+      "elapsed_seconds": 0.448051
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001228974.json",
+      "started_at": "2026-10-09T07:05:19.532640+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 8102,
+      "sha256": "827073b6b5663e962d99a0e435fe2f3d31a74126d0158380bd4da8dc6805f541",
+      "elapsed_seconds": 0.430772
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001228986.json",
+      "started_at": "2026-10-09T07:05:19.696281+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 32360,
+      "sha256": "48dd2c01d689ebcd6a1f84ed3103abf80a00aa2c37c65f4b3828d72a2d50d12e",
+      "elapsed_seconds": 0.604058
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002746041.json",
+      "started_at": "2026-10-09T07:05:19.963593+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 20244,
+      "sha256": "bf2122867489bf63febe8d0e9412f48711ac238d5dff6573e02bf007fa16745c",
+      "elapsed_seconds": 0.510393
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001827673.json",
+      "started_at": "2026-10-09T07:05:19.973795+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 23034,
+      "sha256": "e878a61ad5e98c07df1f4a9d73d156a0d78a721e6d4c28938090638ada299edd",
+      "elapsed_seconds": 0.512801
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001294071.json",
+      "started_at": "2026-10-09T07:05:19.982793+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 13093,
+      "sha256": "add4ca280fc10c7361378ec4a6fd65296d9acedc83fe5a2e3066baebc83c4551",
+      "elapsed_seconds": 0.498066
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003603739.json",
+      "started_at": "2026-10-09T07:05:20.300416+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 36553,
+      "sha256": "695adb39843d750beded763e74b5a1123b62689ed5e6cf23e00c0fac1f9ec89c",
+      "elapsed_seconds": 0.529017
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001116200.json",
+      "started_at": "2026-10-09T07:05:20.474115+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 14072,
+      "sha256": "b268edc5460b638f278eaec3eae866cf6adccee554770897fb79283fb4d10d91",
+      "elapsed_seconds": 0.524363
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001116139.json",
+      "started_at": "2026-10-09T07:05:20.480999+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 18251,
+      "sha256": "910580b4ef3562ca069e0049ba73131afac08de9ca12f75bc6c15cddb201e170",
+      "elapsed_seconds": 0.537538
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001827667.json",
+      "started_at": "2026-10-09T07:05:20.486701+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 24495,
+      "sha256": "1f5c28a7ce52ecbffb1a638c397e558910c9b679c5ffa5b5cc41b768c7e80eab",
+      "elapsed_seconds": 0.512391
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001099873.json",
+      "started_at": "2026-10-09T07:05:20.829704+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 10882,
+      "sha256": "28e897ab7441a24fcc71687f7e8ad10cbb308b90a83814805f378c9711c29002",
+      "elapsed_seconds": 0.438568
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003157370.json",
+      "started_at": "2026-10-09T07:05:20.998804+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 31995,
+      "sha256": "689fa67d17b577bd8c29d33a058dd201662e83bdc2ee16bce24aaf5b4195bed4",
+      "elapsed_seconds": 0.531546
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001190274.json",
+      "started_at": "2026-10-09T07:05:20.999263+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 37525,
+      "sha256": "5e63cb58e33f278ed937f7aa6dad33b61259ee703945360d4ce1538aeef8876e",
+      "elapsed_seconds": 0.62294
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001186980.json",
+      "started_at": "2026-10-09T07:05:21.018667+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 26575,
+      "sha256": "e5ded1de3656c4efb852b236e88b249895dec911ae848a7f8533a2a1deca6a55",
+      "elapsed_seconds": 0.511735
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001190846.json",
+      "started_at": "2026-10-09T07:05:21.268410+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 34233,
+      "sha256": "31cb8bbac9b8e715d43af0fae7019ff67fe1da363cba3d9cefa3d5ebc75cbe02",
+      "elapsed_seconds": 0.527872
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001230427.json",
+      "started_at": "2026-10-09T07:05:21.530819+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 35289,
+      "sha256": "95bbcb649615c2c5fb56a16ac6840de3edb1eb88e7d8e3d8fc1d2cb8bf97a599",
+      "elapsed_seconds": 0.521536
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001280579.json",
+      "started_at": "2026-10-09T07:05:21.531182+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 33673,
+      "sha256": "3fa109029f5e2601aad2b2b66ee8f00671d287aada7a778d598a9211da6fdfe2",
+      "elapsed_seconds": 0.528213
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm002291027.json",
+      "started_at": "2026-10-09T07:05:21.622468+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 17601,
+      "sha256": "afc877821e0c880020adb8f89cd6c450abb42768986e1c3ec49f284b67f78953",
+      "elapsed_seconds": 0.513107
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003559755.json",
+      "started_at": "2026-10-09T07:05:21.796504+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 10645,
+      "sha256": "df2904667b9824ffa08b6f8a4f8678cfdcd77da2820a8551fb989b6dd1722d7d",
+      "elapsed_seconds": 0.349416
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003199974.json",
+      "started_at": "2026-10-09T07:05:22.052489+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 17548,
+      "sha256": "d527c3eb36abb45f50c1f5be53de430b44eb63f3306f551b874c2005aebef37b",
+      "elapsed_seconds": 0.535409
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001281126.json",
+      "started_at": "2026-10-09T07:05:22.059485+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 34520,
+      "sha256": "4ade3c49a8098bc2036549417b50c3930c805c705ee6ef3fdbc3c129df16a9f3",
+      "elapsed_seconds": 0.536472
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001190945.json",
+      "started_at": "2026-10-09T07:05:22.135668+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 12782,
+      "sha256": "b1464935718bd2a0cd1a642029af3fea1a2dd5605e8d22af1e2e6067be955f72",
+      "elapsed_seconds": 0.530976
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001177717.json",
+      "started_at": "2026-10-09T07:05:22.145990+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 15381,
+      "sha256": "0313eb63bc5612a461b5a92f22faa2420345afe264e5c0e197e3582677a940c2",
+      "elapsed_seconds": 0.530089
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001146456.json",
+      "started_at": "2026-10-09T07:05:22.588034+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 18530,
+      "sha256": "3a55a01fb0bdfaa04972c4fc977a99479ab75bf696b041e1cce190aa00164f60",
+      "elapsed_seconds": 0.520522
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001277510.json",
+      "started_at": "2026-10-09T07:05:22.596068+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 11353,
+      "sha256": "b20fe4853afbb7a050fdeee8d379060ba0b4ab735c0f000ea5d389f3b2bf5323",
+      "elapsed_seconds": 0.433574
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm001146455.json",
+      "started_at": "2026-10-09T07:05:22.666816+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 33018,
+      "sha256": "3b21dfd68efd49b53e20067d7df601273957bd314a8c825e153e6da8b330b5e4",
+      "elapsed_seconds": 0.527033
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/details/agm003203155.json",
+      "started_at": "2026-10-09T07:05:22.676178+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 28559,
+      "sha256": "1aaa34378b4d12d1ef561a112cd6f19bac85aad7b9c33f766a272bef69943277",
+      "elapsed_seconds": 0.517602
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003195936.json",
+      "started_at": "2026-10-09T07:05:23.029906+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4264,
+      "sha256": "db0362e2408e07c8da0891ef673b2afe2771d3907bbdf78ecb976632515be752",
+      "elapsed_seconds": 0.431362
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003204399.json",
+      "started_at": "2026-10-09T07:05:23.108815+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4430,
+      "sha256": "1fb94a76dd42eba8e84e9ac51374b4edca1da7c08b06b7347a2104bed668ef5b",
+      "elapsed_seconds": 0.452546
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002664904.json",
+      "started_at": "2026-10-09T07:05:23.194040+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5239,
+      "sha256": "505aed930ded41b2e80423dbee946ad242e86cd9958eb3557eaa3b8378191e96",
+      "elapsed_seconds": 0.454612
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003203668.json",
+      "started_at": "2026-10-09T07:05:23.194331+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4647,
+      "sha256": "01087561739f06f72a155461139a6dfff67653097f257b774666c0e3a3b27dcc",
+      "elapsed_seconds": 0.443367
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003197109.json",
+      "started_at": "2026-10-09T07:05:23.461644+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5275,
+      "sha256": "f0f18fb0890f245aac3d653e6d92d27b6e43c5ec751c5d403c164305a603d955",
+      "elapsed_seconds": 0.431112
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199657.json",
+      "started_at": "2026-10-09T07:05:23.561608+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 10371,
+      "sha256": "5bb1ffef3c81e02dd047e316fecaab5329d86f107d0da91a12a2f32526ded71f",
+      "elapsed_seconds": 0.415915
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199662.json",
+      "started_at": "2026-10-09T07:05:23.637954+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6453,
+      "sha256": "bf3eeceb88a3797fe86f0d8dc46f763788889a081df4ea77a46e0f43d33b0df5",
+      "elapsed_seconds": 0.445296
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199664.json",
+      "started_at": "2026-10-09T07:05:23.648780+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5151,
+      "sha256": "785e8836d19164ecfffcfd8bbd5c2582d0af9dc3c9b53e3a63e414a93c8070c1",
+      "elapsed_seconds": 0.422637
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001173524.json",
+      "started_at": "2026-10-09T07:05:23.892895+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5200,
+      "sha256": "4d956079b8e3b0bdaa327a91dd7effb8a292028234821b43158756476f394d26",
+      "elapsed_seconds": 0.35465
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001173527.json",
+      "started_at": "2026-10-09T07:05:23.977734+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 3914,
+      "sha256": "24bd0b7afbd7607961a3234b5590bf38b0bc0d6e80d6148b2e353ebb12be5752",
+      "elapsed_seconds": 0.44172
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199670.json",
+      "started_at": "2026-10-09T07:05:24.071775+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5228,
+      "sha256": "06c7d9d9af113c2b73eee23c33ebd8851f0eed682fe4404583e65646e705b061",
+      "elapsed_seconds": 0.434782
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003204438.json",
+      "started_at": "2026-10-09T07:05:24.083386+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 10289,
+      "sha256": "01f6700da494085f37d986c1d6f2496931c95154e860a48cbb9a50cde79e0ec6",
+      "elapsed_seconds": 0.432023
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199690.json",
+      "started_at": "2026-10-09T07:05:24.247794+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6473,
+      "sha256": "1427c62f0cce5f9d205dc2cbee3d3e2da42ef77e5a54bfa314f853eeb2befa5c",
+      "elapsed_seconds": 0.439037
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199681.json",
+      "started_at": "2026-10-09T07:05:24.419672+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 7766,
+      "sha256": "9fba4e0c53adcda1d8cc684f54ac64f45fa2be1d5f847525dd87b93b70aa58b7",
+      "elapsed_seconds": 0.409781
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003159377.json",
+      "started_at": "2026-10-09T07:05:24.506689+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4527,
+      "sha256": "47615f6dafb511f8108a7c74c85e8f9ca63d9d54b7dbb5f2d0ad15925dc0ef09",
+      "elapsed_seconds": 0.442484
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003163920.json",
+      "started_at": "2026-10-09T07:05:24.515501+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4038,
+      "sha256": "b700c993a42394cf971b5c6e4b35cd36aebe7e458ff4f72b8179749fae3a34b7",
+      "elapsed_seconds": 0.431387
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001619538.json",
+      "started_at": "2026-10-09T07:05:24.687043+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5756,
+      "sha256": "2525bd849877c55e7ea27e3fffe4b7f167898daf7350cf63aa2cf67074e88500",
+      "elapsed_seconds": 0.433831
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001117007.json",
+      "started_at": "2026-10-09T07:05:24.829703+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 3921,
+      "sha256": "fa16aa35423846dd38e34e15fe38afa6f5b50b4a0e0a53d901a8a851631905f1",
+      "elapsed_seconds": 0.380616
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001271506.json",
+      "started_at": "2026-10-09T07:05:24.947098+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4624,
+      "sha256": "01cea37c5dbc027355c15ae4cd911e2f2cea7d7fe65c6a7a6ef05e0cfce88746",
+      "elapsed_seconds": 0.370599
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001106125.json",
+      "started_at": "2026-10-09T07:05:24.949331+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6100,
+      "sha256": "8fbcb1ddce1642cdcc9ac34e7608ec62f4471db83f8e2e95202f980b57d0221c",
+      "elapsed_seconds": 0.35951
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001631318.json",
+      "started_at": "2026-10-09T07:05:25.121140+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 11075,
+      "sha256": "9f9b487adbfbdedccf57df8cf03fed9b9092ffaa2b704041b699ece0960fcad0",
+      "elapsed_seconds": 0.441705
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002488868.json",
+      "started_at": "2026-10-09T07:05:25.210631+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4853,
+      "sha256": "cb9ad47497fd6fb349899df2c33bfee47c8f0f062a170114e26c29e0e7a2fee6",
+      "elapsed_seconds": 0.433251
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001117008.json",
+      "started_at": "2026-10-09T07:05:25.308970+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 3921,
+      "sha256": "39489e46842926e18799c2a2d723f198f60c18466b4f3d14265784e4de64a1df",
+      "elapsed_seconds": 0.434832
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002493455.json",
+      "started_at": "2026-10-09T07:05:25.317791+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 8817,
+      "sha256": "f3dcc42ae76d3d4e625652db8d2c36fcf8f24cc51f53272cd182df0ce098ebdc",
+      "elapsed_seconds": 0.435722
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002290660.json",
+      "started_at": "2026-10-09T07:05:25.563064+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4815,
+      "sha256": "882a4b803800a3b5929056b84c80865f6fe213d150ffb6bdfc9b00b4b19c904f",
+      "elapsed_seconds": 0.432818
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002339932.json",
+      "started_at": "2026-10-09T07:05:25.644207+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5030,
+      "sha256": "1aed2deed2d8455d0f613dc50c9fb3a1faf109c4e2fac3f2c2fc612ae918f8af",
+      "elapsed_seconds": 0.436831
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003203150.json",
+      "started_at": "2026-10-09T07:05:25.743997+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5270,
+      "sha256": "67fe442ab2cfe889d470c8b1cbc664eec57a3c5ddebf43d078aed060c08fca65",
+      "elapsed_seconds": 0.450229
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003195946.json",
+      "started_at": "2026-10-09T07:05:25.753648+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6459,
+      "sha256": "02dd48f6575b6a193e168f7d48418224da9d88a79a79209368a3aa65907aa36e",
+      "elapsed_seconds": 0.428768
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001179868.json",
+      "started_at": "2026-10-09T07:05:25.996103+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 3935,
+      "sha256": "27b8171c29e42ec9ece0c696a1cc2f65794f10c89c52a8a4641cf722759ee245",
+      "elapsed_seconds": 0.365931
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001179875.json",
+      "started_at": "2026-10-09T07:05:26.081307+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 9305,
+      "sha256": "1ec890f7b7e3b3650fc86b11ce0d828b04077f6c4bc0d719ec6c60bf8bc7acca",
+      "elapsed_seconds": 0.440202
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001179882.json",
+      "started_at": "2026-10-09T07:05:26.182647+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6594,
+      "sha256": "9adb66499ccdb3ba3c3f5f5228e815e496be497e23949069d0e3b4218e151087",
+      "elapsed_seconds": 0.421731
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003195951.json",
+      "started_at": "2026-10-09T07:05:26.194359+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 7664,
+      "sha256": "6046019effafaad1b303b10ea672c2afaf5df6b76bd7d3c8e95fdbc5dc19e521",
+      "elapsed_seconds": 0.421334
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199931.json",
+      "started_at": "2026-10-09T07:05:26.362311+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 9077,
+      "sha256": "8351a2283ac9bd089f35726c2167cb0d8064e99323cf3d13272b6f7461a0d336",
+      "elapsed_seconds": 0.417401
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003273573.json",
+      "started_at": "2026-10-09T07:05:26.521753+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4428,
+      "sha256": "da7b73b9233cc19bc42f2655a65844d257e5b90d804047b5e9717d260ae49c70",
+      "elapsed_seconds": 0.361595
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002702984.json",
+      "started_at": "2026-10-09T07:05:26.604573+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5571,
+      "sha256": "be69fc3f2fe8d26a2badc6eb42b72fadf523a27e8c75cb8ebc988cec6907067a",
+      "elapsed_seconds": 0.443405
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165292.json",
+      "started_at": "2026-10-09T07:05:26.615816+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6688,
+      "sha256": "7efcd7673c8641a1cffdd3a300b07a35d609b0e3d0bfc8c88028baa6b03648a2",
+      "elapsed_seconds": 0.442716
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165329.json",
+      "started_at": "2026-10-09T07:05:26.779988+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5578,
+      "sha256": "73270c6880a42862e9b72c1283e185f6885534358f29530d723215a33165cf37",
+      "elapsed_seconds": 0.447917
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001192155.json",
+      "started_at": "2026-10-09T07:05:26.883571+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6540,
+      "sha256": "ebc09c6e34838de70052b5cb4d13b0d68da6aaf27225019750a6c26face4a496",
+      "elapsed_seconds": 0.445576
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001637483.json",
+      "started_at": "2026-10-09T07:05:27.048183+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5020,
+      "sha256": "56b59ab7b06241a7a150747a858e24f788c3f2f5c661109233449f4b865a206b",
+      "elapsed_seconds": 0.370281
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm004326783.json",
+      "started_at": "2026-10-09T07:05:27.058813+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4503,
+      "sha256": "373ce190341b28146c32df6c37541bd38c9a8aaa8ede4c0be6acf23a65da80de",
+      "elapsed_seconds": 0.358432
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003159857.json",
+      "started_at": "2026-10-09T07:05:27.228163+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4517,
+      "sha256": "1a0e1332cd06cf414a21e33567fc22d7ee72eae098fee1650a2494912368d241",
+      "elapsed_seconds": 0.427571
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003183396.json",
+      "started_at": "2026-10-09T07:05:27.329346+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6717,
+      "sha256": "28dd946e9e4b64f045c3459f9a4be7a866290e36da85919d4b2e40530cdccd59",
+      "elapsed_seconds": 0.422172
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002346313.json",
+      "started_at": "2026-10-09T07:05:27.417374+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5712,
+      "sha256": "d3f7bf004f7740add710dddb0c95fadd110f3dbcfb23815584e858952bc6c7b9",
+      "elapsed_seconds": 0.431725
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002489249.json",
+      "started_at": "2026-10-09T07:05:27.418571+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4659,
+      "sha256": "92d9fd25399319cd570be6b939d2a4c970e0f5c1dcf3b0f3872b94acaf2a964a",
+      "elapsed_seconds": 0.41978
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001216814.json",
+      "started_at": "2026-10-09T07:05:27.656062+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4152,
+      "sha256": "3244f04068b61b7cf59f46c24f1338d7d1cb4262a257cc227114bf8f3a3fb07b",
+      "elapsed_seconds": 0.44113
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002166694.json",
+      "started_at": "2026-10-09T07:05:27.751767+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5453,
+      "sha256": "e9aac127eaa8142b3c84ca52aca66546f287ea4603a305dfbc86300939660f47",
+      "elapsed_seconds": 0.434338
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003766932.json",
+      "started_at": "2026-10-09T07:05:27.838507+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6297,
+      "sha256": "c6f171b7d03cb03800977599dbd8779bfe86ce1b4d4cddef45746698e017ee24",
+      "elapsed_seconds": 0.447245
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003262771.json",
+      "started_at": "2026-10-09T07:05:27.849210+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6315,
+      "sha256": "4e42d659bd5195143dd3563c16ab7bb66403b0b47f1a3bba0b9eb3deec917500",
+      "elapsed_seconds": 0.44647
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003260934.json",
+      "started_at": "2026-10-09T07:05:28.097438+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6211,
+      "sha256": "c2d51eef84f16eec72fc3ebd99bfab64a3afc1e80df7797794d193e284826f58",
+      "elapsed_seconds": 0.373888
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002713597.json",
+      "started_at": "2026-10-09T07:05:28.186346+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4358,
+      "sha256": "27decb89f3ca9f97897eef5e0305a78e9eb5291b1d945d6fa7d5477f41ea91a0",
+      "elapsed_seconds": 0.431385
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001828806.json",
+      "started_at": "2026-10-09T07:05:28.285953+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4336,
+      "sha256": "d84eb9d19121145292a6f7cd2d0fd59ef1018bb2d4055095e0918dbcb8aa1d3b",
+      "elapsed_seconds": 0.420329
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003636382.json",
+      "started_at": "2026-10-09T07:05:28.295799+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5076,
+      "sha256": "375101b0c86c39feacee9984faca1f5c8835963e6269c4e1d7ddd82c45923a42",
+      "elapsed_seconds": 0.419821
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003198926.json",
+      "started_at": "2026-10-09T07:05:28.471560+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 13066,
+      "sha256": "1217181ebb5a49b7213d17d8c7017e65bd57b36fe0edf418b7baea42a089b07e",
+      "elapsed_seconds": 0.48497
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003158378.json",
+      "started_at": "2026-10-09T07:05:28.617977+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6019,
+      "sha256": "ea39f210b6f8a353f35c82ee010ca1c899ec14e7a50d1e966155766777eca625",
+      "elapsed_seconds": 0.355351
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003187563.json",
+      "started_at": "2026-10-09T07:05:28.706451+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4579,
+      "sha256": "6c929c0d6653392bd38d6ab1b6625b04f8e8ff1d20365fbf66cb48d02ea5b797",
+      "elapsed_seconds": 1.358421
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003557884.json",
+      "started_at": "2026-10-09T07:05:28.715733+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 7548,
+      "sha256": "dc5b1aa86dadbbfaabd149961402f2be76315a054f7378f54a359828d7d0a3b8",
+      "elapsed_seconds": 1.356915
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003184276.json",
+      "started_at": "2026-10-09T07:05:28.957597+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6688,
+      "sha256": "be8161fea054f3800bb15c06123a8c4affd3e12951d121f7f00ff4a8659a0c7d",
+      "elapsed_seconds": 0.972818
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm004377652.json",
+      "started_at": "2026-10-09T07:05:28.973464+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4056,
+      "sha256": "670773c6e8419af6a9f88e4f287409376668e2b0551e08bec66adafe908ee093",
+      "elapsed_seconds": 0.429024
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003187522.json",
+      "started_at": "2026-10-09T07:05:29.402578+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4207,
+      "sha256": "124c60bb8c4b93a37d463edc1885b61bb5de3ffe632161329b14ab038ee547eb",
+      "elapsed_seconds": 0.442083
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003267205.json",
+      "started_at": "2026-10-09T07:05:29.844883+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5551,
+      "sha256": "1b329bc963bdc938efd7ec5aba0a59b0f0e7a3333864a60a864f5ad46dbe61db",
+      "elapsed_seconds": 0.431045
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003267242.json",
+      "started_at": "2026-10-09T07:05:29.930537+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4121,
+      "sha256": "b7de4382874501c7b5f6037768d3a50f3c8a5f6ed03def68b0d2503998f402b8",
+      "elapsed_seconds": 0.441134
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165652.json",
+      "started_at": "2026-10-09T07:05:30.064975+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5539,
+      "sha256": "7845be74f17401bd1eb7ed6aef0c6ff3e53e2fc134ef9d8dea83febd8b888f17",
+      "elapsed_seconds": 0.383714
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003158344.json",
+      "started_at": "2026-10-09T07:05:30.072751+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4529,
+      "sha256": "bc2100f427d9ed77c41cc6a05c919a74fa2fca52bb057384d5381fdc5a68b7aa",
+      "elapsed_seconds": 0.387628
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165657.json",
+      "started_at": "2026-10-09T07:05:30.276093+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4546,
+      "sha256": "6d5c43c8119962a44c51a1302c36c25b116ec41ad659d9e2a86cd59509bbb9de",
+      "elapsed_seconds": 0.436766
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003780812.json",
+      "started_at": "2026-10-09T07:05:30.371816+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6016,
+      "sha256": "86bec33643c983cad950d9f779ea626334fb80d6f87c8a0fd98c95d3a1b535a8",
+      "elapsed_seconds": 0.441699
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002028410.json",
+      "started_at": "2026-10-09T07:05:30.448873+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 7698,
+      "sha256": "7f4d096c36fd9ad3dbd256f18cbc050ecea7ccf086e4f923ccd767212008d22f",
+      "elapsed_seconds": 0.447827
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116470.json",
+      "started_at": "2026-10-09T07:05:30.460621+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4164,
+      "sha256": "98bb6ebaa21c74dfb2b67c9d57f6050f34f35dbb5f6b15ff9abb69a509361ebe",
+      "elapsed_seconds": 0.434052
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002244680.json",
+      "started_at": "2026-10-09T07:05:30.713035+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5369,
+      "sha256": "4eb9ec2b3307d2849d85ab896ac9e3c93f25d25a50046331216ebc6e967935a8",
+      "elapsed_seconds": 0.356027
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116173.json",
+      "started_at": "2026-10-09T07:05:30.813710+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4100,
+      "sha256": "53bc457a647de35beda3bb398f35a978d71a9cda97bffca2b9d4108f5b29ebee",
+      "elapsed_seconds": 0.426342
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190754.json",
+      "started_at": "2026-10-09T07:05:30.894873+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6756,
+      "sha256": "db414c58599a26748b7abef0c8755dff11a6979c450652f9e16ddcbdf9f8b20b",
+      "elapsed_seconds": 0.437316
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190757.json",
+      "started_at": "2026-10-09T07:05:30.904809+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4379,
+      "sha256": "1bffbeecb7b6f984d10f1d8e280fa4c8164a3e93e6ad452aac448da66d0130de",
+      "elapsed_seconds": 0.436324
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190814.json",
+      "started_at": "2026-10-09T07:05:31.069552+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4234,
+      "sha256": "0530d093cc18c9d1c54d4709767860da173b633c5d0e9b92f99099e5345c6f2e",
+      "elapsed_seconds": 0.428569
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190827.json",
+      "started_at": "2026-10-09T07:05:31.240221+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4571,
+      "sha256": "aa9dcee33e6ce7d7cae2b863b8b0333068de83dd660b921176519b078a7df5f4",
+      "elapsed_seconds": 0.364665
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186283.json",
+      "started_at": "2026-10-09T07:05:31.332333+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6508,
+      "sha256": "efc1f3b3bbfdd4078398d3f8a9fc07d4df164b6e219ba841ecd7d426b630342f",
+      "elapsed_seconds": 0.436916
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186290.json",
+      "started_at": "2026-10-09T07:05:31.341258+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 3885,
+      "sha256": "7f2936b624ee2fdc4ba3c1102702324d5d0a38ba734446b0deb0e2f5c8010a35",
+      "elapsed_seconds": 0.426674
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186294.json",
+      "started_at": "2026-10-09T07:05:31.498259+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 3921,
+      "sha256": "b5c91334d0fafb3651820a10f906fd28b11179dd500bb44c0af84b8d3b618b9a",
+      "elapsed_seconds": 0.494424
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116204.json",
+      "started_at": "2026-10-09T07:05:31.605146+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4463,
+      "sha256": "475ee46f0eab5289a53a46942f68434bcd86b03aa3b326c8a87931fa26b43f07",
+      "elapsed_seconds": 0.423237
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001228974.json",
+      "started_at": "2026-10-09T07:05:31.768081+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4126,
+      "sha256": "3adcbcab58061fd518b87e856eb75dc79d96986ed459db04f2c32335a6162f10",
+      "elapsed_seconds": 0.365641
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001228986.json",
+      "started_at": "2026-10-09T07:05:31.769364+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6634,
+      "sha256": "17831dbd3ecc9d7ee499e4e4ae4a7c151c76621a35c89cd0f4c66a3228349f39",
+      "elapsed_seconds": 0.390312
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002746041.json",
+      "started_at": "2026-10-09T07:05:31.992779+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6725,
+      "sha256": "fe635c72d96463c4e413c873ca07d32bcc6ac291e7d294c6b2ff3a3f1b058ed0",
+      "elapsed_seconds": 0.389069
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001827673.json",
+      "started_at": "2026-10-09T07:05:32.028499+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5129,
+      "sha256": "ec9739c9749e89bf849abd0cf31ce6cdf83c71a5cd200040bf4c003a60e5a345",
+      "elapsed_seconds": 0.449632
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001294071.json",
+      "started_at": "2026-10-09T07:05:32.133891+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5685,
+      "sha256": "ed8a6d4b64e666a58ab5ccd77b9d120ed79d81fd616ea217f0d0840339460235",
+      "elapsed_seconds": 0.431964
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003603739.json",
+      "started_at": "2026-10-09T07:05:32.159802+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4579,
+      "sha256": "ed8498e8b2fb43e4d3fcb7bbd6417ff9c4c28b41fd0dfecfbd1e4171cfb54829",
+      "elapsed_seconds": 0.396001
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116200.json",
+      "started_at": "2026-10-09T07:05:32.381987+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4251,
+      "sha256": "20db619a5af58f7d8edeb7956b6df3407fd4c603726377b9672ce80a6421d56f",
+      "elapsed_seconds": 0.434982
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116139.json",
+      "started_at": "2026-10-09T07:05:32.478400+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5311,
+      "sha256": "1111448a96784646f8a8657cda8f721a3528e0a4028bdcad5d9796bbbba65cac",
+      "elapsed_seconds": 0.43494
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001827667.json",
+      "started_at": "2026-10-09T07:05:32.556000+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6634,
+      "sha256": "5a497126ee878a4475e4d2f08d28e2f78b994a8ec914c8b3cd9daee5192aeda1",
+      "elapsed_seconds": 0.449023
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001099873.json",
+      "started_at": "2026-10-09T07:05:32.566013+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4570,
+      "sha256": "8cfa31a49fa47aec87b40b07659a59036c88ef827ef4075f47ff6be649096223",
+      "elapsed_seconds": 0.429448
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003157370.json",
+      "started_at": "2026-10-09T07:05:32.817339+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4448,
+      "sha256": "deeeefa39ccd7527b2f85b5d11c1e19de1b25b738b3808661fddde0dd7f3fc00",
+      "elapsed_seconds": 0.360002
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001190274.json",
+      "started_at": "2026-10-09T07:05:32.913623+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5483,
+      "sha256": "553966e57d0f0e4f0e867b2fe0c39a6de86103eb2d0c0a7c34e9e35a5268c384",
+      "elapsed_seconds": 0.422259
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186980.json",
+      "started_at": "2026-10-09T07:05:32.995602+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 3880,
+      "sha256": "85168db439b1803c519bae75bd461347fdb50cb5e3df5ea98e819073f0c3f3f9",
+      "elapsed_seconds": 0.515607
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001190846.json",
+      "started_at": "2026-10-09T07:05:33.005107+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4519,
+      "sha256": "ecf53303f31d28a2f859273c8fea2cd99fb13019d9f6f99b2bb011d1cc0d8c4f",
+      "elapsed_seconds": 0.429942
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001230427.json",
+      "started_at": "2026-10-09T07:05:33.177583+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6816,
+      "sha256": "20a081df6ba6e4f2f7e99ae1562198a6eaf01187bcb8849e2dfe70be644a5e06",
+      "elapsed_seconds": 1.004922
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001280579.json",
+      "started_at": "2026-10-09T07:05:33.336078+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4305,
+      "sha256": "286098e93f647040e976df794ac93df565ebfa944aa8bb1abaae8c0c41b028b1",
+      "elapsed_seconds": 0.360933
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002291027.json",
+      "started_at": "2026-10-09T07:05:33.435188+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5146,
+      "sha256": "58956deed9c5f399876c973aaa2d75f04720058fb30edeba25c3b48498f16d44",
+      "elapsed_seconds": 0.421642
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003559755.json",
+      "started_at": "2026-10-09T07:05:33.511382+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5017,
+      "sha256": "dd1e073e8643c667ff0b1aa7b34f2f7d330952f905b8efe69585b6f1e0f60945",
+      "elapsed_seconds": 0.430261
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199974.json",
+      "started_at": "2026-10-09T07:05:33.697104+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5407,
+      "sha256": "c814ddee9f7109325179966eb8a68372f4733e825224f034de556d2f21580db4",
+      "elapsed_seconds": 0.421181
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001281126.json",
+      "started_at": "2026-10-09T07:05:33.856919+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4606,
+      "sha256": "6295d1039a87a11613f0dba89a15dea664e76978968f6aa8e19f7b3c1a888573",
+      "elapsed_seconds": 0.35723
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001190945.json",
+      "started_at": "2026-10-09T07:05:33.941769+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5523,
+      "sha256": "43832b29dd381f9f3665043580f9d6f91c312bc1efb34a80d2cc5ea8046d6142",
+      "elapsed_seconds": 0.345757
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001177717.json",
+      "started_at": "2026-10-09T07:05:34.118463+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 6944,
+      "sha256": "168d204623b200506793157f082866d799f194af1df19f886ae6f486f2ceb946",
+      "elapsed_seconds": 0.42905
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001146456.json",
+      "started_at": "2026-10-09T07:05:34.182686+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4190,
+      "sha256": "0c08262ee9387eefd77a35f9a395f735f54a26ab5e9f9ee8f003064699789708",
+      "elapsed_seconds": 0.377504
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001277510.json",
+      "started_at": "2026-10-09T07:05:34.214275+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 4791,
+      "sha256": "e649de8e7439e9c706d9b44111252bbbfe7af3014309e0c408e1468f81b5bc26",
+      "elapsed_seconds": 0.431887
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001146455.json",
+      "started_at": "2026-10-09T07:05:34.287784+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 5444,
+      "sha256": "08f174d0587b49c30611a51ff5af0bba2c9dcfdb10e4daa0abe198558aea45cf",
+      "elapsed_seconds": 0.440925
+    },
+    {
+      "url": "https://jzis.org/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003203155.json",
+      "started_at": "2026-10-09T07:05:34.547797+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {},
+      "bytes": 7990,
+      "sha256": "681dae0233830551d376e8af408761e657eb458bc4ceac7415ab61c565f67471",
+      "elapsed_seconds": 0.44757
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Alayh6/enrichment",
+      "started_at": "2026-10-09T07:05:35.000099+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "e55afdb0aec545448223dbe886a881f9",
+        "x-api-version": "1"
+      },
+      "bytes": 43814,
+      "sha256": "8ece4d119954cb072b2a987977ee7cdf95c586986fa31777f4e99ebf3780d668",
+      "elapsed_seconds": 0.597356
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Anb4c3o2/enrichment",
+      "started_at": "2026-10-09T07:05:35.598744+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "28f76d2e53fd4c178ab43cd3a258adae",
+        "x-api-version": "1"
+      },
+      "bytes": 39987,
+      "sha256": "f7e03b33a7f07e1c951e9874d179325ea528bedb9b6b13827794024c0d2002e4",
+      "elapsed_seconds": 0.605577
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Amgh26/enrichment",
+      "started_at": "2026-10-09T07:05:36.205396+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "af793ddd590f40cf86cb697559c6af9d",
+        "x-api-version": "1"
+      },
+      "bytes": 52028,
+      "sha256": "aeebf970966b045cf2d05576e1165194c4b23e68d62d2969665220cacf45a864",
+      "elapsed_seconds": 0.883352
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Acafe0.93co0.07ash/enrichment",
+      "started_at": "2026-10-09T07:05:37.091416+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "dae82919e55e4ae7bf75557605e42ba6",
+        "x-api-version": "1"
+      },
+      "bytes": 33882,
+      "sha256": "df2d5cc53deb2ea8f37df50132b64c82a1e25e34a30061bc8542f9e5c68fda0f",
+      "elapsed_seconds": 0.537647
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Acafe0.95ni0.05asf/enrichment",
+      "started_at": "2026-10-09T07:05:37.629645+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "b8954968d32049b7877d893f3e539dd7",
+        "x-api-version": "1"
+      },
+      "bytes": 33674,
+      "sha256": "2c0c56f44584030b1a44fe9ad2a05a7adf53cb08df9de146e443cf15dd6cdf02",
+      "elapsed_seconds": 0.510827
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Are6se8cl2/enrichment",
+      "started_at": "2026-10-09T07:05:38.141338+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "c8837e8f3757491e850be9b69751cafa",
+        "x-api-version": "1"
+      },
+      "bytes": 43490,
+      "sha256": "416ae84ff89ccbbe23e8d320928d2ff9c0f48938b1024d2e9d1046d49ea76689",
+      "elapsed_seconds": 0.609801
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Aba3rh4ge16/enrichment",
+      "started_at": "2026-10-09T07:05:38.752329+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "eab8f50d263e49b2b0e3329fb2ddafd4",
+        "x-api-version": "1"
+      },
+      "bytes": 65031,
+      "sha256": "ad79a8f64e501511eb79605210d6da5103f5d833ae65f5776d9d8970e173f4ea",
+      "elapsed_seconds": 0.640936
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Acrb2/enrichment",
+      "started_at": "2026-10-09T07:05:39.394464+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "d4ce1dae5a1d4b298bc123885df01a5c",
+        "x-api-version": "1"
+      },
+      "bytes": 77479,
+      "sha256": "ae036690b74b12fb0d1bf637194c79e03e88ebe40b77c82a8de44abe00a4ddc2",
+      "elapsed_seconds": 0.845285
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3A%28mo0.96ti0.04%290.8b2/enrichment",
+      "started_at": "2026-10-09T07:05:40.240268+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "10a4c84554d444798bdeafc925f4a7af",
+        "x-api-version": "1"
+      },
+      "bytes": 48882,
+      "sha256": "c84f00409b620e294eee943604cc4fda91f4f50ebf4d786014b5dfc2156ca303",
+      "elapsed_seconds": 0.605092
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Anb2p5/enrichment",
+      "started_at": "2026-10-09T07:05:40.845790+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "c44a10d2d0014e61a2411d66f9213285",
+        "x-api-version": "1"
+      },
+      "bytes": 64536,
+      "sha256": "404bfae71c6ebd97fe359e3dfdf67a1b05a1c7e9e27ad2b8b5c4b8a4aaa975b7",
+      "elapsed_seconds": 0.530795
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Abe0.024al0.976/enrichment",
+      "started_at": "2026-10-09T07:05:41.377598+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "71ddd67119224ea88c8da9862ef97d7d",
+        "x-api-version": "1"
+      },
+      "bytes": 37596,
+      "sha256": "102dbb3cfc8cf9120b8b3b85df76754f090bcf9ac9df93137be4e51c2d2f3365",
+      "elapsed_seconds": 0.616389
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Anb4cu0.2sisb2/enrichment",
+      "started_at": "2026-10-09T07:05:41.994640+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "6a9fbe3ff3e24e3e9da963e0cb4ed6f0",
+        "x-api-version": "1"
+      },
+      "bytes": 44260,
+      "sha256": "87d6b972e3f50f91756d02822a819c24b19c7150585eba5a490ed817909a05f7",
+      "elapsed_seconds": 0.789977
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Anbsctizr/enrichment",
+      "started_at": "2026-10-09T07:05:42.785750+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "768d09e567bf473ab10e8207cdb46299",
+        "x-api-version": "1"
+      },
+      "bytes": 128251,
+      "sha256": "c374a5a0ad0d6a4262d74009094db23150bfe476d1b00d01a14ff3997c197ebf",
+      "elapsed_seconds": 1.821288
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Are7ta3/enrichment",
+      "started_at": "2026-10-09T07:05:44.609453+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "db5213d8e10e4660bfa2c2ddb3ab5e8e",
+        "x-api-version": "1"
+      },
+      "bytes": 54820,
+      "sha256": "af312d720f458c35efe4c9a72f530f2d4a79672c1ed4a67e5d77f822367ac67e",
+      "elapsed_seconds": 0.794813
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Ata2pdse5/enrichment",
+      "started_at": "2026-10-09T07:05:45.405840+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "92b12227102a4e64af65016e31009187",
+        "x-api-version": "1"
+      },
+      "bytes": 118195,
+      "sha256": "ac4d61d30af0ab5099fab815ebb69d9949a0afd0a26c08bc57b574aad235738a",
+      "elapsed_seconds": 1.046313
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials/mat%3Asmfe0.80co0.20aso/enrichment",
+      "started_at": "2026-10-09T07:05:46.454321+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "11a58e103c074f72bf4772abaf2457d1",
+        "x-api-version": "1"
+      },
+      "bytes": 46621,
+      "sha256": "29c2444fd6d14bab1037ca62fae49fbce73eae658deb036604323ee241dbf567",
+      "elapsed_seconds": 0.61116
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+      "started_at": "2026-10-09T07:05:47.066387+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "9bf58c8821f94195921f6a74705b033e",
+        "x-api-version": "1"
+      },
+      "bytes": 505619,
+      "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+      "elapsed_seconds": 0.971909,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+      "started_at": "2026-10-09T07:05:48.048749+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "c624d152a32a444687e22c48d47c521f",
+        "x-api-version": "1"
+      },
+      "bytes": 505619,
+      "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+      "elapsed_seconds": 0.847735,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+      "started_at": "2026-10-09T07:05:48.906359+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "91deb212bc4a4b3eb8488f03441ceaf3",
+        "x-api-version": "1"
+      },
+      "bytes": 505619,
+      "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+      "elapsed_seconds": 2.681455,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+      "started_at": "2026-10-09T07:05:51.600680+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "59e665ebd8f846fb9dcee3c08e47bab2",
+        "x-api-version": "1"
+      },
+      "bytes": 505619,
+      "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+      "elapsed_seconds": 0.912974,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+      "started_at": "2026-10-09T07:05:52.523422+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "6215d84e24e34b3a895424296c0bdc01",
+        "x-api-version": "1"
+      },
+      "bytes": 505619,
+      "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+      "elapsed_seconds": 1.008175,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:05:53.535245+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "04f879e0cf414ebd9526146a0c4d8698",
+        "x-api-version": "1"
+      },
+      "bytes": 336659,
+      "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+      "elapsed_seconds": 1.575029,
+      "total": 41,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:05:55.117773+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "742f8e6cbe7e4f0f9e8d6f9e659cd0e2",
+        "x-api-version": "1"
+      },
+      "bytes": 336659,
+      "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+      "elapsed_seconds": 0.952265,
+      "total": 41,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:05:56.077351+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "f672a7fbf4234d848adc3404024e61c4",
+        "x-api-version": "1"
+      },
+      "bytes": 336659,
+      "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+      "elapsed_seconds": 0.879652,
+      "total": 41,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:05:56.964505+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "530aa032b7ed4072a83308cd2c821131",
+        "x-api-version": "1"
+      },
+      "bytes": 336659,
+      "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+      "elapsed_seconds": 0.855974,
+      "total": 41,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:05:57.823974+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "c13e6f8901e74703887524936b9827ab",
+        "x-api-version": "1"
+      },
+      "bytes": 336659,
+      "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+      "elapsed_seconds": 1.031578,
+      "total": 41,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "started_at": "2026-10-09T07:05:58.860273+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "dfbda0e7e2c441768a71235bee1dd46b",
+        "x-api-version": "1"
+      },
+      "bytes": 216930,
+      "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+      "elapsed_seconds": 7.537956,
+      "total": 4,
+      "rows": 4,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "started_at": "2026-10-09T07:06:06.403246+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "2ea42d0fbb5048d1b16eeee74cb9f4c8",
+        "x-api-version": "1"
+      },
+      "bytes": 216930,
+      "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+      "elapsed_seconds": 0.768932,
+      "total": 4,
+      "rows": 4,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "started_at": "2026-10-09T07:06:07.178282+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "41cefd2f8be44150ac26c9b745644d20",
+        "x-api-version": "1"
+      },
+      "bytes": 216930,
+      "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+      "elapsed_seconds": 0.962238,
+      "total": 4,
+      "rows": 4,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "started_at": "2026-10-09T07:06:08.144672+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "c937821e8a4b4fc0a240c43033665fe9",
+        "x-api-version": "1"
+      },
+      "bytes": 216930,
+      "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+      "elapsed_seconds": 0.783894,
+      "total": 4,
+      "rows": 4,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "started_at": "2026-10-09T07:06:08.933530+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "c68bf448ba8444bc8a2ba143c21b9fb9",
+        "x-api-version": "1"
+      },
+      "bytes": 216930,
+      "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+      "elapsed_seconds": 0.854859,
+      "total": 4,
+      "rows": 4,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+      "started_at": "2026-10-09T07:06:09.791075+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "738dd2f3440d447b92429a2ff18d76de",
+        "x-api-version": "1"
+      },
+      "bytes": 2557859,
+      "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+      "elapsed_seconds": 18.185522,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+      "started_at": "2026-10-09T07:06:28.025108+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "cd879ef6bd4a4df9855a760f9d24eda0",
+        "x-api-version": "1"
+      },
+      "bytes": 2557859,
+      "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+      "elapsed_seconds": 1.176497,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+      "started_at": "2026-10-09T07:06:29.240019+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "e643cee8b2894bc3854b7935b8b4b09a",
+        "x-api-version": "1"
+      },
+      "bytes": 2557859,
+      "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+      "elapsed_seconds": 1.976004,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+      "started_at": "2026-10-09T07:06:31.255336+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "681f94f3457d4b4fab79682bb7a0f59a",
+        "x-api-version": "1"
+      },
+      "bytes": 2557859,
+      "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+      "elapsed_seconds": 1.29177,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+      "started_at": "2026-10-09T07:06:32.584125+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "8d067622781c438788d0149ee3f4cab5",
+        "x-api-version": "1"
+      },
+      "bytes": 2557859,
+      "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+      "elapsed_seconds": 3.203121,
+      "total": 10507,
+      "rows": 25,
+      "sort_basis": "current_projected_catalogue",
+      "scientific_display_policy": "atomic_property_evidence"
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/version",
+      "started_at": "2026-10-09T07:06:35.837118+00:00",
+      "status": 200,
+      "error": null,
+      "headers": {
+        "x-request-id": "e23f6d2402be46d98c0b059f3b93cdfb",
+        "x-api-version": "1"
+      },
+      "bytes": 76,
+      "sha256": "5406ece54bf4dcbe17e7eba3f186a49ed968c1f63ae4d8a1661d5eb4feba086f",
+      "elapsed_seconds": 0.34668
+    }
+  ],
+  "checks": [
+    {
+      "name": "coverage_counts_present",
+      "passed": true
+    },
+    {
+      "name": "paper_provider_sum",
+      "passed": true
+    },
+    {
+      "name": "frontend_api_version_matches",
+      "passed": true
+    },
+    {
+      "name": "source_catalogue_bytes_match_checkout_pin",
+      "passed": true
+    },
+    {
+      "name": "source_detail_manifest_bytes_match_checkout_pin",
+      "passed": true
+    },
+    {
+      "name": "evidence_index_bytes_match_checkout_pin",
+      "passed": true
+    },
+    {
+      "name": "discovery_counts_and_identity",
+      "passed": true
+    },
+    {
+      "name": "requested_detail_pins",
+      "passed": true
+    },
+    {
+      "name": "all_16_recovery_windows_match_checkout",
+      "passed": true
+    },
+    {
+      "name": "materials_request_default",
+      "passed": true
+    },
+    {
+      "name": "materials_request_formula",
+      "passed": true
+    },
+    {
+      "name": "materials_request_observed_cuprate",
+      "passed": true
+    },
+    {
+      "name": "materials_request_source_count",
+      "passed": true
+    },
+    {
+      "name": "version_stable_across_capture",
+      "passed": true
+    },
+    {
+      "name": "stats_dataset_matches_version",
+      "passed": true
+    },
+    {
+      "name": "all_http_requests_succeeded",
+      "passed": true
+    }
+  ],
+  "latency": {
+    "default": {
+      "request_path": "/materials?limit=25&offset=0",
+      "samples": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T07:05:47.066387+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "9bf58c8821f94195921f6a74705b033e",
+            "x-api-version": "1"
+          },
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 0.971909,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T07:05:48.048749+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "c624d152a32a444687e22c48d47c521f",
+            "x-api-version": "1"
+          },
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 0.847735,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T07:05:48.906359+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "91deb212bc4a4b3eb8488f03441ceaf3",
+            "x-api-version": "1"
+          },
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 2.681455,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T07:05:51.600680+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "59e665ebd8f846fb9dcee3c08e47bab2",
+            "x-api-version": "1"
+          },
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 0.912974,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T07:05:52.523422+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "6215d84e24e34b3a895424296c0bdc01",
+            "x-api-version": "1"
+          },
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 1.008175,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        }
+      ],
+      "attempts": 5,
+      "successful": 5,
+      "failures": 0,
+      "median_seconds": 0.971909,
+      "p95_seconds": 2.681455,
+      "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+      "first_request_seconds": 0.971909,
+      "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+      "slo_acceptance": null
+    },
+    "formula": {
+      "request_path": "/materials?q=MgB2&limit=25&offset=0",
+      "samples": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T07:05:53.535245+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "04f879e0cf414ebd9526146a0c4d8698",
+            "x-api-version": "1"
+          },
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 1.575029,
+          "total": 41,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T07:05:55.117773+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "742f8e6cbe7e4f0f9e8d6f9e659cd0e2",
+            "x-api-version": "1"
+          },
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.952265,
+          "total": 41,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T07:05:56.077351+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "f672a7fbf4234d848adc3404024e61c4",
+            "x-api-version": "1"
+          },
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.879652,
+          "total": 41,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T07:05:56.964505+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "530aa032b7ed4072a83308cd2c821131",
+            "x-api-version": "1"
+          },
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.855974,
+          "total": 41,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T07:05:57.823974+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "c13e6f8901e74703887524936b9827ab",
+            "x-api-version": "1"
+          },
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 1.031578,
+          "total": 41,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        }
+      ],
+      "attempts": 5,
+      "successful": 5,
+      "failures": 0,
+      "median_seconds": 0.952265,
+      "p95_seconds": 1.575029,
+      "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+      "first_request_seconds": 1.575029,
+      "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+      "slo_acceptance": null
+    },
+    "observed_cuprate": {
+      "request_path": "/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "samples": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T07:05:58.860273+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "dfbda0e7e2c441768a71235bee1dd46b",
+            "x-api-version": "1"
+          },
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 7.537956,
+          "total": 4,
+          "rows": 4,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T07:06:06.403246+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "2ea42d0fbb5048d1b16eeee74cb9f4c8",
+            "x-api-version": "1"
+          },
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.768932,
+          "total": 4,
+          "rows": 4,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T07:06:07.178282+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "41cefd2f8be44150ac26c9b745644d20",
+            "x-api-version": "1"
+          },
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.962238,
+          "total": 4,
+          "rows": 4,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T07:06:08.144672+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "c937821e8a4b4fc0a240c43033665fe9",
+            "x-api-version": "1"
+          },
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.783894,
+          "total": 4,
+          "rows": 4,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T07:06:08.933530+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "c68bf448ba8444bc8a2ba143c21b9fb9",
+            "x-api-version": "1"
+          },
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.854859,
+          "total": 4,
+          "rows": 4,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        }
+      ],
+      "attempts": 5,
+      "successful": 5,
+      "failures": 0,
+      "median_seconds": 0.854859,
+      "p95_seconds": 7.537956,
+      "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+      "first_request_seconds": 7.537956,
+      "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+      "slo_acceptance": null
+    },
+    "source_count": {
+      "request_path": "/materials?sort=total_papers&limit=25&offset=0",
+      "samples": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T07:06:09.791075+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "738dd2f3440d447b92429a2ff18d76de",
+            "x-api-version": "1"
+          },
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 18.185522,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T07:06:28.025108+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "cd879ef6bd4a4df9855a760f9d24eda0",
+            "x-api-version": "1"
+          },
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 1.176497,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T07:06:29.240019+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "e643cee8b2894bc3854b7935b8b4b09a",
+            "x-api-version": "1"
+          },
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 1.976004,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T07:06:31.255336+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "681f94f3457d4b4fab79682bb7a0f59a",
+            "x-api-version": "1"
+          },
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 1.29177,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T07:06:32.584125+00:00",
+          "status": 200,
+          "error": null,
+          "headers": {
+            "x-request-id": "8d067622781c438788d0149ee3f4cab5",
+            "x-api-version": "1"
+          },
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 3.203121,
+          "total": 10507,
+          "rows": 25,
+          "sort_basis": "current_projected_catalogue",
+          "scientific_display_policy": "atomic_property_evidence"
+        }
+      ],
+      "attempts": 5,
+      "successful": 5,
+      "failures": 0,
+      "median_seconds": 1.976004,
+      "p95_seconds": 18.185522,
+      "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+      "first_request_seconds": 18.185522,
+      "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+      "slo_acceptance": null
+    }
+  },
+  "recovery": [
+    {
+      "material_id": "mat:layh6",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "bd1b7c67a00f7e1c7bbf2e0486996682bea0e37c6081f82264c6c8670bcfab39"
+    },
+    {
+      "material_id": "mat:nb4c3o2",
+      "matched": true,
+      "observations": 4,
+      "record_coverage_sha256": "e03a480415cbc5055aefe89528aba0a9cf632aa8b5d28ecf37a60e51c6063c04"
+    },
+    {
+      "material_id": "mat:mgh26",
+      "matched": true,
+      "observations": 5,
+      "record_coverage_sha256": "8200e5150e8756a5eccd8958fb5e15c300623ccf46848c4fd43e28a7bb06015f"
+    },
+    {
+      "material_id": "mat:cafe0.93co0.07ash",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "bc0ccf9c332e7fef494de3c44540e78695f25c01d42aedfa1054b526e718e17e"
+    },
+    {
+      "material_id": "mat:cafe0.95ni0.05asf",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "f9b9f63e24becb2666594fee8de58580bb44003b098f3fde627b8c7152f12cec"
+    },
+    {
+      "material_id": "mat:re6se8cl2",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "d8a07ba6c2e4124595b2cbb2a36b812c4e2f40d92b961da2624c898856d91fe0"
+    },
+    {
+      "material_id": "mat:ba3rh4ge16",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "75bb18e52b1cf16afab294cef2c34172f8491cc27ae56aa7e6081bb8150c09cd"
+    },
+    {
+      "material_id": "mat:crb2",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "8c5424943011f620bf7368649339e11981f181c5615582a6ea5dc325b371ee38"
+    },
+    {
+      "material_id": "mat:(mo0.96ti0.04)0.8b2",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "fafa97ccfa3bb4dc695205a61749d0855e4af58f568f56c4638b4b86464898e8"
+    },
+    {
+      "material_id": "mat:nb2p5",
+      "matched": true,
+      "observations": 4,
+      "record_coverage_sha256": "e839930d5c5d09ba1d7c855a636f998c451761fde52eccd87680f418fda07011"
+    },
+    {
+      "material_id": "mat:be0.024al0.976",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "6994e8cd5b41519ed7978f6fcc6cc203e58d1ab57a9b6ed6926627275c32cd8a"
+    },
+    {
+      "material_id": "mat:nb4cu0.2sisb2",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "fdb5aab7dbf04628fe66caca5174686340618bb6e8c4baf36f7952797bddd2e2"
+    },
+    {
+      "material_id": "mat:nbsctizr",
+      "matched": true,
+      "observations": 4,
+      "record_coverage_sha256": "57ec8e55a605f424fb778301044e3c309cd59dafd98b1948430cd435060e1471"
+    },
+    {
+      "material_id": "mat:re7ta3",
+      "matched": true,
+      "observations": 3,
+      "record_coverage_sha256": "9781f6ba0978d4a9be4e4201c7aca5b4f98d07d04aeb280c4678ac2f8718d213"
+    },
+    {
+      "material_id": "mat:ta2pdse5",
+      "matched": true,
+      "observations": 4,
+      "record_coverage_sha256": "7c1e41c94831e9078c78eb31045dcb217751f17f479c083a70d086b8a50a0396"
+    },
+    {
+      "material_id": "mat:smfe0.80co0.20aso",
+      "matched": true,
+      "observations": 4,
+      "record_coverage_sha256": "57ca0ffdf685478f7e7140320b04ca6f166321bee8187067ad28319d58cbd84c"
+    }
+  ],
+  "version_before": {
+    "site_version": "67b790e",
+    "dataset_version": "v2026.09.03",
+    "api_version": "1"
+  },
+  "coverage": {
+    "total_papers": 75202,
+    "total_materials": 11463,
+    "total_chunks": 1117982,
+    "last_ingest_at": "2026-09-03T10:30:54.970754+00:00",
+    "stats_refreshed_at": "2026-10-09T07:00:21.163840+00:00",
+    "dataset_version": "v2026.09.03",
+    "arxiv_papers": 46895,
+    "aps_papers": 28307
+  },
+  "frontend_commits": [
+    "67b790e"
+  ],
+  "discovery": {
+    "version": "2026-10-07-source103-v1",
+    "counts": {
+      "composition_groups": 103,
+      "formal_RPS_scored": 0,
+      "human_reviewed": 0,
+      "experimental_confirmed": 0,
+      "room_temperature_supported": 0
+    }
+  },
+  "detail_checks": [
+    {
+      "url": "/research-hypotheses/details/agm003195936.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003204399.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002664904.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003203668.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003197109.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003199657.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003199662.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003199664.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001173524.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001173527.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003199670.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003204438.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003199690.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003199681.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003159377.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003163920.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001619538.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001117007.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001271506.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001106125.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001631318.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002488868.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001117008.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002493455.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002290660.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002339932.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003203150.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003195946.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001179868.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001179875.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001179882.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003195951.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003199931.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003273573.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002702984.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003165292.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003165329.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001192155.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001637483.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm004326783.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003159857.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003183396.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002346313.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002489249.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001216814.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002166694.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003766932.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003262771.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003260934.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002713597.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001828806.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003636382.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003198926.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003158378.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003187563.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003557884.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003184276.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm004377652.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003187522.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003267205.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003267242.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003165652.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003158344.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003165657.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003780812.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002028410.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001116470.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002244680.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001116173.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002190754.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002190757.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002190814.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002190827.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001186283.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001186290.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001186294.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001116204.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001228974.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001228986.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002746041.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001827673.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001294071.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003603739.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001116200.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001116139.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001827667.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001099873.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003157370.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001190274.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001186980.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001190846.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001230427.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001280579.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm002291027.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003559755.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003199974.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001281126.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001190945.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001177717.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001146456.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001277510.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm001146455.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/details/agm003203155.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003195936.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003204399.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002664904.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003203668.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003197109.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199657.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199662.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199664.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001173524.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001173527.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199670.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003204438.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199690.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199681.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003159377.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003163920.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001619538.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001117007.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001271506.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001106125.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001631318.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002488868.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001117008.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002493455.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002290660.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002339932.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003203150.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003195946.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001179868.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001179875.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001179882.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003195951.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199931.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003273573.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002702984.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165292.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165329.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001192155.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001637483.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm004326783.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003159857.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003183396.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002346313.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002489249.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001216814.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002166694.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003766932.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003262771.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003260934.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002713597.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001828806.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003636382.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003198926.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003158378.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003187563.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003557884.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003184276.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm004377652.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003187522.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003267205.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003267242.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165652.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003158344.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003165657.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003780812.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002028410.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116470.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002244680.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116173.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190754.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190757.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190814.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190827.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186283.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186290.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186294.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116204.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001228974.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001228986.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002746041.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001827673.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001294071.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003603739.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116200.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001116139.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001827667.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001099873.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003157370.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001190274.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001186980.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001190846.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001230427.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001280579.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002291027.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003559755.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003199974.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001281126.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001190945.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001177717.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001146456.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001277510.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001146455.json",
+      "passed": true
+    },
+    {
+      "url": "/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm003203155.json",
+      "passed": true
+    }
+  ],
+  "detail_scope": {
+    "checked": 206,
+    "available": 206,
+    "complete": true
+  },
+  "public_materials": {
+    "total": 10507,
+    "sort_basis": "current_projected_catalogue",
+    "scientific_display_policy": "atomic_property_evidence"
+  },
+  "version_after": {
+    "site_version": "67b790e",
+    "dataset_version": "v2026.09.03",
+    "api_version": "1"
+  },
+  "finished_at": "2026-10-09T07:06:36.184012+00:00",
+  "operational_acceptance": true
+}

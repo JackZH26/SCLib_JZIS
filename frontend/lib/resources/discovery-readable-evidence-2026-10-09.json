@@ -1,0 +1,217 @@
+{
+  "schema_version": "discovery-readable-evidence/1.0.0",
+  "version": "2026-10-09-readable-evidence-v1",
+  "source_catalogue_sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98",
+  "entries": [
+    {
+      "id": "source-hypothesis:agm001190274",
+      "formula": "TiZr3",
+      "source_state": "agm001190274",
+      "field": "prior.case_context",
+      "dossier_sha256": "553966e57d0f0e4f0e867b2fe0c39a6de86103eb2d0c0a7c34e9e35a5268c384",
+      "source_detail_sha256": "5e63cb58e33f278ed937f7aa6dad33b61259ee703945360d4ce1538aeef8876e",
+      "original_text_sha256": "f7b1f24685c50794c8232063438a42c590ea0af97081a49d5c1142e60f2a6cbc",
+      "text": "The retained review discusses a Ti67.6Zr32.4 alloy report and an equimolar Ti–Zr study at high pressure. Their compositions or states differ from ordered TiZr3 in space group 221. This source prediction was already published; the bounded review did not identify an experimental sample matching this exact phase."
+    },
+    {
+      "id": "source-hypothesis:agm001190274",
+      "formula": "TiZr3",
+      "source_state": "agm001190274",
+      "field": "bottleneck.summary",
+      "dossier_sha256": "553966e57d0f0e4f0e867b2fe0c39a6de86103eb2d0c0a7c34e9e35a5268c384",
+      "source_detail_sha256": "5e63cb58e33f278ed937f7aa6dad33b61259ee703945360d4ce1538aeef8876e",
+      "original_text_sha256": "ddaee2a825064bd97ee4f5a7e9b3245a44353a6fdaedccc4a932dd9b2cdbff26",
+      "text": "Several stored comparisons favor TiZr3, but the Zr3Lu comparison gives lower electron–phonon coupling λ and a higher source-model Tc for TiZr3. Forces are printed as zero, and phonons were checked only at sampled points. These checks do not establish relaxation convergence, stability throughout the Brillouin zone or stability against competing phases. Ti–Zr alloy phases remain competitors, and their Tc values cannot be assigned to this ordered phase."
+    },
+    {
+      "id": "source-hypothesis:agm001190274",
+      "formula": "TiZr3",
+      "source_state": "agm001190274",
+      "field": "proposed_contribution.intervention",
+      "dossier_sha256": "553966e57d0f0e4f0e867b2fe0c39a6de86103eb2d0c0a7c34e9e35a5268c384",
+      "source_detail_sha256": "5e63cb58e33f278ed937f7aa6dad33b61259ee703945360d4ce1538aeef8876e",
+      "original_text_sha256": "a5dcdc85e7b25c893cedb331a234beb9dd17f72c1141b2c882cbc0ff240a5abb",
+      "text": "Compare Sc-to-Ti replacement on the minority-element site or Hf-to-Zr replacement on the majority-element sites. Chemistry, site identities, volume and atomic mass change together. These comparisons do not isolate a geometry-only effect or quantify electronic bandwidth or mobile carrier density."
+    },
+    {
+      "id": "source-hypothesis:agm001190274",
+      "formula": "TiZr3",
+      "source_state": "agm001190274",
+      "field": "proposed_contribution.next_action",
+      "dossier_sha256": "553966e57d0f0e4f0e867b2fe0c39a6de86103eb2d0c0a7c34e9e35a5268c384",
+      "source_detail_sha256": "5e63cb58e33f278ed937f7aa6dad33b61259ee703945360d4ce1538aeef8876e",
+      "original_text_sha256": "d5bdc1c5a0b58960cdba4989f431fda923b994576783b7287786c735d990336e",
+      "text": "Compare the ordered space-group-221 state with its exact stored controls, including ScZr3, and assess competition with hexagonal or disordered Ti–Zr phases. A persistent ordered-state advantage would support the hypothesis; a competing phase or reversal of the paired response would weaken it. Missing comparable phase or formation data leave the outcome unresolved."
+    },
+    {
+      "id": "source-hypothesis:agm001116173",
+      "formula": "Ti2ZrW",
+      "source_state": "agm001116173",
+      "field": "prior.case_context",
+      "dossier_sha256": "53bc457a647de35beda3bb398f35a978d71a9cda97bffca2b9d4108f5b29ebee",
+      "source_detail_sha256": "4e369d157b5079349d804e6cb15af1bc5ec4c8d5ed4d4c4b6efadf903517b22f",
+      "original_text_sha256": "d9dcfaed71138d08e394c65615d4896d6a57344303506e5d93732900247b24a8",
+      "text": "The bounded review did not identify an experimental sample matching the ordered Ti2ZrW source phase in space group 123. Related Nb/Ti/Zr alloy studies concern different states. This theoretical proposal was already published."
+    },
+    {
+      "id": "source-hypothesis:agm001116173",
+      "formula": "Ti2ZrW",
+      "source_state": "agm001116173",
+      "field": "bottleneck.summary",
+      "dossier_sha256": "53bc457a647de35beda3bb398f35a978d71a9cda97bffca2b9d4108f5b29ebee",
+      "source_detail_sha256": "4e369d157b5079349d804e6cb15af1bc5ec4c8d5ed4d4c4b6efadf903517b22f",
+      "original_text_sha256": "4fa7b8bb207d2ecd0745ba615c11f39a069a2f98563cc33ef6fcb67dfc3cd0ea",
+      "text": "In the stored Sc-to-Zr comparison, electron–phonon coupling λ is higher by 0.1294–0.2497 across the ten stored width settings, and the separate source-model Tc is higher by 4.910 K. Sampled phonon checks are favorable, but the geometry optimisation reports a BFGS failure. The saved force summaries use different values or definitions; small printed residuals do not establish finer-grid geometry convergence. Chemistry, mass and volume change together, and this comparison does not quantify a carrier-density enhancement."
+    },
+    {
+      "id": "source-hypothesis:agm001116173",
+      "formula": "Ti2ZrW",
+      "source_state": "agm001116173",
+      "field": "proposed_contribution.next_action",
+      "dossier_sha256": "53bc457a647de35beda3bb398f35a978d71a9cda97bffca2b9d4108f5b29ebee",
+      "source_detail_sha256": "4e369d157b5079349d804e6cb15af1bc5ec4c8d5ed4d4c4b6efadf903517b22f",
+      "original_text_sha256": "5f19a93a0da0dbdf4b4496542e90a3352b50e223a7fb64e3dc3db5f8aa3da41f",
+      "text": "Compare the Sc and Zr site contributions to electron–phonon coupling and assess the residual forces on the finer grid. Retain the hypothesis if the advantage survives justified structural refinement; revise it if the response reverses, and leave it unresolved if matched mode data are unavailable."
+    },
+    {
+      "id": "source-hypothesis:agm001116139",
+      "formula": "TiTa2W",
+      "source_state": "agm001116139",
+      "field": "prior.case_context",
+      "dossier_sha256": "1111448a96784646f8a8657cda8f721a3528e0a4028bdcad5d9796bbbba65cac",
+      "source_detail_sha256": "910580b4ef3562ca069e0049ba73131afac08de9ca12f75bc6c15cddb201e170",
+      "original_text_sha256": "5140cc4d6fa23db17d11091b30920b5ee1ea70efe2305eccea524790a302e4f8",
+      "text": "The bounded review did not identify an experimental sample matching ordered TiTa2W in space group 123. Known Ta–Ti alloy wires do not establish this particular phase."
+    },
+    {
+      "id": "source-hypothesis:agm001116139",
+      "formula": "TiTa2W",
+      "source_state": "agm001116139",
+      "field": "bottleneck.summary",
+      "dossier_sha256": "1111448a96784646f8a8657cda8f721a3528e0a4028bdcad5d9796bbbba65cac",
+      "source_detail_sha256": "910580b4ef3562ca069e0049ba73131afac08de9ca12f75bc6c15cddb201e170",
+      "original_text_sha256": "a4cb9300682a52cf32a5ac383171503f22cc32a8557d6fa421da728e071f7f45",
+      "text": "Relative to TiMoTa2, the stored comparison gives a λ increase of 0.0564–0.1263 across the ten stored width settings and a separate source-model Tc increase of 0.767 K. TiNbTa2 has higher λ and source-model Tc than this target. Favorable sampled phonons do not resolve the residual-force and stress uncertainties. Electronic bandwidth is not quantified, and an unfavorable tungsten-substitution result in a different host does not determine this pair’s result."
+    },
+    {
+      "id": "source-hypothesis:agm001116139",
+      "formula": "TiTa2W",
+      "source_state": "agm001116139",
+      "field": "proposed_contribution.next_action",
+      "dossier_sha256": "1111448a96784646f8a8657cda8f721a3528e0a4028bdcad5d9796bbbba65cac",
+      "source_detail_sha256": "910580b4ef3562ca069e0049ba73131afac08de9ca12f75bc6c15cddb201e170",
+      "original_text_sha256": "6549c420b9af2a94331d70c16ef9f5b2bb3aa63be85335d1d49aa12c35e4bb6a",
+      "text": "Compare the Mo and W site contributions to electron–phonon coupling and assess the remaining forces and strain. A response that persists after justified refinement supports this specific comparison; a reversal weakens it. A finite band-energy span alone cannot establish the mechanism."
+    },
+    {
+      "id": "source-hypothesis:agm001827667",
+      "formula": "TiTa3",
+      "source_state": "agm001827667",
+      "field": "prior.case_context",
+      "dossier_sha256": "5a497126ee878a4475e4d2f08d28e2f78b994a8ec914c8b3cd9daee5192aeda1",
+      "source_detail_sha256": "1f5c28a7ce52ecbffb1a638c397e558910c9b679c5ffa5b5cc41b768c7e80eab",
+      "original_text_sha256": "9cff7573bd886d96f7d969f15fb502bd179385e6f61151cfa7ce64432de7a2e4",
+      "text": "The retained review cites superconducting Ta–Ti solid-solution wires reported in 1967. Those samples are not the exact ordered four-site TiTa3 source phase in space group 123. The bounded review did not identify an experimental sample matching this ordering."
+    },
+    {
+      "id": "source-hypothesis:agm001827667",
+      "formula": "TiTa3",
+      "source_state": "agm001827667",
+      "field": "bottleneck.summary",
+      "dossier_sha256": "5a497126ee878a4475e4d2f08d28e2f78b994a8ec914c8b3cd9daee5192aeda1",
+      "source_detail_sha256": "1f5c28a7ce52ecbffb1a638c397e558910c9b679c5ffa5b5cc41b768c7e80eab",
+      "original_text_sha256": "e4bcc7a1eeafc54d5e0b76957430ee529d1a069c3bbff8166f37d347d6f7bae5",
+      "text": "Against NbTa3, the stored comparison gives a λ increase of 0.443–0.6045 across the ten stored width settings and a separate source-model Tc increase of 5.067 K; another stored comparison is also favorable. TiNb2Ta and TiNb3 have higher λ and source-model Tc than this target. Forces printed as zero and the sampled phonon checks do not establish full relaxation or global stability. Known Ta–Ti solid solutions compete with the proposed ordering; their formation does not establish that this ordered phase can be retained."
+    },
+    {
+      "id": "source-hypothesis:agm001827667",
+      "formula": "TiTa3",
+      "source_state": "agm001827667",
+      "field": "proposed_contribution.next_action",
+      "dossier_sha256": "5a497126ee878a4475e4d2f08d28e2f78b994a8ec914c8b3cd9daee5192aeda1",
+      "source_detail_sha256": "1f5c28a7ce52ecbffb1a638c397e558910c9b679c5ffa5b5cc41b768c7e80eab",
+      "original_text_sha256": "1de6676e5266f6073fc25d628ccacbb0a4888a78241082a1c2ab682669121dce",
+      "text": "Compare the Ti and Nb site contributions to electron–phonon coupling, then test whether the ordered phase can persist against the known solid solution. Retain a distinct ordered-state advantage if supported; revise the hypothesis if disorder or another phase removes it. Missing ordering or retention evidence leaves the outcome unresolved."
+    },
+    {
+      "id": "source-hypothesis:agm003203155",
+      "formula": "ZrTc2",
+      "source_state": "agm003203155",
+      "field": "prior.case_context",
+      "dossier_sha256": "681dae0233830551d376e8af408761e657eb458bc4ceac7415ab61c565f67471",
+      "source_detail_sha256": "1aaa34378b4d12d1ef561a112cd6f19bac85aad7b9c33f766a272bef69943277",
+      "original_text_sha256": "7b361c0200e52eed9cda8be91f82400153657d07066ec88d9269621dded3a1b0",
+      "text": "The retained review identifies experimental ZrTc2 in the C14 structure. This entry concerns a different C15 source model in space group 227, which was also previously predicted. Its addition to this catalogue is not a first-discovery claim."
+    },
+    {
+      "id": "source-hypothesis:agm003203155",
+      "formula": "ZrTc2",
+      "source_state": "agm003203155",
+      "field": "bottleneck.summary",
+      "dossier_sha256": "681dae0233830551d376e8af408761e657eb458bc4ceac7415ab61c565f67471",
+      "source_detail_sha256": "1aaa34378b4d12d1ef561a112cd6f19bac85aad7b9c33f766a272bef69943277",
+      "original_text_sha256": "9263b309181ae9097e56feac1737fb3a49d30d47fddf260f418229f3e851dc71",
+      "text": "Several stored comparisons give higher electron–phonon coupling λ and a higher source-model Tc for this target. Other retained comparisons give lower λ despite a higher source-model Tc. Forces printed as zero and sampled phonon checks do not establish full relaxation or global stability. The retained review cites a C15 phase-level energy above the hull of 29 meV per atom; this cannot be assigned to the exact current source state. Technetium radioactivity and competition with the C14 phase remain constraints."
+    },
+    {
+      "id": "source-hypothesis:agm003203155",
+      "formula": "ZrTc2",
+      "source_state": "agm003203155",
+      "field": "proposed_contribution.intervention",
+      "dossier_sha256": "681dae0233830551d376e8af408761e657eb458bc4ceac7415ab61c565f67471",
+      "source_detail_sha256": "1aaa34378b4d12d1ef561a112cd6f19bac85aad7b9c33f766a272bef69943277",
+      "original_text_sha256": "b3d6adb4a11111337b729984fa1b8ef2bfc3045f905c85af375ff5ba44d4b59a",
+      "text": "Compare Re-to-Tc replacement or Hf/Sc-to-Zr replacement in the C15 structure. Chemistry, atomic mass, site roles and cell volume change together; these comparisons do not isolate geometry or establish enhanced bandwidth or mobile carrier density."
+    },
+    {
+      "id": "source-hypothesis:agm003203155",
+      "formula": "ZrTc2",
+      "source_state": "agm003203155",
+      "field": "proposed_contribution.next_action",
+      "dossier_sha256": "681dae0233830551d376e8af408761e657eb458bc4ceac7415ab61c565f67471",
+      "source_detail_sha256": "1aaa34378b4d12d1ef561a112cd6f19bac85aad7b9c33f766a272bef69943277",
+      "original_text_sha256": "82285b0a316516bdfd1e78e993295a478e9c6ada293c32e1c9a75cdfc27ca1da",
+      "text": "Compare the exact C15 source geometry and mode contributions with the known C14 competitor, without transferring either phase’s Tc or energy to the other. A distinct accessible phase with a persistent response supports the hypothesis; phase conversion, an identity match to an existing benchmark, or loss of the response changes the conclusion. Missing retention evidence leaves it unresolved."
+    },
+    {
+      "id": "source-hypothesis:agm003197109",
+      "formula": "Cr2Tc",
+      "source_state": "agm003197109",
+      "field": "bottleneck.summary",
+      "dossier_sha256": "f0f18fb0890f245aac3d653e6d92d27b6e43c5ec751c5d403c164305a603d955",
+      "source_detail_sha256": "d396ef3af16e6b10ec8c8bb2b2b5b88fb61fa567a7057c6caba4f00b41b2a1cc",
+      "original_text_sha256": "17dd1bfbd0f9dfbfcdaf641b53a58fab428e31ed1fe02b323ca5f74c27654901",
+      "text": "The selected C15 source state has no negative printed entries on its sampled phonon path. The source notes retain a P-3m1 alternative with eight negative entries as a separate variant. The Re-to-Tc coupling increase is small but positive across ten stored width settings; another stored comparison gives Cr2Mo higher λ and higher source-model Tc than this target. These are limited source-model comparisons, not evidence of stability throughout the Brillouin zone. The old internal grade is separate from the current rating."
+    },
+    {
+      "id": "source-hypothesis:agm003557884",
+      "formula": "ScZr3N4",
+      "source_state": "agm003557884",
+      "field": "bottleneck.summary",
+      "dossier_sha256": "dc5b1aa86dadbbfaabd149961402f2be76315a054f7378f54a359828d7d0a3b8",
+      "source_detail_sha256": "36c247af056ac96ca9d216cbde28bc4dfe0bac75fb06ff34cc1208420e07ee2b",
+      "original_text_sha256": "25d25c1451a87c208af46cc51bf520b76e9a62c10c7d50d6b11afb25b9472607",
+      "text": "The sampled phonon checks are favorable within the stated source approximation, while a fine-grid residual pressure remains despite symmetry-constrained forces printed as zero. ScHf3N4 has larger λ but lower source-model Tc; YZr3N4 has larger λ and higher source-model Tc. These are retained comparisons, not scientific approval of either phase. Nitrogen vacancies, cation disorder, charge redistribution and competing nitrides still require investigation."
+    },
+    {
+      "id": "source-hypothesis:agm003559755",
+      "formula": "YZr3N4",
+      "source_state": "agm003559755",
+      "field": "proposed_contribution.next_action",
+      "dossier_sha256": "dd1e073e8643c667ff0b1aa7b34f2f7d330952f905b8efe69585b6f1e0f60945",
+      "source_detail_sha256": "df2904667b9824ffa08b6f8a4f8678cfdcd77da2820a8551fb989b6dd1722d7d",
+      "original_text_sha256": "e22827cc3459e7ca1cd8f1a7319c2348eb5c5da43d97deeced295a8d7772687c",
+      "text": "Test a fixed-composition change in cell volume and the planned finite-wavevector stationarity check to distinguish the coupled source response from a geometry-only explanation. Independent numerical and causal evidence is still needed. Historical internal grades are separate from the current C/E1 display and from formal RPS."
+    },
+    {
+      "id": "source-hypothesis:agm001146456",
+      "formula": "ZrNb2Ta",
+      "source_state": "agm001146456",
+      "field": "bottleneck.summary",
+      "dossier_sha256": "0c08262ee9387eefd77a35f9a395f735f54a26ab5e9f9ee8f003064699789708",
+      "source_detail_sha256": "3a55a01fb0bdfaa04972c4fc977a99479ab75bf696b041e1cce190aa00164f60",
+      "original_text_sha256": "7ad08aaa1bbaa74d51000d422f18b4cb0101948381277033cdb6c03327630b5f",
+      "text": "This entry uses source state agm001146456, whose sampled path has no negative entries. Against the retained Nb2HfTa control, λ is higher by 0.0841–0.1294 and source-model Tc by 1.837 K. Fine-grid forces and stress still require refinement. The alternative state agm001233891 has four negative path entries and remains a separate variant; it is not counted as another material."
+    }
+  ]
+}

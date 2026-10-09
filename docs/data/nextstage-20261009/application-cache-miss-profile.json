@@ -1,0 +1,130 @@
+{
+  "schema_version": "sclib-application-cache-observation/1",
+  "version_before": {
+    "site_version": "67b790e",
+    "dataset_version": "v2026.09.03",
+    "api_version": "1"
+  },
+  "version_after": {
+    "site_version": "67b790e",
+    "dataset_version": "v2026.09.03",
+    "api_version": "1"
+  },
+  "version_stable": true,
+  "request_path": "/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+  "samples": [
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:22:29.410807+00:00",
+      "status": 200,
+      "error": null,
+      "request_accept_encoding": "gzip",
+      "headers": {
+        "x-materials-cache": "MISS",
+        "x-request-id": "cb3c628e8f4b441cb2ac6b5796fb6f6f",
+        "x-api-version": "1"
+      },
+      "wire_bytes": 185332,
+      "content_encoding": "gzip",
+      "bytes": 2557858,
+      "sha256": "1b3c2419e55720af0caaa6d3c3a5f4e5d17ce4c8e9d325ee6e3c980be7173cbe",
+      "elapsed_seconds": 14.516175,
+      "total": 2383,
+      "rows": 25
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:22:43.968974+00:00",
+      "status": 200,
+      "error": null,
+      "request_accept_encoding": "gzip",
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "532caf7d908743e8bdc49344668de14e",
+        "x-api-version": "1"
+      },
+      "wire_bytes": 185332,
+      "content_encoding": "gzip",
+      "bytes": 2557858,
+      "sha256": "1b3c2419e55720af0caaa6d3c3a5f4e5d17ce4c8e9d325ee6e3c980be7173cbe",
+      "elapsed_seconds": 0.843437,
+      "total": 2383,
+      "rows": 25
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:22:44.850025+00:00",
+      "status": 200,
+      "error": null,
+      "request_accept_encoding": "gzip",
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "82a586f5a225407b878a42167c13113a",
+        "x-api-version": "1"
+      },
+      "wire_bytes": 185332,
+      "content_encoding": "gzip",
+      "bytes": 2557858,
+      "sha256": "1b3c2419e55720af0caaa6d3c3a5f4e5d17ce4c8e9d325ee6e3c980be7173cbe",
+      "elapsed_seconds": 0.6458,
+      "total": 2383,
+      "rows": 25
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:22:45.530147+00:00",
+      "status": 200,
+      "error": null,
+      "request_accept_encoding": "gzip",
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "407f55283d714df0bf4047472bbbb7ca",
+        "x-api-version": "1"
+      },
+      "wire_bytes": 185332,
+      "content_encoding": "gzip",
+      "bytes": 2557858,
+      "sha256": "1b3c2419e55720af0caaa6d3c3a5f4e5d17ce4c8e9d325ee6e3c980be7173cbe",
+      "elapsed_seconds": 0.687044,
+      "total": 2383,
+      "rows": 25
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+      "started_at": "2026-10-09T07:22:46.259029+00:00",
+      "status": 200,
+      "error": null,
+      "request_accept_encoding": "gzip",
+      "headers": {
+        "x-materials-cache": "HIT",
+        "x-request-id": "7c25055e1cbb474bbadd1dda0d28486c",
+        "x-api-version": "1"
+      },
+      "wire_bytes": 185332,
+      "content_encoding": "gzip",
+      "bytes": 2557858,
+      "sha256": "1b3c2419e55720af0caaa6d3c3a5f4e5d17ce4c8e9d325ee6e3c980be7173cbe",
+      "elapsed_seconds": 0.807303,
+      "total": 2383,
+      "rows": 25
+    }
+  ],
+  "summary": {
+    "attempts": 5,
+    "successful": 5,
+    "failures": 0,
+    "median_seconds": 0.807303,
+    "p95_seconds": 14.516175,
+    "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+    "first_request_seconds": 14.516175,
+    "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+    "reported_application_cache_states": {
+      "MISS": 1,
+      "HIT": 4
+    },
+    "slo_acceptance": null
+  },
+  "scope": "Reported response-cache MISS/HIT only; no cache purge, no ranking/DB cache-state authentication and no per-stage server profiling.",
+  "scientific_acceptance": false,
+  "new_provider_calls": 0
+}

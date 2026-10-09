@@ -14,6 +14,7 @@ from sqlalchemy import select
 from models.db import Material, Paper
 from services.material_visibility_adapter import (
     MAX_PARENT_DEPTH,
+    LifecycleReadMemo,
     material_view,
     prepare_material_views,
 )
@@ -199,3 +200,79 @@ async def test_large_parent_frontier_is_split_into_bounded_read_queries():
     assert len(views) == len(children)
     assert all(item.visibility["public_catalogue_eligible"] for item in views)
     assert session.request_sizes == [1000, 1]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("bounds", ({}, {"max_entries": 1}, {"max_bytes": 1}, {"max_entries": 0}))
+async def test_scan_memo_preserves_complete_status_and_missing_with_bounded_fallback(bounds):
+    from services.source_lifecycle_status import overlay_source_lifecycle
+
+    records = [{"paper_id": identity, "tc_kelvin": 10} for identity in ("active", "held", "missing", " spaced ")]
+    materials = [_material(f"m-{index}", records=records) for index in range(256)]
+    sources = {"active": "published", "held": overlay_source_lifecycle("published", "b" * 64),
+               " spaced ": "retracted"}
+    baseline_session = _ReadSession(materials, sources)
+    baseline = [view for start in (0, 128)
+                for view in await prepare_material_views(baseline_session, materials[start:start + 128])]
+    session = _ReadSession(materials, sources)
+    memo = LifecycleReadMemo(session, **bounds)
+    views = [view for start in (0, 128)
+             for view in await prepare_material_views(session, materials[start:start + 128], lifecycle_memo=memo)]
+    assert views == baseline
+    assert views[-1].source_statuses["missing"] is None
+    assert views[-1].source_statuses["held"] == sources["held"]
+    assert memo.size <= memo.max_bytes and len(memo._entries) <= memo.max_entries
+    assert sum(session.request_sizes) == (4 if not bounds else 7 if bounds == {"max_entries": 1} else 8)
+    assert sum(baseline_session.request_sizes) == 8
+    memo.close()
+    assert not memo._entries and memo.size == 0
+    with pytest.raises(ValueError, match="owning scan"):
+        await memo.resolve(session, ["active"])
+
+
+@pytest.mark.asyncio
+async def test_scan_memo_detaches_overlay_values_and_rejects_another_session():
+    from services.source_lifecycle_status import overlay_source_lifecycle
+
+    material = _material("m", records=[{"paper_id": "held"}])
+    expected = overlay_source_lifecycle("published", "c" * 64)
+    session = _ReadSession([material], {"held": expected.copy()})
+    memo = LifecycleReadMemo(session)
+    first = (await prepare_material_views(session, [material], lifecycle_memo=memo))[0]
+    first.source_statuses["held"]["lifecycle_revision"] = "d" * 64
+    second = (await prepare_material_views(session, [material], lifecycle_memo=memo))[0]
+    assert second.source_statuses["held"] == expected
+    second.source_statuses["held"]["status"] = "changed by caller"
+    third = (await prepare_material_views(session, [material], lifecycle_memo=memo))[0]
+    assert third.source_statuses["held"] == expected
+    assert session.request_sizes == [1]
+    with pytest.raises(ValueError, match="owning scan"):
+        await memo.resolve(_ReadSession([material]), ["held"])
+    memo.close()
+    with pytest.raises(ValueError, match="owning scan"):
+        await memo.resolve(None, ["held"])
+
+
+@pytest.mark.asyncio
+async def test_scan_memo_does_not_cache_resolver_errors_or_unencodable_values(monkeypatch):
+    calls = []
+    session = _ReadSession([])
+    memo = LifecycleReadMemo(session)
+    unencodable = object()
+
+    async def resolve(db, identifiers):
+        assert db is session
+        calls.append(list(identifiers))
+        if len(calls) == 1:
+            raise RuntimeError("synthetic resolver failure")
+        return {"active": "published", "unsupported": unencodable}
+
+    monkeypatch.setattr("services.material_visibility_adapter.resolve_paper_lifecycle", resolve)
+    with pytest.raises(RuntimeError, match="synthetic resolver failure"):
+        await memo.resolve(session, ["active", "unsupported"])
+    assert memo.size == 0 and not memo._entries
+    result = await memo.resolve(session, ["active", "unsupported"])
+    assert result["unsupported"] is unencodable
+    assert await memo.resolve(session, ["active", "unsupported"]) == result
+    assert calls == [["active", "unsupported"], ["active", "unsupported"], ["unsupported"]]
+    memo.close()

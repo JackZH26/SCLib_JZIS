@@ -1,0 +1,66 @@
+{
+  "schema_version": "sclib-material-timing-validation/1.0.0",
+  "captured_at": "2026-10-09T08:04:31.139308+00:00",
+  "runtime": {
+    "python": "3.11.15",
+    "dependencies": "api/uv.lock, uv sync --locked --extra dev --python 3.11",
+    "local_backend": "owned native PostgreSQL 16 / Redis; not Linux image parity"
+  },
+  "source_inputs": [
+    {
+      "path": "api/routers/materials.py",
+      "bytes": 39872,
+      "sha256": "511a8e8ee62cf97c407ab0d4bab36cddd73dd2a83d94f13f1d33dc30aeb056bb"
+    },
+    {
+      "path": "api/services/material_list_timing.py",
+      "bytes": 2385,
+      "sha256": "0c2ebe6913ffab4df41af2e7226226ad86b1017fc1c2bcb168e0c92b1f573693"
+    },
+    {
+      "path": "api/services/metrics.py",
+      "bytes": 10888,
+      "sha256": "60fdc9b119ce7c61b15d775543129d284d7f6775fe4232ac045fec9b00b94dd5"
+    },
+    {
+      "path": "api/tests/test_material_list_timing.py",
+      "bytes": 11290,
+      "sha256": "67b833a78141c0de45fbe6b0f75af06908e2bc0f016ec139f6ca4662c3ebec98"
+    },
+    {
+      "path": "scripts/profile_material_list.py",
+      "bytes": 5896,
+      "sha256": "f4b5d78051de0233e6606b97898e879b019404fbe82e68bf3babc529abe51d67"
+    },
+    {
+      "path": "scripts/tests/test_material_list_profile.py",
+      "bytes": 2942,
+      "sha256": "c752732860cb1ea04da243e41d4d467a3c68f4da81eb87fe106a3154a864033c"
+    }
+  ],
+  "focused_api": {
+    "artifact": "material-timing-focused-final.xml",
+    "sha256": "08d05134ea7dca664bac5197ec034604159e4810f76d967491c584a4b32f47e7",
+    "reported_tests": 80,
+    "passed": 80,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "offline_scripts": {
+    "artifact": "material-timing-all-offline.xml",
+    "sha256": "ba7be788174ca0a758663c4de9126407086bcd5a9a457c7f5366904c9b903555",
+    "reported_tests": 3262,
+    "passed": 3148,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "offline_subtests_reported_passed": 113,
+  "lint": "passed; legacy FastAPI Depends-default B008 diagnostics excluded for existing router only",
+  "full_local_api": "pending",
+  "exact_revision_linux_ci": "pending",
+  "deployed_server_timings": false,
+  "scientific_acceptance": false,
+  "slo_acceptance": null
+}

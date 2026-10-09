@@ -1,5 +1,13 @@
 # Discovery candidate catalogue and research workspace
 
+Historical scope: this describes the initial three-proposal release on 6 October
+2026. The current coordinate catalogue is [v2](discovery_research_catalogue_v2.md),
+with eight composition groups and 19 states. The separate 103 source-computed
+materials and evidence cards are documented in the [current overview](../README.md).
+The M4 availability statement below belongs to that original snapshot; later
+unmerged native-compute evidence is tracked separately in the
+[9 October execution record](NEXTSTAGE_EXECUTION_2026_10_09.md).
+
 The Discovery landing view is a material list. Research plans, scientific-property
 companions, source studies, calculation tools, methodology and the historical feed
 live in a second **Research & tools** tab. Existing inner anchors continue to select

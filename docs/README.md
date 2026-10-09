@@ -12,8 +12,12 @@ enablement, source permission, scientific acceptance or execution authority.
 - [Material semantics](MATERIAL_SEMANTICS_CONTRACT.md), [pressure semantics](PRESSURE_SEMANTICS.md), [property evidence](PROPERTY_EVIDENCE_CONTRACT.md), [result origin](RESULT_ORIGIN_CONTRACT.md) and [visibility policy](VISIBILITY_POLICY.md).
 - [Reported-Tc timeline contract](TIMELINE_RESULT_CONTRACT.md).
 - [Verified homepage coverage snapshot, 6 October 2026](README_SNAPSHOT_2026_10_06.md).
+- [Current homepage acceptance, 9 October 2026](README_SNAPSHOT_2026_10_09.md) and [next-stage execution/evidence](NEXTSTAGE_EXECUTION_2026_10_09.md).
+- [Materials-list performance baseline, request timings and capture protocol](MATERIAL_LIST_PERFORMANCE_2026_10_09.md).
 
 ## Materials and independent sources
+
+- [Sixteen-material primary-source recovery batch](MATERIALS_SOURCE_RECOVERY_BATCH_20261008.md).
 
 - [Formula lookup](materials_formula_lookup.md), [retained record reading](material_retained_record_reading.md) and [source scopes](MATERIAL_SOURCE_SCOPES.md).
 - [Recovery, classification and external references](materials_enrichment.md), [source-value extraction](materials_source_value_extraction.md) and [pressure-table sources](materials_pressure_table_sources.md).
@@ -22,6 +26,8 @@ enablement, source permission, scientific acceptance or execution authority.
 - [Source-expression intake](source_expression_intake_v2_protocol.md), [expression workbench](source_expression_workbench.md), [table intake](material_table_intake_2026_10_05.md), [pending source properties](source_property_pending_protocol.md), [field-case workbench](material_field_case_workbench.md) and [field review](material_field_review_protocol.md).
 
 ## Discovery and local calculation tools
+
+- [Coordinate catalogue v2](discovery_research_catalogue_v2.md), [research cycle](discovery_research_cycle.md), [103 evidence dossiers](DISCOVERY_EVIDENCE_CARDS_20261008.md) and [batch 1/2 preparation](SCLIB_BATCHES_1_2_20261008.md).
 
 - [Candidate catalogue and tabs](discovery_candidate_catalogue_2026_10_06.md), [candidate list](discovery_candidate_list.md) and [research design](discovery_research_design_protocol.md).
 - [Structure coordinates](discovery_structure_coordinates.md), [site candidates](discovery_site_candidates.md) and [combined candidates](discovery_combined_candidates.md).

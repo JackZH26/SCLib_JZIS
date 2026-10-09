@@ -5,10 +5,34 @@ Each value still belongs to one reported result, not a synthesized joint state.
 """
 from __future__ import annotations
 
-from services.property_evidence import EVIDENCE_LIMIT, build_property_evidence
+from services.property_evidence import (
+    EVIDENCE_LIMIT,
+    _tc_selection_inputs,
+    build_property_evidence,
+    build_tc_selection,
+)
 from services.result_semantics import classify_result
 
 SCOPED_SELECTION_POLICY = "source-scoped-atomic-selection/1.0.0"
+
+
+def _preferred_tc_headline(records, project):
+    """Same ordered origin pools for full evidence and the scalar read path."""
+    pools = {origin: [] for origin in ("Observed", "Computed")}
+    for record in records:
+        classification = classify_result(record)
+        if (classification.knowledge_origin in pools
+                and classification.classification_status == "resolved"
+                and classification.source_role != "conflicted"):
+            pools[classification.knowledge_origin].append(record)
+    selected = None
+    for origin in ("Observed", "Computed"):
+        candidate = project(pools[origin])
+        if selected is None or candidate["status"] == "supported":
+            selected = candidate
+        if candidate["status"] == "supported":
+            break
+    return selected
 
 
 def scoped_property_evidence(records, *, scope_id, property_fields, include_joint_epc, anomaly_context):
@@ -20,23 +44,12 @@ def scoped_property_evidence(records, *, scope_id, property_fields, include_join
     # Re-select from eligible atomic records, preferring resolved observations
     # over calculations. No unknown origin becomes an observed measurement.
     if "tc_max" in property_fields:
-        pools = {origin: [] for origin in ("Observed", "Computed")}
-        for record in records:
-            classification = classify_result(record)
-            if (classification.knowledge_origin in pools
-                    and classification.classification_status == "resolved"
-                    and classification.source_role != "conflicted"):
-                pools[classification.knowledge_origin].append(record)
-        selected = None
-        for origin in ("Observed", "Computed"):
-            candidate = build_property_evidence(
-                pools[origin], scope_id=scope_id, property_fields=["tc_max"],
+        def project(pool):
+            return build_property_evidence(
+                pool, scope_id=scope_id, property_fields=["tc_max"],
                 include_joint_epc=False, anomaly_context=anomaly_context,
             )["properties"]["tc_max"]
-            if selected is None or candidate["status"] == "supported":
-                selected = candidate
-            if candidate["status"] == "supported":
-                break
+        selected = _preferred_tc_headline(records, project)
         headline = envelope["properties"]["tc_max"]
         # Keep the bounded eligible-source alternatives across origins. The
         # chosen headline is not a reason to erase a calculated/unknown result.
@@ -54,3 +67,30 @@ def scoped_property_evidence(records, *, scope_id, property_fields, include_join
         "source_scoped_reported_records_only", "not_independent_replication_or_scientific_approval",
     ]))
     return envelope
+
+
+def scoped_tc_selection(records, *, scope_id, field, anomaly_context):
+    """Exact scoped status/identity/value, without public detail construction."""
+    if field not in {"tc_max", "tc_ambient"}:
+        raise ValueError("Tc selection supports tc_max and tc_ambient only")
+    if not _tc_selection_inputs(records, scope_id, None, anomaly_context):
+        binding = scoped_property_evidence(
+            records, scope_id=scope_id, property_fields=[field],
+            include_joint_epc=False, anomaly_context=anomaly_context,
+        )["properties"][field]
+        selected = binding["selected"]
+        return {"status": binding["status"],
+                "selected": {key: selected[key] for key in ("result_id", "value")} if selected else None}
+
+    def project(pool):
+        return build_tc_selection(pool, scope_id=scope_id, field=field, anomaly_context=anomaly_context)
+
+    if field != "tc_max":
+        selected = project(records)
+    else:
+        selected = _preferred_tc_headline(records, project)
+        if selected["selected"] is None:
+            # Unknown/conflicted origins may still have reported Tc evidence.
+            # Preserve the full scoped headline's pending vs not_reported state.
+            selected = {**selected, "status": "pending" if project(records)["has_evidence"] else "not_reported"}
+    return {"status": selected["status"], "selected": selected["selected"]}
