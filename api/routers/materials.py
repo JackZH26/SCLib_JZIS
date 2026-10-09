@@ -14,6 +14,7 @@ import json
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from functools import wraps
+from time import perf_counter
 from typing import Annotated, Literal
 from weakref import WeakValueDictionary
 
@@ -58,11 +59,13 @@ from services.material_visibility import (
     visibility_for_material,
 )
 from services.material_visibility_adapter import (
+    LifecycleReadMemo,
     MaterialReadContext,
     material_prefilter,
     material_view,
     prepare_material_views,
 )
+from services.metrics import MATERIAL_LIST_STAGE_DURATION
 from services.pressure_semantics import classify_pressure
 from services.property_evidence import build_property_evidence
 from services.scientific_filters import ResultFilters, matching_result_references
@@ -156,7 +159,9 @@ def _cache_material_pages(function):
                 return _material_response(body, "HIT")
             result = await function(*args, **kwargs)
             await _check_material_revision(db, before)
+            started = perf_counter()
             body = result.model_dump_json().encode()
+            MATERIAL_LIST_STAGE_DURATION.labels("serialization").observe(perf_counter() - started)
             _material_pages.put(key, body)
             return _material_response(body, "MISS")
 
@@ -359,8 +364,10 @@ async def list_materials(
     revision = await _material_page_revision(db) if parameters is not None else None
     ranking_key = _material_cache_key(revision, parameters, ranking=True) if revision else None
     if ranking_key is not None and (ranking := _material_rankings.get(ranking_key)) is not None:
+        started = perf_counter()
         result = await _page_from_material_ranking(db, json.loads(ranking), scientific_filters,
                                                   offset=offset, limit=limit)
+        MATERIAL_LIST_STAGE_DURATION.labels("ranking_page").observe(perf_counter() - started)
         await _check_material_revision(db, revision)
         return result
     stmt = select(Material)
@@ -431,9 +438,16 @@ async def list_materials(
     ranking_items = [] if ranking_key is not None else None
     ranking_bytes = 2
     total = 0
+    # This memo is owned by this cold scan only. The final revision fence below
+    # still rejects any intervening source/Work/map/parent/material change.
+    lifecycle_memo = LifecycleReadMemo(db) if revision is not None else None
     try:
         async for batch in stream.partitions(128):
-            for material in await prepare_material_views(db, batch):
+            started = perf_counter()
+            views = await prepare_material_views(db, batch, lifecycle_memo=lifecycle_memo)
+            MATERIAL_LIST_STAGE_DURATION.labels("scope").observe(perf_counter() - started)
+            started = perf_counter()
+            for material in views:
                 if not visibility_allows_view(material.visibility, include_archive=include_pending):
                     continue
                 source_count = (material.visibility["source_scope"]["eligible_source_count"]
@@ -467,14 +481,19 @@ async def list_materials(
                     else:
                         heapq.heapreplace(candidates, candidate)
                 total += 1
+            MATERIAL_LIST_STAGE_DURATION.labels("selection").observe(perf_counter() - started)
     finally:
+        if lifecycle_memo is not None:
+            lifecycle_memo.close()
         await stream.close()
+    started = perf_counter()
     selected = []
     for item in sorted(candidates, reverse=True)[offset:offset + limit]:
         summary = MaterialSummary.model_validate(item.material)
         summary.matching_results = _public_matching_results(item.material, item.matching)
         selected.append(summary)
     result = MaterialListResponse(total=total, results=selected, limit=limit, offset=offset)
+    MATERIAL_LIST_STAGE_DURATION.labels("projection").observe(perf_counter() - started)
     await _check_material_revision(db, revision)
     if ranking_items is not None:
         ranking_items.sort(key=lambda item: (item[1] is None, -item[1] if item[1] is not None else 0, item[0]))
