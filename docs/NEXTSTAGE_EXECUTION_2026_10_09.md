@@ -127,3 +127,9 @@ ten successful page-HIT requests, no server timing headers. Diagnostics are an
 implementation awaiting release validation; no production bottleneck, speedup
 or SLO acceptance has been established. The first checkpoint's PR #165 remains
 separate so its complete API CI result can finish without a changed test head.
+
+The later [continuation checkpoint](NEXTSTAGE_CONTINUATION_2026_10_09.md) records
+the completed 8,500-pass local API regression, its independent JUnit replay,
+the inherited 200-material acquisition queue, combined 72-question coverage and
+three newly retained gap-case originals. Earlier pending snapshots above remain
+historical observations; validation v2 records the subsequent completion.

@@ -117,3 +117,13 @@ release gates. Deployment observation, a genuine instrumented scan, frozen SLOs
 and a measured optimization are subsequent gates. Human material acceptance,
 retrieval gold labels, compute admission and training approvals retain their
 separate pending states.
+
+### Subsequent local completion receipt
+
+[Validation v2](data/nextstage-20261009/material-timing-validation-v2.json)
+records completion at `1b54e0e`: eight owned native batches, 268 modules,
+8,500 passes, nine skips and zero failures/errors. All eight retained JUnit
+reports were independently replayed against their assigned modules and counts.
+This updates the earlier local-pending state while preserving validation v1.
+Exact-revision Linux CI, actual deployment, natural instrumented scan and SLO
+acceptance retain their own evidence requirements.
