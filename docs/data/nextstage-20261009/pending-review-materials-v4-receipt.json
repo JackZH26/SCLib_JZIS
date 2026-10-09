@@ -1,0 +1,11 @@
+{
+  "file": "pending-review-materials-v4.zip",
+  "bytes": 185566,
+  "sha256": "37829ff450a27d87370374e38725722dbd1724eb772cb03a4786d5204a5b60df",
+  "file_count": 27,
+  "new_material_review_rows_per_role": 5,
+  "preserved_question_review_rows_per_role": 72,
+  "contains_original_fulltexts": false,
+  "human_reviewed": false,
+  "scientific_acceptance": false
+}

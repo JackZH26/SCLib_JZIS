@@ -1,5 +1,21 @@
 # Homepage acceptance snapshot: 9 October 2026
 
+## Subsequent deployment check: 09:52–09:53 UTC
+
+The later [complete public capture](data/nextstage-20261009/public-after-7efe186-v1.json)
+observed API and freshly fetched frontend revision `7efe186`, dataset
+`v2026.09.03` and API `1` between matching version fences. All 206 static
+source/evidence byte pins and all sixteen recovery windows passed again.
+Coverage remained 75,202 papers, 11,463 stored materials, 10,507 default-public
+materials and 1,117,982 retained chunks. Statistics now reported
+`2026-10-09T09:00:01.676015+00:00`; last ingest was unchanged.
+Deployment [37910749759](https://github.com/JackZH26/SCLib_JZIS/actions/runs/37910749759)
+completed successfully before capture. One sample per fixed profile records
+availability and observed timing; it establishes no p95, bottleneck or SLO.
+The earlier `67b790e` observations below and their raw receipts remain intact.
+
+## Earlier accepted baseline
+
 This supersedes the [6 October homepage snapshot](README_SNAPSHOT_2026_10_06.md)
 for current descriptions. Historical observations remain intact. The application
 baseline was `67b790e30f136bacc0408b86d3be13bfbf2ee6f4` (PR #159).
