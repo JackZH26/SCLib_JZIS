@@ -112,3 +112,18 @@ missing source/family cases, and profile a genuinely observed cache miss without
 purging production caches. Native-compute progress follows its existing PR and
 runtime custody chain; actual node soak, denser-grid calibration and ML training
 must retain their own observed outcomes and unresolved gates.
+
+## Second engineering checkpoint: request-stage diagnostics
+
+Continued execution addresses the P1 performance evidence gap. One previously
+captured complete-page cache MISS took 14.516175 seconds. The new request-local
+timing contract distinguishes full scans, ranking reuse, page hits and waited
+hits, and measures row delivery, version checks, lock waiting and projection.
+The [performance record](MATERIAL_LIST_PERFORMANCE_2026_10_09.md) documents the
+exact boundaries, replay/cancellation checks and repeatable fixed-query collector.
+
+The second predeployment capture still observes public release `67b790e`:
+ten successful page-HIT requests, no server timing headers. Diagnostics are an
+implementation awaiting release validation; no production bottleneck, speedup
+or SLO acceptance has been established. The first checkpoint's PR #165 remains
+separate so its complete API CI result can finish without a changed test head.
