@@ -14,12 +14,58 @@ import re
 import subprocess
 import tempfile
 import uuid
+from contextlib import contextmanager
 from pathlib import Path
 
 from runtime_inventory import compare, digest, loads
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN_LABEL = "org.jzis.sclib.runtime-parity.run"
+FAILURE_ERRORS = (ValueError, KeyError, TypeError, OSError, subprocess.SubprocessError)
+FAILURE_STAGES = frozenset({
+    "inputs", "provenance", "docker_context", "build", "image_validation",
+    "capture", "cleanup", "comparison", "artifacts",
+})
+MAX_DIAGNOSTIC_STDERR = 16_384
+
+
+@contextmanager
+def failure_stage(stage: str):
+    """Label the original exception; never replace it or expose its message."""
+    try:
+        yield
+    except FAILURE_ERRORS as error:
+        # Preserve the innermost stage, including a cleanup failure that masks
+        # a capture failure under the existing finally semantics.
+        previous = getattr(error, "_runtime_parity_stage", None)
+        if type(previous) is not str or previous not in FAILURE_STAGES:
+            error._runtime_parity_stage = stage
+        raise
+
+
+def failure_report(project: str, error: Exception) -> dict:
+    stage = getattr(error, "_runtime_parity_stage", None)
+    if type(stage) is not str or stage not in FAILURE_STAGES:
+        stage = "unknown"
+    cause = "unknown"
+    if stage == "build" and isinstance(error, subprocess.CalledProcessError):
+        stderr = error.stderr
+        # Inspect only a bounded suffix, never serialize any original bytes.
+        if type(stderr) is bytes:
+            stderr = stderr[-MAX_DIAGNOSTIC_STDERR:].decode("ascii", errors="ignore")
+        elif type(stderr) is str:
+            stderr = stderr[-MAX_DIAGNOSTIC_STDERR:]
+        else:
+            stderr = ""
+        if any(marker in stderr.lower() for marker in (
+            "toomanyrequests", "pull rate limit",
+        )):
+            cause = "registry_pull_rate_limit"
+    return {
+        "schema": "sclib-runtime-parity-failure/v1", "matches": False,
+        "project": project if type(project) is str and project in {"api", "ingestion"} else "unknown",
+        "stage": stage, "cause": cause,
+    }
 
 
 def run(command: list[str], *, stdin: str | None = None, timeout: int = 120) -> str:
@@ -54,10 +100,11 @@ def provenance(project: str, tests: dict) -> dict:
     if (tests["project_name"] != f"sclib-{project}" or tests["system"] != "Linux"
             or tests["machine"] != "x86_64"):
         raise ValueError("test inventory has the wrong project or platform")
-    endpoint = json.loads(run(["docker", "--context", "default", "context", "inspect", "default",
-                              "--format", "{{json .Endpoints.docker.Host}}"] ))
-    if not isinstance(endpoint, str) or not endpoint.startswith("unix:///"):
-        raise ValueError("only the local default Unix Docker daemon is supported")
+    with failure_stage("docker_context"):
+        endpoint = json.loads(run(["docker", "--context", "default", "context", "inspect", "default",
+                                  "--format", "{{json .Endpoints.docker.Host}}"] ))
+        if not isinstance(endpoint, str) or not endpoint.startswith("unix:///"):
+            raise ValueError("only the local default Unix Docker daemon is supported")
     return result
 
 
@@ -96,9 +143,12 @@ def clean_owned_container(cidfile: Path, run_id: str) -> None:
 
 
 def check(project: str, tests_path: Path, output: Path) -> dict:
-    tests = loads(tests_path.read_text())
-    expected = provenance(project, tests)
-    output.mkdir(parents=True, exist_ok=True)
+    with failure_stage("inputs"):
+        tests = loads(tests_path.read_text())
+    with failure_stage("provenance"):
+        expected = provenance(project, tests)
+    with failure_stage("artifacts"):
+        output.mkdir(parents=True, exist_ok=True)
     run_id = uuid.uuid4().hex
     labels = {"org.opencontainers.image.revision": expected["source_revision"],
               "org.jzis.sclib.runtime-parity.project": project,
@@ -113,28 +163,34 @@ def check(project: str, tests_path: Path, output: Path) -> dict:
         if project == "api":
             command.extend(["--build-arg", f"GIT_SHA={expected['source_revision'][:7]}"])
         command.extend(["--file", str(ROOT / project / "Dockerfile"), str(ROOT / project)])
-        run(command, timeout=1200)
-        image_id = iidfile.read_text().strip()
-        capture_command = inventory_command(image_id, cidfile, run_id, expected)
-        details = json.loads(run(["docker", "--context", "default", "image", "inspect", image_id]))
-        if (len(details) != 1 or details[0].get("Id") != image_id
-                or details[0].get("Os") != "linux" or details[0].get("Architecture") != "amd64"):
-            raise ValueError("built image identity/platform mismatch")
-        if any(details[0].get("Config", {}).get("Labels", {}).get(key) != value for key, value in labels.items()):
-            raise ValueError("built image provenance mismatch")
-        try:
-            # Exactly the same collector bytes as test capture; stdin avoids
-            # mounting any checkout, secret, Docker socket or credential file.
-            runtime = loads(run(capture_command, stdin=(ROOT / "scripts/runtime_inventory.py").read_text()))
-        finally:
-            clean_owned_container(cidfile, run_id)
-        failures = compare(runtime, tests)
+        with failure_stage("build"):
+            run(command, timeout=1200)
+        with failure_stage("image_validation"):
+            image_id = iidfile.read_text().strip()
+            capture_command = inventory_command(image_id, cidfile, run_id, expected)
+            details = json.loads(run(["docker", "--context", "default", "image", "inspect", image_id]))
+            if (len(details) != 1 or details[0].get("Id") != image_id
+                    or details[0].get("Os") != "linux" or details[0].get("Architecture") != "amd64"):
+                raise ValueError("built image identity/platform mismatch")
+            if any(details[0].get("Config", {}).get("Labels", {}).get(key) != value for key, value in labels.items()):
+                raise ValueError("built image provenance mismatch")
+        with failure_stage("capture"):
+            try:
+                # Exactly the same collector bytes as test capture; stdin avoids
+                # mounting any checkout, secret, Docker socket or credential file.
+                runtime = loads(run(capture_command, stdin=(ROOT / "scripts/runtime_inventory.py").read_text()))
+            finally:
+                with failure_stage("cleanup"):
+                    clean_owned_container(cidfile, run_id)
+        with failure_stage("comparison"):
+            failures = compare(runtime, tests)
         report = {"schema": "sclib-runtime-parity/v1", "matches": not failures,
                   "failures": failures, "project": project, "image_id": image_id,
                   "image_architecture": details[0].get("Architecture"), **expected,
                   "scope": "python_package_versions_not_os_libraries_or_application_execution"}
-        (output / "image-runtime.json").write_text(json.dumps(runtime, sort_keys=True, indent=2) + "\n")
-        (output / "parity-report.json").write_text(json.dumps(report, sort_keys=True, indent=2) + "\n")
+        with failure_stage("artifacts"):
+            (output / "image-runtime.json").write_text(json.dumps(runtime, sort_keys=True, indent=2) + "\n")
+            (output / "parity-report.json").write_text(json.dumps(report, sort_keys=True, indent=2) + "\n")
         return report
 
 
@@ -146,9 +202,17 @@ def main() -> int:
     args = parser.parse_args()
     try:
         report = check(args.project, args.tests, args.output)
-    except (ValueError, KeyError, TypeError, OSError, subprocess.SubprocessError):
-        # No raw subprocess output, environment, DSNs or Docker config is logged.
-        print("Runtime parity failed: build, capture or provenance validation failed.")
+    except FAILURE_ERRORS as error:
+        report = failure_report(args.project, error)
+        encoded = json.dumps(report, sort_keys=True)
+        try:
+            args.output.mkdir(parents=True, exist_ok=True)
+            (args.output / "failure-report.json").write_text(encoded + "\n")
+        except (OSError, ValueError):
+            # Keep the original failure and a safe console report even when
+            # the diagnostic destination itself cannot be written.
+            print("Runtime parity failure artifact unavailable.")
+        print(encoded)
         return 1
     print(json.dumps(report, sort_keys=True))
     return int(not report["matches"])
