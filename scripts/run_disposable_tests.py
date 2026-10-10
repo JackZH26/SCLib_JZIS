@@ -143,9 +143,12 @@ class DisposableServices:
                        "--auth-local=trust", "--auth-host=scram-sha-256", "--no-locale",
                        "--encoding=UTF8"], env=self.env)
             pg_port = unused_port()
+            # Schema-reset fixtures drop and recreate all relations in one
+            # transaction; the default lock table is too small for this schema.
             self._native_start("postgres", [postgres, "-D", str(pgdata), "-h", "127.0.0.1",
                                "-p", str(pg_port), "-k", str(self.socket_dir),
-                               "-c", "max_connections=30"], pg_port)
+                               "-c", "max_connections=30",
+                               "-c", "max_locks_per_transaction=1024"], pg_port)
             redis_port = unused_port()
             if redis_port == pg_port:
                 raise RuntimeError("Ephemeral port allocation collided; retry the runner.")
@@ -161,6 +164,7 @@ class DisposableServices:
             self._docker_start("postgres", [
                 "--publish", "127.0.0.1::5432", "--env-file", str(env_file),
                 "--tmpfs", "/var/lib/postgresql/data:rw,nosuid,size=512m", "postgres:16-alpine",
+                "postgres", "-c", "max_connections=30", "-c", "max_locks_per_transaction=1024",
             ])
             private_write(redis_config, self.redis_configuration("0.0.0.0", 6379))
             # The only bind mount is this run's generated private configuration.
@@ -307,7 +311,7 @@ def main() -> int:
 def _main(destination_holder) -> int:
     parser = SafeParser(description=__doc__, allow_abbrev=False)
     parser.add_argument("--backend", choices=("docker", "native"), default="docker")
-    parser.add_argument("--suite", choices=("api", "migrations"), required=True)
+    parser.add_argument("--suite", choices=("api", "ingestion", "migrations"), required=True)
     parser.add_argument("--postgres-bin", type=Path)
     parser.add_argument("--redis-bin", type=Path)
     parser.add_argument("--report", type=Path, help="New JSON receipt destination; migrations only.")
@@ -332,13 +336,16 @@ def _main(destination_holder) -> int:
         try:
             env = services.start()
             print(f"Disposable {args.backend} services verified; running {args.suite}.", flush=True)
-            if args.suite == "api":
+            if args.suite in {"api", "ingestion"}:
                 command = [sys.executable, "-m", "pytest", *(pytest_args or ["-q"])]
             else:
                 command = [sys.executable, str(REPO / "scripts/run_test_migrations.py")]
                 if destination is not None:
                     command.extend(["--report", str(root / "schema-rehearsal.json")])
-            returncode = subprocess.run(command, cwd=REPO / "api", env=env, check=False).returncode
+            directory = REPO / ("ingestion" if args.suite == "ingestion" else "api")
+            if args.suite == "ingestion":
+                env["PYTHONPATH"] = os.pathsep.join([str(REPO), str(REPO / "ingestion")])
+            returncode = subprocess.run(command, cwd=directory, env=env, check=False).returncode
             if returncode == 0 and destination is not None:
                 report_document = load_report(read_private_report(root / "schema-rehearsal.json"), internal=True)
         except (RuntimeError, OSError):

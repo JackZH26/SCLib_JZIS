@@ -2010,6 +2010,12 @@ export function getMaterial(id: string) {
   return request<MaterialDetail>(`/materials/${encodeURIComponent(id)}`);
 }
 
+export function getMaterialReports(id: string, offset = 0, signal?: AbortSignal, snapshotId?: string) {
+  if (snapshotId && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(snapshotId)) throw new Error("Invalid candidate snapshot identifier");
+  const path = snapshotId ? `/admin/materials-v3/snapshots/${snapshotId}/materials/${encodeURIComponent(id)}` : `/materials/${encodeURIComponent(id)}/reports`;
+  return request<import("./material-reports").MaterialReports>(`${path}?${new URLSearchParams({ offset: String(offset), limit: "50" })}`, { signal, cache: "no-store", responseByteLimit: 2 * 1024 * 1024 });
+}
+
 export function getMaterialPhaseDiagram(id: string) {
   return request<PhaseDiagramPoint[]>(
     `/materials/${encodeURIComponent(id)}/phase_diagram`,

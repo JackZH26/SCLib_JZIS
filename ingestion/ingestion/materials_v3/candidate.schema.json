@@ -1,0 +1,1129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:sclib:schema:materials-ner-candidate:3.0",
+  "title": "SCLib Materials NER candidate schema 3.0",
+  "description": "Development contract draft. Model output contains source-bound candidates only. Pipeline metadata, normalized units, global IDs, coverage decisions, review status and public eligibility are assigned outside this schema. Cross-field science checks and source locator checks are mandatory in addition to JSON Schema validation.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "materials-ner-candidate/3.0"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/result"
+      },
+      "minItems": 0
+    },
+    "unresolved_links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/unresolvedLink"
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "schema_version",
+    "results",
+    "unresolved_links"
+  ],
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "block_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "subject",
+            "value",
+            "unit",
+            "condition",
+            "method",
+            "relation",
+            "table_header",
+            "footnote",
+            "outcome"
+          ]
+        },
+        "char_start": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "char_end": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "table_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "row_label_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "column_label_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "block_id",
+        "quote",
+        "role"
+      ]
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "raw_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "raw_unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "relation": {
+          "enum": [
+            "point",
+            "interval",
+            "lt",
+            "le",
+            "gt",
+            "ge"
+          ]
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "lower": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "upper": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "approximate": {
+          "type": "boolean"
+        },
+        "uncertainty_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "raw_text",
+        "raw_unit",
+        "relation",
+        "value",
+        "lower",
+        "upper",
+        "approximate",
+        "uncertainty_raw"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "relation": {
+                "const": "point"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "lower": {
+                "type": "null"
+              },
+              "upper": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "relation": {
+                "const": "interval"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              },
+              "lower": {
+                "type": "number"
+              },
+              "upper": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "relation": {
+                "enum": [
+                  "lt",
+                  "le"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              },
+              "lower": {
+                "type": "null"
+              },
+              "upper": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "relation": {
+                "enum": [
+                  "gt",
+                  "ge"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              },
+              "lower": {
+                "type": "number"
+              },
+              "upper": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "qualitative": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "raw_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value_raw": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "raw_text",
+        "value_raw"
+      ]
+    },
+    "qualifiers": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tc_definition": {
+          "enum": [
+            "onset",
+            "zero_resistance",
+            "midpoint",
+            "diamagnetic",
+            "heat_capacity",
+            "other",
+            "unknown"
+          ]
+        },
+        "criterion_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "direction_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dimensional_basis_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "frequency_convention_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reported_model_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "component_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "field_quantity_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "denominator_basis_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": []
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name_raw": {
+          "type": "string",
+          "minLength": 1
+        },
+        "formula_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "identity_kind": {
+          "enum": [
+            "exact_composition",
+            "variable_composition",
+            "material_family",
+            "composite",
+            "named_material",
+            "ambiguous"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "name_raw",
+        "formula_raw",
+        "identity_kind",
+        "evidence"
+      ]
+    },
+    "sample": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "form_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "preparation_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "label_raw",
+        "form_raw",
+        "preparation_raw",
+        "evidence"
+      ]
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "enum": [
+            "measurement_pressure",
+            "synthesis_pressure",
+            "calculation_pressure",
+            "structural_pressure",
+            "measurement_temperature",
+            "synthesis_temperature",
+            "calculation_temperature",
+            "magnetic_field",
+            "electric_field",
+            "gate_voltage",
+            "doping_fraction",
+            "oxygen_content",
+            "twist_angle",
+            "strain",
+            "film_thickness",
+            "substrate",
+            "field_direction",
+            "measurement_current",
+            "frequency",
+            "annealing_time",
+            "pressure_medium",
+            "other",
+            "minimum_test_temperature",
+            "temperature_scan_range",
+            "pressure_scan_range",
+            "magnetic_field_scan_range",
+            "maximum_test_field"
+          ]
+        },
+        "status": {
+          "enum": [
+            "reported",
+            "explicit_ambient",
+            "ambiguous"
+          ]
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/quantity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "qualitative": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/qualitative"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "key",
+        "status",
+        "quantity",
+        "qualitative",
+        "evidence"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "reported"
+              }
+            }
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "quantity": {
+                    "$ref": "#/$defs/quantity"
+                  },
+                  "qualitative": {
+                    "type": "null"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "quantity": {
+                    "type": "null"
+                  },
+                  "qualitative": {
+                    "$ref": "#/$defs/qualitative"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "explicit_ambient"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "key": {
+                "enum": [
+                  "measurement_pressure",
+                  "synthesis_pressure",
+                  "calculation_pressure",
+                  "structural_pressure"
+                ]
+              },
+              "quantity": {
+                "type": "null"
+              },
+              "qualitative": {
+                "$ref": "#/$defs/qualitative"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "seriesPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "series_label_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scan_variables": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "measurement_pressure",
+              "synthesis_pressure",
+              "calculation_pressure",
+              "structural_pressure",
+              "measurement_temperature",
+              "synthesis_temperature",
+              "calculation_temperature",
+              "magnetic_field",
+              "electric_field",
+              "gate_voltage",
+              "doping_fraction",
+              "oxygen_content",
+              "twist_angle",
+              "strain",
+              "film_thickness",
+              "substrate",
+              "field_direction",
+              "measurement_current",
+              "frequency",
+              "annealing_time",
+              "pressure_medium",
+              "other",
+              "minimum_test_temperature",
+              "temperature_scan_range",
+              "pressure_scan_range",
+              "magnetic_field_scan_range",
+              "maximum_test_field",
+              "coulomb_mu_star",
+              "exchange_correlation",
+              "k_mesh",
+              "q_mesh",
+              "smearing",
+              "magnetic_order"
+            ]
+          },
+          "minItems": 1
+        },
+        "point_label_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "step_index_raw": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "path_direction": {
+          "enum": [
+            "loading",
+            "unloading",
+            "warming",
+            "cooling",
+            "increasing",
+            "decreasing",
+            "unknown"
+          ]
+        },
+        "replicate_label_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "series_label_raw",
+        "scan_variables",
+        "point_label_raw",
+        "step_index_raw",
+        "path_direction",
+        "replicate_label_raw",
+        "evidence"
+      ]
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "event_kind": {
+          "enum": [
+            "measurement",
+            "calculation",
+            "analysis",
+            "proposal",
+            "unknown"
+          ]
+        },
+        "knowledge_origin": {
+          "enum": [
+            "Observed",
+            "Computed",
+            "Inferred",
+            "AI-Proposed",
+            "Unknown"
+          ]
+        },
+        "source_role": {
+          "enum": [
+            "primary",
+            "cited",
+            "unknown"
+          ]
+        },
+        "method_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "calculation_settings_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cited_source_raw": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "event_kind",
+        "knowledge_origin",
+        "source_role",
+        "method_raw",
+        "calculation_settings_raw",
+        "cited_source_raw",
+        "evidence"
+      ]
+    },
+    "property": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "property_key": {
+          "enum": [
+            "tc",
+            "upper_critical_field",
+            "lower_critical_field",
+            "critical_current_density",
+            "gap_energy",
+            "electron_phonon_lambda",
+            "omega_log",
+            "coulomb_mu_star",
+            "penetration_depth",
+            "coherence_length",
+            "resistivity",
+            "carrier_density",
+            "superfluid_density",
+            "superfluid_stiffness",
+            "transition_temperature_structural",
+            "transition_temperature_magnetic",
+            "lattice_a",
+            "lattice_b",
+            "lattice_c",
+            "lattice_alpha",
+            "lattice_beta",
+            "lattice_gamma",
+            "unit_cell_volume",
+            "band_gap",
+            "dos_at_fermi",
+            "formation_energy_per_atom",
+            "energy_above_hull",
+            "phonon_min_frequency",
+            "film_thickness",
+            "strain",
+            "pairing_symmetry",
+            "composition_family",
+            "structure_motif",
+            "electronic_class",
+            "mechanism_report",
+            "space_group",
+            "phase_label",
+            "sample_form",
+            "substrate",
+            "preparation_method",
+            "pressure_medium",
+            "competing_order",
+            "unconventional_report",
+            "ambient_sc_report"
+          ]
+        },
+        "status": {
+          "enum": [
+            "reported",
+            "explicitly_not_measured",
+            "ambiguous"
+          ]
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/quantity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "qualitative": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/qualitative"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "qualifiers": {
+          "$ref": "#/$defs/qualifiers"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 1
+        },
+        "knowledge_origin": {
+          "enum": [
+            "Observed",
+            "Computed",
+            "Inferred",
+            "AI-Proposed",
+            "Unknown"
+          ]
+        },
+        "source_role": {
+          "enum": [
+            "primary",
+            "cited",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "property_key",
+        "status",
+        "quantity",
+        "qualitative",
+        "qualifiers",
+        "evidence",
+        "knowledge_origin",
+        "source_role"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "reported"
+              }
+            }
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "property_key": {
+                    "enum": [
+                      "tc",
+                      "upper_critical_field",
+                      "lower_critical_field",
+                      "critical_current_density",
+                      "gap_energy",
+                      "electron_phonon_lambda",
+                      "omega_log",
+                      "coulomb_mu_star",
+                      "penetration_depth",
+                      "coherence_length",
+                      "resistivity",
+                      "carrier_density",
+                      "superfluid_density",
+                      "superfluid_stiffness",
+                      "transition_temperature_structural",
+                      "transition_temperature_magnetic",
+                      "lattice_a",
+                      "lattice_b",
+                      "lattice_c",
+                      "lattice_alpha",
+                      "lattice_beta",
+                      "lattice_gamma",
+                      "unit_cell_volume",
+                      "band_gap",
+                      "dos_at_fermi",
+                      "formation_energy_per_atom",
+                      "energy_above_hull",
+                      "phonon_min_frequency",
+                      "film_thickness",
+                      "strain"
+                    ]
+                  },
+                  "quantity": {
+                    "$ref": "#/$defs/quantity"
+                  },
+                  "qualitative": {
+                    "type": "null"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "property_key": {
+                    "enum": [
+                      "pairing_symmetry",
+                      "composition_family",
+                      "structure_motif",
+                      "electronic_class",
+                      "mechanism_report",
+                      "space_group",
+                      "phase_label",
+                      "sample_form",
+                      "substrate",
+                      "preparation_method",
+                      "pressure_medium",
+                      "competing_order",
+                      "unconventional_report",
+                      "ambient_sc_report"
+                    ]
+                  },
+                  "quantity": {
+                    "type": "null"
+                  },
+                  "qualitative": {
+                    "$ref": "#/$defs/qualitative"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "explicitly_not_measured"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "quantity": {
+                "type": "null"
+              },
+              "qualitative": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "local_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject": {
+          "$ref": "#/$defs/subject"
+        },
+        "sample": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sample"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/condition"
+          },
+          "minItems": 0
+        },
+        "series_point": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/seriesPoint"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "event": {
+          "$ref": "#/$defs/event"
+        },
+        "sc_outcome": {
+          "enum": [
+            "positive_reported",
+            "not_detected",
+            "inconclusive",
+            "unknown"
+          ]
+        },
+        "outcome_evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 0
+        },
+        "properties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/property"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "local_id",
+        "subject",
+        "sample",
+        "conditions",
+        "series_point",
+        "event",
+        "sc_outcome",
+        "outcome_evidence",
+        "properties"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "sc_outcome": {
+                "enum": [
+                  "positive_reported",
+                  "not_detected",
+                  "inconclusive"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "outcome_evidence": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "sc_outcome": {
+                "const": "not_detected"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "properties": {
+                "not": {
+                  "contains": {
+                    "properties": {
+                      "property_key": {
+                        "const": "tc"
+                      },
+                      "status": {
+                        "const": "reported"
+                      },
+                      "quantity": {
+                        "type": "object",
+                        "properties": {
+                          "relation": {
+                            "enum": [
+                              "point",
+                              "interval"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "relation"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "property_key",
+                      "status",
+                      "quantity"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "unresolvedLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "raw_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "enum": [
+            "subject_ambiguous",
+            "condition_pairing_ambiguous",
+            "sample_ambiguous",
+            "series_pairing_ambiguous",
+            "source_role_ambiguous",
+            "unsupported_property",
+            "parse_failure"
+          ]
+        },
+        "candidate_local_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "raw_text",
+        "reason",
+        "candidate_local_ids",
+        "evidence"
+      ]
+    }
+  }
+}

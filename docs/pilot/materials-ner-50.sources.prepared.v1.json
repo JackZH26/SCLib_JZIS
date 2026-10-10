@@ -1,0 +1,2919 @@
+{
+  "version": "materials-ner-source-preparation/1",
+  "status": "prepared_pending_review_not_frozen",
+  "private_prepared_manifest_sha256": "e75374d138cfa3f4051d2b507946d242096163e392212ffc46eea88fa0b5ef3e",
+  "private_prepared_file_sha256": "53eaf331bfaa11538ff6723de2fa5b588e27be87ceb1598a98d3a16007b3129b",
+  "selection_sha256": "0377baee5be8e298a67e61b912c8e8e22686ba84cbdcc730b7632a22b311a0ed",
+  "parser_version": "materials-blocks/1.3.0",
+  "works": 50,
+  "formats": {
+    "pdf": 24,
+    "html": 26
+  },
+  "initial_blocks": 209,
+  "source_failures": [],
+  "inference_completed_works": 0,
+  "gold_annotated_works": 0,
+  "frozen_manifest_sha256": null,
+  "scientific_acceptance": false,
+  "papers": [
+    {
+      "paper_id": "arxiv:2309.13919",
+      "work_id": "arxiv:2309.13919",
+      "title": "The investigation of the hydride superconductor's parabolic-like critical temperature under high pressure",
+      "doi_or_arxiv_id": "arxiv:2309.13919",
+      "family": "high_pressure_hydride",
+      "split": "development",
+      "study_dependency_group": "unreviewed:2309.13919",
+      "source_version": "2309.13919v1",
+      "source_url": "https://arxiv.org/pdf/2309.13919v1",
+      "source_license": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "main_text_sha256": "7aa5504f7113ee0c9cd951d7769e8231482343f92ad026f59d2600f9d9bc558a",
+      "content_manifest_sha256": "0a49d564223dd14f7d46ec47f1c1345444e93c8b1d99a4d96938c029070a1192",
+      "source_format": "pdf",
+      "pdf_sha256": "7aa5504f7113ee0c9cd951d7769e8231482343f92ad026f59d2600f9d9bc558a",
+      "source_bytes": 243662,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 3,
+        "source_gaps": [
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 6,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 8,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 9,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 10,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 14
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2502.02252",
+      "work_id": "arxiv:2502.02252",
+      "title": "From superconductivity to non-superconductivity in LiPdH: a first principle approach",
+      "doi_or_arxiv_id": "arxiv:2502.02252",
+      "family": "high_pressure_hydride",
+      "split": "development",
+      "study_dependency_group": "unreviewed:2502.02252",
+      "source_version": "2502.02252v1",
+      "source_url": "https://arxiv.org/html/2502.02252v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "169f5c81c952ffb7f5c57c5e4b37e4cdb804ae8f57e75f18615c1033878397b2",
+      "content_manifest_sha256": "e46f994987ba7a00a6611f3f21047912cc1345d5559ae1e66285411cf980c91c",
+      "source_format": "html",
+      "pdf_sha256": "ab4c940898e16a845bb33d1b32e1904667e7dd081386a75413d10cdea978e5de",
+      "source_bytes": 147067,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 6,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 62
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2408.10625",
+      "work_id": "arxiv:2408.10625",
+      "title": "H3Se in the Im-3m Phase: A High-Pressure Superconductor with Tc Reaching 200 K at 64 GPa Mediated by Anharmonic Phonons",
+      "doi_or_arxiv_id": "arxiv:2408.10625",
+      "family": "high_pressure_hydride",
+      "split": "validation",
+      "study_dependency_group": "unreviewed:2408.10625",
+      "source_version": "2408.10625v3",
+      "source_url": "https://arxiv.org/html/2408.10625v3",
+      "source_license": "http://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "main_text_sha256": "ddeb0045b7517f15ac02f10c652228fb3e6e5caa57e614a97201883d6439d020",
+      "content_manifest_sha256": "630f43b9b5f364ad3f3f35e4cc7fbeec6da667ef91a0982a4c71894542d466c1",
+      "source_format": "html",
+      "pdf_sha256": "748302d758512947282e96e1dc3533f26adfc43df347cc23c6d011a3f6a7e409",
+      "source_bytes": 157639,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 3,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 54
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2307.11742",
+      "work_id": "arxiv:2307.11742",
+      "title": "Evidence for Pseudogap Phase in Cerium Superhydrides: CeH$_{10}$ and CeH$_9$",
+      "doi_or_arxiv_id": "arxiv:2307.11742",
+      "family": "high_pressure_hydride",
+      "split": "validation",
+      "study_dependency_group": "unreviewed:2307.11742",
+      "source_version": "2307.11742v2",
+      "source_url": "https://arxiv.org/pdf/2307.11742v2",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "6ff972b7b484809bd5b247d0a476907ae593f20f98168680a20edf6b003f9028",
+      "content_manifest_sha256": "a3a93c8c94cb71acded63c935b0ee0fd941720773e5e7a4b1b003e72d7c7ec67",
+      "source_format": "pdf",
+      "pdf_sha256": "6ff972b7b484809bd5b247d0a476907ae593f20f98168680a20edf6b003f9028",
+      "source_bytes": 12775363,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 5,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 30
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2507.03383",
+      "work_id": "arxiv:2507.03383",
+      "title": "Anharmonicity and Coulomb pseudopotential effects on superconductivity in YH$_6$ and YH$_9$",
+      "doi_or_arxiv_id": "arxiv:2507.03383",
+      "family": "high_pressure_hydride",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2507.03383",
+      "source_version": "2507.03383v2",
+      "source_url": "https://arxiv.org/html/2507.03383v2",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "24ddbcd228d44995a70a792bea6929dee23c1422f4bfb14d2138f85a52ea07a0",
+      "content_manifest_sha256": "fa47a127aed3d0c6684754b9ed3c712b87dfaf7933cb74072e3e59ea7f82c498",
+      "source_format": "html",
+      "pdf_sha256": "a8959a96e07a0edf710c6e72262a83dc368d56bca30207d31b712c7399ae737f",
+      "source_bytes": 203705,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 4,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 71
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2510.25902",
+      "work_id": "arxiv:2510.25902",
+      "title": "Nonadiabatic and anharmonic effects in high-pressure H3S and D3S superconductors",
+      "doi_or_arxiv_id": "10.1002/andp.202500553",
+      "family": "high_pressure_hydride",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2510.25902",
+      "source_version": "2510.25902v1",
+      "source_url": "https://arxiv.org/html/2510.25902v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "fba5ec6f88adec178df0ae1d2665cc901df255a8e9d3d7dcfc2e2b9f022bbc40",
+      "content_manifest_sha256": "ae2929da87cde3569305a80cca71f30aaf46df87d2801016dfbf05b1f15080c3",
+      "source_format": "html",
+      "pdf_sha256": "f58015cb807734bd635fee5c4a60b4d2c614b5d361c4b515011b8c6b8d4b7ced",
+      "source_bytes": 176122,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 7,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 52
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2608.11428",
+      "work_id": "arxiv:2608.11428",
+      "title": "Yttrium Superhydrides Revisited: Advanced Experimental and Theoretical Studies of YH$_6$, YH$_9$ and YH$_{10}$",
+      "doi_or_arxiv_id": "arxiv:2608.11428",
+      "family": "high_pressure_hydride",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2608.11428",
+      "source_version": "2608.11428v2",
+      "source_url": "https://arxiv.org/pdf/2608.11428v2",
+      "source_license": "http://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "main_text_sha256": "344044c637e0d282f84a9aff0f8edc2304a88f27e922f2e777e8b9e5fb94a4ac",
+      "content_manifest_sha256": "8de577a72116e3b24d908eb4aba0df0c3cf8f516764c5c59ff21cf483809f38e",
+      "source_format": "pdf",
+      "pdf_sha256": "344044c637e0d282f84a9aff0f8edc2304a88f27e922f2e777e8b9e5fb94a4ac",
+      "source_bytes": 17969712,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 8,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 40
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2401.12682",
+      "work_id": "arxiv:2401.12682",
+      "title": "Probing superconducting gap in CeH$_9$ under pressure",
+      "doi_or_arxiv_id": "arxiv:2401.12682",
+      "family": "high_pressure_hydride",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2401.12682",
+      "source_version": "2401.12682v1",
+      "source_url": "https://arxiv.org/pdf/2401.12682v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "99c697c80d8127868e40f4b73f64fd76fb83fa15408de7181c75891accf530aa",
+      "content_manifest_sha256": "3e56038b3ffd374b116c056385f7e90261139576c7807e53952c0e1244a7d7f8",
+      "source_format": "pdf",
+      "pdf_sha256": "99c697c80d8127868e40f4b73f64fd76fb83fa15408de7181c75891accf530aa",
+      "source_bytes": 1549450,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 2,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 20
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2306.03122",
+      "work_id": "arxiv:2306.03122",
+      "title": "Imaging the Meissner effect and flux trapping in a hydride superconductor at megabar pressures using a nanoscale quantum sensor",
+      "doi_or_arxiv_id": "10.1038/s41586-024-07026-7",
+      "family": "high_pressure_hydride",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2306.03122",
+      "source_version": "2306.03122v1",
+      "source_url": "https://arxiv.org/html/2306.03122v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "543b9006828a07064c44233bf9ce7a81b5a96b9b80cb696519d874e2005dae57",
+      "content_manifest_sha256": "ab44b7503b1a07d633f659dd3885bd9d43c0d51290d6ff9558656779c7351922",
+      "source_format": "html",
+      "pdf_sha256": "5424edb20d551c179421dd7d938b371b7c4512e79277fc6e6131466f76fbb560",
+      "source_bytes": 418828,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 7,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 120
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2510.10720",
+      "work_id": "arxiv:2510.10720",
+      "title": "Revisiting YH$_9$ Superconductivity and Predicting High-T$_c$ in GdYH$_5$",
+      "doi_or_arxiv_id": "10.1002/andp.202500504",
+      "family": "high_pressure_hydride",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2510.10720",
+      "source_version": "2510.10720v1",
+      "source_url": "https://arxiv.org/html/2510.10720v1",
+      "source_license": "http://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "main_text_sha256": "8291b94214862f7a195045c6312f45e1ec12c717b69f4facca779b57017e41e1",
+      "content_manifest_sha256": "16430db8a7d9f3ea8e6b144abe0f6f7ba79cb98cc73802aa7aefbc1c503aa395",
+      "source_format": "html",
+      "pdf_sha256": "b555fe6d9ac75747bf9d857b10a02542099059d867de9468bbbdf2b16f2b6b80",
+      "source_bytes": 223248,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 4,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 103
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:1502.02227",
+      "work_id": "arxiv:1502.02227",
+      "title": "Pressure tuning of superconductivity independent of disorder in Tl$_{2}$Ba$_{2}$CaCu$_{2}$O$_{8+δ}$",
+      "doi_or_arxiv_id": "arxiv:1502.02227",
+      "family": "cuprate",
+      "split": "development",
+      "study_dependency_group": "unreviewed:1502.02227",
+      "source_version": "1502.02227v1",
+      "source_url": "https://arxiv.org/html/1502.02227v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "30cc3e1de5b324f6dc50d78f4194aa466dbad4e32d354ae3142a4b37e4edf4c6",
+      "content_manifest_sha256": "b9b8584e870258f3db07fe6813975eefac0d47a8b17be9574614d9903a1acc2a",
+      "source_format": "html",
+      "pdf_sha256": "3b203291cf2e6a4c767c884d5c92234f2c3373ee7d651f01ff3a7118f113b23f",
+      "source_bytes": 153121,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 5,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 45
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:1807.08954",
+      "work_id": "arxiv:1807.08954",
+      "title": "Growth and characterization of HgBa2CaCu2O6+d and HgBa2Ca2Cu3O8+d crystals",
+      "doi_or_arxiv_id": "arxiv:1807.08954",
+      "family": "cuprate",
+      "split": "development",
+      "study_dependency_group": "unreviewed:1807.08954",
+      "source_version": "1807.08954v1",
+      "source_url": "https://arxiv.org/html/1807.08954v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "23507251fa6a27e2995157e2af2a66d6a4ebd9c509ffa668cc8a5e7773a36988",
+      "content_manifest_sha256": "ef85253ff392f91aac56bf2ea8db565a99a9295d45c5b75f9f6d89db40054a49",
+      "source_format": "html",
+      "pdf_sha256": "8e47787705e9a128ef67e9b22b9cfc19c6a0d3e44ebbdff6616f2295c185c41e",
+      "source_bytes": 127168,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 7,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 44
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:1902.05232",
+      "work_id": "arxiv:1902.05232",
+      "title": "Synthesis of Hg-based cuprate superconductors $HgBa_{2}Ca_{n-1}Cu_{n}O_{2(n+1)+δ}$ by CsCl flux additional method",
+      "doi_or_arxiv_id": "arxiv:1902.05232",
+      "family": "cuprate",
+      "split": "validation",
+      "study_dependency_group": "unreviewed:1902.05232",
+      "source_version": "1902.05232v2",
+      "source_url": "https://arxiv.org/pdf/1902.05232v2",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "23589663741bfa5a8f9804bb44e3f2bda677d0b03ad527bd1883be7662b25f4d",
+      "content_manifest_sha256": "1e0367e8cdbe3c84978c53289072da0c52407f3ebd5ce558bcb253d715a7e028",
+      "source_format": "pdf",
+      "pdf_sha256": "23589663741bfa5a8f9804bb44e3f2bda677d0b03ad527bd1883be7662b25f4d",
+      "source_bytes": 495563,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 1,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 10
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:1910.08254",
+      "work_id": "arxiv:1910.08254",
+      "title": "Doping-dependent phonon anomaly and charge-order phenomena in the HgBa$_{2}$CuO$_{4+δ}$ and HgBa$_{2}$CaCu$_{2}$O$_{6+δ}$",
+      "doi_or_arxiv_id": "10.1103/PHYSREVB.101.220509",
+      "family": "cuprate",
+      "split": "validation",
+      "study_dependency_group": "unreviewed:1910.08254",
+      "source_version": "1910.08254v1",
+      "source_url": "https://arxiv.org/html/1910.08254v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "77429c00228ad369aa1250893c0b34b98ce41e1336cbfe349d7ab00d5c15991f",
+      "content_manifest_sha256": "0b50a4c14786cdedea3bc1f997ba6f466c9735341810f1b8e374219d93d82c24",
+      "source_format": "html",
+      "pdf_sha256": "070097b4ae876e5b599dca6afcfd9f35bc6c23bfd0832fcc44f32fe71cc537d6",
+      "source_bytes": 116850,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 5,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 32
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2012.12539",
+      "work_id": "arxiv:2012.12539",
+      "title": "Resistivity, Hall effect, and anisotropic superconducting coherence lengths of HgBa$_2$CaCu$_2$O$_{6+δ}$ thin films with different morphology",
+      "doi_or_arxiv_id": "arxiv:2012.12539",
+      "family": "cuprate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2012.12539",
+      "source_version": "2012.12539v1",
+      "source_url": "https://arxiv.org/html/2012.12539v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "cf3ce1869dbfe59e6dbebe1f2266b370dc0ec86d69bc2adb7ec69a74075deb46",
+      "content_manifest_sha256": "49f17d6c660af99cf1629316bf14824a6c163d522b7eecb9f6cf7b6b9506b62d",
+      "source_format": "html",
+      "pdf_sha256": "a9f433760513d4603dceddb998fe673786f780c07c9044d240e7c2be118f7810",
+      "source_bytes": 163297,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 4,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 62
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2212.13339",
+      "work_id": "arxiv:2212.13339",
+      "title": "Interrelations among critical current density, irreversibility field and pseudogap in hole doped high-Tc cuprates",
+      "doi_or_arxiv_id": "10.1016/j.physc.2023.1354255",
+      "family": "cuprate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2212.13339",
+      "source_version": "2212.13339v1",
+      "source_url": "https://arxiv.org/pdf/2212.13339v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "bdd104a4cc09c82cc4071863ef7b8235585a6dcc6c3609d703da02760b3f722f",
+      "content_manifest_sha256": "ed6097f259fc4f5df4f9f2d44bda76a816a938ee233db6d999b107bea247567b",
+      "source_format": "pdf",
+      "pdf_sha256": "bdd104a4cc09c82cc4071863ef7b8235585a6dcc6c3609d703da02760b3f722f",
+      "source_bytes": 361124,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 2,
+        "source_gaps": [
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 4,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 5,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 6,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 7,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 9,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 13
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2309.17408",
+      "work_id": "arxiv:2309.17408",
+      "title": "Two-fluid model analysis of the terahertz conductivity of YBaCuO samples: optimally doped, underdoped and overdoped cases",
+      "doi_or_arxiv_id": "arxiv:2309.17408",
+      "family": "cuprate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2309.17408",
+      "source_version": "2309.17408v2",
+      "source_url": "https://arxiv.org/html/2309.17408v2",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "e2cb438b44d9fa4be400f259d55aa5e56d1fe20441bfaed693dc5baccbd3af0f",
+      "content_manifest_sha256": "4dd69339143791843aa7ec460e542f729fc521a2796c89e67e37379aaef136e2",
+      "source_format": "html",
+      "pdf_sha256": "a932502c2a8fb3506b6a4bb70352150fa8ee096625e289748eb52eaf14a2f7b5",
+      "source_bytes": 188797,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 6,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 75
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2303.01961",
+      "work_id": "arxiv:2303.01961",
+      "title": "Light-induced coherent interlayer transport in stripe-ordered ${\\rm La}_{1.6-x}{\\rm Nd}_{0.4}{\\rm Sr}_{x}{\\rm CuO}_{4}$",
+      "doi_or_arxiv_id": "10.1103/PhysRevB.107.174523",
+      "family": "cuprate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2303.01961",
+      "source_version": "2303.01961v1",
+      "source_url": "https://arxiv.org/pdf/2303.01961v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "7e4e086d359e6ff481b38c3356919fa49d0946d03f587d9d4ae2a68efce15931",
+      "content_manifest_sha256": "2b96c394b7ff81364618cb917e719a522b5e801132935c2b468d81bb9176bbf5",
+      "source_format": "pdf",
+      "pdf_sha256": "7e4e086d359e6ff481b38c3356919fa49d0946d03f587d9d4ae2a68efce15931",
+      "source_bytes": 1339506,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 3,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 18
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2207.07962",
+      "work_id": "arxiv:2207.07962",
+      "title": "Conservation of the particle-hole symmetry in the pseudogap state in optimally-doped Bi2Sr2CuO6+δ superconductor",
+      "doi_or_arxiv_id": "10.1088/1674-1056/ac7214",
+      "family": "cuprate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2207.07962",
+      "source_version": "2207.07962v1",
+      "source_url": "https://arxiv.org/html/2207.07962v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "ffe9466cf799a497a26f24fe3604940fcfd1d68300b39a8bcd6abce812a84715",
+      "content_manifest_sha256": "60c83f23117d21da98a316dfbfd99195f4daeb08881476704e80cd85dbba11fb",
+      "source_format": "html",
+      "pdf_sha256": "19863ef7dec5f95edb3083a662f7d8ab7a3e9916ec1a56e60163d8eedd504aff",
+      "source_bytes": 77867,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 2,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 32
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:1907.05683",
+      "work_id": "arxiv:1907.05683",
+      "title": "Evolution of Incommensurate Superstructure and Electronic Structure with Pb Substitution in (Bi$_{2-x}$Pb$_{x}$)Sr$_2$CaCu$_2$O$_{8+δ}$ Superconductors",
+      "doi_or_arxiv_id": "10.1088/1674-1056/28/7/077403",
+      "family": "cuprate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:1907.05683",
+      "source_version": "1907.05683v1",
+      "source_url": "https://arxiv.org/html/1907.05683v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "0253c71ba1454df399c5f44508eb7a26724bad4f57e0dc4450362db5d23a511d",
+      "content_manifest_sha256": "421101b98fbc23f5d6e4983f4a29467966b73ffdbefe0a7e511ea3b76328a88c",
+      "source_format": "html",
+      "pdf_sha256": "84cd75555b80f0926f3538cdde2686017ca07de16e1d3f6d7e39030ef8ad13fb",
+      "source_bytes": 150753,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 5,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 46
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2408.02511",
+      "work_id": "arxiv:2408.02511",
+      "title": "Superconductivity of Co-Doped CaKFe4As4 Investigated via Point-Contact Spectroscopy and London Penetration Depth Measurements",
+      "doi_or_arxiv_id": "10.3390/nano14151319",
+      "family": "iron_based",
+      "split": "development",
+      "study_dependency_group": "unreviewed:2408.02511",
+      "source_version": "2408.02511v1",
+      "source_url": "https://arxiv.org/html/2408.02511v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "5cb6e5aaaf42443dc3b8fdededf79f50ad1576c7b07b6f6bd0cf439ccc106946",
+      "content_manifest_sha256": "6135cc6f1ac7891bf698523c56bb8f61c822c1478035c4a0d2ebb338a463b7d7",
+      "source_format": "html",
+      "pdf_sha256": "ef69b677b96d7c6a5dd7930f6e183ad7d914474ef5ad552f9d35e31ff3608fd7",
+      "source_bytes": 210586,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 6,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 70
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2402.17731",
+      "work_id": "arxiv:2402.17731",
+      "title": "Effect of impurity phase and high-pressure synthesis on the superconducting properties of CaKFe4As4",
+      "doi_or_arxiv_id": "10.1016/j.jpcs.2024.111996",
+      "family": "iron_based",
+      "split": "development",
+      "study_dependency_group": "unreviewed:2402.17731",
+      "source_version": "2402.17731v1",
+      "source_url": "https://arxiv.org/pdf/2402.17731v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "672344cd1ec691528993a9d77a269e9946b4fc3bdd1525fac4d46e494725e1e9",
+      "content_manifest_sha256": "73a5dd74e7b4a18ba668155635e6d042e3ea2c8265b145c5247cd8689d122a5f",
+      "source_format": "pdf",
+      "pdf_sha256": "672344cd1ec691528993a9d77a269e9946b4fc3bdd1525fac4d46e494725e1e9",
+      "source_bytes": 17767625,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 4,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 39
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2311.15132",
+      "work_id": "arxiv:2311.15132",
+      "title": "Enhancement of Superconducting Properties of Polycrystalline CaKFe4As4 by High-Pressure Growth",
+      "doi_or_arxiv_id": "10.1109/TASC.2023.3345821",
+      "family": "iron_based",
+      "split": "validation",
+      "study_dependency_group": "unreviewed:2311.15132",
+      "source_version": "2311.15132v1",
+      "source_url": "https://arxiv.org/pdf/2311.15132v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "3a15971814c68cd24bca1c6394b7a70fe17afe4c5085c20547ca76b9ccd7e80e",
+      "content_manifest_sha256": "31f9123d0fc6f2d657a0b2f9d5ec17212b2e9a8275854aa3656a4d39fd310591",
+      "source_format": "pdf",
+      "pdf_sha256": "3a15971814c68cd24bca1c6394b7a70fe17afe4c5085c20547ca76b9ccd7e80e",
+      "source_bytes": 5814034,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 2,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 17
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2402.18082",
+      "work_id": "arxiv:2402.18082",
+      "title": "Study of superconductivity of very thin $\\mathrm{FeSe}_{1-x}\\mathrm{Te}_x$ films investigated by microwave complex conductivity measurements",
+      "doi_or_arxiv_id": "arxiv:2402.18082",
+      "family": "iron_based",
+      "split": "validation",
+      "study_dependency_group": "unreviewed:2402.18082",
+      "source_version": "2402.18082v2",
+      "source_url": "https://arxiv.org/html/2402.18082v2",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "aaad06a570a579d8d13742eee7f49f41cb0cf804f142e66147aaa3f9a7c245c7",
+      "content_manifest_sha256": "f9502202de329969f6f4c2f651cc2f9666340eb83562518341c6d7727fe60bbd",
+      "source_format": "html",
+      "pdf_sha256": "86cabeb2d766865ee3a4ec1ed57c315477205c5aec7446ebae3cbc8ad12e60ff",
+      "source_bytes": 178677,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 4,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 81
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2412.16171",
+      "work_id": "arxiv:2412.16171",
+      "title": "Bulk and surface Dirac states accompanied by two superconducting domes in FeSe-based superconductors",
+      "doi_or_arxiv_id": "10.1073/pnas.2409756121",
+      "family": "iron_based",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2412.16171",
+      "source_version": "2412.16171v1",
+      "source_url": "https://arxiv.org/html/2412.16171v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "ea4168e914646b55faf10c2a3394fcf8270b8a5e5819193c5303a780056b2148",
+      "content_manifest_sha256": "90388f0ace037c9c6a8bed403aab56c7198513cd17249e904afcd87dbf34c881",
+      "source_format": "html",
+      "pdf_sha256": "093627eb5daf259b448fc0c4c8913af8fcc1e9cf374ec1b237ccf95ad0225fd0",
+      "source_bytes": 202138,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 7,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 78
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2412.20837",
+      "work_id": "arxiv:2412.20837",
+      "title": "High-pressure growth effects on the superconducting properties of Sm-based oxypnictide superconductors",
+      "doi_or_arxiv_id": "10.1016/j.ceramint.2025.01.208",
+      "family": "iron_based",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2412.20837",
+      "source_version": "2412.20837v1",
+      "source_url": "https://arxiv.org/pdf/2412.20837v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "86a8b15f3853c2221204b97729a5f64d1180081e1df0c458751d92ef52de4a55",
+      "content_manifest_sha256": "d3691ed75b9c5a60b49d2babb0164a7e0880cb1f838c9fe0e5d58e35b9c8e713",
+      "source_format": "pdf",
+      "pdf_sha256": "86a8b15f3853c2221204b97729a5f64d1180081e1df0c458751d92ef52de4a55",
+      "source_bytes": 15423924,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 6,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 54
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2409.12847",
+      "work_id": "arxiv:2409.12847",
+      "title": "Structural analysis and transport properties of [010]-tilt grain boundaries in Fe(Se,Te)",
+      "doi_or_arxiv_id": "10.1080/14686996.2024.2384829",
+      "family": "iron_based",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2409.12847",
+      "source_version": "2409.12847v1",
+      "source_url": "https://arxiv.org/pdf/2409.12847v1",
+      "source_license": "http://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "main_text_sha256": "4575f770077f67a715bbb051609c8c535bcb61a880315dd27cfca023111fedae",
+      "content_manifest_sha256": "30c4abd91b634f544a414d53ceae8111d38f4376c4769b27fb5c360472eec7a8",
+      "source_format": "pdf",
+      "pdf_sha256": "4575f770077f67a715bbb051609c8c535bcb61a880315dd27cfca023111fedae",
+      "source_bytes": 19341836,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 4,
+        "source_gaps": [
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 6 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 8 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 10 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 12 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 14 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 16 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 18 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 24 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 26 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 28 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 30 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 32 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 34 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 39 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 41 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 43 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 50 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 55 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 61 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 63 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 65 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 67 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 83 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 93 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 95 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 97 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 102 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 104 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 136 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 138 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 140 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 142 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 144 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 149 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 153 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 192 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 6,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 8,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 12,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 14,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 23
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2505.16184",
+      "work_id": "arxiv:2505.16184",
+      "title": "Pure nematic transition inside the superconducting dome of iron chalcogenide superconductor FeSe$_{1-x}$Te$_x$",
+      "doi_or_arxiv_id": "arxiv:2505.16184",
+      "family": "iron_based",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2505.16184",
+      "source_version": "2505.16184v1",
+      "source_url": "https://arxiv.org/pdf/2505.16184v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "9bb5ed0296199e53252656e45646905f79c72c70d2bdd9af7a208018c20ed285",
+      "content_manifest_sha256": "881bb3678d9c2cdddda239e876139b93e635c0f2ee30368204d6f93d8cdaa81d",
+      "source_format": "pdf",
+      "pdf_sha256": "9bb5ed0296199e53252656e45646905f79c72c70d2bdd9af7a208018c20ed285",
+      "source_bytes": 7696997,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 3,
+        "source_gaps": [
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 6 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 8 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 10 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 12 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 14 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 16 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 18 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 20 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 22 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 24 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 26 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 28 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 30 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 32 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 34 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 36 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 45 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 50 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 58 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 63 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 68 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 80 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 104 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 106 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 108 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 110 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 112 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 114 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 116 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 118 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 120 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 131 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 137 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 21
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2407.11332",
+      "work_id": "arxiv:2407.11332",
+      "title": "In-situ local imaging of ferromagnetism and superconductivity in RbEuFe$_4$As$_4$",
+      "doi_or_arxiv_id": "10.1021/acs.nanolett.4c02475",
+      "family": "iron_based",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2407.11332",
+      "source_version": "2407.11332v1",
+      "source_url": "https://arxiv.org/html/2407.11332v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "ba503cbb0094ead9cb0937aa1e4e9fee4a81fc13aa2332e3bebbf1f6ce6a0af0",
+      "content_manifest_sha256": "d904404198d57e98d6c29b02d69c15628b7a01982b75c29803ae875d57ab39e5",
+      "source_format": "html",
+      "pdf_sha256": "5a1c46389680c34bbdf2bbdc1e759f3d644e05db34d50b97eedf0b1cdfbe9679",
+      "source_bytes": 131347,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 4,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 38
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2503.03473",
+      "work_id": "arxiv:2503.03473",
+      "title": "Revealing the electron-spin fluctuation coupling by photoemission in CaKFe4As4",
+      "doi_or_arxiv_id": "arxiv:2503.03473",
+      "family": "iron_based",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2503.03473",
+      "source_version": "2503.03473v1",
+      "source_url": "https://arxiv.org/pdf/2503.03473v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "573422c287d3f55e0a3dc00048e3e46d38080439659583fc28af00ff363411c0",
+      "content_manifest_sha256": "e923d3543cc5bf578696945460d4089cab326c870f6ad017d758460617b94e35",
+      "source_format": "pdf",
+      "pdf_sha256": "573422c287d3f55e0a3dc00048e3e46d38080439659583fc28af00ff363411c0",
+      "source_bytes": 1238788,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 3,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 13
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2411.04896",
+      "work_id": "arxiv:2411.04896",
+      "title": "Achieving superconductivity in infinite-layer nickelate thin films by aluminum sputtering deposition",
+      "doi_or_arxiv_id": "10.1038/s43246-025-01013-9",
+      "family": "nickelate",
+      "split": "development",
+      "study_dependency_group": "unreviewed:2411.04896",
+      "source_version": "2411.04896v1",
+      "source_url": "https://arxiv.org/html/2411.04896v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "d918b95f31d0b7c5fa6bba00d77206d28ccd58423b8aa7e30b08e2a7920fadb4",
+      "content_manifest_sha256": "aaaef5925ef7d7a3aeb3396fbfbaff89f1c0f69313fd1c8aebdcda47f6a855c8",
+      "source_format": "html",
+      "pdf_sha256": "138956ac28211c7d555fd4a0de29f73e054ebaf8c230c18db6f97c9dfd11f603",
+      "source_bytes": 167578,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 5,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 76
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2604.09525",
+      "work_id": "arxiv:2604.09525",
+      "title": "High-temperature superconductivity in Nd$_{0.85}$Sr$_{0.15}$NiO$_2$ membranes under pressure",
+      "doi_or_arxiv_id": "arxiv:2604.09525",
+      "family": "nickelate",
+      "split": "development",
+      "study_dependency_group": "unreviewed:2604.09525",
+      "source_version": "2604.09525v1",
+      "source_url": "https://arxiv.org/pdf/2604.09525v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "ddc4e95126a147c5093c3480d2423deb5360d2890c2e2511efd71a245dab44cf",
+      "content_manifest_sha256": "5d9b32295dd9453963349f722583b3f12716ab6371e84e16069a174894bab54e",
+      "source_format": "pdf",
+      "pdf_sha256": "ddc4e95126a147c5093c3480d2423deb5360d2890c2e2511efd71a245dab44cf",
+      "source_bytes": 3703592,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 2,
+        "source_gaps": [
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 6 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 8 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 10 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 12 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 14 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 16 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 18 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 32 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 34 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 39 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 43 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 46 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 60 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 65 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 70 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 79 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 101 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 111 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 115 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 117 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Rotated text discovered. Layout will be degraded.",
+            "page": 15,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 18
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2508.15284",
+      "work_id": "arxiv:2508.15284",
+      "title": "Superconducting Dome in $\\mathrm{La}_{3-x}\\mathrm{Sr}_{x}\\mathrm{Ni}_{2}\\mathrm{O}_{7-δ}$ Thin Films",
+      "doi_or_arxiv_id": "10.1103/qrkk-l2ng",
+      "family": "nickelate",
+      "split": "validation",
+      "study_dependency_group": "unreviewed:2508.15284",
+      "source_version": "2508.15284v2",
+      "source_url": "https://arxiv.org/pdf/2508.15284v2",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "d6ae08353f6cff4e4aec2efbf977628206d792be64512db350a72e039b7bbdc1",
+      "content_manifest_sha256": "c6f6918b6d3ec98ced3301f3fe374f011652b7c92e086580e31a22d57c8854bf",
+      "source_format": "pdf",
+      "pdf_sha256": "d6ae08353f6cff4e4aec2efbf977628206d792be64512db350a72e039b7bbdc1",
+      "source_bytes": 5054493,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 4,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 33
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2505.12603",
+      "work_id": "arxiv:2505.12603",
+      "title": "Superconductivity and phase diagram in Sr-doped La$_{3-x}$Sr$_{x}$Ni$_2$O$_7$ thin films",
+      "doi_or_arxiv_id": "arxiv:2505.12603",
+      "family": "nickelate",
+      "split": "validation",
+      "study_dependency_group": "unreviewed:2505.12603",
+      "source_version": "2505.12603v1",
+      "source_url": "https://arxiv.org/pdf/2505.12603v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "a9c78246c280e254f27742e1a5340a5a63d6274aba0482f8ba4670da56a4c8fa",
+      "content_manifest_sha256": "219d1c78e95a2ba24413a71ca9ef267246fc692eafb97de008e7ed098ac5fe9a",
+      "source_format": "pdf",
+      "pdf_sha256": "a9c78246c280e254f27742e1a5340a5a63d6274aba0482f8ba4670da56a4c8fa",
+      "source_bytes": 2651483,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 3,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 31
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2502.14410",
+      "work_id": "arxiv:2502.14410",
+      "title": "Isotropic superconductivity in pressurized trilayer nickelate La4Ni3O10",
+      "doi_or_arxiv_id": "arxiv:2502.14410",
+      "family": "nickelate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2502.14410",
+      "source_version": "2502.14410v1",
+      "source_url": "https://arxiv.org/pdf/2502.14410v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "1bbf998b99f7af95e782beb18c049f50c0bac7a746e31bfeb37d846a5ef48700",
+      "content_manifest_sha256": "f4f62daa189f28ecb7a95f244ead0e67c9d2d49127da98e8614d4b315f0d79fb",
+      "source_format": "pdf",
+      "pdf_sha256": "1bbf998b99f7af95e782beb18c049f50c0bac7a746e31bfeb37d846a5ef48700",
+      "source_bytes": 2426608,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 4,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 20
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2502.01018",
+      "work_id": "arxiv:2502.01018",
+      "title": "Superconductivity of the hybrid Ruddlesden-Popper La5Ni3O11 single crystals under high pressure",
+      "doi_or_arxiv_id": "arxiv:2502.01018",
+      "family": "nickelate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2502.01018",
+      "source_version": "2502.01018v1",
+      "source_url": "https://arxiv.org/pdf/2502.01018v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "5284777510b77294621ce1ffb7fdf2054142b5f613315affd6c3902bd2c9fa51",
+      "content_manifest_sha256": "89870e5a1c48039c5b58732e7ecac1c723b64fcc07bb86b836454ba2c940d2d7",
+      "source_format": "pdf",
+      "pdf_sha256": "5284777510b77294621ce1ffb7fdf2054142b5f613315affd6c3902bd2c9fa51",
+      "source_bytes": 5939913,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 3,
+        "source_gaps": [
+          {
+            "kind": "ocr_required",
+            "page": 20,
+            "status": "unprocessed"
+          },
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 19
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2501.13511",
+      "work_id": "arxiv:2501.13511",
+      "title": "Signature of superconductivity in pressurized La4Ni3O10-x single crystals grown at ambient pressure",
+      "doi_or_arxiv_id": "10.1002/adma.202507365",
+      "family": "nickelate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2501.13511",
+      "source_version": "2501.13511v1",
+      "source_url": "https://arxiv.org/pdf/2501.13511v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "e883b25f54349ac19a28b2b534490ad81074ed15eb8fb6bac51fec0edc6ff441",
+      "content_manifest_sha256": "b1fcb3cede4377c06d4a3a7eda6c3fed9b9bd5e3f85203246e584daefa52833b",
+      "source_format": "pdf",
+      "pdf_sha256": "e883b25f54349ac19a28b2b534490ad81074ed15eb8fb6bac51fec0edc6ff441",
+      "source_bytes": 8709324,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 4,
+        "source_gaps": [
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 6 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 8 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 12 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 14 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 16 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 18 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 20 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 22 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 24 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 26 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 32 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 47 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 53 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 55 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 62 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 64 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 66 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 68 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 70 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 75 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 82 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 95 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 9
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2502.17831",
+      "work_id": "arxiv:2502.17831",
+      "title": "Nodeless superconducting gap and electron-boson coupling in (La,Pr,Sm)$_{3}$Ni$_2$O$_7$ films",
+      "doi_or_arxiv_id": "10.1126/science.adw8329",
+      "family": "nickelate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2502.17831",
+      "source_version": "2502.17831v2",
+      "source_url": "https://arxiv.org/pdf/2502.17831v2",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "036b92fba2085fb9da640415bb5ebbfb352007b872dc383a1af15f11ffef046e",
+      "content_manifest_sha256": "7ae9641d06ed348d38f0abbfe16ad41a64151f48550b29d7886e9acb4f06b64d",
+      "source_format": "pdf",
+      "pdf_sha256": "036b92fba2085fb9da640415bb5ebbfb352007b872dc383a1af15f11ffef046e",
+      "source_bytes": 5290097,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 3,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 12
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2503.05176",
+      "work_id": "arxiv:2503.05176",
+      "title": "Collapse of density wave and emergence of superconductivity in pressurized-La$_4$Ni$_3$O$_{10}$ evidenced by ultrafast spectroscopy",
+      "doi_or_arxiv_id": "arxiv:2503.05176",
+      "family": "nickelate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2503.05176",
+      "source_version": "2503.05176v2",
+      "source_url": "https://arxiv.org/html/2503.05176v2",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "9de2a9bacdf1b85a3e976305032d2e766ed53c18b6cb575ce3f24e630b9d69f9",
+      "content_manifest_sha256": "2c0272b4476c952f54e814dcefea6c527eaba81888c7ebe39b7880698bb1bcb0",
+      "source_format": "html",
+      "pdf_sha256": "def1339a5bedf0549d751a6057ee6280c8caad2239eb8c418f781c06d87be9ca",
+      "source_bytes": 187188,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 4,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 53
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2605.30752",
+      "work_id": "arxiv:2605.30752",
+      "title": "Ni-O hybridization-driven electronic reconstruction across the superconducting dome in an infinite-layer nickelate",
+      "doi_or_arxiv_id": "arxiv:2605.30752",
+      "family": "nickelate",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2605.30752",
+      "source_version": "2605.30752v1",
+      "source_url": "https://arxiv.org/pdf/2605.30752v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "04a0589fc7f688ce39aa753d035017983c542d5cd90ffb89b11f5e8d37fd8156",
+      "content_manifest_sha256": "6a51c21f7b0ca29cd67f889ba40ae57ea77c1b7f659ca50ffafe5204634f0ffc",
+      "source_format": "pdf",
+      "pdf_sha256": "04a0589fc7f688ce39aa753d035017983c542d5cd90ffb89b11f5e8d37fd8156",
+      "source_bytes": 1285860,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 2,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 16
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:1602.03211",
+      "work_id": "arxiv:1602.03211",
+      "title": "Isotope Effect on Electron-Phonon Interaction in Multiband Superconductor MgB2",
+      "doi_or_arxiv_id": "10.1103/PhysRevB.93.144504",
+      "family": "conventional",
+      "split": "development",
+      "study_dependency_group": "unreviewed:1602.03211",
+      "source_version": "1602.03211v1",
+      "source_url": "https://arxiv.org/html/1602.03211v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "16224c040c9e2969d63cf315ef0e036cdaa8b37a54aa5afd2658971886d5525c",
+      "content_manifest_sha256": "dc7a0cbc166eb8fa7df8c1f1a46663ec90d54ff4179696478d8b76ece302e9d1",
+      "source_format": "html",
+      "pdf_sha256": "c9dfa4f906239e00c7f59fb201376ee965777c813b6815bc2654c886ba18385b",
+      "source_bytes": 77523,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 2,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 30
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:1101.2596",
+      "work_id": "arxiv:1101.2596",
+      "title": "Influence of the carbon substitution on the critical current density and AC losses in MgB2 single crystals",
+      "doi_or_arxiv_id": "arxiv:1101.2596",
+      "family": "conventional",
+      "split": "development",
+      "study_dependency_group": "unreviewed:1101.2596",
+      "source_version": "1101.2596v1",
+      "source_url": "https://arxiv.org/pdf/1101.2596v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "a8c4616afaf3520cf580d5b2b6cb914455f8f54b6e21cc07db7c3b66b676005f",
+      "content_manifest_sha256": "e99eef4cc2615e4729b417eaa71676167f4700ab1f588aba83e60dcf213b66ae",
+      "source_format": "pdf",
+      "pdf_sha256": "a8c4616afaf3520cf580d5b2b6cb914455f8f54b6e21cc07db7c3b66b676005f",
+      "source_bytes": 386403,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 2,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 10
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2601.13292",
+      "work_id": "arxiv:2601.13292",
+      "title": "Symmetry-broken superconducting configurations from density functional theory for bcc and hcp metals and Nb3Sn",
+      "doi_or_arxiv_id": "arxiv:2601.13292",
+      "family": "conventional",
+      "split": "validation",
+      "study_dependency_group": "unreviewed:2601.13292",
+      "source_version": "2601.13292v1",
+      "source_url": "https://arxiv.org/pdf/2601.13292v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "d5fb7a5bf5503985368250da5cf53dbb4d26d8dd5e4674e44a52a49de852883c",
+      "content_manifest_sha256": "f843f59c02d17c9d7cd60f1a3b5387d67a47ec7b1b84625314c70cadae353200",
+      "source_format": "pdf",
+      "pdf_sha256": "d5fb7a5bf5503985368250da5cf53dbb4d26d8dd5e4674e44a52a49de852883c",
+      "source_bytes": 5516674,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 5,
+        "source_gaps": [
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 43
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2408.04516",
+      "work_id": "arxiv:2408.04516",
+      "title": "Characteristic times for gap relaxation and heat escape in nanothin NbTi superconducting filaments: thickness dependence and effect of substrate",
+      "doi_or_arxiv_id": "10.3390/nano14191585",
+      "family": "conventional",
+      "split": "validation",
+      "study_dependency_group": "unreviewed:2408.04516",
+      "source_version": "2408.04516v1",
+      "source_url": "https://arxiv.org/html/2408.04516v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "b4a5de7d856804e72676ec46875f0aa8078741a6c57af50d134e3310a39cef57",
+      "content_manifest_sha256": "7ae7c4ac7e3404c79ab113953869ec4915d933339920b1ba758769de8da716f7",
+      "source_format": "html",
+      "pdf_sha256": "8f3768e123bface4e6d8a5738724ffa85432255dfafc3636031702d1c3a95536",
+      "source_bytes": 118078,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 2,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 59
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2408.10719",
+      "work_id": "arxiv:2408.10719",
+      "title": "Development of a Nb-based semiconductor-superconductor hybrid platform",
+      "doi_or_arxiv_id": "10.1002/aelm.202400687",
+      "family": "conventional",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2408.10719",
+      "source_version": "2408.10719v1",
+      "source_url": "https://arxiv.org/html/2408.10719v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "0b66b7e54bdb762cecaad11b278805b5d03009d4a1d854e6b32244c645e3543b",
+      "content_manifest_sha256": "216ebe20ae123eeef6f2ad16e706533b1744022c44f921bb31e5be767f577550",
+      "source_format": "html",
+      "pdf_sha256": "46004923159137ca475c3c953d52e00b970efb8efce60cde91d8be48db904392",
+      "source_bytes": 137668,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 5,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 81
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2308.04377",
+      "work_id": "arxiv:2308.04377",
+      "title": "Superconductivity of cerium under pressures up to 54GPa",
+      "doi_or_arxiv_id": "10.1103/PhysRevB.108.094502",
+      "family": "conventional",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2308.04377",
+      "source_version": "2308.04377v1",
+      "source_url": "https://arxiv.org/html/2308.04377v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "1b29638adb9626055e36cd216bafcd66fb67ee993aeedfdd628e31a1c6504cbd",
+      "content_manifest_sha256": "090c3154a90327c02c7259af5cdfc5fe2dbe9c04eca7fa510beeeda294ae6010",
+      "source_format": "html",
+      "pdf_sha256": "82bc08ed9b89464da4c7d3ac288c86f0e3a2af194f920c9b1b863c2bc287ce39",
+      "source_bytes": 134344,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 2,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 41
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2509.23404",
+      "work_id": "arxiv:2509.23404",
+      "title": "Magnetic-field dependent vortex dynamics and critical currents in superconducting microwires with regular large-area perforation by pinholes",
+      "doi_or_arxiv_id": "10.1088/1361-6668/ae1893",
+      "family": "conventional",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2509.23404",
+      "source_version": "2509.23404v1",
+      "source_url": "https://arxiv.org/pdf/2509.23404v1",
+      "source_license": "http://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "main_text_sha256": "bd34a49c6c0cb3fd171a8c55d414c312d0cdb1b71a2059a01087fb7696c1c18e",
+      "content_manifest_sha256": "73ef8fa67a93b7aeee9137d749762cb850b84e84e2a0083e20956e67a7598a0d",
+      "source_format": "pdf",
+      "pdf_sha256": "bd34a49c6c0cb3fd171a8c55d414c312d0cdb1b71a2059a01087fb7696c1c18e",
+      "source_bytes": 8914665,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 3,
+        "source_gaps": [
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 6 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 8 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 10 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 12 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 14 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 20 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 25 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 27 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 29 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 31 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 36 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 38 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 40 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 42 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 44 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 46 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 48 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 55 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 63 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 72 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 82 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 84 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 90 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 106 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 108 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 110 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 112 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 121 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 126 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 136 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 138 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_parser_warning",
+            "message": "Ignoring wrong pointing object 140 0 (offset 0)",
+            "page": null,
+            "status": "requires_review"
+          },
+          {
+            "kind": "pdf_tables_figures_visual_review",
+            "status": "not_verified"
+          }
+        ],
+        "text_records": 20
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2508.21281",
+      "work_id": "arxiv:2508.21281",
+      "title": "Rigid muffin-tin approximation in plane-wave codes for fast modeling of phonon-mediated superconductors",
+      "doi_or_arxiv_id": "arxiv:2508.21281",
+      "family": "conventional",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2508.21281",
+      "source_version": "2508.21281v1",
+      "source_url": "https://arxiv.org/html/2508.21281v1",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "3ff7b19476492f93e50ab0603a368c405a30548189ad59e17a33475520a58d06",
+      "content_manifest_sha256": "e05bf7997f57fd9511d942169090d67f9f6d2dcff08eea7f8b1e7bd7ea086918",
+      "source_format": "html",
+      "pdf_sha256": "6453ffb95c49cd612d621bb1dea9e284a537014914d7edff8f8875e8ba1c3c14",
+      "source_bytes": 371223,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 10,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 146
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2602.21364",
+      "work_id": "arxiv:2602.21364",
+      "title": "Granular aluminum induced superconductivity in germanium for hole spin-based hybrid devices",
+      "doi_or_arxiv_id": "arxiv:2602.21364",
+      "family": "conventional",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2602.21364",
+      "source_version": "2602.21364v4",
+      "source_url": "https://arxiv.org/html/2602.21364v4",
+      "source_license": "http://creativecommons.org/licenses/by/4.0/",
+      "main_text_sha256": "51a9e694cb386f3e6e485acd4f3f1e76f6dc3f5add32e2c3440a0c690c4b90ab",
+      "content_manifest_sha256": "ccf8a8f03c767d7024f2d43ee3b87d3372aa850075eb8c18143852247118b36c",
+      "source_format": "html",
+      "pdf_sha256": "802a8e41da7077cb7b8691f7917e8cf783368b9bff8d9ca9bf13ec177b757165",
+      "source_bytes": 564483,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 9,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 217
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    },
+    {
+      "paper_id": "arxiv:2607.20974",
+      "work_id": "arxiv:2607.20974",
+      "title": "Evidence for fully-gapped superconductivity in BCS superconductor NiBi3",
+      "doi_or_arxiv_id": "arxiv:2607.20974",
+      "family": "conventional",
+      "split": "blind_test",
+      "study_dependency_group": "unreviewed:2607.20974",
+      "source_version": "2607.20974v1",
+      "source_url": "https://arxiv.org/html/2607.20974v1",
+      "source_license": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "main_text_sha256": "6b09849bffd04edd7a3bb918da09f131c3f83c7b8ab7ac17663199cf10692d35",
+      "content_manifest_sha256": "ee345e41dc80f8ef78a76b3163f3c6c8b29f8ad863161d06bcc0aea2f037b3fa",
+      "source_format": "html",
+      "pdf_sha256": "2fdfe305c75b6945417afbe9e1b28cbcf8979ff5bde2b449f9b85ab8a1332c81",
+      "source_bytes": 175499,
+      "coverage": {
+        "ner_status": "not_run",
+        "parser_status": "text_extracted_with_gaps",
+        "planned_blocks": 3,
+        "source_gaps": [
+          {
+            "kind": "figures_require_visual_review",
+            "status": "not_digitized"
+          }
+        ],
+        "text_records": 74
+      },
+      "supplement_status": "pending_source_scope_review",
+      "work_identity_status": "external_arxiv_verified_sclib_work_mapping_pending",
+      "license_review_status": "recorded_not_adjudicated",
+      "transfer_allowed": false,
+      "cloud_inference_allowed": false,
+      "verified_case_tags": [],
+      "verified_independent_materials": [],
+      "supplement_captures": [],
+      "dependency_group_review_status": "pending",
+      "family_review_status": "pending"
+    }
+  ],
+  "receipt_sha256": "2903f28f2055c3345ab31c3e298eb0dc5577287f4b76a6df39217f5011a960d0"
+}

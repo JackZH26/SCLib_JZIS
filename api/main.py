@@ -664,6 +664,9 @@ app.include_router(discovery_calculations.router, prefix="/v1")
 app.include_router(material_field_review.router, prefix="/v1")
 app.include_router(material_literal_fields.router, prefix="/v1")
 app.include_router(ml_foundation.router, prefix="/v1")
+from routers import material_reports_v3  # noqa: E402
+
+app.include_router(material_reports_v3.router, prefix="/v1")
 app.include_router(materials.router, prefix="/v1")
 app.include_router(papers.router, prefix="/v1")
 app.include_router(seo.router, prefix="/v1")

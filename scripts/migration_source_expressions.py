@@ -21,6 +21,7 @@ from migration_discovery_condition_batches import function_signatures as conditi
 from migration_discovery_feedback import function_signatures as feedback_function_signatures
 from migration_discovery_calculations import function_signatures as calculation_function_signatures
 from test_safety import validate_test_environment, verify_postgres_identity
+from migration_materials_v3 import table_names as materials_v3_tables, assert_empty as assert_empty_materials_v3
 
 TABLES = (*INTAKE_V2_TABLES, *FIELD_CASE_TABLES, *FIELD_REVIEW_TABLES)
 
@@ -58,7 +59,7 @@ def snapshot(connection):
         name: connection.execute(text(
             f'SELECT to_jsonb(t) FROM public."{name}" t ORDER BY to_jsonb(t)::text')).scalars().all()
         for name in inspect(connection).get_table_names(schema="public")
-        if name not in {"alembic_version", *TABLES, *DISCOVERY_DESIGN_TABLES, *DISCOVERY_CONDITION_BATCH_TABLES, *DISCOVERY_FEEDBACK_TABLES, *CALCULATION_TABLES}
+        if name not in {"alembic_version", *TABLES, *DISCOVERY_DESIGN_TABLES, *DISCOVERY_CONDITION_BATCH_TABLES, *DISCOVERY_FEEDBACK_TABLES, *CALCULATION_TABLES, *materials_v3_tables()}
     }
 
 
@@ -84,6 +85,7 @@ def assert_empty(connection):
     assert_empty_condition_batches(connection)
     assert_empty_feedback(connection)
     assert_empty_calculations(connection)
+    assert_empty_materials_v3(connection)
     for name in TABLES:
         assert connection.execute(text(f'SELECT count(*) FROM public."{name}"')).scalar_one() == 0
 
@@ -117,12 +119,12 @@ def empty_roundtrip(capability, engine, config):
         all_definitions = public_objects(connection)
         new_signatures = {connection.execute(text("SELECT to_regprocedure(:signature)::text"),
             {"signature": f"public.{name}({arguments})"}).scalar_one()
-            for name, arguments in (*function_signatures(), *discovery_design_function_signatures(), *condition_batch_function_signatures(), *feedback_function_signatures(), *calculation_function_signatures())}
+            for name, arguments in (*function_signatures(), *discovery_design_function_signatures(), *condition_batch_function_signatures(), *feedback_function_signatures(), *calculation_function_signatures(), ("mv3_immutable_history", ""))}
         assert None not in new_signatures
         earlier_definitions = ({key: value for key, value in all_definitions[0].items()
                                 if key not in new_signatures},
                                tuple(row for row in all_definitions[1]
-                                     if row[0] not in {*TABLES, *DISCOVERY_DESIGN_TABLES, *DISCOVERY_CONDITION_BATCH_TABLES, *DISCOVERY_FEEDBACK_TABLES, *CALCULATION_TABLES}))
+                                     if row[0] not in {*TABLES, *DISCOVERY_DESIGN_TABLES, *DISCOVERY_CONDITION_BATCH_TABLES, *DISCOVERY_FEEDBACK_TABLES, *CALCULATION_TABLES, *materials_v3_tables()}))
         assert any(before.values()), "Earlier rehearsal rows must actually be populated"
         assert all(definitions[0])
         assert {(row[0], row[1]) for row in definitions[1]} == expected_triggers()

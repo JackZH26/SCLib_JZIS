@@ -1,0 +1,238 @@
+{
+  "protocol_version": "materials-ner-50/1",
+  "status": "engineering_implemented_sources_prepared_quality_pending",
+  "created_on": "2026-10-10",
+  "total_unique_works": 50,
+  "sampling_method": "Five equal family strata, fixed manifest before inference; source work and original-data dependency groups remain in one split.",
+  "strata": [
+    {
+      "family": "high_pressure_hydride",
+      "works": 10,
+      "development": 2,
+      "validation": 2,
+      "blind_test": 6
+    },
+    {
+      "family": "cuprate",
+      "works": 10,
+      "development": 2,
+      "validation": 2,
+      "blind_test": 6
+    },
+    {
+      "family": "iron_based",
+      "works": 10,
+      "development": 2,
+      "validation": 2,
+      "blind_test": 6
+    },
+    {
+      "family": "nickelate",
+      "works": 10,
+      "development": 2,
+      "validation": 2,
+      "blind_test": 6
+    },
+    {
+      "family": "conventional",
+      "works": 10,
+      "development": 2,
+      "validation": 2,
+      "blind_test": 6
+    }
+  ],
+  "splits": {
+    "development": 10,
+    "validation": 10,
+    "blind_test": 30
+  },
+  "frozen_paper_manifest": null,
+  "manifest_required_fields": [
+    "paper_id",
+    "work_id",
+    "title",
+    "doi_or_arxiv_id",
+    "family",
+    "study_dependency_group",
+    "split",
+    "source_version",
+    "source_url",
+    "source_license",
+    "transfer_allowed",
+    "cloud_inference_allowed",
+    "main_text_sha256",
+    "content_manifest_sha256",
+    "source_format",
+    "coverage",
+    "supplement_status",
+    "supplement_captures",
+    "work_identity_status",
+    "dependency_group_review_status",
+    "family_review_status",
+    "verified_case_tags",
+    "verified_independent_materials"
+  ],
+  "selection_requirements": {
+    "existing_sclib_record": true,
+    "main_fulltext_available": true,
+    "main_and_available_supplement_included": true,
+    "arxiv_and_journal_versions_count_as_one_work": true,
+    "past_prompt_tuning_examples_forbidden_in_blind_test": true,
+    "inaccessible_sources_replaced_before_freeze": true
+  },
+  "overlapping_challenge_targets": [
+    {
+      "tag": "multi_point_same_paper_material",
+      "min_works": 20
+    },
+    {
+      "tag": "table_header_and_footnote_binding",
+      "min_works": 15
+    },
+    {
+      "tag": "negative_or_inconclusive_sc_outcome",
+      "min_works": 5
+    },
+    {
+      "tag": "cited_and_primary_results",
+      "min_works": 10
+    },
+    {
+      "tag": "bounds_ranges_or_uncertainty",
+      "min_works": 10
+    },
+    {
+      "tag": "multiple_tc_criteria",
+      "min_works": 8
+    },
+    {
+      "tag": "calculated_results_with_method_parameters",
+      "min_works": 10
+    },
+    {
+      "tag": "same_material_across_independent_works",
+      "min_distinct_materials": 5,
+      "min_works_per_material": 2
+    },
+    {
+      "tag": "critical_evidence_after_old_16k_prefix_or_section_eight",
+      "min_works": 5
+    }
+  ],
+  "comparator_models": [
+    {
+      "provider": "local_mlx",
+      "model": "mlx-community/Qwen3.6-35B-A3B-4bit",
+      "revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+      "enable_thinking": false,
+      "initial_total_context_tokens": 16384,
+      "initial_body_tokens_range": [
+        4000,
+        6000
+      ],
+      "initial_max_output_tokens": 4096,
+      "concurrency": 1,
+      "temperature": 0,
+      "configuration_freeze": "after_development_and_validation"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini-3.5-flash",
+      "deployment_verification_required": true,
+      "reason": "Current repository default; deployed model and actual API settings must be read before freezing.",
+      "structured_output": true,
+      "configuration_freeze": "before_blind_test"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "api": "responses",
+      "reasoning_effort": "low",
+      "structured_output": true,
+      "configuration_freeze": "before_blind_test"
+    }
+  ],
+  "comparison_controls": {
+    "identical_source_snapshot_and_blocks": true,
+    "identical_semantic_prompt_and_schema": true,
+    "common_schema_and_semantic_validation": true,
+    "allowed_provider_specific_transport_and_decoding": true,
+    "no_cross_model_result_in_inputs": true,
+    "no_external_search_for_extraction": true,
+    "local_failures_count_in_end_to_end_metrics": true,
+    "shared_syntax_repair_max_per_block": 1,
+    "shared_infrastructure_retries_max_per_block": 2,
+    "output_limit_uses_block_split_not_syntax_repair": true,
+    "outputs_anonymized_for_human_review": true,
+    "all_model_outputs_are_candidates_not_independent_scientific_replications": true,
+    "final_frozen_configuration_rerun_on_all_50": true,
+    "acceptance_metrics_use_blind_30_only": true
+  },
+  "gold": {
+    "scope": "All target claims, material/sample/state/series bindings and supporting locators in the frozen sources; include explicit negatives and missingness labels.",
+    "annotators_required": 2,
+    "disagreement_adjudication_required": true,
+    "assigned_annotators": null,
+    "annotation_started": false,
+    "cloud_outputs_are_not_gold": true
+  },
+  "quality_acceptance": {
+    "evaluation_split": "blind_test",
+    "critical_tuple_precision_min": 0.98,
+    "critical_tuple_recall_min": 0.95,
+    "each_family_critical_tuple_recall_min": 0.9,
+    "scalar_range_bound_numeric_and_unit_accuracy_min": 0.99,
+    "evidence_locator_resolves_rate": 1,
+    "evidence_support_precision_min": 0.98,
+    "origin_and_source_role_macro_f1_min": 0.98,
+    "optional_scientific_property_macro_f1_min": 0.9,
+    "severe_semantic_error_count_max": 0,
+    "local_tuple_f1_noninferiority_margin_points": 2,
+    "noninferiority_reference": "Compare local tuple F1 separately against Gemini and GPT; each paired 95% paper-cluster confidence interval lower bound must be at least -2 percentage points. An inconclusive interval is not a pass.",
+    "stats": "Precision, recall, F1 with TP/FP/FN and denominators; paper-cluster paired bootstrap; per family and challenge tags; unknowns are not true negatives.",
+    "paired_confidence_level": 0.95,
+    "empty_field_recovery_recall_min": 0.95,
+    "empty_field_recovery_scope": "Only existing null fields in the 50-work source scope with a gold-confirmed recoverable source claim; source holds and mapping/association problems are classified separately."
+  },
+  "operational_acceptance": {
+    "unique_works_completed_in_local_offline_rerun": 50,
+    "repaired_accepted_schema_validity": 1,
+    "raw_first_pass_json_validity_min": 0.98,
+    "all_blocks_have_terminal_and_coverage_status": true,
+    "invisible_prefix_truncation_count_max": 0,
+    "canonical_duplicate_rows_after_retry_max": 0,
+    "stale_attempt_overwrites_max": 0,
+    "soak_hours": 24,
+    "local_inference_process_tree_plus_metal_observed_peak_budget_gib": 32,
+    "os_and_other_service_headroom_gib_min": 12,
+    "concurrent_heavy_jobs_max": 1,
+    "performance_targets": {
+      "mean_seconds_per_paper": 300,
+      "p95_seconds_per_paper": 900,
+      "status": "Planning targets to calibrate with first 10 works; actual measured performance controls corpus rollout."
+    },
+    "memory_accounting": "Report RSS and Metal separately; unified-memory overlap uses max(RSS,Metal) plus live host headroom. No direct disjoint sum is claimed."
+  },
+  "rollout": {
+    "fifty_paper_scope": "Architecture and engineering pilot, not a full-corpus accuracy guarantee.",
+    "next_gate": "200-300 additional blinded stratified works including other families and source formats",
+    "staged_full_corpus_batches": [
+      100,
+      1000
+    ],
+    "global_automatic_replacement_requires_expanded_evidence": true,
+    "production_database_writes_during_model_comparison": false
+  },
+  "prepared_sources_receipt": "materials-ner-50.sources.prepared.v1.json",
+  "source_preparation": {
+    "works": 50,
+    "pdf_inputs": 24,
+    "html_inputs": 26,
+    "initial_blocks": 209,
+    "parser_version": "materials-blocks/1.3.0",
+    "source_failures": 0,
+    "source_scope_frozen": false,
+    "ner_completed_works": 0,
+    "gold_completed_works": 0
+  }
+}
