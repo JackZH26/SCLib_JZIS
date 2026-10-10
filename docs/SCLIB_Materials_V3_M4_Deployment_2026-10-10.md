@@ -108,6 +108,8 @@ loading at 150 GPa. Its transition onset was 240 K; zero resistance was
 
 云模型在协调方运行，Mini 不需要云密钥。OpenAI 固定 `gpt-6.1-sol`、Responses、low reasoning、strict schema、`store=false`；[Gemini candidate](pilot/materials-ner-gemini.candidate.v1.json) 只是当前仓库默认，实际旧部署型号仍须核对。标准环境变量或既有秘密管理提供凭据，不能粘贴到聊天、文档或 Git。记录实际返回 model、tokens、reasoning/cache 与错误；费用未知保持 null，不能把失败当零成本。当前尚无实际云请求。
 
+本轮已只读核对VPS2的旧配置为 `gemini-3.5-flash`、项目变量 `GCP_PROJECT`；适配器保留 `GCP_PROJECT_ID` / `GOOGLE_CLOUD_PROJECT` 并兼容该现用变量。Gemini 3使用 `thinking_level=LOW`，省略已不推荐的sampling参数；旧版本保持原budget控制。参数依据[Google官方指南](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/guides/gemini-3-5-flash)，实际请求和返回型号仍需验证，不能仅按配置名声称固定了底层模型。OpenAI官方已列出[GPT 6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol)及Responses/structured outputs；本机和已核对的VPS2环境未发现OpenAI标准API凭据，账户可用性尚未验证。
+
 ## 接入现有计算协议
 
 使用独立 `ner_qwen_mlx` kind/capability、新 NER grant 和固定 runtime_id。仓库 staging server 默认仍只允许 dummy，新增 contract 不自动开放 NER 派发。旧 QE grant 的剩余 core-seconds不能用于 NER。

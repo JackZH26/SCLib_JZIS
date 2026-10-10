@@ -56,6 +56,12 @@ class ProviderConfig:
             "max",
         }:
             raise ValueError("unsupported_openai_reasoning_effort")
+        if (
+            self.provider == "gemini"
+            and self.model.startswith("gemini-3")
+            and self.reasoning_effort not in {"minimal", "low", "medium", "high"}
+        ):
+            raise ValueError("unsupported_gemini_thinking_level")
 
     @property
     def sha256(self):
@@ -204,9 +210,22 @@ class HTTPProvider:
         from google import genai
         from google.genai import types
 
-        project = os.environ.get("GCP_PROJECT_ID") or os.environ.get("GOOGLE_CLOUD_PROJECT")
+        project = (
+            os.environ.get("GCP_PROJECT_ID")
+            or os.environ.get("GOOGLE_CLOUD_PROJECT")
+            or os.environ.get("GCP_PROJECT")
+        )
         if not project:
             raise ProviderError("gemini_project_unavailable")
+        generation_options = (
+            {
+                "thinking_config": types.ThinkingConfig(
+                    thinking_level=self.config.reasoning_effort.upper()
+                )
+            }
+            if self.config.model.startswith("gemini-3")
+            else {"temperature": 0, "thinking_config": types.ThinkingConfig(thinking_budget=0)}
+        )
         try:
             with genai.Client(
                 vertexai=True,
@@ -219,11 +238,10 @@ class HTTPProvider:
                     contents=messages[-1]["content"],
                     config=types.GenerateContentConfig(
                         system_instruction=messages[0]["content"],
-                        temperature=0,
                         max_output_tokens=self.config.max_output_tokens,
                         response_mime_type="application/json",
                         response_json_schema=provider_schema(),
-                        thinking_config=types.ThinkingConfig(thinking_budget=0),
+                        **generation_options,
                     ),
                 )
         except Exception:

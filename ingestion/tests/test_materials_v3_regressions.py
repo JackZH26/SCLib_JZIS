@@ -353,6 +353,63 @@ def test_mlx_uses_terminal_metadata_and_preserves_truncated_receipt(monkeypatch,
     assert receipt.finish_reason == finish
 
 
+@pytest.mark.parametrize("model,modern", [("gemini-3.5-flash", True), ("gemini-2.5-flash", False)])
+def test_gemini_reads_existing_project_setting_and_uses_model_specific_thinking(
+    monkeypatch, model, modern
+):
+    from types import SimpleNamespace
+    from google import genai
+    from ingestion.materials_v3.providers import HTTPProvider, ProviderConfig
+
+    for key in ("GCP_PROJECT_ID", "GOOGLE_CLOUD_PROJECT"):
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("GCP_PROJECT", "synthetic-existing-project")
+    captured = {}
+
+    class Client:
+        def __init__(self, **kwargs):
+            captured.update(kwargs)
+            self.models = self
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            pass
+
+        def generate_content(self, **kwargs):
+            captured["generation"] = kwargs
+            return SimpleNamespace(
+                text="{}",
+                candidates=[],
+                model_version="synthetic-returned-model",
+                usage_metadata=SimpleNamespace(
+                    prompt_token_count=12,
+                    candidates_token_count=2,
+                    thoughts_token_count=3,
+                    cached_content_token_count=0,
+                ),
+            )
+
+    monkeypatch.setattr(genai, "Client", Client)
+    provider = HTTPProvider(ProviderConfig("gemini", model))
+    try:
+        result = provider.generate(
+            [{"content": "synthetic system"}, {"content": "synthetic input"}]
+        )
+    finally:
+        provider.client.close()
+    assert captured["project"] == "synthetic-existing-project"
+    config = captured["generation"]["config"]
+    if modern:
+        assert str(config.thinking_config.thinking_level).endswith("LOW")
+        assert config.thinking_config.thinking_budget is None and config.temperature is None
+    else:
+        assert config.thinking_config.thinking_budget == 0 and config.temperature == 0
+    assert result.reasoning_tokens == 3
+    assert result.metadata["actual_model"] == "synthetic-returned-model"
+
+
 def test_model_snapshot_rejects_missing_files_before_loading(tmp_path):
     from ingestion.materials_v3.providers import MODEL, REVISION
     from ingestion.materials_v3.runtime import model_pin, verify_model

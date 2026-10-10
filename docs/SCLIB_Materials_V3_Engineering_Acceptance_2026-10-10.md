@@ -4,7 +4,7 @@
 
 本阶段完成了可审阅的 schema、NER 代码、队列 adapter、私有数据快照和材料报告界面。真实 Qwen 生成、50 篇三模型抽取、人工 gold、源范围冻结和生产切换均未完成，因此本记录不作“模型可以胜任全库”的结论。
 
-2026-10-10用户授权切换至Qwen3.5-9B MLX 4-bit，本轮固定revision为 `8b2b98c00a6b4d291155e4890773ca8f769aee53`。旧35B pin和下文历史回执保留。新增独立9B资源配置、统一共享锁默认路径和精确development来源staging；相关85项测试及Ruff通过。9B真实tokenizer对209个完整prompt计数3,060–10,096，预留4,096输出均不超过16,384；[新回执](pilot/materials-ner-qwen3.5-9b-tokenizer.preflight.v1.json)不是模型推理。首轮错误计数的私有回执保留且已废弃；10篇开发原始输入在CPU复现，下载/真实load/推理按Mini本轮收据记录。
+2026-10-10用户授权切换至Qwen3.5-9B MLX 4-bit，本轮固定revision为 `8b2b98c00a6b4d291155e4890773ca8f769aee53`。旧35B pin和下文历史回执保留。新增独立9B资源配置、统一共享锁默认路径和精确development来源staging，并修正Gemini适配器读取既有 `GCP_PROJECT` 配置及Gemini 3 thinking参数；相关87项测试及Ruff通过。9B真实tokenizer对209个完整prompt计数3,060–10,096，预留4,096输出均不超过16,384；[新回执](pilot/materials-ner-qwen3.5-9b-tokenizer.preflight.v1.json)不是模型推理。首轮错误计数的私有回执保留且已废弃；10篇开发原始输入在CPU复现，下载/真实load/推理按Mini本轮收据记录。
 
 ## 已实现与实际验证
 
