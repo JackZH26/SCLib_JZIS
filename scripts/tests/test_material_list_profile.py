@@ -23,6 +23,25 @@ def test_missing_header_is_not_zero_server_latency():
     assert profile.parse_timing(None) == {"status": "not_emitted"}
 
 
+@pytest.mark.parametrize("parent", ("scope", "projection", "ranking_page"))
+def test_nested_elapsed_subtotals_are_not_added_to_their_parent(parent):
+    header = (f'materials_path;desc="scan", {parent};dur=34.000, '
+              'parent_execute_elapsed;dur=3.000, lifecycle_resolver_elapsed;dur=15.000, '
+              'lifecycle_execute_elapsed;dur=9.000, scope_policy_elapsed;dur=14.000, total;dur=35.000')
+    parsed = profile.parse_timing(header)
+    assert parsed["status"] == "available"
+    assert sum(parsed["stage_ms"].values()) > parsed["stage_ms"]["total"]
+
+
+@pytest.mark.parametrize("children", (
+    'lifecycle_resolver_elapsed;dur=10.000, lifecycle_execute_elapsed;dur=11.000',
+    'parent_execute_elapsed;dur=20.000, scope_policy_elapsed;dur=20.000',
+))
+def test_child_intervals_cannot_exceed_their_actual_enclosing_intervals(children):
+    header = f'materials_path;desc="scan", scope;dur=30.000, {children}, total;dur=31.000'
+    assert profile.parse_timing(header) == {"status": "invalid"}
+
+
 def test_failures_and_cache_paths_have_separate_denominators():
     attempts = [
         {"status": 200, "error": None, "elapsed_seconds": 1,

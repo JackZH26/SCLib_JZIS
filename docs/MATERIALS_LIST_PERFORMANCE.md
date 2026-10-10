@@ -41,13 +41,19 @@ transactions, details and ranking-hit page hydration retain their prior reads.
 | `projection` | Final heap ordering, selected-page full DTOs and list model. |
 | `ranking_page` | Existing-ranking page hydration, scoping and full DTOs. |
 | `serialization` | Full result JSON encoding in the cacheable wrapper. |
+| `parent_execute_elapsed` | Parent-row execute awaits, excluding result materialization. |
+| `lifecycle_resolver_elapsed` | Complete paper/direct/accepted-Work resolution on memo misses. |
+| `lifecycle_execute_elapsed` | Execute-await subtotal nested within the resolver. |
+| `scope_policy_elapsed` | Synchronous source maps, ancestry and scoped policy for a batch. |
 
-These are partial measurements, not a complete request waterfall. Initial SQL
-stream execution, batch fetch/ORM hydration, epoch reads, lock wait, final ranking
-sort/encoding, and page-HIT handling are not separate stage observations. Failed
-stages are not recorded as completed stages. Existing HTTP and dependency metrics
-remain available, but subtracting or summing these metrics cannot reliably split
-SQL and CPU time. No query, material, paper, user or formula labels are added.
+The [request-specific timing contract](MATERIAL_LIST_PERFORMANCE_2026_10_09.md)
+also defines stream/fetch, revision, lock, ranking publication and total stages.
+The child intervals overlap their enclosing `scope`, `projection` or
+`ranking_page`; lifecycle total includes lifecycle execute. Do not sum nested
+subtotals. Execute awaits include client/driver/wait time, not just database
+server time; synchronous policy elapsed is not pure CPU. Entered stages record
+in `finally` even on errors/cancellation. Shared non-list callers emit no list
+timing. No query, material, paper, user or formula labels are added.
 
 ## Validation
 

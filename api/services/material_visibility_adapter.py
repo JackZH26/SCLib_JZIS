@@ -15,6 +15,7 @@ from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.db import Material
+from services.material_list_timing import material_list_stage
 from services.material_source_scope import (
     SourceScope,
     SourceScopeError,
@@ -193,9 +194,11 @@ async def prepare_material_views(
         looked_up.update(identifiers)
         rows = []
         for start in range(0, len(identifiers), _SQL_BATCH_SIZE):
-            rows.extend((await session.execute(
-                select(Material).where(Material.id.in_(identifiers[start:start + _SQL_BATCH_SIZE])),
-            )).scalars().all())
+            with material_list_stage("parent_execute_elapsed"):
+                result = await session.execute(
+                    select(Material).where(Material.id.in_(identifiers[start:start + _SQL_BATCH_SIZE])),
+                )
+            rows.extend(result.scalars().all())
         known.update((m.id, m) for m in rows)
         frontier = {m.parent_material_id for m in rows if m.parent_material_id} - looked_up
     paper_ids = {
@@ -211,51 +214,52 @@ async def prepare_material_views(
             batch = identifiers[start:start + _SQL_BATCH_SIZE]
             statuses.update(await resolve_paper_lifecycle(session, batch))
             MATERIAL_LIFECYCLE_IDS.labels("resolved").inc(len(batch))
-    own_sources = {
-        material.id: {
-            identifier: statuses.get(identifier)
-            for r in (material.records if isinstance(material.records, list) else [])
-            if (identifier := _scope_paper_id(r)) is not None
+    with material_list_stage("scope_policy_elapsed"):
+        own_sources = {
+            material.id: {
+                identifier: statuses.get(identifier)
+                for r in (material.records if isinstance(material.records, list) else [])
+                if (identifier := _scope_paper_id(r)) is not None
+            }
+            for material in known.values()
         }
-        for material in known.values()
-    }
-    # Preserve exactly the legacy nonempty-string source inventory for v1's
-    # malformed-metadata checks, without sending unrepresentable keys to SQL.
-    # Dropping an overlong key entirely would turn a hold into ordinary unknown.
-    fallback_sources = {
-        material.id: {
-            record["paper_id"]: statuses.get(record["paper_id"])
-            for record in (material.records if isinstance(material.records, list) else [])
-            if isinstance(record, dict) and isinstance(record.get("paper_id"), str) and record["paper_id"]
+        # Preserve exactly the legacy nonempty-string source inventory for v1's
+        # malformed-metadata checks, without sending unrepresentable keys to SQL.
+        # Dropping an overlong key entirely would turn a hold into ordinary unknown.
+        fallback_sources = {
+            material.id: {
+                record["paper_id"]: statuses.get(record["paper_id"])
+                for record in (material.records if isinstance(material.records, list) else [])
+                if isinstance(record, dict) and isinstance(record.get("paper_id"), str) and record["paper_id"]
+            }
+            for material in known.values()
         }
-        for material in known.values()
-    }
-    resolved, scopes = {}, {}
+        resolved, scopes = {}, {}
 
-    def assess(mid, *, parent=None, ancestry_error=None):
-        material = known[mid]
-        resolved[mid], scopes[mid] = scoped_material_visibility(
-            material, source_statuses=own_sources[mid],
-            parent_visibility=parent, ancestry_error=ancestry_error,
-            fallback_source_statuses=fallback_sources[mid],
-        )
+        def assess(mid, *, parent=None, ancestry_error=None):
+            material = known[mid]
+            resolved[mid], scopes[mid] = scoped_material_visibility(
+                material, source_statuses=own_sources[mid],
+                parent_visibility=parent, ancestry_error=ancestry_error,
+                fallback_source_statuses=fallback_sources[mid],
+            )
 
-    def resolve(mid):
-        if mid in resolved:
+        def resolve(mid):
+            if mid in resolved:
+                return resolved[mid]
+            chain, error = _ancestry_chain(mid, known)
+            if error is not None:
+                # Do not recursively build/cross-cache a partial cycle: that would
+                # make revisions depend on which sibling was requested first.
+                assess(mid, ancestry_error=error)
+            else:
+                for identity in reversed(chain):
+                    if identity not in resolved:
+                        parent_id = known[identity].parent_material_id
+                        assess(identity, parent=resolved.get(parent_id) if parent_id else None)
             return resolved[mid]
-        chain, error = _ancestry_chain(mid, known)
-        if error is not None:
-            # Do not recursively build/cross-cache a partial cycle: that would
-            # make revisions depend on which sibling was requested first.
-            assess(mid, ancestry_error=error)
-        else:
-            for identity in reversed(chain):
-                if identity not in resolved:
-                    parent_id = known[identity].parent_material_id
-                    assess(identity, parent=resolved.get(parent_id) if parent_id else None)
-        return resolved[mid]
 
-    return [MaterialReadContext(m, resolve(m.id), own_sources[m.id], scopes[m.id]) for m in originals]
+        return [MaterialReadContext(m, resolve(m.id), own_sources[m.id], scopes[m.id]) for m in originals]
 
 
 def _ancestry_chain(material_id, known):

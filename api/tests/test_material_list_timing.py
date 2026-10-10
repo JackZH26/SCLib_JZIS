@@ -30,8 +30,14 @@ def parsed_header(response):
         assert name in timing.STAGES and name not in stages
         stages[name] = float(value)
     assert "total" in stages
-    # Stage totals are disjoint except for `total`; allow rounding to 0.001 ms.
-    assert sum(value for name, value in stages.items() if name != "total") <= stages["total"] + .02
+    # Only the original top-level stages are disjoint; children overlap.
+    assert sum(stages.get(name, 0) for name in timing.TOP_LEVEL_STAGES
+               if name != "total") <= stages["total"] + .02
+    child_total = sum(stages.get(name, 0) for name in timing.SCOPE_CHILD_STAGES
+                      if name != "lifecycle_execute_elapsed")
+    assert child_total <= sum(stages.get(name, 0) for name in
+                              ("scope", "projection", "ranking_page")) + .02
+    assert stages.get("lifecycle_execute_elapsed", 0) <= stages.get("lifecycle_resolver_elapsed", 0) + .02
     return path, stages
 
 
@@ -77,6 +83,7 @@ async def test_real_scan_page_hit_ranking_and_lifecycle_invalidation(client, inv
     assert path == "scan" and cold.headers["x-materials-cache"] == "MISS"
     assert {"revision", "lock_wait", "scan_fetch", "scope", "selection", "scan_close",
             "projection", "ranking_publish", "serialization"} <= stages.keys()
+    assert {"lifecycle_resolver_elapsed", "lifecycle_execute_elapsed", "scope_policy_elapsed"} <= stages.keys()
     warm = await client.get("/v1/materials", params=params)
     assert warm.content == cold.content
     assert parsed_header(warm)[0] == "page_hit"
@@ -87,6 +94,7 @@ async def test_real_scan_page_hit_ranking_and_lifecycle_invalidation(client, inv
     assert adjacent.status_code == 200 and adjacent.json()["total"] == 4
     path, stages = parsed_header(adjacent)
     assert path == "ranking" and "ranking_page" in stages and "scan_fetch" not in stages
+    assert "scope" not in stages and "scope_policy_elapsed" in stages
     assert adjacent.headers["x-materials-cache"] == "MISS"
     assert set(row["id"] for row in adjacent.json()["results"]).isdisjoint(
         row["id"] for row in cold.json()["results"])

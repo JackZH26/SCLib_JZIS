@@ -46,7 +46,7 @@ MATERIAL_LIFECYCLE_IDS = Counter(
 )
 MATERIAL_LIST_STAGE_DURATION = Histogram(
     "sclib_material_list_stage_duration_seconds",
-    "Material list stage wall time; total contains other stages, batches observed separately.",
+    "Material list elapsed wall time; nested stages overlap, batches observed separately.",
     ("stage",),
     buckets=(0.001, 0.005, 0.01, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10, 30),
 )
