@@ -843,7 +843,7 @@ class SecurityWorkflowTests(unittest.TestCase):
         for image, tool_image in (
             (
                 "prom/prometheus:v3.13.1-distroless",
-                "prom/prometheus:v3.13.1",
+                "quay.io/prometheus/prometheus:v3.13.1@sha256:3c42b892cf723fa54d2f262c37a0e1f80aa8c8ddb1da7b9b0df9455a35a7f893",
             ),
             (
                 "quay.io/prometheus/alertmanager:v0.33.1",
