@@ -1,0 +1,91 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "sclib-ner-job/1",
+      "default": "sclib-ner-job/1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "paper_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f]+$",
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "work_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f]+$",
+      "title": "Work Id",
+      "type": "string"
+    },
+    "source_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Source Sha256",
+      "type": "string"
+    },
+    "document_manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Document Manifest Sha256",
+      "type": "string"
+    },
+    "implementation_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Implementation Sha256",
+      "type": "string"
+    },
+    "schema_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Schema Sha256",
+      "type": "string"
+    },
+    "provider_config_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Provider Config Sha256",
+      "type": "string"
+    },
+    "budget_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Budget Sha256",
+      "type": "string"
+    },
+    "model_manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Model Manifest Sha256",
+      "type": "string"
+    },
+    "runtime_lock_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Runtime Lock Sha256",
+      "type": "string"
+    },
+    "transfer_allowed": {
+      "const": true,
+      "title": "Transfer Allowed",
+      "type": "boolean"
+    },
+    "local_inference_allowed": {
+      "const": true,
+      "title": "Local Inference Allowed",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "paper_id",
+    "work_id",
+    "source_sha256",
+    "document_manifest_sha256",
+    "implementation_sha256",
+    "schema_sha256",
+    "provider_config_sha256",
+    "budget_sha256",
+    "model_manifest_sha256",
+    "runtime_lock_sha256",
+    "transfer_allowed",
+    "local_inference_allowed"
+  ],
+  "title": "NERJob",
+  "type": "object"
+}

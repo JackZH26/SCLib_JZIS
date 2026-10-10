@@ -1,0 +1,10 @@
+{
+  "provider": "local_mlx",
+  "model": "mlx-community/Qwen3.5-9B-4bit",
+  "revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+  "context_tokens": 16384,
+  "max_output_tokens": 4096,
+  "timeout_seconds": 240,
+  "reasoning_effort": "low",
+  "endpoint": null
+}

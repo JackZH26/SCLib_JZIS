@@ -56,6 +56,7 @@ test("private and authentication routes instruct crawlers not to index", async (
   for (const path of [
     "/auth/:path*",
     "/dashboard/:path*",
+    "/materials/preview/:path*",
     "/forgot-password",
     "/login",
     "/register",

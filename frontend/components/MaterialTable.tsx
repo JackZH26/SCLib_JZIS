@@ -19,6 +19,7 @@ import { pressureLabel } from "@/lib/pressure-semantics";
 import { ScientificMatches } from "@/components/ScientificMatches";
 import { materialRowTc, materialTcCriterion, materialTcQuantityKind, type MaterialsTcDisplay } from "@/lib/materials-browser";
 import { materialStudyReading } from "@/lib/material-study-reading";
+import { MaterialReports } from "@/components/MaterialReports";
 
 const OPTIONAL_COLUMNS = [
   { key: "tc_ambient", label: "Ambient Tc (K)" }, { key: "pairing_symmetry", label: "Pairing" },
@@ -147,6 +148,7 @@ export function MaterialTable({ rows, resultFiltersActive = false }: { rows: Mat
           </section>
           {resultFiltersActive && <details><summary>Matching result references</summary><ScientificMatches results={inspection.matching_results} scope="material" /></details>}
           <details><summary>Other catalogue selections and result alternatives</summary><p className="materials-inspection-note">Each property has its own source and conditions. These selections are not a joint observation, and unavailable values do not establish absence.</p><div className="materials-inspection-properties"><PropertyEvidenceValue evidence={inspection.property_evidence} field="tc_max" /><PropertyEvidenceValue evidence={inspection.property_evidence} field="tc_ambient" /></div></details>
+          <MaterialReports key={inspection.id} materialId={inspection.id} />
           <details><summary>Reported classifications</summary><MaterialSemanticsPanel semantics={inspection.material_semantics} /></details>
           <details><summary>Structure and phase evidence</summary><StructureEvidencePanel evidence={inspection.structure_evidence} /></details>
           <details><summary>Catalogue visibility and review policy</summary><MaterialVisibilityNotice visibility={inspection.visibility} /><ScientificAnomalyNotice review={inspection.anomaly_review} /></details>

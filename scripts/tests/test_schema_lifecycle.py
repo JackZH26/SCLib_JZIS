@@ -2,15 +2,62 @@
 from __future__ import annotations
 
 import ast
+import re
 import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
 class SchemaLifecycleBoundaryTests(unittest.TestCase):
+    def assert_earlier_snapshot_retained(self, source, function_name):
+        """Exercise the snapshot against retained rows and later empty tables.
+
+        Whitespace or adding an independently checked empty migration must not
+        invalidate this guard; omitting any earlier relation must invalidate it.
+        The owned PostgreSQL rehearsal separately verifies the empty-table gate.
+        """
+        function = next(n for n in ast.parse(source).body
+                        if isinstance(n, ast.FunctionDef) and n.name == function_name)
+        snapshot = next(n for n in function.body
+                        if isinstance(n, ast.FunctionDef) and n.name == "snapshot")
+        retained = {
+            name: [{"id": name, "retained_text": "Original Unicode β and raw JSON bytes"}]
+            for name in ("papers", "materials", "material_states", "material_claims",
+                         "discovery_projection_packages", "earlier_unregistered_relation")
+        }
+        later = ("ner_source_captures", "ner_candidates")
+        queried = []
+
+        def execute(query):
+            match = re.match(r"\s*SELECT\s+to_jsonb\([^)]+\)\s+FROM\s+public\.([a-z_]+)\b",
+                             query, re.IGNORECASE)
+            self.assertIsNotNone(match, "Snapshot must retain complete rows in a read query")
+            name = match.group(1)
+            self.assertIn(name, retained, "Snapshot must read only retained relations")
+            queried.append(name)
+            return SimpleNamespace(scalars=lambda: SimpleNamespace(all=lambda: retained[name]))
+
+        def table_names(*, schema):
+            self.assertEqual(schema, "public")
+            return ["alembic_version", *retained, *later]
+
+        environment = {n.id: () for n in ast.walk(snapshot)
+                       if isinstance(n, ast.Name) and n.id.isupper()}
+        environment.update(
+            _MATERIALS_V3_TABLES=later,
+            text=lambda sql: sql,
+            inspect=lambda connection: SimpleNamespace(get_table_names=table_names),
+        )
+        module = ast.Module(body=[snapshot], type_ignores=[])
+        exec(compile(module, "retained-migration-snapshot", "exec"), environment)
+        actual = environment["snapshot"](SimpleNamespace(execute=execute))
+        self.assertEqual(actual, retained)
+        self.assertEqual(set(queried), set(retained))
+
     def test_condition_batch_roundtrip_is_independent_empty_and_preserves_earlier_objects(self):
         migration = (ROOT / "api/alembic/versions/0088_discovery_condition_batches.py").read_text()
         upgrade, downgrade = migration.split("def upgrade()", 1)[1].split("def downgrade()", 1)
@@ -256,7 +303,7 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
                        "_assert_empty_ml_use_roles(connection)", "FUNCTION_SIGNATURES", "to_regprocedure"):
             self.assertIn(marker, block)
         self.assertEqual(block.count("assert snapshot(connection) == before"), 2)
-        self.assertIn('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES, _RESULT_PASSAGE_TABLE, *_LEGACY_CORPUS_TABLES, *_SOURCE_PROPERTY_TABLES, *_DISCOVERY_DESIGN_TABLES, *_DISCOVERY_CONDITION_BATCH_TABLES, *_DISCOVERY_FEEDBACK_TABLES, *_DISCOVERY_CALCULATION_TABLES}', block)
+        self.assert_earlier_snapshot_retained(source, "_ml_use_roles_empty_roundtrip")
         self.assertIn('assert "exact revision" in str(exc)', block)
         for connection in block.split("with engine.connect() as connection:")[1:]:
             self.assertLess(connection.index("check_connection_schema(connection)"),
@@ -314,7 +361,8 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
     def test_main_barrier_roundtrip_retains_every_v1_byte_and_the_exact_frozen_function(self):
         source = (ROOT / "scripts/run_test_migrations.py").read_text()
         body = source.split("def _discovery_main_barrier_roundtrip", 1)[1].split("async def _discovery_projection_replays_on_migrated_schema", 1)[0]
-        for marker in ('if name not in {"alembic_version", _ML_USE_ROLE_TABLE, *_ML_SUBMISSION_TABLES, _ML_RIGHTS_TABLE, *_ML_RUN_TABLES, *_ML_PILOT_TABLES, _RESULT_PASSAGE_TABLE, *_LEGACY_CORPUS_TABLES, *_SOURCE_PROPERTY_TABLES, *_DISCOVERY_DESIGN_TABLES, *_DISCOVERY_CONDITION_BATCH_TABLES, *_DISCOVERY_FEEDBACK_TABLES, *_DISCOVERY_CALCULATION_TABLES}', "_assert_empty_discovery_projections(connection)",
+        self.assert_earlier_snapshot_retained(source, "_discovery_main_barrier_roundtrip")
+        for marker in ("_assert_empty_discovery_projections(connection)",
             'all(before[name] for name in _DISCOVERY_PROJECTION_TABLES)',
             'command.downgrade(config, "0069_discovery_projection")', 'assert "exact revision" in str(exc)',
             'frozen_insert_statement().split("AS $$", 1)', 'SELECT prosrc FROM pg_proc',

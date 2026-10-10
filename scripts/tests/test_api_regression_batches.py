@@ -48,6 +48,8 @@ def test_real_partition_covers_every_module_once_and_excludes_capacity():
     groups = coordinator.partition(selected, 8)
     assert len(selected) >= 223 and len(groups) == 8
     assert sorted(path for group in groups for path in group) == selected
+    restore = "tests/test_research_restore_worker.py"
+    assert next(group for group in groups if restore in group) == [restore]
     assert all(
         path.startswith("tests/") and "tests_capacity" not in path for path in selected
     )

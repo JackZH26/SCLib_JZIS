@@ -7,26 +7,29 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 from uuid import uuid4
+
 import pytest_asyncio
 import sqlalchemy as sa
+
 from models.db import get_session_factory
-from tests.test_retained_legacy import input_window
+from services import index_generations, index_vector_adapter, schema_lifecycle
 from tests.test_embedding_receipts import completion
 from tests.test_index_vector_adapter import fixture_generation
-from services import index_generations, index_vector_adapter, schema_lifecycle
+from tests.test_retained_legacy import input_window
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
-from legacy_index_pack import Pack, specification, canonical
-from embed_legacy_index_pack import file_sha
-from repair_legacy_index_pack import private_db, VERSION
-from publish_legacy_corpus import Inputs, run
+from embed_legacy_index_pack import file_sha  # noqa: E402
+from legacy_index_pack import Pack, canonical, specification  # noqa: E402
+from publish_legacy_corpus import Inputs, run  # noqa: E402
+from repair_legacy_index_pack import VERSION, private_db  # noqa: E402
 
 
 @pytest_asyncio.fixture(loop_scope="function")
 async def operator_transactions(monkeypatch):
-    from models import db as models
     from sqlalchemy.ext.asyncio import async_sessionmaker
+
+    from models import db as models
 
     engine = models.get_engine()
     async with engine.connect() as connection:
@@ -48,11 +51,42 @@ async def test_resumable_operator_preserves_originals_and_activates_only_after_f
 ):
     tmp_path.chmod(0o700)
     rows = []
+    retained_tables = (
+        "legacy_index_papers",
+        "legacy_index_sources",
+        "legacy_index_windows",
+        "rag_evidence_revisions",
+        "embedding_completion_receipts",
+        "index_generations",
+    )
     async with get_session_factory()() as db:
+        baseline = {
+            table: await db.scalar(sa.text("SELECT count(*) FROM " + table))
+            for table in ("chunks", *retained_tables)
+        }
+        original_rows = await db.scalar(
+            sa.text(
+                "SELECT coalesce(jsonb_agg(to_jsonb(c) ORDER BY c.id), '[]'::jsonb) FROM chunks c"
+            )
+        )
         for _ in range(3):
             chunk, member, args = await input_window(db)
             rows.append((chunk, json.loads(args["paper_raw"])))
         await db.commit()
+
+    async def originals_unchanged(db):
+        # Session fixtures can retain other synthetic rows. Compare this
+        # operator against its baseline rather than assuming an empty DB.
+        assert await db.scalar(sa.text("SELECT count(*) FROM chunks")) == baseline["chunks"] + 3
+        retained = await db.scalar(
+            sa.text(
+                "SELECT coalesce(jsonb_agg(to_jsonb(c) ORDER BY c.id), '[]'::jsonb) FROM chunks c "
+                "WHERE NOT (c.id::text = ANY(CAST(:created_ids AS text[])))"
+            ),
+            {"created_ids": [str(chunk["id"]) for chunk, _ in rows]},
+        )
+        assert retained == original_rows
+
     pack = Pack(tmp_path / "pack.sqlite", specification({"synthetic": True}))
     for n, (chunk, paper) in enumerate(sorted(rows, key=lambda row: row[0]["id"]), 1):
         pack.append(n, chunk, paper)
@@ -63,7 +97,7 @@ async def test_resumable_operator_preserves_originals_and_activates_only_after_f
     data.executescript(
         "CREATE TABLE completions(seq INTEGER PRIMARY KEY,member_id TEXT,partition_id INTEGER,vector BLOB,receipt TEXT); CREATE TABLE metadata(key TEXT PRIMARY KEY,body TEXT);"
     )
-    for seq, part, key, body in pack.db.execute(
+    for seq, part, key, _body in pack.db.execute(
         "SELECT seq,partition_id,id,body FROM members ORDER BY seq"
     ):
         source = pack.db.execute(
@@ -121,21 +155,14 @@ async def test_resumable_operator_preserves_originals_and_activates_only_after_f
     for _ in range(3):
         await run(args)
     async with get_session_factory()() as db:
-        assert await db.scalar(sa.text("SELECT count(*) FROM chunks")) == 3
-        for table in (
-            "legacy_index_papers",
-            "legacy_index_sources",
-            "legacy_index_windows",
-            "rag_evidence_revisions",
-            "embedding_completion_receipts",
-            "index_generations",
-        ):
-            assert await db.scalar(sa.text("SELECT count(*) FROM " + table)) == 0
+        await originals_unchanged(db)
+        for table in retained_tables:
+            assert await db.scalar(sa.text("SELECT count(*) FROM " + table)) == baseline[table]
     args.command = "stage"
     for _ in range(3):
         await run(args)
     async with get_session_factory()() as db:
-        assert await db.scalar(sa.text("SELECT count(*) FROM chunks")) == 3
+        await originals_unchanged(db)
         assert await index_generations.load_active_generation(db) is None
     index_vector_adapter.register_disposable(target)
     args.command = "publish"
@@ -157,7 +184,7 @@ async def test_resumable_operator_preserves_originals_and_activates_only_after_f
         assert (await index_generations.load_active_generation(db))[
             "generation_id"
         ] == args.generation_id
-        assert await db.scalar(sa.text("SELECT count(*) FROM chunks")) == 3
+        await originals_unchanged(db)
     from services import rag, retrieval_currentness
 
     # This fixture keeps all operator commits in one rollback-only outer

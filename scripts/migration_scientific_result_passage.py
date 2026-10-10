@@ -6,6 +6,7 @@ from migration_discovery_designs import TABLES as DISCOVERY_DESIGN_TABLES
 from migration_discovery_condition_batches import TABLES as DISCOVERY_CONDITION_BATCH_TABLES
 from migration_discovery_feedback import TABLES as DISCOVERY_FEEDBACK_TABLES
 from migration_discovery_calculations import TABLES as CALCULATION_TABLES
+from migration_materials_v3 import table_names as materials_v3_tables, assert_empty as assert_empty_materials_v3
 from migration_legacy_corpus import TABLES as LEGACY_CORPUS_TABLES
 from migration_source_properties import TABLES as SOURCE_PROPERTY_TABLES
 from migration_source_properties import assert_empty as assert_empty_source_properties
@@ -20,7 +21,7 @@ def snapshot(connection, *, old_only=True):
         name: connection.execute(text(
             f'SELECT to_jsonb(t) FROM public."{name}" t ORDER BY to_jsonb(t)::text')).scalars().all()
         for name in inspect(connection).get_table_names(schema="public")
-        if not old_only or name not in {TABLE, "alembic_version", *LEGACY_CORPUS_TABLES, *SOURCE_PROPERTY_TABLES, *DISCOVERY_DESIGN_TABLES, *DISCOVERY_CONDITION_BATCH_TABLES, *DISCOVERY_FEEDBACK_TABLES, *CALCULATION_TABLES}
+        if not old_only or name not in {TABLE, "alembic_version", *LEGACY_CORPUS_TABLES, *SOURCE_PROPERTY_TABLES, *DISCOVERY_DESIGN_TABLES, *DISCOVERY_CONDITION_BATCH_TABLES, *DISCOVERY_FEEDBACK_TABLES, *CALCULATION_TABLES, *materials_v3_tables()}
     }
 
 
@@ -46,6 +47,7 @@ def empty_roundtrip(capability, engine, config):
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
         assert_empty_source_properties(connection)
+        assert_empty_materials_v3(connection)
         assert connection.execute(text(f"SELECT count(*) FROM {TABLE}")).scalar_one() == 0
         before, definitions = snapshot(connection), objects(connection)
         assert all(definitions[0]) and len(definitions[1]) == 3
@@ -67,6 +69,7 @@ def empty_roundtrip(capability, engine, config):
         assert check_connection_schema(connection)["status"] == "compatible"
         verify_postgres_identity(connection, capability)
         assert_empty_source_properties(connection)
+        assert_empty_materials_v3(connection)
         assert snapshot(connection) == before
         assert objects(connection) == definitions
 

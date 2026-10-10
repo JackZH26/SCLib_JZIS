@@ -1,6 +1,7 @@
 """0079–0081 owned migration round trips and independent history guards."""
 
 from test_safety import validate_test_environment, verify_postgres_identity
+from migration_materials_v3 import table_names as materials_v3_tables, assert_empty as assert_empty_materials_v3
 from migration_discovery_designs import TABLES as DISCOVERY_DESIGN_TABLES
 from migration_discovery_condition_batches import TABLES as DISCOVERY_CONDITION_BATCH_TABLES
 from migration_discovery_feedback import TABLES as DISCOVERY_FEEDBACK_TABLES
@@ -34,7 +35,7 @@ def snapshot(connection, old_only=False):
         .scalars()
         .all()
         for name in inspect(connection).get_table_names(schema="public")
-        if name != "alembic_version" and (not old_only or name not in {*TABLES, *SOURCE_PROPERTY_TABLES, *DISCOVERY_DESIGN_TABLES, *DISCOVERY_CONDITION_BATCH_TABLES, *DISCOVERY_FEEDBACK_TABLES, *CALCULATION_TABLES})
+        if name != "alembic_version" and (not old_only or name not in {*TABLES, *SOURCE_PROPERTY_TABLES, *DISCOVERY_DESIGN_TABLES, *DISCOVERY_CONDITION_BATCH_TABLES, *DISCOVERY_FEEDBACK_TABLES, *CALCULATION_TABLES, *materials_v3_tables()})
     }
 
 
@@ -58,6 +59,7 @@ def empty_roundtrip(capability, engine, config):
         assert check_connection_schema(c)["status"] == "compatible"
         verify_postgres_identity(c, capability)
         assert_empty_source_properties(c)
+        assert_empty_materials_v3(c)
         assert all(
             c.execute(text(f"SELECT count(*) FROM {name}")).scalar_one() == 0
             for name in TABLES if name != "index_generation_search"
@@ -79,6 +81,7 @@ def empty_roundtrip(capability, engine, config):
         assert check_connection_schema(c)["status"] == "compatible"
         verify_postgres_identity(c, capability)
         assert_empty_source_properties(c)
+        assert_empty_materials_v3(c)
         assert snapshot(c, True) == before and objects(c) == definitions
         assert (
             c.execute(

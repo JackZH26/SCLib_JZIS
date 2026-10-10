@@ -10,8 +10,8 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 Identifier = Annotated[str, Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,79}$")]
 Sha256 = Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
-JobKind = Literal["dummy", "structure_check", "qe_initialize", "qe_scf", "qe_relax", "qe_ph"]
-JOB_KINDS = {"dummy", "structure_check", "qe_initialize", "qe_scf", "qe_relax", "qe_ph"}
+JobKind = Literal["dummy", "structure_check", "qe_initialize", "qe_scf", "qe_relax", "qe_ph", "ner_qwen_mlx"]
+JOB_KINDS = {"dummy", "structure_check", "qe_initialize", "qe_scf", "qe_relax", "qe_ph", "ner_qwen_mlx"}
 ACTIVE_STATES = {"leased", "preparing", "running", "uploading"}
 
 
@@ -79,7 +79,7 @@ class JobSpec(Closed):
 class NodeRegistration(Closed):
     # Identity is supplied by authenticated certificate mapping, never this body.
     runtime_id: Identifier
-    capabilities: Annotated[list[JobKind], Field(min_length=1, max_length=6)]
+    capabilities: Annotated[list[JobKind], Field(min_length=1, max_length=7)]
     platform: Literal["dummy_test", "linux_x86_64", "macos_arm64"]
 
     @model_validator(mode="after")
