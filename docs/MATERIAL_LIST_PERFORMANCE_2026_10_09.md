@@ -59,19 +59,32 @@ their existing 422/503 responses without successful-response timings.
 | `ranking_publish` | Identifier sorting, encoding and ranking-cache publication |
 | `serialization` | Encoding the complete response DTO to JSON bytes |
 | `total` | Decorated route execution, including its cache, revision and lock work |
+| `parent_execute_elapsed` | Parent-row `execute` awaits; result materialization remains outside this subtotal |
+| `lifecycle_resolver_elapsed` | Complete paper-lifecycle resolver calls, including validation, accepted-Work resolution and result materialization; memo hits do not call the resolver |
+| `lifecycle_execute_elapsed` | Nested paper, accepted-map and Work `execute` awaits; result materialization remains outside this subtotal |
+| `scope_policy_elapsed` | Synchronous source maps, ancestry resolution and scoped visibility/anomaly policy for one batch |
 
 `total` **contains** the other stages; do not add it to their durations. It
 excludes dependency setup before route entry, outer middleware/compression,
 reverse-proxy work and network transfer. Small unclassified route/measurement
 overhead remains within `total`. `scope` includes its SQL; it is not pure CPU
-time. The stages do not establish a query plan or identify one slow SQL statement.
+time. The four child intervals occur inside `scope`, `projection` or
+`ranking_page`, depending on the read path. `lifecycle_resolver_elapsed` also
+contains `lifecycle_execute_elapsed`; these overlapping subtotals must not be
+added to their enclosing stages or to `total`. Execute-await elapsed includes
+client, pool, driver and database waiting; it is not PostgreSQL server execution
+time. Synchronous policy elapsed is wall time, not a pure CPU measurement.
+The stages do not establish a query plan or identify one slow SQL statement.
 
 The existing `sclib_material_list_stage_duration_seconds` histogram keeps its
 stage label and gains these fixed stages. Batched stages observe each batch
 separately in Prometheus; the response header sums them per request. `total`
 observes the decorated execution, including exceptions, but validation errors
 raised before route entry are outside its scope. Shared revision helper calls
-from detail/enrichment routes do not enter this list metric. No SQL text,
+from detail/enrichment routes do not enter this list metric. Shared resolver and
+adapter calls likewise stay silent without an active list collector. Entered
+stages record elapsed in `finally`, including errors and cancellation, while
+the request collector still resets on every exit. No SQL text,
 filter value, source ID, user identity or credential is added to either label.
 
 ## Repeatable capture and interpretation
@@ -111,6 +124,13 @@ Eleven offline collector cases reject malformed/duplicate/unsafe timing labels,
 keep missing headers unavailable, preserve failure denominators and reject
 changed versions. Existing ordering, formula lookup and lifecycle-scope tests
 are included in focused regression.
+
+Child-phase tests use the same guarded disposable PostgreSQL/Redis runner.
+Controlled clocks and async scheduling verify nested non-additive totals,
+execute-only boundaries, unchanged complete views/raw records, overlapping
+request isolation, shared-call silence and exact exception/cancellation
+propagation. The offline header parser retains its top-level arithmetic check
+and separately validates child containment, including ranking-page reads.
 
 Complete owned-service local regression and exact-revision Linux CI remain
 release gates. Deployment observation, a genuine instrumented scan, frozen SLOs

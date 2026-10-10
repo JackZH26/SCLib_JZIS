@@ -18,8 +18,11 @@ except ModuleNotFoundError:  # Direct execution from scripts/.
 
 REQUESTS = {**public.REQUESTS,
             "source_count_min2": "/materials?sort=total_papers&min_papers=2&limit=25&offset=0"}
-STAGES = frozenset({"revision", "lock_wait", "scan_fetch", "scope", "selection", "scan_close",
-                    "projection", "ranking_page", "ranking_publish", "serialization", "total"})
+TOP_LEVEL_STAGES = frozenset({"revision", "lock_wait", "scan_fetch", "scope", "selection", "scan_close",
+                             "projection", "ranking_page", "ranking_publish", "serialization", "total"})
+SCOPE_CHILD_STAGES = frozenset({"parent_execute_elapsed", "lifecycle_resolver_elapsed",
+                              "lifecycle_execute_elapsed", "scope_policy_elapsed"})
+STAGES = TOP_LEVEL_STAGES | SCOPE_CHILD_STAGES
 PATHS = frozenset({"uncached", "page_hit", "waited_hit", "ranking", "scan"})
 
 
@@ -38,7 +41,13 @@ def parse_timing(header):
         if match is None or match[1] not in STAGES or match[1] in values:
             return {"status": "invalid"}
         values[match[1]] = float(match[2])
-    if "total" not in values or sum(v for k, v in values.items() if k != "total") > values["total"] + .02:
+    if "total" not in values or sum(values.get(k, 0) for k in TOP_LEVEL_STAGES
+                                   if k != "total") > values["total"] + .02:
+        return {"status": "invalid"}
+    if sum(values.get(k, 0) for k in SCOPE_CHILD_STAGES if k != "lifecycle_execute_elapsed") > sum(
+            values.get(k, 0) for k in ("scope", "projection", "ranking_page")) + .02:
+        return {"status": "invalid"}
+    if values.get("lifecycle_execute_elapsed", 0) > values.get("lifecycle_resolver_elapsed", 0) + .02:
         return {"status": "invalid"}
     return {"status": "available", "path": first[1], "stage_ms": values}
 
@@ -74,7 +83,7 @@ def collect(samples=3):
               "scientific_acceptance": False, "slo_acceptance": None,
               "database_transaction_snapshot": False,
               "version_before": before, "version_requests": [before_meta], "profiles": {},
-              "measurement_scope": "Sequential urllib GETs include TLS/transfer/decode; server total covers decorated route only. No SQL/root-cause or cold-database claim."}
+              "measurement_scope": "Sequential urllib GETs include TLS/transfer/decode; server total covers decorated route only. Nested elapsed stages overlap; execute includes client/wait time, policy is not pure CPU. No SQL/root-cause or cold-database claim."}
     for name, path in REQUESTS.items():
         attempts = []
         for _ in range(samples):

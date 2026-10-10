@@ -18,6 +18,7 @@ import sqlalchemy as sa
 
 from models.db import Base
 from models.source_lifecycle_v1 import POLICY_VERSION
+from services.material_list_timing import material_list_stage
 from services.research_access import ResearchAccessDenied, active_grant
 from services.research_release_manifest import canonical, digest
 from services.source_lifecycle_status import (
@@ -98,7 +99,9 @@ async def _resolve(db, identifiers, kind):
         selected = identifiers[offset:offset + BATCH_SIZE]
         if kind == "work":
             selected = [_uuid(value) for value in selected]
-        rows = (await db.execute(statement, {"ids": selected, "kind": kind})).mappings().all()
+        with material_list_stage("lifecycle_execute_elapsed"):
+            executed = await db.execute(statement, {"ids": selected, "kind": kind})
+        rows = executed.mappings().all()
         for row in rows:
             if row["valid"] is not True:
                 raise SourceLifecycleError("Source lifecycle head no longer matches the catalogue")
@@ -118,26 +121,29 @@ async def resolve_paper_lifecycle(db, paper_ids):
     is conservative negative admission, not scientific equivalence of claims.
     Review claim binding itself always requires the claim's explicit FK.
     """
-    identifiers = _identifiers(paper_ids, "paper")
-    result = await _resolve(db, identifiers, "paper")
-    relation = Base.metadata.tables["paper_work_map"]
-    for offset in range(0, len(identifiers), BATCH_SIZE):
-        rows = (await db.execute(sa.select(relation.c.paper_id, relation.c.work_id).where(
-            relation.c.paper_id.in_(identifiers[offset:offset + BATCH_SIZE]),
-            relation.c.review_status == "accepted"))).mappings().all()
-        if not rows:
-            continue
-        works = await resolve_work_lifecycle(db, {str(row["work_id"]) for row in rows})
-        for row in rows:
-            work_revision = lifecycle_revision(works.get(str(row["work_id"])))
-            if work_revision is None:
+    with material_list_stage("lifecycle_resolver_elapsed"):
+        identifiers = _identifiers(paper_ids, "paper")
+        result = await _resolve(db, identifiers, "paper")
+        relation = Base.metadata.tables["paper_work_map"]
+        for offset in range(0, len(identifiers), BATCH_SIZE):
+            with material_list_stage("lifecycle_execute_elapsed"):
+                executed = await db.execute(sa.select(relation.c.paper_id, relation.c.work_id).where(
+                    relation.c.paper_id.in_(identifiers[offset:offset + BATCH_SIZE]),
+                    relation.c.review_status == "accepted"))
+            rows = executed.mappings().all()
+            if not rows:
                 continue
-            previous = result[row["paper_id"]]
-            direct_revision = lifecycle_revision(previous)
-            raw_status = previous["status"] if isinstance(previous, dict) else previous
-            revision = combined_lifecycle_revision(direct_revision, work_revision)
-            result[row["paper_id"]] = overlay_source_lifecycle(raw_status, revision)
-    return result
+            works = await resolve_work_lifecycle(db, {str(row["work_id"]) for row in rows})
+            for row in rows:
+                work_revision = lifecycle_revision(works.get(str(row["work_id"])))
+                if work_revision is None:
+                    continue
+                previous = result[row["paper_id"]]
+                direct_revision = lifecycle_revision(previous)
+                raw_status = previous["status"] if isinstance(previous, dict) else previous
+                revision = combined_lifecycle_revision(direct_revision, work_revision)
+                result[row["paper_id"]] = overlay_source_lifecycle(raw_status, revision)
+        return result
 
 
 async def _event(db, identifier):

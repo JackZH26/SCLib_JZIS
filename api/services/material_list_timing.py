@@ -9,12 +9,19 @@ from time import perf_counter
 
 from services.metrics import MATERIAL_LIST_STAGE_DURATION
 
-# Durations are aggregated across all batches in one request. `total` contains
-# the other stages; it must not be added to them. No SQL, query or source IDs.
-STAGES = (
+# Durations are aggregated across all batches in one request. Children overlap
+# their enclosing scope/projection/ranking_page stages, and resolver includes
+# execute. These elapsed intervals are not additive or CPU/DB-server timings.
+# No SQL, query or source IDs are labels.
+TOP_LEVEL_STAGES = (
     "revision", "lock_wait", "scan_fetch", "scope", "selection", "scan_close",
     "projection", "ranking_page", "ranking_publish", "serialization", "total",
 )
+SCOPE_CHILD_STAGES = (
+    "parent_execute_elapsed", "lifecycle_resolver_elapsed",
+    "lifecycle_execute_elapsed", "scope_policy_elapsed",
+)
+STAGES = TOP_LEVEL_STAGES + SCOPE_CHILD_STAGES
 PATHS = frozenset({"uncached", "page_hit", "waited_hit", "ranking", "scan"})
 
 
