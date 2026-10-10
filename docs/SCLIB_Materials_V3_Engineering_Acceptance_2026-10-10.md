@@ -4,7 +4,11 @@
 
 本阶段完成了可审阅的 schema、NER 代码、队列 adapter、私有数据快照和材料报告界面。真实 Qwen 生成、50 篇三模型抽取、人工 gold、源范围冻结和生产切换均未完成，因此本记录不作“模型可以胜任全库”的结论。
 
-2026-10-10用户授权切换至Qwen3.5-9B MLX 4-bit，本轮固定revision为 `8b2b98c00a6b4d291155e4890773ca8f769aee53`。旧35B pin和下文历史回执保留。新增独立9B资源配置、统一共享锁默认路径和精确development来源staging，并修正Gemini适配器读取既有 `GCP_PROJECT` 配置及Gemini 3 thinking参数；相关90项测试及Ruff通过。9B真实tokenizer对209个完整prompt计数3,060–10,096，预留4,096输出均不超过16,384；[新回执](pilot/materials-ner-qwen3.5-9b-tokenizer.preflight.v1.json)不是模型推理。首轮错误计数的私有回执保留且已废弃；10篇开发原始输入在CPU复现；Mini联调暴露公开准备收据与私有manifest的父摘要字段不同，已修复并以文档指定的真实公开收据复现10篇全部成功，分别绑定父manifest与实际输入摘要。下载/真实load/推理按Mini本轮收据记录。
+2026-10-10用户授权切换至Qwen3.5-9B MLX 4-bit，本轮固定revision为 `8b2b98c00a6b4d291155e4890773ca8f769aee53`。旧35B pin和下文历史回执保留。新增独立9B资源配置、统一共享锁默认路径和精确development来源staging，并修正Gemini适配器读取既有 `GCP_PROJECT` 配置及Gemini 3 thinking参数。共用prompt更新3.0.3、字段级quote诊断、合法JSON修复输入压缩和HTTP返回后的预留上下文拒绝守卫完成；最终针对性98项测试及Ruff全部通过。9B真实tokenizer对209个当前完整prompt计数3,114–10,150，预留4,096输出均不超过16,384；[当前回执](pilot/materials-ner-qwen3.5-9b-tokenizer.preflight.v2.json)不是模型推理，旧回执保留。首轮错误计数的私有回执保留且已废弃；10篇开发原始输入在CPU复现；Mini联调暴露公开准备收据与私有manifest的父摘要字段不同，已修复并以文档指定的真实公开收据复现10篇全部成功，分别绑定父manifest与实际输入摘要。下载/真实load/推理按Mini本轮收据记录。
+
+VPS2隔离私有目录用现有ingestion workload identity完成凭据交换，Gemini5次合成generation（3 LOW、2 MINIMAL，包括两组各一次有限修复），4份完整响应实际型号均为 `gemini-3.5-flash`。首次和修复因offset不符失败；其后一次输出触顶、两次重复quote未能唯一定位，最后修复还未满足输入+预留输出门槛。触顶试验的私有probe漏存截断receipt，计为不完整失败；随后修复probe，主pipeline的错误receipt保留逻辑已有测试。没有接纳候选，MINIMAL不作为已通过的基线。当前共用prompt由程序定位唯一quote，给逐字段失败位置并压缩修复输入排版，未放宽校验。SDK底层HTTP请求数及实际账单未知，真实论文抽取仍为0。生产服务和数据库未改。
+
+已通过只读公开paper API取得50/50候选的现有记录快照，共166个返回材料occurrence。见[字段基线](pilot/materials-ner-50.public-baseline.v1.json)：Tc字段缺键71、压力85、配对151、结构138、λ149、ω_log161。按旧字段的实际名称计数，布尔false与数值0分开；保留来源/occurrence visibility和每次响应SHA。这是当前公开论文projection的字段缺失，不证明原文没有值或缺失均可补，也不是全库Materials页面快照。人工可补性分母及材料汇总页基线仍待完成。
 
 ## 已实现与实际验证
 
@@ -14,7 +18,7 @@
 | 科研存储 | 0092 增量迁移与 14 个新表；旧冻结模型保持；Tc 仍唯一规范存储在 material_claims | 模型 FK/条件/定性属性与真实 PG 测试；历史 rehearsal v7通过，最后精确 commit 的 seal另附 |
 | 来源与解释 | 同一原文 occurrence 不含模型/解释值；多个 run 分开，显式选择一个来源解释 | 导入幂等、跨来源 evidence 拒绝；成功导入不修改 catalogue；新记录 append-only |
 | 全文处理 | 全部文档记录、稳定 Unicode offset、表头/脚注 context、PDF warning/图像 gaps、正文与独立 supplementary captures | 所有字符/块纳入覆盖；附件未完成不能给全文通过；附属源权限独立，整篇 budget共享 |
-| NER | MLX +固定 Qwen、Gemini、OpenAI Responses；同语义 prompt/schema、有限修复/重试/拆块 | JSON/值/单位/quote/行绑定验证；输出触顶与资源失败保存部分回执；没有实际模型抽取 |
+| NER | MLX +固定 Qwen、Gemini、OpenAI Responses；同语义 prompt/schema、有限修复/重试/拆块 | JSON/值/单位/quote/行绑定验证；输出触顶与资源失败保存部分回执；5次真实Gemini合成调试均未通过，论文抽取仍为0 |
 | 恢复 | SQLite WAL/FULL、原子 claim/fencing、每块与 attempt 收据、恢复原成功响应 | 验证 attempt 与 block fsync 间崩溃、重试、超长拆分和资源停止；不重复生成已成功或已触顶父块 |
 | 队列 | 独立 ner_qwen_mlx kind/capability，绑定输入/代码/schema/provider/budget/model/runtime hashes；沿用 mTLS/outbox 协议 | 真实本机 HTTP/SQLite 故障测试通过；ACK 丢失不重推理；使用的是合成 provider，Mini 真实联网仍 pending |
 | 比较 | 原子 tuple、单位规范化、每族/字段/难例指标、依赖组 paired bootstrap、预测证据审计与空值恢复分母 | 拒绝模型共识 gold、空分母高分、混用 provider label/config或不同 token/time budget；不匹配模型不计独立实验 |
@@ -65,6 +69,6 @@ Mini 实机确认 M4 Pro/48 GiB；该节点任务已安装 `87a71c0e…` 的固�
 | M4 数据页切换 | 在真实经审候选上建立material links及selected interpretation、snapshot；显式固定条件后才提供曲线；相同快照性能/SQL与回退/激活仍待真实数据和部署环境验证 |
 | M5 三模型验收 | 实际Gemini部署型号和两个云provider标准凭据；三模型同源最终50输出、30blind独立gold/预测审计/空值基线、置信区间、费用、24h服务账号soak |
 
-当前真实 NER=0、云请求=0、人工 gold=0、科学接纳=0。没有取得现有50-work字段基线导出，因此不声称现有空值总数、实测补全率或计算值已生成。计算补全的适用输入/方法见[审查规范](pilot/materials-ner-50.review-guide.v1.md)；大规模DFT/DFPT不是此次NER替代试验。
+当前论文NER=0、Gemini合成generation调用=5、人工gold=0、科学接纳=0。已取得50-work公开paper projection基线；Materials汇总页快照、人工可补性分母和实测补全率仍未取得。计算补全的适用输入/方法见[审查规范](pilot/materials-ner-50.review-guide.v1.md)；大规模DFT/DFPT不是此次NER替代试验。下文及旧私有最终交付包中的旧35B/零云调用状态作为历史保留，本轮新收据分别绑定新配置。
 
 质量门槛保持：core precision≥98%、recall≥95%、每族recall≥90%、数值单位≥99%、证据支持≥98%、locator100%、origin/source-role macro F1≥98%、扩展字段≥90%、严重错误0；本地分别对两个云模型的paired95%下界≥−2pp。空分母/缺gold/缺runtime均未验收。50篇通过后仍需200–300篇扩大盲测，不能直接外推全部SCLib论文。

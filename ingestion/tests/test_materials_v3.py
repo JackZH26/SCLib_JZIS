@@ -125,6 +125,44 @@ def test_multiple_criteria_are_retained_and_normalized():
     assert out["scientific_acceptance"] is False
 
 
+def test_ambiguous_quotes_and_wrong_offsets_identify_each_failed_field():
+    value, block = fixture(
+        "LaH10 sample S1 pressure scan at 150 GPa loading: onset Tc 240 K; zero Tc 232 K. "
+        "The unloading measurement was at 150 GPa with onset Tc 236 K."
+    )
+    subject = value["results"][0]["subject"]["evidence"][0]
+    subject.update(quote="LaH10", char_start=1, char_end=6)
+    condition = value["results"][0]["conditions"][0]["evidence"][0]
+    condition.update(quote="150 GPa", char_start=None, char_end=None)
+    with pytest.raises(CandidateError) as error:
+        validate_candidate(value, [block])
+    assert set(error.value.errors) == {
+        "quote_offset_mismatch:results/0/subject/evidence/0",
+        "quote_missing_or_ambiguous_offset:results/0/conditions/0/evidence/0",
+    }
+
+
+def test_repair_compacts_only_valid_json_and_preserves_invalid_source_output():
+    from ingestion.materials_v3.prompt import messages
+
+    candidate, block = fixture()
+    original = json.dumps(candidate, ensure_ascii=False, indent=2)
+    payload = json.loads(
+        messages([block], repair_errors=["error"], previous=original)[1]["content"]
+    )
+    compact = payload["previous_candidate"]
+    assert len(compact) < len(original)
+    assert json.loads(compact) == candidate
+    duplicate = '{"results":[],"results":[1]}'
+    malformed = '{"results":'
+    overflow = '{"quantity":1e999}'
+    for invalid in (duplicate, malformed, overflow):
+        payload = json.loads(
+            messages([block], repair_errors=["error"], previous=invalid)[1]["content"]
+        )
+        assert payload["previous_candidate"] == invalid
+
+
 @pytest.mark.parametrize(
     "mutation,error",
     [

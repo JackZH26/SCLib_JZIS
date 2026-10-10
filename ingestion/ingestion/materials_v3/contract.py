@@ -102,16 +102,21 @@ def parse_json(text: str) -> dict:
         raise CandidateError([f"invalid_json:{exc.lineno}:{exc.colno}"]) from None
 
 
-def evidences(value):
+def located_evidences(value, path=()):
     if isinstance(value, dict):
         if "block_id" in value and "quote" in value:
-            yield value
+            yield path, value
         else:
-            for child in value.values():
-                yield from evidences(child)
+            for key, child in value.items():
+                yield from located_evidences(child, (*path, key))
     elif isinstance(value, list):
-        for child in value:
-            yield from evidences(child)
+        for index, child in enumerate(value):
+            yield from located_evidences(child, (*path, index))
+
+
+def evidences(value):
+    for _, evidence in located_evidences(value):
+        yield evidence
 
 
 def source_number_spans(raw: str) -> list[tuple[float, int, int]]:
@@ -215,11 +220,12 @@ def validate_candidate(value: dict, blocks: list[dict]) -> dict:
     output = deepcopy(value)
     # Bound evidence is kept outside the model contract, preserving original output.
     proof = []
-    for evidence in evidences(value):
+    for path, evidence in located_evidences(value):
         try:
             proof.append(bind_evidence(evidence, lookup))
         except CandidateError as exc:
-            errors.extend(exc.errors)
+            location = "/".join(map(str, path))
+            errors.extend(f"{error}:{location}" for error in exc.errors)
     normalized = []
     for link in value["unresolved_links"]:
         if any(local_id not in ids for local_id in link["candidate_local_ids"]):

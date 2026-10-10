@@ -125,6 +125,22 @@ class HTTPProvider:
             ):
                 raise ValueError("local_endpoint_must_be_literal_loopback_http")
 
+    def _check_context_budget(self, result):
+        count = result.input_tokens
+        verified = type(count) is int and count >= 0
+        result.metadata["input_context_budget_verified"] = verified
+        if verified and count + self.config.max_output_tokens > self.config.context_tokens:
+            result.metadata.update(
+                generation_attempted=True,
+                provider_finish_reason=result.finish_reason,
+                input_context_budget_verified=False,
+                reserved_output_tokens=self.config.max_output_tokens,
+                context_tokens=self.config.context_tokens,
+            )
+            result.finish_reason = "input_limit"
+            raise OutputLimit("observed_input_context_budget_exceeded", receipt=result)
+        return result
+
     def generate(self, messages) -> Response:
         config, started = self.config, time.monotonic()
         if config.provider == "openai":
@@ -191,7 +207,7 @@ class HTTPProvider:
                         result.finish_reason = "length"
                         raise OutputLimit("output_limit", receipt=result)
                     raise ProviderError("provider_incomplete", receipt=result)
-                return result
+                return self._check_context_budget(result)
             choice = raw["choices"][0]
             result = Response(
                 choice["message"]["content"],
@@ -202,7 +218,7 @@ class HTTPProvider:
             )
             if result.finish_reason == "length":
                 raise OutputLimit("output_limit", receipt=result)
-            return result
+            return self._check_context_budget(result)
         except (KeyError, TypeError, ValueError):
             raise ProviderError("provider_response_invalid") from None
 
@@ -259,7 +275,7 @@ class HTTPProvider:
         if raw.candidates and str(raw.candidates[0].finish_reason).endswith("MAX_TOKENS"):
             result.finish_reason = "length"
             raise OutputLimit("output_limit", receipt=result)
-        return result
+        return self._check_context_budget(result)
 
 
 class MLXProvider:

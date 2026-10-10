@@ -53,7 +53,7 @@ CLI 的 comparison input 带 provider/config，供协调方留档；它不是可
 
 ## 空值补全与判定
 
-在同一 50-work 范围导出已有字段快照，保留 source/material hold 和 association 状态。当前尚未取得这个基线导出，不报告实际空值总数或补全比例。人工确认可重提取的 source claim IDs 才进入 `baseline_recoverable_claim_ids_by_work`；现有值、原文缺失、未取得源、治理/归并问题不进入这个分母。
+在同一50-work范围导出已有字段快照，保留source/material hold和association状态。已用只读公开paper API取得50/50当前projection，共166个返回材料occurrence，[基线收据](materials-ner-50.public-baseline.v1.json)保留响应SHA、visibility和旧字段实际名称的缺键/值统计；布尔false不按数值0统计。这不是全库Materials汇总页快照，缺键也不证明原文无值或可补。人工确认可重提取的source claim IDs才进入 `baseline_recoverable_claim_ids_by_work`；现有值、原文缺失、未取得源、治理/归并问题不进入这个分母。当前仍不报告实测补全率。
 
 | 路径 | 输入与验收 |
 |---|---|

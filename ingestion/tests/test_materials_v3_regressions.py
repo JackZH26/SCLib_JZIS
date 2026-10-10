@@ -353,13 +353,47 @@ def test_mlx_uses_terminal_metadata_and_preserves_truncated_receipt(monkeypatch,
     assert receipt.finish_reason == finish
 
 
+@pytest.mark.parametrize("input_tokens,exceeded", [(12288, False), (12289, True)])
+def test_openai_observed_context_budget_is_enforced_and_retains_the_paid_response(
+    monkeypatch, input_tokens, exceeded
+):
+    import httpx
+    from ingestion.materials_v3.providers import HTTPProvider, OutputLimit, ProviderConfig
+
+    monkeypatch.setenv("OPENAI_API_KEY", "synthetic-test-key")
+    body = {
+        "id": "synthetic-response",
+        "model": "gpt-6.1-sol",
+        "status": "completed",
+        "output": [{"type": "message", "content": [{"type": "output_text", "text": "{}"}]}],
+        "usage": {"input_tokens": input_tokens, "output_tokens": 2},
+    }
+    with httpx.Client(
+        transport=httpx.MockTransport(lambda _: httpx.Response(200, json=body))
+    ) as client:
+        provider = HTTPProvider(ProviderConfig("openai", "gpt-6.1-sol"), client=client)
+        if exceeded:
+            with pytest.raises(
+                OutputLimit, match="observed_input_context_budget_exceeded"
+            ) as error:
+                provider.generate([])
+            result = error.value.receipt
+            assert result.finish_reason == "input_limit" and result.metadata["generation_attempted"]
+        else:
+            result = provider.generate([])
+            assert result.metadata["input_context_budget_verified"] is True
+    assert result.text == "{}" and result.input_tokens == input_tokens
+    assert result.metadata["actual_model"] == "gpt-6.1-sol"
+
+
 @pytest.mark.parametrize("model,modern", [("gemini-3.5-flash", True), ("gemini-2.5-flash", False)])
+@pytest.mark.parametrize("input_tokens,exceeded", [(12, False), (12288, False), (12289, True)])
 def test_gemini_reads_existing_project_setting_and_uses_model_specific_thinking(
-    monkeypatch, model, modern
+    monkeypatch, model, modern, input_tokens, exceeded
 ):
     from types import SimpleNamespace
     from google import genai
-    from ingestion.materials_v3.providers import HTTPProvider, ProviderConfig
+    from ingestion.materials_v3.providers import HTTPProvider, OutputLimit, ProviderConfig
 
     for key in ("GCP_PROJECT_ID", "GOOGLE_CLOUD_PROJECT"):
         monkeypatch.delenv(key, raising=False)
@@ -384,7 +418,7 @@ def test_gemini_reads_existing_project_setting_and_uses_model_specific_thinking(
                 candidates=[],
                 model_version="synthetic-returned-model",
                 usage_metadata=SimpleNamespace(
-                    prompt_token_count=12,
+                    prompt_token_count=input_tokens,
                     candidates_token_count=2,
                     thoughts_token_count=3,
                     cached_content_token_count=0,
@@ -394,9 +428,17 @@ def test_gemini_reads_existing_project_setting_and_uses_model_specific_thinking(
     monkeypatch.setattr(genai, "Client", Client)
     provider = HTTPProvider(ProviderConfig("gemini", model))
     try:
-        result = provider.generate(
-            [{"content": "synthetic system"}, {"content": "synthetic input"}]
-        )
+        input_messages = [{"content": "synthetic system"}, {"content": "synthetic input"}]
+        if exceeded:
+            with pytest.raises(
+                OutputLimit, match="observed_input_context_budget_exceeded"
+            ) as error:
+                provider.generate(input_messages)
+            result = error.value.receipt
+            assert result.finish_reason == "input_limit" and result.metadata["generation_attempted"]
+        else:
+            result = provider.generate(input_messages)
+            assert result.metadata["input_context_budget_verified"] is True
     finally:
         provider.client.close()
     assert captured["project"] == "synthetic-existing-project"
@@ -407,6 +449,7 @@ def test_gemini_reads_existing_project_setting_and_uses_model_specific_thinking(
     else:
         assert config.thinking_config.thinking_budget == 0 and config.temperature == 0
     assert result.reasoning_tokens == 3
+    assert result.input_tokens == input_tokens and result.text == "{}"
     assert result.metadata["actual_model"] == "synthetic-returned-model"
 
 
