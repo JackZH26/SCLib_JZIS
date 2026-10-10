@@ -12,7 +12,7 @@ from pathlib import Path
 from .assembly import assemble_reports
 from .blocks import parse_source, verify_document
 from .contract import canonical
-from .corpus import prepare_corpus
+from .corpus import prepare_corpus, stage_development
 from .batch import batch_selection, run_batch
 from .comparison import comparison_package
 from .export import import_package
@@ -21,7 +21,16 @@ from .ledger import Ledger
 from .manifest import freeze_manifest, validate_manifest
 from .pipeline import Budget, Pipeline
 from .providers import HTTPProvider, MLXProvider, ProviderConfig, ResourceLimit
-from .runtime import admission, hardware, heavy_lock, memory_observation, verify_model, runtime_lock
+from .runtime import (
+    DEFAULT_HEAVY_LOCK,
+    admission,
+    hardware,
+    heavy_lock,
+    local_resource_profile,
+    memory_observation,
+    verify_model,
+    runtime_lock,
+)
 from .review import blinded_review
 
 
@@ -58,16 +67,20 @@ def provider_session(args, config):
             raise ValueError("model_manifest_required_for_mlx")
         verify_model(args.model_path, args.model_manifest, config.revision)
         with heavy_lock(args.heavy_lock):
+            profile = local_resource_profile()
             admission(hardware())
             import mlx.core as mx
 
-            mx.set_memory_limit(32 * 1024**3)
+            mx.set_memory_limit(profile["budget_gib"] * 1024**3)
 
             def guard():
                 observed = memory_observation(mx.get_peak_memory())
-                if observed["observed_peak_bytes"] > 32 * 1024**3:
+                if observed["observed_peak_bytes"] > profile["budget_gib"] * 1024**3:
                     raise ResourceLimit("local_memory_budget_exhausted")
-                if hardware()["reclaimable_memory_estimate_bytes"] < 12 * 1024**3:
+                if (
+                    hardware()["reclaimable_memory_estimate_bytes"]
+                    < profile["headroom_gib"] * 1024**3
+                ):
                     raise ResourceLimit("local_memory_headroom_exhausted")
 
             provider = MLXProvider(config, str(args.model_path), guard=guard)
@@ -98,6 +111,10 @@ def main():
     corpus.add_argument("selection", type=Path)
     corpus.add_argument("--private-root", type=Path, required=True)
     corpus.add_argument("--output", type=Path, required=True)
+    stage = commands.add_parser("stage-development")
+    stage.add_argument("manifest", type=Path)
+    stage.add_argument("--private-root", type=Path, required=True)
+    stage.add_argument("--output", type=Path, required=True)
     run = commands.add_parser("run")
     run.add_argument("document", type=Path)
     run.add_argument("--paper-id", required=True)
@@ -111,9 +128,7 @@ def main():
     )
     run.add_argument("--model-path", type=Path)
     run.add_argument("--model-manifest", type=Path)
-    run.add_argument(
-        "--heavy-lock", type=Path, default=Path("/Users/Shared/SCLibCompute/heavy-job.lock")
-    )
+    run.add_argument("--heavy-lock", type=Path, default=DEFAULT_HEAVY_LOCK)
     batch = commands.add_parser("batch")
     batch.add_argument("manifest", type=Path)
     batch.add_argument(
@@ -131,9 +146,7 @@ def main():
     )
     batch.add_argument("--model-path", type=Path)
     batch.add_argument("--model-manifest", type=Path)
-    batch.add_argument(
-        "--heavy-lock", type=Path, default=Path("/Users/Shared/SCLibCompute/heavy-job.lock")
-    )
+    batch.add_argument("--heavy-lock", type=Path, default=DEFAULT_HEAVY_LOCK)
     package = commands.add_parser("export")
     package.add_argument("run", type=Path)
     package.add_argument("document", type=Path)
@@ -176,9 +189,7 @@ def main():
     worker.add_argument("--budget", type=Path)
     worker.add_argument("--model-path", type=Path, required=True)
     worker.add_argument("--model-manifest", type=Path, required=True)
-    worker.add_argument(
-        "--heavy-lock", type=Path, default=Path("/Users/Shared/SCLibCompute/heavy-job.lock")
-    )
+    worker.add_argument("--heavy-lock", type=Path, default=DEFAULT_HEAVY_LOCK)
     worker.add_argument("--cycles", type=int, default=1)
     args = parser.parse_args()
     if args.command == "prepare":
@@ -198,6 +209,16 @@ def main():
         return 1 if result["source_failures"] else 0
     elif args.command == "hardware":
         print(json.dumps(hardware()))
+    elif args.command == "stage-development":
+        manifest = read(args.manifest)
+        errors = validate_manifest(manifest)
+        if errors:
+            raise ValueError("development_manifest_invalid:" + ";".join(errors))
+        result = stage_development(
+            manifest, args.private_root, progress=lambda row: print(json.dumps(row), flush=True)
+        )
+        write(args.output, result)
+        return 1 if result["source_failures"] else 0
     elif args.command == "runtime-lock":
         write(args.output, runtime_lock())
     elif args.command == "worker":

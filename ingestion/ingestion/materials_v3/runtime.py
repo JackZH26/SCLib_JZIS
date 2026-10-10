@@ -13,6 +13,8 @@ import sys
 from contextlib import contextmanager
 from pathlib import Path
 
+DEFAULT_HEAVY_LOCK = Path("/Users/Shared/SCLibCompute/service-state/heavy-job.lock")
+
 
 def runtime_lock():
     """Record the environment actually installed; writing this is not a load receipt."""
@@ -30,11 +32,14 @@ def runtime_lock():
     if not info.get("supported"):
         raise ValueError("runtime_lock_requires_native_mlx_host")
     return {
-        "version": "sclib-ner-runtime/1",
+        "version": "sclib-ner-runtime/2",
         "python": sys.version,
         "os_release": platform.release(),
         "packages": dict(sorted(packages.items())),
         "implementation_sha256": implementation_hash(),
+        "model_id": model_pin()["model_id"],
+        "model_revision": model_pin()["revision"],
+        "resource_profile": local_resource_profile(),
         "hardware": {
             k: info[k] for k in ("architecture", "platform", "cpu_brand", "total_memory_bytes")
         },
@@ -73,15 +78,24 @@ def hardware():
     }
 
 
-def admission(info, *, budget_gib=32, headroom_gib=12, expected_peak_gib=24):
+def admission(info, *, budget_gib=None, headroom_gib=None, expected_peak_gib=None):
+    profile = local_resource_profile()
+    budget_gib = profile["budget_gib"] if budget_gib is None else budget_gib
+    headroom_gib = profile["headroom_gib"] if headroom_gib is None else headroom_gib
+    expected_peak_gib = (
+        profile["expected_peak_gib"] if expected_peak_gib is None else expected_peak_gib
+    )
+    if (
+        any(type(v) is not int or v <= 0 for v in (budget_gib, headroom_gib, expected_peak_gib))
+        or expected_peak_gib > budget_gib
+    ):
+        raise ValueError("invalid_memory_admission_profile")
     if not info.get("supported"):
         raise ValueError("mlx_requires_native_macos_arm64")
     if info["total_memory_bytes"] < (budget_gib + headroom_gib) * 1024**3:
         raise ValueError("insufficient_total_memory")
-    if not 0 < expected_peak_gib <= budget_gib:
-        raise ValueError("invalid_memory_admission_profile")
-    # Initial 24 GiB is a smoke-test admission estimate, not a measured profile.
-    # The 32 GiB cap and 12 GiB live headroom guard remain independent limits.
+    # The pinned model's initial peak is a planning estimate. The process cap
+    # and live host headroom remain independent, measured stop conditions.
     if info["reclaimable_memory_estimate_bytes"] < (expected_peak_gib + headroom_gib) * 1024**3:
         raise ValueError("insufficient_current_memory_headroom")
 
@@ -103,6 +117,14 @@ def heavy_lock(path: Path):
 
 def model_pin():
     return json.loads(Path(__file__).with_name("model-pin.json").read_bytes())
+
+
+def local_resource_profile():
+    profile = model_pin()["resource_profile"]
+    values = [profile[k] for k in ("budget_gib", "headroom_gib", "expected_peak_gib")]
+    if any(type(v) is not int or v <= 0 for v in values) or values[2] > values[0]:
+        raise ValueError("invalid_pinned_resource_profile")
+    return profile
 
 
 def verify_model(model_path: Path, model_manifest: Path, revision: str):

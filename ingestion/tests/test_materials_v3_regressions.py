@@ -217,15 +217,23 @@ def test_batch_reuses_provider_and_checkpoints_two_distinct_sources(tmp_path):
     ledger.close()
 
 
-def test_mini_admission_preserves_12_gib_headroom():
+def test_mini_admission_uses_new_9b_profile_without_relaxing_old_35b_profile():
     base = {
         "supported": True,
         "total_memory_bytes": 48 * 1024**3,
         "reclaimable_memory_estimate_bytes": 26 * 1024**3,
     }
+    admission(base)
     with pytest.raises(ValueError, match="headroom"):
-        admission(base)
-    admission({**base, "reclaimable_memory_estimate_bytes": 38 * 1024**3})
+        admission({**base, "reclaimable_memory_estimate_bytes": 19 * 1024**3})
+    with pytest.raises(ValueError, match="headroom"):
+        admission(base, budget_gib=32, headroom_gib=12, expected_peak_gib=24)
+    admission(
+        {**base, "reclaimable_memory_estimate_bytes": 38 * 1024**3},
+        budget_gib=32,
+        headroom_gib=12,
+        expected_peak_gib=24,
+    )
 
 
 def test_documented_and_packaged_schemas_are_identical():
@@ -350,7 +358,7 @@ def test_model_snapshot_rejects_missing_files_before_loading(tmp_path):
     from ingestion.materials_v3.runtime import model_pin, verify_model
 
     pin = model_pin()
-    assert len(pin["files"]) == 17 and pin["total_bytes"] == 20429169263
+    assert pin["weights_bytes"] == 5950221072
     manifest = tmp_path / "model-manifest.json"
     manifest.write_text(
         json.dumps({"model_id": MODEL, "revision": REVISION, "files": pin["files"][:-1]})

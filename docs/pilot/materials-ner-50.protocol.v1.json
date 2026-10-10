@@ -122,8 +122,8 @@
   "comparator_models": [
     {
       "provider": "local_mlx",
-      "model": "mlx-community/Qwen3.6-35B-A3B-4bit",
-      "revision": "38740b847e4cb78f352aba30aa41c76e08e6eb46",
+      "model": "mlx-community/Qwen3.5-9B-4bit",
+      "revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
       "enable_thinking": false,
       "initial_total_context_tokens": 16384,
       "initial_body_tokens_range": [
@@ -203,15 +203,17 @@
     "canonical_duplicate_rows_after_retry_max": 0,
     "stale_attempt_overwrites_max": 0,
     "soak_hours": 24,
-    "local_inference_process_tree_plus_metal_observed_peak_budget_gib": 32,
-    "os_and_other_service_headroom_gib_min": 12,
+    "local_inference_process_tree_plus_metal_observed_peak_budget_gib": 16,
+    "os_and_other_service_headroom_gib_min": 8,
     "concurrent_heavy_jobs_max": 1,
     "performance_targets": {
       "mean_seconds_per_paper": 300,
       "p95_seconds_per_paper": 900,
       "status": "Planning targets to calibrate with first 10 works; actual measured performance controls corpus rollout."
     },
-    "memory_accounting": "Report RSS and Metal separately; unified-memory overlap uses max(RSS,Metal) plus live host headroom. No direct disjoint sum is claimed."
+    "memory_accounting": "Report RSS and Metal separately; unified-memory overlap uses max(RSS,Metal) plus live host headroom. No direct disjoint sum is claimed.",
+    "initial_model_peak_estimate_gib": 12,
+    "resource_profile_status": "planning_estimate_not_measured"
   },
   "rollout": {
     "fifty_paper_scope": "Architecture and engineering pilot, not a full-corpus accuracy guarantee.",
@@ -234,5 +236,14 @@
     "source_scope_frozen": false,
     "ner_completed_works": 0,
     "gold_completed_works": 0
+  },
+  "model_switch": {
+    "date": "2026-10-10",
+    "authorized_by": "user",
+    "previous_model": "mlx-community/Qwen3.6-35B-A3B-4bit",
+    "previous_pin_receipt": "materials-ner-qwen3.6-35b.model-pin.archived.v1.json",
+    "current_model": "mlx-community/Qwen3.5-9B-4bit",
+    "current_revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+    "quality_results_available": false
   }
 }

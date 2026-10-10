@@ -10,9 +10,11 @@ from urllib.parse import urlsplit
 import httpx
 
 from .contract import digest, provider_schema
+from .runtime import model_pin
 
-MODEL = "mlx-community/Qwen3.6-35B-A3B-4bit"
-REVISION = "38740b847e4cb78f352aba30aa41c76e08e6eb46"
+_MODEL_PIN = model_pin()
+MODEL = _MODEL_PIN["model_id"]
+REVISION = _MODEL_PIN["revision"]
 
 
 @dataclass(frozen=True)

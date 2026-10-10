@@ -210,3 +210,74 @@ def prepare_corpus(selection, root: Path, *, progress=print):
         "scientific_acceptance": False,
     }
     return {**body, "manifest_sha256": digest(body)}
+
+
+def stage_development(manifest, root: Path, *, sources=None, progress=lambda row: None):
+    """Fetch the original pinned development captures on the private node.
+
+    This does not fetch the latest version, grant cloud permissions, resolve
+    supplements, or turn a prepared candidate set into a frozen experiment.
+    """
+    from copy import deepcopy
+    from .cli import write
+
+    owned = sources is None
+    sources = sources or ArxivSources(root / "sources")
+    papers = deepcopy(manifest["papers"])
+    failures, staged = [], []
+    try:
+        for paper in papers:
+            if paper["split"] != "development":
+                continue
+            try:
+                identifier = paper["paper_id"].removeprefix("arxiv:")
+                version = paper["source_version"]
+                fmt = paper["source_format"]
+                if (
+                    not re.fullmatch(r"\d{4}\.\d{4,5}", identifier)
+                    or not re.fullmatch(re.escape(identifier) + r"v[1-9]\d*", version)
+                    or fmt not in {"pdf", "html"}
+                    or paper["source_url"] != f"https://arxiv.org/{fmt}/{version}"
+                ):
+                    raise ValueError("development_source_must_be_original_pinned_arxiv_url")
+                directory = root / "sources" / identifier
+                directory.mkdir(parents=True, exist_ok=True, mode=0o700)
+                path = directory / f"{version}.{fmt}"
+                data = sources.fetch(paper["source_url"], path)
+                if (
+                    len(data) != paper["source_bytes"]
+                    or hashlib.sha256(data).hexdigest() != paper["main_text_sha256"]
+                ):
+                    raise ValueError("development_original_source_hash_mismatch")
+                document = parse_source(path, source_id=paper["paper_id"] + ":" + version)
+                if document["manifest_sha256"] != paper["content_manifest_sha256"]:
+                    raise ValueError("development_parsed_capture_differs_from_prepared_input")
+                document_path = root / "documents" / (document["manifest_sha256"] + ".json")
+                if not document_path.exists():
+                    write(document_path, document)
+                elif digest(__import__("json").loads(document_path.read_bytes())) != digest(
+                    document
+                ):
+                    raise ValueError("existing_development_document_conflict")
+                paper["private_document_path"] = str(document_path)
+                paper["private_source_path"] = str(path)
+                staged.append(paper["paper_id"])
+                progress({"paper_id": paper["paper_id"], "status": "development_source_staged"})
+            except (ValueError, KeyError, httpx.HTTPError, OSError) as exc:
+                code = str(exc) if type(exc) is ValueError else type(exc).__name__
+                failures.append({"paper_id": paper["paper_id"], "error": code})
+                progress({"paper_id": paper["paper_id"], "status": "development_source_failed"})
+    finally:
+        if owned:
+            sources.client.close()
+    body = {
+        "version": "materials-ner-development-staging/1",
+        "status": "development_staged_pending_review",
+        "prepared_input_manifest_sha256": manifest["manifest_sha256"],
+        "papers": papers,
+        "staged_development_papers": staged,
+        "source_failures": failures,
+        "source_scope_frozen": False,
+        "scientific_acceptance": False,
+    }
+    return {**body, "manifest_sha256": digest(body)}

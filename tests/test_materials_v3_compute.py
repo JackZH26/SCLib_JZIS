@@ -45,7 +45,7 @@ class SyntheticProvider:
         )
 
 
-def setup(tmp_path, *, wrong_code=False):
+def setup(tmp_path, *, wrong_code=False, memory_gib=16):
     root = tmp_path.resolve()
     source = root / "synthetic.txt"
     source.write_text("Synthetic transport fixture without target claims.")
@@ -98,7 +98,7 @@ def setup(tmp_path, *, wrong_code=False):
         ],
         resources={
             "cpu_cores": 1,
-            "memory_bytes": 32 * 1024**3,
+            "memory_bytes": memory_gib * 1024**3,
             "wall_seconds": 30,
             "output_bytes": 8 * 1024**2 + 4096,
         },
@@ -161,6 +161,18 @@ def test_wrong_implementation_hash_rejects_job_before_inference(tmp_path):
         worker = adapter(root, client, provider, budget)
         try:
             with pytest.raises(WorkerStopped, match="binding_mismatch"):
+                worker.one_cycle()
+            assert provider.calls == 0
+        finally:
+            worker.close()
+
+
+def test_old_35b_job_memory_envelope_rejected_before_9b_inference(tmp_path):
+    root, client, provider, budget = setup(tmp_path, memory_gib=32)
+    with client:
+        worker = adapter(root, client, provider, budget)
+        try:
+            with pytest.raises(WorkerStopped, match="outside_frozen_adapter_envelope"):
                 worker.one_cycle()
             assert provider.calls == 0
         finally:

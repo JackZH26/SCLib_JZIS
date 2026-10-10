@@ -20,6 +20,7 @@ from .contract import canonical, digest, schema
 from .ledger import Ledger
 from .pipeline import Budget, Pipeline, implementation_hash
 from .providers import MODEL, REVISION
+from .runtime import local_resource_profile
 
 
 class NERJob(Closed):
@@ -97,7 +98,7 @@ class NERWorker(DummyWorker):
             or spec.input_manifest_sha256 != claim["input_manifest_sha256"]
             or {p.name for p in spec.input_artifacts} != {"document.json", "ner-job.json"}
             or {p.name for p in spec.output_rules} != {"result.json", "execution.json"}
-            or spec.resources.memory_bytes > 32 * 1024**3
+            or spec.resources.memory_bytes > local_resource_profile()["budget_gib"] * 1024**3
             or spec.resources.cpu_cores > 4
             or spec.resources.wall_seconds < self.budget.paper_seconds
             or spec.resources.wall_seconds > 7200

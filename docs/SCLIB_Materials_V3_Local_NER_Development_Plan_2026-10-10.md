@@ -1,10 +1,10 @@
 # SCLib Materials V3 与本地 NER 开发计划
 
-计划日期：2026 年 10 月 10 日。目标是在保留当前 Materials 页面显示习惯的基础上，建立以材料为索引、以论文及条件明确的结果为证据的数据体系，并在 Mac mini 上用 Qwen3.6-35B-A3B 对 50 篇分族论文进行全文抽取和三模型比较。
+计划日期：2026 年 10 月 10 日。目标是在保留当前 Materials 页面显示习惯的基础上，建立以材料为索引、以论文及条件明确的结果为证据的数据体系，并在 Mac mini 上用 Qwen3.5-9B 对 50 篇分族论文进行全文抽取和三模型比较。用户已授权从原 35B 候选切换为 9B；旧配置和收据保留。
 
 首期交付包括新版材料页预览、可追溯的数据 schema、本地 NER worker、50 篇冻结样本及人工参照标注、Qwen/Gemini/GPT 6.1 Sol 的评估报告。50 篇用于验证架构和发现错误模式；全库自动替代还需要扩大盲测及分批运行。
 
-当前交付状态：已实现候选 schema、0092 增量迁移、独立全文 NER/三模型适配器、持久队列与恢复、补充材料多 capture 支持、私有材料快照和沿用现有视觉体系的页面预览。50 篇候选正文已取得并解析为 209 个初始块，分层为每族 10 篇；许可、依赖组、族与难例审查、补充材料范围、双人 gold 和最终冻结尚未完成。Mini 已安装独立 MLX 环境并校验全部 17 个模型文件；实际生成仍受旧 worker 移交和可用内存门槛限制。工程测试与真实模型质量验收分别记录，见 [工程验收记录](SCLIB_Materials_V3_Engineering_Acceptance_2026-10-10.md)、[部署说明](SCLIB_Materials_V3_M4_Deployment_2026-10-10.md)及[来源与标注规范](pilot/materials-ner-50.review-guide.v1.md)。
+当前交付状态：已实现候选 schema、0092 增量迁移、独立全文 NER/三模型适配器、持久队列与恢复、补充材料多 capture 支持、私有材料快照和沿用现有视觉体系的页面预览。50 篇候选正文已取得并解析为209个初始块；许可、依赖组、族与难例审查、补充材料范围、双人gold和最终冻结尚未完成。本轮切换9B的模型pin、资源配置及209块真实tokenizer预检已完成，10篇开发输入在本机用原始文件成功复现；Mini的9B下载、真实load及原worker排他移交按新回执分别记录。工程测试与真实模型质量验收分别记录，见[工程验收记录](SCLIB_Materials_V3_Engineering_Acceptance_2026-10-10.md)、[部署说明](SCLIB_Materials_V3_M4_Deployment_2026-10-10.md)及[来源与标注规范](pilot/materials-ner-50.review-guide.v1.md)。
 
 **一、开发基线与必须先处理的问题**
 
@@ -145,24 +145,24 @@ URL、导航名、原有筛选参数、来源治理和分享链接保持兼容�
 
 **六、Mini 模型与运行方案**
 
-采用 [Qwen3.6-35B-A3B](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) 的 [MLX 4-bit 版本](https://huggingface.co/mlx-community/Qwen3.6-35B-A3B-4bit)，35B 总参数、约 3B 激活；量化包约 20.4 GB。激活参数量不代表只需加载 3B 权重。选型依据是 Apple Silicon 原生运行与现有内存容量，NER 准确率须由本项目样本决定。
+采用 [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) 的 [MLX 4-bit 版本](https://huggingface.co/mlx-community/Qwen3.5-9B-4bit)，dense 语言架构，safetensors 权重合计 5,950,221,072 字节，全部 13 个 snapshot 文件合计 5,977,073,303 字节。选型依据是原生 Apple Silicon 推理与较小的内存需求，NER 准确率须由本项目样本决定。原 35B 的 [pin](pilot/materials-ner-qwen3.6-35b.model-pin.archived.v1.json)及 tokenizer 回执仅作历史记录。
 
 | 项目 | 首期配置 |
 |---|---|
-| model_id | mlx-community/Qwen3.6-35B-A3B-4bit |
-| pinned revision | 38740b847e4cb78f352aba30aa41c76e08e6eb46；下载前核 revision，并记录逐文件 SHA-256 |
+| model_id | mlx-community/Qwen3.5-9B-4bit |
+| pinned revision | 8b2b98c00a6b4d291155e4890773ca8f769aee53；下载前核 revision，并记录逐文件 SHA-256 |
 | runtime | 原生 arm64 Python + MLX + mlx-lm 的独立环境，实际加载成功后冻结版本 |
-| 兼容性核查 | 量化卡片由 mlx-vlm 0.4.4 转换；验证文本加载、vision 权重处理及 Qwen3.5 MoE 架构兼容，不能靠包安装成功判定 |
+| 兼容性核查 | 核验 mlx-lm 0.32.0 的 dense qwen3_5 文本加载、vision 权重过滤和完整 chat template；真实 load/生成之前不声明兼容性通过；不改原始 snapshot |
 | 初始工作窗口 | 总计 16384 tokens，body 4000–6000；schema/上下文和输出另留容量；初始 max output 4096 |
 | 长段落/表格 | 保留表头与脚注，按行或语义继续分段；输出触顶就拆块，不截断并标成功 |
 | 推理配置 | enable_thinking=false、temperature=0 为开发起点；10 篇开发/10 篇验证后冻结；不把模型采样参数不支持视为可强行通用 |
 | 并发 | 单个模型常驻、一个推理请求；与 QE/DFPT 等重任务互斥 |
-| 初始内存预算 | 同时记录进程 RSS 与 Metal 峰值，统一内存可能重叠，使用 max(RSS, Metal)配合主机余量守卫，不声称二者可直接相加；上限 32 GiB，系统及其它服务至少保留 12 GiB；未实测前用 24 GiB 峰值估计，因此加载前至少有 36 GiB 当前可回收内存 |
+| 初始内存预算 | 9B 独立资源配置：同时记录进程 RSS 与 Metal 峰值，统一内存可能重叠，使用 max(RSS, Metal)配合主机余量守卫；峰值上限16 GiB，主机余量至少8 GiB；未实测前预估峰值12 GiB，加载前至少20 GiB当前可回收内存。上述估计待实测校准；旧35B的32/12/24 GiB配置没有被当作9B实测结果 |
 | 磁盘 | 权重、缓存、环境、scratch 和日志分预算，预检建议至少 80 GiB 空闲；数据按批领取，不把全库一次性复制到 Mini |
 | 服务 | worker 本机调用 runtime，若用 HTTP 则仅监听 loopback；协调器通过已有出站任务协议派发 |
 | 稳定性 | 在实际低权限服务账号验证 Metal、锁屏、重启恢复及 24 小时运行；不用交互终端成功替代后台验收 |
 
-16k 是此分块任务的工作窗口选择，不是模型最大上下文。必要时在验证集上尝试 32k 或有界 thinking，只有质量/资源测量支持才变更配置。[官方模型](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) 支持 enable_thinking 控制；具体传参要核 MLX 使用的聊天模板。不能用滚动 KV 淘汰原文片段充当全文处理。[MLX LM](https://github.com/ml-explore/mlx-lm) 的 Apple Silicon 推理与缓存能力可复用，但不默认宣称其 HTTP 服务支持严格 JSON Schema 受约束解码。
+16k 是此分块任务的工作窗口选择，不是模型最大上下文。必要时在验证集上尝试 32k 或有界 thinking，只有质量/资源测量支持才变更配置。[官方模型](https://huggingface.co/Qwen/Qwen3.5-9B) 支持 enable_thinking 控制；具体传参要核 MLX 使用的聊天模板。不能用滚动 KV 淘汰原文片段充当全文处理。[MLX LM](https://github.com/ml-explore/mlx-lm) 的 Apple Silicon 推理与缓存能力可复用，但不默认宣称其 HTTP 服务支持严格 JSON Schema 受约束解码。
 
 先使用提示约束、JSON 解析、schema/Pydantic 校验和一次有界语法修复。修复仍失败则失败/隔离；修复不能更改科学事实，JSON 合法也不代表材料与条件绑定正确。三个模型使用相同的后处理和修复额度，并报告原始与修复后成绩。
 
@@ -270,7 +270,7 @@ VPS 负责冻结输入、任务队列、租约、接收、云模型比较、科�
 | 全文流程 | 本地离线重跑 50 个 work；全部目标 block 有终态；没有不可见截断；全文与补充材料/曲线缺口分别报告 | 50 篇 manifest、coverage ledger、失败清单 |
 | JSON | 首次原始 JSON 有效率至少 98%；接纳输出 schema 合法率 100%；失败不能变成空成功 | 原始/修复后分开统计 |
 | 幂等与恢复 | 重试、丢 ACK、旧租约、崩溃/断网恢复不重复接纳、不覆盖新结果，成功块可续跑 | 故障注入收据与对账报告 |
-| Mini 资源 | 峰值符合 32 GiB 初始预算及至少 12 GiB系统余量；无 OOM、持续 swap 增长或并行重任务失控；实际服务账号 24 小时通过 | Metal/进程树/系统压力采样；soak 报告 |
+| Mini 资源 | 9B峰值符合16 GiB初始预算及至少8 GiB主机余量；无OOM、持续swap增长或并行重任务失控；实际服务账号24小时通过 | Metal/进程树/系统压力采样；soak报告；资源配置校准并冻结 |
 | 吞吐 | 以预解析样本为口径，mean 目标不超过 5 分钟/篇、p95 不超过 15 分钟/篇；同时报告完整获取/解析/排队/修复耗时 | 首批 10 篇校准及全部 50 篇耗时，不把估计当实测 |
 | 聚合与 API | selected Tc 及筛选条件来自同一事件；重复版本/引用不增加独立支持；范围、负结果及旧 source hold 保留 | 端到端查询、计数、原子组合与治理回归 |
 | 页面 | 保留线上默认列、筛选、排序、分页、英语 UI 与稳定路由；360/768/1440 宽度可用，键盘可打开/关闭证据 | 线上基线与新版截图、浏览器端到端检查 |
