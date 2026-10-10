@@ -54,6 +54,39 @@ def test_staging_reproduces_capture_without_granting_cloud_or_freezing_scope(tmp
     assert paper["supplement_status"] == "pending_source_scope_review"
 
 
+def test_documented_public_receipt_preserves_private_parent_and_public_input_hash(tmp_path):
+    import json
+    from pathlib import Path
+
+    receipt_path = (
+        Path(__file__).resolve().parents[2] / "docs/pilot/materials-ner-50.sources.prepared.v1.json"
+    )
+    public = json.loads(receipt_path.read_bytes())
+    assert "manifest_sha256" not in public
+    manifest, data = prepared(tmp_path)
+    public["papers"] = manifest[
+        "papers"
+    ]  # Synthetic bytes; retain the actual published receipt shape.
+    result = stage_development(public, tmp_path / "node", sources=SyntheticSources(data))
+    assert result["source_failures"] == []
+    assert result["prepared_input_manifest_sha256"] == public["private_prepared_manifest_sha256"]
+    assert result["staging_input_sha256"] == digest(public)
+    assert result["staging_input_sha256"] != result["prepared_input_manifest_sha256"]
+
+
+@pytest.mark.parametrize("mode", ["missing", "conflicting"])
+def test_invalid_parent_receipt_identity_is_rejected_before_source_download(tmp_path, mode):
+    manifest, data = prepared(tmp_path)
+    if mode == "missing":
+        manifest.pop("manifest_sha256")
+    else:
+        manifest["private_prepared_manifest_sha256"] = "0" * 64
+    sources = SyntheticSources(data)
+    with pytest.raises(ValueError, match="development_prepared_manifest_identity"):
+        stage_development(manifest, tmp_path / "node", sources=sources)
+    assert sources.calls == 0
+
+
 @pytest.mark.parametrize(
     "url",
     [

@@ -221,6 +221,17 @@ def stage_development(manifest, root: Path, *, sources=None, progress=lambda row
     from copy import deepcopy
     from .cli import write
 
+    prepared_sha = manifest.get("manifest_sha256") or manifest.get(
+        "private_prepared_manifest_sha256"
+    )
+    if not isinstance(prepared_sha, str) or not re.fullmatch(r"[0-9a-f]{64}", prepared_sha):
+        raise ValueError("development_prepared_manifest_identity_missing")
+    if (
+        manifest.get("manifest_sha256")
+        and manifest.get("private_prepared_manifest_sha256")
+        and manifest["manifest_sha256"] != manifest["private_prepared_manifest_sha256"]
+    ):
+        raise ValueError("development_prepared_manifest_identity_conflict")
     owned = sources is None
     sources = sources or ArxivSources(root / "sources")
     papers = deepcopy(manifest["papers"])
@@ -273,7 +284,8 @@ def stage_development(manifest, root: Path, *, sources=None, progress=lambda row
     body = {
         "version": "materials-ner-development-staging/1",
         "status": "development_staged_pending_review",
-        "prepared_input_manifest_sha256": manifest["manifest_sha256"],
+        "prepared_input_manifest_sha256": prepared_sha,
+        "staging_input_sha256": digest(manifest),
         "papers": papers,
         "staged_development_papers": staged,
         "source_failures": failures,
