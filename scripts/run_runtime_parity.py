@@ -14,12 +14,101 @@ import re
 import subprocess
 import tempfile
 import uuid
+from contextlib import contextmanager
 from pathlib import Path
 
 from runtime_inventory import compare, digest, loads
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN_LABEL = "org.jzis.sclib.runtime-parity.run"
+FAILURE_ERRORS = (ValueError, KeyError, TypeError, OSError, subprocess.SubprocessError)
+FAILURE_STAGES = frozenset({
+    "inputs", "provenance", "docker_context", "build", "image_validation",
+    "capture", "cleanup", "comparison", "artifacts",
+})
+MAX_DIAGNOSTIC_STREAM = 16_384
+# Observations only: these fixed failure phrases do not identify a registry or
+# establish a root cause. Never include arbitrary matched text in the report.
+BUILD_SIGNALS = {
+    "source_metadata_resolution_failed": ("failed to resolve source metadata", "failed to load metadata"),
+    "http_429": ("429 too many requests", "status code: 429", "status code 429"),
+    "registry_pull_quota": ("toomanyrequests", "pull rate limit"),
+    "manifest_missing": ("manifest unknown", "no matching manifest", "manifest not found"),
+    "registry_auth_denied": ("pull access denied", "unauthorized: authentication required", "no basic auth credentials"),
+    "dns_resolution_failed": ("temporary failure in name resolution", "no such host", "could not resolve host", "name or service not known"),
+    "tls_verification_failed": ("certificate verify failed", "x509: certificate"),
+    "transport_timeout": ("i/o timeout", "connection timed out", "context deadline exceeded", "tls handshake timeout"),
+    "disk_full": ("no space left on device",),
+    "dependency_resolution_failed": ("no solution found when resolving dependencies", "resolutionimpossible", "no matching distribution found", "could not find a version that satisfies the requirement"),
+    "dependency_fetch_failed": ("failed to download", "could not fetch url"),
+    "apt_failed": ("e: failed to fetch", "e: unable to fetch some archives", "e: unable to locate package", "dpkg: error"),
+    "home_unset": ("$home is not defined", "home is not set", "home environment variable is not set"),
+    "buildx_missing": ("buildx component is missing or broken", "buildx is not a docker command", "docker: 'buildx' is not a docker command"),
+    "docker_daemon_unavailable": ("cannot connect to the docker daemon", "is the docker daemon running"),
+    "unsupported_flag": ("unknown flag:", "unknown shorthand flag:"),
+}
+
+
+@contextmanager
+def failure_stage(stage: str):
+    """Label the original exception; never replace it or expose its message."""
+    try:
+        yield
+    except FAILURE_ERRORS as error:
+        # Preserve the innermost stage, including a cleanup failure that masks
+        # a capture failure under the existing finally semantics.
+        previous = getattr(error, "_runtime_parity_stage", None)
+        if type(previous) is not str or previous not in FAILURE_STAGES:
+            error._runtime_parity_stage = stage
+        raise
+
+
+def diagnostic_suffix(value) -> str:
+    """Bound each stream before decoding/case-folding; never render it."""
+    if type(value) is bytes:
+        return value[-MAX_DIAGNOSTIC_STREAM:].decode("ascii", errors="ignore").lower()
+    if type(value) is str:
+        return value[-MAX_DIAGNOSTIC_STREAM:].lower()
+    return ""
+
+
+def failure_report(project: str, error: Exception) -> dict:
+    stage = getattr(error, "_runtime_parity_stage", None)
+    if type(stage) is not str or stage not in FAILURE_STAGES:
+        stage = "unknown"
+    cause = "unknown"
+    exit_code = None
+    signals = []
+    if isinstance(error, subprocess.CalledProcessError):
+        error_kind = "called_process_error"
+        if type(error.returncode) is int and -(2**31) <= error.returncode < 2**31:
+            exit_code = error.returncode
+    elif isinstance(error, subprocess.TimeoutExpired):
+        error_kind = "timeout"
+    elif isinstance(error, (ValueError, KeyError, TypeError)):
+        error_kind = "validation"
+    elif isinstance(error, OSError):
+        error_kind = "io"
+    else:
+        error_kind = "unknown"
+    if stage == "build" and isinstance(error, (subprocess.CalledProcessError, subprocess.TimeoutExpired)):
+        stdout, stderr = diagnostic_suffix(error.stdout), diagnostic_suffix(error.stderr)
+        # Preserve v1 cause semantics; stdout observations are additional
+        # evidence rather than a newly inferred cause.
+        if isinstance(error, subprocess.CalledProcessError) and any(
+            marker in stderr for marker in BUILD_SIGNALS["registry_pull_quota"]
+        ):
+            cause = "registry_pull_rate_limit"
+        signals = sorted(
+            signal for signal, markers in BUILD_SIGNALS.items()
+            if any(marker in stream for marker in markers for stream in (stdout, stderr))
+        )
+    return {
+        "schema": "sclib-runtime-parity-failure/v2", "matches": False,
+        "project": project if type(project) is str and project in {"api", "ingestion"} else "unknown",
+        "stage": stage, "cause": cause, "error_kind": error_kind,
+        "subprocess_exit_code": exit_code, "observed_build_signals": signals,
+    }
 
 
 def run(command: list[str], *, stdin: str | None = None, timeout: int = 120) -> str:
@@ -54,10 +143,11 @@ def provenance(project: str, tests: dict) -> dict:
     if (tests["project_name"] != f"sclib-{project}" or tests["system"] != "Linux"
             or tests["machine"] != "x86_64"):
         raise ValueError("test inventory has the wrong project or platform")
-    endpoint = json.loads(run(["docker", "--context", "default", "context", "inspect", "default",
-                              "--format", "{{json .Endpoints.docker.Host}}"] ))
-    if not isinstance(endpoint, str) or not endpoint.startswith("unix:///"):
-        raise ValueError("only the local default Unix Docker daemon is supported")
+    with failure_stage("docker_context"):
+        endpoint = json.loads(run(["docker", "--context", "default", "context", "inspect", "default",
+                                  "--format", "{{json .Endpoints.docker.Host}}"] ))
+        if not isinstance(endpoint, str) or not endpoint.startswith("unix:///"):
+            raise ValueError("only the local default Unix Docker daemon is supported")
     return result
 
 
@@ -96,9 +186,12 @@ def clean_owned_container(cidfile: Path, run_id: str) -> None:
 
 
 def check(project: str, tests_path: Path, output: Path) -> dict:
-    tests = loads(tests_path.read_text())
-    expected = provenance(project, tests)
-    output.mkdir(parents=True, exist_ok=True)
+    with failure_stage("inputs"):
+        tests = loads(tests_path.read_text())
+    with failure_stage("provenance"):
+        expected = provenance(project, tests)
+    with failure_stage("artifacts"):
+        output.mkdir(parents=True, exist_ok=True)
     run_id = uuid.uuid4().hex
     labels = {"org.opencontainers.image.revision": expected["source_revision"],
               "org.jzis.sclib.runtime-parity.project": project,
@@ -113,28 +206,34 @@ def check(project: str, tests_path: Path, output: Path) -> dict:
         if project == "api":
             command.extend(["--build-arg", f"GIT_SHA={expected['source_revision'][:7]}"])
         command.extend(["--file", str(ROOT / project / "Dockerfile"), str(ROOT / project)])
-        run(command, timeout=1200)
-        image_id = iidfile.read_text().strip()
-        capture_command = inventory_command(image_id, cidfile, run_id, expected)
-        details = json.loads(run(["docker", "--context", "default", "image", "inspect", image_id]))
-        if (len(details) != 1 or details[0].get("Id") != image_id
-                or details[0].get("Os") != "linux" or details[0].get("Architecture") != "amd64"):
-            raise ValueError("built image identity/platform mismatch")
-        if any(details[0].get("Config", {}).get("Labels", {}).get(key) != value for key, value in labels.items()):
-            raise ValueError("built image provenance mismatch")
-        try:
-            # Exactly the same collector bytes as test capture; stdin avoids
-            # mounting any checkout, secret, Docker socket or credential file.
-            runtime = loads(run(capture_command, stdin=(ROOT / "scripts/runtime_inventory.py").read_text()))
-        finally:
-            clean_owned_container(cidfile, run_id)
-        failures = compare(runtime, tests)
+        with failure_stage("build"):
+            run(command, timeout=1200)
+        with failure_stage("image_validation"):
+            image_id = iidfile.read_text().strip()
+            capture_command = inventory_command(image_id, cidfile, run_id, expected)
+            details = json.loads(run(["docker", "--context", "default", "image", "inspect", image_id]))
+            if (len(details) != 1 or details[0].get("Id") != image_id
+                    or details[0].get("Os") != "linux" or details[0].get("Architecture") != "amd64"):
+                raise ValueError("built image identity/platform mismatch")
+            if any(details[0].get("Config", {}).get("Labels", {}).get(key) != value for key, value in labels.items()):
+                raise ValueError("built image provenance mismatch")
+        with failure_stage("capture"):
+            try:
+                # Exactly the same collector bytes as test capture; stdin avoids
+                # mounting any checkout, secret, Docker socket or credential file.
+                runtime = loads(run(capture_command, stdin=(ROOT / "scripts/runtime_inventory.py").read_text()))
+            finally:
+                with failure_stage("cleanup"):
+                    clean_owned_container(cidfile, run_id)
+        with failure_stage("comparison"):
+            failures = compare(runtime, tests)
         report = {"schema": "sclib-runtime-parity/v1", "matches": not failures,
                   "failures": failures, "project": project, "image_id": image_id,
                   "image_architecture": details[0].get("Architecture"), **expected,
                   "scope": "python_package_versions_not_os_libraries_or_application_execution"}
-        (output / "image-runtime.json").write_text(json.dumps(runtime, sort_keys=True, indent=2) + "\n")
-        (output / "parity-report.json").write_text(json.dumps(report, sort_keys=True, indent=2) + "\n")
+        with failure_stage("artifacts"):
+            (output / "image-runtime.json").write_text(json.dumps(runtime, sort_keys=True, indent=2) + "\n")
+            (output / "parity-report.json").write_text(json.dumps(report, sort_keys=True, indent=2) + "\n")
         return report
 
 
@@ -146,9 +245,17 @@ def main() -> int:
     args = parser.parse_args()
     try:
         report = check(args.project, args.tests, args.output)
-    except (ValueError, KeyError, TypeError, OSError, subprocess.SubprocessError):
-        # No raw subprocess output, environment, DSNs or Docker config is logged.
-        print("Runtime parity failed: build, capture or provenance validation failed.")
+    except FAILURE_ERRORS as error:
+        report = failure_report(args.project, error)
+        encoded = json.dumps(report, sort_keys=True)
+        try:
+            args.output.mkdir(parents=True, exist_ok=True)
+            (args.output / "failure-report.json").write_text(encoded + "\n")
+        except (OSError, ValueError):
+            # Keep the original failure and a safe console report even when
+            # the diagnostic destination itself cannot be written.
+            print("Runtime parity failure artifact unavailable.")
+        print(encoded)
         return 1
     print(json.dumps(report, sort_keys=True))
     return int(not report["matches"])
