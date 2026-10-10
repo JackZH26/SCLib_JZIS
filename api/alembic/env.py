@@ -24,7 +24,9 @@ from services.schema_lifecycle import migration_lock  # noqa: E402
 
 config = context.config
 if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+    # Migrations can run in a process that already has application audit loggers.
+    # Preserve those loggers instead of silently disabling subsequent audits.
+    fileConfig(config.config_file_name, disable_existing_loggers=False)
 
 target_metadata = Base.metadata
 

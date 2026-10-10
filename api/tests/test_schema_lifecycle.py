@@ -7,6 +7,7 @@ guarded migration runner verifies the actual Alembic upgrade to head.
 from __future__ import annotations
 
 import asyncio
+import logging
 
 import pytest
 from sqlalchemy import text
@@ -80,7 +81,9 @@ async def test_uninitialized_database_is_not_stamped(schema_engine):
             await connection.execute(text("CREATE TABLE public.alembic_version (version_num varchar(100) PRIMARY KEY)"))
 
 
-async def test_session_lock_serializes_manual_alembic_and_api_admission(schema_engine):
+async def test_session_lock_serializes_manual_alembic_and_api_admission(schema_engine, monkeypatch):
+    audit_logger = logging.getLogger("routers.admin")
+    monkeypatch.setattr(audit_logger, "disabled", False)
     async with schema_engine.connect() as owner:
         await owner.run_sync(acquire_migration_lock)
         # A second transaction commit cannot release the session lock.
@@ -93,6 +96,7 @@ async def test_session_lock_serializes_manual_alembic_and_api_admission(schema_e
             await check_application_schema(schema_engine)
         with pytest.raises(SchemaLifecycleError, match="Another schema operation"):
             await asyncio.to_thread(command.upgrade, alembic_config(), "head")
+        assert audit_logger.disabled is False
     # NullPool physically closes the owner, releasing the session lock.
     assert (await check_application_schema(schema_engine))["status"] == "compatible"
 

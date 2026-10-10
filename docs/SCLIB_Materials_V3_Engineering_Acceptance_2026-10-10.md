@@ -41,7 +41,7 @@ Mini 实机确认 M4 Pro/48 GiB；该节点任务已安装 `87a71c0e…` 的固�
 | API新增数据/来源治理/科研 shadow | `api-auth-and-v3-final-v2.xml`：59 passed；最终压力归属及隔离复测 `api-pressure-and-isolation-final.xml`：27 passed；新增6个压力归属案例（另有1个缺值语义案例在初次API收集后加入），无错误压力回退 |
 | frontend source +unit | `frontend-final.log`：46项源码检查通过；最后 `frontend-pressure-final.log`：unit 3201 passed、3个既有skip；最终 tsc 与 production build通过 |
 | UI 浏览器 | [QA receipt](pilot/materials-v3-ui-qa.v1.json)，三个宽度，文档无水平溢出；表格自己滚动，keyboard初次观察19.5px、最终压力角色复核观察40px位移；临时viewport/tab/服务器已清理 |
-| API全部收集项 | 初始8567项；原始运行在临时服务一小时能力到期前中断分组，记录4370项：4353 passed、6 skip、1失败、10 setup errors。失败为旧 corpus operator假设空DB（63≠3）；已改为基线与旧行不变校验。10 errors为本机PG锁表容量不足；只调整新建临时服务的 max_locks_per_transaction=1024，涉及两个模块40项全部复测通过。剩余2132与2065项分别在独立临时服务中运行；最终代码实际收集8574项（新增7项）；全部覆盖及最终统计由外部最终收据记录，保留原始失败，不把中断称为整套通过 |
+| API全部收集项 | 初始8567项；原始运行在临时服务一小时能力到期前中断分组，记录4370项：4353 passed、6 skip、1失败、10 setup errors。失败为旧 corpus operator假设空DB（63≠3）；已改为基线与旧行不变校验。10 errors为本机PG锁表容量不足；只调整新建临时服务的 max_locks_per_transaction=1024，涉及两个模块40项全部复测通过。尾批A为2129 passed、3失败：恢复快照2项超过整库20,000行/32 MiB上限，改为独立服务模块且14项复测通过；另1项为Alembic默认禁用已有应用logger，单独日志测试通过、先运行迁移再运行日志测试重现失败，改为保留已有logger后迁移与correction两个模块71项通过。尾批B为2062 passed、3 skip，另有61个passed subtests。按实际JUnit与8574项最终collection逐项核对，跨批次及针对原因复测后的覆盖为8566 passed、8 skip，0遗漏、0未解决失败；10个随机UUID4参数采用唯一匹配并保留对应关系。这是多次真实收据合并，未称为一次完整干净运行；密封收据与最终CI状态另附 |
 | scripts 边界及 runtime | 首次 CI 的2个旧迁移测试依赖表名列表完整字符串；改为执行受控 snapshot并检查所有旧行保留及新空表排除，相关48项通过。完整 `scripts-final-v2.xml` 为3176 passed、1个既有skip，另有148个passed subtests。随后对批次隔离与snapshot守卫复测79项通过。首次本机全跑误用了原checkout的editable package，保留30个collection errors，改为显式当前API PYTHONPATH后复测 |
 | migration | 历史 v7通过；最终完整迁移在代码与文档冻结后，对最终commit重新密封，收据独立保存 |
 
