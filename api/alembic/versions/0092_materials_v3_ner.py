@@ -52,6 +52,9 @@ def upgrade():
 
 def downgrade():
     # Rollback is a read-path flag/snapshot switch. Do not erase populated history.
+    # Lock before the empty checks so an importer cannot insert retained rows
+    # between those checks and the eventual table drops.
+    op.execute(f"LOCK TABLE {', '.join(TABLE_ORDER)}, event_properties IN ACCESS EXCLUSIVE MODE")
     for name in TABLE_ORDER:
         if op.get_bind().execute(sa.text(f"SELECT EXISTS(SELECT 1 FROM {name})")).scalar():
             raise RuntimeError("Materials V3 downgrade refused: retained history exists")
@@ -67,7 +70,9 @@ def downgrade():
         raise RuntimeError("Materials V3 downgrade refused: V3 scientific properties exist")
     for name in reversed(TABLE_ORDER):
         _tables()[name].drop(op.get_bind())
-    op.execute("DROP FUNCTION mv3_immutable_history()")
+    # Metadata-only owned rehearsals may omit the migration-created function.
+    # All V3 relations and properties have already been locked and checked empty.
+    op.execute("DROP FUNCTION IF EXISTS public.mv3_immutable_history()")
     from models.research_schema_v2 import PROPERTY_UNITS
 
     old = " OR ".join(f"(property_key='{k}' AND unit='{v}')" for k, v in PROPERTY_UNITS.items())

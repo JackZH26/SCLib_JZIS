@@ -20,7 +20,7 @@
 | 材料页 | 保留旧列表/筛选/排序/布局，在 Evidence 和详情加入按 Work 展开的 source result rows；另有私有候选 preview | 360/768/1440、负结果、区间、多判据、路径、未知/ambient、参数来源、locator、重试及键盘横向滚动验证；Observed Tc只配测量压力，Computed Tc只配计算压力，合成压力单独保留 |
 | 治理 | source/material hold动态过滤；候选 API限 reviewer/admin；no-store、noindex | 匿名401、普通用户403；撤稿/hold/范围过滤回归；没有生产候选接纳或 snapshot激活 |
 
-Migration rehearsal 会核旧数据/字段与冻结函数、0092→0091→0092 往返、14表的 UPDATE/DELETE/TRUNCATE拒绝、有候选数据时拒绝 downgrade。旧 head 的 inventory 仅在确认新表为空后排除新增表，不通过漏检掩盖历史数据变化。
+Migration rehearsal 会核旧数据/字段与冻结函数、0092→0091→0092 往返、14表的 UPDATE/DELETE/TRUNCATE拒绝、有候选数据时拒绝 downgrade。旧 head 的 inventory 仅在确认新表为空后排除新增表，不通过漏检掩盖历史数据变化。Downgrade 在检查空表前取得全部 V3 表和 event_properties 的排他锁，防止检查后并发写入再被删除。首次 CI 的 metadata-only 空库测试缺少迁移创建的 trigger function；在锁定并确认历史为空后使用 DROP FUNCTION IF EXISTS，实际空库往返复测通过。
 
 ## 来源与固定 tokenizer
 
@@ -28,7 +28,7 @@ Migration rehearsal 会核旧数据/字段与冻结函数、0092→0091→0092 �
 
 在独立 CPU 环境，用固定 revision 的真实 tokenizer及 chat template、关闭 thinking，对完整 prompt计数：209块输入为 3,060–10,096 tokens，预留4,096输出均不超过16,384；0个超预算块。见 [tokenizer receipt](pilot/materials-ner-qwen-tokenizer.preflight.v1.json)。此试验没有安装/加载模型权重，也没有生成结果；不能代替 MLX 兼容性、内存或NER准确率验收。初次试验缺 jinja2的失败记录保留，安装依赖后才得到该收据。
 
-Mini 实机确认 M4 Pro/48 GiB；该节点任务已报告 17个固定模型文件完整校验、20.43 GB、独立环境与14项拒绝/准备测试通过。旧worker停止收据、加载前内存余量、实际服务账号、真实生成与24h soak仍 pending。代码安装或权重下载不是 local_ready/compute_verified。
+Mini 实机确认 M4 Pro/48 GiB；该节点任务已安装 `87a71c0e…` 的固定代码及冻结环境，完整核验17个模型文件、20.43 GB；18项离线检查及所选54项既有测试通过。真实 tokenizer 的完整合成提示词为2,747输入tokens，schema保留loading onset/zero与unloading onset三项，但数据是手工合成，真实生成未执行。节点当时可用内存27.21 GiB，低于36 GiB加载门槛；旧worker停止收据、服务监督与权限、真实生成与24h soak仍 pending。代码安装或权重下载不是 local_ready/compute_verified；后续修复提交的同步状态由最终收据单独记录。
 
 ## 工程测试收据
 
@@ -38,10 +38,11 @@ Mini 实机确认 M4 Pro/48 GiB；该节点任务已报告 17个固定模型文�
 |---|---|
 | ingestion完整套件 | `ingestion-final-v2.xml`：1554 passed，34项既有 SQL编译deprecation warnings |
 | compute staging +NER adapter | `compute-ner-final-v2.xml`：25 passed，真实本机HTTP/SQLite +合成 provider；无真实 MLX生成 |
-| API新增数据/来源治理/科研 shadow | `api-auth-and-v3-final-v2.xml`：59 passed；最终压力归属及隔离复测 `api-pressure-and-isolation-final.xml`：27 passed；新增6个压力归属案例，无错误压力回退 |
+| API新增数据/来源治理/科研 shadow | `api-auth-and-v3-final-v2.xml`：59 passed；最终压力归属及隔离复测 `api-pressure-and-isolation-final.xml`：27 passed；新增6个压力归属案例（另有1个缺值语义案例在初次API收集后加入），无错误压力回退 |
 | frontend source +unit | `frontend-final.log`：46项源码检查通过；最后 `frontend-pressure-final.log`：unit 3201 passed、3个既有skip；最终 tsc 与 production build通过 |
 | UI 浏览器 | [QA receipt](pilot/materials-v3-ui-qa.v1.json)，三个宽度，文档无水平溢出；表格自己滚动，keyboard初次观察19.5px、最终压力角色复核观察40px位移；临时viewport/tab/服务器已清理 |
-| API全部收集项 | 初始8567项；原始运行在临时服务一小时能力到期前中断分组，记录4370项：4353 passed、6 skip、1失败、10 setup errors。失败为旧 corpus operator假设空DB（63≠3）；已改为基线与旧行不变校验。10 errors为本机PG锁表容量不足；只调整新建临时服务的 max_locks_per_transaction=1024，涉及两个模块40项全部复测通过。剩余2132与2065项分别在独立临时服务中运行；与新增6项的全部覆盖及最终统计由外部最终收据记录，保留原始失败，不把中断称为整套通过 |
+| API全部收集项 | 初始8567项；原始运行在临时服务一小时能力到期前中断分组，记录4370项：4353 passed、6 skip、1失败、10 setup errors。失败为旧 corpus operator假设空DB（63≠3）；已改为基线与旧行不变校验。10 errors为本机PG锁表容量不足；只调整新建临时服务的 max_locks_per_transaction=1024，涉及两个模块40项全部复测通过。剩余2132与2065项分别在独立临时服务中运行；最终代码实际收集8574项（新增7项）；全部覆盖及最终统计由外部最终收据记录，保留原始失败，不把中断称为整套通过 |
+| scripts 边界及 runtime | 首次 CI 的2个旧迁移测试依赖表名列表完整字符串；改为执行受控 snapshot并检查所有旧行保留及新空表排除，相关48项通过。完整 `scripts-final-v2.xml` 为3176 passed、1个既有skip，另有148个passed subtests。随后对批次隔离与snapshot守卫复测79项通过。首次本机全跑误用了原checkout的editable package，保留30个collection errors，改为显式当前API PYTHONPATH后复测 |
 | migration | 历史 v7通过；最终完整迁移在代码与文档冻结后，对最终commit重新密封，收据独立保存 |
 
 此前采集失败还包括缺 pylatexenc、未提供隔离测试DB导致的旧 ingestion settings collection错误、早期迁移 rehearsal问题与旧 frontend依赖目录 tracing问题；均保留原日志，针对原因修复后再测试。没有通过跳过新 NER测试来取得通过结果。
