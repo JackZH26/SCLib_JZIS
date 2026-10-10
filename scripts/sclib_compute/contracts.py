@@ -105,7 +105,7 @@ class Completion(Closed):
     input_manifest_sha256: Sha256
     runtime_id: Identifier
     manifest: Annotated[list[FilePin], Field(min_length=1, max_length=16)]
-    solver_outcome: Literal["success", "solver_failure", "not_converged", "clean_checkpoint"]
+    solver_outcome: Literal["success", "solver_failure", "not_converged", "clean_checkpoint", "interrupted"]
     elapsed_seconds: Annotated[int, Field(ge=0, le=86400)]
     scientific_status: Literal["not_assessed"] = "not_assessed"
 

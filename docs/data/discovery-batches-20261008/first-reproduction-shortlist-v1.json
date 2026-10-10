@@ -1,0 +1,3096 @@
+{
+  "schema_version": "sclib-first-reproduction-shortlist/1.0.0",
+  "created_on": "2026-10-08",
+  "status": "proposed_for_root_review",
+  "source_catalogue_pin": {
+    "artifact": "source-computed-candidates-2026-10-07.json",
+    "bytes": 2273528,
+    "sha256": "4a9089bc569f99ad7f5f469280814fb22bfcc86252b1fb7c1e1be446f8bcac98"
+  },
+  "saved_method_sources": [
+    {
+      "artifact": "ROOT-frozen-prototype-controls-source-science-workingview-v1.json",
+      "bytes": 23282876,
+      "sha256": "9f36366526c6fb634ef89f21f8d48097aeda98f0c50e75e1160b782a198efd5c"
+    },
+    {
+      "artifact": "geometry-payload.json",
+      "bytes": 591661,
+      "sha256": "93c3ce21c362fc36392db6d13f4555d76cce96122769d1212414bbc770f81541"
+    },
+    {
+      "artifact": "ROOT-all500-owned-small-q-sampling-summary-v1.json",
+      "bytes": 852876,
+      "sha256": "7c41fa11f1d930ec1a1edf424825bf628db3569b27a45512a7ae90000d542175"
+    }
+  ],
+  "selection_scope": "Six source-published states for reconstruction and independent response tests, not new discoveries or a calibrated potential ranking. All source route attributions remain geometry_construction. Preparation sequence is operational, not a material score.",
+  "new_computations": 0,
+  "automatic_enqueue": false,
+  "publication_authority": false,
+  "shared_control_policy": "Ti3Ge and Ti3Te share agm002190808; count and execute the verified Sn control once per identical settings/runtime, retaining its reuse links.",
+  "unique_source_states": 11,
+  "blocking_inputs": [
+    "Complete raw source input files and exact full UPF files with SHA-256, licenses and validated headers for every target/control. Review extracts inspected here have null full-UPF identity fields.",
+    "Source-method preparation/reader contract for the PBEsol collection hint and original model: current PBE-only QE7.5 MgB2 adapter cannot silently accept this different method.",
+    "Explicit treatment of source-omitted ecutrho/spin/charge values, justified by source output/UPF/engine defaults rather than guessed experimental conditions.",
+    "Per-pair resource trial, physical-grid refinement plan, observable-specific numerical tolerances and bounded job/campaign budget before enqueue.",
+    "Fresh immutable input manifests and exact state-to-result bindings; original source QE6.8/7.1 versus Mini QE7.5 must remain explicit."
+  ],
+  "budgets": {
+    "cpu_core_hours": null,
+    "memory_GiB": null,
+    "wall_seconds": null,
+    "human_hours": null
+  },
+  "candidates": [
+    {
+      "preparation_sequence": 1,
+      "id": "source-hypothesis:agm001228974",
+      "formula": "TiNb2Mo",
+      "target": {
+        "source_state": "agm001228974",
+        "source_directory": "batch-a/TiNb2Mo_agm001228974",
+        "listed_QE_atoms": 4,
+        "CIF_source_record": 7467,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 4.54338184,
+            "length_b": 4.54338184,
+            "length_c": 3.200859,
+            "angle_alpha": 90.0,
+            "angle_beta": 90.0,
+            "angle_gamma": 90.0,
+            "volume": 66.07315087
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Ti0",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Nb1",
+              "species": "Nb",
+              "frac_unwrapped": [
+                0.0,
+                0.5,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "Nb2",
+              "species": "Nb",
+              "frac_unwrapped": [
+                0.5,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "Mo3",
+              "species": "Mo",
+              "frac_unwrapped": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 7484,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                98.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                6.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                8.585747348635769
+              ],
+              "celldm(2)": null,
+              "celldm(3)": [
+                0.704510233
+              ],
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.0 0.0 0.500000007208889",
+                  "Nb 0.0 0.500000007208889 0.0",
+                  "Nb 0.500000007208889 0.0 0.0",
+                  "Mo 0.500000007208889 0.500000007208889 0.500000007208889"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "6 6 10 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 7485,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                98.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                6.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                8.585747348635769
+              ],
+              "celldm(2)": null,
+              "celldm(3)": [
+                0.704510233
+              ],
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.0 0.0 0.500000007208889",
+                  "Nb 0.0 0.500000007208889 0.0",
+                  "Nb 0.500000007208889 0.0 0.0",
+                  "Mo 0.500000007208889 0.500000007208889 0.500000007208889"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "24 24 40 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.7.1 starts on  8Nov2022 at  3:24:23"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.7.1 starts on  8Nov2022 at  2:58:36"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.0,
+        "source_fine_max_abs_stress_GPa": 0.45899999999999996,
+        "source_q_grid": [
+          3.0,
+          3.0,
+          5.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "control": {
+        "source_state": "agm002322068",
+        "source_directory": "batch-a/TiNb2Mo_agm002322068",
+        "listed_QE_atoms": 4,
+        "CIF_source_record": 8143,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 4.538087,
+            "length_b": 4.538087,
+            "length_c": 4.538087,
+            "angle_alpha": 60.0,
+            "angle_beta": 60.0,
+            "angle_gamma": 60.0,
+            "volume": 66.08508512
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Ti0",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Nb1",
+              "species": "Nb",
+              "frac_unwrapped": [
+                -0.75000001,
+                2.25000002,
+                -0.75000001
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "Nb2",
+              "species": "Nb",
+              "frac_unwrapped": [
+                -0.25,
+                0.75000001,
+                -0.25
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "Mo3",
+              "species": "Mo",
+              "frac_unwrapped": [
+                -0.5,
+                1.50000001,
+                -0.5
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 8159,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                98.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                2.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                12.127930011570317
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.0 0.0 0.0",
+                  "Nb -0.750000010813334 2.25000003244 -0.750000010813334",
+                  "Nb -0.250000003604445 0.750000010813334 -0.250000003604445",
+                  "Mo -0.50000000720889 1.50000002162667 -0.500000007208889"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "8 8 8 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 8160,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                98.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                2.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                12.127930011570317
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.0 0.0 0.0",
+                  "Nb -0.750000010813334 2.25000003244 -0.750000010813334",
+                  "Nb -0.250000003604445 0.750000010813334 -0.250000003604445",
+                  "Mo -0.50000000720889 1.50000002162667 -0.500000007208889"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "32 32 32 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.7.1 starts on  5Oct2022 at 22:39:32"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.7.1 starts on  5Oct2022 at 22:33:25"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.0,
+        "source_fine_max_abs_stress_GPa": 0.146,
+        "source_q_grid": [
+          4.0,
+          4.0,
+          4.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "selection_reason": "Same-composition four-site ordered cells isolate a geometry/order contrast before changing chemistry.",
+      "existing_route": "geometry_construction",
+      "quantified_bandwidth": null,
+      "quantified_mobile_carrier_density": null,
+      "evidence_level": "E1",
+      "source_tc_reference_only": {
+        "target_K": 15.378,
+        "control_K": 14.888,
+        "delta_K": 0.4900000000000002,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "ambient_scope": "Zero-pressure-target optimized models and completed sampled non-Gamma/ASR-path phonons plus positive Gamma optical compression support local near-ambient harmonic feasibility within the declared source model.",
+      "known_limitations": "NegativeGamma modes are predominantly translational, and the independently checked optical form is positive beyond raw printing bounds. Magnetism/SOC/disorder and full-BZ/finite-temperature stability remain beyond this nonmagnetic source approximation.",
+      "first_test": "Reconstruct both original SCF cells and full source UPFs; initialize and run matched PBEsol-family coarse SCFs, then refine physical reciprocal resolution and compare forces/stress before EPC.",
+      "falsifier": "Failure to retain the declared structures or reversal/disappearance of the matched EPC advantage beyond numerical sensitivity revises this specific response; SCF alone cannot test Tc.",
+      "evidence_card": {
+        "repository_path": "frontend/public/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001228974.json",
+        "artifact": "agm001228974.json",
+        "bytes": 4126,
+        "sha256": "3adcbcab58061fd518b87e856eb75dc79d96986ed459db04f2c32335a6162f10"
+      },
+      "retained_counterlimitations": [],
+      "execution_status": "not_prepared_not_queued_not_run",
+      "grade_change": null,
+      "formal_RPS": null,
+      "global_novelty": "unresolved",
+      "exact_experimental_status": "unresolved"
+    },
+    {
+      "preparation_sequence": 2,
+      "id": "source-hypothesis:agm001828806",
+      "formula": "NbTa3",
+      "target": {
+        "source_state": "agm001828806",
+        "source_directory": "batch-a/NbTa3_agm001828806",
+        "listed_QE_atoms": 4,
+        "CIF_source_record": 13905,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 4.63330659,
+            "length_b": 4.63330659,
+            "length_c": 3.28156452,
+            "angle_alpha": 90.0,
+            "angle_beta": 90.0,
+            "angle_gamma": 90.0,
+            "volume": 70.4470848
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Ta0",
+              "species": "Ta",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Ta1",
+              "species": "Ta",
+              "frac_unwrapped": [
+                0.0,
+                0.5,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "Ta2",
+              "species": "Ta",
+              "frac_unwrapped": [
+                0.5,
+                0.0,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "Nb3",
+              "species": "Nb",
+              "frac_unwrapped": [
+                0.5,
+                0.5,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 13922,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                144.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                6.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                8.755680515422949
+              ],
+              "celldm(2)": null,
+              "celldm(3)": [
+                0.708255422683761
+              ],
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ta 0.0 0.0 0.0",
+                  "Ta 0.5 0.0 0.5",
+                  "Ta 8.0406133e-17 0.5 0.5",
+                  "Nb 0.5 0.5 8.6455166e-17"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "6 6 10 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 13923,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                144.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                6.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                8.755680515422949
+              ],
+              "celldm(2)": null,
+              "celldm(3)": [
+                0.708255422683761
+              ],
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ta 0.0 0.0 0.0",
+                  "Ta 0.5 0.0 0.5",
+                  "Ta 8.0406133e-17 0.5 0.5",
+                  "Nb 0.5 0.5 8.6455166e-17"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "24 24 40 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.6.8 starts on 18Apr2023 at 14:46:54"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.6.8 starts on 18Apr2023 at 11:32: 6"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.0,
+        "source_fine_max_abs_stress_GPa": 0.331,
+        "source_q_grid": [
+          3.0,
+          3.0,
+          5.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "control": {
+        "source_state": "agm001416090",
+        "source_directory": "batch-a/NbTa3_agm001416090",
+        "listed_QE_atoms": 4,
+        "CIF_source_record": 16081,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 4.63614381,
+            "length_b": 4.63614381,
+            "length_c": 4.63614381,
+            "angle_alpha": 60.0,
+            "angle_beta": 60.0,
+            "angle_gamma": 60.0,
+            "volume": 70.46211873
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Ta0",
+              "species": "Ta",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Ta1",
+              "species": "Ta",
+              "frac_unwrapped": [
+                0.25,
+                0.25000001,
+                0.25
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "Ta2",
+              "species": "Ta",
+              "frac_unwrapped": [
+                0.75,
+                0.75000001,
+                0.74999999
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "Nb3",
+              "species": "Nb",
+              "frac_unwrapped": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 16097,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                144.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                2.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                12.389984510307798
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ta 0.0 0.0 0.0",
+                  "Ta 0.25 0.25000001 0.25",
+                  "Ta 0.75 0.75000001 0.74999999",
+                  "Nb 0.5 0.5 0.5"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "8 8 8 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 16098,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                144.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                2.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                12.389984510307798
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ta 0.0 0.0 0.0",
+                  "Ta 0.25 0.25000001 0.25",
+                  "Ta 0.75 0.75000001 0.74999999",
+                  "Nb 0.5 0.5 0.5"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "32 32 32 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.6.8 starts on 18Apr2023 at 13:12:52"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.6.8 starts on 18Apr2023 at 11:56:47"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.0,
+        "source_fine_max_abs_stress_GPa": 0.177,
+        "source_q_grid": [
+          4.0,
+          4.0,
+          4.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "selection_reason": "Same composition and nearly equal source volumes make the ordering contrast informative; near-degeneracy provides a deliberately demanding control.",
+      "existing_route": "geometry_construction",
+      "quantified_bandwidth": null,
+      "quantified_mobile_carrier_density": null,
+      "evidence_level": "E1",
+      "source_tc_reference_only": {
+        "target_K": 12.871,
+        "control_K": 12.235,
+        "delta_K": 0.636000000000001,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "ambient_scope": "Source nearambient fullstress/pressure and coarse-relaxed geometry, positive raw-Gamma optical compression beyond printing bounds, and no negative printed finite-path values support preliminary local feasibility only within the declared source approximation. WholeBZ/global hull/synthesis remain unknown.",
+      "known_limitations": "Small source Eli Tc gain12.871 versus12.235K; all ten lambda contrasts positive but q3x3x5 versus4^3. Coarse/fine phase-energy preference flips at sub-meV fine scale; assess as near-degenerate phase response, not global ground state. Evaluated risks define a falsifiable bounded hypothesis, not an established bulk ground state or experimental coherence proof.",
+      "first_test": "Reconstruct both four-site cells; independently test the coarse/fine energy-order sign change with consistent energy definitions, smearing and physical k-resolution.",
+      "falsifier": "A vanished or reversed coupling gain at matched settings refutes the source-response advantage; unresolved sub-meV energy ordering remains unresolved rather than a ground-state claim.",
+      "evidence_card": {
+        "repository_path": "frontend/public/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm001828806.json",
+        "artifact": "agm001828806.json",
+        "bytes": 4336,
+        "sha256": "d84eb9d19121145292a6f7cd2d0fd59ef1018bb2d4055095e0918dbcb8aa1d3b"
+      },
+      "retained_counterlimitations": [],
+      "execution_status": "not_prepared_not_queued_not_run",
+      "grade_change": null,
+      "formal_RPS": null,
+      "global_novelty": "unresolved",
+      "exact_experimental_status": "unresolved"
+    },
+    {
+      "preparation_sequence": 3,
+      "id": "source-hypothesis:agm002291027",
+      "formula": "YNbN2",
+      "target": {
+        "source_state": "agm002291027",
+        "source_directory": "batch-a/N2YNb_agm002291027",
+        "listed_QE_atoms": 4,
+        "CIF_source_record": 6261,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 5.65181464,
+            "length_b": 5.65181464,
+            "length_c": 5.65181464,
+            "angle_alpha": 33.11229828,
+            "angle_beta": 33.11229826,
+            "angle_gamma": 33.11229828,
+            "volume": 47.95392586
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Y0",
+              "species": "Y",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Nb1",
+              "species": "Nb",
+              "frac_unwrapped": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "N2",
+              "species": "N",
+              "frac_unwrapped": [
+                0.24174948,
+                0.24174948,
+                0.24174948
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "N3",
+              "species": "N",
+              "frac_unwrapped": [
+                0.75825053,
+                0.75825052,
+                0.75825052
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 6282,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                98.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                5.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                10.68038177555471
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": [
+                0.8376014791106668
+              ],
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Y 0.0 0.0 0.0",
+                  "Nb 0.5 0.5 0.5",
+                  "N 0.24174948 0.24174948 0.24174948",
+                  "N 0.75825052 0.75825052 0.75825052"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "8 8 8 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 6283,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                98.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                5.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                10.68038177555471
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": [
+                0.8376014791106668
+              ],
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Y 0.0 0.0 0.0",
+                  "Nb 0.5 0.5 0.5",
+                  "N 0.24174948 0.24174948 0.24174948",
+                  "N 0.75825052 0.75825052 0.75825052"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "32 32 32 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.7.1 starts on 13May2023 at 13: 9: 2"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.7.1 starts on 13May2023 at 12:55:21"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.023729741478300106,
+        "source_fine_max_abs_stress_GPa": 0.10300000000000001,
+        "source_q_grid": [
+          4.0,
+          4.0,
+          4.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "control": {
+        "source_state": "agm002291033",
+        "source_directory": "batch-a/N2YTa_agm002291033",
+        "listed_QE_atoms": 4,
+        "CIF_source_record": 11509,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 5.65504344,
+            "length_b": 5.65504344,
+            "length_c": 5.65504344,
+            "angle_alpha": 32.96301813,
+            "angle_beta": 32.9630181,
+            "angle_gamma": 32.96301813,
+            "volume": 47.64127621
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Y0",
+              "species": "Y",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Ta1",
+              "species": "Ta",
+              "frac_unwrapped": [
+                0.50000001,
+                0.5,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "N2",
+              "species": "N",
+              "frac_unwrapped": [
+                0.24010711,
+                0.24010711,
+                0.24010711
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "N3",
+              "species": "N",
+              "frac_unwrapped": [
+                0.7598929,
+                0.7598929,
+                0.7598929
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 11530,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                144.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                5.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                10.686483330165409
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": [
+                0.8390219335791513
+              ],
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Y 0.0 0.0 0.0",
+                  "Ta 0.5 0.5 0.5",
+                  "N 0.24010711 0.24010711 0.24010711",
+                  "N 0.75989289 0.75989289 0.75989289"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "8 8 8 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 11531,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                144.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                5.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                10.686483330165409
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": [
+                0.8390219335791513
+              ],
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Y 0.0 0.0 0.0",
+                  "Ta 0.5 0.5 0.5",
+                  "N 0.24010711 0.24010711 0.24010711",
+                  "N 0.75989289 0.75989289 0.75989289"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "32 32 32 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.7.1 starts on 13May2023 at 13:48:31"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.7.1 starts on 13May2023 at 13: 9:15"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.012998727327003039,
+        "source_fine_max_abs_stress_GPa": 0.191,
+        "source_q_grid": [
+          4.0,
+          4.0,
+          4.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "selection_reason": "Small layered nitride with a specified distortion competitor and source input/structure records.",
+      "existing_route": "geometry_construction",
+      "quantified_bandwidth": null,
+      "quantified_mobile_carrier_density": null,
+      "evidence_level": "E1",
+      "source_tc_reference_only": {
+        "target_K": 15.006,
+        "control_K": 12.416,
+        "delta_K": 2.59,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "ambient_scope": "Both source SCFs converge, near-zero coarse forces/stress and bounded fine response are measured. Fine Fmax=0.023729741 eV/A, P=-0.003 GPa, full max stress=0.103 GPa. Gamma optical compression is positive beyond printing bound and sampled path has no signed negative values. All listed q outputs have JOBDONE/last response convergence and no routine errors. This supports a finite-grid local/metastable source model, not global hull or experimental synthesis.",
+      "known_limitations": "A concrete competing structure exists: Pilemalm et al. predict a distorted YNbN2 relative to the binaries, while their YTaN2 is unfavorable. Those different relaxed metrics/DFT methods are not the exact R-3m source state and are not imported as its hull energy. The source state is locally stable at Gamma and sampled path, so the prior supplies a falsifiable distortion/decomposition risk rather than automatic rejection. Nitrogen defects/order and suppressed magnetism remain possible; a reported ScMN2 semiconductor result is not assumed to be the exact YNbN2 metallic EPC phase.",
+      "first_test": "Reproduce R-3m target/control force and full-stress response; prepare a same-composition symmetry-breaking perturbation and an independently sourced distorted competitor before relaxation.",
+      "falsifier": "Barrierless relaxation out of the proposed basin, or loss of metallic pairing response, opposes the exact R-3m route; different-phase literature does not decide this by itself.",
+      "evidence_card": {
+        "repository_path": "frontend/public/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002291027.json",
+        "artifact": "agm002291027.json",
+        "bytes": 5146,
+        "sha256": "58956deed9c5f399876c973aaa2d75f04720058fb30edeba25c3b48498f16d44"
+      },
+      "retained_counterlimitations": [],
+      "execution_status": "not_prepared_not_queued_not_run",
+      "grade_change": null,
+      "formal_RPS": null,
+      "global_novelty": "unresolved",
+      "exact_experimental_status": "unresolved"
+    },
+    {
+      "preparation_sequence": 4,
+      "id": "source-hypothesis:agm002346313",
+      "formula": "N2TiZr",
+      "target": {
+        "source_state": "agm002346313",
+        "source_directory": "batch-a/N2TiZr_agm002346313",
+        "listed_QE_atoms": 4,
+        "CIF_source_record": 13695,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 5.34865389,
+            "length_b": 5.34865389,
+            "length_c": 5.34865389,
+            "angle_alpha": 33.82470202,
+            "angle_beta": 33.82470198,
+            "angle_gamma": 33.82470202,
+            "volume": 42.25114491
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Zr0",
+              "species": "Zr",
+              "frac_unwrapped": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Ti1",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "N2",
+              "species": "N",
+              "frac_unwrapped": [
+                0.25585542,
+                0.25585542,
+                0.25585542
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "N3",
+              "species": "N",
+              "frac_unwrapped": [
+                0.74414458,
+                0.74414458,
+                0.74414458
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 13716,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                98.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                5.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                10.107490990006234
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": [
+                0.8307445556512955
+              ],
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Zr 0.5 0.5 0.5",
+                  "Ti 0.0 0.0 0.0",
+                  "N 0.25585542 0.25585542 0.25585542",
+                  "N 0.74414458 0.74414458 0.74414458"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "8 8 8 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 13717,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                98.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                5.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                10.107490990006234
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": [
+                0.8307445556512955
+              ],
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Zr 0.5 0.5 0.5",
+                  "Ti 0.0 0.0 0.0",
+                  "N 0.25585542 0.25585542 0.25585542",
+                  "N 0.74414458 0.74414458 0.74414458"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "32 32 32 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.7.1 starts on 13May2023 at 13: 4:33"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.7.1 starts on 13May2023 at 12:55:55"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.0029110032398348084,
+        "source_fine_max_abs_stress_GPa": 0.861,
+        "source_q_grid": [
+          4.0,
+          4.0,
+          4.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "control": {
+        "source_state": "agm002291077",
+        "source_directory": "batch-a/N2ZrHf_agm002291077",
+        "listed_QE_atoms": 4,
+        "CIF_source_record": 15467,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 5.55333888,
+            "length_b": 5.55333888,
+            "length_c": 5.55333888,
+            "angle_alpha": 33.49523888,
+            "angle_beta": 33.49523885,
+            "angle_gamma": 33.49523888,
+            "volume": 46.45485445
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Hf0",
+              "species": "Hf",
+              "frac_unwrapped": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Zr1",
+              "species": "Zr",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "N2",
+              "species": "N",
+              "frac_unwrapped": [
+                0.24671214,
+                0.24671214,
+                0.24671214
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "N3",
+              "species": "N",
+              "frac_unwrapped": [
+                0.75328787,
+                0.75328787,
+                0.75328787
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 15488,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                144.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                5.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                10.494289567852203
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": [
+                0.8339316837522633
+              ],
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Hf 0.500000007208889 0.500000007208889 0.500000007208889",
+                  "Zr 0.0 0.0 0.0",
+                  "N 0.246712138588604 0.246712138588604 0.246712138588604",
+                  "N 0.753287875929174 0.753287875929174 0.753287875929174"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "8 8 8 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 15489,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                144.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                5.0
+              ],
+              "nat": [
+                4.0
+              ],
+              "ntyp": [
+                3.0
+              ],
+              "celldm(1)": [
+                10.494289567852203
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": [
+                0.8339316837522633
+              ],
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Hf 0.500000007208889 0.500000007208889 0.500000007208889",
+                  "Zr 0.0 0.0 0.0",
+                  "N 0.246712138588604 0.246712138588604 0.246712138588604",
+                  "N 0.753287875929174 0.753287875929174 0.753287875929174"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "32 32 32 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.6.8 starts on  8Jul2022 at  2:49:22"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.6.8 starts on  7Jul2022 at 23:47:53"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.041530775686917216,
+        "source_fine_max_abs_stress_GPa": 0.315,
+        "source_q_grid": [
+          4.0,
+          4.0,
+          4.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "selection_reason": "Four-site nitride exposes a frequency/coupling tradeoff and an explicit fine-stress sensitivity.",
+      "existing_route": "geometry_construction",
+      "quantified_bandwidth": null,
+      "quantified_mobile_carrier_density": null,
+      "evidence_level": "E1",
+      "source_tc_reference_only": {
+        "target_K": 12.845,
+        "control_K": 11.965,
+        "delta_K": 0.8800000000000008,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "ambient_scope": "The exact source neutral zero-applied-pressure model has positive Γ optical compression intervals and no negative retained sampled path value for target and selected control. Coarse/fine force and full stress, relaxation warnings and every q record are retained. These finite observations do not prove full-BZ or thermodynamic hull stability.",
+      "known_limitations": "Geoopt0 prints BFGS failure, but geoopt1 prints later positive convergence/no failure and low force. Coarse source stress is near zero; fine stress is anisotropic (−.567,−.567,+.861 GPa). This is finite basin support, not proof of a thermodynamic ambient ground state.",
+      "first_test": "Reproduce the target/control anisotropic stress at source cells; test matched small strains only after numerical convergence and associate the saved alpha2F spectra with their exact headers.",
+      "falsifier": "Disappearance/reversal of the weighted-frequency/net-pairing advantage after stress or declared mu-star sensitivity limits the claim; do not infer a mobile-carrier gain.",
+      "evidence_card": {
+        "repository_path": "frontend/public/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002346313.json",
+        "artifact": "agm002346313.json",
+        "bytes": 5712,
+        "sha256": "d3f7bf004f7740add710dddb0c95fadd110f3dbcfb23815584e858952bc6c7b9"
+      },
+      "retained_counterlimitations": [
+        {
+          "comparison_origin": "frozen_countercontrol",
+          "countercontrol_index": 0,
+          "control_reference": "batch-a/N2ZrHf_agm002291077",
+          "direction": "discordant",
+          "lambda_target_minus_control_range": [
+            -0.02290000000000003,
+            -0.017100000000000004
+          ],
+          "lambda_unit": "dimensionless",
+          "source_tc_target_minus_control_K": 0.8800000000000008,
+          "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+          "causal_geometry_effect": null
+        }
+      ],
+      "execution_status": "not_prepared_not_queued_not_run",
+      "grade_change": null,
+      "formal_RPS": null,
+      "global_novelty": "unresolved",
+      "exact_experimental_status": "unresolved"
+    },
+    {
+      "preparation_sequence": 5,
+      "id": "source-hypothesis:agm002190754",
+      "formula": "Ti3Ge",
+      "target": {
+        "source_state": "agm002190754",
+        "source_directory": "batch-a/Ti3Ge_agm002190754",
+        "listed_QE_atoms": 8,
+        "CIF_source_record": 4985,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 4.98630666,
+            "length_b": 4.98630666,
+            "length_c": 4.98630666,
+            "angle_alpha": 90.0,
+            "angle_beta": 90.0,
+            "angle_gamma": 90.0,
+            "volume": 123.9758093
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Ti0",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.25,
+                0.0,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Ti1",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.75000001,
+                0.0,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "Ti2",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.0,
+                0.5,
+                0.25
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "Ti3",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.0,
+                0.5,
+                0.75000001
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 5,
+              "label": "Ti4",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.5,
+                0.75000001,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 6,
+              "label": "Ti5",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.5,
+                0.25,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 7,
+              "label": "Ge6",
+              "species": "Ge",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 8,
+              "label": "Ge7",
+              "species": "Ge",
+              "frac_unwrapped": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 4997,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                136.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                1.0
+              ],
+              "nat": [
+                8.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                9.422753954603257
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.250000003604445 0.0 0.500000007208889",
+                  "Ti 0.750000010813334 0.0 0.500000007208889",
+                  "Ti 0.0 0.500000007208889 0.250000003604445",
+                  "Ti 0.0 0.500000007208889 0.750000010813334",
+                  "Ti 0.500000007208889 0.750000010813334 0.0",
+                  "Ti 0.500000007208889 0.250000003604445 0.0",
+                  "Ge 0.0 0.0 0.0",
+                  "Ge 0.500000007208889 0.500000007208889 0.500000007208889"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "6 6 6 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 4998,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                136.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                1.0
+              ],
+              "nat": [
+                8.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                9.422753954603257
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.250000003604445 0.0 0.500000007208889",
+                  "Ti 0.750000010813334 0.0 0.500000007208889",
+                  "Ti 0.0 0.500000007208889 0.250000003604445",
+                  "Ti 0.0 0.500000007208889 0.750000010813334",
+                  "Ti 0.500000007208889 0.750000010813334 0.0",
+                  "Ti 0.500000007208889 0.250000003604445 0.0",
+                  "Ge 0.0 0.0 0.0",
+                  "Ge 0.500000007208889 0.500000007208889 0.500000007208889"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "24 24 24 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.6.8 starts on  1Oct2022 at  0:14:40"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.6.8 starts on 30Sep2022 at 22:40:57"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.0,
+        "source_fine_max_abs_stress_GPa": 0.06999999999999999,
+        "source_q_grid": [
+          3.0,
+          3.0,
+          3.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "control": {
+        "source_state": "agm002190808",
+        "source_directory": "batch-a/Ti3Sn_agm002190808",
+        "listed_QE_atoms": 8,
+        "CIF_source_record": 12005,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 5.17874265,
+            "length_b": 5.17874265,
+            "length_c": 5.17874265,
+            "angle_alpha": 90.0,
+            "angle_beta": 90.0,
+            "angle_gamma": 90.0,
+            "volume": 138.8906436
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Ti0",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.5,
+                0.25,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Ti1",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.5,
+                0.75000001,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "Ti2",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.25,
+                0.0,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "Ti3",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.75000001,
+                0.0,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 5,
+              "label": "Ti4",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.0,
+                0.5,
+                0.25
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 6,
+              "label": "Ti5",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.0,
+                0.5,
+                0.75000001
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 7,
+              "label": "Sn6",
+              "species": "Sn",
+              "frac_unwrapped": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 8,
+              "label": "Sn7",
+              "species": "Sn",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 12017,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                114.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                1.0
+              ],
+              "nat": [
+                8.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                9.786405282851264
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.500000007208889 0.250000003604445 0.0",
+                  "Ti 0.500000007208889 0.750000010813334 0.0",
+                  "Ti 0.250000003604445 0.0 0.500000007208889",
+                  "Ti 0.750000010813334 0.0 0.500000007208889",
+                  "Ti 0.0 0.500000007208889 0.250000003604445",
+                  "Ti 0.0 0.500000007208889 0.750000010813334",
+                  "Sn 0.500000007208889 0.500000007208889 0.500000007208889",
+                  "Sn 0.0 0.0 0.0"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "6 6 6 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 12018,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                114.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                1.0
+              ],
+              "nat": [
+                8.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                9.786405282851264
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.500000007208889 0.250000003604445 0.0",
+                  "Ti 0.500000007208889 0.750000010813334 0.0",
+                  "Ti 0.250000003604445 0.0 0.500000007208889",
+                  "Ti 0.750000010813334 0.0 0.500000007208889",
+                  "Ti 0.0 0.500000007208889 0.250000003604445",
+                  "Ti 0.0 0.500000007208889 0.750000010813334",
+                  "Sn 0.500000007208889 0.500000007208889 0.500000007208889",
+                  "Sn 0.0 0.0 0.0"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "24 24 24 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.6.8 starts on  6Oct2022 at 22:23:57"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.6.8 starts on  6Oct2022 at 20:47:59"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.0,
+        "source_fine_max_abs_stress_GPa": 0.03,
+        "source_q_grid": [
+          3.0,
+          3.0,
+          3.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "selection_reason": "Eight-site A15 pair and a shared Sn control permit an economical three-state comparison with Ti3Te; retained lambda/Tc discordance is scientifically useful.",
+      "existing_route": "geometry_construction",
+      "quantified_bandwidth": null,
+      "quantified_mobile_carrier_density": null,
+      "evidence_level": "E1",
+      "source_tc_reference_only": {
+        "target_K": 16.928,
+        "control_K": 13.176,
+        "delta_K": 3.7520000000000007,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "ambient_scope": "The exact source neutral zero-applied-pressure model has positive Γ optical compression intervals and no negative retained sampled path value for target and selected control. Coarse/fine force and full stress, relaxation warnings and every q record are retained. These finite observations do not prove full-BZ or thermodynamic hull stability.",
+      "known_limitations": "All three frozen Ti3Ni/Ti3Sn/Ti3Te neighbors remain. The Ge target has the highest separate source Eli response among these four, and the Sn-controlled header proxy remains positive for μ*=.1/.15/.2.",
+      "first_test": "Reconstruct Ge/Sn source cells and UPFs; matched SCFs first, then reproduce cumulative coupling and the log-frequency moment from exact-state saved alpha2F before deciding on new DFPT.",
+      "falsifier": "A missing or reversed frequency-weight redistribution after method matching weakens the proposed mechanism; lower lambda is not itself failure when the weighted spectrum changes.",
+      "evidence_card": {
+        "repository_path": "frontend/public/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190754.json",
+        "artifact": "agm002190754.json",
+        "bytes": 6756,
+        "sha256": "db414c58599a26748b7abef0c8755dff11a6979c450652f9e16ddcbdf9f8b20b"
+      },
+      "retained_counterlimitations": [
+        {
+          "comparison_origin": "frozen_countercontrol",
+          "countercontrol_index": 0,
+          "control_reference": "batch-a/Ti3Ni_agm002190774",
+          "direction": "discordant",
+          "lambda_target_minus_control_range": [
+            -0.13929999999999998,
+            -0.021499999999999853
+          ],
+          "lambda_unit": "dimensionless",
+          "source_tc_target_minus_control_K": 2.9620000000000015,
+          "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+          "causal_geometry_effect": null
+        },
+        {
+          "comparison_origin": "frozen_countercontrol",
+          "countercontrol_index": 1,
+          "control_reference": "batch-a/Ti3Sn_agm002190808",
+          "direction": "discordant",
+          "lambda_target_minus_control_range": [
+            -0.12939999999999996,
+            -0.02859999999999996
+          ],
+          "lambda_unit": "dimensionless",
+          "source_tc_target_minus_control_K": 3.7520000000000007,
+          "scope": "Coupling and separate source-model Tc move in opposite directions against this alternative; a monotonic coupling-to-Tc explanation is insufficient.",
+          "causal_geometry_effect": null
+        }
+      ],
+      "execution_status": "not_prepared_not_queued_not_run",
+      "grade_change": null,
+      "formal_RPS": null,
+      "global_novelty": "unresolved",
+      "exact_experimental_status": "unresolved"
+    },
+    {
+      "preparation_sequence": 6,
+      "id": "source-hypothesis:agm002190814",
+      "formula": "Ti3Te",
+      "target": {
+        "source_state": "agm002190814",
+        "source_directory": "batch-a/Ti3Te_agm002190814",
+        "listed_QE_atoms": 8,
+        "CIF_source_record": 6331,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 5.13151198,
+            "length_b": 5.13151198,
+            "length_c": 5.13151198,
+            "angle_alpha": 90.0,
+            "angle_beta": 90.0,
+            "angle_gamma": 90.0,
+            "volume": 135.12510389
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Ti0",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.5,
+                0.75000001,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Ti1",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.0,
+                0.5,
+                0.75000001
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "Ti2",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.5,
+                0.25,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "Ti3",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.0,
+                0.5,
+                0.25
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 5,
+              "label": "Ti4",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.25,
+                0.0,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 6,
+              "label": "Ti5",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.75000001,
+                0.0,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 7,
+              "label": "Te6",
+              "species": "Te",
+              "frac_unwrapped": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 8,
+              "label": "Te7",
+              "species": "Te",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 6343,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                114.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                1.0
+              ],
+              "nat": [
+                8.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                9.697152243281268
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.500000007208889 0.750000010813334 0.0",
+                  "Ti 0.0 0.500000007208889 0.750000010813334",
+                  "Ti 0.500000007208889 0.250000003604445 0.0",
+                  "Ti 0.0 0.500000007208889 0.250000003604445",
+                  "Ti 0.250000003604445 0.0 0.500000007208889",
+                  "Ti 0.750000010813334 0.0 0.500000007208889",
+                  "Te 0.500000007208889 0.500000007208889 0.500000007208889",
+                  "Te 0.0 0.0 0.0"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "6 6 6 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 6344,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                114.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                1.0
+              ],
+              "nat": [
+                8.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                9.697152243281268
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.500000007208889 0.750000010813334 0.0",
+                  "Ti 0.0 0.500000007208889 0.750000010813334",
+                  "Ti 0.500000007208889 0.250000003604445 0.0",
+                  "Ti 0.0 0.500000007208889 0.250000003604445",
+                  "Ti 0.250000003604445 0.0 0.500000007208889",
+                  "Ti 0.750000010813334 0.0 0.500000007208889",
+                  "Te 0.500000007208889 0.500000007208889 0.500000007208889",
+                  "Te 0.0 0.0 0.0"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "24 24 24 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.7.1 starts on 12Mar2023 at 10:47:28"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.7.1 starts on 12Mar2023 at 10: 9: 9"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.0,
+        "source_fine_max_abs_stress_GPa": 0.02,
+        "source_q_grid": [
+          3.0,
+          3.0,
+          3.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "control": {
+        "source_state": "agm002190808",
+        "source_directory": "batch-a/Ti3Sn_agm002190808",
+        "listed_QE_atoms": 8,
+        "CIF_source_record": 12005,
+        "CIF_geometry": {
+          "metric": {
+            "length_a": 5.17874265,
+            "length_b": 5.17874265,
+            "length_c": 5.17874265,
+            "angle_alpha": 90.0,
+            "angle_beta": 90.0,
+            "angle_gamma": 90.0,
+            "volume": 138.8906436
+          },
+          "sites": [
+            {
+              "index": 1,
+              "label": "Ti0",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.5,
+                0.25,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 2,
+              "label": "Ti1",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.5,
+                0.75000001,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 3,
+              "label": "Ti2",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.25,
+                0.0,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 4,
+              "label": "Ti3",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.75000001,
+                0.0,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 5,
+              "label": "Ti4",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.0,
+                0.5,
+                0.25
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 6,
+              "label": "Ti5",
+              "species": "Ti",
+              "frac_unwrapped": [
+                0.0,
+                0.5,
+                0.75000001
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 7,
+              "label": "Sn6",
+              "species": "Sn",
+              "frac_unwrapped": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "export_occupancy": 1.0
+            },
+            {
+              "index": 8,
+              "label": "Sn7",
+              "species": "Sn",
+              "frac_unwrapped": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "export_occupancy": 1.0
+            }
+          ]
+        },
+        "source_inputs": {
+          "scf_coarse.in": {
+            "source_record": 12017,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                114.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                1.0
+              ],
+              "nat": [
+                8.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                9.786405282851264
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.500000007208889 0.250000003604445 0.0",
+                  "Ti 0.500000007208889 0.750000010813334 0.0",
+                  "Ti 0.250000003604445 0.0 0.500000007208889",
+                  "Ti 0.750000010813334 0.0 0.500000007208889",
+                  "Ti 0.0 0.500000007208889 0.250000003604445",
+                  "Ti 0.0 0.500000007208889 0.750000010813334",
+                  "Sn 0.500000007208889 0.500000007208889 0.500000007208889",
+                  "Sn 0.0 0.0 0.0"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "6 6 6 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          },
+          "scf_fine.in": {
+            "source_record": 12018,
+            "literal_assignments": {
+              "calculation": [
+                "scf"
+              ],
+              "input_dft": null,
+              "ecutwfc": [
+                114.0
+              ],
+              "ecutrho": null,
+              "smearing": [
+                "mp"
+              ],
+              "degauss": [
+                0.014699728870262
+              ],
+              "occupations": [
+                "smearing"
+              ],
+              "conv_thr": [
+                1e-12
+              ],
+              "nspin": null,
+              "noncolin": null,
+              "lspinorb": null,
+              "tot_charge": null,
+              "ibrav": [
+                1.0
+              ],
+              "nat": [
+                8.0
+              ],
+              "ntyp": [
+                2.0
+              ],
+              "celldm(1)": [
+                9.786405282851264
+              ],
+              "celldm(2)": null,
+              "celldm(3)": null,
+              "celldm(4)": null,
+              "celldm(5)": null,
+              "celldm(6)": null
+            },
+            "geometry_and_k_cards": [
+              {
+                "header": "ATOMIC_POSITIONS crystal",
+                "rows": [
+                  "Ti 0.500000007208889 0.250000003604445 0.0",
+                  "Ti 0.500000007208889 0.750000010813334 0.0",
+                  "Ti 0.250000003604445 0.0 0.500000007208889",
+                  "Ti 0.750000010813334 0.0 0.500000007208889",
+                  "Ti 0.0 0.500000007208889 0.250000003604445",
+                  "Ti 0.0 0.500000007208889 0.750000010813334",
+                  "Sn 0.500000007208889 0.500000007208889 0.500000007208889",
+                  "Sn 0.0 0.0 0.0"
+                ]
+              },
+              {
+                "header": "K_POINTS automatic",
+                "rows": [
+                  "24 24 24 0 0 0"
+                ]
+              }
+            ],
+            "pseudopotential_collection_name_hint": "nc-sr-04_pbesol_stringent_upf",
+            "full_UPF_names_masses_hashes_in_review": null,
+            "omitted_assignments_are_unknown_not_invented": true
+          }
+        },
+        "source_program_headers": {
+          "scf_coarse.out.bz2": [
+            "Program PWSCF v.6.8 starts on  6Oct2022 at 22:23:57"
+          ],
+          "scf_fine.out.bz2": [
+            "Program PWSCF v.6.8 starts on  6Oct2022 at 20:47:59"
+          ]
+        },
+        "source_fine_max_force_eV_A": 0.0,
+        "source_fine_max_abs_stress_GPa": 0.03,
+        "source_q_grid": [
+          3.0,
+          3.0,
+          3.0
+        ],
+        "q_scope": "Saved finite source grid; not an independent whole-BZ stability certificate."
+      },
+      "selection_reason": "Shares the Sn control with Ti3Ge and tests a counterexample to a bare-mass explanation; eight actual QE atoms per cell.",
+      "existing_route": "geometry_construction",
+      "quantified_bandwidth": null,
+      "quantified_mobile_carrier_density": null,
+      "evidence_level": "E1",
+      "source_tc_reference_only": {
+        "target_K": 15.902,
+        "control_K": 13.176,
+        "delta_K": 2.725999999999999,
+        "unit": "K",
+        "method": "Eliashberg",
+        "mu_star": 0.1,
+        "experimental": false,
+        "sigma_binding": null
+      },
+      "ambient_scope": "The exact source neutral zero-applied-pressure model has positive Γ optical compression intervals and no negative retained sampled path value for target and selected control. Coarse/fine force and full stress, relaxation warnings and every q record are retained. These finite observations do not prove full-BZ or thermodynamic hull stability.",
+      "known_limitations": "Ti3Ge has a still higher source response and is retained as the reverse comparison. Ti3Ni is also retained. Source McMillan, Allen–Dynes and Eli outputs all favor Te versus Sn, and the separate-header proxy is positive at the three declared μ sensitivities.",
+      "first_test": "Reuse the verified Sn reference, independently initialize/SCF Te, and freeze a common Ge/Sn/Te scalar comparison before any separately scoped SOC extension.",
+      "falsifier": "If a consistent method or relevant SOC correction removes the Te-versus-Sn advantage, revise that response; retain Ge as the stronger-source-response alternative without calling either a discovery.",
+      "evidence_card": {
+        "repository_path": "frontend/public/research-hypotheses/evidence-cards/2026-10-08-evidence103-v1/agm002190814.json",
+        "artifact": "agm002190814.json",
+        "bytes": 4234,
+        "sha256": "0530d093cc18c9d1c54d4709767860da173b633c5d0e9b92f99099e5345c6f2e"
+      },
+      "retained_counterlimitations": [],
+      "execution_status": "not_prepared_not_queued_not_run",
+      "grade_change": null,
+      "formal_RPS": null,
+      "global_novelty": "unresolved",
+      "exact_experimental_status": "unresolved"
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "schema_version": "sclib-pbesol-source-profile/1",
+  "source_dataset": {
+    "url": "https://archive.materialscloud.org/records/3kbt5-r3n56",
+    "license": "CC-BY-4.0",
+    "recovery_receipt_sha256": "450d5aa688041ef4c21749da39b74c21163250532505579fbb3acfbbe3277cc5",
+    "plan_sha256": "2d3c72efae8dfef752e88d4757fbb04a378ead845bbd62c1a3539d8590c23277"
+  },
+  "qe75_source_audit": {
+    "runtime_source_commit": "770a0b2d12928a67048e2f3da8d10d057e52179e",
+    "audit_receipt_sha256": "505ac41842ad20d1bcadf96c34542e0be2f8cc43c3b40e7d9d526f50cd73b553",
+    "source_url": "https://github.com/QEF/q-e/tree/770a0b2d12928a67048e2f3da8d10d057e52179e"
+  },
+  "upfs": [
+    {
+      "element": "Mo",
+      "filename": "Mo.upf",
+      "bytes": 302637,
+      "sha256": "7d9e896d30564e2fe20bddd12fe22fc92191e0e748d91b18eade2e37c177ddc2",
+      "md5": "c40353276b9086539cda6b9e5a66907b",
+      "functional": "PBESOL",
+      "pseudo_type": "NC",
+      "relativistic": "scalar",
+      "valence_electrons": 14,
+      "download_url": "https://www.pseudo-dojo.org/pseudos/nc-sr-04_pbesol_stringent/Mo.upf.gz",
+      "license": "CC-BY-4.0 per PseudoDojo project README; preserve embedded ONCVPSP notice",
+      "license_source": "https://github.com/abinit/pseudo_dojo#license"
+    },
+    {
+      "element": "Nb",
+      "filename": "Nb.upf",
+      "bytes": 306468,
+      "sha256": "8e564c7f6879f322880d825eec5e6a18419d09993810a4804a32a55117cc95cc",
+      "md5": "f0922cae2acd95e7020481ef16123e2a",
+      "functional": "PBESOL",
+      "pseudo_type": "NC",
+      "relativistic": "scalar",
+      "valence_electrons": 13,
+      "download_url": "https://www.pseudo-dojo.org/pseudos/nc-sr-04_pbesol_stringent/Nb.upf.gz",
+      "license": "CC-BY-4.0 per PseudoDojo project README; preserve embedded ONCVPSP notice",
+      "license_source": "https://github.com/abinit/pseudo_dojo#license"
+    },
+    {
+      "element": "Ta",
+      "filename": "Ta.upf",
+      "bytes": 319910,
+      "sha256": "6dfcd79f0d9779c505989cda0d1b8e1cb11e7847aee8d1c4919d8fe9ed7d7eca",
+      "md5": "19444268c42496a60dd631ab3238a489",
+      "functional": "PBESOL",
+      "pseudo_type": "NC",
+      "relativistic": "scalar",
+      "valence_electrons": 27,
+      "download_url": "https://www.pseudo-dojo.org/pseudos/nc-sr-04_pbesol_stringent/Ta.upf.gz",
+      "license": "CC-BY-4.0 per PseudoDojo project README; preserve embedded ONCVPSP notice",
+      "license_source": "https://github.com/abinit/pseudo_dojo#license"
+    },
+    {
+      "element": "Ti",
+      "filename": "Ti.upf",
+      "bytes": 295202,
+      "sha256": "336c46fb791efedbe56798ca008838910ec74bf23f6c86f5e4f6dff0ed9c282d",
+      "md5": "c7cef475492d2ee3d0561e3a3e59fcd4",
+      "functional": "PBESOL",
+      "pseudo_type": "NC",
+      "relativistic": "scalar",
+      "valence_electrons": 12,
+      "download_url": "https://www.pseudo-dojo.org/pseudos/nc-sr-04_pbesol_stringent/Ti.upf.gz",
+      "license": "CC-BY-4.0 per PseudoDojo project README; preserve embedded ONCVPSP notice",
+      "license_source": "https://github.com/abinit/pseudo_dojo#license"
+    }
+  ],
+  "states": [
+    {
+      "id": "agm001228974",
+      "formula": "TiNb2Mo",
+      "role": "target",
+      "source_qe_version": "7.1",
+      "source_deck": {
+        "path": "TiNb2Mo_agm001228974/scf_coarse.in",
+        "bytes": 989,
+        "sha256": "acde575a6478c164ebbc22bb01ffe59a6bb2dde00da6ece83a66c089fd0aa8ba"
+      },
+      "ibrav": 6,
+      "celldm_literals": {
+        "celldm(1)": "8.585747348635769",
+        "celldm(3)": "0.704510233"
+      },
+      "species_rows": [
+        "  Mo  95.9400 Mo.upf",
+        "  Nb  92.9064 Nb.upf",
+        "  Ti  47.8670 Ti.upf"
+      ],
+      "position_rows": [
+        "  Ti 0.0 0.0 0.500000007208889",
+        "  Nb 0.0 0.500000007208889 0.0",
+        "  Nb 0.500000007208889 0.0 0.0",
+        "  Mo 0.500000007208889 0.500000007208889 0.500000007208889"
+      ],
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "ecutwfc_ry": 98,
+      "ecutrho_ry": 392,
+      "valence_electrons": 52,
+      "nbnd": 31,
+      "source_electron_maxstep": null
+    },
+    {
+      "id": "agm002322068",
+      "formula": "TiNb2Mo",
+      "role": "same_composition_structure_control",
+      "source_qe_version": "7.1",
+      "source_deck": {
+        "path": "TiNb2Mo_agm002322068/scf_coarse.in",
+        "bytes": 1044,
+        "sha256": "10a88d907393c8974d5fea206d1035457d7b4584ac4aa8a161ad285873c3dfa4"
+      },
+      "ibrav": 2,
+      "celldm_literals": {
+        "celldm(1)": "12.127930011570317"
+      },
+      "species_rows": [
+        "  Mo  95.9400 Mo.upf",
+        "  Nb  92.9064 Nb.upf",
+        "  Ti  47.8670 Ti.upf"
+      ],
+      "position_rows": [
+        "  Ti 0.0 0.0 0.0",
+        "  Nb -0.750000010813334 2.25000003244 -0.750000010813334",
+        "  Nb -0.250000003604445 0.750000010813334 -0.250000003604445",
+        "  Mo -0.50000000720889 1.50000002162667 -0.500000007208889"
+      ],
+      "mesh": [
+        8,
+        8,
+        8
+      ],
+      "ecutwfc_ry": 98,
+      "ecutrho_ry": 392,
+      "valence_electrons": 52,
+      "nbnd": 31,
+      "source_electron_maxstep": 200
+    },
+    {
+      "id": "agm001828806",
+      "formula": "NbTa3",
+      "role": "target",
+      "source_qe_version": "6.8",
+      "source_deck": {
+        "path": "NbTa3_agm001828806/scf_coarse.in",
+        "bytes": 940,
+        "sha256": "4376a8b4086b3c5e97334cf7a47127062fbde6e00f4624716e440385486c4755"
+      },
+      "ibrav": 6,
+      "celldm_literals": {
+        "celldm(1)": "8.755680515422949",
+        "celldm(3)": "0.708255422683761"
+      },
+      "species_rows": [
+        "  Nb  92.9064 Nb.upf",
+        "  Ta  180.9479 Ta.upf"
+      ],
+      "position_rows": [
+        "  Ta 0.0 0.0 0.0",
+        "  Ta 0.5 0.0 0.5",
+        "  Ta 8.0406133e-17 0.5 0.5",
+        "  Nb 0.5 0.5 8.6455166e-17"
+      ],
+      "mesh": [
+        6,
+        6,
+        10
+      ],
+      "ecutwfc_ry": 144,
+      "ecutrho_ry": 576,
+      "valence_electrons": 94,
+      "nbnd": 56,
+      "source_electron_maxstep": 200
+    },
+    {
+      "id": "agm001416090",
+      "formula": "NbTa3",
+      "role": "same_composition_structure_control",
+      "source_qe_version": "6.8",
+      "source_deck": {
+        "path": "NbTa3_agm001416090/scf_coarse.in",
+        "bytes": 911,
+        "sha256": "e0cac2a43369cea64d91b5e57c87ca5d2f4a055effb593068733f1da83d7a613"
+      },
+      "ibrav": 2,
+      "celldm_literals": {
+        "celldm(1)": "12.389984510307798"
+      },
+      "species_rows": [
+        "  Nb  92.9064 Nb.upf",
+        "  Ta  180.9479 Ta.upf"
+      ],
+      "position_rows": [
+        "  Ta 0.0 0.0 0.0",
+        "  Ta 0.25 0.25000001 0.25",
+        "  Ta 0.75 0.75000001 0.74999999",
+        "  Nb 0.5 0.5 0.5"
+      ],
+      "mesh": [
+        8,
+        8,
+        8
+      ],
+      "ecutwfc_ry": 144,
+      "ecutrho_ry": 576,
+      "valence_electrons": 94,
+      "nbnd": 56,
+      "source_electron_maxstep": 200
+    }
+  ]
+}

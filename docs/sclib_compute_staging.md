@@ -1,5 +1,10 @@
 # Isolated compute staging control plane — 2026-10-08
 
+The original acceptance below describes the deployed dummy-only version. The
+subsequent opt-in native worker contract and separate acceptance requirements are
+documented in [Native QE worker](sclib_compute_native.md). Code availability does
+not change the historical deployment receipt or imply Mini acceptance.
+
 This implementation provides a persistent transport coordinator and a **dummy
 adapter only**. It has no production database connection and cannot publish or
 approve scientific candidates. `structure_check`/`qe_*` are contract vocabulary;

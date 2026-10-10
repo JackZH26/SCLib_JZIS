@@ -1,0 +1,208 @@
+{
+  "schema_version": "sclib-pbesol-prepared-pins/1",
+  "source_profile_sha256": "4c0d2f406bdb200b88f01299074ce200e331c56952d07fdc8354621b807b263c",
+  "preparer_sha256": "0076c6714becc67315cad3075eee408aca71443f54fd4c8f61565b5d94986ffd",
+  "bundle_manifest_sha256": "93d99171d86c1d5f509b3f56582d95a52ba79657d56ce136b3f9afbfb01ea19d",
+  "contexts": [
+    {
+      "source_id": "agm001228974",
+      "phase": "initialize",
+      "preparation_manifest": {
+        "name": "preparation.json",
+        "bytes": 13716,
+        "sha256": "af57b2e37217d02aa1e3b3d2efa704709b8cdcd1fb7f94e50b0e664720a4e72c"
+      },
+      "source_deck": {
+        "name": "source.in",
+        "bytes": 989,
+        "sha256": "acde575a6478c164ebbc22bb01ffe59a6bb2dde00da6ece83a66c089fd0aa8ba"
+      },
+      "derived_deck": {
+        "name": "input.in",
+        "bytes": 988,
+        "sha256": "23e2d6d96ef0a4330163bd330cd517536b99155aac2bb742d9f1d47d8c055c34"
+      },
+      "line_delta": {
+        "name": "delta.json",
+        "bytes": 13586,
+        "sha256": "74f636ddee2250516212f5b52178d9f5c66615464522835dc7ee2bef8cf2f358"
+      },
+      "geometry_sha256": "3cd8a92de3a7e05bd4859a89ef2c3926df59e929a58db2853e580aaa2ae498f0"
+    },
+    {
+      "source_id": "agm001228974",
+      "phase": "scf",
+      "preparation_manifest": {
+        "name": "preparation.json",
+        "bytes": 13660,
+        "sha256": "3d19e0082e73fb4178386d946175c8474f13c8cfd486c19eeeac154c0d28badd"
+      },
+      "source_deck": {
+        "name": "source.in",
+        "bytes": 989,
+        "sha256": "acde575a6478c164ebbc22bb01ffe59a6bb2dde00da6ece83a66c089fd0aa8ba"
+      },
+      "derived_deck": {
+        "name": "input.in",
+        "bytes": 981,
+        "sha256": "c9eaf1adc72c95b594f29b2f58a2567782c7aea986f41b74f0029cf17e4b23ba"
+      },
+      "line_delta": {
+        "name": "delta.json",
+        "bytes": 13579,
+        "sha256": "0e01d0dcde38d5bde856a5e0cc4226d52fdd103bcc5edcfc89a4658e2e624ad9"
+      },
+      "geometry_sha256": "3cd8a92de3a7e05bd4859a89ef2c3926df59e929a58db2853e580aaa2ae498f0"
+    },
+    {
+      "source_id": "agm002322068",
+      "phase": "initialize",
+      "preparation_manifest": {
+        "name": "preparation.json",
+        "bytes": 13974,
+        "sha256": "b586f8f1decb4860c563a7419a3b264aa3ea756f5cfba1e58f7d4c0c43f736a5"
+      },
+      "source_deck": {
+        "name": "source.in",
+        "bytes": 1044,
+        "sha256": "10a88d907393c8974d5fea206d1035457d7b4584ac4aa8a161ad285873c3dfa4"
+      },
+      "derived_deck": {
+        "name": "input.in",
+        "bytes": 1003,
+        "sha256": "6c313fe769ae5584f8cf038a9f35d151646ea87bd6b7ef48bf48f288fd92ffd4"
+      },
+      "line_delta": {
+        "name": "delta.json",
+        "bytes": 13401,
+        "sha256": "eb38435c38be8f4919d16cf14c6aac809cee490de1b7aa9573bd237b368112f6"
+      },
+      "geometry_sha256": "e2e488b3fe0488ba82d47ce38d51b8b09d714d2d47b367168f8af20b33f02d96"
+    },
+    {
+      "source_id": "agm002322068",
+      "phase": "scf",
+      "preparation_manifest": {
+        "name": "preparation.json",
+        "bytes": 13917,
+        "sha256": "d5834abb40a37e4aee0f1e99468a8816b23beee2d775d7308bfb709808c80463"
+      },
+      "source_deck": {
+        "name": "source.in",
+        "bytes": 1044,
+        "sha256": "10a88d907393c8974d5fea206d1035457d7b4584ac4aa8a161ad285873c3dfa4"
+      },
+      "derived_deck": {
+        "name": "input.in",
+        "bytes": 996,
+        "sha256": "de6158b8738797688187a7830dc8404709d85d91e40056f451c90f76515e1149"
+      },
+      "line_delta": {
+        "name": "delta.json",
+        "bytes": 13394,
+        "sha256": "142254961d008ad61e96ad7216d71c1ca0276429bf61f56086c14e33384bdd1f"
+      },
+      "geometry_sha256": "e2e488b3fe0488ba82d47ce38d51b8b09d714d2d47b367168f8af20b33f02d96"
+    },
+    {
+      "source_id": "agm001828806",
+      "phase": "initialize",
+      "preparation_manifest": {
+        "name": "preparation.json",
+        "bytes": 12057,
+        "sha256": "cc00bb5fb798b46c80dffebe1b7035b7e46dbf795ce958518ed9ac7d3ff18f30"
+      },
+      "source_deck": {
+        "name": "source.in",
+        "bytes": 940,
+        "sha256": "4376a8b4086b3c5e97334cf7a47127062fbde6e00f4624716e440385486c4755"
+      },
+      "derived_deck": {
+        "name": "input.in",
+        "bytes": 911,
+        "sha256": "da6060ee91105601d2a9bb4d00cf8bed6356606cc41952bf167712bc0cc310a9"
+      },
+      "line_delta": {
+        "name": "delta.json",
+        "bytes": 13205,
+        "sha256": "ecd6fc1098000e6c35ee554d3f3e19e099298f51cf8c0c396e4a49c13745cf9b"
+      },
+      "geometry_sha256": "069e17ce91bc204865c0ea67efd00f313b95cb236548e303fa03f729afdfe40c"
+    },
+    {
+      "source_id": "agm001828806",
+      "phase": "scf",
+      "preparation_manifest": {
+        "name": "preparation.json",
+        "bytes": 12008,
+        "sha256": "3c7d133c4b98df2b5065aa29d2c50f10ad26b07933d7e0412bf331ed9d7e7aca"
+      },
+      "source_deck": {
+        "name": "source.in",
+        "bytes": 940,
+        "sha256": "4376a8b4086b3c5e97334cf7a47127062fbde6e00f4624716e440385486c4755"
+      },
+      "derived_deck": {
+        "name": "input.in",
+        "bytes": 904,
+        "sha256": "65b02906afa3fdc93074c17befefcdb0177b5b57c92c9529d490d0ae7494f24f"
+      },
+      "line_delta": {
+        "name": "delta.json",
+        "bytes": 13198,
+        "sha256": "06edec942403ee5699733571bfdc640d7f7e26564421ca8146009fa50d885427"
+      },
+      "geometry_sha256": "069e17ce91bc204865c0ea67efd00f313b95cb236548e303fa03f729afdfe40c"
+    },
+    {
+      "source_id": "agm001416090",
+      "phase": "initialize",
+      "preparation_manifest": {
+        "name": "preparation.json",
+        "bytes": 11922,
+        "sha256": "a52398acaae46cae95d16902c6fff2bff43f2d13e1f54e320c8cb54e349d1d96"
+      },
+      "source_deck": {
+        "name": "source.in",
+        "bytes": 911,
+        "sha256": "e0cac2a43369cea64d91b5e57c87ca5d2f4a055effb593068733f1da83d7a613"
+      },
+      "derived_deck": {
+        "name": "input.in",
+        "bytes": 882,
+        "sha256": "483663ccb25477bb59d952db8da51b21941a0ce8e476c5e4a99892900eef8297"
+      },
+      "line_delta": {
+        "name": "delta.json",
+        "bytes": 12975,
+        "sha256": "1dde7a034f0284eb5f13a2bbf787fc7f63b1ce3ace27715944450e1c25e18737"
+      },
+      "geometry_sha256": "563ce2bf3e918f7f19568b6b6990f7b52b829b1047fdfae88980a067c0a45b88"
+    },
+    {
+      "source_id": "agm001416090",
+      "phase": "scf",
+      "preparation_manifest": {
+        "name": "preparation.json",
+        "bytes": 11873,
+        "sha256": "c9bced308576c9f43aead5bff492f6be56917732c68bac949a82b6da1f4c9990"
+      },
+      "source_deck": {
+        "name": "source.in",
+        "bytes": 911,
+        "sha256": "e0cac2a43369cea64d91b5e57c87ca5d2f4a055effb593068733f1da83d7a613"
+      },
+      "derived_deck": {
+        "name": "input.in",
+        "bytes": 875,
+        "sha256": "5da51176e082cadda67853d898259d3bc3e0ce4a825113826603178f90dedebc"
+      },
+      "line_delta": {
+        "name": "delta.json",
+        "bytes": 12968,
+        "sha256": "0221a223f3f3622f4cc9c06d4782b9e8a559cb7457d2adc40c9f3d37733b5b12"
+      },
+      "geometry_sha256": "563ce2bf3e918f7f19568b6b6990f7b52b829b1047fdfae88980a067c0a45b88"
+    }
+  ]
+}

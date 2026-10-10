@@ -1,0 +1,89 @@
+{
+  "schema_version": "sclib-pbesol-result-custody-provenance/1",
+  "scope": "Static implementation and independent review provenance. No authenticated capture, installed-release verification, runtime attestation or scientific acceptance.",
+  "actual_pbesol_execution": false,
+  "authenticated_origin_verified": false,
+  "runtime_installed": false,
+  "scientific_acceptance": false,
+  "private_review": {
+    "verdict": "pass_three_fix_private_delta",
+    "new_probes_passed": 21,
+    "new_probes_failed": 0,
+    "scope": "Three-fix delta of inert private candidate; repository promotion requires separate review."
+  },
+  "sources": [
+    {
+      "source": "reviewed-private-custody-candidate-v2",
+      "bytes": 24411,
+      "sha256": "db4e46a50ea07049a7ecdd0dfdbff89e2082faa5822766ef5dbcff91f47f59b8"
+    },
+    {
+      "source": "reviewed-private-custody-candidate-v2-tests",
+      "bytes": 28529,
+      "sha256": "50f86226ae1b935df7cf1e7742ee4f65be04c031208d445f3f2b26156c8d6ecc"
+    },
+    {
+      "source": "independent-custody-v2-delta-review",
+      "bytes": 2078,
+      "sha256": "8e654f8fc62a71593591e4124ed6f13633de2296e0bb995d40e8881f467f02b9"
+    },
+    {
+      "source": "independent-custody-v2-delta-probes",
+      "bytes": 9098,
+      "sha256": "801935c7400f3d401b0bc5f92f3ba59019625072a0e3a6099d75de239fd51359"
+    },
+    {
+      "source": "retained-private-custody-v1-findings",
+      "bytes": 3446,
+      "sha256": "9d0d9aa7e766b6171ab6943fb71b56622e03455eda23cdbce7953cd0836ec74a"
+    },
+    {
+      "source": "scripts/sclib_compute/contracts.py",
+      "bytes": 4771,
+      "sha256": "db53508c288c89f3f4ecb5ff60973cdd2906259aee98d6e9c95b2feeb17ac660",
+      "git_commit": "84c1f4104854eb7be568512f09524eb987a52311"
+    },
+    {
+      "source": "scripts/sclib_compute/native_contract.py",
+      "bytes": 12856,
+      "sha256": "bf95da851ad67593050e724af1f45c1032b2e3d1d8b8071d36345083053614b6",
+      "git_commit": "84c1f4104854eb7be568512f09524eb987a52311"
+    },
+    {
+      "source": "scripts/sclib_compute/native_supervisor.py",
+      "bytes": 9895,
+      "sha256": "1f823f212b154f95c5f7870f319aac32ee1f4f5f160af15bdea63f1369005116",
+      "git_commit": "84c1f4104854eb7be568512f09524eb987a52311"
+    },
+    {
+      "source": "scripts/sclib_compute/store.py",
+      "bytes": 29832,
+      "sha256": "15cc1657d7f3c2e0a6c20e2ee5eba7973ec66203290773533905109b97284985",
+      "git_commit": "84c1f4104854eb7be568512f09524eb987a52311"
+    },
+    {
+      "source": "scripts/sclib_compute/pbesol_profile.py",
+      "bytes": 12735,
+      "sha256": "121c5ee3a33dfe971c68b77e05783b9233b8adb5223516c7ae21704c73bdbbb6",
+      "git_commit": "84c1f4104854eb7be568512f09524eb987a52311"
+    },
+    {
+      "source": "scripts/sclib_compute/pbesol_native_contract.py",
+      "bytes": 5537,
+      "sha256": "09b0be8fa624a928be82b9d80e09a6c0fca74a9bc1eb4154fb1cab4a2df12ab8",
+      "git_commit": "84c1f4104854eb7be568512f09524eb987a52311"
+    },
+    {
+      "source": "scripts/sclib_compute/pbesol_init_reader.py",
+      "bytes": 27388,
+      "sha256": "59d7ba53fd7b48c8bab93b71b766b0557e0099464ef82d3c42eb2ad1a8ed21f0",
+      "git_commit": "84c1f4104854eb7be568512f09524eb987a52311"
+    },
+    {
+      "source": "scripts/build_sclib_pbesol_preparation.py",
+      "bytes": 21365,
+      "sha256": "0076c6714becc67315cad3075eee408aca71443f54fd4c8f61565b5d94986ffd",
+      "git_commit": "84c1f4104854eb7be568512f09524eb987a52311"
+    }
+  ]
+}

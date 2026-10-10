@@ -1,0 +1,137 @@
+{
+  "schema_version": "sclib-m4-calibration-observation/1",
+  "observed_on": "2026-10-08",
+  "adapter_source_commit": "75d8e56768d8101b6da9926d1a21ccf90b9abf6d",
+  "runtime_id": "qe-7.5-770a0b2-arm64",
+  "canonical_reader_sha256": "a14d1e1443d2869b0446600e32f7439a8b176aa296970fac1651776528c56633",
+  "frozen_plan_sha256": "f5c36327e95b395f550e6fee1efafde8224accf8f558dad4c9dfa77702f4126c",
+  "comparison_report_sha256": "c9fbddac632a5725188c74ab15de7bc2bb2a854819f6bd8fcbdb4c9aa9c356bf",
+  "composition": {
+    "Mg": 4,
+    "B": 8
+  },
+  "atom_count": 12,
+  "linear_strain_percent": 0,
+  "kmesh": [
+    4,
+    4,
+    6
+  ],
+  "xc": "PBE",
+  "pseudopotential_type": "PAW",
+  "ecutwfc_ry": 60,
+  "ecutrho_ry": 480,
+  "electronic_threshold_ry": 1e-10,
+  "smearing": "mv",
+  "degauss_ry": 0.02,
+  "initialization": {
+    "job_id": "m4-mgb2-parent-k4-init-20261008-v1",
+    "classification": "initialization_only",
+    "process_exit_code": 0,
+    "xml_exit_status": 255,
+    "physical_observations_present": false
+  },
+  "runs": [
+    {
+      "job_id": "m4-mgb2-parent-k4-scf-r1-20261008-v1",
+      "mpi_ranks": 1,
+      "threads_per_rank": 1,
+      "process_wall_seconds": 377.0339602080003,
+      "sampled_peak_process_tree_rss_bytes": 498991104,
+      "rank_times_wall_seconds_allocation_proxy": 377.0339602080003,
+      "scf_steps": 14,
+      "scf_error_hartree_cell": 5.714967672054252e-12,
+      "total_energy_hartree_cell": -328.6857595752683,
+      "input_manifest_sha256": "a1f7992bbf9740521f64bd168ba66751ce0dcfd73522785313a3da2027622729",
+      "reading_sha256": "a29e1683ef549e6074c320c3aff652b6877778142692ee1bffd0f80bca73ffd3",
+      "completion_sha256": "fd301008f6f3b6fef2cd38d608d27c20aa1b33d3be420744b50e81e485d23d36",
+      "output_manifest_sha256": "00a67f86d1508c77497816554917f61e97c72e4c466f0c34f2cc04fe7ff98fcf",
+      "returned_at_unix": 1791462398.2578406
+    },
+    {
+      "job_id": "m4-mgb2-parent-k4-scf-r2-20261008-v1",
+      "mpi_ranks": 2,
+      "threads_per_rank": 1,
+      "process_wall_seconds": 199.67424879200007,
+      "sampled_peak_process_tree_rss_bytes": 514998272,
+      "rank_times_wall_seconds_allocation_proxy": 399.34849758400014,
+      "scf_steps": 12,
+      "scf_error_hartree_cell": 9.54883714432846e-12,
+      "total_energy_hartree_cell": -328.6857595752766,
+      "input_manifest_sha256": "a1f7992bbf9740521f64bd168ba66751ce0dcfd73522785313a3da2027622729",
+      "reading_sha256": "4a2e07b220689460758b89fc5a18c00641bf9661f95b63e214fb9bcf7fd0fa8c",
+      "completion_sha256": "d2b43b35aa1b721cb7ddba147a4743077bfb814bd019c640e6ec578db02d4c24",
+      "output_manifest_sha256": "426b916bb5338c8f0d038161b3087987b25700deef6ce7cd966136d0299d0e01",
+      "returned_at_unix": 1791461833.9338722
+    },
+    {
+      "job_id": "m4-mgb2-parent-k4-scf-r4-20261008-v1",
+      "mpi_ranks": 4,
+      "threads_per_rank": 1,
+      "process_wall_seconds": 245.99727133399938,
+      "sampled_peak_process_tree_rss_bytes": 575242240,
+      "rank_times_wall_seconds_allocation_proxy": 983.9890853359975,
+      "scf_steps": 14,
+      "scf_error_hartree_cell": 4.299154109601822e-13,
+      "total_energy_hartree_cell": -328.6857595752293,
+      "input_manifest_sha256": "a1f7992bbf9740521f64bd168ba66751ce0dcfd73522785313a3da2027622729",
+      "reading_sha256": "b502289521d467d8106a4795d289f74bcb21aa8bcb74da887cf855f0e3f86a5d",
+      "completion_sha256": "4cc793dff040a05bba74f51f07b7bc31baf2d5d69518fd3e3fe7f88f6c338042",
+      "output_manifest_sha256": "a0a45ab450d95c569f32cbdb6f23ed267444990037e9a908dcd86a0d65abd299",
+      "returned_at_unix": 1791462739.9731593
+    }
+  ],
+  "mpi_repeatability": {
+    "status": "predeclared_checks_passed",
+    "metrics": {
+      "energy_window_hartree_per_atom": 3.941143707682689e-12,
+      "energy_window_within_tolerance": true,
+      "force_max_abs_component_difference": 2.4914198309862027e-07,
+      "force_within_tolerance": true,
+      "max_scf_error_hartree_per_atom": 7.957364286940383e-13,
+      "scf_error_strictly_below_tolerance": true,
+      "stress_max_abs_component_difference": 2.3194743181690405e-08,
+      "stress_within_tolerance": true
+    },
+    "thresholds": {
+      "energy_window_hartree_per_atom_max": 1e-07,
+      "scf_error_hartree_per_atom_strict_max": 1e-07,
+      "force_component_difference_hartree_bohr_max": 1e-05,
+      "stress_component_difference_hartree_bohr3_max": 1e-06
+    }
+  },
+  "performance_interpretation": {
+    "provisional_ranks": 2,
+    "basis": "Fastest wall time in one measured sample per rank; iterations differ (14/12/14). No general speedup claim.",
+    "allocation_proxy_is_measured_cpu_time": false
+  },
+  "queue_reservation": {
+    "campaign_limit_core_seconds": 7200,
+    "reserved_including_prior_transport_core_seconds": 6780,
+    "remaining_core_seconds": 420,
+    "new_scf_batch_admitted": false
+  },
+  "source_followup": {
+    "mgb2_upf_provenance_receipt_sha256": "73a4afa57abb48d73b8bfc83251a1dc85a70c58f445ebdd9288148eb602ed85a",
+    "official_downloads_exact_sha256_match": true,
+    "pslibrary_collection_license": "GPL-2.0-or-later",
+    "per_file_license_header_present": false,
+    "original_preparation_provenance_preserved": true
+  },
+  "pending": [
+    "denser k-mesh initialization and feasible budget",
+    "finite k-mesh convergence",
+    "cross-machine comparison of the identical case",
+    "complete fault and lifecycle acceptance",
+    "continuous 24-hour observation"
+  ],
+  "scientific_scope": {
+    "tc_calculated": false,
+    "phonons_calculated": false,
+    "physical_stability_established": false,
+    "new_material_discovered": false,
+    "candidate_grade_changed": false,
+    "full_node_acceptance": false,
+    "soak24h_accepted": false
+  }
+}
