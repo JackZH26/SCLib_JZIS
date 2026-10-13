@@ -131,7 +131,13 @@ def schema_errors(value, *, model_output=False):
                 for child in relevant:
                     yield from details(child)
                 return
-        yield f"schema:{'/'.join(map(str, error.absolute_path))}:{error.validator}"
+        suffix = ""
+        if error.validator == "enum":
+            suffix = ":allowed=" + ",".join(map(str, error.validator_value))
+        elif error.validator == "additionalProperties" and isinstance(error.instance, dict):
+            unexpected = sorted(set(error.instance) - set(error.schema.get("properties", {})))
+            suffix = ":unexpected=" + ",".join(unexpected)
+        yield f"schema:{'/'.join(map(str, error.absolute_path))}:{error.validator}{suffix}"
 
     return list(
         dict.fromkeys(
@@ -367,6 +373,31 @@ def validate_candidate(value: dict, blocks: list[dict], *, model_output=False) -
                 if key.endswith("_raw")
             ):
                 errors.append("raw_qualifier_not_in_evidence")
+            if key == "measurement_temperature" and quantity and quantity.get("value") is not None:
+                same_tc = any(
+                    p["property_key"] == "tc"
+                    and p["quantity"]
+                    and p["quantity"].get("value") == quantity["value"]
+                    for p in row["properties"]
+                )
+                only_tc_proof = bool(item["evidence"]) and all(
+                    re.search(
+                        r"\bTc\b|\bT_c\b|critical\s+temperature|transition\s+temperature",
+                        e["quote"],
+                        re.IGNORECASE,
+                    )
+                    and not re.search(
+                        r"(?:measurements?|measured|spectra|data|experiment)\s+(?:were\s+|was\s+|taken\s+|performed\s+)*(?:at|for)\b|\bT\s*=",
+                        e["quote"],
+                        re.IGNORECASE,
+                    )
+                    for e in item["evidence"]
+                )
+                if same_tc and only_tc_proof:
+                    errors.append(
+                        "tc_value_is_not_a_reported_measurement_setting:"
+                        f"results/{row_index}/conditions/{row['conditions'].index(item)}"
+                    )
             criterion = item.get("qualifiers", {}).get("tc_definition")
             criterion_patterns = {
                 "onset": r"\bonset\b|起始",

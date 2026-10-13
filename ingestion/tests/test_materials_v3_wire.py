@@ -260,3 +260,39 @@ def test_optional_slots_do_not_allow_reported_items_without_one_representation(m
     result, errors = validate_response(value, [block])
     assert errors and not result["candidate"]["results"]
     assert any("reported_value_" in e for e in errors)
+
+
+def test_repair_feedback_lists_allowed_roles_and_the_actual_unexpected_field():
+    value, block = compact_fixture()
+    value["results"][0]["event"]["evidence"][0]["role"] = "event"
+    value["results"][0]["unresolved_links"] = []
+    result, errors = validate_response(value, [block])
+    assert not result["candidate"]["results"]
+    assert any("event/evidence/0/role:enum:allowed=subject,value" in e for e in errors)
+    assert any("additionalProperties:unexpected=unresolved_links" in e for e in errors)
+
+
+def test_tc_feedback_lists_the_controlled_criteria_without_relabeling_bad_output():
+    value, block = compact_fixture()
+    value["results"][0]["properties"][0]["qualifiers"][0]["value"] = "transition_temperature"
+    result, errors = validate_response(value, [block])
+    assert not result["candidate"]["results"]
+    assert any("tc_definition:enum:allowed=onset,zero_resistance" in e for e in errors)
+    assert any("unknown" in e for e in errors)
+
+
+def test_tc_cannot_fill_a_measurement_temperature_setting_without_separate_proof():
+    value, block = compact_fixture()
+    row = value["results"][0]
+    condition = deepcopy(row["conditions"][0])
+    condition.update(key="measurement_temperature")
+    condition["quantity"].update(raw_text="240 K", raw_unit="K", numbers=[240])
+    row["conditions"].append(condition)
+    result, errors = validate_response(value, [block])
+    assert any("tc_value_is_not_a_reported_measurement_setting" in e for e in errors)
+    assert not result["candidate"]["results"]
+    # An independently stated setting at the same temperature remains allowable.
+    block["text"] += " Measurements were taken at 240 K."
+    condition["evidence"] = [{"ref": "R1", "role": "condition"}]
+    result, errors = validate_response(value, [block])
+    assert not errors and len(result["candidate"]["results"]) == 1

@@ -117,7 +117,13 @@ def _schema_messages(validator, value, prefix="wire"):
                 if not (child.validator == "type" and child.absolute_path == error.absolute_path):
                     yield from details(child)
             return
-        yield f"{prefix}:{'/'.join(map(str, error.absolute_path))}:{error.validator}"
+        suffix = ""
+        if error.validator == "enum":
+            suffix = ":allowed=" + ",".join(map(str, error.validator_value))
+        elif error.validator == "additionalProperties" and isinstance(error.instance, dict):
+            unexpected = sorted(set(error.instance) - set(error.schema.get("properties", {})))
+            suffix = ":unexpected=" + ",".join(unexpected)
+        yield f"{prefix}:{'/'.join(map(str, error.absolute_path))}:{error.validator}{suffix}"
 
     return list(dict.fromkeys(m for e in validator.iter_errors(value) for m in details(e)))
 

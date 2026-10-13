@@ -498,7 +498,12 @@ def test_nullable_series_repair_names_the_invalid_condition_key_instead_of_only_
     value["results"][0]["series_point"]["scan_variables"] = ["pressure"]
     with pytest.raises(CandidateError) as error:
         validate_candidate(value, [block])
-    assert "schema:results/0/series_point/scan_variables/0:enum" in error.value.errors
+    assert any(
+        e.startswith(
+            "schema:results/0/series_point/scan_variables/0:enum:allowed=measurement_pressure"
+        )
+        for e in error.value.errors
+    )
     assert "schema:results/0/series_point:type" not in error.value.errors
 
 
